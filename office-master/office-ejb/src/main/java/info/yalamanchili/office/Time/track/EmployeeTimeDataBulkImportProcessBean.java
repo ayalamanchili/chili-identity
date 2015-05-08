@@ -11,7 +11,6 @@ package info.yalamanchili.office.Time.track;
 
 import info.yalamanchili.office.bulkimport.AbstractBulkImportDocumentProcess;
 import info.yalamanchili.office.dao.ext.ExternalRefDao;
-import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.dao.time.TimeRecordDao;
 import info.yalamanchili.office.entity.bulkimport.BulkImport;
 import info.yalamanchili.office.entity.bulkimport.BulkImportEntity;
@@ -23,7 +22,6 @@ import info.yalamanchili.office.model.time.TimeRecordCategory;
 import info.yalamanchili.office.model.time.TimeRecordStatus;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -128,10 +126,7 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDoc
             }
             notes.append(timeEntry.describe()).append("\n");
         }
-        Long hours = minutes / 60;
-        Long mnts = minutes % 60;
-        //TODO this is not a correct cacluation
-        return new BigDecimal(hours.toString() + "." + mnts.toString()).setScale(2, RoundingMode.HALF_UP);
+        return new BigDecimal((double) minutes / (double) 60).setScale(2, RoundingMode.UP);
     }
 
     protected BigDecimal caluclateBorderMinutes(List<TimeEntry> entries, StringBuilder notes) {
@@ -142,10 +137,7 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDoc
         Date timeIn = entries.get(0).getEntryTimeStamp();
         Date timeOut = entries.get(entries.size() - 1).getEntryTimeStamp();
         minutes = minutes + TimeUnit.MILLISECONDS.toMinutes(timeOut.getTime() - timeIn.getTime());
-        Long hours = minutes / 60;
-        Long mnts = minutes % 60;
-        //TODO this is not a correct cacluation
-        return new BigDecimal(hours.toString() + "." + mnts.toString()).setScale(2, RoundingMode.HALF_UP);
+        return new BigDecimal((double) minutes / (double) 60).setScale(2, RoundingMode.UP);
     }
 
     protected TimeRecord createTimeRecord(String employeeId, Date startDate, Date endDate, Map<String, BigDecimal> hours, TimeRecordStatus status, String notes) {
@@ -165,7 +157,6 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDoc
     }
 
     protected List<TimeEntry> getTimeEntriesForEmployeeByDate(String empExtRefId, Date entryDate, List<TimeEntry> timeEntries, String location) {
-        List<TimeEntry> res = new ArrayList();
         Predicate<TimeEntry> equalsDate = (TimeEntry te) -> te.getEntryDate().compareTo(entryDate) == 0;
         Predicate<TimeEntry> equalsEmp = (TimeEntry te) -> te.getEmployeeId().equals(empExtRefId);
         Predicate<TimeEntry> equalsLocation = (TimeEntry te) -> te.getLocation().equals(location);
@@ -198,26 +189,22 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDoc
 
     @Override
     public BulkImport revert(BulkImport bulkImport) {
-        for (BulkImportEntity bie : bulkImport.getEntities()) {
-            String id = bie.getEntityType().substring(bie.getEntityType().indexOf(":") + 1);
-            Query q = new Query(Criteria.where("id").is(id));
-            TimeRecord trec = mongoTemplate.findOne(q, TimeRecord.class);
+        bulkImport.getEntities().stream().map((bie) -> bie.getEntityType().substring(bie.getEntityType().indexOf(":") + 1)).map((id) -> new Query(Criteria.where("id").is(id))).map((q) -> mongoTemplate.findOne(q, TimeRecord.class)).forEach((trec) -> {
             mongoTemplate.remove(trec);
-        }
+        });
         return bulkImport;
     }
 
     @Override
     public BulkImport commit(BulkImport bulkImport) {
-        for (BulkImportEntity bie : bulkImport.getEntities()) {
-            String id = bie.getEntityType().substring(bie.getEntityType().indexOf(":") + 1);
-            Query q = new Query(Criteria.where("id").is(id));
-            TimeRecord trec = mongoTemplate.findOne(q, TimeRecord.class);
+        bulkImport.getEntities().stream().map((bie) -> bie.getEntityType().substring(bie.getEntityType().indexOf(":") + 1)).map((id) -> new Query(Criteria.where("id").is(id))).map((q) -> mongoTemplate.findOne(q, TimeRecord.class)).map((trec) -> {
             if (trec.getStatus().equals(TimeRecordStatus.Saved)) {
                 trec.setStatus(TimeRecordStatus.Approved);
             }
+            return trec;
+        }).forEach((trec) -> {
             mongoTemplate.save(trec);
-        }
+        });
         return bulkImport;
     }
 }
