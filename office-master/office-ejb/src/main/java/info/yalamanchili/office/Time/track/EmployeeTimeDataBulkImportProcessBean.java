@@ -68,7 +68,7 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDoc
         return bulkImport;
     }
 
-    public void processTimeEntryRecords(BulkImport bulkImport, List<TimeEntry> timeEntries) {   
+    public void processTimeEntryRecords(BulkImport bulkImport, List<TimeEntry> timeEntries) {
         Set<String> employeeIdsNotFound = new HashSet();
         for (Date entryDate : getDates(timeEntries)) {
             for (String empExtRefId : getEmployeeIds(timeEntries)) {
@@ -92,8 +92,7 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDoc
                     calendar.setTime(secondFloorTimeEntries.get(0).getEntryTimeStamp());
                     Integer hours = calendar.get(Calendar.HOUR_OF_DAY);
                     Integer minutes = calendar.get(Calendar.MINUTE);
-                    System.out.println("ddddddddddddddddddddd"+new BigDecimal(hours.toString() + "." + minutes.toString()).setScale(2, RoundingMode.HALF_UP));
-                    hoursPerType.put(TIME_IN, new BigDecimal(hours.toString() + "." + minutes.toString()).setScale(2, RoundingMode.HALF_UP));
+                    hoursPerType.put(TIME_IN, new BigDecimal(hours.toString() + "." + minutes.toString()));
                 }
                 TimeRecordStatus status;
                 if (secondFloorTimeEntries.size() % 2 == 0) {
