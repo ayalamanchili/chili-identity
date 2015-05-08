@@ -19,11 +19,8 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import info.chili.gwt.composite.LocalStorage;
-import info.chili.gwt.widgets.NewWindowPanel;
 import info.yalamanchili.office.client.config.OfficeClientConfig;
 import info.yalamanchili.office.client.login.LoginPage;
 import info.yalamanchili.office.client.resources.OfficeImages;
@@ -40,7 +37,7 @@ public class OfficeWelcome implements EntryPoint {
     public OfficeClientConfig officeClientConfig;
 
     @Override
-    public void onModuleLoad() {
+    public void onModuleLoad1() {
         OfficeImages.INSTANCE.officeCss().ensureInjected();
         instance = this;
         RootLayoutPanel.get().add(new LoginPage());
