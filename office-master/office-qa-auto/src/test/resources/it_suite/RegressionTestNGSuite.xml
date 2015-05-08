@@ -1,4 +1,9 @@
 <?xml version='1.0' encoding='UTF-8' ?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="info.yalamanchili.office_office-qa-auto_jar_1.2-SNAPSHOT">
     

@@ -386,6 +386,7 @@ public class OfficeStartup {
 
         // Address Types
         getHomeAddressType();
+        getOtherAddressType();
         // Email Types
         getWorkEmailType();
         getPersonalEmailType();
@@ -454,6 +455,18 @@ public class OfficeStartup {
         } else {
             AddressType officeAddressType = new AddressType();
             officeAddressType.setAddressType("Office");
+            return em.merge(officeAddressType);
+        }
+    }
+    protected AddressType getOtherAddressType() {
+        Query getAddressType = em.createQuery("from " + AddressType.class.getCanonicalName()
+                + " where addressType=:addressTypeParam");
+        getAddressType.setParameter("addressTypeParam", "Other");
+        if (getAddressType.getResultList().size() > 0) {
+            return (AddressType) getAddressType.getResultList().get(0);
+        } else {
+            AddressType officeAddressType = new AddressType();
+            officeAddressType.setAddressType("Other");
             return em.merge(officeAddressType);
         }
     }
