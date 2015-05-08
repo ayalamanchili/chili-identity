@@ -9,7 +9,7 @@ import info.yalamanchili.office.client.TabPanel;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.rpc.HttpService;
@@ -27,6 +27,10 @@ public class AddressOptionsPanel extends ALComposite implements ClickHandler {
     protected HorizontalPanel panel = new HorizontalPanel();
     protected ClickableLink addAddressLink = new ClickableLink("Add Address");
     protected ClickableLink manageHomeAddressL = new ClickableLink("");
+    protected static HTML addressUpdateInstructions = new HTML("<ul>\n"
+            + "<li><span style=\"font-size:14px;\">Please make sure your current Home/Primary Mailing Address is reflected in Portal<b>&nbsp;</b>as this will be used by all departments and systems.</span></li>\n"
+            + "<li><span style=\"font-size:14px;\">When changing your Home/Primary Mailing address in portal please select the<strong> Notify Change</strong> check box to notify the apprioriate departments.</span></li>\n"
+            + "</ul>");
     protected String employeeId;
     protected String manageHomeAddressType;
 
@@ -89,6 +93,7 @@ public class AddressOptionsPanel extends ALComposite implements ClickHandler {
             panel.add(manageHomeAddressL);
             panel.add(addAddressLink);
         }
+        panel.add(addressUpdateInstructions);
     }
 
     @Override

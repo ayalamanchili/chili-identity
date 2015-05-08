@@ -22,9 +22,6 @@
         <!-- Parallel Payroll Dept Task-->
         <sequenceFlow sourceRef="createTasks"
                       targetRef="updateAddressPayrollTask">
-            <conditionExpression>
-                ${primaryMailingAddress == true}
-            </conditionExpression>
         </sequenceFlow> 
         <userTask id="updateAddressPayrollTask" 
                   name="Address Updated Payroll Dept Task for ${employeeName}" 
@@ -74,64 +71,6 @@
             name="Task Email Escalation"
             activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
         </serviceTask>        
-
-        <sequenceFlow sourceRef="createTasks"
-                      targetRef="updateAddressImmigrationTask">
-            <conditionExpression>
-                ${notifyImmigration == true}
-            </conditionExpression>
-        </sequenceFlow> 
-        
-        <!--Address Updates Task for Immigration Dept-->
-        <userTask id="updateAddressImmigrationTask" 
-                  name="Address Updated Immigration Task for ${employeeName}" 
-                  activiti:candidateGroups="ROLE_H1B_IMMIGRATION">
-            <documentation>
-                Employee Primary Residence Address is updated in portal.
-                1) Please update any Immigration Related Docs and notify necessary personal as needed (If applicable)
-                2) Please complete this task once all the updates are complete.
-                3) If no action/changes for this employee just click complete by adding notes. 
-                
-                Address Change Notes From Employee  : ${entity.changeNotes} 
-                Street1                             : ${entity.street1}
-                Street2                             : ${entity.street2}
-                City, State, Zip                    : ${entity.city}, ${entity.state}, ${entity.zip} 
-                More Information : https://apps.sstech.us/site/office/bpm/address-updated-process.html
-            </documentation>
-            <extensionElements>
-                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.address.HomeAddressChangeProcess" />
-                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.address.HomeAddressChangeProcess" />
-                <activiti:formProperty id="immigrationDeptNotes" type="string" required="true" name="Notes"/>
-            </extensionElements>             
-        </userTask>
-        <exclusiveGateway id="immigrationTaskGateway" />
-        <sequenceFlow sourceRef="updateAddressImmigrationTask" 
-                      targetRef="waitForTasks">
-            <conditionExpression>
-                ${allTasksCompleted == true}
-            </conditionExpression>
-        </sequenceFlow>
-        <sequenceFlow sourceRef="updateAddressImmigrationTask" 
-                      targetRef="updateAddressEnd">
-            <conditionExpression>
-                ${allTasksCompleted == false}
-            </conditionExpression>
-        </sequenceFlow> 
-        <!--Immigration Task escalation email after 2 days-->
-        <boundaryEvent id="immigrationTaskEmailEscalationTimer"
-                       cancelActivity="false" 
-                       attachedToRef="updateAddressImmigrationTask">
-            <timerEventDefinition> 
-                <timeDuration>PT48H</timeDuration> 
-            </timerEventDefinition>
-        </boundaryEvent>
-        <sequenceFlow sourceRef="immigrationTaskEmailEscalationTimer" 
-                      targetRef="immigrationTaskEmailEscalation" />
-        <serviceTask
-            id="immigrationTaskEmailEscalation"
-            name="Task Email Escalation"
-            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
-        </serviceTask> 
 
         <sequenceFlow sourceRef="createTasks"
                       targetRef="updateHealthInsuranceTask">
@@ -204,6 +143,7 @@
                 Street2                             : ${entity.street2}
                 City, State, Zip                    : ${entity.city}, ${entity.state}, ${entity.zip} 
                 --------------------------------------#Notes#----------------------------------------------------------------
+                Payroll Dept Notes                  : ${payrollDeptNotes} 
 
                 -------------------------------------------------------------------------------------------------------------                
                 More Information : https://apps.sstech.us/site/office/bpm/address-updated-process.html

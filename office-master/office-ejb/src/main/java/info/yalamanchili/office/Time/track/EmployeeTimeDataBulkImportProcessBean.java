@@ -13,7 +13,6 @@ import info.yalamanchili.office.bulkimport.AbstractBulkImportDocumentProcess;
 import info.yalamanchili.office.dao.ext.ExternalRefDao;
 import info.yalamanchili.office.dao.time.TimeRecordDao;
 import info.yalamanchili.office.entity.bulkimport.BulkImport;
-import info.yalamanchili.office.entity.bulkimport.BulkImportEntity;
 import info.yalamanchili.office.entity.bulkimport.BulkImportMessageType;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.TimeEntry;

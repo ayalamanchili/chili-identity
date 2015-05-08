@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.data.CountryFactory;
 import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.BooleanField;
@@ -28,6 +29,8 @@ import info.yalamanchili.office.client.profile.ProfileHome;
 public class CreateAddressPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateAddressPanel.class.getName());
+    protected static HTML notifyChangeInstructions = new HTML("<h5>Please choose <strong>Notify Change</strong> check box if you are changing to a new address</span><span style=\\\"line-height: 20.7999992370605px;\\\"> that needs to communicated to other departments (Payroll, HR and Health Insurance)</h5>");
+    protected static HTML notifyChangeInstructions2 = new HTML("<h5>If <strong>Notify Change</strong> is selected Payroll and HR Department will be notified by default</h5>");
 
     public enum CreateAddressPanelType {
 
@@ -42,7 +45,6 @@ public class CreateAddressPanel extends CreateComposite {
     }
 
     BooleanField notifyChangeF;
-    BooleanField notifyImmigrationF;
     BooleanField notifyHealthInsuranceF;
     TextAreaField changeNotesF;
 
@@ -61,7 +63,6 @@ public class CreateAddressPanel extends CreateComposite {
         }
         if (CreateAddressPanelType.CHANGE_WITH_TYPE_NOTIFY.equals(type)) {
             assignEntityValueFromField("notifyChange", entity);
-            assignEntityValueFromField("notifyImmigration", entity);
             assignEntityValueFromField("notifyHealthInsurance", entity);
             assignEntityValueFromField("changeNotes", entity);
         }
@@ -124,9 +125,9 @@ public class CreateAddressPanel extends CreateComposite {
     }
 
     protected void renderChangeAddressFields(boolean show) {
-        notifyImmigrationF.setVisible(show);
         notifyHealthInsuranceF.setVisible(show);
         changeNotesF.setVisible(show);
+        notifyChangeInstructions2.setVisible(show);
         if (show) {
             alignFields(180);
         }
@@ -136,12 +137,11 @@ public class CreateAddressPanel extends CreateComposite {
     protected void configure() {
         if (CreateAddressPanelType.CHANGE_WITH_TYPE_NOTIFY.equals(type)) {
             notifyChangeF = (BooleanField) fields.get("notifyChange");
-            notifyImmigrationF = (BooleanField) fields.get("notifyImmigration");
             notifyHealthInsuranceF = (BooleanField) fields.get("notifyHealthInsurance");
             changeNotesF = (TextAreaField) fields.get("changeNotes");
-            notifyImmigrationF.setVisible(false);
             notifyHealthInsuranceF.setVisible(false);
             changeNotesF.setVisible(false);
+            notifyChangeInstructions2.setVisible(false);
         }
     }
 
@@ -159,7 +159,8 @@ public class CreateAddressPanel extends CreateComposite {
         }
         if (CreateAddressPanelType.CHANGE_WITH_TYPE_NOTIFY.equals(type)) {
             addField("notifyChange", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-            addField("notifyImmigration", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+            entityFieldsPanel.add(notifyChangeInstructions);
+            entityFieldsPanel.add(notifyChangeInstructions2);
             addField("notifyHealthInsurance", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("changeNotes", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         }

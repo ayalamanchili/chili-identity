@@ -75,19 +75,16 @@ public class AddressResource extends CRUDResource<Address> {
     @Validate
     @Path("/employee")
     public Address saveEmployeeAddress(Address entity) {
-        boolean notifyImmigration = entity.isNotifyImmigration();
         boolean notifyHealthInsurance = entity.isNotifyHealthInsurance();
         boolean notifyChange = entity.isNotifyChange();
         //Update existing home address
-        if (entity.getContact() != null && entity.getAddressType()!=null && entity.getAddressType().getAddressType() != null && entity.getAddressType().getAddressType().equals("Home") && addressDao.getAddressByType((Employee) entity.getContact(), "Home").size() > 0) {
+        if (entity.getContact() != null && entity.getAddressType() != null && entity.getAddressType().getAddressType() != null && entity.getAddressType().getAddressType().equals("Home") && addressDao.getAddressByType((Employee) entity.getContact(), "Home").size() > 0) {
             Address existingAddress = addressDao.getAddressByType((Employee) entity.getContact(), "Home").get(0);
             entity.setId(existingAddress.getId());
         }
         entity = save(entity);
         if (OfficeFeatureFlipper.instance().getEnableNewHomeAddressChangeProcess() && notifyChange) {
-            processAddressUpdateNotificationV2(entity, null, true, notifyImmigration, notifyHealthInsurance);
-        } else {
-//            processAddressUpdateNotification(entity, null);
+            processAddressUpdateNotificationV2(entity, null, notifyHealthInsurance);
         }
         return entity;
     }
@@ -101,7 +98,7 @@ public class AddressResource extends CRUDResource<Address> {
         }
     }
 
-    public void processAddressUpdateNotificationV2(Address entity, Employee emp, boolean primaryMailingAddress, boolean notifyImmigration, boolean notifyHealthInsurance) {
+    public void processAddressUpdateNotificationV2(Address entity, Employee emp, boolean notifyHealthInsurance) {
         if (emp == null) {
             emp = EmployeeDao.instance().findById(entity.getContact().getId());
         }
@@ -111,9 +108,6 @@ public class AddressResource extends CRUDResource<Address> {
             vars.put("entity", entity);
             vars.put("entityId", entity.getId());
             vars.put("employeeName", emp.getFirstName() + " " + emp.getLastName());
-            //notify flags
-            vars.put("primaryMailingAddress", primaryMailingAddress);
-            vars.put("notifyImmigration", notifyImmigration);
             vars.put("notifyHealthInsurance", notifyHealthInsurance);
             vars.put("allTasksCompleted", false);
             OfficeBPMService.instance().startProcess("home_address_update_process", vars);
