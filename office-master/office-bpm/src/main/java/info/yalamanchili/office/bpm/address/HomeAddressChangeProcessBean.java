@@ -9,6 +9,7 @@
 package info.yalamanchili.office.bpm.address;
 
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.email.MailUtils;
@@ -34,21 +35,30 @@ public class HomeAddressChangeProcessBean {
     @Autowired
     protected MailUtils mailUtils;
 
-//TODO send email to employee with default set of instructions
     public void sendAddressChangeRequestSubmittedEmail(Address address) {
         Email email = new Email();
         email.addTo(EmployeeDao.instance().getPrimaryEmail(EmployeeDao.instance().findById(address.getContact().getId())));
         StringBuilder subject = new StringBuilder();
         subject.append("Address update request received");
         email.setSubject(subject.toString());
-        Map<String, Object> emailCtx = new HashMap<String, Object>();
+        Map<String, Object> emailCtx = new HashMap<>();
         emailCtx.put("employeeName", address.getContact().getFirstName() + " " + address.getContact().getLastName());
         email.setTemplateName("home_address_update_template.html");
         email.setContext(emailCtx);
         email.setHtml(Boolean.TRUE);
         MessagingService.instance().sendEmail(email);
     }
-//TODO send email to employee
+
+    public void sendAddressChangeRequestEEMNotificationEmail(Address address) {
+        //TODO send only for associate employee
+        MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
+        Email email = new Email();
+        email.addTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_RELATIONSHIP.name()));
+        email.setSubject("Employee " + address.getContact().getFirstName() + " " + address.getContact().getLastName() + "Address has been updated");
+        email.setBody("Your Address request has been completed");
+        //TODO add address information in the email body
+        messagingService.sendEmail(email);
+    }
 
     public void sendAddressChangeRequestCompletedEmail(Address address) {
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
