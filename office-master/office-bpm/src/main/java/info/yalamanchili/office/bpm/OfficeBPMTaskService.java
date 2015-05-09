@@ -255,7 +255,7 @@ public class OfficeBPMTaskService {
 
     public TaskTable getTasksForAsignee(String assignee, int start, int limit) {
         TaskTable result = new TaskTable();
-        TaskQuery query = bpmTaskService.createTaskQuery().taskAssignee(assignee);
+        TaskQuery query = bpmTaskService.createTaskQuery().taskAssignee(assignee).orderByTaskCreateTime().desc();
         for (org.activiti.engine.task.Task bpmTask : query.listPage(start, limit)) {
             result.getEntities().add(mapper.map(bpmTask, Task.class));
         }
@@ -264,10 +264,10 @@ public class OfficeBPMTaskService {
     }
 
     public List<Task> searchTasks(Task task) {
-        List<Task> tasks = new ArrayList<Task>();
+        List<Task> tasks = new ArrayList<>();
         TaskQuery query = bpmTaskService.createTaskQuery();
         if (!Strings.isNullOrEmpty(task.getAssignee())) {
-            return new ArrayList<Task>(getAllTasksForUser(EmployeeDao.instance().findEmployeWithEmpId(task.getAssignee()), 0, 100).getEntities());
+            return new ArrayList<>(getAllTasksForUser(EmployeeDao.instance().findEmployeWithEmpId(task.getAssignee()), 0, 100).getEntities());
         }
         if (!Strings.isNullOrEmpty(task.getName())) {
             query.taskNameLike(task.getName().trim());
@@ -283,7 +283,7 @@ public class OfficeBPMTaskService {
 
     public TaskTable getCandidateTasksForUser(String user, int start, int limit) {
         TaskTable result = new TaskTable();
-        TaskQuery query = bpmTaskService.createTaskQuery().taskCandidateUser(user);
+        TaskQuery query = bpmTaskService.createTaskQuery().taskCandidateUser(user).orderByTaskCreateTime().desc();
         for (org.activiti.engine.task.Task bpmTask : query.listPage(start, limit)) {
             result.getEntities().add(mapper.map(bpmTask, Task.class));
         }
@@ -293,7 +293,7 @@ public class OfficeBPMTaskService {
 
     public TaskTable getCandidateTasksForRoles(List<String> roles, int start, int limit) {
         TaskTable result = new TaskTable();
-        TaskQuery query = bpmTaskService.createTaskQuery().taskCandidateGroupIn(roles);
+        TaskQuery query = bpmTaskService.createTaskQuery().taskCandidateGroupIn(roles).orderByTaskCreateTime().desc();
         for (org.activiti.engine.task.Task bpmTask : query.listPage(start, limit)) {
             result.getEntities().add(mapper.map(bpmTask, Task.class));
         }
