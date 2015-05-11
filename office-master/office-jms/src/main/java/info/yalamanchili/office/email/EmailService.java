@@ -8,7 +8,6 @@
 package info.yalamanchili.office.email;
 
 import com.google.common.xml.XmlEscapers;
-import info.chili.bpm.BPMService;
 import info.chili.commons.HtmlUtils;
 import info.chili.exception.FaultEventException;
 import info.chili.exception.FaultEventPayload;
@@ -24,7 +23,6 @@ import java.util.logging.Logger;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -133,8 +131,8 @@ public class EmailService {
     }
 
     private Address[] convertToEmailAddress(Set<String> emails) {
-        List<Address> addresses = new ArrayList<Address>();
-        for (String emailAddress : emails) {
+        List<Address> addresses = new ArrayList<>();
+        emails.stream().forEach((emailAddress) -> {
             InternetAddress address = null;
             try {
                 address = new InternetAddress(emailAddress, true);
@@ -144,25 +142,21 @@ public class EmailService {
                 MailUtils.logExceptionDetials(ex);
                 logger.log(Level.WARNING, ex.getMessage());
             }
-        }
+        });
         return addresses.toArray(new Address[addresses.size()]);
     }
 
     protected Set<String> filterEmails(Set<String> emails) {
-        Set<String> result = new HashSet<String>();
+        Set<String> result = new HashSet<>();
         if (OfficeServiceConfiguration.instance().isFilterEmails()) {
-            Set<String> whiteListEmails = OfficeServiceConfiguration.instance().getFilteredEmailsAsSet();
-            for (String email : emails) {
-                if (whiteListEmails.contains(email)) {
-                    result.add(email);
-                }
-            }
+            String testEmailProvider = OfficeServiceConfiguration.instance().getTestEmailProvider();
+            emails.stream().filter((email) -> (email.contains(testEmailProvider))).forEach((email) -> {
+                result.add(email);
+            });
         } else {
-            for (String email : emails) {
-                if (notificationsEnabled(email)) {
-                    result.add(email);
-                }
-            }
+            emails.stream().filter((email) -> (notificationsEnabled(email))).forEach((email) -> {
+                result.add(email);
+            });
         }
         return result;
     }

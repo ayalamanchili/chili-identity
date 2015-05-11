@@ -103,7 +103,7 @@ public class CorporateTimeAccuralService {
 
     protected void sendEmailNotification(String msg) {
         Email email = new Email();
-        email.setTos(OfficeServiceConfiguration.instance().getFilteredEmailsAsSet());
+        email.addTo(OfficeServiceConfiguration.instance().getAdminEmail());
         email.setSubject("Successfully complete Monthly Leave Accrual on " + new Date());
         email.setBody(msg);
         MessagingService.instance().sendEmail(email);

@@ -68,6 +68,11 @@ public class OfficeServiceConfiguration {
     @Value("#{officeProperties['filterEmails']}")
     protected Boolean filterEmails = false;
     /**
+     *
+     */
+    @Value("#{officeProperties['testEmailProvider']}")
+    protected String testEmailProvider = "yopmail.com";
+    /**
      * admin email used to send feedback
      */
     protected String adminEmail = "yphanikumar@gmail.com";
@@ -88,10 +93,6 @@ public class OfficeServiceConfiguration {
      * List of emails to send error logs
      */
     protected String errorLogsEmailList = "yphanikumar@gmail.com,prasanthi.p@sstech.mobi,anu@yalamanchili.info,chaitanya.k@sstech.us,benerjisai369@gmail.com";
-    /**
-     * list of white listed emails addresses that can receive emails
-     */
-    protected String filteredEmailsList = "yphanikumar@gmail.com,prasanthi.p@sstech.mobi,anu@yalamanchili.info,chaitanya.k@sstech.us,benerjisai369@gmail.com";
     /**
      * file path used by data loader tool
      */
@@ -195,6 +196,15 @@ public class OfficeServiceConfiguration {
         this.filterEmails = filterEmails;
     }
 
+    @ManagedAttribute
+    public String getTestEmailProvider() {
+        return testEmailProvider;
+    }
+
+    public void setTestEmailProvider(String testEmailProvider) {
+        this.testEmailProvider = testEmailProvider;
+    }
+
     public void setImageSizeLimit(long imageSizeLimit) {
         this.imageSizeLimit = imageSizeLimit;
     }
@@ -222,21 +232,7 @@ public class OfficeServiceConfiguration {
 
     public Set<String> getErrorLogsEmailsAsSet() {
         String[] emails = OfficeServiceConfiguration.instance().getErrorLogsEmailList().split(",");
-        return new HashSet<String>(Arrays.asList(emails));
-    }
-
-    @ManagedAttribute
-    public String getFilteredEmailsList() {
-        return filteredEmailsList;
-    }
-
-    public Set<String> getFilteredEmailsAsSet() {
-        String[] emails = OfficeServiceConfiguration.instance().getFilteredEmailsList().split(",");
-        return new HashSet<String>(Arrays.asList(emails));
-    }
-
-    public void setFilteredEmailsList(String filteredEmailsList) {
-        this.filteredEmailsList = filteredEmailsList;
+        return new HashSet<>(Arrays.asList(emails));
     }
 
     public String getDataloadFilePath() {
