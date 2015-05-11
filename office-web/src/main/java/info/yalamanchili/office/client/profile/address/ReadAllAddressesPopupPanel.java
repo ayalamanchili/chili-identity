@@ -12,6 +12,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.crud.TableRowOptionsWidget;
+import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.profile.ProfileHome;
 import info.yalamanchili.office.client.profile.address.UpdateAddressPanel.UpdateAddressPanelType;
 
@@ -51,5 +52,15 @@ public class ReadAllAddressesPopupPanel extends ReadAllAddressesPanel {
         new ResponseStatusWidget().show("Successfully Deleted Address Information");
         ProfileHome.instance();
         ProfileHome.instance().refreshAddresses();
+    }
+
+    @Override
+    protected String getDocumentationLink() {
+        return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "profile/manage-address.html";
+    }
+
+    @Override
+    protected boolean autoShowDocumentation() {
+        return true;
     }
 }
