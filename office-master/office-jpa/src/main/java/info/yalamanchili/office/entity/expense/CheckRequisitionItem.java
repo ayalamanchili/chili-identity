@@ -5,6 +5,7 @@
  */
 package info.yalamanchili.office.entity.expense;
 
+import info.chili.jpa.AbstractEntity;
 import java.math.BigDecimal;
 import javax.persistence.Entity;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -19,7 +20,9 @@ import org.hibernate.envers.Audited;
 @Audited
 @XmlRootElement
 @XmlType
-public class CheckRequisitionItem {
+public class CheckRequisitionItem extends AbstractEntity {
+    private static final long serialVersionUID = 1L;
+
     private String name;
     private BigDecimal amount;
 

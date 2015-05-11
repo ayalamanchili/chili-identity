@@ -5,6 +5,7 @@
  */
 package info.yalamanchili.office.entity.expense;
 
+import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.profile.Employee;
 
@@ -27,7 +28,8 @@ import org.hibernate.envers.Audited;
 @Audited
 @XmlRootElement
 @XmlType
-public class ImmigrationCheckRequisition {
+public class ImmigrationCheckRequisition extends AbstractEntity {
+    private static final long serialVersionUID = 1L;
 
     /**
      *
