@@ -45,6 +45,7 @@
             </item>
             <item name="Profile" href="office/profile/profile.html" collapse="true">
                 <item name="Manage Profle" href="office/profile/profile.html"/>
+                <item name="Manage Address" href="office/profile/manage-address.html"/>
                 <item name="Privacy" href="office/profile/privacy.html"/>
                 <item name="Client Information" href="office/profile/client-information.html" collapse="true">
                     <item name="Client Inforamtion Correction Details" href="/office/clientcorrectiondetails.html"/>
@@ -77,9 +78,7 @@
                 <item name="Attendance Process" href="/office/timesheets/attendence.html"/>
             </item>
             <item name="Portal Processes" href="/office/bpm/bpm.html" collapse="true">
-                <item name="Employee Address updated" href="/office/bpm/address-updated-process.html"/>
-                <item name="Address Change Initiation" href="/office/bpm/FormalAddressChangeProcessOne.html"/>
-                <item name="Approval by individual departments" href="/office/bpm/FormalAddressChangeProcessTwo.html"/>
+                <item name="Address Change Initiation Process" href="/office/bpm/address-updated-process.html"/>
                 <item name="New Client request" href="/office/bpm/client-request-process.html"/>
                 <item name="New Vendor request" href="/office/bpm/vendor-request-process.html"/>
             </item>
