@@ -30,6 +30,7 @@ import info.yalamanchili.office.client.admin.client.ClientSidePanel;
 import info.yalamanchili.office.client.admin.client.ReadAllClientsPanel;
 import info.yalamanchili.office.client.advancerequisition.AdvanceRequisitionSidePanel;
 import info.yalamanchili.office.client.advancerequisition.ReadAllAdvanceRequisitionPanel;
+import info.yalamanchili.office.client.chiliadmin.ChiliAdminMenu;
 import info.yalamanchili.office.client.drive.SearchDrivePanel;
 import info.yalamanchili.office.client.expense.ExpenseMenu;
 import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
@@ -62,6 +63,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     public EntityLayout adminPanel = new EntityLayout();
     public EntityLayout reportingPanel = new EntityLayout();
     public EntityLayout recruitingPanel = new EntityLayout();
+    public EntityLayout chiliAdminPanel = new EntityLayout();
     public EntityLayout helpPanel = new EntityLayout();
 
     public TabPanel() {
@@ -86,6 +88,9 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_RECRUITER)) {
             tabPanel.add(recruitingPanel, "Recruiting", false);
 
+        }
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_CHILI_ADMIN)) {
+            tabPanel.add(chiliAdminPanel, "Chili Admin");
         }
         tabPanel.add(helpPanel, "Help", false);
         tabPanel.addSelectionHandler(this);
@@ -170,6 +175,14 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
                 @Override
                 public void onResponse() {
                     selectRecruitingPanel();
+                }
+            });
+        }
+        if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(chiliAdminPanel)) {
+            GWT.runAsync(new RunAsyncCallback() {
+                @Override
+                public void onResponse() {
+                    selectChiliAdminPanel();
                 }
             });
         }
@@ -280,6 +293,12 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
 
     }
 
+    public void selectChiliAdminPanel() {
+        chiliAdminPanel.entityPanel.clear();
+        chiliAdminPanel.sidePanelTop.clear();
+        chiliAdminPanel.entityTitlePanel.add(new ChiliAdminMenu());
+    }
+
     public void selectHelpTab() {
         helpPanel.entityPanel.clear();
         helpPanel.sidePanelTop.clear();
@@ -325,5 +344,9 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
 
     public EntityLayout getRecruitingPanel() {
         return recruitingPanel;
+    }
+
+    public EntityLayout getChiliAdminPanel() {
+        return chiliAdminPanel;
     }
 }
