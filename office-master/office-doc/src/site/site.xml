@@ -78,8 +78,8 @@
             </item>
             <item name="Portal Processes" href="/office/bpm/bpm.html" collapse="true">
                 <item name="Employee Address updated" href="/office/bpm/address-updated-process.html"/>
-                <item name="Formal Address ChangeProcess One" href="/office/bpm/FormalAddressChangeProcessOne.html"/>
-                <item name="Formal Address Change Process Two" href="/office/bpm/FormalAddressChangeProcessTwo.html"/>
+                <item name="Address Change Initiation" href="/office/bpm/FormalAddressChangeProcessOne.html"/>
+                <item name="Approval by individual departments" href="/office/bpm/FormalAddressChangeProcessTwo.html"/>
                 <item name="New Client request" href="/office/bpm/client-request-process.html"/>
                 <item name="New Vendor request" href="/office/bpm/vendor-request-process.html"/>
             </item>

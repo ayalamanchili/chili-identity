@@ -1,17 +1,19 @@
 Address Update Process
 -------
+There are two ways to change the employees Address in portal 
 
-When employee address is updated in portal, tasks are created for
+* Home Address change initiated by employee
+- [Address Change Initiation](../../office/bpm/FormalAddressChangeProcessOne.html "Address")
+* Add other address
+
+* Address change initiated by HR, Payroll and other departments
+- [Approval by individual departments](../../office/bpm/FormalAddressChangeProcessTwo.html "Address")
+
+ While initiating the address change one can choose to notify different departments by selecting Notify Change option. 
+An email notification is sent out to employee and various departments about address change via portal.
 
 * Payroll and Benefits Department to update ADP, BIS, SMS, and such.
 * HR and Immigration Department to handle Immigration related changes.
 
-What should be done?
-------
- - Coordinate and update the change of address if necessary in other systems like ADP, Immigration, BIS and complete them
- - Once all necessary changes are complete you can go to Portal--> Home--> My Tasks and Complete the Task.
-
- - [FormalAddressChangeProcessOne](../../office/bpm/FormalAddressChangeProcessOne.html "Address")
- - [FormalAddressChangeProcessTwo](../../office/bpm/FormalAddressChangeProcessTwo.html "Address")
  
 ![alt text](../../images/bpm/address_create_update_process.png "Address Update Process")
