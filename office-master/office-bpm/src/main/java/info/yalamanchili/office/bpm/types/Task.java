@@ -8,9 +8,9 @@
 package info.yalamanchili.office.bpm.types;
 
 import info.chili.spring.SpringContext;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -139,7 +139,7 @@ public class Task {
     public static class TaskTable implements java.io.Serializable {
 
         protected Long size;
-        protected Set<Task> entities;
+        protected List<Task> entities;
 
         public Long getSize() {
             return size;
@@ -150,14 +150,14 @@ public class Task {
         }
 
         @XmlElement
-        public Set<Task> getEntities() {
+        public List<Task> getEntities() {
             if (this.entities == null) {
-                this.entities = new HashSet<Task>();
+                this.entities = new ArrayList<>();
             }
             return entities;
         }
 
-        public void setEntities(Set<Task> entities) {
+        public void setEntities(List<Task> entities) {
             this.entities = entities;
         }
     }

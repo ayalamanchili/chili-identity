@@ -24,8 +24,10 @@ import info.yalamanchili.office.security.SecurityUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.activiti.engine.FormService;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.IdentityService;
@@ -226,15 +228,19 @@ public class OfficeBPMTaskService {
      */
     public TaskTable getAllTasksForUser(Employee emp, int start, int limit) {
         TaskTable result = new TaskTable();
+        Set<Task> tasks = new HashSet();
         TaskTable taskForAssignee = getTasksForAsignee(emp.getEmployeeId(), start, limit);
         TaskTable taskForUser = getCandidateTasksForUser(emp.getEmployeeId(), start, limit);
 
         List<String> roles = OfficeSecurityService.instance().getUserRoles(emp);
         TaskTable taskForRoles = getCandidateTasksForRoles(roles, start, limit);
 
-        result.getEntities().addAll(taskForAssignee.getEntities());
-        result.getEntities().addAll(taskForUser.getEntities());
-        result.getEntities().addAll(taskForRoles.getEntities());
+        tasks.addAll(taskForAssignee.getEntities());
+        tasks.addAll(taskForUser.getEntities());
+        tasks.addAll(taskForRoles.getEntities());
+        List<Task> tasksList = new ArrayList(tasks);
+        Collections.sort(tasksList, (Task m1, Task m2) -> m1.getCreateTime().compareTo(m2.getCreateTime()));
+        result.setEntities(tasksList);
         result.setSize(taskForAssignee.getSize() + taskForRoles.getSize());
         return result;
     }
