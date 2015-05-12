@@ -35,6 +35,7 @@ public class ExpenseMenu extends Composite {
     protected void configureExpenseMenu() {
 
         expenseMenuBar.addItem("AdvanceRequisition", expensadvancerequisitionCmd);
+        expenseMenuBar.addItem("CheckRequisition", expensimmigrationcheckrequisitionCmd);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN)) {
             expenseMenuBar.addItem("ExpenseReports", expenseReportsMaintainenceCmd);
             expenseMenuBar.addItem("ExpenseCategories", expenseCategoriesMaintainenceCmd);
@@ -51,11 +52,17 @@ public class ExpenseMenu extends Composite {
         }
     };
     Command expensadvancerequisitionCmd = new Command() {
-        public void execute() {
+         public void execute() {
             TabPanel.instance().getExpensePanel().entityPanel.clear();
             TabPanel.instance().getExpensePanel().sidePanelTop.clear();
             TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllAdvanceRequisitionPanel());
             TabPanel.instance().getExpensePanel().sidePanelTop.add(new AdvanceRequisitionSidePanel());
+        }
+    };
+    Command expensimmigrationcheckrequisitionCmd = new Command() {
+       public void execute() {
+            TabPanel.instance().getExpensePanel().entityPanel.clear();
+            TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllImmigrationCheckRequisitionPanel());     
         }
     };
 
