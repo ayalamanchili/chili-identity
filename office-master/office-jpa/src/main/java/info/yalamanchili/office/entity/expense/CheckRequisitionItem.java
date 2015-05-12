@@ -24,11 +24,19 @@ import org.hibernate.envers.Audited;
 @XmlRootElement
 @XmlType
 public class CheckRequisitionItem extends AbstractEntity {
+    
     private static final long serialVersionUID = 1L;
-
+    /**
+    *
+    */
     private String name;
+    /**
+    *
+    */
     private BigDecimal amount;
-
+    /**
+    *   GETTERS & SETTERS
+    */
     public String getName() {
         return name;
     }
@@ -44,5 +52,9 @@ public class CheckRequisitionItem extends AbstractEntity {
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
-    
+
+    @Override
+    public String toString() {
+        return "CheckRequisitionItem{" + "name=" + name + ", amount=" + amount + '}';
+    }
 }

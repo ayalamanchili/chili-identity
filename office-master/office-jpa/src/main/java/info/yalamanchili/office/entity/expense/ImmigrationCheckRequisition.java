@@ -15,12 +15,18 @@ import info.yalamanchili.office.entity.profile.Employee;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 
 /**
@@ -32,37 +38,47 @@ import org.hibernate.envers.Audited;
 @XmlRootElement
 @XmlType
 public class ImmigrationCheckRequisition extends AbstractEntity {
-    private static final long serialVersionUID = 1L;
-
+    
+    private static long serialVersionUID = 1L;
     /**
      *
      */
+    @Temporal(javax.persistence.TemporalType.DATE)
+    @NotNull(message = "{requestedDate.not.empty.msg}")
     private Date requestedDate;
     /**
      *
      */
+    @Temporal(javax.persistence.TemporalType.DATE)
+    @NotNull(message = "{neededBy.not.empty.msg}")
     private Date neededByDate;
-    /**
+    /**     
      *
      */
+    @NotNull(message = "{amount.not.empty.msg}")
     private BigDecimal amount;
     /**
      *
      */
+    @NotNull(message = "{mailingAddress.not.empty.msg}")
     private String mailingAddress;
     /**
      *
      */
-    private String caseType;
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "{ImmigrationCaseType.caseType.not.empty.msg}")
+    private ImmigrationCaseType caseType;
     /**
      *
      */
     @Lob
+    @NotNull(message = "{purpose.not.empty.msg}")
     private String purpose;
     /**
      *
      */
-    private String requestorName;
+    @NotNull(message = "{requesterName.not.empty.msg}")
+    private String requesterName;
     /**
      *
      */
@@ -74,6 +90,7 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
     /**
      *
      */
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date approvedDate;
     /**
      *
@@ -82,27 +99,35 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
     /**
      *
      */
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date checkIssuedDate;
     /**
      *
      */
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date accountDeptReceivedDate;
     /**
      *
      */
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_Company_ImmigrationCheckReqs")
+    @NotNull(message = "{immigration.check.requisition.company.not.empty.msg}")
     private Company company;
     /**
      *
      */
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_Employee_ImmigrationCheckReqs")
+    @NotNull(message = "{immigration.check.requisition.employee.not.empty.msg}")
     private Employee employee;
     /**
      *
      */
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<CheckRequisitionItem> items;
-
+    /**
+    * GETTERS and SETTERS
+    */
     public Date getRequestedDate() {
         return requestedDate;
     }
@@ -135,11 +160,11 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
         this.mailingAddress = mailingAddress;
     }
 
-    public String getCaseType() {
+    public ImmigrationCaseType getCaseType() {
         return caseType;
     }
 
-    public void setCaseType(String caseType) {
+    public void setCaseType(ImmigrationCaseType caseType) {
         this.caseType = caseType;
     }
 
@@ -151,12 +176,12 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
         this.purpose = purpose;
     }
 
-    public String getRequestorName() {
-        return requestorName;
+    public String getRequesterName() {
+        return requesterName;
     }
 
-    public void setRequestorName(String requestorName) {
-        this.requestorName = requestorName;
+    public void setRequesterName(String requesterName) {
+        this.requesterName = requesterName;
     }
 
     public String getHrName() {
@@ -230,5 +255,10 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
     public void setItems(List<CheckRequisitionItem> items) {
         this.items = items;
     }
-    
+
+    @Override
+    public String toString() {
+        return "ImmigrationCheckRequisition{" + "requestedDate=" + requestedDate + ", neededByDate=" + neededByDate + ", amount=" + amount + ", mailingAddress=" + mailingAddress + ", caseType=" + caseType + ", purpose=" + purpose + ", requesterName=" + requesterName + ", hrName=" + hrName + ", approvedBy=" + approvedBy + ", approvedDate=" + approvedDate + ", accountedBy=" + accountedBy + ", checkIssuedDate=" + checkIssuedDate + ", accountDeptReceivedDate=" + accountDeptReceivedDate + ", company=" + company + ", employee=" + employee + ", items=" + items + '}';
+    }
+
 }
