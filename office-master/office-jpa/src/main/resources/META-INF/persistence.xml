@@ -59,8 +59,8 @@
         <class>info.yalamanchili.office.entity.bulkimport.BulkImportMessage</class>
         <class>info.yalamanchili.office.entity.privacy.PrivacySetting</class>
         <!-- i18n-->
-<!--        <class>info.chili.i18n.domain.Ci18nResourceBundle</class>
-        <class>info.chili.i18n.domain.Ci18nResource</class>-->
+        <class>info.chili.i18n.domain.Ci18nResourceBundle</class>
+        <class>info.chili.i18n.domain.Ci18nResource</class>
         <properties>
             <property name="hibernate.show_sql" value="${db.show.sql}"/>
             <property name="hibernate.format_sql" value="${db.format.sql}"/>
