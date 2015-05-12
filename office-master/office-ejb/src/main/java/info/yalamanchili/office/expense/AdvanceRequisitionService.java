@@ -47,10 +47,10 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class AdvanceRequisitionService {
-    
+
     @Autowired
     protected AdvanceRequisitionDao advanceRequisitionDao;
-    
+
     public void submitAdvanceRequisition(AdvanceRequisition entity) {
         Map<String, Object> vars = new HashMap<>();
         vars.put("entity", entity);
@@ -59,7 +59,7 @@ public class AdvanceRequisitionService {
         String processId = OfficeBPMService.instance().startProcess("advance_requisition_process", vars);
         entity.setBpmProcessId(processId);
     }
-    
+
     protected Task getTaskForTicket(AdvanceRequisition advanceRequisition) {
         OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
         List<Task> tasks = taskService.getTasksForProcessId(advanceRequisition.getBpmProcessId());
@@ -69,13 +69,13 @@ public class AdvanceRequisitionService {
             return null;
         }
     }
-    
+
     public void delete(Long id) {
         AdvanceRequisition ticket = advanceRequisitionDao.findById(id);
         OfficeBPMTaskService.instance().deleteAllTasksForProcessId(ticket.getBpmProcessId(), true);
         advanceRequisitionDao.delete(id);
     }
-    
+
     @AccessCheck(employeePropertyName = "employee", companyContacts = {}, roles = {"ROLE_PAYROLL_AND_BENIFITS", "ROLE_ACCOUNTS_PAYABLE"})
     public Response getReport(AdvanceRequisition entity) {
         PdfDocumentData data = new PdfDocumentData();
@@ -117,6 +117,9 @@ public class AdvanceRequisitionService {
         }
         //Comment
         List<Comment> cmnts = CommentDao.instance().findAll(entity.getId(), entity.getClass().getCanonicalName());
+        for (Integer i = 0; i < 3; i++) {
+            data.getData().put("comment" + i.toString(), cmnts.get(i).getUpdatedBy() + ":" + cmnts.get(i).getComment());
+        }
         //TODO add comment
         //Approved By
         if (entity.getApprovedBy() != null) {
@@ -133,9 +136,9 @@ public class AdvanceRequisitionService {
                 .header("content-disposition", "filename = advacne-requisition.pdf")
                 .header("Content-Length", pdf)
                 .build();
-        
+
     }
-    
+
     public static AdvanceRequisitionService instance() {
         return SpringContext.getBean(AdvanceRequisitionService.class);
     }
