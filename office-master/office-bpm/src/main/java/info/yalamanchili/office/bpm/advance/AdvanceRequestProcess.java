@@ -9,6 +9,7 @@
 package info.yalamanchili.office.bpm.advance;
 
 import info.chili.service.jrs.exception.ServiceException;
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
 import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
@@ -16,9 +17,12 @@ import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.expense.AdvanceRequisitionDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.email.Email;
+import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.expense.AdvanceRequisition;
 import info.yalamanchili.office.entity.expense.AdvanceRequisitionStatus;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.jms.MessagingService;
 import java.math.BigDecimal;
 import java.util.Date;
 import org.activiti.engine.delegate.DelegateTask;
@@ -108,6 +112,7 @@ public class AdvanceRequestProcess implements TaskListener {
         String status = (String) task.getExecution().getVariable("status");
         if (status.equalsIgnoreCase("approved")) {
             entity.setStatus(AdvanceRequisitionStatus.Approved);
+            notifyAccountsPayableDept(entity);
         } else {
             entity.setStatus(AdvanceRequisitionStatus.Rejected);
         }
@@ -137,6 +142,16 @@ public class AdvanceRequestProcess implements TaskListener {
             task.addCandidateUser(reportsToEmp.getEmployeeId());
         }
         task.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name());
+    }
+
+    public void notifyAccountsPayableDept(AdvanceRequisition entity) {
+        MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
+        Email email = new Email();
+        email.addTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_ACCOUNTS_PAYABLE.name()));
+        email.setSubject("Advance Requisition Approved For Employee" + entity.getEmployee().getFirstName() + " " + entity.getEmployee().getLastName());
+        email.setBody("Advance Requisition Approved For Employee" + entity.getEmployee().getFirstName() + " " + entity.getEmployee().getLastName() + " Please Print and Process it");
+        messagingService.sendEmail(email);
+
     }
 
     protected AdvanceRequisition getRequestFromTask(DelegateTask task) {
