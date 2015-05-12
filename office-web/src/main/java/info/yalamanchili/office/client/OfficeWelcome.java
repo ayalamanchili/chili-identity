@@ -57,7 +57,7 @@ public class OfficeWelcome implements EntryPoint {
         });
     }
 
-    protected static final String FEEDBACK_KEY = "FEEDBACK-JAN-2015";
+    protected2 static final String FEEDBACK_KEY = "FEEDBACK-JAN-2015";
 
     protected void showFeedbackPage() {
         if (LocalStorage.getValue(FEEDBACK_KEY) == null) {
