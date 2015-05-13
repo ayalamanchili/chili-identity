@@ -19,10 +19,6 @@ import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.expenseitem.CreateExpenseItemPanel;
-import info.yalamanchili.office.client.profile.phone.PhoneOptionsPanel;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -33,13 +29,7 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
     
     private static Logger logger = Logger.getLogger(CreateImmigrationCheckRequisitionPanel.class.getName());
     protected ClickableLink addItemL = new ClickableLink("Add Expense Item");
-    protected List<CreateImmigrationCheckRequisitionPanel> expenseItemPanels = new ArrayList<CreateImmigrationCheckRequisitionPanel>();
-    RadioButton passCheckInfo = new RadioButton("payment", "Add Check Information");
-    RadioButton passBankAcctInfo = new RadioButton("payment", "Add Bank Account Information");
-    RadioButton useCurrentPayrollInfo = new RadioButton("payment", "Use Current Payroll Information");
-    HTML tac = new HTML("<h6> I " + OfficeWelcome.instance().getCurrentUserName() + " hereby certify that I am solely responsible \n"
-            + "for repayment of the above Immigration requistion amount, to System Soft Technologies,as \n"
-            + "per agreed terms & conditions or on-demand. </h6>");
+    
     
     public CreateImmigrationCheckRequisitionPanel() {
         super(CreateCompositeType.CREATE);
@@ -88,7 +78,6 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addItemL)) {
             CreateImmigrationCheckRequisitionPanel panel = new CreateImmigrationCheckRequisitionPanel();
-            expenseItemPanels.add(panel);
             entityFieldsPanel.add(panel);
         }
         super.onClick(event);
@@ -104,9 +93,7 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
 
     @Override
     protected void addListeners() {
-        passBankAcctInfo.addClickHandler(this);
-        passCheckInfo.addClickHandler(this);
-        useCurrentPayrollInfo.addClickHandler(this);
+        
     }
 
     @Override
@@ -123,10 +110,6 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
         addField("mailingAddress", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("caseType", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("purpose", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        entityFieldsPanel.add(passBankAcctInfo);
-        entityFieldsPanel.add(passCheckInfo);
-        entityFieldsPanel.add(useCurrentPayrollInfo);
-        entityFieldsPanel.add(tac);
         entityFieldsPanel.add(addItemL);
         alignFields();
     }
@@ -138,6 +121,6 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "ImmigrationCheckRequisition/submit-ImmigrationCheck-requisition-request";
+        return OfficeWelcome.constants.root_url() + "checkrequisition";
     }
 }

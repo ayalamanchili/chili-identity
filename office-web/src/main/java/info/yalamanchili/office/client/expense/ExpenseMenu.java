@@ -62,6 +62,7 @@ public class ExpenseMenu extends Composite {
     Command expensimmigrationcheckrequisitionCmd = new Command() {
        public void execute() {
             TabPanel.instance().getExpensePanel().entityPanel.clear();
+            TabPanel.instance().getExpensePanel().sidePanelTop.clear();
             TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllImmigrationCheckRequisitionPanel());     
         }
     };
