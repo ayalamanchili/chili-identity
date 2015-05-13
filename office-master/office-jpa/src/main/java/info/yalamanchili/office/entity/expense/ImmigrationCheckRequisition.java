@@ -66,18 +66,16 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
      *
      */
     @Enumerated(EnumType.STRING)
-    @NotNull(message = "{ImmigrationCaseType.caseType.not.empty.msg}")
+    @NotNull(message = "{ImmigrationCaseType.not.empty.msg}")
     private ImmigrationCaseType caseType;
     /**
      *
      */
     @Lob
-    @NotNull(message = "{purpose.not.empty.msg}")
     private String purpose;
     /**
      *
      */
-    @NotNull(message = "{requesterName.not.empty.msg}")
     private String requesterName;
     /**
      *

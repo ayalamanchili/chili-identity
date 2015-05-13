@@ -11,6 +11,7 @@ package info.yalamanchili.office.entity.expense;
 import info.chili.jpa.AbstractEntity;
 import java.math.BigDecimal;
 import javax.persistence.Entity;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.envers.Audited;
@@ -25,24 +26,26 @@ import org.hibernate.envers.Audited;
 @XmlType
 public class CheckRequisitionItem extends AbstractEntity {
     
-    private static final long serialVersionUID = 1L;
+    private static long serialVersionUID = 1L;
     /**
     *
     */
-    private String name;
+    @NotNull(message = "{itemName.not.empty.msg}")
+    private String itemName;
     /**
     *
     */
+    @NotNull(message = "{amount.not.empty.msg}")
     private BigDecimal amount;
     /**
     *   GETTERS & SETTERS
     */
-    public String getName() {
-        return name;
+    public String getItemName() {
+        return itemName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 
     public BigDecimal getAmount() {
@@ -55,6 +58,8 @@ public class CheckRequisitionItem extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "CheckRequisitionItem{" + "name=" + name + ", amount=" + amount + '}';
+        return "CheckRequisitionItem{" + "itemName=" + itemName + ", amount=" + amount + '}';
     }
+    
+ 
 }
