@@ -36,35 +36,37 @@ import org.springframework.stereotype.Component;
 @Scope("request")
 public class QuestionService {
 
-    @Autowired
     protected MessagesUtils messagesUtils;
+
     @Autowired
     protected QuestionDao questionDao;
 
     public List<QuestionDto> getQuestions(QuestionCategory category, QuestionContext context, int start, int limit) {
-        List<QuestionDto> questions = new ArrayList<QuestionDto>();
-        for (Question q : questionDao.getQuestions(category, context, start, limit)) {
+        List<QuestionDto> questions = new ArrayList<>();
+        questionDao.getQuestions(category, context, start, limit).stream().map((q) -> {
             QuestionDto dto = new QuestionDto();
             dto.setId(q.getId());
             dto.setSortOrder(q.getSortOrder());
-            dto.setQuestion(messagesUtils.get(q.getQuestionKey()));
-            dto.setQuestionInfo(messagesUtils.get(q.getQuestionKey() + "_info"));
+            dto.setQuestion(getMessageUtils().get(q.getQuestionKey()));
+            dto.setQuestionInfo(getMessageUtils().get(q.getQuestionKey() + "_info"));
             dto.setQuestionCommentRequired(q.getQuestionCommentRequired());
             dto.setQuestionRatingRequired(q.getQuestionRatingRequired());
+            return dto;
+        }).forEach((dto) -> {
             questions.add(dto);
-        }
+        });
         return questions;
     }
 
     public List<QuestionComment> getQuestionComments(Long perfEvalId, QuestionCategory category, QuestionContext context) {
-        List<QuestionComment> res = new ArrayList<QuestionComment>();
+        List<QuestionComment> res = new ArrayList<>();
         PerformanceEvaluation perfEval = PerformanceEvaluationDao.instance().findById(perfEvalId);
         CommentDao commentDao = CommentDao.instance();
-        for (Question q : PerformanceEvaluationDao.instance().getQuestions(perfEvalId, category, context)) {
+        PerformanceEvaluationDao.instance().getQuestions(perfEvalId, category, context).stream().map((q) -> {
             Comment cmmt = commentDao.find(perfEval, q);
             QuestionComment qc = new QuestionComment();
-            qc.setQuestion(messagesUtils.get(q.getQuestionKey()));
-            qc.setQuestionInfo(messagesUtils.get(q.getQuestionKey() + "_info"));
+            qc.setQuestion(getMessageUtils().get(q.getQuestionKey()));
+            qc.setQuestionInfo(getMessageUtils().get(q.getQuestionKey() + "_info"));
             qc.setSortOrder(q.getSortOrder());
             qc.setQuestionRatingRequired(q.getQuestionRatingRequired());
             qc.setQuestionCommentRequired(q.getQuestionCommentRequired());
@@ -74,8 +76,10 @@ public class QuestionService {
                 qc.setComment(cmmt.getComment());
                 qc.setRating(cmmt.getRating());
             }
+            return qc;
+        }).forEach((qc) -> {
             res.add(qc);
-        }
+        });
         return res;
     }
 
@@ -86,8 +90,8 @@ public class QuestionService {
         for (Question q : ProbationPeriodEvaluationDao.instance().getQuestions(provationPrdEvaluation, category, context)) {
             Comment cmmt = commentDao.find(perfEval, q);
             QuestionComment qc = new QuestionComment();
-            qc.setQuestion(messagesUtils.get(q.getQuestionKey()));
-            qc.setQuestionInfo(messagesUtils.get(q.getQuestionKey() + "_info"));
+            qc.setQuestion(getMessageUtils().get(q.getQuestionKey()));
+            qc.setQuestionInfo(getMessageUtils().get(q.getQuestionKey() + "_info"));
             qc.setSortOrder(q.getSortOrder());
             qc.setQuestionRatingRequired(q.getQuestionRatingRequired());
             qc.setQuestionCommentRequired(q.getQuestionCommentRequired());
@@ -100,6 +104,14 @@ public class QuestionService {
             res.add(qc);
         }
         return res;
+    }
+
+    public MessagesUtils getMessageUtils() {
+        if (messagesUtils == null) {
+            messagesUtils = SpringContext.getBean(MessagesUtils.class);
+            messagesUtils.setBundleName("officeMessages");
+        }
+        return messagesUtils;
     }
 
     public static QuestionService instance() {

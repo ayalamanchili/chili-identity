@@ -8,8 +8,9 @@
  */
 package info.yalamanchili.office.messages;
 
+import info.chili.i18n.CDatabaseMessages;
+import info.chili.spring.SpringContext;
 import java.util.Locale;
-import javax.annotation.Resource;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.stereotype.Component;
@@ -20,17 +21,54 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class MessagesUtils {
+//TODO move to commons and make the default bundle name 
 
-    @Resource(name = "officeMessages")
-    private MessageSource messageSource;
+    protected String bundleName;
+
+    protected MessageSource messageSource = null;
+    protected CDatabaseMessages databaseMessages = null;
 
     public String get(String key) {
         String message;
-        try {
-            message = messageSource.getMessage(key, null, null);
-        } catch (NoSuchMessageException e) {
-            message = key;
+        message = getDatabaseMessageSource().getMessage(key, null, Locale.ENGLISH);
+        if (message == null) {
+            try {
+                message = getStaticMessageSource().getMessage(key, null, null);
+            } catch (NoSuchMessageException e) {
+                message = key;
+            }
         }
         return message;
     }
+    
+    //Add resolver with Specified Locale
+
+    protected String getBundleName() {
+        return bundleName;
+    }
+
+    public void setBundleName(String bundleName) {
+        this.bundleName = bundleName;
+    }
+
+    protected MessageSource getStaticMessageSource() {
+        if (messageSource == null) {
+            messageSource = (MessageSource) SpringContext.getBean(bundleName);
+        }
+        return messageSource;
+    }
+
+    protected MessageSource getDatabaseMessageSource() {
+        if (databaseMessages == null) {
+            databaseMessages = CDatabaseMessages.instance(bundleName);
+        }
+        return databaseMessages;
+    }
+
+    public static MessagesUtils instance(String bundleName) {
+        MessagesUtils res = SpringContext.getBean(MessagesUtils.class);
+        res.setBundleName(bundleName);
+        return res;
+    }
+
 }
