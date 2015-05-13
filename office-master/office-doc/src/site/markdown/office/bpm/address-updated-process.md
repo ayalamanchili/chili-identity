@@ -5,15 +5,15 @@ Address Update Process
 Payroll Department Task
 ----
 * Payroll Department is notified by default (Task/Email) when a employee is changes his Home Address.
-*  
+![alt text](../../images/bpm/payroll_task.png "Address Update Process")
 
 Health Insurance Department Task
 ----
-* TODO
+![alt text](../../images/bpm/health_insurance_task.png "Address Update Process")
 
 HR Admin Department Task
 ----
-
+![alt text](../../images/bpm/hradmin_task.png "Address Update Process")
 
 
  
