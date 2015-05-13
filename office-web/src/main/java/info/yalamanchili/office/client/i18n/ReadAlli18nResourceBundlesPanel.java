@@ -15,7 +15,6 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.advancerequisition.AdvReqTreePanel;
 import info.yalamanchili.office.client.profile.email.EmailOptionsPanel;
 import info.yalamanchili.office.client.profile.email.ReadAllEmailsPanel;
 import info.yalamanchili.office.client.profile.email.UpdateEmailPanel;
@@ -60,18 +59,25 @@ public class ReadAlli18nResourceBundlesPanel extends CRUDReadAllComposite {
         table.setText(0, 1, getKeyValue("Name"));
         table.setText(0, 2, getKeyValue("Language"));
         table.setText(0, 3, getKeyValue("Country"));
-        table.setText(0, 3, getKeyValue("Cariant"));
+        table.setText(0, 3, getKeyValue("Variant"));
     }
 
     @Override
     public void fillData(JSONArray entities) {
+        logger.info("aaaaaaaaaaaaaaa" + entities.toString());
+
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
-            table.setText(i, 2, JSONUtils.toString(entity, "language"));
-            table.setText(i, 3, JSONUtils.toString(entity, "country"));
-            table.setText(i, 4, JSONUtils.toString(entity, "variant"));
+            if (entity.get("resourceLocale") != null) {
+                JSONObject locale = entity.get("resourceLocale").isObject();
+                if (locale != null) {
+                    table.setText(i, 2, JSONUtils.toString(locale, "language"));
+                    table.setText(i, 3, JSONUtils.toString(locale, "country"));
+                    table.setText(i, 4, JSONUtils.toString(locale, "variant"));
+                }
+            }
         }
     }
 

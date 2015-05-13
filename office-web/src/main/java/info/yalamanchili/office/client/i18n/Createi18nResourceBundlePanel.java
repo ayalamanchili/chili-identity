@@ -32,9 +32,11 @@ public class Createi18nResourceBundlePanel extends CreateComposite {
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
         assignEntityValueFromField("name", entity);
+        JSONObject locale = new JSONObject();
         assignEntityValueFromField("language", entity);
         assignEntityValueFromField("country", entity);
-        assignEntityValueFromField("variant", entity);
+        assignEntityValueFromField("locale", entity);
+        entity.put("resourceLocale", locale);
         return entity;
     }
 
