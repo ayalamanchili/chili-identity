@@ -15,6 +15,7 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.advancerequisition.AdvReqTreePanel;
 import info.yalamanchili.office.client.profile.email.EmailOptionsPanel;
 import info.yalamanchili.office.client.profile.email.ReadAllEmailsPanel;
 import info.yalamanchili.office.client.profile.email.UpdateEmailPanel;
@@ -81,6 +82,7 @@ public class ReadAlli18nResourceBundlesPanel extends CRUDReadAllComposite {
 
     @Override
     public void viewClicked(String entityId) {
+        TabPanel.instance().chiliAdminPanel.sidePanelTop.add(new Ci18nBundleTreePanel(entityId));
 
     }
 
