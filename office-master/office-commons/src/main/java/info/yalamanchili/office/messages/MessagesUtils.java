@@ -30,7 +30,7 @@ public class MessagesUtils {
 
     public String get(String key) {
         String message;
-        message = getDatabaseMessageSource().getMessage(key, null, Locale.ENGLISH);
+        message = getDatabaseMessageSource().getMessage(key, null, Locale.getDefault());
         if (message == null) {
             try {
                 message = getStaticMessageSource().getMessage(key, null, null);

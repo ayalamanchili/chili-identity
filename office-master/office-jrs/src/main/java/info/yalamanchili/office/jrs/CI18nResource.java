@@ -46,6 +46,13 @@ public class CI18nResource {
         ci18nDao.saveBundle(bundle);
     }
 
+    @PUT
+    @Path("/bundle/delete/{id}")
+    @Validate
+    public void deleteBundle(@PathParam("id") Integer id) {
+        ci18nDao.deleteBundle(id);
+    }
+
     @Path("/bundle/{start}/{limit}")
     @GET
     public Ci18nResourceBundle.CResourceBundleTable getBundles(@PathParam("start") int start, @PathParam("limit") int limit) {
@@ -66,11 +73,16 @@ public class CI18nResource {
         ci18nDao.updateResource(resource);
     }
 
+    @PUT
+    @Path("/bundle/resource/delete/{id}")
+    @Validate
+    public void deleteResource(@PathParam("id") Integer id) {
+        ci18nDao.deleteResource(id);
+    }
+
     @Path("/bundle/resources/{bundleId}/{start}/{limit}")
     @GET
     public Ci18nResourceTable getResources(@PathParam("bundleId") Integer bundleId, @PathParam("start") int start, @PathParam("limit") int limit) {
         return ci18nDao.getResources(bundleId, start, limit);
     }
-
-    //TODO delete resource bundle
 }
