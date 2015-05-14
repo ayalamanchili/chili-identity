@@ -42,6 +42,8 @@ public class RetirementPlanResource {
         rp.setEmployee(OfficeSecurityService.instance().getCurrentUser());
         rp = retirementPlanDao.save(rp);
         CommentDao.instance().addComment(comment.getComment(), rp);
+        
+        //TODO send email
     }
 
 }
