@@ -8,8 +8,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.RadioButton;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
@@ -25,14 +23,18 @@ import java.util.logging.Logger;
  *
  * @author benerji.v
  */
-public class CreateImmigrationCheckRequisitionPanel extends CreateComposite implements ClickHandler{
-    
+public class CreateImmigrationCheckRequisitionPanel extends CreateComposite implements ClickHandler {
+
     private static Logger logger = Logger.getLogger(CreateImmigrationCheckRequisitionPanel.class.getName());
     protected ClickableLink addItemL = new ClickableLink("Add Expense Item");
-    
-    
+
     public CreateImmigrationCheckRequisitionPanel() {
         super(CreateCompositeType.CREATE);
+        initCreateComposite("ImmigrationCheckRequisition", OfficeWelcome.constants);
+    }
+
+    public CreateImmigrationCheckRequisitionPanel(CreateComposite.CreateCompositeType type) {
+        super(type);
         initCreateComposite("ImmigrationCheckRequisition", OfficeWelcome.constants);
     }
 
@@ -43,38 +45,37 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
         assignEntityValueFromField("neededByDate", entity);
         assignEntityValueFromField("amount", entity);
         assignEntityValueFromField("mailingAddress", entity);
-        assignEntityValueFromField("caseType", entity);
         assignEntityValueFromField("purpose", entity);
+        //entity.put("caseType", new JSONObject());
         entity.put("company", new JSONObject());
         entity.put("employee", new JSONObject());
         return entity;
-        
+
     }
 
     @Override
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        logger.info(arg0.getMessage());
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                logger.info(arg0.getMessage());
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
-                    }
-                });
-   
+            @Override
+            public void onSuccess(String arg0) {
+                postCreateSuccess(arg0);
+            }
+        });
+
     }
 
     @Override
     protected void addButtonClicked() {
-        
     }
-    
-     @Override
+
+    @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addItemL)) {
             CreateImmigrationCheckRequisitionPanel panel = new CreateImmigrationCheckRequisitionPanel();
@@ -93,9 +94,8 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
 
     @Override
     protected void addListeners() {
-        
     }
-
+//DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL
     @Override
     protected void configure() {
         setButtonText("Submit");
@@ -104,19 +104,18 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
     @Override
     protected void addWidgets() {
         entityFieldsPanel.add(getLineSeperatorTag("ImmigrationCheck Requisition Information"));
-        addField("requestedDate", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        addField("neededByDate", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-        addField("amount", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("mailingAddress", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("caseType", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("purpose", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        entityFieldsPanel.add(addItemL);
+        addField("requestedDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("neededByDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("amount", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        addField("mailingAddress", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        //addField("caseType", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("purpose", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        //entityFieldsPanel.add(addItemL);
         alignFields();
     }
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-        
     }
 
     @Override

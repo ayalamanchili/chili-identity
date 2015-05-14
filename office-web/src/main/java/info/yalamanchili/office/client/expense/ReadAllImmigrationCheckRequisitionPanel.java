@@ -10,6 +10,7 @@ import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.CRUDReadAllComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.fields.FileField;
@@ -26,11 +27,12 @@ import java.util.logging.Logger;
  *
  * @author benerji.v
  */
-public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposite{
+public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposite {
+
     private static Logger logger = Logger.getLogger(ReadAllImmigrationCheckRequisitionPanel.class.getName());
     public static ReadAllImmigrationCheckRequisitionPanel instance;
     protected String url;
-    
+
     public ReadAllImmigrationCheckRequisitionPanel() {
         instance = this;
         initTable("ImmigrationCheckRequisition", OfficeWelcome.constants);
@@ -44,18 +46,17 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
 
     @Override
     public void viewClicked(String entityId) {
-        
     }
 
     @Override
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        postDeleteSuccess();
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                postDeleteSuccess();
+            }
+        });
     }
 
     @Override
@@ -67,19 +68,18 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
 
     @Override
     public void updateClicked(String entityId) {
-        
     }
 
     @Override
     public void preFetchTable(int start) {
-         HttpService.HttpServiceAsync.instance().doGet(getImmigrationCheckURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
+        HttpService.HttpServiceAsync.instance().doGet(getImmigrationCheckURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
                 false, new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        logger.info(result);
-                        postFetchTable(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                logger.info(result);
+                postFetchTable(result);
+            }
+        });
     }
 
     @Override
@@ -111,16 +111,29 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        
+
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN)) {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
         } else {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
-        }    
+        }
     }
 
     private String getDeleteURL(String entityId) {
-         return OfficeWelcome.instance().constants.root_url() + "checkrequisition/delete/" + entityId;
+        return OfficeWelcome.instance().constants.root_url() + "checkrequisition/delete/" + entityId;
+    }
+
+    @Override
+    protected void configureCreateButton() {
+        createButton.setText("Create Check Requisition");
+        createButton.setVisible(true);
+    }
+
+    @Override
+    protected void createButtonClicked() {
+        TabPanel.instance().getExpensePanel().sidePanelTop.clear();
+        TabPanel.instance().expensePanel.entityPanel.clear();
+        TabPanel.instance().expensePanel.entityPanel.add(new CreateImmigrationCheckRequisitionPanel(CreateComposite.CreateCompositeType.CREATE));
     }
 
     private String getImmigrationCheckURL(Integer start, String limit) {
