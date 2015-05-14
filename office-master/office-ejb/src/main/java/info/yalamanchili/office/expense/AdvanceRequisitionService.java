@@ -118,7 +118,9 @@ public class AdvanceRequisitionService {
         //Comment
         List<Comment> cmnts = CommentDao.instance().findAll(entity.getId(), entity.getClass().getCanonicalName());
         for (Integer i = 0; i < 3; i++) {
-            data.getData().put("comment" + i.toString(), cmnts.get(i).getUpdatedBy() + ":" + cmnts.get(i).getComment());
+            if (cmnts.size() > i) {
+                data.getData().put("comment" + i.toString(), cmnts.get(i).getUpdatedBy() + ":" + cmnts.get(i).getComment());
+            }
         }
         //TODO add comment
         //Approved By
