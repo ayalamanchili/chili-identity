@@ -7,10 +7,7 @@ package info.yalamanchili.office.client.i18n;
 
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.advancerequisition.ReadAdvanceRequisitionPanel;
 import info.yalamanchili.office.client.gwt.TreePanelComposite;
-import info.yalamanchili.office.client.transaction.ReadAllTransactionPanel;
-import info.yalamanchili.office.client.transaction.TransactionOptionsWidget;
 import java.util.logging.Logger;
 
 /**
@@ -56,7 +53,7 @@ public class Ci18nBundleTreePanel extends TreePanelComposite {
     public void treeNodeSelected(String entityNodeKey) {
         if (RESOURCES_NODE.equals(entityNodeKey)) {
             TabPanel.instance().chiliAdminPanel.entityPanel.clear();
-            TabPanel.instance().chiliAdminPanel.entityPanel.add(new ReadAllC18nResourcesPanel(entityId));
+            TabPanel.instance().chiliAdminPanel.entityPanel.add(new ReadAllCi8nResourcesPanel(entityId));
         }
     }
 
@@ -66,7 +63,5 @@ public class Ci18nBundleTreePanel extends TreePanelComposite {
 
     @Override
     public void showEntity() {
-        TabPanel.instance().chiliAdminPanel.entityPanel.clear();
-        TabPanel.instance().chiliAdminPanel.entityPanel.add(new ReadAdvanceRequisitionPanel(getEntityId()));
     }
 }

@@ -9,7 +9,7 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuBar;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.i18n.ReadAlli18nResourceBundlesPanel;
+import info.yalamanchili.office.client.i18n.ReadAllci18nResourceBundlesPanel;
 
 /**
  *
@@ -32,7 +32,7 @@ public class ChiliAdminMenu extends Composite {
         public void execute() {
             TabPanel.instance().getChiliAdminPanel().entityPanel.clear();
             TabPanel.instance().getChiliAdminPanel().sidePanelTop.clear();
-            TabPanel.instance().getChiliAdminPanel().entityPanel.add(new ReadAlli18nResourceBundlesPanel());
+            TabPanel.instance().getChiliAdminPanel().entityPanel.add(new ReadAllci18nResourceBundlesPanel());
         }
     };
 }

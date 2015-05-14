@@ -12,20 +12,23 @@ import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.profile.email.ReadAllEmailsPanel;
+import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
 /**
  *
  * @author ayalamanchili
  */
-public class ReadAllC18nResourcesPanel extends CRUDReadAllComposite {
+public class ReadAllCi8nResourcesPanel extends CRUDReadAllComposite {
 
-    private static Logger logger = Logger.getLogger(ReadAllC18nResourcesPanel.class.getName());
-    public static ReadAllC18nResourcesPanel instance;
+    private static Logger logger = Logger.getLogger(ReadAllCi8nResourcesPanel.class.getName());
+    public static ReadAllCi8nResourcesPanel instance;
 
-    public ReadAllC18nResourcesPanel(String parentId) {
+    public ReadAllCi8nResourcesPanel(String parentId) {
         instance = this;
         this.parentId = parentId;
         initTable("Recources", OfficeWelcome.constants);
@@ -78,32 +81,30 @@ public class ReadAllC18nResourcesPanel extends CRUDReadAllComposite {
 
     @Override
     public void deleteClicked(String entityId) {
-//        HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
-//                new ALAsyncCallback<String>() {
-//                    @Override
-//                    public void onResponse(String arg0) {
-//                        postDeleteSuccess();
-//                    }
-//                });
+        HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
     }
 
     @Override
     public void postDeleteSuccess() {
-//        new ResponseStatusWidget().show("Successfully Deleted Resource Bundle Information");
-//        TabPanel.instance().myOfficePanel.entityPanel.clear();
-//        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmailsPanel(TreeEmployeePanel.instance().getEntityId()));
-//        TabPanel.instance().myOfficePanel.entityPanel.add(new EmailOptionsPanel());
+        new ResponseStatusWidget().show("Successfully Deleted Resource Information");
+        TabPanel.instance().chiliAdminPanel.entityPanel.clear();
+        TabPanel.instance().chiliAdminPanel.entityPanel.add(new ReadAllCi8nResourcesPanel(Ci18nBundleTreePanel.instance().getEntityId()));
     }
 
     @Override
     public void updateClicked(String entityId) {
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-//        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateEmailPanel(getEntity(entityId)));
-
+        TabPanel.instance().chiliAdminPanel.entityPanel.clear();
+        TabPanel.instance().chiliAdminPanel.entityPanel.add(new UpdateCi18nResourcePanel(getEntity(entityId)));
     }
 
     protected String getDeleteURL(String entityId) {
-        return OfficeWelcome.instance().constants.root_url() + "email/delete/" + entityId;
+        return OfficeWelcome.constants.root_url() + "i18n/bundle/resource/delete/"+entityId;
     }
 
     @Override

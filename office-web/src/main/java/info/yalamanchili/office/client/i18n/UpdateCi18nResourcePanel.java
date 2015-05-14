@@ -7,39 +7,41 @@ package info.yalamanchili.office.client.i18n;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import info.chili.gwt.crud.CreateComposite;
+import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.profile.email.EmailOptionsPanel;
+import info.yalamanchili.office.client.profile.email.ReadAllEmailsPanel;
+import info.yalamanchili.office.client.profile.emailtype.SelectEmailTypeWidget;
+import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
 /**
  *
  * @author ayalamanchili
  */
-public class Createi18nResourcePanel extends CreateComposite {
+public class UpdateCi18nResourcePanel extends UpdateComposite {
 
-    private static Logger logger = Logger.getLogger(Createi18nResourcePanel.class.getName());
+    private static Logger logger = Logger.getLogger(UpdateCi18nResourcePanel.class.getName());
 
-    public Createi18nResourcePanel() {
-        super(CreateComposite.CreateCompositeType.CREATE);
-        initCreateComposite("Resources", OfficeWelcome.constants);
+    public UpdateCi18nResourcePanel(JSONObject entity) {
+        initUpdateComposite(entity, "Resource", OfficeWelcome.constants);
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject entity = new JSONObject();
         assignEntityValueFromField("key", entity);
         assignEntityValueFromField("value", entity);
         return entity;
     }
 
     @Override
-    protected void createButtonClicked() {
-        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
-                new AsyncCallback<String>() {
+    protected void updateButtonClicked() {
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
+                OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
                     @Override
                     public void onFailure(Throwable arg0) {
                         handleErrorResponse(arg0);
@@ -47,31 +49,30 @@ public class Createi18nResourcePanel extends CreateComposite {
 
                     @Override
                     public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
+                        postUpdateSuccess(arg0);
                     }
                 });
     }
 
     @Override
-    protected void addButtonClicked() {
-
-    }
-
-    @Override
-    protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully Created Resource");
+    protected void postUpdateSuccess(String result) {
+        new ResponseStatusWidget().show("Successfully  Updated Resource");
         TabPanel.instance().chiliAdminPanel.entityPanel.clear();
         TabPanel.instance().chiliAdminPanel.entityPanel.add(new ReadAllCi8nResourcesPanel(Ci18nBundleTreePanel.instance().getEntityId()));
     }
 
     @Override
+    public void populateFieldsFromEntity(JSONObject entity) {
+        assignFieldValueFromEntity("key", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("value", entity, DataType.STRING_FIELD);
+    }
+
+    @Override
     protected void addListeners() {
-        // TODO Auto-generated method stub
     }
 
     @Override
     protected void configure() {
-        // TODO Auto-generated method stub
     }
 
     @Override
@@ -82,11 +83,10 @@ public class Createi18nResourcePanel extends CreateComposite {
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-        // TODO Auto-generated method stub
     }
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "i18n/bundle/resource/" + Ci18nBundleTreePanel.instance().getEntityId();
+        return OfficeWelcome.constants.root_url() + "i18n/bundle/resource/";
     }
 }

@@ -34,6 +34,7 @@ import info.yalamanchili.office.client.chiliadmin.ChiliAdminMenu;
 import info.yalamanchili.office.client.drive.SearchDrivePanel;
 import info.yalamanchili.office.client.expense.ExpenseMenu;
 import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
+import info.yalamanchili.office.client.i18n.ReadAllci18nResourceBundlesPanel;
 import info.yalamanchili.office.client.profile.reports.ProfileReportsSidePanel;
 import info.yalamanchili.office.client.profile.selfservice.ReadAllServiceTicketsPanel;
 import info.yalamanchili.office.client.profile.skill.ReadAllSkillsPanel;
@@ -207,6 +208,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         } else {
             homePanel.entityPanel.add(new ReadAllServiceTicketsPanel());
         }
+        homePanel.sidePanelTop.setHeight("100%");
     }
 
     public void selectSocialTab() {
@@ -297,6 +299,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         chiliAdminPanel.entityPanel.clear();
         chiliAdminPanel.sidePanelTop.clear();
         chiliAdminPanel.entityTitlePanel.add(new ChiliAdminMenu());
+        chiliAdminPanel.entityPanel.add(new ReadAllci18nResourceBundlesPanel());
     }
 
     public void selectHelpTab() {

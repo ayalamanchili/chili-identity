@@ -15,22 +15,18 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.profile.email.EmailOptionsPanel;
-import info.yalamanchili.office.client.profile.email.ReadAllEmailsPanel;
-import info.yalamanchili.office.client.profile.email.UpdateEmailPanel;
-import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
 /**
  *
  * @author ayalamanchili
  */
-public class ReadAlli18nResourceBundlesPanel extends CRUDReadAllComposite {
+public class ReadAllci18nResourceBundlesPanel extends CRUDReadAllComposite {
 
-    private static Logger logger = Logger.getLogger(ReadAlli18nResourceBundlesPanel.class.getName());
-    public static ReadAlli18nResourceBundlesPanel instance;
+    private static Logger logger = Logger.getLogger(ReadAllci18nResourceBundlesPanel.class.getName());
+    public static ReadAllci18nResourceBundlesPanel instance;
 
-    public ReadAlli18nResourceBundlesPanel() {
+    public ReadAllci18nResourceBundlesPanel() {
         instance = this;
         initTable("Recource Bundle", OfficeWelcome.constants);
     }
@@ -59,13 +55,11 @@ public class ReadAlli18nResourceBundlesPanel extends CRUDReadAllComposite {
         table.setText(0, 1, getKeyValue("Name"));
         table.setText(0, 2, getKeyValue("Language"));
         table.setText(0, 3, getKeyValue("Country"));
-        table.setText(0, 3, getKeyValue("Variant"));
+        table.setText(0, 4, getKeyValue("Variant"));
     }
 
     @Override
     public void fillData(JSONArray entities) {
-        logger.info("aaaaaaaaaaaaaaa" + entities.toString());
-
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
@@ -106,20 +100,19 @@ public class ReadAlli18nResourceBundlesPanel extends CRUDReadAllComposite {
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Resource Bundle Information");
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmailsPanel(TreeEmployeePanel.instance().getEntityId()));
-        TabPanel.instance().myOfficePanel.entityPanel.add(new EmailOptionsPanel());
+        TabPanel.instance().chiliAdminPanel.entityPanel.clear();
+        TabPanel.instance().chiliAdminPanel.entityPanel.add(new ReadAllci18nResourceBundlesPanel());
     }
 
     @Override
     public void updateClicked(String entityId) {
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateEmailPanel(getEntity(entityId)));
+        TabPanel.instance().chiliAdminPanel.entityPanel.clear();
+        TabPanel.instance().chiliAdminPanel.entityPanel.add(new UpdateCi18nResourceBundlePanel(getEntity(entityId)));
 
     }
 
     protected String getDeleteURL(String entityId) {
-        return OfficeWelcome.instance().constants.root_url() + "email/delete/" + entityId;
+        return OfficeWelcome.constants.root_url() + "i18n/bundle/delete/" + entityId;
     }
 
     @Override
