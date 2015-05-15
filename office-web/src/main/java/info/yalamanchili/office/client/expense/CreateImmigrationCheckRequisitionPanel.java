@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.expense;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
@@ -18,8 +19,10 @@ import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import java.util.logging.Logger;
 
 /**
@@ -29,6 +32,7 @@ import java.util.logging.Logger;
 public class CreateImmigrationCheckRequisitionPanel extends CreateComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(CreateImmigrationCheckRequisitionPanel.class.getName());
+    protected SelectCompanyWidget selectCompnayWidget = new SelectCompanyWidget(false, true, Alignment.HORIZONTAL);
     protected ClickableLink addItemL = new ClickableLink("Add Expense Item");
 
     public CreateImmigrationCheckRequisitionPanel() {
@@ -50,10 +54,13 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
         assignEntityValueFromField("mailingAddress", entity);
         assignEntityValueFromField("purpose", entity);
         assignEntityValueFromField("caseType", entity);
-        assignEntityValueFromField("status", entity);
-        
-        //entity.put("caseType", new JSONObject());
-        entity.put("company", new JSONObject());
+        entity.put("status", new JSONString("Open"));
+
+        if (fields.containsKey("company") && selectCompnayWidget.getSelectedObject() != null) {
+            JSONObject company = selectCompnayWidget.getSelectedObject();
+            company.put("name", company.get("value"));
+            entity.put("company", company);
+        }        
         entity.put("employee", new JSONObject());
         return entity;
 
@@ -110,7 +117,6 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
     @Override
     protected void addWidgets() {
         entityFieldsPanel.add(getLineSeperatorTag("ImmigrationCheck Requisition Information"));
-        addField("status", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("requestedDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("neededByDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("amount", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
@@ -118,7 +124,9 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
         //addField("caseType", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("purpose", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("caseType", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION, Auth.ROLE.ROLE_RELATIONSHIP, Auth.ROLE.ROLE_HR)) {
+            addDropDown("company", selectCompnayWidget);
+        }
         //entityFieldsPanel.add(addItemL);
         alignFields();
     }
