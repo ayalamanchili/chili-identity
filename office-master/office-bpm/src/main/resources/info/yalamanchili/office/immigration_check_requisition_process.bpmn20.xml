@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 sadipan.b@sstech.us
+
+-->
+<definitions
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:activiti="http://activiti.org/bpmn">
+ 
+    <process id="immigration_check_requisition_process">
+        <startEvent id="immigrationCheckRequisitionStart"/>
+        
+        <!-- Manager approval task-->
+        <sequenceFlow  sourceRef="immigrationCheckRequisitionStart" targetRef="immigrationCheckRequisitionApprovalTask" />
+        <userTask id="immigrationCheckRequisitionApprovalTask" 
+                  name="Immigration Check Requisition Task for ${currentEmployee.firstName} ${currentEmployee.lastName}">
+            <documentation>
+                Employee Immigration Check Requisition Approval Task
+                Employee Name   : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Amount          : #{entity.amount}
+                Purpose         : #{entity.purpose}
+                Needed By Date :#{entity.neededBy}
+                Follow instructions from below:
+                https://apps.sstech.us/site/office/expense/immigrationcheckprocess.html
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.immigration.ImmigrationCheckRequestProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.immigration.ImmigrationCheckRequestProcess" />
+                <activiti:formProperty id="approvedAmount" 
+                                       name="Approved Amount"
+                                       required="true" 
+                                       type="string" />
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <!-- Task escalation email after 48 hours-->
+        <boundaryEvent id="immigrationCheckRequisitionApprovalTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="immigrationCheckRequisitionApprovalTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="immigrationCheckRequisitionApprovalTaskEscalationTimer" 
+                      targetRef="immigrationCheckRequisitionApprovalTaskEscalation" />
+        <serviceTask id="immigrationCheckRequisitionApprovalTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <!--desision-->
+        <sequenceFlow sourceRef="immigrationCheckRequisitionApprovalTask" 
+                      targetRef="approvalGateway" />
+        <exclusiveGateway id="approvalGateway" />
+        <sequenceFlow sourceRef="approvalGateway" 
+                      targetRef="immigrationCheckRequisitionFinalApprovalTask">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="approvalGateway" 
+                      targetRef="immigrationCheckRequisitionEnd">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'rejected'}
+            </conditionExpression>
+        </sequenceFlow>
+        <userTask id="immigrationCheckRequisitionFinalApprovalTask" 
+                  name="Immigration Check Requisition Final Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" 
+                  activiti:candidateGroups="ROLE_ADMIN">
+            <documentation>
+                Immigration Check Requisition Final Approval Task
+                Employee Name  : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Amount         : #{entity.amount}
+                Purpose        : #{entity.purpose}
+                Needed By Date :#{entity.neededBy}
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.immigration.ImmigrationCheckRequestProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.immigration.ImmigrationCheckRequestProcess" />
+                <activiti:formProperty id="approvedAmount" 
+                                       name="Approved Amount"
+                                       required="true" 
+                                       type="string" />
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <!-- Task escalation email after 48 hours-->
+        <boundaryEvent id="immigrationCheckRequisitionFinalApprovalTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="immigrationCheckRequisitionFinalApprovalTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="immigrationCheckFinalApprovalTaskEscalationTimer" 
+                      targetRef="immigrationCheckRequisitionFinalApprovalTaskEscalation" />
+        <serviceTask id="immigrationCheckRequisitionFinalApprovalTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <!--desision-->
+        <sequenceFlow sourceRef="immigrationCheckRequisitionFinalApprovalTask" 
+                      targetRef="finalApprovalTaskGateway" />
+        <exclusiveGateway id="finalApprovalTaskGateway" />
+        <sequenceFlow sourceRef="finalApprovalTaskGateway" 
+                      targetRef="immigrationCheckRequisitionEnd">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="finalApprovalTaskGateway" 
+                      targetRef="immigrationCheckRequisitionEnd">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'rejected'}
+            </conditionExpression>
+        </sequenceFlow>
+        <endEvent id="immigrationCheckRequisitionEnd" />
+    </process>
+</definitions>
