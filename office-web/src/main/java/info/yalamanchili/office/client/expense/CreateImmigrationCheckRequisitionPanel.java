@@ -129,6 +129,6 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "checkrequisition";
+        return OfficeWelcome.constants.root_url() + "checkrequisition/submit-check-requisition-request";
     }
 }
