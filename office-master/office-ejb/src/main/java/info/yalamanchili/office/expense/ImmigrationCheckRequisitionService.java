@@ -39,7 +39,7 @@ public class ImmigrationCheckRequisitionService {
         vars.put("entity", entity);
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
         vars.put("currentEmployee", emp);
-        String processId = OfficeBPMService.instance().startProcess("immigrationcheck_requisition_process", vars);
+        String processId = OfficeBPMService.instance().startProcess("immigration_check_requisition_process", vars);
         entity.setBpmProcessId(processId);
     }
 
