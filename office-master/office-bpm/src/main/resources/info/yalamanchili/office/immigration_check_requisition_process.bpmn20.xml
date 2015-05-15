@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    System Soft Technologies Copyright (C) 2013 sadipan.b@sstech.us
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
 
 -->
 <definitions
@@ -111,7 +111,7 @@
                 <timeDuration>PT48H</timeDuration> 
             </timerEventDefinition>
         </boundaryEvent>
-        <sequenceFlow sourceRef="immigrationCheckFinalApprovalTaskEscalationTimer" 
+        <sequenceFlow sourceRef="immigrationCheckRequisitionFinalApprovalTaskEscalationTimer" 
                       targetRef="immigrationCheckRequisitionFinalApprovalTaskEscalation" />
         <serviceTask id="immigrationCheckRequisitionFinalApprovalTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
         <!--desision-->
