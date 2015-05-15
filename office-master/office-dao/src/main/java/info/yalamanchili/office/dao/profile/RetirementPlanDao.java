@@ -10,9 +10,12 @@ package info.yalamanchili.office.dao.profile;
 
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.RetirementPlan;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
@@ -24,11 +27,24 @@ import org.springframework.stereotype.Repository;
 @Scope("prototype")
 public class RetirementPlanDao extends CRUDDao<RetirementPlan> {
 
+    public RetirementPlan find(Employee emp) {
+        TypedQuery<RetirementPlan> q = getEntityManager().createQuery("from " + RetirementPlan.class.getCanonicalName() + " where employee=:employeeParam", RetirementPlan.class);
+        if (emp != null) {
+            q.setParameter("employeeParam", emp);
+        } else {
+            q.setParameter("employeeParam", OfficeSecurityService.instance().getCurrentUser());
+        }
+        if (q.getResultList().size() > 0) {
+            return q.getResultList().get(0);
+        } else {
+            return null;
+        }
+    }
+
     public RetirementPlanDao() {
         super(RetirementPlan.class);
     }
-    
-    
+
     @PersistenceContext
     protected EntityManager em;
 
@@ -37,8 +53,8 @@ public class RetirementPlanDao extends CRUDDao<RetirementPlan> {
         return em;
     }
 
-    public static EmployeeDocumentDao instance() {
-        return SpringContext.getBean(EmployeeDocumentDao.class);
+    public static RetirementPlanDao instance() {
+        return SpringContext.getBean(RetirementPlanDao.class);
     }
-    
+
 }

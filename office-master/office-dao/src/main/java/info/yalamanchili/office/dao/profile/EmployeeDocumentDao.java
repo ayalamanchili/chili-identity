@@ -34,6 +34,7 @@ public class EmployeeDocumentDao extends CRUDDao<EmployeeDocument> {
         query.setParameter("employeeIdParam", employeeId);
         return query.getResultList();
     }
+
     @PersistenceContext
     protected EntityManager em;
 

@@ -8,14 +8,15 @@
  */
 package info.yalamanchili.office.jrs.profile;
 
-import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.profile.RetirementPlanDao;
-import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.ext.Comment;
 import info.yalamanchili.office.entity.profile.RetirementPlan;
-import java.util.Date;
+import info.yalamanchili.office.profile.RetirementPlanService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -29,21 +30,28 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 @Scope("request")
+@Produces("application/json")
+@Consumes("application/json")
 public class RetirementPlanResource {
 
     @Autowired
-    public RetirementPlanDao retirementPlanDao;
+    public RetirementPlanService retirementPlanService;
+
+    @GET
+    public RetirementPlan find() {
+        return RetirementPlanDao.instance().find(null);
+    }
 
     @PUT
     @Path("/opt-in")
     public void optIn(Comment comment) {
-        RetirementPlan rp = new RetirementPlan();
-        rp.setOptInDate(new Date());
-        rp.setEmployee(OfficeSecurityService.instance().getCurrentUser());
-        rp = retirementPlanDao.save(rp);
-        CommentDao.instance().addComment(comment.getComment(), rp);
-        
-        //TODO send email
+        retirementPlanService.optIn(comment);
+    }
+
+    @PUT
+    @Path("/opt-out")
+    public void optOut(Comment comment) {
+        retirementPlanService.optOut(comment);
     }
 
 }

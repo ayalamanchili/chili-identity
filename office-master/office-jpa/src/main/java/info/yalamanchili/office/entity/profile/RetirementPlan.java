@@ -17,6 +17,7 @@ import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Indexed;
@@ -43,6 +44,10 @@ public class RetirementPlan extends AbstractEntity {
     /**
      *
      */
+    protected Boolean optIn;
+    /**
+     *
+     */
     @OneToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Employee_RET_PLN")
     @NotNull
@@ -59,6 +64,15 @@ public class RetirementPlan extends AbstractEntity {
         this.optInDate = optInDate;
     }
 
+    public Boolean getOptIn() {
+        return optIn;
+    }
+
+    public void setOptIn(Boolean optIn) {
+        this.optIn = optIn;
+    }
+
+    @XmlTransient
     public Employee getEmployee() {
         return employee;
     }
