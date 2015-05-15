@@ -47,7 +47,7 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
     @Override
     protected void configureCreateButton() {
         if (TabPanel.instance().homePanel.isVisible()) {
-            createButton.setText("Submit Status Report");
+            createButton.setText("Create Status Report");
             createButton.setVisible(true);
         }
     }

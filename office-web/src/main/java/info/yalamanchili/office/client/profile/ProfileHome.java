@@ -28,15 +28,17 @@ import info.yalamanchili.office.client.profile.skillset.ReadSkillSetPopupPanel;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.companycontact.ReadAllCompanyContactPanel;
 import info.yalamanchili.office.client.profile.benefits.RetirementPlanOptInPanel;
+import info.yalamanchili.office.client.profile.benefits.RetirementPlanOptOutPanel;
+import info.yalamanchili.office.client.profile.benefits.RetirementPlanReadPanel;
 import info.yalamanchili.office.client.profile.empdoc.ReadAllEmpDocsPopupPanel;
 import info.yalamanchili.office.client.profile.employee.ReadEmployeePopupPanel;
 import info.yalamanchili.office.client.profile.privacy.ReadAllPrivacySettingPopupPanel;
 import java.util.logging.Logger;
 
 public class ProfileHome extends ALComposite {
-    
+
     private static ProfileHome instance;
-    
+
     public static ProfileHome instance() {
         return instance;
     }
@@ -54,21 +56,21 @@ public class ProfileHome extends ALComposite {
     protected DisclosurePanel preferencesPanel;
     protected DisclosurePanel documentsPanel;
     protected DisclosurePanel benefitsDP;
-    
+
     public ProfileHome() {
         instance = this;
         init(panel);
     }
-    
+
     @Override
     protected void configure() {
         // TODO Auto-generated method stub
     }
-    
+
     @Override
     protected void addListeners() {
     }
-    
+
     @Override
     protected void addWidgets() {
         addEmployeePanel();
@@ -88,7 +90,7 @@ public class ProfileHome extends ALComposite {
     /*
      * Read Employee Panel
      */
-    
+
     protected void addEmployeePanel() {
         if (panel.getWidgetIndex(employeeePanel) < 0) {
             employeeePanel = new DisclosurePanel("Profile");
@@ -102,7 +104,7 @@ public class ProfileHome extends ALComposite {
             });
         }
     }
-    
+
     public void refreshEmployeePanel() {
         employeeePanel.setOpen(false);
         employeeePanel.setOpen(true);
@@ -110,7 +112,7 @@ public class ProfileHome extends ALComposite {
     /*
      * Addresses
      */
-    
+
     protected void addAddressesPanel() {
         if (panel.getWidgetIndex(addressesPanel) < 0) {
             addressesPanel = new DisclosurePanel("Addresses");
@@ -125,7 +127,7 @@ public class ProfileHome extends ALComposite {
             });
         }
     }
-    
+
     public void refreshAddresses() {
         addressesPanel.setOpen(false);
         addressesPanel.setOpen(true);
@@ -148,7 +150,7 @@ public class ProfileHome extends ALComposite {
             });
         }
     }
-    
+
     public void refreshPhones() {
         phonesPanel.setOpen(false);
         phonesPanel.setOpen(true);
@@ -156,7 +158,7 @@ public class ProfileHome extends ALComposite {
     /*
      * Emails
      */
-    
+
     protected void addEmailsPanel() {
         if (panel.getWidgetIndex(emailsPanel) < 0) {
             /*emailsPanel = null;*/
@@ -172,7 +174,7 @@ public class ProfileHome extends ALComposite {
             });
         }
     }
-    
+
     public void refreshEmails() {
         emailsPanel.setOpen(false);
         emailsPanel.setOpen(true);
@@ -180,7 +182,7 @@ public class ProfileHome extends ALComposite {
     /*
      * Client Information
      */
-    
+
     protected void addClientInfoPanel() {
         clientInfoPanel = new DisclosurePanel("Client Information");
         panel.add(clientInfoPanel);
@@ -193,7 +195,7 @@ public class ProfileHome extends ALComposite {
             }
         });
     }
-    
+
     public void refreshClientInformation() {
         clientInfoPanel.setOpen(false);
         clientInfoPanel.setOpen(true);
@@ -201,7 +203,7 @@ public class ProfileHome extends ALComposite {
     /*
      * emergency contact
      */
-    
+
     protected void addEmergencyContactsPanel() {
         emergencyContactsPanel = new DisclosurePanel("Emergency Contacts");
         panel.add(emergencyContactsPanel);
@@ -214,7 +216,7 @@ public class ProfileHome extends ALComposite {
             }
         });
     }
-    
+
     public void refreshEmergencyContactsPanel() {
         emergencyContactsPanel.setOpen(false);
         emergencyContactsPanel.setOpen(true);
@@ -222,7 +224,7 @@ public class ProfileHome extends ALComposite {
     /*
      *company contact
      */
-    
+
     protected void addCompanyContactsPanel() {
         companyContactsPanel = new DisclosurePanel("Company Contacts");
         panel.add(companyContactsPanel);
@@ -271,31 +273,34 @@ public class ProfileHome extends ALComposite {
     public String getSkillSetUrl(String empId) {
         return OfficeWelcome.constants.root_url() + "employee/skillset/" + empId;
     }
-    
+
     public void refreshSkillSetPanel() {
         skillSetDP.setOpen(false);
         skillSetDP.setOpen(true);
     }
-    
+
     protected void addBenefitsPanel() {
         benefitsDP = new DisclosurePanel("Benefits");
-        final FlowPanel benefitsPanel = new FlowPanel();
-        benefitsPanel.add(new RetirementPlanOptInPanel());
         panel.add(benefitsDP);
         benefitsDP.addStyleName("profileHome");
         benefitsDP.addOpenHandler(new OpenHandler<DisclosurePanel>() {
             @Override
             public void onOpen(OpenEvent<DisclosurePanel> event) {
-                benefitsDP.setContent(benefitsPanel);
+                benefitsDP.clear();
+                benefitsDP.setContent(new RetirementPlanReadPanel());
             }
         });
     }
-    
+
     public void refreshBenifitsPanel() {
         benefitsDP.setOpen(false);
         benefitsDP.setOpen(true);
     }
-    
+
+    protected String getBenifitsURI() {
+        return OfficeWelcome.constants.root_url() + "retirement-plan";
+    }
+
     protected void addPreferencesPanel() {
         preferencesPanel = new DisclosurePanel("Preferences");
         panel.add(preferencesPanel);
@@ -318,19 +323,19 @@ public class ProfileHome extends ALComposite {
             }
         });
     }
-    
+
     public void refreshPreferencesPanel() {
         preferencesPanel.setOpen(false);
         preferencesPanel.setOpen(true);
     }
-    
+
     protected String getPreferencesURI() {
         return OfficeWelcome.constants.root_url() + "employee/preferences/" + OfficeWelcome.instance().employeeId;
     }
     /*
      *Privacy
      */
-    
+
     protected void addPrivacyPanel() {
         if (panel.getWidgetIndex(privacyPanel) < 0) {
             privacyPanel = new DisclosurePanel("Privacy");
@@ -345,7 +350,7 @@ public class ProfileHome extends ALComposite {
             });
         }
     }
-    
+
     public void refreshPrivacy() {
         privacyPanel.setOpen(false);
         privacyPanel.setOpen(true);
@@ -353,7 +358,7 @@ public class ProfileHome extends ALComposite {
     /*
      * Emp Documents 
      */
-    
+
     protected void addEmpDocsPanel() {
         if (panel.getWidgetIndex(documentsPanel) < 0) {
             documentsPanel = new DisclosurePanel("Documents");
@@ -368,7 +373,7 @@ public class ProfileHome extends ALComposite {
             });
         }
     }
-    
+
     public void refreshEmpDocs() {
         documentsPanel.setOpen(false);
         documentsPanel.setOpen(true);

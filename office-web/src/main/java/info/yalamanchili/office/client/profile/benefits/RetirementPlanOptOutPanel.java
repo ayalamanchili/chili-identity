@@ -28,59 +28,76 @@ import info.yalamanchili.office.client.profile.ProfileHome;
  *
  * @author ayalamanchili
  */
-public class RetirementPlanOptInPanel extends ALComposite implements ClickHandler {
-
+public class RetirementPlanOptOutPanel extends ALComposite implements ClickHandler {
+    
     protected FlowPanel panel = new FlowPanel();
-
-    HTML optInHTML = new HTML("<h4>I am interested in 401k plan</h4>");
-    TextAreaField optInCommentsF = new TextAreaField(OfficeWelcome.constants, "optInComment", "RetirementPlan", false, false, Alignment.VERTICAL);
-    Button optInB = new Button("Opt Me In");
-
-    public RetirementPlanOptInPanel() {
+    HTML futureHTML = new HTML("<html>\n"
+            + "<head>\n"
+            + "	<title></title>\n"
+            + "</head>\n"
+            + "<body>\n"
+            + "<hr />\n"
+            + "<p>Thank you for your interest in 401k Plan.</p>\n"
+            + "\n"
+            + "<div style=\"page-break-after: always\"><span style=\"display: none;\">&nbsp;</span></div>\n"
+            + "\n"
+            + "<p>Comming Soon...&nbsp;Manage&nbsp;your 401k Plan</p>\n"
+            + "\n"
+            + "<hr />\n"
+            + "<p>&nbsp;</p>\n"
+            + "</body>\n"
+            + "</html>");
+    
+    HTML optOutHTML = new HTML("<h4>I am not interested 401k </h4>");
+    TextAreaField optOutCommentsF = new TextAreaField(OfficeWelcome.constants, "optOutComment", "RetirementPlan", false, false, Alignment.VERTICAL);
+    Button optOutB = new Button("Opt Me Out");
+    
+    public RetirementPlanOptOutPanel() {
         init(panel);
     }
-
+    
     @Override
     protected void addListeners() {
-        optInB.addClickHandler(this);
+        optOutB.addClickHandler(this);
     }
-
+    
     @Override
     protected void configure() {
-
+        
     }
-
+    
     @Override
     protected void addWidgets() {
-        panel.add(optInHTML);
-        panel.add(optInCommentsF);
-        panel.add(optInB);
+        panel.add(futureHTML);
+        panel.add(optOutHTML);
+        panel.add(optOutCommentsF);
+        panel.add(optOutB);
     }
-
+    
     @Override
     public void onClick(ClickEvent event) {
-        if (event.getSource().equals(optInB)) {
-            processOptIn();
+        if (event.getSource().equals(optOutB)) {
+            processOptOut();
         }
     }
-
-    protected void processOptIn() {
+    
+    protected void processOptOut() {
         JSONObject entity = new JSONObject();
-        if (optInCommentsF.getValue() != null && !optInCommentsF.getValue().isEmpty()) {
-            entity.put("comment", new JSONString(optInCommentsF.getValue()));
+        if (optOutCommentsF.getValue() != null && !optOutCommentsF.getValue().isEmpty()) {
+            entity.put("comment", new JSONString(optOutCommentsF.getValue()));
         }
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-
+                    
                     @Override
                     public void onResponse(String arg0) {
-                        new ResponseStatusWidget().show("Thank you. You will soon be notified via email on the next steps.");
+                        new ResponseStatusWidget().show("Thank you. You are now Opted Out of Retirement Plan");
                         ProfileHome.instance().refreshBenifitsPanel();
                     }
                 });
     }
-
+    
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "retirement-plan/opt-in";
+        return OfficeWelcome.constants.root_url() + "retirement-plan/opt-out";
     }
 }
