@@ -28,6 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
+import org.hibernate.search.annotations.Field;
 
 /**
  *
@@ -123,6 +124,17 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
      */
     @OneToMany(cascade = CascadeType.ALL)
     private List<CheckRequisitionItem> items;
+    /**
+     *
+     */
+    @Enumerated(EnumType.STRING)
+    @Field
+    @NotNull(message = "{immigration.check.requisition.status.not.empty.msg}")
+    private ImmigrationCheckRequisitionStatus status;
+    /**
+     * 
+     */
+    private String bpmProcessId;
     /**
     * GETTERS and SETTERS
     */
@@ -254,9 +266,25 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
         this.items = items;
     }
 
+    public ImmigrationCheckRequisitionStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ImmigrationCheckRequisitionStatus status) {
+        this.status = status;
+    }
+
+    public String getBpmProcessId() {
+        return bpmProcessId;
+    }
+
+    public void setBpmProcessId(String bpmProcessId) {
+        this.bpmProcessId = bpmProcessId;
+    }
+
     @Override
     public String toString() {
-        return "ImmigrationCheckRequisition{" + "requestedDate=" + requestedDate + ", neededByDate=" + neededByDate + ", amount=" + amount + ", mailingAddress=" + mailingAddress + ", caseType=" + caseType + ", purpose=" + purpose + ", requesterName=" + requesterName + ", hrName=" + hrName + ", approvedBy=" + approvedBy + ", approvedDate=" + approvedDate + ", accountedBy=" + accountedBy + ", checkIssuedDate=" + checkIssuedDate + ", accountDeptReceivedDate=" + accountDeptReceivedDate + ", company=" + company + ", employee=" + employee + ", items=" + items + '}';
+        return "ImmigrationCheckRequisition{" + "requestedDate=" + requestedDate + ", neededByDate=" + neededByDate + ", amount=" + amount + ", mailingAddress=" + mailingAddress + ", caseType=" + caseType + ", purpose=" + purpose + ", requesterName=" + requesterName + ", hrName=" + hrName + ", approvedBy=" + approvedBy + ", approvedDate=" + approvedDate + ", accountedBy=" + accountedBy + ", checkIssuedDate=" + checkIssuedDate + ", accountDeptReceivedDate=" + accountDeptReceivedDate + ", company=" + company + ", employee=" + employee + ", items=" + items + ", status=" + status + ", bpmProcessId=" + bpmProcessId + '}';
     }
 
 }
