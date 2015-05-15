@@ -49,6 +49,9 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
         assignEntityValueFromField("amount", entity);
         assignEntityValueFromField("mailingAddress", entity);
         assignEntityValueFromField("purpose", entity);
+        assignEntityValueFromField("caseType", entity);
+        assignEntityValueFromField("status", entity);
+        
         //entity.put("caseType", new JSONObject());
         entity.put("company", new JSONObject());
         entity.put("employee", new JSONObject());
@@ -107,12 +110,15 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
     @Override
     protected void addWidgets() {
         entityFieldsPanel.add(getLineSeperatorTag("ImmigrationCheck Requisition Information"));
+        addField("status", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("requestedDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("neededByDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("amount", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("mailingAddress", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         //addField("caseType", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("purpose", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("caseType", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        
         //entityFieldsPanel.add(addItemL);
         alignFields();
     }
