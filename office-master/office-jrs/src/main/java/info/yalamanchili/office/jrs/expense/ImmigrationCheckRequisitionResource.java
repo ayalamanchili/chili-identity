@@ -10,8 +10,10 @@ package info.yalamanchili.office.jrs.expense;
 
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
+import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.expense.ImmigrationCheckRequisitionDao;
 import info.yalamanchili.office.entity.expense.ImmigrationCheckRequisition;
+import info.yalamanchili.office.expense.ImmigrationCheckRequisitionService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
 import javax.ws.rs.GET;
@@ -22,6 +24,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
@@ -39,7 +42,13 @@ public class ImmigrationCheckRequisitionResource extends CRUDResource<Immigratio
     @Autowired
     public ImmigrationCheckRequisitionDao immigrationCheckRequisitionDao;
     
- 
+    @PUT
+    @Validate
+    @Path("/submit-check-requisition-request")
+    @CacheEvict(value = OfficeCacheKeys.ADVANCE_REQUSITON, allEntries = true)
+    public void submitImmigrationCheckRequest(ImmigrationCheckRequisition entity) {
+        ImmigrationCheckRequisitionService.instance().submitImmigrationCheckRequisition(entity);
+    } 
 
     @PUT
     @Override
@@ -48,7 +57,7 @@ public class ImmigrationCheckRequisitionResource extends CRUDResource<Immigratio
     public ImmigrationCheckRequisition save(ImmigrationCheckRequisition entity) {
         return super.save(entity);
     }
-
+    
     @Override
     public CRUDDao getDao() {
         return immigrationCheckRequisitionDao;
