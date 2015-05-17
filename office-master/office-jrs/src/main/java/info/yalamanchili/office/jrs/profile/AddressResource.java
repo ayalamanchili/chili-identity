@@ -109,8 +109,10 @@ public class AddressResource extends CRUDResource<Address> {
 
     protected void validateExistingAddressUpdateRequest(Long addressId) {
         List<Task> tasks = OfficeBPMTaskService.instance().findTasksWithVariable("entityId", addressId);
-        if (!tasks.stream().noneMatch((task) -> (task.getTaskDefinitionKey().equals("updateAddressPayrollTask")))) {
-            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "update.request.pending", "Please wait for the existing request to comeplte. After which you can resubmit");
+        for (Task task : tasks) {
+            if (task.getTaskDefinitionKey().equals("updateAddressPayrollTask")) {
+                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "update.request.pending", "Please wait for the existing request to comeplte. After which you can resubmit");
+            }
         }
     }
 
