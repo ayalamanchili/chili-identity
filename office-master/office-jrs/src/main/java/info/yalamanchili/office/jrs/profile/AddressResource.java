@@ -5,9 +5,10 @@ package info.yalamanchili.office.jrs.profile;
 
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
-import info.yalamanchili.office.bpm.profile.BPMProfileService;
+import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.config.OfficeFeatureFlipper;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
@@ -30,6 +31,7 @@ import javax.ws.rs.QueryParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.activiti.engine.task.Task;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -84,26 +86,17 @@ public class AddressResource extends CRUDResource<Address> {
         }
         entity = save(entity);
         if (OfficeFeatureFlipper.instance().getEnableNewHomeAddressChangeProcess() && notifyChange) {
-            processAddressUpdateNotificationV2(entity, null, notifyHealthInsurance);
+            processAddressUpdateNotification(entity, null, notifyHealthInsurance);
         }
         return entity;
     }
 
-    public void processAddressUpdateNotification(Address entity, Employee emp) {
+    public void processAddressUpdateNotification(Address entity, Employee emp, boolean notifyHealthInsurance) {
+        validateExistingAddressUpdateRequest(entity.getId());
         if (emp == null) {
             emp = EmployeeDao.instance().findById(entity.getContact().getId());
         }
-        if (emp.getEmployeeType().getName().equals("Employee") && entity.isNotifyChange()) {
-            BPMProfileService.instance().startAddressUpdatedProcess(entity, emp, entity.getChangeNotes());
-        }
-    }
-
-    public void processAddressUpdateNotificationV2(Address entity, Employee emp, boolean notifyHealthInsurance) {
-        if (emp == null) {
-            emp = EmployeeDao.instance().findById(entity.getContact().getId());
-        }
-        //TODO checl address type==home
-        if (emp.getEmployeeType().getName().equals("Employee")) {
+        if (entity.getAddressType().getAddressType().equals("Home")) {
             Map<String, Object> vars = new HashMap<>();
             vars.put("entity", entity);
             vars.put("entityId", entity.getId());
@@ -111,6 +104,13 @@ public class AddressResource extends CRUDResource<Address> {
             vars.put("notifyHealthInsurance", notifyHealthInsurance);
             vars.put("allTasksCompleted", false);
             OfficeBPMService.instance().startProcess("home_address_update_process", vars);
+        }
+    }
+
+    protected void validateExistingAddressUpdateRequest(Long addressId) {
+        List<Task> tasks = OfficeBPMTaskService.instance().findTasksWithVariable("entityId", addressId);
+        if (!tasks.stream().noneMatch((task) -> (task.getTaskDefinitionKey().equals("updateAddressPayrollTask")))) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "update.request.pending", "Please wait for the existing request to comeplte. After which you can resubmit");
         }
     }
 

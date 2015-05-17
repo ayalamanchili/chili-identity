@@ -10,7 +10,9 @@ package info.yalamanchili.office.messages;
 
 import info.chili.i18n.CDatabaseMessages;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.config.OfficeFeatureFlipper;
 import java.util.Locale;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.stereotype.Component;
@@ -28,9 +30,14 @@ public class MessagesUtils {
     protected MessageSource messageSource = null;
     protected CDatabaseMessages databaseMessages = null;
 
+    @Autowired
+    OfficeFeatureFlipper OfficeFeatureFlipper;
+
     public String get(String key) {
-        String message;
-        message = getDatabaseMessageSource().getMessage(key, null, Locale.getDefault());
+        String message = null;
+        if (OfficeFeatureFlipper.getEnablePersistedResourceBundles()) {
+            message = getDatabaseMessageSource().getMessage(key, null, Locale.getDefault());
+        }
         if (message == null) {
             try {
                 message = getStaticMessageSource().getMessage(key, null, null);
@@ -40,9 +47,8 @@ public class MessagesUtils {
         }
         return message;
     }
-    
-    //Add resolver with Specified Locale
 
+    //Add resolver with Specified Locale
     protected String getBundleName() {
         return bundleName;
     }

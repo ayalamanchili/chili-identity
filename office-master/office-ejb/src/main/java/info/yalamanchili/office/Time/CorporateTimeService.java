@@ -89,7 +89,7 @@ public class CorporateTimeService {
     public void cancelLeaveRequest(Long timesheetId, String cancelReason) {
         CorporateTimeSheet ts = corporateTimeSheetDao.findById(timesheetId);
         validateExistingCanelRequests(timesheetId);
-        Map<String, Object> vars = new HashMap<String, Object>();
+        Map<String, Object> vars = new HashMap<>();
         vars.put("entity", ts);
         vars.put("entityId", ts.getId());
         vars.put("cancelReason", cancelReason);

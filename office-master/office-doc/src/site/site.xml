@@ -77,10 +77,7 @@
                 <item name="Time Data Import" href="/office/timesheets/import-external-time-data.html"/>
                 <item name="Attendance Process" href="/office/timesheets/attendence.html"/>
             </item>
-            <item name="Address Processes" href="/office/bpm/address-change-overall-flow.html" collapse="true">
-                <item name="Overall Flow" href="/office/bpm/address-change-overall-flow.html"/>
-                <item name="Address change initiated by employee" href="/office/bpm/address-change-initiated-employee.html"/>
-                <item name="Address change initiated by departments" href="/office/bpm/address-change-initiated-departments.html"/>
+            <item name="Portal Processes" href="/office/bpm/address-updated-process.html" collapse="true">
                 <item name="Address Change Approval Process" href="/office/bpm/address-updated-process.html"/>
                 
             </item>

@@ -30,14 +30,6 @@ public class BPMProfileService {
     @Autowired
     protected OfficeBPMService officeBPMService;
 
-    public void startAddressUpdatedProcess(Address address, Employee emp, String changeNotes) {
-        Map<String, Object> vars = new HashMap<String, Object>();
-        vars.put("entity", address);
-        vars.put("employeeName", emp.getFirstName() + " " + emp.getLastName());
-        vars.put("changeNotes", changeNotes);
-        officeBPMService.startProcess("address_update_process-v3", vars);
-    }
-
     @Async
     public void startAccountResetProcess(AccountReset account) {
         Map<String, Object> vars = new HashMap<String, Object>();

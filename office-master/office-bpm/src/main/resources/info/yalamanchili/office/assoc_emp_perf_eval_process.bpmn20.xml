@@ -23,7 +23,7 @@
                 Employee Name              : #{currentEmployee.firstName} #{currentEmployee.lastName}
                 Evaluation Fiscal Year     : #{entity.evaluationFYYear}
                 Follow instructions from below:
-                https://apps.sstech.us/site/office/perfeval/assoc-emp-perf-eval-process.html
+                https://apps.sstech.us/site/office/perf-eval/assoc-approval-process.html
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.perfeval.AssociatePerfEvalProcess" />

@@ -1,4 +1,4 @@
-Forgot Password
+Reset/Forgot Password
 =========
 
 - Visit [Portal](https://apps.sstech.us/portal) [please bookmark] (https://apps.sstech.us/portal)
@@ -10,9 +10,9 @@ Forgot Password
 - If you see a message that your username is not registered or have not received a email. please click on - [Account Reset](../../office/accountresettask.html "Account Reset") located at the bottom of the page and submit the form with complete details so that system administrator will validate the request and an email will be sent to you with the login details.
 - please don't forget to change your password after your login with temporary password.
 
-Forgot Password
+Reset/Forgot Password
 ----
-![alt text](../images/forgot_password.png "Forgot Password")
+![alt text](../images/resetpassword.png "Forgot Password")
 
 Change Password
 ----

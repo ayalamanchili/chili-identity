@@ -30,6 +30,17 @@ public class OfficeFeatureFlipper {
         this.enableNewHomeAddressChangeProcess = enableNewHomeAddressChangeProcess;
     }
 
+    @Value("#{officeFeatureFlipperProperties['enablePersistedResourceBundles']}")
+    protected Boolean enablePersistedResourceBundles;
+
+    public Boolean getEnablePersistedResourceBundles() {
+        return enablePersistedResourceBundles;
+    }
+
+    public void setEnablePersistedResourceBundles(Boolean enablePersistedResourceBundles) {
+        this.enablePersistedResourceBundles = enablePersistedResourceBundles;
+    }
+
     public static OfficeFeatureFlipper instance() {
         return SpringContext.getBean(OfficeFeatureFlipper.class);
     }
