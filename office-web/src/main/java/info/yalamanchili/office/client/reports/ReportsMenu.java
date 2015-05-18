@@ -17,6 +17,7 @@ import info.yalamanchili.office.client.contracts.ContractsSidePanel;
 import info.yalamanchili.office.client.contracts.ReadAllContractsPanel;
 import info.yalamanchili.office.client.employee.prbprdeval.ProbatioPeriodPerfEvaluationReportsSidePanel;
 import info.yalamanchili.office.client.employee.prefeval.PerfEvaluationReportsSidePanel;
+import info.yalamanchili.office.client.profile.address.RetirementPlanReportsSidePanel;
 import info.yalamanchili.office.client.profile.reports.ProfileReportsSidePanel;
 
 /**
@@ -42,8 +43,11 @@ public class ReportsMenu extends Composite {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
             reportsMenuBar.addItem("Perf Evaluations", performanceEvaluationsReportsMaintainenceCmd);
         }
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION,ROLE.ROLE_HR, ROLE.ROLE_PRB_EVALUATIONS_MANAGER)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_HR, ROLE.ROLE_PRB_EVALUATIONS_MANAGER)) {
             reportsMenuBar.addItem("Probation Period", probperformanceEvaluationsReportsMaintainenceCmd);
+        }
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
+            reportsMenuBar.addItem("Retirement Plan", retirementPlanReportsMaintainenceCmd);
         }
         reportsMenuBar.addStyleName("entityMenuBar");
     }
@@ -78,6 +82,14 @@ public class ReportsMenu extends Composite {
             TabPanel.instance().getReportingPanel().entityPanel.clear();
             TabPanel.instance().getReportingPanel().sidePanelTop.clear();
             TabPanel.instance().getReportingPanel().sidePanelTop.add(new ProbatioPeriodPerfEvaluationReportsSidePanel());
+        }
+    };
+    Command retirementPlanReportsMaintainenceCmd = new Command() {
+        @Override
+        public void execute() {
+            TabPanel.instance().getReportingPanel().entityPanel.clear();
+            TabPanel.instance().getReportingPanel().sidePanelTop.clear();
+            TabPanel.instance().getReportingPanel().sidePanelTop.add(new RetirementPlanReportsSidePanel());
         }
     };
 }
