@@ -91,8 +91,8 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
         table.setText(0, 1, getKeyValue("Employee"));
         table.setText(0, 2, getKeyValue("Purpose"));
         table.setText(0, 3, getKeyValue("Amount"));
-        table.setText(0, 4, getKeyValue("requestedDate"));
-        table.setText(0, 5, getKeyValue("neededByDate"));
+        table.setText(0, 4, getKeyValue("RequestedDate"));
+        table.setText(0, 5, getKeyValue("NeededByDate"));
         table.setText(0, 6, getKeyValue("Print"));
     }
 
