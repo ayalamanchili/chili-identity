@@ -101,7 +101,7 @@ public class ServiceInterceptor {
     }
 
     protected void handleFaultEvent(FaultEventException ex) {
-        Map<String, Object> vars = new HashMap<String, Object>();
+        Map<String, Object> vars = new HashMap<>();
         vars.put("entity", ex.getFaultEventPayload());
         vars.put("enableEmailNotification", ex.isEnableEmailNotification());
         BPMService.instance().startProcess("fault_event_process", vars);

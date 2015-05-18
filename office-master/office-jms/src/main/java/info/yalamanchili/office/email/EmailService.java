@@ -52,15 +52,15 @@ import org.thymeleaf.context.Context;
 @Component
 @Transactional
 public class EmailService {
-
+    
     private static Logger logger = Logger.getLogger(EmailService.class.getName());
     protected JavaMailSender mailSender;
     @Autowired
     protected OfficeServiceConfiguration officeServiceConfiguration;
-
+    
     @Autowired
     protected OfficeCacheManager officeCacheManager;
-
+    
     @Async
     @Transactional
     public void sendEmail(final Email email) {
@@ -68,7 +68,7 @@ public class EmailService {
         if (tos.length < 1) {
             return;
         }
-
+        
         MimeMessagePreparator preparator = new MimeMessagePreparator() {
             public void prepare(MimeMessage mimeMessage) throws Exception {
                 MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
@@ -86,7 +86,7 @@ public class EmailService {
             throw new FaultEventException(new FaultEventPayload(email, Email.class.getCanonicalName()), false, ex);
         }
     }
-
+    
     protected String processEmailBodyFromTemplate(Email email) {
         Context emailCtx = new Context();
         Map<String, Object> ctx = email.getContext();
@@ -98,7 +98,7 @@ public class EmailService {
         }
         return TemplateService.instance().processTemplate(getTemplateName(email), emailCtx);
     }
-
+    
     protected String getTemplateName(Email email) {
         if (email.getTemplateName() != null) {
             return email.getTemplateName();
@@ -111,7 +111,7 @@ public class EmailService {
             return "default_email_template.html";
         }
     }
-
+    
     protected void cleanEmailHtmlBody(Email email) {
         if (email.isRichText()) {
             email.setBody(HtmlUtils.cleanData(email.getBody()));
@@ -120,7 +120,7 @@ public class EmailService {
             email.setBody(XmlEscapers.xmlAttributeEscaper().escape(email.getBody()));
         }
     }
-
+    
     protected void processAttchments(MimeMessageHelper message, Email email) throws MessagingException {
         for (String attachmentName : email.getAttachments()) {
             File attachment = new File(officeServiceConfiguration.getContentManagementLocationRoot() + attachmentName);
@@ -129,7 +129,7 @@ public class EmailService {
             }
         }
     }
-
+    
     private Address[] convertToEmailAddress(Set<String> emails) {
         List<Address> addresses = new ArrayList<>();
         emails.stream().forEach((emailAddress) -> {
@@ -145,12 +145,12 @@ public class EmailService {
         });
         return addresses.toArray(new Address[addresses.size()]);
     }
-
+    
     protected Set<String> filterEmails(Set<String> emails) {
         Set<String> result = new HashSet<>();
         if (OfficeServiceConfiguration.instance().isFilterEmails()) {
             String testEmailProvider = OfficeServiceConfiguration.instance().getTestEmailProvider();
-            emails.stream().filter((email) -> (email.contains(testEmailProvider))).forEach((email) -> {
+            emails.stream().filter((email) -> (email.contains(testEmailProvider) || email.contains(OfficeServiceConfiguration.instance().getAdminEmail()))).forEach((email) -> {
                 result.add(email);
             });
         } else {
@@ -160,7 +160,7 @@ public class EmailService {
         }
         return result;
     }
-
+    
     public Boolean notificationsEnabled(String emailAddress) {
         if (officeCacheManager.contains(OfficeCacheKeys.EMAILS, emailAddress)) {
             return (Boolean) officeCacheManager.get(OfficeCacheKeys.EMAILS, emailAddress);
@@ -177,7 +177,7 @@ public class EmailService {
         officeCacheManager.put(OfficeCacheKeys.EMAILS, emailAddress, true);
         return true;
     }
-
+    
     @PersistenceContext
     protected EntityManager em;
 
@@ -192,11 +192,11 @@ public class EmailService {
             return null;
         }
     }
-
+    
     public void setMailSender(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
-
+    
     public static EmailService instance() {
         return SpringContext.getBean(EmailService.class);
     }
