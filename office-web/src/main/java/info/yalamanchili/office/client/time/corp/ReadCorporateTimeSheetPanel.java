@@ -114,7 +114,7 @@ public class ReadCorporateTimeSheetPanel extends ReadComposite {
 
     @Override
     protected void displayTasks() {
-        String tasksUrl = OfficeWelcome.constants.root_url() + "bpm/tasks/";
+        String tasksUrl = OfficeWelcome.constants.root_url() + "bpm/tasks/process/";
         tasksDP.setContent(new ReadAllTasks(tasksUrl + JSONUtils.toString(getEntity(), "bpmProcessId") + "/", true));
     }
 
