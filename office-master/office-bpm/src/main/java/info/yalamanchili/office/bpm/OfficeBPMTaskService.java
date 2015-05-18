@@ -191,6 +191,20 @@ public class OfficeBPMTaskService {
         return result;
     }
 
+    public List<Task> getUserForProcessId(String processId) {
+        if (processId == null || processId.isEmpty()) {
+            return Collections.EMPTY_LIST;
+        }
+        List<Task> result = new ArrayList<>();
+        OfficeSecurityService securityService = OfficeSecurityService.instance();
+        TaskQuery query = bpmTaskService.createTaskQuery().processInstanceId(processId).taskCandidateGroupIn(securityService.getCurrentUserRoles());
+        //TODO check for assignee also
+        for (org.activiti.engine.task.Task bpmTask : query.list()) {
+            result.add(mapper.map(bpmTask, Task.class));
+        }
+        return result;
+    }
+
     public void addComment(String taskId, String comment) {
         bpmIdentityService.setAuthenticatedUserId(SecurityUtils.getCurrentUser());
         bpmTaskService.addComment(taskId, null, comment);

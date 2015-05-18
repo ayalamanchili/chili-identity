@@ -22,7 +22,6 @@ import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.employee.statusreport.StatusReport;
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.entity.employee.statusreport.ReportDocument;
 import info.yalamanchili.office.entity.employee.statusreport.StatusReportStage;
 import info.yalamanchili.office.security.AccessCheck;

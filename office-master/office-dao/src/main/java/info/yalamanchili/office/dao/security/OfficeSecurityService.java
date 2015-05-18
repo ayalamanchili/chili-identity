@@ -16,6 +16,7 @@ import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.security.SecurityUtils;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
@@ -56,9 +57,7 @@ public class OfficeSecurityService {
             Employee emp = query.getSingleResult();
             EmployeeLoginDto res = mapper.map(emp, EmployeeLoginDto.class);
             res.setUsername(emp.getUser().getUsername());
-            for (CRole role : emp.getUser().getRoles()) {
-                res.getRoles().add(role.getRolename());
-            }
+            res.setRoles(getCurrentUserRoles());
             return res;
         } catch (NoResultException e) {
             return null;
@@ -89,6 +88,22 @@ public class OfficeSecurityService {
         } catch (NoResultException e) {
             return null;
         }
+    }
+
+    public List<String> getCurrentUserRoles() {
+        SecurityContext context = SecurityContextHolder.getContext();
+        if (context == null) {
+            return Collections.emptyList();
+        }
+        Authentication authentication = context.getAuthentication();
+        if (authentication == null) {
+            return Collections.emptyList();
+        }
+        List<String> roles = new ArrayList();
+        for (GrantedAuthority auth : authentication.getAuthorities()) {
+            roles.add(auth.getAuthority());
+        }
+        return roles;
     }
 
     public boolean hasAnyRole(String... roles) {

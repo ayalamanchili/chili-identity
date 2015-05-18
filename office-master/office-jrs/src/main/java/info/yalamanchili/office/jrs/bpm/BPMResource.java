@@ -134,9 +134,9 @@ public class BPMResource {
     }
 
     @GET
-    @Path("/tasks/{processId}/{start}/{limit}")
+    @Path("/tasks/process/{processId}/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public TaskTable getTasksByProcess(@PathParam("processId") String processId, @PathParam("start") int start, @PathParam("limit") int limit) {
+    public TaskTable getUserTasksByProcess(@PathParam("processId") String processId, @PathParam("start") int start, @PathParam("limit") int limit) {
         TaskTable result = new TaskTable();
         result.setEntities(officeBPMTaskService.getTasksForProcessId(processId));
         result.setSize(10l);
