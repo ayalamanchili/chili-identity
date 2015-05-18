@@ -9,6 +9,7 @@ package info.yalamanchili.office.client.expense;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -23,6 +24,8 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -32,8 +35,9 @@ import java.util.logging.Logger;
 public class CreateImmigrationCheckRequisitionPanel extends CreateComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(CreateImmigrationCheckRequisitionPanel.class.getName());
-    protected SelectCompanyWidget selectCompnayWidget = new SelectCompanyWidget(false, true, Alignment.HORIZONTAL);
-    protected ClickableLink addItemL = new ClickableLink("Add Expense Item");
+    protected SelectCompanyWidget selectCompnayWidget = new SelectCompanyWidget(true, true, Alignment.HORIZONTAL);
+    protected ClickableLink addItemL = new ClickableLink("Add Check Item");
+    protected List<CreateImmigrationCheckItemPanel> checkItemPanels = new ArrayList<CreateImmigrationCheckItemPanel>();
 
     public CreateImmigrationCheckRequisitionPanel() {
         super(CreateCompositeType.CREATE);
@@ -48,20 +52,40 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
+        
+        assignEntityValueFromField("attorneyName", entity);
         assignEntityValueFromField("requestedDate", entity);
         assignEntityValueFromField("neededByDate", entity);
         assignEntityValueFromField("amount", entity);
-        assignEntityValueFromField("mailingAddress", entity);
-        assignEntityValueFromField("purpose", entity);
-        assignEntityValueFromField("caseType", entity);
-        entity.put("status", new JSONString("Open"));
-
+        assignEntityValueFromField("requesterName", entity);
+        assignEntityValueFromField("purpose", entity);        
+        
+        
+        JSONObject employee = new JSONObject();
+        assignEntityValueFromField("employeeId", employee);
+        entity.put("employee", employee);        
+        
         if (fields.containsKey("company") && selectCompnayWidget.getSelectedObject() != null) {
             JSONObject company = selectCompnayWidget.getSelectedObject();
             company.put("name", company.get("value"));
             entity.put("company", company);
         }
-        entity.put("employee", new JSONObject());
+        assignEntityValueFromField("caseType", entity);        
+        
+        if (checkItemPanels.size() > 0) {
+            JSONArray items = new JSONArray();
+            int i = 0;
+            for (CreateImmigrationCheckItemPanel panel : checkItemPanels) {
+                items.set(i, panel.populateEntityFromFields());
+                i++;
+            }
+            entity.put("items", items);
+        }
+
+        assignEntityValueFromField("mailingAddress", entity);
+        
+        entity.put("status", new JSONString("Open"));
+
         return entity;
 
     }
@@ -91,7 +115,8 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addItemL)) {
-            CreateImmigrationCheckRequisitionPanel panel = new CreateImmigrationCheckRequisitionPanel();
+            CreateImmigrationCheckItemPanel panel = new CreateImmigrationCheckItemPanel();
+            checkItemPanels.add(panel);
             entityFieldsPanel.add(panel);
         }
         super.onClick(event);
@@ -107,6 +132,7 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
 
     @Override
     protected void addListeners() {
+        addItemL.addClickHandler(this);
     }
 //DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL
 
@@ -117,18 +143,21 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
 
     @Override
     protected void addWidgets() {
-        entityFieldsPanel.add(getLineSeperatorTag("ImmigrationCheck Requisition Information"));
+        addField("attorneyName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("requestedDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("neededByDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("amount", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-        addField("mailingAddress", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        //addField("caseType", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("requesterName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);        
         addField("purpose", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        addEnumField("caseType", false, true, ImmigrationCaseType.names(), Alignment.HORIZONTAL);
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION, Auth.ROLE.ROLE_RELATIONSHIP, Auth.ROLE.ROLE_HR)) {
-            addDropDown("company", selectCompnayWidget);
-        }
-        //entityFieldsPanel.add(addItemL);
+        
+        entityFieldsPanel.add(getLineSeperatorTag("Check Details"));
+        addField("employeeId", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addDropDown("company", selectCompnayWidget);
+        addEnumField("caseType", false, true, ImmigrationCaseType.names(), Alignment.HORIZONTAL);                      
+        addField("mailingAddress", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);        
+        
+        entityFieldsPanel.add(addItemL);
+        
         alignFields();
     }
 
