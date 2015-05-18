@@ -52,6 +52,7 @@
                 </item>
                 <item name="SkillSet" href="office/profile/skillset.html" />
                 <item name="Preferences" href="office/profile/preferences.html"/>
+                <item name="Benefits" href="office/profile/benefits.html"/>
             </item>
             <item name="Drive" href="/office/drive.html"/>
             <item name="Recruiting" href="/office/recruiting/find-candidates.html" collapse="true">
