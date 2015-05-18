@@ -36,9 +36,12 @@ public class ImmigrationCheckRequisitionService {
     
         public void submitImmigrationCheckRequisition(ImmigrationCheckRequisition entity) {
         Map<String, Object> vars = new HashMap<>();
-        vars.put("entity", entity);
+        
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
+        entity.setHrName(emp.getFirstName() + " " + emp.getLastName());        
+        vars.put("entity", entity);
         vars.put("currentEmployee", emp);
+        
         String processId = OfficeBPMService.instance().startProcess("immigration_check_requisition_process", vars);
         entity.setBpmProcessId(processId);
     }

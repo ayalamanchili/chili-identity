@@ -58,9 +58,8 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
         assignEntityValueFromField("neededByDate", entity);
         assignEntityValueFromField("amount", entity);
         assignEntityValueFromField("requesterName", entity);
-        assignEntityValueFromField("purpose", entity);        
-        
-        
+        assignEntityValueFromField("purpose", entity);                
+
         JSONObject employee = new JSONObject();
         assignEntityValueFromField("employeeId", employee);
         entity.put("employee", employee);        

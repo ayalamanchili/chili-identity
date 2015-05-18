@@ -19,10 +19,12 @@
                   name="Immigration Check Requisition Task for ${currentEmployee.firstName} ${currentEmployee.lastName}">
             <documentation>
                 Employee Immigration Check Requisition Approval Task
-                Employee Name   : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                HR Name         : #{entity.hrName}
+                Requested By    : #{entity.requesterName}
+                Employee Name   : #{entity.employee.employeeId}
                 Amount          : #{entity.amount}
                 Purpose         : #{entity.purpose}
-                Needed By Date :#{entity.neededByDate}
+                Needed By Date  : #{entity.neededByDate}
                 Follow instructions from below:
                 https://apps.sstech.us/site/office/expense/immigrationcheckprocess.html
             </documentation>
@@ -78,10 +80,13 @@
                   activiti:candidateGroups="ROLE_ADMIN">
             <documentation>
                 Immigration Check Requisition Final Approval Task
-                Employee Name  : #{currentEmployee.firstName} #{currentEmployee.lastName}
-                Amount         : #{entity.amount}
-                Purpose        : #{entity.purpose}
-                Needed By Date :#{entity.neededByDate}
+                Approved By     : #{entity.approvedBy}
+                Employee Name   : #{entity.employee.employeeId}
+                Amount          : #{entity.amount}
+                Purpose         : #{entity.purpose}
+                Needed By Date  : #{entity.neededByDate}
+                Attorney Name   : #{entity.attorneyName}
+                Mailing Address : #{entity.mailingAddress}                
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.immigration.ImmigrationCheckRequestProcess" />
