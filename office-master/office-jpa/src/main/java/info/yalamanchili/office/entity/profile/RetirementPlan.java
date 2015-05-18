@@ -81,4 +81,8 @@ public class RetirementPlan extends AbstractEntity {
         this.employee = employee;
     }
 
+    public Object getComments() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

@@ -14,7 +14,7 @@ public class MessagingService {
 
     public void sendEmail(final Email email) {
         if (OfficeServiceConfiguration.instance().getIsSendMail()) {
-           EmailService.instance().sendEmail(email);
+            EmailService.instance().sendEmail(email);
         }
     }
 
@@ -23,7 +23,7 @@ public class MessagingService {
         for (String to : tos) {
             email.addTo(to);
         }
-        email.setSubject("Report:"+fileName);
+        email.setSubject("Report:" + fileName);
         email.addAttachment(fileName);
         sendEmail(email);
 

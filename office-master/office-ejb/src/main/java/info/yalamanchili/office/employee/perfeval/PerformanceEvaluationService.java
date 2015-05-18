@@ -437,7 +437,7 @@ public class PerformanceEvaluationService {
             }
             report.add(dto);
         }
-        MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(report, "Performance-Evaluation-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(report, " MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(report, \"Performance-Evaluation-Report\", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
     }
 
     public static PerformanceEvaluationService instance() {
