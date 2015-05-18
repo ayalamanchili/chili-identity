@@ -1,12 +1,4 @@
-/**
- * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
- */
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package info.yalamanchili.office.client.profile.address;
+package info.yalamanchili.office.client.profile.reports;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -18,49 +10,59 @@ import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 /**
  *
  * @author chaitanya.k
  */
-public class RetirementPlanReportsSidePanel extends ALComposite implements ClickHandler {
+public class RetirementPlanOptInSidePanal extends ALComposite implements ClickHandler {
 
     protected FlowPanel panel = new FlowPanel();
-    ClickableLink retirementplan = new ClickableLink("Retirement Plan Opt In Report");
+    ClickableLink retirementplanReportL = new ClickableLink("RetirementPlan Report");
+
+    public RetirementPlanOptInSidePanal() {
+        init(panel);
+    }
 
     @Override
     protected void addListeners() {
-        retirementplan.addClickHandler(this);
+        retirementplanReportL.addClickHandler(this);
     }
 
     @Override
     protected void configure() {
-        retirementplan.setTitle("report with employeeName, Comment");
-
+        retirementplanReportL.setTitle("report with name,comments");
     }
 
     @Override
     protected void addWidgets() {
-        panel.add(retirementplan);
+        panel.add(retirementplanReportL);
     }
 
     @Override
     public void onClick(ClickEvent event) {
-        if (event.getSource().equals(retirementplan)) {
+        if (event.getSource().equals(retirementplanReportL)) {
             generateRetirementPlanReport();
         }
+
     }
 
     protected void generateRetirementPlanReport() {
-        HttpService.HttpServiceAsync.instance().doGet(getretirementplanReportUrl(), OfficeWelcome.instance().getHeaders(), true,
+        HttpService.HttpServiceAsync.instance().doGet(getRetirementplanInfoReportUrl(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
                         new ResponseStatusWidget().show("Report will be emailed to your primary email");
                     }
                 });
+
     }
 
-    protected String getretirementplanReportUrl() {
-        return OfficeWelcome.constants.root_url() + "probation-period-evaluation/probation-period-evaluation-report";
+    private String getRetirementplanInfoReportUrl() {
+        return OfficeWelcome.constants.root_url() + "retirementplan-reports/employee-retirementplan-info-report";
     }
 }
