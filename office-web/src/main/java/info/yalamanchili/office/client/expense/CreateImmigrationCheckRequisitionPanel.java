@@ -60,7 +60,7 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
             JSONObject company = selectCompnayWidget.getSelectedObject();
             company.put("name", company.get("value"));
             entity.put("company", company);
-        }        
+        }
         entity.put("employee", new JSONObject());
         return entity;
 
@@ -109,6 +109,7 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
     protected void addListeners() {
     }
 //DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL
+
     @Override
     protected void configure() {
         setButtonText("Submit");
@@ -122,8 +123,8 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
         addField("amount", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("mailingAddress", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         //addField("caseType", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        addField("purpose", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        addField("caseType", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("purpose", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addEnumField("caseType", false, true, ImmigrationCaseType.names(), Alignment.HORIZONTAL);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION, Auth.ROLE.ROLE_RELATIONSHIP, Auth.ROLE.ROLE_HR)) {
             addDropDown("company", selectCompnayWidget);
         }
