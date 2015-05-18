@@ -85,7 +85,7 @@ public class AddressResource extends CRUDResource<Address> {
             entity.setId(existingAddress.getId());
         }
         entity = save(entity);
-        if (OfficeFeatureFlipper.instance().getEnableNewHomeAddressChangeProcess() && notifyChange) {
+        if (notifyChange) {
             processAddressUpdateNotification(entity, null, notifyHealthInsurance);
         }
         return entity;

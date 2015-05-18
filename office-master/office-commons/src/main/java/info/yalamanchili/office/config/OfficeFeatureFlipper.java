@@ -19,17 +19,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class OfficeFeatureFlipper {
 
-    @Value("#{officeFeatureFlipperProperties['enableNewHomeAddressChangeProcess']}")
-    protected String enableNewHomeAddressChangeProcess;
-
-    public Boolean getEnableNewHomeAddressChangeProcess() {
-        return Boolean.valueOf(enableNewHomeAddressChangeProcess);
-    }
-
-    public void setEnableNewHomeAddressChangeProcess(String enableNewHomeAddressChangeProcess) {
-        this.enableNewHomeAddressChangeProcess = enableNewHomeAddressChangeProcess;
-    }
-
     @Value("#{officeFeatureFlipperProperties['enablePersistedResourceBundles']}")
     protected Boolean enablePersistedResourceBundles;
 
