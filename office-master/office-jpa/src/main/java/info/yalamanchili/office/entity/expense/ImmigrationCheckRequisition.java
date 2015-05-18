@@ -78,6 +78,15 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
      *
      */
     private String requesterName;
+    private String attorneyName;
+
+    public String getAttorneyName() {
+        return attorneyName;
+    }
+
+    public void setAttorneyName(String attorneyName) {
+        this.attorneyName = attorneyName;
+    }
     /**
      *
      */

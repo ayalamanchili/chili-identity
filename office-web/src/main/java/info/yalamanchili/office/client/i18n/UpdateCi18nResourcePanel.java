@@ -31,7 +31,7 @@ public class UpdateCi18nResourcePanel extends UpdateComposite {
     private static Logger logger = Logger.getLogger(UpdateCi18nResourcePanel.class.getName());
 
     public UpdateCi18nResourcePanel(JSONObject entity) {
-        initUpdateComposite(entity, "Resource", OfficeWelcome.constants);
+        initUpdateComposite(entity, "Resources", OfficeWelcome.constants);
     }
 
     @Override
