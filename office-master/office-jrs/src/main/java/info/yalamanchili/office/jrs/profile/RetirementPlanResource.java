@@ -9,6 +9,7 @@
 package info.yalamanchili.office.jrs.profile;
 
 import info.yalamanchili.office.dao.profile.RetirementPlanDao;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.ext.Comment;
 import info.yalamanchili.office.entity.profile.RetirementPlan;
 import info.yalamanchili.office.profile.RetirementPlanService;
@@ -52,6 +53,12 @@ public class RetirementPlanResource {
     @Path("/opt-out")
     public void optOut(Comment comment) {
         retirementPlanService.optOut(comment);
+    }
+
+    @GET
+    @Path("/opt-in-report")
+    public void optInReport() {
+        retirementPlanService.getRetirementPlanOptInReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
 
 }

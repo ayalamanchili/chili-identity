@@ -6,7 +6,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package RetirementPlanOptIn;
+package info.yalamanchili.office.dto.profile;
 
 import java.io.Serializable;
 
@@ -36,22 +36,12 @@ public class RetirementPlanOptInDto implements Serializable {
         this.employee = employee;
     }
 
-    /**
-     * @return the employee
-     */
-    public String getComments() {
-        return employee;
+    public String getComment() {
+        return comment;
     }
 
-    /**
-     * @param comment the employee to set
-     */
     public void setComment(String comment) {
         this.comment = comment;
-    }
-
-    public void setManager(String string) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

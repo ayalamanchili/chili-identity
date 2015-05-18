@@ -8,23 +8,21 @@
  */
 package info.yalamanchili.office.profile;
 
-import RetirementPlanOptIn.RetirementPlanOptInDto;
+import info.yalamanchili.office.dto.profile.RetirementPlanOptInDto;
 import info.chili.reporting.ReportGenerator;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
-import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
-import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.RetirementPlanDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.entity.ext.Comment;
-import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.RetirementPlan;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.Async;
@@ -41,7 +39,6 @@ public class RetirementPlanService {
 
     @Autowired
     public RetirementPlanDao retirementPlanDao;
-    private RetirementPlanOptInDto dto;
 
     public void optIn(Comment comment) {
         RetirementPlan rp = retirementPlanDao.find(null);
@@ -76,15 +73,20 @@ public class RetirementPlanService {
 
     @Async
     @Transactional(readOnly = true)
-    public void getRetirementPlanOptIn(String name, String comments) {
-        List<RetirementPlanOptInDto> report = new ArrayList<RetirementPlanOptInDto>();
-        for (Employee emp : EmployeeDao.instance().getAllEmployeesByType("Employee")) {
+    public void getRetirementPlanOptInReport(String email) {
+        List<RetirementPlanOptInDto> report = new ArrayList<>();
+        TypedQuery<RetirementPlan> query = retirementPlanDao.getEntityManager().createQuery("from " + RetirementPlan.class.getCanonicalName() + " where optIn=:OptInParam", RetirementPlan.class);
+        query.setParameter("OptInParam", Boolean.TRUE);
+        for (RetirementPlan rp : query.getResultList()) {
             RetirementPlanOptInDto dto = new RetirementPlanOptInDto();
-            dto.setEmployee(emp.getFirstName() + " " + emp.getLastName());
-            dto.setComment(emp.getFirstName() + "" + emp.getLastName());
-
+            dto.setEmployee(rp.getEmployee().getFirstName() + " " + rp.getEmployee().getLastName());
+            Comment cmt = CommentDao.instance().find(rp);
+            if (cmt != null) {
+                dto.setComment(cmt.getComment());
+            }
             report.add(dto);
         }
-        MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(report, " MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(report, \"Retiremet-Plan-Report\", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()));
+        String fileName = ReportGenerator.generateExcelReport(report, "Recruitment Opt In Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot());
+        MessagingService.instance().emailReport(fileName, email);
     }
 }
