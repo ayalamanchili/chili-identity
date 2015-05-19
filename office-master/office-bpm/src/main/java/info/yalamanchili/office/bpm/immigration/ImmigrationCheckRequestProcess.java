@@ -58,10 +58,10 @@ public class ImmigrationCheckRequestProcess implements TaskListener  {
         if (entity == null) {
             return;
         }
-        Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
-        if (currentUser.getEmployeeId().equals(entity.getEmployee().getEmployeeId())) {
-            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.self.approve.corp.immigrationCheckrequisition", "You cannot approve your immigrationCheckrequisition task");
-        }
+//        Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
+//        if (currentUser.getEmployeeId().equals(entity.getEmployee().getEmployeeId())) {
+//            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.self.approve.corp.immigrationCheckrequisition", "You cannot approve your immigrationCheckrequisition task");
+//        }        
         switch (task.getTaskDefinitionKey()) {
             case "immigrationCheckRequisitionApprovalTask":
                 payrollApprovalTaskComplete(entity, task);
@@ -88,7 +88,7 @@ public class ImmigrationCheckRequestProcess implements TaskListener  {
         String status = (String) task.getExecution().getVariable("status");
         if (status.equalsIgnoreCase("approved")) {
             entity.setStatus(ImmigrationCheckRequisitionStatus.Pending_Final_Approval);
-            entity.setApprovedBy(OfficeSecurityService.instance().getCurrentUser().getEmployeeId());
+            entity.setApprovedBy(OfficeSecurityService.instance().getCurrentUser());
             entity.setApprovedDate(new Date());
         } else {
             entity.setStatus(ImmigrationCheckRequisitionStatus.Rejected);
@@ -113,6 +113,7 @@ public class ImmigrationCheckRequestProcess implements TaskListener  {
         String status = (String) task.getExecution().getVariable("status");
         if (status.equalsIgnoreCase("approved")) {
             entity.setStatus(ImmigrationCheckRequisitionStatus.Approved);
+            entity.setAccountedBy(OfficeSecurityService.instance().getCurrentUser());
             notifyAccountsPayableDept(entity);
         } else {
             entity.setStatus(ImmigrationCheckRequisitionStatus.Rejected);
@@ -121,14 +122,11 @@ public class ImmigrationCheckRequestProcess implements TaskListener  {
         new GenericTaskCompleteNotification().notifyWithMoreRoles(task, OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name());
     }
 
-    protected void saveImmigrationCheckRequisition(DelegateTask task) {
-        Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
+    protected void saveImmigrationCheckRequisition(DelegateTask task) {        
         ImmigrationCheckRequisitionDao dao = ImmigrationCheckRequisitionDao.instance();
         ImmigrationCheckRequisition entity = (ImmigrationCheckRequisition) task.getExecution().getVariable("entity");
         entity.setBpmProcessId(task.getExecution().getProcessInstanceId());
-        entity.setStatus(ImmigrationCheckRequisitionStatus.Pending_Initial_Approval);
-        entity.setEmployee(emp);
-        entity.setRequestedDate(new Date());
+        entity.setStatus(ImmigrationCheckRequisitionStatus.Pending_Initial_Approval);        
         entity = dao.save(entity);
         CommentDao.instance().addComment("Save Immigration Check", entity);
         task.getExecution().setVariable("entity", entity);

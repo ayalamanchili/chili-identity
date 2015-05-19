@@ -16,6 +16,7 @@ import info.yalamanchili.office.dao.expense.ImmigrationCheckRequisitionDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.expense.ImmigrationCheckRequisition;
 import info.yalamanchili.office.entity.profile.Employee;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,13 +35,13 @@ public class ImmigrationCheckRequisitionService {
     @Autowired
     protected ImmigrationCheckRequisitionDao immigrationCheckRequisitionDao;
     
-        public void submitImmigrationCheckRequisition(ImmigrationCheckRequisition entity) {
-        Map<String, Object> vars = new HashMap<>();
-        
+    public void submitImmigrationCheckRequisition(ImmigrationCheckRequisition entity) {
+        Map<String, Object> vars = new HashMap<>();        
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
-        entity.setHrName(emp.getFirstName() + " " + emp.getLastName());        
-        vars.put("entity", entity);
-        vars.put("currentEmployee", emp);
+        entity.setSubmittedBy(emp);
+        entity.setRequestedDate(new Date());
+        vars.put("entity", entity);        
+        vars.put("currentEmployee", entity.getEmployee());
         
         String processId = OfficeBPMService.instance().startProcess("immigration_check_requisition_process", vars);
         entity.setBpmProcessId(processId);

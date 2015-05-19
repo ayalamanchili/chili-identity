@@ -19,9 +19,9 @@
                   name="Immigration Check Requisition Task for ${currentEmployee.firstName} ${currentEmployee.lastName}">
             <documentation>
                 Employee Immigration Check Requisition Approval Task
-                HR Name         : #{entity.hrName}
-                Requested By    : #{entity.requesterName}
-                Employee Name   : #{entity.employee.employeeId}
+                Submitted By    : #{entity.submittedBy.firstName} #{entity.submittedBy.lastName}
+                Requested By    : #{entity.requestedBy.firstName} #{entity.requestedBy.firstName}
+                Employee Name   : #{entity.employee.firstName} #{entity.employee.firstName}
                 Amount          : #{entity.amount}
                 Purpose         : #{entity.purpose}
                 Needed By Date  : #{entity.neededByDate}
@@ -80,8 +80,8 @@
                   activiti:candidateGroups="ROLE_ADMIN">
             <documentation>
                 Immigration Check Requisition Final Approval Task
-                Approved By     : #{entity.approvedBy}
-                Employee Name   : #{entity.employee.employeeId}
+                Approved By     : #{entity.approvedBy.firstName} #{entity.approvedBy.lastName}
+                Employee Name   : #{entity.employee.firstName} #{entity.employee.firstName}
                 Amount          : #{entity.amount}
                 Purpose         : #{entity.purpose}
                 Needed By Date  : #{entity.neededByDate}

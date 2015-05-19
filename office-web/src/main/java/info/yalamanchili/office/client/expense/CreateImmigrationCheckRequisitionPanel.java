@@ -54,14 +54,23 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
         JSONObject entity = new JSONObject();
         
         assignEntityValueFromField("attorneyName", entity);
-        assignEntityValueFromField("requestedDate", entity);
+        assignEntityValueFromField("mailingAddress", entity);        
         assignEntityValueFromField("neededByDate", entity);
         assignEntityValueFromField("amount", entity);
-        assignEntityValueFromField("requesterName", entity);
+        
+        JSONObject requestedBy = new JSONObject();
+        assignEntityValueFromField("requesterId", requestedBy);
+        requestedBy.put("employeeId",requestedBy.get("requesterId"));
+        requestedBy.put("firstName",requestedBy.get("requesterId"));
+        requestedBy.put("lastName",requestedBy.get("requesterId"));
+        entity.put("requestedBy", requestedBy);        
+        
         assignEntityValueFromField("purpose", entity);                
 
         JSONObject employee = new JSONObject();
         assignEntityValueFromField("employeeId", employee);
+        employee.put("firstName",employee.get("employeeId"));
+        employee.put("lastName",employee.get("employeeId"));
         entity.put("employee", employee);        
         
         if (fields.containsKey("company") && selectCompnayWidget.getSelectedObject() != null) {
@@ -80,8 +89,6 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
             }
             entity.put("items", items);
         }
-
-        assignEntityValueFromField("mailingAddress", entity);
         
         entity.put("status", new JSONString("Open"));
 
@@ -143,17 +150,16 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
     @Override
     protected void addWidgets() {
         addField("attorneyName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("requestedDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("mailingAddress", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);        
         addField("neededByDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("amount", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-        addField("requesterName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);        
+        addField("requesterId", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);        
         addField("purpose", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         
         entityFieldsPanel.add(getLineSeperatorTag("Check Details"));
         addField("employeeId", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addDropDown("company", selectCompnayWidget);
-        addEnumField("caseType", false, true, ImmigrationCaseType.names(), Alignment.HORIZONTAL);                      
-        addField("mailingAddress", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);        
+        addEnumField("caseType", false, true, ImmigrationCaseType.names(), Alignment.HORIZONTAL);                              
         
         entityFieldsPanel.add(addItemL);
         

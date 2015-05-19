@@ -77,24 +77,18 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
     /**
      *
      */
-    private String requesterName;
+    private Employee requestedBy;
+    
     private String attorneyName;
 
-    public String getAttorneyName() {
-        return attorneyName;
-    }
-
-    public void setAttorneyName(String attorneyName) {
-        this.attorneyName = attorneyName;
-    }
     /**
      *
      */
-    private String hrName;
+    private Employee submittedBy;
     /**
      *
      */
-    private String approvedBy;
+    private Employee approvedBy;
     /**
      *
      */
@@ -103,7 +97,7 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
     /**
      *
      */
-    private String accountedBy;
+    private Employee accountedBy;
     /**
      *
      */
@@ -195,27 +189,35 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
         this.purpose = purpose;
     }
 
-    public String getRequesterName() {
-        return requesterName;
+    public Employee getRequestedBy() {
+        return requestedBy;
     }
 
-    public void setRequesterName(String requesterName) {
-        this.requesterName = requesterName;
+    public void setRequestedBy(Employee requestedBy) {
+        this.requestedBy = requestedBy;
+    }    
+    
+    public String getAttorneyName() {
+        return attorneyName;
     }
 
-    public String getHrName() {
-        return hrName;
+    public void setAttorneyName(String attorneyName) {
+        this.attorneyName = attorneyName;
     }
 
-    public void setHrName(String hrName) {
-        this.hrName = hrName;
+    public Employee getSubmittedBy() {
+        return submittedBy;
     }
 
-    public String getApprovedBy() {
+    public void setSubmittedBy(Employee submittedBy) {
+        this.submittedBy = submittedBy;
+    }
+
+    public Employee getApprovedBy() {
         return approvedBy;
     }
 
-    public void setApprovedBy(String approvedBy) {
+    public void setApprovedBy(Employee approvedBy) {
         this.approvedBy = approvedBy;
     }
 
@@ -227,11 +229,11 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
         this.approvedDate = approvedDate;
     }
 
-    public String getAccountedBy() {
+    public Employee getAccountedBy() {
         return accountedBy;
     }
 
-    public void setAccountedBy(String accountedBy) {
+    public void setAccountedBy(Employee accountedBy) {
         this.accountedBy = accountedBy;
     }
 
@@ -293,7 +295,7 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "ImmigrationCheckRequisition{" + "requestedDate=" + requestedDate + ", neededByDate=" + neededByDate + ", amount=" + amount + ", mailingAddress=" + mailingAddress + ", caseType=" + caseType + ", purpose=" + purpose + ", requesterName=" + requesterName + ", hrName=" + hrName + ", approvedBy=" + approvedBy + ", approvedDate=" + approvedDate + ", accountedBy=" + accountedBy + ", checkIssuedDate=" + checkIssuedDate + ", accountDeptReceivedDate=" + accountDeptReceivedDate + ", company=" + company + ", employee=" + employee + ", items=" + items + ", status=" + status + ", bpmProcessId=" + bpmProcessId + '}';
+        return "ImmigrationCheckRequisition{" + "requestedDate=" + requestedDate + ", neededByDate=" + neededByDate + ", amount=" + amount + ", mailingAddress=" + mailingAddress + ", caseType=" + caseType + ", purpose=" + purpose + ", requestedBy=" + requestedBy + ", submittedBy=" + submittedBy + ", approvedBy=" + approvedBy + ", approvedDate=" + approvedDate + ", accountedBy=" + accountedBy + ", checkIssuedDate=" + checkIssuedDate + ", accountDeptReceivedDate=" + accountDeptReceivedDate + ", company=" + company + ", employee=" + employee + ", items=" + items + ", status=" + status + ", bpmProcessId=" + bpmProcessId + '}';
     }
 
 }
