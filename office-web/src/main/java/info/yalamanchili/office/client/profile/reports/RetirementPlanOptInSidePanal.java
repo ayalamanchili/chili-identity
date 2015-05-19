@@ -63,6 +63,6 @@ public class RetirementPlanOptInSidePanal extends ALComposite implements ClickHa
     }
 
     private String getRetirementplanInfoReportUrl() {
-        return OfficeWelcome.constants.root_url() + "retirementplan-reports/employee-retirementplan-info-report";
+        return OfficeWelcome.constants.root_url() + "retirement-plan/opt-in-report";
     }
 }
