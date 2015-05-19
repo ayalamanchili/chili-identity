@@ -15,7 +15,6 @@ import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.SkillSetDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.employee.perfeval.PerformanceEvaluationQuestionsFactory;
-import info.yalamanchili.office.employee.probeval.ProbationPeriodEvaluationInitiator;
 import info.yalamanchili.office.employee.probeval.ProbationPeriodEvaluationQuestionsFactory;
 import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.stereotype.Component;
@@ -52,6 +51,11 @@ public class OfficeServiceJobConfiguration {
     @ManagedOperation
     public void syncNotificationGroupsForRoles() {
         NotificationGroupDao.instance().syncNotificationGroupsForRoles();
+    }
+
+    @ManagedOperation
+    public void syncNotificationGroupForRetirementPlanOptIns() {
+        NotificationGroupDao.instance().syncRetirementPlanOptInNotificationGroup();
     }
 
     @ManagedOperation

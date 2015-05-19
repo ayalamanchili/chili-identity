@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
@@ -55,6 +56,7 @@ public class NotificationGroup extends AbstractEntity {
         this.name = name;
     }
 
+    @XmlTransient
     public List<Employee> getEmployees() {
         if (this.employees == null) {
             this.employees = new ArrayList<Employee>();

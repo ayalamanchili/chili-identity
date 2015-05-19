@@ -13,6 +13,7 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.RetirementPlan;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -39,6 +40,13 @@ public class RetirementPlanDao extends CRUDDao<RetirementPlan> {
         } else {
             return null;
         }
+    }
+
+    public List<RetirementPlan> getActiveRetirementPlans() {
+        TypedQuery<RetirementPlan> query = em.createQuery("from " + RetirementPlan.class.getCanonicalName() + " where optIn=:OptInParam", RetirementPlan.class);
+        query.setParameter("OptInParam", Boolean.TRUE);
+        return query.getResultList();
+
     }
 
     public RetirementPlanDao() {

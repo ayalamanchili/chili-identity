@@ -75,9 +75,7 @@ public class RetirementPlanService {
     @Transactional(readOnly = true)
     public void getRetirementPlanOptInReport(String email) {
         List<RetirementPlanOptInDto> report = new ArrayList<>();
-        TypedQuery<RetirementPlan> query = retirementPlanDao.getEntityManager().createQuery("from " + RetirementPlan.class.getCanonicalName() + " where optIn=:OptInParam", RetirementPlan.class);
-        query.setParameter("OptInParam", Boolean.TRUE);
-        for (RetirementPlan rp : query.getResultList()) {
+        for (RetirementPlan rp : retirementPlanDao.getActiveRetirementPlans()) {
             RetirementPlanOptInDto dto = new RetirementPlanOptInDto();
             dto.setEmployee(rp.getEmployee().getFirstName() + " " + rp.getEmployee().getLastName());
             Comment cmt = CommentDao.instance().find(rp);

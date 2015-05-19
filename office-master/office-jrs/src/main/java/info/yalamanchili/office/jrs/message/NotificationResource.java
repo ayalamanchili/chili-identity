@@ -12,6 +12,7 @@ import info.chili.jpa.validation.Validate;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.message.NotificationGroupDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dto.notification.NotificationGroupSaveDto;
 import info.yalamanchili.office.entity.message.NotificationGroup;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jrs.CRUDResource;
@@ -40,27 +41,30 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Scope("request")
 public class NotificationResource extends CRUDResource<NotificationGroup> {
-
+    
     @Autowired
     public NotificationGroupDao notificationGroupDao;
-
+    
     @Path("/group/save")
     @PUT
     @Validate
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public void saveNotificationGroup(NotificationGroup group) {
-        String groupName = group.getName();
-        List<Employee> emps = new ArrayList<Employee>();
-        emps.addAll(group.getEmployees());
-        if (group.getId() != null) {
-            group = (NotificationGroup) getDao().findById(group.getId());
+    public void saveNotificationGroup(NotificationGroupSaveDto dto) {
+        String groupName = dto.getName();
+        List<Employee> emps = new ArrayList<>();
+        emps.addAll(dto.getEmployees());
+        NotificationGroup group = null;
+        if (dto.getId() != null) {
+            group = (NotificationGroup) getDao().findById(dto.getId());
             //TODO currently removing all existing and adding new ones figure out a better approach
-            List<Employee> existingEmps = new ArrayList<Employee>();
+            List<Employee> existingEmps = new ArrayList<>();
             existingEmps.addAll(group.getEmployees());
             for (Employee emp : existingEmps) {
                 group.getEmployees().remove(emp);
             }
         } else {
+            group = new NotificationGroup();
+            group.setName(dto.getName());
             group.setEmployees(null);
         }
         for (Employee employee : emps) {
@@ -72,7 +76,7 @@ public class NotificationResource extends CRUDResource<NotificationGroup> {
         group.setName(groupName);
         notificationGroupDao.save(group);
     }
-
+    
     @GET
     @Path("/groups/{start}/{limit}")
     public NotificationGroupTable getGroupsTable(@PathParam("start") int start, @PathParam("limit") int limit) {
@@ -81,7 +85,7 @@ public class NotificationResource extends CRUDResource<NotificationGroup> {
         tableObj.setSize(getDao().size());
         return tableObj;
     }
-
+    
     @GET
     @Path("/group/employees/{groupId}/{start}/{limit}")
     //TODO needs performance tune up
@@ -102,39 +106,39 @@ public class NotificationResource extends CRUDResource<NotificationGroup> {
         obj.setAvailable(CollectionsUtils.sortByComparator(obj.getAvailable()));
         return obj;
     }
-
+    
     @Path("/group/delete/{id}")
     @PUT
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public void deleteNotificationGroup(@PathParam("id") Long id) {
         notificationGroupDao.delete(id);
     }
-
+    
     @Override
     public NotificationGroupDao getDao() {
         return notificationGroupDao;
     }
-
+    
     @XmlRootElement
     @XmlType
-    public static class NotificationGroupTable implements java.io.Serializable{
-
+    public static class NotificationGroupTable implements java.io.Serializable {
+        
         protected Long size;
         protected List<NotificationGroup> entities;
-
+        
         public Long getSize() {
             return size;
         }
-
+        
         public void setSize(Long size) {
             this.size = size;
         }
-
+        
         @XmlElement
         public List<NotificationGroup> getEntities() {
             return entities;
         }
-
+        
         public void setEntities(List<NotificationGroup> entities) {
             this.entities = entities;
         }
