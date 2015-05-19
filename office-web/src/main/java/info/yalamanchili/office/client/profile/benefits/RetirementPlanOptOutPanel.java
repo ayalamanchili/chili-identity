@@ -41,7 +41,7 @@ public class RetirementPlanOptOutPanel extends ALComposite implements ClickHandl
             + "\n"
             + "<div style=\"page-break-after: always\"><span style=\"display: none;\">&nbsp;</span></div>\n"
             + "\n"
-            + "<p>Comming Soon...&nbsp;Manage&nbsp;your 401k Plan</p>\n"
+            + "<p>Coming Soon...&nbsp;Manage&nbsp;your 401k Plan</p>\n"
             + "\n"
             + "<hr />\n"
             + "<p>&nbsp;</p>\n"
