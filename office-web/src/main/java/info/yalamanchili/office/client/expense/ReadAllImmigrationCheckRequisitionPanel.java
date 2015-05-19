@@ -49,6 +49,8 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
 
     @Override
     public void viewClicked(String entityId) {
+        TabPanel.instance().expensePanel.entityPanel.clear();
+        TabPanel.instance().expensePanel.entityPanel.add(new ReadImmigrationCheckRequisitionPanel(entityId));
     }
 
     @Override
@@ -89,10 +91,10 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Employee"));
-        table.setText(0, 2, getKeyValue("Purpose"));
-        table.setText(0, 3, getKeyValue("Amount"));
-        table.setText(0, 4, getKeyValue("RequestedDate"));
-        table.setText(0, 5, getKeyValue("NeededByDate"));
+        table.setText(0, 2, getKeyValue("Amount"));
+        table.setText(0, 3, getKeyValue("RequestedDate"));
+        table.setText(0, 4, getKeyValue("NeededByDate"));
+        table.setText(0, 5, getKeyValue("Status"));
         table.setText(0, 6, getKeyValue("Print"));
     }
 
@@ -103,10 +105,10 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
             addOptionsWidget(i, entity);
             JSONObject emp = (JSONObject) entity.get("employee");
             table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
-            table.setText(i, 2, JSONUtils.toString(entity, "purpose"));
-            table.setText(i, 3, FormatUtils.formarCurrency(JSONUtils.toString(entity, "amount")));
-            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "requestedDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, "neededByDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 2, FormatUtils.formarCurrency(JSONUtils.toString(entity, "amount")));
+            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "requestedDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "neededByDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 5, JSONUtils.formatEnumString(entity, "status"));
             FileField reportL = new FileField("Print", ChiliClientConfig.instance().getFileDownloadUrl() + "advancerequisition/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id"));
             table.setWidget(i, 6, reportL);
         }
