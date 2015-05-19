@@ -16,11 +16,11 @@
         <!-- Manager approval task-->
         <sequenceFlow  sourceRef="immigrationCheckRequisitionStart" targetRef="immigrationCheckRequisitionApprovalTask" />
         <userTask id="immigrationCheckRequisitionApprovalTask" 
-                  name="Immigration Check Requisition Task for ${currentEmployee}">
+                  name="Immigration Check Requisition Task for ${Employee}">
             <documentation>
                 Employee Immigration Check Requisition Approval Task
                 Submitted By    : #{entity.submittedBy.firstName} #{entity.submittedBy.lastName}
-                Requested By    : #{entity.requestedBy.firstName} #{entity.requestedBy.firstName}
+                Requested By    : #{entity.requestedBy}
                 Amount          : #{entity.amount}
                 Purpose         : #{entity.purpose}
                 Needed By Date  : #{entity.neededByDate}
@@ -75,7 +75,7 @@
             </conditionExpression>
         </sequenceFlow>
         <userTask id="immigrationCheckRequisitionFinalApprovalTask" 
-                  name="Immigration Check Requisition Final Approval Task for ${currentEmployee}" 
+                  name="Immigration Check Requisition Final Approval Task for ${Employee}" 
                   activiti:candidateGroups="ROLE_ADMIN">
             <documentation>
                 Immigration Check Requisition Final Approval Task
