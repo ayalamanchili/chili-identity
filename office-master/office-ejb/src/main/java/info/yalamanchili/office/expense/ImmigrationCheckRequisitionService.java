@@ -39,12 +39,13 @@ public class ImmigrationCheckRequisitionService {
         Map<String, Object> vars = new HashMap<>();        
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
         entity.setSubmittedBy(emp);
-        entity.setRequestedDate(new Date());
+//        entity.setRequestedDate(new Date());
         vars.put("entity", entity);        
         vars.put("currentEmployee", entity.getEmployee());
-        
+        System.out.println("Req Date 0 - " + entity.getRequestedDate());
         String processId = OfficeBPMService.instance().startProcess("immigration_check_requisition_process", vars);
         entity.setBpmProcessId(processId);
+        System.out.println("Req Date 1 - " + entity.getRequestedDate());
     }
 
     protected Task getTaskForTicket(ImmigrationCheckRequisition immigrationCheckRequisition) {

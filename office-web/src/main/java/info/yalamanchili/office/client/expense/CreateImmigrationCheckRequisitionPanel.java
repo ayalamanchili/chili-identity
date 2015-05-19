@@ -57,21 +57,10 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
         assignEntityValueFromField("mailingAddress", entity);        
         assignEntityValueFromField("neededByDate", entity);
         assignEntityValueFromField("amount", entity);
-        
-        JSONObject requestedBy = new JSONObject();
-        assignEntityValueFromField("requesterId", requestedBy);
-        requestedBy.put("employeeId",requestedBy.get("requesterId"));
-        requestedBy.put("firstName",requestedBy.get("requesterId"));
-        requestedBy.put("lastName",requestedBy.get("requesterId"));
-        entity.put("requestedBy", requestedBy);        
-        
+        assignEntityValueFromField("requestedDate", entity);
+        assignEntityValueFromField("requestedBy", entity);        
         assignEntityValueFromField("purpose", entity);                
-
-        JSONObject employee = new JSONObject();
-        assignEntityValueFromField("employeeId", employee);
-        employee.put("firstName",employee.get("employeeId"));
-        employee.put("lastName",employee.get("employeeId"));
-        entity.put("employee", employee);        
+        assignEntityValueFromField("employee", entity);
         
         if (fields.containsKey("company") && selectCompnayWidget.getSelectedObject() != null) {
             JSONObject company = selectCompnayWidget.getSelectedObject();
@@ -153,11 +142,11 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
         addField("mailingAddress", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);        
         addField("neededByDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("amount", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-        addField("requesterId", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);        
+        addField("requestedBy", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);        
         addField("purpose", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        
+        addField("requestedDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Check Details"));
-        addField("employeeId", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("employee", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addDropDown("company", selectCompnayWidget);
         addEnumField("caseType", false, true, ImmigrationCaseType.names(), Alignment.HORIZONTAL);                              
         

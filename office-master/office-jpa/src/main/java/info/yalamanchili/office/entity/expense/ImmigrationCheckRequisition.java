@@ -77,7 +77,7 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
     /**
      *
      */
-    private Employee requestedBy;
+    private String requestedBy;
     
     private String attorneyName;
 
@@ -118,10 +118,10 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
     /**
      *
      */
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_Employee_ImmigrationCheckReqs")
+//    @ManyToOne(cascade = CascadeType.MERGE)
+//    @ForeignKey(name = "FK_Employee_ImmigrationCheckReqs")
     @NotNull(message = "{immigration.check.requisition.employee.not.empty.msg}")
-    private Employee employee;
+    private String employee;
     /**
      *
      */
@@ -189,11 +189,11 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
         this.purpose = purpose;
     }
 
-    public Employee getRequestedBy() {
+    public String getRequestedBy() {
         return requestedBy;
     }
 
-    public void setRequestedBy(Employee requestedBy) {
+    public void setRequestedBy(String requestedBy) {
         this.requestedBy = requestedBy;
     }    
     
@@ -261,11 +261,11 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
         this.company = company;
     }
 
-    public Employee getEmployee() {
+    public String getEmployee() {
         return employee;
     }
 
-    public void setEmployee(Employee employee) {
+    public void setEmployee(String employee) {
         this.employee = employee;
     }
 

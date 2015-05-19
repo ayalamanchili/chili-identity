@@ -62,6 +62,7 @@ public class ImmigrationCheckRequestProcess implements TaskListener  {
 //        if (currentUser.getEmployeeId().equals(entity.getEmployee().getEmployeeId())) {
 //            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.self.approve.corp.immigrationCheckrequisition", "You cannot approve your immigrationCheckrequisition task");
 //        }        
+        System.out.println("Req Date C - " + entity.getRequestedDate());
         switch (task.getTaskDefinitionKey()) {
             case "immigrationCheckRequisitionApprovalTask":
                 payrollApprovalTaskComplete(entity, task);
@@ -127,7 +128,9 @@ public class ImmigrationCheckRequestProcess implements TaskListener  {
         ImmigrationCheckRequisition entity = (ImmigrationCheckRequisition) task.getExecution().getVariable("entity");
         entity.setBpmProcessId(task.getExecution().getProcessInstanceId());
         entity.setStatus(ImmigrationCheckRequisitionStatus.Pending_Initial_Approval);        
+        System.out.println("Req Date A - " + entity.getRequestedDate());
         entity = dao.save(entity);
+        System.out.println("Req Date B - " + entity.getRequestedDate());
         CommentDao.instance().addComment("Save Immigration Check", entity);
         task.getExecution().setVariable("entity", entity);
         task.getExecution().setVariable("entityId", entity.getId());
@@ -146,8 +149,8 @@ public class ImmigrationCheckRequestProcess implements TaskListener  {
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
         Email email = new Email();
         email.addTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_ACCOUNTS_PAYABLE.name()));
-        email.setSubject("Immigration Requisition Approved For Employee" + entity.getEmployee().getFirstName() + " " + entity.getEmployee().getLastName());
-        email.setBody("Immigration Requisition Approved For Employee" + entity.getEmployee().getFirstName() + " " + entity.getEmployee().getLastName() + " Please Print and Process it");
+        email.setSubject("Immigration Requisition Approved For Employee" + entity.getEmployee());
+        email.setBody("Immigration Requisition Approved For Employee" + entity.getEmployee());
         messagingService.sendEmail(email);
 
     }
