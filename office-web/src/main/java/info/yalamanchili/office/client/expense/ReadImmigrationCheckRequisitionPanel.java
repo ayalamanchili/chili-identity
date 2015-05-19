@@ -10,6 +10,7 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -60,7 +61,7 @@ public class ReadImmigrationCheckRequisitionPanel extends ReadComposite{
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("employee", entity, null);
+        assignFieldValueFromEntity("employee", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("amount", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("requestedDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("neededByDate", entity, DataType.DATE_FIELD);
@@ -79,7 +80,7 @@ public class ReadImmigrationCheckRequisitionPanel extends ReadComposite{
 
     @Override
     protected void addWidgets() {
-        addDropDown("employee", selectEmployeeWidgetF);
+        addField("employee", true, false, DataType.STRING_FIELD);
         addField("amount", true, false, DataType.CURRENCY_FIELD);
         addField("requestedDate", true, false, DataType.DATE_FIELD);
         addField("neededByDate", true, false, DataType.DATE_FIELD);
