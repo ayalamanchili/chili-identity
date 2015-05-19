@@ -18,12 +18,21 @@
         <userTask id="immigrationCheckRequisitionApprovalTask" 
                   name="Immigration Check Requisition Task for ${Employee}">
             <documentation>
-                Employee Immigration Check Requisition Approval Task
+                Employee Immigration Check Requisition Payroll Approval Task
                 Submitted By    : #{entity.submittedBy.firstName} #{entity.submittedBy.lastName}
-                Requested By    : #{entity.requestedBy}
                 Amount          : #{entity.amount}
                 Purpose         : #{entity.purpose}
                 Needed By Date  : #{entity.neededByDate}
+                Requested Date  : #{entity.requestedDate}
+                MailingAddress  : #{entity.mailingAddress}
+                caseType        : #{entity.caseType}
+                attorney        : #{entity.attorneyName}
+                approvedBy      : #{entity.approvedBy.firstName} #{entity.approvedBy.lastName}
+                approvedDate    : #{entity.approvedDate}
+                accountedBy     : #{entity.accountedBy.firstName} #{entity.accountedBy.lastName}
+                company         : #{entity.company.name}
+                status          : #{entity.status}
+                bpmProcessId    : #{entity.bpmProcessId}
                 Follow instructions from below:
                 https://apps.sstech.us/site/office/expense/immigrationcheckprocess.html
             </documentation>
@@ -78,13 +87,21 @@
                   name="Immigration Check Requisition Final Approval Task for ${Employee}" 
                   activiti:candidateGroups="ROLE_ADMIN">
             <documentation>
-                Immigration Check Requisition Final Approval Task
-                Approved By     : #{entity.approvedBy.firstName} #{entity.approvedBy.lastName}
+                Immigration Check Requisition Account Approval Task
+                Submitted By    : #{entity.submittedBy.firstName} #{entity.submittedBy.lastName}
                 Amount          : #{entity.amount}
                 Purpose         : #{entity.purpose}
                 Needed By Date  : #{entity.neededByDate}
-                Attorney Name   : #{entity.attorneyName}
-                Mailing Address : #{entity.mailingAddress}                
+                Requested Date  : #{entity.requestedDate}
+                MailingAddress  : #{entity.mailingAddress}
+                caseType        : #{entity.caseType}
+                attorney        : #{entity.attorneyName}
+                approvedBy      : #{entity.approvedBy.firstName} #{entity.approvedBy.lastName}
+                approvedDate    : #{entity.approvedDate}
+                accountedBy     : #{entity.accountedBy.firstName} #{entity.accountedBy.lastName}
+                company         : #{entity.company.name}
+                status          : #{entity.status}
+                bpmProcessId    : #{entity.bpmProcessId}
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.immigration.ImmigrationCheckRequestProcess" />

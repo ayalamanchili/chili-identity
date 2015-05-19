@@ -20,7 +20,6 @@ import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
-import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
@@ -58,7 +57,6 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
         assignEntityValueFromField("neededByDate", entity);
         assignEntityValueFromField("amount", entity);
         assignEntityValueFromField("requestedDate", entity);
-        assignEntityValueFromField("requestedBy", entity);        
         assignEntityValueFromField("purpose", entity);                
         assignEntityValueFromField("employee", entity);
         
@@ -142,7 +140,6 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
         addField("mailingAddress", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);        
         addField("neededByDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("amount", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-        addField("requestedBy", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);        
         addField("purpose", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("requestedDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Check Details"));

@@ -76,8 +76,7 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
     private String purpose;
     /**
      *
-     */
-    private String requestedBy;
+     */    
     
     private String attorneyName;
 
@@ -188,14 +187,6 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
     public void setPurpose(String purpose) {
         this.purpose = purpose;
     }
-
-    public String getRequestedBy() {
-        return requestedBy;
-    }
-
-    public void setRequestedBy(String requestedBy) {
-        this.requestedBy = requestedBy;
-    }    
     
     public String getAttorneyName() {
         return attorneyName;
@@ -295,7 +286,7 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "ImmigrationCheckRequisition{" + "requestedDate=" + requestedDate + ", neededByDate=" + neededByDate + ", amount=" + amount + ", mailingAddress=" + mailingAddress + ", caseType=" + caseType + ", purpose=" + purpose + ", requestedBy=" + requestedBy + ", submittedBy=" + submittedBy + ", approvedBy=" + approvedBy + ", approvedDate=" + approvedDate + ", accountedBy=" + accountedBy + ", checkIssuedDate=" + checkIssuedDate + ", accountDeptReceivedDate=" + accountDeptReceivedDate + ", company=" + company + ", employee=" + employee + ", items=" + items + ", status=" + status + ", bpmProcessId=" + bpmProcessId + '}';
+        return "ImmigrationCheckRequisition{" + "requestedDate=" + requestedDate + ", neededByDate=" + neededByDate + ", amount=" + amount + ", mailingAddress=" + mailingAddress + ", caseType=" + caseType + ", purpose=" + purpose + ", submittedBy=" + submittedBy + ", approvedBy=" + approvedBy + ", approvedDate=" + approvedDate + ", accountedBy=" + accountedBy + ", checkIssuedDate=" + checkIssuedDate + ", accountDeptReceivedDate=" + accountDeptReceivedDate + ", company=" + company + ", employee=" + employee + ", items=" + items + ", status=" + status + ", bpmProcessId=" + bpmProcessId + '}';
     }
 
 }
