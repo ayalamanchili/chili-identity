@@ -89,7 +89,7 @@
         </profile>
     </profiles>    
     <scm>
-        <connection>scm:svn:http://yalamanchili.info/projects/office/trunk/office-jms</connection>
-        <url>http://yalamanchili.info/projects/office/trunk/office-jms</url>
+        <connection>scm:svn:http://tools.sstech.us/svn/office/trunk/office-master/office-jms</connection>
+        <url>http://tools.sstech.us/svn/office/trunk/office-master/office-jms</url>
     </scm> 
 </project>
