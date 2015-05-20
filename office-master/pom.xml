@@ -422,14 +422,14 @@
         </pluginManagement>
     </build>
     <scm>
-        <connection>scm:svn:http://yalamanchili.info/projects/office/trunk/office-master</connection>
-        <url>http://yalamanchili.info/projects/office/trunk/office-master</url>
+        <connection>scm:svn:http://tools.sstech.us/svn/office/trunk/office-master</connection>
+        <url>http://tools.sstech.us/svn/office/trunk/office-master</url>
     </scm>    
     <!-- download artifacts from this repo -->
     <repositories>
         <repository>
-            <id>tools.sstech.us</id>
-            <name>tools.sstech.us</name>
+            <id>sstech.us</id>
+            <name>sstech.us</name>
             <url>http://tools.sstech.us/nexus/content/groups/public</url>
             <releases>
                 <enabled>true</enabled>
@@ -443,8 +443,8 @@
     <!-- download plugins from this repo -->
     <pluginRepositories>
         <pluginRepository>
-            <id>tools.sstech.us</id>
-            <name>tools.sstech.us</name>
+            <id>sstech.us</id>
+            <name>sstech.us</name>
             <url>http://tools.sstech.us/nexus/content/groups/public</url>
             <releases>
                 <enabled>true</enabled>
@@ -458,15 +458,15 @@
     <distributionManagement>
         <!-- Publish the versioned releases here -->
         <repository>
-            <id>tools.sstech.us</id>
-            <name>tools.sstech.us</name>
+            <id>sstech.us</id>
+            <name>sstech.us</name>
             <url>http://tools.sstech.us/nexus/content/repositories/releases</url>
         </repository>
 
         <!-- Publish the versioned releases here -->
         <snapshotRepository>
-            <id>tools.sstech.us</id>
-            <name>tools.sstech.us</name>
+            <id>sstech.us</id>
+            <name>sstech.us</name>
             <url>http://tools.sstech.us/nexus/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
