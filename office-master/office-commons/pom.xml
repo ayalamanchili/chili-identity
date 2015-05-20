@@ -95,7 +95,7 @@
         <jsoup.version>1.7.3</jsoup.version>
     </properties>
     <scm>
-        <connection>scm:svn:http://yalamanchili.info/projects/office/trunk/office-commons</connection>
-        <url>http://yalamanchili.info/projects/office/trunk/office-commons</url>
+        <connection>scm:svn:http://tools.sstech.us/svn/office/trunk/office-master/office-commons</connection>
+        <url>http://tools.sstech.us/svn/office/trunk/office-master/office-commons</url>
     </scm>     
 </project>
