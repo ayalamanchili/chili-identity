@@ -333,6 +333,9 @@
         <!-- web -->
         <!--<module>../office-web</module> -->
         <module>office-bpm</module>
+        <module>office-qa</module>
+        <module>office-toolbox</module>
+        <module>office-doc</module>
     </modules>
     <build>
         <plugins>
