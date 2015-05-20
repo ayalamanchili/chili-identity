@@ -55,8 +55,8 @@
         </profile>
     </profiles>
     <scm>
-        <connection>scm:svn:http://yalamanchili.info/projects/office/trunk/office-bpm</connection>
-        <url>http://yalamanchili.info/projects/office/trunk/office-bpm</url>
+        <connection>scm:svn:http://tools.sstech.us/svn/office/trunk/office-master/office-bpm</connection>
+        <url>http://tools.sstech.us/svn/office/trunk/office-master/office-bpm</url>
     </scm> 
     <properties>
     </properties>
