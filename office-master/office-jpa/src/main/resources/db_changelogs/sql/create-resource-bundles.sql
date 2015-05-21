@@ -1,3 +1,7 @@
+--
+-- System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+--
+
 CREATE TABLE `ci18nresource` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `_key` varchar(255) NOT NULL,
