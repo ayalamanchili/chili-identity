@@ -17,6 +17,7 @@ import info.yalamanchili.office.client.contracts.ContractsSidePanel;
 import info.yalamanchili.office.client.contracts.ReadAllContractsPanel;
 import info.yalamanchili.office.client.employee.prbprdeval.ProbatioPeriodPerfEvaluationReportsSidePanel;
 import info.yalamanchili.office.client.employee.prefeval.PerfEvaluationReportsSidePanel;
+import info.yalamanchili.office.client.profile.reports.CorporateStatusReportSidePanel;
 
 import info.yalamanchili.office.client.profile.reports.ProfileReportsSidePanel;
 import info.yalamanchili.office.client.profile.reports.RetirementPlanOptInSidePanal;
@@ -43,6 +44,9 @@ public class ReportsMenu extends Composite {
         }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
             reportsMenuBar.addItem("Perf Evaluations", performanceEvaluationsReportsMaintainenceCmd);
+        }
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_HR)) {
+            reportsMenuBar.addItem("Status Report", corporatestatusReportsMaintainenceCmd);
         }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_HR, ROLE.ROLE_PRB_EVALUATIONS_MANAGER)) {
             reportsMenuBar.addItem("Probation Period", probperformanceEvaluationsReportsMaintainenceCmd);
@@ -91,6 +95,14 @@ public class ReportsMenu extends Composite {
             TabPanel.instance().getReportingPanel().entityPanel.clear();
             TabPanel.instance().getReportingPanel().sidePanelTop.clear();
             TabPanel.instance().getReportingPanel().sidePanelTop.add(new RetirementPlanOptInSidePanal());
+        }
+    };
+    Command corporatestatusReportsMaintainenceCmd = new Command() {
+        @Override
+        public void execute() {
+            TabPanel.instance().getReportingPanel().entityPanel.clear();
+            TabPanel.instance().getReportingPanel().sidePanelTop.clear();
+            TabPanel.instance().getReportingPanel().sidePanelTop.add(new CorporateStatusReportSidePanel());
         }
     };
 }
