@@ -84,7 +84,7 @@ public class RetirementPlanService {
             }
             report.add(dto);
         }
-        String fileName = ReportGenerator.generateExcelReport(report, "Recruitment Opt In Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot());
+        String fileName = ReportGenerator.generateExcelReport(report, "Retirement Opt In Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot());
         MessagingService.instance().emailReport(fileName, email);
     }
 }
