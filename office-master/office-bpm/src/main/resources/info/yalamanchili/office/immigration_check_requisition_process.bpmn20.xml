@@ -14,11 +14,11 @@
         <startEvent id="immigrationCheckRequisitionStart"/>
         
         <!-- Manager approval task-->
-        <sequenceFlow  sourceRef="immigrationCheckRequisitionStart" targetRef="immigrationCheckRequisitionApprovalTask" />
-        <userTask id="immigrationCheckRequisitionApprovalTask" 
-                  name="Immigration Check Requisition Task for ${Employee}">
+        <sequenceFlow  sourceRef="immigrationCheckRequisitionStart" targetRef="payrollDeptApprovalTask" />
+        <userTask id="payrollDeptApprovalTask" 
+                  name="Immigration Check Approval by Payroll Dept for ${Employee}">
             <documentation>
-                Employee Immigration Check Requisition Payroll Approval Task
+                Check Requisition Detail
                 Submitted By    : #{entity.submittedBy.firstName} #{entity.submittedBy.lastName}
                 Amount          : #{entity.amount}
                 Purpose         : #{entity.purpose}
@@ -57,22 +57,22 @@
             </extensionElements> 
         </userTask>
         <!-- Task escalation email after 48 hours-->
-        <boundaryEvent id="immigrationCheckRequisitionApprovalTaskEscalationTimer"
+        <boundaryEvent id="payrollDeptApprovalTaskEscalationTimer"
                        cancelActivity="false" 
-                       attachedToRef="immigrationCheckRequisitionApprovalTask">
+                       attachedToRef="payrollDeptApprovalTask">
             <timerEventDefinition> 
                 <timeDuration>PT48H</timeDuration> 
             </timerEventDefinition>
         </boundaryEvent>
-        <sequenceFlow sourceRef="immigrationCheckRequisitionApprovalTaskEscalationTimer" 
-                      targetRef="immigrationCheckRequisitionApprovalTaskEscalation" />
-        <serviceTask id="immigrationCheckRequisitionApprovalTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <sequenceFlow sourceRef="payrollDeptApprovalTaskEscalationTimer" 
+                      targetRef="payrollDeptApprovalTaskEscalation" />
+        <serviceTask id="payrollDeptApprovalTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
         <!--desision-->
-        <sequenceFlow sourceRef="immigrationCheckRequisitionApprovalTask" 
+        <sequenceFlow sourceRef="payrollDeptApprovalTask" 
                       targetRef="approvalGateway" />
         <exclusiveGateway id="approvalGateway" />
         <sequenceFlow sourceRef="approvalGateway" 
-                      targetRef="immigrationCheckRequisitionFinalApprovalTask">
+                      targetRef="accountDeptDispatchTask">
             <conditionExpression xsi:type="tFormalExpression">
                 ${status == 'approved'}
             </conditionExpression>
@@ -83,11 +83,11 @@
                 ${status == 'rejected'}
             </conditionExpression>
         </sequenceFlow>
-        <userTask id="immigrationCheckRequisitionFinalApprovalTask" 
-                  name="Immigration Check Requisition Final Approval Task for ${Employee}" 
+        <userTask id="accountDeptDispatchTask" 
+                  name="Immigration Check Dispatch by Accounts Dept for ${Employee}" 
                   activiti:candidateGroups="ROLE_ADMIN">
             <documentation>
-                Immigration Check Requisition Account Approval Task
+                Check Requisition Detail
                 Submitted By    : #{entity.submittedBy.firstName} #{entity.submittedBy.lastName}
                 Amount          : #{entity.amount}
                 Purpose         : #{entity.purpose}
@@ -124,18 +124,18 @@
             </extensionElements> 
         </userTask>
         <!-- Task escalation email after 48 hours-->
-        <boundaryEvent id="immigrationCheckRequisitionFinalApprovalTaskEscalationTimer"
+        <boundaryEvent id="accountDeptDispatchTaskEscalationTimer"
                        cancelActivity="false" 
-                       attachedToRef="immigrationCheckRequisitionFinalApprovalTask">
+                       attachedToRef="accountDeptDispatchTask">
             <timerEventDefinition> 
                 <timeDuration>PT48H</timeDuration> 
             </timerEventDefinition>
         </boundaryEvent>
-        <sequenceFlow sourceRef="immigrationCheckRequisitionFinalApprovalTaskEscalationTimer" 
-                      targetRef="immigrationCheckRequisitionFinalApprovalTaskEscalation" />
-        <serviceTask id="immigrationCheckRequisitionFinalApprovalTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <sequenceFlow sourceRef="accountDeptDispatchTaskEscalationTimer" 
+                      targetRef="accountDeptDispatchTaskEscalation" />
+        <serviceTask id="accountDeptDispatchTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
         <!--desision-->
-        <sequenceFlow sourceRef="immigrationCheckRequisitionFinalApprovalTask" 
+        <sequenceFlow sourceRef="accountDeptDispatchTask" 
                       targetRef="finalApprovalTaskGateway" />
         <exclusiveGateway id="finalApprovalTaskGateway" />
         <sequenceFlow sourceRef="finalApprovalTaskGateway" 

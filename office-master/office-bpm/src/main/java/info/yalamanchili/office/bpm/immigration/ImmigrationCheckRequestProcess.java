@@ -45,7 +45,7 @@ public class ImmigrationCheckRequestProcess implements TaskListener  {
     }
 
     protected void immigrationCheckRequestTaskCreated(DelegateTask task) {
-        if (task.getTaskDefinitionKey().equals("immigrationCheckRequisitionApprovalTask")) {
+        if (task.getTaskDefinitionKey().equals("payrollDeptApprovalTask")) {
             saveImmigrationCheckRequisition(task);
             assignImmigrationCheckRequisitionTask(task);
         }
@@ -62,11 +62,11 @@ public class ImmigrationCheckRequestProcess implements TaskListener  {
 //            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.self.approve.corp.immigrationCheckrequisition", "You cannot approve your immigrationCheckrequisition task");
 //        }        
         switch (task.getTaskDefinitionKey()) {
-            case "immigrationCheckRequisitionApprovalTask":
+            case "payrollDeptApprovalTask":
                 payrollApprovalTaskComplete(entity, task);
                 break;
-            case "immigrationCheckRequisitionFinalApprovalTask":
-                accountApprovalTaskComplete(entity, task);
+            case "accountDeptDispatchTask":
+                accountsDispatchTaskComplete(entity, task);
                 break;
         }
     }
@@ -96,7 +96,7 @@ public class ImmigrationCheckRequestProcess implements TaskListener  {
         ImmigrationCheckRequisitionDao.instance().save(entity);
     }
 
-    protected void accountApprovalTaskComplete(ImmigrationCheckRequisition entity, DelegateTask task) {
+    protected void accountsDispatchTaskComplete(ImmigrationCheckRequisition entity, DelegateTask task) {
         String approvedAmountVar = (String) task.getExecution().getVariable("approvedAmount");
         BigDecimal approvedAmount;
         try {
