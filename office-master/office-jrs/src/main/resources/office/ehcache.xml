@@ -30,4 +30,5 @@
     <cache name="expense" maxElementsInMemory="10000" eternal="true" overflowToDisk="true" /> 
       
     <cache name="aclCache" maxElementsInMemory="10000" eternal="true" overflowToDisk="true" />
+    <cache name="cmessages" maxElementsInMemory="10000" eternal="true" overflowToDisk="true" />
 </ehcache>

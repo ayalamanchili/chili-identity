@@ -64,7 +64,7 @@ public class MessagesUtils {
         return messageSource;
     }
 
-    protected MessageSource getDatabaseMessageSource() {
+    protected CDatabaseMessages getDatabaseMessageSource() {
         if (databaseMessages == null) {
             databaseMessages = CDatabaseMessages.instance(bundleName);
         }

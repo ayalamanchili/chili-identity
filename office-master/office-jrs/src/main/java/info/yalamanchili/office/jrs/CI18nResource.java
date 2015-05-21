@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.jrs;
 
+import info.chili.i18n.CDatabaseMessages;
 import info.chili.i18n.dao.Ci18nDao;
 import info.chili.i18n.domain.Ci18nResource;
 import info.chili.i18n.domain.Ci18nResource.Ci18nResourceTable;
@@ -20,6 +21,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +44,7 @@ public class CI18nResource {
     @PUT
     @Path("/bundle")
     @Validate
+    @CacheEvict(value = CDatabaseMessages.CMESSAGES_CACHE_REGION, allEntries = true)
     public void saveBundle(Ci18nResourceBundle bundle) {
         ci18nDao.saveBundle(bundle);
     }
@@ -49,6 +52,7 @@ public class CI18nResource {
     @PUT
     @Path("/bundle/delete/{id}")
     @Validate
+    @CacheEvict(value = CDatabaseMessages.CMESSAGES_CACHE_REGION, allEntries = true)
     public void deleteBundle(@PathParam("id") Integer id) {
         ci18nDao.deleteBundle(id);
     }
@@ -62,6 +66,7 @@ public class CI18nResource {
     @PUT
     @Path("/bundle/resource/{bundleId}")
     @Validate
+    @CacheEvict(value = CDatabaseMessages.CMESSAGES_CACHE_REGION, allEntries = true)
     public void addResource(@PathParam("bundleId") Integer bundleId, Ci18nResource resource) {
         ci18nDao.addResource(bundleId, resource);
     }
@@ -69,6 +74,7 @@ public class CI18nResource {
     @PUT
     @Path("/bundle/resource")
     @Validate
+    @CacheEvict(value = CDatabaseMessages.CMESSAGES_CACHE_REGION, allEntries = true)
     public void updateResource(Ci18nResource resource) {
         ci18nDao.updateResource(resource);
     }
@@ -76,6 +82,7 @@ public class CI18nResource {
     @PUT
     @Path("/bundle/resource/delete/{id}")
     @Validate
+    @CacheEvict(value = CDatabaseMessages.CMESSAGES_CACHE_REGION, allEntries = true)
     public void deleteResource(@PathParam("id") Integer id) {
         ci18nDao.deleteResource(id);
     }
