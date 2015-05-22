@@ -18,6 +18,7 @@ import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
 import java.util.Map;
@@ -184,5 +185,24 @@ public class ReadStatusReportPanel extends ReadComposite {
     @Override
     protected String getAuditUrl() {
         return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.employee.statusreport.StatusReport" + "/" + getEntityId();
+    }
+
+    @Override
+    protected boolean enableClone() {
+        return true;
+    }
+
+    @Override
+    protected void cloneClicked() {
+        HttpService.HttpServiceAsync.instance().doGet(OfficeWelcome.constants.root_url() + "statusreport/clone/" + getEntityId(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+
+                    @Override
+                    public void onResponse(String arg0) {
+                        logger.info(arg0);
+                        TabPanel.instance().homePanel.entityPanel.clear();
+                        TabPanel.instance().homePanel.entityPanel.add(new UpdateStatusReportPanel(JSONParser.parseLenient(arg0).isObject()));
+                    }
+                });
     }
 }
