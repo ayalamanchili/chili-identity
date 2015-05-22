@@ -109,7 +109,7 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
             table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "requestedDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "neededByDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 5, JSONUtils.formatEnumString(entity, "status"));
-            FileField reportL = new FileField("Print", ChiliClientConfig.instance().getFileDownloadUrl() + "advancerequisition/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id"));
+            FileField reportL = new FileField("Print", ChiliClientConfig.instance().getFileDownloadUrl() + "checkrequisition/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id"));
             table.setWidget(i, 6, reportL);
         }
     }

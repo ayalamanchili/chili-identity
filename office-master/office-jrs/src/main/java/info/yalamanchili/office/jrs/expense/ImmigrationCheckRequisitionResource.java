@@ -20,6 +20,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -38,17 +41,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 @Scope("request")
-public class ImmigrationCheckRequisitionResource extends CRUDResource<ImmigrationCheckRequisition>{
+public class ImmigrationCheckRequisitionResource extends CRUDResource<ImmigrationCheckRequisition> {
+
     @Autowired
     public ImmigrationCheckRequisitionDao immigrationCheckRequisitionDao;
-    
+
     @PUT
     @Validate
     @Path("/submit-check-requisition-request")
     @CacheEvict(value = OfficeCacheKeys.ADVANCE_REQUSITON, allEntries = true)
     public void submitImmigrationCheckRequest(ImmigrationCheckRequisition entity) {
         ImmigrationCheckRequisitionService.instance().submitImmigrationCheckRequisition(entity);
-    } 
+    }
 
     @PUT
     @Override
@@ -57,7 +61,7 @@ public class ImmigrationCheckRequisitionResource extends CRUDResource<Immigratio
     public ImmigrationCheckRequisition save(ImmigrationCheckRequisition entity) {
         return super.save(entity);
     }
-    
+
     @Override
     public CRUDDao getDao() {
         return immigrationCheckRequisitionDao;
@@ -71,6 +75,13 @@ public class ImmigrationCheckRequisitionResource extends CRUDResource<Immigratio
         tableObj.setEntities(getDao().query(start, limit));
         tableObj.setSize(getDao().size());
         return tableObj;
+    }
+
+    @GET
+    @Path("/report")
+    @Produces({"application/pdf"})
+    public Response getReport(@QueryParam("id") Long id) {
+        return ImmigrationCheckRequisitionService.instance().getReport(immigrationCheckRequisitionDao.findById(id));
     }
 
     @XmlRootElement
@@ -97,5 +108,4 @@ public class ImmigrationCheckRequisitionResource extends CRUDResource<Immigratio
             this.entities = entities;
         }
     }
-    
 }
