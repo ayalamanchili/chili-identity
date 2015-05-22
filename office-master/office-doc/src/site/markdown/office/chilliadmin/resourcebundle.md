@@ -1,0 +1,18 @@
+How to submit Resource Bundle
+==========
+ - [Login to Portal](../../office/forgot-password.html "Login")
+ - Navigate to Chilli Admin --> Resource Bundle --> Submit Resource Bundle
+ - Enter  basic information in resource bundle     
+ - Submit the information after filling all relevant fields. 
+ - A resource tree panel will be created for resource bundle for updating the questions 
+
+Create Resource Bundle
+----
+![alt text](../../images/chilliadmin/create-resource-bundle.png "Advance Requisition")
+Create Resource Bundle Resource
+----
+![alt text](../../images/chilliadmin/create-resource.png "Advance Requisition")
+
+Adding Performance Evaluation Questions
+----
+![alt text](../../images/chilliadmin/perf-question.png "Advance Requisition")
