@@ -135,7 +135,7 @@ public class AdvanceRequisitionService {
         }
         byte[] pdf = PDFUtils.generatePdf(data);
         return Response.ok(pdf)
-                .header("content-disposition", "filename = advacne-requisition.pdf")
+                .header("content-disposition", "filename = advance-requisition.pdf")
                 .header("Content-Length", pdf)
                 .build();
 
