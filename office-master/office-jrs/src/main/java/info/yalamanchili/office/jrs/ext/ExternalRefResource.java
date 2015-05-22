@@ -9,7 +9,6 @@
 package info.yalamanchili.office.jrs.ext;
 
 import info.chili.jpa.validation.Validate;
-import static info.chili.jpa.validation.ValidationUtils.validate;
 import info.yalamanchili.office.dao.ext.ExternalRefDao;
 import info.yalamanchili.office.entity.ext.ExternalRef;
 import java.util.List;

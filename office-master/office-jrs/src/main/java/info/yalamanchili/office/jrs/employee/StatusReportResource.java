@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.jrs.employee;
 
+import com.google.gson.Gson;
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.dao.employee.statusreport.StatusReportDao;
@@ -16,9 +17,8 @@ import info.yalamanchili.office.entity.employee.statusreport.StatusReport;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.employee.statusreport.StatusReportService;
-import info.yalamanchili.office.security.AccessCheck;
+import info.yalamanchili.office.entity.employee.statusreport.ReportDocument;
 import java.util.List;
-import javax.validation.Validation;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -76,6 +76,15 @@ public class StatusReportResource extends CRUDResource<StatusReport> {
     @Produces("application/text")
     public String saveReport(StatusReport entity, @QueryParam("submitForApproval") Boolean submitForApproval) {
         return StatusReportService.instance().save(entity, submitForApproval);
+    }
+
+    @GET
+    @Path("/clone/{id}")
+    @Override
+    public StatusReport clone(@PathParam("id") Long id) {
+        StatusReport entity = statusReportDao.clone(id);
+        entity.setReportDocument(new Gson().fromJson(entity.getReport(), ReportDocument.class));
+        return entity;
     }
 
     @GET
