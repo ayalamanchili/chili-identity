@@ -38,23 +38,23 @@ import java.util.logging.Logger;
  * @author prasanthi.p
  */
 public class UpdateStatusReportPanel extends UpdateComposite {
-
+    
     private static Logger logger = Logger.getLogger(UpdateStatusReportPanel.class.getName());
     protected boolean showPreview;
-
+    
     public UpdateStatusReportPanel(String id, Boolean preview) {
         showPreview = preview;
         initUpdateComposite(id, "StatusReport", OfficeWelcome.constants);
     }
-
+    
     public UpdateStatusReportPanel(String id) {
         initUpdateComposite(id, "StatusReport", OfficeWelcome.constants);
     }
-
+    
     public UpdateStatusReportPanel(JSONObject entity) {
         initUpdateComposite(entity, "StatusReport", OfficeWelcome.constants);
     }
-
+    
     @Override
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
@@ -64,25 +64,25 @@ public class UpdateStatusReportPanel extends UpdateComposite {
                         logger.info(response);
                         entity = (JSONObject) JSONParser.parseLenient(response);
                         populateFieldsFromEntity(entity);
-
+                        
                     }
                 });
         if (showPreview) {
             showPreview();
         }
     }
-
+    
     protected void showPreview() {
         Frame f = new Frame(ChiliClientConfig.instance().getFileDownloadUrl() + "statusreport/report" + "&passthrough=true" + "&id=" + entityId);
         f.setHeight("35em");
         f.setWidth("50em");
         new GenericPopup(f).show();
     }
-
+    
     protected String getReadURI() {
         return OfficeWelcome.constants.root_url() + "statusreport/" + entityId;
     }
-
+    
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject report = new JSONObject();
@@ -90,31 +90,31 @@ public class UpdateStatusReportPanel extends UpdateComposite {
         assignEntityValueFromField("reportStartDate", entity);
         assignEntityValueFromField("reportEndDate", entity);
         assignEntityValueFromField("status", entity);
-
+        
         assignEntityValueFromField("projectPhase1Name", report);
         assignEntityValueFromField("projectPhase1Deliverable", report);
         assignEntityValueFromField("projectPhase1EndDate", report);
         assignEntityValueFromField("projectPhase1Status", report);
-
+        
         assignEntityValueFromField("projectPhase2Name", report);
         assignEntityValueFromField("projectPhase2Deliverable", report);
         assignEntityValueFromField("projectPhase2EndDate", report);
         assignEntityValueFromField("projectPhase2Status", report);
-
+        
         assignEntityValueFromField("projectPhase3Name", report);
         assignEntityValueFromField("projectPhase3Deliverable", report);
         assignEntityValueFromField("projectPhase3EndDate", report);
         assignEntityValueFromField("projectPhase3Status", report);
-
+        
         assignEntityValueFromField("projectPhase4Name", report);
         assignEntityValueFromField("projectPhase4Deliverable", report);
         assignEntityValueFromField("projectPhase4EndDate", report);
         assignEntityValueFromField("projectPhase4Status", report);
-
+        
         assignEntityValueFromField("statusDescription", report);
         assignEntityValueFromField("accomplishments", report);
         assignEntityValueFromField("scheduledActivities", report);
-
+        
         assignEntityValueFromField("preparedBy", entity);
         assignEntityValueFromField("approvedBy", entity);
         assignEntityValueFromField("submittedDate", entity);
@@ -123,7 +123,7 @@ public class UpdateStatusReportPanel extends UpdateComposite {
         logger.info("Dddddd" + entity);
         return entity;
     }
-
+    
     @Override
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
@@ -132,20 +132,20 @@ public class UpdateStatusReportPanel extends UpdateComposite {
                     public void onFailure(Throwable arg0) {
                         handleErrorResponse(arg0);
                     }
-
+                    
                     @Override
                     public void onSuccess(String arg0) {
                         postUpdateSuccess(arg0);
                     }
                 });
     }
-
+    
     protected void populateComments() {
         if (getEntityId() != null && !getEntityId().isEmpty()) {
             entityActionsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.employee.statusreport.StatusReport"));
         }
     }
-
+    
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         JSONObject reportDocument = entity.get("reportDocument").isObject();
@@ -153,31 +153,31 @@ public class UpdateStatusReportPanel extends UpdateComposite {
         assignFieldValueFromEntity("reportStartDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("reportEndDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
-
+        
         assignFieldValueFromEntity("projectPhase1Name", reportDocument, DataType.STRING_FIELD);
         assignFieldValueFromEntity("projectPhase1Deliverable", reportDocument, DataType.STRING_FIELD);
         assignFieldValueFromEntity("projectPhase1EndDate", reportDocument, DataType.STRING_FIELD);
         assignFieldValueFromEntity("projectPhase1Status", reportDocument, DataType.STRING_FIELD);
-
+        
         assignFieldValueFromEntity("projectPhase2Name", reportDocument, DataType.STRING_FIELD);
         assignFieldValueFromEntity("projectPhase2Deliverable", reportDocument, DataType.STRING_FIELD);
         assignFieldValueFromEntity("projectPhase2EndDate", reportDocument, DataType.STRING_FIELD);
         assignFieldValueFromEntity("projectPhase2Status", reportDocument, DataType.STRING_FIELD);
-
+        
         assignFieldValueFromEntity("projectPhase3Name", reportDocument, DataType.STRING_FIELD);
         assignFieldValueFromEntity("projectPhase3Deliverable", reportDocument, DataType.STRING_FIELD);
         assignFieldValueFromEntity("projectPhase3EndDate", reportDocument, DataType.STRING_FIELD);
         assignFieldValueFromEntity("projectPhase3Status", reportDocument, DataType.STRING_FIELD);
-
+        
         assignFieldValueFromEntity("projectPhase4Name", reportDocument, DataType.STRING_FIELD);
         assignFieldValueFromEntity("projectPhase4Deliverable", reportDocument, DataType.STRING_FIELD);
         assignFieldValueFromEntity("projectPhase4EndDate", reportDocument, DataType.STRING_FIELD);
         assignFieldValueFromEntity("projectPhase4Status", reportDocument, DataType.STRING_FIELD);
-
+        
         assignFieldValueFromEntity("statusDescription", reportDocument, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("accomplishments", reportDocument, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("scheduledActivities", reportDocument, DataType.TEXT_AREA_FIELD);
-
+        
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_RELATIONSHIP)) {
             assignFieldValueFromEntity("preparedBy", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("approvedBy", entity, DataType.STRING_FIELD);
@@ -186,7 +186,7 @@ public class UpdateStatusReportPanel extends UpdateComposite {
         }
         populateComments();
     }
-
+    
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated Status Report Information");
@@ -202,18 +202,18 @@ public class UpdateStatusReportPanel extends UpdateComposite {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllStatusReportPanel(TreeEmployeePanel.instance().getEntityId()));
         }
-
+        
     }
-
+    
     @Override
     protected void addListeners() {
         submitForApprovalF.getBox().addClickHandler(this);
         previewF.getBox().addClickHandler(this);
     }
-
+    
     BooleanField submitForApprovalF;
     BooleanField previewF;
-
+    
     @Override
     protected void configure() {
         formatTextAreaFields();
@@ -228,8 +228,11 @@ public class UpdateStatusReportPanel extends UpdateComposite {
         p3.getTextbox().setVisibleLength(90);
         StringField p4 = (StringField) fields.get("projectPhase4Deliverable");
         p4.getTextbox().setVisibleLength(90);
+        if (getEntityId().isEmpty()) {
+            update.setText("Create");
+        }
     }
-
+    
     protected void formatStringFields() {
         for (Map.Entry entry : fields.entrySet()) {
             if (entry.getValue() instanceof StringField) {
@@ -237,7 +240,7 @@ public class UpdateStatusReportPanel extends UpdateComposite {
             }
         }
     }
-
+    
     protected void formatTextAreaFields() {
         for (Map.Entry entry : fields.entrySet()) {
             if (entry.getValue() instanceof TextAreaField) {
@@ -247,14 +250,14 @@ public class UpdateStatusReportPanel extends UpdateComposite {
             }
         }
     }
-
+    
     @Override
     protected void addWidgets() {
         addField("projectDescription", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("reportStartDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("reportEndDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("status", false, true, ProjectStatus.names(), Alignment.HORIZONTAL);
-
+        
         entityFieldsPanel.add(getLineSeperatorTag("Project Phase 1"));
         addField("projectPhase1Name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("projectPhase1Deliverable", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -275,7 +278,7 @@ public class UpdateStatusReportPanel extends UpdateComposite {
         addField("projectPhase4Deliverable", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("projectPhase4EndDate", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("projectPhase4Status", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-
+        
         addField("statusDescription", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("accomplishments", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("scheduledActivities", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
@@ -295,11 +298,11 @@ public class UpdateStatusReportPanel extends UpdateComposite {
         addField("submitForApproval", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
-
+    
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
-
+    
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
         boolean valid = true;
@@ -331,7 +334,7 @@ public class UpdateStatusReportPanel extends UpdateComposite {
             }
             focus = false;
         }
-
+        
         TextAreaField scheduledActivitiesF = (TextAreaField) fields.get("scheduledActivities");
         if (numberOfLines(scheduledActivitiesF) > 5) {
             scheduledActivitiesF.setMessage("Cannot exceed more than 5 lines");
@@ -342,18 +345,18 @@ public class UpdateStatusReportPanel extends UpdateComposite {
         }
         return valid;
     }
-
+    
     protected int numberOfLines(TextAreaField textArea) {
         String[] lines = textArea.getTextbox().getText().split("\r\n|\r|\n");
         return lines.length;
-
+        
     }
-
+    
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "statusreport/save?submitForApproval=" + submitForApprovalF.getValue();
     }
-
+    
     @Override
     public void onClick(ClickEvent event) {
         if (previewF.getValue() && submitForApprovalF.getValue()) {
@@ -367,22 +370,22 @@ public class UpdateStatusReportPanel extends UpdateComposite {
         }
         super.onClick(event);
     }
-
+    
     @Override
     protected boolean enableAudit() {
         return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_RELATIONSHIP);
     }
-
+    
     @Override
     protected String getAuditUrl() {
         return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.employee.statusreport.StatusReport" + "/" + getEntityId();
     }
-
+    
     @Override
     protected boolean enableViewTasks() {
         return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_GC_IMMIGRATION, Auth.ROLE.ROLE_HR);
     }
-
+    
     @Override
     protected void displayTasks() {
         String tasksUrl = OfficeWelcome.constants.root_url() + "bpm/tasks/";
