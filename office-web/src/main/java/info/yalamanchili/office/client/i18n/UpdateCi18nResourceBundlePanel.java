@@ -100,14 +100,4 @@ public class UpdateCi18nResourceBundlePanel extends UpdateComposite {
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "i18n/bundle";
     }
-
-    @Override
-    protected boolean enableAudit() {
-        return true;
-    }
-
-    @Override
-    protected String getAuditUrl() {
-        return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.chili.i18n.domain.Ci18nResourceBundle" + "/" + getEntityId();
-    }
 }

@@ -18,8 +18,6 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.profile.email.ReadAllEmailsPanel;
-import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
 /**
@@ -41,12 +39,12 @@ public class ReadAllCi8nResourcesPanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getResourcesUrl(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
                 false, new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        logger.info(result);
-                        postFetchTable(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                logger.info(result);
+                postFetchTable(result);
+            }
+        });
 
     }
 
@@ -79,18 +77,19 @@ public class ReadAllCi8nResourcesPanel extends CRUDReadAllComposite {
 
     @Override
     public void viewClicked(String entityId) {
-
+        TabPanel.instance().chiliAdminPanel.entityPanel.clear();
+        TabPanel.instance().chiliAdminPanel.entityPanel.add(new Readci18nResourcePanel(getEntity(entityId)));
     }
 
     @Override
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        postDeleteSuccess();
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                postDeleteSuccess();
+            }
+        });
     }
 
     @Override
@@ -103,11 +102,11 @@ public class ReadAllCi8nResourcesPanel extends CRUDReadAllComposite {
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().chiliAdminPanel.entityPanel.clear();
-        TabPanel.instance().chiliAdminPanel.entityPanel.add(new UpdateCi18nResourcePanel(getEntity(entityId)));
+        TabPanel.instance().chiliAdminPanel.entityPanel.add(new Readci18nResourcePanel(getEntity(entityId)));
     }
 
     protected String getDeleteURL(String entityId) {
-        return OfficeWelcome.constants.root_url() + "i18n/bundle/resource/delete/"+entityId;
+        return OfficeWelcome.constants.root_url() + "i18n/bundle/resource/delete/" + entityId;
     }
 
     @Override
