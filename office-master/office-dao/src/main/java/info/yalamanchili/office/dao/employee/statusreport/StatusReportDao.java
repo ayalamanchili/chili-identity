@@ -46,6 +46,18 @@ public class StatusReportDao extends CRUDDao<StatusReport> {
         return super.save(entity);
     }
 
+    public StatusReport find(StatusReport entity) {
+        TypedQuery<StatusReport> query = em.createQuery("from " + StatusReport.class.getCanonicalName() + " where employee=:empParam and reportStartDate=:startDateParam and reportEndDate=:endDateParam", StatusReport.class);
+        query.setParameter("empParam", entity.getEmployee());
+        query.setParameter("startDateParam", entity.getReportStartDate());
+        query.setParameter("endDateParam", entity.getReportEndDate());
+        if (query.getResultList().size() > 0) {
+            return query.getResultList().get(0);
+        } else {
+            return null;
+        }
+    }
+
     public List<StatusReport> getReports(Employee emp, int start, int limit) {
         TypedQuery<StatusReport> query = em.createQuery("from " + StatusReport.class.getCanonicalName() + " where employee=:empParam", StatusReport.class);
         query.setParameter("empParam", emp);

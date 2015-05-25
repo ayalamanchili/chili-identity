@@ -12,6 +12,7 @@ import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
 import info.chili.commons.pdf.PdfDocumentData;
 import info.chili.security.Signature;
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
@@ -52,6 +53,9 @@ public class StatusReportService {
     }
 
     public String save(StatusReport entity, Boolean submitForApproval) {
+        if (entity.getId() == null && statusReportDao.find(entity) != null) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "status.report.dates.invalid", "Status Report with the entered dates already exists");
+        }
         Gson gson = new Gson();
         entity.setReport(gson.toJson(entity.getReportDocument()));
         entity = statusReportDao.save(entity);
@@ -162,7 +166,6 @@ public class StatusReportService {
     }
 
     public static StatusReportService instance() {
-        return SpringContext.getBean(StatusReportService.class
-        );
+        return SpringContext.getBean(StatusReportService.class);
     }
 }
