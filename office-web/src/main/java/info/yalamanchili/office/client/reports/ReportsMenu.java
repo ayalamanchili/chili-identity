@@ -17,7 +17,6 @@ import info.yalamanchili.office.client.contracts.ContractsSidePanel;
 import info.yalamanchili.office.client.contracts.ReadAllContractsPanel;
 import info.yalamanchili.office.client.employee.prbprdeval.ProbatioPeriodPerfEvaluationReportsSidePanel;
 import info.yalamanchili.office.client.employee.prefeval.PerfEvaluationReportsSidePanel;
-import info.yalamanchili.office.client.profile.reports.CorporateStatusReportSidePanel;
 
 import info.yalamanchili.office.client.profile.reports.ProfileReportsSidePanel;
 import info.yalamanchili.office.client.profile.reports.RetirementPlanOptInSidePanal;
@@ -102,7 +101,7 @@ public class ReportsMenu extends Composite {
         public void execute() {
             TabPanel.instance().getReportingPanel().entityPanel.clear();
             TabPanel.instance().getReportingPanel().sidePanelTop.clear();
-            TabPanel.instance().getReportingPanel().sidePanelTop.add(new CorporateStatusReportSidePanel());
+//            TabPanel.instance().getReportingPanel().sidePanelTop.add(new CorporateStatusReportSidePanel());
         }
     };
 }
