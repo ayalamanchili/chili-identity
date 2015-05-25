@@ -8,14 +8,21 @@
 package info.yalamanchili.office.entity.employee.statusreport;
 
 import info.chili.jpa.AbstractEntity;
+import info.yalamanchili.office.entity.profile.Employee;
 import java.util.Date;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
+import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 
 /**
@@ -49,6 +56,39 @@ public class CorporateStatusReport extends AbstractEntity {
      */
     @Lob
     private String report;
+    /**
+     * Employee
+     */
+    @ManyToOne
+    @ForeignKey(name = "FK_EMP_CRP_STS_RPTS")
+    protected Employee employee;
+    /**
+     *
+     */
+    @Enumerated(EnumType.STRING)
+    @Field
+    protected CropStatusReportsStatus status;
+    /**
+     *
+     */
+    protected String approvedBy;
+    /**
+     *
+     */
+    @Temporal(javax.persistence.TemporalType.DATE)
+    protected Date submittedDate;
+    /**
+     *
+     */
+    @Temporal(javax.persistence.TemporalType.DATE)
+    protected Date approvedDate;
+    /**
+     * bpmProcessId
+     */
+    protected String bpmProcessId;
+
+    public CorporateStatusReport() {
+    }
 
     /**
      * @return the reportStartDate
@@ -91,5 +131,59 @@ public class CorporateStatusReport extends AbstractEntity {
     public void setReport(String report) {
         this.report = report;
     }
-    
+
+    @XmlTransient
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public CropStatusReportsStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(CropStatusReportsStatus status) {
+        this.status = status;
+    }
+
+    public String getApprovedBy() {
+        return approvedBy;
+    }
+
+    public void setApprovedBy(String approvedBy) {
+        this.approvedBy = approvedBy;
+    }
+
+    public Date getSubmittedDate() {
+        return submittedDate;
+    }
+
+    public void setSubmittedDate(Date submittedDate) {
+        this.submittedDate = submittedDate;
+    }
+
+    public Date getApprovedDate() {
+        return approvedDate;
+    }
+
+    public void setApprovedDate(Date approvedDate) {
+        this.approvedDate = approvedDate;
+    }
+
+    public String getBpmProcessId() {
+        return bpmProcessId;
+    }
+
+    public void setBpmProcessId(String bpmProcessId) {
+        this.bpmProcessId = bpmProcessId;
+    }
+
+    @Override
+    public String toString() {
+        return "CorporateStatusReport{" + "reportStartDate=" + reportStartDate + ", reportEndDate=" + reportEndDate + ", report=" + report + ", employee=" + employee + ", stage=" + status + ", approvedBy=" + approvedBy + ", submittedDate=" + submittedDate + ", approvedDate=" + approvedDate + ", bpmProcessId=" + bpmProcessId + '}';
+    }
+
 }
