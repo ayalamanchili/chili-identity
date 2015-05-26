@@ -333,7 +333,6 @@
         <!-- web -->
         <!--<module>../office-web</module> -->
         <module>office-bpm</module>
-        <!--<module>office-qa</module>-->
     </modules>
     <build>
         <plugins>
@@ -420,15 +419,15 @@
         </pluginManagement>
     </build>
     <scm>
-        <connection>scm:svn:http://tools.sstech.us/svn/office/trunk/office-master</connection>
-        <url>http://tools.sstech.us/svn/office/trunk/office-master</url>
+        <connection>scm:svn:http://yalamanchili.info/projects/office/trunk/office-master</connection>
+        <url>http://yalamanchili.info/projects/office/trunk/office-master</url>
     </scm>    
     <!-- download artifacts from this repo -->
     <repositories>
         <repository>
-            <id>sstech.us</id>
-            <name>sstech.us</name>
-            <url>http://tools.sstech.us/nexus/content/groups/public</url>
+            <id>yalamanchili.info</id>
+            <name>yalamanchili.info</name>
+            <url>http://tools.yalamanchili.info/nexus/content/groups/public</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -441,9 +440,9 @@
     <!-- download plugins from this repo -->
     <pluginRepositories>
         <pluginRepository>
-            <id>sstech.us</id>
-            <name>sstech.us</name>
-            <url>http://tools.sstech.us/nexus/content/groups/public</url>
+            <id>yalamanchili.info</id>
+            <name>yalamanchili.info</name>
+            <url>http://tools.yalamanchili.info/nexus/content/groups/public</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -456,16 +455,16 @@
     <distributionManagement>
         <!-- Publish the versioned releases here -->
         <repository>
-            <id>sstech.us</id>
-            <name>sstech.us</name>
-            <url>http://tools.sstech.us/nexus/content/repositories/releases</url>
+            <id>yalamanchili.info</id>
+            <name>yalamanchili.info</name>
+            <url>http://tools.yalamanchili.info/nexus/content/repositories/releases</url>
         </repository>
 
         <!-- Publish the versioned releases here -->
         <snapshotRepository>
-            <id>sstech.us</id>
-            <name>sstech.us</name>
-            <url>http://tools.sstech.us/nexus/content/repositories/snapshots</url>
+            <id>yalamanchili.info</id>
+            <name>yalamanchili.info</name>
+            <url>http://tools.yalamanchili.info/nexus/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
     <properties>
