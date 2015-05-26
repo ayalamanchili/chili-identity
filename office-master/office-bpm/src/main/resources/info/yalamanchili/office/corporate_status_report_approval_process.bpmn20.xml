@@ -15,9 +15,9 @@
         </startEvent>
         <sequenceFlow id="flow1" sourceRef="corporateStatusReportStart" targetRef="corporateStatusReportApprovalTask" />
         <userTask id="corporateStatusReportApprovalTask" 
-                  name="Corporate Status Report Task">
+                  name="Corporate Status Report Approval Task">
             <documentation>
-                Corporate Status Report Approval Task
+                Corporate Status Report Task For
                 Report Start Date    : #{entity.reportStartDate}
                 Report End Date      : #{entity.reportEndDate}                
             </documentation>
