@@ -63,7 +63,7 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
 
     @Override
     protected void configure() {
-        basePanel.setCaptionHTML("Status Report");
+        basePanel.setCaptionHTML("StatusReport");
         startDateField.getLabel().getElement().getStyle().setWidth(90, Style.Unit.PX);
         endDateField.getLabel().getElement().getStyle().setWidth(90, Style.Unit.PX);
     }
@@ -93,16 +93,16 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
         entity.put("report", new JSONString(statusReportsF.getHTML()));
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        new ResponseStatusWidget().show("Successfully submited status report");
-                        TabPanel.instance().homePanel.entityPanel.clear();
-                        TabPanel.instance().homePanel.entityPanel.add(new ReadAllCorporateStatusReportsPanel());
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                new ResponseStatusWidget().show("Successfully submited status report");
+                TabPanel.instance().homePanel.entityPanel.clear();
+                TabPanel.instance().homePanel.entityPanel.add(new ReadAllCorporateStatusReportsPanel());
+            }
+        });
     }
 
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "corporate-statusreport";
+        return OfficeWelcome.constants.root_url() + "corporate-statusreport/submit-corporate-statusreport-request";
     }
 }

@@ -7,11 +7,15 @@
  */
 package info.yalamanchili.office.jrs.reports;
 
+import info.chili.jpa.validation.Validate;
+import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.employee.statusreport.CorporateStatusReportDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.employee.statusreport.CorporateStatusReport;
+import info.yalamanchili.office.entity.expense.ImmigrationCheckRequisition;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.expense.ImmigrationCheckRequisitionService;
 import info.yalamanchili.office.reports.profile.CorporateStatusReportService;
 import java.util.List;
 import javax.ws.rs.Consumes;
@@ -25,6 +29,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,7 +48,6 @@ public class CorporateStatusReportResource {
 
     @Autowired
     protected CorporateStatusReportService corporateStatusReportService;
-
     @Autowired
     protected CorporateStatusReportDao corporateStatusReportDao;
 
@@ -73,9 +77,16 @@ public class CorporateStatusReportResource {
         return tableObj;
     }
 
+    @PUT
+    @Validate
+    @Path("/submit-corporate-statusreport-request")
+    public void submitCorporateStatusReportRequest(CorporateStatusReport entity) {
+        corporateStatusReportService.instance().startCorporateStatusReportProcess(entity);
+    }
+
     @GET
     @Path("/report")
-    public void basicEmployeeInfoReport() {
+    public void basicCorporateStatusReport() {
         corporateStatusReportService.getCorporateStatusReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
 

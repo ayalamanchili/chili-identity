@@ -10,21 +10,19 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:activiti="http://activiti.org/bpmn">
  
-    <process id="corporate_status_Rrport_approval_process">
+    <process id="corporate_status_report_approval_process">
         <startEvent id="corporateStatusReportStart">
         </startEvent>
         <sequenceFlow id="flow1" sourceRef="corporateStatusReportStart" targetRef="corporateStatusReportApprovalTask" />
         <userTask id="corporateStatusReportApprovalTask" 
-                  name="Corporate Status Report Task" 
-                  activiti:candidateGroups="ROLE_HR_ADMINSTRATION">
+                  name="Corporate Status Report Task">
             <documentation>
-                Corporate Status Report Task for
-                Start Date    : #{entity.startDate}
-                End Date      : #{entity.endDate}
-                
+                Corporate Status Report Approval Task
+                Report Start Date    : #{entity.reportStartDate}
+                Report End Date      : #{entity.reportEndDate}                
             </documentation>
             <extensionElements>
-                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.statusreport.CorporateStatusReportProcess" />
                 <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.statusreport.CorporateStatusReportProcess" />
                 <activiti:formProperty id="status" 
                                        name="Approved?"
@@ -33,11 +31,6 @@
                     <activiti:value id="approved" name="approved"/>
                     <activiti:value id="rejected" name="rejected"/>
                 </activiti:formProperty>
-                <activiti:formProperty id="username" 
-                                       name="Username"
-                                       required="true" 
-                                       variable="username"
-                                       type="string" />
                 <activiti:formProperty id="notes" 
                                        name="Notes"
                                        required="false" 

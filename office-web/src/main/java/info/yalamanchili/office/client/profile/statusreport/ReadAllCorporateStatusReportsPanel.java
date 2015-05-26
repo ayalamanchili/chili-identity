@@ -28,7 +28,7 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
     private static Logger logger = Logger.getLogger(ReadAllCorporateStatusReportsPanel.class.getName());
 
     public ReadAllCorporateStatusReportsPanel() {
-        initTable("Status Reports", OfficeWelcome.constants);
+        initTable("StatusReports", OfficeWelcome.constants);
     }
 
     @Override

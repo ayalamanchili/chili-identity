@@ -49,7 +49,7 @@ public class CorporateStatusReportProcess implements TaskListener {
         if (emp.getEmployeeType().getName().equals("Corporate Employee") && reportsToEmp != null) {
             dt.addCandidateUser(reportsToEmp.getEmployeeId());
         } else {
-            dt.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_HR_ADMINSTRATION.name());
+            dt.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_ADMIN.name());
         }
     }
 

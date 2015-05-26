@@ -79,7 +79,7 @@ public class CorporateStatusReportService {
         vars.put("entity", entity);
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
         vars.put("currentEmployee", emp);
-        return OfficeBPMService.instance().startProcess("corporate_status_Rrport_approval_process", vars);
+        return OfficeBPMService.instance().startProcess("corporate_status_report_approval_process", vars);
     }
     //TODO move to commons
 
