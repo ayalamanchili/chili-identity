@@ -47,6 +47,7 @@
             <documentation>
                 Corporate Employee Leave Request
                 Employee Name : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Hire Date     : #{currentEmployee.startDate}
                 Start Date    : #{entity.startDate}
                 End Date      : #{entity.endDate} 
                 Category      : #{entity.category} 
@@ -117,6 +118,7 @@
             <documentation>
                 Corporate Employee Unpaid Leave Final Approval Request
                 Employee Name       : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Hire Date           : #{currentEmployee.startDate}
                 Start Date          : #{entity.startDate}
                 End Date            : #{entity.endDate} 
                 Category            : #{entity.category} 
