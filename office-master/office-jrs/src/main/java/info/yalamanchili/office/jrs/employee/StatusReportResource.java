@@ -84,6 +84,11 @@ public class StatusReportResource extends CRUDResource<StatusReport> {
     public StatusReport clone(@PathParam("id") Long id) {
         StatusReport entity = statusReportDao.clone(id);
         entity.setReportDocument(new Gson().fromJson(entity.getReport(), ReportDocument.class));
+        entity.setApprovedBy(null);
+        entity.setApprovedDate(null);
+        entity.setBpmProcessId(null);
+        entity.setSubmittedDate(null);
+        entity.setStage(null);
         return entity;
     }
 
