@@ -53,7 +53,7 @@ public class StatusReportService {
     }
 
     public String save(StatusReport entity, Boolean submitForApproval) {
-        if (statusReportDao.findByDates(entity) != null) {
+        if (entity.getId() == null && statusReportDao.findByDates(entity) != null) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "status.report.dates.invalid", "Status Report with the entered dates already exists");
         }
         Gson gson = new Gson();
