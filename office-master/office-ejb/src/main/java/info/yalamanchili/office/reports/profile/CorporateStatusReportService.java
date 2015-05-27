@@ -7,7 +7,6 @@
  */
 package info.yalamanchili.office.reports.profile;
 
-import com.google.gson.Gson;
 import info.chili.reporting.ReportGenerator;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
@@ -19,7 +18,6 @@ import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.employee.statusreport.CorporateStatusReport;
 import info.yalamanchili.office.entity.employee.statusreport.CropStatusReportsStatus;
-import info.yalamanchili.office.entity.employee.statusreport.StatusReport;
 import info.yalamanchili.office.entity.employee.statusreport.StatusReportStage;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
@@ -62,10 +60,9 @@ public class CorporateStatusReportService {
     }
 
     public String save(CorporateStatusReport entity, Boolean submitForApproval) {
-        Gson gson = new Gson();
         entity = corporateStatusReportDao.save(entity);
-        if (submitForApproval && (CropStatusReportsStatus.Pending_Manager_Approval.equals(entity.getStatus()) || StatusReportStage.Saved.equals(entity.getStatus()))) {
-//            entity.setStatus(CropStatusReportsStatus.Pending_Manager_Approval);
+        if (submitForApproval) {
+            entity.setStatus(CropStatusReportsStatus.Pending_Manager_Approval);
             String bpmProcessId = startCorporateStatusReportProcess(entity);
             entity.setBpmProcessId(bpmProcessId);
         }
@@ -73,7 +70,7 @@ public class CorporateStatusReportService {
     }
 
     public String startCorporateStatusReportProcess(CorporateStatusReport entity) {
-        OfficeBPMTaskService.instance().deleteTasksWithVariable("entityId", entity.getId(), "corporateStatusReportApprovalTask", true);
+        OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("entityId", entity.getId());
         vars.put("entity", entity);
