@@ -8,21 +8,22 @@
  */
 package info.yalamanchili.office.jrs.bpm;
 
-import info.chili.service.jrs.types.Entries;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.bpm.OfficeBPMFormService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.bpm.types.FormProperty;
 import info.yalamanchili.office.bpm.types.Task;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -30,28 +31,24 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
+ * This will server the html for managing tasks from email and other browser
+ * based sessions
  *
  * @author ayalamanchili
  */
-@Path("public/bpm")
+@Path("secured/web/bpm/")
 @Component
 @Scope("request")
 @Produces("application/json")
 @Consumes("application/json")
 @Transactional
-public class PublicBPMResource {
+public class WebBpmResource {
 
     @Autowired
     protected OfficeBPMTaskService officeBPMTaskService;
 
     @Autowired
     protected OfficeBPMFormService officeBPMFormService;
-
-    @POST
-    @Path("/completetask/{taskId}")
-    public void completeTask(@PathParam("taskId") String taskId, Entries vars) {
-        officeBPMTaskService.completeTask(taskId, vars.getEntries());
-    }
 
     @GET
     @Path("/task/{taskId}")
@@ -63,33 +60,38 @@ public class PublicBPMResource {
         return Response.ok(res.toString(), MediaType.TEXT_HTML).build();
     }
 
+    @POST
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Path("/task/{taskId}")
+    public void completeTask(@PathParam("taskId") String taskId, MultivaluedMap<String, String> formParams) {
+        List<Entry> vars = new ArrayList();
+        for (Map.Entry<String, List<String>> v : formParams.entrySet()) {
+            if (v.getValue().size() > 0) {
+                vars.add(new Entry(v.getKey(), v.getValue().get(0)));
+            }
+        }
+        officeBPMTaskService.completeTask(taskId, vars);
+    }
+
     public String buildForm(String taskId) {
         StringBuilder form = new StringBuilder();
-        form.append("<form method=\"post\" action=\"http://localhost:9080/office/resources/public/bpm/task/" + taskId + "\">");
+        form.append("<form method=\"post\" action=\"/office/resources/public/web/bpm/task/").append(taskId).append("\">");
         for (FormProperty property : officeBPMFormService.getTaskFormProperties(taskId)) {
             form.append(property.getName()).append(" : ");
             if (property.getType().getName().equals("string")) {
-                form.append("<input type=\"text\" type=\"").append(property.getName()).append("\"/>");
+                form.append("<input type=\"text\" name=\"").append(property.getId()).append("\"/>");
             }
             if (property.getType().getName().equals("enum")) {
-                form.append("<select>");
+                form.append("<select name=\"" + property.getId() + "\">");
                 for (Entry entry : property.getType().getValues()) {
-                    form.append("<option value=\"").append(entry.getValue()).append("\">").append(entry.getValue()).append("</option>");
+                    form.append("<option value=\"").append(entry.getId()).append("\">").append(entry.getValue()).append("</option>");
                 }
                 form.append("</select>");
             }
             form.append("</br>");
         }
+        form.append("<input type=\"submit\" value=\"Submit\"> ");
         form.append("</form>");
         return form.toString();
-    }
-
-    @POST
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Path("/task")
-    public Response completeTask(
-            @FormParam("key") List<String> values,
-            @FormParam("key") List<String> keys) {
-        return Response.ok().build();
     }
 }
