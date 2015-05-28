@@ -8,7 +8,9 @@
  */
 package info.yalamanchili.office.jrs.time;
 
+import info.yalamanchili.office.Time.TimeRecordService;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.TimeRecordDao;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.model.time.TimeRecord;
@@ -41,7 +43,6 @@ public class TimeRecordResource {
     @Autowired
     protected TimeRecordDao timeRecordDao;
 
-    
     @GET
     @Path("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_BULK_IMPORT')")
@@ -49,7 +50,6 @@ public class TimeRecordResource {
         return timeRecordDao.find(id);
     }
 
-    
     @GET
     @Path("/employee/{empId}/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_BULK_IMPORT')")
@@ -69,5 +69,12 @@ public class TimeRecordResource {
     @PreAuthorize("hasAnyRole('ROLE_BULK_IMPORT')")
     public void delete(@PathParam("id") String id) {
         timeRecordDao.delete(id);
+    }
+
+    @GET
+    @Path("/all-emp-summary-report")
+    @PreAuthorize("hasAnyRole('ROLE_HR_ADMINSTRATION','ROLE_CORPORATE_TIME_REPORTS')")
+    public void getAllEmployeesSummaryReport() {
+        TimeRecordService.instance().getAllEmployeesSummaryReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
 }
