@@ -5,12 +5,13 @@ package info.yalamanchili.office.server;
 
 import info.chili.gwt.server.AbstractHttpService;
 import info.yalamanchili.office.config.OfficeWebConfiguration;
+import java.io.Serializable;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequestMapping("/**/httpService")
-public class HttpServiceImpl extends AbstractHttpService {
+public class HttpServiceImpl extends AbstractHttpService implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Autowired
