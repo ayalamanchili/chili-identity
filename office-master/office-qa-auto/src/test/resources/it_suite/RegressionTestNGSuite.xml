@@ -19,6 +19,11 @@
                     <class name="info.yalamanchili.office.qa.myoffice.EmployeesTest"/>
                 </classes>
             </package>
+            <package name="info.yalamanchili.office.qa.profile">
+                <classes>
+                    <class name="info.yalamanchili.office.qa.profile.AddressesTest"/>                    
+                </classes>
+            </package>
         </packages>
     </test>
     
