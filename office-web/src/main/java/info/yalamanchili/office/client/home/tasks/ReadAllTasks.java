@@ -71,6 +71,7 @@ public class ReadAllTasks extends CRUDReadAllComposite {
 
     @Override
     public void fillData(JSONArray entities) {
+        logger.info("ddddddddddddddd" + entities.toString());
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
