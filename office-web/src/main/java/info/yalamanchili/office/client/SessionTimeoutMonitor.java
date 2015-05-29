@@ -18,10 +18,8 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.rpc.HttpService;
-import info.chili.gwt.widgets.ResponseStatusWidget;
 
 public class SessionTimeoutMonitor {
 
@@ -29,8 +27,8 @@ public class SessionTimeoutMonitor {
     private static SessionTimeoutMonitor instance = new SessionTimeoutMonitor();
     private SessionTimeoutTimer activityTimer;
     private HandlerRegistration activityHandlerRegistration;
-    //8 hours server is timeout is set to 540 mins 9 hours
-    private static final int TIMEOUT_IN_MINUTES = 480;
+    //10 hours -server inactive timeout is set in web.xml
+    private static final int TIMEOUT_IN_MINUTES = 600;
 
     private SessionTimeoutMonitor() {
         int total_timeout = maxSessionTimeoutSeconds();

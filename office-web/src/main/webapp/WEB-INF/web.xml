@@ -60,7 +60,7 @@
     </servlet-mapping>
     <!--Session timeout min -->
     <session-config>
-        <session-timeout>75</session-timeout>
+        <session-timeout>600</session-timeout>
     </session-config>
     <welcome-file-list>
         <welcome-file>office.html</welcome-file>
