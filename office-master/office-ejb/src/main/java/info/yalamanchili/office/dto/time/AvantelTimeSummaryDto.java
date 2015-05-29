@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -5,6 +8,7 @@
 package info.yalamanchili.office.dto.time;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -14,16 +18,19 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlRootElement
 @XmlType
-public class TimeRecordSummary {
+public class AvantelTimeSummaryDto {
 
     protected String Employee;
-    protected BigDecimal reception;
-    protected BigDecimal secondndFloor;
-    protected BigDecimal Cubical;
+    protected BigDecimal receptionHours;
+    protected BigDecimal secondndFloorHours;
+    protected BigDecimal cubicalHours;
     protected BigDecimal availablePTOHours;
     protected BigDecimal monthlyAccuredHours;
     protected BigDecimal totalavailablePTOHours;
     protected BigDecimal usedPTOHours;
+    protected Date startDate;
+    protected Date endDate;
+    
 
     public String getEmployee() {
         return Employee;
@@ -33,28 +40,28 @@ public class TimeRecordSummary {
         this.Employee = Employee;
     }
 
-    public BigDecimal getReception() {
-        return reception;
+    public BigDecimal getReceptionHours() {
+        return receptionHours;
     }
 
-    public void setReception(BigDecimal reception) {
-        this.reception = reception;
+    public void setReceptionHours(BigDecimal receptionHours) {
+        this.receptionHours = receptionHours;
     }
 
-    public BigDecimal getSecondndFloor() {
-        return secondndFloor;
+    public BigDecimal getSecondndFloorHours() {
+        return secondndFloorHours;
     }
 
-    public void setSecondndFloor(BigDecimal secondndFloor) {
-        this.secondndFloor = secondndFloor;
+    public void setSecondndFloorHours(BigDecimal secondndFloorHours) {
+        this.secondndFloorHours = secondndFloorHours;
     }
 
-    public BigDecimal getCubical() {
-        return Cubical;
+    public BigDecimal getCubicalHours() {
+        return cubicalHours;
     }
 
-    public void setCubical(BigDecimal Cubical) {
-        this.Cubical = Cubical;
+    public void setCubicalHours(BigDecimal cubicalHours) {
+        this.cubicalHours = cubicalHours;
     }
 
     public BigDecimal getAvailablePTOHours() {
@@ -89,6 +96,22 @@ public class TimeRecordSummary {
         this.usedPTOHours = usedPTOHours;
     }
 
-    public TimeRecordSummary() {
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public AvantelTimeSummaryDto() {
     }
 }

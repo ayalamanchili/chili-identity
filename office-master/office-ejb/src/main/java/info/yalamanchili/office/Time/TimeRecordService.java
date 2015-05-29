@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -9,14 +12,13 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.time.TimeRecordDao;
-import info.yalamanchili.office.dto.time.TimeRecordSummary;
+import info.yalamanchili.office.dto.time.AvantelTimeSummaryDto;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,13 +30,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("prototype")
 public class TimeRecordService {
 
-    @Autowired
+    @Autowired  
     protected TimeRecordDao timeRecordDao;
 
-    @Async
     @Transactional(readOnly = true)
     public void getAllEmployeesSummaryReport(String email) {
-        List<TimeRecordSummary> summary = new ArrayList<TimeRecordSummary>();
+        List<AvantelTimeSummaryDto> summary = new ArrayList<AvantelTimeSummaryDto>();
         for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
 //            summary.add(getMonthlySummary(emp));
         }
