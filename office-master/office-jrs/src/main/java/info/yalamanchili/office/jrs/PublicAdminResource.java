@@ -15,7 +15,6 @@ import info.yalamanchili.office.bpm.types.AccountReset;
 import info.yalamanchili.office.dto.security.User;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.profile.EmployeeService;
-import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;

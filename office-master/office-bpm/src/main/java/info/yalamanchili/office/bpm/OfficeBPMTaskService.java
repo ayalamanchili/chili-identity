@@ -100,7 +100,7 @@ public class OfficeBPMTaskService {
     }
 
     public void completeTask(String taskId, List<Entry> request) {
-        Map<String, Object> vars = new HashMap<String, Object>();
+        Map<String, Object> vars = new HashMap<>();
         if (request != null) {
             for (Entry entry : request) {
                 vars.put(entry.getId(), entry.getValue());

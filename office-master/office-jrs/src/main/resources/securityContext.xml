@@ -17,12 +17,20 @@
     <http auto-config="true" create-session="stateless" use-expressions="true">
         <intercept-url pattern="/**/secured/**" access="hasRole('ROLE_USER') and hasIpAddress('127.0.0.1')" />
         <csrf disabled="true"/>
-       <!-- http://stackoverflow.com/questions/28647136/how-to-disable-x-frame-options-response-header-in-spring-security-->
+        <!-- http://stackoverflow.com/questions/28647136/how-to-disable-x-frame-options-response-header-in-spring-security-->
         <headers>
             <frame-options policy="SAMEORIGIN"/>
         </headers>
+        <!-- This is to handle form login for email tasks -->
+        <!--<form-login authentication-success-handler-ref="authenticationSuccessHandler"/>-->
     </http>
      
+<!--    <beans:bean id="authenticationSuccessHandler"
+                class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+        fix target default URL
+        <beans:property name="defaultTargetUrl" value="/problemSolution/home"/>
+    </beans:bean>-->
+
     <authentication-manager>
         <authentication-provider>
             <password-encoder ref="passwordEncoder" />

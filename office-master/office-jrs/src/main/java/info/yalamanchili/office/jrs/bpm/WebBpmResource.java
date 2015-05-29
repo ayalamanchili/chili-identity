@@ -57,7 +57,7 @@ public class WebBpmResource {
         StringBuilder res = new StringBuilder();
         Task task = officeBPMTaskService.getTaskForId(taskId);
         res.append("<body><pre>").append(task.getDescription()).append(buildForm(taskId)).append("</pre></body>");
-        return Response.ok(res.toString(), MediaType.TEXT_HTML).build();
+        return Response.ok(res.toString(), MediaType.TEXT_HTML).header("Referer", "/office/resources/public/web/bpm/task/" + taskId).build();
     }
 
     @POST
