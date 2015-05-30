@@ -27,29 +27,30 @@ import org.activiti.engine.delegate.TaskListener;
 public class CorporateStatusReportProcess implements TaskListener {
 
     @Override
-    public void notify(DelegateTask dt) {
-        if ("create".equals(dt.getEventName())) {
-            corporateStatusReportTaskCreated(dt);
+    public void notify(DelegateTask task) {
+        if ("create".equals(task.getEventName())) {
+            corporateStatusReportTaskCreated(task);
         }
-        if ("complete".equals(dt.getEventName())) {
-            corporateStatusReportTaskCompleted(dt);
+        if ("complete".equals(task.getEventName())) {
+            corporateStatusReportTaskCompleted(task);
         }
     }
 
     private void corporateStatusReportTaskCreated(DelegateTask dt) {
-        if (dt.getTaskDefinitionKey().equals("corporateStatusReportApprovalTask")) {
-            assigncorporateStatusReportTask(dt);
-        }
+        assignCorporateStatusReportTask(dt);
         new GenericTaskCreateNotification().notify(dt);
     }
 
-    private void assigncorporateStatusReportTask(DelegateTask dt) {
-        Employee emp = (Employee) dt.getExecution().getVariable("currentEmployee");
-        Employee reportsToEmp = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Reports_To");
-        if (emp.getEmployeeType().getName().equals("Corporate Employee") && reportsToEmp != null) {
-            dt.addCandidateUser(reportsToEmp.getEmployeeId());
+    private void assignCorporateStatusReportTask(DelegateTask task) {
+        Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
+        Employee manager = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Perf_Eval_Manager");
+        if (manager == null) {
+            manager = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Reports_To");
+        }
+        if (manager != null) {
+            task.addCandidateUser(manager.getEmployeeId());
         } else {
-            dt.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_ADMIN.name());
+            task.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_HR_ADMINSTRATION.name());
         }
     }
 
@@ -65,11 +66,10 @@ public class CorporateStatusReportProcess implements TaskListener {
         //Status
         String status = (String) dt.getExecution().getVariable("status");
         if (status.equalsIgnoreCase("approved")) {
-            entity.setStatus(CropStatusReportsStatus.Pending_Manager_Approval);
-        } else {
             entity.setStatus(CropStatusReportsStatus.Approved);
+        } else if (status.equalsIgnoreCase("rejected")) {
+            entity.setStatus(CropStatusReportsStatus.Rejected);
         }
-
         new GenericTaskCompleteNotification().notify(dt);
     }
 

@@ -17,4 +17,5 @@ public enum CropStatusReportsStatus {
     Saved,
     Pending_Manager_Approval,
     Approved,
+    Rejected,
 }

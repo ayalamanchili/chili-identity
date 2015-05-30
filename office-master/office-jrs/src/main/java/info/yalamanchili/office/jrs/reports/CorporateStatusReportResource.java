@@ -8,14 +8,11 @@
 package info.yalamanchili.office.jrs.reports;
 
 import info.chili.jpa.validation.Validate;
-import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.employee.statusreport.CorporateStatusReportDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.employee.statusreport.CorporateStatusReport;
-import info.yalamanchili.office.entity.expense.ImmigrationCheckRequisition;
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.expense.ImmigrationCheckRequisitionService;
 import info.yalamanchili.office.reports.profile.CorporateStatusReportService;
 import java.util.List;
 import javax.ws.rs.Consumes;
@@ -29,7 +26,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,8 +54,15 @@ public class CorporateStatusReportResource {
     }
 
     @PUT
-    public void save(CorporateStatusReport entity) {
-        corporateStatusReportDao.save(entity);
+    @Validate
+    public void save(CorporateStatusReport entity, @QueryParam("submitForApproval") Boolean submitForApproval) {
+        corporateStatusReportService.save(entity, submitForApproval);
+    }
+
+    @PUT
+    @Path("/delete/{id}")
+    public void save(@PathParam("id") Long id) {
+        corporateStatusReportService.delete(id);
     }
 
     @GET
@@ -75,13 +78,6 @@ public class CorporateStatusReportResource {
         tableObj.setEntities(corporateStatusReportDao.getReports(emp, start, limit));
         tableObj.setSize(corporateStatusReportDao.getReportsSize(emp, start, limit));
         return tableObj;
-    }
-
-    @PUT
-    @Validate
-    @Path("/submit-corporate-statusreport-request")
-    public void submitCorporateStatusReportRequest(CorporateStatusReport entity) {
-        corporateStatusReportService.instance().startCorporateStatusReportProcess(entity);
     }
 
     @GET
