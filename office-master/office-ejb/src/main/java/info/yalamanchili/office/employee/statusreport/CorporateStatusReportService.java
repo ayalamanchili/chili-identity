@@ -5,8 +5,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.reports.profile;
+package info.yalamanchili.office.employee.statusreport;
 
+import info.chili.jpa.validation.Validate;
 import info.chili.reporting.ReportGenerator;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
@@ -15,10 +16,12 @@ import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.employee.statusreport.CorporateStatusReportDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.dao.time.TimePeriodDao;
 import info.yalamanchili.office.entity.employee.statusreport.CorporateStatusReport;
 import info.yalamanchili.office.entity.employee.statusreport.CropStatusReportsStatus;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
+import info.yalamanchili.office.model.time.TimePeriod;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +46,7 @@ public class CorporateStatusReportService {
     @Autowired
     public CorporateStatusReportDao corporateStatusReportDao;
 
+    @Validate
     public String save(CorporateStatusReport entity, Boolean submitForApproval) {
         entity = corporateStatusReportDao.save(entity);
         if (submitForApproval) {

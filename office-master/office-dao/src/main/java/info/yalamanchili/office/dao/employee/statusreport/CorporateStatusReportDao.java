@@ -7,12 +7,16 @@
  */
 package info.yalamanchili.office.dao.employee.statusreport;
 
+import info.chili.commons.DateUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.dao.time.TimePeriodDao;
 import info.yalamanchili.office.entity.employee.statusreport.CorporateStatusReport;
 import info.yalamanchili.office.entity.employee.statusreport.CropStatusReportsStatus;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.model.time.TimePeriod;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -50,6 +54,8 @@ public class CorporateStatusReportDao extends CRUDDao<CorporateStatusReport> {
         query.setParameter("empParam", emp);
         return query.getSingleResult();
     }
+
+    
 
     public CorporateStatusReportDao() {
         super(CorporateStatusReport.class);

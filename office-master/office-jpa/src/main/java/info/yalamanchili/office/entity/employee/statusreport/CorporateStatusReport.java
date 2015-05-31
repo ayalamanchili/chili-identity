@@ -9,6 +9,7 @@ package info.yalamanchili.office.entity.employee.statusreport;
 
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.model.time.TimePeriod;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,6 +17,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -179,6 +181,17 @@ public class CorporateStatusReport extends AbstractEntity {
 
     public void setBpmProcessId(String bpmProcessId) {
         this.bpmProcessId = bpmProcessId;
+    }
+
+    @Transient
+    protected TimePeriod statusReportPeriod;
+
+    public TimePeriod getStatusReportPeriod() {
+        return statusReportPeriod;
+    }
+
+    public void setStatusReportPeriod(TimePeriod statusReportPeriod) {
+        this.statusReportPeriod = statusReportPeriod;
     }
 
     @Override

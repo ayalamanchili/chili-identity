@@ -8,12 +8,15 @@
 package info.yalamanchili.office.jrs.reports;
 
 import info.chili.jpa.validation.Validate;
+import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.dao.employee.statusreport.CorporateStatusReportDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.dao.time.TimePeriodDao;
 import info.yalamanchili.office.entity.employee.statusreport.CorporateStatusReport;
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.reports.profile.CorporateStatusReportService;
+import info.yalamanchili.office.employee.statusreport.CorporateStatusReportService;
+import info.yalamanchili.office.model.time.TimePeriod;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -54,14 +57,16 @@ public class CorporateStatusReportResource {
     }
 
     @PUT
-    @Validate
     public void save(CorporateStatusReport entity, @QueryParam("submitForApproval") Boolean submitForApproval) {
+        TimePeriod statusReportPeriod = TimePeriodDao.instance().fineOne(entity.getStatusReportPeriod().getId());
+        entity.setReportStartDate(statusReportPeriod.getStartDate());
+        entity.setReportEndDate(statusReportPeriod.getEndDate());
         corporateStatusReportService.save(entity, submitForApproval);
     }
 
     @PUT
     @Path("/delete/{id}")
-    public void save(@PathParam("id") Long id) {
+    public void delete(@PathParam("id") Long id) {
         corporateStatusReportService.delete(id);
     }
 
@@ -78,6 +83,12 @@ public class CorporateStatusReportResource {
         tableObj.setEntities(corporateStatusReportDao.getReports(emp, start, limit));
         tableObj.setSize(corporateStatusReportDao.getReportsSize(emp, start, limit));
         return tableObj;
+    }
+
+    @GET
+    @Path("/periods")
+    public List<Entry> getStatusReportPeriods() {
+        return TimePeriodDao.instance().getDropDown(0, 10);
     }
 
     @GET
