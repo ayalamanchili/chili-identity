@@ -14,7 +14,6 @@ import com.axeiya.gwtckeditor.client.CKConfig.TOOLBAR_OPTIONS;
 import com.axeiya.gwtckeditor.client.CKEditor;
 import com.axeiya.gwtckeditor.client.Toolbar;
 import com.axeiya.gwtckeditor.client.ToolbarLine;
-import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
@@ -24,15 +23,14 @@ import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
-import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.fields.BooleanField;
-import info.chili.gwt.fields.DateField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import java.util.Date;
 
 /**
  *
@@ -42,9 +40,7 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
 
     protected CaptionPanel basePanel = new CaptionPanel();
     protected FlowPanel panel = new FlowPanel();
-    DateField startDateField = new DateField(OfficeWelcome.constants, "startDate", "StatusReport", false, false, Alignment.HORIZONTAL);
-    DateField endDateField = new DateField(OfficeWelcome.constants, "endDate", "StatusReport", false, false, Alignment.HORIZONTAL);
-
+    SelectTimePeriodWidget statusReportPeriodF = new SelectTimePeriodWidget(false, true);
     CKEditor statusReportsF = getEditor();
     BooleanField submitForApprovalF = new BooleanField(OfficeWelcome.constants, "submitForApproval", "CorporateStatusReport", false, false, Alignment.HORIZONTAL);
     Button createB = new Button("Save");
@@ -61,8 +57,6 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
     }
 
     public final void populateEntityFromFields(JSONObject entity) {
-        startDateField.setValue(JSONUtils.toString(entity, "reportStartDate"));
-        endDateField.setValue(JSONUtils.toString(entity, "reportEndDate"));
         statusReportsF.setHTML(JSONUtils.toString(entity, "report"));
     }
 
@@ -75,15 +69,12 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
     @Override
     protected void configure() {
         basePanel.setCaptionHTML("StatusReport");
-        startDateField.getLabel().getElement().getStyle().setWidth(90, Style.Unit.PX);
-        endDateField.getLabel().getElement().getStyle().setWidth(90, Style.Unit.PX);
     }
 
     @Override
     protected void addWidgets() {
         basePanel.setContentWidget(panel);
-        panel.add(startDateField);
-        panel.add(endDateField);
+        panel.add(statusReportPeriodF);
         panel.add(statusReportsF);
         panel.add(submitForApprovalF);
         panel.add(createB);
@@ -107,8 +98,7 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
         if (entity == null) {
             entity = new JSONObject();
         }
-        entity.put("reportStartDate", new JSONString(DateUtils.toDateString(startDateField.getDate())));
-        entity.put("reportEndDate", new JSONString(DateUtils.toDateString(endDateField.getDate())));
+        entity.put("statusReportPeriod", statusReportPeriodF.getSelectedObject());
         entity.put("report", new JSONString(statusReportsF.getHTML()));
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
