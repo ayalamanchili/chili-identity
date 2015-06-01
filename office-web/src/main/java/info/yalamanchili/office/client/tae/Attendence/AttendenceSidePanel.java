@@ -10,23 +10,18 @@ package info.yalamanchili.office.client.tae.Attendence;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.URL;
-import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
-import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
-import info.chili.gwt.utils.FileUtils;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.widgets.SuggestBox;
@@ -34,7 +29,6 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.time.TimeSheetStatus;
-import info.yalamanchili.office.client.time.corp.ReadAllCorporateTimeSheetPanel;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -45,7 +39,8 @@ import java.util.logging.Logger;
 public class AttendenceSidePanel extends ALComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(AttendenceSidePanel.class.getName());
-    public FlowPanel timeSheetsidepanel = new FlowPanel();
+    public FlowPanel timeSheetSidePanel = new FlowPanel();
+    //View Employee time sheets
     CaptionPanel timesheetsForEmpCaptionPanel = new CaptionPanel();
     FlowPanel timesheetsForEmpPanel = new FlowPanel();
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false);
@@ -59,7 +54,6 @@ public class AttendenceSidePanel extends ALComposite implements ClickHandler {
             "endDate", "CorporateTimeSheet", false, true);
     EnumField reportStatusField = new EnumField(OfficeWelcome.constants, "status", "CorporateTimeSheet",
             false, false, true, TimeSheetStatus.names(), Alignment.VERTICAL);
-    Button viewReportsB = new Button("View");
     Button reportsB = new Button("Report");
     protected static AttendenceSidePanel instance;
 
@@ -69,13 +63,12 @@ public class AttendenceSidePanel extends ALComposite implements ClickHandler {
 
     public AttendenceSidePanel() {
         instance = this;
-        init(timeSheetsidepanel);
+        init(timeSheetSidePanel);
     }
 
     @Override
     protected void addListeners() {
         showTimeSheetsForEmpB.addClickHandler(this);
-        viewReportsB.addClickHandler(this);
         reportsB.addClickHandler(this);
     }
 
@@ -98,23 +91,21 @@ public class AttendenceSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addWidgets() {
-
         if (Auth.isCorporateEmployee()) {
             //time sheets for emp panel
             timesheetsForEmpPanel.add(employeeSB);
             timesheetsForEmpPanel.add(showTimeSheetsForEmpB);
             timesheetsForEmpCaptionPanel.setContentWidget(timesheetsForEmpPanel);
-            timeSheetsidepanel.add(timesheetsForEmpCaptionPanel);
+            timeSheetSidePanel.add(timesheetsForEmpCaptionPanel);
         }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION, Auth.ROLE.ROLE_CORPORATE_TIME_REPORTS)) {
             //reports panel
-//            reportsPanel.add(startDateF);
-//            reportsPanel.add(endDateF);
-//            reportsPanel.add(reportStatusField);
-//            reportsPanel.add(viewReportsB);
-//            reportsCaptionPanel.setContentWidget(reportsPanel);
-//            timeSheetsidepanel.add(reportsCaptionPanel);
-            timeSheetsidepanel.add(reportsB);
+            reportsPanel.add(startDateF);
+            reportsPanel.add(endDateF);
+            reportsPanel.add(reportStatusField);
+            reportsCaptionPanel.setContentWidget(reportsPanel);
+            timeSheetSidePanel.add(reportsCaptionPanel);
+            timeSheetSidePanel.add(reportsB);
 
         }
     }
@@ -126,62 +117,30 @@ public class AttendenceSidePanel extends ALComposite implements ClickHandler {
             TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllTimeRecordsPanel(employeeSB.getKey()));
         }
         if (event.getSource().equals(reportsB)) {
-            pdfReport();
+            generateReport();
         }
-    }
-
-    protected void processSummaryReports() {
-        HttpService.HttpServiceAsync.instance().doGet(getSummaryReportUrl(), OfficeWelcome.instance().getHeaders(), true,
-                new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                new ResponseStatusWidget().show("Report will be emailed to your primary email");
-            }
-        });
-    }
-
-    protected String getSummaryReportUrl() {
-        return OfficeWelcome.constants.root_url() + "timerecord/all-emp-summary-report";
     }
 
     private String getEmployeeIdsDropDownUrl() {
         return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Corporate Employee");
     }
 
-    protected void pdfReport() {
-        FileUtils.openFile(getReportObject(), getPDFReportURL());
-    }
-
-    protected String getPDFReportURL() {
-        return ChiliClientConfig.instance().getFileDownloadUrl() + "timerecord/report" + "&passthrough=true";
-    }
-
-    protected void viewReport() {
+    protected void generateReport() {
         JSONObject search = getReportObject();
         if (search != null) {
             TabPanel.instance().getTimePanel().entityPanel.clear();
             HttpService.HttpServiceAsync.instance().doPut(getReportUrl(), search.toString(), OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
-                @Override
-                public void onResponse(String result) {
-                    TabPanel.instance().getTimePanel().entityPanel.clear();
-                    if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                        new ResponseStatusWidget().show("no results");
-                    } else {
-                        //TODO use size and entities attributes
-                        JSONObject resObj = JSONParser.parseLenient(result).isObject();
-                        String key = (String) resObj.keySet().toArray()[0];
-                        JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-
-                        TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel("Time Sheet Report Results", results));
-                    }
-                }
-            });
+                        @Override
+                        public void onResponse(String result) {
+                            new ResponseStatusWidget().show("Report will be emailed to your primary ");
+                        }
+                    });
         }
     }
 
     protected String getReportUrl() {
-        return OfficeWelcome.instance().constants.root_url() + "timerecord/report/0/500";
+        return OfficeWelcome.instance().constants.root_url() + "timerecord/report";
     }
 
     private JSONObject getReportObject() {
