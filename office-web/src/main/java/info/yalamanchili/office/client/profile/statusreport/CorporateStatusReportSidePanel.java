@@ -11,12 +11,15 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.widgets.SuggestBox;
@@ -35,6 +38,9 @@ public class CorporateStatusReportSidePanel extends ALComposite implements Click
     protected FlowPanel panel = new FlowPanel();
     protected CaptionPanel mainPanel = new CaptionPanel();
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false);
+    SelectTimePeriodWidget statusReportPeriodF = new SelectTimePeriodWidget(false, true);
+    EnumField statusF = new EnumField(OfficeWelcome.constants, "status", "CorporateStatusReport",
+            false, false, CropStatusReportStatus.names(), Alignment.VERTICAL);
     Button searchB = new Button("Search");
 
     public CorporateStatusReportSidePanel() {
@@ -68,6 +74,8 @@ public class CorporateStatusReportSidePanel extends ALComposite implements Click
     protected void addWidgets() {
         mainPanel.setContentWidget(panel);
         panel.add(employeeSB);
+        panel.add(statusReportPeriodF);
+        panel.add(statusF);
         panel.add(searchB);
     }
 
@@ -81,6 +89,8 @@ public class CorporateStatusReportSidePanel extends ALComposite implements Click
     protected void search() {
         JSONObject entity = new JSONObject();
         entity.put("employee", employeeSB.getSelectedObject());
+        entity.put("statusReportPeriod", statusReportPeriodF.getSelectedObject());
+        entity.put("status", new JSONString(statusF.getValue()));
         HttpService.HttpServiceAsync.instance().doPut(searchReportsUrl(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override

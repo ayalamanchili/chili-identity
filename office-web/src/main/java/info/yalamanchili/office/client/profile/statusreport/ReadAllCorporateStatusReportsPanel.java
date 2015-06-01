@@ -30,11 +30,14 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
 
     private static Logger logger = Logger.getLogger(ReadAllCorporateStatusReportsPanel.class.getName());
 
+    protected boolean searchResultsTable = false;
+
     public ReadAllCorporateStatusReportsPanel() {
         initTable("StatusReports", OfficeWelcome.constants);
     }
 
     public ReadAllCorporateStatusReportsPanel(String title, JSONArray array) {
+        searchResultsTable = true;
         initTable(title, array, OfficeWelcome.constants);
     }
 
@@ -59,9 +62,12 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
-        table.setText(0, 1, getKeyValue("Start Date"));
-        table.setText(0, 2, getKeyValue("End Date"));
-        table.setText(0, 3, getKeyValue("Status"));
+        if (searchResultsTable) {
+            table.setText(0, 1, getKeyValue("Employee"));
+        }
+        table.setText(0, 2, getKeyValue("Start Date"));
+        table.setText(0, 3, getKeyValue("End Date"));
+        table.setText(0, 4, getKeyValue("Status"));
     }
 
     @Override
@@ -69,16 +75,23 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            table.setText(i, 1, DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportStartDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportEndDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 3, JSONUtils.toString(entity, "status"));
+            if (searchResultsTable) {
+                table.setText(i, 1, JSONUtils.toString(entity, "employeeName"));
+            }
+            table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportStartDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportEndDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 4, JSONUtils.toString(entity, "status"));
         }
     }
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         //TODO check permission
-        createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+        if (searchResultsTable) {
+            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
+        } else {
+            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+        }
     }
 
     @Override
@@ -118,7 +131,9 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
 
     @Override
     protected void configureCreateButton() {
-        createButton.setVisible(true);
+        if (!searchResultsTable) {
+            createButton.setVisible(true);
+        }
     }
 
     @Override
