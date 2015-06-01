@@ -68,7 +68,7 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
 
     @Override
     protected void configure() {
-        basePanel.setCaptionHTML("StatusReport");
+        basePanel.setCaptionHTML("StatusReports");
     }
 
     @Override
