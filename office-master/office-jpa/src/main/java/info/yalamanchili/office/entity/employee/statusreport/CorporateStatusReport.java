@@ -69,7 +69,7 @@ public class CorporateStatusReport extends AbstractEntity {
      */
     @Enumerated(EnumType.STRING)
     @Field
-    protected CropStatusReportsStatus status;
+    protected CropStatusReportStatus status;
     /**
      *
      */
@@ -143,11 +143,11 @@ public class CorporateStatusReport extends AbstractEntity {
         this.employee = employee;
     }
 
-    public CropStatusReportsStatus getStatus() {
+    public CropStatusReportStatus getStatus() {
         return status;
     }
 
-    public void setStatus(CropStatusReportsStatus status) {
+    public void setStatus(CropStatusReportStatus status) {
         this.status = status;
     }
 
@@ -192,6 +192,17 @@ public class CorporateStatusReport extends AbstractEntity {
 
     public void setStatusReportPeriod(TimePeriod statusReportPeriod) {
         this.statusReportPeriod = statusReportPeriod;
+    }
+
+    @Transient
+    protected String employeeName;
+
+    public String getEmployeeName() {
+        return employeeName;
+    }
+
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
     }
 
     @Override

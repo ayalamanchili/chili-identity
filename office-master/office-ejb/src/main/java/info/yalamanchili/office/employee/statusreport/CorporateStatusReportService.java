@@ -14,7 +14,7 @@ import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.dao.employee.statusreport.CorporateStatusReportDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.employee.statusreport.CorporateStatusReport;
-import info.yalamanchili.office.entity.employee.statusreport.CropStatusReportsStatus;
+import info.yalamanchili.office.entity.employee.statusreport.CropStatusReportStatus;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +40,7 @@ public class CorporateStatusReportService {
     public String save(CorporateStatusReport entity, Boolean submitForApproval) {
         entity = corporateStatusReportDao.save(entity);
         if (submitForApproval) {
-            entity.setStatus(CropStatusReportsStatus.Pending_Manager_Approval);
+            entity.setStatus(CropStatusReportStatus.Pending_Manager_Approval);
             String bpmProcessId = startCorporateStatusReportProcess(entity);
             entity.setBpmProcessId(bpmProcessId);
         }

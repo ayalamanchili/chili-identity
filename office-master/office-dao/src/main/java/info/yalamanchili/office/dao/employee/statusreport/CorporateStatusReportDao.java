@@ -8,13 +8,17 @@
 package info.yalamanchili.office.dao.employee.statusreport;
 
 import info.chili.dao.CRUDDao;
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.dao.time.TimePeriodDao;
 import info.yalamanchili.office.entity.employee.statusreport.CorporateStatusReport;
-import info.yalamanchili.office.entity.employee.statusreport.CropStatusReportsStatus;
+import info.yalamanchili.office.entity.employee.statusreport.CropStatusReportStatus;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.model.time.TimePeriod;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -35,10 +39,26 @@ public class CorporateStatusReportDao extends CRUDDao<CorporateStatusReport> {
     @Override
     public CorporateStatusReport save(CorporateStatusReport entity) {
         if (entity.getId() == null) {
-            entity.setStatus(CropStatusReportsStatus.Saved);
-            entity.setEmployee(OfficeSecurityService.instance().getCurrentUser());
+            Employee emp = OfficeSecurityService.instance().getCurrentUser();
+            if (find(emp, entity.getReportStartDate(), entity.getReportEndDate()) != null) {
+                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "status.report.exists", "Status Report with same dates already exists");
+            }
+            entity.setStatus(CropStatusReportStatus.Saved);
+            entity.setEmployee(emp);
         }
         return super.save(entity);
+    }
+
+    public CorporateStatusReport find(Employee emp, Date startDate, Date endDate) {
+        TypedQuery<CorporateStatusReport> query = em.createQuery("from " + CorporateStatusReport.class.getCanonicalName() + " where employee=:empParam and reportStartDate=:reportStartDateParam and reportEndDate=:reportEndDateParam", CorporateStatusReport.class);
+        query.setParameter("empParam", emp);
+        query.setParameter("reportStartDateParam", startDate);
+        query.setParameter("reportEndDateParam", endDate);
+        if (query.getResultList().size() > 0) {
+            return query.getResultList().get(0);
+        } else {
+            return null;
+        }
     }
 
     public List<CorporateStatusReport> getReports(Employee emp, int start, int limit) {
@@ -56,12 +76,37 @@ public class CorporateStatusReportDao extends CRUDDao<CorporateStatusReport> {
     }
 
     public List<CorporateStatusReport> search(CorporateStatusReportSearchDto dto) {
+        if (dto.getStatus().contains("NotSubmitted")) {
+            return notSubmittedReport(dto);
+        }
         String queryStr = getSearchReportsQuery(dto);
         TypedQuery<CorporateStatusReport> query = em.createQuery(queryStr, entityCls);
         if (queryStr.contains("employeeParam")) {
             query.setParameter("employeeParam", EmployeeDao.instance().findById(dto.getEmployee().getId()));
         }
-        return query.getResultList();
+        if (queryStr.contains("startDateParam")) {
+            query.setParameter("startDateParam", dto.getStatusReportPeriod().getStartDate());
+            query.setParameter("endDateParam", dto.getStatusReportPeriod().getEndDate());
+        }
+        List<CorporateStatusReport> res = new ArrayList();
+        for (CorporateStatusReport entity : query.getResultList()) {
+            entity.setEmployeeName(entity.getEmployee().getFirstName() + " " + entity.getEmployee().getLastName());
+            res.add(entity);
+        }
+        return res;
+    }
+
+    protected List<CorporateStatusReport> notSubmittedReport(CorporateStatusReportSearchDto dto) {
+        List<CorporateStatusReport> res = new ArrayList();
+        TimePeriod timePeriod = TimePeriodDao.instance().fineOne(dto.getStatusReportPeriod().getId());
+        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
+            if (find(emp, timePeriod.getStartDate(), timePeriod.getEndDate()) == null) {
+                CorporateStatusReport rpt = new CorporateStatusReport();
+                rpt.setEmployeeName(emp.getFirstName() + " " + emp.getLastName());
+                res.add(rpt);
+            }
+        }
+        return res;
     }
 
     protected String getSearchReportsQuery(CorporateStatusReportSearchDto dto) {
@@ -69,6 +114,10 @@ public class CorporateStatusReportDao extends CRUDDao<CorporateStatusReport> {
         query.append("from ").append(CorporateStatusReport.class.getCanonicalName()).append(" where ");
         if (dto.getEmployee() != null) {
             query.append("employee=:employeeParam");
+        }
+        if (dto.getStatusReportPeriod() != null) {
+            query.append("reportStartDate=:startDateParam").append(" and ");
+            query.append("reportEndDate=:endDateParam");
         }
         return query.toString();
     }

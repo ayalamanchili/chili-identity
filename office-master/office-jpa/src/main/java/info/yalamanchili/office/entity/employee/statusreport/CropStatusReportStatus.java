@@ -12,7 +12,7 @@ package info.yalamanchili.office.entity.employee.statusreport;
  *
  * @author ayalamanchili
  */
-public enum CropStatusReportsStatus {
+public enum CropStatusReportStatus {
 
     Saved,
     Pending_Manager_Approval,

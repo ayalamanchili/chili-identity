@@ -15,7 +15,7 @@ import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.employee.statusreport.CorporateStatusReportDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.employee.statusreport.CorporateStatusReport;
-import info.yalamanchili.office.entity.employee.statusreport.CropStatusReportsStatus;
+import info.yalamanchili.office.entity.employee.statusreport.CropStatusReportStatus;
 import info.yalamanchili.office.entity.profile.Employee;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
@@ -66,9 +66,9 @@ public class CorporateStatusReportProcess implements TaskListener {
         //Status
         String status = (String) dt.getExecution().getVariable("status");
         if (status.equalsIgnoreCase("approved")) {
-            entity.setStatus(CropStatusReportsStatus.Approved);
+            entity.setStatus(CropStatusReportStatus.Approved);
         } else if (status.equalsIgnoreCase("rejected")) {
-            entity.setStatus(CropStatusReportsStatus.Rejected);
+            entity.setStatus(CropStatusReportStatus.Rejected);
         }
         new GenericTaskCompleteNotification().notify(dt);
     }
