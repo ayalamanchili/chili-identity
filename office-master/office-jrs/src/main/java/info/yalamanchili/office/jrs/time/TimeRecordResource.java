@@ -71,10 +71,10 @@ public class TimeRecordResource {
         timeRecordDao.delete(id);
     }
 
-    @GET
-    @Path("/all-emp-summary-report")
-    @PreAuthorize("hasAnyRole('ROLE_HR_ADMINSTRATION','ROLE_CORPORATE_TIME_REPORTS')")
-    public void getAllEmployeesSummaryReport() {
+    @PUT
+    @Path("/report")
+    @PreAuthorize("hasAnyRole('ROLE_HR_ADMINSTRATION')")
+    public void report() {
         TimeRecordService.instance().getAllEmployeesSummaryReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
 }

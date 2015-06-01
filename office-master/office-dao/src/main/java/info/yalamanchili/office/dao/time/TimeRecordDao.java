@@ -11,6 +11,8 @@ package info.yalamanchili.office.dao.time;
 import info.yalamanchili.office.model.time.TimeRecord;
 import info.yalamanchili.office.model.time.TimeRecord.TimeRecordsTable;
 import java.util.Date;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Sort;
@@ -61,5 +63,31 @@ public class TimeRecordDao {
 
     public void save(TimeRecord trec) {
         mongoTemplate.save(trec);
+    }
+
+
+    @XmlRootElement
+    @XmlType
+    public static class TimeRecordSearchDto {
+
+        protected Date startDate;
+        protected Date endDate;
+
+        public Date getStartDate() {
+            return startDate;
+        }
+
+        public void setStartDate(Date startDate) {
+            this.startDate = startDate;
+        }
+
+        public Date getEndDate() {
+            return endDate;
+        }
+
+        public void setEndDate(Date endDate) {
+            this.endDate = endDate;
+        }
+
     }
 }

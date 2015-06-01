@@ -10,17 +10,14 @@ package info.yalamanchili.office.Time;
 import info.chili.reporting.ReportGenerator;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
-import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.time.TimeRecordDao;
 import info.yalamanchili.office.dto.time.AvantelTimeSummaryDto;
-import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -30,16 +27,21 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("prototype")
 public class TimeRecordService {
 
-    @Autowired  
+    @Autowired
     protected TimeRecordDao timeRecordDao;
 
-    @Transactional(readOnly = true)
-    public void getAllEmployeesSummaryReport(String email) {
-        List<AvantelTimeSummaryDto> summary = new ArrayList<AvantelTimeSummaryDto>();
-        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
-//            summary.add(getMonthlySummary(emp));
-        }
-        MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(summary, "attendence-time-summary", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
+    /**
+     * this will generate a summary report of timerecords based on start and end
+     * dates
+     *
+     * @param dto
+     */
+    public void report(TimeRecordDao.TimeRecordSearchDto dto, String email) {
+        List<AvantelTimeSummaryDto> res = new ArrayList();
+        //for loop of all india team employees (corporate employee whose branch is india)
+        // find all time records get hours data and add and populate dto.
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(res, "attandance-summary", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
+
     }
 
     public static CorporateTimeService instance() {
