@@ -34,6 +34,10 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
         initTable("StatusReports", OfficeWelcome.constants);
     }
 
+    public ReadAllCorporateStatusReportsPanel(String title, JSONArray array) {
+        initTable(title, array, OfficeWelcome.constants);
+    }
+
     @Override
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
