@@ -7,9 +7,9 @@
  */
 package info.yalamanchili.office.jrs.reports;
 
-import info.chili.jpa.validation.Validate;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.dao.employee.statusreport.CorporateStatusReportDao;
+import info.yalamanchili.office.dao.employee.statusreport.CorporateStatusReportDao.CorporateStatusReportSearchDto;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.TimePeriodDao;
@@ -85,16 +85,16 @@ public class CorporateStatusReportResource {
         return tableObj;
     }
 
+    @PUT
+    @Path("/search")
+    public List<CorporateStatusReport> search(CorporateStatusReportSearchDto dto) {
+        return corporateStatusReportDao.search(dto);
+    }
+
     @GET
     @Path("/periods")
     public List<Entry> getStatusReportPeriods() {
         return TimePeriodDao.instance().getDropDown(0, 10);
-    }
-
-    @GET
-    @Path("/report")
-    public void basicCorporateStatusReport() {
-        corporateStatusReportService.getCorporateStatusReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
 
     @XmlRootElement

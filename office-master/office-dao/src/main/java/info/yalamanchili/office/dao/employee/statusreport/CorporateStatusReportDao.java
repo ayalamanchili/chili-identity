@@ -20,6 +20,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
@@ -30,7 +31,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Scope("prototype")
 public class CorporateStatusReportDao extends CRUDDao<CorporateStatusReport> {
-    
+
     @Override
     public CorporateStatusReport save(CorporateStatusReport entity) {
         if (entity.getId() == null) {
@@ -39,7 +40,7 @@ public class CorporateStatusReportDao extends CRUDDao<CorporateStatusReport> {
         }
         return super.save(entity);
     }
-    
+
     public List<CorporateStatusReport> getReports(Employee emp, int start, int limit) {
         TypedQuery<CorporateStatusReport> query = em.createQuery("from " + CorporateStatusReport.class.getCanonicalName() + " where employee=:empParam", CorporateStatusReport.class);
         query.setParameter("empParam", emp);
@@ -47,13 +48,13 @@ public class CorporateStatusReportDao extends CRUDDao<CorporateStatusReport> {
         query.setMaxResults(limit);
         return query.getResultList();
     }
-    
+
     public Long getReportsSize(Employee emp, int start, int limit) {
         TypedQuery<Long> query = em.createQuery("select count(*) from " + CorporateStatusReport.class.getCanonicalName() + " where employee=:empParam", Long.class);
         query.setParameter("empParam", emp);
         return query.getSingleResult();
     }
-    
+
     public List<CorporateStatusReport> search(CorporateStatusReportSearchDto dto) {
         String queryStr = getSearchReportsQuery(dto);
         TypedQuery<CorporateStatusReport> query = em.createQuery(queryStr, entityCls);
@@ -61,9 +62,8 @@ public class CorporateStatusReportDao extends CRUDDao<CorporateStatusReport> {
             query.setParameter("employeeParam", EmployeeDao.instance().findById(dto.getEmployee().getId()));
         }
         return query.getResultList();
-        
     }
-    
+
     protected String getSearchReportsQuery(CorporateStatusReportSearchDto dto) {
         StringBuilder query = new StringBuilder();
         query.append("from ").append(CorporateStatusReport.class.getCanonicalName()).append(" where ");
@@ -72,52 +72,53 @@ public class CorporateStatusReportDao extends CRUDDao<CorporateStatusReport> {
         }
         return query.toString();
     }
-    
+
     public CorporateStatusReportDao() {
         super(CorporateStatusReport.class);
     }
     @PersistenceContext
     protected EntityManager em;
-    
+
     @Override
     public EntityManager getEntityManager() {
         return em;
     }
-    
+
     public static CorporateStatusReportDao instance() {
         return SpringContext.getBean(CorporateStatusReportDao.class);
     }
-    
+
     @XmlRootElement
-    public class CorporateStatusReportSearchDto {
-        
+    @XmlType
+    public static class CorporateStatusReportSearchDto {
+
         protected Employee employee;
         protected String status;
         protected TimePeriod statusReportPeriod;
-        
+
         public Employee getEmployee() {
             return employee;
         }
-        
+
         public void setEmployee(Employee employee) {
             this.employee = employee;
         }
-        
+
         public String getStatus() {
             return status;
         }
-        
+
         public void setStatus(String status) {
             this.status = status;
         }
-        
+
         public TimePeriod getStatusReportPeriod() {
             return statusReportPeriod;
         }
-        
+
         public void setStatusReportPeriod(TimePeriod statusReportPeriod) {
             this.statusReportPeriod = statusReportPeriod;
         }
-        
+
     }
 }
