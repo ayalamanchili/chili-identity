@@ -27,7 +27,7 @@
         </plugins>
     </build>
     <scm>
-        <connection>scm:svn:http://yalamanchili.info/projects/office/trunk/office-dao</connection>
-        <url>http://yalamanchili.info/projects/office/trunk/office-dao</url>
+        <connection>scm:svn:http://tools.sstech.us/svn/office/trunk/office-master/office-dao</connection>
+        <url>http://tools.sstech.us/svn/office/trunk/office-master/office-dao</url>
     </scm>         
 </project>
