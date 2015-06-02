@@ -121,7 +121,7 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().homePanel.entityPanel.clear();
-        TabPanel.instance().homePanel.entityPanel.add(new CreateCorporateStatusReportPanel(getEntity(entityId)));
+        TabPanel.instance().homePanel.entityPanel.add(new CreateCorporateStatusReportPanel(entityId));
 
     }
 

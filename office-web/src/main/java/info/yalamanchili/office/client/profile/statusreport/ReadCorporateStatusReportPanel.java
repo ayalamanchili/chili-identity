@@ -19,6 +19,7 @@ import info.chili.gwt.fields.DateField;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
+import java.util.logging.Logger;
 
 /**
  *
@@ -26,6 +27,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
  */
 public class ReadCorporateStatusReportPanel extends ALComposite {
 
+    private static Logger logger = Logger.getLogger(ReadCorporateStatusReportPanel.class.getName());
     protected CaptionPanel basePanel = new CaptionPanel();
     protected FlowPanel panel = new FlowPanel();
     DateField startDateField = new DateField(OfficeWelcome.constants, "startDate", "StatusReport", true, false, Alignment.HORIZONTAL);
@@ -58,6 +60,7 @@ public class ReadCorporateStatusReportPanel extends ALComposite {
     }
 
     public final void populateEntityFromFields(JSONObject entity) {
+        logger.info("ddddddddddddddd" + entity);
         startDateField.setValue(JSONUtils.toString(entity, "reportStartDate"));
         endDateField.setValue(JSONUtils.toString(entity, "reportEndDate"));
         statusReportsF.setHTML(JSONUtils.toString(entity, "report"));
