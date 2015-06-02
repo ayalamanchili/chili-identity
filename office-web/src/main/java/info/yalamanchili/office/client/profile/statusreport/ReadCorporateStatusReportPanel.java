@@ -44,7 +44,7 @@ public class ReadCorporateStatusReportPanel extends ALComposite {
 
     @Override
     protected void configure() {
-        basePanel.setCaptionHTML("Status Report");
+        basePanel.setCaptionHTML("StatusReports");
         startDateField.getLabel().getElement().getStyle().setWidth(90, Style.Unit.PX);
         endDateField.getLabel().getElement().getStyle().setWidth(90, Style.Unit.PX);
     }

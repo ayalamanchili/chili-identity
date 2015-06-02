@@ -54,7 +54,7 @@ public class CorporateStatusReportSidePanel extends ALComposite implements Click
 
     @Override
     protected void configure() {
-        mainPanel.setCaptionHTML("Status Reports");
+        mainPanel.setCaptionHTML("StatusReports");
         HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
