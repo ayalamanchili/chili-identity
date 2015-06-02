@@ -419,8 +419,8 @@
         </pluginManagement>
     </build>
     <scm>
-        <connection>scm:svn:http://yalamanchili.info/projects/office/trunk/office-master</connection>
-        <url>http://yalamanchili.info/projects/office/trunk/office-master</url>
+        <connection>scm:svn:http://tools.sstech.us/svn/office/trunk/office-master</connection>
+        <url>http://tools.sstech.us/svn/office/trunk/office-master</url>
     </scm>    
    <!-- download artifacts from this repo -->
     <repositories>
