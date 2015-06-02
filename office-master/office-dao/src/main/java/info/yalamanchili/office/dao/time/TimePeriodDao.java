@@ -48,8 +48,8 @@ public class TimePeriodDao {
 
     public TimePeriod find(Date startDate, Date endDate, TimePeriodType type) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("startDate").is(startDate));
-        query.addCriteria(Criteria.where("endDate").is(endDate));
+        query.addCriteria(Criteria.where("startDate").lte(new Date(startDate.getTime())));
+        query.addCriteria(Criteria.where("endDate").lte(new Date(endDate.getTime())));
         query.addCriteria(Criteria.where("type").is(type.name()));
         return mongoTemplate.findOne(query, TimePeriod.class);
     }

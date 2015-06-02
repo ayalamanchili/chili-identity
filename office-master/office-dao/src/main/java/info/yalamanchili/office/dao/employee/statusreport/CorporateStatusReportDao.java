@@ -27,6 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -35,6 +36,14 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Scope("prototype")
 public class CorporateStatusReportDao extends CRUDDao<CorporateStatusReport> {
+
+    @Transactional(readOnly = true)
+    public CorporateStatusReport findById(Long id) {
+        CorporateStatusReport entity = getEntityManager().find(CorporateStatusReport.class, id);
+        entity.setStatusReportPeriod(TimePeriodDao.instance().find(entity.getReportStartDate(), entity.getReportEndDate(), TimePeriod.TimePeriodType.Week));
+        return entity;
+    }
+    
 
     @Override
     public CorporateStatusReport save(CorporateStatusReport entity) {
