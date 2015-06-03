@@ -196,12 +196,16 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
             });
         }
     }
-//TODO update selects to call the menu commands.
+
+    public void clearEntityPanel(EntityLayout panel) {
+        panel.entityPanel.clear();
+        panel.sidePanelTop.clear();
+        panel.sidePanelBottom.clear();
+        panel.entityTitlePanel.clear();
+    }
 
     public void selectHomeTab() {
-        homePanel.entityPanel.clear();
-        homePanel.sidePanelTop.clear();
-        homePanel.sidePanelBottom.clear();
+        clearEntityPanel(homePanel);
         homePanel.sidePanelTop.add(new HomeStackPanel());
         if (Auth.isCorporateEmployee()) {
             homePanel.entityPanel.add(new ReadAllTasks());
@@ -212,15 +216,13 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     }
 
     public void selectSocialTab() {
-        socialPanel.entityPanel.clear();
-        socialPanel.sidePanelTop.clear();
+        clearEntityPanel(socialPanel);
         socialPanel.entityTitlePanel.add(new SocialMenu());
         socialPanel.entityPanel.add(new EmployeeFeedHome());
     }
 
     public void selectMyOfficeTab() {
-        myOfficePanel.entityPanel.clear();
-        myOfficePanel.sidePanelTop.clear();
+        clearEntityPanel(myOfficePanel);
         myOfficePanel.entityTitlePanel.add(new MyOfficeMenu());
         myOfficePanel.entityPanel.add(new ReadAllEmployeesPanel());
         myOfficePanel.sidePanelTop.add(new EmployeeSidePanel());
@@ -229,8 +231,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     }
 
     public void selectTimeTab() {
-        timePanel.entityPanel.clear();
-        timePanel.sidePanelTop.clear();
+        clearEntityPanel(timePanel);
         if (Auth.isCorporateEmployee()) {
             timePanel.sidePanelTop.add(new CorporateTimeSummarySidePanel());
             timePanel.entityPanel.add(new CorporateTimeSummaryPanel());
@@ -246,39 +247,33 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     }
 
     public void selectExpenseTab() {
-        expensePanel.entityPanel.clear();
-        expensePanel.sidePanelTop.clear();
+        clearEntityPanel(expensePanel);
         expensePanel.entityTitlePanel.add(new ExpenseMenu());
         TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllAdvanceRequisitionPanel());
         TabPanel.instance().getExpensePanel().sidePanelTop.add(new AdvanceRequisitionSidePanel());
     }
 
     public void selectDriveTab() {
-        drivePanel.entityPanel.clear();
-        drivePanel.sidePanelTop.clear();
-        drivePanel.sidePanelBottom.clear();
+        clearEntityPanel(drivePanel);
         drivePanel.sidePanelTop.add(new DriveTreePanel());
         drivePanel.sidePanelBottom.add(new SearchDrivePanel());
     }
 
     public void selectProfileTab() {
-        profilePanel.entityPanel.clear();
-        profilePanel.sidePanelTop.clear();
+        clearEntityPanel(profilePanel);
         profilePanel.entityPanel.add(new ProfileHome());
         profilePanel.sidePanelTop.add(new ProfileSidePanel());
     }
 
     public void selectAdminTab() {
-        adminPanel.entityPanel.clear();
-        adminPanel.sidePanelTop.clear();
+        clearEntityPanel(adminPanel);
         adminPanel.entityTitlePanel.add(new AdminMenu());
         adminPanel.entityPanel.add(new ReadAllClientsPanel());
         adminPanel.sidePanelTop.add(new ClientSidePanel());
     }
 
     public void selectReportingPanel() {
-        reportingPanel.entityPanel.clear();
-        reportingPanel.sidePanelTop.clear();
+        clearEntityPanel(reportingPanel);
         reportingPanel.entityTitlePanel.add(new ReportsMenu());
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP)) {
             reportingPanel.sidePanelTop.add(new ProfileReportsSidePanel());
@@ -286,9 +281,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     }
 
     public void selectRecruitingPanel() {
-        recruitingPanel.entityPanel.clear();
-        recruitingPanel.sidePanelTop.clear();
-        recruitingPanel.sidePanelBottom.clear();
+        clearEntityPanel(recruitingPanel);
         recruitingPanel.entityTitlePanel.add(new RecruitingMenu());
         recruitingPanel.entityPanel.add(new ReadAllSkillsPanel());
         recruitingPanel.sidePanelTop.add(new SkillSidePanel());
@@ -296,15 +289,13 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     }
 
     public void selectChiliAdminPanel() {
-        chiliAdminPanel.entityPanel.clear();
-        chiliAdminPanel.sidePanelTop.clear();
+        clearEntityPanel(chiliAdminPanel);
         chiliAdminPanel.entityTitlePanel.add(new ChiliAdminMenu());
         chiliAdminPanel.entityPanel.add(new ReadAllci18nResourceBundlesPanel());
     }
 
     public void selectHelpTab() {
-        helpPanel.entityPanel.clear();
-        helpPanel.sidePanelTop.clear();
+        clearEntityPanel(helpPanel);
         helpPanel.entityPanel.add(new HelpHome());
     }
     private static TabPanel instance;
