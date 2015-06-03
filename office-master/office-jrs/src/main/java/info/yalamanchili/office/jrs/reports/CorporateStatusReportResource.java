@@ -44,32 +44,46 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("request")
 @Transactional
 public class CorporateStatusReportResource {
-
+    
     @Autowired
     protected CorporateStatusReportService corporateStatusReportService;
     @Autowired
     protected CorporateStatusReportDao corporateStatusReportDao;
-
+    
     @GET
     @Path("/{id}")
     public CorporateStatusReport get(@PathParam("id") Long id) {
         return corporateStatusReportDao.findById(id);
     }
-
+    
+    @GET
+    @Path("/clone/{id}")
+    public CorporateStatusReport clone(@PathParam("id") Long id) {
+        CorporateStatusReport entity = corporateStatusReportDao.clone(id);
+        entity.setApprovedBy(null);
+        entity.setApprovedDate(null);
+        entity.setBpmProcessId(null);
+        entity.setSubmittedDate(null);
+        entity.setReportStartDate(null);
+        entity.setReportEndDate(null);
+        entity.setStatus(null);
+        return entity;
+    }
+    
     @PUT
     public void save(CorporateStatusReport entity, @QueryParam("submitForApproval") Boolean submitForApproval) {
-            TimePeriod statusReportPeriod = TimePeriodDao.instance().fineOne(entity.getStatusReportPeriod().getId());
-            entity.setReportStartDate(statusReportPeriod.getStartDate());
-            entity.setReportEndDate(statusReportPeriod.getEndDate());
+        TimePeriod statusReportPeriod = TimePeriodDao.instance().fineOne(entity.getStatusReportPeriod().getId());
+        entity.setReportStartDate(statusReportPeriod.getStartDate());
+        entity.setReportEndDate(statusReportPeriod.getEndDate());
         corporateStatusReportService.save(entity, submitForApproval);
     }
-
+    
     @PUT
     @Path("/delete/{id}")
     public void delete(@PathParam("id") Long id) {
         corporateStatusReportService.delete(id);
     }
-
+    
     @GET
     @Path("/{start}/{limit}")
     public CorpoateStatusReportTable reportsForEmployee(@QueryParam("employeeId") Long employeeId, @PathParam("start") int start, @PathParam("limit") int limit) {
@@ -84,39 +98,39 @@ public class CorporateStatusReportResource {
         tableObj.setSize(corporateStatusReportDao.getReportsSize(emp, start, limit));
         return tableObj;
     }
-
+    
     @PUT
     @Path("/search")
     public List<CorporateStatusReport> search(CorporateStatusReportSearchDto dto) {
         return corporateStatusReportDao.search(dto);
     }
-
+    
     @GET
     @Path("/periods")
     public List<Entry> getStatusReportPeriods() {
         return TimePeriodDao.instance().getDropDown(0, 10);
     }
-
+    
     @XmlRootElement
     @XmlType
     public static class CorpoateStatusReportTable implements java.io.Serializable {
-
+        
         protected Long size;
         protected List<CorporateStatusReport> entities;
-
+        
         public Long getSize() {
             return size;
         }
-
+        
         public void setSize(Long size) {
             this.size = size;
         }
-
+        
         @XmlElement
         public List<CorporateStatusReport> getEntities() {
             return entities;
         }
-
+        
         public void setEntities(List<CorporateStatusReport> entities) {
             this.entities = entities;
         }
