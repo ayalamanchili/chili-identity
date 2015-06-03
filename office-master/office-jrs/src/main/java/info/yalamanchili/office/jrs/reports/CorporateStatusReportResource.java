@@ -58,9 +58,9 @@ public class CorporateStatusReportResource {
 
     @PUT
     public void save(CorporateStatusReport entity, @QueryParam("submitForApproval") Boolean submitForApproval) {
-        TimePeriod statusReportPeriod = TimePeriodDao.instance().fineOne(entity.getStatusReportPeriod().getId());
-        entity.setReportStartDate(statusReportPeriod.getStartDate());
-        entity.setReportEndDate(statusReportPeriod.getEndDate());
+            TimePeriod statusReportPeriod = TimePeriodDao.instance().fineOne(entity.getStatusReportPeriod().getId());
+            entity.setReportStartDate(statusReportPeriod.getStartDate());
+            entity.setReportEndDate(statusReportPeriod.getEndDate());
         corporateStatusReportService.save(entity, submitForApproval);
     }
 

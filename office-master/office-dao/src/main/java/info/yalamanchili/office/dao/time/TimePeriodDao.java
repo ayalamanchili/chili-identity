@@ -48,11 +48,12 @@ public class TimePeriodDao {
 
     public TimePeriod find(Date startDate, Date endDate, TimePeriodType type) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("startDate").lte(new Date(startDate.getTime())));
-        query.addCriteria(Criteria.where("endDate").lte(new Date(endDate.getTime())));
+        query.addCriteria(Criteria.where("startDate").is(new Date(startDate.getTime())));
+        query.addCriteria(Criteria.where("endDate").is(new Date(endDate.getTime())));
         query.addCriteria(Criteria.where("type").is(type.name()));
         return mongoTemplate.findOne(query, TimePeriod.class);
     }
+//TODO cache
 
     public List<Entry> getDropDown(int start, int limit) {
         List<Entry> res = new ArrayList<>();
@@ -79,6 +80,7 @@ public class TimePeriodDao {
             calendar.set(Calendar.SECOND, 0);
             calendar.set(Calendar.MINUTE, 0);
             calendar.set(Calendar.HOUR, 0);
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
             date = calendar.getTime();
             TimePeriod entity = new TimePeriod();
             entity.setStartDate(DateUtils.firstDayOfWeek(date));
