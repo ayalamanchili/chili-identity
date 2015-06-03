@@ -19,6 +19,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -114,12 +115,17 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
     protected void saveStatusReport() {
         if (statusReportPeriodF.getSelectedObject() == null) {
             statusReportPeriodF.setMessage("Please select a Time Period");
+            return;
+        }
+        if (reportF.getHTML() == null || reportF.getHTML().length() < 5) {
+            Window.alert("Report is Empty");
+            return;
         }
         if (entity == null) {
             entity = new JSONObject();
         }
         entity.put("statusReportPeriod", statusReportPeriodF.getSelectedObject());
-        entity.put("report", new JSONString(reportF.getHTML()));
+        entity.put("report", new JSONString(reportF.getData()));
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
