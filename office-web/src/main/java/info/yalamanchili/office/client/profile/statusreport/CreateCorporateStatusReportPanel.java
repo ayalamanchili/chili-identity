@@ -63,7 +63,7 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
                     @Override
                     public void onResponse(String arg0) {
                         entity = JSONParser.parseLenient(arg0).isObject();
-                        populateEntityFromFields(entity);
+                        populateFieldsFromEntity(entity);
                     }
                 });
     }
@@ -72,7 +72,7 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
         return OfficeWelcome.constants.root_url() + "corporate-statusreport/" + entityId;
     }
 
-    public final void populateEntityFromFields(JSONObject entity) {
+    public final void populateFieldsFromEntity(JSONObject entity) {
         logger.info(DEBUG_ID_PREFIX);
         statusReportPeriodF.setSelectedValue(entity.get("statusReportPeriod").isObject());
         reportF.setHTML(JSONUtils.toString(entity, "report"));
@@ -117,15 +117,15 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
             statusReportPeriodF.setMessage("Please select a Time Period");
             return;
         }
-        if (reportF.getHTML() == null || reportF.getHTML().length() < 5) {
-            Window.alert("Report is Empty");
-            return;
-        }
         if (entity == null) {
             entity = new JSONObject();
         }
         entity.put("statusReportPeriod", statusReportPeriodF.getSelectedObject());
         entity.put("report", new JSONString(reportF.getData()));
+        if (entity.get("report").isString().stringValue().length() < 10) {
+            Window.alert("Report is Empty");
+            return;
+        }
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
