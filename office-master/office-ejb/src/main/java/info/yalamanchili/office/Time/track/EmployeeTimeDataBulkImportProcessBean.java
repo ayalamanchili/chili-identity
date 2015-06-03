@@ -47,10 +47,10 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDoc
 
     @Autowired
     protected AvantelEmployeeTimeDataMapper avantelEmployeeTimeDataMapper;
-    protected static final String CUBICAL = "Cubical";
-    protected static final String SECOND_FLOOR = "2nd Floor";
-    protected static final String RECEPTION = "Reception";
-    protected static final String TIME_IN = "Time_In";
+    public static final String CUBICAL = "Cubical";
+    public static final String SECOND_FLOOR = "2nd Floor";
+    public static final String RECEPTION = "Reception";
+    public static final String TIME_IN = "Time_In";
 
     @PersistenceContext
     protected EntityManager em;

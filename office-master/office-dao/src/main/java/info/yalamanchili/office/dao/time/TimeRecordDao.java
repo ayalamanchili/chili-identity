@@ -8,17 +8,12 @@
  */
 package info.yalamanchili.office.dao.time;
 
-import info.chili.dao.CRUDDao;
-import info.yalamanchili.office.dao.security.OfficeSecurityService;
-import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.model.time.TimeRecord;
 import info.yalamanchili.office.model.time.TimeRecord.TimeRecordsTable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TemporalType;
-import javax.persistence.TypedQuery;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +59,14 @@ public class TimeRecordDao {
         return mongoTemplate.findOne(query, TimeRecord.class);
     }
 
+    public List<TimeRecord> findAll(String employeeId, Date startDate, Date endDate) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("startDate").gte(startDate));
+        query.addCriteria(Criteria.where("endDate").lte(endDate));
+        query.addCriteria(Criteria.where("employeeId").is(employeeId));
+        return mongoTemplate.find(query, TimeRecord.class);
+    }
+
     public void delete(String id) {
         Query q = new Query(Criteria.where("id").is(id));
         mongoTemplate.findAndRemove(q, TimeRecord.class);
@@ -73,39 +76,6 @@ public class TimeRecordDao {
         mongoTemplate.save(trec);
     }
 
-    public List<TimeRecord> getReport(TimeRecordSearchDto dto, int start, int limit) {
-        List<Employee> emps = null;
-
-        String queryStr = getReportQueryString(dto, emps);
-        TypedQuery<TimeRecord> query = getEntityManager().createQuery(queryStr, TimeRecord.class);
-        query = (TypedQuery<TimeRecord>) getReportQueryWithParams(queryStr, query, dto, emps);
-        query.setFirstResult(start);
-        query.setMaxResults(limit);
-        return query.getResultList();
-    }
-
-    protected javax.persistence.Query getReportQueryWithParams(String qryStr, javax.persistence.Query query, TimeRecordSearchDto dto, List<Employee> emps) {
-        if (qryStr.contains("startDateParam")) {
-            query.setParameter("startDateParam", dto.getStartDate(), TemporalType.DATE);
-        }
-        if (qryStr.contains("endDateParam")) {
-            query.setParameter("endDateParam", dto.getEndDate(), TemporalType.DATE);
-        }
-        return query;
-    }
-
-    protected String getReportQueryString(TimeRecordSearchDto dto, List<Employee> emps) {
-        StringBuilder reportQueryBuilder = new StringBuilder();
-        reportQueryBuilder.append("from ").append(TimeRecord.class.getCanonicalName()).append(" where ");
-        if (dto.getStartDate() != null) {
-            reportQueryBuilder.append("( startDate BETWEEN :startDateParam AND :endDateParam");
-        }
-        if (dto.getEndDate() != null) {
-            reportQueryBuilder.append(" or endDate BETWEEN :startDateParam AND :endDateParam)");
-        }
-        reportQueryBuilder.append(" order by employee.firstName, startDate DESC ");
-        return reportQueryBuilder.toString();
-    }
     @PersistenceContext
     protected EntityManager em;
 

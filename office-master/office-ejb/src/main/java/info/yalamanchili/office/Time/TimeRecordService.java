@@ -9,11 +9,11 @@ package info.yalamanchili.office.Time;
 
 import info.chili.reporting.ReportGenerator;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.Time.track.EmployeeTimeDataBulkImportProcessBean;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.time.TimeRecordDao;
 import info.yalamanchili.office.dto.time.AvantelTimeSummaryDto;
-import info.yalamanchili.office.dto.time.CorporateTimeSummary;
 import info.yalamanchili.office.entity.profile.Branch;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
@@ -47,30 +47,26 @@ public class TimeRecordService {
      */
     public void getAllEmployeesSummaryReport(String email, TimeRecordDao.TimeRecordSearchDto dto) {
         List<AvantelTimeSummaryDto> res = new ArrayList();
+
+        //
         //for loop of all india team employees (corporate employee whose branch is india)
         // find all time records get hours data and add and populate dto.
         for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
-//            TimeRecord tr;
-//            CorporateTimeSummary hours ;
-            AvantelTimeSummaryDto summary = mapper.map(emp, AvantelTimeSummaryDto.class);
-            summary.setEmployee(emp.getFirstName() + " " + emp.getLastName());
-            summary.setStartDate(dto.getStartDate());
-            summary.setEndDate(dto.getEndDate());
-//            summary.setAvailablePTOHours(hours.getAvailablePTOHours());
-//            summary.setTotalavailablePTOHours(hours.getTotalAvailableHours());
-//            summary.setUsedPTOHours(hours.getUsedPTOHours());
-//            summary.setCubicalHours(BigDecimal.ZERO);
-//            summary.setMonthlyAccuredHours(hours.getTotalAccumulatedHours());
-//          summary.setReceptionHours(BigDecimal.ZERO);
-//          summary.setSecondndFloorHours(BigDecimal.ZERO);
+            AvantelTimeSummaryDto summaryRec = new AvantelTimeSummaryDto();
+            if (emp.getBranch().equals(Branch.Hyderabad)) {
 
-//                if (tr.getCubicalHours()!= null) {
-//                    dto.setCubicalHours(tr.getCubicalHours());
-//                }
-            res.add(summary);
-
-            MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(res, "Attandance-Summary", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
+                BigDecimal cubicalHours = BigDecimal.ZERO;
+                for (TimeRecord timeRecord : timeRecordDao.findAll(emp.getEmployeeId(), dto.getStartDate(), dto.getEndDate())) {
+                    cubicalHours.add(timeRecord.getTags().get(EmployeeTimeDataBulkImportProcessBean.CUBICAL));
+                }
+                summaryRec.setCubicalHours(cubicalHours);
+                summaryRec.setEmployee(emp.getFirstName() + " " + emp.getLastName());
+                summaryRec.setStartDate(dto.getStartDate());
+                summaryRec.setEndDate(dto.getEndDate());
+            }
+            res.add(summaryRec);
         }
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(res, "Attandance-Summary", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
     }
 
     public static TimeRecordService instance() {
