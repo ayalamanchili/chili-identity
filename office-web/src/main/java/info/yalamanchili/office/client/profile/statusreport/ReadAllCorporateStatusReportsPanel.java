@@ -8,15 +8,19 @@
  */
 package info.yalamanchili.office.client.profile.statusreport;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -68,6 +72,7 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
         table.setText(0, 2, getKeyValue("Start Date"));
         table.setText(0, 3, getKeyValue("End Date"));
         table.setText(0, 4, getKeyValue("Status"));
+        table.setText(0, 5, getKeyValue("Copy"));
     }
 
     @Override
@@ -81,7 +86,31 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
             table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportStartDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportEndDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 4, JSONUtils.toString(entity, "status"));
+            ClickableLink copyL = new ClickableLink("Create Copy");
+            copyL.setTitle(JSONUtils.toString(entity, "id"));
+            copyL.addClickHandler(new ClickHandler() {
+
+                @Override
+                public void onClick(ClickEvent event) {
+                    createCopy(((ClickableLink) event.getSource()).getTitle());
+                }
+            });
+            table.setWidget(i, 5, copyL);
         }
+    }
+
+    protected void createCopy(String entityId) {
+        HttpService.HttpServiceAsync.instance().doGet(OfficeWelcome.constants.root_url() + "corporate-statusreport/clone/" + entityId, OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+
+                    @Override
+                    public void onResponse(String arg0) {
+                        logger.info(arg0);
+                        new ResponseStatusWidget().show("Copy created. Plase update and save.");
+                        TabPanel.instance().homePanel.entityPanel.clear();
+                        TabPanel.instance().homePanel.entityPanel.add(new CreateCorporateStatusReportPanel(JSONParser.parseLenient(arg0).isObject()));
+                    }
+                });
     }
 
     @Override

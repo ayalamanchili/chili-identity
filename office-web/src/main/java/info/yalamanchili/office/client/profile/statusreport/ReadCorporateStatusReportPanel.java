@@ -10,6 +10,8 @@ package info.yalamanchili.office.client.profile.statusreport;
 
 import com.axeiya.gwtckeditor.client.CKConfig;
 import com.axeiya.gwtckeditor.client.CKEditor;
+import com.axeiya.gwtckeditor.client.Toolbar;
+import com.axeiya.gwtckeditor.client.ToolbarLine;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.CaptionPanel;
@@ -32,7 +34,7 @@ public class ReadCorporateStatusReportPanel extends ALComposite {
     protected FlowPanel panel = new FlowPanel();
     DateField startDateField = new DateField(OfficeWelcome.constants, "startDate", "StatusReport", true, false, Alignment.HORIZONTAL);
     DateField endDateField = new DateField(OfficeWelcome.constants, "endDate", "StatusReport", true, false, Alignment.HORIZONTAL);
-    CKEditor statusReportsF = new CKEditor(CKConfig.basic);
+    CKEditor statusReportsF = getEditor();
 
     public ReadCorporateStatusReportPanel(JSONObject entity) {
         init(basePanel);
@@ -64,6 +66,26 @@ public class ReadCorporateStatusReportPanel extends ALComposite {
         startDateField.setValue(JSONUtils.toString(entity, "reportStartDate"));
         endDateField.setValue(JSONUtils.toString(entity, "reportEndDate"));
         statusReportsF.setHTML(JSONUtils.toString(entity, "report"));
+    }
+
+    protected CKEditor getEditor() {
+        CKConfig ckf = new CKConfig(CKConfig.PRESET_TOOLBAR.FULL);
+        //Setting size
+        ckf.setHeight("400px");
+        //Creating personalized toolbar
+        ToolbarLine line0 = new ToolbarLine();
+        line0.add(CKConfig.TOOLBAR_OPTIONS.Preview);
+        line0.add(CKConfig.TOOLBAR_OPTIONS.Maximize);
+
+        //Creates the toolbar
+        Toolbar t = new Toolbar();
+        t.add(line0);
+
+        //Set the toolbar to the config (replace the FULL preset toolbar)
+        ckf.setToolbar(t);
+
+        //Creates the editor with this config
+        return new CKEditor(true, ckf);
     }
 
 }

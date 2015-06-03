@@ -55,6 +55,12 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
         init(basePanel);
     }
 
+    protected CreateCorporateStatusReportPanel(JSONObject entity) {
+        init(basePanel);
+        this.entity = entity;
+        populateFieldsFromEntity(entity);
+    }
+
     protected CreateCorporateStatusReportPanel(String id) {
         init(basePanel);
         this.entityId = id;
@@ -62,6 +68,7 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String arg0) {
+                        logger.info(arg0);
                         entity = JSONParser.parseLenient(arg0).isObject();
                         populateFieldsFromEntity(entity);
                     }
@@ -73,8 +80,10 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
     }
 
     public final void populateFieldsFromEntity(JSONObject entity) {
-        logger.info(DEBUG_ID_PREFIX);
-        statusReportPeriodF.setSelectedValue(entity.get("statusReportPeriod").isObject());
+        logger.info(entity.toString());
+        if (entity.get("statusReportPeriod") != null) {
+            statusReportPeriodF.setSelectedValue(entity.get("statusReportPeriod").isObject());
+        }
         reportF.setHTML(JSONUtils.toString(entity, "report"));
     }
 
