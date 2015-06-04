@@ -49,6 +49,7 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
     Button createB = new Button("Save");
     JSONObject entity;
     String entityId;
+    boolean isUpdate = false;
 
     protected CreateCorporateStatusReportPanel() {
         init(basePanel);
@@ -61,17 +62,18 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
     }
 
     protected CreateCorporateStatusReportPanel(String id) {
+        this.isUpdate = true;
         init(basePanel);
         this.entityId = id;
         HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                logger.info(arg0);
-                entity = JSONParser.parseLenient(arg0).isObject();
-                populateFieldsFromEntity(entity);
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        logger.info(arg0);
+                        entity = JSONParser.parseLenient(arg0).isObject();
+                        populateFieldsFromEntity(entity);
+                    }
+                });
     }
 
     protected final String getReadURI() {
@@ -95,6 +97,7 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
     @Override
     protected void configure() {
         basePanel.setCaptionHTML("StatusReports");
+        statusReportPeriodF.setReadOnly(isUpdate);
     }
 
     @Override
@@ -136,19 +139,19 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
         }
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                new ResponseStatusWidget().show("Successfully submited status report");
-                if (TabPanel.instance().myOfficePanel.isVisible()) {
-                    TabPanel.instance().myOfficePanel.entityPanel.clear();
-                    TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllCorporateStatusReportsPanel());
-                }
-                if (TabPanel.instance().homePanel.isVisible()) {
-                    TabPanel.instance().homePanel.entityPanel.clear();
-                    TabPanel.instance().homePanel.entityPanel.add(new ReadAllCorporateStatusReportsPanel());
-                }
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        new ResponseStatusWidget().show("Successfully submited status report");
+                        if (TabPanel.instance().myOfficePanel.isVisible()) {
+                            TabPanel.instance().myOfficePanel.entityPanel.clear();
+                            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllCorporateStatusReportsPanel());
+                        }
+                        if (TabPanel.instance().homePanel.isVisible()) {
+                            TabPanel.instance().homePanel.entityPanel.clear();
+                            TabPanel.instance().homePanel.entityPanel.add(new ReadAllCorporateStatusReportsPanel());
+                        }
+                    }
+                });
     }
 
     protected CKEditor getEditor() {

@@ -91,13 +91,20 @@ public class CorporateStatusReportSidePanel extends ALComposite implements Click
 
     protected void search() {
         JSONObject entity = new JSONObject();
-        entity.put("employee", employeeSB.getSelectedObject());
-        entity.put("statusReportPeriod", statusReportPeriodF.getSelectedObject());
-        entity.put("status", new JSONString(statusF.getValue()));
+        if (employeeSB.getSelectedObject() != null) {
+            entity.put("employee", employeeSB.getSelectedObject());
+        }
+        if (statusReportPeriodF.getSelectedObject() != null) {
+            entity.put("statusReportPeriod", statusReportPeriodF.getSelectedObject());
+        }
+        if (statusF.getValue() != null) {
+            entity.put("status", new JSONString(statusF.getValue()));
+        }
         HttpService.HttpServiceAsync.instance().doPut(searchReportsUrl(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
+                        clear();
                         TabPanel.instance().getReportingPanel().entityPanel.clear();
                         if (result == null || JSONParser.parseLenient(result).isObject() == null) {
                             new ResponseStatusWidget().show("no results");
@@ -110,6 +117,10 @@ public class CorporateStatusReportSidePanel extends ALComposite implements Click
                         }
                     }
                 });
+    }
+
+    protected void clear() {
+
     }
 
     protected String searchReportsUrl() {
