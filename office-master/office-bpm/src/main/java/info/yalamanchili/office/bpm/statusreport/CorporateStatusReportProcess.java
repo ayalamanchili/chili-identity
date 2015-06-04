@@ -49,7 +49,6 @@ public class CorporateStatusReportProcess implements TaskListener {
         }
         if (manager != null) {
             task.addCandidateUser(manager.getEmployeeId());
-        } else {
             task.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_ADMIN.name());
             task.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_CRP_STATUS_RPT_MGR.name());
         }
