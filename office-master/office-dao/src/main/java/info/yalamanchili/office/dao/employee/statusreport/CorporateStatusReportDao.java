@@ -72,8 +72,26 @@ public class CorporateStatusReportDao extends CRUDDao<CorporateStatusReport> {
     }
 
     public List<CorporateStatusReport> getReports(Employee emp, int start, int limit) {
+        List<CorporateStatusReport> corporateStatusReport = new ArrayList<CorporateStatusReport>();
         TypedQuery<CorporateStatusReport> query = em.createQuery("from " + CorporateStatusReport.class.getCanonicalName() + " where employee=:empParam", CorporateStatusReport.class);
         query.setParameter("empParam", emp);
+        boolean isCorporateEmployee = false;
+        if (OfficeSecurityService.instance().getUserRoles(emp).contains(OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+            isCorporateEmployee = true;
+        }
+        for (CorporateStatusReport corporatestatus : query.getResultList()) {
+            if (enableUpdate(corporatestatus, emp)) {
+                corporatestatus.setEnableUpdate(true);
+            } else {
+                corporatestatus.setEnableUpdate(false);
+            }
+            if (isCorporateEmployee) {
+                corporatestatus.setEnableUpdate(enableUpdate(corporatestatus, emp));
+            } else {
+                corporatestatus.setEnableUpdate(true);
+            }
+            corporateStatusReport.add(corporatestatus);
+        }
         query.setFirstResult(start);
         query.setMaxResults(limit);
         return query.getResultList();
@@ -134,7 +152,7 @@ public class CorporateStatusReportDao extends CRUDDao<CorporateStatusReport> {
 
     public boolean enableUpdate(CorporateStatusReport statusreports, Employee employee) {
         boolean flag = false;
-        if (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_HR_ADMINSTRATION.name(), OfficeRoles.OfficeRole.ROLE_PRB_EVALUATIONS_MANAGER.name())) {
+        if (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_ADMIN.name(), OfficeRoles.OfficeRole.ROLE_CRP_STATUS_RPT_MGR.name())) {
             flag = true;
         }
         Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
@@ -150,6 +168,32 @@ public class CorporateStatusReportDao extends CRUDDao<CorporateStatusReport> {
             flag = true;
         }
         return flag && CropStatusReportStatus.Pending_Manager_Approval.equals(statusreports.getStatus());
+    }
+
+    public void acceccCheck(Employee employee) {
+        Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
+        if (employee.getId().equals(currentUser.getId())) {
+            return;
+        }
+        boolean isCorporateEmployee = false;
+        if (OfficeSecurityService.instance().getUserRoles(employee).contains(OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+            isCorporateEmployee = true;
+        }
+        //this is a corp emp review
+        if (isCorporateEmployee) {
+            if (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_CRP_STATUS_RPT_MGR.name())) {
+                return;
+            }
+            Employee perfEvalMgr = CompanyContactDao.instance().getCompanyContactForEmployee(employee, "Perf_Eval_Manager");
+            if (perfEvalMgr != null && currentUser.getId().equals(perfEvalMgr.getId())) {
+                return;
+            }
+            Employee reportsToMgr = CompanyContactDao.instance().getCompanyContactForEmployee(employee, "Reports_To");
+            if (reportsToMgr != null && currentUser.getId().equals(reportsToMgr.getId())) {
+                return;
+            }
+        }
+        throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "permission.error", "you do not have permission to view this information");
     }
 
     public CorporateStatusReportDao() {

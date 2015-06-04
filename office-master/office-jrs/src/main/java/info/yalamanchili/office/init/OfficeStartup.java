@@ -97,7 +97,7 @@ public class OfficeStartup {
         //Run sync tasks
 //        TimeJobService.instance().syncTimeSheetPeriods();
         OfficeBPMIdentityService.instance().syncUsersAndRoles();
-        NotificationGroupDao.instance().syncStatusReportNotificationGroup();
+//        NotificationGroupDao.instance().syncNotificationGroupsForRoles();
     }
 
     protected void initSecurity() {
