@@ -67,7 +67,7 @@ public class TimePeriod extends AbstractDocument {
     }
 
     public String describe() {
-        return new SimpleDateFormat("MM-dd-yyyy").format(startDate) + " - " + new SimpleDateFormat("MM-dd-yyyy").format(endDate);
+        return new SimpleDateFormat("dd-MMM-yyyy").format(startDate) + " - " + new SimpleDateFormat("dd-MMM-yyyy").format(endDate);
     }
 
 }

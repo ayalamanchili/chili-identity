@@ -91,16 +91,6 @@ public class CorporateStatusReport extends AbstractEntity {
 
     public CorporateStatusReport() {
     }
-    @Transient
-    protected boolean enableUpdate;
-
-    public boolean isEnableUpdate() {
-        return enableUpdate;
-    }
-
-    public void setEnableUpdate(boolean enableUpdate) {
-        this.enableUpdate = enableUpdate;
-    }
 
     /**
      * @return the reportStartDate

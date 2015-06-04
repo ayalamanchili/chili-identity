@@ -94,7 +94,6 @@ public class CorporateStatusReportResource {
         if (emp == null) {
             emp = OfficeSecurityService.instance().getCurrentUser();
         }
-        CorporateStatusReportDao.instance().acceccCheck(emp);
         CorpoateStatusReportTable tableObj = new CorpoateStatusReportTable();
         tableObj.setEntities(corporateStatusReportDao.getReports(emp, start, limit));
         tableObj.setSize(corporateStatusReportDao.getReportsSize(emp, start, limit));
