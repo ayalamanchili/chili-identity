@@ -88,10 +88,11 @@ public class CorporateStatusReportResource {
     @Path("/{start}/{limit}")
     public CorpoateStatusReportTable reportsForEmployee(@QueryParam("employeeId") Long employeeId, @PathParam("start") int start, @PathParam("limit") int limit) {
         Employee emp = null;
-        if (employeeId == null) {
-            emp = OfficeSecurityService.instance().getCurrentUser();
-        } else {
+        if (employeeId != null) {
             emp = EmployeeDao.instance().findById(employeeId);
+        }
+        if (emp == null) {
+            emp = OfficeSecurityService.instance().getCurrentUser();
         }
         CorporateStatusReportDao.instance().acceccCheck(emp);
         CorpoateStatusReportTable tableObj = new CorpoateStatusReportTable();
