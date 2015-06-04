@@ -182,8 +182,10 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new CreateCorporateStatusReportPanel(TreeEmployeePanel.instance().getEntityId()));
         }
-        TabPanel.instance().homePanel.entityPanel.clear();
-        TabPanel.instance().homePanel.entityPanel.add(new CreateCorporateStatusReportPanel(entityId));
+        if (TabPanel.instance().homePanel.isVisible()) {
+            TabPanel.instance().homePanel.entityPanel.clear();
+            TabPanel.instance().homePanel.entityPanel.add(new CreateCorporateStatusReportPanel(entityId));
+        }
 
     }
 
@@ -204,7 +206,7 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new CreateCorporateStatusReportPanel(parentId));
         }
-        if (TabPanel.instance().homePanel.isVisible()) {
+        if (TabPanel.instance().getHomePanel().isVisible()) {
             TabPanel.instance().getHomePanel().entityPanel.clear();
             TabPanel.instance().getHomePanel().entityPanel.add(new CreateCorporateStatusReportPanel());
         }
