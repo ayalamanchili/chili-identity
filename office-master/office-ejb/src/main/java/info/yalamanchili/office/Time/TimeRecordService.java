@@ -53,13 +53,28 @@ public class TimeRecordService {
         // find all time records get hours data and add and populate dto.
         for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
             AvantelTimeSummaryDto summaryRec = new AvantelTimeSummaryDto();
-            if (emp.getBranch().equals(Branch.Hyderabad)) {
+            if (Branch.Hyderabad.equals(emp.getBranch())) {
 
                 BigDecimal cubicalHours = BigDecimal.ZERO;
                 for (TimeRecord timeRecord : timeRecordDao.findAll(emp.getEmployeeId(), dto.getStartDate(), dto.getEndDate())) {
                     cubicalHours.add(timeRecord.getTags().get(EmployeeTimeDataBulkImportProcessBean.CUBICAL));
                 }
+
+                BigDecimal recptionHours = BigDecimal.ZERO;
+                for (TimeRecord timeRecord : timeRecordDao.findAll(emp.getEmployeeId(), dto.getStartDate(), dto.getEndDate())) {
+                    recptionHours.add(timeRecord.getTags().get(EmployeeTimeDataBulkImportProcessBean.RECEPTION));
+                }
+                BigDecimal secondndFloorHours = BigDecimal.ZERO;
+                for (TimeRecord timeRecord : timeRecordDao.findAll(emp.getEmployeeId(), dto.getStartDate(), dto.getEndDate())) {
+                    secondndFloorHours.add(timeRecord.getTags().get(EmployeeTimeDataBulkImportProcessBean.SECOND_FLOOR));
+                }
+                BigDecimal timeInHours = BigDecimal.ZERO;
+                for (TimeRecord timeRecord : timeRecordDao.findAll(emp.getEmployeeId(), dto.getStartDate(), dto.getEndDate())) {
+                    timeInHours.add(timeRecord.getTags().get(EmployeeTimeDataBulkImportProcessBean.TIME_IN));
+                }
                 summaryRec.setCubicalHours(cubicalHours);
+                summaryRec.setReceptionHours(recptionHours);
+                summaryRec.setSecondndFloorHours(secondndFloorHours);
                 summaryRec.setEmployee(emp.getFirstName() + " " + emp.getLastName());
                 summaryRec.setStartDate(dto.getStartDate());
                 summaryRec.setEndDate(dto.getEndDate());
