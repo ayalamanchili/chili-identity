@@ -32,6 +32,7 @@ public class Auth {
         ROLE_HEALTH_INSURANCE_MANAGER,
         ROLE_BULK_IMPORT,
         ROLE_CHILI_ADMIN,
+        ROLE_STATUS_REPORT,
     }
 
     public static boolean isAdmin() {

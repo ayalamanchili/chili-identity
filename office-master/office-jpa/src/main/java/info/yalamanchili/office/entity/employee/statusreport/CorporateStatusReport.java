@@ -91,6 +91,16 @@ public class CorporateStatusReport extends AbstractEntity {
 
     public CorporateStatusReport() {
     }
+    @Transient
+    protected boolean enableUpdate;
+
+    public boolean isEnableUpdate() {
+        return enableUpdate;
+    }
+
+    public void setEnableUpdate(boolean enableUpdate) {
+        this.enableUpdate = enableUpdate;
+    }
 
     /**
      * @return the reportStartDate
@@ -182,7 +192,6 @@ public class CorporateStatusReport extends AbstractEntity {
     public void setBpmProcessId(String bpmProcessId) {
         this.bpmProcessId = bpmProcessId;
     }
-
     @Transient
     protected TimePeriod statusReportPeriod;
 
@@ -193,7 +202,6 @@ public class CorporateStatusReport extends AbstractEntity {
     public void setStatusReportPeriod(TimePeriod statusReportPeriod) {
         this.statusReportPeriod = statusReportPeriod;
     }
-
     @Transient
     protected String employeeName;
 
@@ -209,5 +217,4 @@ public class CorporateStatusReport extends AbstractEntity {
     public String toString() {
         return "CorporateStatusReport{" + "reportStartDate=" + reportStartDate + ", reportEndDate=" + reportEndDate + ", report=" + report + ", employee=" + employee + ", stage=" + status + ", approvedBy=" + approvedBy + ", submittedDate=" + submittedDate + ", approvedDate=" + approvedDate + ", bpmProcessId=" + bpmProcessId + '}';
     }
-
 }

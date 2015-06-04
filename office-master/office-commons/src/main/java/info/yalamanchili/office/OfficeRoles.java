@@ -1,5 +1,5 @@
-/**test
- * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+/**
+ * test System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
  */
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -51,6 +51,7 @@ public class OfficeRoles {
         ROLE_HEALTH_INSURANCE_MANAGER,
         ROLE_BULK_IMPORT,
         ROLE_CHILI_ADMIN,
+        ROLE_STATUS_REPORT,
     }
     public final static Map<String, String> rolesMessages = new HashMap<String, String>();
 
@@ -86,5 +87,6 @@ public class OfficeRoles {
         rolesMessages.put(OfficeRole.ROLE_HEALTH_INSURANCE_MANAGER.name(), "Health Insurance Manager");
         rolesMessages.put(OfficeRole.ROLE_BULK_IMPORT.name(), "Bulk Import Manager");
         rolesMessages.put(OfficeRole.ROLE_CHILI_ADMIN.name(), "Chili Admin");
+        rolesMessages.put(OfficeRole.ROLE_STATUS_REPORT.name(), "Status Report Role");
     }
 }

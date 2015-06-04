@@ -10,6 +10,8 @@ package info.yalamanchili.office.dao.employee.statusreport;
 import info.chili.dao.CRUDDao;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.OfficeRoles;
+import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.TimePeriodDao;
@@ -43,7 +45,6 @@ public class CorporateStatusReportDao extends CRUDDao<CorporateStatusReport> {
         entity.setStatusReportPeriod(TimePeriodDao.instance().find(entity.getReportStartDate(), entity.getReportEndDate(), TimePeriod.TimePeriodType.Week));
         return entity;
     }
-    
 
     @Override
     public CorporateStatusReport save(CorporateStatusReport entity) {
@@ -131,6 +132,26 @@ public class CorporateStatusReportDao extends CRUDDao<CorporateStatusReport> {
         return query.toString();
     }
 
+    public boolean enableUpdate(CorporateStatusReport statusreports, Employee employee) {
+        boolean flag = false;
+        if (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_HR_ADMINSTRATION.name(), OfficeRoles.OfficeRole.ROLE_PRB_EVALUATIONS_MANAGER.name())) {
+            flag = true;
+        }
+        Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
+        if (currentUser == null) {
+            return false;
+        }
+        Employee perfEvalMgr = CompanyContactDao.instance().getCompanyContactForEmployee(employee, "Perf_Eval_Manager");
+        if (perfEvalMgr != null && currentUser.getId().equals(perfEvalMgr.getId())) {
+            flag = true;
+        }
+        Employee reportsToMgr = CompanyContactDao.instance().getCompanyContactForEmployee(employee, "Reports_To");
+        if (reportsToMgr != null && currentUser.getId().equals(reportsToMgr.getId())) {
+            flag = true;
+        }
+        return flag && CropStatusReportStatus.Pending_Manager_Approval.equals(statusreports.getStatus());
+    }
+
     public CorporateStatusReportDao() {
         super(CorporateStatusReport.class);
     }
@@ -177,6 +198,5 @@ public class CorporateStatusReportDao extends CRUDDao<CorporateStatusReport> {
         public void setStatusReportPeriod(TimePeriod statusReportPeriod) {
             this.statusReportPeriod = statusReportPeriod;
         }
-
     }
 }

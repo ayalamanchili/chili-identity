@@ -13,6 +13,7 @@ import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
 import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
+import info.yalamanchili.office.dao.message.NotificationGroupDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.employee.perfeval.PerformanceEvaluationQuestionsFactory;
 import info.yalamanchili.office.entity.Company;
@@ -96,7 +97,7 @@ public class OfficeStartup {
         //Run sync tasks
 //        TimeJobService.instance().syncTimeSheetPeriods();
         OfficeBPMIdentityService.instance().syncUsersAndRoles();
-//        NotificationGroupDao.instance().syncNotificationGroupsForRoles();
+        NotificationGroupDao.instance().syncStatusReportNotificationGroup();
     }
 
     protected void initSecurity() {
@@ -458,6 +459,7 @@ public class OfficeStartup {
             return em.merge(officeAddressType);
         }
     }
+
     protected AddressType getOtherAddressType() {
         Query getAddressType = em.createQuery("from " + AddressType.class.getCanonicalName()
                 + " where addressType=:addressTypeParam");

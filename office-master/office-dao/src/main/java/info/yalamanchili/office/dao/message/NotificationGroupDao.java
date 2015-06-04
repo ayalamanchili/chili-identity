@@ -95,6 +95,23 @@ public class NotificationGroupDao extends CRUDDao<NotificationGroup> {
         }
         group.setEmployees(employees);
     }
+    private static final String CORPORATE_STATUS_REPORT_NOTIFICATION_GROUP = "Status Report Manger";
+
+    @Transactional
+    public void syncStatusReportNotificationGroup() {
+        NotificationGroup group = findByName(CORPORATE_STATUS_REPORT_NOTIFICATION_GROUP);
+        if (group == null) {
+            group = new NotificationGroup();
+            group.setName(CORPORATE_STATUS_REPORT_NOTIFICATION_GROUP);
+            group = save(group);
+        }
+        RetirementPlanDao dao = RetirementPlanDao.instance();
+        List<Employee> employees = new ArrayList<>();
+        for (RetirementPlan rp : dao.getActiveRetirementPlans()) {
+            employees.add(rp.getEmployee());
+        }
+        group.setEmployees(employees);
+    }
 
     public NotificationGroup findByName(String name) {
         return QueryUtils.findEntity(getEntityManager(), NotificationGroup.class, "name", name);
