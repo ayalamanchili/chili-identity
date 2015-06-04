@@ -204,12 +204,13 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
     protected void createButtonClicked() {
         if (TabPanel.instance().myOfficePanel.isVisible()) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateCorporateStatusReportPanel(parentId));
+            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateCorporateStatusReportPanel());
         }
-        if (TabPanel.instance().getHomePanel().isVisible()) {
-            TabPanel.instance().getHomePanel().entityPanel.clear();
-            TabPanel.instance().getHomePanel().entityPanel.add(new CreateCorporateStatusReportPanel());
+        if (TabPanel.instance().homePanel.isVisible()) {
+            if (Auth.isCorporateEmployee()) {
+                TabPanel.instance().homePanel.entityPanel.clear();
+                TabPanel.instance().homePanel.entityPanel.add(new CreateCorporateStatusReportPanel());
+            }
         }
-
     }
 }
