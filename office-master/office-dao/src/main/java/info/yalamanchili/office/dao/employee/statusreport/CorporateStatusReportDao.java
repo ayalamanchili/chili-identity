@@ -16,10 +16,12 @@ import info.yalamanchili.office.dao.message.NotificationGroupDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.TimePeriodDao;
+import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.entity.employee.statusreport.CorporateStatusReport;
 import info.yalamanchili.office.entity.employee.statusreport.CropStatusReportStatus;
 import info.yalamanchili.office.entity.message.NotificationGroup;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.model.time.TimePeriod;
 import info.yalamanchili.office.security.AccessCheck;
 import java.util.ArrayList;
@@ -111,7 +113,6 @@ public class CorporateStatusReportDao extends CRUDDao<CorporateStatusReport> {
         }
         return res;
     }
-
     public static final String CORPORATE_STATUS_REPORT_GROUP = "Corporate_Status_Reports_Group";
 
     protected List<CorporateStatusReport> notSubmittedReport(CorporateStatusReportSearchDto dto) {
@@ -128,6 +129,12 @@ public class CorporateStatusReportDao extends CRUDDao<CorporateStatusReport> {
             if (find(emp, timePeriod.getStartDate(), timePeriod.getEndDate()) == null) {
                 CorporateStatusReport rpt = new CorporateStatusReport();
                 rpt.setEmployeeName(emp.getFirstName() + " " + emp.getLastName());
+                Email email = new Email();
+                email.addTo(EmployeeDao.instance().getPrimaryEmail(emp));
+                email.setSubject("Weekly Status Report  Remainder: " + rpt.getEmployee().getFirstName());
+                String messageText = "Weekly Status Report" + rpt.getEmployeeName() + ", StartDate" + rpt.getReportStartDate() + ", EndDate" + rpt.getReportEndDate() + " details ";
+                email.setBody(messageText);
+                MessagingService.instance().sendEmail(email);
                 res.add(rpt);
             }
         }

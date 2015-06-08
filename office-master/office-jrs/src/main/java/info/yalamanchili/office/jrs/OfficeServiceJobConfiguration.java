@@ -56,6 +56,11 @@ public class OfficeServiceJobConfiguration {
     }
 
     @ManagedOperation
+    public void syncNotSubmitted() {
+//        CorporateStatusReportDao.instance().notSubmittedReport();
+    }
+
+    @ManagedOperation
     public void syncNotificationGroupForRetirementPlanOptIns() {
         NotificationGroupDao.instance().syncRetirementPlanOptInNotificationGroup();
     }
