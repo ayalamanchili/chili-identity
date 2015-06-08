@@ -45,7 +45,7 @@ public class ReportsMenu extends Composite {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
             reportsMenuBar.addItem("Perf Evaluations", performanceEvaluationsReportsMaintainenceCmd);
         }
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_HR)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CRP_STATUS_RPT_MGR, Auth.ROLE.ROLE_ADMIN)) {
             reportsMenuBar.addItem("Status Report", corporatestatusReportsMaintainenceCmd);
         }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_HR, ROLE.ROLE_PRB_EVALUATIONS_MANAGER)) {

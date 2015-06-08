@@ -18,12 +18,14 @@ import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -45,6 +47,7 @@ public class CorporateStatusReportSidePanel extends ALComposite implements Click
     EnumField statusF = new EnumField(OfficeWelcome.constants, "status", "CorporateStatusReport",
             false, false, CropStatusReportStatus.names(), Alignment.VERTICAL);
     Button searchB = new Button("Search");
+    ClickableLink reminderB = new ClickableLink("Send Reminder");
 
     public CorporateStatusReportSidePanel() {
         init(mainPanel);
@@ -53,6 +56,7 @@ public class CorporateStatusReportSidePanel extends ALComposite implements Click
     @Override
     protected void addListeners() {
         searchB.addClickHandler(this);
+        reminderB.addClickHandler(this);
     }
 
     @Override
@@ -80,6 +84,8 @@ public class CorporateStatusReportSidePanel extends ALComposite implements Click
         panel.add(statusReportPeriodF);
         panel.add(statusF);
         panel.add(searchB);
+        panel.add(new HTML("<hr>"));
+        panel.add(reminderB);
     }
 
     @Override
@@ -87,9 +93,12 @@ public class CorporateStatusReportSidePanel extends ALComposite implements Click
         if (event.getSource().equals(searchB)) {
             search();
         }
+        if (event.getSource().equals(reminderB)) {
+            sendRemainder();
+        }
     }
 
-    protected void search() {
+    protected JSONObject populateEntity() {
         JSONObject entity = new JSONObject();
         if (employeeSB.getSelectedObject() != null) {
             entity.put("employee", employeeSB.getSelectedObject());
@@ -100,7 +109,21 @@ public class CorporateStatusReportSidePanel extends ALComposite implements Click
         if (statusF.getValue() != null) {
             entity.put("status", new JSONString(statusF.getValue()));
         }
-        HttpService.HttpServiceAsync.instance().doPut(searchReportsUrl(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+        return entity;
+    }
+
+    protected void sendRemainder() {
+        HttpService.HttpServiceAsync.instance().doPut(sendRemainderUrl(), populateEntity().toString(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String result) {
+                        new ResponseStatusWidget().show("Remainder Email Sent");
+                    }
+                });
+    }
+
+    protected void search() {
+        HttpService.HttpServiceAsync.instance().doPut(searchReportsUrl(), populateEntity().toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
@@ -125,5 +148,9 @@ public class CorporateStatusReportSidePanel extends ALComposite implements Click
 
     protected String searchReportsUrl() {
         return OfficeWelcome.instance().constants.root_url() + "corporate-statusreport/search";
+    }
+
+    protected String sendRemainderUrl() {
+        return OfficeWelcome.instance().constants.root_url() + "corporate-statusreport/not-submitted-reminder";
     }
 }
