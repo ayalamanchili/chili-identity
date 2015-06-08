@@ -25,6 +25,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @XmlType
 public class TimePeriod extends AbstractDocument {
 
+    @XmlType
     public enum TimePeriodType {
 
         Month, Week, Year

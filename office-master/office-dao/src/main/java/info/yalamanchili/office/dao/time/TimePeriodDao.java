@@ -11,6 +11,7 @@ package info.yalamanchili.office.dao.time;
 import info.chili.commons.DateUtils;
 import info.chili.service.jrs.types.Entry;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.model.time.TimePeriod;
 import info.yalamanchili.office.model.time.TimePeriod.TimePeriodType;
 import java.util.ArrayList;
@@ -18,6 +19,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -36,6 +39,7 @@ public class TimePeriodDao {
     @Autowired
     protected MongoOperations mongoTemplate;
 
+    @CacheEvict(value = OfficeCacheKeys.TIME, allEntries = true)
     public void save(TimePeriod entity) {
         if (find(entity.getStartDate(), entity.getEndDate(), TimePeriodType.Week) == null) {
             mongoTemplate.save(entity);
@@ -53,11 +57,13 @@ public class TimePeriodDao {
         query.addCriteria(Criteria.where("type").is(type.name()));
         return mongoTemplate.findOne(query, TimePeriod.class);
     }
-//TODO cache
 
-    public List<Entry> getDropDown(int start, int limit) {
+    @Cacheable(OfficeCacheKeys.TIME)
+    public List<Entry> getDropDown(int start, int limit, TimePeriodType type) {
         List<Entry> res = new ArrayList<>();
-        for (TimePeriod entity : mongoTemplate.findAll(TimePeriod.class, "timeperiods")) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("type").is(type.name()));
+        for (TimePeriod entity : mongoTemplate.find(query, TimePeriod.class)) {
             res.add(new Entry(entity.getId(), entity.describe()));
         }
         return res;
@@ -66,6 +72,7 @@ public class TimePeriodDao {
     /**
      * creates weekly time periods eg: week1 jan 1 to jan 8th;
      */
+    @CacheEvict(value = OfficeCacheKeys.TIME, allEntries = true)
     public void syncWeeklyTimePeriods() {
         for (int i = 0; i > -10; i--) {
             Date date;

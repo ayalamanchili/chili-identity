@@ -11,6 +11,7 @@ import info.yalamanchili.office.Time.AssociateTimeAccuralService;
 import info.yalamanchili.office.Time.CorporateTimeAccuralService;
 import info.yalamanchili.office.Time.TimeJobService;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.time.TimePeriodDao;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.employee.probeval.ProbationPeriodEvaluationInitiator;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -53,6 +54,14 @@ public class OfficeSchedulerService {
     public void accuredMonthlyTime() {
         CorporateTimeAccuralService.instance().accureMonthlyTime();
         AssociateTimeAccuralService.instance().accureMonthlyConsTime();
+    }
+
+    /**
+     * runs 10 15 AM every sunday
+     */
+    @Scheduled(cron = "0 15 10 ? * SUN")
+    public void syncWeeklyTimePeriods() {
+        TimePeriodDao.instance().syncWeeklyTimePeriods();
     }
 
     /**

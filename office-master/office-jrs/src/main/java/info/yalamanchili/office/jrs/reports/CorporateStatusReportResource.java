@@ -7,7 +7,6 @@
  */
 package info.yalamanchili.office.jrs.reports;
 
-import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.dao.employee.statusreport.CorporateStatusReportDao;
 import info.yalamanchili.office.dao.employee.statusreport.CorporateStatusReportDao.CorporateStatusReportSearchDto;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
@@ -110,12 +109,6 @@ public class CorporateStatusReportResource {
     @Path("/not-submitted-reminder")
     public void notSubmittedRemainder(CorporateStatusReportSearchDto dto) {
         corporateStatusReportDao.notSubmittedEmailNotification(dto);
-    }
-
-    @GET
-    @Path("/periods")
-    public List<Entry> getStatusReportPeriods() {
-        return TimePeriodDao.instance().getDropDown(0, 10);
     }
 
     @XmlRootElement
