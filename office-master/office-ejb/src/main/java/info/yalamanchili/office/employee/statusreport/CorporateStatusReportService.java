@@ -35,8 +35,7 @@ public class CorporateStatusReportService {
     protected Mapper mapper;
     @Autowired
     public CorporateStatusReportDao corporateStatusReportDao;
-
-    @Validate
+    
     public String save(CorporateStatusReport entity, Boolean submitForApproval) {
         entity = corporateStatusReportDao.save(entity);
         if (submitForApproval) {

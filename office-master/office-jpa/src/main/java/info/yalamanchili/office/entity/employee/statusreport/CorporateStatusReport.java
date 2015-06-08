@@ -26,6 +26,7 @@ import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -57,6 +58,7 @@ public class CorporateStatusReport extends AbstractEntity {
      *
      */
     @Lob
+    @NotEmpty
     private String report;
     /**
      * Employee

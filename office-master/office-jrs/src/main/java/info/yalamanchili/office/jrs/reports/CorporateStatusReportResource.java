@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.jrs.reports;
 
+import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.dao.employee.statusreport.CorporateStatusReportDao;
 import info.yalamanchili.office.dao.employee.statusreport.CorporateStatusReportDao.CorporateStatusReportSearchDto;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
@@ -70,6 +71,7 @@ public class CorporateStatusReportResource {
     }
 
     @PUT
+    @Validate
     public void save(CorporateStatusReport entity, @QueryParam("submitForApproval") Boolean submitForApproval) {
         TimePeriod statusReportPeriod = TimePeriodDao.instance().fineOne(entity.getStatusReportPeriod().getId());
         entity.setReportStartDate(statusReportPeriod.getStartDate());

@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -63,6 +64,9 @@ public class TimePeriodDao {
         List<Entry> res = new ArrayList<>();
         Query query = new Query();
         query.addCriteria(Criteria.where("type").is(type.name()));
+        query.with(new Sort(Sort.Direction.DESC, "startDate"));
+        query.skip(start);
+        query.limit(limit);
         for (TimePeriod entity : mongoTemplate.find(query, TimePeriod.class)) {
             res.add(new Entry(entity.getId(), entity.describe()));
         }
