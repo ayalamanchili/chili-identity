@@ -36,7 +36,7 @@ public class SelectTimePeriodWidget extends SelectComposite {
 
     @Override
     protected String getDropDownURL(Integer start, Integer limit, String... columns) {
-        return OfficeWelcome.constants.root_url() + "corporate-statusreport/periods";
+        return OfficeWelcome.constants.root_url() + "timeperiod/periods/Week/" + start.toString() + "/" + limit;
     }
 
     @Override
