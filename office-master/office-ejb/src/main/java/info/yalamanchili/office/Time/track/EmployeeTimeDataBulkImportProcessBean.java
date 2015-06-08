@@ -125,7 +125,10 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDoc
             }
             notes.append(timeEntry.describe()).append("\n");
         }
-        return new BigDecimal((double) minutes / (double) 60).setScale(2, RoundingMode.UP);
+        long hours = minutes / 60;
+        long mins  = minutes % 60;
+        String totaltime = hours+"."+mins;
+        return new BigDecimal(totaltime);
     }
 
     protected BigDecimal caluclateBorderMinutes(List<TimeEntry> entries, StringBuilder notes) {
@@ -136,7 +139,10 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDoc
         Date timeIn = entries.get(0).getEntryTimeStamp();
         Date timeOut = entries.get(entries.size() - 1).getEntryTimeStamp();
         minutes = minutes + TimeUnit.MILLISECONDS.toMinutes(timeOut.getTime() - timeIn.getTime());
-        return new BigDecimal((double) minutes / (double) 60).setScale(2, RoundingMode.UP);
+        long hours = minutes / 60;
+        long mins  = minutes % 60;
+        String totaltime = hours+"."+mins;
+        return new BigDecimal(totaltime);
     }
 
     protected TimeRecord createTimeRecord(String employeeId, Date startDate, Date endDate, Map<String, BigDecimal> hours, TimeRecordStatus status, String notes) {
