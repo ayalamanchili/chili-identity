@@ -19,12 +19,12 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
@@ -32,6 +32,7 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import java.util.Date;
 import java.util.logging.Logger;
 
 /**
@@ -132,13 +133,12 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
             entity = new JSONObject();
         }
         entity.put("statusReportPeriod", statusReportPeriodF.getSelectedObject());
+        entity.put("reportStartDate", new JSONString(DateUtils.toDateString(new Date())));
+        entity.put("reportEndDate", new JSONString(DateUtils.toDateString(new Date())));
         entity.put("report", new JSONString(reportF.getData()));
-        if (entity.get("report").isString().stringValue().length() < 10) {
-            Window.alert("Report is Empty");
-            return;
-        }
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
+
                     @Override
                     public void onResponse(String arg0) {
                         new ResponseStatusWidget().show("Successfully submited status report");
@@ -151,6 +151,7 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
                             TabPanel.instance().homePanel.entityPanel.add(new ReadAllCorporateStatusReportsPanel());
                         }
                     }
+
                 });
     }
 
