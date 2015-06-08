@@ -55,11 +55,6 @@ public class OfficeSchedulerService {
         AssociateTimeAccuralService.instance().accureMonthlyConsTime();
     }
 
-    @Scheduled(cron = "0 0 3 * * ?MON")
-    public void sendNotSubmittedStatusReportsNotifications() {
-//        CorporateStatusReportService.instance().sendNotSubmittedStatusReportsNotifications;
-    }
-
     /**
      * runs every night at 1.10 AM
      */

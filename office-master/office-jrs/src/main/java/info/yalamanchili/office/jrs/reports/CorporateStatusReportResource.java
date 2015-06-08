@@ -106,6 +106,12 @@ public class CorporateStatusReportResource {
         return corporateStatusReportDao.search(dto);
     }
 
+    @PUT
+    @Path("/not-submitted-reminder")
+    public void notSubmittedRemainder(CorporateStatusReportSearchDto dto) {
+        corporateStatusReportDao.notSubmittedEmailNotification(dto);
+    }
+
     @GET
     @Path("/periods")
     public List<Entry> getStatusReportPeriods() {

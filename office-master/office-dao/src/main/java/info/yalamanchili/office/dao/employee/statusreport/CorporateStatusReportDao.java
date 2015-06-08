@@ -10,8 +10,6 @@ package info.yalamanchili.office.dao.employee.statusreport;
 import info.chili.dao.CRUDDao;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.OfficeRoles;
-import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.message.NotificationGroupDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
@@ -26,7 +24,9 @@ import info.yalamanchili.office.model.time.TimePeriod;
 import info.yalamanchili.office.security.AccessCheck;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -129,16 +129,40 @@ public class CorporateStatusReportDao extends CRUDDao<CorporateStatusReport> {
             if (find(emp, timePeriod.getStartDate(), timePeriod.getEndDate()) == null) {
                 CorporateStatusReport rpt = new CorporateStatusReport();
                 rpt.setEmployeeName(emp.getFirstName() + " " + emp.getLastName());
-                Email email = new Email();
-                email.addTo(EmployeeDao.instance().getPrimaryEmail(emp));
-                email.setSubject("Weekly Status Report  Remainder: " + rpt.getEmployee().getFirstName());
-                String messageText = "Weekly Status Report" + rpt.getEmployeeName() + ", StartDate" + rpt.getReportStartDate() + ", EndDate" + rpt.getReportEndDate() + " details ";
-                email.setBody(messageText);
-                MessagingService.instance().sendEmail(email);
                 res.add(rpt);
             }
         }
         return res;
+    }
+
+    /**
+     * this is invoked by the scheduler to send email remainders to all employee
+     * in who did not submit status report for the week
+     *
+     * @param dto
+     * @return
+     */
+    public void notSubmittedEmailNotification(CorporateStatusReportSearchDto dto) {
+        Set<String> res = new HashSet();
+        if (dto.getStatusReportPeriod() == null) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "timeperiod.not.present", "Please select a time period");
+        }
+        TimePeriod timePeriod = TimePeriodDao.instance().fineOne(dto.getStatusReportPeriod().getId());
+        NotificationGroup ng = NotificationGroupDao.instance().findByName(CORPORATE_STATUS_REPORT_GROUP);
+        if (ng == null) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "status.report.notificationgroup.dontnot.exist", CORPORATE_STATUS_REPORT_GROUP + " notification group does not exist");
+        }
+        for (Employee emp : ng.getEmployees()) {
+            if (find(emp, timePeriod.getStartDate(), timePeriod.getEndDate()) == null) {
+                res.add(emp.getPrimaryEmail().getEmail());
+            }
+        }
+        Email email = new Email();
+        email.setTos(res);
+        email.setSubject("Weekly status report Not Submitted Remainder");
+        String messageText = "Please submit your weekly status report";
+        email.setBody(messageText);
+        MessagingService.instance().sendEmail(email);
     }
 
     protected String getSearchReportsQuery(CorporateStatusReportSearchDto dto) {
