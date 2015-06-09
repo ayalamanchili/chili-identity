@@ -47,7 +47,7 @@ public class StatusReportProcess implements TaskListener {
         }
         StatusReportDao.instance().save(request);
         CommentDao.instance().addComment(notes, request);
-        new GenericTaskCompleteNotification().notify(dt);
+        new GenericTaskCompleteNotification().notify(dt, true);
     }
 
     protected StatusReport getRequestFromTask(DelegateTask task) {

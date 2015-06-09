@@ -14,6 +14,8 @@ import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
+import java.util.HashSet;
+import java.util.Set;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
 
@@ -29,17 +31,10 @@ public class GenericTaskCompleteNotification implements TaskListener {
         notifyWithMoreRoles(delegateTask);
     }
 
-    public void notifyWithMoreRoles(DelegateTask delegateTask, String... notifyRoles) {
+    public void notify(DelegateTask delegateTask, Boolean notifyEmployee, String... notifyRoles) {
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
         Email email = new Email();
-        email.setTos(BPMUtils.getCandidateEmails(delegateTask));
-        if (notifyRoles.length > 0) {
-            email.addTos(MailUtils.instance().getEmailsAddressesForRoles(notifyRoles));
-        }
-        Employee employee = (Employee) delegateTask.getExecution().getVariable("currentEmployee");
-        if (employee != null) {
-            email.addTo(EmployeeDao.instance().getPrimaryEmail(employee.getId()));
-        }
+        email.setTos(getEmails(delegateTask, notifyEmployee, notifyRoles));
         String subjectText = "Task Complete:" + delegateTask.getName();
         String messageText = "Task Complete.  Details: \n Name: " + delegateTask.getName() + " \n Description:" + delegateTask.getDescription();
         //task statuss
@@ -62,5 +57,24 @@ public class GenericTaskCompleteNotification implements TaskListener {
         email.setSubject(subjectText);
         email.setBody(messageText);
         messagingService.sendEmail(email);
+    }
+
+    public void notifyWithMoreRoles(DelegateTask delegateTask, String... notifyRoles) {
+        notify(delegateTask, Boolean.FALSE, notifyRoles);
+    }
+
+    public Set<String> getEmails(DelegateTask delegateTask, Boolean notifyEmployeeOnly, String... notifyRoles) {
+        Set<String> emails = new HashSet();
+        if (!notifyEmployeeOnly) {
+            emails.addAll(BPMUtils.getCandidateEmails(delegateTask));
+        }
+        if (notifyRoles.length > 0) {
+            emails.addAll(MailUtils.instance().getEmailsAddressesForRoles(notifyRoles));
+        }
+        Employee employee = (Employee) delegateTask.getExecution().getVariable("currentEmployee");
+        if (employee != null) {
+            emails.add(EmployeeDao.instance().getPrimaryEmail(employee.getId()));
+        }
+        return emails;
     }
 }
