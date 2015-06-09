@@ -61,8 +61,8 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
         assignEntityValueFromField("employee", entity);
         
         if (fields.containsKey("company") && selectCompnayWidget.getSelectedObject() != null) {
-            JSONObject company = selectCompnayWidget.getSelectedObject();
-            company.put("name", company.get("value"));
+            JSONObject company = new JSONObject();            
+            company.put("name", selectCompnayWidget.getSelectedObject().get("value"));
             entity.put("company", company);
         }
         assignEntityValueFromField("caseType", entity);        
