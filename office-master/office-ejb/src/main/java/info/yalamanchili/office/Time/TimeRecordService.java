@@ -52,34 +52,29 @@ public class TimeRecordService {
         //for loop of all india team employees (corporate employee whose branch is india)
         // find all time records get hours data and add and populate dto.
         for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
-            AvantelTimeSummaryDto summaryRec = new AvantelTimeSummaryDto();
+            
             if (Branch.Hyderabad.equals(emp.getBranch())) {
-
-                BigDecimal cubicalHours = BigDecimal.ZERO;
-                for (TimeRecord timeRecord : timeRecordDao.findAll(emp.getEmployeeId(), dto.getStartDate(), dto.getEndDate())) {
-                    cubicalHours.add(timeRecord.getTags().get(EmployeeTimeDataBulkImportProcessBean.CUBICAL));
+                
+                AvantelTimeSummaryDto summaryRec = new AvantelTimeSummaryDto();
+                
+                BigDecimal cubicleHours     = BigDecimal.ZERO;
+                BigDecimal receptionHours   = BigDecimal.ZERO;
+                BigDecimal secondFloorHours = BigDecimal.ZERO;
+                
+                for ( TimeRecord timeRecord : timeRecordDao.findAll(emp.getEmployeeId(), dto.getStartDate(), dto.getEndDate())){
+                    cubicleHours.add(timeRecord.getTags().get(EmployeeTimeDataBulkImportProcessBean.CUBICAL));
+                    receptionHours.add(timeRecord.getTags().get(EmployeeTimeDataBulkImportProcessBean.RECEPTION));
+                    secondFloorHours.add(timeRecord.getTags().get(EmployeeTimeDataBulkImportProcessBean.SECOND_FLOOR));
                 }
-
-                BigDecimal recptionHours = BigDecimal.ZERO;
-                for (TimeRecord timeRecord : timeRecordDao.findAll(emp.getEmployeeId(), dto.getStartDate(), dto.getEndDate())) {
-                    recptionHours.add(timeRecord.getTags().get(EmployeeTimeDataBulkImportProcessBean.RECEPTION));
-                }
-                BigDecimal secondndFloorHours = BigDecimal.ZERO;
-                for (TimeRecord timeRecord : timeRecordDao.findAll(emp.getEmployeeId(), dto.getStartDate(), dto.getEndDate())) {
-                    secondndFloorHours.add(timeRecord.getTags().get(EmployeeTimeDataBulkImportProcessBean.SECOND_FLOOR));
-                }
-                BigDecimal timeInHours = BigDecimal.ZERO;
-                for (TimeRecord timeRecord : timeRecordDao.findAll(emp.getEmployeeId(), dto.getStartDate(), dto.getEndDate())) {
-                    timeInHours.add(timeRecord.getTags().get(EmployeeTimeDataBulkImportProcessBean.TIME_IN));
-                }
-                summaryRec.setCubicalHours(cubicalHours);
-                summaryRec.setReceptionHours(recptionHours);
-                summaryRec.setSecondndFloorHours(secondndFloorHours);
+                
+                summaryRec.setCubicalHours(cubicleHours);
+                summaryRec.setReceptionHours(receptionHours);
+                summaryRec.setSecondndFloorHours(secondFloorHours);
                 summaryRec.setEmployee(emp.getFirstName() + " " + emp.getLastName());
                 summaryRec.setStartDate(dto.getStartDate());
                 summaryRec.setEndDate(dto.getEndDate());
+                res.add(summaryRec);
             }
-            res.add(summaryRec);
         }
         MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(res, "Attandance-Summary", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
     }
