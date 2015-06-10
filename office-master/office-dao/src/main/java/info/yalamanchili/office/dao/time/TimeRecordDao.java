@@ -61,8 +61,8 @@ public class TimeRecordDao {
 
     public List<TimeRecord> findAll(String employeeId, Date startDate, Date endDate) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("startDate").is(startDate));
-        query.addCriteria(Criteria.where("endDate").is(endDate));
+        query.addCriteria(Criteria.where("startDate").gte(startDate));
+        query.addCriteria(Criteria.where("endDate").lte(endDate));
         query.addCriteria(Criteria.where("employeeId").is(employeeId));
         return mongoTemplate.find(query, TimeRecord.class);
     }

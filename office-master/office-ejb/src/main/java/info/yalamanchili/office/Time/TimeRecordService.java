@@ -52,21 +52,21 @@ public class TimeRecordService {
         //for loop of all india team employees (corporate employee whose branch is india)
         // find all time records get hours data and add and populate dto.
         for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
-            
+
             if (Branch.Hyderabad.equals(emp.getBranch())) {
-                
+
                 AvantelTimeSummaryDto summaryRec = new AvantelTimeSummaryDto();
-                
-                BigDecimal cubicleHours     = BigDecimal.ZERO;
-                BigDecimal receptionHours   = BigDecimal.ZERO;
+
+                BigDecimal cubicleHours = BigDecimal.ZERO;
+                BigDecimal receptionHours = BigDecimal.ZERO;
                 BigDecimal secondFloorHours = BigDecimal.ZERO;
-                
-                for ( TimeRecord timeRecord : timeRecordDao.findAll(emp.getEmployeeId(), dto.getStartDate(), dto.getEndDate())){
-                    cubicleHours.add(timeRecord.getTags().get(EmployeeTimeDataBulkImportProcessBean.CUBICAL));
-                    receptionHours.add(timeRecord.getTags().get(EmployeeTimeDataBulkImportProcessBean.RECEPTION));
-                    secondFloorHours.add(timeRecord.getTags().get(EmployeeTimeDataBulkImportProcessBean.SECOND_FLOOR));
+
+                for (TimeRecord timeRecord : timeRecordDao.findAll(emp.getId().toString(), dto.getStartDate(), dto.getEndDate())) {
+                    cubicleHours = cubicleHours.add(timeRecord.getTags().get(EmployeeTimeDataBulkImportProcessBean.CUBICAL));
+                    receptionHours = receptionHours.add(timeRecord.getTags().get(EmployeeTimeDataBulkImportProcessBean.RECEPTION));
+                    secondFloorHours = secondFloorHours.add(timeRecord.getTags().get(EmployeeTimeDataBulkImportProcessBean.SECOND_FLOOR));
                 }
-                
+
                 summaryRec.setCubicalHours(cubicleHours);
                 summaryRec.setReceptionHours(receptionHours);
                 summaryRec.setSecondndFloorHours(secondFloorHours);
