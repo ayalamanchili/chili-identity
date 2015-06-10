@@ -7,13 +7,13 @@
  */
 package info.yalamanchili.office.client.expense;
 
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
-import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -26,15 +26,16 @@ import java.util.logging.Logger;
  *
  * @author benerji.v
  */
-public class ReadImmigrationCheckRequisitionPanel extends ReadComposite{
-    
+public class ReadImmigrationCheckRequisitionPanel extends ReadComposite {
+
     private static ReadImmigrationCheckRequisitionPanel instance;
     private static Logger logger = Logger.getLogger(ReadImmigrationCheckRequisitionPanel.class.getName());
     SelectEmployeeWidget selectEmployeeWidgetF = new SelectEmployeeWidget("Employee", false, true);
-    
+
     public static ReadImmigrationCheckRequisitionPanel instance() {
         return instance;
     }
+
     public ReadImmigrationCheckRequisitionPanel(JSONObject entity) {
         instance = this;
         initReadComposite(entity, "ImmigrationCheckRequisition", OfficeWelcome.constants);
@@ -45,7 +46,6 @@ public class ReadImmigrationCheckRequisitionPanel extends ReadComposite{
         initReadComposite(id, "ImmigrationCheckRequisition", OfficeWelcome.constants);
     }
 
-
     @Override
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
@@ -54,11 +54,13 @@ public class ReadImmigrationCheckRequisitionPanel extends ReadComposite{
                     public void onResponse(String response) {
                         entity = (JSONObject) JSONParser.parseLenient(response);
                         populateFieldsFromEntity(entity);
-                        populateComments();
+                        populateComments(JSONUtils.toJSONArray(entity.get("items")));
                     }
                 });
     }
-    protected void populateComments() {
+
+    protected void populateComments(JSONArray items) {
+        entityFieldsPanel.add(new ReadAllImmigrationCheckRequisitionItems(items));
         entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.expense.ImmigrationCheckRequisition"));
     }
 
@@ -73,12 +75,12 @@ public class ReadImmigrationCheckRequisitionPanel extends ReadComposite{
 
     @Override
     protected void addListeners() {
-        
+
     }
 
     @Override
     protected void configure() {
-        
+
     }
 
     @Override
@@ -89,16 +91,17 @@ public class ReadImmigrationCheckRequisitionPanel extends ReadComposite{
         addField("neededByDate", true, false, DataType.DATE_FIELD);
         addEnumField("status", true, false, ImmigrationCheckRequisitionStatus.names());
     }
+
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-        
+
     }
 
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "checkrequisition/" + getEntityId();
     }
-    
+
     @Override
     protected boolean enableAudit() {
         return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_EXPENSE);
@@ -119,5 +122,5 @@ public class ReadImmigrationCheckRequisitionPanel extends ReadComposite{
         String tasksUrl = OfficeWelcome.constants.root_url() + "bpm/tasks/process/";
         tasksDP.setContent(new ReadAllTasks(tasksUrl + JSONUtils.toString(getEntity(), "bpmProcessId") + "/", true));
     }
-    
+
 }
