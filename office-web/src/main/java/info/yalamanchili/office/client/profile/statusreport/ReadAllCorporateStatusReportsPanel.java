@@ -14,6 +14,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.user.client.Window;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
@@ -21,6 +22,7 @@ import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
+import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -32,26 +34,26 @@ import java.util.logging.Logger;
  * @author ayalamanchili
  */
 public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
-    
+
     private static Logger logger = Logger.getLogger(ReadAllCorporateStatusReportsPanel.class.getName());
     public static ReadAllCorporateStatusReportsPanel instance;
     protected boolean searchResultsTable = false;
-    
+
     public ReadAllCorporateStatusReportsPanel() {
         initTable("StatusReports", OfficeWelcome.constants);
     }
-    
+
     public ReadAllCorporateStatusReportsPanel(String parentId) {
         instance = this;
         this.parentId = parentId;
         initTable("StatusReports", OfficeWelcome.constants);
     }
-    
+
     public ReadAllCorporateStatusReportsPanel(String title, JSONArray array) {
         searchResultsTable = true;
         initTable(title, array, OfficeWelcome.constants);
     }
-    
+
     @Override
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
@@ -62,9 +64,9 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
                         postFetchTable(result);
                     }
                 });
-        
+
     }
-    
+
     public String getURL(Integer start, String limit) {
         if (parentId == null) {
             return OfficeWelcome.constants.root_url() + "corporate-statusreport/" + start.toString() + "/"
@@ -74,7 +76,7 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
                     + limit + "?employeeId=" + parentId;
         }
     }
-    
+
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
@@ -88,7 +90,7 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
             table.setText(0, 5, getKeyValue("Copy"));
         }
     }
-    
+
     @Override
     public void fillData(JSONArray entities) {
         for (int i = 1; i <= entities.size(); i++) {
@@ -113,7 +115,7 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
             }
         }
     }
-    
+
     protected void createCopy(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(OfficeWelcome.constants.root_url() + "corporate-statusreport/clone/" + entityId, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
@@ -126,7 +128,7 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
                     }
                 });
     }
-    
+
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         //TODO check permission
@@ -136,20 +138,20 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
         }
     }
-    
+
     @Override
     public void viewClicked(String entityId) {
         if (TabPanel.instance().myOfficePanel.isVisible()) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadCorporateStatusReportPanel(getEntity(entityId)));
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadCorporateStatusReportPanel(entityId));
         }
         if (TabPanel.instance().homePanel.isVisible()) {
             TabPanel.instance().homePanel.entityPanel.clear();
-            TabPanel.instance().homePanel.entityPanel.add(new ReadCorporateStatusReportPanel(getEntity(entityId)));
+            TabPanel.instance().homePanel.entityPanel.add(new ReadCorporateStatusReportPanel(entityId));
         }
-        
+
     }
-    
+
     @Override
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
@@ -160,7 +162,7 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
                     }
                 });
     }
-    
+
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully deleted status report");
@@ -172,7 +174,7 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
             TabPanel.instance().homePanel.entityPanel.add(new ReadAllCorporateStatusReportsPanel());
         }
     }
-    
+
     @Override
     public void updateClicked(String entityId) {
         if (TabPanel.instance().myOfficePanel.isVisible()) {
@@ -183,13 +185,23 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
             TabPanel.instance().homePanel.entityPanel.clear();
             TabPanel.instance().homePanel.entityPanel.add(new CreateCorporateStatusReportPanel(entityId));
         }
-        
+
     }
-    
+
+    @Override
+    protected boolean enableQuickView() {
+        return true;
+    }
+
+    @Override
+    protected void onQuickView(int row, String id) {
+        new GenericPopup(new ReadCorporateStatusReportPanel(id), Window.getClientWidth() / 3, 0).show();
+    }
+
     protected String getDeleteURL(String entityId) {
         return OfficeWelcome.instance().constants.root_url() + "corporate-statusreport/delete/" + entityId;
     }
-    
+
     @Override
     protected void configureCreateButton() {
         if (TabPanel.instance().homePanel.isVisible()) {
@@ -198,7 +210,7 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
             createButton.setVisible(false);
         }
     }
-    
+
     @Override
     protected void createButtonClicked() {
         TabPanel.instance().homePanel.entityPanel.clear();
