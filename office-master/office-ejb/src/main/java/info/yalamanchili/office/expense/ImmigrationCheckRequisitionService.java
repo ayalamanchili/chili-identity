@@ -16,19 +16,12 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.bpm.types.Task;
-import info.yalamanchili.office.config.OfficeSecurityConfiguration;
-import info.yalamanchili.office.dao.expense.BankAccountDao;
-import info.yalamanchili.office.dao.expense.CheckDao;
 import info.yalamanchili.office.dao.expense.ImmigrationCheckRequisitionDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
-import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
-import info.yalamanchili.office.entity.expense.AdvanceRequisition;
-import info.yalamanchili.office.entity.expense.BankAccount;
-import info.yalamanchili.office.entity.expense.Check;
+import info.yalamanchili.office.entity.expense.CheckRequisitionItem;
 import info.yalamanchili.office.entity.expense.ImmigrationCheckRequisition;
 import info.yalamanchili.office.entity.ext.Comment;
-import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -83,41 +76,41 @@ public class ImmigrationCheckRequisitionService {
     public Response getReport(ImmigrationCheckRequisition entity) {
         PdfDocumentData data = new PdfDocumentData();
         data.setTemplateUrl("/templates/pdf/check-request-template.pdf");
-        EmployeeDao employeeDao = EmployeeDao.instance();
-        OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
-        data.setKeyStoreName(securityConfiguration.getKeyStoreName());
+
         Employee preparedBy = entity.getSubmittedBy();
         String prepareByStr = preparedBy.getLastName() + ", " + preparedBy.getFirstName();
+        data.getData().put("attorneyName", entity.getAttorneyName());
         data.getData().put("submittedBy", prepareByStr);
         data.getData().put("employee", entity.getEmployee());
-        data.getData().put("attorneyName", entity.getAttorneyName());
         data.getData().put("requestedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getRequestedDate()));
         data.getData().put("neededByDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getNeededByDate()));
         if (entity.getAmount() != null) {
             data.getData().put("amount", entity.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
         }
         data.getData().put("purpose", entity.getPurpose());
-        //PreparedBy
-        Signature preparedBysignature = new Signature(preparedBy.getEmployeeId(), preparedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "approvedBy", DateUtils.dateToCalendar(entity.getRequestedDate()), employeeDao.getPrimaryEmail(preparedBy), null);
-        data.getSignatures().add(preparedBysignature);
+        data.getData().put("caseType", entity.getCaseType().name());
+        data.getData().put("mailingAddress", entity.getMailingAddress());
+//        data.getData().put("accountDeptReceivedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getAccountDeptReceivedDate()));
+        data.getData().put("checkIssuedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getCheckIssuedDate()));
+        data.getData().put("approvedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getApprovedDate()));
+        String accountedBy = entity.getAccountedBy().getLastName()+ ", " + entity.getAccountedBy().getFirstName();
+        data.getData().put("accountedBy", accountedBy);
+
+
+        Integer i = 1;
+        for (CheckRequisitionItem item : entity.getItems()) {
+            data.getData().put("item" + i + "itemName", item.getItemName());
+            data.getData().put("item" + i + "amount", item.getAmount().toString());
+            i++;
+        }
+
         //Comment
         List<Comment> cmnts = CommentDao.instance().findAll(entity.getId(), entity.getClass().getCanonicalName());
-        for (Integer i = 0; i < 3; i++) {
-            if (cmnts.size() > i) {
-                data.getData().put("comment" + i.toString(), cmnts.get(i).getUpdatedBy() + ":" + cmnts.get(i).getComment());
-            }
+        String allComment = "";
+        for (Comment comment: cmnts) {
+            allComment = allComment + ". " + comment.getComment();
         }
-        //TODO add comment
-        //Approved By
-        if (entity.getApprovedBy() != null) {
-            Employee approver = employeeDao.findEmployeWithEmpId(entity.getEmployee());
-            if (approver != null) {
-                Signature approvedBysignature = new Signature(approver.getEmployeeId(), approver.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "approvedBy", DateUtils.dateToCalendar(entity.getApprovedDate()), employeeDao.getPrimaryEmail(approver), null);
-                data.getSignatures().add(approvedBysignature);
-                data.getData().put("approvedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getApprovedDate()));
-                data.getData().put("amount", entity.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
-            }
-        }
+        data.getData().put("comment", allComment);
         byte[] pdf = PDFUtils.generatePdf(data);
         return Response.ok(pdf)
                 .header("content-disposition", "filename = check-requisition.pdf")
