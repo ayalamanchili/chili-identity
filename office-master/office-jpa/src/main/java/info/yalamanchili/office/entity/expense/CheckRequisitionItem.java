@@ -35,7 +35,12 @@ public class CheckRequisitionItem extends AbstractEntity {
     /**
     *
     */
-    @NotNull(message = "{amount.not.empty.msg}")
+    @NotNull(message = "{itemDesc.not.empty.msg}")
+    private String itemDesc;
+    /**
+    *
+    */    
+    @NotNull(message = "{itemAmount.not.empty.msg}")
     private BigDecimal amount;
     /**
     *   GETTERS & SETTERS
@@ -54,6 +59,14 @@ public class CheckRequisitionItem extends AbstractEntity {
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
+    }
+
+    public String getItemDesc() {
+        return itemDesc;
+    }
+
+    public void setItemDesc(String itemDesc) {
+        this.itemDesc = itemDesc;
     }
 
     @Override

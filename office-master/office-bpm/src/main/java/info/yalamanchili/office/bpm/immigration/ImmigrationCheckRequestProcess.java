@@ -89,6 +89,7 @@ public class ImmigrationCheckRequestProcess implements TaskListener  {
             entity.setStatus(ImmigrationCheckRequisitionStatus.Pending_Final_Approval);
             entity.setApprovedBy(OfficeSecurityService.instance().getCurrentUser());
             entity.setApprovedDate(new Date());
+            entity.setAccountDeptReceivedDate(new Date());
         } else {
             entity.setStatus(ImmigrationCheckRequisitionStatus.Rejected);
             new GenericTaskCompleteNotification().notify(task);

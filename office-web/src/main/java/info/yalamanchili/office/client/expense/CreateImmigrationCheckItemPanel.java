@@ -29,6 +29,7 @@ public class CreateImmigrationCheckItemPanel extends CreateComposite {
     public JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();        
         assignEntityValueFromField("itemName", entity);
+        assignEntityValueFromField("itemDesc", entity);
         assignEntityValueFromField("amount", entity);        
         return entity;
     }
@@ -37,6 +38,7 @@ public class CreateImmigrationCheckItemPanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         addField("itemName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("itemDesc", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("amount", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }

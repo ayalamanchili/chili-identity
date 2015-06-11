@@ -90,7 +90,7 @@ public class ImmigrationCheckRequisitionService {
         data.getData().put("purpose", entity.getPurpose());
         data.getData().put("caseType", entity.getCaseType().name());
         data.getData().put("mailingAddress", entity.getMailingAddress());
-//        data.getData().put("accountDeptReceivedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getAccountDeptReceivedDate()));
+        data.getData().put("accountDeptReceivedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getAccountDeptReceivedDate()));
         data.getData().put("checkIssuedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getCheckIssuedDate()));
         data.getData().put("approvedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getApprovedDate()));
         String accountedBy = entity.getAccountedBy().getLastName()+ ", " + entity.getAccountedBy().getFirstName();
@@ -99,8 +99,10 @@ public class ImmigrationCheckRequisitionService {
 
         Integer i = 1;
         for (CheckRequisitionItem item : entity.getItems()) {
-            data.getData().put("item" + i + "itemName", item.getItemName());
-            data.getData().put("item" + i + "amount", item.getAmount().toString());
+            data.getData().put("sl"+ i, i.toString());
+            data.getData().put("itemName"+ i, item.getItemName());
+            data.getData().put("itemDesc"+ i, item.getItemDesc());
+            data.getData().put("itemAmount"+ i, item.getAmount().toString());
             i++;
         }
 
