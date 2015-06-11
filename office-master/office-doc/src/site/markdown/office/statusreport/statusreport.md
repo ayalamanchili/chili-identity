@@ -7,7 +7,7 @@ How to submit a Status Report
  - Navigate to Home --> My Reports --> Status Reports --> Click Submit Project Status Report.
  - Enter the necessary information as necessary following the sample data.
  - Please select *Preview* checkbox to click *Save and Preview* to review the report and its format.
- - Once ready select *Submit For Approval* check box and click "Save and Submit* to send it for approval for HR Immigration Team followed by Engagement Manager's approval.
+ - Once ready select *Submit For Approval* check box and click *Save and Submit* to send it for approval for HR Immigration Team followed by Engagement Manager's approval.
  - Please keep a watch on your emails for any comments and updates on your report. The HR and the EEM team can add commments based on the review. 
  - Once the review is complete you will be receiving a email notifications about the confirmation.
 

@@ -93,6 +93,7 @@
             <item name="Status Reports" href="/office/statusreport/statusreport.html"  collapse="true">
                 <item name="Submit Status Report" href="/office/statusreport/statusreport.html" />
                 <item name="Status Report Approval Process" href="/office/statusreport/statusreportprocess.html"/>
+                <item name="Corporate Status Reports" href="/office/statusreport/weeklystatusreports.html"/>
             </item>
             <item name="Performance Evaluations" href="/office/perf-eval/assoc-submit-review.html"  collapse="true">
                 <item name="Submit Associate Review" href="/office/perf-eval/assoc-submit-review.html" />
