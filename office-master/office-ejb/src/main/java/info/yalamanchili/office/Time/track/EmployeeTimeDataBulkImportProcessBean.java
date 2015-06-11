@@ -127,7 +127,13 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDoc
         }
         long hours = minutes / 60;
         long mins  = minutes % 60;
-        String totaltime = hours+"."+mins;
+        String totaltime = " ";
+        if (mins > 0 && mins < 10) {
+            totaltime = hours+"."+"0"+mins;
+        }
+        else {
+            totaltime = hours+"."+mins;
+        }
         return new BigDecimal(totaltime);
     }
 
@@ -141,7 +147,13 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDoc
         minutes = minutes + TimeUnit.MILLISECONDS.toMinutes(timeOut.getTime() - timeIn.getTime());
         long hours = minutes / 60;
         long mins  = minutes % 60;
-        String totaltime = hours+"."+mins;
+        String totaltime = " ";
+        if (mins > 0 && mins < 10) {
+            totaltime = hours+"."+"0"+mins;
+        }
+        else {
+            totaltime = hours+"."+mins;
+        }
         return new BigDecimal(totaltime);
     }
 

@@ -22,7 +22,7 @@ public class AvantelTimeSummaryDto {
 
     protected String Employee;
     protected BigDecimal receptionHours;
-    protected BigDecimal secondndFloorHours;
+    protected BigDecimal secondFloorHours;
     protected BigDecimal cubicalHours;
     protected BigDecimal availablePTOHours;
     protected BigDecimal monthlyAccuredHours;
@@ -48,12 +48,12 @@ public class AvantelTimeSummaryDto {
         this.receptionHours = receptionHours;
     }
 
-    public BigDecimal getSecondndFloorHours() {
-        return secondndFloorHours;
+    public BigDecimal getSecondFloorHours() {
+        return secondFloorHours;
     }
 
-    public void setSecondndFloorHours(BigDecimal secondndFloorHours) {
-        this.secondndFloorHours = secondndFloorHours;
+    public void setSecondFloorHours(BigDecimal secondFloorHours) {
+        this.secondFloorHours = secondFloorHours;
     }
 
     public BigDecimal getCubicalHours() {
