@@ -56,7 +56,7 @@ public class ImmigrationCheckRequisitionService {
         Map<String, Object> vars = new HashMap<>();
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
         entity.setSubmittedBy(emp);
-        entity.setRequestedDate(new Date());
+//        entity.setRequestedDate(new Date());
         vars.put("entity", entity);
         vars.put("Employee", entity.getEmployee());
         vars.put("currentEmployee", emp);

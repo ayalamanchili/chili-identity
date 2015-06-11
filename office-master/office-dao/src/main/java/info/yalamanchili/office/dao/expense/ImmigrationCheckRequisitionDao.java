@@ -10,6 +10,7 @@ package info.yalamanchili.office.dao.expense;
 
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.expense.AdvanceRequisition;
 import info.yalamanchili.office.entity.expense.ImmigrationCheckRequisition;
 import java.util.List;
@@ -53,6 +54,21 @@ public class ImmigrationCheckRequisitionDao extends CRUDDao<ImmigrationCheckRequ
         findAllQuery.setMaxResults(limit);
         return findAllQuery.getResultList();
     }
+    
+    @Override
+    public ImmigrationCheckRequisition save(ImmigrationCheckRequisition entity) {
+        if (entity.getId() != null) {
+            ImmigrationCheckRequisition updatedImmigrationCheckRequisition = null;
+            updatedImmigrationCheckRequisition = super.save(entity);
+            if (entity.getCompany() != null) {
+                updatedImmigrationCheckRequisition.setCompany(em.find(Company.class, entity.getCompany().getId()));
+            } else {
+                updatedImmigrationCheckRequisition.setCompany(null);
+            }
+            return em.merge(updatedImmigrationCheckRequisition);
+        }
+        return super.save(entity);
+    }    
     
     public ImmigrationCheckRequisitionDao() {
         super(ImmigrationCheckRequisition.class);

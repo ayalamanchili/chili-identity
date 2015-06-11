@@ -94,6 +94,8 @@ public class ImmigrationCheckRequestProcess implements TaskListener  {
             new GenericTaskCompleteNotification().notify(task);
         }
         ImmigrationCheckRequisitionDao.instance().save(entity);
+        task.getExecution().setVariable("entity", entity);
+        task.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_ACCOUNTS_PAYABLE.name());
     }
 
     protected void accountsDispatchTaskComplete(ImmigrationCheckRequisition entity, DelegateTask task) {
@@ -119,6 +121,7 @@ public class ImmigrationCheckRequestProcess implements TaskListener  {
             entity.setStatus(ImmigrationCheckRequisitionStatus.Rejected);
         }
         ImmigrationCheckRequisitionDao.instance().save(entity);
+        task.getExecution().setVariable("entity", entity);
         new GenericTaskCompleteNotification().notifyWithMoreRoles(task, OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name());
     }
 
@@ -135,7 +138,7 @@ public class ImmigrationCheckRequestProcess implements TaskListener  {
     }
 
     protected void assignImmigrationCheckRequisitionTask(DelegateTask task) {
-        Employee emp = (Employee) task.getExecution().getVariable("submittedBy");
+//        Employee emp = (Employee) task.getExecution().getVariable("submittedBy");
         task.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name());
     }
 

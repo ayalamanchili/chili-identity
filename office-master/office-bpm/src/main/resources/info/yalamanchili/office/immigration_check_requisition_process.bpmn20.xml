@@ -32,7 +32,6 @@
                 accountedBy     : #{entity.accountedBy.firstName} #{entity.accountedBy.lastName}
                 company         : #{entity.company.name}
                 status          : #{entity.status}
-                bpmProcessId    : #{entity.bpmProcessId}
                 Follow instructions from below:
                 https://apps.sstech.us/site/office/expense/immigrationcheckprocess.html
             </documentation>
@@ -101,7 +100,6 @@
                 accountedBy     : #{entity.accountedBy.firstName} #{entity.accountedBy.lastName}
                 company         : #{entity.company.name}
                 status          : #{entity.status}
-                bpmProcessId    : #{entity.bpmProcessId}
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.immigration.ImmigrationCheckRequestProcess" />
