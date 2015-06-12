@@ -71,7 +71,7 @@ public class CheckRequisitionItem extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "CheckRequisitionItem{" + "itemName=" + itemName + ", amount=" + amount + '}';
+        return "CheckRequisitionItem{" + "itemName=" + itemName + ", itemDesc=" + itemDesc + ", amount=" + amount + '}';
     }
     
  

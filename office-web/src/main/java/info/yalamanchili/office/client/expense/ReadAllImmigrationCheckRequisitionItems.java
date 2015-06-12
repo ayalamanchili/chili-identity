@@ -63,7 +63,8 @@ public class ReadAllImmigrationCheckRequisitionItems extends CRUDReadAllComposit
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "itemName"));
-            table.setText(i, 2, FormatUtils.formarCurrency(JSONUtils.toString(entity, "amount")));
+            table.setText(i, 2, JSONUtils.toString(entity, "itemDesc"));
+            table.setText(i, 3, FormatUtils.formarCurrency(JSONUtils.toString(entity, "amount")));
         }
     }
 
