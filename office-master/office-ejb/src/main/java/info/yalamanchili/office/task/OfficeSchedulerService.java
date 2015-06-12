@@ -100,4 +100,33 @@ public class OfficeSchedulerService {
     public void initiateProbationPeriodEvaluations() {
         ProbationPeriodEvaluationInitiator.instance().initiateNewHireProbationPeriodEvaluations();
     }
+     @Scheduled(cron = "0 30 1 * * ?")
+    public void anniversaryNotification() {
+        Calendar today = Calendar.getInstance();
+        Calendar anniversary = today;
+        anniversary.add(Calendar.YEAR, 1);
+        int monthb = Calendar.getInstance().get(Calendar.MONTH);
+        monthb = monthb + 1;
+        javax.persistence.Query findUserQuery = em.createQuery("from " + Employee.class.getCanonicalName() + " where  user.enabled= TRUE and day(startDate)=:date1 and month(startDate)=:month1 and year(startDate)=:year1");
+        findUserQuery.setParameter("date1", Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+        findUserQuery.setParameter("month1", monthb);
+        findUserQuery.setParameter("year1", anniversary);
+        List lstResult = findUserQuery.getResultList();
+        Iterator itr = lstResult.iterator();
+        while (itr.hasNext()) {
+            Employee empres = null;
+            empres = ((Employee) itr.next());
+            //TODO enhance it to collect all emails and send once
+              if (empres.isActive()) {
+                Set<String> emailto = new HashSet<String>();
+                Email email = new Email();
+                emailto.add(EmployeeDao.instance().getPrimaryEmail(empres));
+                email.setTos(emailto);
+                email.setSubject("Anniversary Wishes");
+                String messageText = "Congratulating " + empres.getFirstName() + "," + empres.getLastName() + "" + "on" + anniversary + 1 + "year Anniversary with System Soft Technologies. Thank you for being a part of our SSTech family & wish you more successful years.";
+                email.setBody(messageText);
+                MessagingService.instance().sendEmail(email);
+            }
+        }
+     }
 }
