@@ -98,14 +98,17 @@ public class ImmigrationCheckRequisitionService {
 
 
         Integer i = 1;
+        BigDecimal itemTotal = new BigDecimal(0);
         for (CheckRequisitionItem item : entity.getItems()) {
             data.getData().put("sl"+ i, i.toString());
             data.getData().put("itemName"+ i, item.getItemName());
             data.getData().put("itemDesc"+ i, item.getItemDesc());
-            data.getData().put("itemAmount"+ i, item.getAmount().toString());
+            data.getData().put("itemAmount"+ i, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+            itemTotal = itemTotal.add(item.getAmount());
             i++;
         }
-
+        data.getData().put("itemTotal", itemTotal.setScale(2, BigDecimal.ROUND_UP).toString());
+        
         //Comment
         List<Comment> cmnts = CommentDao.instance().findAll(entity.getId(), entity.getClass().getCanonicalName());
         String allComment = "";

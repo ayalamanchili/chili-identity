@@ -84,7 +84,7 @@
         </sequenceFlow>
         <userTask id="accountDeptDispatchTask" 
                   name="Immigration Check Dispatch by Accounts Dept for ${Employee}" 
-                  activiti:candidateGroups="ROLE_ADMIN">
+                  activiti:candidateGroups="ROLE_ACCOUNTS_PAYABLE">
             <documentation>
                 Check Requisition Detail
                 Submitted By    : #{entity.submittedBy.firstName} #{entity.submittedBy.lastName}

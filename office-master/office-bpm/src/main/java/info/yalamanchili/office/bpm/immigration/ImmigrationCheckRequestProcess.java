@@ -96,7 +96,6 @@ public class ImmigrationCheckRequestProcess implements TaskListener  {
         }
         ImmigrationCheckRequisitionDao.instance().save(entity);
         task.getExecution().setVariable("entity", entity);
-        task.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_ACCOUNTS_PAYABLE.name());
     }
 
     protected void accountsDispatchTaskComplete(ImmigrationCheckRequisition entity, DelegateTask task) {
