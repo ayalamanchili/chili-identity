@@ -9,8 +9,7 @@
 package info.yalamanchili.office.client.profile.statusreport;
 
 import com.axeiya.gwtckeditor.client.CKEditor;
-import com.axeiya.gwtckeditor.client.event.InstanceReadyEvent;
-import com.axeiya.gwtckeditor.client.event.InstanceReadyHandler;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -75,22 +74,33 @@ public class ReadCorporateStatusReportPanel extends ALComposite {
         basePanel.setContentWidget(panel);
         panel.add(startDateField);
         panel.add(endDateField);
-        panel.add(statusReportsF);
+        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                addReportField();
+            }
+        });
     }
 
     public final void populateFieldsFromEntity(final JSONObject entity) {
         startDateField.setValue(JSONUtils.toString(entity, "reportStartDate"));
         endDateField.setValue(JSONUtils.toString(entity, "reportEndDate"));
-        statusReportsF.addInstanceReadyHandler(new InstanceReadyHandler() {
+         Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
             @Override
-            public void onInstanceReady(InstanceReadyEvent event) {
+            public void execute() {
                 populateReport(entity);
             }
         });
 
     }
 
+    protected final void addReportField() {
+        statusReportsF = Editor.getEditor();
+        panel.add(statusReportsF);
+    }
+
     protected final void populateReport(final JSONObject entity) {
+        
         statusReportsF.setHTML(JSONUtils.toString(entity, "report"));
     }
 

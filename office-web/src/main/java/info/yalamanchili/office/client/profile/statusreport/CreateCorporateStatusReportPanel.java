@@ -9,8 +9,7 @@
 package info.yalamanchili.office.client.profile.statusreport;
 
 import com.axeiya.gwtckeditor.client.CKEditor;
-import com.axeiya.gwtckeditor.client.event.InstanceReadyEvent;
-import com.axeiya.gwtckeditor.client.event.InstanceReadyHandler;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
@@ -37,28 +36,28 @@ import java.util.logging.Logger;
  * @author ayalamanchili
  */
 public class CreateCorporateStatusReportPanel extends ALComposite implements ClickHandler {
-
+    
     private static Logger logger = Logger.getLogger(CreateCorporateStatusReportPanel.class.getName());
     protected CaptionPanel basePanel = new CaptionPanel();
     protected FlowPanel panel = new FlowPanel();
     SelectTimePeriodWidget statusReportPeriodF = new SelectTimePeriodWidget(false, true);
-    CKEditor reportF = Editor.getEditor();
+    CKEditor reportF;
     BooleanField submitForApprovalF = new BooleanField(OfficeWelcome.constants, "submitForApproval", "CorporateStatusReport", false, false, Alignment.HORIZONTAL);
     Button createB = new Button("Save");
     JSONObject entity;
     String entityId;
     boolean isUpdate = false;
-
+    
     protected CreateCorporateStatusReportPanel() {
         init(basePanel);
     }
-
+    
     protected CreateCorporateStatusReportPanel(JSONObject entity) {
         init(basePanel);
         this.entity = entity;
         populateFieldsFromEntity(entity);
     }
-
+    
     protected CreateCorporateStatusReportPanel(String id) {
         this.isUpdate = true;
         init(basePanel);
@@ -73,49 +72,60 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
                     }
                 });
     }
-
+    
     protected final String getReadURI() {
         return OfficeWelcome.constants.root_url() + "corporate-statusreport/" + entityId;
     }
-
+    
     public final void populateFieldsFromEntity(final JSONObject entity) {
         logger.info(entity.toString());
         if (entity.get("statusReportPeriod") != null) {
             statusReportPeriodF.setSelectedValue(entity.get("statusReportPeriod").isObject());
         }
-        reportF.addInstanceReadyHandler(new InstanceReadyHandler() {
+        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
             @Override
-            public void onInstanceReady(InstanceReadyEvent event) {
+            public void execute() {
                 populateReport(entity);
             }
         });
     }
-
+    
     protected final void populateReport(final JSONObject entity) {
         reportF.setHTML(JSONUtils.toString(entity, "report"));
     }
-
+    
     @Override
     protected void addListeners() {
         createB.addClickHandler(this);
         submitForApprovalF.getBox().addClickHandler(this);
     }
-
+    
     @Override
     protected void configure() {
         basePanel.setCaptionHTML("StatusReports");
         statusReportPeriodF.setReadOnly(isUpdate);
     }
-
+    
     @Override
     protected void addWidgets() {
         basePanel.setContentWidget(panel);
         panel.add(statusReportPeriodF);
-        panel.add(reportF);
+        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                addReportField();
+            }
+        });
+        
         panel.add(submitForApprovalF);
         panel.add(createB);
     }
-
+    
+    protected final void addReportField() {
+        reportF = Editor.getEditor();
+        panel.insert(reportF, panel.getWidgetIndex(submitForApprovalF));
+    }
+    
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createB)) {
@@ -129,7 +139,7 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
             }
         }
     }
-
+    
     protected void saveStatusReport() {
         if (statusReportPeriodF.getSelectedObject() == null) {
             statusReportPeriodF.setMessage("Please select a Time Period");
@@ -144,7 +154,7 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
         entity.put("report", new JSONString(reportF.getData()));
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-
+                    
                     @Override
                     public void onResponse(String arg0) {
                         new ResponseStatusWidget().show("Successfully submited status report");
@@ -157,10 +167,10 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
                             TabPanel.instance().homePanel.entityPanel.add(new ReadAllCorporateStatusReportsPanel());
                         }
                     }
-
+                    
                 });
     }
-
+    
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "corporate-statusreport?submitForApproval=" + submitForApprovalF.getValue();
     }
