@@ -122,7 +122,7 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
     }
     
     protected final void addReportField() {
-        reportF = Editor.getEditor();
+        reportF = Editor.getEditor(false);
         panel.insert(reportF, panel.getWidgetIndex(submitForApprovalF));
     }
     

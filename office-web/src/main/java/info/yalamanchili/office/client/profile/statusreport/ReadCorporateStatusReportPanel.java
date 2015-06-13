@@ -35,7 +35,7 @@ public class ReadCorporateStatusReportPanel extends ALComposite {
     protected FlowPanel panel = new FlowPanel();
     DateField startDateField = new DateField(OfficeWelcome.constants, "startDate", "StatusReport", true, false, Alignment.HORIZONTAL);
     DateField endDateField = new DateField(OfficeWelcome.constants, "endDate", "StatusReport", true, false, Alignment.HORIZONTAL);
-    CKEditor statusReportsF = Editor.getEditor();
+    CKEditor statusReportsF;
     JSONObject entity;
     String entityId;
 
@@ -85,7 +85,7 @@ public class ReadCorporateStatusReportPanel extends ALComposite {
     public final void populateFieldsFromEntity(final JSONObject entity) {
         startDateField.setValue(JSONUtils.toString(entity, "reportStartDate"));
         endDateField.setValue(JSONUtils.toString(entity, "reportEndDate"));
-         Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
             @Override
             public void execute() {
                 populateReport(entity);
@@ -95,32 +95,13 @@ public class ReadCorporateStatusReportPanel extends ALComposite {
     }
 
     protected final void addReportField() {
-        statusReportsF = Editor.getEditor();
+        statusReportsF = Editor.getEditor(true);
         panel.add(statusReportsF);
     }
 
     protected final void populateReport(final JSONObject entity) {
-        
+
         statusReportsF.setHTML(JSONUtils.toString(entity, "report"));
     }
 
-//    protected CKEditor getEditor() {
-//        CKConfig ckf = new CKConfig(CKConfig.PRESET_TOOLBAR.FULL);
-//        //Setting size
-//        ckf.setHeight("400px");
-//        //Creating personalized toolbar
-//        ToolbarLine line0 = new ToolbarLine();
-//        line0.add(CKConfig.TOOLBAR_OPTIONS.Preview);
-//        line0.add(CKConfig.TOOLBAR_OPTIONS.Maximize);
-//
-//        //Creates the toolbar
-//        Toolbar t = new Toolbar();
-//        t.add(line0);
-//
-//        //Set the toolbar to the config (replace the FULL preset toolbar)
-//        ckf.setToolbar(t);
-//        ckf.setReadOnly(true);
-//        //Creates the editor with this config
-//        return new CKEditor(ckf);
-//    }
 }

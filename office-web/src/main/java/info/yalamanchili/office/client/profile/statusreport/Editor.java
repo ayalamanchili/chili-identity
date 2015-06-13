@@ -16,16 +16,17 @@ import com.axeiya.gwtckeditor.client.CKEditor;
  * @author ayalamanchili
  */
 public class Editor {
-    
-    public static CKEditor getEditor() {
-        
-        CKConfig config = new CKConfig(CKConfig.PRESET_TOOLBAR.BASIC);
+
+    public static CKEditor getEditor(boolean readOnly) {
+
+        CKConfig config = new CKConfig(CKConfig.PRESET_TOOLBAR.FULL);
         config.setBaseFloatZIndex(1000);
         config.setUseFormPanel(false);
+
         config.setHeight("400px");
+        config.setReadOnly(readOnly);
         CKEditor ckeEditor = new CKEditor(config);
-        //Creates the editor with this config
         return ckeEditor;
     }
-    
+
 }
