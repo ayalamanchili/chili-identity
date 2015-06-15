@@ -13,6 +13,8 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.Time.track.EmployeeTimeDataBulkImportProcessBean;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
+import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.dao.time.TimeRecordDao;
 import info.yalamanchili.office.dto.time.AvantelTimeSummaryDto;
 import info.yalamanchili.office.entity.profile.Branch;
@@ -41,6 +43,8 @@ public class TimeRecordService {
     protected TimeRecordDao timeRecordDao;
     @Autowired
     protected Mapper mapper;
+    @Autowired
+    protected CorporateTimeSheetDao corporateTimeSheetDao;
 
     /**
      * this will generate a summary report of timerecords based on start and end
@@ -49,11 +53,9 @@ public class TimeRecordService {
      * @param dto
      */
     public void getAllEmployeesSummaryReport(String email, TimeRecordDao.TimeRecordSearchDto dto) {
+        
         List<AvantelTimeSummaryDto> res = new ArrayList();
-
-        //
-        //for loop of all india team employees (corporate employee whose branch is india)
-        // find all time records get hours data and add and populate dto.
+        
         for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
 
             if (Branch.Hyderabad.equals(emp.getBranch())) {
@@ -91,7 +93,7 @@ public class TimeRecordService {
                      minutes = ((value.subtract(new BigDecimal(hours))).multiply(new BigDecimal(10).pow(2))).toBigInteger();
                      secondFloorHours = secondFloorHours.add(new BigDecimal((hours.multiply(new BigInteger("60"))).add(minutes)));
                 }
-                
+                // calculating cubicleHours  
                 long minutes = 0;
                 long hours = 0;
                 long mins = 0;
@@ -107,7 +109,7 @@ public class TimeRecordService {
                 }
                 totaltime = hours+"."+mins;
                 summaryRec.setCubicalHours(new BigDecimal(totaltime));
-                
+                // calculating receptionHours  
                 minutes = 0;
                 hours = 0;
                 mins = 0;
@@ -122,7 +124,7 @@ public class TimeRecordService {
                     totaltime = hours+"."+mins;
                 }
                 summaryRec.setReceptionHours(new BigDecimal(totaltime));
-                
+                // calculating secondFloorHours 
                 minutes = 0;
                 hours = 0;
                 mins = 0;
@@ -141,6 +143,8 @@ public class TimeRecordService {
                 summaryRec.setEmployee(emp.getFirstName() + " " + emp.getLastName());
                 summaryRec.setStartDate(dto.getStartDate());
                 summaryRec.setEndDate(dto.getEndDate());
+                summaryRec.setAvailablePTOHours(corporateTimeSheetDao.getPTOAccruedTimeSheet(emp).getHours());
+                
                 res.add(summaryRec);
             }
         }
