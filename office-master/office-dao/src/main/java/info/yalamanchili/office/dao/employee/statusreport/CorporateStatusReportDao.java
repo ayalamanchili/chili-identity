@@ -32,6 +32,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.apache.commons.lang.time.DateUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,6 +51,12 @@ public class CorporateStatusReportDao extends CRUDDao<CorporateStatusReport> {
         CorporateStatusReport entity = getEntityManager().find(CorporateStatusReport.class, id);
         entity.setStatusReportPeriod(TimePeriodDao.instance().find(entity.getReportStartDate(), entity.getReportEndDate(), TimePeriod.TimePeriodType.Week));
         return entity;
+    }
+
+    public CorporateStatusReport getPreviousReport(Long id) {
+        CorporateStatusReport entity = getEntityManager().find(CorporateStatusReport.class, id);
+        TimePeriod tp = TimePeriodDao.instance().find(entity.getReportStartDate(), entity.getReportEndDate(), TimePeriod.TimePeriodType.Week);
+        return find(entity.getEmployee(), DateUtils.addDays(tp.getStartDate(), -7), DateUtils.addDays(tp.getEndDate(), -7));
     }
 
     @Override

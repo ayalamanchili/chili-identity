@@ -269,6 +269,11 @@
             <version>${itext.pdf.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.outerj.daisy</groupId>
+            <artifactId>daisydiff</artifactId>
+            <version>${daisydiff.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcprov-jdk15on</artifactId>
             <version>${bouncycastle.version}</version>
@@ -422,7 +427,7 @@
         <connection>scm:svn:http://tools.sstech.us/svn/office/trunk/office-master</connection>
         <url>http://tools.sstech.us/svn/office/trunk/office-master</url>
     </scm>    
-   <!-- download artifacts from this repo -->
+    <!-- download artifacts from this repo -->
     <repositories>
         <repository>
             <id>sstech.us</id>
@@ -503,6 +508,7 @@
         <bouncycastle.version>1.47</bouncycastle.version>
         <spring.mongodb>1.7.0.RELEASE</spring.mongodb>
         <mongodb.driver.version>3.0.0</mongodb.driver.version>
+        <daisydiff.version>1.2-NX3</daisydiff.version>
     </properties>
     <profiles>
         <profile>

@@ -25,6 +25,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -68,6 +70,19 @@ public class CorporateStatusReportResource {
         entity.setReportEndDate(null);
         entity.setStatus(null);
         return entity;
+    }
+
+    @Path("/diff/{reportId1}/{reportId2}")
+    @Produces(MediaType.TEXT_HTML)
+    public Response diff(@PathParam("reportId1") Long reportId1, @PathParam("reportId2") Long reportId2) {
+        return corporateStatusReportService.diff(reportId1, reportId2);
+    }
+
+    @Path("/diff/{reportId}")
+    @Produces(MediaType.TEXT_HTML)
+    @GET
+    public String diff(@PathParam("reportId") Long reportId) {
+        return corporateStatusReportService.diff(reportId);
     }
 
     @PUT
