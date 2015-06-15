@@ -36,10 +36,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Scope("request")
 public class ProfileReportsService {
-
+    
     @Autowired
     protected Mapper mapper;
-
+    
     @Async
     @Transactional
     public void generateEmployeBasicInfoReport(String email) {
@@ -47,6 +47,7 @@ public class ProfileReportsService {
         for (Employee emp : EmployeeDao.instance().query(0, 2000)) {
             EmployeeBasicInfoReportDto dto = mapper.map(emp, EmployeeBasicInfoReportDto.class);
             dto.setEmail(EmployeeDao.instance().getPrimaryEmail(emp));
+            dto.setType(emp.getEmployeeType().getName());
             if (emp.getPhones().size() > 0) {
                 dto.setPhoneNumber(emp.getPhones().get(0).getPhoneNumber());
             }
@@ -54,7 +55,7 @@ public class ProfileReportsService {
         }
         MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(res, "employee-basic-info-report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
     }
-
+    
     @Async
     @Transactional
     public void generateProfileReport(String email) {
@@ -88,7 +89,7 @@ public class ProfileReportsService {
         }
         MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(res, "Profile-Information-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
     }
-
+    
     @Async
     @Transactional
     public void generateEmployeClientInfoReport(String email) {

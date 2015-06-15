@@ -27,6 +27,7 @@ public class EmployeeBasicInfoReportDto implements Serializable{
     protected String phoneNumber;
     protected String jobTitle;
     protected Date startDate;
+    protected String type;
 
     public String getFirstName() {
         return firstName;
@@ -74,6 +75,14 @@ public class EmployeeBasicInfoReportDto implements Serializable{
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
 }
