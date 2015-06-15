@@ -274,6 +274,11 @@
             <version>${daisydiff.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>eclipse-core-runtime</artifactId>
+            <version>${eclipse.core.runtime.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcprov-jdk15on</artifactId>
             <version>${bouncycastle.version}</version>
@@ -509,6 +514,7 @@
         <spring.mongodb>1.7.0.RELEASE</spring.mongodb>
         <mongodb.driver.version>3.0.0</mongodb.driver.version>
         <daisydiff.version>1.2-NX3</daisydiff.version>
+        <eclipse.core.runtime.version>20070801</eclipse.core.runtime.version>
     </properties>
     <profiles>
         <profile>

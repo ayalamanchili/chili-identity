@@ -18,8 +18,6 @@ import info.yalamanchili.office.entity.employee.statusreport.CropStatusReportSta
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.HashMap;
 import java.util.Map;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +47,28 @@ public class CorporateStatusReportService {
         return entity.getId().toString();
     }
 
+    protected static final String DIFF_STYLE = "<head>\n"
+            + "<style>\n"
+            + "span.diff-html-removed {\n"
+            + "color: red; \n"
+            + "text-decoration: line-through;\n"
+            + "cursor: default;\n"
+            + "} \n"
+            + "\n"
+            + "span.diff-html-added {\n"
+            + "color: blue;\n"
+            + "cursor: default;\n"
+            + "} \n"
+            + "\n"
+            + "span.diff-html-changed {\n"
+            + "color: black;\n"
+            + "border-bottom: dotted 2px red;\n"
+            + "cursor: default;\n"
+            + "text-decoration: none;\n"
+            + "}\n"
+            + "</style>\n"
+            + "</head>";
+
     public String diff(Long report1) {
         String orginalText = corporateStatusReportDao.findById(report1).getReport();
         String modifiedText = corporateStatusReportDao.getPreviousReport(report1).getReport();
@@ -58,7 +78,7 @@ public class CorporateStatusReportService {
         } catch (Exception ex) {
             return "";
         }
-        return diff;
+        return DIFF_STYLE + diff;
     }
 
     public Response diff(Long report1, Long report2) {
