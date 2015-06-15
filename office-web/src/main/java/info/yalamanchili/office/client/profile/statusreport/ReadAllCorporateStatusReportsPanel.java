@@ -15,6 +15,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
@@ -89,6 +90,7 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
         if (TabPanel.instance().homePanel.isVisible()) {
             table.setText(0, 5, getKeyValue("Copy"));
         }
+        table.setText(0, 6, getKeyValue("Compare"));
     }
 
     @Override
@@ -113,7 +115,28 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
                 });
                 table.setWidget(i, 5, copyL);
             }
+            //Compare
+            ClickableLink compareL = new ClickableLink("Compare");
+            compareL.setTitle(JSONUtils.toString(entity, "id"));
+            compareL.addClickHandler(new ClickHandler() {
+                @Override
+                public void onClick(ClickEvent event) {
+                    compare(((ClickableLink) event.getSource()).getTitle());
+                }
+            });
+            table.setWidget(i, 6, compareL);
         }
+    }
+
+    protected void compare(String entityId) {
+        HttpService.HttpServiceAsync.instance().doGet(OfficeWelcome.constants.root_url() + "corporate-statusreport/diff/" + entityId, OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String arg0) {
+                        logger.info(arg0);
+                        new GenericPopup(new HTML(arg0));
+                    }
+                });
     }
 
     protected void createCopy(String entityId) {
