@@ -8,6 +8,7 @@
 package info.yalamanchili.office.employee.statusreport;
 
 import info.chili.commons.HtmlUtils;
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
@@ -18,7 +19,6 @@ import info.yalamanchili.office.entity.employee.statusreport.CropStatusReportSta
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.HashMap;
 import java.util.Map;
-import javax.ws.rs.core.Response;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -71,26 +71,17 @@ public class CorporateStatusReportService {
 
     public String diff(Long report1) {
         String orginalText = corporateStatusReportDao.findById(report1).getReport();
+        if (corporateStatusReportDao.getPreviousReport(report1) == null) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "previous.report.not.exist", "Cannot find previous report to Compare");
+        }
         String modifiedText = corporateStatusReportDao.getPreviousReport(report1).getReport();
         String diff = null;
         try {
-            diff = HtmlUtils.getDiffForHTMLInput(orginalText, modifiedText);
+            diff = HtmlUtils.getDiffForHTMLInput(modifiedText, orginalText);
         } catch (Exception ex) {
             return "";
         }
         return DIFF_STYLE + diff;
-    }
-
-    public Response diff(Long report1, Long report2) {
-        String orginalText = corporateStatusReportDao.findById(report1).getReport();
-        String modifiedText = corporateStatusReportDao.findById(report2).getReport();
-        String diff = null;
-        try {
-            diff = HtmlUtils.getDiffForHTMLInput(orginalText, modifiedText);
-        } catch (Exception ex) {
-            return Response.serverError().build();
-        }
-        return Response.status(200).entity(diff).build();
     }
 
     public String startCorporateStatusReportProcess(CorporateStatusReport entity) {

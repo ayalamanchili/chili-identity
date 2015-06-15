@@ -72,11 +72,6 @@ public class CorporateStatusReportResource {
         return entity;
     }
 
-    @Path("/diff/{reportId1}/{reportId2}")
-    @Produces(MediaType.TEXT_HTML)
-    public Response diff(@PathParam("reportId1") Long reportId1, @PathParam("reportId2") Long reportId2) {
-        return corporateStatusReportService.diff(reportId1, reportId2);
-    }
 
     @Path("/diff/{reportId}")
     @Produces(MediaType.TEXT_HTML)

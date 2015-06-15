@@ -56,7 +56,16 @@ public class CorporateStatusReportDao extends CRUDDao<CorporateStatusReport> {
     public CorporateStatusReport getPreviousReport(Long id) {
         CorporateStatusReport entity = getEntityManager().find(CorporateStatusReport.class, id);
         TimePeriod tp = TimePeriodDao.instance().find(entity.getReportStartDate(), entity.getReportEndDate(), TimePeriod.TimePeriodType.Week);
-        return find(entity.getEmployee(), DateUtils.addDays(tp.getStartDate(), -7), DateUtils.addDays(tp.getEndDate(), -7));
+        int x = 7;
+        for (int i = 0; i < 5; i++) {
+            CorporateStatusReport res = find(entity.getEmployee(), DateUtils.addDays(tp.getStartDate(), -x), DateUtils.addDays(tp.getEndDate(), -x));
+            if (res != null) {
+                return res;
+            } else {
+                x = x + 7;
+            }
+        }
+        return null;
     }
 
     @Override
