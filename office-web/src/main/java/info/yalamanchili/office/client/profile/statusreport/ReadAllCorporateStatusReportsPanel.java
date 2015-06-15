@@ -134,10 +134,19 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
                     @Override
                     public void onResponse(String arg0) {
                         logger.info(arg0);
-                        new GenericPopup(new HTML(arg0));
+                        openPrintWindow(arg0);
                     }
                 });
     }
+
+    protected native void openPrintWindow(String contents) /*-{
+     var printWindow = window.open("", "PrintWin");
+     if (printWindow && printWindow.top) {
+     printWindow.document.write(contents);
+     } else {
+     alert("Please allow popup's");
+     }
+     }-*/;
 
     protected void createCopy(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(OfficeWelcome.constants.root_url() + "corporate-statusreport/clone/" + entityId, OfficeWelcome.instance().getHeaders(), true,

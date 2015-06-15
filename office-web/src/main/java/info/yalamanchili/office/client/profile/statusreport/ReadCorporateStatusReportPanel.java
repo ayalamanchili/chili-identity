@@ -35,7 +35,7 @@ public class ReadCorporateStatusReportPanel extends ALComposite {
     protected FlowPanel panel = new FlowPanel();
     DateField startDateField = new DateField(OfficeWelcome.constants, "startDate", "StatusReport", true, false, Alignment.HORIZONTAL);
     DateField endDateField = new DateField(OfficeWelcome.constants, "endDate", "StatusReport", true, false, Alignment.HORIZONTAL);
-    CKEditor statusReportsF;
+    CKEditor statusReportsF=Editor.getEditor(true);
     JSONObject entity;
     String entityId;
 
