@@ -49,7 +49,7 @@ public class ImmigrationCheckRequisitionResource extends CRUDResource<Immigratio
     @PUT
     @Validate
     @Path("/submit-check-requisition-request")
-    @CacheEvict(value = OfficeCacheKeys.ADVANCE_REQUSITON, allEntries = true)
+    @CacheEvict(value = OfficeCacheKeys.IMMIGRATION_CHECK, allEntries = true)
     public void submitImmigrationCheckRequest(ImmigrationCheckRequisition entity) {
         ImmigrationCheckRequisitionService.instance().submitImmigrationCheckRequisition(entity);
     }
@@ -58,6 +58,7 @@ public class ImmigrationCheckRequisitionResource extends CRUDResource<Immigratio
     @Override
     @Validate
     @PreAuthorize("hasAnyRole('ROLE_EXPENSE')")
+    @CacheEvict(value = OfficeCacheKeys.IMMIGRATION_CHECK, allEntries = true)
     public ImmigrationCheckRequisition save(ImmigrationCheckRequisition entity) {
         return super.save(entity);
     }
@@ -77,6 +78,15 @@ public class ImmigrationCheckRequisitionResource extends CRUDResource<Immigratio
         return tableObj;
     }
 
+    @PUT
+    @Path("/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @CacheEvict(value = OfficeCacheKeys.IMMIGRATION_CHECK, allEntries = true)
+    @Override
+    public void delete(@PathParam("id") Long id) {
+        ImmigrationCheckRequisitionService.instance().delete(id);
+    }
+    
     @GET
     @Path("/report")
     @Produces({"application/pdf"})

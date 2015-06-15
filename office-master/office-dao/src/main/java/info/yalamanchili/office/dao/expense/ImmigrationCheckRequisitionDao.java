@@ -10,6 +10,7 @@ package info.yalamanchili.office.dao.expense;
 
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.expense.AdvanceRequisition;
 import info.yalamanchili.office.entity.expense.ImmigrationCheckRequisition;
@@ -17,6 +18,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
@@ -32,6 +35,7 @@ public class ImmigrationCheckRequisitionDao extends CRUDDao<ImmigrationCheckRequ
     private EntityManager em;
     
     @Override
+    @Cacheable(OfficeCacheKeys.IMMIGRATION_CHECK)
     public ImmigrationCheckRequisition findById(Long id) {
         ImmigrationCheckRequisition entity = super.findById(id);
         if (entity == null) {
@@ -40,6 +44,7 @@ public class ImmigrationCheckRequisitionDao extends CRUDDao<ImmigrationCheckRequ
         return entity;
     }
     
+    @Cacheable(value = OfficeCacheKeys.IMMIGRATION_CHECK, key = "{#root.methodName,#start,#limit}")
     public List<ImmigrationCheckRequisition> queryAll(Integer start, Integer limit) {
         Query findAllQuery = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " order by dateRequested DESC", entityCls);
         findAllQuery.setFirstResult(start);
@@ -47,6 +52,8 @@ public class ImmigrationCheckRequisitionDao extends CRUDDao<ImmigrationCheckRequ
         return findAllQuery.getResultList();
     }
     
+    
+    @Cacheable(value = OfficeCacheKeys.IMMIGRATION_CHECK, key = "{#root.methodName,#employeeId,#start,#limit}")
     public List<ImmigrationCheckRequisition> queryForEmployee(Long employeeId, Integer start, Integer limit) {
         Query findAllQuery = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " where employee.id=:employeeIdParam order by dateRequested DESC", entityCls);
         findAllQuery.setParameter("employeeIdParam", employeeId);
@@ -56,6 +63,7 @@ public class ImmigrationCheckRequisitionDao extends CRUDDao<ImmigrationCheckRequ
     }
     
     @Override
+    @CacheEvict(value = OfficeCacheKeys.IMMIGRATION_CHECK, allEntries = true)
     public ImmigrationCheckRequisition save(ImmigrationCheckRequisition entity) {
         if (entity.getId() != null) {
             ImmigrationCheckRequisition updatedImmigrationCheckRequisition = null;
