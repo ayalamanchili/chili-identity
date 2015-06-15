@@ -105,6 +105,7 @@
             <item name="Expense" href="/office/expense/advance.html" collapse="true">
                 <item name="Submit Advance Requisition" href="/office/expense/advance.html"/>
                 <item name="Advance Requisition Process" href="/office/expense/advancerequestprocess.html"/>
+                <item name="Check Requisition Process" href="/office/expense/checkrequisitionprocess.html"/>
             </item>
             <item name="Trouble Accessing Portal" href="/office/accountresettask.html" collapse="true">
                 <item name="Account Reset" href="/office/accountresettask.html"/>
