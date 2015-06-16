@@ -10,10 +10,12 @@ package info.yalamanchili.office.task;
 import info.yalamanchili.office.Time.AssociateTimeAccuralService;
 import info.yalamanchili.office.Time.CorporateTimeAccuralService;
 import info.yalamanchili.office.Time.TimeJobService;
+import info.yalamanchili.office.dao.message.NotificationGroupDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.time.TimePeriodDao;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.employee.probeval.ProbationPeriodEvaluationInitiator;
+import info.yalamanchili.office.entity.message.NotificationGroup;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.Calendar;
@@ -80,8 +82,13 @@ public class OfficeSchedulerService {
             Employee empres = null;
             empres = ((Employee) itr.next());
             //TODO enhance it to collect all emails and send once
+
             if (empres.isActive()) {
                 Set<String> emailto = new HashSet<String>();
+                NotificationGroup ng = NotificationGroupDao.instance().findByName(BIRTHDAY_ANNUAL_NOTIFICATION_GROUP);
+                for (Employee emp : ng.getEmployees()) {
+                    emailto.add(emp.getPrimaryEmail().getEmail());
+                }
                 Email email = new Email();
                 emailto.add(EmployeeDao.instance().getPrimaryEmail(empres));
                 email.setTos(emailto);
@@ -100,7 +107,9 @@ public class OfficeSchedulerService {
     public void initiateProbationPeriodEvaluations() {
         ProbationPeriodEvaluationInitiator.instance().initiateNewHireProbationPeriodEvaluations();
     }
-     @Scheduled(cron = "0 30 1 * * ?")
+    public static final String BIRTHDAY_ANNUAL_NOTIFICATION_GROUP = "Birthday_Annual_Notification_Group";
+
+    @Scheduled(cron = "0 30 1 * * ?")
     public void anniversaryNotification() {
         Calendar today = Calendar.getInstance();
         Calendar anniversary = today;
@@ -116,8 +125,13 @@ public class OfficeSchedulerService {
             Employee empres = null;
             empres = ((Employee) itr.next());
             //TODO enhance it to collect all emails and send once
-              if (empres.isActive()) {
+
+            if (empres.isActive()) {
                 Set<String> emailto = new HashSet<String>();
+                NotificationGroup ng = NotificationGroupDao.instance().findByName(BIRTHDAY_ANNUAL_NOTIFICATION_GROUP);
+                for (Employee emp : ng.getEmployees()) {
+                    emailto.add(emp.getPrimaryEmail().getEmail());
+                }
                 Email email = new Email();
                 emailto.add(EmployeeDao.instance().getPrimaryEmail(empres));
                 email.setTos(emailto);
@@ -127,5 +141,5 @@ public class OfficeSchedulerService {
                 MessagingService.instance().sendEmail(email);
             }
         }
-     }
+    }
 }
