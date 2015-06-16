@@ -29,11 +29,11 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 @Scope("prototype")
-public class ImmigrationCheckRequisitionDao extends CRUDDao<ImmigrationCheckRequisition>{
-  
+public class ImmigrationCheckRequisitionDao extends CRUDDao<ImmigrationCheckRequisition> {
+
     @PersistenceContext
     private EntityManager em;
-    
+
     @Override
     @Cacheable(OfficeCacheKeys.IMMIGRATION_CHECK)
     public ImmigrationCheckRequisition findById(Long id) {
@@ -43,7 +43,7 @@ public class ImmigrationCheckRequisitionDao extends CRUDDao<ImmigrationCheckRequ
         }
         return entity;
     }
-    
+
     @Cacheable(value = OfficeCacheKeys.IMMIGRATION_CHECK, key = "{#root.methodName,#start,#limit}")
     public List<ImmigrationCheckRequisition> queryAll(Integer start, Integer limit) {
         Query findAllQuery = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " order by dateRequested DESC", entityCls);
@@ -51,8 +51,7 @@ public class ImmigrationCheckRequisitionDao extends CRUDDao<ImmigrationCheckRequ
         findAllQuery.setMaxResults(limit);
         return findAllQuery.getResultList();
     }
-    
-    
+
     @Cacheable(value = OfficeCacheKeys.IMMIGRATION_CHECK, key = "{#root.methodName,#employeeId,#start,#limit}")
     public List<ImmigrationCheckRequisition> queryForEmployee(Long employeeId, Integer start, Integer limit) {
         Query findAllQuery = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " where employee.id=:employeeIdParam order by dateRequested DESC", entityCls);
@@ -61,23 +60,14 @@ public class ImmigrationCheckRequisitionDao extends CRUDDao<ImmigrationCheckRequ
         findAllQuery.setMaxResults(limit);
         return findAllQuery.getResultList();
     }
-    
+
     @Override
     @CacheEvict(value = OfficeCacheKeys.IMMIGRATION_CHECK, allEntries = true)
     public ImmigrationCheckRequisition save(ImmigrationCheckRequisition entity) {
-        if (entity.getId() != null) {
-            ImmigrationCheckRequisition updatedImmigrationCheckRequisition = null;
-            updatedImmigrationCheckRequisition = super.save(entity);
-            if (entity.getCompany() != null) {
-                updatedImmigrationCheckRequisition.setCompany(em.find(Company.class, entity.getCompany().getId()));
-            } else {
-                updatedImmigrationCheckRequisition.setCompany(null);
-            }
-            return em.merge(updatedImmigrationCheckRequisition);
-        }
+        entity.setCompany(em.find(Company.class, entity.getCompany().getId()));
         return super.save(entity);
-    }    
-    
+    }
+
     public ImmigrationCheckRequisitionDao() {
         super(ImmigrationCheckRequisition.class);
     }
@@ -85,10 +75,10 @@ public class ImmigrationCheckRequisitionDao extends CRUDDao<ImmigrationCheckRequ
     public static ImmigrationCheckRequisitionDao instance() {
         return SpringContext.getBean(ImmigrationCheckRequisitionDao.class);
     }
-    
+
     @Override
     public EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

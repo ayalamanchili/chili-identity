@@ -51,6 +51,7 @@ public class ImmigrationCheckRequisitionResource extends CRUDResource<Immigratio
     @Path("/submit-check-requisition-request")
     @CacheEvict(value = OfficeCacheKeys.IMMIGRATION_CHECK, allEntries = true)
     public void submitImmigrationCheckRequest(ImmigrationCheckRequisition entity) {
+        entity = save(entity);
         ImmigrationCheckRequisitionService.instance().submitImmigrationCheckRequisition(entity);
     }
 
@@ -86,7 +87,7 @@ public class ImmigrationCheckRequisitionResource extends CRUDResource<Immigratio
     public void delete(@PathParam("id") Long id) {
         ImmigrationCheckRequisitionService.instance().delete(id);
     }
-    
+
     @GET
     @Path("/report")
     @Produces({"application/pdf"})
