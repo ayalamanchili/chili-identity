@@ -38,9 +38,14 @@ public class OfficeClientConfigDev implements OfficeClientConfig {
     public String getPortalDocumentationSiteUrl() {
         return "https://apps.sstech.us/site/office/";
     }
-
+    
     @Override
     public TimeZone getTimeZone() {
         return TimeZone.createTimeZone(0);
+    }
+
+    @Override
+    public String getFileConverterUrl() {
+        return "http://localhost:9090/office-web/office/rpc/fileConverterService";
     }
 }

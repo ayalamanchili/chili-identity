@@ -17,4 +17,6 @@ import info.chili.gwt.config.ClientConfig;
 public interface OfficeClientConfig extends ClientConfig {
 
     public String getPortalDocumentationSiteUrl();
+
+    public String getFileConverterUrl();
 }

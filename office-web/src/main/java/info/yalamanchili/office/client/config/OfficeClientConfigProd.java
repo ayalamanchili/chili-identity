@@ -39,6 +39,11 @@ public class OfficeClientConfigProd implements OfficeClientConfig {
     }
 
     @Override
+    public String getFileConverterUrl() {
+        return "https://apps.sstech.us/office-web/office/rpc/fileConverterService";
+    }
+
+    @Override
     public TimeZone getTimeZone() {
         return TimeZone.createTimeZone(tzConstants.americaNewYork());
     }

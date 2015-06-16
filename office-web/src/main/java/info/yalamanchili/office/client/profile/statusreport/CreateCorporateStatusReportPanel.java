@@ -25,6 +25,8 @@ import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.ClickableLink;
+import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -40,6 +42,7 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
     private static Logger logger = Logger.getLogger(CreateCorporateStatusReportPanel.class.getName());
     protected CaptionPanel basePanel = new CaptionPanel();
     protected FlowPanel panel = new FlowPanel();
+    ClickableLink uploadFromFile = new ClickableLink("Upload");
     SelectTimePeriodWidget statusReportPeriodF = new SelectTimePeriodWidget(false, true);
     CKEditor reportF;
     BooleanField submitForApprovalF = new BooleanField(OfficeWelcome.constants, "submitForApproval", "CorporateStatusReport", false, false, Alignment.HORIZONTAL);
@@ -48,7 +51,14 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
     String entityId;
     boolean isUpdate = false;
     
+    private static CreateCorporateStatusReportPanel instance;
+    
+    public static CreateCorporateStatusReportPanel instance() {
+        return instance;
+    }
+    
     protected CreateCorporateStatusReportPanel() {
+        instance = this;
         init(basePanel);
     }
     
@@ -98,6 +108,7 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
     protected void addListeners() {
         createB.addClickHandler(this);
         submitForApprovalF.getBox().addClickHandler(this);
+        uploadFromFile.addClickHandler(this);
     }
     
     @Override
@@ -110,6 +121,7 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
     protected void addWidgets() {
         basePanel.setContentWidget(panel);
         panel.add(statusReportPeriodF);
+        panel.add(uploadFromFile);
         Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
             @Override
             public void execute() {
@@ -126,6 +138,10 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
         panel.insert(reportF, panel.getWidgetIndex(submitForApprovalF));
     }
     
+    public void setHtml(String html) {
+        reportF.setData(html);
+    }
+    
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createB)) {
@@ -137,6 +153,9 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
             } else {
                 createB.setText("Save");
             }
+        }
+        if (event.getSource().equals(uploadFromFile)) {
+            new GenericPopup(new UploadCorporateStatusReportPanel()).show();
         }
     }
     
@@ -174,45 +193,5 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "corporate-statusreport?submitForApproval=" + submitForApprovalF.getValue();
     }
-
-//    protected CKEditor getEditor() {
-//        CKConfig ckf = new CKConfig(CKConfig.PRESET_TOOLBAR.FULL);
-//        //Setting size
-//        ckf.setHeight("400px");
-//        //Creating personalized toolbar
-//        ToolbarLine line0 = new ToolbarLine();
-//        line0.add(CKConfig.TOOLBAR_OPTIONS.BulletedList);
-//        line0.add(CKConfig.TOOLBAR_OPTIONS.NumberedList);
-//        line0.add(CKConfig.TOOLBAR_OPTIONS.Indent);
-//        line0.add(CKConfig.TOOLBAR_OPTIONS.Outdent);
-//        line0.add(CKConfig.TOOLBAR_OPTIONS.JustifyBlock);
-//        line0.add(CKConfig.TOOLBAR_OPTIONS.JustifyCenter);
-//        line0.add(CKConfig.TOOLBAR_OPTIONS.JustifyLeft);
-//        line0.add(CKConfig.TOOLBAR_OPTIONS.JustifyRight);
-//        line0.add(CKConfig.TOOLBAR_OPTIONS.Styles);
-//        line0.addBlockSeparator();
-//        line0.add(CKConfig.TOOLBAR_OPTIONS.Bold);
-//        line0.add(CKConfig.TOOLBAR_OPTIONS.Underline);
-//        line0.add(CKConfig.TOOLBAR_OPTIONS.Italic);
-//        line0.add(CKConfig.TOOLBAR_OPTIONS.FontSize);
-//        line0.add(CKConfig.TOOLBAR_OPTIONS.Font);
-//        line0.add(CKConfig.TOOLBAR_OPTIONS.TextColor);
-//        line0.add(CKConfig.TOOLBAR_OPTIONS.BGColor);
-//        line0.add(CKConfig.TOOLBAR_OPTIONS.Table);
-//        line0.addBlockSeparator();
-//        line0.add(CKConfig.TOOLBAR_OPTIONS.PasteFromWord);
-//        line0.add(CKConfig.TOOLBAR_OPTIONS.Preview);
-//        line0.add(CKConfig.TOOLBAR_OPTIONS.Templates);
-//        line0.add(CKConfig.TOOLBAR_OPTIONS.Maximize);
-//
-//        //Creates the toolbar
-//        Toolbar t = new Toolbar();
-//        t.add(line0);
-//
-//        //Set the toolbar to the config (replace the FULL preset toolbar)
-//        ckf.setToolbar(t);
-//
-//        //Creates the editor with this config
-//        return new CKEditor(ckf);
-//    }
+    
 }
