@@ -8,12 +8,17 @@
 package info.yalamanchili.office.dao.expense;
 
 import info.chili.dao.CRUDDao;
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
+import info.yalamanchili.office.dao.company.CompanyContactDao;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.expense.AdvanceRequisition;
 import info.yalamanchili.office.entity.expense.BankAccount;
 import info.yalamanchili.office.entity.expense.Check;
 import info.yalamanchili.office.entity.expense.Transaction;
+import info.yalamanchili.office.entity.profile.Employee;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -93,6 +98,37 @@ public class AdvanceRequisitionDao extends CRUDDao<AdvanceRequisition> {
         TypedQuery<Long> findAllQuery = getEntityManager().createQuery("select count(*) from " + entityCls.getCanonicalName() + " where employee.id=:employeeIdParam", Long.class);
         findAllQuery.setParameter("employeeIdParam", employeeId);
         return findAllQuery.getSingleResult();
+    }
+
+    public void acceccCheck(Employee employee) {
+        Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
+        if (employee.getId().equals(currentUser.getId())) {
+            return;
+        }
+        boolean isCorporateEmployee = false;
+        if (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name(), OfficeRoles.OfficeRole.ROLE_ACCOUNTS_PAYABLE.name(), OfficeRoles.OfficeRole.ROLE_ADMIN.name())) {
+            isCorporateEmployee = true;
+        }
+        //this is a corp emp review
+        if (isCorporateEmployee) {
+            if (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name(), OfficeRoles.OfficeRole.ROLE_ACCOUNTS_PAYABLE.name(), OfficeRoles.OfficeRole.ROLE_ADMIN.name())) {
+                return;
+            }
+            Employee perfEvalMgr = CompanyContactDao.instance().getCompanyContactForEmployee(employee, "Perf_Eval_Manager");
+            if (perfEvalMgr != null && currentUser.getId().equals(perfEvalMgr.getId())) {
+                return;
+            }
+            Employee reportsToMgr = CompanyContactDao.instance().getCompanyContactForEmployee(employee, "Reports_To");
+            if (reportsToMgr != null && currentUser.getId().equals(reportsToMgr.getId())) {
+                return;
+            }
+        } //Consultant employee review
+        else {
+            if (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name(), OfficeRoles.OfficeRole.ROLE_ACCOUNTS_PAYABLE.name(), OfficeRoles.OfficeRole.ROLE_ADMIN.name())) {
+                return;
+            }
+        }
+        throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "permission.error", "you do not have permission to view this information");
     }
 
     public void addTransaction(Long id, Transaction transaction) {
