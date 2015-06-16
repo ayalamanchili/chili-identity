@@ -2,11 +2,9 @@ How to submit Check Requisition Request
 ==========
  - [Login to Portal](../../office/forgot-password.html "Login")
  - Navigate to Expense --> Check Requisition --> Create Check Requisition 
- - Immigration Team enters the information about check request and submits it
- - Submit the information after filling all relevant fields. 
- - Payroll Department will review it and approve it 
- - accounting Department will review it and approve it finally    
- - A request is sent to appropriate department for approval.
+ - Immigration Team submits the check request after entering all the relevant details
+ - Payroll Department will review and approve the request
+ - Accounting Department will review the approved request and dispatch the check
  - After approval process is complete, an email indicating final decision is generated and sent to user.
 
 Creating Check Requisition Request
