@@ -107,10 +107,9 @@ public class OfficeSchedulerService {
         anniversary.add(Calendar.YEAR, 1);
         int monthb = Calendar.getInstance().get(Calendar.MONTH);
         monthb = monthb + 1;
-        javax.persistence.Query findUserQuery = em.createQuery("from " + Employee.class.getCanonicalName() + " where  user.enabled= TRUE and day(startDate)=:date1 and month(startDate)=:month1 and year(startDate)=:year1");
+        javax.persistence.Query findUserQuery = em.createQuery("from " + Employee.class.getCanonicalName() + " where  user.enabled= TRUE and day(startDate)=:date1 and month(startDate)=:month1 ");
         findUserQuery.setParameter("date1", Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
         findUserQuery.setParameter("month1", monthb);
-        findUserQuery.setParameter("year1", anniversary);
         List lstResult = findUserQuery.getResultList();
         Iterator itr = lstResult.iterator();
         while (itr.hasNext()) {
