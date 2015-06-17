@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.task;
 
+import info.chili.commons.DateUtils;
 import info.yalamanchili.office.Time.AssociateTimeAccuralService;
 import info.yalamanchili.office.Time.CorporateTimeAccuralService;
 import info.yalamanchili.office.Time.TimeJobService;
@@ -18,7 +19,9 @@ import info.yalamanchili.office.employee.probeval.ProbationPeriodEvaluationIniti
 import info.yalamanchili.office.entity.message.NotificationGroup;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
+import static info.yalamanchili.office.task.OfficeSchedulerService.monthsBetween;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -82,21 +85,18 @@ public class OfficeSchedulerService {
             Employee empres = null;
             empres = ((Employee) itr.next());
             //TODO enhance it to collect all emails and send once
-
-            if (empres.isActive()) {
-                Set<String> emailto = new HashSet<String>();
-                NotificationGroup ng = NotificationGroupDao.instance().findByName(BIRTHDAY_ANNUAL_NOTIFICATION_GROUP);
-                for (Employee emp : ng.getEmployees()) {
-                    emailto.add(emp.getPrimaryEmail().getEmail());
-                }
-                Email email = new Email();
-                emailto.add(EmployeeDao.instance().getPrimaryEmail(empres));
-                email.setTos(emailto);
-                email.setSubject("Birthday Wishes");
-                String messageText = "SystemSoft Technologies Wishes a very Happy Birthday to " + empres.getFirstName() + "," + empres.getLastName();
-                email.setBody(messageText);
-                MessagingService.instance().sendEmail(email);
+            Set<String> emailto = new HashSet<String>();
+            NotificationGroup ng = NotificationGroupDao.instance().findByName(BIRTHDAY_ANNUAL_NOTIFICATION_GROUP);
+            for (Employee emp : ng.getEmployees()) {
+                emailto.add(emp.getPrimaryEmail().getEmail());
             }
+            Email email = new Email();
+            emailto.add(EmployeeDao.instance().getPrimaryEmail(empres));
+            email.setTos(emailto);
+            email.setSubject("Birthday Wishes");
+            String messageText = "SystemSoft Technologies Wishes a very Happy Birthday to " + empres.getFirstName() + "," + empres.getLastName();
+            email.setBody(messageText);
+            MessagingService.instance().sendEmail(email);
         }
     }
 
@@ -112,9 +112,6 @@ public class OfficeSchedulerService {
     @Scheduled(cron = "0 30 1 * * ?")
     public void anniversaryNotification() {
         Employee employee;
-        Calendar date1 = null;
-        Calendar date2 = null;
-        double monthsBetween = monthsBetween(date1, date2);
         int monthb = Calendar.getInstance().get(Calendar.MONTH);
         monthb = monthb + 1;
         javax.persistence.Query findUserQuery = em.createQuery("from " + Employee.class.getCanonicalName() + " where  user.enabled= TRUE and day(startDate)=:date1 and month(startDate)=:month1 ");
@@ -126,21 +123,18 @@ public class OfficeSchedulerService {
             Employee empres = null;
             empres = ((Employee) itr.next());
             //TODO enhance it to collect all emails and send once
-
-            if (empres.isActive()) {
-                Set<String> emailto = new HashSet<String>();
-                NotificationGroup ng = NotificationGroupDao.instance().findByName(BIRTHDAY_ANNUAL_NOTIFICATION_GROUP);
-                for (Employee emp : ng.getEmployees()) {
-                    emailto.add(emp.getPrimaryEmail().getEmail());
-                }
-                Email email = new Email();
-                emailto.add(EmployeeDao.instance().getPrimaryEmail(empres));
-                email.setTos(emailto);
-                email.setSubject("Anniversary Wishes");
-                String messageText = "Congratulating " + empres.getFirstName() + "," + empres.getLastName() + " on " + (int) monthsBetween + " year Anniversary with System Soft Technologies. Thank you for being a part of our SSTech family & wish you more successful years.";
-                email.setBody(messageText);
-                MessagingService.instance().sendEmail(email);
+            Set<String> emailto = new HashSet<>();
+            NotificationGroup ng = NotificationGroupDao.instance().findByName(BIRTHDAY_ANNUAL_NOTIFICATION_GROUP);
+            for (Employee emp : ng.getEmployees()) {
+                emailto.add(emp.getPrimaryEmail().getEmail());
             }
+            Email email = new Email();
+            emailto.add(EmployeeDao.instance().getPrimaryEmail(empres));
+            email.setTos(emailto);
+            email.setSubject("Anniversary Wishes");
+            String messageText = "Congratulating " + empres.getFirstName() + "," + empres.getLastName() + " on " + DateUtils.getDiffYears(empres.getStartDate(), new Date()) + " year Anniversary with System Soft Technologies. Thank you for being a part of our SSTech family & wish you more successful years.";
+            email.setBody(messageText);
+            MessagingService.instance().sendEmail(email);
         }
     }
 
