@@ -47,6 +47,7 @@ public class FileConverterResource extends HttpServlet implements Serializable {
                 } else if (item.getName().contains("doc")) {
                     html = WordToHtml.convert(item.getInputStream());
                 }
+                response.setContentType("text/html");
                 response.getWriter().write(html);
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
