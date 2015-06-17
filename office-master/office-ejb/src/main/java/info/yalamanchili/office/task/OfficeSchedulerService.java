@@ -111,9 +111,10 @@ public class OfficeSchedulerService {
 
     @Scheduled(cron = "0 30 1 * * ?")
     public void anniversaryNotification() {
-        Calendar today = Calendar.getInstance();
-        Calendar anniversary = today;
-        anniversary.add(Calendar.YEAR, 1);
+        Employee employee;
+        Calendar date1 = null;
+        Calendar date2 = null;
+        double monthsBetween = monthsBetween(date1, date2);
         int monthb = Calendar.getInstance().get(Calendar.MONTH);
         monthb = monthb + 1;
         javax.persistence.Query findUserQuery = em.createQuery("from " + Employee.class.getCanonicalName() + " where  user.enabled= TRUE and day(startDate)=:date1 and month(startDate)=:month1 ");
@@ -136,10 +137,18 @@ public class OfficeSchedulerService {
                 emailto.add(EmployeeDao.instance().getPrimaryEmail(empres));
                 email.setTos(emailto);
                 email.setSubject("Anniversary Wishes");
-                String messageText = "Congratulating " + empres.getFirstName() + "," + empres.getLastName() + "" + "on" + anniversary + 1 + "year Anniversary with System Soft Technologies. Thank you for being a part of our SSTech family & wish you more successful years.";
+                String messageText = "Congratulating " + empres.getFirstName() + "," + empres.getLastName() + " on " + (int) monthsBetween + " year Anniversary with System Soft Technologies. Thank you for being a part of our SSTech family & wish you more successful years.";
                 email.setBody(messageText);
                 MessagingService.instance().sendEmail(email);
             }
         }
+    }
+
+    public static double monthsBetween(Calendar date1, Calendar date2) {
+        double monthsBetween = 0;
+        //difference in of years
+        monthsBetween = (date1.get(Calendar.YEAR) - date2.get(Calendar.YEAR));
+
+        return monthsBetween;
     }
 }
