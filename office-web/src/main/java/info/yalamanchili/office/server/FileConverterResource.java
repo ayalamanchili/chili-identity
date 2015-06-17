@@ -42,9 +42,9 @@ public class FileConverterResource extends HttpServlet implements Serializable {
             }
             try {
                 String html = "";
-                if (item.getName().contains("xls") || item.getName().contains("xlsx")) {
+                if (item.getName().contains("xls")) {
                     html = new ExcelToHtml(item.getInputStream()).getHTML();
-                } else if (item.getName().contains("doc") || item.getName().contains("docx")) {
+                } else if (item.getName().contains("doc")) {
                     html = WordToHtml.convert(item.getInputStream());
                 }
                 response.getWriter().write(html);

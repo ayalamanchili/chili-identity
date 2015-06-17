@@ -7,6 +7,7 @@ package info.yalamanchili.office.client.profile.statusreport;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FileUpload;
@@ -22,10 +23,10 @@ import java.util.logging.Logger;
  * @author ayalamanchili
  */
 public class UploadCorporateStatusReportPanel extends Composite {
-
+    
     FlowPanel panel = new FlowPanel();
     public static Logger logger = Logger.getLogger(UploadCorporateStatusReportPanel.class.getName());
-
+    
     public UploadCorporateStatusReportPanel() {
         initWidget(panel);
         final FormPanel form = new FormPanel();
@@ -38,7 +39,7 @@ public class UploadCorporateStatusReportPanel extends Composite {
 
         // Add a 'submit' button.
         panel.add(form);
-        panel.add(new Button("Submit", new ClickHandler() {
+        panel.add(new Button("Import", new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 form.submit();
@@ -47,12 +48,15 @@ public class UploadCorporateStatusReportPanel extends Composite {
         form.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
             @Override
             public void onSubmitComplete(SubmitCompleteEvent event) {
-                logger.info(event.getResults());
+                if (event.getResults().isEmpty()) {
+                    Window.alert("Formart not supported");
+                }
                 CreateCorporateStatusReportPanel.instance().setHtml(event.getResults());
                 GenericPopup.instance().hide();
+                
             }
         });
-
+        
     }
-
+    
 }

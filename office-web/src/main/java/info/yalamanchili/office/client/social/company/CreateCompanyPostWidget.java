@@ -28,7 +28,6 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.utils.FileUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
-import info.chili.gwt.widgets.RichTextToolBar;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.fields.FileuploadField;
 import info.chili.gwt.utils.JSONUtils;
@@ -48,7 +47,7 @@ public class CreateCompanyPostWidget extends ALComposite implements ClickHandler
     FlowPanel mainPanel = new FlowPanel();
     HorizontalPanel buttonsPanel = new HorizontalPanel();
     final RichTextArea textArea = new RichTextArea();
-    final RichTextToolBar toolBar = new RichTextToolBar(textArea);
+    final RichTextToolbar toolBar = new RichTextToolbar(textArea);
     Button createPostB = new Button("Share");
     Image fileUploadIcon = new Image(OfficeImages.INSTANCE.fileAttachmentIcon());
     FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "PostFile", "", "PostFile/fileURL", false) {
