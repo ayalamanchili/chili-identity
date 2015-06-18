@@ -7,7 +7,6 @@
  */
 package info.yalamanchili.office.task;
 
-import info.chili.commons.DateUtils;
 import info.yalamanchili.office.Time.AssociateTimeAccuralService;
 import info.yalamanchili.office.Time.CorporateTimeAccuralService;
 import info.yalamanchili.office.Time.TimeJobService;
@@ -19,9 +18,7 @@ import info.yalamanchili.office.employee.probeval.ProbationPeriodEvaluationIniti
 import info.yalamanchili.office.entity.message.NotificationGroup;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
-import static info.yalamanchili.office.task.OfficeSchedulerService.monthsBetween;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -111,7 +108,6 @@ public class OfficeSchedulerService {
 
     @Scheduled(cron = "0 30 1 * * ?")
     public void anniversaryNotification() {
-        Employee employee;
         int monthb = Calendar.getInstance().get(Calendar.MONTH);
         monthb = monthb + 1;
         javax.persistence.Query findUserQuery = em.createQuery("from " + Employee.class.getCanonicalName() + " where  user.enabled= TRUE and day(startDate)=:date1 and month(startDate)=:month1 ");
@@ -122,27 +118,36 @@ public class OfficeSchedulerService {
         while (itr.hasNext()) {
             Employee empres = null;
             empres = ((Employee) itr.next());
+            Calendar date1 = Calendar.getInstance();
+            date1.setTime(empres.getStartDate());
+            Calendar date2 = Calendar.getInstance();
+
+            int years = yearsBetween(date1, date2);
             //TODO enhance it to collect all emails and send once
-            Set<String> emailto = new HashSet<>();
-            NotificationGroup ng = NotificationGroupDao.instance().findByName(BIRTHDAY_ANNUAL_NOTIFICATION_GROUP);
-            for (Employee emp : ng.getEmployees()) {
-                emailto.add(emp.getPrimaryEmail().getEmail());
+
+            if (years > 0 && empres.isActive()) {
+                Set<String> emailto = new HashSet<String>();
+                NotificationGroup ng = NotificationGroupDao.instance().findByName(BIRTHDAY_ANNUAL_NOTIFICATION_GROUP);
+                for (Employee emp : ng.getEmployees()) {
+                    emailto.add(emp.getPrimaryEmail().getEmail());
+                }
+                Email email = new Email();
+                emailto.add(EmployeeDao.instance().getPrimaryEmail(empres));
+                email.setTos(emailto);
+                email.setSubject("Anniversary Wishes");
+                String messageText = "Congratulating " + empres.getFirstName() + "," + empres.getLastName() + " on " + years + " year Anniversary with System Soft Technologies. Thank you for being a part of our SSTech family & wish you more successful years.";
+                email.setBody(messageText);
+                MessagingService.instance().sendEmail(email);
             }
-            Email email = new Email();
-            emailto.add(EmployeeDao.instance().getPrimaryEmail(empres));
-            email.setTos(emailto);
-            email.setSubject("Anniversary Wishes");
-            String messageText = "Congratulating " + empres.getFirstName() + "," + empres.getLastName() + " on " + DateUtils.getDiffYears(empres.getStartDate(), new Date()) + " year Anniversary with System Soft Technologies. Thank you for being a part of our SSTech family & wish you more successful years.";
-            email.setBody(messageText);
-            MessagingService.instance().sendEmail(email);
         }
     }
 
-    public static double monthsBetween(Calendar date1, Calendar date2) {
-        double monthsBetween = 0;
+    public static int yearsBetween(Calendar date1, Calendar date2) {
+        int years = 0;
         //difference in of years
-        monthsBetween = (date1.get(Calendar.YEAR) - date2.get(Calendar.YEAR));
-
-        return monthsBetween;
+        if (date2.get(Calendar.MONTH) == date1.get(Calendar.MONTH)) {
+            years = date2.get(Calendar.YEAR) - date1.get(Calendar.YEAR);
+        }
+        return years;
     }
 }
