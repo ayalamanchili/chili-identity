@@ -91,7 +91,7 @@ public class OfficeSchedulerService {
             emailto.add(EmployeeDao.instance().getPrimaryEmail(empres));
             email.setTos(emailto);
             email.setSubject("Birthday Wishes");
-            String messageText = "SystemSoft Technologies Wishes a very Happy Birthday to " + empres.getFirstName() + "," + empres.getLastName();
+            String messageText = "System Soft Technologies Wishes a very Happy Birthday to " + empres.getFirstName() + "," + empres.getLastName();
             email.setBody(messageText);
             MessagingService.instance().sendEmail(email);
         }
@@ -135,7 +135,8 @@ public class OfficeSchedulerService {
                 emailto.add(EmployeeDao.instance().getPrimaryEmail(empres));
                 email.setTos(emailto);
                 email.setSubject("Anniversary Wishes");
-                String messageText = "Congratulating " + empres.getFirstName() + "," + empres.getLastName() + " on " + years + " year Anniversary with System Soft Technologies. Thank you for being a part of our SSTech family & wish you more successful years.";
+                String messageText = "Congratulations " + empres.getFirstName() + "," + empres.getLastName() + " on " + years + " year(s) Anniversary with System Soft Technologies. "
+                        + "Thank you for being a part of our SSTech family & wish you more successful years.";
                 email.setBody(messageText);
                 MessagingService.instance().sendEmail(email);
             }
