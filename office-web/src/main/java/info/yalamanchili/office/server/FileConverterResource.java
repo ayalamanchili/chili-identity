@@ -9,6 +9,7 @@ import com.google.gwt.thirdparty.guava.common.io.Files;
 import info.chili.docs.DocxConverter;
 import info.chili.docs.ExcelToHtml;
 import info.chili.docs.WordToHtml;
+import info.chili.docs.XlsToHtml;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
@@ -41,7 +42,7 @@ public class FileConverterResource extends HttpServlet implements Serializable {
             try {
                 String html = "";
                 if (Files.getFileExtension(item.getName()).equalsIgnoreCase("xls")) {
-                    html = ExcelToHtml.convert(item.getInputStream());
+                    html = new XlsToHtml(item.getInputStream()).getHTML();
                 } else if (Files.getFileExtension(item.getName()).equalsIgnoreCase("xlsx")) {
                     html = ExcelToHtml.convert(item.getInputStream());
                 } else if (Files.getFileExtension(item.getName()).equalsIgnoreCase("doc")) {
