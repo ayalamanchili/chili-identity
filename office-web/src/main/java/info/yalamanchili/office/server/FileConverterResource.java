@@ -5,6 +5,8 @@
  */
 package info.yalamanchili.office.server;
 
+import com.google.gwt.thirdparty.guava.common.io.Files;
+import info.chili.docs.DocxConverter;
 import info.chili.docs.ExcelToHtml;
 import info.chili.docs.WordToHtml;
 import java.io.IOException;
@@ -19,10 +21,6 @@ import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-
-/**
- *
- * @author ayalamanchili
  */
 public class FileConverterResource extends HttpServlet implements Serializable {
 
@@ -42,10 +40,14 @@ public class FileConverterResource extends HttpServlet implements Serializable {
             }
             try {
                 String html = "";
-                if (item.getName().contains("xls")) {
-                    html = new ExcelToHtml(item.getInputStream()).getHTML();
-                } else if (item.getName().contains("doc")) {
+                if (Files.getFileExtension(item.getName()).equalsIgnoreCase("xls")) {
+                    html = ExcelToHtml.convert(item.getInputStream());
+                } else if (Files.getFileExtension(item.getName()).equalsIgnoreCase("xlsx")) {
+                    html = ExcelToHtml.convert(item.getInputStream());
+                } else if (Files.getFileExtension(item.getName()).equalsIgnoreCase("doc")) {
                     html = WordToHtml.convert(item.getInputStream());
+                } else if (Files.getFileExtension(item.getName()).equalsIgnoreCase("docx")) {
+                    html = DocxConverter.convert(item.getInputStream());
                 }
                 response.setContentType("text/html");
                 response.getWriter().write(html);
