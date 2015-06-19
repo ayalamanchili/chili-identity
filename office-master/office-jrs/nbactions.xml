@@ -50,25 +50,33 @@
         <actionName>CUSTOM-cargo:deploy</actionName>
         <displayName>cargo:deploy</displayName>
         <goals>
-            <goal>cargo:deploy</goal>
-            
+            <goal>cargo:deploy</goal>           
         </goals>
     </action>
+    <action>
+        <actionName>CUSTOM-mvn findbugs:gui</actionName>
+        <displayName>Static Code Analysis</displayName>
+        <goals>
+            <goal>clean</goal>            
+            <goal>install</goal>            
+            <goal>site</goal>
+            <goal>findbugs:gui</goal>            
+        </goals>
+        <activatedProfiles>
+            <activatedProfile>static-analysis</activatedProfile>
+        </activatedProfiles>        
+    </action>    
     <action>
         <actionName>CUSTOM-mvn tomcat6:run -Pprod</actionName>
         <displayName>mvn tomcat6:run -Pprod</displayName>
         <goals>
-            <goal>tomcat6:run</goal>
-                
+            <goal>tomcat6:run</goal>                
         </goals>
         <properties>
-                <Env.MAVEN_OPTS>-XX:MaxPermSize=256m -Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n</Env.MAVEN_OPTS>
-            </properties>
+            <Env.MAVEN_OPTS>-XX:MaxPermSize=256m -Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n</Env.MAVEN_OPTS>
+        </properties>
         <activatedProfiles>
-                <activatedProfile>prod</activatedProfile>
-            </activatedProfiles>
-    </action>
-    
-    
-        
+            <activatedProfile>prod</activatedProfile>
+        </activatedProfiles>
+    </action>    
 </actions>

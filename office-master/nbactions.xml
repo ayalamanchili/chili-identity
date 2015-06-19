@@ -23,20 +23,28 @@
             </properties>
     </action>
     <action>
-            <actionName>CUSTOM-gce-test</actionName>
-            <displayName>gce-test</displayName>
-            <goals>
-                <goal>clean</goal>
-                <goal>install</goal>
-                <goal>-DskipTests</goal>
-            </goals>
-            <activatedProfiles>
-                <activatedProfile>gce-test</activatedProfile>
-            </activatedProfiles>
-        </action>
-    
-    
-    
-    
-    
+        <actionName>CUSTOM-gce-test</actionName>
+        <displayName>gce-test</displayName>
+        <goals>
+            <goal>clean</goal>
+            <goal>install</goal>
+            <goal>-DskipTests</goal>
+        </goals>
+        <activatedProfiles>
+            <activatedProfile>gce-test</activatedProfile>
+        </activatedProfiles>
+    </action>
+    <action>
+        <actionName>CUSTOM-mvn findbugs:gui</actionName>
+        <displayName>Static Code Analysis</displayName>
+        <goals>
+            <goal>clean</goal>            
+            <goal>install</goal>            
+            <goal>site</goal>
+            <!--<goal>findbugs:gui</goal>-->            
+        </goals>
+        <activatedProfiles>
+            <activatedProfile>static-analysis</activatedProfile>
+        </activatedProfiles>        
+    </action>        
 </actions>

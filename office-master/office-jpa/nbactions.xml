@@ -33,5 +33,17 @@
             <activatedProfile>prod</activatedProfile>
         </activatedProfiles>
     </action>
-    
+    <action>
+        <actionName>CUSTOM-mvn findbugs:gui</actionName>
+        <displayName>Static Code Analysis</displayName>
+        <goals>
+            <goal>clean</goal>            
+            <goal>install</goal>            
+            <goal>site</goal>
+            <goal>findbugs:gui</goal>            
+        </goals>
+        <activatedProfiles>
+            <activatedProfile>static-analysis</activatedProfile>
+        </activatedProfiles>        
+    </action>            
 </actions>
