@@ -20,24 +20,23 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType
 public class AvantelTimeSummaryDto {
 
-    protected String Employee;
-    protected BigDecimal receptionHours;
-    protected BigDecimal secondFloorHours;
-    protected BigDecimal cubicalHours;
-    protected BigDecimal availablePTOHours;
-    protected BigDecimal monthlyAccuredHours;
-    protected BigDecimal totalavailablePTOHours;
-    protected BigDecimal usedPTOHours;
-    protected Date startDate;
-    protected Date endDate;
-    
+    private String employee;
+    private BigDecimal receptionHours;
+    private BigDecimal secondFloorHours;
+    private BigDecimal cubicalHours;
+    private BigDecimal availablePaidTimeOffHours;
+//  protected BigDecimal monthlyAccuredHours;
+//  protected BigDecimal totalavailablePTOHours;
+//  protected BigDecimal usedPTOHours;
+    private Date startDate;
+    private Date endDate;
 
     public String getEmployee() {
-        return Employee;
+        return employee;
     }
 
-    public void setEmployee(String Employee) {
-        this.Employee = Employee;
+    public void setEmployee(String employee) {
+        this.employee = employee;
     }
 
     public BigDecimal getReceptionHours() {
@@ -64,36 +63,12 @@ public class AvantelTimeSummaryDto {
         this.cubicalHours = cubicalHours;
     }
 
-    public BigDecimal getAvailablePTOHours() {
-        return availablePTOHours;
+    public BigDecimal getAvailablePaidTimeOffHours() {
+        return availablePaidTimeOffHours;
     }
 
-    public void setAvailablePTOHours(BigDecimal availablePTOHours) {
-        this.availablePTOHours = availablePTOHours;
-    }
-
-    public BigDecimal getMonthlyAccuredHours() {
-        return monthlyAccuredHours;
-    }
-
-    public void setMonthlyAccuredHours(BigDecimal monthlyAccuredHours) {
-        this.monthlyAccuredHours = monthlyAccuredHours;
-    }
-
-    public BigDecimal getTotalavailablePTOHours() {
-        return totalavailablePTOHours;
-    }
-
-    public void setTotalavailablePTOHours(BigDecimal totalavailablePTOHours) {
-        this.totalavailablePTOHours = totalavailablePTOHours;
-    }
-
-    public BigDecimal getUsedPTOHours() {
-        return usedPTOHours;
-    }
-
-    public void setUsedPTOHours(BigDecimal usedPTOHours) {
-        this.usedPTOHours = usedPTOHours;
+    public void setAvailablePaidTimeOffHours(BigDecimal availablePaidTimeOffHours) {
+        this.availablePaidTimeOffHours = availablePaidTimeOffHours;
     }
 
     public Date getStartDate() {
@@ -111,7 +86,8 @@ public class AvantelTimeSummaryDto {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
-
+    
     public AvantelTimeSummaryDto() {
     }
+
 }

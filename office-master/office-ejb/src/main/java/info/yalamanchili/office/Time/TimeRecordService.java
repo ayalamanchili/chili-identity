@@ -7,13 +7,11 @@
  */
 package info.yalamanchili.office.Time;
 
-import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
 import info.chili.reporting.ReportGenerator;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.Time.track.EmployeeTimeDataBulkImportProcessBean;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.dao.time.TimeRecordDao;
 import info.yalamanchili.office.dto.time.AvantelTimeSummaryDto;
@@ -143,15 +141,48 @@ public class TimeRecordService {
                 summaryRec.setEmployee(emp.getFirstName() + " " + emp.getLastName());
                 summaryRec.setStartDate(dto.getStartDate());
                 summaryRec.setEndDate(dto.getEndDate());
-                summaryRec.setAvailablePTOHours(corporateTimeSheetDao.getPTOAccruedTimeSheet(emp).getHours());
+                summaryRec.setAvailablePaidTimeOffHours(corporateTimeSheetDao.getPTOAccruedTimeSheet(emp).getHours());
                 
                 res.add(summaryRec);
             }
         }
-        MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(res, "Attandance-Summary", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
+        
+        // Columns order in the report can be set with either of below options
+        // # 1 AbstractColumn class used to create Column order, titcle and format. Added the columsn in the required order to List<AbstractColumn> and 
+        //     then the List<AbstractColumn> has to be passed to ReportGenerator class. 
+        
+        // # 2 String Array = Give the columns in the required order in the String Array and pass it to ReportGenerator class 
+        
+        // # 1 AbstraceColumn - Setting columns names and order. Add Columns to the List.
+//        AbstractColumn columnEmpNo = createColumn("employee", String.class,"Employee");
+//        AbstractColumn columnStartDate = createColumn("startDate", Date.class,"Start Date");
+//        AbstractColumn columnEndDate = createColumn("endDate", Date.class,"End Date");
+//        AbstractColumn columnReception = createColumn("receptionHours", BigDecimal.class,"Reception Hours");        
+//        AbstractColumn columnSecondFloor = createColumn("secondFloorHours", BigDecimal.class,"Second Floor Hours");
+//        AbstractColumn columnCubical = createColumn("cubicalHours", BigDecimal.class,"Cubical Hours");
+//        AbstractColumn columnAvailablePTO = createColumn("availablePTOHours", BigDecimal.class,"Available PTO Hours");
+        
+//        List<AbstractColumn> columns = new ArrayList<> ();
+//        columns.add(columnEmpNo);
+//        columns.add(columnStartDate);
+//        columns.add(columnEndDate);
+//        columns.add(columnReception);
+//        columns.add(columnSecondFloor);
+//        columns.add(columnCubical);
+//        columns.add(columnAvailablePTO);
+        
+        // # 2 String Array - Setting columns names and order
+        String[] columnOrder = new String[]{"employee", "startDate", "endDate", "receptionHours", "secondFloorHours", "cubicalHours", "availablePaidTimeOffHours"};
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Attendance-Summary", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(),columnOrder), email);
     }
 
     public static TimeRecordService instance() {
         return SpringContext.getBean(TimeRecordService.class);
     }
+    
+//    private AbstractColumn createColumn(String property, Class type,String title)throws ColumnBuilderException {
+//        AbstractColumn columnState = ColumnBuilder.getNew().setColumnProperty(property, type.getName()).setTitle(title).build();
+//        return columnState;
+//    }
+
 }
