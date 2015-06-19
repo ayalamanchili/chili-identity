@@ -95,7 +95,7 @@ public class CorporateStatusReportDao extends CRUDDao<CorporateStatusReport> {
 
     @AccessCheck(companyContacts = {"Perf_Eval_Manager", "Reports_To"}, roles = {"ROLE_CRP_STATUS_RPT_MGR"})
     public List<CorporateStatusReport> getReports(Employee emp, int start, int limit) {
-        TypedQuery<CorporateStatusReport> query = em.createQuery("from " + CorporateStatusReport.class.getCanonicalName() + " where employee=:empParam", CorporateStatusReport.class);
+        TypedQuery<CorporateStatusReport> query = em.createQuery("from " + CorporateStatusReport.class.getCanonicalName() + " where employee=:empParam order by reportStartDate desc", CorporateStatusReport.class);
         query.setParameter("empParam", emp);
         query.setFirstResult(start);
         query.setMaxResults(limit);
@@ -194,6 +194,7 @@ public class CorporateStatusReportDao extends CRUDDao<CorporateStatusReport> {
             query.append("reportStartDate=:startDateParam").append(" and ");
             query.append("reportEndDate=:endDateParam");
         }
+        query.append(" order by reportStartDate desc");
         return query.toString();
     }
 
