@@ -11,12 +11,16 @@ package info.yalamanchili.office.client.profile.statusreport;
 import com.axeiya.gwtckeditor.client.CKEditor;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.logical.shared.OpenEvent;
+import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.CaptionPanel;
+import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.crud.ReadAllAuditDataPanel;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
@@ -80,6 +84,18 @@ public class ReadCorporateStatusReportPanel extends ALComposite {
                 addReportField();
             }
         });
+        final DisclosurePanel auditDP = new DisclosurePanel("Audit");
+        auditDP.addOpenHandler(new OpenHandler<DisclosurePanel>() {
+            @Override
+            public void onOpen(OpenEvent<DisclosurePanel> event) {
+                auditDP.setContent(new ReadAllAuditDataPanel("", getAuditUrl(), OfficeWelcome.constants));
+            }
+        });
+        panel.add(auditDP);
+    }
+
+    protected String getAuditUrl() {
+        return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.employee.statusreport.CorporateStatusReport" + "/" + entityId;
     }
 
     public final void populateFieldsFromEntity(final JSONObject entity) {
