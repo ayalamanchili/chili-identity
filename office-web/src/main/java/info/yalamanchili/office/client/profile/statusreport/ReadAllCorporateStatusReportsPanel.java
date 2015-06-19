@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.profile.statusreport;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
@@ -34,6 +35,22 @@ import java.util.logging.Logger;
  * @author ayalamanchili
  */
 public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
+
+    @Override
+    protected void createOptionsWidget(TableRowOptionsWidget.OptionsType type, final int row, final String id) {
+        TableRowOptionsWidget rowOptionsWidget = new TableRowOptionsWidget(type, id) {
+            @Override
+            protected void onQuickView() {
+                ReadAllCorporateStatusReportsPanel.this.onQuickView(row, id);
+            }
+
+            @Override
+            public void onMouseOut(MouseOutEvent event) {
+
+            }
+        };
+        createOptionsWidget(rowOptionsWidget, row, id);
+    }
 
     private static Logger logger = Logger.getLogger(ReadAllCorporateStatusReportsPanel.class.getName());
     public static ReadAllCorporateStatusReportsPanel instance;
@@ -162,7 +179,6 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        //TODO check permission
         if (TabPanel.instance().homePanel.isVisible()) {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
         } else {
@@ -179,6 +195,10 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
         if (TabPanel.instance().homePanel.isVisible()) {
             TabPanel.instance().homePanel.entityPanel.clear();
             TabPanel.instance().homePanel.entityPanel.add(new ReadCorporateStatusReportPanel(entityId));
+        }
+        if (TabPanel.instance().reportingPanel.isVisible()) {
+            TabPanel.instance().reportingPanel.entityPanel.clear();
+            TabPanel.instance().reportingPanel.entityPanel.add(new ReadCorporateStatusReportPanel(entityId));
         }
 
     }
