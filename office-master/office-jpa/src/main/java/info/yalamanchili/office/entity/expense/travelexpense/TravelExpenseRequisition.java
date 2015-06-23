@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -28,25 +31,14 @@ import org.hibernate.search.annotations.Field;
 @XmlRootElement
 @XmlType
 public class TravelExpenseRequisition extends AbstractEntity {
-    
+
     private static long serialVersionUID = 1L;
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
-    public static void setSerialVersionUID(long aSerialVersionUID) {
-        serialVersionUID = aSerialVersionUID;
-    }
-    
     @Enumerated(EnumType.STRING)
     @Field
     @NotNull(message = "{travel.expense.requisition.type.not.empty.msg}")
     private TravelType travelType;
-    
     @NotNull(message = "{travel.expense.requisition.employee.not.empty.msg}")
     private Employee employee;
-    
     private String department;
     private String phoneNumber;
     private String travelDestination;
@@ -56,13 +48,11 @@ public class TravelExpenseRequisition extends AbstractEntity {
     private Date returnDate;
     @Lob
     private String reasonForTravel;
-    
-    private TravelTransportation travelTransportation;
-    
-    private TravelAccommodation travelAccommodation;
-    
-    private TravelFood travelFood;
-    
+//    private TravelTransportation travelTransportation;
+//    
+//    private TravelAccommodation travelAccommodation;
+//    
+//    private TravelFood travelFood;
     @Enumerated(EnumType.STRING)
     @Field
     private TravelExpenseRequisitionStatus travelExpenseRequisitionStatus;
@@ -74,8 +64,6 @@ public class TravelExpenseRequisition extends AbstractEntity {
     public void setTravelType(TravelType travelType) {
         this.travelType = travelType;
     }
-
-
 
     public String getDepartment() {
         return department;
@@ -125,30 +113,29 @@ public class TravelExpenseRequisition extends AbstractEntity {
         this.reasonForTravel = reasonForTravel;
     }
 
-    public TravelTransportation getTravelTransportation() {
-        return travelTransportation;
-    }
-
-    public void setTravelTransportation(TravelTransportation travelTransportation) {
-        this.travelTransportation = travelTransportation;
-    }
-
-    public TravelAccommodation getTravelAccommodation() {
-        return travelAccommodation;
-    }
-
-    public void setTravelAccommodation(TravelAccommodation travelAccommodation) {
-        this.travelAccommodation = travelAccommodation;
-    }
-
-    public TravelFood getTravelFood() {
-        return travelFood;
-    }
-
-    public void setTravelFood(TravelFood travelFood) {
-        this.travelFood = travelFood;
-    }
-
+//    public TravelTransportation getTravelTransportation() {
+//        return travelTransportation;
+//    }
+//
+//    public void setTravelTransportation(TravelTransportation travelTransportation) {
+//        this.travelTransportation = travelTransportation;
+//    }
+//
+//    public TravelAccommodation getTravelAccommodation() {
+//        return travelAccommodation;
+//    }
+//
+//    public void setTravelAccommodation(TravelAccommodation travelAccommodation) {
+//        this.travelAccommodation = travelAccommodation;
+//    }
+//
+//    public TravelFood getTravelFood() {
+//        return travelFood;
+//    }
+//
+//    public void setTravelFood(TravelFood travelFood) {
+//        this.travelFood = travelFood;
+//    }
     public Employee getEmployee() {
         return employee;
     }
@@ -164,5 +151,4 @@ public class TravelExpenseRequisition extends AbstractEntity {
     public void setTravelExpenseRequisitionStatus(TravelExpenseRequisitionStatus travelExpenseRequisitionStatus) {
         this.travelExpenseRequisitionStatus = travelExpenseRequisitionStatus;
     }
-    
 }
