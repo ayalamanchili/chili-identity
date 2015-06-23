@@ -6,8 +6,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.entity.expense.travelexpense;
+package info.yalamanchili.office.entity.expense.travelauthorization;
 
+import info.chili.jpa.AbstractEntity;
 import java.math.BigDecimal;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -18,18 +19,42 @@ import org.hibernate.search.annotations.Field;
  *
  * @author Madhu.Badiginchala
  */
-public class TravelFood {
-    
+public class TravelFood extends AbstractEntity {
+
+    private static long serialVersionUID = 1L;
+    /**
+     *
+     *
+     */
     private BigDecimal totalCostOfFood;
+    /**
+     *
+     *
+     */
     private BigDecimal conferenceFee;
+    /**
+     *
+     *
+     */
     private BigDecimal totalCostOfBanquet;
+    /**
+     *
+     *
+     */
     private BigDecimal otherExpences;
-    
+    /**
+     *
+     *
+     */
     @Enumerated(EnumType.STRING)
     @Field
     @NotNull(message = "{travel.expense.transportation.pay.type.not.empty.msg}")
     private TravelTransportationPayType travelTransportationPayType;
 
+    /**
+     *
+     *
+     */
     public BigDecimal getTotalCostOfFood() {
         return totalCostOfFood;
     }
@@ -69,7 +94,4 @@ public class TravelFood {
     public void setTravelTransportationPayType(TravelTransportationPayType travelTransportationPayType) {
         this.travelTransportationPayType = travelTransportationPayType;
     }
-    
-    
-    
 }

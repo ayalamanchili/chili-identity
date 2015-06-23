@@ -6,14 +6,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.entity.expense.travelexpense;
+package info.yalamanchili.office.entity.expense.travelauthorization;
 
 /**
  *
  * @author Madhu.Badiginchala
  */
-public enum TravelRentalVehicleType {
-    MID_SIZE, 
-    COMPACT, 
-    OTHER;
+public enum TravelTransportationType {
+    AIR, 
+    BUS, 
+    RAILWAY,
+    OTHER,
+    COMPANY_VEHICLE,
+    PRIVATE_VEHICLE,
+    RENTAL_VEHICLE;
 }

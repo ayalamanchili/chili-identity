@@ -6,7 +6,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.entity.expense.travelexpense;
+package info.yalamanchili.office.entity.expense.travelauthorization;
 
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -33,30 +33,76 @@ import org.hibernate.search.annotations.Field;
 public class TravelExpenseRequisition extends AbstractEntity {
 
     private static long serialVersionUID = 1L;
+    /**
+     *
+     *
+     */
     @Enumerated(EnumType.STRING)
     @Field
     @NotNull(message = "{travel.expense.requisition.type.not.empty.msg}")
     private TravelType travelType;
+    /**
+     *
+     *
+     */
     @NotNull(message = "{travel.expense.requisition.employee.not.empty.msg}")
     private Employee employee;
+    /**
+     *
+     *
+     */
     private String department;
+    /**
+     *
+     *
+     */
     private String phoneNumber;
+    /**
+     *
+     *
+     */
     private String travelDestination;
+    /**
+     *
+     *
+     */
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date departureDate;
+    /**
+     *
+     *
+     */
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date returnDate;
     @Lob
     private String reasonForTravel;
-//    private TravelTransportation travelTransportation;
-//    
-//    private TravelAccommodation travelAccommodation;
-//    
-//    private TravelFood travelFood;
+    /**
+     *
+     *
+     */
+    private TravelTransportation travelTransportation;
+    /**
+     *
+     *
+     */
+    private TravelAccommodation travelAccommodation;
+    /**
+     *
+     *
+     */
+    private TravelFood travelFood;
+    /**
+     *
+     *
+     */
     @Enumerated(EnumType.STRING)
     @Field
     private TravelExpenseRequisitionStatus travelExpenseRequisitionStatus;
 
+    /**
+     *
+     *
+     */
     public TravelType getTravelType() {
         return travelType;
     }
@@ -113,29 +159,30 @@ public class TravelExpenseRequisition extends AbstractEntity {
         this.reasonForTravel = reasonForTravel;
     }
 
-//    public TravelTransportation getTravelTransportation() {
-//        return travelTransportation;
-//    }
-//
-//    public void setTravelTransportation(TravelTransportation travelTransportation) {
-//        this.travelTransportation = travelTransportation;
-//    }
-//
-//    public TravelAccommodation getTravelAccommodation() {
-//        return travelAccommodation;
-//    }
-//
-//    public void setTravelAccommodation(TravelAccommodation travelAccommodation) {
-//        this.travelAccommodation = travelAccommodation;
-//    }
-//
-//    public TravelFood getTravelFood() {
-//        return travelFood;
-//    }
-//
-//    public void setTravelFood(TravelFood travelFood) {
-//        this.travelFood = travelFood;
-//    }
+    public TravelTransportation getTravelTransportation() {
+        return travelTransportation;
+    }
+
+    public void setTravelTransportation(TravelTransportation travelTransportation) {
+        this.travelTransportation = travelTransportation;
+    }
+
+    public TravelAccommodation getTravelAccommodation() {
+        return travelAccommodation;
+    }
+
+    public void setTravelAccommodation(TravelAccommodation travelAccommodation) {
+        this.travelAccommodation = travelAccommodation;
+    }
+
+    public TravelFood getTravelFood() {
+        return travelFood;
+    }
+
+    public void setTravelFood(TravelFood travelFood) {
+        this.travelFood = travelFood;
+    }
+
     public Employee getEmployee() {
         return employee;
     }

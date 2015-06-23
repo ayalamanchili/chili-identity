@@ -6,8 +6,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.entity.expense.travelexpense;
+package info.yalamanchili.office.entity.expense.travelauthorization;
 
+import info.chili.jpa.AbstractEntity;
 import java.math.BigDecimal;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -19,17 +20,39 @@ import org.hibernate.search.annotations.Field;
  *
  * @author Madhu.Badiginchala
  */
-public class TravelRentalVehicleJustification {
+public class TravelRentalVehicleJustification extends AbstractEntity {
+
+    private static long serialVersionUID = 1L;
+    /**
+     *
+     *
+     */
     private BigDecimal estimatedCostOfOtherTransportation;
+    /**
+     *
+     *
+     */
     @Lob
     private String rentalVehicleJustification;
+    /**
+     *
+     *
+     */
     @Enumerated(EnumType.STRING)
     @Field
     @NotNull(message = "{travel.expense.rentalvehicle.type.not.empty.msg}")
     private TravelRentalVehicleType travelRentalVehicleType;
+    /**
+     *
+     *
+     */
     @Lob
     private String otherVehicleTypeJustification;
 
+    /**
+     *
+     *
+     */
     public BigDecimal getEstimatedCostOfOtherTransportation() {
         return estimatedCostOfOtherTransportation;
     }
@@ -61,6 +84,4 @@ public class TravelRentalVehicleJustification {
     public void setOtherVehicleTypeJustification(String otherVehicleTypeJustification) {
         this.otherVehicleTypeJustification = otherVehicleTypeJustification;
     }
-    
-    
 }
