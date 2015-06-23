@@ -8,7 +8,9 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
+import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import java.util.logging.Logger;
@@ -55,6 +57,11 @@ public class ReadTravelExpensePanel extends ReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+        assignFieldValueFromEntity("employee", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("departureDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("returnDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("phoneNumber", entity, DataType.INTEGER_FIELD);
+        assignFieldValueFromEntity("department", entity, DataType.STRING_FIELD);
     }
 
     @Override
@@ -67,6 +74,12 @@ public class ReadTravelExpensePanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
+        addField("employee", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("departureDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("returnDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("phoneNumber", false, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        addField("department", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        alignFields();
     }
 
     @Override
@@ -75,6 +88,6 @@ public class ReadTravelExpensePanel extends ReadComposite {
 
     @Override
     protected String getURI() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return OfficeWelcome.constants.root_url() + "travelexpense/" + entityId;
     }
 }

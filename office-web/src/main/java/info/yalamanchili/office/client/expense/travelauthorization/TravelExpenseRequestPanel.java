@@ -6,13 +6,17 @@ package info.yalamanchili.office.client.expense.travelauthorization;
 
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
+import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.expense.travelauthorizationtransactions.TravelType;
 import java.util.logging.Logger;
 
 /**
@@ -30,7 +34,17 @@ public class TravelExpenseRequestPanel extends CreateComposite implements ClickH
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        assignEntityValueFromField("travelType", entity);
+        assignEntityValueFromField("departureDate", entity);
+        assignEntityValueFromField("returnDate", entity);
+        assignEntityValueFromField("phoneNumber", entity);
+        assignEntityValueFromField("department", entity);
+        assignEntityValueFromField("travelDestination", entity);
+        assignEntityValueFromField("reasonForTravel", entity);
+        entity.put("employee", new JSONObject());
+        entity.put("status", new JSONString("Open"));
+        return entity;
+
     }
 
     @Override
@@ -68,10 +82,22 @@ public class TravelExpenseRequestPanel extends CreateComposite implements ClickH
 
     @Override
     protected void configure() {
+        setButtonText("Submit");
     }
 
     @Override
     protected void addWidgets() {
+        addEnumField("travelType", false, true, TravelType.names(), Alignment.HORIZONTAL);
+        entityFieldsPanel.add(getLineSeperatorTag("Section I.  Employee and Trip Information"));
+        addField("departureDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("returnDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("phoneNumber", false, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        addField("department", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("travelDestination", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("reasonForTravel", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(getLineSeperatorTag("Section II.  Estimated Expenses"));
+
+        alignFields();
     }
 
     @Override
@@ -80,6 +106,6 @@ public class TravelExpenseRequestPanel extends CreateComposite implements ClickH
 
     @Override
     protected String getURI() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return OfficeWelcome.constants.root_url() + "travelexpense/submit-travel-expense-request";
     }
 }

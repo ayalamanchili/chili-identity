@@ -44,7 +44,7 @@ public class ExpenseMenu extends Composite {
             expenseMenuBar.addItem("ExpenseReports", expenseReportsMaintainenceCmd);
             expenseMenuBar.addItem("ExpenseCategories", expenseCategoriesMaintainenceCmd);
         }
-        expenseMenuBar.addItem("Travel Expense", travelEcpenseMaintainenceCmd);
+        expenseMenuBar.addItem("Travel Aurhorization", travelEcpenseMaintainenceCmd);
         expenseMenuBar.addStyleName("entityMenuBar");
     }
     Command expenseCategoriesMaintainenceCmd = new Command() {

@@ -46,7 +46,7 @@ public class ReadAllTravelExpensePanel extends CRUDReadAllComposite {
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().expensePanel.entityPanel.clear();
-//        TabPanel.instance().expensePanel.entityPanel.add(new ReadTravelExpensePanel(entityId));
+        TabPanel.instance().expensePanel.entityPanel.add(new ReadTravelExpensePanel(entityId));
     }
 
     @Override
@@ -89,10 +89,10 @@ public class ReadAllTravelExpensePanel extends CRUDReadAllComposite {
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Employee"));
-        table.setText(0, 2, getKeyValue("Purpose"));
-        table.setText(0, 3, getKeyValue("Amount"));
-        table.setText(0, 4, getKeyValue("Start Date"));
-        table.setText(0, 5, getKeyValue("End Date"));
+        table.setText(0, 2, getKeyValue("Departure Date"));
+        table.setText(0, 3, getKeyValue("ReturnDate"));
+        table.setText(0, 4, getKeyValue("PhoneNumber"));
+        table.setText(0, 5, getKeyValue("Department"));
         table.setText(0, 6, getKeyValue("Status"));
         table.setText(0, 7, getKeyValue("Print"));
     }
@@ -104,10 +104,10 @@ public class ReadAllTravelExpensePanel extends CRUDReadAllComposite {
             addOptionsWidget(i, entity);
             JSONObject emp = (JSONObject) entity.get("employee");
             table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
-            table.setText(i, 2, JSONUtils.toString(entity, "purpose"));
-            table.setText(i, 3, FormatUtils.formarCurrency(JSONUtils.toString(entity, "amount")));
-            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "departureDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "returnDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 4, JSONUtils.toString(entity, "phoneNumber"));
+            table.setText(i, 5, FormatUtils.formarCurrency(JSONUtils.toString(entity, "department")));
             table.setText(i, 6, JSONUtils.formatEnumString(entity, "status"));
             FileField reportL = new FileField("Print", ChiliClientConfig.instance().getFileDownloadUrl() + "travelexpense/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id"));
             table.setWidget(i, 7, reportL);
