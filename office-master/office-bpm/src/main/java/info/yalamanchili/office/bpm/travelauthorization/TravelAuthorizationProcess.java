@@ -76,7 +76,7 @@ public class TravelAuthorizationProcess implements TaskListener {
         //Status
         String status = (String) task.getExecution().getVariable("status");
         if (status.equalsIgnoreCase("approved")) {
-            entity.setTravelExpenseRequisitionStatus(TravelExpenseRequisitionStatus.PENDING_INITIAL_APPROVAL);
+            entity.setTravelExpenseRequisitionStatus(TravelExpenseRequisitionStatus.PENDING_FINAL_APPROVAL);
             entity.setApprovedBy(OfficeSecurityService.instance().getCurrentUser().getEmployeeId());
             entity.setApprovedDate(new Date());
         } else {
