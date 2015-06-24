@@ -94,12 +94,12 @@ public class TravelAuthorizationProcess implements TaskListener {
         String status = (String) task.getExecution().getVariable("status");
         if (status.equalsIgnoreCase("approved")) {
             entity.setTravelExpenseRequisitionStatus(TravelExpenseRequisitionStatus.APPROVED);
-            notifyAccountsPayableDept(entity);
+//            notifyAccountsPayableDept(entity);
         } else {
             entity.setTravelExpenseRequisitionStatus(TravelExpenseRequisitionStatus.REJECTED);
         }
         TravelAuthorizationDao.instance().save(entity);
-        new GenericTaskCompleteNotification().notifyWithMoreRoles(task, OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name());
+        new GenericTaskCompleteNotification().notifyWithMoreRoles(task, OfficeRoles.OfficeRole.ROLE_ADMIN.name());
     }
 
     public void notifyAccountsPayableDept(TravelExpenseRequisition entity) {
@@ -130,7 +130,7 @@ public class TravelAuthorizationProcess implements TaskListener {
         if (emp.getEmployeeType().getName().equals("Corporate Employee") && reportsToEmp != null) {
             task.addCandidateUser(reportsToEmp.getEmployeeId());
         }
-        task.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name());
+        task.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_ADMIN.name());
     }
 
     protected TravelExpenseRequisition getRequestFromTask(DelegateTask task) {
