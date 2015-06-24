@@ -56,7 +56,7 @@ public class TravelExpenseRequisition extends AbstractEntity {
      */
     @ManyToOne
 //  @ForeignKey(name = "FK_Emp_AdvanceReqs")
-    @NotNull(message = "{travel.expense.requisition.employee.not.empty.msg}")
+//  @NotNull(message = "{travel.expense.requisition.employee.not.empty.msg}")
     protected Employee employee;
     /**
      *
