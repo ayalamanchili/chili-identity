@@ -15,10 +15,12 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
@@ -33,6 +35,14 @@ import org.hibernate.search.annotations.Field;
 public class TravelExpenseRequisition extends AbstractEntity {
 
     private static long serialVersionUID = 1L;
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public static void setSerialVersionUID(long aSerialVersionUID) {
+        serialVersionUID = aSerialVersionUID;
+    }
     /**
      *
      *
@@ -40,69 +50,96 @@ public class TravelExpenseRequisition extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     @Field
     @NotNull(message = "{travel.expense.requisition.type.not.empty.msg}")
-    private TravelType travelType;
+    protected TravelType travelType;
     /**
      *
      *
      */
+    @ManyToOne
+//  @ForeignKey(name = "FK_Emp_AdvanceReqs")
     @NotNull(message = "{travel.expense.requisition.employee.not.empty.msg}")
-    private Employee employee;
+    protected Employee employee;
+    /**
+    *
+    *
+    */
+    protected String department;
     /**
      *
      *
      */
-    private String department;
+    protected String phoneNumber;
     /**
      *
      *
      */
-    private String phoneNumber;
-    /**
-     *
-     *
-     */
-    private String travelDestination;
-    /**
-     *
-     *
-     */
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date departureDate;
+    @NotNull(message = "{travel.destination.not.empty.msg}")
+    protected String travelDestination;
     /**
      *
      *
      */
     @Temporal(javax.persistence.TemporalType.DATE)
-    private Date returnDate;
+    protected Date departureDate;
+    /**
+     *
+     *
+     */
+    @Temporal(javax.persistence.TemporalType.DATE)
+    protected Date returnDate;
+    /**
+     *
+     *
+     */
     @Lob
-    private String reasonForTravel;
+    protected String reasonForTravel;
     /**
      *
      *
      */
-    private TravelTransportation travelTransportation;
+    protected TravelTransportation travelTransportation;
     /**
      *
      *
      */
-    private TravelAccommodation travelAccommodation;
+    protected TravelAccommodation travelAccommodation;
     /**
      *
      *
      */
-    private TravelFood travelFood;
+    protected TravelFood travelFood;
     /**
      *
      *
      */
     @Enumerated(EnumType.STRING)
     @Field
-    private TravelExpenseRequisitionStatus travelExpenseRequisitionStatus;
-
+    protected TravelExpenseRequisitionStatus travelExpenseRequisitionStatus;  
     /**
      *
      *
      */
+     private String bpmProcessId;
+    /**
+     *
+     */
+    private String approvedBy;
+    /**
+     *
+     */
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date approvedDate;
+    /**
+     *
+     */
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date dateRequested;
+    /**
+     *
+     */
+    public TravelExpenseRequisition() {
+    }
+    
     public TravelType getTravelType() {
         return travelType;
     }
@@ -198,4 +235,43 @@ public class TravelExpenseRequisition extends AbstractEntity {
     public void setTravelExpenseRequisitionStatus(TravelExpenseRequisitionStatus travelExpenseRequisitionStatus) {
         this.travelExpenseRequisitionStatus = travelExpenseRequisitionStatus;
     }
+    
+    public String getBpmProcessId() {
+        return bpmProcessId;
+    }
+
+    public void setBpmProcessId(String bpmProcessId) {
+        this.bpmProcessId = bpmProcessId;
+    }
+
+    public String getApprovedBy() {
+        return approvedBy;
+    }
+
+    public void setApprovedBy(String approvedBy) {
+        this.approvedBy = approvedBy;
+    }
+
+    public Date getApprovedDate() {
+        return approvedDate;
+    }
+
+    public void setApprovedDate(Date approvedDate) {
+        this.approvedDate = approvedDate;
+    }
+
+    public Date getDateRequested() {
+        return dateRequested;
+    }
+
+    public void setDateRequested(Date dateRequested) {
+        this.dateRequested = dateRequested;
+    }
+
+    @Override
+    public String toString() {
+        return "TravelExpenseRequisition{" + "travelType=" + travelType + ", employee=" + employee + ", department=" + department + ", phoneNumber=" + phoneNumber + ", travelDestination=" + travelDestination + ", departureDate=" + departureDate + ", returnDate=" + returnDate + ", reasonForTravel=" + reasonForTravel + ", travelTransportation=" + travelTransportation + ", travelAccommodation=" + travelAccommodation + ", travelFood=" + travelFood + ", travelExpenseRequisitionStatus=" + travelExpenseRequisitionStatus + '}';
+    }
+
+    
 }

@@ -10,15 +10,23 @@ package info.yalamanchili.office.entity.expense.travelauthorization;
 
 import info.chili.jpa.AbstractEntity;
 import java.math.BigDecimal;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
 /**
  *
  * @author Madhu.Badiginchala
  */
+@Entity
+@Audited
+@XmlRootElement
+@XmlType
 public class TravelAccommodation extends AbstractEntity {
 
     private static long serialVersionUID = 1L;
@@ -26,17 +34,17 @@ public class TravelAccommodation extends AbstractEntity {
      *
      *
      */
-    private BigDecimal numberOfLodgingNights;
+    protected BigDecimal numberOfLodgingNights;
     /**
      *
      *
      */
-    private BigDecimal lodgingCostPerNight;
+    protected BigDecimal lodgingCostPerNight;
     /**
      *
      *
      */
-    private BigDecimal totalLodgingCost;
+    protected BigDecimal totalLodgingCost;
     /**
      *
      *
@@ -44,12 +52,14 @@ public class TravelAccommodation extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     @Field
     @NotNull(message = "{travel.expense.transportation.pay.type.not.empty.msg}")
-    private TravelTransportationPayType travelTransportationPayType;
-
+    protected TravelTransportationPayType travelTransportationPayType;
     /**
      *
      *
      */
+    public TravelAccommodation() {
+    }
+
     public BigDecimal getNumberOfLodgingNights() {
         return numberOfLodgingNights;
     }
@@ -81,4 +91,10 @@ public class TravelAccommodation extends AbstractEntity {
     public void setTravelTransportationPayType(TravelTransportationPayType travelTransportationPayType) {
         this.travelTransportationPayType = travelTransportationPayType;
     }
+
+    @Override
+    public String toString() {
+        return "TravelAccommodation{" + "numberOfLodgingNights=" + numberOfLodgingNights + ", lodgingCostPerNight=" + lodgingCostPerNight + ", totalLodgingCost=" + totalLodgingCost + ", travelTransportationPayType=" + travelTransportationPayType + '}';
+    }
+    
 }

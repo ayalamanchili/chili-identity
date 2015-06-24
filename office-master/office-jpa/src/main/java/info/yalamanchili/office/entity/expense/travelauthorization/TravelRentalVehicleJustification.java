@@ -27,13 +27,13 @@ public class TravelRentalVehicleJustification extends AbstractEntity {
      *
      *
      */
-    private BigDecimal estimatedCostOfOtherTransportation;
+    protected BigDecimal estimatedCostOfOtherTransportation;
     /**
      *
      *
      */
     @Lob
-    private String rentalVehicleJustification;
+    protected String rentalVehicleJustification;
     /**
      *
      *
@@ -41,18 +41,20 @@ public class TravelRentalVehicleJustification extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     @Field
     @NotNull(message = "{travel.expense.rentalvehicle.type.not.empty.msg}")
-    private TravelRentalVehicleType travelRentalVehicleType;
+    protected TravelRentalVehicleType travelRentalVehicleType;
     /**
      *
      *
      */
     @Lob
-    private String otherVehicleTypeJustification;
-
+    protected String otherVehicleTypeJustification;
     /**
      *
      *
      */
+    public TravelRentalVehicleJustification() {
+    }
+
     public BigDecimal getEstimatedCostOfOtherTransportation() {
         return estimatedCostOfOtherTransportation;
     }
@@ -84,4 +86,10 @@ public class TravelRentalVehicleJustification extends AbstractEntity {
     public void setOtherVehicleTypeJustification(String otherVehicleTypeJustification) {
         this.otherVehicleTypeJustification = otherVehicleTypeJustification;
     }
+
+    @Override
+    public String toString() {
+        return "TravelRentalVehicleJustification{" + "estimatedCostOfOtherTransportation=" + estimatedCostOfOtherTransportation + ", rentalVehicleJustification=" + rentalVehicleJustification + ", travelRentalVehicleType=" + travelRentalVehicleType + ", otherVehicleTypeJustification=" + otherVehicleTypeJustification + '}';
+    }
+    
 }

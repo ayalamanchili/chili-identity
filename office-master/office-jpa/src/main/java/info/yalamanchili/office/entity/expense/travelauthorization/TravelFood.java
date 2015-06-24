@@ -10,15 +10,23 @@ package info.yalamanchili.office.entity.expense.travelauthorization;
 
 import info.chili.jpa.AbstractEntity;
 import java.math.BigDecimal;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
 /**
  *
  * @author Madhu.Badiginchala
  */
+@Entity
+@Audited
+@XmlRootElement
+@XmlType
 public class TravelFood extends AbstractEntity {
 
     private static long serialVersionUID = 1L;
@@ -26,22 +34,22 @@ public class TravelFood extends AbstractEntity {
      *
      *
      */
-    private BigDecimal totalCostOfFood;
+    protected BigDecimal totalCostOfFood;
     /**
      *
      *
      */
-    private BigDecimal conferenceFee;
+    protected BigDecimal conferenceFee;
     /**
      *
      *
      */
-    private BigDecimal totalCostOfBanquet;
+    protected BigDecimal totalCostOfBanquet;
     /**
      *
      *
      */
-    private BigDecimal otherExpences;
+    protected BigDecimal otherExpences;
     /**
      *
      *
@@ -49,12 +57,14 @@ public class TravelFood extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     @Field
     @NotNull(message = "{travel.expense.transportation.pay.type.not.empty.msg}")
-    private TravelTransportationPayType travelTransportationPayType;
-
+    protected TravelTransportationPayType travelTransportationPayType;
     /**
      *
      *
      */
+    public TravelFood() {
+    }
+
     public BigDecimal getTotalCostOfFood() {
         return totalCostOfFood;
     }
@@ -94,4 +104,10 @@ public class TravelFood extends AbstractEntity {
     public void setTravelTransportationPayType(TravelTransportationPayType travelTransportationPayType) {
         this.travelTransportationPayType = travelTransportationPayType;
     }
+
+    @Override
+    public String toString() {
+        return "TravelFood{" + "totalCostOfFood=" + totalCostOfFood + ", conferenceFee=" + conferenceFee + ", totalCostOfBanquet=" + totalCostOfBanquet + ", otherExpences=" + otherExpences + ", travelTransportationPayType=" + travelTransportationPayType + '}';
+    }
+    
 }

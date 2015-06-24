@@ -10,15 +10,24 @@ package info.yalamanchili.office.entity.expense.travelauthorization;
 
 import info.chili.jpa.AbstractEntity;
 import java.math.BigDecimal;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
 /**
  *
  * @author Madhu.Badiginchala
  */
+@Entity
+@Audited
+@XmlRootElement
+@XmlType
 public class TravelTransportation extends AbstractEntity {
 
     private static long serialVersionUID = 1L;
@@ -29,28 +38,27 @@ public class TravelTransportation extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     @Field
     @NotNull(message = "{travel.expense.transportation.type.not.empty.msg}")
-    private TravelTransportationType travelTransportationType;
+    protected TravelTransportationType travelTransportationType;
     /**
      *
      *
      */
-    @NotNull(message = "{amount.not.empty.msg}")
-    private BigDecimal totalTransportationcost;
+    protected BigDecimal totalTransportationcost;
     /**
      *
      *
      */
-    private BigDecimal totalMiles;
+    protected BigDecimal totalMiles;
     /**
      *
      *
      */
-    private BigDecimal costPerMile;
+    protected BigDecimal costPerMile;
     /**
      *
      *
      */
-    private TravelRentalVehicleJustification travelRentalVehicleJustification;
+    protected TravelRentalVehicleJustification travelRentalVehicleJustification;
     /**
      *
      *
@@ -58,12 +66,14 @@ public class TravelTransportation extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     @Field
     @NotNull(message = "{travel.expense.transportation.pay.type.not.empty.msg}")
-    private TravelTransportationPayType travelTransportationPayType;
-
+    protected TravelTransportationPayType travelTransportationPayType;
     /**
      *
      *
      */
+    public TravelTransportation() {
+    }
+
     public TravelTransportationType getTravelTransportationType() {
         return travelTransportationType;
     }
@@ -111,4 +121,10 @@ public class TravelTransportation extends AbstractEntity {
     public void setTravelTransportationPayType(TravelTransportationPayType travelTransportationPayType) {
         this.travelTransportationPayType = travelTransportationPayType;
     }
+
+    @Override
+    public String toString() {
+        return "TravelTransportation{" + "travelTransportationType=" + travelTransportationType + ", totalTransportationcost=" + totalTransportationcost + ", totalMiles=" + totalMiles + ", costPerMile=" + costPerMile + ", travelRentalVehicleJustification=" + travelRentalVehicleJustification + ", travelTransportationPayType=" + travelTransportationPayType + '}';
+    }
+    
 }
