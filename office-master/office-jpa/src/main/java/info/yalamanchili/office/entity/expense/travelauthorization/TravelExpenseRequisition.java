@@ -20,7 +20,6 @@ import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
@@ -55,17 +54,14 @@ public class TravelExpenseRequisition extends AbstractEntity {
      *
      *
      */
-<<<<<<< .mine
-=======
     @ManyToOne
 //  @ForeignKey(name = "FK_Emp_AdvanceReqs")
     @NotNull(message = "{travel.expense.requisition.employee.not.empty.msg}")
->>>>>>> .r5977
     protected Employee employee;
     /**
-    *
-    *
-    */
+     *
+     *
+     */
     protected String department;
     /**
      *
@@ -117,16 +113,11 @@ public class TravelExpenseRequisition extends AbstractEntity {
      */
     @Enumerated(EnumType.STRING)
     @Field
-<<<<<<< .mine
-    private TravelExpenseRequisitionStatus travelExpenseRequisitionStatus;
-=======
-    protected TravelExpenseRequisitionStatus travelExpenseRequisitionStatus;  
->>>>>>> .r5977
+    protected TravelExpenseRequisitionStatus travelExpenseRequisitionStatus;
     /**
      *
      *
      */
-<<<<<<< .mine
     protected String bpmProcessId;
     /**
      *
@@ -146,29 +137,9 @@ public class TravelExpenseRequisition extends AbstractEntity {
     /**
      *
      */
-=======
-     private String bpmProcessId;
-    /**
-     *
-     */
-    private String approvedBy;
-    /**
-     *
-     */
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date approvedDate;
-    /**
-     *
-     */
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date dateRequested;
-    /**
-     *
-     */
     public TravelExpenseRequisition() {
     }
-    
->>>>>>> .r5977
+
     public TravelType getTravelType() {
         return travelType;
     }
@@ -264,7 +235,6 @@ public class TravelExpenseRequisition extends AbstractEntity {
     public void setTravelExpenseRequisitionStatus(TravelExpenseRequisitionStatus travelExpenseRequisitionStatus) {
         this.travelExpenseRequisitionStatus = travelExpenseRequisitionStatus;
     }
-<<<<<<< .mine
 
     /**
      * @return the bpmProcessId
@@ -321,45 +291,9 @@ public class TravelExpenseRequisition extends AbstractEntity {
     public void setDateRequested(Date dateRequested) {
         this.dateRequested = dateRequested;
     }
-=======
-    
-    public String getBpmProcessId() {
-        return bpmProcessId;
-    }
-
-    public void setBpmProcessId(String bpmProcessId) {
-        this.bpmProcessId = bpmProcessId;
-    }
-
-    public String getApprovedBy() {
-        return approvedBy;
-    }
-
-    public void setApprovedBy(String approvedBy) {
-        this.approvedBy = approvedBy;
-    }
-
-    public Date getApprovedDate() {
-        return approvedDate;
-    }
-
-    public void setApprovedDate(Date approvedDate) {
-        this.approvedDate = approvedDate;
-    }
-
-    public Date getDateRequested() {
-        return dateRequested;
-    }
-
-    public void setDateRequested(Date dateRequested) {
-        this.dateRequested = dateRequested;
-    }
 
     @Override
     public String toString() {
         return "TravelExpenseRequisition{" + "travelType=" + travelType + ", employee=" + employee + ", department=" + department + ", phoneNumber=" + phoneNumber + ", travelDestination=" + travelDestination + ", departureDate=" + departureDate + ", returnDate=" + returnDate + ", reasonForTravel=" + reasonForTravel + ", travelTransportation=" + travelTransportation + ", travelAccommodation=" + travelAccommodation + ", travelFood=" + travelFood + ", travelExpenseRequisitionStatus=" + travelExpenseRequisitionStatus + '}';
     }
-
-    
->>>>>>> .r5977
 }
