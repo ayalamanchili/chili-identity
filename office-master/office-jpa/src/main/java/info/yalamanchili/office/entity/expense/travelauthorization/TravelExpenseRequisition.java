@@ -55,9 +55,12 @@ public class TravelExpenseRequisition extends AbstractEntity {
      *
      *
      */
+<<<<<<< .mine
+=======
     @ManyToOne
 //  @ForeignKey(name = "FK_Emp_AdvanceReqs")
     @NotNull(message = "{travel.expense.requisition.employee.not.empty.msg}")
+>>>>>>> .r5977
     protected Employee employee;
     /**
     *
@@ -114,11 +117,36 @@ public class TravelExpenseRequisition extends AbstractEntity {
      */
     @Enumerated(EnumType.STRING)
     @Field
+<<<<<<< .mine
+    private TravelExpenseRequisitionStatus travelExpenseRequisitionStatus;
+=======
     protected TravelExpenseRequisitionStatus travelExpenseRequisitionStatus;  
+>>>>>>> .r5977
     /**
      *
      *
      */
+<<<<<<< .mine
+    protected String bpmProcessId;
+    /**
+     *
+     */
+    protected String approvedBy;
+    /**
+     *
+     */
+    @Temporal(javax.persistence.TemporalType.DATE)
+    protected Date approvedDate;
+    /**
+     *
+     */
+    @Temporal(javax.persistence.TemporalType.DATE)
+    protected Date dateRequested;
+
+    /**
+     *
+     */
+=======
      private String bpmProcessId;
     /**
      *
@@ -140,6 +168,7 @@ public class TravelExpenseRequisition extends AbstractEntity {
     public TravelExpenseRequisition() {
     }
     
+>>>>>>> .r5977
     public TravelType getTravelType() {
         return travelType;
     }
@@ -235,6 +264,64 @@ public class TravelExpenseRequisition extends AbstractEntity {
     public void setTravelExpenseRequisitionStatus(TravelExpenseRequisitionStatus travelExpenseRequisitionStatus) {
         this.travelExpenseRequisitionStatus = travelExpenseRequisitionStatus;
     }
+<<<<<<< .mine
+
+    /**
+     * @return the bpmProcessId
+     */
+    public String getBpmProcessId() {
+        return bpmProcessId;
+    }
+
+    /**
+     * @param bpmProcessId the bpmProcessId to set
+     */
+    public void setBpmProcessId(String bpmProcessId) {
+        this.bpmProcessId = bpmProcessId;
+    }
+
+    /**
+     * @return the approvedBy
+     */
+    public String getApprovedBy() {
+        return approvedBy;
+    }
+
+    /**
+     * @param approvedBy the approvedBy to set
+     */
+    public void setApprovedBy(String approvedBy) {
+        this.approvedBy = approvedBy;
+    }
+
+    /**
+     * @return the approvedDate
+     */
+    public Date getApprovedDate() {
+        return approvedDate;
+    }
+
+    /**
+     * @param approvedDate the approvedDate to set
+     */
+    public void setApprovedDate(Date approvedDate) {
+        this.approvedDate = approvedDate;
+    }
+
+    /**
+     * @return the dateRequested
+     */
+    public Date getDateRequested() {
+        return dateRequested;
+    }
+
+    /**
+     * @param dateRequested the dateRequested to set
+     */
+    public void setDateRequested(Date dateRequested) {
+        this.dateRequested = dateRequested;
+    }
+=======
     
     public String getBpmProcessId() {
         return bpmProcessId;
@@ -274,4 +361,5 @@ public class TravelExpenseRequisition extends AbstractEntity {
     }
 
     
+>>>>>>> .r5977
 }

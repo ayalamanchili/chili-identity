@@ -34,6 +34,7 @@ public class TravelExpenseRequestPanel extends CreateComposite implements ClickH
 
     @Override
     protected JSONObject populateEntityFromFields() {
+        JSONObject entity = new JSONObject();
         assignEntityValueFromField("travelType", entity);
         assignEntityValueFromField("departureDate", entity);
         assignEntityValueFromField("returnDate", entity);
@@ -41,13 +42,26 @@ public class TravelExpenseRequestPanel extends CreateComposite implements ClickH
         assignEntityValueFromField("department", entity);
         assignEntityValueFromField("travelDestination", entity);
         assignEntityValueFromField("reasonForTravel", entity);
-        entity.put("employee", new JSONObject());
         entity.put("status", new JSONString("Open"));
         return entity;
 
     }
 
+  
     @Override
+    protected void addWidgets() {
+        addEnumField("travelType", false, true, TravelType.names(), Alignment.HORIZONTAL);
+        entityFieldsPanel.add(getLineSeperatorTag("Section I.  Employee and Trip Information"));
+        addField("departureDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("returnDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("phoneNumber", false, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        addField("department", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("travelDestination", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("reasonForTravel", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(getLineSeperatorTag("Section II.  Estimated Expenses"));
+        alignFields();
+    }
+      @Override
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
@@ -85,20 +99,6 @@ public class TravelExpenseRequestPanel extends CreateComposite implements ClickH
         setButtonText("Submit");
     }
 
-    @Override
-    protected void addWidgets() {
-        addEnumField("travelType", false, true, TravelType.names(), Alignment.HORIZONTAL);
-        entityFieldsPanel.add(getLineSeperatorTag("Section I.  Employee and Trip Information"));
-        addField("departureDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("returnDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("phoneNumber", false, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
-        addField("department", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("travelDestination", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("reasonForTravel", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        entityFieldsPanel.add(getLineSeperatorTag("Section II.  Estimated Expenses"));
-
-        alignFields();
-    }
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {

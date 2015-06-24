@@ -28,6 +28,7 @@
     <cache name="questions" maxElementsInMemory="10000" eternal="true" overflowToDisk="true" />
     <cache name="advReq" maxElementsInMemory="10000" eternal="true" overflowToDisk="true" /> 
     <cache name="immiCheck" maxElementsInMemory="10000" eternal="true" overflowToDisk="true" /> 
+    <cache name="travelauth" maxElementsInMemory="10000" eternal="true" overflowToDisk="true" /> 
     <cache name="expense" maxElementsInMemory="10000" eternal="true" overflowToDisk="true" /> 
     <cache name="time" maxElementsInMemory="10000" eternal="true" overflowToDisk="true" /> 
       

@@ -13,6 +13,7 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
+import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import java.util.logging.Logger;
 
 /**
@@ -23,6 +24,7 @@ public class ReadTravelExpensePanel extends ReadComposite {
 
     private static ReadTravelExpensePanel instance;
     private static Logger logger = Logger.getLogger(ReadTravelExpensePanel.class.getName());
+    SelectEmployeeWidget selectEmployeeWidgetF = new SelectEmployeeWidget("Employee", false, true, Alignment.HORIZONTAL);
 
     public static ReadTravelExpensePanel instance() {
         return instance;
@@ -52,12 +54,12 @@ public class ReadTravelExpensePanel extends ReadComposite {
     }
 
     protected void populateComments() {
-        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.expense.AdvanceRequisition"));
+        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.expense.travelauthorization.TravelExpenseRequisition"));
     }
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("employee", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("employee", entity, null);
         assignFieldValueFromEntity("departureDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("returnDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("phoneNumber", entity, DataType.INTEGER_FIELD);
@@ -74,11 +76,11 @@ public class ReadTravelExpensePanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addField("employee", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("departureDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("returnDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("phoneNumber", false, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
-        addField("department", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addDropDown("employee", selectEmployeeWidgetF);
+        addField("departureDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("returnDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("phoneNumber", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        addField("department", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 

@@ -35,6 +35,7 @@ public interface OfficeCacheKeys {
     String QUESTIONS = "questions";
     String ADVANCE_REQUSITON = "advReq";
     String IMMIGRATION_CHECK = "immiCheck";
+    String TRAVEL_AUTH = "travelauth";
     String EXPENSE = "expense";
     String TIME = "time";
     /**

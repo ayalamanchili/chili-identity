@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<definitions
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:activiti="http://activiti.org/bpmn">
+ 
+    <process id="travel_authorization_process">
+        <startEvent id="travelAuthorizationStart"/>
+        
+        <!-- Manager approval task-->
+        <sequenceFlow  sourceRef="travelAuthorizationStart" targetRef="travelAuthorizationApprovalTask" />
+        <userTask id="travelAuthorizationApprovalTask" 
+                  name="Travel Authorization Task for ${currentEmployee.firstName} ${currentEmployee.lastName}">
+            <documentation>
+                Employee Travel Authorization Approval Task
+                
+                Employee Name   : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                
+                Follow instructions from below:
+
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.travelauthorization.TravelAuthorizationProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.travelauthorization.TravelAuthorizationProcess" />
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <!-- Task escalation email after 48 hours-->
+        <boundaryEvent id="travelAuthorizationApprovalTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="travelAuthorizationApprovalTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="travelAuthorizationApprovalTaskEscalationTimer" 
+                      targetRef="travelAuthorizationApprovalTaskEscalation" />
+        <serviceTask id="travelAuthorizationApprovalTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <!--desision-->
+        <sequenceFlow sourceRef="travelAuthorizationApprovalTask" 
+                      targetRef="approvalGateway" />
+        <exclusiveGateway id="approvalGateway" />
+        <sequenceFlow sourceRef="approvalGateway" 
+                      targetRef="travelAuthorizationFinalApprovalTask">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="approvalGateway" 
+                      targetRef="travelAuthorizationEnd">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'rejected'}
+            </conditionExpression>
+        </sequenceFlow>
+        <userTask id="travelAuthorizationFinalApprovalTask" 
+                  name="Travel Authorization Final Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" 
+                  activiti:candidateGroups="ROLE_ADMIN">
+            <documentation>
+                Travel Authorization Final Approval Task
+                Employee Name  : #{currentEmployee.firstName} #{currentEmployee.lastName}
+               
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.travelauthorization.TravelAuthorizationProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.travelauthorization.TravelAuthorizationProcess" />
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <!-- Task escalation email after 48 hours-->
+        <boundaryEvent id="travelAuthorizationFinalApprovalTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="travelAuthorizationFinalApprovalTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="travelAuthorizationFinalApprovalTaskEscalationTimer" 
+                      targetRef="travelAuthorizationFinalApprovalTaskEscalation" />
+        <serviceTask id="travelAuthorizationFinalApprovalTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <!--desision-->
+        <sequenceFlow sourceRef="travelAuthorizationFinalApprovalTask" 
+                      targetRef="finalApprovalTaskGateway" />
+        <exclusiveGateway id="finalApprovalTaskGateway" />
+        <sequenceFlow sourceRef="finalApprovalTaskGateway" 
+                      targetRef="travelAuthorizationEnd">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="finalApprovalTaskGateway" 
+                      targetRef="travelAuthorizationEnd">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'rejected'}
+            </conditionExpression>
+        </sequenceFlow>
+        <endEvent id="travelAuthorizationEnd" />
+    </process>
+</definitions>

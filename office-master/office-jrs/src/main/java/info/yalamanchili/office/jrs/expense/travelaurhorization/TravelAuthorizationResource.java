@@ -1,0 +1,139 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package info.yalamanchili.office.jrs.expense.travelaurhorization;
+
+import info.chili.dao.CRUDDao;
+import info.chili.jpa.validation.Validate;
+import info.yalamanchili.office.OfficeRoles;
+import info.yalamanchili.office.cache.OfficeCacheKeys;
+import info.yalamanchili.office.dao.expense.travelauthorization.TravelAuthorizationDao;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.entity.expense.travelauthorization.TravelExpenseRequisition;
+import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.expense.travelauthorization.TravelExpenseService;
+import info.yalamanchili.office.jrs.CRUDResource;
+import java.util.List;
+import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Response;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ *
+ * @author prasanthi.p
+ */
+@Path("secured/travelexpense")
+@Component
+@Transactional
+@Scope("request")
+public class TravelAuthorizationResource extends CRUDResource<TravelExpenseRequisition> {
+
+    @Autowired
+    public TravelAuthorizationDao travelAuthorizationDao;
+
+    @PUT
+    @Validate
+    @Override
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @CacheEvict(value = OfficeCacheKeys.TRAVEL_AUTH, allEntries = true)
+    public TravelExpenseRequisition save(TravelExpenseRequisition entity) {
+        return super.save(entity);
+    }
+
+    @PUT
+    @Validate
+    @Path("/submit-travel-expense-request")
+    @CacheEvict(value = OfficeCacheKeys.TRAVEL_AUTH, allEntries = true)
+    public void submitTravelAuthorizationRequest(TravelExpenseRequisition entity) {
+        TravelExpenseService.instance().submitTravelAuthorization(entity);
+    }
+
+    @GET
+    @Path("/{start}/{limit}")
+    public TravelAuthorizationResource.TravelAurhorizationTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
+        TravelAuthorizationResource.TravelAurhorizationTable tableObj = new TravelAuthorizationResource.TravelAurhorizationTable();
+        if (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_ACCOUNTS_PAYABLE.name(), OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name(), OfficeRoles.OfficeRole.ROLE_ADMIN.name())) {
+            tableObj.setEntities(travelAuthorizationDao.queryAll(start, limit));
+            tableObj.setSize(travelAuthorizationDao.size());
+        } else {
+            Employee currentEmp = OfficeSecurityService.instance().getCurrentUser();
+            tableObj.setEntities(travelAuthorizationDao.queryForEmployee(currentEmp.getId(), start, limit));
+            tableObj.setSize(travelAuthorizationDao.size(currentEmp.getId()));
+        }
+        tableObj.setSize(getDao().size());
+        return tableObj;
+    }
+
+    @GET
+    @Path("/{employeeId}/{start}/{limit}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public TravelAuthorizationResource.TravelAurhorizationTable getAdvanceRequisitionsForEmployee(@PathParam("employeeId") Long employeeId, @PathParam("start") int start, @PathParam("limit") int limit) {
+        TravelAuthorizationResource.TravelAurhorizationTable tableObj = new TravelAuthorizationResource.TravelAurhorizationTable();
+        tableObj.setEntities(travelAuthorizationDao.queryForEmployee(employeeId, start, limit));
+        tableObj.setSize(travelAuthorizationDao.size(employeeId));
+        return tableObj;
+    }
+
+    @PUT
+    @Path("/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @CacheEvict(value = OfficeCacheKeys.TRAVEL_AUTH, allEntries = true)
+    @Override
+    public void delete(@PathParam("id") Long id) {
+        TravelExpenseService.instance().delete(id);
+    }
+
+    @GET
+    @Path("/report")
+    @Produces({"application/pdf"})
+    public Response getReport(@QueryParam("id") Long id) {
+        return TravelExpenseService.instance().getReport(travelAuthorizationDao.findById(id));
+    }
+
+    @Override
+    public CRUDDao getDao() {
+        return travelAuthorizationDao.instance();
+    }
+
+    @XmlRootElement
+    @XmlType
+    public static class TravelAurhorizationTable implements java.io.Serializable {
+
+        protected Long size;
+        protected List<TravelExpenseRequisition> entities;
+
+        public Long getSize() {
+            return size;
+        }
+
+        public void setSize(Long size) {
+            this.size = size;
+        }
+
+        @XmlElement
+        public List<TravelExpenseRequisition> getEntities() {
+            return entities;
+        }
+
+        public void setEntities(List<TravelExpenseRequisition> entities) {
+            this.entities = entities;
+        }
+    }
+}

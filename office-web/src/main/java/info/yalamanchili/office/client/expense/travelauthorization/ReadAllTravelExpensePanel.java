@@ -106,9 +106,9 @@ public class ReadAllTravelExpensePanel extends CRUDReadAllComposite {
             table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
             table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "departureDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "returnDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 4, JSONUtils.toString(entity, "phoneNumber"));
-            table.setText(i, 5, FormatUtils.formarCurrency(JSONUtils.toString(entity, "department")));
-            table.setText(i, 6, JSONUtils.formatEnumString(entity, "status"));
+            table.setText(i, 4, FormatUtils.formatPhoneNumber(JSONUtils.toString(entity, "phoneNumber")));
+            table.setText(i, 5, JSONUtils.toString(entity, "department"));
+            table.setText(i, 6, JSONUtils.formatEnumString(entity, "travelExpenseRequisitionStatus"));
             FileField reportL = new FileField("Print", ChiliClientConfig.instance().getFileDownloadUrl() + "travelexpense/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id"));
             table.setWidget(i, 7, reportL);
         }
