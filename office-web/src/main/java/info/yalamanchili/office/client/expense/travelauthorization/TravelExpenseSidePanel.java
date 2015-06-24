@@ -31,7 +31,7 @@ public class TravelExpenseSidePanel extends ALComposite implements ClickHandler 
 
     private static Logger logger = Logger.getLogger(TravelExpenseSidePanel.class.getName());
     public FlowPanel travelExpenseSidePanel = new FlowPanel();
-    ClickableLink createtravelExpenseLink = new ClickableLink("Submit Travel Aurhorization Request");
+    ClickableLink createtravelExpenseLink = new ClickableLink("Submit Travel Authorization Request");
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false);
     Button viewB = new Button("View");
 
