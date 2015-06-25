@@ -50,7 +50,7 @@ public class TravelAccommodation implements Serializable {
     @Enumerated(EnumType.STRING)
     @Field
     @NotNull(message = "{travel.expense.transportation.pay.type.not.empty.msg}")
-    protected ExpensePaymentType expensePaymentType;
+    protected ExpensePaymentType expenseAccommodationPaymentType;
     /**
      *
      *
@@ -83,16 +83,16 @@ public class TravelAccommodation implements Serializable {
     }
 
     public ExpensePaymentType getExpensePaymentType() {
-        return expensePaymentType;
+        return expenseAccommodationPaymentType;
     }
 
-    public void setExpensePaymentType(ExpensePaymentType expensePaymentType) {
-        this.expensePaymentType = expensePaymentType;
+    public void setExpensePaymentType(ExpensePaymentType expenseAccommodationPaymentType) {
+        this.expenseAccommodationPaymentType = expenseAccommodationPaymentType;
     }
 
     @Override
     public String toString() {
-        return "TravelAccommodation{" + "numberOfLodgingNights=" + numberOfLodgingNights + ", lodgingCostPerNight=" + lodgingCostPerNight + ", totalLodgingCost=" + totalLodgingCost + ", travelTransportationPayType=" + expensePaymentType + '}';
+        return "TravelAccommodation{" + "numberOfLodgingNights=" + numberOfLodgingNights + ", lodgingCostPerNight=" + lodgingCostPerNight + ", totalLodgingCost=" + totalLodgingCost + ", travelTransportationPayType=" + expenseAccommodationPaymentType + '}';
     }
     
 }

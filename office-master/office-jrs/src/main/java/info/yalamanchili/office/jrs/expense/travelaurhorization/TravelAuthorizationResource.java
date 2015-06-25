@@ -15,8 +15,9 @@ import info.yalamanchili.office.dao.expense.travelauthorization.TravelAuthorizat
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.expense.travelauthorization.TravelAuthorization;
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.expense.travelauthorization.TravelExpenseService;
+import info.yalamanchili.office.expense.travelauthorization.TravelAuthorizationService;
 import info.yalamanchili.office.jrs.CRUDResource;
+import info.yalamanchili.office.security.AccessCheck;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -51,7 +52,6 @@ public class TravelAuthorizationResource extends CRUDResource<TravelAuthorizatio
     @PUT
     @Validate
     @Override
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @CacheEvict(value = OfficeCacheKeys.TRAVEL_AUTH, allEntries = true)
     public TravelAuthorization save(TravelAuthorization entity) {
         return super.save(entity);
@@ -62,28 +62,23 @@ public class TravelAuthorizationResource extends CRUDResource<TravelAuthorizatio
     @Path("/submit-travel-expense-request")
     @CacheEvict(value = OfficeCacheKeys.TRAVEL_AUTH, allEntries = true)
     public void submitTravelAuthorizationRequest(TravelAuthorization entity) {
-        TravelExpenseService.instance().submitTravelAuthorization(entity);
+        TravelAuthorizationService.instance().submitTravelAuthorization(entity);
     }
 
     @GET
     @Path("/{start}/{limit}")
     public TravelAuthorizationResource.TravelAurhorizationTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         TravelAuthorizationResource.TravelAurhorizationTable tableObj = new TravelAuthorizationResource.TravelAurhorizationTable();
-        if (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_ACCOUNTS_PAYABLE.name(), OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name(), OfficeRoles.OfficeRole.ROLE_ADMIN.name())) {
-            tableObj.setEntities(travelAuthorizationDao.queryAll(start, limit));
-            tableObj.setSize(travelAuthorizationDao.size());
-        } else {
-            Employee currentEmp = OfficeSecurityService.instance().getCurrentUser();
-            tableObj.setEntities(travelAuthorizationDao.queryForEmployee(currentEmp.getId(), start, limit));
-            tableObj.setSize(travelAuthorizationDao.size(currentEmp.getId()));
-        }
+        Employee currentEmp = OfficeSecurityService.instance().getCurrentUser();
+        tableObj.setEntities(travelAuthorizationDao.queryForEmployee(currentEmp.getId(), start, limit));
+        tableObj.setSize(travelAuthorizationDao.size(currentEmp.getId()));
         tableObj.setSize(getDao().size());
         return tableObj;
     }
 
     @GET
     @Path("/{employeeId}/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @AccessCheck(companyContacts = {"Reports_To"}, roles = {"ROLE_ADMIN"})
     public TravelAuthorizationResource.TravelAurhorizationTable getAdvanceRequisitionsForEmployee(@PathParam("employeeId") Long employeeId, @PathParam("start") int start, @PathParam("limit") int limit) {
         TravelAuthorizationResource.TravelAurhorizationTable tableObj = new TravelAuthorizationResource.TravelAurhorizationTable();
         tableObj.setEntities(travelAuthorizationDao.queryForEmployee(employeeId, start, limit));
@@ -93,18 +88,19 @@ public class TravelAuthorizationResource extends CRUDResource<TravelAuthorizatio
 
     @PUT
     @Path("/delete/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @AccessCheck(companyContacts = {"Reports_To"}, roles = {"ROLE_ADMIN"})
     @CacheEvict(value = OfficeCacheKeys.TRAVEL_AUTH, allEntries = true)
     @Override
     public void delete(@PathParam("id") Long id) {
-        TravelExpenseService.instance().delete(id);
+        TravelAuthorizationService.instance().delete(id);
     }
 
     @GET
     @Path("/report")
     @Produces({"application/pdf"})
+    @AccessCheck(companyContacts = {"Reports_To"}, roles = {"ROLE_ADMIN"})
     public Response getReport(@QueryParam("id") Long id) {
-        return TravelExpenseService.instance().getReport(travelAuthorizationDao.findById(id));
+        return TravelAuthorizationService.instance().getReport(travelAuthorizationDao.findById(id));
     }
 
     @Override

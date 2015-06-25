@@ -33,7 +33,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-public class TravelExpenseService {
+public class TravelAuthorizationService {
 
     @Autowired
     protected TravelAuthorizationDao travelAuthorizationDao;
@@ -81,7 +81,7 @@ public class TravelExpenseService {
 
     }
 
-    public static TravelExpenseService instance() {
-        return SpringContext.getBean(TravelExpenseService.class);
+    public static TravelAuthorizationService instance() {
+        return SpringContext.getBean(TravelAuthorizationService.class);
     }
 }

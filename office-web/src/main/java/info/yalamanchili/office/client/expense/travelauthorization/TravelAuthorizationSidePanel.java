@@ -27,15 +27,15 @@ import java.util.logging.Logger;
  *
  * @author prasanthi.p
  */
-public class TravelExpenseSidePanel extends ALComposite implements ClickHandler {
+public class TravelAuthorizationSidePanel extends ALComposite implements ClickHandler {
 
-    private static Logger logger = Logger.getLogger(TravelExpenseSidePanel.class.getName());
+    private static Logger logger = Logger.getLogger(TravelAuthorizationSidePanel.class.getName());
     public FlowPanel travelExpenseSidePanel = new FlowPanel();
     ClickableLink createtravelExpenseLink = new ClickableLink("Submit Travel Authorization Request");
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false);
     Button viewB = new Button("View");
 
-    public TravelExpenseSidePanel() {
+    public TravelAuthorizationSidePanel() {
         init(travelExpenseSidePanel);
     }
 
@@ -73,11 +73,11 @@ public class TravelExpenseSidePanel extends ALComposite implements ClickHandler 
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createtravelExpenseLink)) {
-            new GenericPopup(new TravelExpenseRequestPanel()).show();
+            new GenericPopup(new TravelAuthorizationRequestPanel()).show();
         }
         if (event.getSource().equals(viewB)) {
             TabPanel.instance().expensePanel.entityPanel.clear();
-            TabPanel.instance().expensePanel.entityPanel.add(new ReadAllTravelExpensePanel(getadvanceURL(0, "10")));
+            TabPanel.instance().expensePanel.entityPanel.add(new ReadAllravelAuthorizationPanel(getadvanceURL(0, "10")));
         }
     }
 

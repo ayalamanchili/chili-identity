@@ -26,18 +26,18 @@ import java.util.logging.Logger;
  *
  * @author prasanthi.p
  */
-public class ReadAllTravelExpensePanel extends CRUDReadAllComposite {
+public class ReadAllravelAuthorizationPanel extends CRUDReadAllComposite {
 
-    private static Logger logger = Logger.getLogger(ReadAllTravelExpensePanel.class.getName());
-    public static ReadAllTravelExpensePanel instance;
+    private static Logger logger = Logger.getLogger(ReadAllravelAuthorizationPanel.class.getName());
+    public static ReadAllravelAuthorizationPanel instance;
     protected String url;
 
-    public ReadAllTravelExpensePanel() {
+    public ReadAllravelAuthorizationPanel() {
         instance = this;
         initTable("TravelExpense", OfficeWelcome.constants);
     }
 
-    public ReadAllTravelExpensePanel(String url) {
+    public ReadAllravelAuthorizationPanel(String url) {
         instance = this;
         this.url = url;
         initTable("TravelExpense", OfficeWelcome.constants);
@@ -46,7 +46,7 @@ public class ReadAllTravelExpensePanel extends CRUDReadAllComposite {
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().expensePanel.entityPanel.clear();
-        TabPanel.instance().expensePanel.entityPanel.add(new ReadTravelExpensePanel(entityId));
+        TabPanel.instance().expensePanel.entityPanel.add(new ReadTravelAuthorizationPanel(entityId));
     }
 
     @Override
@@ -64,13 +64,13 @@ public class ReadAllTravelExpensePanel extends CRUDReadAllComposite {
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Travel Expense Information");
         TabPanel.instance().expensePanel.entityPanel.clear();
-        TabPanel.instance().expensePanel.entityPanel.add(new ReadAllTravelExpensePanel());
+        TabPanel.instance().expensePanel.entityPanel.add(new ReadAllravelAuthorizationPanel());
     }
 
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().expensePanel.entityPanel.clear();
-        TabPanel.instance().expensePanel.entityPanel.add(new UpdateTravelExpensePanel(entityId));
+        TabPanel.instance().expensePanel.entityPanel.add(new UpdateTravelAuthorizationPanel(entityId));
     }
 
     @Override
@@ -89,8 +89,8 @@ public class ReadAllTravelExpensePanel extends CRUDReadAllComposite {
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Employee"));
-        table.setText(0, 2, getKeyValue("Departure Date"));
-        table.setText(0, 3, getKeyValue("ReturnDate"));
+        table.setText(0, 2, getKeyValue("Travel Type"));
+        table.setText(0, 3, getKeyValue("Destination"));
         table.setText(0, 4, getKeyValue("PhoneNumber"));
         table.setText(0, 5, getKeyValue("Department"));
         table.setText(0, 6, getKeyValue("Status"));
@@ -104,8 +104,8 @@ public class ReadAllTravelExpensePanel extends CRUDReadAllComposite {
             addOptionsWidget(i, entity);
             JSONObject emp = (JSONObject) entity.get("employee");
             table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
-            table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "departureDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "returnDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            setEnumColumn(i, 2, entity, "travelType", "travelType");
+            table.setText(i, 3, JSONUtils.toString(entity, "travelDestination"));
             table.setText(i, 4, FormatUtils.formatPhoneNumber(JSONUtils.toString(entity, "phoneNumber")));
             table.setText(i, 5, JSONUtils.toString(entity, "department"));
             table.setText(i, 6, JSONUtils.formatEnumString(entity, "travelExpenseRequisitionStatus"));

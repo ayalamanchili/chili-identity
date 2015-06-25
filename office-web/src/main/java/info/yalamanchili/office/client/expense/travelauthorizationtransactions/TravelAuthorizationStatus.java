@@ -8,15 +8,15 @@ package info.yalamanchili.office.client.expense.travelauthorizationtransactions;
  *
  * @author prasanthi.p
  */
-public enum TravelExpenseRequisitionStatus {
+public enum TravelAuthorizationStatus {
 
-    PENDING_INITIAL_APPROVAL,
-    PENDING_FINAL_APPROVAL,
+    PENDING_MANAGER_APPROVAL,
+    PENDING_CEO_APPROVAL,
     APPROVED,
     REJECTED;
 
     public static String[] names() {
-        TravelExpenseRequisitionStatus[] values = values();
+        TravelAuthorizationStatus[] values = values();
         String[] names = new String[values.length];
         for (int i = 0; i < values.length; i++) {
             names[i] = values[i].name();

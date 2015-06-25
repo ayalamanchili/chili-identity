@@ -13,8 +13,9 @@ package info.yalamanchili.office.entity.expense.travelauthorization;
  * @author Madhu.Badiginchala
  */
 public enum TravelAuthorizationStatus {
-    PENDING_INITIAL_APPROVAL,
-    PENDING_FINAL_APPROVAL,
+
+    PENDING_MANAGER_APPROVAL,
+    PENDING_CEO_APPROVAL,
     APPROVED,
-    REJECTED;
+    REJECTED,
 }

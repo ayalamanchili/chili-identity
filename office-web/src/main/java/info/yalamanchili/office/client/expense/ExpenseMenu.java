@@ -14,8 +14,8 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.advancerequisition.AdvanceRequisitionSidePanel;
 import info.yalamanchili.office.client.advancerequisition.ReadAllAdvanceRequisitionPanel;
-import info.yalamanchili.office.client.expense.travelauthorization.ReadAllTravelExpensePanel;
-import info.yalamanchili.office.client.expense.travelauthorization.TravelExpenseSidePanel;
+import info.yalamanchili.office.client.expense.travelauthorization.ReadAllravelAuthorizationPanel;
+import info.yalamanchili.office.client.expense.travelauthorization.TravelAuthorizationSidePanel;
 import info.yalamanchili.office.client.expensecategory.ExpenseCategorySidePanel;
 import info.yalamanchili.office.client.expensecategory.ReadAllExpenseCategoryPanel;
 import info.yalamanchili.office.client.expensereports.ExpenseReportsSidePanel;
@@ -83,8 +83,8 @@ public class ExpenseMenu extends Composite {
         public void execute() {
             TabPanel.instance().getExpensePanel().entityPanel.clear();
             TabPanel.instance().getExpensePanel().sidePanelTop.clear();
-            TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllTravelExpensePanel());
-            TabPanel.instance().getExpensePanel().sidePanelTop.add(new TravelExpenseSidePanel());
+            TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllravelAuthorizationPanel());
+            TabPanel.instance().getExpensePanel().sidePanelTop.add(new TravelAuthorizationSidePanel());
         }
     };
 }

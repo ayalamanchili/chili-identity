@@ -21,11 +21,11 @@ import java.util.logging.Logger;
  *
  * @author prasanthi.p
  */
-public class UpdateTravelExpensePanel extends UpdateComposite {
+public class UpdateTravelAuthorizationPanel extends UpdateComposite {
 
-    private static Logger logger = Logger.getLogger(UpdateTravelExpensePanel.class.getName());
+    private static Logger logger = Logger.getLogger(UpdateTravelAuthorizationPanel.class.getName());
 
-    public UpdateTravelExpensePanel(String entityId) {
+    public UpdateTravelAuthorizationPanel(String entityId) {
         initUpdateComposite(entityId, "TravelExpense", OfficeWelcome.constants);
     }
 
@@ -84,7 +84,7 @@ public class UpdateTravelExpensePanel extends UpdateComposite {
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully  Updated Travel Expense Information");
         TabPanel.instance().expensePanel.entityPanel.clear();
-        TabPanel.instance().expensePanel.entityPanel.add(new ReadAllTravelExpensePanel());
+        TabPanel.instance().expensePanel.entityPanel.add(new ReadAllravelAuthorizationPanel());
     }
 
     @Override

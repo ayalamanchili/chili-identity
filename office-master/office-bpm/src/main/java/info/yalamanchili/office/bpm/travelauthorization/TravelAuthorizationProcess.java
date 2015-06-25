@@ -8,7 +8,6 @@
 package info.yalamanchili.office.bpm.travelauthorization;
 
 import info.chili.service.jrs.exception.ServiceException;
-import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
 import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
@@ -16,12 +15,9 @@ import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.expense.travelauthorization.TravelAuthorizationDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
-import info.yalamanchili.office.email.Email;
-import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.expense.travelauthorization.TravelAuthorization;
 import info.yalamanchili.office.entity.expense.travelauthorization.TravelAuthorizationStatus;
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.jms.MessagingService;
 import java.util.Date;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
@@ -76,7 +72,7 @@ public class TravelAuthorizationProcess implements TaskListener {
         //Status
         String status = (String) task.getExecution().getVariable("status");
         if (status.equalsIgnoreCase("approved")) {
-            entity.setTravelExpenseRequisitionStatus(TravelAuthorizationStatus.PENDING_FINAL_APPROVAL);
+            entity.setTravelExpenseRequisitionStatus(TravelAuthorizationStatus.PENDING_CEO_APPROVAL);
             entity.setManagerApprovalBy(OfficeSecurityService.instance().getCurrentUser().getEmployeeId());
             entity.setManaerApprovalDate(new Date());
         } else {
@@ -94,7 +90,6 @@ public class TravelAuthorizationProcess implements TaskListener {
         String status = (String) task.getExecution().getVariable("status");
         if (status.equalsIgnoreCase("approved")) {
             entity.setTravelExpenseRequisitionStatus(TravelAuthorizationStatus.APPROVED);
-//            notifyAccountsPayableDept(entity);
         } else {
             entity.setTravelExpenseRequisitionStatus(TravelAuthorizationStatus.REJECTED);
         }
@@ -102,22 +97,12 @@ public class TravelAuthorizationProcess implements TaskListener {
         new GenericTaskCompleteNotification().notifyWithMoreRoles(task, OfficeRoles.OfficeRole.ROLE_ADMIN.name());
     }
 
-    public void notifyAccountsPayableDept(TravelAuthorization entity) {
-        MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
-        Email email = new Email();
-        email.addTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_ACCOUNTS_PAYABLE.name()));
-        email.setSubject("Travel Authorization Approved For Employee" + entity.getEmployee().getFirstName() + " " + entity.getEmployee().getLastName());
-        email.setBody("Travel Authorization Approved For Employee" + entity.getEmployee().getFirstName() + " " + entity.getEmployee().getLastName() + " Please Print and Process it");
-        messagingService.sendEmail(email);
-
-    }
-
     protected void saveTravelAuthorization(DelegateTask task) {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         TravelAuthorizationDao dao = TravelAuthorizationDao.instance();
         TravelAuthorization entity = (TravelAuthorization) task.getExecution().getVariable("entity");
         entity.setBpmProcessId(task.getExecution().getProcessInstanceId());
-        entity.setTravelExpenseRequisitionStatus(TravelAuthorizationStatus.PENDING_INITIAL_APPROVAL);
+        entity.setTravelExpenseRequisitionStatus(TravelAuthorizationStatus.PENDING_MANAGER_APPROVAL);
         entity.setEmployee(emp);
         entity = dao.save(entity);
         task.getExecution().setVariable("entity", entity);
@@ -129,8 +114,9 @@ public class TravelAuthorizationProcess implements TaskListener {
         Employee reportsToEmp = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Reports_To");
         if (emp.getEmployeeType().getName().equals("Corporate Employee") && reportsToEmp != null) {
             task.addCandidateUser(reportsToEmp.getEmployeeId());
+        } else {
+            task.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_ADMIN.name());
         }
-        task.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_ADMIN.name());
     }
 
     protected TravelAuthorization getRequestFromTask(DelegateTask task) {
