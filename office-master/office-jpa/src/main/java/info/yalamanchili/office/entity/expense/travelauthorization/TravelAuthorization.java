@@ -117,7 +117,7 @@ public class TravelAuthorization extends AbstractEntity {
      */
     @Enumerated(EnumType.STRING)
     @Field
-    protected TravelAuthrizationStatus travelExpenseRequisitionStatus;
+    protected TravelAuthorizationStatus travelExpenseRequisitionStatus;
     /**
      *
      *
@@ -240,11 +240,11 @@ public class TravelAuthorization extends AbstractEntity {
         this.employee = employee;
     }
 
-    public TravelAuthrizationStatus getTravelExpenseRequisitionStatus() {
+    public TravelAuthorizationStatus getTravelExpenseRequisitionStatus() {
         return travelExpenseRequisitionStatus;
     }
 
-    public void setTravelExpenseRequisitionStatus(TravelAuthrizationStatus travelExpenseRequisitionStatus) {
+    public void setTravelExpenseRequisitionStatus(TravelAuthorizationStatus travelExpenseRequisitionStatus) {
         this.travelExpenseRequisitionStatus = travelExpenseRequisitionStatus;
     }
 
