@@ -8,13 +8,12 @@
  */
 package info.yalamanchili.office.entity.expense.travelauthorization;
 
-import info.chili.jpa.AbstractEntity;
+import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.Entity;
+import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
@@ -23,11 +22,10 @@ import org.hibernate.search.annotations.Field;
  *
  * @author Madhu.Badiginchala
  */
-@Entity
+@Embeddable
 @Audited
-@XmlRootElement
 @XmlType
-public class TravelAccommodation extends AbstractEntity {
+public class TravelAccommodation implements Serializable {
 
     private static long serialVersionUID = 1L;
     /**
@@ -52,7 +50,7 @@ public class TravelAccommodation extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     @Field
     @NotNull(message = "{travel.expense.transportation.pay.type.not.empty.msg}")
-    protected TravelTransportationPayType travelTransportationPayType;
+    protected ExpensePaymentType expensePaymentType;
     /**
      *
      *
@@ -84,17 +82,17 @@ public class TravelAccommodation extends AbstractEntity {
         this.totalLodgingCost = totalLodgingCost;
     }
 
-    public TravelTransportationPayType getTravelTransportationPayType() {
-        return travelTransportationPayType;
+    public ExpensePaymentType getExpensePaymentType() {
+        return expensePaymentType;
     }
 
-    public void setTravelTransportationPayType(TravelTransportationPayType travelTransportationPayType) {
-        this.travelTransportationPayType = travelTransportationPayType;
+    public void setExpensePaymentType(ExpensePaymentType expensePaymentType) {
+        this.expensePaymentType = expensePaymentType;
     }
 
     @Override
     public String toString() {
-        return "TravelAccommodation{" + "numberOfLodgingNights=" + numberOfLodgingNights + ", lodgingCostPerNight=" + lodgingCostPerNight + ", totalLodgingCost=" + totalLodgingCost + ", travelTransportationPayType=" + travelTransportationPayType + '}';
+        return "TravelAccommodation{" + "numberOfLodgingNights=" + numberOfLodgingNights + ", lodgingCostPerNight=" + lodgingCostPerNight + ", totalLodgingCost=" + totalLodgingCost + ", travelTransportationPayType=" + expensePaymentType + '}';
     }
     
 }

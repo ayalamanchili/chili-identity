@@ -8,13 +8,12 @@
  */
 package info.yalamanchili.office.entity.expense.travelauthorization;
 
-import info.chili.jpa.AbstractEntity;
+import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.Entity;
+import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
@@ -23,11 +22,10 @@ import org.hibernate.search.annotations.Field;
  *
  * @author Madhu.Badiginchala
  */
-@Entity
+@Embeddable
 @Audited
-@XmlRootElement
 @XmlType
-public class TravelFood extends AbstractEntity {
+public class TravelFood implements Serializable {
 
     private static long serialVersionUID = 1L;
     /**
@@ -57,7 +55,8 @@ public class TravelFood extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     @Field
     @NotNull(message = "{travel.expense.transportation.pay.type.not.empty.msg}")
-    protected TravelTransportationPayType travelTransportationPayType;
+    protected ExpensePaymentType expensePaymentType;
+
     /**
      *
      *
@@ -97,17 +96,17 @@ public class TravelFood extends AbstractEntity {
         this.otherExpences = otherExpences;
     }
 
-    public TravelTransportationPayType getTravelTransportationPayType() {
-        return travelTransportationPayType;
+    public ExpensePaymentType getExpensePaymentType() {
+        return expensePaymentType;
     }
 
-    public void setTravelTransportationPayType(TravelTransportationPayType travelTransportationPayType) {
-        this.travelTransportationPayType = travelTransportationPayType;
+    public void setExpensePaymentType(ExpensePaymentType expensePaymentType) {
+        this.expensePaymentType = expensePaymentType;
     }
 
     @Override
     public String toString() {
-        return "TravelFood{" + "totalCostOfFood=" + totalCostOfFood + ", conferenceFee=" + conferenceFee + ", totalCostOfBanquet=" + totalCostOfBanquet + ", otherExpences=" + otherExpences + ", travelTransportationPayType=" + travelTransportationPayType + '}';
+        return "TravelFood{" + "totalCostOfFood=" + totalCostOfFood + ", conferenceFee=" + conferenceFee + ", totalCostOfBanquet=" + totalCostOfBanquet + ", otherExpences=" + otherExpences + ", travelTransportationPayType=" + expensePaymentType + '}';
     }
-    
+
 }

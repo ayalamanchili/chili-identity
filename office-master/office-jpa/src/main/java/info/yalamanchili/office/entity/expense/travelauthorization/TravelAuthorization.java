@@ -11,6 +11,7 @@ package info.yalamanchili.office.entity.expense.travelauthorization;
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.Date;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -31,7 +32,7 @@ import org.hibernate.search.annotations.Field;
 @Audited
 @XmlRootElement
 @XmlType
-public class TravelExpenseRequisition extends AbstractEntity {
+public class TravelAuthorization extends AbstractEntity {
 
     private static long serialVersionUID = 1L;
 
@@ -96,16 +97,19 @@ public class TravelExpenseRequisition extends AbstractEntity {
      *
      *
      */
+    @Embedded
     protected TravelTransportation travelTransportation;
     /**
      *
      *
      */
+    @Embedded
     protected TravelAccommodation travelAccommodation;
     /**
      *
      *
      */
+    @Embedded
     protected TravelFood travelFood;
     /**
      *
@@ -113,7 +117,7 @@ public class TravelExpenseRequisition extends AbstractEntity {
      */
     @Enumerated(EnumType.STRING)
     @Field
-    protected TravelExpenseRequisitionStatus travelExpenseRequisitionStatus;
+    protected TravelAuthrizationStatus travelExpenseRequisitionStatus;
     /**
      *
      *
@@ -122,22 +126,30 @@ public class TravelExpenseRequisition extends AbstractEntity {
     /**
      *
      */
-    protected String approvedBy;
+    protected String managerApprovalBy;
     /**
      *
      */
     @Temporal(javax.persistence.TemporalType.DATE)
-    protected Date approvedDate;
+    protected Date manaerApprovalDate;
+    /**
+     *
+     */
+    protected String ceoApprovalBy;
+    /**
+     *
+     */
+    @Temporal(javax.persistence.TemporalType.DATE)
+    protected Date ceoApprovalDate;
     /**
      *
      */
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date dateRequested;
-
     /**
      *
      */
-    public TravelExpenseRequisition() {
+    public TravelAuthorization() {
     }
 
     public TravelType getTravelType() {
@@ -228,11 +240,11 @@ public class TravelExpenseRequisition extends AbstractEntity {
         this.employee = employee;
     }
 
-    public TravelExpenseRequisitionStatus getTravelExpenseRequisitionStatus() {
+    public TravelAuthrizationStatus getTravelExpenseRequisitionStatus() {
         return travelExpenseRequisitionStatus;
     }
 
-    public void setTravelExpenseRequisitionStatus(TravelExpenseRequisitionStatus travelExpenseRequisitionStatus) {
+    public void setTravelExpenseRequisitionStatus(TravelAuthrizationStatus travelExpenseRequisitionStatus) {
         this.travelExpenseRequisitionStatus = travelExpenseRequisitionStatus;
     }
 
@@ -253,29 +265,45 @@ public class TravelExpenseRequisition extends AbstractEntity {
     /**
      * @return the approvedBy
      */
-    public String getApprovedBy() {
-        return approvedBy;
+    public String getManagerApprovalBy() {
+        return managerApprovalBy;
     }
 
     /**
-     * @param approvedBy the approvedBy to set
+     * @param managerApprovalBy the approvedBy to set
      */
-    public void setApprovedBy(String approvedBy) {
-        this.approvedBy = approvedBy;
+    public void setManagerApprovalBy(String managerApprovalBy) {
+        this.managerApprovalBy = managerApprovalBy;
     }
 
     /**
-     * @return the approvedDate
+     * @return the manaerApprovalDate
      */
-    public Date getApprovedDate() {
-        return approvedDate;
+    public Date getManaerApprovalDate() {
+        return manaerApprovalDate;
     }
 
     /**
-     * @param approvedDate the approvedDate to set
+     * @param manaerApprovalDate the manaerApprovalDate to set
      */
-    public void setApprovedDate(Date approvedDate) {
-        this.approvedDate = approvedDate;
+    public void setManaerApprovalDate(Date manaerApprovalDate) {
+        this.manaerApprovalDate = manaerApprovalDate;
+    }
+
+    public String getCeoApprovalBy() {
+        return ceoApprovalBy;
+    }
+
+    public void setCeoApprovalBy(String ceoApprovalBy) {
+        this.ceoApprovalBy = ceoApprovalBy;
+    }
+
+    public Date getCeoApprovalDate() {
+        return ceoApprovalDate;
+    }
+
+    public void setCeoApprovalDate(Date ceoApprovalDate) {
+        this.ceoApprovalDate = ceoApprovalDate;
     }
 
     /**

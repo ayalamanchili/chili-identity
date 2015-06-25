@@ -17,7 +17,7 @@ import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.dao.expense.travelauthorization.TravelAuthorizationDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
-import info.yalamanchili.office.entity.expense.travelauthorization.TravelExpenseRequisition;
+import info.yalamanchili.office.entity.expense.travelauthorization.TravelAuthorization;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +38,7 @@ public class TravelExpenseService {
     @Autowired
     protected TravelAuthorizationDao travelAuthorizationDao;
 
-    public void submitTravelAuthorization(TravelExpenseRequisition entity) {
+    public void submitTravelAuthorization(TravelAuthorization entity) {
         Map<String, Object> vars = new HashMap<>();
         vars.put("entity", entity);
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
@@ -47,7 +47,7 @@ public class TravelExpenseService {
         entity.setBpmProcessId(processId);
     }
 
-    protected Task getTaskForTicket(TravelExpenseRequisition travelExpenseRequisition) {
+    protected Task getTaskForTicket(TravelAuthorization travelExpenseRequisition) {
         OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
         List<Task> tasks = taskService.getTasksForProcessId(travelExpenseRequisition.getBpmProcessId());
         if (tasks.size() > 0) {
@@ -58,12 +58,12 @@ public class TravelExpenseService {
     }
 
     public void delete(Long id) {
-        TravelExpenseRequisition ticket = travelAuthorizationDao.findById(id);
+        TravelAuthorization ticket = travelAuthorizationDao.findById(id);
         OfficeBPMTaskService.instance().deleteAllTasksForProcessId(ticket.getBpmProcessId(), true);
         travelAuthorizationDao.delete(id);
     }
 
-    public Response getReport(TravelExpenseRequisition entity) {
+    public Response getReport(TravelAuthorization entity) {
         PdfDocumentData data = new PdfDocumentData();
         data.setTemplateUrl("/templates/pdf/travel-authorization-template.pdf");
         EmployeeDao employeeDao = EmployeeDao.instance();

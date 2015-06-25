@@ -12,7 +12,7 @@ package info.yalamanchili.office.entity.expense.travelauthorization;
  *
  * @author Madhu.Badiginchala
  */
-public enum TravelTransportationPayType {
+public enum ExpensePaymentType {
     EMPLOYEE_EXPENSE, 
     PURCHASING_CARD, 
     PO;

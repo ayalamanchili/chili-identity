@@ -8,14 +8,12 @@
  */
 package info.yalamanchili.office.entity.expense.travelauthorization;
 
-import info.chili.jpa.AbstractEntity;
+import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.Entity;
+import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
@@ -24,11 +22,10 @@ import org.hibernate.search.annotations.Field;
  *
  * @author Madhu.Badiginchala
  */
-@Entity
+@Embeddable
 @Audited
-@XmlRootElement
 @XmlType
-public class TravelTransportation extends AbstractEntity {
+public class TravelTransportation implements Serializable {
 
     private static long serialVersionUID = 1L;
     /**
@@ -43,7 +40,7 @@ public class TravelTransportation extends AbstractEntity {
      *
      *
      */
-    protected BigDecimal totalTransportationcost;
+    protected BigDecimal totalTransportationCost;
     /**
      *
      *
@@ -66,7 +63,8 @@ public class TravelTransportation extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     @Field
     @NotNull(message = "{travel.expense.transportation.pay.type.not.empty.msg}")
-    protected TravelTransportationPayType travelTransportationPayType;
+    protected ExpensePaymentType expensePaymentType;
+
     /**
      *
      *
@@ -82,12 +80,12 @@ public class TravelTransportation extends AbstractEntity {
         this.travelTransportationType = travelTransportationType;
     }
 
-    public BigDecimal getTotalTransportationcost() {
-        return totalTransportationcost;
+    public BigDecimal getTotalTransportationCost() {
+        return totalTransportationCost;
     }
 
-    public void setTotalTransportationcost(BigDecimal totalTransportationcost) {
-        this.totalTransportationcost = totalTransportationcost;
+    public void setTotalTransportationCost(BigDecimal totalTransportationCost) {
+        this.totalTransportationCost = totalTransportationCost;
     }
 
     public BigDecimal getTotalMiles() {
@@ -114,17 +112,17 @@ public class TravelTransportation extends AbstractEntity {
         this.travelRentalVehicleJustification = travelRentalVehicleJustification;
     }
 
-    public TravelTransportationPayType getTravelTransportationPayType() {
-        return travelTransportationPayType;
+    public ExpensePaymentType getExpensePaymentType() {
+        return expensePaymentType;
     }
 
-    public void setTravelTransportationPayType(TravelTransportationPayType travelTransportationPayType) {
-        this.travelTransportationPayType = travelTransportationPayType;
+    public void setExpensePaymentType(ExpensePaymentType expensePaymentType) {
+        this.expensePaymentType = expensePaymentType;
     }
 
     @Override
     public String toString() {
-        return "TravelTransportation{" + "travelTransportationType=" + travelTransportationType + ", totalTransportationcost=" + totalTransportationcost + ", totalMiles=" + totalMiles + ", costPerMile=" + costPerMile + ", travelRentalVehicleJustification=" + travelRentalVehicleJustification + ", travelTransportationPayType=" + travelTransportationPayType + '}';
+        return "TravelTransportation{" + "travelTransportationType=" + travelTransportationType + ", totalTransportationcost=" + totalTransportationCost + ", totalMiles=" + totalMiles + ", costPerMile=" + costPerMile + ", travelRentalVehicleJustification=" + travelRentalVehicleJustification + ", travelTransportationPayType=" + expensePaymentType + '}';
     }
-    
+
 }

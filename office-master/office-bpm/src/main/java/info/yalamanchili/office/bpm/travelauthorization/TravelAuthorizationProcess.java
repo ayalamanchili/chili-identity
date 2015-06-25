@@ -18,8 +18,8 @@ import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.email.MailUtils;
-import info.yalamanchili.office.entity.expense.travelauthorization.TravelExpenseRequisition;
-import info.yalamanchili.office.entity.expense.travelauthorization.TravelExpenseRequisitionStatus;
+import info.yalamanchili.office.entity.expense.travelauthorization.TravelAuthorization;
+import info.yalamanchili.office.entity.expense.travelauthorization.TravelAuthrizationStatus;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.Date;
@@ -51,7 +51,7 @@ public class TravelAuthorizationProcess implements TaskListener {
     }
 
     protected void travelAuthorizationTaskCompleted(DelegateTask task) {
-        TravelExpenseRequisition entity = getRequestFromTask(task);
+        TravelAuthorization entity = getRequestFromTask(task);
         if (entity == null) {
             return;
         }
@@ -69,40 +69,40 @@ public class TravelAuthorizationProcess implements TaskListener {
         }
     }
 
-    protected void managerApprovalTaskComplete(TravelExpenseRequisition entity, DelegateTask task) {
+    protected void managerApprovalTaskComplete(TravelAuthorization entity, DelegateTask task) {
         //Notes
         String notes = (String) task.getExecution().getVariable("notes");
         CommentDao.instance().addComment(notes, entity);
         //Status
         String status = (String) task.getExecution().getVariable("status");
         if (status.equalsIgnoreCase("approved")) {
-            entity.setTravelExpenseRequisitionStatus(TravelExpenseRequisitionStatus.PENDING_FINAL_APPROVAL);
-            entity.setApprovedBy(OfficeSecurityService.instance().getCurrentUser().getEmployeeId());
-            entity.setApprovedDate(new Date());
+            entity.setTravelExpenseRequisitionStatus(TravelAuthrizationStatus.PENDING_FINAL_APPROVAL);
+            entity.setManagerApprovalBy(OfficeSecurityService.instance().getCurrentUser().getEmployeeId());
+            entity.setManaerApprovalDate(new Date());
         } else {
-            entity.setTravelExpenseRequisitionStatus(TravelExpenseRequisitionStatus.REJECTED);
+            entity.setTravelExpenseRequisitionStatus(TravelAuthrizationStatus.REJECTED);
             new GenericTaskCompleteNotification().notify(task);
         }
         TravelAuthorizationDao.instance().save(entity);
     }
 
-    protected void adminApprovalTaskComplete(TravelExpenseRequisition entity, DelegateTask task) {
+    protected void adminApprovalTaskComplete(TravelAuthorization entity, DelegateTask task) {
         //Notes
         String notes = (String) task.getExecution().getVariable("notes");
         CommentDao.instance().addComment(notes, entity);
         //Status
         String status = (String) task.getExecution().getVariable("status");
         if (status.equalsIgnoreCase("approved")) {
-            entity.setTravelExpenseRequisitionStatus(TravelExpenseRequisitionStatus.APPROVED);
+            entity.setTravelExpenseRequisitionStatus(TravelAuthrizationStatus.APPROVED);
 //            notifyAccountsPayableDept(entity);
         } else {
-            entity.setTravelExpenseRequisitionStatus(TravelExpenseRequisitionStatus.REJECTED);
+            entity.setTravelExpenseRequisitionStatus(TravelAuthrizationStatus.REJECTED);
         }
         TravelAuthorizationDao.instance().save(entity);
         new GenericTaskCompleteNotification().notifyWithMoreRoles(task, OfficeRoles.OfficeRole.ROLE_ADMIN.name());
     }
 
-    public void notifyAccountsPayableDept(TravelExpenseRequisition entity) {
+    public void notifyAccountsPayableDept(TravelAuthorization entity) {
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
         Email email = new Email();
         email.addTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_ACCOUNTS_PAYABLE.name()));
@@ -115,9 +115,9 @@ public class TravelAuthorizationProcess implements TaskListener {
     protected void saveTravelAuthorization(DelegateTask task) {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         TravelAuthorizationDao dao = TravelAuthorizationDao.instance();
-        TravelExpenseRequisition entity = (TravelExpenseRequisition) task.getExecution().getVariable("entity");
+        TravelAuthorization entity = (TravelAuthorization) task.getExecution().getVariable("entity");
         entity.setBpmProcessId(task.getExecution().getProcessInstanceId());
-        entity.setTravelExpenseRequisitionStatus(TravelExpenseRequisitionStatus.PENDING_INITIAL_APPROVAL);
+        entity.setTravelExpenseRequisitionStatus(TravelAuthrizationStatus.PENDING_INITIAL_APPROVAL);
         entity.setEmployee(emp);
         entity = dao.save(entity);
         task.getExecution().setVariable("entity", entity);
@@ -133,7 +133,7 @@ public class TravelAuthorizationProcess implements TaskListener {
         task.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_ADMIN.name());
     }
 
-    protected TravelExpenseRequisition getRequestFromTask(DelegateTask task) {
+    protected TravelAuthorization getRequestFromTask(DelegateTask task) {
         Long entityId = (Long) task.getExecution().getVariable("entityId");
         if (entityId != null) {
             return TravelAuthorizationDao.instance().findById(entityId);

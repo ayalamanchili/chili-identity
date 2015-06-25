@@ -13,7 +13,7 @@ import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.expense.travelauthorization.TravelAuthorizationDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
-import info.yalamanchili.office.entity.expense.travelauthorization.TravelExpenseRequisition;
+import info.yalamanchili.office.entity.expense.travelauthorization.TravelAuthorization;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.expense.travelauthorization.TravelExpenseService;
 import info.yalamanchili.office.jrs.CRUDResource;
@@ -43,7 +43,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 @Scope("request")
-public class TravelAuthorizationResource extends CRUDResource<TravelExpenseRequisition> {
+public class TravelAuthorizationResource extends CRUDResource<TravelAuthorization> {
 
     @Autowired
     public TravelAuthorizationDao travelAuthorizationDao;
@@ -53,7 +53,7 @@ public class TravelAuthorizationResource extends CRUDResource<TravelExpenseRequi
     @Override
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @CacheEvict(value = OfficeCacheKeys.TRAVEL_AUTH, allEntries = true)
-    public TravelExpenseRequisition save(TravelExpenseRequisition entity) {
+    public TravelAuthorization save(TravelAuthorization entity) {
         return super.save(entity);
     }
 
@@ -61,7 +61,7 @@ public class TravelAuthorizationResource extends CRUDResource<TravelExpenseRequi
     @Validate
     @Path("/submit-travel-expense-request")
     @CacheEvict(value = OfficeCacheKeys.TRAVEL_AUTH, allEntries = true)
-    public void submitTravelAuthorizationRequest(TravelExpenseRequisition entity) {
+    public void submitTravelAuthorizationRequest(TravelAuthorization entity) {
         TravelExpenseService.instance().submitTravelAuthorization(entity);
     }
 
@@ -117,7 +117,7 @@ public class TravelAuthorizationResource extends CRUDResource<TravelExpenseRequi
     public static class TravelAurhorizationTable implements java.io.Serializable {
 
         protected Long size;
-        protected List<TravelExpenseRequisition> entities;
+        protected List<TravelAuthorization> entities;
 
         public Long getSize() {
             return size;
@@ -128,11 +128,11 @@ public class TravelAuthorizationResource extends CRUDResource<TravelExpenseRequi
         }
 
         @XmlElement
-        public List<TravelExpenseRequisition> getEntities() {
+        public List<TravelAuthorization> getEntities() {
             return entities;
         }
 
-        public void setEntities(List<TravelExpenseRequisition> entities) {
+        public void setEntities(List<TravelAuthorization> entities) {
             this.entities = entities;
         }
     }

@@ -10,7 +10,7 @@ package info.yalamanchili.office.dao.expense.travelauthorization;
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
-import info.yalamanchili.office.entity.expense.travelauthorization.TravelExpenseRequisition;
+import info.yalamanchili.office.entity.expense.travelauthorization.TravelAuthorization;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -28,11 +28,11 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository
 @Scope("prototype")
-public class TravelAuthorizationDao extends CRUDDao<TravelExpenseRequisition> {
+public class TravelAuthorizationDao extends CRUDDao<TravelAuthorization> {
 
     @Override
-    public TravelExpenseRequisition findById(Long id) {
-        TravelExpenseRequisition entity = super.findById(id);
+    public TravelAuthorization findById(Long id) {
+        TravelAuthorization entity = super.findById(id);
         if (entity == null) {
             return null;
         }
@@ -40,7 +40,7 @@ public class TravelAuthorizationDao extends CRUDDao<TravelExpenseRequisition> {
     }
 
     @Cacheable(value = OfficeCacheKeys.TRAVEL_AUTH, key = "{#root.methodName,#start,#limit}")
-    public List<TravelExpenseRequisition> queryAll(Integer start, Integer limit) {
+    public List<TravelAuthorization> queryAll(Integer start, Integer limit) {
         Query findAllQuery = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " order by dateRequested DESC", entityCls);
         findAllQuery.setFirstResult(start);
         findAllQuery.setMaxResults(limit);
@@ -48,7 +48,7 @@ public class TravelAuthorizationDao extends CRUDDao<TravelExpenseRequisition> {
     }
 
     @Cacheable(value = OfficeCacheKeys.TRAVEL_AUTH, key = "{#root.methodName,#employeeId,#start,#limit}")
-    public List<TravelExpenseRequisition> queryForEmployee(Long employeeId, Integer start, Integer limit) {
+    public List<TravelAuthorization> queryForEmployee(Long employeeId, Integer start, Integer limit) {
         Query findAllQuery = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " where employee.id=:employeeIdParam order by dateRequested DESC", entityCls);
         findAllQuery.setParameter("employeeIdParam", employeeId);
         findAllQuery.setFirstResult(start);
@@ -71,7 +71,7 @@ public class TravelAuthorizationDao extends CRUDDao<TravelExpenseRequisition> {
     }
 
     public TravelAuthorizationDao() {
-        super(TravelExpenseRequisition.class);
+        super(TravelAuthorization.class);
     }
     @PersistenceContext
     protected EntityManager em;
