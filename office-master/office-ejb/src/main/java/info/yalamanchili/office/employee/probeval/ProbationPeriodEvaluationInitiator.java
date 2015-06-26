@@ -74,7 +74,7 @@ public class ProbationPeriodEvaluationInitiator {
     public void initiateNewHireProbationPeriodEvaluations() {
         for (Employee emp : OfficeSecurityService.instance().getUsersWithRoles(0, 5000, OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
             long numberOfDays = DateUtils.differenceInDays(emp.getStartDate(), new Date());
-            if (emp.getBranch().equals(Branch.Hyderabad)) {
+            if (Branch.Hyderabad.equals(emp.getBranch())) {
                 //If India Team its 6 months
                 if (numberOfDays >= 172 && numberOfDays <= 176) {
                     try {
