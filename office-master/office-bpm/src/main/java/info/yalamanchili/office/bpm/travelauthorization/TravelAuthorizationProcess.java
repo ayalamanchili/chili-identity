@@ -53,7 +53,7 @@ public class TravelAuthorizationProcess implements TaskListener {
         }
         Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
         if (currentUser.getEmployeeId().equals(entity.getEmployee().getEmployeeId())) {
-            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.self.approve.corp.travelauthorization", "You cannot approve your advancerequisition task");
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.self.approve.corp.travelauthorization", "You cannot approve your travel authorization task");
         }
         switch (task.getTaskDefinitionKey()) {
             case "travelAuthorizationApprovalTask":

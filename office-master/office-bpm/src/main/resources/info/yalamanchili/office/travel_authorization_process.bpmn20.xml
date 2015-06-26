@@ -19,10 +19,12 @@
                   name="Travel Authorization Task for ${currentEmployee.firstName} ${currentEmployee.lastName}">
             <documentation>
                 Employee Travel Authorization Approval Task
-                
-                Employee Name   : #{currentEmployee.firstName} #{currentEmployee.lastName}
-                
-                Follow instructions from below:
+                Employee Name          : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Departure Date         : #{entity.departureDate}
+                Return Date            : #{entity.returnDate} 
+                <!--   TransportationCost     : #{entity.totalTransportationCost} -->
+                Reason                 : #{entity.reasonForTravel}
+                Status                 : #{entity.travelExpenseRequisitionStatus}  
 
             </documentation>
             <extensionElements>
@@ -73,7 +75,12 @@
                   activiti:candidateGroups="ROLE_ADMIN">
             <documentation>
                 Travel Authorization Final Approval Task
-                Employee Name  : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Employee Name          : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Departure Date         : #{entity.departureDate}
+                Return Date            : #{entity.returnDate} 
+                <!--   TransportationCost     : #{entity.totalTransportationCost} -->
+                Reason                 : #{entity.reasonForTravel}
+                Status                 : #{entity.travelExpenseRequisitionStatus}  
                
             </documentation>
             <extensionElements>
