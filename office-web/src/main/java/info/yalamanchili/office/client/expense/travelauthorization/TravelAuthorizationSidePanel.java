@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.utils.Utils;
@@ -73,15 +74,16 @@ public class TravelAuthorizationSidePanel extends ALComposite implements ClickHa
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createtravelExpenseLink)) {
-            new GenericPopup(new TravelAuthorizationRequestPanel()).show();
+            TabPanel.instance().expensePanel.entityPanel.clear();
+            TabPanel.instance().expensePanel.entityPanel.add(new TravelAuthorizationRequestPanel(CreateComposite.CreateCompositeType.CREATE));
         }
         if (event.getSource().equals(viewB)) {
             TabPanel.instance().expensePanel.entityPanel.clear();
-            TabPanel.instance().expensePanel.entityPanel.add(new ReadAllravelAuthorizationPanel(getadvanceURL(0, "10")));
+            TabPanel.instance().expensePanel.entityPanel.add(new ReadAllravelAuthorizationPanel(gettravelexpenseURL(0, "10")));
         }
     }
 
-    private String getadvanceURL(Integer start, String limit) {
+    private String gettravelexpenseURL(Integer start, String limit) {
         return OfficeWelcome.constants.root_url() + "travelexpense/" + employeeSB.getKey() + "/" + start.toString() + "/"
                 + limit.toString();
     }

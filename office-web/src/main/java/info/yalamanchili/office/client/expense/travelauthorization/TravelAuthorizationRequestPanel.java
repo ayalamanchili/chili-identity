@@ -46,6 +46,11 @@ public class TravelAuthorizationRequestPanel extends CreateComposite implements 
     HTML comment = new HTML("<h5> "
             + " *Applicable only when RENTAL_VEHICALE selected as transpotation type.*</h5>");
 
+    public TravelAuthorizationRequestPanel(CreateComposite.CreateCompositeType type) {
+        super(type);
+        initCreateComposite("Travel Expense", OfficeWelcome.constants);
+    }
+
     public TravelAuthorizationRequestPanel() {
         super(CreateCompositeType.CREATE);
         initCreateComposite("Travel Expense", OfficeWelcome.constants);
@@ -99,8 +104,8 @@ public class TravelAuthorizationRequestPanel extends CreateComposite implements 
         entityFieldsPanel.add(comment);
         addEnumField("travelRentalVehicleType", false, true, TravelRentalVehicleType.names(), Alignment.HORIZONTAL);
         addField("estimatedCostOfOtherTransportation", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
-        addField("rentalVehicleJustification", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
-        addField("otherVehicleTypeJustification", false, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        addField("rentalVehicleJustification", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("otherVehicleTypeJustification", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(lodging);
         addField("numberOfLodgingNights", false, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
         addField("lodgingCostPerNight", false, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
