@@ -17,6 +17,7 @@ import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.expense.travelauthorizationtransactions.ExpensePaymentType;
 import info.yalamanchili.office.client.expense.travelauthorizationtransactions.TravelRentalVehicleType;
 import info.yalamanchili.office.client.expense.travelauthorizationtransactions.TravelTransportationType;
 import info.yalamanchili.office.client.expense.travelauthorizationtransactions.TravelType;
@@ -109,7 +110,7 @@ public class TravelAuthorizationRequestPanel extends CreateComposite implements 
         addField("conferenceFee", false, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
         addField("totalCostOfBanquet", false, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
         addField("otherExpences", false, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
-        addField("expenseAccommodationPaymentType", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        addEnumField("expenseAccommodationPaymentType", false, true, ExpensePaymentType.names(), Alignment.HORIZONTAL);
         alignFields();
     }
 
