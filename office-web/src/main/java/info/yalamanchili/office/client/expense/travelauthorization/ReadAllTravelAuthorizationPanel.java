@@ -4,14 +4,12 @@
  */
 package info.yalamanchili.office.client.expense.travelauthorization;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
-import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.fields.FileField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.FormatUtils;
@@ -26,18 +24,18 @@ import java.util.logging.Logger;
  *
  * @author prasanthi.p
  */
-public class ReadAllravelAuthorizationPanel extends CRUDReadAllComposite {
+public class ReadAllTravelAuthorizationPanel extends CRUDReadAllComposite {
 
-    private static Logger logger = Logger.getLogger(ReadAllravelAuthorizationPanel.class.getName());
-    public static ReadAllravelAuthorizationPanel instance;
+    private static Logger logger = Logger.getLogger(ReadAllTravelAuthorizationPanel.class.getName());
+    public static ReadAllTravelAuthorizationPanel instance;
     protected String url;
 
-    public ReadAllravelAuthorizationPanel() {
+    public ReadAllTravelAuthorizationPanel() {
         instance = this;
         initTable("TravelExpense", OfficeWelcome.constants);
     }
 
-    public ReadAllravelAuthorizationPanel(String url) {
+    public ReadAllTravelAuthorizationPanel(String url) {
         instance = this;
         this.url = url;
         initTable("TravelExpense", OfficeWelcome.constants);
@@ -46,7 +44,7 @@ public class ReadAllravelAuthorizationPanel extends CRUDReadAllComposite {
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().expensePanel.entityPanel.clear();
-        TabPanel.instance().expensePanel.entityPanel.add(new ReadTravelAuthorizationPanel(entityId));
+        TabPanel.instance().expensePanel.entityPanel.add(new ReadTravelAuthorizationPanel(getEntity(entityId)));
     }
 
     @Override
@@ -64,7 +62,7 @@ public class ReadAllravelAuthorizationPanel extends CRUDReadAllComposite {
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Travel Expense Information");
         TabPanel.instance().expensePanel.entityPanel.clear();
-        TabPanel.instance().expensePanel.entityPanel.add(new ReadAllravelAuthorizationPanel());
+        TabPanel.instance().expensePanel.entityPanel.add(new ReadAllTravelAuthorizationPanel());
     }
 
     @Override

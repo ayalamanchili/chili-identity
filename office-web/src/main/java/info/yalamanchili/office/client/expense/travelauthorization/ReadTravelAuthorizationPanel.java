@@ -13,9 +13,6 @@ import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.expense.travelauthorizationtransactions.ExpensePaymentType;
-import info.yalamanchili.office.client.expense.travelauthorizationtransactions.TravelRentalVehicleType;
-import info.yalamanchili.office.client.expense.travelauthorizationtransactions.TravelTransportationType;
 import info.yalamanchili.office.client.expense.travelauthorizationtransactions.TravelType;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
@@ -55,22 +52,17 @@ public class ReadTravelAuthorizationPanel extends ReadComposite {
         initReadComposite(entity, "TravelExpense", OfficeWelcome.constants);
     }
 
-    public ReadTravelAuthorizationPanel(String id) {
-        instance = this;
-        initReadComposite(id, "TravelExpense", OfficeWelcome.constants);
-    }
-
     @Override
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
-                populateComments();
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                        populateComments();
+                    }
+                });
     }
 
     protected void populateComments() {
@@ -83,23 +75,8 @@ public class ReadTravelAuthorizationPanel extends ReadComposite {
         assignFieldValueFromEntity("travelType", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("departureDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("returnDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("phoneNumber", entity, DataType.INTEGER_FIELD);
-        assignFieldValueFromEntity("department", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("travelDestination", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("reasonForTravel", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("travelTransportationType", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("totalMiles", entity, DataType.INTEGER_FIELD);
-        assignFieldValueFromEntity("costPerMile", entity, DataType.INTEGER_FIELD);
-        assignFieldValueFromEntity("travelRentalVehicleType", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("estimatedCostOfOtherTransportation", entity, DataType.INTEGER_FIELD);
-        assignFieldValueFromEntity("rentalVehicleJustification", entity, DataType.INTEGER_FIELD);
-        assignFieldValueFromEntity("otherVehicleTypeJustification", entity, DataType.INTEGER_FIELD);
-        assignFieldValueFromEntity("numberOfLodgingNights", entity, DataType.INTEGER_FIELD);
-        assignFieldValueFromEntity("lodgingCostPerNight", entity, DataType.INTEGER_FIELD);
-        assignFieldValueFromEntity("totalCostOfFood", entity, DataType.INTEGER_FIELD);
-        assignFieldValueFromEntity("conferenceFee", entity, DataType.INTEGER_FIELD);
-        assignFieldValueFromEntity("otherExpences", entity, DataType.INTEGER_FIELD);
-        assignFieldValueFromEntity("expenseAccommodationPaymentType", entity, DataType.INTEGER_FIELD);
     }
 
     @Override
@@ -112,36 +89,28 @@ public class ReadTravelAuthorizationPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
+        logger.info("dddddddddddd"+entity.toString());
         addDropDown("employee", selectEmployeeWidgetF);
         addEnumField("travelType", true, false, TravelType.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(employeetripinfo);
         addField("departureDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("returnDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("phoneNumber", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
-        addField("department", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("travelDestination", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("reasonForTravel", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(estimatedexpenses);
-        addEnumField("travelTransportationType", true, false, TravelTransportationType.names(), Alignment.HORIZONTAL);
-        addField("totalMiles", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
-        addField("costPerMile", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
-        addField("totalTransportationCost", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        if (entity.get("travelTransportation") != null) {
+            entityFieldsPanel.add(new TravelTransportationPanel(entity.get("travelTransportation").isObject(), true));
+        }
         entityFieldsPanel.add(comment);
-        addEnumField("travelRentalVehicleType", true, false, TravelRentalVehicleType.names(), Alignment.HORIZONTAL);
-        addField("estimatedCostOfOtherTransportation", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
-        addField("rentalVehicleJustification", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
-        addField("otherVehicleTypeJustification", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(lodging);
-        addField("numberOfLodgingNights", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
-        addField("lodgingCostPerNight", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
-        addField("totalLodgingCost", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        if (entity.get("travelAccommodation") != null) {
+            entityFieldsPanel.add(new TravelAccommodationPanel(entity.get("travelAccommodation").isObject(), true));
+        }
         entityFieldsPanel.add(meals);
-        addField("totalCostOfFood", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
-        addField("conferenceFee", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
-        addField("totalCostOfBanquet", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
-        addField("otherExpences", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
-        addEnumField("expenseAccommodationPaymentType", true, false, ExpensePaymentType.names(), Alignment.HORIZONTAL);
-        alignFields();
+        if (entity.get("travelFood") != null) {
+            entityFieldsPanel.add(new TravelFoodPanel(entity.get("travelFood").isObject(), true));
+        }
+        alignFields(240);
     }
 
     @Override

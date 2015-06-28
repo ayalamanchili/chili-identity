@@ -75,11 +75,11 @@ public class TravelAuthorizationSidePanel extends ALComposite implements ClickHa
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createtravelExpenseLink)) {
             TabPanel.instance().expensePanel.entityPanel.clear();
-            TabPanel.instance().expensePanel.entityPanel.add(new TravelAuthorizationRequestPanel(CreateComposite.CreateCompositeType.CREATE));
+            TabPanel.instance().expensePanel.entityPanel.add(new CreateTravelAuthorizationPanel(CreateComposite.CreateCompositeType.CREATE));
         }
         if (event.getSource().equals(viewB)) {
             TabPanel.instance().expensePanel.entityPanel.clear();
-            TabPanel.instance().expensePanel.entityPanel.add(new ReadAllravelAuthorizationPanel(gettravelexpenseURL(0, "10")));
+            TabPanel.instance().expensePanel.entityPanel.add(new ReadAllTravelAuthorizationPanel(gettravelexpenseURL(0, "10")));
         }
     }
 

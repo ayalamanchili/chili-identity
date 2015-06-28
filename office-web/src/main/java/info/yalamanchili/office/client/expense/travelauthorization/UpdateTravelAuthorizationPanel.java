@@ -51,8 +51,6 @@ public class UpdateTravelAuthorizationPanel extends UpdateComposite {
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("departureDate", entity);
         assignEntityValueFromField("returnDate", entity);
-        assignEntityValueFromField("phoneNumber", entity);
-        assignEntityValueFromField("department", entity);
         return entity;
     }
 
@@ -76,15 +74,13 @@ public class UpdateTravelAuthorizationPanel extends UpdateComposite {
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("departureDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("returnDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("phoneNumber", entity, DataType.INTEGER_FIELD);
-        assignFieldValueFromEntity("department", entity, DataType.STRING_FIELD);
     }
 
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully  Updated Travel Expense Information");
         TabPanel.instance().expensePanel.entityPanel.clear();
-        TabPanel.instance().expensePanel.entityPanel.add(new ReadAllravelAuthorizationPanel());
+        TabPanel.instance().expensePanel.entityPanel.add(new ReadAllTravelAuthorizationPanel());
     }
 
     @Override
@@ -99,8 +95,6 @@ public class UpdateTravelAuthorizationPanel extends UpdateComposite {
     protected void addWidgets() {
         addField("departureDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("returnDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("phoneNumber", false, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
-        addField("department", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
