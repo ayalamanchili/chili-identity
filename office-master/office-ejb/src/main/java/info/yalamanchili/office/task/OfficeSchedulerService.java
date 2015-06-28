@@ -84,8 +84,10 @@ public class OfficeSchedulerService {
             //TODO enhance it to collect all emails and send once
             Set<String> emailto = new HashSet<String>();
             NotificationGroup ng = NotificationGroupDao.instance().findByName(BIRTHDAY_ANNUAL_NOTIFICATION_GROUP);
-            for (Employee emp : ng.getEmployees()) {
-                emailto.add(emp.getPrimaryEmail().getEmail());
+            if (ng != null) {
+                for (Employee emp : ng.getEmployees()) {
+                    emailto.add(emp.getPrimaryEmail().getEmail());
+                }
             }
             Email email = new Email();
             emailto.add(EmployeeDao.instance().getPrimaryEmail(empres));
@@ -128,8 +130,10 @@ public class OfficeSchedulerService {
             if (years > 0 && empres.isActive()) {
                 Set<String> emailto = new HashSet<String>();
                 NotificationGroup ng = NotificationGroupDao.instance().findByName(BIRTHDAY_ANNUAL_NOTIFICATION_GROUP);
-                for (Employee emp : ng.getEmployees()) {
-                    emailto.add(emp.getPrimaryEmail().getEmail());
+                if (ng != null) {
+                    for (Employee emp : ng.getEmployees()) {
+                        emailto.add(emp.getPrimaryEmail().getEmail());
+                    }
                 }
                 Email email = new Email();
                 emailto.add(EmployeeDao.instance().getPrimaryEmail(empres));
