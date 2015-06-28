@@ -20,7 +20,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
@@ -56,8 +58,7 @@ public class TravelAuthorization extends AbstractEntity {
      *
      */
     @ManyToOne
-//  @ForeignKey(name = "FK_Emp_AdvanceReqs")
-//  @NotNull(message = "{travel.expense.requisition.employee.not.empty.msg}")
+    @ForeignKey(name = "FK_Emp_TravelAuths")
     protected Employee employee;
     /**
      *
@@ -146,6 +147,7 @@ public class TravelAuthorization extends AbstractEntity {
      */
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date dateRequested;
+
     /**
      *
      */
