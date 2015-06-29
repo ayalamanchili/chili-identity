@@ -56,10 +56,16 @@ public class CorporateTimeService {
     protected CorporateTimeSheetDao corporateTimeSheetDao;
 
     public void submitLeaveRequest(CorporateTimeSheet entity) {
+        Employee emp;
+        Map<String, Object> vars = new HashMap<>();
         validateRequest(entity);
-        Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("entity", entity);
-        Employee emp = OfficeSecurityService.instance().getCurrentUser();
+        if (entity.getEmployee().getId() != null) {
+            emp = EmployeeDao.instance().findById(entity.getEmployee().getId());
+        } else {
+            emp = OfficeSecurityService.instance().getCurrentUser();
+        }
+        entity.setEmployee(emp);
         vars.put("currentEmployee", emp);
         vars.put("summary", getYearlySummary(emp));
         if (entity.getId() != null) {

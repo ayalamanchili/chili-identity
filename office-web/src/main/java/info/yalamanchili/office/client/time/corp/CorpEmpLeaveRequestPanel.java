@@ -23,6 +23,8 @@ import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.chili.gwt.widgets.SuggestBox;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.MultiSelectSuggestBox;
@@ -42,6 +44,7 @@ public class CorpEmpLeaveRequestPanel extends CreateComposite {
         super(type);
         initCreateComposite("CorpEmpLeaveRequest", OfficeWelcome.constants);
     }
+    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false, Alignment.HORIZONTAL);
 
     @Override
     protected JSONObject populateEntityFromFields() {
@@ -52,7 +55,11 @@ public class CorpEmpLeaveRequestPanel extends CreateComposite {
         assignEntityValueFromField("category", entity);
         assignEntityValueFromField("notes", entity);
         entity.put("status", new JSONString(TimeSheetStatus.Pending.name()));
-        entity.put("employee", new JSONObject());
+        if (fields.containsKey("employee")) {
+            assignEntityValueFromField("employee", entity);
+        } else {
+            entity.put("employee", new JSONObject());
+        }
         JSONArray notifyEmployeesList = employeesSB.getValues();
         if (notifyEmployeesList.size() > 0) {
             entity.put("notifyEmployees", notifyEmployeesList);
@@ -101,10 +108,26 @@ public class CorpEmpLeaveRequestPanel extends CreateComposite {
     @Override
     protected void configure() {
         setButtonText("Submit");
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
+            HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+                @Override
+                public void onResponse(String entityString) {
+                    logger.info(entityString);
+                    Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
+                    if (values != null) {
+                        employeeSB.loadData(values);
+                    }
+                }
+            });
+        }
+
     }
 
     @Override
     protected void addWidgets() {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
+            addSuggestField("employee", employeeSB);
+        }
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("hours", false, true, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
