@@ -49,12 +49,12 @@ public class CreateTravelAuthorizationPanel extends CreateComposite implements C
 
     public CreateTravelAuthorizationPanel(CreateComposite.CreateCompositeType type) {
         super(type);
-        initCreateComposite("Travel Expense", OfficeWelcome.constants);
+        initCreateComposite("TravelExpense", OfficeWelcome.constants);
     }
 
     public CreateTravelAuthorizationPanel() {
         super(CreateCompositeType.CREATE);
-        initCreateComposite("Travel Expense", OfficeWelcome.constants);
+        initCreateComposite("TravelExpense", OfficeWelcome.constants);
     }
 
     @Override
