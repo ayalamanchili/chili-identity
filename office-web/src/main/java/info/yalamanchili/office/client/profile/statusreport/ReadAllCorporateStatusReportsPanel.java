@@ -145,14 +145,16 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
     }
 
     protected void compare(String entityId) {
-        HttpService.HttpServiceAsync.instance().doGet(OfficeWelcome.constants.root_url() + "corporate-statusreport/diff/" + entityId, OfficeWelcome.instance().getHeaders(), true,
-                new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        logger.info(arg0);
-                        openPrintWindow(arg0);
-                    }
-                });
+        if (!entityId.isEmpty()) {
+            HttpService.HttpServiceAsync.instance().doGet(OfficeWelcome.constants.root_url() + "corporate-statusreport/diff/" + entityId, OfficeWelcome.instance().getHeaders(), true,
+                    new ALAsyncCallback<String>() {
+                        @Override
+                        public void onResponse(String arg0) {
+                            logger.info(arg0);
+                            openPrintWindow(arg0);
+                        }
+                    });
+        }
     }
 
     protected native void openPrintWindow(String contents) /*-{
@@ -196,7 +198,7 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
             TabPanel.instance().homePanel.entityPanel.clear();
             TabPanel.instance().homePanel.entityPanel.add(new ReadCorporateStatusReportPanel(entityId));
         }
-        if (TabPanel.instance().reportingPanel.isVisible()) {
+        if (TabPanel.instance().reportingPanel.isVisible() && !entityId.isEmpty()) {
             TabPanel.instance().reportingPanel.entityPanel.clear();
             TabPanel.instance().reportingPanel.entityPanel.add(new ReadCorporateStatusReportPanel(entityId));
         }
@@ -246,7 +248,9 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
 
     @Override
     protected void onQuickView(int row, String id) {
-        new GenericPopup(new ReadCorporateStatusReportPanel(id), Window.getClientWidth() / 3, 0).show();
+        if (!id.isEmpty()) {
+            new GenericPopup(new ReadCorporateStatusReportPanel(id), Window.getClientWidth() / 3, 0).show();
+        }
     }
 
     protected String getDeleteURL(String entityId) {
