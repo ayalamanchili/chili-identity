@@ -59,13 +59,13 @@ public class CorporateTimeService {
         Employee emp;
         Map<String, Object> vars = new HashMap<>();
         validateRequest(entity);
-        vars.put("entity", entity);
         if (entity.getEmployee().getId() != null) {
             emp = EmployeeDao.instance().findById(entity.getEmployee().getId());
         } else {
             emp = OfficeSecurityService.instance().getCurrentUser();
         }
         entity.setEmployee(emp);
+        vars.put("entity", entity);
         vars.put("currentEmployee", emp);
         vars.put("summary", getYearlySummary(emp));
         if (entity.getId() != null) {
