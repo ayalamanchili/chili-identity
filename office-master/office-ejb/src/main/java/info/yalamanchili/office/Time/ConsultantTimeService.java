@@ -204,7 +204,9 @@ public class ConsultantTimeService {
         for (Employee emp : EmployeeDao.instance().getEmployeesByType("Employee")) {
             summary.add(getYearlySummary(emp));
         }
-        MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(summary, "consultants-time-summary", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
+        String[] columnOrder = new String[]{"employee", "startDate", "availablePTOHours", "usedPTOHours", "totalPTOHours", "usedUnpaidHours", "totalUsedHours"};
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(summary, "Consultants-Time-Summary", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
+
     }
 
     public static ConsultantTimeService instance() {
