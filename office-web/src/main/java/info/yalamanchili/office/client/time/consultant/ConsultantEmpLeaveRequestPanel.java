@@ -39,11 +39,19 @@ import java.util.logging.Logger;
 public class ConsultantEmpLeaveRequestPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(ConsultantEmpLeaveRequestPanel.class.getName());
+    protected boolean submitOnBehalf = false;
 
     public ConsultantEmpLeaveRequestPanel(CreateComposite.CreateCompositeType type) {
         super(type);
         initCreateComposite("EmpLeaveRequest", OfficeWelcome.constants);
     }
+
+    public ConsultantEmpLeaveRequestPanel(CreateComposite.CreateCompositeType type, boolean submitOnBahalf) {
+        super(type);
+        this.submitOnBehalf = submitOnBehalf;
+        initCreateComposite("CorpEmpLeaveRequest", OfficeWelcome.constants);
+    }
+
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false, Alignment.HORIZONTAL);
 
     @Override
@@ -105,7 +113,7 @@ public class ConsultantEmpLeaveRequestPanel extends CreateComposite {
     @Override
     protected void configure() {
         setButtonText("Submit");
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CONSULTANT_TIME_ADMIN)) {
+        if (submitOnBehalf && Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CONSULTANT_TIME_ADMIN)) {
             HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
                 @Override
                 public void onResponse(String entityString) {
@@ -121,7 +129,7 @@ public class ConsultantEmpLeaveRequestPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CONSULTANT_TIME_ADMIN)) {
+        if (submitOnBehalf && Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CONSULTANT_TIME_ADMIN)) {
             addSuggestField("employee", employeeSB);
         }
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
