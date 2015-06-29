@@ -40,9 +40,9 @@ public class CorporateStatusReportService {
     public String save(CorporateStatusReport entity, Boolean submitForApproval) {
         entity = corporateStatusReportDao.save(entity);
         if (submitForApproval) {
-            entity.setStatus(CropStatusReportStatus.Pending_Manager_Approval);
-            String bpmProcessId = startCorporateStatusReportProcess(entity);
-            entity.setBpmProcessId(bpmProcessId);
+            entity.setStatus(CropStatusReportStatus.Approved);
+//            String bpmProcessId = startCorporateStatusReportProcess(entity);
+//            entity.setBpmProcessId(bpmProcessId);
         }
         return entity.getId().toString();
     }
