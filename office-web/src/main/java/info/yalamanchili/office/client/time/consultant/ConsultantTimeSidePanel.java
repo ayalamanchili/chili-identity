@@ -52,7 +52,7 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
 
     private static Logger logger = Logger.getLogger(CorporateTimeSummarySidePanel.class.getName());
     public FlowPanel panel = new FlowPanel();
-    ClickableLink createtimeSheetlink = new ClickableLink("Enter TimeSheet");
+    //ClickableLink createtimeSheetlink = new ClickableLink("Enter TimeSheet");
     ClickableLink submitLeaveRequest = new ClickableLink("Submit Leave Request");
     //Timesheets for employee
     CaptionPanel timesheetsForEmpCaptionPanel = new CaptionPanel();
@@ -92,7 +92,7 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
     @Override
     protected void addListeners() {
         submitLeaveRequest.addClickHandler(this);
-        createtimeSheetlink.addClickHandler(this);
+        //createtimeSheetlink.addClickHandler(this);
         showTimeSheetsForEmpB.addClickHandler(this);
         viewReportsB.addClickHandler(this);
         reportsB.addClickHandler(this);
@@ -123,7 +123,7 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
     @Override
     protected void addWidgets() {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS, Auth.ROLE.ROLE_RELATIONSHIP, Auth.ROLE.ROLE_CONSULTANT_TIME_ADMIN)) {
-            panel.add(createtimeSheetlink);
+            //panel.add(createtimeSheetlink);
             panel.add(submitLeaveRequest);
         }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS, Auth.ROLE.ROLE_RELATIONSHIP, Auth.ROLE.ROLE_CONSULTANT_TIME_REPORTS)) {
@@ -152,10 +152,10 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
         if (event.getSource().equals(submitLeaveRequest)) {
             new GenericPopup(new ConsultantEmpLeaveRequestPanel(CreateComposite.CreateCompositeType.CREATE, true)).show();
         }
-        if (event.getSource().equals(createtimeSheetlink)) {
+        /*if (event.getSource().equals(createtimeSheetlink)) {
             TabPanel.instance().timePanel.entityPanel.clear();
             TabPanel.instance().timePanel.entityPanel.add(new CreateConsultantTimeSheetPanel(CreateComposite.CreateCompositeType.CREATE));
-        }
+        }*/
         if (!Strings.isNullOrEmpty(employeeSB.getKey()) && event.getSource().equals(showTimeSheetsForEmpB)) {
             TabPanel.instance().getTimePanel().entityPanel.clear();
             TabPanel.instance().getTimePanel().entityPanel.add(new ConsultantTimeSummaryPanel(employeeSB.getKey()));
