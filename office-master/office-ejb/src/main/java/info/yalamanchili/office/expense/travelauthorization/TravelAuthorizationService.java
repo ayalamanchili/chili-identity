@@ -19,6 +19,7 @@ import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.expense.travelauthorization.TravelAuthorization;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.security.AccessCheck;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -64,6 +65,7 @@ public class TravelAuthorizationService {
         travelAuthorizationDao.delete(id);
     }
 
+    @AccessCheck(employeePropertyName = "employee", companyContacts = {"Perf_Eval_Manager", "Reports_To"}, roles = {"ROLE_ADMIN"})
     public Response getReport(TravelAuthorization entity) {
         PdfDocumentData data = new PdfDocumentData();
         data.setTemplateUrl("/templates/pdf/travel-authorization-template.pdf");

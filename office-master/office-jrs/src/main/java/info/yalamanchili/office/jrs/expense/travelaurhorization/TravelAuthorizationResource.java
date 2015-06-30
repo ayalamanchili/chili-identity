@@ -69,17 +69,22 @@ public class TravelAuthorizationResource extends CRUDResource<TravelAuthorizatio
     @Path("/{start}/{limit}")
     public TravelAuthorizationResource.TravelAurhorizationTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         TravelAuthorizationResource.TravelAurhorizationTable tableObj = new TravelAuthorizationResource.TravelAurhorizationTable();
-        Employee currentEmp = OfficeSecurityService.instance().getCurrentUser();
-        tableObj.setEntities(travelAuthorizationDao.queryForEmployee(currentEmp.getId(), start, limit));
-        tableObj.setSize(travelAuthorizationDao.size(currentEmp.getId()));
-        tableObj.setSize(getDao().size());
+        if (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_ADMIN.name())) {
+            tableObj.setEntities(travelAuthorizationDao.queryAll(start, limit));
+            tableObj.setSize(travelAuthorizationDao.size());
+        } else {
+            Employee currentEmp = OfficeSecurityService.instance().getCurrentUser();
+            tableObj.setEntities(travelAuthorizationDao.queryForEmployee(currentEmp.getId(), start, limit));
+            tableObj.setSize(travelAuthorizationDao.size(currentEmp.getId()));
+            tableObj.setSize(getDao().size());
+        }
         return tableObj;
     }
 
     @GET
     @Path("/{employeeId}/{start}/{limit}")
-    @AccessCheck(companyContacts = {"Reports_To"}, roles = {"ROLE_ADMIN"})
-    public TravelAuthorizationResource.TravelAurhorizationTable getAdvanceRequisitionsForEmployee(@PathParam("employeeId") Long employeeId, @PathParam("start") int start, @PathParam("limit") int limit) {
+    @AccessCheck(companyContacts = {"Perf_Eval_Manager", "Reports_To"}, roles = {"ROLE_ADMIN"})
+    public TravelAuthorizationResource.TravelAurhorizationTable getTravelAuthorizationsForEmployee(@PathParam("employeeId") Long employeeId, @PathParam("start") int start, @PathParam("limit") int limit) {
         TravelAuthorizationResource.TravelAurhorizationTable tableObj = new TravelAuthorizationResource.TravelAurhorizationTable();
         tableObj.setEntities(travelAuthorizationDao.queryForEmployee(employeeId, start, limit));
         tableObj.setSize(travelAuthorizationDao.size(employeeId));
@@ -88,7 +93,6 @@ public class TravelAuthorizationResource extends CRUDResource<TravelAuthorizatio
 
     @PUT
     @Path("/delete/{id}")
-//    @AccessCheck(companyContacts = {"Reports_To"}, roles = {"ROLE_ADMIN"})
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @CacheEvict(value = OfficeCacheKeys.TRAVEL_AUTH, allEntries = true)
     @Override
@@ -99,7 +103,6 @@ public class TravelAuthorizationResource extends CRUDResource<TravelAuthorizatio
     @GET
     @Path("/report")
     @Produces({"application/pdf"})
-//    @AccessCheck(companyContacts = {"Reports_To"}, roles = {"ROLE_ADMIN"})
     public Response getReport(@QueryParam("id") Long id) {
         return TravelAuthorizationService.instance().getReport(travelAuthorizationDao.findById(id));
     }
