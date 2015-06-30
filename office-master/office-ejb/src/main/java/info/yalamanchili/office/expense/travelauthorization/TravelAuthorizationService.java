@@ -80,6 +80,18 @@ public class TravelAuthorizationService {
         data.getData().put("department", entity.getDepartment());
         data.getData().put("travelDestination", entity.getTravelDestination());
         data.getData().put("reasonForTravel", entity.getReasonForTravel());
+        //Travel Information
+        switch (entity.getTravelType()) {
+            case IN_STATE:
+                data.getData().put("travelTypeInState", "true");
+                break;
+            case OUT_OF_STATE:
+                data.getData().put("travelTypeOutOfState", "true");
+                break;
+            case INTERNATIONAL:
+                data.getData().put("travelTypeInternational", "true");
+                break;
+        }
 
         byte[] pdf = PDFUtils.generatePdf(data);
         return Response.ok(pdf)
