@@ -80,6 +80,7 @@ public class TravelAuthorizationProcess implements TaskListener {
             new GenericTaskCompleteNotification().notify(task);
         }
         TravelAuthorizationDao.instance().save(entity);
+        task.getExecution().setVariable("entity", entity);
     }
 
     protected void adminApprovalTaskComplete(TravelAuthorization entity, DelegateTask task) {
@@ -94,6 +95,7 @@ public class TravelAuthorizationProcess implements TaskListener {
             entity.setTravelExpenseRequisitionStatus(TravelAuthorizationStatus.REJECTED);
         }
         TravelAuthorizationDao.instance().save(entity);
+        task.getExecution().setVariable("entity", entity);
         new GenericTaskCompleteNotification().notifyWithMoreRoles(task, OfficeRoles.OfficeRole.ROLE_ADMIN.name());
     }
 
@@ -105,6 +107,7 @@ public class TravelAuthorizationProcess implements TaskListener {
         entity.setTravelExpenseRequisitionStatus(TravelAuthorizationStatus.PENDING_MANAGER_APPROVAL);
         entity.setEmployee(emp);
         entity = dao.save(entity);
+        CommentDao.instance().addComment("Save Travel Authorizaton Expense", entity);
         task.getExecution().setVariable("entity", entity);
         task.getExecution().setVariable("entityId", entity.getId());
     }
