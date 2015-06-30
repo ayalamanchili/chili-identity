@@ -23,7 +23,7 @@ import info.chili.gwt.composite.BaseField;
 import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.IntegerField;
-import info.chili.gwt.fields.StringField;
+import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.resources.ChiliImages;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ClickableImage;
@@ -35,7 +35,7 @@ import java.math.BigDecimal;
  *
  * @author ayalamanchili
  */
-public class TravelTransportationPanel extends ALComposite implements ChangeHandler, BlurHandler, ClickHandler{
+public class TravelTransportationPanel extends ALComposite implements ChangeHandler, BlurHandler, ClickHandler {
 
     protected FlowPanel panel = new FlowPanel();
     EnumField travelTransportationType;
@@ -43,9 +43,9 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
     CurrencyField costPerMile;
     CurrencyField totalTransportationCost;
     CurrencyField estimatedCostOfOtherTransportation;
-    StringField rentalVehicleJustification;
+    TextAreaField rentalVehicleJustification;
     EnumField travelRentalVehicleType;
-    StringField otherVehicleTypeJustification;
+    TextAreaField otherVehicleTypeJustification;
 
     boolean readyOnly;
     JSONObject entity;
@@ -93,7 +93,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
 
     @Override
     protected void addWidgets() {
-        travelTransportationType = new EnumField(OfficeWelcome.constants, 
+        travelTransportationType = new EnumField(OfficeWelcome.constants,
                 "travelTransportationType", "TravelAuthorization", readyOnly, false, TravelTransportationType.names(), Alignment.HORIZONTAL);
         totalMiles = new IntegerField(OfficeWelcome.constants,
                 "totalMiles", "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
@@ -104,11 +104,11 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         renderUpdatePaymentTypeLink();
         estimatedCostOfOtherTransportation = new CurrencyField(OfficeWelcome.constants,
                 "estimatedCostOfOtherTransportation", "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
-        rentalVehicleJustification = new StringField(OfficeWelcome.constants,
+        rentalVehicleJustification = new TextAreaField(OfficeWelcome.constants,
                 "rentalVehicleJustification", "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
-        travelRentalVehicleType = new EnumField(OfficeWelcome.constants, 
+        travelRentalVehicleType = new EnumField(OfficeWelcome.constants,
                 "travelRentalVehicleType", "TravelAuthorization", readyOnly, false, TravelRentalVehicleType.names(), Alignment.HORIZONTAL);
-        otherVehicleTypeJustification = new StringField(OfficeWelcome.constants,
+        otherVehicleTypeJustification = new TextAreaField(OfficeWelcome.constants,
                 "otherVehicleTypeJustification", "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         panel.add(travelTransportationType);
         panel.add(totalMiles);
@@ -172,55 +172,64 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
 
     @Override
     public void onChange(ChangeEvent event) {
-        if (travelTransportationType.getValue().equals(TravelTransportationType.AIR.name())) {
-            renderMiles(false);
-            renderRentalJustification(false);
+        if (event.getSource().equals(travelTransportationType.listBox)) {
+            if (travelTransportationType.getValue().equals(TravelTransportationType.AIR.name())) {
+                renderMiles(false);
+                renderRentalJustification(false);
+            }
+            if (travelTransportationType.getValue().equals(TravelTransportationType.BUS.name())) {
+                renderMiles(false);
+                renderRentalJustification(false);
+            }
+            if (travelTransportationType.getValue().equals(TravelTransportationType.RAILWAY.name())) {
+                renderMiles(false);
+                renderRentalJustification(false);
+            }
+            if (travelTransportationType.getValue().equals(TravelTransportationType.COMPANY_VEHICLE.name())) {
+                renderMiles(true);
+                renderRentalJustification(false);
+            }
+            if (travelTransportationType.getValue().equals(TravelTransportationType.PRIVATE_VEHICLE.name())) {
+                renderMiles(true);
+                renderRentalJustification(false);
+            }
+            if (travelTransportationType.getValue().equals(TravelTransportationType.RENTAL_VEHICLE.name())) {
+                renderMiles(true);
+                renderRentalJustification(true);
+            }
+            if (travelTransportationType.getValue().equals(TravelTransportationType.OTHER.name())) {
+                renderMiles(false);
+                renderRentalJustification(false);
+            }
+        } else if (event.getSource().equals(travelRentalVehicleType.listBox)) {
+            if (travelRentalVehicleType.getValue().equals(TravelRentalVehicleType.OTHER.name())) {
+                otherVehicleTypeJustification.setVisible(true);
+            } else {
+                otherVehicleTypeJustification.setVisible(false);
+            }
         }
-        if (travelTransportationType.getValue().equals(TravelTransportationType.BUS.name())) {
-            renderMiles(false);
-            renderRentalJustification(false);
-        }
-        if (travelTransportationType.getValue().equals(TravelTransportationType.RAILWAY.name())) {
-            renderMiles(false);
-            renderRentalJustification(false);
-        }
-        if (travelTransportationType.getValue().equals(TravelTransportationType.COMPANY_VEHICLE.name())) {
-            renderMiles(true);
-            renderRentalJustification(false);
-        }
-        if (travelTransportationType.getValue().equals(TravelTransportationType.PRIVATE_VEHICLE.name())) {
-            renderMiles(true);
-            renderRentalJustification(false);
-        }
-        if (travelTransportationType.getValue().equals(TravelTransportationType.RENTAL_VEHICLE.name())) {
-            renderMiles(true);
-            renderRentalJustification(true);
-        }
-        if (travelTransportationType.getValue().equals(TravelTransportationType.OTHER.name())) {
-            renderMiles(false);
-            renderRentalJustification(false);
-        }
+
     }
 
     protected void renderMiles(boolean render) {
         costPerMile.setVisible(render);
         totalMiles.setVisible(render);
     }
-    
+
     protected void renderRentalJustification(boolean render) {
         estimatedCostOfOtherTransportation.setVisible(render);
         rentalVehicleJustification.setVisible(render);
         travelRentalVehicleType.setVisible(render);
-        otherVehicleTypeJustification.setVisible(render);
+        otherVehicleTypeJustification.setVisible(false);
+
     }
-    
+
     ClickableImage updatePaymentType = new ClickableImage("Select Expense Payment Type", ChiliImages.INSTANCE.updateIcon_16_16());
 
     protected void renderUpdatePaymentTypeLink() {
         BaseField paymentTypeField = totalTransportationCost;
         paymentTypeField.addWidgetToFieldPanel(updatePaymentType);
     }
-    
 
     @Override
     public void onClick(ClickEvent event) {
