@@ -6,13 +6,19 @@
 package info.yalamanchili.office.client.expense.travelauthorization;
 
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.composite.BaseField;
 import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.fields.IntegerField;
+import info.chili.gwt.resources.ChiliImages;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.widgets.ClickableImage;
+import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.OfficeWelcome;
 import java.math.BigDecimal;
 
@@ -20,7 +26,7 @@ import java.math.BigDecimal;
  *
  * @author ayalamanchili
  */
-public class TravelAccommodationPanel extends ALComposite {
+public class TravelAccommodationPanel extends ALComposite implements ClickHandler {
 
     protected FlowPanel panel = new FlowPanel();
 
@@ -45,7 +51,7 @@ public class TravelAccommodationPanel extends ALComposite {
 
     @Override
     protected void addListeners() {
-
+        updatePaymentType.addClickHandler(this);
     }
 
     @Override
@@ -63,7 +69,7 @@ public class TravelAccommodationPanel extends ALComposite {
                 "lodgingCostPerNight", "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         totalLodgingCost = new CurrencyField(OfficeWelcome.constants,
                 "totalLodgingCost", "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
-
+        renderUpdatePaymentTypeLink();
         panel.add(noOfLodgingDays);
         panel.add(lodgingCostPerDay);
         panel.add(totalLodgingCost);
@@ -93,5 +99,19 @@ public class TravelAccommodationPanel extends ALComposite {
             entity.put("totalLodgingCost", new JSONString(totalLodgingCost.getCurrency().toString()));
         }
         return entity;
+    }
+
+    ClickableImage updatePaymentType = new ClickableImage("Select Expense Payment Type", ChiliImages.INSTANCE.updateIcon_16_16());
+
+    protected void renderUpdatePaymentTypeLink() {
+        BaseField paymentTypeField = totalLodgingCost;
+        paymentTypeField.addWidgetToFieldPanel(updatePaymentType);
+    }
+
+    @Override
+    public void onClick(ClickEvent event) {
+        if (event.getSource().equals(updatePaymentType)) {
+            new GenericPopup(new ExpensePaymentTypePanel(false)).show();
+        }
     }
 }

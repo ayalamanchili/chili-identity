@@ -10,25 +10,34 @@ import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.composite.BaseField;
+import info.chili.gwt.crud.CRUDComposite;
 import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.IntegerField;
 import info.chili.gwt.fields.StringField;
+import info.chili.gwt.resources.ChiliImages;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.widgets.ClickableImage;
+import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.expense.travelauthorizationtransactions.ExpensePaymentType;
 import info.yalamanchili.office.client.expense.travelauthorizationtransactions.TravelRentalVehicleType;
 import info.yalamanchili.office.client.expense.travelauthorizationtransactions.TravelTransportationType;
+import info.yalamanchili.office.client.profile.updateBillingRate.CreateUpdateBillingRatePanel;
 import java.math.BigDecimal;
 
 /**
  *
  * @author ayalamanchili
  */
-public class TravelTransportationPanel extends ALComposite implements ChangeHandler, BlurHandler {
+public class TravelTransportationPanel extends ALComposite implements ChangeHandler, BlurHandler, ClickHandler{
 
     protected FlowPanel panel = new FlowPanel();
     EnumField travelTransportationType;
@@ -65,6 +74,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         rentalVehicleJustification.getTextbox().addBlurHandler(this);
         travelRentalVehicleType.listBox.addChangeHandler(this);
         otherVehicleTypeJustification.getTextbox().addBlurHandler(this);
+        updatePaymentType.addClickHandler(this);
     }
 
     @Override
@@ -93,6 +103,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
                 "costPerMile", "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         totalTransportationCost = new CurrencyField(OfficeWelcome.constants,
                 "totalTransportationCost", "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
+        renderUpdatePaymentTypeLink();
         estimatedCostOfOtherTransportation = new CurrencyField(OfficeWelcome.constants,
                 "estimatedCostOfOtherTransportation", "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         rentalVehicleJustification = new StringField(OfficeWelcome.constants,
@@ -203,6 +214,22 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         rentalVehicleJustification.setVisible(render);
         travelRentalVehicleType.setVisible(render);
         otherVehicleTypeJustification.setVisible(render);
+    }
+    
+    ClickableImage updatePaymentType = new ClickableImage("Select Expense Payment Type", ChiliImages.INSTANCE.updateIcon_16_16());
+
+    protected void renderUpdatePaymentTypeLink() {
+        BaseField paymentTypeField = totalTransportationCost;
+        paymentTypeField.addWidgetToFieldPanel(updatePaymentType);
+    }
+    
+
+    @Override
+    public void onClick(ClickEvent event) {
+//        super.onClick(event);
+        if (event.getSource().equals(updatePaymentType)) {
+            new GenericPopup(new ExpensePaymentTypePanel(false)).show();
+        }
     }
 
     @Override

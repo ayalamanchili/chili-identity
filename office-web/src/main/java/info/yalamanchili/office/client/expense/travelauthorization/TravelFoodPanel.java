@@ -6,12 +6,18 @@
 package info.yalamanchili.office.client.expense.travelauthorization;
 
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.composite.BaseField;
 import info.chili.gwt.fields.CurrencyField;
+import info.chili.gwt.resources.ChiliImages;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.widgets.ClickableImage;
+import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.OfficeWelcome;
 import java.math.BigDecimal;
 
@@ -19,7 +25,7 @@ import java.math.BigDecimal;
  *
  * @author ayalamanchili
  */
-public class TravelFoodPanel extends ALComposite {
+public class TravelFoodPanel extends ALComposite implements ClickHandler {
 
     protected FlowPanel panel = new FlowPanel();
 
@@ -45,7 +51,10 @@ public class TravelFoodPanel extends ALComposite {
 
     @Override
     protected void addListeners() {
-
+        updateFoodPaymentType.addClickHandler(this);
+        updateConferencePaymentType.addClickHandler(this);
+        updateBanquetPaymentType.addClickHandler(this);
+        updateOtherExpencesPaymentType.addClickHandler(this);
     }
 
     @Override
@@ -66,7 +75,7 @@ public class TravelFoodPanel extends ALComposite {
                 "totalCostOfBanquet", "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         otherExpences = new CurrencyField(OfficeWelcome.constants,
                 "otherExpences", "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
-
+        renderUpdatePaymentTypeLink();
         panel.add(totalCostOfFood);
         panel.add(conferenceFee);
         panel.add(totalCostOfBanquet);
@@ -103,5 +112,30 @@ public class TravelFoodPanel extends ALComposite {
             entity.put("otherExpences", new JSONString(otherExpences.getCurrency().toString()));
         }
         return entity;
+    }
+    
+    ClickableImage updateFoodPaymentType = new ClickableImage("Select Expense Payment Type", ChiliImages.INSTANCE.updateIcon_16_16());
+    ClickableImage updateConferencePaymentType = new ClickableImage("Select Expense Payment Type", ChiliImages.INSTANCE.updateIcon_16_16());
+    ClickableImage updateBanquetPaymentType = new ClickableImage("Select Expense Payment Type", ChiliImages.INSTANCE.updateIcon_16_16());
+    ClickableImage updateOtherExpencesPaymentType = new ClickableImage("Select Expense Payment Type", ChiliImages.INSTANCE.updateIcon_16_16());
+
+    protected void renderUpdatePaymentTypeLink() {
+        BaseField paymentTypeField = totalCostOfFood;
+        paymentTypeField.addWidgetToFieldPanel(updateFoodPaymentType);
+        paymentTypeField = conferenceFee;
+        paymentTypeField.addWidgetToFieldPanel(updateConferencePaymentType);
+        paymentTypeField = totalCostOfBanquet;
+        paymentTypeField.addWidgetToFieldPanel(updateBanquetPaymentType);
+        paymentTypeField = otherExpences;
+        paymentTypeField.addWidgetToFieldPanel(updateOtherExpencesPaymentType);
+    }
+
+    @Override
+    public void onClick(ClickEvent event) {
+        if ( (event.getSource().equals(updateFoodPaymentType))    || (event.getSource().equals(updateConferencePaymentType    )) ||
+             (event.getSource().equals(updateBanquetPaymentType)) ||  (event.getSource().equals(updateOtherExpencesPaymentType)) )      
+        {
+            new GenericPopup(new ExpensePaymentTypePanel(false)).show();
+        }
     }
 }
