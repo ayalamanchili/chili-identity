@@ -19,6 +19,7 @@ import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.expense.travelauthorization.TravelAuthorization;
 import info.yalamanchili.office.entity.profile.Employee;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,13 +73,17 @@ public class TravelAuthorizationService {
         Employee preparedBy = entity.getEmployee();
         String prepareByStr = preparedBy.getLastName() + ", " + preparedBy.getFirstName();
         data.getData().put("employeeName", prepareByStr);
+        data.getData().put("departureDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getDepartureDate()));
+        data.getData().put("returnDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getReturnDate()));
+        data.getData().put("department", entity.getDepartment());
+        data.getData().put("travelDestination", entity.getTravelDestination());
+        data.getData().put("reasonForTravel", entity.getReasonForTravel());
 
         byte[] pdf = PDFUtils.generatePdf(data);
         return Response.ok(pdf)
                 .header("content-disposition", "filename = travel-authorization.pdf")
                 .header("Content-Length", pdf)
                 .build();
-
     }
 
     public static TravelAuthorizationService instance() {

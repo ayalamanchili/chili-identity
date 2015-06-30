@@ -88,7 +88,8 @@ public class TravelAuthorizationResource extends CRUDResource<TravelAuthorizatio
 
     @PUT
     @Path("/delete/{id}")
-    @AccessCheck(companyContacts = {"Reports_To"}, roles = {"ROLE_ADMIN"})
+//    @AccessCheck(companyContacts = {"Reports_To"}, roles = {"ROLE_ADMIN"})
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @CacheEvict(value = OfficeCacheKeys.TRAVEL_AUTH, allEntries = true)
     @Override
     public void delete(@PathParam("id") Long id) {
@@ -98,7 +99,7 @@ public class TravelAuthorizationResource extends CRUDResource<TravelAuthorizatio
     @GET
     @Path("/report")
     @Produces({"application/pdf"})
-    @AccessCheck(companyContacts = {"Reports_To"}, roles = {"ROLE_ADMIN"})
+//    @AccessCheck(companyContacts = {"Reports_To"}, roles = {"ROLE_ADMIN"})
     public Response getReport(@QueryParam("id") Long id) {
         return TravelAuthorizationService.instance().getReport(travelAuthorizationDao.findById(id));
     }
