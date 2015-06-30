@@ -1,21 +1,25 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.client.expense.travelauthorizationtransactions;
+package info.yalamanchili.office.client.expense.travelauthorization;
 
 /**
  *
  * @author prasanthi.p
  */
-public enum TravelRentalVehicleType {
+public enum TravelAuthorizationStatus {
 
-    MID_SIZE,
-    COMPACT,
-    OTHER;
+    PENDING_MANAGER_APPROVAL,
+    PENDING_CEO_APPROVAL,
+    APPROVED,
+    REJECTED;
 
     public static String[] names() {
-        TravelRentalVehicleType[] values = values();
+        TravelAuthorizationStatus[] values = values();
         String[] names = new String[values.length];
         for (int i = 0; i < values.length; i++) {
             names[i] = values[i].name();

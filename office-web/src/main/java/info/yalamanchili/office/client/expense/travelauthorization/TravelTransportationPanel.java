@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -17,7 +20,6 @@ import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.composite.BaseField;
-import info.chili.gwt.crud.CRUDComposite;
 import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.IntegerField;
@@ -27,10 +29,6 @@ import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ClickableImage;
 import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.expense.travelauthorizationtransactions.ExpensePaymentType;
-import info.yalamanchili.office.client.expense.travelauthorizationtransactions.TravelRentalVehicleType;
-import info.yalamanchili.office.client.expense.travelauthorizationtransactions.TravelTransportationType;
-import info.yalamanchili.office.client.profile.updateBillingRate.CreateUpdateBillingRatePanel;
 import java.math.BigDecimal;
 
 /**
@@ -79,14 +77,14 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
 
     @Override
     protected void configure() {
-        travelTransportationType.getLabel().getElement().getStyle().setWidth(340, Style.Unit.PX);
-        totalMiles.getLabel().getElement().getStyle().setWidth(340, Style.Unit.PX);
-        costPerMile.getLabel().getElement().getStyle().setWidth(340, Style.Unit.PX);
-        totalTransportationCost.getLabel().getElement().getStyle().setWidth(340, Style.Unit.PX);
-        estimatedCostOfOtherTransportation.getLabel().getElement().getStyle().setWidth(340, Style.Unit.PX);
-        rentalVehicleJustification.getLabel().getElement().getStyle().setWidth(340, Style.Unit.PX);
-        travelRentalVehicleType.getLabel().getElement().getStyle().setWidth(340, Style.Unit.PX);
-        otherVehicleTypeJustification.getLabel().getElement().getStyle().setWidth(340, Style.Unit.PX);
+        travelTransportationType.getLabel().getElement().getStyle().setWidth(TravelAuthConstants.defaultFieldWidth, Style.Unit.PX);
+        totalMiles.getLabel().getElement().getStyle().setWidth(TravelAuthConstants.defaultFieldWidth, Style.Unit.PX);
+        costPerMile.getLabel().getElement().getStyle().setWidth(TravelAuthConstants.defaultFieldWidth, Style.Unit.PX);
+        totalTransportationCost.getLabel().getElement().getStyle().setWidth(TravelAuthConstants.defaultFieldWidth, Style.Unit.PX);
+        estimatedCostOfOtherTransportation.getLabel().getElement().getStyle().setWidth(TravelAuthConstants.defaultFieldWidth, Style.Unit.PX);
+        rentalVehicleJustification.getLabel().getElement().getStyle().setWidth(TravelAuthConstants.defaultFieldWidth, Style.Unit.PX);
+        travelRentalVehicleType.getLabel().getElement().getStyle().setWidth(TravelAuthConstants.defaultFieldWidth, Style.Unit.PX);
+        otherVehicleTypeJustification.getLabel().getElement().getStyle().setWidth(TravelAuthConstants.defaultFieldWidth, Style.Unit.PX);
         if (!readyOnly) {
             renderMiles(false);
             renderRentalJustification(false);
@@ -102,7 +100,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         costPerMile = new CurrencyField(OfficeWelcome.constants,
                 "costPerMile", "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         totalTransportationCost = new CurrencyField(OfficeWelcome.constants,
-                "totalTransportationCost", "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
+                TravelAuthConstants.TOTAL_TRANSPORTATION_COST, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         renderUpdatePaymentTypeLink();
         estimatedCostOfOtherTransportation = new CurrencyField(OfficeWelcome.constants,
                 "estimatedCostOfOtherTransportation", "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
@@ -129,8 +127,8 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         if (entity.get("costPerMile") != null) {
             costPerMile.setValue(new BigDecimal(entity.get("costPerMile").isString().stringValue()), true);
         }
-        if (entity.get("totalTransportationCost") != null) {
-            totalTransportationCost.setValue(new BigDecimal(entity.get("totalTransportationCost").isString().stringValue()), true);
+        if (entity.get(TravelAuthConstants.TOTAL_TRANSPORTATION_COST) != null) {
+            totalTransportationCost.setValue(new BigDecimal(entity.get(TravelAuthConstants.TOTAL_TRANSPORTATION_COST).isString().stringValue()), true);
         }
         if (entity.get("estimatedCostOfOtherTransportation") != null) {
             estimatedCostOfOtherTransportation.setValue(new BigDecimal(entity.get("estimatedCostOfOtherTransportation").isString().stringValue()), true);
@@ -155,7 +153,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
             entity.put("costPerMile", new JSONString(costPerMile.getCurrency().toString()));
         }
         if (totalTransportationCost.getCurrency() != null) {
-            entity.put("totalTransportationCost", new JSONString(totalTransportationCost.getCurrency().toString()));
+            entity.put(TravelAuthConstants.TOTAL_TRANSPORTATION_COST, new JSONString(totalTransportationCost.getCurrency().toString()));
         }
         if (estimatedCostOfOtherTransportation.getCurrency() != null) {
             entity.put("estimatedCostOfOtherTransportation", new JSONString(estimatedCostOfOtherTransportation.getCurrency().toString()));

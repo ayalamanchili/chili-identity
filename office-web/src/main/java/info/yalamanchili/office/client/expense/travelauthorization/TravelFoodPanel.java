@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -59,16 +62,16 @@ public class TravelFoodPanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void configure() {
-        totalCostOfFood.getLabel().getElement().getStyle().setWidth(340, Style.Unit.PX);
-        conferenceFee.getLabel().getElement().getStyle().setWidth(340, Style.Unit.PX);
-        totalCostOfBanquet.getLabel().getElement().getStyle().setWidth(340, Style.Unit.PX);
-        otherExpences.getLabel().getElement().getStyle().setWidth(340, Style.Unit.PX);
+        totalCostOfFood.getLabel().getElement().getStyle().setWidth(TravelAuthConstants.defaultFieldWidth, Style.Unit.PX);
+        conferenceFee.getLabel().getElement().getStyle().setWidth(TravelAuthConstants.defaultFieldWidth, Style.Unit.PX);
+        totalCostOfBanquet.getLabel().getElement().getStyle().setWidth(TravelAuthConstants.defaultFieldWidth, Style.Unit.PX);
+        otherExpences.getLabel().getElement().getStyle().setWidth(TravelAuthConstants.defaultFieldWidth, Style.Unit.PX);
     }
 
     @Override
     protected void addWidgets() {
         totalCostOfFood = new CurrencyField(OfficeWelcome.constants,
-                "totalCostOfFood", "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
+                TravelAuthConstants.TOTAL_COST_OF_FOOD, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         conferenceFee = new CurrencyField(OfficeWelcome.constants,
                 "conferenceFee", "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         totalCostOfBanquet = new CurrencyField(OfficeWelcome.constants,
@@ -83,8 +86,8 @@ public class TravelFoodPanel extends ALComposite implements ClickHandler {
     }
 
     protected final void populateFields() {
-        if (entity.get("totalCostOfFood") != null) {
-            totalCostOfFood.setValue(new BigDecimal(entity.get("totalCostOfFood").isString().stringValue()), true);
+        if (entity.get(TravelAuthConstants.TOTAL_COST_OF_FOOD) != null) {
+            totalCostOfFood.setValue(new BigDecimal(entity.get(TravelAuthConstants.TOTAL_COST_OF_FOOD).isString().stringValue()), true);
         }
         if (entity.get("conferenceFee") != null) {
             conferenceFee.setValue(new BigDecimal(entity.get("conferenceFee").isString().stringValue()), true);
@@ -100,7 +103,7 @@ public class TravelFoodPanel extends ALComposite implements ClickHandler {
     public JSONObject getObject() {
         entity = new JSONObject();
         if (totalCostOfFood.getCurrency() != null) {
-            entity.put("totalCostOfFood", new JSONString(totalCostOfFood.getCurrency().toString()));
+            entity.put(TravelAuthConstants.TOTAL_COST_OF_FOOD, new JSONString(totalCostOfFood.getCurrency().toString()));
         }
         if (conferenceFee.getCurrency() != null) {
             entity.put("conferenceFee", new JSONString(conferenceFee.getCurrency().toString()));
@@ -113,7 +116,7 @@ public class TravelFoodPanel extends ALComposite implements ClickHandler {
         }
         return entity;
     }
-    
+
     ClickableImage updateFoodPaymentType = new ClickableImage("Select Expense Payment Type", ChiliImages.INSTANCE.updateIcon_16_16());
     ClickableImage updateConferencePaymentType = new ClickableImage("Select Expense Payment Type", ChiliImages.INSTANCE.updateIcon_16_16());
     ClickableImage updateBanquetPaymentType = new ClickableImage("Select Expense Payment Type", ChiliImages.INSTANCE.updateIcon_16_16());
@@ -132,9 +135,8 @@ public class TravelFoodPanel extends ALComposite implements ClickHandler {
 
     @Override
     public void onClick(ClickEvent event) {
-        if ( (event.getSource().equals(updateFoodPaymentType))    || (event.getSource().equals(updateConferencePaymentType    )) ||
-             (event.getSource().equals(updateBanquetPaymentType)) ||  (event.getSource().equals(updateOtherExpencesPaymentType)) )      
-        {
+        if ((event.getSource().equals(updateFoodPaymentType)) || (event.getSource().equals(updateConferencePaymentType))
+                || (event.getSource().equals(updateBanquetPaymentType)) || (event.getSource().equals(updateOtherExpencesPaymentType))) {
             new GenericPopup(new ExpensePaymentTypePanel(false)).show();
         }
     }

@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -13,7 +16,6 @@ import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.expense.travelauthorizationtransactions.TravelType;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import java.util.logging.Logger;

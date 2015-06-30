@@ -15,7 +15,6 @@ import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.expense.travelauthorizationtransactions.ExpensePaymentType;
 
 /**
  *

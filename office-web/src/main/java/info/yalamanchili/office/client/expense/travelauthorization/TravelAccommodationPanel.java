@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -68,7 +71,7 @@ public class TravelAccommodationPanel extends ALComposite implements ClickHandle
         lodgingCostPerDay = new CurrencyField(OfficeWelcome.constants,
                 "lodgingCostPerNight", "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         totalLodgingCost = new CurrencyField(OfficeWelcome.constants,
-                "totalLodgingCost", "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
+                TravelAuthConstants.TOTAL_LODGING_COST, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         renderUpdatePaymentTypeLink();
         panel.add(noOfLodgingDays);
         panel.add(lodgingCostPerDay);
@@ -82,8 +85,8 @@ public class TravelAccommodationPanel extends ALComposite implements ClickHandle
         if (entity.get("lodgingCostPerNight") != null) {
             lodgingCostPerDay.setValue(new BigDecimal(entity.get("lodgingCostPerNight").isString().stringValue()), true);
         }
-        if (entity.get("totalLodgingCost") != null) {
-            totalLodgingCost.setValue(new BigDecimal(entity.get("totalLodgingCost").isString().stringValue()), true);
+        if (entity.get(TravelAuthConstants.TOTAL_LODGING_COST) != null) {
+            totalLodgingCost.setValue(new BigDecimal(entity.get(TravelAuthConstants.TOTAL_LODGING_COST).isString().stringValue()), true);
         }
     }
 
@@ -96,7 +99,7 @@ public class TravelAccommodationPanel extends ALComposite implements ClickHandle
             entity.put("lodgingCostPerNight", new JSONString(lodgingCostPerDay.getCurrency().toString()));
         }
         if (totalLodgingCost.getCurrency() != null) {
-            entity.put("totalLodgingCost", new JSONString(totalLodgingCost.getCurrency().toString()));
+            entity.put(TravelAuthConstants.TOTAL_LODGING_COST, new JSONString(totalLodgingCost.getCurrency().toString()));
         }
         return entity;
     }
