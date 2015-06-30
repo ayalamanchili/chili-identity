@@ -50,9 +50,9 @@ public class TravelAccommodationPanel extends ALComposite {
 
     @Override
     protected void configure() {
-        noOfLodgingDays.getLabel().getElement().getStyle().setWidth(240, Style.Unit.PX);
-        lodgingCostPerDay.getLabel().getElement().getStyle().setWidth(240, Style.Unit.PX);
-        totalLodgingCost.getLabel().getElement().getStyle().setWidth(240, Style.Unit.PX);
+        noOfLodgingDays.getLabel().getElement().getStyle().setWidth(340, Style.Unit.PX);
+        lodgingCostPerDay.getLabel().getElement().getStyle().setWidth(340, Style.Unit.PX);
+        totalLodgingCost.getLabel().getElement().getStyle().setWidth(340, Style.Unit.PX);
     }
 
     @Override

@@ -50,10 +50,10 @@ public class TravelFoodPanel extends ALComposite {
 
     @Override
     protected void configure() {
-        totalCostOfFood.getLabel().getElement().getStyle().setWidth(240, Style.Unit.PX);
-        conferenceFee.getLabel().getElement().getStyle().setWidth(240, Style.Unit.PX);
-        totalCostOfBanquet.getLabel().getElement().getStyle().setWidth(240, Style.Unit.PX);
-        otherExpences.getLabel().getElement().getStyle().setWidth(240, Style.Unit.PX);
+        totalCostOfFood.getLabel().getElement().getStyle().setWidth(340, Style.Unit.PX);
+        conferenceFee.getLabel().getElement().getStyle().setWidth(340, Style.Unit.PX);
+        totalCostOfBanquet.getLabel().getElement().getStyle().setWidth(340, Style.Unit.PX);
+        otherExpences.getLabel().getElement().getStyle().setWidth(340, Style.Unit.PX);
     }
 
     @Override

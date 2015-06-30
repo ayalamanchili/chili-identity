@@ -13,7 +13,6 @@ import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
-import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -27,21 +26,20 @@ import java.util.logging.Logger;
 public class CreateTravelAuthorizationPanel extends CreateComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(CreateTravelAuthorizationPanel.class.getName());
-    protected static HTML tripInfoHelpText = new HTML("<hr />\n"
-            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\"><strong style=\"color:#819FF7\">Trip Information</strong></p>\n"
+    protected static HTML tripInfoHelpText = new HTML("\n"
+            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
+            + "<strong style=\"color:#555555\">Trip Information</strong></p>\n"
             + "\n"
             + "<ul>\n"
             + "</ul>");
-    protected static HTML estimatedExpensesHelpText = new HTML("<hr />\n"
-            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\"><strong style=\"color:#819FF7\">Estimated Expenses</strong></p>\n"
+    protected static HTML estimatedExpensesHelpText = new HTML("\n"
+            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238)\">"
+            + "<strong style=\"color:#555555\">Estimated Expenses</strong></p>\n"
             + "\n");
-    HTML tacHelpText = new HTML("<h5> "
-            + "Estimate all expenses to be incurred and indicate method of payment.</h5>");
-    HTML transportation = new HTML("<h4 style=\"color:#819FF7\">" + "Transportation</h4>");
-    HTML lodging = new HTML("<h4 style=\"color:#819FF7\">  " + "Accommodation</h4>");
-    HTML meals = new HTML("<h4 style=\"color:#819FF7\"> " + "Food</h4>");
-    HTML comment = new HTML("<h5> "
-            + " *Applicable only when RENTAL_VEHICALE selected as transpotation type.*</h5>");
+    HTML tacHelpText = new HTML("<h4 style=\"color:#888\">" + "Estimate all expenses to be incurred and indicate method of payment.</h4>");
+    HTML transportation = new HTML("<h4 style=\"color:#427fed\">" + "Transportation</h4>");
+    HTML lodging = new HTML("<h4 style=\"color:#427fed\">  " + "Accommodation</h4>");
+    HTML meals = new HTML("<h4 style=\"color:#427fed\"> " + "Food</h4>");
 
     TravelTransportationPanel travelTransportationItem = new TravelTransportationPanel(false);
     TravelAccommodationPanel lodgingItemPanel = new TravelAccommodationPanel(false);
@@ -91,7 +89,7 @@ public class CreateTravelAuthorizationPanel extends CreateComposite implements C
         entityFieldsPanel.add(meals);
         entityFieldsPanel.add(mealsItemPanel);
 //        addEnumField("expenseAccommodationPaymentType", false, true, ExpensePaymentType.names(), Alignment.HORIZONTAL);
-        alignFields(240);
+        alignFields(340);
     }
 
     @Override
