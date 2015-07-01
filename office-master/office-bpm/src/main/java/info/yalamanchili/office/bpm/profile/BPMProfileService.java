@@ -10,8 +10,6 @@ package info.yalamanchili.office.bpm.profile;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.types.AccountReset;
-import info.yalamanchili.office.entity.profile.Address;
-import info.yalamanchili.office.entity.profile.Employee;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;

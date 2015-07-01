@@ -12,11 +12,15 @@ import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
+import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.employee.statusreport.CorporateStatusReportDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.entity.employee.statusreport.CorporateStatusReport;
 import info.yalamanchili.office.entity.employee.statusreport.CropStatusReportStatus;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.jms.MessagingService;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 import org.dozer.Mapper;
@@ -41,10 +45,25 @@ public class CorporateStatusReportService {
         entity = corporateStatusReportDao.save(entity);
         if (submitForApproval) {
             entity.setStatus(CropStatusReportStatus.Approved);
-//            String bpmProcessId = startCorporateStatusReportProcess(entity);
-//            entity.setBpmProcessId(bpmProcessId);
+            notifyManager(entity);
         }
         return entity.getId().toString();
+    }
+
+    protected void notifyManager(CorporateStatusReport entity) {
+        Employee manager = CompanyContactDao.instance().getCompanyContactForEmployee(entity.getEmployee(), "Perf_Eval_Manager");
+        if (manager == null) {
+            manager = CompanyContactDao.instance().getCompanyContactForEmployee(entity.getEmployee(), "Reports_To");
+        }
+        if (manager != null) {
+            Email email = new Email();
+            email.addTo(manager.getPrimaryEmail().getEmail());
+            email.setSubject("Weekly Status Report submitted for " + entity.getEmployee().getFirstName() + " " + entity.getEmployee().getLastName() + " for " + new SimpleDateFormat("dd-MMM-yyyy").format(entity.getReportStartDate()) + "-" + new SimpleDateFormat("dd-MMM-yyyy").format(entity.getReportEndDate()));
+            email.setHtml(Boolean.TRUE);
+            email.setRichText(Boolean.TRUE);
+            email.setBody(entity.getReport());
+            MessagingService.instance().sendEmail(email);
+        }
     }
 
     protected static final String DIFF_STYLE = "<head>\n"
