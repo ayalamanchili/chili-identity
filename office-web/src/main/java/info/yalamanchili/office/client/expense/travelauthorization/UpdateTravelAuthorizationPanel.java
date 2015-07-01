@@ -9,7 +9,6 @@ package info.yalamanchili.office.client.expense.travelauthorization;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
-import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -20,7 +19,6 @@ import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import static info.yalamanchili.office.client.expense.travelauthorization.CreateTravelAuthorizationPanel.tripInfoHelpText;
 import java.util.logging.Logger;
 
 /**
@@ -56,14 +54,14 @@ public class UpdateTravelAuthorizationPanel extends UpdateComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                logger.info(response);
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
+                    @Override
+                    public void onResponse(String response) {
+                        logger.info(response);
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
 
-            }
-        });
+                    }
+                });
     }
 
     protected String getReadURI() {
@@ -89,26 +87,31 @@ public class UpdateTravelAuthorizationPanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postUpdateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postUpdateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("employee", entity, null);
+        logger.info(entity.toString());
         assignFieldValueFromEntity("travelType", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("departureDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("returnDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("travelDestination", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("reasonForTravel", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("reasonForTravel", entity, DataType.TEXT_AREA_FIELD);
+        if (entity.get("travelTransportation") != null) {
+            TravelTransportationPanel travelTransportationItem = new TravelTransportationPanel(entity.get("travelTransportation").isObject(), false);
+            entityFieldsPanel.add(travelTransportationItem);
+        }
+
     }
 
     @Override
@@ -137,13 +140,14 @@ public class UpdateTravelAuthorizationPanel extends UpdateComposite {
         entityFieldsPanel.add(estimatedExpensesHelpText);
         entityFieldsPanel.add(tacHelpText);
         entityFieldsPanel.add(transportation);
-        entityFieldsPanel.add(travelTransportationItem);
-        entityFieldsPanel.add(lodging);
-        entityFieldsPanel.add(lodgingItemPanel);
-        entityFieldsPanel.add(meals);
-        entityFieldsPanel.add(mealsItemPanel);
+
+//        entityFieldsPanel.add(travelTransportationItem);
+//        entityFieldsPanel.add(lodging);
+//        entityFieldsPanel.add(lodgingItemPanel);
+//        entityFieldsPanel.add(meals);
+//        entityFieldsPanel.add(mealsItemPanel);
 //        addEnumField("expenseAccommodationPaymentType", false, true, ExpensePaymentType.names(), Alignment.HORIZONTAL);
-        alignFields(340);
+        alignFields(TravelAuthConstants.defaultFieldWidth);
     }
 
     @Override

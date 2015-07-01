@@ -98,7 +98,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         totalMiles = new IntegerField(OfficeWelcome.constants,
                 "totalMiles", "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         costPerMile = new CurrencyField(OfficeWelcome.constants,
-                "costPerMile", "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
+                TravelAuthConstants.COST_PER_MILE, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         totalTransportationCost = new CurrencyField(OfficeWelcome.constants,
                 TravelAuthConstants.TOTAL_TRANSPORTATION_COST, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         renderUpdatePaymentTypeLink();
@@ -124,8 +124,8 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         if (entity.get("totalMiles") != null) {
             totalMiles.setInteger(Integer.valueOf(entity.get("totalMiles").isString().stringValue()));
         }
-        if (entity.get("costPerMile") != null) {
-            costPerMile.setValue(new BigDecimal(entity.get("costPerMile").isString().stringValue()), true);
+        if (entity.get(TravelAuthConstants.COST_PER_MILE) != null) {
+            costPerMile.setValue(new BigDecimal(entity.get(TravelAuthConstants.COST_PER_MILE).isString().stringValue()), true);
         }
         if (entity.get(TravelAuthConstants.TOTAL_TRANSPORTATION_COST) != null) {
             totalTransportationCost.setValue(new BigDecimal(entity.get(TravelAuthConstants.TOTAL_TRANSPORTATION_COST).isString().stringValue()), true);
@@ -150,7 +150,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
             entity.put("totalMiles", new JSONString(totalMiles.getInteger().toString()));
         }
         if (costPerMile.getCurrency() != null) {
-            entity.put("costPerMile", new JSONString(costPerMile.getCurrency().toString()));
+            entity.put(TravelAuthConstants.COST_PER_MILE, new JSONString(costPerMile.getCurrency().toString()));
         }
         if (totalTransportationCost.getCurrency() != null) {
             entity.put(TravelAuthConstants.TOTAL_TRANSPORTATION_COST, new JSONString(totalTransportationCost.getCurrency().toString()));
