@@ -42,9 +42,9 @@ import info.yalamanchili.office.client.profile.selfservice.ReadAllServiceTickets
 import java.util.logging.Logger;
 
 public class TreeEmployeePanel extends TreePanelComposite {
-
+    
     private static TreeEmployeePanel instance;
-
+    
     public static TreeEmployeePanel instance() {
         return instance;
     }
@@ -66,7 +66,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected static final String DEACTIVATION_USER_NODE = "deactivation";
     protected TreeSkillSetPanel skillSetTreePanel;
     protected TreeEmpReportsPanel empReportsPanel;
-
+    
     public TreeEmployeePanel(JSONObject emp) {
         super();
         instance = this;
@@ -76,21 +76,21 @@ public class TreeEmployeePanel extends TreePanelComposite {
         String name = JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName");
         init(name, OfficeWelcome.constants);
     }
-
+    
     @Override
     protected void addListeners() {
         // TODO Auto-generated method stub
     }
-
+    
     @Override
     protected void configure() {
     }
-
+    
     @Override
     public boolean expandTree() {
         return true;
     }
-
+    
     @Override
     protected void addWidgets() {
         addFirstChildLink("Addresses", ADDRESS_NODE);
@@ -119,12 +119,12 @@ public class TreeEmployeePanel extends TreePanelComposite {
         if (Auth.isCorporateEmployee()) {
             addFirstChildLink("Privacy", PRIVACY_NODE);
         }
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_SYSTEM_AND_NETWORK_ADMIN) && Auth.isEmployee(entity)) {
+        if ((Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_SYSTEM_AND_NETWORK_ADMIN) && Auth.isCorporateEmployee(entity)) || (Auth.isConsultantEmployee() && Auth.hasAnyOfRoles(ROLE.ROLE_CONSULTANT_TIME_ADMIN, ROLE.ROLE_ADMIN, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_SYSTEM_AND_NETWORK_ADMIN))) {
             addFirstChildLink("Deactivation", DEACTIVATION_USER_NODE);
         }
         this.rootItem.setState(true);
     }
-
+    
     @Override
     public void treeNodeSelected(String entityNodeKey) {
         if (ADDRESS_NODE.equals(entityNodeKey)) {
@@ -189,7 +189,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
                             }
                         });
             }
-
+            
         }
         if (PREFERENCES_NODE.equals(entityNodeKey)) {
             HttpService.HttpServiceAsync.instance().doGet(getPreferencesURI(), OfficeWelcome.instance().getHeaders(), true,
@@ -203,7 +203,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
                             }
                         }
                     });
-
+            
         }
         if (ROLES_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
@@ -212,7 +212,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         if (RESET_PASSWORD_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ResetPasswordPanel(CreateComposite.CreateCompositeType.CREATE));
-
+            
         } //TODO review
         if (skillSetTreePanel != null) {
             skillSetTreePanel.treeNodeSelected(entityNodeKey);
@@ -221,21 +221,21 @@ public class TreeEmployeePanel extends TreePanelComposite {
             empReportsPanel.treeNodeSelected(entityNodeKey);
         }
     }
-
+    
     @Override
     public void loadEntity() {
     }
-
+    
     @Override
     public void showEntity() {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadEmployeePanel(getEntityId()));
     }
-
+    
     protected String getPreferencesURI() {
         return OfficeWelcome.constants.root_url() + "employee/preferences/" + getEntityId();
     }
-
+    
     protected String getDeactivateuserURL() {
         return OfficeWelcome.constants.root_url() + "admin/deactivateuser/" + getEntityId();
     }
