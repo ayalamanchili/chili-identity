@@ -170,30 +170,30 @@ public class TravelAuthorizationService {
             }
         }
         //TravelAccommodation Information
-//        TravelAccommodation travelAccommodation = entity.getTravelAccommodation());
-//        if (travelAccommodation != null) {
-//            //ExpensePaymentType info
-//            switch (travelAccommodation.getExpensePaymentType()) {
-//                case EMPLOYEE_EXPENSE:
-//                    data.getData().put("expenseTransPaymentExp", "true");
-//                    break;
-//                case PO:
-//                    data.getData().put("expenseTransPaymentPo", "true");
-//                    break;
-//                case PURCHASING_CARD:
-//                    data.getData().put("expenseTransPaymentPurchasingCard", "true");
-//                    break;
-//            }
-//            if (travelAccommodation.getLodgingCostPerNight() != null) {
-//                data.getData().put("lodgingCostPerNight", travelAccommodation.getLodgingCostPerNight().setScale(2, BigDecimal.ROUND_UP).toString());
-//            }
-//            if (travelAccommodation.getNumberOfLodgingNights() != null) {
-//                data.getData().put("numberOfLodgingNights", travelAccommodation.getNumberOfLodgingNights().setScale(2, BigDecimal.ROUND_UP).toString());
-//            }
-//            if (travelAccommodation.getTotalLodgingCost() != null) {
-//                data.getData().put("totalLodgingCost", travelAccommodation.getTotalLodgingCost().setScale(2, BigDecimal.ROUND_UP).toString());
-//            }
-//        }
+        TravelAccommodation travelAccommodation = entity.getTravelAccommodation();
+        if (travelAccommodation != null) {
+            //ExpensePaymentType info
+            switch (travelAccommodation.getExpensePaymentType()) {
+                case EMPLOYEE_EXPENSE:
+                    data.getData().put("expenseTransPaymentExp", "true");
+                    break;
+                case PO:
+                    data.getData().put("expenseTransPaymentPo", "true");
+                    break;
+                case PURCHASING_CARD:
+                    data.getData().put("expenseTransPaymentPurchasingCard", "true");
+                    break;
+            }
+            if (travelAccommodation.getLodgingCostPerNight() != null) {
+                data.getData().put("lodgingCostPerNight", travelAccommodation.getLodgingCostPerNight().setScale(2, BigDecimal.ROUND_UP).toString());
+            }
+            if (travelAccommodation.getNumberOfLodgingNights() != null) {
+                data.getData().put("numberOfLodgingNights", travelAccommodation.getNumberOfLodgingNights().setScale(2, BigDecimal.ROUND_UP).toString());
+            }
+            if (travelAccommodation.getTotalLodgingCost() != null) {
+                data.getData().put("totalLodgingCost", travelAccommodation.getTotalLodgingCost().setScale(2, BigDecimal.ROUND_UP).toString());
+            }
+        }
         //TravelFood Information
         TravelFood travelFood = entity.getTravelFood();
         if (travelFood != null) {
