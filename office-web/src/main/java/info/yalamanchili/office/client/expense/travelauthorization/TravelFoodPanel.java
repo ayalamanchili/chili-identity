@@ -137,7 +137,7 @@ public class TravelFoodPanel extends ALComposite implements ClickHandler {
     public void onClick(ClickEvent event) {
         if ((event.getSource().equals(updateFoodPaymentType)) || (event.getSource().equals(updateConferencePaymentType))
                 || (event.getSource().equals(updateBanquetPaymentType)) || (event.getSource().equals(updateOtherExpencesPaymentType))) {
-            new GenericPopup(new ExpensePaymentTypePanel(false)).show();
+            new GenericPopup(new ExpensePaymentModePanel(false)).show();
         }
     }
 }

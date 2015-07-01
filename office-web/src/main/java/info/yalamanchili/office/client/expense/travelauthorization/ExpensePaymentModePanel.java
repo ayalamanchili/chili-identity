@@ -23,7 +23,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
  *
  * @author Madhu.Badiginchala
  */
-public class ExpensePaymentTypePanel extends ALComposite implements ChangeHandler {
+public class ExpensePaymentModePanel extends ALComposite implements ChangeHandler {
 
     protected FlowPanel panel = new FlowPanel();
     EnumField expensePaymentType;
@@ -32,12 +32,12 @@ public class ExpensePaymentTypePanel extends ALComposite implements ChangeHandle
     JSONObject entity;
     ExpensePaymentType type;
 
-    public ExpensePaymentTypePanel(boolean readOnly) {
+    public ExpensePaymentModePanel(boolean readOnly) {
         this.readyOnly = readOnly;
         init(panel);
     }
 
-    public ExpensePaymentTypePanel(JSONObject entity, boolean readOnly) {
+    public ExpensePaymentModePanel(JSONObject entity, boolean readOnly) {
         this.readyOnly = readOnly;
         this.entity = entity;
         init(panel);

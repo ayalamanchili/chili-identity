@@ -114,7 +114,7 @@ public class TravelAccommodationPanel extends ALComposite implements ClickHandle
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(updatePaymentType)) {
-            new GenericPopup(new ExpensePaymentTypePanel(false)).show();
+            new GenericPopup(new ExpensePaymentModePanel(false)).show();
         }
     }
 }

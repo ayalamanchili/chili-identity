@@ -70,7 +70,6 @@ public class UpdateTravelAuthorizationPanel extends UpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        entity = new JSONObject();
         assignEntityValueFromField("travelType", entity);
         assignEntityValueFromField("departureDate", entity);
         assignEntityValueFromField("returnDate", entity);
@@ -108,7 +107,7 @@ public class UpdateTravelAuthorizationPanel extends UpdateComposite {
         assignFieldValueFromEntity("travelDestination", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("reasonForTravel", entity, DataType.TEXT_AREA_FIELD);
         if (entity.get("travelTransportation") != null) {
-            TravelTransportationPanel travelTransportationItem = new TravelTransportationPanel(entity.get("travelTransportation").isObject(), false);
+            travelTransportationItem = new TravelTransportationPanel(entity.get("travelTransportation").isObject(), false);
             entityFieldsPanel.add(travelTransportationItem);
         }
 
@@ -156,6 +155,6 @@ public class UpdateTravelAuthorizationPanel extends UpdateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "travel-authorization/save" + entityId;
+        return OfficeWelcome.constants.root_url() + "travel-authorization/";
     }
 }

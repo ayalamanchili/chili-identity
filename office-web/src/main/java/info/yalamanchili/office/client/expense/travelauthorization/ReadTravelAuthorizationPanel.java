@@ -62,13 +62,8 @@ public class ReadTravelAuthorizationPanel extends ReadComposite {
                     public void onResponse(String response) {
                         entity = (JSONObject) JSONParser.parseLenient(response);
                         populateFieldsFromEntity(entity);
-                        populateComments();
                     }
                 });
-    }
-
-    protected void populateComments() {
-        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.expense.travelauthorization.TravelExpenseRequisition"));
     }
 
     @Override
@@ -79,26 +74,6 @@ public class ReadTravelAuthorizationPanel extends ReadComposite {
         assignFieldValueFromEntity("returnDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("travelDestination", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("reasonForTravel", entity, DataType.STRING_FIELD);
-    }
-
-    @Override
-    protected void addListeners() {
-    }
-
-    @Override
-    protected void configure() {
-    }
-
-    @Override
-    protected void addWidgets() {
-        logger.info("dddddddddddd"+entity.toString());
-        addDropDown("employee", selectEmployeeWidgetF);
-        addEnumField("travelType", true, false, TravelType.names(), Alignment.HORIZONTAL);
-        entityFieldsPanel.add(employeetripinfo);
-        addField("departureDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("returnDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("travelDestination", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("reasonForTravel", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(estimatedexpenses);
         if (entity.get("travelTransportation") != null) {
             entityFieldsPanel.add(new TravelTransportationPanel(entity.get("travelTransportation").isObject(), true));
@@ -112,7 +87,27 @@ public class ReadTravelAuthorizationPanel extends ReadComposite {
         if (entity.get("travelFood") != null) {
             entityFieldsPanel.add(new TravelFoodPanel(entity.get("travelFood").isObject(), true));
         }
-        alignFields(240);
+        alignFields(TravelAuthConstants.defaultFieldWidth);
+    }
+
+    @Override
+    protected void addListeners() {
+    }
+
+    @Override
+    protected void configure() {
+    }
+
+    @Override
+    protected void addWidgets() {
+        addDropDown("employee", selectEmployeeWidgetF);
+        addEnumField("travelType", true, false, TravelType.names(), Alignment.HORIZONTAL);
+        entityFieldsPanel.add(employeetripinfo);
+        addField("departureDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("returnDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("travelDestination", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("reasonForTravel", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        alignFields(TravelAuthConstants.defaultFieldWidth);
     }
 
     @Override

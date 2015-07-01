@@ -19,15 +19,11 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.composite.ALComposite;
-import info.chili.gwt.composite.BaseField;
 import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.IntegerField;
 import info.chili.gwt.fields.TextAreaField;
-import info.chili.gwt.resources.ChiliImages;
 import info.chili.gwt.utils.Alignment;
-import info.chili.gwt.widgets.ClickableImage;
-import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.OfficeWelcome;
 import java.math.BigDecimal;
 
@@ -46,6 +42,8 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
     TextAreaField rentalVehicleJustification;
     EnumField travelRentalVehicleType;
     TextAreaField otherVehicleTypeJustification;
+    //
+    EnumField expensePaymentMode;
 
     boolean readyOnly;
     JSONObject entity;
@@ -72,7 +70,6 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         rentalVehicleJustification.getTextbox().addBlurHandler(this);
         travelRentalVehicleType.listBox.addChangeHandler(this);
         otherVehicleTypeJustification.getTextbox().addBlurHandler(this);
-        updatePaymentType.addClickHandler(this);
     }
 
     @Override
@@ -85,6 +82,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         rentalVehicleJustification.getLabel().getElement().getStyle().setWidth(TravelAuthConstants.defaultFieldWidth, Style.Unit.PX);
         travelRentalVehicleType.getLabel().getElement().getStyle().setWidth(TravelAuthConstants.defaultFieldWidth, Style.Unit.PX);
         otherVehicleTypeJustification.getLabel().getElement().getStyle().setWidth(TravelAuthConstants.defaultFieldWidth, Style.Unit.PX);
+        expensePaymentMode.getLabel().getElement().getStyle().setWidth(TravelAuthConstants.defaultFieldWidth, Style.Unit.PX);
         if (!readyOnly) {
             renderMiles(false);
             renderRentalJustification(false);
@@ -101,7 +99,8 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
                 TravelAuthConstants.COST_PER_MILE, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         totalTransportationCost = new CurrencyField(OfficeWelcome.constants,
                 TravelAuthConstants.TOTAL_TRANSPORTATION_COST, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
-        renderUpdatePaymentTypeLink();
+        expensePaymentMode = new EnumField(OfficeWelcome.constants,
+                "expensePaymentType", "TravelAuthorization", readyOnly, false, ExpensePaymentType.names(), Alignment.HORIZONTAL);
         estimatedCostOfOtherTransportation = new CurrencyField(OfficeWelcome.constants,
                 "estimatedCostOfOtherTransportation", "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         rentalVehicleJustification = new TextAreaField(OfficeWelcome.constants,
@@ -114,6 +113,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         panel.add(totalMiles);
         panel.add(costPerMile);
         panel.add(totalTransportationCost);
+        panel.add(expensePaymentMode);
         panel.add(estimatedCostOfOtherTransportation);
         panel.add(rentalVehicleJustification);
         panel.add(travelRentalVehicleType);
@@ -121,6 +121,9 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
     }
 
     protected final void populateFields() {
+        if (entity.get("travelTransportationType") != null) {
+            travelTransportationType.selectValue(entity.get("travelTransportationType").isString().stringValue());
+        }
         if (entity.get("totalMiles") != null) {
             totalMiles.setInteger(Integer.valueOf(entity.get("totalMiles").isString().stringValue()));
         }
@@ -138,6 +141,9 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         }
         if (entity.get("otherVehicleTypeJustification") != null) {
             otherVehicleTypeJustification.setValue("otherVehicleTypeJustification");
+        }
+        if (entity.get("expensePaymentType") != null) {
+            expensePaymentMode.selectValue(entity.get("expensePaymentType").isString().stringValue());
         }
     }
 
@@ -166,6 +172,9 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         }
         if (otherVehicleTypeJustification.getValue() != null) {
             entity.put("otherVehicleTypeJustification", new JSONString(otherVehicleTypeJustification.getValue()));
+        }
+        if (expensePaymentMode.getValue() != null) {
+            entity.put("expensePaymentType", new JSONString(expensePaymentMode.getValue()));
         }
         return entity;
     }
@@ -224,19 +233,9 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
 
     }
 
-    ClickableImage updatePaymentType = new ClickableImage("Select Expense Payment Type", ChiliImages.INSTANCE.updateIcon_16_16());
-
-    protected void renderUpdatePaymentTypeLink() {
-        BaseField paymentTypeField = totalTransportationCost;
-        paymentTypeField.addWidgetToFieldPanel(updatePaymentType);
-    }
-
     @Override
     public void onClick(ClickEvent event) {
-//        super.onClick(event);
-        if (event.getSource().equals(updatePaymentType)) {
-            new GenericPopup(new ExpensePaymentTypePanel(false)).show();
-        }
+
     }
 
     @Override
