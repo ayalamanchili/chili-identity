@@ -17,9 +17,16 @@ import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.dao.expense.travelauthorization.TravelAuthorizationDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.entity.expense.travelauthorization.TravelAccommodation;
 import info.yalamanchili.office.entity.expense.travelauthorization.TravelAuthorization;
+import info.yalamanchili.office.entity.expense.travelauthorization.TravelFood;
+import info.yalamanchili.office.entity.expense.travelauthorization.TravelRentalVehicleJustification;
+import info.yalamanchili.office.entity.expense.travelauthorization.TravelTransportation;
+import static info.yalamanchili.office.entity.expense.travelauthorization.TravelTransportationType.OTHER;
+import static info.yalamanchili.office.entity.expense.travelauthorization.TravelTransportationType.RAILWAY;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.security.AccessCheck;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -80,7 +87,7 @@ public class TravelAuthorizationService {
         data.getData().put("department", entity.getDepartment());
         data.getData().put("travelDestination", entity.getTravelDestination());
         data.getData().put("reasonForTravel", entity.getReasonForTravel());
-        //Travel Information
+        //Travel type Information
         switch (entity.getTravelType()) {
             case IN_STATE:
                 data.getData().put("travelTypeInState", "true");
@@ -91,6 +98,126 @@ public class TravelAuthorizationService {
             case INTERNATIONAL:
                 data.getData().put("travelTypeInternational", "true");
                 break;
+        }
+        //TravelTransportation info
+        TravelTransportation travelTransportation = entity.getTravelTransportation();
+        if (travelTransportation != null) {
+            //TravelTransportationType info
+            switch (travelTransportation.getTravelTransportationType()) {
+                case AIR:
+                    data.getData().put("travelTransportationTypeAir", "true");
+                    break;
+                case BUS:
+                    data.getData().put("travelTransportationTypeBus", "true");
+                    break;
+                case RAILWAY:
+                    data.getData().put("travelTransportationTypeRailWay", "true");
+                    break;
+                case OTHER:
+                    data.getData().put("travelTransportationTypeOther", "true");
+                    break;
+                case COMPANY_VEHICLE:
+                    data.getData().put("travelTransportationTypeCpmapny", "true");
+                    break;
+                case PRIVATE_VEHICLE:
+                    data.getData().put("travelTransportationTypePrivate", "true");
+                    break;
+                case RENTAL_VEHICLE:
+                    data.getData().put("travelTransportationTypeRental", "true");
+                    break;
+            }
+            //ExpensePaymentType info
+            switch (travelTransportation.getExpensePaymentType()) {
+                case EMPLOYEE_EXPENSE:
+                    data.getData().put("expenseTransPaymentExp", "true");
+                    break;
+                case PO:
+                    data.getData().put("expenseTransPaymentPo", "true");
+                    break;
+                case PURCHASING_CARD:
+                    data.getData().put("expenseTransPaymentPurchasingCard", "true");
+                    break;
+            }
+            if (travelTransportation.getCostPerMile() != null) {
+                data.getData().put("costPerMile", travelTransportation.getCostPerMile().setScale(2, BigDecimal.ROUND_UP).toString());
+            }
+            if (travelTransportation.getTotalMiles() != null) {
+                data.getData().put("totalMiles", travelTransportation.getTotalMiles().setScale(2, BigDecimal.ROUND_UP).toString());
+            }
+            if (travelTransportation.getTotalTransportationCost() != null) {
+                data.getData().put("totalTransportationCost", travelTransportation.getTotalTransportationCost().setScale(2, BigDecimal.ROUND_UP).toString());
+            }
+            if (travelTransportation.getTravelRentalVehicleJustification() != null) {
+                //TravelRentalVehicleJustification Information
+                TravelRentalVehicleJustification justification = travelTransportation.getTravelRentalVehicleJustification();
+                data.getData().put("rentalVehicleJustification", justification.getRentalVehicleJustification());
+                data.getData().put("otherVehicleTypeJustification", justification.getOtherVehicleTypeJustification());
+                if (justification.getEstimatedCostOfOtherTransportation() != null) {
+                    data.getData().put("estimatedCostOfOtherTransportation", justification.getEstimatedCostOfOtherTransportation().setScale(2, BigDecimal.ROUND_UP).toString());
+                }
+                //TravelRentalVehicleType info
+                switch (justification.getTravelRentalVehicleType()) {
+                    case MID_SIZE:
+                        data.getData().put("travelRentalVehicleMidSize", "true");
+                        break;
+                    case COMPACT:
+                        data.getData().put("travelRentalVehicleCompact", "true");
+                        break;
+                    case OTHER:
+                        data.getData().put("travelRentalVehicleOther", "true");
+                        break;
+                }
+            }
+        }
+        //TravelAccommodation Information
+//        TravelAccommodation travelAccommodation = entity.getTravelAccommodation());
+//        if (travelAccommodation != null) {
+//            //ExpensePaymentType info
+//            switch (travelAccommodation.getExpensePaymentType()) {
+//                case EMPLOYEE_EXPENSE:
+//                    data.getData().put("expenseTransPaymentExp", "true");
+//                    break;
+//                case PO:
+//                    data.getData().put("expenseTransPaymentPo", "true");
+//                    break;
+//                case PURCHASING_CARD:
+//                    data.getData().put("expenseTransPaymentPurchasingCard", "true");
+//                    break;
+//            }
+//            if (travelAccommodation.getLodgingCostPerNight() != null) {
+//                data.getData().put("lodgingCostPerNight", travelAccommodation.getLodgingCostPerNight().setScale(2, BigDecimal.ROUND_UP).toString());
+//            }
+//            if (travelAccommodation.getNumberOfLodgingNights() != null) {
+//                data.getData().put("numberOfLodgingNights", travelAccommodation.getNumberOfLodgingNights().setScale(2, BigDecimal.ROUND_UP).toString());
+//            }
+//            if (travelAccommodation.getTotalLodgingCost() != null) {
+//                data.getData().put("totalLodgingCost", travelAccommodation.getTotalLodgingCost().setScale(2, BigDecimal.ROUND_UP).toString());
+//            }
+//        }
+        //TravelFood Information
+        TravelFood travelFood = entity.getTravelFood();
+        if (travelFood != null) {
+            if (travelFood.getConferenceFee() != null) {
+                data.getData().put("conferenceFee", travelFood.getConferenceFee().setScale(2, BigDecimal.ROUND_UP).toString());
+            }
+            if (travelFood.getOtherExpences() != null) {
+                data.getData().put("otherExpences", travelFood.getOtherExpences().setScale(2, BigDecimal.ROUND_UP).toString());
+            }
+            if (travelFood.getTotalCostOfBanquet() != null) {
+                data.getData().put("totalCostOfBanquet", travelFood.getTotalCostOfBanquet().setScale(2, BigDecimal.ROUND_UP).toString());
+            }
+            //ExpensePaymentType info
+            switch (travelFood.getExpensePaymentType()) {
+                case EMPLOYEE_EXPENSE:
+                    data.getData().put("expenseTransPaymentExp", "true");
+                    break;
+                case PO:
+                    data.getData().put("expenseTransPaymentPo", "true");
+                    break;
+                case PURCHASING_CARD:
+                    data.getData().put("expenseTransPaymentPurchasingCard", "true");
+                    break;
+            }
         }
 
         byte[] pdf = PDFUtils.generatePdf(data);

@@ -68,7 +68,7 @@ public class CreateTravelAuthorizationPanel extends CreateComposite implements C
         entity.put("travelTransportation", travelTransportationItem.getObject());
         entity.put("travelAccommodation", lodgingItemPanel.getObject());
         entity.put("travelFood", mealsItemPanel.getObject());
-        entity.put("status", new JSONString("Open"));
+        entity.put("travelExpenseRequisitionStatus", new JSONString("Open"));
         logger.info(entity.toString());
         return entity;
 
