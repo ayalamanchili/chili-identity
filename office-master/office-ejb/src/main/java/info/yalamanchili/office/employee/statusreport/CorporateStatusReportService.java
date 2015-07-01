@@ -51,19 +51,20 @@ public class CorporateStatusReportService {
     }
 
     protected void notifyManager(CorporateStatusReport entity) {
-        Employee manager = CompanyContactDao.instance().getCompanyContactForEmployee(entity.getEmployee(), "Perf_Eval_Manager");
-        if (manager == null) {
-            manager = CompanyContactDao.instance().getCompanyContactForEmployee(entity.getEmployee(), "Reports_To");
+        Email email = new Email();
+        Employee perfEvalManager = CompanyContactDao.instance().getCompanyContactForEmployee(entity.getEmployee(), "Perf_Eval_Manager");
+        if (perfEvalManager != null) {
+            email.addTo(perfEvalManager.getPrimaryEmail().getEmail());
         }
-        if (manager != null) {
-            Email email = new Email();
-            email.addTo(manager.getPrimaryEmail().getEmail());
-            email.setSubject("Weekly Status Report submitted for " + entity.getEmployee().getFirstName() + " " + entity.getEmployee().getLastName() + " for " + new SimpleDateFormat("dd-MMM-yyyy").format(entity.getReportStartDate()) + "-" + new SimpleDateFormat("dd-MMM-yyyy").format(entity.getReportEndDate()));
-            email.setHtml(Boolean.TRUE);
-            email.setRichText(Boolean.TRUE);
-            email.setBody(entity.getReport());
-            MessagingService.instance().sendEmail(email);
+        Employee reportsToMgr = CompanyContactDao.instance().getCompanyContactForEmployee(entity.getEmployee(), "Reports_To");
+        if (reportsToMgr != null) {
+            email.addTo(reportsToMgr.getPrimaryEmail().getEmail());
         }
+        email.setSubject("Weekly Status Report submitted for " + entity.getEmployee().getFirstName() + " " + entity.getEmployee().getLastName() + " for " + new SimpleDateFormat("dd-MMM-yyyy").format(entity.getReportStartDate()) + "-" + new SimpleDateFormat("dd-MMM-yyyy").format(entity.getReportEndDate()));
+        email.setHtml(Boolean.TRUE);
+        email.setRichText(Boolean.TRUE);
+        email.setBody(entity.getReport());
+        MessagingService.instance().sendEmail(email);
     }
 
     protected static final String DIFF_STYLE = "<head>\n"
