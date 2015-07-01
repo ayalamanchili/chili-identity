@@ -136,7 +136,7 @@ public class EmailService {
         emails.stream().forEach((emailAddress) -> {
             InternetAddress address = null;
             try {
-                if (Strings.isNullOrEmpty(emailAddress)) {
+                if (!Strings.isNullOrEmpty(emailAddress)) {
                     address = new InternetAddress(emailAddress, true);
                     address.validate();
                     addresses.add(address);
