@@ -51,7 +51,7 @@ public class ReadTravelAuthorizationPanel extends ReadComposite {
 
     public ReadTravelAuthorizationPanel(JSONObject entity) {
         instance = this;
-        initReadComposite(entity, "TravelExpense", OfficeWelcome.constants);
+        initReadComposite(entity, "TravelAuthorization", OfficeWelcome.constants);
     }
 
     @Override
@@ -121,6 +121,6 @@ public class ReadTravelAuthorizationPanel extends ReadComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "travelexpense/" + entityId;
+        return OfficeWelcome.constants.root_url() + "travel-authorization/" + entityId;
     }
 }

@@ -7,12 +7,14 @@
  */
 package info.yalamanchili.office.client.expense.travelauthorization;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
+import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.fields.FileField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.FormatUtils;
@@ -35,13 +37,13 @@ public class ReadAllTravelAuthorizationPanel extends CRUDReadAllComposite {
 
     public ReadAllTravelAuthorizationPanel() {
         instance = this;
-        initTable("TravelExpense", OfficeWelcome.constants);
+        initTable("TravelAuthorization", OfficeWelcome.constants);
     }
 
     public ReadAllTravelAuthorizationPanel(String url) {
         instance = this;
         this.url = url;
-        initTable("TravelExpense", OfficeWelcome.constants);
+        initTable("TravelAuthorization", OfficeWelcome.constants);
     }
 
     @Override
@@ -63,7 +65,7 @@ public class ReadAllTravelAuthorizationPanel extends CRUDReadAllComposite {
 
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("Successfully Deleted Travel Expense Information");
+        new ResponseStatusWidget().show("Successfully Deleted Travel Authorization Information");
         TabPanel.instance().expensePanel.entityPanel.clear();
         TabPanel.instance().expensePanel.entityPanel.add(new ReadAllTravelAuthorizationPanel());
     }
@@ -92,8 +94,8 @@ public class ReadAllTravelAuthorizationPanel extends CRUDReadAllComposite {
         table.setText(0, 1, getKeyValue("Employee"));
         table.setText(0, 2, getKeyValue("Travel Type"));
         table.setText(0, 3, getKeyValue("Destination"));
-        table.setText(0, 4, getKeyValue("PhoneNumber"));
-        table.setText(0, 5, getKeyValue("Department"));
+        table.setText(0, 4, getKeyValue("DepartureDate"));
+        table.setText(0, 5, getKeyValue("ReturnDate"));
         table.setText(0, 6, getKeyValue("Status"));
         table.setText(0, 7, getKeyValue("Print"));
     }
@@ -107,8 +109,8 @@ public class ReadAllTravelAuthorizationPanel extends CRUDReadAllComposite {
             table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
             setEnumColumn(i, 2, entity, "travelType", "travelType");
             table.setText(i, 3, JSONUtils.toString(entity, "travelDestination"));
-            table.setText(i, 4, FormatUtils.formatPhoneNumber(JSONUtils.toString(entity, "phoneNumber")));
-            table.setText(i, 5, JSONUtils.toString(entity, "department"));
+            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "departureDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, "returnDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 6, JSONUtils.formatEnumString(entity, "travelExpenseRequisitionStatus"));
             FileField reportL = new FileField("Print", ChiliClientConfig.instance().getFileDownloadUrl() + "travelexpense/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id"));
             table.setWidget(i, 7, reportL);
@@ -125,14 +127,14 @@ public class ReadAllTravelAuthorizationPanel extends CRUDReadAllComposite {
     }
 
     private String getDeleteURL(String entityId) {
-        return OfficeWelcome.instance().constants.root_url() + "travelexpense/delete/" + entityId;
+        return OfficeWelcome.instance().constants.root_url() + "travel-authorization/delete/" + entityId;
     }
 
     private String getadvanceURL(Integer start, String limit) {
         if (url != null) {
             return url;
         }
-        return OfficeWelcome.constants.root_url() + "travelexpense/" + start.toString() + "/"
+        return OfficeWelcome.constants.root_url() + "travel-authorization/" + start.toString() + "/"
                 + limit.toString();
     }
 }

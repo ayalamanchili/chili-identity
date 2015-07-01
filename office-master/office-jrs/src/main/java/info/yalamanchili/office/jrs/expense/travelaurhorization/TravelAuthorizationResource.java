@@ -40,7 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author prasanthi.p
  */
-@Path("secured/travelexpense")
+@Path("secured/travel-authorization")
 @Component
 @Transactional
 @Scope("request")

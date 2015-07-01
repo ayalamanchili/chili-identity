@@ -87,7 +87,7 @@ public class TravelAuthorizationSidePanel extends ALComposite implements ClickHa
     }
 
     private String gettravelexpenseURL(Integer start, String limit) {
-        return OfficeWelcome.constants.root_url() + "travelexpense/" + employeeSB.getKey() + "/" + start.toString() + "/"
+        return OfficeWelcome.constants.root_url() + "travel-authorization/" + employeeSB.getKey() + "/" + start.toString() + "/"
                 + limit.toString();
     }
 

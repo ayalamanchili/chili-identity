@@ -49,12 +49,12 @@ public class CreateTravelAuthorizationPanel extends CreateComposite implements C
 
     public CreateTravelAuthorizationPanel(CreateComposite.CreateCompositeType type) {
         super(type);
-        initCreateComposite("TravelExpense", OfficeWelcome.constants);
+        initCreateComposite("TravelAuthorization", OfficeWelcome.constants);
     }
 
     public CreateTravelAuthorizationPanel() {
         super(CreateCompositeType.CREATE);
-        initCreateComposite("TravelExpense", OfficeWelcome.constants);
+        initCreateComposite("TravelAuthorization", OfficeWelcome.constants);
     }
 
     @Override
@@ -137,6 +137,6 @@ public class CreateTravelAuthorizationPanel extends CreateComposite implements C
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "travelexpense/submit-travel-expense-request";
+        return OfficeWelcome.constants.root_url() + "travel-authorization/submit-travel-expense-request";
     }
 }
