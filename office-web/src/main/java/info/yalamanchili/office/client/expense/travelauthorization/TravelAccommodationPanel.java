@@ -93,7 +93,7 @@ public class TravelAccommodationPanel extends ALComposite implements ClickHandle
         if (entity.get(NUM_OF_LODGING_NIGHTS) != null) {
             noOfLodgingDays.setInteger(Integer.valueOf(entity.get(NUM_OF_LODGING_NIGHTS).isString().stringValue()));
         }
-        if (entity.get(NUM_OF_LODGING_NIGHTS) != null) {
+        if (entity.get(LODGING_COST_PER_NIGHT) != null) {
             lodgingCostPerDay.setValue(new BigDecimal(entity.get(LODGING_COST_PER_NIGHT).isString().stringValue()), true);
         }
         if (entity.get(TOTAL_LODGING_COST) != null) {
@@ -110,7 +110,7 @@ public class TravelAccommodationPanel extends ALComposite implements ClickHandle
             entity.put(NUM_OF_LODGING_NIGHTS, new JSONString(noOfLodgingDays.getInteger().toString()));
         }
         if (lodgingCostPerDay.getCurrency() != null) {
-            entity.put(NUM_OF_LODGING_NIGHTS, new JSONString(lodgingCostPerDay.getCurrency().toString()));
+            entity.put(LODGING_COST_PER_NIGHT, new JSONString(lodgingCostPerDay.getCurrency().toString()));
         }
         if (totalLodgingCost.getCurrency() != null) {
             entity.put(TOTAL_LODGING_COST, new JSONString(totalLodgingCost.getCurrency().toString()));

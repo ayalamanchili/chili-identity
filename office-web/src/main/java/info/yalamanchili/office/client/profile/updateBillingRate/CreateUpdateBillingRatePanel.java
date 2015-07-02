@@ -9,7 +9,6 @@ package info.yalamanchili.office.client.profile.updateBillingRate;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
