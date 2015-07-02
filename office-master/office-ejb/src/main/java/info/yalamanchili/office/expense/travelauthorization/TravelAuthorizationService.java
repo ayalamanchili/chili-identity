@@ -211,16 +211,18 @@ public class TravelAuthorizationService {
                 data.getData().put("totalCostOfBanquet", travelFood.getTotalCostOfBanquet().setScale(2, BigDecimal.ROUND_UP).toString());
             }
             //ExpensePaymentType info
-            switch (travelFood.getExpensePaymentType()) {
-                case EMPLOYEE_EXPENSE:
-                    data.getData().put("expenseTransPaymentExp", "true");
-                    break;
-                case PO:
-                    data.getData().put("expenseTransPaymentPo", "true");
-                    break;
-                case PURCHASING_CARD:
-                    data.getData().put("expenseTransPaymentPurchasingCard", "true");
-                    break;
+            if (travelFood.getExpensePaymentType() != null) {
+                switch (travelFood.getExpensePaymentType()) {
+                    case EMPLOYEE_EXPENSE:
+                        data.getData().put("expenseTransPaymentExp", "true");
+                        break;
+                    case PO:
+                        data.getData().put("expenseTransPaymentPo", "true");
+                        break;
+                    case PURCHASING_CARD:
+                        data.getData().put("expenseTransPaymentPurchasingCard", "true");
+                        break;
+                }
             }
         }
         if (entity.getCeoApprovalBy() != null) {
