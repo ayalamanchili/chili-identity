@@ -17,11 +17,13 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.composite.BaseField;
 import info.chili.gwt.fields.CurrencyField;
+import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.resources.ChiliImages;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ClickableImage;
 import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.OfficeWelcome;
+import static info.yalamanchili.office.client.expense.travelauthorization.TravelAuthConstants.*;
 import java.math.BigDecimal;
 
 /**
@@ -36,6 +38,10 @@ public class TravelFoodPanel extends ALComposite implements ClickHandler {
     CurrencyField conferenceFee;
     CurrencyField totalCostOfBanquet;
     CurrencyField otherExpences;
+    EnumField foodExpensePaymentMode;
+    EnumField conferenceExpensePaymentMode;
+    EnumField banquetExpensePaymentMode;
+    EnumField otherExpensePaymentMode;
 
     boolean readyOnly;
     JSONObject entity;
@@ -54,90 +60,109 @@ public class TravelFoodPanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addListeners() {
-        updateFoodPaymentType.addClickHandler(this);
-        updateConferencePaymentType.addClickHandler(this);
-        updateBanquetPaymentType.addClickHandler(this);
-        updateOtherExpencesPaymentType.addClickHandler(this);
     }
 
     @Override
     protected void configure() {
-        totalCostOfFood.getLabel().getElement().getStyle().setWidth(TravelAuthConstants.defaultFieldWidth, Style.Unit.PX);
-        conferenceFee.getLabel().getElement().getStyle().setWidth(TravelAuthConstants.defaultFieldWidth, Style.Unit.PX);
-        totalCostOfBanquet.getLabel().getElement().getStyle().setWidth(TravelAuthConstants.defaultFieldWidth, Style.Unit.PX);
-        otherExpences.getLabel().getElement().getStyle().setWidth(TravelAuthConstants.defaultFieldWidth, Style.Unit.PX);
+        totalCostOfFood.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
+        conferenceFee.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
+        totalCostOfBanquet.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
+        otherExpences.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
+        foodExpensePaymentMode.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
+        conferenceExpensePaymentMode.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
+        banquetExpensePaymentMode.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
+        otherExpensePaymentMode.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
     }
 
     @Override
     protected void addWidgets() {
         totalCostOfFood = new CurrencyField(OfficeWelcome.constants,
-                TravelAuthConstants.TOTAL_COST_OF_FOOD, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
+                TOTAL_COST_OF_FOOD, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
+        foodExpensePaymentMode = new EnumField(OfficeWelcome.constants,
+                EXPENSE_PAYMENT_TYPE, "TravelAuthorizationFood", readyOnly, false, ExpensePaymentType.names(), Alignment.HORIZONTAL);
         conferenceFee = new CurrencyField(OfficeWelcome.constants,
-                "conferenceFee", "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
+                CONFERENCE_FEE, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
+        conferenceExpensePaymentMode = new EnumField(OfficeWelcome.constants,
+                EXPENSE_PAYMENT_TYPE, "TravelAuthorizationConference", readyOnly, false, ExpensePaymentType.names(), Alignment.HORIZONTAL);
         totalCostOfBanquet = new CurrencyField(OfficeWelcome.constants,
-                "totalCostOfBanquet", "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
+                TOTAL_COST_OF_BANQUET, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
+        banquetExpensePaymentMode = new EnumField(OfficeWelcome.constants,
+                EXPENSE_PAYMENT_TYPE, "TravelAuthorizationBanquet", readyOnly, false, ExpensePaymentType.names(), Alignment.HORIZONTAL);
         otherExpences = new CurrencyField(OfficeWelcome.constants,
-                "otherExpences", "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
-        renderUpdatePaymentTypeLink();
+                OTHER_EXPENCES, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
+        otherExpensePaymentMode = new EnumField(OfficeWelcome.constants,
+                EXPENSE_PAYMENT_TYPE, "TravelAuthorizationOther", readyOnly, false, ExpensePaymentType.names(), Alignment.HORIZONTAL);
+        totalCostOfFood.getElement().getStyle().setProperty("float", "left");
+        conferenceFee.getElement().getStyle().setProperty("float", "left");
+        totalCostOfBanquet.getElement().getStyle().setProperty("float", "left");
+        otherExpences.getElement().getStyle().setProperty("float", "left");
         panel.add(totalCostOfFood);
+        panel.add(foodExpensePaymentMode);
         panel.add(conferenceFee);
+        panel.add(conferenceExpensePaymentMode);
         panel.add(totalCostOfBanquet);
+        panel.add(banquetExpensePaymentMode);
         panel.add(otherExpences);
+        panel.add(otherExpensePaymentMode);
     }
 
     protected final void populateFields() {
-        if (entity.get(TravelAuthConstants.TOTAL_COST_OF_FOOD) != null) {
-            totalCostOfFood.setValue(new BigDecimal(entity.get(TravelAuthConstants.TOTAL_COST_OF_FOOD).isString().stringValue()), true);
+        if (entity.get(TOTAL_COST_OF_FOOD) != null) {
+            totalCostOfFood.setValue(new BigDecimal(entity.get(TOTAL_COST_OF_FOOD).isString().stringValue()), true);
         }
-        if (entity.get("conferenceFee") != null) {
-            conferenceFee.setValue(new BigDecimal(entity.get("conferenceFee").isString().stringValue()), true);
+        if (entity.get(CONFERENCE_FEE) != null) {
+            conferenceFee.setValue(new BigDecimal(entity.get(CONFERENCE_FEE).isString().stringValue()), true);
         }
-        if (entity.get("totalCostOfBanquet") != null) {
-            totalCostOfBanquet.setValue(new BigDecimal(entity.get("totalCostOfBanquet").isString().stringValue()), true);
+        if (entity.get(TOTAL_COST_OF_BANQUET) != null) {
+            totalCostOfBanquet.setValue(new BigDecimal(entity.get(TOTAL_COST_OF_BANQUET).isString().stringValue()), true);
         }
-        if (entity.get("otherExpences") != null) {
-            otherExpences.setValue(new BigDecimal(entity.get("otherExpences").isString().stringValue()), true);
+        if (entity.get(OTHER_EXPENCES) != null) {
+            otherExpences.setValue(new BigDecimal(entity.get(OTHER_EXPENCES).isString().stringValue()), true);
+        }
+        if (entity.get(EXPENSE_PAYMENT_TYPE) != null) {
+            foodExpensePaymentMode.selectValue(entity.get(EXPENSE_PAYMENT_TYPE).isString().stringValue());
+        }
+        if (entity.get(EXPENSE_PAYMENT_TYPE) != null) {
+            conferenceExpensePaymentMode.selectValue(entity.get(EXPENSE_PAYMENT_TYPE).isString().stringValue());
+        }
+        if (entity.get(EXPENSE_PAYMENT_TYPE) != null) {
+            banquetExpensePaymentMode.selectValue(entity.get(EXPENSE_PAYMENT_TYPE).isString().stringValue());
+        }
+        if (entity.get(EXPENSE_PAYMENT_TYPE) != null) {
+            otherExpensePaymentMode.selectValue(entity.get(EXPENSE_PAYMENT_TYPE).isString().stringValue());
         }
     }
 
     public JSONObject getObject() {
         entity = new JSONObject();
         if (totalCostOfFood.getCurrency() != null) {
-            entity.put(TravelAuthConstants.TOTAL_COST_OF_FOOD, new JSONString(totalCostOfFood.getCurrency().toString()));
+            entity.put(TOTAL_COST_OF_FOOD, new JSONString(totalCostOfFood.getCurrency().toString()));
         }
         if (conferenceFee.getCurrency() != null) {
-            entity.put("conferenceFee", new JSONString(conferenceFee.getCurrency().toString()));
+            entity.put(CONFERENCE_FEE, new JSONString(conferenceFee.getCurrency().toString()));
         }
         if (totalCostOfBanquet.getCurrency() != null) {
-            entity.put("totalCostOfBanquet", new JSONString(totalCostOfBanquet.getCurrency().toString()));
+            entity.put(TOTAL_COST_OF_BANQUET, new JSONString(totalCostOfBanquet.getCurrency().toString()));
         }
         if (otherExpences.getCurrency() != null) {
-            entity.put("otherExpences", new JSONString(otherExpences.getCurrency().toString()));
+            entity.put(OTHER_EXPENCES, new JSONString(otherExpences.getCurrency().toString()));
+        }
+        if (foodExpensePaymentMode.getValue() != null) {
+            entity.put(EXPENSE_PAYMENT_TYPE, new JSONString(foodExpensePaymentMode.getValue()));
+        }
+        if (conferenceExpensePaymentMode.getValue() != null) {
+            entity.put(EXPENSE_PAYMENT_TYPE, new JSONString(conferenceExpensePaymentMode.getValue()));
+        }
+        if (banquetExpensePaymentMode.getValue() != null) {
+            entity.put(EXPENSE_PAYMENT_TYPE, new JSONString(banquetExpensePaymentMode.getValue()));
+        }
+        if (otherExpensePaymentMode.getValue() != null) {
+            entity.put(EXPENSE_PAYMENT_TYPE, new JSONString(otherExpensePaymentMode.getValue()));
         }
         return entity;
     }
 
-    ClickableImage updateFoodPaymentType = new ClickableImage("Select Expense Payment Type", ChiliImages.INSTANCE.updateIcon_16_16());
-    ClickableImage updateConferencePaymentType = new ClickableImage("Select Expense Payment Type", ChiliImages.INSTANCE.updateIcon_16_16());
-    ClickableImage updateBanquetPaymentType = new ClickableImage("Select Expense Payment Type", ChiliImages.INSTANCE.updateIcon_16_16());
-    ClickableImage updateOtherExpencesPaymentType = new ClickableImage("Select Expense Payment Type", ChiliImages.INSTANCE.updateIcon_16_16());
-
-    protected void renderUpdatePaymentTypeLink() {
-        BaseField paymentTypeField = totalCostOfFood;
-        paymentTypeField.addWidgetToFieldPanel(updateFoodPaymentType);
-        paymentTypeField = conferenceFee;
-        paymentTypeField.addWidgetToFieldPanel(updateConferencePaymentType);
-        paymentTypeField = totalCostOfBanquet;
-        paymentTypeField.addWidgetToFieldPanel(updateBanquetPaymentType);
-        paymentTypeField = otherExpences;
-        paymentTypeField.addWidgetToFieldPanel(updateOtherExpencesPaymentType);
-    }
-
     @Override
     public void onClick(ClickEvent event) {
-        if ((event.getSource().equals(updateFoodPaymentType)) || (event.getSource().equals(updateConferencePaymentType))
-                || (event.getSource().equals(updateBanquetPaymentType)) || (event.getSource().equals(updateOtherExpencesPaymentType))) {
-            new GenericPopup(new ExpensePaymentModePanel(false)).show();
-        }
     }
 }

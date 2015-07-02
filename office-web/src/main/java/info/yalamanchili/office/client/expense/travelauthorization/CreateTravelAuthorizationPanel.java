@@ -19,6 +19,7 @@ import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import static info.yalamanchili.office.client.expense.travelauthorization.TravelAuthConstants.DEFAULT_FIELD_WIDTH;
 import java.util.logging.Logger;
 
 /**
@@ -42,6 +43,7 @@ public class CreateTravelAuthorizationPanel extends CreateComposite implements C
     HTML transportation = new HTML("<h4 style=\"color:#427fed\">" + "Transportation</h4>");
     HTML lodging = new HTML("<h4 style=\"color:#427fed\">  " + "Accommodation</h4>");
     HTML meals = new HTML("<h4 style=\"color:#427fed\"> " + "Food</h4>");
+    HTML emptyLine = new HTML("<br/>");
 
     TravelTransportationPanel travelTransportationItem = new TravelTransportationPanel(false);
     TravelAccommodationPanel lodgingItemPanel = new TravelAccommodationPanel(false);
@@ -90,8 +92,8 @@ public class CreateTravelAuthorizationPanel extends CreateComposite implements C
         entityFieldsPanel.add(lodgingItemPanel);
         entityFieldsPanel.add(meals);
         entityFieldsPanel.add(mealsItemPanel);
-//        addEnumField("expenseAccommodationPaymentType", false, true, ExpensePaymentType.names(), Alignment.HORIZONTAL);
-        alignFields(340);
+        entityFieldsPanel.add(emptyLine);
+        alignFields(DEFAULT_FIELD_WIDTH);
     }
 
     @Override
@@ -117,7 +119,7 @@ public class CreateTravelAuthorizationPanel extends CreateComposite implements C
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Request Submited, please wait for email notification within 48 hours for Email confirmation");
+        new ResponseStatusWidget().show("Request Submitted, please wait for Email notification within 48 hours of Email confirmation");
         TabPanel.instance().expensePanel.entityPanel.clear();
         TabPanel.instance().expensePanel.entityPanel.add(new ReadAllTravelAuthorizationPanel());
     }

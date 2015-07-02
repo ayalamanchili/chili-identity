@@ -19,6 +19,7 @@ import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import static info.yalamanchili.office.client.expense.travelauthorization.TravelAuthConstants.DEFAULT_FIELD_WIDTH;
 import java.util.logging.Logger;
 
 /**
@@ -145,8 +146,7 @@ public class UpdateTravelAuthorizationPanel extends UpdateComposite {
 //        entityFieldsPanel.add(lodgingItemPanel);
 //        entityFieldsPanel.add(meals);
 //        entityFieldsPanel.add(mealsItemPanel);
-//        addEnumField("expenseAccommodationPaymentType", false, true, ExpensePaymentType.names(), Alignment.HORIZONTAL);
-        alignFields(TravelAuthConstants.defaultFieldWidth);
+        alignFields(DEFAULT_FIELD_WIDTH);
     }
 
     @Override
