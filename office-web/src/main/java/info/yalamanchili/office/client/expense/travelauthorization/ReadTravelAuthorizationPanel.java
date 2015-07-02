@@ -16,11 +16,8 @@ import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
-<<<<<<< .mine
-import static info.yalamanchili.office.client.expense.travelauthorization.TravelAuthConstants.DEFAULT_FIELD_WIDTH;
-=======
+import static info.yalamanchili.office.client.expense.travelauthorization.TravelAuthConstants.*;
 import static info.yalamanchili.office.client.expense.travelauthorization.CreateTravelAuthorizationPanel.estimatedExpensesHelpText;
->>>>>>> .r6030
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import java.util.logging.Logger;
@@ -111,13 +108,10 @@ public class ReadTravelAuthorizationPanel extends ReadComposite {
         addField("returnDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("travelDestination", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("reasonForTravel", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-<<<<<<< .mine
-        alignFields(DEFAULT_FIELD_WIDTH);
-=======
         entityFieldsPanel.add(estimatedExpensesHelpText);
         entityFieldsPanel.add(tacHelpText);
-        alignFields(TravelAuthConstants.defaultFieldWidth);
->>>>>>> .r6030
+        alignFields(DEFAULT_FIELD_WIDTH);
+
     }
 
     @Override
