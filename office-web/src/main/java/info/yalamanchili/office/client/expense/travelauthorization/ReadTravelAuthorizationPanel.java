@@ -16,6 +16,7 @@ import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
+import static info.yalamanchili.office.client.expense.travelauthorization.CreateTravelAuthorizationPanel.estimatedExpensesHelpText;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import java.util.logging.Logger;
@@ -29,21 +30,21 @@ public class ReadTravelAuthorizationPanel extends ReadComposite {
     private static ReadTravelAuthorizationPanel instance;
     private static Logger logger = Logger.getLogger(ReadTravelAuthorizationPanel.class.getName());
     SelectEmployeeWidget selectEmployeeWidgetF = new SelectEmployeeWidget("Employee", false, true, Alignment.HORIZONTAL);
-    protected static HTML employeetripinfo = new HTML("<hr />\n"
-            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\"><strong style=\"color:#819FF7\">Employee and Trip Information</strong></p>\n"
+   protected static HTML tripInfoHelpText = new HTML("\n"
+            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
+            + "<strong style=\"color:#555555\">Trip Information</strong></p>\n"
             + "\n"
             + "<ul>\n"
             + "</ul>");
-    protected static HTML estimatedexpenses = new HTML("<hr />\n"
-            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\"><strong style=\"color:#819FF7\">Estimated Expenses</strong></p>\n"
+    protected static HTML estimatedExpensesHelpText = new HTML("\n"
+            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238)\">"
+            + "<strong style=\"color:#555555\">Estimated Expenses</strong></p>\n"
             + "\n");
-    HTML tac = new HTML("<h5> "
-            + "Estimate all expenses to be incurred and indicate method of payment.</h5>");
-    HTML transportation = new HTML("<h4 style=\"color:#819FF7\">" + "Transportation</h4>");
-    HTML lodging = new HTML("<h4 style=\"color:#819FF7\">  " + "Accommodation</h4>");
-    HTML meals = new HTML("<h4 style=\"color:#819FF7\"> " + "Food</h4>");
-    HTML comment = new HTML("<h5> "
-            + " *Applicable only when RENTAL_VEHICALE selected as transpotation type.*</h5>");
+    HTML tacHelpText = new HTML("<h4 style=\"color:#888\">" + "Estimate all expenses to be incurred and indicate method of payment.</h4>");
+    HTML transportation = new HTML("<h4 style=\"color:#427fed\">" + "Transportation</h4>");
+    HTML lodging = new HTML("<h4 style=\"color:#427fed\">  " + "Accommodation</h4>");
+    HTML meals = new HTML("<h4 style=\"color:#427fed\"> " + "Food</h4>");
+
 
     public static ReadTravelAuthorizationPanel instance() {
         return instance;
@@ -74,11 +75,10 @@ public class ReadTravelAuthorizationPanel extends ReadComposite {
         assignFieldValueFromEntity("returnDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("travelDestination", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("reasonForTravel", entity, DataType.STRING_FIELD);
-        entityFieldsPanel.add(estimatedexpenses);
+        entityFieldsPanel.add(transportation);
         if (entity.get("travelTransportation") != null) {
             entityFieldsPanel.add(new TravelTransportationPanel(entity.get("travelTransportation").isObject(), true));
         }
-        entityFieldsPanel.add(comment);
         entityFieldsPanel.add(lodging);
         if (entity.get("travelAccommodation") != null) {
             entityFieldsPanel.add(new TravelAccommodationPanel(entity.get("travelAccommodation").isObject(), true));
@@ -102,11 +102,13 @@ public class ReadTravelAuthorizationPanel extends ReadComposite {
     protected void addWidgets() {
         addDropDown("employee", selectEmployeeWidgetF);
         addEnumField("travelType", true, false, TravelType.names(), Alignment.HORIZONTAL);
-        entityFieldsPanel.add(employeetripinfo);
+        entityFieldsPanel.add(tripInfoHelpText);
         addField("departureDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("returnDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("travelDestination", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("reasonForTravel", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(estimatedExpensesHelpText);
+        entityFieldsPanel.add(tacHelpText);
         alignFields(TravelAuthConstants.defaultFieldWidth);
     }
 
