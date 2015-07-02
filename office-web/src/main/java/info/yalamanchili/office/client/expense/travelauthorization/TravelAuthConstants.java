@@ -8,6 +8,8 @@
  */
 package info.yalamanchili.office.client.expense.travelauthorization;
 
+import info.chili.gwt.fields.EnumField;
+
 /**
  *
  * @author ayalamanchili
@@ -35,4 +37,8 @@ public interface TravelAuthConstants {
     String CONFERENCE_FEE = "conferenceFee";
     String TOTAL_COST_OF_BANQUET = "totalCostOfBanquet";
     String OTHER_EXPENCES = "otherExpences";
+    String FOOD_EXPENSE_PAYMENT_TYPE="foodExpensePaymentMode";
+    String CONFERENCE_EXPENSE_PAYMENT_TYPE="conferenceExpensePaymentMode";
+    String BANQUET_EXPENSE_PAYMENT_TYPE="banquetExpensePaymentMode";
+    String OTHER_EXPENSE_PAYMENT_TYPE="otherExpensePaymentMode";
 }

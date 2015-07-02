@@ -79,19 +79,19 @@ public class TravelFoodPanel extends ALComposite implements ClickHandler {
         totalCostOfFood = new CurrencyField(OfficeWelcome.constants,
                 TOTAL_COST_OF_FOOD, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         foodExpensePaymentMode = new EnumField(OfficeWelcome.constants,
-                EXPENSE_PAYMENT_TYPE, "TravelAuthorizationFood", readyOnly, false, ExpensePaymentType.names(), Alignment.HORIZONTAL);
+                FOOD_EXPENSE_PAYMENT_TYPE, "TravelAuthorizationFood", readyOnly, false, ExpensePaymentType.names(), Alignment.HORIZONTAL);
         conferenceFee = new CurrencyField(OfficeWelcome.constants,
                 CONFERENCE_FEE, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         conferenceExpensePaymentMode = new EnumField(OfficeWelcome.constants,
-                EXPENSE_PAYMENT_TYPE, "TravelAuthorizationConference", readyOnly, false, ExpensePaymentType.names(), Alignment.HORIZONTAL);
+                CONFERENCE_EXPENSE_PAYMENT_TYPE, "TravelAuthorizationConference", readyOnly, false, ExpensePaymentType.names(), Alignment.HORIZONTAL);
         totalCostOfBanquet = new CurrencyField(OfficeWelcome.constants,
                 TOTAL_COST_OF_BANQUET, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         banquetExpensePaymentMode = new EnumField(OfficeWelcome.constants,
-                EXPENSE_PAYMENT_TYPE, "TravelAuthorizationBanquet", readyOnly, false, ExpensePaymentType.names(), Alignment.HORIZONTAL);
+                BANQUET_EXPENSE_PAYMENT_TYPE, "TravelAuthorizationBanquet", readyOnly, false, ExpensePaymentType.names(), Alignment.HORIZONTAL);
         otherExpences = new CurrencyField(OfficeWelcome.constants,
                 OTHER_EXPENCES, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         otherExpensePaymentMode = new EnumField(OfficeWelcome.constants,
-                EXPENSE_PAYMENT_TYPE, "TravelAuthorizationOther", readyOnly, false, ExpensePaymentType.names(), Alignment.HORIZONTAL);
+                OTHER_EXPENSE_PAYMENT_TYPE, "TravelAuthorizationOther", readyOnly, false, ExpensePaymentType.names(), Alignment.HORIZONTAL);
         totalCostOfFood.getElement().getStyle().setProperty("float", "left");
         conferenceFee.getElement().getStyle().setProperty("float", "left");
         totalCostOfBanquet.getElement().getStyle().setProperty("float", "left");
@@ -119,17 +119,17 @@ public class TravelFoodPanel extends ALComposite implements ClickHandler {
         if (entity.get(OTHER_EXPENCES) != null) {
             otherExpences.setValue(new BigDecimal(entity.get(OTHER_EXPENCES).isString().stringValue()), true);
         }
-        if (entity.get(EXPENSE_PAYMENT_TYPE) != null) {
-            foodExpensePaymentMode.selectValue(entity.get(EXPENSE_PAYMENT_TYPE).isString().stringValue());
+        if (entity.get(FOOD_EXPENSE_PAYMENT_TYPE) != null) {
+            foodExpensePaymentMode.selectValue(entity.get(FOOD_EXPENSE_PAYMENT_TYPE).isString().stringValue());
         }
-        if (entity.get(EXPENSE_PAYMENT_TYPE) != null) {
-            conferenceExpensePaymentMode.selectValue(entity.get(EXPENSE_PAYMENT_TYPE).isString().stringValue());
+        if (entity.get(CONFERENCE_EXPENSE_PAYMENT_TYPE) != null) {
+            conferenceExpensePaymentMode.selectValue(entity.get(CONFERENCE_EXPENSE_PAYMENT_TYPE).isString().stringValue());
         }
-        if (entity.get(EXPENSE_PAYMENT_TYPE) != null) {
-            banquetExpensePaymentMode.selectValue(entity.get(EXPENSE_PAYMENT_TYPE).isString().stringValue());
+        if (entity.get(BANQUET_EXPENSE_PAYMENT_TYPE) != null) {
+            banquetExpensePaymentMode.selectValue(entity.get(BANQUET_EXPENSE_PAYMENT_TYPE).isString().stringValue());
         }
-        if (entity.get(EXPENSE_PAYMENT_TYPE) != null) {
-            otherExpensePaymentMode.selectValue(entity.get(EXPENSE_PAYMENT_TYPE).isString().stringValue());
+        if (entity.get(OTHER_EXPENSE_PAYMENT_TYPE) != null) {
+            otherExpensePaymentMode.selectValue(entity.get(OTHER_EXPENSE_PAYMENT_TYPE).isString().stringValue());
         }
     }
 
@@ -148,16 +148,16 @@ public class TravelFoodPanel extends ALComposite implements ClickHandler {
             entity.put(OTHER_EXPENCES, new JSONString(otherExpences.getCurrency().toString()));
         }
         if (foodExpensePaymentMode.getValue() != null) {
-            entity.put(EXPENSE_PAYMENT_TYPE, new JSONString(foodExpensePaymentMode.getValue()));
+            entity.put(FOOD_EXPENSE_PAYMENT_TYPE, new JSONString(foodExpensePaymentMode.getValue()));
         }
         if (conferenceExpensePaymentMode.getValue() != null) {
-            entity.put(EXPENSE_PAYMENT_TYPE, new JSONString(conferenceExpensePaymentMode.getValue()));
+            entity.put(CONFERENCE_EXPENSE_PAYMENT_TYPE, new JSONString(conferenceExpensePaymentMode.getValue()));
         }
         if (banquetExpensePaymentMode.getValue() != null) {
-            entity.put(EXPENSE_PAYMENT_TYPE, new JSONString(banquetExpensePaymentMode.getValue()));
+            entity.put(BANQUET_EXPENSE_PAYMENT_TYPE, new JSONString(banquetExpensePaymentMode.getValue()));
         }
         if (otherExpensePaymentMode.getValue() != null) {
-            entity.put(EXPENSE_PAYMENT_TYPE, new JSONString(otherExpensePaymentMode.getValue()));
+            entity.put(OTHER_EXPENSE_PAYMENT_TYPE, new JSONString(otherExpensePaymentMode.getValue()));
         }
         return entity;
     }
