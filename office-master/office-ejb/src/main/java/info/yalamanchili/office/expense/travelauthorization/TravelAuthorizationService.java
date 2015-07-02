@@ -7,8 +7,10 @@
  */
 package info.yalamanchili.office.expense.travelauthorization;
 
+import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
 import info.chili.commons.pdf.PdfDocumentData;
+import info.chili.security.Signature;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
@@ -87,6 +89,8 @@ public class TravelAuthorizationService {
         data.getData().put("department", entity.getDepartment());
         data.getData().put("travelDestination", entity.getTravelDestination());
         data.getData().put("reasonForTravel", entity.getReasonForTravel());
+//        Signature preparedBysignature = new Signature(preparedBy.getEmployeeId(), preparedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(entity.getDateRequested()), employeeDao.getPrimaryEmail(preparedBy), null);
+//        data.getSignatures().add(preparedBysignature);
         //Travel type Information
         switch (entity.getTravelType()) {
             case IN_STATE:
@@ -217,6 +221,22 @@ public class TravelAuthorizationService {
                 case PURCHASING_CARD:
                     data.getData().put("expenseTransPaymentPurchasingCard", "true");
                     break;
+            }
+        }
+        if (entity.getCeoApprovalBy() != null) {
+            Employee approver = employeeDao.findEmployeWithEmpId(entity.getCeoApprovalBy());
+            if (approver != null) {
+                Signature approvedBysignature = new Signature(approver.getEmployeeId(), approver.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "approverSignature", DateUtils.dateToCalendar(entity.getCeoApprovalDate()), employeeDao.getPrimaryEmail(approver), null);
+                data.getSignatures().add(approvedBysignature);
+                data.getData().put("ceoApprovalDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getCeoApprovalDate()));
+            }
+        }
+        if (entity.getManagerApprovalBy() != null) {
+            Employee approver = employeeDao.findEmployeWithEmpId(entity.getManagerApprovalBy());
+            if (approver != null) {
+                Signature approvedBysignature = new Signature(approver.getEmployeeId(), approver.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "approverSignature", DateUtils.dateToCalendar(entity.getManaerApprovalDate()), employeeDao.getPrimaryEmail(approver), null);
+                data.getSignatures().add(approvedBysignature);
+                data.getData().put("manaerApprovalDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getManaerApprovalDate()));
             }
         }
 
