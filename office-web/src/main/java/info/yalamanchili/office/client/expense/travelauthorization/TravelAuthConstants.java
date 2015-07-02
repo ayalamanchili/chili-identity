@@ -8,8 +8,6 @@
  */
 package info.yalamanchili.office.client.expense.travelauthorization;
 
-import info.chili.gwt.fields.EnumField;
-
 /**
  *
  * @author ayalamanchili

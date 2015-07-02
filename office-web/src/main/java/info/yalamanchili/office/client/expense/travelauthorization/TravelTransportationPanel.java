@@ -27,12 +27,15 @@ import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
 import static info.yalamanchili.office.client.expense.travelauthorization.TravelAuthConstants.*;
 import java.math.BigDecimal;
+import java.util.logging.Logger;
 
 /**
  *
  * @author ayalamanchili
  */
 public class TravelTransportationPanel extends ALComposite implements ChangeHandler, BlurHandler, ClickHandler {
+
+    private static Logger logger = Logger.getLogger(TravelTransportationPanel.class.getName());
 
     protected FlowPanel panel = new FlowPanel();
     EnumField travelTransportationType;
@@ -95,7 +98,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         travelTransportationType = new EnumField(OfficeWelcome.constants,
                 TRAVEL_TRANSPORTATION_TYPE, "TravelAuthorization", readyOnly, false, TravelTransportationType.names(), Alignment.HORIZONTAL);
         totalMiles = new IntegerField(OfficeWelcome.constants,
-                TOTAL_MILES,"TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
+                TOTAL_MILES, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         costPerMile = new CurrencyField(OfficeWelcome.constants,
                 COST_PER_MILE, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         totalTransportationCost = new CurrencyField(OfficeWelcome.constants,
@@ -123,6 +126,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
     }
 
     protected final void populateFields() {
+        logger.info(entity.toString());
         if (entity.get(TRAVEL_TRANSPORTATION_TYPE) != null) {
             travelTransportationType.selectValue(entity.get(TRAVEL_TRANSPORTATION_TYPE).isString().stringValue());
         }
@@ -166,22 +170,21 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         if (totalTransportationCost.getCurrency() != null) {
             entity.put(TOTAL_TRANSPORTATION_COST, new JSONString(totalTransportationCost.getCurrency().toString()));
         }
-        if (estimatedCostOfOtherTransportation.getCurrency() != null) {
-            entity.put(ESTIMATED_COST_OF_OTHER_TRANSPORTATION, new JSONString(estimatedCostOfOtherTransportation.getCurrency().toString()));
-        }
-        if (rentalVehicleJustification.getValue() != null) {
-            entity.put(RENTAL_VEHICLE_JUSTIFICATION, new JSONString(rentalVehicleJustification.getValue()));
-        }
-        if (travelRentalVehicleType.getValue() != null) {
-            entity.put(TRAVEL_RENTAL_VEHICLE_TYPE, new JSONString(travelRentalVehicleType.getValue()));
-        }
-        if (otherVehicleTypeJustification.getValue() != null) {
-            entity.put(OTHER_VEHICLE_TYPE_JUSTIFICATION, new JSONString(otherVehicleTypeJustification.getValue()));
+        if (travelTransportationType.getValue().equals(TravelTransportationType.RENTAL_VEHICLE.name())) {
+            entity.put("travelRentalVehicleJustification", getRentalVehicalObj());
         }
         if (transportationExpensePaymentMode.getValue() != null) {
             entity.put(EXPENSE_PAYMENT_TYPE, new JSONString(transportationExpensePaymentMode.getValue()));
         }
         return entity;
+    }
+
+    public JSONObject getRentalVehicalObj() {
+        JSONObject rentalVehicalObj = new JSONObject();
+        rentalVehicalObj.put("estimatedCostOfOtherTransportation", new JSONString(estimatedCostOfOtherTransportation.getCurrency().toString()));
+        //
+        //
+        return rentalVehicalObj;
     }
 
     @Override

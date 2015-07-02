@@ -17,8 +17,6 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
 import static info.yalamanchili.office.client.expense.travelauthorization.TravelAuthConstants.*;
-import static info.yalamanchili.office.client.expense.travelauthorization.CreateTravelAuthorizationPanel.estimatedExpensesHelpText;
-import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import java.util.logging.Logger;
 
