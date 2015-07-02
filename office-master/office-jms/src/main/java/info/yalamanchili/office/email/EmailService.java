@@ -83,6 +83,7 @@ public class EmailService {
             logger.info("sending email:" + email);
             mailSender.send(preparator);
         } catch (MailException ex) {
+            logger.info(ex.getMessage());
             ex.printStackTrace();
             throw new FaultEventException(new FaultEventPayload(email, Email.class.getCanonicalName()), false, ex);
         }

@@ -16,7 +16,7 @@ import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
-import info.yalamanchili.office.bpm.types.Task;
+import info.chili.bpm.types.Task;
 import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.dao.employee.statusreport.StatusReportDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;

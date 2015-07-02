@@ -9,7 +9,7 @@ package info.yalamanchili.office.bpm;
 
 import info.chili.commons.DateUtils;
 import info.chili.service.jrs.types.Entry;
-import info.yalamanchili.office.bpm.types.FormProperty;
+import info.chili.bpm.types.FormProperty;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import java.util.ArrayList;
 import java.util.HashMap;

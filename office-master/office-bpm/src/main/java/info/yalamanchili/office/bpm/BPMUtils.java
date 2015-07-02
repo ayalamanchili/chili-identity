@@ -9,7 +9,7 @@
 package info.yalamanchili.office.bpm;
 
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.bpm.types.Task;
+import info.chili.bpm.types.Task;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.profile.Employee;

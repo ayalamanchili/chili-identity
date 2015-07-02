@@ -240,6 +240,11 @@
             <artifactId>pdfbox</artifactId>
             <version>${pdfbox.version}</version>
         </dependency>  
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gson.version}</version>
+        </dependency>
         <!--Spring Tests-->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -519,6 +524,7 @@
         <spring.mongodb>1.7.0.RELEASE</spring.mongodb>
         <mongodb.driver.version>3.0.0</mongodb.driver.version>
         <daisydiff.version>1.2-NX3</daisydiff.version>
+        <gson.version>2.2.4</gson.version>
         <eclipse.core.runtime.version>20070801</eclipse.core.runtime.version>
     </properties>
     <profiles>
@@ -572,14 +578,14 @@
                                         <linkXRef>false</linkXRef>
                                         <!--<verbose>true</verbose>-->
                                         <skip>false</skip>
-                                            <rulesets>
-                                              <!-- Two rule sets that come bundled with PMD -->
-                                              <ruleset>/rulesets/java/braces.xml</ruleset>
-                                              <ruleset>/rulesets/java/naming.xml</ruleset>
-                                              <!-- Custom local file system rule set - Examples -->
-                                              <!-- <ruleset>d:\rulesets\strings.xml</ruleset>
-                                              <ruleset>http://localhost/design.xml</ruleset> -->
-                                            </rulesets>                                        
+                                        <rulesets>
+                                            <!-- Two rule sets that come bundled with PMD -->
+                                            <ruleset>/rulesets/java/braces.xml</ruleset>
+                                            <ruleset>/rulesets/java/naming.xml</ruleset>
+                                            <!-- Custom local file system rule set - Examples -->
+                                            <!-- <ruleset>d:\rulesets\strings.xml</ruleset>
+                                            <ruleset>http://localhost/design.xml</ruleset> -->
+                                        </rulesets>                                        
                                     </configuration>
                                 </plugin>
                                 <plugin>

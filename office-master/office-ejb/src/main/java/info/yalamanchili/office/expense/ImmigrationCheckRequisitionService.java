@@ -15,7 +15,7 @@ import info.chili.security.Signature;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
-import info.yalamanchili.office.bpm.types.Task;
+import info.chili.bpm.types.Task;
 import info.yalamanchili.office.dao.expense.ImmigrationCheckRequisitionDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
