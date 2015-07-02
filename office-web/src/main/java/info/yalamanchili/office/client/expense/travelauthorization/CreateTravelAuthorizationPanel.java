@@ -19,7 +19,7 @@ import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import static info.yalamanchili.office.client.expense.travelauthorization.TravelAuthConstants.DEFAULT_FIELD_WIDTH;
+import static info.yalamanchili.office.client.expense.travelauthorization.TravelAuthConstants.*;
 import java.util.logging.Logger;
 
 /**
@@ -62,15 +62,15 @@ public class CreateTravelAuthorizationPanel extends CreateComposite implements C
     @Override
     protected JSONObject populateEntityFromFields() {
         entity = new JSONObject();
-        assignEntityValueFromField("travelType", entity);
-        assignEntityValueFromField("departureDate", entity);
-        assignEntityValueFromField("returnDate", entity);
-        assignEntityValueFromField("travelDestination", entity);
-        assignEntityValueFromField("reasonForTravel", entity);
-        entity.put("travelTransportation", travelTransportationItem.getObject());
-        entity.put("travelAccommodation", lodgingItemPanel.getObject());
-        entity.put("travelFood", mealsItemPanel.getObject());
-        entity.put("travelExpenseRequisitionStatus", new JSONString("Open"));
+        assignEntityValueFromField(TRAVEL_TYPE, entity);
+        assignEntityValueFromField(DEPARTURE_DATE, entity);
+        assignEntityValueFromField(RETURN_DATE, entity);
+        assignEntityValueFromField(TRAVEL_DESTINATION, entity);
+        assignEntityValueFromField(REASON_FOR_TRAVEL, entity);
+        entity.put(TRAVEL_TRANSPORTATION, travelTransportationItem.getObject());
+        entity.put(TRAVEL_ACCOMMODATION, lodgingItemPanel.getObject());
+        entity.put(TRAVEL_FOOD, mealsItemPanel.getObject());
+        entity.put(TRAVEL_EXPENSE_REQUISITION_STATUS, new JSONString("Open"));
         logger.info(entity.toString());
         return entity;
 
@@ -78,12 +78,12 @@ public class CreateTravelAuthorizationPanel extends CreateComposite implements C
 
     @Override
     protected void addWidgets() {
-        addEnumField("travelType", false, true, TravelType.names(), Alignment.HORIZONTAL);
+        addEnumField(TRAVEL_TYPE, false, true, TravelType.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(tripInfoHelpText);
-        addField("departureDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("returnDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("travelDestination", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("reasonForTravel", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField(DEPARTURE_DATE, false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField(RETURN_DATE, false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField(TRAVEL_DESTINATION, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField(REASON_FOR_TRAVEL, false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(estimatedExpensesHelpText);
         entityFieldsPanel.add(tacHelpText);
         entityFieldsPanel.add(transportation);

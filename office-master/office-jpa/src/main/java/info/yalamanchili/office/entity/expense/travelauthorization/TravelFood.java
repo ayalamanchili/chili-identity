@@ -55,7 +55,31 @@ public class TravelFood implements Serializable {
     @Enumerated(EnumType.STRING)
     @Field
     @NotNull(message = "{travel.expense.transportation.pay.type.not.empty.msg}")
-    protected ExpensePaymentType expenseFoodPaymentType;
+    protected ExpensePaymentType foodExpensePaymentMode;
+     /**
+     *
+     *
+     */
+    @Enumerated(EnumType.STRING)
+    @Field
+    @NotNull(message = "{travel.expense.transportation.pay.type.not.empty.msg}")
+    protected ExpensePaymentType conferenceExpensePaymentMode;
+     /**
+     *
+     *
+     */
+    @Enumerated(EnumType.STRING)
+    @Field
+    @NotNull(message = "{travel.expense.transportation.pay.type.not.empty.msg}")
+    protected ExpensePaymentType banquetExpensePaymentMode;
+     /**
+     *
+     *
+     */
+    @Enumerated(EnumType.STRING)
+    @Field
+    @NotNull(message = "{travel.expense.transportation.pay.type.not.empty.msg}")
+    protected ExpensePaymentType otherExpensePaymentMode;
 
     /**
      *
@@ -96,17 +120,40 @@ public class TravelFood implements Serializable {
         this.otherExpences = otherExpences;
     }
 
-    public ExpensePaymentType getExpensePaymentType() {
-        return expenseFoodPaymentType;
+    public ExpensePaymentType getFoodExpensePaymentMode() {
+        return foodExpensePaymentMode;
     }
 
-    public void setExpensePaymentType(ExpensePaymentType expenseFoodPaymentType) {
-        this.expenseFoodPaymentType = expenseFoodPaymentType;
+    public void setFoodExpensePaymentMode(ExpensePaymentType foodExpensePaymentMode) {
+        this.foodExpensePaymentMode = foodExpensePaymentMode;
+    }
+
+    public ExpensePaymentType getConferenceExpensePaymentMode() {
+        return conferenceExpensePaymentMode;
+    }
+
+    public void setConferenceExpensePaymentMode(ExpensePaymentType conferenceExpensePaymentMode) {
+        this.conferenceExpensePaymentMode = conferenceExpensePaymentMode;
+    }
+
+    public ExpensePaymentType getBanquetExpensePaymentMode() {
+        return banquetExpensePaymentMode;
+    }
+
+    public void setBanquetExpensePaymentMode(ExpensePaymentType banquetExpensePaymentMode) {
+        this.banquetExpensePaymentMode = banquetExpensePaymentMode;
+    }
+
+    public ExpensePaymentType getOtherExpensePaymentMode() {
+        return otherExpensePaymentMode;
+    }
+
+    public void setOtherExpensePaymentMode(ExpensePaymentType otherExpensePaymentMode) {
+        this.otherExpensePaymentMode = otherExpensePaymentMode;
     }
 
     @Override
     public String toString() {
-        return "TravelFood{" + "totalCostOfFood=" + totalCostOfFood + ", conferenceFee=" + conferenceFee + ", totalCostOfBanquet=" + totalCostOfBanquet + ", otherExpences=" + otherExpences + ", travelTransportationPayType=" + expenseFoodPaymentType + '}';
+        return "TravelFood{" + "totalCostOfFood=" + totalCostOfFood + ", conferenceFee=" + conferenceFee + ", totalCostOfBanquet=" + totalCostOfBanquet + ", otherExpences=" + otherExpences + ", foodExpensePaymentMode=" + foodExpensePaymentMode + ", conferenceExpensePaymentMode=" + conferenceExpensePaymentMode + ", banquetExpensePaymentMode=" + banquetExpensePaymentMode + ", otherExpensePaymentMode=" + otherExpensePaymentMode + '}';
     }
-
 }

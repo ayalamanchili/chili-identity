@@ -15,13 +15,9 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.composite.ALComposite;
-import info.chili.gwt.composite.BaseField;
 import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.fields.EnumField;
-import info.chili.gwt.resources.ChiliImages;
 import info.chili.gwt.utils.Alignment;
-import info.chili.gwt.widgets.ClickableImage;
-import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.OfficeWelcome;
 import static info.yalamanchili.office.client.expense.travelauthorization.TravelAuthConstants.*;
 import java.math.BigDecimal;
@@ -79,19 +75,19 @@ public class TravelFoodPanel extends ALComposite implements ClickHandler {
         totalCostOfFood = new CurrencyField(OfficeWelcome.constants,
                 TOTAL_COST_OF_FOOD, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         foodExpensePaymentMode = new EnumField(OfficeWelcome.constants,
-                FOOD_EXPENSE_PAYMENT_TYPE, "TravelAuthorizationFood", readyOnly, false, ExpensePaymentType.names(), Alignment.HORIZONTAL);
+                FOOD_EXPENSE_PAYMENT_TYPE, "TravelAuthorization", readyOnly, false, ExpensePaymentType.names(), Alignment.HORIZONTAL);
         conferenceFee = new CurrencyField(OfficeWelcome.constants,
                 CONFERENCE_FEE, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         conferenceExpensePaymentMode = new EnumField(OfficeWelcome.constants,
-                CONFERENCE_EXPENSE_PAYMENT_TYPE, "TravelAuthorizationConference", readyOnly, false, ExpensePaymentType.names(), Alignment.HORIZONTAL);
+                CONFERENCE_EXPENSE_PAYMENT_TYPE, "TravelAuthorization", readyOnly, false, ExpensePaymentType.names(), Alignment.HORIZONTAL);
         totalCostOfBanquet = new CurrencyField(OfficeWelcome.constants,
                 TOTAL_COST_OF_BANQUET, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         banquetExpensePaymentMode = new EnumField(OfficeWelcome.constants,
-                BANQUET_EXPENSE_PAYMENT_TYPE, "TravelAuthorizationBanquet", readyOnly, false, ExpensePaymentType.names(), Alignment.HORIZONTAL);
+                BANQUET_EXPENSE_PAYMENT_TYPE, "TravelAuthorization", readyOnly, false, ExpensePaymentType.names(), Alignment.HORIZONTAL);
         otherExpences = new CurrencyField(OfficeWelcome.constants,
                 OTHER_EXPENCES, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         otherExpensePaymentMode = new EnumField(OfficeWelcome.constants,
-                OTHER_EXPENSE_PAYMENT_TYPE, "TravelAuthorizationOther", readyOnly, false, ExpensePaymentType.names(), Alignment.HORIZONTAL);
+                OTHER_EXPENSE_PAYMENT_TYPE, "TravelAuthorization", readyOnly, false, ExpensePaymentType.names(), Alignment.HORIZONTAL);
         totalCostOfFood.getElement().getStyle().setProperty("float", "left");
         conferenceFee.getElement().getStyle().setProperty("float", "left");
         totalCostOfBanquet.getElement().getStyle().setProperty("float", "left");

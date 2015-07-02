@@ -47,7 +47,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
     EnumField travelRentalVehicleType;
     TextAreaField otherVehicleTypeJustification;
     //
-    EnumField transportationExpensePaymentMode;
+    EnumField expensePaymentType;
 
     boolean readyOnly;
     JSONObject entity;
@@ -86,7 +86,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         rentalVehicleJustification.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         travelRentalVehicleType.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         otherVehicleTypeJustification.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
-        transportationExpensePaymentMode.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
+        expensePaymentType.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         if (!readyOnly) {
             renderMiles(false);
             renderRentalJustification(false);
@@ -103,8 +103,8 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
                 COST_PER_MILE, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         totalTransportationCost = new CurrencyField(OfficeWelcome.constants,
                 TOTAL_TRANSPORTATION_COST, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
-        transportationExpensePaymentMode = new EnumField(OfficeWelcome.constants,
-                EXPENSE_PAYMENT_TYPE, "TravelAuthorizationTransportation", readyOnly, false, ExpensePaymentType.names(), Alignment.HORIZONTAL);
+        expensePaymentType = new EnumField(OfficeWelcome.constants,
+                EXPENSE_PAYMENT_TYPE, "TravelAuthorization", readyOnly, false, ExpensePaymentType.names(), Alignment.HORIZONTAL);
         estimatedCostOfOtherTransportation = new CurrencyField(OfficeWelcome.constants,
                 ESTIMATED_COST_OF_OTHER_TRANSPORTATION, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         rentalVehicleJustification = new TextAreaField(OfficeWelcome.constants,
@@ -118,7 +118,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         panel.add(totalMiles);
         panel.add(costPerMile);
         panel.add(totalTransportationCost);
-        panel.add(transportationExpensePaymentMode);
+        panel.add(expensePaymentType);
         panel.add(estimatedCostOfOtherTransportation);
         panel.add(rentalVehicleJustification);
         panel.add(travelRentalVehicleType);
@@ -152,7 +152,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
             otherVehicleTypeJustification.setValue(entity.get(OTHER_VEHICLE_TYPE_JUSTIFICATION).isString().stringValue());
         }
         if (entity.get(EXPENSE_PAYMENT_TYPE) != null) {
-            transportationExpensePaymentMode.selectValue(entity.get(EXPENSE_PAYMENT_TYPE).isString().stringValue());
+            expensePaymentType.selectValue(entity.get(EXPENSE_PAYMENT_TYPE).isString().stringValue());
         }
     }
 
@@ -171,19 +171,20 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
             entity.put(TOTAL_TRANSPORTATION_COST, new JSONString(totalTransportationCost.getCurrency().toString()));
         }
         if (travelTransportationType.getValue().equals(TravelTransportationType.RENTAL_VEHICLE.name())) {
-            entity.put("travelRentalVehicleJustification", getRentalVehicalObj());
+            entity.put(TRAVEL_RENTAL_VEHICLE_JUSTIFICATION, getRentalVehicalObj());
         }
-        if (transportationExpensePaymentMode.getValue() != null) {
-            entity.put(EXPENSE_PAYMENT_TYPE, new JSONString(transportationExpensePaymentMode.getValue()));
+        if (expensePaymentType.getValue() != null) {
+            entity.put(EXPENSE_PAYMENT_TYPE, new JSONString(expensePaymentType.getValue()));
         }
         return entity;
     }
 
     public JSONObject getRentalVehicalObj() {
         JSONObject rentalVehicalObj = new JSONObject();
-        rentalVehicalObj.put("estimatedCostOfOtherTransportation", new JSONString(estimatedCostOfOtherTransportation.getCurrency().toString()));
-        //
-        //
+        rentalVehicalObj.put(ESTIMATED_COST_OF_OTHER_TRANSPORTATION, new JSONString(estimatedCostOfOtherTransportation.getCurrency().toString()));
+        rentalVehicalObj.put(RENTAL_VEHICLE_JUSTIFICATION, new JSONString(rentalVehicleJustification.getValue()));
+        rentalVehicalObj.put(TRAVEL_RENTAL_VEHICLE_TYPE, new JSONString(travelRentalVehicleType.getValue()));
+        rentalVehicalObj.put(OTHER_VEHICLE_TYPE_JUSTIFICATION, new JSONString(otherVehicleTypeJustification.getValue()));
         return rentalVehicalObj;
     }
 

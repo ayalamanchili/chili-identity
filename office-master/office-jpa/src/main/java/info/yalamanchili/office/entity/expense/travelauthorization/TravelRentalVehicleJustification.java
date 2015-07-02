@@ -9,18 +9,25 @@
 package info.yalamanchili.office.entity.expense.travelauthorization;
 
 import info.chili.jpa.AbstractEntity;
+import java.io.Serializable;
 import java.math.BigDecimal;
+import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlType;
+import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
 /**
  *
  * @author Madhu.Badiginchala
  */
-public class TravelRentalVehicleJustification extends AbstractEntity {
+@Embeddable
+@Audited
+@XmlType
+public class TravelRentalVehicleJustification implements Serializable {
 
     private static long serialVersionUID = 1L;
     /**

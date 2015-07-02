@@ -11,6 +11,7 @@ package info.yalamanchili.office.entity.expense.travelauthorization;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
@@ -55,6 +56,7 @@ public class TravelTransportation implements Serializable {
      *
      *
      */
+    @Embedded
     protected TravelRentalVehicleJustification travelRentalVehicleJustification;
     /**
      *

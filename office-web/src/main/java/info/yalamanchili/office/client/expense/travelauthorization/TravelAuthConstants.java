@@ -26,10 +26,21 @@ public interface TravelAuthConstants {
     String TRAVEL_RENTAL_VEHICLE_TYPE = "travelRentalVehicleType";                        
     String OTHER_VEHICLE_TYPE_JUSTIFICATION = "otherVehicleTypeJustification";
     String EXPENSE_PAYMENT_TYPE = "expensePaymentType";  
+    String TRAVEL_RENTAL_VEHICLE_JUSTIFICATION="travelRentalVehicleJustification";
+    String TRAVEL_TYPE="travelType";
+    String DEPARTURE_DATE="departureDate";
+    String RETURN_DATE="returnDate";
+    String TRAVEL_DESTINATION="travelDestination";
+    String REASON_FOR_TRAVEL="reasonForTravel";
+    String TRAVEL_TRANSPORTATION="travelTransportation";
+    String TRAVEL_ACCOMMODATION="travelAccommodation";
+    String TRAVEL_FOOD="travelFood";
+    String TRAVEL_EXPENSE_REQUISITION_STATUS="travelExpenseRequisitionStatus";
     // Travel Accommodation Panel
     String NUM_OF_LODGING_NIGHTS="numberOfLodgingNights";
     String LODGING_COST_PER_NIGHT="lodgingCostPerNight";
     String TOTAL_LODGING_COST = "totalLodgingCost";
+    String EXPENSE_ACCOMMODATION_PAYMENT_TYPE = "expenseAccommodationPaymentType"; 
     // Travel Food Panel
     String TOTAL_COST_OF_FOOD = "totalCostOfFood";
     String CONFERENCE_FEE = "conferenceFee";

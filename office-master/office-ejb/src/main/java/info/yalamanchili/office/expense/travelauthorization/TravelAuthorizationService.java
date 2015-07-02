@@ -211,18 +211,57 @@ public class TravelAuthorizationService {
                 data.getData().put("totalCostOfBanquet", travelFood.getTotalCostOfBanquet().setScale(2, BigDecimal.ROUND_UP).toString());
             }
             //ExpensePaymentType info
-            if (travelFood.getExpensePaymentType() != null) {
-                switch (travelFood.getExpensePaymentType()) {
-                    case EMPLOYEE_EXPENSE:
-                        data.getData().put("expenseTransPaymentExp", "true");
-                        break;
-                    case PO:
-                        data.getData().put("expenseTransPaymentPo", "true");
-                        break;
-                    case PURCHASING_CARD:
-                        data.getData().put("expenseTransPaymentPurchasingCard", "true");
-                        break;
-                }
+            if (travelFood.getFoodExpensePaymentMode() != null) {
+            switch (travelFood.getFoodExpensePaymentMode()){
+                case EMPLOYEE_EXPENSE:
+                    data.getData().put("expenseTransPaymentExp", "true");
+                    break;
+                case PO:
+                    data.getData().put("expenseTransPaymentPo", "true");
+                    break;
+                case PURCHASING_CARD:
+                    data.getData().put("expenseTransPaymentPurchasingCard", "true");
+                    break;
+            }
+            }
+            if (travelFood.getConferenceExpensePaymentMode() != null) {
+            switch (travelFood.getConferenceExpensePaymentMode()){
+                case EMPLOYEE_EXPENSE:
+                    data.getData().put("expenseTransPaymentExp", "true");
+                    break;
+                case PO:
+                    data.getData().put("expenseTransPaymentPo", "true");
+                    break;
+                case PURCHASING_CARD:
+                    data.getData().put("expenseTransPaymentPurchasingCard", "true");
+                    break;
+            }
+            }
+            if (travelFood.getBanquetExpensePaymentMode() != null) {
+            switch (travelFood.getBanquetExpensePaymentMode()){
+                case EMPLOYEE_EXPENSE:
+                    data.getData().put("expenseTransPaymentExp", "true");
+                    break;
+                case PO:
+                    data.getData().put("expenseTransPaymentPo", "true");
+                    break;
+                case PURCHASING_CARD:
+                    data.getData().put("expenseTransPaymentPurchasingCard", "true");
+                    break;
+            }
+            }
+            if (travelFood.getOtherExpensePaymentMode() != null) {
+            switch (travelFood.getOtherExpensePaymentMode()){
+                case EMPLOYEE_EXPENSE:
+                    data.getData().put("expenseTransPaymentExp", "true");
+                    break;
+                case PO:
+                    data.getData().put("expenseTransPaymentPo", "true");
+                    break;
+                case PURCHASING_CARD:
+                    data.getData().put("expenseTransPaymentPurchasingCard", "true");
+                    break;
+            }
             }
         }
         if (entity.getCeoApprovalBy() != null) {
