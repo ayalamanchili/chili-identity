@@ -29,6 +29,7 @@ public class ChiliAdminMenu extends Composite {
 
     protected void configureAdminMenu() {
         chiliAdminMenuBar.addItem("Resource Bundles", chiliAdminMenuResourceBundles);
+        chiliAdminMenuBar.addItem("BPMTaskDelegateRule", chiliAdminMenubpmTaskDelegate);
         chiliAdminMenuBar.addStyleName("entityMenuBar");
     }
     Command chiliAdminMenuResourceBundles = new Command() {
@@ -36,6 +37,13 @@ public class ChiliAdminMenu extends Composite {
             TabPanel.instance().getChiliAdminPanel().entityPanel.clear();
             TabPanel.instance().getChiliAdminPanel().sidePanelTop.clear();
             TabPanel.instance().getChiliAdminPanel().entityPanel.add(new ReadAllci18nResourceBundlesPanel());
+        }
+    };
+    Command chiliAdminMenubpmTaskDelegate = new Command() {
+        public void execute() {
+            TabPanel.instance().getChiliAdminPanel().entityPanel.clear();
+            TabPanel.instance().getChiliAdminPanel().sidePanelTop.clear();
+            TabPanel.instance().getChiliAdminPanel().entityPanel.add(new ReadAllBPMTaskDelegateRulePanel());
         }
     };
 }

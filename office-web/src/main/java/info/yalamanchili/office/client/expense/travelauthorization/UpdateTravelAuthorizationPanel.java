@@ -20,6 +20,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import static info.yalamanchili.office.client.expense.travelauthorization.TravelAuthConstants.DEFAULT_FIELD_WIDTH;
+import static info.yalamanchili.office.client.expense.travelauthorization.UpdateTravelAuthorizationPanel.tripInfoHelpText;
 import java.util.logging.Logger;
 
 /**
@@ -55,14 +56,14 @@ public class UpdateTravelAuthorizationPanel extends UpdateComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        logger.info(response);
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity);
+            @Override
+            public void onResponse(String response) {
+                logger.info(response);
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                populateFieldsFromEntity(entity);
 
-                    }
-                });
+            }
+        });
     }
 
     protected String getReadURI() {
@@ -87,16 +88,16 @@ public class UpdateTravelAuthorizationPanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postUpdateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postUpdateSuccess(arg0);
+            }
+        });
     }
 
     @Override
@@ -110,6 +111,16 @@ public class UpdateTravelAuthorizationPanel extends UpdateComposite {
         if (entity.get("travelTransportation") != null) {
             travelTransportationItem = new TravelTransportationPanel(entity.get("travelTransportation").isObject(), false);
             entityFieldsPanel.add(travelTransportationItem);
+        }
+        entityFieldsPanel.add(lodging);
+        if (entity.get("travelAccommodation") != null) {
+            lodgingItemPanel = new TravelAccommodationPanel(entity.get("travelAccommodation").isObject(), false);
+            entityFieldsPanel.add(lodgingItemPanel);
+        }
+        entityFieldsPanel.add(meals);
+        if (entity.get("travelFood") != null) {
+            mealsItemPanel = new TravelFoodPanel(entity.get("travelFood").isObject(), false);
+            entityFieldsPanel.add(mealsItemPanel);
         }
 
     }
@@ -140,12 +151,6 @@ public class UpdateTravelAuthorizationPanel extends UpdateComposite {
         entityFieldsPanel.add(estimatedExpensesHelpText);
         entityFieldsPanel.add(tacHelpText);
         entityFieldsPanel.add(transportation);
-
-//        entityFieldsPanel.add(travelTransportationItem);
-//        entityFieldsPanel.add(lodging);
-//        entityFieldsPanel.add(lodgingItemPanel);
-//        entityFieldsPanel.add(meals);
-//        entityFieldsPanel.add(mealsItemPanel);
         alignFields(DEFAULT_FIELD_WIDTH);
     }
 
