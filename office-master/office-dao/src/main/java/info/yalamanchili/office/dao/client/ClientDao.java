@@ -10,10 +10,13 @@ package info.yalamanchili.office.dao.client;
 import info.chili.spring.SpringContext;
 import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.entity.client.Client;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -37,5 +40,15 @@ public class ClientDao extends CRUDDao<Client> {
 
     public static ClientDao instance() {
         return SpringContext.getBean(ClientDao.class);
+    }
+    
+    @Transactional(readOnly = true)
+    @Override
+    public List<Client> query(int start, int limit) {
+        Query findAllQuery = getEntityManager().createQuery("from " + Client.class.getCanonicalName() + "  order by upper(name) ASC", entityCls);
+        findAllQuery.setFirstResult(start);
+        findAllQuery.setMaxResults(limit);
+        return findAllQuery.getResultList();
+
     }
 }
