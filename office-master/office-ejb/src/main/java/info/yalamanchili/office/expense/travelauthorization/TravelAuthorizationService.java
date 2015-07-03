@@ -177,7 +177,7 @@ public class TravelAuthorizationService {
         TravelAccommodation travelAccommodation = entity.getTravelAccommodation();
         if (travelAccommodation != null) {
             //ExpensePaymentType info
-            switch (travelAccommodation.getExpensePaymentType()) {
+            switch (travelAccommodation.getExpenseAccommodationPaymentType()) {
                 case EMPLOYEE_EXPENSE:
                     data.getData().put("expenseTransPaymentExp", "true");
                     break;

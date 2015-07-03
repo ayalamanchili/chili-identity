@@ -82,11 +82,11 @@ public class TravelAccommodation implements Serializable {
         this.totalLodgingCost = totalLodgingCost;
     }
 
-    public ExpensePaymentType getExpensePaymentType() {
+    public ExpensePaymentType getExpenseAccommodationPaymentType() {
         return expenseAccommodationPaymentType;
     }
 
-    public void setExpensePaymentType(ExpensePaymentType expenseAccommodationPaymentType) {
+    public void setExpenseAccommodationPaymentType(ExpensePaymentType expenseAccommodationPaymentType) {
         this.expenseAccommodationPaymentType = expenseAccommodationPaymentType;
     }
 

@@ -8,7 +8,6 @@
  */
 package info.yalamanchili.office.entity.expense.travelauthorization;
 
-import info.chili.jpa.AbstractEntity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Embeddable;
