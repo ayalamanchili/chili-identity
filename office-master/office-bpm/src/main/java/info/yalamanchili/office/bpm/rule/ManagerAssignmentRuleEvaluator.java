@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -26,10 +29,10 @@ public class ManagerAssignmentRuleEvaluator extends AbstractTaskDelegate {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         Employee reportsToEmp = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Reports_To");
         if (reportsToEmp != null) {
-            task.setAssignee(reportsToEmp.getEmployeeId());
+            res.setAssignee(reportsToEmp.getEmployeeId());
         } else {
             //TODO avoid hard coding
-            task.setAssignee("aadmin");
+            res.setAssignee("aadmin");
         }
         return res;
     }

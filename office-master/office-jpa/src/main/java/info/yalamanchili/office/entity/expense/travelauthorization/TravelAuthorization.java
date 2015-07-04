@@ -117,7 +117,7 @@ public class TravelAuthorization extends AbstractEntity {
      */
     @Enumerated(EnumType.STRING)
     @Field
-    protected TravelAuthorizationStatus travelExpenseRequisitionStatus;
+    protected TravelAuthorizationStatus status;
     /**
      *
      *
@@ -241,14 +241,15 @@ public class TravelAuthorization extends AbstractEntity {
         this.employee = employee;
     }
 
-    public TravelAuthorizationStatus getTravelExpenseRequisitionStatus() {
-        return travelExpenseRequisitionStatus;
+    public TravelAuthorizationStatus getStatus() {
+        return status;
     }
 
-    public void setTravelExpenseRequisitionStatus(TravelAuthorizationStatus travelExpenseRequisitionStatus) {
-        this.travelExpenseRequisitionStatus = travelExpenseRequisitionStatus;
+    public void setStatus(TravelAuthorizationStatus status) {
+        this.status = status;
     }
 
+   
     /**
      * @return the bpmProcessId
      */
@@ -323,6 +324,6 @@ public class TravelAuthorization extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "TravelExpenseRequisition{" + "travelType=" + travelType + ", employee=" + employee + ", department=" + department + ", phoneNumber=" + phoneNumber + ", travelDestination=" + travelDestination + ", departureDate=" + departureDate + ", returnDate=" + returnDate + ", reasonForTravel=" + reasonForTravel + ", travelTransportation=" + travelTransportation + ", travelAccommodation=" + travelAccommodation + ", travelFood=" + travelFood + ", travelExpenseRequisitionStatus=" + travelExpenseRequisitionStatus + '}';
+        return "TravelExpenseRequisition{" + "travelType=" + travelType + ", employee=" + employee + ", department=" + department + ", phoneNumber=" + phoneNumber + ", travelDestination=" + travelDestination + ", departureDate=" + departureDate + ", returnDate=" + returnDate + ", reasonForTravel=" + reasonForTravel + ", travelTransportation=" + travelTransportation + ", travelAccommodation=" + travelAccommodation + ", travelFood=" + travelFood + ", travelExpenseRequisitionStatus=" + status + '}';
     }
 }

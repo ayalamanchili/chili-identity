@@ -14,8 +14,8 @@
         <startEvent id="travelAuthorizationStart"/>
         
         <!-- Manager approval task-->
-        <sequenceFlow  sourceRef="travelAuthorizationStart" targetRef="travelAuthorizationApprovalTask" />
-        <userTask id="travelAuthorizationApprovalTask" 
+        <sequenceFlow  sourceRef="travelAuthorizationStart" targetRef="travelAuthorizationManagerApprovalTask" />
+        <userTask id="travelAuthorizationManagerApprovalTask" 
                   name="Travel Authorization Task for ${currentEmployee.firstName} ${currentEmployee.lastName}">
             <documentation>
                 Employee Travel Authorization Approval Task
@@ -24,11 +24,11 @@
                 Return Date            : #{entity.returnDate} 
                 <!--   TransportationCost     : #{entity.totalTransportationCost} -->
                 Reason                 : #{entity.reasonForTravel}
-                Status                 : #{entity.travelExpenseRequisitionStatus}  
+                Status                 : #{entity.status}  
 
             </documentation>
             <extensionElements>
-                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.travelauthorization.TravelAuthorizationProcess" />
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner" />
                 <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.travelauthorization.TravelAuthorizationProcess" />
                 <activiti:formProperty id="status" 
                                        name="Approved?"
@@ -46,7 +46,7 @@
         <!-- Task escalation email after 48 hours-->
         <boundaryEvent id="travelAuthorizationApprovalTaskEscalationTimer"
                        cancelActivity="false" 
-                       attachedToRef="travelAuthorizationApprovalTask">
+                       attachedToRef="travelAuthorizationManagerApprovalTask">
             <timerEventDefinition> 
                 <timeDuration>PT48H</timeDuration> 
             </timerEventDefinition>
@@ -55,11 +55,11 @@
                       targetRef="travelAuthorizationApprovalTaskEscalation" />
         <serviceTask id="travelAuthorizationApprovalTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
         <!--desision-->
-        <sequenceFlow sourceRef="travelAuthorizationApprovalTask" 
+        <sequenceFlow sourceRef="travelAuthorizationManagerApprovalTask" 
                       targetRef="approvalGateway" />
         <exclusiveGateway id="approvalGateway" />
         <sequenceFlow sourceRef="approvalGateway" 
-                      targetRef="travelAuthorizationFinalApprovalTask">
+                      targetRef="travelAuthorizationCEOApprovalTask">
             <conditionExpression xsi:type="tFormalExpression">
                 ${status == 'approved'}
             </conditionExpression>
@@ -70,8 +70,8 @@
                 ${status == 'rejected'}
             </conditionExpression>
         </sequenceFlow>
-        <userTask id="travelAuthorizationFinalApprovalTask" 
-                  name="Travel Authorization Final Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" 
+        <userTask id="travelAuthorizationCEOApprovalTask" 
+                  name="Travel Authorization CEO Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" 
                   activiti:candidateGroups="ROLE_ADMIN">
             <documentation>
                 Travel Authorization Final Approval Task
@@ -80,7 +80,7 @@
                 Return Date            : #{entity.returnDate} 
                 <!--   TransportationCost     : #{entity.totalTransportationCost} -->
                 Reason                 : #{entity.reasonForTravel}
-                Status                 : #{entity.travelExpenseRequisitionStatus}  
+                Status                 : #{entity.status}  
                
             </documentation>
             <extensionElements>
@@ -102,7 +102,7 @@
         <!-- Task escalation email after 48 hours-->
         <boundaryEvent id="travelAuthorizationFinalApprovalTaskEscalationTimer"
                        cancelActivity="false" 
-                       attachedToRef="travelAuthorizationFinalApprovalTask">
+                       attachedToRef="travelAuthorizationCEOApprovalTask">
             <timerEventDefinition> 
                 <timeDuration>PT48H</timeDuration> 
             </timerEventDefinition>
@@ -111,7 +111,7 @@
                       targetRef="travelAuthorizationFinalApprovalTaskEscalation" />
         <serviceTask id="travelAuthorizationFinalApprovalTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
         <!--desision-->
-        <sequenceFlow sourceRef="travelAuthorizationFinalApprovalTask" 
+        <sequenceFlow sourceRef="travelAuthorizationCEOApprovalTask" 
                       targetRef="finalApprovalTaskGateway" />
         <exclusiveGateway id="finalApprovalTaskGateway" />
         <sequenceFlow sourceRef="finalApprovalTaskGateway" 
