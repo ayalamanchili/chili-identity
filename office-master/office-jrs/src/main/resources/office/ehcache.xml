@@ -34,4 +34,5 @@
       
     <cache name="aclCache" maxElementsInMemory="10000" eternal="true" overflowToDisk="true" />
     <cache name="cmessages" maxElementsInMemory="10000" eternal="true" overflowToDisk="true" />
+    <cache name="bpm-task-delegate-rules" maxElementsInMemory="10000" eternal="true" overflowToDisk="true" />
 </ehcache>
