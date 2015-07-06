@@ -15,10 +15,7 @@ How to submit a Status Report
  - Before Create A status report we need to add  *Corporate_Status_Reports_Group* in create Notification Group.
 
 
-Notification Group
-----
- - Navigate to Admin --> Notification Group --> Create Notification Group.
-![alt text](../../images/statusreport/create-notification-group.png "Create Status Report")
+
 
 Refer to [Weekly Status Reports](../../office/statusreport/weekly-statusreport.html "Submit Weekly Status Report") for Submitting Weekly status report
 View The Corporate Status Report
