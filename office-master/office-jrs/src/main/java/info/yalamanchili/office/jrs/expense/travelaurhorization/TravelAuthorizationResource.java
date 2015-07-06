@@ -54,7 +54,7 @@ public class TravelAuthorizationResource extends CRUDResource<TravelAuthorizatio
     @Override
     @CacheEvict(value = OfficeCacheKeys.TRAVEL_AUTH, allEntries = true)
     public TravelAuthorization save(TravelAuthorization entity) {
-        return super.save(entity);
+        return travelAuthorizationDao.save(entity);
     }
 
     @PUT

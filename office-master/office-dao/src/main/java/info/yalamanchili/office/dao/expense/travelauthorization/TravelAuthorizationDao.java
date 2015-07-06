@@ -31,6 +31,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class TravelAuthorizationDao extends CRUDDao<TravelAuthorization> {
 
     @Override
+    public TravelAuthorization save(TravelAuthorization entity) {
+        return em.merge(entity);
+    }
+
+    @Override
     public TravelAuthorization findById(Long id) {
         TravelAuthorization entity = super.findById(id);
         if (entity == null) {
