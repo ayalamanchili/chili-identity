@@ -110,7 +110,7 @@ public class ReadAllTravelAuthorizationPanel extends CRUDReadAllComposite {
             table.setText(i, 3, JSONUtils.toString(entity, "travelDestination"));
             table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "departureDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, "returnDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 6, JSONUtils.formatEnumString(entity, "travelExpenseRequisitionStatus"));
+            table.setText(i, 6, JSONUtils.formatEnumString(entity, "status"));
             FileField reportL = new FileField("Print", ChiliClientConfig.instance().getFileDownloadUrl() + "travel-authorization/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id"));
             table.setWidget(i, 7, reportL);
         }

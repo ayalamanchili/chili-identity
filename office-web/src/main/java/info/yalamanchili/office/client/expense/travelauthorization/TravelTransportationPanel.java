@@ -87,7 +87,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         travelRentalVehicleType.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         otherVehicleTypeJustification.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         expensePaymentType.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
-        if (!readyOnly) {
+        if (entity == null) {
             renderMiles(false);
             renderRentalJustification(false);
         }
@@ -134,22 +134,25 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
             totalMiles.setInteger(Integer.valueOf(entity.get(TOTAL_MILES).isString().stringValue()));
         }
         if (entity.get(COST_PER_MILE) != null) {
-            costPerMile.setValue(new BigDecimal(entity.get(COST_PER_MILE).isString().stringValue()), true);
+            costPerMile.setValue(new BigDecimal(entity.get(COST_PER_MILE).isString().stringValue()), false);
         }
         if (entity.get(TOTAL_TRANSPORTATION_COST) != null) {
-            totalTransportationCost.setValue(new BigDecimal(entity.get(TOTAL_TRANSPORTATION_COST).isString().stringValue()), true);
+            totalTransportationCost.setValue(new BigDecimal(entity.get(TOTAL_TRANSPORTATION_COST).isString().stringValue()), false);
         }
-        if (entity.get(ESTIMATED_COST_OF_OTHER_TRANSPORTATION) != null) {
-            estimatedCostOfOtherTransportation.setValue(new BigDecimal(entity.get(ESTIMATED_COST_OF_OTHER_TRANSPORTATION).isString().stringValue()), true);
-        }
-        if (entity.get(RENTAL_VEHICLE_JUSTIFICATION) != null) {
-            rentalVehicleJustification.setValue(entity.get(RENTAL_VEHICLE_JUSTIFICATION).isString().stringValue());
-        }
-        if (entity.get(TRAVEL_RENTAL_VEHICLE_TYPE) != null) {
-            travelRentalVehicleType.setValue(entity.get(TRAVEL_RENTAL_VEHICLE_TYPE).isString().stringValue());
-        }
-        if (entity.get(OTHER_VEHICLE_TYPE_JUSTIFICATION) != null) {
-            otherVehicleTypeJustification.setValue(entity.get(OTHER_VEHICLE_TYPE_JUSTIFICATION).isString().stringValue());
+        if (entity.containsKey(TRAVEL_RENTAL_VEHICLE_JUSTIFICATION)) {
+            JSONObject rentalVehicleJustificationObj = entity.get(TravelAuthConstants.TRAVEL_RENTAL_VEHICLE_JUSTIFICATION).isObject();
+            if (rentalVehicleJustificationObj.get(ESTIMATED_COST_OF_OTHER_TRANSPORTATION) != null) {
+                estimatedCostOfOtherTransportation.setValue(new BigDecimal(rentalVehicleJustificationObj.get(ESTIMATED_COST_OF_OTHER_TRANSPORTATION).isString().stringValue()), false);
+            }
+            if (rentalVehicleJustificationObj.get(RENTAL_VEHICLE_JUSTIFICATION) != null) {
+                rentalVehicleJustification.setValue(rentalVehicleJustificationObj.get(RENTAL_VEHICLE_JUSTIFICATION).isString().stringValue());
+            }
+            if (rentalVehicleJustificationObj.get(TRAVEL_RENTAL_VEHICLE_TYPE) != null) {
+                travelRentalVehicleType.setValue(rentalVehicleJustificationObj.get(TRAVEL_RENTAL_VEHICLE_TYPE).isString().stringValue());
+            }
+            if (rentalVehicleJustificationObj.get(OTHER_VEHICLE_TYPE_JUSTIFICATION) != null) {
+                otherVehicleTypeJustification.setValue(rentalVehicleJustificationObj.get(OTHER_VEHICLE_TYPE_JUSTIFICATION).isString().stringValue());
+            }
         }
         if (entity.get(EXPENSE_PAYMENT_TYPE) != null) {
             expensePaymentType.selectValue(entity.get(EXPENSE_PAYMENT_TYPE).isString().stringValue());
@@ -181,10 +184,18 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
 
     public JSONObject getRentalVehicalObj() {
         JSONObject rentalVehicalObj = new JSONObject();
-        rentalVehicalObj.put(ESTIMATED_COST_OF_OTHER_TRANSPORTATION, new JSONString(estimatedCostOfOtherTransportation.getCurrency().toString()));
-        rentalVehicalObj.put(RENTAL_VEHICLE_JUSTIFICATION, new JSONString(rentalVehicleJustification.getValue()));
-        rentalVehicalObj.put(TRAVEL_RENTAL_VEHICLE_TYPE, new JSONString(travelRentalVehicleType.getValue()));
-        rentalVehicalObj.put(OTHER_VEHICLE_TYPE_JUSTIFICATION, new JSONString(otherVehicleTypeJustification.getValue()));
+        if (estimatedCostOfOtherTransportation.getCurrency() != null) {
+            rentalVehicalObj.put(ESTIMATED_COST_OF_OTHER_TRANSPORTATION, new JSONString(estimatedCostOfOtherTransportation.getCurrency().toString()));
+        }
+        if (rentalVehicleJustification.getValue() != null) {
+            rentalVehicalObj.put(RENTAL_VEHICLE_JUSTIFICATION, new JSONString(rentalVehicleJustification.getValue()));
+        }
+        if (travelRentalVehicleType.getValue() != null) {
+            rentalVehicalObj.put(TRAVEL_RENTAL_VEHICLE_TYPE, new JSONString(travelRentalVehicleType.getValue()));
+        }
+        if (otherVehicleTypeJustification.getValue() != null) {
+            rentalVehicalObj.put(OTHER_VEHICLE_TYPE_JUSTIFICATION, new JSONString(otherVehicleTypeJustification.getValue()));
+        }
         return rentalVehicalObj;
     }
 

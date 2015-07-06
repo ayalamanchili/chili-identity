@@ -90,10 +90,10 @@ public class TravelAccommodationPanel extends ALComposite implements ClickHandle
             numberOfLodgingNights.setInteger(Integer.valueOf(entity.get(NUM_OF_LODGING_NIGHTS).isString().stringValue()));
         }
         if (entity.get(LODGING_COST_PER_NIGHT) != null) {
-            lodgingCostPerNight.setValue(new BigDecimal(entity.get(LODGING_COST_PER_NIGHT).isString().stringValue()), true);
+            lodgingCostPerNight.setValue(new BigDecimal(entity.get(LODGING_COST_PER_NIGHT).isString().stringValue()), false);
         }
         if (entity.get(TOTAL_LODGING_COST) != null) {
-            totalLodgingCost.setValue(new BigDecimal(entity.get(TOTAL_LODGING_COST).isString().stringValue()), true);
+            totalLodgingCost.setValue(new BigDecimal(entity.get(TOTAL_LODGING_COST).isString().stringValue()), false);
         }
         if (entity.get(EXPENSE_ACCOMMODATION_PAYMENT_TYPE) != null) {
             expenseAccommodationPaymentType.selectValue(entity.get(EXPENSE_ACCOMMODATION_PAYMENT_TYPE).isString().stringValue());

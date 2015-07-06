@@ -104,16 +104,16 @@ public class TravelFoodPanel extends ALComposite implements ClickHandler {
 
     protected final void populateFields() {
         if (entity.get(TOTAL_COST_OF_FOOD) != null) {
-            totalCostOfFood.setValue(new BigDecimal(entity.get(TOTAL_COST_OF_FOOD).isString().stringValue()), true);
+            totalCostOfFood.setValue(new BigDecimal(entity.get(TOTAL_COST_OF_FOOD).isString().stringValue()), false);
         }
         if (entity.get(CONFERENCE_FEE) != null) {
-            conferenceFee.setValue(new BigDecimal(entity.get(CONFERENCE_FEE).isString().stringValue()), true);
+            conferenceFee.setValue(new BigDecimal(entity.get(CONFERENCE_FEE).isString().stringValue()), false);
         }
         if (entity.get(TOTAL_COST_OF_BANQUET) != null) {
-            totalCostOfBanquet.setValue(new BigDecimal(entity.get(TOTAL_COST_OF_BANQUET).isString().stringValue()), true);
+            totalCostOfBanquet.setValue(new BigDecimal(entity.get(TOTAL_COST_OF_BANQUET).isString().stringValue()), false);
         }
         if (entity.get(OTHER_EXPENCES) != null) {
-            otherExpences.setValue(new BigDecimal(entity.get(OTHER_EXPENCES).isString().stringValue()), true);
+            otherExpences.setValue(new BigDecimal(entity.get(OTHER_EXPENCES).isString().stringValue()), false);
         }
         if (entity.get(FOOD_EXPENSE_PAYMENT_TYPE) != null) {
             foodExpensePaymentMode.selectValue(entity.get(FOOD_EXPENSE_PAYMENT_TYPE).isString().stringValue());
