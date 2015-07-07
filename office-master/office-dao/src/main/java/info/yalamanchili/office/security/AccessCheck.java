@@ -26,4 +26,6 @@ public @interface AccessCheck {
     String[] roles();
 
     String[] companyContacts();
+    
+    boolean strictOrderCheck() default true;
 }

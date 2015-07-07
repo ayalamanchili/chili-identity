@@ -52,17 +52,29 @@ public class AccessCheckService {
         if (OfficeSecurityService.instance().hasAnyRole((String[]) accessCheck.roles())) {
             return true;
         }
-        boolean flag = false;
         for (String cc : accessCheck.companyContacts()) {
-            Employee companyContact = CompanyContactDao.instance().getCompanyContactForEmployee(employee, cc);
-            if (companyContact != null) {
-                flag = true;
-                if (companyContact.getId().equals(currentUser.getId())) {
-                    return true;
-                }
+            boolean canAccess = canAccess(cc, employee, currentUser);
+            if (canAccess) {
+                return true;
             }
-            if (flag) {
+            if (hasContactType(cc, employee) && accessCheck.strictOrderCheck()) {
                 break;
+            }
+        }
+        return false;
+    }
+
+    protected boolean hasContactType(String companyContactType, Employee employee) {
+        return CompanyContactDao.instance().getCompanyContactForEmployee(employee, companyContactType) != null;
+    }
+
+    protected boolean canAccess(String companyContactType, Employee employee, Employee currentUser) {
+        Employee companyContact = CompanyContactDao.instance().getCompanyContactForEmployee(employee, companyContactType);
+        while (companyContact != null) {
+            if (companyContact.getId().equals(currentUser.getId())) {
+                return true;
+            } else {
+                return canAccess(companyContactType, companyContact, currentUser);
             }
         }
         return false;
