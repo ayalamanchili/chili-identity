@@ -28,7 +28,7 @@
 
             </documentation>
             <extensionElements>
-                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner" />
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.travelauthorization.TravelAuthorizationProcess" />
                 <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.travelauthorization.TravelAuthorizationProcess" />
                 <activiti:formProperty id="status" 
                                        name="Approved?"
