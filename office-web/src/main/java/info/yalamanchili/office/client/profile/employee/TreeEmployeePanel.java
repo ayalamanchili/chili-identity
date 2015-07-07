@@ -119,7 +119,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         if (Auth.isCorporateEmployee()) {
             addFirstChildLink("Privacy", PRIVACY_NODE);
         }
-        if ((Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_SYSTEM_AND_NETWORK_ADMIN) && Auth.isCorporateEmployee(entity)) || (Auth.isConsultantEmployee() && Auth.hasAnyOfRoles(ROLE.ROLE_CONSULTANT_TIME_ADMIN, ROLE.ROLE_ADMIN, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_SYSTEM_AND_NETWORK_ADMIN))) {
+        if ((Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_SYSTEM_AND_NETWORK_ADMIN) && Auth.isCorporateEmployee(entity)) || (Auth.isConsultantEmployee(entity) && Auth.hasAnyOfRoles(ROLE.ROLE_CONSULTANT_TIME_ADMIN, ROLE.ROLE_ADMIN, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_SYSTEM_AND_NETWORK_ADMIN))) {
             addFirstChildLink("Deactivation", DEACTIVATION_USER_NODE);
         }
         this.rootItem.setState(true);

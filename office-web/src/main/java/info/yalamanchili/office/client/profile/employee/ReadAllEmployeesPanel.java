@@ -52,12 +52,12 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
         // TODO externalize the limit size for read all
         HttpServiceAsync.instance().doGet(getReadAllEmployeesURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                logger.info(result);
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        logger.info(result);
+                        postFetchTable(result);
+                    }
+                });
     }
 
     public String getReadAllEmployeesURL(Integer start, String limit) {
@@ -114,7 +114,7 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
     protected void addOptionsWidget(int row, JSONObject entity) {
         if (Auth.isAdmin()) {
             createOptionsWidget(OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
-        } else if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_TIME, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_HR_ADMINSTRATION)) {
+        } else if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_TIME, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_CONSULTANT_TIME_ADMIN)) {
             createOptionsWidget(OptionsType.READ_UPDATE, row, JSONUtils.toString(entity, "id"));
         } else {
             createOptionsWidget(OptionsType.READ, row, JSONUtils.toString(entity, "id"));
@@ -134,11 +134,11 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
         if (Window.confirm("Are you sure? All Employee details will be deleted")) {
             HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
-                @Override
-                public void onResponse(String arg0) {
-                    postDeleteSuccess();
-                }
-            });
+                        @Override
+                        public void onResponse(String arg0) {
+                            postDeleteSuccess();
+                        }
+                    });
         }
     }
 
