@@ -22,6 +22,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import static info.yalamanchili.office.client.expense.travelauthorization.TravelAuthConstants.*;
 import java.util.logging.Logger;
 
 /**
@@ -104,12 +105,12 @@ public class ReadAllTravelAuthorizationPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            JSONObject emp = (JSONObject) entity.get("employee");
+            JSONObject emp = (JSONObject) entity.get(EMPLOYEE);
             table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
-            setEnumColumn(i, 2, entity, "travelType", "travelType");
-            table.setText(i, 3, JSONUtils.toString(entity, "travelDestination"));
-            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "departureDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, "returnDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            setEnumColumn(i, 2, entity, TRAVEL_TYPE, TRAVEL_TYPE);
+            table.setText(i, 3, JSONUtils.toString(entity, TRAVEL_DESTINATION));
+            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, DEPARTURE_DATE), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, RETURN_DATE), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 6, JSONUtils.formatEnumString(entity, "status"));
             FileField reportL = new FileField("Print", ChiliClientConfig.instance().getFileDownloadUrl() + "travel-authorization/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id"));
             table.setWidget(i, 7, reportL);
