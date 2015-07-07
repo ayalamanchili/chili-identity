@@ -27,6 +27,7 @@ public interface TravelAuthConstants {
     String OTHER_VEHICLE_TYPE_JUSTIFICATION = "otherVehicleTypeJustification";
     String EXPENSE_PAYMENT_TYPE = "expensePaymentType";  
     String TRAVEL_RENTAL_VEHICLE_JUSTIFICATION="travelRentalVehicleJustification";
+    String EMPLOYEE="employee";
     String TRAVEL_TYPE="travelType";
     String DEPARTURE_DATE="departureDate";
     String RETURN_DATE="returnDate";
