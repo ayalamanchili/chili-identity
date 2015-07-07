@@ -59,9 +59,10 @@ public class TravelAuthorizationService {
         entity.setStatus(TravelAuthorizationStatus.PENDING_MANAGER_APPROVAL);
         vars.put("entity", entity);
         vars.put("currentEmployee", emp);
+        entity=travelAuthorizationDao.save(entity);
+        vars.put("entityId", entity.getId());
         String processId = OfficeBPMService.instance().startProcess("travel_authorization_process", vars);
         entity.setBpmProcessId(processId);
-        travelAuthorizationDao.save(entity);
     }
     
     protected Task getTaskForTicket(TravelAuthorization travelExpenseRequisition) {
