@@ -47,10 +47,10 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class TravelAuthorizationService {
-    
+
     @Autowired
     protected TravelAuthorizationDao travelAuthorizationDao;
-    
+
     public void submitTravelAuthorization(TravelAuthorization entity) {
         Map<String, Object> vars = new HashMap<>();
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
@@ -59,12 +59,12 @@ public class TravelAuthorizationService {
         entity.setStatus(TravelAuthorizationStatus.PENDING_MANAGER_APPROVAL);
         vars.put("entity", entity);
         vars.put("currentEmployee", emp);
-        entity=travelAuthorizationDao.save(entity);
+        entity = travelAuthorizationDao.save(entity);
         vars.put("entityId", entity.getId());
         String processId = OfficeBPMService.instance().startProcess("travel_authorization_process", vars);
         entity.setBpmProcessId(processId);
     }
-    
+
     protected Task getTaskForTicket(TravelAuthorization travelExpenseRequisition) {
         OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
         List<Task> tasks = taskService.getTasksForProcessId(travelExpenseRequisition.getBpmProcessId());
@@ -74,13 +74,13 @@ public class TravelAuthorizationService {
             return null;
         }
     }
-    
+
     public void delete(Long id) {
         TravelAuthorization ticket = travelAuthorizationDao.findById(id);
         OfficeBPMTaskService.instance().deleteAllTasksForProcessId(ticket.getBpmProcessId(), true);
         travelAuthorizationDao.delete(id);
     }
-    
+
     @AccessCheck(employeePropertyName = "employee", companyContacts = {"Perf_Eval_Manager", "Reports_To"}, roles = {"ROLE_ADMIN"})
     public Response getReport(TravelAuthorization entity) {
         PdfDocumentData data = new PdfDocumentData();
@@ -98,7 +98,7 @@ public class TravelAuthorizationService {
         data.getData().put("reasonForTravel", entity.getReasonForTravel());
 //        Signature preparedBysignature = new Signature(preparedBy.getEmployeeId(), preparedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(entity.getDateRequested()), employeeDao.getPrimaryEmail(preparedBy), null);
 //        data.getSignatures().add(preparedBysignature);
-        //Travel type Information
+////        Travel type Information
         switch (entity.getTravelType()) {
             case IN_STATE:
                 data.getData().put("travelTypeInState", "true");
@@ -186,13 +186,13 @@ public class TravelAuthorizationService {
             //ExpensePaymentType info
             switch (travelAccommodation.getExpenseAccommodationPaymentType()) {
                 case EMPLOYEE_EXPENSE:
-                    data.getData().put("expenseTransPaymentExp", "true");
+                    data.getData().put("accommodationTransPaymentExp", "true");
                     break;
                 case PO:
-                    data.getData().put("expenseTransPaymentPo", "true");
+                    data.getData().put("accommodationTransPaymentPo", "true");
                     break;
                 case PURCHASING_CARD:
-                    data.getData().put("expenseTransPaymentPurchasingCard", "true");
+                    data.getData().put("accommodationTransPaymentPurchasingCard", "true");
                     break;
             }
             if (travelAccommodation.getLodgingCostPerNight() != null) {
@@ -217,64 +217,68 @@ public class TravelAuthorizationService {
             if (travelFood.getTotalCostOfBanquet() != null) {
                 data.getData().put("totalCostOfBanquet", travelFood.getTotalCostOfBanquet().setScale(2, BigDecimal.ROUND_UP).toString());
             }
+            if (travelFood.getTotalCostOfFood() != null) {
+                data.getData().put("totalCostOfFood", travelFood.getTotalCostOfFood().setScale(2, BigDecimal.ROUND_UP).toString());
+            }
             //ExpensePaymentType info
             if (travelFood.getFoodExpensePaymentMode() != null) {
                 switch (travelFood.getFoodExpensePaymentMode()) {
                     case EMPLOYEE_EXPENSE:
-                        data.getData().put("expenseTransPaymentExp", "true");
+                        data.getData().put("travelFoodexpenseTransPaymentExp", "true");
                         break;
                     case PO:
-                        data.getData().put("expenseTransPaymentPo", "true");
+                        data.getData().put("travelFoodexpenseTransPaymentPo", "true");
                         break;
                     case PURCHASING_CARD:
-                        data.getData().put("expenseTransPaymentPurchasingCard", "true");
+                        data.getData().put("travelFoodexpenseTransPaymentPurchasingCard", "true");
                         break;
                 }
             }
             if (travelFood.getConferenceExpensePaymentMode() != null) {
                 switch (travelFood.getConferenceExpensePaymentMode()) {
                     case EMPLOYEE_EXPENSE:
-                        data.getData().put("expenseTransPaymentExp", "true");
+                        data.getData().put("conferenceexpenseTransPaymentExp", "true");
                         break;
                     case PO:
-                        data.getData().put("expenseTransPaymentPo", "true");
+                        data.getData().put("conferenceexpenseTransPaymentPo", "true");
                         break;
                     case PURCHASING_CARD:
-                        data.getData().put("expenseTransPaymentPurchasingCard", "true");
+                        data.getData().put("conferenceexpenseTransPaymentPurchasingCard", "true");
                         break;
                 }
             }
             if (travelFood.getBanquetExpensePaymentMode() != null) {
                 switch (travelFood.getBanquetExpensePaymentMode()) {
                     case EMPLOYEE_EXPENSE:
-                        data.getData().put("expenseTransPaymentExp", "true");
+                        data.getData().put("banquetexpenseTransPaymentExp", "true");
                         break;
                     case PO:
-                        data.getData().put("expenseTransPaymentPo", "true");
+                        data.getData().put("banquetexpenseTransPaymentPo", "true");
                         break;
                     case PURCHASING_CARD:
-                        data.getData().put("expenseTransPaymentPurchasingCard", "true");
+                        data.getData().put("banquetexpenseTransPaymentPurchasingCard", "true");
                         break;
                 }
             }
             if (travelFood.getOtherExpensePaymentMode() != null) {
                 switch (travelFood.getOtherExpensePaymentMode()) {
                     case EMPLOYEE_EXPENSE:
-                        data.getData().put("expenseTransPaymentExp", "true");
+                        data.getData().put("foodexpenseTransPaymentExp", "true");
                         break;
                     case PO:
-                        data.getData().put("expenseTransPaymentPo", "true");
+                        data.getData().put("foodexpenseTransPaymentPo", "true");
                         break;
                     case PURCHASING_CARD:
-                        data.getData().put("expenseTransPaymentPurchasingCard", "true");
+                        data.getData().put("foodexpenseTransPaymentPurchasingCard", "true");
                         break;
                 }
             }
         }
+
         if (entity.getCeoApprovalBy() != null) {
             Employee approver = employeeDao.findEmployeWithEmpId(entity.getCeoApprovalBy());
             if (approver != null) {
-                Signature approvedBysignature = new Signature(approver.getEmployeeId(), approver.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "approverSignature", DateUtils.dateToCalendar(entity.getCeoApprovalDate()), employeeDao.getPrimaryEmail(approver), null);
+                Signature approvedBysignature = new Signature(approver.getEmployeeId(), approver.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "ceoApprovalBy", DateUtils.dateToCalendar(entity.getCeoApprovalDate()), employeeDao.getPrimaryEmail(approver), null);
                 data.getSignatures().add(approvedBysignature);
                 data.getData().put("ceoApprovalDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getCeoApprovalDate()));
             }
@@ -282,19 +286,19 @@ public class TravelAuthorizationService {
         if (entity.getManagerApprovalBy() != null) {
             Employee approver = employeeDao.findEmployeWithEmpId(entity.getManagerApprovalBy());
             if (approver != null) {
-                Signature approvedBysignature = new Signature(approver.getEmployeeId(), approver.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "approverSignature", DateUtils.dateToCalendar(entity.getManaerApprovalDate()), employeeDao.getPrimaryEmail(approver), null);
+                Signature approvedBysignature = new Signature(approver.getEmployeeId(), approver.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "managerApprovalBy", DateUtils.dateToCalendar(entity.getManaerApprovalDate()), employeeDao.getPrimaryEmail(approver), null);
                 data.getSignatures().add(approvedBysignature);
                 data.getData().put("manaerApprovalDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getManaerApprovalDate()));
             }
         }
-        
+
         byte[] pdf = PDFUtils.generatePdf(data);
         return Response.ok(pdf)
                 .header("content-disposition", "filename = travel-authorization.pdf")
                 .header("Content-Length", pdf)
                 .build();
     }
-    
+
     public static TravelAuthorizationService instance() {
         return SpringContext.getBean(TravelAuthorizationService.class);
     }
