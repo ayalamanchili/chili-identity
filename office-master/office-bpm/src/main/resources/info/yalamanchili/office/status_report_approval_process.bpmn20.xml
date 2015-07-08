@@ -85,7 +85,7 @@
                 https://apps.sstech.us/site/office/statusreport/statusreportprocess.html                
             </documentation>
             <extensionElements>
-                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.statusreport.StatusReportProcess" />
                 <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.statusreport.StatusReportProcess" />
                 <activiti:formProperty id="notes" 
                                        name="Notes"
