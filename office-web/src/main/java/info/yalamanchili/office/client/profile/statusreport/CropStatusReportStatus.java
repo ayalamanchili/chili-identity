@@ -18,7 +18,8 @@ public enum CropStatusReportStatus {
     Saved,
     Pending_Manager_Approval,
     Approved,
-    Rejected;
+    Rejected,
+    Submitted;
 
     public static String[] names() {
         CropStatusReportStatus[] values = values();

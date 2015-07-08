@@ -44,7 +44,7 @@ public class CorporateStatusReportService {
     public String save(CorporateStatusReport entity, Boolean submitForApproval) {
         entity = corporateStatusReportDao.save(entity);
         if (submitForApproval) {
-            entity.setStatus(CropStatusReportStatus.Approved);
+            entity.setStatus(CropStatusReportStatus.Submitted);
             notifyManager(entity);
         }
         return entity.getId().toString();
@@ -66,7 +66,6 @@ public class CorporateStatusReportService {
         email.setBody(entity.getReport());
         MessagingService.instance().sendEmail(email);
     }
-
     protected static final String DIFF_STYLE = "<head>\n"
             + "<style>\n"
             + "span.diff-html-removed {\n"
