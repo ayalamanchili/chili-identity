@@ -25,14 +25,15 @@ import org.activiti.engine.delegate.DelegateTask;
  * @author prasanthi.p
  */
 public class TravelAuthorizationProcess extends RuleBasedTaskDelegateListner {
-
+    
     @Override
     public void processTask(DelegateTask task) {
+        super.processTask(task);
         if ("complete".equals(task.getEventName())) {
             travelAuthorizationTaskCompleted(task);
         }
     }
-
+    
     protected void travelAuthorizationTaskCompleted(DelegateTask task) {
         TravelAuthorization entity = getRequestFromTask(task);
         if (entity == null) {
@@ -51,7 +52,7 @@ public class TravelAuthorizationProcess extends RuleBasedTaskDelegateListner {
                 break;
         }
     }
-
+    
     protected void managerApprovalTaskComplete(TravelAuthorization entity, DelegateTask task) {
         //Notes
         String notes = (String) task.getExecution().getVariable("notes");
@@ -70,7 +71,7 @@ public class TravelAuthorizationProcess extends RuleBasedTaskDelegateListner {
         TravelAuthorizationDao.instance().save(entity);
         task.getExecution().setVariable("entity", entity);
     }
-
+    
     protected void adminApprovalTaskComplete(TravelAuthorization entity, DelegateTask task) {
         //Notes
         String notes = (String) task.getExecution().getVariable("notes");
@@ -87,7 +88,7 @@ public class TravelAuthorizationProcess extends RuleBasedTaskDelegateListner {
         TravelAuthorizationDao.instance().save(entity);
         task.getExecution().setVariable("entity", entity);
     }
-
+    
     protected TravelAuthorization getRequestFromTask(DelegateTask task) {
         Long entityId = (Long) task.getExecution().getVariable("entityId");
         if (entityId != null) {
