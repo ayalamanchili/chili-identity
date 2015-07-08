@@ -33,6 +33,7 @@ public class Auth {
         ROLE_BULK_IMPORT,
         ROLE_CHILI_ADMIN,
         ROLE_CRP_STATUS_RPT_MGR,
+        ROLE_CEO
     }
 
     public static boolean isAdmin() {

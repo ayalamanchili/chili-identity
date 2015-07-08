@@ -52,6 +52,7 @@ public class OfficeRoles {
         ROLE_BULK_IMPORT,
         ROLE_CHILI_ADMIN,
         ROLE_CRP_STATUS_RPT_MGR,
+        ROLE_CEO,
     }
     public final static Map<String, String> rolesMessages = new HashMap<String, String>();
 
@@ -88,5 +89,6 @@ public class OfficeRoles {
         rolesMessages.put(OfficeRole.ROLE_BULK_IMPORT.name(), "Bulk Import Manager");
         rolesMessages.put(OfficeRole.ROLE_CHILI_ADMIN.name(), "Chili Admin");
         rolesMessages.put(OfficeRole.ROLE_CRP_STATUS_RPT_MGR.name(), " Status Report Manager");
+        rolesMessages.put(OfficeRole.ROLE_CEO.name(), "CEO");
     }
 }
