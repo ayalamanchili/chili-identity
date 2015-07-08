@@ -365,7 +365,7 @@ public class OfficeStartup {
 
         BPMTaskDelegateRule rule = new BPMTaskDelegateRule();
         rule.setBpmProcessId("status_report_approval_process");
-        rule.setBpmTaskId("statusReportHRApprovalTask");
+        rule.setBpmTaskId("statusReportEEMApprovalTask");
         rule.setRuleName("alphabetRangeRuleEvaluator");
         rule.addAttribute(new Entry("range1Start", "a"));
         rule.addAttribute(new Entry("range1End", "z"));

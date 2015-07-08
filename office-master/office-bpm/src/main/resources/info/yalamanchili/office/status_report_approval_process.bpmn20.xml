@@ -74,8 +74,7 @@
             </conditionExpression>
         </sequenceFlow>
         <userTask id="statusReportEEMApprovalTask" 
-                  name="Status Report Engagement Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" 
-                  activiti:candidateGroups="ROLE_RELATIONSHIP">
+                  name="Status Report Engagement Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}">
             <documentation>
                 Project Status Report Submitted For Engegement Manager Approval
                 Employee Name       : #{currentEmployee.firstName} #{currentEmployee.lastName}

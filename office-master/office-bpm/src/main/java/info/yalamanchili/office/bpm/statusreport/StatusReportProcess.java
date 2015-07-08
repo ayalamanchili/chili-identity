@@ -8,6 +8,7 @@
 package info.yalamanchili.office.bpm.statusreport;
 
 import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
+import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
 import info.yalamanchili.office.dao.employee.statusreport.StatusReportDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
@@ -16,16 +17,15 @@ import info.yalamanchili.office.entity.employee.statusreport.StatusReportStage;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.Date;
 import org.activiti.engine.delegate.DelegateTask;
-import org.activiti.engine.delegate.TaskListener;
 
 /**
  *
  * @author prasanthi.p
  */
-public class StatusReportProcess implements TaskListener {
+public class StatusReportProcess extends RuleBasedTaskDelegateListner {
 
     @Override
-    public void notify(DelegateTask dt) {
+    public void processTask(DelegateTask dt) {
         StatusReport request = getRequestFromTask(dt);
         if (request == null) {
             return;
