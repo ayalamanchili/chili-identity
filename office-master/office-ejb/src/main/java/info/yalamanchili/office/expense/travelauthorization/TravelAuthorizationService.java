@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.expense.travelauthorization;
 
+import com.google.common.base.Strings;
 import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
 import info.chili.commons.pdf.PdfDocumentData;
@@ -24,7 +25,9 @@ import info.yalamanchili.office.entity.expense.travelauthorization.TravelAuthori
 import info.yalamanchili.office.entity.expense.travelauthorization.TravelAuthorizationStatus;
 import info.yalamanchili.office.entity.expense.travelauthorization.TravelFood;
 import info.yalamanchili.office.entity.expense.travelauthorization.TravelRentalVehicleJustification;
+import info.yalamanchili.office.entity.expense.travelauthorization.TravelRentalVehicleType;
 import info.yalamanchili.office.entity.expense.travelauthorization.TravelTransportation;
+import info.yalamanchili.office.entity.expense.travelauthorization.TravelTransportationType;
 import static info.yalamanchili.office.entity.expense.travelauthorization.TravelTransportationType.OTHER;
 import static info.yalamanchili.office.entity.expense.travelauthorization.TravelTransportationType.RAILWAY;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -96,7 +99,7 @@ public class TravelAuthorizationService {
         data.getData().put("department", entity.getDepartment());
         data.getData().put("travelDestination", entity.getTravelDestination());
         data.getData().put("reasonForTravel", entity.getReasonForTravel());
-//        Signature preparedBysignature = new Signature(preparedBy.getEmployeeId(), preparedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(entity.getDateRequested()), employeeDao.getPrimaryEmail(preparedBy), null);
+        Signature preparedBysignature = new Signature(preparedBy.getEmployeeId(), preparedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(entity.getDateRequested()), employeeDao.getPrimaryEmail(preparedBy), null);
 //        data.getSignatures().add(preparedBysignature);
 ////        Travel type Information
         switch (entity.getTravelType()) {
@@ -122,13 +125,13 @@ public class TravelAuthorizationService {
                     data.getData().put("travelTransportationTypeBus", "true");
                     break;
                 case RAILWAY:
-                    data.getData().put("travelTransportationTypeRailWay", "true");
+                    data.getData().put("travelTransportationTypeRailway", "true");
                     break;
                 case OTHER:
                     data.getData().put("travelTransportationTypeOther", "true");
                     break;
                 case COMPANY_VEHICLE:
-                    data.getData().put("travelTransportationTypeCpmapny", "true");
+                    data.getData().put("travelTransportationTypeCompany", "true");
                     break;
                 case PRIVATE_VEHICLE:
                     data.getData().put("travelTransportationTypePrivate", "true");
@@ -137,34 +140,55 @@ public class TravelAuthorizationService {
                     data.getData().put("travelTransportationTypeRental", "true");
                     break;
             }
-            //ExpensePaymentType info
+            //Travel Transportation ExpensePaymentType info
             switch (travelTransportation.getExpensePaymentType()) {
                 case EMPLOYEE_EXPENSE:
-                    data.getData().put("expenseTransPaymentExp", "true");
+                    data.getData().put("travelTransportationPaymentType-EE", "true");
                     break;
                 case PO:
-                    data.getData().put("expenseTransPaymentPo", "true");
+                    data.getData().put("travelTransportationPaymentType-PO", "true");
                     break;
                 case PURCHASING_CARD:
-                    data.getData().put("expenseTransPaymentPurchasingCard", "true");
+                    data.getData().put("travelTransportationPaymentType-PC", "true");
                     break;
             }
-            if (travelTransportation.getCostPerMile() != null) {
-                data.getData().put("costPerMile", travelTransportation.getCostPerMile().setScale(2, BigDecimal.ROUND_UP).toString());
+            if (entity.getTravelTransportation().getTravelTransportationType().equals(TravelTransportationType.PRIVATE_VEHICLE)) {
+                if (travelTransportation.getCostPerMile() != null) {
+                    data.getData().put("companyVehicleMiles", travelTransportation.getCostPerMile().setScale(2, BigDecimal.ROUND_UP).toString());
+                }
+                if (travelTransportation.getTotalMiles() != null) {
+                    data.getData().put("companyVehicleCostPerMile", travelTransportation.getTotalMiles().setScale(2, BigDecimal.ROUND_UP).toString());
+                }
+                if (travelTransportation.getTotalTransportationCost() != null) {
+                    data.getData().put("totalTransportationCostCompanyVehicle", travelTransportation.getTotalTransportationCost().setScale(2, BigDecimal.ROUND_UP).toString());
+                }
             }
-            if (travelTransportation.getTotalMiles() != null) {
-                data.getData().put("totalMiles", travelTransportation.getTotalMiles().setScale(2, BigDecimal.ROUND_UP).toString());
+            if (entity.getTravelTransportation().getTravelTransportationType().equals(TravelTransportationType.COMPANY_VEHICLE)) {
+                if (travelTransportation.getCostPerMile() != null) {
+                    data.getData().put("privateVehicleMiles", travelTransportation.getCostPerMile().setScale(2, BigDecimal.ROUND_UP).toString());
+                }
+                if (travelTransportation.getTotalMiles() != null) {
+                    data.getData().put("privateVehicleCostPerMile", travelTransportation.getTotalMiles().setScale(2, BigDecimal.ROUND_UP).toString());
+                }
+                if (travelTransportation.getTotalTransportationCost() != null) {
+                    data.getData().put("totalTransportationCostPrivateVehicle", travelTransportation.getTotalTransportationCost().setScale(2, BigDecimal.ROUND_UP).toString());
+                }
             }
-            if (travelTransportation.getTotalTransportationCost() != null) {
-                data.getData().put("totalTransportationCost", travelTransportation.getTotalTransportationCost().setScale(2, BigDecimal.ROUND_UP).toString());
-            }
+
             if (travelTransportation.getTravelRentalVehicleJustification() != null) {
                 //TravelRentalVehicleJustification Information
                 TravelRentalVehicleJustification justification = travelTransportation.getTravelRentalVehicleJustification();
-                data.getData().put("rentalVehicleJustification", justification.getRentalVehicleJustification());
-                data.getData().put("otherVehicleTypeJustification", justification.getOtherVehicleTypeJustification());
+                if (!Strings.isNullOrEmpty(justification.getRentalVehicleJustification())) {
+                    data.getData().put("rentalVehicleJustification", justification.getRentalVehicleJustification());
+                }
+                if (justification.getTravelRentalVehicleType().equals(TravelRentalVehicleType.OTHER)) {
+                    data.getData().put("otherVehicleTypeJustification", justification.getOtherVehicleTypeJustification());
+                }
                 if (justification.getEstimatedCostOfOtherTransportation() != null) {
                     data.getData().put("estimatedCostOfOtherTransportation", justification.getEstimatedCostOfOtherTransportation().setScale(2, BigDecimal.ROUND_UP).toString());
+                }
+                if (travelTransportation.getTotalTransportationCost() != null) {
+                    data.getData().put("totalTransportationCostRentalVehicle", travelTransportation.getTotalTransportationCost().setScale(2, BigDecimal.ROUND_UP).toString());
                 }
                 //TravelRentalVehicleType info
                 switch (justification.getTravelRentalVehicleType()) {
@@ -186,13 +210,13 @@ public class TravelAuthorizationService {
             //ExpensePaymentType info
             switch (travelAccommodation.getExpenseAccommodationPaymentType()) {
                 case EMPLOYEE_EXPENSE:
-                    data.getData().put("accommodationTransPaymentExp", "true");
+                    data.getData().put("accommodationPaymentType-EE", "true");
                     break;
                 case PO:
-                    data.getData().put("accommodationTransPaymentPo", "true");
+                    data.getData().put("accommodationPaymentType-PO", "true");
                     break;
                 case PURCHASING_CARD:
-                    data.getData().put("accommodationTransPaymentPurchasingCard", "true");
+                    data.getData().put("accommodationPaymentType-PC", "true");
                     break;
             }
             if (travelAccommodation.getLodgingCostPerNight() != null) {
@@ -226,67 +250,61 @@ public class TravelAuthorizationService {
                     case EMPLOYEE_EXPENSE:
                         data.getData().put("travelFoodexpenseTransPaymentExp", "true");
                         break;
-                    case PO:
-                        data.getData().put("travelFoodexpenseTransPaymentPo", "true");
-                        break;
-                    case PURCHASING_CARD:
-                        data.getData().put("travelFoodexpenseTransPaymentPurchasingCard", "true");
-                        break;
                 }
             }
             if (travelFood.getConferenceExpensePaymentMode() != null) {
                 switch (travelFood.getConferenceExpensePaymentMode()) {
                     case EMPLOYEE_EXPENSE:
-                        data.getData().put("conferenceexpenseTransPaymentExp", "true");
+                        data.getData().put("conferencePaymentType-EE", "true");
                         break;
                     case PO:
-                        data.getData().put("conferenceexpenseTransPaymentPo", "true");
+                        data.getData().put("conferencePaymentType-PO", "true");
                         break;
                     case PURCHASING_CARD:
-                        data.getData().put("conferenceexpenseTransPaymentPurchasingCard", "true");
+                        data.getData().put("conferencePaymentType-PC", "true");
                         break;
                 }
             }
             if (travelFood.getBanquetExpensePaymentMode() != null) {
                 switch (travelFood.getBanquetExpensePaymentMode()) {
                     case EMPLOYEE_EXPENSE:
-                        data.getData().put("banquetexpenseTransPaymentExp", "true");
+                        data.getData().put("banquetExpensePaymentType-EE", "true");
                         break;
                     case PO:
-                        data.getData().put("banquetexpenseTransPaymentPo", "true");
+                        data.getData().put("banquetExpensePaymentType-PO", "true");
                         break;
                     case PURCHASING_CARD:
-                        data.getData().put("banquetexpenseTransPaymentPurchasingCard", "true");
+                        data.getData().put("banquetExpensePaymentType-PC", "true");
                         break;
                 }
             }
             if (travelFood.getOtherExpensePaymentMode() != null) {
                 switch (travelFood.getOtherExpensePaymentMode()) {
                     case EMPLOYEE_EXPENSE:
-                        data.getData().put("foodexpenseTransPaymentExp", "true");
+                        data.getData().put("foodOtherExpensePaymentType-EE", "true");
                         break;
                     case PO:
-                        data.getData().put("foodexpenseTransPaymentPo", "true");
+                        data.getData().put("foodOtherExpensePaymentType-PO", "true");
                         break;
                     case PURCHASING_CARD:
-                        data.getData().put("foodexpenseTransPaymentPurchasingCard", "true");
+                        data.getData().put("foodOtherExpensePaymentType-PC", "true");
                         break;
                 }
             }
         }
 
         if (entity.getCeoApprovalBy() != null) {
-            Employee approver = employeeDao.findEmployeWithEmpId(entity.getCeoApprovalBy());
-            if (approver != null) {
-                Signature approvedBysignature = new Signature(approver.getEmployeeId(), approver.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "ceoApprovalBy", DateUtils.dateToCalendar(entity.getCeoApprovalDate()), employeeDao.getPrimaryEmail(approver), null);
+            Employee ceo = employeeDao.findEmployeWithEmpId(entity.getCeoApprovalBy());
+            if (ceo != null) {
+                Signature approvedBysignature = new Signature(ceo.getEmployeeId(), ceo.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "ceoApprovalBy", DateUtils.dateToCalendar(entity.getCeoApprovalDate()), employeeDao.getPrimaryEmail(ceo), null);
                 data.getSignatures().add(approvedBysignature);
                 data.getData().put("ceoApprovalDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getCeoApprovalDate()));
             }
         }
         if (entity.getManagerApprovalBy() != null) {
-            Employee approver = employeeDao.findEmployeWithEmpId(entity.getManagerApprovalBy());
-            if (approver != null) {
-                Signature approvedBysignature = new Signature(approver.getEmployeeId(), approver.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "managerApprovalBy", DateUtils.dateToCalendar(entity.getManaerApprovalDate()), employeeDao.getPrimaryEmail(approver), null);
+            Employee manager = employeeDao.findEmployeWithEmpId(entity.getManagerApprovalBy());
+            if (manager != null) {
+                Signature approvedBysignature = new Signature(manager.getEmployeeId(), manager.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "managerApprovalBy", DateUtils.dateToCalendar(entity.getManaerApprovalDate()), employeeDao.getPrimaryEmail(manager), null);
                 data.getSignatures().add(approvedBysignature);
                 data.getData().put("manaerApprovalDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getManaerApprovalDate()));
             }
