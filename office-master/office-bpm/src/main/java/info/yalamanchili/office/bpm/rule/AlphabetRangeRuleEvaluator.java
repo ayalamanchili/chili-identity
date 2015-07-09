@@ -36,13 +36,14 @@ public class AlphabetRangeRuleEvaluator extends AbstractTaskDelegate {
 
     protected String getAssignee(DelegateTask task, BPMTaskDelegateRule rule) {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
-        char lastName = emp.getLastName().charAt(0);
+        char lastName = emp.getLastName().toLowerCase().charAt(0);
         for (AlphabetRangeBean range : getRanges(task, rule)) {
             if ((range.getRangeStartLetter() <= lastName) && (lastName <= range.getRangeEndLetter())) {
                 return range.getAssignee();
             }
         }
-        return null;
+        //TODO use default assignee per config
+        return "aadmin";
     }
 
     protected List<AlphabetRangeBean> getRanges(DelegateTask task, BPMTaskDelegateRule rule) {
@@ -58,10 +59,10 @@ public class AlphabetRangeRuleEvaluator extends AbstractTaskDelegate {
                         bean = new AlphabetRangeBean();
                     }
                     if (e.getId().equals("range" + i + "Start")) {
-                        bean.setRangeStartLetter(e.getValue().charAt(0));
+                        bean.setRangeStartLetter(e.getValue().toLowerCase().charAt(0));
                     }
                     if (e.getId().equals("range" + i + "End")) {
-                        bean.setRangeEndLetter(e.getValue().charAt(0));
+                        bean.setRangeEndLetter(e.getValue().toLowerCase().charAt(0));
                     }
                     if (e.getId().equals("range" + i + "Assignee")) {
                         bean.setAssignee(e.getValue());
