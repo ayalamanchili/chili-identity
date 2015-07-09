@@ -47,7 +47,7 @@ public class TreeEmpReportsPanel extends TreePanelComposite {
     @Override
     protected void addWidgets() {
         addFirstChildLink("Weekly Status Reports", CORPORATE_STATUS_REPORTS_NODE);
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_RELATIONSHIP)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_RELATIONSHIP,Auth.ROLE.ROLE_IT_DEVELOPER)) {
             addFirstChildLink("Status Reports", PROJECTS_REPORTS_NODE);
         }
         addFirstChildLink("Performance Reports", PERFORMANCE_REPORTS_NODE);
