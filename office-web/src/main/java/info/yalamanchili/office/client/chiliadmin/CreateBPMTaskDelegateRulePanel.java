@@ -35,7 +35,6 @@ public class CreateBPMTaskDelegateRulePanel extends CreateComposite {
         assignEntityValueFromField("ruleName", entity);
         assignEntityValueFromField("ruleExpression", entity);
         assignEntityValueFromField("attributeData", entity);
-        assignEntityValueFromField("attributes", entity);
         return entity;
     }
 
@@ -82,8 +81,7 @@ public class CreateBPMTaskDelegateRulePanel extends CreateComposite {
         addField("bpmTaskId", false, true, DataType.STRING_FIELD);
         addField("ruleName", false, true, DataType.STRING_FIELD);
         addField("ruleExpression", false, false, DataType.STRING_FIELD);
-        addField("attributeData", false, false, DataType.STRING_FIELD);
-        addField("attributes", false, false, DataType.STRING_FIELD);
+        addField("attributeData", false, false, DataType.TEXT_AREA_FIELD);
     }
 
     @Override

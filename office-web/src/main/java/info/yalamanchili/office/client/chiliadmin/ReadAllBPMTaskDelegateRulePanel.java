@@ -89,8 +89,6 @@ public class ReadAllBPMTaskDelegateRulePanel extends CRUDReadAllComposite {
         table.setText(0, 2, getKeyValue("BpmTaskId"));
         table.setText(0, 3, getKeyValue("RuleName"));
         table.setText(0, 4, getKeyValue("RuleExpression"));
-        table.setText(0, 5, getKeyValue("AttributeData"));
-        table.setText(0, 6, getKeyValue("Attributes"));
     }
 
     @Override
@@ -102,8 +100,6 @@ public class ReadAllBPMTaskDelegateRulePanel extends CRUDReadAllComposite {
             table.setText(i, 2, JSONUtils.toString(entity, "bpmTaskId"));
             table.setText(i, 3, JSONUtils.toString(entity, "ruleName"));
             table.setText(i, 4, JSONUtils.toString(entity, "ruleExpression"));
-            table.setText(i, 5, JSONUtils.toString(entity, "attributeData"));
-            table.setText(i, 6, JSONUtils.toString(entity, "attributes"));
         }
     }
 
