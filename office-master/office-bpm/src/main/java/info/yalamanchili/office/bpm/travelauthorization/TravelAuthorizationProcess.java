@@ -80,7 +80,7 @@ public class TravelAuthorizationProcess extends RuleBasedTaskDelegateListner {
         String status = (String) task.getExecution().getVariable("status");
         if (status.equalsIgnoreCase("approved")) {
             entity.setStatus(TravelAuthorizationStatus.APPROVED);
-            new GenericTaskCompleteNotification().notifyWithMoreRoles(task, OfficeRoles.OfficeRole.ROLE_CEO.name());
+            new GenericTaskCompleteNotification().notify(task);
         } else {
             entity.setStatus(TravelAuthorizationStatus.REJECTED);
             new GenericTaskCompleteNotification().notify(task);

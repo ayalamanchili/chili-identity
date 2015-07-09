@@ -51,4 +51,5 @@ public interface TravelAuthConstants {
     String CONFERENCE_EXPENSE_PAYMENT_TYPE="conferenceExpensePaymentMode";
     String BANQUET_EXPENSE_PAYMENT_TYPE="banquetExpensePaymentMode";
     String OTHER_EXPENSE_PAYMENT_TYPE="otherExpensePaymentMode";
+    String TOTAL_ESTIMATED_TRIP_EXPENCES="totalEstimatedTripExpences";
 }

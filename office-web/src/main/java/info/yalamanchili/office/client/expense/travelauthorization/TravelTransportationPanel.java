@@ -261,7 +261,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
     @Override
     public void onBlur(BlurEvent event) {
         if (totalMiles.getInteger() != null && costPerMile.getCurrency() != null) {
-            totalTransportationCost.setValue(costPerMile.getCurrency().multiply(BigDecimal.valueOf(totalMiles.getInteger())), readyOnly);
+                totalTransportationCost.setValue(costPerMile.getCurrency().multiply(BigDecimal.valueOf(totalMiles.getInteger())), readyOnly);
         }
     }
 }

@@ -20,6 +20,8 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import static info.yalamanchili.office.client.expense.travelauthorization.TravelAuthConstants.*;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.logging.Logger;
 
 /**
@@ -70,12 +72,38 @@ public class CreateTravelAuthorizationPanel extends CreateComposite implements C
         entity.put(TRAVEL_TRANSPORTATION, travelTransportationItem.getObject());
         entity.put(TRAVEL_ACCOMMODATION, lodgingItemPanel.getObject());
         entity.put(TRAVEL_FOOD, mealsItemPanel.getObject());
+        entity.put(TOTAL_ESTIMATED_TRIP_EXPENCES, new JSONString((calculateTotalCost(travelTransportationItem,lodgingItemPanel,mealsItemPanel)).abs().toString()));
         entity.put(TRAVEL_EXPENSE_REQUISITION_STATUS, new JSONString("Open"));
         logger.info(entity.toString());
         return entity;
 
     }
 
+    protected BigDecimal calculateTotalCost(TravelTransportationPanel transportation,TravelAccommodationPanel lodging,TravelFoodPanel meals) {
+            
+            BigDecimal totalEstimatedTripExpences = new BigDecimal(BigInteger.ZERO);
+            
+            if  (transportation.totalTransportationCost.getCurrency() != null) {
+                 totalEstimatedTripExpences.add(transportation.totalTransportationCost.getCurrency());
+            }
+            if  (lodging.totalLodgingCost.getCurrency() != null) {
+                totalEstimatedTripExpences.add(lodging.totalLodgingCost.getCurrency());
+            }
+            if  (meals.totalCostOfFood.getCurrency() != null) {
+                totalEstimatedTripExpences.add(meals.totalCostOfFood.getCurrency());
+            }
+            if  (meals.totalCostOfBanquet.getCurrency() != null) {
+                totalEstimatedTripExpences.add(meals.totalCostOfBanquet.getCurrency());
+            }
+            if  (meals.conferenceFee.getCurrency() != null) {
+                totalEstimatedTripExpences.add(meals.conferenceFee.getCurrency());
+            }
+            if  (meals.otherExpences.getCurrency() != null) {
+                totalEstimatedTripExpences.add(meals.otherExpences.getCurrency());
+            } 
+            return totalEstimatedTripExpences;
+    } 
+    
     @Override
     protected void addWidgets() {
         addEnumField(TRAVEL_TYPE, false, true, TravelType.names(), Alignment.HORIZONTAL);
@@ -92,6 +120,8 @@ public class CreateTravelAuthorizationPanel extends CreateComposite implements C
         entityFieldsPanel.add(lodgingItemPanel);
         entityFieldsPanel.add(meals);
         entityFieldsPanel.add(mealsItemPanel);
+        entityFieldsPanel.add(emptyLine);
+        addField(TOTAL_ESTIMATED_TRIP_EXPENCES, false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(emptyLine);
         alignFields(DEFAULT_FIELD_WIDTH);
     }
@@ -141,4 +171,5 @@ public class CreateTravelAuthorizationPanel extends CreateComposite implements C
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "travel-authorization/submit-travel-expense-request";
     }
+    
 }

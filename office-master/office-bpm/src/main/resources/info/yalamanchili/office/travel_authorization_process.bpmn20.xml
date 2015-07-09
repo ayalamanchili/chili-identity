@@ -22,9 +22,9 @@
                 Employee Name          : #{currentEmployee.firstName} #{currentEmployee.lastName}
                 Departure Date         : #{entity.departureDate}
                 Return Date            : #{entity.returnDate} 
-                <!--   TransportationCost     : #{entity.totalTransportationCost} -->
                 Reason                 : #{entity.reasonForTravel}
-                Status                 : #{entity.status}  
+                Status                 : #{entity.status}
+                Estimated Trip Cost    : #{entity.totalEstimatedTripExpences} 
 
             </documentation>
             <extensionElements>
@@ -78,9 +78,9 @@
                 Employee Name          : #{currentEmployee.firstName} #{currentEmployee.lastName}
                 Departure Date         : #{entity.departureDate}
                 Return Date            : #{entity.returnDate} 
-                <!--   TransportationCost     : #{entity.totalTransportationCost} -->
                 Reason                 : #{entity.reasonForTravel}
-                Status                 : #{entity.status}  
+                Status                 : #{entity.status}
+                Estimated Trip Cost    : #{entity.totalEstimatedTripExpences}  
                
             </documentation>
             <extensionElements>

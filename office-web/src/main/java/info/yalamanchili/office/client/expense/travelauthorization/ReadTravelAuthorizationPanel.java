@@ -29,7 +29,7 @@ public class ReadTravelAuthorizationPanel extends ReadComposite {
     private static ReadTravelAuthorizationPanel instance;
     private static Logger logger = Logger.getLogger(ReadTravelAuthorizationPanel.class.getName());
     SelectEmployeeWidget selectEmployeeWidgetF = new SelectEmployeeWidget("Employee", false, true, Alignment.HORIZONTAL);
-   protected static HTML tripInfoHelpText = new HTML("\n"
+    protected static HTML tripInfoHelpText = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
             + "<strong style=\"color:#555555\">Trip Information</strong></p>\n"
             + "\n"
@@ -86,6 +86,7 @@ public class ReadTravelAuthorizationPanel extends ReadComposite {
         if (entity.get(TRAVEL_FOOD) != null) {
             entityFieldsPanel.add(new TravelFoodPanel(entity.get(TRAVEL_FOOD).isObject(), true));
         }
+        assignFieldValueFromEntity(TOTAL_ESTIMATED_TRIP_EXPENCES, entity, DataType.CURRENCY_FIELD);
         alignFields(DEFAULT_FIELD_WIDTH);
     }
 
@@ -108,6 +109,7 @@ public class ReadTravelAuthorizationPanel extends ReadComposite {
         addField(REASON_FOR_TRAVEL, true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(estimatedExpensesHelpText);
         entityFieldsPanel.add(tacHelpText);
+        addField(TOTAL_ESTIMATED_TRIP_EXPENCES, true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         alignFields(DEFAULT_FIELD_WIDTH);
 
     }

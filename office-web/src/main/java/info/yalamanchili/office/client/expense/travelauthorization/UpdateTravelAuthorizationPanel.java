@@ -44,6 +44,7 @@ public class UpdateTravelAuthorizationPanel extends UpdateComposite {
     HTML transportation = new HTML("<h4 style=\"color:#427fed\">" + "Transportation</h4>");
     HTML lodging = new HTML("<h4 style=\"color:#427fed\">  " + "Accommodation</h4>");
     HTML meals = new HTML("<h4 style=\"color:#427fed\"> " + "Food</h4>");
+    HTML emptyLine = new HTML("<br/>");
     TravelTransportationPanel travelTransportationItem = new TravelTransportationPanel(false);
     TravelAccommodationPanel lodgingItemPanel = new TravelAccommodationPanel(false);
     TravelFoodPanel mealsItemPanel = new TravelFoodPanel(false);
