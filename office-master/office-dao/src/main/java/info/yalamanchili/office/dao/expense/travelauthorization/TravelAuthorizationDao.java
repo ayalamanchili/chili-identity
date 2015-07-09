@@ -16,6 +16,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
@@ -31,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class TravelAuthorizationDao extends CRUDDao<TravelAuthorization> {
 
     @Override
+    @CacheEvict(value = OfficeCacheKeys.TRAVEL_AUTH, allEntries = true)
     public TravelAuthorization save(TravelAuthorization entity) {
         return em.merge(entity);
     }

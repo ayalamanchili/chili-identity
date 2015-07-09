@@ -10,6 +10,7 @@ package info.yalamanchili.office.entity.expense.travelauthorization;
 
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.profile.Employee;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -146,7 +147,10 @@ public class TravelAuthorization extends AbstractEntity {
      */
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date dateRequested;
-
+     /**
+     *
+     */
+    private BigDecimal totalEstimatedTripExpences;
     /**
      *
      */
@@ -322,8 +326,18 @@ public class TravelAuthorization extends AbstractEntity {
         this.dateRequested = dateRequested;
     }
 
+    public BigDecimal getTotalEstimatedTripExpences() {
+        return totalEstimatedTripExpences;
+    }
+
+    public void setTotalEstimatedTripExpences(BigDecimal totalEstimatedTripExpences) {
+        this.totalEstimatedTripExpences = totalEstimatedTripExpences;
+    }
+
     @Override
     public String toString() {
-        return "TravelExpenseRequisition{" + "travelType=" + travelType + ", employee=" + employee + ", department=" + department + ", phoneNumber=" + phoneNumber + ", travelDestination=" + travelDestination + ", departureDate=" + departureDate + ", returnDate=" + returnDate + ", reasonForTravel=" + reasonForTravel + ", travelTransportation=" + travelTransportation + ", travelAccommodation=" + travelAccommodation + ", travelFood=" + travelFood + ", travelExpenseRequisitionStatus=" + status + '}';
+        return "TravelAuthorization{" + "travelType=" + travelType + ", employee=" + employee + ", department=" + department + ", phoneNumber=" + phoneNumber + ", travelDestination=" + travelDestination + ", departureDate=" + departureDate + ", returnDate=" + returnDate + ", reasonForTravel=" + reasonForTravel + ", travelTransportation=" + travelTransportation + ", travelAccommodation=" + travelAccommodation + ", travelFood=" + travelFood + ", status=" + status + ", bpmProcessId=" + bpmProcessId + ", managerApprovalBy=" + managerApprovalBy + ", manaerApprovalDate=" + manaerApprovalDate + ", ceoApprovalBy=" + ceoApprovalBy + ", ceoApprovalDate=" + ceoApprovalDate + ", dateRequested=" + dateRequested + ", totalEstimatedTripExpences=" + totalEstimatedTripExpences + '}';
     }
+    
+    
 }

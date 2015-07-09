@@ -110,7 +110,7 @@ public class TravelAuthorizationService {
                 data.getData().put("travelTypeOutOfState", "true");
                 break;
             case INTERNATIONAL:
-                data.getData().put("travelTypeInternational", "true");
+                    data.getData().put("travelTypeInternational", "true");
                 break;
         }
         //TravelTransportation info
@@ -228,7 +228,7 @@ public class TravelAuthorizationService {
             if (travelAccommodation.getTotalLodgingCost() != null) {
                 data.getData().put("totalLodgingCost", travelAccommodation.getTotalLodgingCost().setScale(2, BigDecimal.ROUND_UP).toString());
             }
-        }
+        }   
         //TravelFood Information
         TravelFood travelFood = entity.getTravelFood();
         if (travelFood != null) {
