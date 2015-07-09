@@ -9,7 +9,7 @@
 package info.yalamanchili.office.server;
 
 import com.google.gwt.thirdparty.guava.common.io.Files;
-import info.chili.docs.DocxConverter;
+import info.chili.docs.DocxToHtml;
 import info.chili.docs.WordToHtml;
 import info.chili.docs.XlsToHtml;
 import info.chili.docs.XlsxConverter;
@@ -51,7 +51,7 @@ public class FileConverterResource extends HttpServlet implements Serializable {
                 } else if (Files.getFileExtension(item.getName()).equalsIgnoreCase("doc")) {
                     html = WordToHtml.convert(item.getInputStream());
                 } else if (Files.getFileExtension(item.getName()).equalsIgnoreCase("docx")) {
-                    html = DocxConverter.convert(item.getInputStream());
+                    html = DocxToHtml.convert(item.getInputStream());
                 }
                 response.setContentType("text/html");
                 response.getWriter().write(html);

@@ -138,6 +138,11 @@
             <artifactId>commons-io</artifactId>
             <version>1.4</version>
         </dependency>
+        <dependency>
+            <groupId>fr.opensagres.xdocreport</groupId>
+            <artifactId>org.apache.poi.xwpf.converter.xhtml</artifactId>
+            <version>${xdocreport.version}</version>
+        </dependency>
         <!-- Base 64 -->
         <dependency>
             <groupId>commons-codec</groupId>
@@ -541,6 +546,7 @@
         <http.client.version>4.2</http.client.version>
         <spring.version>3.1.1.RELEASE</spring.version>
         <guava.version>17.0</guava.version>
-        <poi.version>3.9</poi.version>
+        <poi.version>3.11</poi.version>
+        <xdocreport.version>1.0.5</xdocreport.version>
     </properties>
 </project>
