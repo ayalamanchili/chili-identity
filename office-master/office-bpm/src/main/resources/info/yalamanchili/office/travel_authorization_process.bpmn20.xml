@@ -22,8 +22,16 @@
                 Employee Name          : #{currentEmployee.firstName} #{currentEmployee.lastName}
                 Departure Date         : #{entity.departureDate}
                 Return Date            : #{entity.returnDate} 
+                Travel Destination     : #{entity.travelDestination}
+                TotalTransportationCost: #{entity.getTravelTransportation().totalTransportationCost}
+                Total Lodging Cost     : #{entity.getTravelAccommodation().totalLodgingCost}
+                Total Cost Of Food     : #{entity.getTravelFood().totalCostOfFood}
+                Conference Fee         : #{entity.getTravelFood().conferenceFee}
+                Total Cost Of Banquet  : #{entity.getTravelFood().totalCostOfBanquet}
+                Other Expenses         : #{entity.getTravelFood().otherExpences}
                 Reason                 : #{entity.reasonForTravel}
                 Status                 : #{entity.status}
+                
                 Estimated Trip Cost    : #{entity.totalEstimatedTripExpences} 
 
             </documentation>
@@ -78,9 +86,18 @@
                 Employee Name          : #{currentEmployee.firstName} #{currentEmployee.lastName}
                 Departure Date         : #{entity.departureDate}
                 Return Date            : #{entity.returnDate} 
+                Travel Destination     : #{entity.travelDestination}
+                TotalTransportationCost: #{entity.getTravelTransportation().totalTransportationCost}
+                Total Lodging Cost     : #{entity.getTravelAccommodation().totalLodgingCost}
+                Total Cost Of Food     : #{entity.getTravelFood().totalCostOfFood}
+                Conference Fee         : #{entity.getTravelFood().conferenceFee}
+                Total Cost Of Banquet  : #{entity.getTravelFood().totalCostOfBanquet}
+                Other Expenses         : #{entity.getTravelFood().otherExpences}
                 Reason                 : #{entity.reasonForTravel}
                 Status                 : #{entity.status}
-                Estimated Trip Cost    : #{entity.totalEstimatedTripExpences}  
+                
+                Estimated Trip Cost    : #{entity.totalEstimatedTripExpences} 
+
                
             </documentation>
             <extensionElements>

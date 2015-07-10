@@ -99,6 +99,9 @@ public class TravelAuthorizationService {
         data.getData().put("department", entity.getDepartment());
         data.getData().put("travelDestination", entity.getTravelDestination());
         data.getData().put("reasonForTravel", entity.getReasonForTravel());
+        if (entity.getTotalEstimatedTripExpences() != null) {
+            data.getData().put("totalEstimatedTripExpences", entity.getTotalEstimatedTripExpences().setScale(2, BigDecimal.ROUND_UP).toString());
+        }
         Signature preparedBysignature = new Signature(preparedBy.getEmployeeId(), preparedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(entity.getDateRequested()), employeeDao.getPrimaryEmail(preparedBy), null);
 //        data.getSignatures().add(preparedBysignature);
 ////        Travel type Information
@@ -110,7 +113,7 @@ public class TravelAuthorizationService {
                 data.getData().put("travelTypeOutOfState", "true");
                 break;
             case INTERNATIONAL:
-                    data.getData().put("travelTypeInternational", "true");
+                data.getData().put("travelTypeInternational", "true");
                 break;
         }
         //TravelTransportation info
@@ -152,7 +155,8 @@ public class TravelAuthorizationService {
                     data.getData().put("travelTransportationPaymentType-PC", "true");
                     break;
             }
-            if (entity.getTravelTransportation().getTravelTransportationType().equals(TravelTransportationType.PRIVATE_VEHICLE)) {
+           
+            if (entity.getTravelTransportation().getTravelTransportationType().equals(TravelTransportationType.COMPANY_VEHICLE)) {
                 if (travelTransportation.getCostPerMile() != null) {
                     data.getData().put("companyVehicleCostPerMile", travelTransportation.getCostPerMile().setScale(2, BigDecimal.ROUND_UP).toString());
                 }
@@ -163,7 +167,7 @@ public class TravelAuthorizationService {
                     data.getData().put("totalTransportationCostCompanyVehicle", travelTransportation.getTotalTransportationCost().setScale(2, BigDecimal.ROUND_UP).toString());
                 }
             }
-            if (entity.getTravelTransportation().getTravelTransportationType().equals(TravelTransportationType.COMPANY_VEHICLE)) {
+            if (entity.getTravelTransportation().getTravelTransportationType().equals(TravelTransportationType.PRIVATE_VEHICLE)) {
                 if (travelTransportation.getCostPerMile() != null) {
                     data.getData().put("privateVehicleMiles", travelTransportation.getCostPerMile().setScale(2, BigDecimal.ROUND_UP).toString());
                 }
@@ -228,7 +232,7 @@ public class TravelAuthorizationService {
             if (travelAccommodation.getTotalLodgingCost() != null) {
                 data.getData().put("totalLodgingCost", travelAccommodation.getTotalLodgingCost().setScale(2, BigDecimal.ROUND_UP).toString());
             }
-        }   
+        }
         //TravelFood Information
         TravelFood travelFood = entity.getTravelFood();
         if (travelFood != null) {
