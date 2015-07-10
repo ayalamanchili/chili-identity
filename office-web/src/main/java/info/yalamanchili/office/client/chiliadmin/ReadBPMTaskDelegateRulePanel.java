@@ -55,7 +55,6 @@ public class ReadBPMTaskDelegateRulePanel extends ReadComposite {
         assignFieldValueFromEntity("ruleName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("ruleExpression", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("attributeData", entity, DataType.TEXT_AREA_FIELD);
-        assignFieldValueFromEntity("attributes", entity, DataType.TEXT_AREA_FIELD);
     }
 
     @Override
@@ -73,7 +72,6 @@ public class ReadBPMTaskDelegateRulePanel extends ReadComposite {
         addField("ruleName", true, false, DataType.STRING_FIELD);
         addField("ruleExpression", true, false, DataType.STRING_FIELD);
         addField("attributeData", true, false, DataType.TEXT_AREA_FIELD);
-        addField("attributes", true, false, DataType.TEXT_AREA_FIELD);
     }
 
     @Override
