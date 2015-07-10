@@ -13,6 +13,7 @@ import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.crud.CreateComposite;
+import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
@@ -31,6 +32,7 @@ import java.util.logging.Logger;
 public class CreateTravelAuthorizationPanel extends CreateComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(CreateTravelAuthorizationPanel.class.getName());
+
     protected static HTML tripInfoHelpText = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
             + "<strong style=\"color:#555555\">Trip Information</strong></p>\n"
@@ -80,26 +82,26 @@ public class CreateTravelAuthorizationPanel extends CreateComposite implements C
     }
 
     protected BigDecimal calculateTotalCost(TravelTransportationPanel transportation,TravelAccommodationPanel lodging,TravelFoodPanel meals) {
-            
-            BigDecimal totalEstimatedTripExpences = new BigDecimal(BigInteger.ZERO);
+
+            BigDecimal totalEstimatedTripExpences = BigDecimal.ZERO;
             
             if  (transportation.totalTransportationCost.getCurrency() != null) {
-                 totalEstimatedTripExpences.add(transportation.totalTransportationCost.getCurrency());
+                 totalEstimatedTripExpences = totalEstimatedTripExpences.add(transportation.totalTransportationCost.getCurrency());
             }
             if  (lodging.totalLodgingCost.getCurrency() != null) {
-                totalEstimatedTripExpences.add(lodging.totalLodgingCost.getCurrency());
+                 totalEstimatedTripExpences = totalEstimatedTripExpences.add(lodging.totalLodgingCost.getCurrency());
             }
             if  (meals.totalCostOfFood.getCurrency() != null) {
-                totalEstimatedTripExpences.add(meals.totalCostOfFood.getCurrency());
+                totalEstimatedTripExpences = totalEstimatedTripExpences.add(meals.totalCostOfFood.getCurrency());
             }
             if  (meals.totalCostOfBanquet.getCurrency() != null) {
-                totalEstimatedTripExpences.add(meals.totalCostOfBanquet.getCurrency());
+                totalEstimatedTripExpences = totalEstimatedTripExpences.add(meals.totalCostOfBanquet.getCurrency());
             }
             if  (meals.conferenceFee.getCurrency() != null) {
-                totalEstimatedTripExpences.add(meals.conferenceFee.getCurrency());
+                totalEstimatedTripExpences = totalEstimatedTripExpences.add(meals.conferenceFee.getCurrency());
             }
             if  (meals.otherExpences.getCurrency() != null) {
-                totalEstimatedTripExpences.add(meals.otherExpences.getCurrency());
+                totalEstimatedTripExpences = totalEstimatedTripExpences.add(meals.otherExpences.getCurrency());
             } 
             return totalEstimatedTripExpences;
     } 
@@ -121,7 +123,7 @@ public class CreateTravelAuthorizationPanel extends CreateComposite implements C
         entityFieldsPanel.add(meals);
         entityFieldsPanel.add(mealsItemPanel);
         entityFieldsPanel.add(emptyLine);
-        addField(TOTAL_ESTIMATED_TRIP_EXPENCES, false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+//        addField(TOTAL_ESTIMATED_TRIP_EXPENCES, false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(emptyLine);
         alignFields(DEFAULT_FIELD_WIDTH);
     }
