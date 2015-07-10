@@ -43,16 +43,16 @@ public class UpdateBPMTaskDelegatePanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postUpdateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postUpdateSuccess(arg0);
+            }
+        });
     }
 
     @Override
@@ -61,6 +61,7 @@ public class UpdateBPMTaskDelegatePanel extends UpdateComposite {
         assignFieldValueFromEntity("bpmTaskId", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("ruleName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("ruleExpression", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("attributeData", entity, DataType.TEXT_AREA_FIELD);
     }
 
     @Override
@@ -83,6 +84,8 @@ public class UpdateBPMTaskDelegatePanel extends UpdateComposite {
         addField("bpmProcessId", false, true, DataType.STRING_FIELD);
         addField("bpmTaskId", false, true, DataType.STRING_FIELD);
         addField("ruleName", false, true, DataType.STRING_FIELD);
+        addField("ruleExpression", false, true, DataType.STRING_FIELD);
+        addField("attributeData", false, true, DataType.TEXT_AREA_FIELD);
     }
 
     @Override

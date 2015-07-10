@@ -84,6 +84,7 @@ public class CreateBPMTaskDelegateRulePanel extends CreateComposite {
         addField("bpmTaskId", false, true, DataType.STRING_FIELD);
         addField("ruleName", false, true, DataType.STRING_FIELD);
         addField("ruleExpression", false, false, DataType.STRING_FIELD);
+        addField("attributeData", false, false, DataType.TEXT_AREA_FIELD);
     }
 
     @Override
