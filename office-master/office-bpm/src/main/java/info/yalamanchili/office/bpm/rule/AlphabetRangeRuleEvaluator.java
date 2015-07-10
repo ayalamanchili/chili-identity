@@ -39,7 +39,7 @@ public class AlphabetRangeRuleEvaluator extends AbstractTaskDelegate {
         char lastName = emp.getLastName().toLowerCase().charAt(0);
         for (AlphabetRangeBean range : getRanges(task, rule)) {
             if ((range.getRangeStartLetter() <= lastName) && (lastName <= range.getRangeEndLetter())) {
-                return range.getAssignee();
+                return range.getAssignee().trim();
             }
         }
         //TODO use default assignee per config
