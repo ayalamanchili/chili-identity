@@ -154,10 +154,10 @@ public class TravelAuthorizationService {
             }
             if (entity.getTravelTransportation().getTravelTransportationType().equals(TravelTransportationType.PRIVATE_VEHICLE)) {
                 if (travelTransportation.getCostPerMile() != null) {
-                    data.getData().put("companyVehicleMiles", travelTransportation.getCostPerMile().setScale(2, BigDecimal.ROUND_UP).toString());
+                    data.getData().put("companyVehicleCostPerMile", travelTransportation.getCostPerMile().setScale(2, BigDecimal.ROUND_UP).toString());
                 }
                 if (travelTransportation.getTotalMiles() != null) {
-                    data.getData().put("companyVehicleCostPerMile", travelTransportation.getTotalMiles().setScale(2, BigDecimal.ROUND_UP).toString());
+                    data.getData().put("companyVehicleMiles", travelTransportation.getTotalMiles().setScale(2, BigDecimal.ROUND_UP).toString());
                 }
                 if (travelTransportation.getTotalTransportationCost() != null) {
                     data.getData().put("totalTransportationCostCompanyVehicle", travelTransportation.getTotalTransportationCost().setScale(2, BigDecimal.ROUND_UP).toString());

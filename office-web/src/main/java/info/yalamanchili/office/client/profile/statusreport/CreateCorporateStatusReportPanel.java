@@ -45,7 +45,7 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
     ClickableLink uploadFromFile = new ClickableLink("Import from Word or Excel");
     SelectTimePeriodWidget statusReportPeriodF = new SelectTimePeriodWidget(false, true);
     CKEditor reportF;
-    BooleanField submitForApprovalF = new BooleanField(OfficeWelcome.constants, "SubmitForApproval", "CorporateStatusReport", false, false, Alignment.HORIZONTAL);
+    BooleanField submitForApprovalF = new BooleanField(OfficeWelcome.constants, "Submit", "CorporateStatusReport", false, false, Alignment.HORIZONTAL);
     Button createB = new Button("Save");
     JSONObject entity;
     String entityId;

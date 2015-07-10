@@ -35,7 +35,8 @@ public class ReadAllBPMTaskDelegateRulePanel extends CRUDReadAllComposite {
 
     @Override
     public void viewClicked(String entityId) {
-//        TabPanel.instance().chiliAdminPanel.sidePanelTop.add(new ReadBPMTaskDelegatePanel(entityId));
+        TabPanel.instance().chiliAdminPanel.entityPanel.clear();
+        TabPanel.instance().chiliAdminPanel.entityPanel.add(new ReadBPMTaskDelegateRulePanel(entityId));
     }
 
     @Override
