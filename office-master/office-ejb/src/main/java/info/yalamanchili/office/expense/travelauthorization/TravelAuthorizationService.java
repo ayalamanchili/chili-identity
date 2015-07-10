@@ -155,7 +155,26 @@ public class TravelAuthorizationService {
                     data.getData().put("travelTransportationPaymentType-PC", "true");
                     break;
             }
-           
+            if (entity.getTravelTransportation().getTravelTransportationType().equals(TravelTransportationType.AIR)) {
+                if (travelTransportation.getTotalTransportationCost() != null) {
+                    data.getData().put("totalTransportationCost", travelTransportation.getTotalTransportationCost().setScale(2, BigDecimal.ROUND_UP).toString());
+                }
+            }
+            if (entity.getTravelTransportation().getTravelTransportationType().equals(TravelTransportationType.BUS)) {
+                if (travelTransportation.getTotalTransportationCost() != null) {
+                    data.getData().put("totalTransportationCost", travelTransportation.getTotalTransportationCost().setScale(2, BigDecimal.ROUND_UP).toString());
+                }
+            }
+            if (entity.getTravelTransportation().getTravelTransportationType().equals(TravelTransportationType.RAILWAY)) {
+                if (travelTransportation.getTotalTransportationCost() != null) {
+                    data.getData().put("totalTransportationCost", travelTransportation.getTotalTransportationCost().setScale(2, BigDecimal.ROUND_UP).toString());
+                }
+            }
+            if (entity.getTravelTransportation().getTravelTransportationType().equals(TravelTransportationType.OTHER)) {
+                if (travelTransportation.getTotalTransportationCost() != null) {
+                    data.getData().put("totalTransportationCost", travelTransportation.getTotalTransportationCost().setScale(2, BigDecimal.ROUND_UP).toString());
+                }
+            }
             if (entity.getTravelTransportation().getTravelTransportationType().equals(TravelTransportationType.COMPANY_VEHICLE)) {
                 if (travelTransportation.getCostPerMile() != null) {
                     data.getData().put("companyVehicleCostPerMile", travelTransportation.getCostPerMile().setScale(2, BigDecimal.ROUND_UP).toString());
