@@ -37,19 +37,19 @@ import info.yalamanchili.office.client.home.tasks.GenericBPMStartFormPanel;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
 
 public class CreateClientInfoPanel extends CreateComposite {
-
+    
     private static Logger logger = Logger.getLogger(CreateClientInfoPanel.class.getName());
     protected Anchor addClientL = new Anchor("Client not present? submit request");
     protected Anchor addVendorL = new Anchor("Vendor not present? submit request");
-
+    
     public CreateClientInfoPanel(CreateCompositeType type) {
         super(type);
         initCreateComposite("ClientInfo", OfficeWelcome.constants);
     }
-
+    
     BooleanField endPreviousProjectFlagField;
     DateField previousProjectEndDate;
-
+    
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject clientInfo = new JSONObject();
@@ -98,15 +98,15 @@ public class CreateClientInfoPanel extends CreateComposite {
             assignEntityValueFromField("terminationNotice", clientInfo);
             assignEntityValueFromField("notes", clientInfo);
         }
-
+        
         return clientInfo;
     }
-
+    
     @Override
     protected void createButtonClicked() {
         // TODO Auto-generated method stub
     }
-
+    
     @Override
     protected void addButtonClicked() {
         HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
@@ -116,15 +116,15 @@ public class CreateClientInfoPanel extends CreateComposite {
                         logger.info(arg0.getMessage());
                         handleErrorResponse(arg0);
                     }
-
+                    
                     @Override
                     public void onSuccess(String arg0) {
                         postCreateSuccess(arg0);
                     }
                 });
-
+        
     }
-
+    
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Added Client Information");
@@ -132,7 +132,7 @@ public class CreateClientInfoPanel extends CreateComposite {
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(TreeEmployeePanel.instance().getEntityId()));
         TabPanel.instance().myOfficePanel.entityPanel.add(new ClientInfoOptionsPanel());
     }
-
+    
     @Override
     protected void addListeners() {
         addClientL.addClickHandler(this);
@@ -141,7 +141,7 @@ public class CreateClientInfoPanel extends CreateComposite {
             endPreviousProjectFlagField.getBox().addClickHandler(this);
         }
     }
-
+    
     @Override
     protected void configure() {
         endPreviousProjectFlagField = (BooleanField) fields.get("endPreviousProject");
@@ -149,8 +149,9 @@ public class CreateClientInfoPanel extends CreateComposite {
         if (previousProjectEndDate != null) {
             previousProjectEndDate.setVisible(false);
         }
+        add.setText("Save");
     }
-
+    
     @Override
     protected void addWidgets() {
         //Basic
@@ -175,7 +176,7 @@ public class CreateClientInfoPanel extends CreateComposite {
             addField("previousProjectEndDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_TIME, ROLE.ROLE_RECRUITER, ROLE.ROLE_RELATIONSHIP)) {
-            addDropDown("recruiter", new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER, false, false,Alignment.HORIZONTAL));
+            addDropDown("recruiter", new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER, false, false, Alignment.HORIZONTAL));
             //Billing Information
             entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
             addField("payRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
@@ -215,12 +216,12 @@ public class CreateClientInfoPanel extends CreateComposite {
         }
         alignFields();
     }
-
+    
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
         // TODO Auto-generated method stub
     }
-
+    
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addClientL)) {
@@ -229,14 +230,14 @@ public class CreateClientInfoPanel extends CreateComposite {
         if (event.getSource().equals(addVendorL)) {
             new GenericPopup(new GenericBPMStartFormPanel("AddNewVendorRequest", "add_new_vendor_request_1")).show();
         }
-
+        
         if ((ReadAllClientInfoPanel.instance().numberOfRecords > 0) && (event.getSource().equals(endPreviousProjectFlagField.getBox()))) {
             previousProjectEndDate.setVisible(endPreviousProjectFlagField.getValue());
         }
-
+        
         super.onClick(event);
     }
-
+    
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "employee/clientinformation/" + TreeEmployeePanel.instance().getEntityId();
