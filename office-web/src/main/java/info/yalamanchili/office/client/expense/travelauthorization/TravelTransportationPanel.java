@@ -19,6 +19,7 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.IntegerField;
@@ -38,6 +39,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
     private static Logger logger = Logger.getLogger(TravelTransportationPanel.class.getName());
 
     protected FlowPanel panel = new FlowPanel();
+    BooleanField showAllTransportationOptions = new BooleanField(OfficeWelcome.constants, "showAllTravalTransportationOptions", "TravelAuthorization", false, false, Alignment.HORIZONTAL);
     EnumField travelTransportationType;
     IntegerField totalMiles;
     CurrencyField costPerMile;
@@ -74,6 +76,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         rentalVehicleJustification.getTextbox().addBlurHandler(this);
         travelRentalVehicleType.listBox.addChangeHandler(this);
         otherVehicleTypeJustification.getTextbox().addBlurHandler(this);
+        showAllTransportationOptions.getBox().addClickHandler(this);
     }
 
     @Override
@@ -87,7 +90,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         travelRentalVehicleType.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         otherVehicleTypeJustification.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         expensePaymentType.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
-        if (entity == null) {
+        if (entity == null && !showAllTransportationOptions.getValue()) {
             renderMiles(false);
             renderRentalJustification(false);
         }
@@ -123,6 +126,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         panel.add(rentalVehicleJustification);
         panel.add(travelRentalVehicleType);
         panel.add(otherVehicleTypeJustification);
+        panel.add(showAllTransportationOptions);
     }
 
     protected final void populateFields() {
@@ -202,35 +206,35 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
     @Override
     public void onChange(ChangeEvent event) {
         if (event.getSource().equals(travelTransportationType.listBox)) {
-            if (travelTransportationType.getValue().equals(TravelTransportationType.AIR.name())) {
+            if (travelTransportationType.getValue().equals(TravelTransportationType.AIR.name()) && !showAllTransportationOptions.getValue()) {
                 renderMiles(false);
                 renderRentalJustification(false);
             }
-            if (travelTransportationType.getValue().equals(TravelTransportationType.BUS.name())) {
+            if (travelTransportationType.getValue().equals(TravelTransportationType.BUS.name()) && !showAllTransportationOptions.getValue()) {
                 renderMiles(false);
                 renderRentalJustification(false);
             }
-            if (travelTransportationType.getValue().equals(TravelTransportationType.RAILWAY.name())) {
+            if (travelTransportationType.getValue().equals(TravelTransportationType.RAILWAY.name()) && !showAllTransportationOptions.getValue()) {
                 renderMiles(false);
                 renderRentalJustification(false);
             }
-            if (travelTransportationType.getValue().equals(TravelTransportationType.COMPANY_VEHICLE.name())) {
+            if (travelTransportationType.getValue().equals(TravelTransportationType.COMPANY_VEHICLE.name()) && !showAllTransportationOptions.getValue()) {
                 renderMiles(true);
                 renderRentalJustification(false);
             }
-            if (travelTransportationType.getValue().equals(TravelTransportationType.PRIVATE_VEHICLE.name())) {
+            if (travelTransportationType.getValue().equals(TravelTransportationType.PRIVATE_VEHICLE.name()) && !showAllTransportationOptions.getValue()) {
                 renderMiles(true);
                 renderRentalJustification(false);
             }
-            if (travelTransportationType.getValue().equals(TravelTransportationType.RENTAL_VEHICLE.name())) {
+            if (travelTransportationType.getValue().equals(TravelTransportationType.RENTAL_VEHICLE.name()) && !showAllTransportationOptions.getValue()) {
                 renderMiles(true);
                 renderRentalJustification(true);
             }
-            if (travelTransportationType.getValue().equals(TravelTransportationType.OTHER.name())) {
+            if (travelTransportationType.getValue().equals(TravelTransportationType.OTHER.name()) && !showAllTransportationOptions.getValue()) {
                 renderMiles(false);
                 renderRentalJustification(false);
             }
-        } else if (event.getSource().equals(travelRentalVehicleType.listBox)) {
+        } else if (event.getSource().equals(travelRentalVehicleType.listBox) && !showAllTransportationOptions.getValue()) {
             if (travelRentalVehicleType.getValue().equals(TravelRentalVehicleType.OTHER.name())) {
                 otherVehicleTypeJustification.setVisible(true);
             } else {
@@ -255,13 +259,25 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
 
     @Override
     public void onClick(ClickEvent event) {
+        if (event.getSource().equals(showAllTransportationOptions.getBox())) {
+            renderAllOptions(showAllTransportationOptions.getValue());
+        }
 
+    }
+
+    protected void renderAllOptions(boolean render) {
+        totalMiles.setVisible(render);
+        costPerMile.setVisible(render);
+        estimatedCostOfOtherTransportation.setVisible(render);
+        rentalVehicleJustification.setVisible(render);
+        travelRentalVehicleType.setVisible(render);
+        otherVehicleTypeJustification.setVisible(render);
     }
 
     @Override
     public void onBlur(BlurEvent event) {
         if (totalMiles.getInteger() != null && costPerMile.getCurrency() != null) {
-                totalTransportationCost.setValue(costPerMile.getCurrency().multiply(BigDecimal.valueOf(totalMiles.getInteger())), readyOnly);
+            totalTransportationCost.setValue(costPerMile.getCurrency().multiply(BigDecimal.valueOf(totalMiles.getInteger())), readyOnly);
         }
     }
 }
