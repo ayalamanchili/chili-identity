@@ -37,7 +37,7 @@ public class UploadCorporateStatusReportPanel extends Composite {
             + "<ul>\n"
             + "	<li>\n"
             + "	<pre>\n"
-            + "We currently support .doc, .docx, .xls, .xlsx formats only.</pre>\n"
+            + "Preferred format : 2007 XLSX and DOCX But we also support: .doc, .docx, .xls, .xlsx formats.</pre>\n"
             + "	</li>\n"
             + "	<li>\n"
             + "	<pre>\n"
