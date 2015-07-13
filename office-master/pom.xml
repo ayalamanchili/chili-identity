@@ -6,7 +6,7 @@
     <packaging>pom</packaging>
     <version>1.2-SNAPSHOT</version>
     <name>office-master</name>
-    <url>http://somecompany.com</url>
+    <url>https://apps.sstech.us/portal</url>
     <dependencies>
         <dependency>
             <groupId>info.chili</groupId>
