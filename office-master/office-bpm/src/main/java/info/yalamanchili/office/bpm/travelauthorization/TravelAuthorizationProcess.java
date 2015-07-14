@@ -8,7 +8,6 @@
 package info.yalamanchili.office.bpm.travelauthorization;
 
 import info.chili.service.jrs.exception.ServiceException;
-import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
 import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
 import info.yalamanchili.office.dao.expense.travelauthorization.TravelAuthorizationDao;
@@ -25,7 +24,7 @@ import org.activiti.engine.delegate.DelegateTask;
  * @author prasanthi.p
  */
 public class TravelAuthorizationProcess extends RuleBasedTaskDelegateListner {
-    
+
     @Override
     public void processTask(DelegateTask task) {
         super.processTask(task);
@@ -33,7 +32,7 @@ public class TravelAuthorizationProcess extends RuleBasedTaskDelegateListner {
             travelAuthorizationTaskCompleted(task);
         }
     }
-    
+
     protected void travelAuthorizationTaskCompleted(DelegateTask task) {
         TravelAuthorization entity = getRequestFromTask(task);
         if (entity == null) {
@@ -48,11 +47,11 @@ public class TravelAuthorizationProcess extends RuleBasedTaskDelegateListner {
                 managerApprovalTaskComplete(entity, task);
                 break;
             case "travelAuthorizationCEOApprovalTask":
-                adminApprovalTaskComplete(entity, task);
+                ceoApprovalTaskComplete(entity, task);
                 break;
         }
     }
-    
+
     protected void managerApprovalTaskComplete(TravelAuthorization entity, DelegateTask task) {
         //Notes
         String notes = (String) task.getExecution().getVariable("notes");
@@ -61,9 +60,9 @@ public class TravelAuthorizationProcess extends RuleBasedTaskDelegateListner {
         String status = (String) task.getExecution().getVariable("status");
         if (status.equalsIgnoreCase("approved")) {
             entity.setStatus(TravelAuthorizationStatus.PENDING_CEO_APPROVAL);
-            entity.setCeoApprovalBy(OfficeSecurityService.instance().getCurrentUser().getEmployeeId());
-            entity.setCeoApprovalDate(new Date());
-            new GenericTaskCompleteNotification().notifyWithMoreRoles(task, OfficeRoles.OfficeRole.ROLE_CEO.name());
+            entity.setManagerApprovalBy(OfficeSecurityService.instance().getCurrentUser().getEmployeeId());
+            entity.setManaerApprovalDate(new Date());
+            new GenericTaskCompleteNotification().notify(task);
         } else {
             entity.setStatus(TravelAuthorizationStatus.REJECTED);
             new GenericTaskCompleteNotification().notify(task);
@@ -71,8 +70,8 @@ public class TravelAuthorizationProcess extends RuleBasedTaskDelegateListner {
         TravelAuthorizationDao.instance().save(entity);
         task.getExecution().setVariable("entity", entity);
     }
-    
-    protected void adminApprovalTaskComplete(TravelAuthorization entity, DelegateTask task) {
+
+    protected void ceoApprovalTaskComplete(TravelAuthorization entity, DelegateTask task) {
         //Notes
         String notes = (String) task.getExecution().getVariable("notes");
         CommentDao.instance().addComment(notes, entity);
@@ -80,6 +79,8 @@ public class TravelAuthorizationProcess extends RuleBasedTaskDelegateListner {
         String status = (String) task.getExecution().getVariable("status");
         if (status.equalsIgnoreCase("approved")) {
             entity.setStatus(TravelAuthorizationStatus.APPROVED);
+            entity.setCeoApprovalBy(OfficeSecurityService.instance().getCurrentUser().getEmployeeId());
+            entity.setCeoApprovalDate(new Date());
             new GenericTaskCompleteNotification().notify(task);
         } else {
             entity.setStatus(TravelAuthorizationStatus.REJECTED);
@@ -88,7 +89,7 @@ public class TravelAuthorizationProcess extends RuleBasedTaskDelegateListner {
         TravelAuthorizationDao.instance().save(entity);
         task.getExecution().setVariable("entity", entity);
     }
-    
+
     protected TravelAuthorization getRequestFromTask(DelegateTask task) {
         Long entityId = (Long) task.getExecution().getVariable("entityId");
         if (entityId != null) {

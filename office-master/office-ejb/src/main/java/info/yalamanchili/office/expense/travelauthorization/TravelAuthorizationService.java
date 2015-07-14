@@ -335,7 +335,14 @@ public class TravelAuthorizationService {
                 }
             }
         }
-
+        if (entity.getManagerApprovalBy() != null) {
+            Employee manager = employeeDao.findEmployeWithEmpId(entity.getManagerApprovalBy());
+            if (manager != null) {
+                Signature approvedBysignature = new Signature(manager.getEmployeeId(), manager.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "managerApprovalBy", DateUtils.dateToCalendar(entity.getManaerApprovalDate()), employeeDao.getPrimaryEmail(manager), null);
+                data.getSignatures().add(approvedBysignature);
+                data.getData().put("managerapprovalDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getManaerApprovalDate()));
+            }
+        }
         if (entity.getCeoApprovalBy() != null) {
             Employee ceo = employeeDao.findEmployeWithEmpId(entity.getCeoApprovalBy());
             if (ceo != null) {
@@ -344,15 +351,6 @@ public class TravelAuthorizationService {
                 data.getData().put("ceoApprovalDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getCeoApprovalDate()));
             }
         }
-        if (entity.getManagerApprovalBy() != null) {
-            Employee manager = employeeDao.findEmployeWithEmpId(entity.getManagerApprovalBy());
-            if (manager != null) {
-                Signature approvedBysignature = new Signature(manager.getEmployeeId(), manager.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "managerApprovalBy", DateUtils.dateToCalendar(entity.getManaerApprovalDate()), employeeDao.getPrimaryEmail(manager), null);
-                data.getSignatures().add(approvedBysignature);
-                data.getData().put("manaerApprovalDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getManaerApprovalDate()));
-            }
-        }
-
         byte[] pdf = PDFUtils.generatePdf(data);
         return Response.ok(pdf)
                 .header("content-disposition", "filename = travel-authorization.pdf")
