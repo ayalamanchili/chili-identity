@@ -17,7 +17,6 @@ import info.chili.gwt.fields.StringField;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
-import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -32,15 +31,16 @@ import java.util.logging.Logger;
 public class CreateStatusReportPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(info.yalamanchili.office.client.profile.statusreport.CreateStatusReportPanel.class.getName());
+
     protected String employeeId;
 
     public CreateStatusReportPanel() {
-        super(CreateCompositeType.CREATE);
+        super(CreateComposite.CreateCompositeType.CREATE);
         initCreateComposite("StatusReport", OfficeWelcome.constants);
     }
 
     public CreateStatusReportPanel(String employeeId) {
-        super(CreateCompositeType.CREATE);
+        super(CreateComposite.CreateCompositeType.CREATE);
         this.employeeId = employeeId;
         initCreateComposite("StatusReport", OfficeWelcome.constants);
     }
@@ -49,13 +49,10 @@ public class CreateStatusReportPanel extends CreateComposite {
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
         JSONObject report = new JSONObject();
-        JSONObject emp = (JSONObject) entity.get("jobTitle");
         assignEntityValueFromField("projectDescription", report);
         assignEntityValueFromField("reportStartDate", entity);
         assignEntityValueFromField("reportEndDate", entity);
         assignEntityValueFromField("status", entity);
-        assignEntityValueFromField(JSONUtils.toString(emp, "jobTitle"), entity);
-
 
         assignEntityValueFromField("projectPhase1Name", report);
         assignEntityValueFromField("projectPhase1Deliverable", report);
@@ -92,17 +89,17 @@ public class CreateStatusReportPanel extends CreateComposite {
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                logger.info(arg0.getMessage());
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        logger.info(arg0.getMessage());
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -131,6 +128,7 @@ public class CreateStatusReportPanel extends CreateComposite {
         submitForApprovalF.getBox().addClickHandler(this);
         previewF.getBox().addClickHandler(this);
     }
+
     BooleanField submitForApprovalF;
     BooleanField previewF;
 
@@ -171,7 +169,6 @@ public class CreateStatusReportPanel extends CreateComposite {
         addField("reportStartDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("reportEndDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("status", false, true, ProjectStatus.names(), Alignment.HORIZONTAL);
-        addField("jobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
 
         entityFieldsPanel.add(getLineSeperatorTag("Project Phase 1"));
         addField("projectPhase1Name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -211,6 +208,7 @@ public class CreateStatusReportPanel extends CreateComposite {
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
+
     }
 
     @Override
@@ -278,10 +276,6 @@ public class CreateStatusReportPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-        if (employeeId != null) {
-            return OfficeWelcome.constants.root_url() + "statusreport/save?submitForApproval=" + submitForApprovalF.getValue();
-        } else {
-            return OfficeWelcome.constants.root_url() + "statusreport/summary";
-        }
+        return OfficeWelcome.constants.root_url() + "statusreport/save?submitForApproval=" + submitForApprovalF.getValue();
     }
 }
