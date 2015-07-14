@@ -37,7 +37,6 @@ import java.util.logging.Logger;
 public class TravelTransportationPanel extends ALComposite implements ChangeHandler, BlurHandler, ClickHandler {
 
     private static Logger logger = Logger.getLogger(TravelTransportationPanel.class.getName());
-
     protected FlowPanel panel = new FlowPanel();
     BooleanField showAllTransportationOptions = new BooleanField(OfficeWelcome.constants, "showAllTravalTransportationOptions", "TravelAuthorization", false, false, Alignment.HORIZONTAL);
     EnumField travelTransportationType;
@@ -50,7 +49,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
     TextAreaField otherVehicleTypeJustification;
     //
     EnumField expensePaymentType;
-
+    EnumField expenseRentalPaymentType;
     boolean readyOnly;
     JSONObject entity;
     TravelTransportationType type;
@@ -74,6 +73,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         totalMiles.getTextbox().addBlurHandler(this);
         estimatedCostOfOtherTransportation.getTextbox().addBlurHandler(this);
         rentalVehicleJustification.getTextbox().addBlurHandler(this);
+        expenseRentalPaymentType.listBox.addChangeHandler(this);
         travelRentalVehicleType.listBox.addChangeHandler(this);
         otherVehicleTypeJustification.getTextbox().addBlurHandler(this);
         showAllTransportationOptions.getBox().addClickHandler(this);
@@ -90,6 +90,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         travelRentalVehicleType.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         otherVehicleTypeJustification.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         expensePaymentType.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
+        expenseRentalPaymentType.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         if (entity == null && !showAllTransportationOptions.getValue()) {
             renderMiles(false);
             renderRentalJustification(false);
@@ -112,6 +113,8 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
                 ESTIMATED_COST_OF_OTHER_TRANSPORTATION, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         rentalVehicleJustification = new TextAreaField(OfficeWelcome.constants,
                 RENTAL_VEHICLE_JUSTIFICATION, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
+        expenseRentalPaymentType = new EnumField(OfficeWelcome.constants,
+                RENTAL_EXPENSE_PAYMENT_TYPE, "TravelAuthorization", readyOnly, false, ExpensePaymentType.names(), Alignment.HORIZONTAL);
         travelRentalVehicleType = new EnumField(OfficeWelcome.constants,
                 TRAVEL_RENTAL_VEHICLE_TYPE, "TravelAuthorization", readyOnly, false, TravelRentalVehicleType.names(), Alignment.HORIZONTAL);
         otherVehicleTypeJustification = new TextAreaField(OfficeWelcome.constants,
@@ -124,6 +127,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         panel.add(expensePaymentType);
         panel.add(estimatedCostOfOtherTransportation);
         panel.add(rentalVehicleJustification);
+        panel.add(expenseRentalPaymentType);
         panel.add(travelRentalVehicleType);
         panel.add(otherVehicleTypeJustification);
         panel.add(showAllTransportationOptions);
@@ -150,6 +154,9 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
             }
             if (rentalVehicleJustificationObj.get(RENTAL_VEHICLE_JUSTIFICATION) != null) {
                 rentalVehicleJustification.setValue(rentalVehicleJustificationObj.get(RENTAL_VEHICLE_JUSTIFICATION).isString().stringValue());
+            }
+            if (rentalVehicleJustificationObj.get(RENTAL_EXPENSE_PAYMENT_TYPE) != null) {
+                expenseRentalPaymentType.setValue(rentalVehicleJustificationObj.get(RENTAL_EXPENSE_PAYMENT_TYPE).isString().stringValue());
             }
             if (rentalVehicleJustificationObj.get(TRAVEL_RENTAL_VEHICLE_TYPE) != null) {
                 travelRentalVehicleType.setValue(rentalVehicleJustificationObj.get(TRAVEL_RENTAL_VEHICLE_TYPE).isString().stringValue());
@@ -180,6 +187,9 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         if (travelTransportationType.getValue().equals(TravelTransportationType.RENTAL_VEHICLE.name())) {
             entity.put(TRAVEL_RENTAL_VEHICLE_JUSTIFICATION, getRentalVehicalObj());
         }
+        if (expenseRentalPaymentType.getValue().equals(TravelTransportationType.RENTAL_VEHICLE.name())) {
+            entity.put(RENTAL_EXPENSE_PAYMENT_TYPE, getRentalVehicalObj());
+        }
         if (expensePaymentType.getValue() != null) {
             entity.put(EXPENSE_PAYMENT_TYPE, new JSONString(expensePaymentType.getValue()));
         }
@@ -193,6 +203,9 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         }
         if (rentalVehicleJustification.getValue() != null) {
             rentalVehicalObj.put(RENTAL_VEHICLE_JUSTIFICATION, new JSONString(rentalVehicleJustification.getValue()));
+        }
+        if (expenseRentalPaymentType.getValue() != null) {
+            rentalVehicalObj.put(RENTAL_EXPENSE_PAYMENT_TYPE, new JSONString(expenseRentalPaymentType.getValue()));
         }
         if (travelRentalVehicleType.getValue() != null) {
             rentalVehicalObj.put(TRAVEL_RENTAL_VEHICLE_TYPE, new JSONString(travelRentalVehicleType.getValue()));
@@ -252,6 +265,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
     protected void renderRentalJustification(boolean render) {
         estimatedCostOfOtherTransportation.setVisible(render);
         rentalVehicleJustification.setVisible(render);
+        expenseRentalPaymentType.setVisible(render);
         travelRentalVehicleType.setVisible(render);
         otherVehicleTypeJustification.setVisible(false);
 
@@ -270,6 +284,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         costPerMile.setVisible(render);
         estimatedCostOfOtherTransportation.setVisible(render);
         rentalVehicleJustification.setVisible(render);
+        expenseRentalPaymentType.setVisible(render);
         travelRentalVehicleType.setVisible(render);
         otherVehicleTypeJustification.setVisible(render);
     }

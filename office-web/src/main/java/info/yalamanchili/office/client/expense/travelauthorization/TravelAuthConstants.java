@@ -23,6 +23,7 @@ public interface TravelAuthConstants {
     String TOTAL_TRANSPORTATION_COST = "totalTransportationCost";
     String ESTIMATED_COST_OF_OTHER_TRANSPORTATION = "estimatedCostOfOtherTransportation";
     String RENTAL_VEHICLE_JUSTIFICATION = "rentalVehicleJustification";
+    String RENTAL_EXPENSE_PAYMENT_TYPE="expenseRentalPaymentType";
     String TRAVEL_RENTAL_VEHICLE_TYPE = "travelRentalVehicleType";                        
     String OTHER_VEHICLE_TYPE_JUSTIFICATION = "otherVehicleTypeJustification";
     String EXPENSE_PAYMENT_TYPE = "expensePaymentType";  

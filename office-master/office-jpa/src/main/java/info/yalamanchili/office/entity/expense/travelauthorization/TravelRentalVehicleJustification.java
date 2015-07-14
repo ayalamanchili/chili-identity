@@ -102,8 +102,16 @@ public class TravelRentalVehicleJustification implements Serializable {
         this.otherVehicleTypeJustification = otherVehicleTypeJustification;
     }
 
+    public ExpensePaymentType getExpenseRentalPaymentType() {
+        return expenseRentalPaymentType;
+    }
+
+    public void setExpenseRentalPaymentType(ExpensePaymentType expenseRentalPaymentType) {
+        this.expenseRentalPaymentType = expenseRentalPaymentType;
+    }
+
     @Override
     public String toString() {
-        return "TravelRentalVehicleJustification{" + "estimatedCostOfOtherTransportation=" + estimatedCostOfOtherTransportation + ", rentalVehicleJustification=" + rentalVehicleJustification + ", travelRentalVehicleType=" + travelRentalVehicleType + ", otherVehicleTypeJustification=" + otherVehicleTypeJustification + '}';
+        return "TravelRentalVehicleJustification{" + "estimatedCostOfOtherTransportation=" + estimatedCostOfOtherTransportation + ", rentalVehicleJustification=" + rentalVehicleJustification + ", travelRentalVehicleType=" + travelRentalVehicleType + ", otherVehicleTypeJustification=" + otherVehicleTypeJustification + ", expenseRentalPaymentType=" + expenseRentalPaymentType + '}';
     }
 }
