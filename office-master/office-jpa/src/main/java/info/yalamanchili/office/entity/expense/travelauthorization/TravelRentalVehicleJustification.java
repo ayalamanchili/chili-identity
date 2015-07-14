@@ -52,8 +52,17 @@ public class TravelRentalVehicleJustification implements Serializable {
      *
      *
      */
+    @Enumerated(EnumType.STRING)
+    @Field
+    @NotNull(message = "{travel.expense.expenseRentalPaymentType.pay.type.not.empty.msg}")
+    protected ExpensePaymentType expenseRentalPaymentType;
+    /**
+     *
+     *
+     */
     @Lob
     protected String otherVehicleTypeJustification;
+
     /**
      *
      *
@@ -97,5 +106,4 @@ public class TravelRentalVehicleJustification implements Serializable {
     public String toString() {
         return "TravelRentalVehicleJustification{" + "estimatedCostOfOtherTransportation=" + estimatedCostOfOtherTransportation + ", rentalVehicleJustification=" + rentalVehicleJustification + ", travelRentalVehicleType=" + travelRentalVehicleType + ", otherVehicleTypeJustification=" + otherVehicleTypeJustification + '}';
     }
-    
 }

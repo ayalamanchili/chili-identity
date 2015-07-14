@@ -80,18 +80,21 @@ public class TravelAuthorization extends AbstractEntity {
      *
      *
      */
+    @NotNull(message = "{travel.departureDate.not.empty.msg}")
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date departureDate;
     /**
      *
      *
      */
+    @NotNull(message = "{travel.returnDate.not.empty.msg}")
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date returnDate;
     /**
      *
      *
      */
+    @NotNull(message = "{travel.reasonForTravel.not.empty.msg}")
     @Lob
     protected String reasonForTravel;
     /**
@@ -147,10 +150,11 @@ public class TravelAuthorization extends AbstractEntity {
      */
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date dateRequested;
-     /**
+    /**
      *
      */
     private BigDecimal totalEstimatedTripExpences;
+
     /**
      *
      */
@@ -253,7 +257,6 @@ public class TravelAuthorization extends AbstractEntity {
         this.status = status;
     }
 
-   
     /**
      * @return the bpmProcessId
      */
@@ -338,6 +341,4 @@ public class TravelAuthorization extends AbstractEntity {
     public String toString() {
         return "TravelAuthorization{" + "travelType=" + travelType + ", employee=" + employee + ", department=" + department + ", phoneNumber=" + phoneNumber + ", travelDestination=" + travelDestination + ", departureDate=" + departureDate + ", returnDate=" + returnDate + ", reasonForTravel=" + reasonForTravel + ", travelTransportation=" + travelTransportation + ", travelAccommodation=" + travelAccommodation + ", travelFood=" + travelFood + ", status=" + status + ", bpmProcessId=" + bpmProcessId + ", managerApprovalBy=" + managerApprovalBy + ", manaerApprovalDate=" + manaerApprovalDate + ", ceoApprovalBy=" + ceoApprovalBy + ", ceoApprovalDate=" + ceoApprovalDate + ", dateRequested=" + dateRequested + ", totalEstimatedTripExpences=" + totalEstimatedTripExpences + '}';
     }
-    
-    
 }
