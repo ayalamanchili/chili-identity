@@ -69,6 +69,7 @@ public class StatusReport extends AbstractEntity {
      */
     @Lob
     protected String report;
+    protected String jobTitle;
     /**
      * Employee
      */
@@ -191,11 +192,10 @@ public class StatusReport extends AbstractEntity {
     public void setBpmProcessId(String bpmProcessId) {
         this.bpmProcessId = bpmProcessId;
     }
-    
     @Transient
     @Valid
     protected ReportDocument reportDocument;
-    
+
     public ReportDocument getReportDocument() {
         return reportDocument;
     }
@@ -216,4 +216,11 @@ public class StatusReport extends AbstractEntity {
         }
     }
 
+    public String getJobTitle() {
+        return jobTitle;
+    }
+
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
 }

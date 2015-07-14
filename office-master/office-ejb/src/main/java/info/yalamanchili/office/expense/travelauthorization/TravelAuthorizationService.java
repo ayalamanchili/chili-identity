@@ -103,7 +103,9 @@ public class TravelAuthorizationService {
             data.getData().put("totalEstimatedTripExpences", entity.getTotalEstimatedTripExpences().setScale(2, BigDecimal.ROUND_UP).toString());
         }
         Signature preparedBysignature = new Signature(preparedBy.getEmployeeId(), preparedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(entity.getDateRequested()), employeeDao.getPrimaryEmail(preparedBy), null);
-//        data.getSignatures().add(preparedBysignature);
+       data.getSignatures().add(preparedBysignature);
+       data.getData().put("dateRequested", new SimpleDateFormat("MM-dd-yyyy").format(entity.getDateRequested()));
+
 ////        Travel type Information
         switch (entity.getTravelType()) {
             case IN_STATE:
@@ -319,8 +321,8 @@ public class TravelAuthorizationService {
         if (entity.getCeoApprovalBy() != null) {
             Employee ceo = employeeDao.findEmployeWithEmpId(entity.getCeoApprovalBy());
             if (ceo != null) {
-                Signature approvedBysignature = new Signature(ceo.getEmployeeId(), ceo.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "ceoApprovalBy", DateUtils.dateToCalendar(entity.getCeoApprovalDate()), employeeDao.getPrimaryEmail(ceo), null);
-                data.getSignatures().add(approvedBysignature);
+                Signature approvedsignature = new Signature(ceo.getEmployeeId(), ceo.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "ceoApprovalBy", DateUtils.dateToCalendar(entity.getCeoApprovalDate()), employeeDao.getPrimaryEmail(ceo), null);
+                data.getSignatures().add(approvedsignature);
                 data.getData().put("ceoApprovalDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getCeoApprovalDate()));
             }
         }
