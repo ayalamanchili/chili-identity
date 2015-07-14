@@ -103,8 +103,8 @@ public class TravelAuthorizationService {
             data.getData().put("totalEstimatedTripExpences", entity.getTotalEstimatedTripExpences().setScale(2, BigDecimal.ROUND_UP).toString());
         }
         Signature preparedBysignature = new Signature(preparedBy.getEmployeeId(), preparedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(entity.getDateRequested()), employeeDao.getPrimaryEmail(preparedBy), null);
-       data.getSignatures().add(preparedBysignature);
-       data.getData().put("dateRequested", new SimpleDateFormat("MM-dd-yyyy").format(entity.getDateRequested()));
+        data.getSignatures().add(preparedBysignature);
+        data.getData().put("dateRequested", new SimpleDateFormat("MM-dd-yyyy").format(entity.getDateRequested()));
 
 ////        Travel type Information
         switch (entity.getTravelType()) {
@@ -148,14 +148,9 @@ public class TravelAuthorizationService {
             //Travel Transportation ExpensePaymentType info
             switch (travelTransportation.getExpensePaymentType()) {
                 case EMPLOYEE_EXPENSE:
-                    data.getData().put("travelTransportationPaymentType-EE", "true");
+                    data.getData().put("privateVehiclePaymentType-EE", "true");
                     break;
-                case PO:
-                    data.getData().put("travelTransportationPaymentType-PO", "true");
-                    break;
-                case PURCHASING_CARD:
-                    data.getData().put("travelTransportationPaymentType-PC", "true");
-                    break;
+
             }
             if (entity.getTravelTransportation().getTravelTransportationType().equals(TravelTransportationType.AIR)) {
                 if (travelTransportation.getTotalTransportationCost() != null) {
@@ -198,6 +193,17 @@ public class TravelAuthorizationService {
                 if (travelTransportation.getTotalTransportationCost() != null) {
                     data.getData().put("totalTransportationCostPrivateVehicle", travelTransportation.getTotalTransportationCost().setScale(2, BigDecimal.ROUND_UP).toString());
                 }
+                switch (travelTransportation.getExpensePaymentType()) {
+                    case EMPLOYEE_EXPENSE:
+                        data.getData().put("rentalVehiclePaymentType-EE", "true");
+                        break;
+                    case PURCHASING_CARD:
+                        data.getData().put("rentalVehiclePaymentType-PC", "true");
+                        break;
+                    case PO:
+                        data.getData().put("rentalVehiclePaymentType-PO", "true");
+                        break;
+                }
             }
 
             if (travelTransportation.getTravelRentalVehicleJustification() != null) {
@@ -214,6 +220,18 @@ public class TravelAuthorizationService {
                 }
                 if (travelTransportation.getTotalTransportationCost() != null) {
                     data.getData().put("totalTransportationCostRentalVehicle", travelTransportation.getTotalTransportationCost().setScale(2, BigDecimal.ROUND_UP).toString());
+                }
+                //TravelRentalVehicleType info
+                switch (justification.getExpenseRentalPaymentType()) {
+                    case EMPLOYEE_EXPENSE:
+                        data.getData().put("rentalVehiclePaymentType-EE", "true");
+                        break;
+                    case PURCHASING_CARD:
+                        data.getData().put("rentalVehiclePaymentType-PC", "true");
+                        break;
+                    case PO:
+                        data.getData().put("rentalVehiclePaymentType-PO", "true");
+                        break;
                 }
                 //TravelRentalVehicleType info
                 switch (justification.getTravelRentalVehicleType()) {
