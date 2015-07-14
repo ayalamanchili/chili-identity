@@ -65,12 +65,9 @@ public class TravelAuthorizationSidePanel extends ALComposite implements ClickHa
     @Override
     protected void addWidgets() {
         travelExpenseSidePanel.add(createtravelExpenseLink);
-
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN)) {
-            travelExpenseSidePanel.add(Utils.getLineSeperatorTag("Search"));
-            travelExpenseSidePanel.add(employeeSB);
-            travelExpenseSidePanel.add(viewB);
-        }
+        travelExpenseSidePanel.add(Utils.getLineSeperatorTag("Search"));
+        travelExpenseSidePanel.add(employeeSB);
+        travelExpenseSidePanel.add(viewB);
     }
 
     @Override
