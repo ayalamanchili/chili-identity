@@ -17,6 +17,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.fields.BooleanField;
@@ -27,6 +28,7 @@ import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
 import static info.yalamanchili.office.client.expense.travelauthorization.TravelAuthConstants.*;
+import static info.yalamanchili.office.client.expense.travelauthorization.TravelTransportationType.values;
 import java.math.BigDecimal;
 import java.util.logging.Logger;
 
@@ -99,6 +101,14 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
 
     @Override
     protected void addWidgets() {
+        TravelTransportationType[] values = values();
+        String[] names = new String[values.length];
+        for (int i = 0; i < values.length; i++) {
+            names[i] = values[i].name();
+            CheckBox checkBox = new CheckBox(names[i]);
+            checkBox.ensureDebugId("cwCheckBox-" + names[i]);
+            panel.add(checkBox);
+        } 
         travelTransportationType = new EnumField(OfficeWelcome.constants,
                 TRAVEL_TRANSPORTATION_TYPE, "TravelAuthorization", readyOnly, false, TravelTransportationType.names(), Alignment.HORIZONTAL);
         totalMiles = new IntegerField(OfficeWelcome.constants,
@@ -113,20 +123,21 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
                 ESTIMATED_COST_OF_OTHER_TRANSPORTATION, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         rentalVehicleJustification = new TextAreaField(OfficeWelcome.constants,
                 RENTAL_VEHICLE_JUSTIFICATION, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
-        expenseRentalPaymentType = new EnumField(OfficeWelcome.constants,
-                RENTAL_EXPENSE_PAYMENT_TYPE, "TravelAuthorization", readyOnly, false, ExpensePaymentType.names(), Alignment.HORIZONTAL);
         travelRentalVehicleType = new EnumField(OfficeWelcome.constants,
                 TRAVEL_RENTAL_VEHICLE_TYPE, "TravelAuthorization", readyOnly, false, TravelRentalVehicleType.names(), Alignment.HORIZONTAL);
+        expenseRentalPaymentType = new EnumField(OfficeWelcome.constants,
+                RENTAL_EXPENSE_PAYMENT_TYPE, "TravelAuthorization", readyOnly, false, ExpensePaymentType.names(), Alignment.HORIZONTAL);
         otherVehicleTypeJustification = new TextAreaField(OfficeWelcome.constants,
                 OTHER_VEHICLE_TYPE_JUSTIFICATION, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         totalTransportationCost.getElement().getStyle().setProperty("float", "left");
+        estimatedCostOfOtherTransportation.getElement().getStyle().setProperty("float", "left");    
         panel.add(travelTransportationType);
         panel.add(totalMiles);
         panel.add(costPerMile);
         panel.add(totalTransportationCost);
         panel.add(expensePaymentType);
-        panel.add(estimatedCostOfOtherTransportation);
         panel.add(rentalVehicleJustification);
+        panel.add(estimatedCostOfOtherTransportation);
         panel.add(expenseRentalPaymentType);
         panel.add(travelRentalVehicleType);
         panel.add(otherVehicleTypeJustification);
