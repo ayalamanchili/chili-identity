@@ -101,14 +101,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
 
     @Override
     protected void addWidgets() {
-        TravelTransportationType[] values = values();
-        String[] names = new String[values.length];
-        for (int i = 0; i < values.length; i++) {
-            names[i] = values[i].name();
-            CheckBox checkBox = new CheckBox(names[i]);
-            checkBox.ensureDebugId("cwCheckBox-" + names[i]);
-            panel.add(checkBox);
-        } 
+
         travelTransportationType = new EnumField(OfficeWelcome.constants,
                 TRAVEL_TRANSPORTATION_TYPE, "TravelAuthorization", readyOnly, false, TravelTransportationType.names(), Alignment.HORIZONTAL);
         totalMiles = new IntegerField(OfficeWelcome.constants,
