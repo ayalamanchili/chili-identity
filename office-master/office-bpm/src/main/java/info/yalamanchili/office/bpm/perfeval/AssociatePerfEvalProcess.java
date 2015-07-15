@@ -11,6 +11,7 @@ package info.yalamanchili.office.bpm.perfeval;
 import com.google.common.base.Strings;
 import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
 import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
+import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
 import info.yalamanchili.office.dao.employee.PerformanceEvaluationDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.employee.PerformanceEvaluation;
@@ -18,7 +19,6 @@ import info.yalamanchili.office.entity.employee.PerformanceEvaluationStage;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.Date;
 import org.activiti.engine.delegate.DelegateTask;
-import org.activiti.engine.delegate.TaskListener;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,10 +30,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Scope("prototype")
 @Transactional
-public class AssociatePerfEvalProcess implements TaskListener {
-    
+public class AssociatePerfEvalProcess extends RuleBasedTaskDelegateListner {
+
     @Override
-    public void notify(DelegateTask task) {
+    public void processTask(DelegateTask task) {
         if ("create".equals(task.getEventName())) {
             perfEvalTaskCreated(task);
             new GenericTaskCreateNotification().notify(task);
@@ -42,13 +42,13 @@ public class AssociatePerfEvalProcess implements TaskListener {
             perfEvalTaskCompleted(task);
             new GenericTaskCompleteNotification().notify(task);
         }
-        
+
     }
-    
+
     protected void perfEvalTaskCreated(DelegateTask task) {
         savePerformanceEvaluation(task);
     }
-    
+
     protected void savePerformanceEvaluation(DelegateTask task) {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         PerformanceEvaluation entity = getPerformanceEvaluationFromTask(task);
@@ -62,7 +62,7 @@ public class AssociatePerfEvalProcess implements TaskListener {
         task.getExecution().setVariable("entity", entity);
         task.getExecution().setVariable("entityId", entity.getId());
     }
-    
+
     protected void perfEvalTaskCompleted(DelegateTask task) {
         PerformanceEvaluation entity = getPerformanceEvaluationFromTask(task);
         if (entity == null) {
@@ -88,7 +88,7 @@ public class AssociatePerfEvalProcess implements TaskListener {
         }
         PerformanceEvaluationDao.instance().save(entity);
     }
-    
+
     protected PerformanceEvaluation getPerformanceEvaluationFromTask(DelegateTask task) {
         Long tsId = (Long) task.getExecution().getVariable("entityId");
         if (tsId != null) {
