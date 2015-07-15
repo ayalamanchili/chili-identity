@@ -47,11 +47,12 @@
             </plugin>
         </plugins>
     </build>
+    <!-- download artifacts from this repo -->
     <repositories>
         <repository>
-            <id>yalamanchili.info</id>
-            <name>yalamanchili.info</name>
-            <url>http://tools.yalamanchili.info/nexus/content/groups/public</url>
+            <id>sstech.us</id>
+            <name>sstech.us</name>
+            <url>http://tools.sstech.us/nexus/content/groups/public</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -59,14 +60,14 @@
                 <enabled>true</enabled>
                 <updatePolicy>always</updatePolicy>
             </snapshots>
-        </repository>       
+        </repository>
     </repositories>
     <!-- download plugins from this repo -->
     <pluginRepositories>
         <pluginRepository>
-            <id>yalamanchili.info</id>
-            <name>yalamanchili.info</name>
-            <url>http://tools.yalamanchili.info/nexus/content/groups/public</url>
+            <id>sstech.us</id>
+            <name>sstech.us</name>
+            <url>http://tools.sstech.us/nexus/content/groups/public</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -77,21 +78,18 @@
         </pluginRepository>
     </pluginRepositories>
     <distributionManagement>
-        <site>
-            <id>portal-site</id>
-            <url>dav:http://tools.yalamanchili.info/nexus/content/sites/site/</url>
-        </site>
         <!-- Publish the versioned releases here -->
         <repository>
-            <id>yalamanchili.info</id>
-            <name>yalamanchili.info</name>
-            <url>http://tools.yalamanchili.info/nexus/content/repositories/releases</url>
+            <id>sstech.us</id>
+            <name>sstech.us</name>
+            <url>http://tools.sstech.us/nexus/content/repositories/releases</url>
         </repository>
+
         <!-- Publish the versioned releases here -->
         <snapshotRepository>
-            <id>yalamanchili.info</id>
-            <name>yalamanchili.info</name>
-            <url>http://tools.yalamanchili.info/nexus/content/repositories/snapshots</url>
+            <id>sstech.us</id>
+            <name>sstech.us</name>
+            <url>http://tools.sstech.us/nexus/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
     <properties>
