@@ -422,6 +422,9 @@ public class OfficeStartup {
         //Skills
         getJavaSkill();
         getDOTNETSkill();
+        //Company Contact Type
+        getCompanyContactReportsTo();
+        getCompanyContactPerf();
         //vendor
         techSysVendor();
         sstechSubcontractor();
