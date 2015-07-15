@@ -69,7 +69,7 @@ public class ReadTravelAuthorizationPanel extends ReadComposite {
     }
 
     protected void populateComments() {
-        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.expense.travelauthorization.TravelAuthorization;"));
+        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.expense.travelauthorization.TravelAuthorization"));
     }
 
     @Override
