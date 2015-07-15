@@ -149,6 +149,7 @@ public class TravelAuthorization extends AbstractEntity {
      *
      */
     @Temporal(javax.persistence.TemporalType.DATE)
+    @org.hibernate.annotations.Index(name = "TRVL_AUTH_DT_REQ_IDX")
     protected Date dateRequested;
     /**
      *
