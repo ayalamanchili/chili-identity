@@ -13,6 +13,7 @@ import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.crud.CreateComposite;
+import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
@@ -47,9 +48,21 @@ public class CreateTravelAuthorizationPanel extends CreateComposite implements C
     HTML meals = new HTML("<h4 style=\"color:#427fed\"> " + "Food</h4>");
     HTML emptyLine = new HTML("<br/>");
 
-    TravelTransportationPanel travelTransportationItem = new TravelTransportationPanel(false);
-    TravelAccommodationPanel lodgingItemPanel = new TravelAccommodationPanel(false);
-    TravelFoodPanel mealsItemPanel = new TravelFoodPanel(false);
+    TravelTransportationPanel travelTransportationItem = new TravelTransportationPanel(false) {
+        protected void onChange() {
+            calculateTotalCost(travelTransportationItem, lodgingItemPanel, mealsItemPanel);
+        }
+    };
+    TravelAccommodationPanel lodgingItemPanel = new TravelAccommodationPanel(false) {
+        protected void onChange() {
+            calculateTotalCost(travelTransportationItem, lodgingItemPanel, mealsItemPanel);
+        }
+    };
+    TravelFoodPanel mealsItemPanel = new TravelFoodPanel(false) {
+        protected void onChange() {
+            calculateTotalCost(travelTransportationItem, lodgingItemPanel, mealsItemPanel);
+        }
+    };
 
     public CreateTravelAuthorizationPanel() {
         super(CreateCompositeType.CREATE);
@@ -73,11 +86,10 @@ public class CreateTravelAuthorizationPanel extends CreateComposite implements C
         return entity;
 
     }
+    CurrencyField totalEstimatedTripExpencesF = null;
 
     protected BigDecimal calculateTotalCost(TravelTransportationPanel transportation, TravelAccommodationPanel lodging, TravelFoodPanel meals) {
-
         BigDecimal totalEstimatedTripExpences = BigDecimal.ZERO;
-
         if (transportation.totalTransportationCost.getCurrency() != null) {
             totalEstimatedTripExpences = totalEstimatedTripExpences.add(transportation.totalTransportationCost.getCurrency());
         }
@@ -96,6 +108,7 @@ public class CreateTravelAuthorizationPanel extends CreateComposite implements C
         if (meals.otherExpences.getCurrency() != null) {
             totalEstimatedTripExpences = totalEstimatedTripExpences.add(meals.otherExpences.getCurrency());
         }
+        totalEstimatedTripExpencesF.setValue(totalEstimatedTripExpences, false);
         return totalEstimatedTripExpences;
     }
 
@@ -116,9 +129,10 @@ public class CreateTravelAuthorizationPanel extends CreateComposite implements C
         entityFieldsPanel.add(meals);
         entityFieldsPanel.add(mealsItemPanel);
         entityFieldsPanel.add(emptyLine);
-//        addField(TOTAL_ESTIMATED_TRIP_EXPENCES, false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        addField(TOTAL_ESTIMATED_TRIP_EXPENCES, false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(emptyLine);
         alignFields(DEFAULT_FIELD_WIDTH);
+        totalEstimatedTripExpencesF = (CurrencyField) fields.get("totalEstimatedTripExpences");
     }
 
     @Override

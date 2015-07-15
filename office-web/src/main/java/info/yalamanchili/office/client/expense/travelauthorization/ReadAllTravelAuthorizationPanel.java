@@ -56,11 +56,11 @@ public class ReadAllTravelAuthorizationPanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                postDeleteSuccess();
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
     }
 
     @Override
@@ -80,12 +80,12 @@ public class ReadAllTravelAuthorizationPanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getTravelAuthURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
                 false, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                logger.info(result);
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        logger.info(result);
+                        postFetchTable(result);
+                    }
+                });
     }
 
     @Override
@@ -107,11 +107,11 @@ public class ReadAllTravelAuthorizationPanel extends CRUDReadAllComposite {
             addOptionsWidget(i, entity);
             JSONObject emp = (JSONObject) entity.get(EMPLOYEE);
             table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
-            setEnumColumn(i, 2, entity, TRAVEL_TYPE, TRAVEL_TYPE);
+            setEnumColumn(i, 2, entity, TravelType.class.getSimpleName(), TRAVEL_TYPE);
             table.setText(i, 3, JSONUtils.toString(entity, TRAVEL_DESTINATION));
             table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, DEPARTURE_DATE), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, RETURN_DATE), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 6, JSONUtils.formatEnumString(entity, "status"));
+            setEnumColumn(i, 6, entity, TravelAuthorizationStatus.class.getSimpleName(), "status");
             FileField reportL = new FileField("Print", ChiliClientConfig.instance().getFileDownloadUrl() + "travel-authorization/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id"));
             table.setWidget(i, 7, reportL);
         }

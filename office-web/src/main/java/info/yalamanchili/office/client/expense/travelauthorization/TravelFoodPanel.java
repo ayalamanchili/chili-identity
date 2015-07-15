@@ -9,6 +9,8 @@
 package info.yalamanchili.office.client.expense.travelauthorization;
 
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
@@ -26,7 +28,7 @@ import java.math.BigDecimal;
  *
  * @author ayalamanchili
  */
-public class TravelFoodPanel extends ALComposite implements ClickHandler {
+public class TravelFoodPanel extends ALComposite implements ClickHandler, BlurHandler {
 
     protected FlowPanel panel = new FlowPanel();
 
@@ -56,6 +58,10 @@ public class TravelFoodPanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addListeners() {
+        totalCostOfFood.getTextbox().addBlurHandler(this);
+        conferenceFee.getTextbox().addBlurHandler(this);
+        totalCostOfBanquet.getTextbox().addBlurHandler(this);
+        otherExpences.getTextbox().addBlurHandler(this);
     }
 
     @Override
@@ -161,4 +167,14 @@ public class TravelFoodPanel extends ALComposite implements ClickHandler {
     @Override
     public void onClick(ClickEvent event) {
     }
+
+    @Override
+    public void onBlur(BlurEvent event) {
+        onChange();
+    }
+
+    protected void onChange() {
+
+    }
+
 }

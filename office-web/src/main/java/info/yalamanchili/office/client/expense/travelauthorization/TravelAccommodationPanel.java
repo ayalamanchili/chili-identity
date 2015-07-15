@@ -127,5 +127,10 @@ public class TravelAccommodationPanel extends ALComposite implements ClickHandle
         if (numberOfLodgingNights.getInteger() != null && lodgingCostPerNight.getCurrency() != null) {
             totalLodgingCost.setValue(lodgingCostPerNight.getCurrency().multiply(BigDecimal.valueOf(numberOfLodgingNights.getInteger())), readyOnly);
         }
+        onChange();
+    }
+    
+    protected void onChange() {
+
     }
 }

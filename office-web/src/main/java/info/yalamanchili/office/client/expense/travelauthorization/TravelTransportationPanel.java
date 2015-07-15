@@ -17,7 +17,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.fields.BooleanField;
@@ -28,7 +27,6 @@ import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
 import static info.yalamanchili.office.client.expense.travelauthorization.TravelAuthConstants.*;
-import static info.yalamanchili.office.client.expense.travelauthorization.TravelTransportationType.values;
 import java.math.BigDecimal;
 import java.util.logging.Logger;
 
@@ -101,7 +99,6 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
 
     @Override
     protected void addWidgets() {
-
         travelTransportationType = new EnumField(OfficeWelcome.constants,
                 TRAVEL_TRANSPORTATION_TYPE, "TravelAuthorization", readyOnly, false, TravelTransportationType.names(), Alignment.HORIZONTAL);
         totalMiles = new IntegerField(OfficeWelcome.constants,
@@ -311,5 +308,10 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         if (totalMiles.getInteger() != null && costPerMile.getCurrency() != null) {
             totalTransportationCost.setValue(costPerMile.getCurrency().multiply(BigDecimal.valueOf(totalMiles.getInteger())), readyOnly);
         }
+        onChange();
+    }
+
+    protected void onChange() {
+
     }
 }
