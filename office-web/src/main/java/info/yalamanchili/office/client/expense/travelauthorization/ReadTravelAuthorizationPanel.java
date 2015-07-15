@@ -17,6 +17,7 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
 import static info.yalamanchili.office.client.expense.travelauthorization.TravelAuthConstants.*;
+import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import java.util.logging.Logger;
 
@@ -44,7 +45,6 @@ public class ReadTravelAuthorizationPanel extends ReadComposite {
     HTML lodging = new HTML("<h4 style=\"color:#427fed\">  " + "Accommodation</h4>");
     HTML meals = new HTML("<h4 style=\"color:#427fed\"> " + "Food</h4>");
 
-
     public static ReadTravelAuthorizationPanel instance() {
         return instance;
     }
@@ -58,12 +58,18 @@ public class ReadTravelAuthorizationPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity);
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                populateFieldsFromEntity(entity);
+                populateComments();
+
+            }
+        });
+    }
+
+    protected void populateComments() {
+        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.expense.travelauthorization.TravelAuthorization;"));
     }
 
     @Override
