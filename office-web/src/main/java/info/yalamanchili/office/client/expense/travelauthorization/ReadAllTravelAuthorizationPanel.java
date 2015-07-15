@@ -78,7 +78,7 @@ public class ReadAllTravelAuthorizationPanel extends CRUDReadAllComposite {
 
     @Override
     public void preFetchTable(int start) {
-        HttpService.HttpServiceAsync.instance().doGet(getadvanceURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
+        HttpService.HttpServiceAsync.instance().doGet(getTravelAuthURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
                 false, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String result) {
@@ -130,7 +130,7 @@ public class ReadAllTravelAuthorizationPanel extends CRUDReadAllComposite {
         return OfficeWelcome.instance().constants.root_url() + "travel-authorization/delete/" + entityId;
     }
 
-    private String getadvanceURL(Integer start, String limit) {
+    private String getTravelAuthURL(Integer start, String limit) {
         if (url != null) {
             return url;
         }

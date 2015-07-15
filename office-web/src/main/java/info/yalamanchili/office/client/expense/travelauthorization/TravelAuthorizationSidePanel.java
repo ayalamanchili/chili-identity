@@ -14,13 +14,11 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
-import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.utils.Utils;
 import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.SuggestBox;
-import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import java.util.Map;
@@ -74,15 +72,15 @@ public class TravelAuthorizationSidePanel extends ALComposite implements ClickHa
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createtravelExpenseLink)) {
             TabPanel.instance().expensePanel.entityPanel.clear();
-            TabPanel.instance().expensePanel.entityPanel.add(new CreateTravelAuthorizationPanel(CreateComposite.CreateCompositeType.CREATE));
+            TabPanel.instance().expensePanel.entityPanel.add(new CreateTravelAuthorizationPanel());
         }
         if (event.getSource().equals(viewB)) {
             TabPanel.instance().expensePanel.entityPanel.clear();
-            TabPanel.instance().expensePanel.entityPanel.add(new ReadAllTravelAuthorizationPanel(gettravelexpenseURL(0, "10")));
+            TabPanel.instance().expensePanel.entityPanel.add(new ReadAllTravelAuthorizationPanel(getTravelAuthURL(0, "10")));
         }
     }
 
-    private String gettravelexpenseURL(Integer start, String limit) {
+    private String getTravelAuthURL(Integer start, String limit) {
         return OfficeWelcome.constants.root_url() + "travel-authorization/" + employeeSB.getKey() + "/" + start.toString() + "/"
                 + limit.toString();
     }

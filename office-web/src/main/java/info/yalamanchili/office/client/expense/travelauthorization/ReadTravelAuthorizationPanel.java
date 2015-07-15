@@ -52,23 +52,15 @@ public class ReadTravelAuthorizationPanel extends ReadComposite {
     public ReadTravelAuthorizationPanel(JSONObject entity) {
         instance = this;
         initReadComposite(entity, "TravelAuthorization", OfficeWelcome.constants);
+        populateComments();
     }
 
     @Override
     public void loadEntity(String entityId) {
-        HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
-                new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
-                populateComments();
-
-            }
-        });
+      
     }
 
-    protected void populateComments() {
+    protected final void populateComments() {
         entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.expense.travelauthorization.TravelAuthorization"));
     }
 
