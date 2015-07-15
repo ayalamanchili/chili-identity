@@ -53,9 +53,6 @@ public class TravelAuthorizationProcess extends RuleBasedTaskDelegateListner {
     }
 
     protected void managerApprovalTaskComplete(TravelAuthorization entity, DelegateTask task) {
-        //Notes
-        String notes = (String) task.getExecution().getVariable("notes");
-        CommentDao.instance().addComment(notes, entity);
         //Status
         String status = (String) task.getExecution().getVariable("status");
         if (status.equalsIgnoreCase("approved")) {
@@ -72,9 +69,6 @@ public class TravelAuthorizationProcess extends RuleBasedTaskDelegateListner {
     }
 
     protected void ceoApprovalTaskComplete(TravelAuthorization entity, DelegateTask task) {
-        //Notes
-        String notes = (String) task.getExecution().getVariable("notes");
-        CommentDao.instance().addComment(notes, entity);
         //Status
         String status = (String) task.getExecution().getVariable("status");
         if (status.equalsIgnoreCase("approved")) {

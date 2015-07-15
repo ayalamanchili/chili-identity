@@ -20,6 +20,7 @@ import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.dao.expense.travelauthorization.TravelAuthorizationDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import static info.yalamanchili.office.entity.expense.travelauthorization.ExpensePaymentType.EMPLOYEE_EXPENSE;
 import info.yalamanchili.office.entity.expense.travelauthorization.TravelAccommodation;
 import info.yalamanchili.office.entity.expense.travelauthorization.TravelAuthorization;
 import info.yalamanchili.office.entity.expense.travelauthorization.TravelAuthorizationStatus;
@@ -146,9 +147,21 @@ public class TravelAuthorizationService {
                     break;
             }
             //Travel Transportation ExpensePaymentType info
+//            switch (travelTransportation.getExpensePaymentType()) {
+//                case EMPLOYEE_EXPENSE:
+//                    data.getData().put("privateVehiclePaymentType-EE", "true");
+//                    break;
+//
+//            }
             switch (travelTransportation.getExpensePaymentType()) {
                 case EMPLOYEE_EXPENSE:
-                    data.getData().put("privateVehiclePaymentType-EE", "true");
+                    data.getData().put("travelTransportationPaymentType-EE", "true");
+                    break;
+                case PURCHASING_CARD:
+                    data.getData().put("travelTransportationPaymentType-PC", "true");
+                    break;
+                case PO:
+                    data.getData().put("travelTransportationPaymentType-PO", "true");
                     break;
 
             }
