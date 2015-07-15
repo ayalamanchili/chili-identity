@@ -123,7 +123,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         otherVehicleTypeJustification = new TextAreaField(OfficeWelcome.constants,
                 OTHER_VEHICLE_TYPE_JUSTIFICATION, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         totalTransportationCost.getElement().getStyle().setProperty("float", "left");
-        estimatedCostOfOtherTransportation.getElement().getStyle().setProperty("float", "left");    
+        estimatedCostOfOtherTransportation.getElement().getStyle().setProperty("float", "left");
         panel.add(travelTransportationType);
         panel.add(totalMiles);
         panel.add(costPerMile);
@@ -188,6 +188,9 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         if (totalTransportationCost.getCurrency() != null) {
             entity.put(TOTAL_TRANSPORTATION_COST, new JSONString(totalTransportationCost.getCurrency().toString()));
         }
+        if (showAllTransportationOptions.getValue()) {
+            entity.put(TRAVEL_RENTAL_VEHICLE_JUSTIFICATION, getRentalVehicalObj());
+        }
         if (travelTransportationType.getValue().equals(TravelTransportationType.RENTAL_VEHICLE.name())) {
             entity.put(TRAVEL_RENTAL_VEHICLE_JUSTIFICATION, getRentalVehicalObj());
         }
@@ -251,7 +254,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
                 renderMiles(false);
                 renderRentalJustification(false);
             }
-        } else if (event.getSource().equals(travelRentalVehicleType.listBox) && !showAllTransportationOptions.getValue()) {
+        } else if (event.getSource().equals(travelRentalVehicleType.listBox) || showAllTransportationOptions.getValue()) {
             if (travelRentalVehicleType.getValue().equals(TravelRentalVehicleType.OTHER.name())) {
                 otherVehicleTypeJustification.setVisible(true);
             } else {
@@ -272,7 +275,6 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         expenseRentalPaymentType.setVisible(render);
         travelRentalVehicleType.setVisible(render);
         otherVehicleTypeJustification.setVisible(false);
-
     }
 
     @Override
@@ -280,7 +282,18 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         if (event.getSource().equals(showAllTransportationOptions.getBox())) {
             renderAllOptions(showAllTransportationOptions.getValue());
         }
-
+        if (travelTransportationType.getValue().equals(TravelTransportationType.RENTAL_VEHICLE.name())) {
+            renderMiles(true);
+            renderRentalJustification(true);
+        }
+        if (travelTransportationType.getValue().equals(TravelTransportationType.COMPANY_VEHICLE.name())) {
+            renderMiles(true);
+            renderRentalJustification(false);
+        }
+        if (travelTransportationType.getValue().equals(TravelTransportationType.PRIVATE_VEHICLE.name())) {
+            renderMiles(true);
+            renderRentalJustification(false);
+        }
     }
 
     protected void renderAllOptions(boolean render) {
@@ -290,7 +303,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         rentalVehicleJustification.setVisible(render);
         expenseRentalPaymentType.setVisible(render);
         travelRentalVehicleType.setVisible(render);
-        otherVehicleTypeJustification.setVisible(render);
+        otherVehicleTypeJustification.setVisible(false);
     }
 
     @Override
