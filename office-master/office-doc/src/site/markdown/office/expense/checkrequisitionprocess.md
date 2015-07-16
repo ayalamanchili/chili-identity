@@ -21,7 +21,7 @@ Check Request Process for pay roll department(Pay Roll and Benefits)
 Check Request Process for Accounts department(Accounts Payable)
 ----
 ![alt text](../../images/expense/accounts-dept-check-request-task.png "Check Requisition")
-Print Status Report
+Print Check Request
 ===========
  - Navigate to Expense --> Check Requisition --> Print
 
