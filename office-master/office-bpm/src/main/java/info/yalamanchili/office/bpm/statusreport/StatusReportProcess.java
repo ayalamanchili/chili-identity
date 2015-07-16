@@ -26,28 +26,30 @@ public class StatusReportProcess extends RuleBasedTaskDelegateListner {
 
     @Override
     public void processTask(DelegateTask dt) {
-        StatusReport request = getRequestFromTask(dt);
-        if (request == null) {
-            return;
-        }
-        Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
-        String notes = (String) dt.getExecution().getVariable("notes");
-        String status = (String) dt.getExecution().getVariable("status");
-        if (dt.getTaskDefinitionKey().equals("statusReportHRApprovalTask")) {
-            if (status.equals("approved")) {
-                request.setStage(StatusReportStage.Pending_EEM_Approval);
-            } else {
-                request.setStage(StatusReportStage.Pending_Employee_Correction);
+        if ("complete".equals(dt.getEventName())) {
+            StatusReport request = getRequestFromTask(dt);
+            if (request == null) {
+                return;
             }
+            Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
+            String notes = (String) dt.getExecution().getVariable("notes");
+            String status = (String) dt.getExecution().getVariable("status");
+            if (dt.getTaskDefinitionKey().equals("statusReportHRApprovalTask")) {
+                if (status.equals("approved")) {
+                    request.setStage(StatusReportStage.Pending_EEM_Approval);
+                } else {
+                    request.setStage(StatusReportStage.Pending_Employee_Correction);
+                }
+            }
+            if (dt.getTaskDefinitionKey().equals("statusReportEEMApprovalTask")) {
+                request.setStage(StatusReportStage.Complete);
+                request.setApprovedBy(currentUser.getEmployeeId());
+                request.setApprovedDate(new Date());
+            }
+            StatusReportDao.instance().save(request);
+            CommentDao.instance().addComment(notes, request);
+            new GenericTaskCompleteNotification().notify(dt, true);
         }
-        if (dt.getTaskDefinitionKey().equals("statusReportEEMApprovalTask")) {
-            request.setStage(StatusReportStage.Complete);
-            request.setApprovedBy(currentUser.getEmployeeId());
-            request.setApprovedDate(new Date());
-        }
-        StatusReportDao.instance().save(request);
-        CommentDao.instance().addComment(notes, request);
-        new GenericTaskCompleteNotification().notify(dt, true);
     }
 
     protected StatusReport getRequestFromTask(DelegateTask task) {
