@@ -9,16 +9,14 @@
 package info.yalamanchili.office.reports.profile;
 
 import info.chili.reporting.ReportGenerator;
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
-import info.yalamanchili.office.dao.profile.EmailDao;
+import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.profile.PhoneDao;
 import info.yalamanchili.office.dto.profile.EmployeProfileDto;
-import info.yalamanchili.office.entity.VersionStatus;
+import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.entity.profile.ClientInformation;
-import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,12 +32,12 @@ import org.springframework.transaction.annotation.Transactional;
  * @author ayalamanchili
  */
 @Component
-@Scope("request")
+@Scope("prototype")
 public class ProfileReportsService {
-    
+
     @Autowired
     protected Mapper mapper;
-    
+
     @Async
     @Transactional
     public void generateEmployeBasicInfoReport(String email) {
@@ -55,7 +53,7 @@ public class ProfileReportsService {
         }
         MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(res, "employee-basic-info-report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
     }
-    
+
     @Async
     @Transactional
     public void generateProfileReport(String email) {
@@ -89,13 +87,13 @@ public class ProfileReportsService {
         }
         MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(res, "Profile-Information-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
     }
-    
+
     @Async
     @Transactional
     public void generateEmployeClientInfoReport(String email) {
-        List<EmployeeClientInfoReportDto> res = new ArrayList<EmployeeClientInfoReportDto>();
+        List<EmployeeClientInfoReportDto> res = new ArrayList<>();
         //TODO using paging
-        for (Employee emp : EmployeeDao.instance().getAllEmployeesByType("Employee")) {
+        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Employee")) {
             for (ClientInformation ci : emp.getClientInformations()) {
                 EmployeeClientInfoReportDto dto = new EmployeeClientInfoReportDto();
                 dto.setEmployeeName(emp.getFirstName() + " " + emp.getLastName());
@@ -125,5 +123,58 @@ public class ProfileReportsService {
             }
         }
         MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(res, "employee-client-info-report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
+    }
+
+    /**
+     * this will generate a list of employees whose profile is not complete
+     *
+     * @param email
+     */
+    @Async
+    @Transactional
+    public void sendMissingProfileInfoEmail() {
+        AddressDao addressDao = AddressDao.instance();
+        EmployeeDao.instance().getEmployeesByType("Employee", "Corporate Employee").stream().forEach((emp) -> {
+            StringBuilder emailBody = new StringBuilder();
+            EmployeProfileDto dto = new EmployeProfileDto();
+            int profileCompleteCounter = 10;
+            dto.setFirstName(emp.getFirstName());
+            dto.setLastName(emp.getLastName());
+            boolean isCorporateEmployee = emp.getEmployeeType().getName().equals("Corporate Employee");
+            if (addressDao.getAddressByType(emp, "Home").size() <= 0) {
+                emailBody.append("<li>Primary Mailing/Home address is missing </li>").append("</br>");
+                profileCompleteCounter--;
+            }
+            if (!isCorporateEmployee && addressDao.getAddressByType(emp, "Work").size() <= 0) {
+                emailBody.append("<li>Work address is missing</li>").append("</br>");
+                profileCompleteCounter--;
+            }
+            if (emp.getPhones().size() <= 0) {
+                emailBody.append("<li>No contact phone numbers available</li>").append("</br>");
+                profileCompleteCounter--;
+            }
+            if (emp.getEmergencyContacts().size() <= 0) {
+                emailBody.append("<li>No emergency contacts information available</li>").append("</br>");
+                profileCompleteCounter--;
+            }
+            if (profileCompleteCounter < 10) {
+                Email email = new Email();
+                email.addTo(emp.getPrimaryEmail().getEmail());
+                email.setHtml(true);
+                email.setRichText(true);
+                email.setSubject("Please review and complete your profile information");
+                StringBuilder emailBodyTitle = new StringBuilder();
+                emailBodyTitle.insert(0, "Your profile information is not complete. </br> <h4>Its very criticle to have the up-to date information since all departments rely on this information.</h4> </br> Please take a couple of minutes to review and update your information. </br>");
+                emailBodyTitle.append("<a href=\"https://apps.sstech.us/site/office/forgot-password.html\">How can i login:</a>").append("</br>");
+                emailBodyTitle.append("<a href=\"https://apps.sstech.us/site/office/profile/profile.html\">How can i update my profile:</a>").append("</br>");
+                emailBodyTitle.append("<h5>Missing information:</h5>").append("</br>");
+                email.setBody(emailBodyTitle.toString() + emailBody.toString());
+                MessagingService.instance().sendEmail(email);
+            }
+        });
+    }
+
+    public static ProfileReportsService instance() {
+        return SpringContext.getBean(ProfileReportsService.class);
     }
 }
