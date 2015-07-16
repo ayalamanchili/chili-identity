@@ -113,7 +113,8 @@
                     <item name="Account Reset" href="/office/accountresettask.html"/>
                     <item name="Forgot Password" href="/office/forgot-password.html"/>
                 </item>
-                <item name="Resource Bundle" href="/office/chilliadmin/resourcebundle.html"collapse="true"/>
+            </item>
+            <item name="Resource Bundle" href="/office/chilliadmin/resourcebundle.html"collapse="true"/>
         </menu>
         <footer>COPYRIGHT © 2012-2015 sstech.us - All Rights Reserved</footer>
     </body>
