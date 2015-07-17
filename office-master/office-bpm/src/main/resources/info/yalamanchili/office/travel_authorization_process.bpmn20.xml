@@ -23,16 +23,17 @@
                 Departure Date              : #{entity.departureDate}
                 Return Date                 : #{entity.returnDate} 
                 Travel Destination          : #{entity.travelDestination}
-                TotalTransportationCost : #{entity.getTravelTransportation().totalTransportationCost}
-                Total Lodging Cost          : #{entity.getTravelAccommodation().totalLodgingCost}
-                Total Cost Of Food          : #{entity.getTravelFood().totalCostOfFood}
-                Conference Fee              : #{entity.getTravelFood().conferenceFee}
-                Total Cost Of Banquet       : #{entity.getTravelFood().totalCostOfBanquet}
-                Other Expenses              : #{entity.getTravelFood().otherExpences}
+                TotalTransportationCost  : $#{entity.getTravelTransportation().totalTransportationCost}
+                Total Lodging Cost          : $#{entity.getTravelAccommodation().totalLodgingCost}
+                Total Cost Of Food          : $#{entity.getTravelFood().conferenceFee}
+                Total Cost Of Banquet       : $#{entity.getTravelFood().totalCostOfBanquet}
+                Other Expenses              : $#{entity.getTravelFood().otherExpences}
                 Reason                      : #{entity.reasonForTravel}
                 Status                      : #{entity.status}
                 
-                Estimated Trip Cost         : #{entity.totalEstimatedTripExpences} 
+                Estimated Trip Cost         : $#{entity.totalEstimatedTripExpences} 
+                Please follow the instructions below to review and complete the approval.
+                https://apps.sstech.us/site/office/expense/travelauthorization.html
 
 
             </documentation>
@@ -84,22 +85,22 @@
                   activiti:candidateGroups="ROLE_ADMIN">
             <documentation>
                 Travel Authorization Final Approval Task
-                Employee Name               : #{currentEmployee.firstName} #{currentEmployee.lastName}
+               Employee Name               : #{currentEmployee.firstName} #{currentEmployee.lastName}
                 Departure Date              : #{entity.departureDate}
                 Return Date                 : #{entity.returnDate} 
                 Travel Destination          : #{entity.travelDestination}
-                TotalTransportationCost : #{entity.getTravelTransportation().totalTransportationCost}
-                Total Lodging Cost          : #{entity.getTravelAccommodation().totalLodgingCost}
-                Total Cost Of Food          : #{entity.getTravelFood().totalCostOfFood}
-                Conference Fee              : #{entity.getTravelFood().conferenceFee}
-                Total Cost Of Banquet       : #{entity.getTravelFood().totalCostOfBanquet}
-                Other Expenses              : #{entity.getTravelFood().otherExpences}
+                TotalTransportationCost  : $#{entity.getTravelTransportation().totalTransportationCost}
+                Total Lodging Cost          : $#{entity.getTravelAccommodation().totalLodgingCost}
+                Total Cost Of Food          : $#{entity.getTravelFood().conferenceFee}
+                Total Cost Of Banquet       : $#{entity.getTravelFood().totalCostOfBanquet}
+                Other Expenses              : $#{entity.getTravelFood().otherExpences}
                 Reason                      : #{entity.reasonForTravel}
                 Status                      : #{entity.status}
                 
-                Estimated Trip Cost         : #{entity.totalEstimatedTripExpences}  
-
-               
+                Estimated Trip Cost         : $#{entity.totalEstimatedTripExpences} 
+                Please follow the instructions below to review and complete the approval.
+                https://apps.sstech.us/site/office/expense/travelauthorization.html 
+              
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.travelauthorization.TravelAuthorizationProcess" />
