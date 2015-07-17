@@ -56,11 +56,11 @@ public class ReadAllTravelAuthorizationPanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        postDeleteSuccess();
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                postDeleteSuccess();
+            }
+        });
     }
 
     @Override
@@ -80,12 +80,12 @@ public class ReadAllTravelAuthorizationPanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getTravelAuthURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
                 false, new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        logger.info(result);
-                        postFetchTable(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                logger.info(result);
+                postFetchTable(result);
+            }
+        });
     }
 
     @Override
@@ -138,5 +138,24 @@ public class ReadAllTravelAuthorizationPanel extends CRUDReadAllComposite {
         }
         return OfficeWelcome.constants.root_url() + "travel-authorization/" + start.toString() + "/"
                 + limit.toString();
+    }
+
+    @Override
+    protected boolean showDocumentationLink() {
+        return true;
+    }
+
+    @Override
+    protected String getDocumentationLink() {
+        if (Auth.isCorporateEmployee()) {
+            return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "expense/travelauthorizationprocess.html";
+        } else {
+            return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "expense/travelauthorization.html";
+        }
+    }
+
+    @Override
+    protected boolean autoShowDocumentation() {
+        return true;
     }
 }
