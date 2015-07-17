@@ -264,16 +264,18 @@ public class TravelAuthorizationService {
         TravelAccommodation travelAccommodation = entity.getTravelAccommodation();
         if (travelAccommodation != null) {
             //ExpensePaymentType info
-            switch (travelAccommodation.getExpenseAccommodationPaymentType()) {
-                case EMPLOYEE_EXPENSE:
-                    data.getData().put("accommodationPaymentType-EE", "true");
-                    break;
-                case PO:
-                    data.getData().put("accommodationPaymentType-PO", "true");
-                    break;
-                case PURCHASING_CARD:
-                    data.getData().put("accommodationPaymentType-PC", "true");
-                    break;
+            if (travelAccommodation.getExpenseAccommodationPaymentType() != null) {
+                switch (travelAccommodation.getExpenseAccommodationPaymentType()) {
+                    case EMPLOYEE_EXPENSE:
+                        data.getData().put("accommodationPaymentType-EE", "true");
+                        break;
+                    case PO:
+                        data.getData().put("accommodationPaymentType-PO", "true");
+                        break;
+                    case PURCHASING_CARD:
+                        data.getData().put("accommodationPaymentType-PC", "true");
+                        break;
+                }
             }
             if (travelAccommodation.getLodgingCostPerNight() != null) {
                 data.getData().put("lodgingCostPerNight", travelAccommodation.getLodgingCostPerNight().setScale(2, BigDecimal.ROUND_UP).toString());
