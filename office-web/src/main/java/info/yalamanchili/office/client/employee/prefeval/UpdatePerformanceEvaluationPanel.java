@@ -146,6 +146,7 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
             assignFieldValueFromEntity("approvedDate", entity, DataType.DATE_FIELD);
             assignFieldValueFromEntity("hrApprovalBy", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("hrApprovalDate", entity, DataType.DATE_FIELD);
+            assignFieldValueFromEntity("acceptDate", entity, DataType.DATE_FIELD);
         }
     }
 
