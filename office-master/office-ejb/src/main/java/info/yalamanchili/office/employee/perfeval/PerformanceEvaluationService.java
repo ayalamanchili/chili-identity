@@ -122,6 +122,12 @@ public class PerformanceEvaluationService {
             if (dto.getPerformanceEvaluation().getEvaluationDate() != null) {
                 entity.setEvaluationDate(dto.getPerformanceEvaluation().getEvaluationDate());
             }
+            if (!Strings.isNullOrEmpty(dto.getPerformanceEvaluation().getHrApprovalBy())) {
+                entity.setHrApprovalBy(dto.getPerformanceEvaluation().getHrApprovalBy());
+            }
+            if (!Strings.isNullOrEmpty(dto.getPerformanceEvaluation().getApprovedBy())) {
+                entity.setApprovedBy(dto.getPerformanceEvaluation().getApprovedBy());
+            }
         }
         createQuestionComments(entity, dto.getComments());
         if (startProcess) {
