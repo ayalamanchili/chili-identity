@@ -23,7 +23,7 @@
                 Departure Date              : #{entity.departureDate}
                 Return Date                 : #{entity.returnDate} 
                 Travel Destination          : #{entity.travelDestination}
-                TotalTransportationCost  : $#{entity.getTravelTransportation().totalTransportationCost}
+                TotalTransportationCost     : $#{entity.getTravelTransportation().totalTransportationCost}
                 Total Lodging Cost          : $#{entity.getTravelAccommodation().totalLodgingCost}
                 Total Cost Of Food          : $#{entity.getTravelFood().conferenceFee}
                 Total Cost Of Banquet       : $#{entity.getTravelFood().totalCostOfBanquet}
@@ -33,7 +33,7 @@
                 
                 Estimated Trip Cost         : $#{entity.totalEstimatedTripExpences} 
                 Please follow the instructions below to review and complete the approval.
-                https://apps.sstech.us/site/office/expense/travelauthorization.html
+                https://apps.sstech.us/site/office/expense/travelauthorizationprocess.html
 
 
             </documentation>
@@ -89,7 +89,7 @@
                 Departure Date              : #{entity.departureDate}
                 Return Date                 : #{entity.returnDate} 
                 Travel Destination          : #{entity.travelDestination}
-                TotalTransportationCost  : $#{entity.getTravelTransportation().totalTransportationCost}
+                TotalTransportationCost     : $#{entity.getTravelTransportation().totalTransportationCost}
                 Total Lodging Cost          : $#{entity.getTravelAccommodation().totalLodgingCost}
                 Total Cost Of Food          : $#{entity.getTravelFood().conferenceFee}
                 Total Cost Of Banquet       : $#{entity.getTravelFood().totalCostOfBanquet}
@@ -99,7 +99,7 @@
                 
                 Estimated Trip Cost         : $#{entity.totalEstimatedTripExpences} 
                 Please follow the instructions below to review and complete the approval.
-                https://apps.sstech.us/site/office/expense/travelauthorization.html 
+                https://apps.sstech.us/site/office/expense/travelauthorizationprocess.html
               
             </documentation>
             <extensionElements>
