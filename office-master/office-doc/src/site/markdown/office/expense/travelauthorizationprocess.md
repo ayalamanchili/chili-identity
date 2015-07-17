@@ -1,8 +1,10 @@
 Travel Authorization process
 ==========
 ![alt text](../../images/expense/travel-authorization-process.png "Travel Authorization")
+
 Travel Authorization Process for Reports_To Manager
 ----
+ - Navigate to Expense --> Travel Authorization--> view
 ![alt text](../../images/expense/travel-reportsto-manager.png "Travel Authorization")
 Email For Reports_To Manager
 ----
@@ -11,9 +13,10 @@ Email For Reports_To Manager
 Travel Authorization Process for Reports_To Manager Task
 ----
 ![alt text](../../images/expense/pending-manager-approval-task.png "Travel Authorization")
-
 Travel Authorization Process for CEO Process
 ----
+ - Navigate to Expense --> Travel Authorization--> view
+
 ![alt text](../../images/expense/ceo-approval-process.png "Travel Authorization")
 
 Email For CEO
