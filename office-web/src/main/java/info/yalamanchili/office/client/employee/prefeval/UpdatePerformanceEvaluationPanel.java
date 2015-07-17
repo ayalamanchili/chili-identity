@@ -69,6 +69,7 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
             assignEntityValueFromField("approvedDate", entity);
             assignEntityValueFromField("hrApprovalBy", entity);
             assignEntityValueFromField("hrApprovalDate", entity);
+            assignEntityValueFromField("acceptDate", entity);
         }
         perfEval.put("performanceEvaluation", entity);
         JSONArray questionComments = new JSONArray();
@@ -193,6 +194,7 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
             addField("approvedDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
             addField("hrApprovalBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("hrApprovalDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+            addField("acceptDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         }
         addField("keyAccomplishments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("areasNeedImprovement", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
