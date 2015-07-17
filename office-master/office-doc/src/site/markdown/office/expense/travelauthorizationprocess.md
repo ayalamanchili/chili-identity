@@ -5,6 +5,7 @@ Travel Authorization Work Flow process
 How To View Travel Authorization Process for Reports_To Manager
 ----
  - Navigate to Expense --> Travel Authorization--> Search --> view
+ - once view and validate the all the details go back to home page in review and approve the task
 ![alt text](../../images/expense/travel-reportsto-manager.png "Travel Authorization")
 ![alt text](../../images/expense/view-travel-authorization.png "Travel Authorization")
 
@@ -20,6 +21,7 @@ How To Approve Travel Authorization Process for Reports_To Manager Task
 Travel Authorization Process for CEO Process
 ----
 - Navigate to Expense --> Travel Authorization--> Search --> view
+- Same as above process for the CEO also.
 
 ![alt text](../../images/expense/ceo-approval-process.png "Travel Authorization")
 
