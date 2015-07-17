@@ -133,6 +133,7 @@ public class ProfileReportsService {
     @Async
     @Transactional
     public void sendMissingProfileInfoEmail() {
+        List<EmployeProfileDto> report = new ArrayList();
         AddressDao addressDao = AddressDao.instance();
         EmployeeDao.instance().getEmployeesByType("Employee", "Corporate Employee").stream().forEach((emp) -> {
             StringBuilder emailBody = new StringBuilder();
@@ -164,14 +165,16 @@ public class ProfileReportsService {
                 email.setRichText(true);
                 email.setSubject("Please review and complete your profile information");
                 StringBuilder emailBodyTitle = new StringBuilder();
-                emailBodyTitle.insert(0, "Your profile information is not complete. </br> <h4>Its very criticle to have the up-to date information since all departments rely on this information.</h4> </br> Please take a couple of minutes to review and update your information. </br>");
+                emailBodyTitle.insert(0, "Your profile information is not complete. </br> <h4>Its very criticle to have the up-to date information since all departments rely on this information for Correspondance, Immigration, etc...</h4> </br> Please take a couple of minutes to review and update your information. </br>");
                 emailBodyTitle.append("<a href=\"https://apps.sstech.us/site/office/forgot-password.html\">How can i login:</a>").append("</br>");
                 emailBodyTitle.append("<a href=\"https://apps.sstech.us/site/office/profile/profile.html\">How can i update my profile:</a>").append("</br>");
                 emailBodyTitle.append("<h5>Missing information:</h5>").append("</br>");
                 email.setBody(emailBodyTitle.toString() + emailBody.toString());
                 MessagingService.instance().sendEmail(email);
+                report.add(dto);
             }
         });
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(report, "Profile-Information-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), OfficeServiceConfiguration.instance().getAdminEmail());
     }
 
     public static ProfileReportsService instance() {
