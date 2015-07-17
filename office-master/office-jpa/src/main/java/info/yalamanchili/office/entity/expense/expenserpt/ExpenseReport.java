@@ -9,21 +9,19 @@ package info.yalamanchili.office.entity.expense.expenserpt;
 
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.profile.Employee;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
@@ -39,206 +37,330 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlType
 public class ExpenseReport extends AbstractEntity {
 
-    protected static long serialVersionUID = 1L;
+    private static long serialVersionUID = 1L;
     /**
      *
      */
     @NotEmpty(message = "{expenseitem.name.not.empty.msg}")
-    protected String name;
+    private String name;
     /**
      *
      */
-    @Lob
-    protected String description;
+    private String location;
+    /**
+     *
+     */
+    private String department;
     /**
      *
      */
     @NotNull(message = "{expenseitem.startDate.not.empty.msg}")
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(TemporalType.DATE)
     @org.hibernate.annotations.Index(name = "EXP_RPT_STRT_DT")
-    protected Date startDate;
+    private Date startDate;
     /**
      *
      */
     @NotNull(message = "{expenseitem.endDate.not.empty.msg}")
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(TemporalType.DATE)
     @org.hibernate.annotations.Index(name = "EXP_RPT_END_DT")
-    protected Date endDate;
+    private Date endDate;
     /**
      *
      */
-    protected String submittedBy;
+    private String projectName;
     /**
      *
      */
-    @Temporal(javax.persistence.TemporalType.DATE)
-    protected Date submittedDate;
+    private String projectNumber;
     /**
      *
      */
-    protected String department;
+    @Temporal(TemporalType.DATE)
+    private Date submittedDate;
     /**
      *
      */
-    protected String approvedBy;
-    /**
-     *
-     */
-    @Temporal(javax.persistence.TemporalType.DATE)
-    protected Date approvedDate;
+    private String approvedBy;
     /**
      *
      */
     @Temporal(javax.persistence.TemporalType.DATE)
-    protected Date paidDate;
+    private Date approvedDate;
     /**
      *
      */
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_EMP_EXP_RPTS")
-    protected Employee employee;
+    private Employee employee;
     /**
      *
      */
-    @OneToMany(mappedBy = "expenseReport", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     @Valid
-    protected List<ExpenseItem> expenseItems;
+    private List<ExpenseItem> expenseItems;
     /**
      *
      */
-    protected String bpmProcessId;
+    private String bpmProcessId;
+    /**
+     *
+     */
     @Enumerated(EnumType.STRING)
     private ExpenseReportStatus status;
+    /**
+     *
+     */
+    @Enumerated(EnumType.STRING)
+    private ExpenseFormPurpose expenseFormPurpose;
+    /**
+     *
+     */
+    @Enumerated(EnumType.STRING)
+    private ExpenseReimbursePaymentMode expenseReimbursePaymentMode;
 
+    /**
+     *
+     */
     public ExpenseReport() {
     }
 
+    /**
+     * GETTERS and SETTERS
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     *
+     */
     public void setName(String name) {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    /**
+     *
+     */
+    public String getLocation() {
+        return location;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    /**
+     *
+     */
+    public void setLocation(String location) {
+        this.location = location;
     }
 
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    public String getSubmittedBy() {
-        return submittedBy;
-    }
-
-    public void setSubmittedBy(String submittedBy) {
-        this.submittedBy = submittedBy;
-    }
-
-    public Date getSubmittedDate() {
-        return submittedDate;
-    }
-
-    public void setSubmittedDate(Date submittedDate) {
-        this.submittedDate = submittedDate;
-    }
-
+    /**
+     *
+     */
     public String getDepartment() {
         return department;
     }
 
+    /**
+     *
+     */
     public void setDepartment(String department) {
         this.department = department;
     }
 
+    /**
+     *
+     */
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    /**
+     *
+     */
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    /**
+     *
+     */
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    /**
+     *
+     */
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    /**
+     *
+     */
+    public String getProjectName() {
+        return projectName;
+    }
+
+    /**
+     *
+     */
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    /**
+     *
+     */
+    public String getProjectNumber() {
+        return projectNumber;
+    }
+
+    /**
+     *
+     */
+    public void setProjectNumber(String projectNumber) {
+        this.projectNumber = projectNumber;
+    }
+
+    /**
+     *
+     */
+    public Date getSubmittedDate() {
+        return submittedDate;
+    }
+
+    /**
+     *
+     */
+    public void setSubmittedDate(Date submittedDate) {
+        this.submittedDate = submittedDate;
+    }
+
+    /**
+     *
+     */
     public String getApprovedBy() {
         return approvedBy;
     }
 
+    /**
+     *
+     */
     public void setApprovedBy(String approvedBy) {
         this.approvedBy = approvedBy;
     }
 
+    /**
+     *
+     */
     public Date getApprovedDate() {
         return approvedDate;
     }
 
+    /**
+     *
+     */
     public void setApprovedDate(Date approvedDate) {
         this.approvedDate = approvedDate;
     }
 
-    public Date getPaidDate() {
-        return paidDate;
-    }
-
-    public void setPaidDate(Date paidDate) {
-        this.paidDate = paidDate;
-    }
-
-    @XmlTransient
+    /**
+     *
+     */
     public Employee getEmployee() {
         return employee;
     }
 
+    /**
+     *
+     */
     public void setEmployee(Employee employee) {
         this.employee = employee;
     }
 
-    @XmlTransient
+    /**
+     *
+     */
     public List<ExpenseItem> getExpenseItems() {
-        if (this.expenseItems == null) {
-            this.expenseItems = new ArrayList<ExpenseItem>();
-        }
         return expenseItems;
     }
 
+    /**
+     *
+     */
     public void setExpenseItems(List<ExpenseItem> expenseItems) {
         this.expenseItems = expenseItems;
     }
 
     /**
-     * @return the bpmProcessId
+     *
      */
     public String getBpmProcessId() {
         return bpmProcessId;
     }
 
     /**
-     * @param bpmProcessId the bpmProcessId to set
+     *
      */
     public void setBpmProcessId(String bpmProcessId) {
         this.bpmProcessId = bpmProcessId;
     }
 
     /**
-     * @return the status
+     *
      */
     public ExpenseReportStatus getStatus() {
         return status;
     }
 
     /**
-     * @param status the status to set
+     *
      */
     public void setStatus(ExpenseReportStatus status) {
         this.status = status;
     }
+
+    /**
+     *
+     */
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    /**
+     *
+     */
+    public static void setSerialVersionUID(long aSerialVersionUID) {
+        serialVersionUID = aSerialVersionUID;
+    }
+
+    /**
+     *
+     */
+    public ExpenseFormPurpose getExpenseFormPurpose() {
+        return expenseFormPurpose;
+    }
+
+    /**
+     *
+     */
+    public void setExpenseFormPurpose(ExpenseFormPurpose expenseFormPurpose) {
+        this.expenseFormPurpose = expenseFormPurpose;
+    }
+
+    /**
+     *
+     */
+    public ExpenseReimbursePaymentMode getExpenseReimbursePaymentMode() {
+        return expenseReimbursePaymentMode;
+    }
+
+    /**
+     *
+     */
+    public void setExpenseReimbursePaymentMode(ExpenseReimbursePaymentMode expenseReimbursePaymentMode) {
+        this.expenseReimbursePaymentMode = expenseReimbursePaymentMode;
+    }
+
 }

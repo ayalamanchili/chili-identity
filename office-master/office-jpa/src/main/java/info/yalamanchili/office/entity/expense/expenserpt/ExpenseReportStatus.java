@@ -13,8 +13,8 @@ package info.yalamanchili.office.entity.expense.expenserpt;
  */
 public enum ExpenseReportStatus {
 
-    Pending_Approval,
-    Pending_Dispatch_Approval,
-    Rejected,
-    Completed;
+    PENDING_APPROVAL,
+    PENDING_DISPATCH_APPROVAL,
+    REJECTED,
+    COMPLETED;
 }

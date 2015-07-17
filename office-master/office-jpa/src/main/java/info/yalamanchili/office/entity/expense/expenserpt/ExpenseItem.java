@@ -17,13 +17,15 @@ import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
-import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.search.annotations.Field;
 
 /**
  *
@@ -35,164 +37,145 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlType
 public class ExpenseItem extends AbstractEntity {
 
-    protected static long serialVersionUID = 1L;
-    /**
+    @Transient
+    private static final long serialVersionUID = 1L;
+    /*
      *
      */
-    @ForeignKey(name = "FK_EXP_ITM_EXP_CAT")
-    @ManyToOne
-    @NotNull(message = "{expenseitem.category.not.empty.msg}")
-    protected ExpenseCategory category;
-    /**
-     *
-     */
-    @Lob
-    @NotEmpty(message = "{description.not.empty.msg}")
-    protected String description;
-    /**
-     *
-     */
-    @NotNull(message = "{expenseitem.amount.not.empty.msg}")
-    protected BigDecimal amount;
-    /**
+    @Temporal(TemporalType.DATE)
+    @NotNull(message = "{expenseDate.not.empty.msg}")
+    private Date expenseDate;
+    /*
      *
      */
     @Lob
-    protected String purpose;
-    /**
-     *
-     */
-    @Temporal(javax.persistence.TemporalType.DATE)
-    @NotNull(message = "{itemStartDate.not.empty.msg}")
-    protected Date itemStartDate;
-    /**
-     *
-     */
-    @Temporal(javax.persistence.TemporalType.DATE)
-    @NotNull(message = "{itemEndDate.not.empty.msg}")
-    protected Date itemEndDate;
-    /**
+    private String description;
+    /*
      *
      */
     @Lob
-    protected String remarks;
-    /**
+    private String purpose;
+    /*
+     *
+     */
+    @NotNull(message = "{amount.not.empty.msg}")
+    private BigDecimal amount;
+    /*
+     *
+     */
+    @Lob
+    private String remark;
+    /*
      *
      */
     @ManyToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_EXP_RPT_EXP_ITEMS")
-    protected ExpenseReport expenseReport;
-
-    /**
-     * @return the category
+    @ForeignKey(name = "FK_Expenses_Category")
+    @NotNull(message = "{category.not.empty.msg}")
+    private ExpenseCategory category;
+    /*
+     *
      */
-    public ExpenseCategory getCategory() {
-        return category;
+    @Enumerated(EnumType.STRING)
+    @Field
+    private ExpensePaymentMode expensePaymentMode;
+    /*
+     *   GETTERS and SETTERS
+     */
+
+    public Date getExpenseDate() {
+        return expenseDate;
     }
-
-    /**
-     * @param category the category to set
+    /*
+     *
      */
-    public void setCategory(ExpenseCategory category) {
-        this.category = category;
+
+    public void setExpenseDate(Date expenseDate) {
+        this.expenseDate = expenseDate;
     }
-
-    /**
-     * @return the description
+    /*
+     *
      */
+
     public String getDescription() {
         return description;
     }
-
-    /**
-     * @param description the description to set
+    /*
+     *
      */
+
     public void setDescription(String description) {
         this.description = description;
     }
-
-    /**
-     * @return the amount
+    /*
+     *
      */
-    public BigDecimal getAmount() {
-        return amount;
-    }
 
-    /**
-     * @param amount the amount to set
-     */
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
-
-    /**
-     * @return the purpose
-     */
     public String getPurpose() {
         return purpose;
     }
-
-    /**
-     * @param purpose the purpose to set
+    /*
+     *
      */
+
     public void setPurpose(String purpose) {
         this.purpose = purpose;
     }
-
-    /**
-     * @return the itemStartDate
+    /*
+     *
      */
-    public Date getItemStartDate() {
-        return itemStartDate;
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+    /*
+     *
+     */
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+    /*
+     *
+     */
+
+    public String getRemark() {
+        return remark;
+    }
+    /*
+     *
+     */
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+    /*
+     *
+     */
+
+    @XmlElement
+    public ExpenseCategory getCategory() {
+        return category;
+    }
+    /*
+     *
+     */
+
+    public void setCategory(ExpenseCategory category) {
+        this.category = category;
+    }
+    /*
+     *
+     */
+
+    public ExpensePaymentMode getExpensePaymentMode() {
+        return expensePaymentMode;
+    }
+    /*
+     *
+     */
+
+    public void setExpensePaymentMode(ExpensePaymentMode expensePaymentMode) {
+        this.expensePaymentMode = expensePaymentMode;
     }
 
-    /**
-     * @param itemStartDate the itemStartDate to set
-     */
-    public void setItemStartDate(Date itemStartDate) {
-        this.itemStartDate = itemStartDate;
-    }
-
-    /**
-     * @return the itemEndDate
-     */
-    public Date getItemEndDate() {
-        return itemEndDate;
-    }
-
-    /**
-     * @param itemEndDate the itemEndDate to set
-     */
-    public void setItemEndDate(Date itemEndDate) {
-        this.itemEndDate = itemEndDate;
-    }
-
-    /**
-     * @return the remarks
-     */
-    public String getRemarks() {
-        return remarks;
-    }
-
-    /**
-     * @param remarks the remarks to set
-     */
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
-    }
-
-    /**
-     * @return the expenseReport
-     */
-    @XmlTransient
-    public ExpenseReport getExpenseReport() {
-        return expenseReport;
-    }
-
-    /**
-     * @param expenseReport the expenseReport to set
-     */
-    public void setExpenseReport(ExpenseReport expenseReport) {
-        this.expenseReport = expenseReport;
-    }
 }
