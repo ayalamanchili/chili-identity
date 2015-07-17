@@ -33,3 +33,6 @@ Travel Authorization Process for CEO Process Task
 ----
  - Navigate to Home --> MY Tasks --> view
 ![alt text](../../images/expense/ceo-approval-task.png "Travel Authorization")
+Approved Travel Authorization
+----
+![alt text](../../images/expense/approved-travel-authorization.png "Travel Authorization")
