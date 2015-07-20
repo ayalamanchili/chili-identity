@@ -153,17 +153,19 @@ public class TravelAuthorizationService {
 //                    break;
 //
 //            }
-            switch (travelTransportation.getExpensePaymentType()) {
-                case EMPLOYEE_EXPENSE:
-                    data.getData().put("travelTransportationPaymentType-EE", "true");
-                    break;
-                case PURCHASING_CARD:
-                    data.getData().put("travelTransportationPaymentType-PC", "true");
-                    break;
-                case PO:
-                    data.getData().put("travelTransportationPaymentType-PO", "true");
-                    break;
+            if (travelTransportation.getExpensePaymentType() != null) {
+                switch (travelTransportation.getExpensePaymentType()) {
+                    case EMPLOYEE_EXPENSE:
+                        data.getData().put("travelTransportationPaymentType-EE", "true");
+                        break;
+                    case PURCHASING_CARD:
+                        data.getData().put("travelTransportationPaymentType-PC", "true");
+                        break;
+                    case PO:
+                        data.getData().put("travelTransportationPaymentType-PO", "true");
+                        break;
 
+                }
             }
             if (entity.getTravelTransportation().getTravelTransportationType().equals(TravelTransportationType.AIR)) {
                 if (travelTransportation.getTotalTransportationCost() != null) {
@@ -235,28 +237,32 @@ public class TravelAuthorizationService {
                     data.getData().put("totalTransportationCostRentalVehicle", travelTransportation.getTotalTransportationCost().setScale(2, BigDecimal.ROUND_UP).toString());
                 }
                 //TravelRentalVehicleType info
-                switch (justification.getExpenseRentalPaymentType()) {
-                    case EMPLOYEE_EXPENSE:
-                        data.getData().put("rentalVehiclePaymentType-EE", "true");
-                        break;
-                    case PURCHASING_CARD:
-                        data.getData().put("rentalVehiclePaymentType-PC", "true");
-                        break;
-                    case PO:
-                        data.getData().put("rentalVehiclePaymentType-PO", "true");
-                        break;
+                if (justification.getExpenseRentalPaymentType() != null) {
+                    switch (justification.getExpenseRentalPaymentType()) {
+                        case EMPLOYEE_EXPENSE:
+                            data.getData().put("rentalVehiclePaymentType-EE", "true");
+                            break;
+                        case PURCHASING_CARD:
+                            data.getData().put("rentalVehiclePaymentType-PC", "true");
+                            break;
+                        case PO:
+                            data.getData().put("rentalVehiclePaymentType-PO", "true");
+                            break;
+                    }
                 }
                 //TravelRentalVehicleType info
-                switch (justification.getTravelRentalVehicleType()) {
-                    case MID_SIZE:
-                        data.getData().put("travelRentalVehicleMidSize", "true");
-                        break;
-                    case COMPACT:
-                        data.getData().put("travelRentalVehicleCompact", "true");
-                        break;
-                    case OTHER:
-                        data.getData().put("travelRentalVehicleOther", "true");
-                        break;
+                if (justification.getTravelRentalVehicleType() != null) {
+                    switch (justification.getTravelRentalVehicleType()) {
+                        case MID_SIZE:
+                            data.getData().put("travelRentalVehicleMidSize", "true");
+                            break;
+                        case COMPACT:
+                            data.getData().put("travelRentalVehicleCompact", "true");
+                            break;
+                        case OTHER:
+                            data.getData().put("travelRentalVehicleOther", "true");
+                            break;
+                    }
                 }
             }
         }
