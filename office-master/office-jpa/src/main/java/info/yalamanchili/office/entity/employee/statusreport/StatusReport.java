@@ -69,7 +69,6 @@ public class StatusReport extends AbstractEntity {
      */
     @Lob
     protected String report;
-    protected String jobTitle;
     /**
      * Employee
      */
@@ -214,13 +213,5 @@ public class StatusReport extends AbstractEntity {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             this.preparedBy = auth.getName();
         }
-    }
-
-    public String getJobTitle() {
-        return jobTitle;
-    }
-
-    public void setJobTitle(String jobTitle) {
-        this.jobTitle = jobTitle;
     }
 }

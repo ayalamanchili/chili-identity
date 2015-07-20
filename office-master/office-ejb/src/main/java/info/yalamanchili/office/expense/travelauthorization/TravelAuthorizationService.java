@@ -374,7 +374,7 @@ public class TravelAuthorizationService {
         }
         byte[] pdf = PDFUtils.generatePdf(data);
         return Response.ok(pdf)
-                .header("content-disposition", "filename = travel-authorization.pdf")
+                .header("content-disposition", "filename = Travel-Authorization.pdf")
                 .header("Content-Length", pdf)
                 .build();
     }

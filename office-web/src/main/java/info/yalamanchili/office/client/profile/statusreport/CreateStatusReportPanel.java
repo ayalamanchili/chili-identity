@@ -168,9 +168,7 @@ public class CreateStatusReportPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        StringField jobTitleF = new StringField(OfficeWelcome.constants,
-                "jobTitle", "StatusReport", true, false, Alignment.HORIZONTAL);
-        entityFieldsPanel.add(jobTitleF);
+       
         addField("projectDescription", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("reportStartDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("reportEndDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
@@ -210,10 +208,6 @@ public class CreateStatusReportPanel extends CreateComposite {
         addField("preview", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("submitForApproval", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         alignFields();
-        logger.info(JSONUtils.toString(OfficeWelcome.instance().employee, "jobTitle"));
-        if (!JSONUtils.toString(OfficeWelcome.instance().employee, "jobTitle").isEmpty()) {
-            jobTitleF.setValue(JSONUtils.toString(OfficeWelcome.instance().employee, "jobTitle"));
-        }
     }
 
     @Override
