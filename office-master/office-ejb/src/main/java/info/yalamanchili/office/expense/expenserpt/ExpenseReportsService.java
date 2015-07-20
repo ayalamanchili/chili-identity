@@ -54,7 +54,7 @@ public class ExpenseReportsService {
         ExpenseCategoryDao expenseCategoryDao = ExpenseCategoryDao.instance();
         for (ExpenseItem item : entity.getExpenseItems()) {
             item.setCategory(expenseCategoryDao.findById(item.getCategory().getId()));
-            item.setExpenseReport(entity);
+//            item.setExpenseReport(entity);
         }
         entity = expenseReportsDao.getEntityManager().merge(entity);
         Map<String, Object> vars = new HashMap<String, Object>();
@@ -87,7 +87,7 @@ public class ExpenseReportsService {
         EmployeeDao employeeDao = EmployeeDao.instance();
         PdfDocumentData data = new PdfDocumentData();
         data.setTemplateUrl(OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "/templates/expense-report-template.pdf");
-        data.getData().put("description", entity.getDescription());
+//        data.getData().put("description", entity.getDescription());
         OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
         data.setKeyStoreName(securityConfiguration.getKeyStoreName());
         Employee preparedBy = entity.getEmployee();

@@ -56,16 +56,16 @@ public class CorpEmpExpenseReportProcess implements TaskListener {
         //Status
         String status = (String) dt.getExecution().getVariable("status");
         if (status.equalsIgnoreCase("approved")) {
-            entity.setStatus(ExpenseReportStatus.Pending_Approval);
+            entity.setStatus(ExpenseReportStatus.PENDING_APPROVAL);
         } else {
-            entity.setStatus(ExpenseReportStatus.Rejected);
+            entity.setStatus(ExpenseReportStatus.REJECTED);
         }
-        if (dt.getTaskDefinitionKey().equals("expenseReportPayrollApprovalTask") && ExpenseReportStatus.Pending_Dispatch_Approval.equals(entity.getStatus())) {
-            entity.setStatus(ExpenseReportStatus.Completed);
+        if (dt.getTaskDefinitionKey().equals("expenseReportPayrollApprovalTask") && ExpenseReportStatus.PENDING_DISPATCH_APPROVAL.equals(entity.getStatus())) {
+            entity.setStatus(ExpenseReportStatus.COMPLETED);
         }
         ExpenseReportsDao.instance().save(entity);
-        if (dt.getTaskDefinitionKey().equals("expenseReportFinalApprovalTask") && ExpenseReportStatus.Pending_Approval.equals(entity.getStatus())
-                || dt.getTaskDefinitionKey().equals("expenseReportFinalApprovalTask") && ExpenseReportStatus.Pending_Approval.equals(entity.getStatus())) {
+        if (dt.getTaskDefinitionKey().equals("expenseReportFinalApprovalTask") && ExpenseReportStatus.PENDING_APPROVAL.equals(entity.getStatus())
+                || dt.getTaskDefinitionKey().equals("expenseReportFinalApprovalTask") && ExpenseReportStatus.PENDING_APPROVAL.equals(entity.getStatus())) {
             return;
         }
         new GenericTaskCompleteNotification().notify(dt);

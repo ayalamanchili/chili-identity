@@ -50,14 +50,14 @@ public class AssocEmpExpenseReportProcess implements TaskListener {
         //Status
         String status = (String) dt.getExecution().getVariable("status");
         if (status.equalsIgnoreCase("approved")) {
-            entity.setStatus(ExpenseReportStatus.Pending_Approval);
+            entity.setStatus(ExpenseReportStatus.PENDING_APPROVAL);
         } else {
-            entity.setStatus(ExpenseReportStatus.Rejected);
+            entity.setStatus(ExpenseReportStatus.REJECTED);
         }
-       
+
         ExpenseReportsDao.instance().save(entity);
-        if (dt.getTaskDefinitionKey().equals("expenseReportFinalApprovalTask") && ExpenseReportStatus.Pending_Approval.equals(entity.getStatus())
-                || dt.getTaskDefinitionKey().equals("expenseReportFinalApprovalTask") && ExpenseReportStatus.Pending_Approval.equals(entity.getStatus())) {
+        if (dt.getTaskDefinitionKey().equals("expenseReportFinalApprovalTask") && ExpenseReportStatus.PENDING_APPROVAL.equals(entity.getStatus())
+                || dt.getTaskDefinitionKey().equals("expenseReportFinalApprovalTask") && ExpenseReportStatus.PENDING_APPROVAL.equals(entity.getStatus())) {
             return;
         }
         new GenericTaskCompleteNotification().notify(dt);
