@@ -23,6 +23,7 @@ import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.model.time.TimePeriod;
 import info.yalamanchili.office.security.AccessCheck;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -153,17 +154,40 @@ public class CorporateStatusReportDao extends CRUDDao<CorporateStatusReport> {
 
     /**
      * this is invoked by the scheduler to send email remainders to all employee
-     * in who did not submit status report for the week
+     * in who did not submit status report for the last week
      *
      * @param dto
      * @return
      */
+    public void notSubmittedEmailNotification() {
+        Date date = DateUtils.addDays(new Date(), -7);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        date = calendar.getTime();
+        Date startDate = info.chili.commons.DateUtils.firstDayOfWeek(date);
+        Date endDate = info.chili.commons.DateUtils.lastDayOfWeek(date);
+
+        Set<String> res = new HashSet();
+        TimePeriod timePeriod = TimePeriodDao.instance().find(startDate, endDate, TimePeriod.TimePeriodType.Week);
+        notSubmittedEmailNotification(timePeriod);
+    }
+
     public void notSubmittedEmailNotification(CorporateStatusReportSearchDto dto) {
         Set<String> res = new HashSet();
         if (dto.getStatusReportPeriod() == null) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "timeperiod.not.present", "Please select a time period");
         }
         TimePeriod timePeriod = TimePeriodDao.instance().fineOne(dto.getStatusReportPeriod().getId());
+        notSubmittedEmailNotification(timePeriod);
+    }
+
+    protected void notSubmittedEmailNotification(TimePeriod timePeriod) {
+        Set<String> res = new HashSet();
         NotificationGroup ng = NotificationGroupDao.instance().findByName(CORPORATE_STATUS_REPORT_GROUP);
         if (ng == null) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "status.report.notificationgroup.dontnot.exist", CORPORATE_STATUS_REPORT_GROUP + " notification group does not exist");

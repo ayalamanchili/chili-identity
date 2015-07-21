@@ -10,6 +10,7 @@ package info.yalamanchili.office.task;
 import info.yalamanchili.office.Time.AssociateTimeAccuralService;
 import info.yalamanchili.office.Time.CorporateTimeAccuralService;
 import info.yalamanchili.office.Time.TimeJobService;
+import info.yalamanchili.office.dao.employee.statusreport.CorporateStatusReportDao;
 import info.yalamanchili.office.dao.message.NotificationGroupDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.time.TimePeriodDao;
@@ -37,7 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 public class OfficeSchedulerService {
-
+    
     @PersistenceContext
     public EntityManager em;
 
@@ -64,6 +65,14 @@ public class OfficeSchedulerService {
     @Scheduled(cron = "0 15 10 ? * SUN")
     public void syncWeeklyTimePeriods() {
         TimePeriodDao.instance().syncWeeklyTimePeriods();
+    }
+
+    /**
+     * runs 3 15 PM every Monday
+     */
+    @Scheduled(cron = "0 15 15 ? * MON")
+    public void sendWeeklyStatusReportsRemainder() {
+        CorporateStatusReportDao.instance().notSubmittedEmailNotification();
     }
 
     /**
@@ -107,7 +116,7 @@ public class OfficeSchedulerService {
         ProbationPeriodEvaluationInitiator.instance().initiateNewHireProbationPeriodEvaluations();
     }
     public static final String BIRTHDAY_ANNUAL_NOTIFICATION_GROUP = "Birthday_Annual_Notification_Group";
-
+    
     @Scheduled(cron = "0 30 1 * * ?")
     public void anniversaryNotification() {
         int monthb = Calendar.getInstance().get(Calendar.MONTH);
@@ -123,7 +132,7 @@ public class OfficeSchedulerService {
             Calendar date1 = Calendar.getInstance();
             date1.setTime(empres.getStartDate());
             Calendar date2 = Calendar.getInstance();
-
+            
             int years = yearsBetween(date1, date2);
             //TODO enhance it to collect all emails and send once
 
@@ -146,7 +155,7 @@ public class OfficeSchedulerService {
             }
         }
     }
-
+    
     public static int yearsBetween(Calendar date1, Calendar date2) {
         int years = 0;
         //difference in of years
