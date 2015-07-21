@@ -121,7 +121,7 @@ public class ReadAllBPMTaskDelegateRulePanel extends CRUDReadAllComposite {
 
     @Override
     protected void configureCreateButton() {
-        createButton.setText("BPMTaskDelegateRule");
+        createButton.setText("CreateBPMTaskDelegateRule");
         createButton.setVisible(true);
     }
 }
