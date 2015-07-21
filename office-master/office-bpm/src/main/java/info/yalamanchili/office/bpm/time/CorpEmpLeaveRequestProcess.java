@@ -42,7 +42,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("prototype")
 @Transactional
 public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
-
+    
     @Override
     public void notify(DelegateTask task) {
         if ("create".equals(task.getEventName())) {
@@ -65,7 +65,7 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
         }
         sendLeaveRequestCreatedNotification(task);
     }
-
+    
     protected void saveLeaveRequest(DelegateTask task) {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         CorporateTimeSheet ts = (CorporateTimeSheet) task.getExecution().getVariable("entity");
@@ -77,16 +77,21 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
         task.getExecution().setVariable("entity", ts);
         task.getExecution().setVariable("entityId", ts.getId());
     }
-
+    
+    protected final String SUBMITTED_STATUS = "Submitted";
+    protected final String UPDATED_STATUS = "Updated";
+    protected final String APPROVED_STATUS = "Approved";
+    protected final String REJECTED_STATUS = "Rejected";
+    
     protected void sendLeaveRequestCreatedNotification(DelegateTask task) {
         String status = (String) task.getExecution().getVariable("status");
         if (status != null && !task.getTaskDefinitionKey().equals("unpaidLeaveFinalApprovalTask")) {
-            sendLeaveRequestStatusNotification("Updated", task);
+            sendLeaveRequestStatusNotification(UPDATED_STATUS, task);
         } else {
-            sendLeaveRequestStatusNotification("Submitted", task);
+            sendLeaveRequestStatusNotification(SUBMITTED_STATUS, task);
         }
     }
-
+    
     protected void assignLeaveRequestTask(DelegateTask task) {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         Employee manager = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Reports_To");
@@ -118,7 +123,7 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
             leaveRequestRejected(task);
         }
     }
-
+    
     protected CorporateTimeSheet getTimeSheetFromTask(DelegateTask task) {
         Long tsId = (Long) task.getExecution().getVariable("entityId");
         if (tsId != null) {
@@ -143,7 +148,7 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
         }
         if (CorpEmpLeaveRequestProcessBean.instance().validateLeaveRequest(ts.getEmployee(), ts)) {
             ts.setApprovedBy(currentUser.getEmployeeId());
-            sendLeaveRequestStatusNotification("Approved", task);
+            sendLeaveRequestStatusNotification(APPROVED_STATUS, task);
         } else {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "no.enough.leaves", "No Enough leaves for employee. Please verify time summary and reject the task");
         }
@@ -158,15 +163,17 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
         CorporateTimeSheet ts = getTimeSheetFromTask(task);
         ts.setStatus(TimeSheetStatus.Rejected);
         CorporateTimeSheetDao.instance().save(ts);
-        sendLeaveRequestStatusNotification("Rejected", task);
+        sendLeaveRequestStatusNotification(REJECTED_STATUS, task);
     }
-
+    
     protected void sendLeaveRequestStatusNotification(String status, DelegateTask task) {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         sendNotifyEmplyeeNotification(status, task);
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
         Email email = new Email();
-        email.setTos(BPMUtils.getCandidateEmails(task));
+        if (status.equals(SUBMITTED_STATUS) || status.equals(UPDATED_STATUS)) {
+            email.setTos(BPMUtils.getCandidateEmails(task));
+        }
         email.addTo(EmployeeDao.instance().getPrimaryEmail(emp));
         String summary = "Leave Request " + status + " For: " + emp.getFirstName() + " " + emp.getLastName();
         email.setSubject(summary);
@@ -186,7 +193,7 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
         email.setHtml(Boolean.TRUE);
         messagingService.sendEmail(email);
     }
-
+    
     protected void sendNotifyEmplyeeNotification(String status, DelegateTask task) {
         List<Entry> notifyEmployees = (List<Entry>) task.getExecution().getVariable("notifyEmployees");
         Email email = new Email();
@@ -214,7 +221,7 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
     public void execute(DelegateExecution execution) throws Exception {
         leaveRequestEscationTask(execution);
     }
-
+    
     protected void leaveRequestEscationTask(DelegateExecution execution) throws Exception {
         new EmailEscalation().execute(execution);
     }
