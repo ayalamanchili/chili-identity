@@ -178,7 +178,7 @@ public class EmailService {
                 officeCacheManager.put(OfficeCacheKeys.EMAILS, emailAddress, false);
                 return false;
             }
-            if (!disableEmailByRules(emp, emailObj, emailAddress)) {
+            if (disableEmailByRules(emp, emailObj, emailAddress)) {
                 return false;
             }
 
@@ -191,7 +191,7 @@ public class EmailService {
     protected UserEmailPreferenceRuleDao userEmailPreferenceRuleDao;
 
     protected boolean disableEmailByRules(Employee emp, Email emailObj, String emailAddress) {
-        if (!Strings.isNullOrEmpty(emailObj.getEmailPreferenceRuleId()) && userEmailPreferenceRuleDao.findRulesForUser(emp.getEmployeeId(), emailObj.getEmailPreferenceRuleId()) != null) {
+        if (!Strings.isNullOrEmpty(emailObj.getEmailPreferenceRuleId()) && userEmailPreferenceRuleDao.findRuleForUser(emp.getEmployeeId(), emailObj.getEmailPreferenceRuleId()) != null) {
             return true;
         }
         //TODO check process and task related stuff
