@@ -18,6 +18,7 @@ import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.entity.employee.statusreport.CorporateStatusReport;
 import info.yalamanchili.office.entity.employee.statusreport.CropStatusReportStatus;
+
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import java.text.SimpleDateFormat;
@@ -49,6 +50,7 @@ public class CorporateStatusReportService {
         }
         return entity.getId().toString();
     }
+    public static String CORPORATE_STATUS_REPORT_SUBMITTED_EMAIL = "Disable_Corporate_Status_Report_Submited_Emails";
 
     protected void notifyManager(CorporateStatusReport entity) {
         Email email = new Email();
@@ -64,6 +66,7 @@ public class CorporateStatusReportService {
         email.setHtml(Boolean.TRUE);
         email.setRichText(Boolean.TRUE);
         email.setBody(entity.getReport());
+        email.setEmailPreferenceRuleId(CORPORATE_STATUS_REPORT_SUBMITTED_EMAIL);
         MessagingService.instance().sendEmail(email);
     }
     protected static final String DIFF_STYLE = "<head>\n"

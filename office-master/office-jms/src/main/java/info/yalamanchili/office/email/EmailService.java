@@ -10,6 +10,7 @@ package info.yalamanchili.office.email;
 import com.google.common.base.Strings;
 import com.google.common.xml.XmlEscapers;
 import info.chili.commons.HtmlUtils;
+import info.chili.email.dao.UserEmailPreferenceRuleDao;
 import info.chili.exception.FaultEventException;
 import info.chili.exception.FaultEventPayload;
 import info.chili.spring.SpringContext;
@@ -65,7 +66,7 @@ public class EmailService {
     @Async
     @Transactional
     public void sendEmail(final Email email) {
-        final Address[] tos = convertToEmailAddress(filterEmails(email.getTos()));
+        final Address[] tos = convertToEmailAddress(filterEmails(email, email.getTos()));
         if (tos.length < 1) {
             return;
         }
@@ -150,7 +151,7 @@ public class EmailService {
         return addresses.toArray(new Address[addresses.size()]);
     }
 
-    protected Set<String> filterEmails(Set<String> emails) {
+    protected Set<String> filterEmails(Email emailObj, Set<String> emails) {
         Set<String> result = new HashSet<>();
         if (OfficeServiceConfiguration.instance().isFilterEmails()) {
             String testEmailProvider = OfficeServiceConfiguration.instance().getTestEmailProvider();
@@ -158,14 +159,14 @@ public class EmailService {
                 result.add(email);
             });
         } else {
-            emails.stream().filter((email) -> (notificationsEnabled(email))).forEach((email) -> {
+            emails.stream().filter((email) -> (notificationsEnabled(emailObj, email))).forEach((email) -> {
                 result.add(email);
             });
         }
         return result;
     }
 
-    public Boolean notificationsEnabled(String emailAddress) {
+    public Boolean notificationsEnabled(Email emailObj, String emailAddress) {
         if (officeCacheManager.contains(OfficeCacheKeys.EMAILS, emailAddress)) {
             return (Boolean) officeCacheManager.get(OfficeCacheKeys.EMAILS, emailAddress);
         }
@@ -177,9 +178,24 @@ public class EmailService {
                 officeCacheManager.put(OfficeCacheKeys.EMAILS, emailAddress, false);
                 return false;
             }
+            if (!disableEmailByRules(emp, emailObj, emailAddress)) {
+                return false;
+            }
+
         }
         officeCacheManager.put(OfficeCacheKeys.EMAILS, emailAddress, true);
         return true;
+    }
+
+    @Autowired
+    protected UserEmailPreferenceRuleDao userEmailPreferenceRuleDao;
+
+    protected boolean disableEmailByRules(Employee emp, Email emailObj, String emailAddress) {
+        if (!Strings.isNullOrEmpty(emailObj.getEmailPreferenceRuleId()) && userEmailPreferenceRuleDao.findRulesForUser(emp.getEmployeeId(), emailObj.getEmailPreferenceRuleId()) != null) {
+            return true;
+        }
+        //TODO check process and task related stuff
+        return false;
     }
 
     @PersistenceContext

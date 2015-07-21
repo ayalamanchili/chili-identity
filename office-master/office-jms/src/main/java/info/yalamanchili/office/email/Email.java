@@ -28,13 +28,14 @@ public class Email implements Serializable {
     protected Set<String> attachments;
     protected String templateName;
     protected Map<String, Object> context;
+    protected String emailPreferenceRuleId;
 
     public Email() {
     }
 
     public Set<String> getTos() {
         if (this.tos == null) {
-            this.tos = new HashSet<String>();
+            this.tos = new HashSet<>();
         }
         return tos;
     }
@@ -53,7 +54,7 @@ public class Email implements Serializable {
 
     public Set<String> getCcs() {
         if (this.ccs == null) {
-            this.ccs = new HashSet<String>();
+            this.ccs = new HashSet<>();
         }
         return ccs;
     }
@@ -108,7 +109,7 @@ public class Email implements Serializable {
 
     public Set<String> getAttachments() {
         if (this.attachments == null) {
-            this.attachments = new HashSet<String>();
+            this.attachments = new HashSet<>();
         }
         return attachments;
     }
@@ -140,6 +141,14 @@ public class Email implements Serializable {
 
     public void setContext(Map<String, Object> context) {
         this.context = context;
+    }
+
+    public String getEmailPreferenceRuleId() {
+        return emailPreferenceRuleId;
+    }
+
+    public void setEmailPreferenceRuleId(String emailPreferenceRuleId) {
+        this.emailPreferenceRuleId = emailPreferenceRuleId;
     }
 
     @Override

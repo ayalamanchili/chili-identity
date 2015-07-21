@@ -62,6 +62,7 @@
         <class>info.chili.i18n.domain.Ci18nResourceBundle</class>
         <class>info.chili.i18n.domain.Ci18nResource</class>
         <class>info.chili.bpm.domain.BPMTaskDelegateRule</class>
+        <class>info.chili.email.domain.EmailPreferenceRule</class>
         <properties>
             <property name="hibernate.show_sql" value="${db.show.sql}"/>
             <property name="hibernate.format_sql" value="${db.format.sql}"/>
