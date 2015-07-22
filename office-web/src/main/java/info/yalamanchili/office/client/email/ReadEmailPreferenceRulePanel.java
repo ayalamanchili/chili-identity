@@ -84,6 +84,6 @@ public class ReadEmailPreferenceRulePanel extends ReadComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "email_preferencerule";
+        return OfficeWelcome.constants.root_url() + "email_preferencerule/" + entityId;
     }
 }

@@ -47,6 +47,11 @@ public class EmailPreferenceRuleResource {
     public void save(EmailPreferenceRule entity) {
         emailPreferenceRuleDao.save(entity);
     }
+    @Path("/id")
+    @GET
+    public EmailPreferenceRule read(@PathParam("id") Long id) {
+     return   emailPreferenceRuleDao.findById(id);
+    }
 
     @PUT
     @Path("/delete/{id}")

@@ -83,6 +83,6 @@ public class ReadBPMTaskDelegateRulePanel extends ReadComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "bpmtask_delegaterule";
+        return OfficeWelcome.constants.root_url() + "bpmtask_delegaterule/" + entityId;
     }
 }
