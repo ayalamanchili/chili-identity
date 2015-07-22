@@ -8,8 +8,12 @@
 package info.yalamanchili.office.jrs.email;
 
 import info.chili.email.dao.EmailPreferenceRuleDao;
+import info.chili.email.dao.UserEmailPreferenceRuleDao;
+import info.chili.email.dao.UserEmailPreferenceRuleDao.UserEmailPreferenceRuleDto;
 import info.chili.email.domain.EmailPreferenceRule;
 import info.chili.jpa.validation.Validate;
+import info.chili.service.jrs.types.Entry;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -21,7 +25,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,32 +45,59 @@ public class EmailPreferenceRuleResource {
     protected EmailPreferenceRuleDao emailPreferenceRuleDao;
 
     @PUT
+    @Path("/add")
+    public void addEmailPreferecneRule(Entry entry) {
+        UserEmailPreferenceRuleDao.instance().save(null, entry.getId());
+    }
+
+    @PUT
     @Validate
-    @CacheEvict(value = EmailPreferenceRule.EMAIL_PREF_RULE_CACHE_REGION, allEntries = true)
     public void save(EmailPreferenceRule entity) {
         emailPreferenceRuleDao.save(entity);
     }
-    @Path("/id")
+
     @GET
+    @Path("/id")
     public EmailPreferenceRule read(@PathParam("id") Long id) {
-     return   emailPreferenceRuleDao.findById(id);
+        return emailPreferenceRuleDao.findById(id);
     }
 
     @PUT
     @Path("/delete/{id}")
     @Validate
-    @CacheEvict(value = EmailPreferenceRule.EMAIL_PREF_RULE_CACHE_REGION, allEntries = true)
     public void delete(@PathParam("id") Long id) {
         emailPreferenceRuleDao.delete(id);
     }
 
-    @Path("/{start}/{limit}")
+    @PUT
+    @Path("/remove/{id}")
+    @Validate
+    public void remove(@PathParam("id") Long id) {
+        UserEmailPreferenceRuleDao.instance().delete(id);
+    }
+
     @GET
+    @Path("/{start}/{limit}")
     public EmailPreferenceRuleTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         EmailPreferenceRuleTable res = new EmailPreferenceRuleTable();
         res.setEntities(emailPreferenceRuleDao.query(start, limit));
         res.setSize(emailPreferenceRuleDao.size());
         return res;
+    }
+
+    @GET
+    @Path("currentuser/{start}/{limit}")
+    public UserEmailPreferenceRuleTable getRulesForCurrentUser(@PathParam("start") int start, @PathParam("limit") int limit) {
+        UserEmailPreferenceRuleTable res = new UserEmailPreferenceRuleTable();
+        res.setEntities(UserEmailPreferenceRuleDao.instance().findRulesForUser(OfficeSecurityService.instance().getCurrentUserName()));
+        res.setSize(emailPreferenceRuleDao.size());
+        return res;
+    }
+
+    @GET
+    @Path("/dropdown")
+    public List<Entry> dropdown() {
+        return emailPreferenceRuleDao.getDropDown();
     }
 
     @XmlRootElement
@@ -91,6 +121,31 @@ public class EmailPreferenceRuleResource {
         }
 
         public void setEntities(List<EmailPreferenceRule> entities) {
+            this.entities = entities;
+        }
+    }
+
+    @XmlRootElement
+    @XmlType
+    public static class UserEmailPreferenceRuleTable implements java.io.Serializable {
+
+        protected Long size;
+        protected List<UserEmailPreferenceRuleDto> entities;
+
+        public Long getSize() {
+            return size;
+        }
+
+        public void setSize(Long size) {
+            this.size = size;
+        }
+
+        @XmlElement
+        public List<UserEmailPreferenceRuleDto> getEntities() {
+            return entities;
+        }
+
+        public void setEntities(List<UserEmailPreferenceRuleDto> entities) {
             this.entities = entities;
         }
     }
