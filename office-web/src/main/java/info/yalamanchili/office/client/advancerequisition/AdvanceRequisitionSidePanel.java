@@ -24,7 +24,6 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -90,7 +89,7 @@ public class AdvanceRequisitionSidePanel extends ALComposite implements ClickHan
 
     private String getadvanceURL(Integer start, String limit) {
         return OfficeWelcome.constants.root_url() + "advancerequisition/" + employeeSB.getKey() + "/" + start.toString() + "/"
-                + limit.toString();
+                + limit;
     }
 
     private String getEmployeeIdsDropDownUrl() {
