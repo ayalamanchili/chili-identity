@@ -12,6 +12,7 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuBar;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.email.ReadAllEmailPreferenceRulePanel;
 import info.yalamanchili.office.client.i18n.ReadAllci18nResourceBundlesPanel;
 
 /**
@@ -30,6 +31,7 @@ public class ChiliAdminMenu extends Composite {
     protected void configureAdminMenu() {
         chiliAdminMenuBar.addItem("Resource Bundles", chiliAdminMenuResourceBundles);
         chiliAdminMenuBar.addItem("BPMTaskDelegateRule", chiliAdminMenubpmTaskDelegate);
+        chiliAdminMenuBar.addItem("EmailPreferenceRule", chiliAdminMenuEmailPreferenceRule);
         chiliAdminMenuBar.addStyleName("entityMenuBar");
     }
     Command chiliAdminMenuResourceBundles = new Command() {
@@ -44,6 +46,13 @@ public class ChiliAdminMenu extends Composite {
             TabPanel.instance().getChiliAdminPanel().entityPanel.clear();
             TabPanel.instance().getChiliAdminPanel().sidePanelTop.clear();
             TabPanel.instance().getChiliAdminPanel().entityPanel.add(new ReadAllBPMTaskDelegateRulePanel());
+        }
+    };
+    Command chiliAdminMenuEmailPreferenceRule = new Command() {
+        public void execute() {
+            TabPanel.instance().getChiliAdminPanel().entityPanel.clear();
+            TabPanel.instance().getChiliAdminPanel().sidePanelTop.clear();
+            TabPanel.instance().getChiliAdminPanel().entityPanel.add(new ReadAllEmailPreferenceRulePanel());
         }
     };
 }
