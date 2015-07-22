@@ -146,7 +146,7 @@ public class ProfileReportsService {
                 emailBody.append("<li>Primary Mailing/Home address is missing </li>").append("</br>");
                 profileCompleteCounter--;
             }
-            if (!isCorporateEmployee && addressDao.getAddressByType(emp, "Work").size() <= 0) {
+            if (!isCorporateEmployee && addressDao.getAddressByType(emp, "Office").size() <= 0) {
                 emailBody.append("<li>Work address is missing</li>").append("</br>");
                 profileCompleteCounter--;
             }
