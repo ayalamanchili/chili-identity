@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.jrs.email;
 
+import com.google.common.base.Strings;
 import info.chili.email.dao.EmailPreferenceRuleDao;
 import info.chili.email.dao.UserEmailPreferenceRuleDao;
 import info.chili.email.dao.UserEmailPreferenceRuleDao.UserEmailPreferenceRuleDto;
@@ -21,6 +22,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -46,8 +48,8 @@ public class EmailPreferenceRuleResource {
 
     @PUT
     @Path("/add")
-    public void addEmailPreferecneRule(Entry entry) {
-        UserEmailPreferenceRuleDao.instance().save(null, entry.getId());
+    public void addEmailPreferecneRule(Entry entry, @QueryParam("employeeId") String employeeId) {
+        UserEmailPreferenceRuleDao.instance().save(employeeId, entry.getId());
     }
 
     @PUT
@@ -86,10 +88,14 @@ public class EmailPreferenceRuleResource {
     }
 
     @GET
-    @Path("currentuser/{start}/{limit}")
-    public UserEmailPreferenceRuleTable getRulesForCurrentUser(@PathParam("start") int start, @PathParam("limit") int limit) {
+    @Path("user/{start}/{limit}")
+    public UserEmailPreferenceRuleTable getRulesForCurrentUser(@QueryParam("employeeId") String employeeId, @PathParam("start") int start, @PathParam("limit") int limit) {
         UserEmailPreferenceRuleTable res = new UserEmailPreferenceRuleTable();
-        res.setEntities(UserEmailPreferenceRuleDao.instance().findRulesForUser(OfficeSecurityService.instance().getCurrentUserName()));
+        if (Strings.isNullOrEmpty(employeeId)) {
+            res.setEntities(UserEmailPreferenceRuleDao.instance().findRulesForUser(OfficeSecurityService.instance().getCurrentUserName()));
+        } else {
+            res.setEntities(UserEmailPreferenceRuleDao.instance().findRulesForUser(employeeId));
+        }
         res.setSize(emailPreferenceRuleDao.size());
         return res;
     }

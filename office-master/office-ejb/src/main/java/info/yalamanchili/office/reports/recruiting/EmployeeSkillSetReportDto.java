@@ -20,9 +20,9 @@ public class EmployeeSkillSetReportDto {
     protected String name;
     protected String technologyGroup;
     protected String practice;
-    protected List<String> skills;
-    protected List<String> certifications;
-    protected List<String> tags;
+    protected String skills;
+    protected String certifications;
+    protected String tags;
 
     public EmployeeSkillSetReportDto() {
     }
@@ -51,36 +51,27 @@ public class EmployeeSkillSetReportDto {
         this.practice = practice;
     }
 
-    public List<String> getSkills() {
-        if (skills == null) {
-            this.skills = new ArrayList();
-        }
+    public String getSkills() {
         return skills;
     }
 
-    public void setSkills(List<String> skills) {
+    public void setSkills(String skills) {
         this.skills = skills;
     }
 
-    public List<String> getCertifications() {
-        if (certifications == null) {
-            this.certifications = new ArrayList();
-        }
+    public String getCertifications() {
         return certifications;
     }
 
-    public void setCertifications(List<String> certifications) {
+    public void setCertifications(String certifications) {
         this.certifications = certifications;
     }
 
-    public List<String> getTags() {
-        if (tags == null) {
-            this.tags = new ArrayList();
-        }
+    public String getTags() {
         return tags;
     }
 
-    public void setTags(List<String> tags) {
+    public void setTags(String tags) {
         this.tags = tags;
     }
 

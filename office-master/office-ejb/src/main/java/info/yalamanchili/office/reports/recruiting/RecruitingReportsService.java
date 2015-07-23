@@ -110,15 +110,21 @@ public class RecruitingReportsService {
                 if (emp.getSkillSet().getTechnologyGroup() != null) {
                     dto.setTechnologyGroup(emp.getSkillSet().getTechnologyGroup().getName());
                 }
+                StringBuilder skills = new StringBuilder("");
                 for (Skill skill : emp.getSkillSet().getSkills()) {
-                    dto.getSkills().add(skill.getName());
+                    skills.append(skill.getName()).append(",");
                 }
+                dto.setSkills(skills.toString());
+                StringBuilder certifications = new StringBuilder("");
                 for (Certification cert : emp.getSkillSet().getCertifications()) {
-                    dto.getCertifications().add(cert.getName());
+                    certifications.append(cert.getName()).append(",");
                 }
+                dto.setCertifications(skills.toString());
+                StringBuilder tags = new StringBuilder("");
                 for (SkillSetTag tag : emp.getSkillSet().getTags()) {
-                    dto.getTags().add(tag.getName());
+                    tags.append(tag.getName()).append(",");
                 }
+                dto.setTags(tags.toString());
             }
             res.add(dto);
         }
