@@ -9,6 +9,7 @@ package info.yalamanchili.office.client.expense.travelauthorization;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -19,8 +20,9 @@ import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import static info.yalamanchili.office.client.expense.travelauthorization.TravelAuthConstants.DEFAULT_FIELD_WIDTH;
+import static info.yalamanchili.office.client.expense.travelauthorization.TravelAuthConstants.*;
 import static info.yalamanchili.office.client.expense.travelauthorization.UpdateTravelAuthorizationPanel.tripInfoHelpText;
+import java.math.BigDecimal;
 import java.util.logging.Logger;
 
 /**
@@ -57,14 +59,14 @@ public class UpdateTravelAuthorizationPanel extends UpdateComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                logger.info(response);
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
+                    @Override
+                    public void onResponse(String response) {
+                        logger.info(response);
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
 
-            }
-        });
+                    }
+                });
     }
 
     protected String getReadURI() {
@@ -73,14 +75,15 @@ public class UpdateTravelAuthorizationPanel extends UpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        assignEntityValueFromField("travelType", entity);
-        assignEntityValueFromField("departureDate", entity);
-        assignEntityValueFromField("returnDate", entity);
-        assignEntityValueFromField("travelDestination", entity);
-        assignEntityValueFromField("reasonForTravel", entity);
-        entity.put("travelTransportation", travelTransportationItem.getObject());
-        entity.put("travelAccommodation", lodgingItemPanel.getObject());
-        entity.put("travelFood", mealsItemPanel.getObject());
+        assignEntityValueFromField(TRAVEL_TYPE, entity);
+        assignEntityValueFromField(DEPARTURE_DATE, entity);
+        assignEntityValueFromField(RETURN_DATE, entity);
+        assignEntityValueFromField(TRAVEL_DESTINATION, entity);
+        assignEntityValueFromField(REASON_FOR_TRAVEL, entity);
+        entity.put(TRAVEL_TRANSPORTATION, travelTransportationItem.getObject());
+        entity.put(TRAVEL_ACCOMMODATION, lodgingItemPanel.getObject());
+        entity.put(TRAVEL_FOOD, mealsItemPanel.getObject());
+        entity.put(TOTAL_ESTIMATED_TRIP_EXPENCES, new JSONString((calculateTotalCost(travelTransportationItem, lodgingItemPanel, mealsItemPanel)).abs().toString()));
         logger.info(entity.toString());
         return entity;
     }
@@ -89,41 +92,64 @@ public class UpdateTravelAuthorizationPanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postUpdateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postUpdateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         logger.info(entity.toString());
-        assignFieldValueFromEntity("travelType", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("departureDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("returnDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("travelDestination", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("reasonForTravel", entity, DataType.TEXT_AREA_FIELD);
-        if (entity.get("travelTransportation") != null) {
-            travelTransportationItem = new TravelTransportationPanel(entity.get("travelTransportation").isObject(), false);
+        assignFieldValueFromEntity(TRAVEL_TYPE, entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity(DEPARTURE_DATE, entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity(RETURN_DATE, entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity(TRAVEL_DESTINATION, entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity(REASON_FOR_TRAVEL, entity, DataType.TEXT_AREA_FIELD);
+        if (entity.get(TRAVEL_TRANSPORTATION) != null) {
+            travelTransportationItem = new TravelTransportationPanel(entity.get(TRAVEL_TRANSPORTATION).isObject(), false);
             entityFieldsPanel.add(travelTransportationItem);
         }
         entityFieldsPanel.add(lodging);
-        if (entity.get("travelAccommodation") != null) {
-            lodgingItemPanel = new TravelAccommodationPanel(entity.get("travelAccommodation").isObject(), false);
+        if (entity.get(TRAVEL_ACCOMMODATION) != null) {
+            lodgingItemPanel = new TravelAccommodationPanel(entity.get(TRAVEL_ACCOMMODATION).isObject(), false);
             entityFieldsPanel.add(lodgingItemPanel);
         }
         entityFieldsPanel.add(meals);
-        if (entity.get("travelFood") != null) {
-            mealsItemPanel = new TravelFoodPanel(entity.get("travelFood").isObject(), false);
+        if (entity.get(TRAVEL_FOOD) != null) {
+            mealsItemPanel = new TravelFoodPanel(entity.get(TRAVEL_FOOD).isObject(), false);
             entityFieldsPanel.add(mealsItemPanel);
         }
+       
+    }
 
+    protected BigDecimal calculateTotalCost(TravelTransportationPanel transportation, TravelAccommodationPanel lodging, TravelFoodPanel meals) {
+        BigDecimal totalEstimatedTripExpences = BigDecimal.ZERO;
+        if (transportation.totalTransportationCost.getCurrency() != null) {
+            totalEstimatedTripExpences = totalEstimatedTripExpences.add(transportation.totalTransportationCost.getCurrency());
+        }
+        if (lodging.totalLodgingCost.getCurrency() != null) {
+            totalEstimatedTripExpences = totalEstimatedTripExpences.add(lodging.totalLodgingCost.getCurrency());
+        }
+        if (meals.totalCostOfFood.getCurrency() != null) {
+            totalEstimatedTripExpences = totalEstimatedTripExpences.add(meals.totalCostOfFood.getCurrency());
+        }
+        if (meals.totalCostOfBanquet.getCurrency() != null) {
+            totalEstimatedTripExpences = totalEstimatedTripExpences.add(meals.totalCostOfBanquet.getCurrency());
+        }
+        if (meals.conferenceFee.getCurrency() != null) {
+            totalEstimatedTripExpences = totalEstimatedTripExpences.add(meals.conferenceFee.getCurrency());
+        }
+        if (meals.otherExpences.getCurrency() != null) {
+            totalEstimatedTripExpences = totalEstimatedTripExpences.add(meals.otherExpences.getCurrency());
+        }
+        return totalEstimatedTripExpences;
     }
 
     @Override
@@ -143,12 +169,12 @@ public class UpdateTravelAuthorizationPanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
-        addEnumField("travelType", false, true, TravelType.names(), Alignment.HORIZONTAL);
+        addEnumField(TRAVEL_TYPE, false, true, TravelType.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(tripInfoHelpText);
-        addField("departureDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("returnDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("travelDestination", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("reasonForTravel", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField(DEPARTURE_DATE, false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField(RETURN_DATE, false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField(TRAVEL_DESTINATION, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField(REASON_FOR_TRAVEL, false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(estimatedExpensesHelpText);
         entityFieldsPanel.add(tacHelpText);
         entityFieldsPanel.add(transportation);
