@@ -9,9 +9,17 @@
 package info.yalamanchili.office.reports.recruiting;
 
 import info.chili.commons.SearchUtils;
+import info.chili.reporting.ReportGenerator;
+import info.chili.spring.SpringContext;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dto.profile.EmployeeDto;
+import info.yalamanchili.office.entity.profile.Certification;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.Skill;
 import info.yalamanchili.office.entity.profile.SkillSet;
+import info.yalamanchili.office.entity.recruiting.SkillSetTag;
+import info.yalamanchili.office.jms.MessagingService;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -22,13 +30,15 @@ import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author ayalamanchili
  */
 @Component
-@Scope("request")
+@Scope("prototype")
+@Transactional
 public class RecruitingReportsService {
 
     @PersistenceContext
@@ -44,7 +54,7 @@ public class RecruitingReportsService {
     }
 
     public List<EmployeeDto> searchSkillSet(SkillSetSearchDto searchDto) {
-        List<info.yalamanchili.office.dto.profile.EmployeeDto> employees = new ArrayList<info.yalamanchili.office.dto.profile.EmployeeDto>();
+        List<info.yalamanchili.office.dto.profile.EmployeeDto> employees = new ArrayList<>();
         TypedQuery<Employee> query = em.createQuery(getSearchSkillSetQueryString(searchDto), Employee.class);
         for (Object empObj : query.getResultList()) {
             employees.add(info.yalamanchili.office.dto.profile.EmployeeDto.map(mapper, (Employee) empObj));
@@ -88,7 +98,38 @@ public class RecruitingReportsService {
         return sb.toString();
     }
 
+    public void generateEmployeeSkillSetReport() {
+        List<EmployeeSkillSetReportDto> res = new ArrayList<>();
+        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee", "Employee")) {
+            EmployeeSkillSetReportDto dto = new EmployeeSkillSetReportDto();
+            dto.setName(emp.getFirstName() + emp.getLastName());
+            if (emp.getSkillSet() != null) {
+                if (emp.getSkillSet().getPractice() != null) {
+                    dto.setPractice(emp.getSkillSet().getPractice().getName());
+                }
+                if (emp.getSkillSet().getTechnologyGroup() != null) {
+                    dto.setTechnologyGroup(emp.getSkillSet().getTechnologyGroup().getName());
+                }
+                for (Skill skill : emp.getSkillSet().getSkills()) {
+                    dto.getSkills().add(skill.getName());
+                }
+                for (Certification cert : emp.getSkillSet().getCertifications()) {
+                    dto.getCertifications().add(cert.getName());
+                }
+                for (SkillSetTag tag : emp.getSkillSet().getTags()) {
+                    dto.getTags().add(tag.getName());
+                }
+            }
+            res.add(dto);
+        }
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(res, "SkillSet-Information-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), OfficeServiceConfiguration.instance().getAdminEmail());
+    }
+
     protected boolean disableRegularSearch() {
         return true;
+    }
+
+    public static RecruitingReportsService instance() {
+        return SpringContext.getBean(RecruitingReportsService.class);
     }
 }
