@@ -19,15 +19,33 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlRootElement
 @XmlType
-public class EmployeeBasicInfoReportDto implements Serializable{
+public class EmployeeBasicInfoReportDto implements Serializable {
 
     protected String firstName;
     protected String lastName;
     protected String email;
     protected String phoneNumber;
     protected String jobTitle;
+    protected Date dateOfBirth;
     protected Date startDate;
     protected String type;
+    protected String branch;
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getBranch() {
+        return branch;
+    }
+
+    public void setBranch(String branch) {
+        this.branch = branch;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -84,5 +102,4 @@ public class EmployeeBasicInfoReportDto implements Serializable{
     public void setType(String type) {
         this.type = type;
     }
-
 }

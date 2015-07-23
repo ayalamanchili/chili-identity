@@ -46,13 +46,18 @@ public class ProfileReportsService {
             EmployeeBasicInfoReportDto dto = mapper.map(emp, EmployeeBasicInfoReportDto.class);
             dto.setEmail(EmployeeDao.instance().getPrimaryEmail(emp));
             dto.setType(emp.getEmployeeType().getName());
+            if (emp.getBranch() != null) {
+                dto.setBranch(emp.getBranch().name());
+            }
+            dto.setDateOfBirth(emp.getDateOfBirth());
             if (emp.getPhones().size() > 0) {
                 dto.setPhoneNumber(emp.getPhones().get(0).getPhoneNumber());
             }
+
             res.add(dto);
         }
-        MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(res, "employee-basic-info-report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
-    }
+        String[] columnOrder = new String[]{"firstName", "lastName", "startDate", "dateOfBirth", "type", "branch", "phoneNumber", "jobTitle", "email"};
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Employee-Basic-Info-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);    }
 
     @Async
     @Transactional
