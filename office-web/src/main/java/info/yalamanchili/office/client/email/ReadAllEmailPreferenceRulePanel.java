@@ -85,10 +85,9 @@ public class ReadAllEmailPreferenceRulePanel extends CRUDReadAllComposite {
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Name"));
-        table.setText(0, 2, getKeyValue("Description"));
-        table.setText(0, 3, getKeyValue("ProcessId"));
-        table.setText(0, 4, getKeyValue("TaskId"));
-        table.setText(0, 5, getKeyValue("EventName"));
+        table.setText(0, 2, getKeyValue("ProcessId"));
+        table.setText(0, 3, getKeyValue("TaskId"));
+        table.setText(0, 4, getKeyValue("EventName"));
     }
 
     @Override
@@ -97,10 +96,9 @@ public class ReadAllEmailPreferenceRulePanel extends CRUDReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
-            table.setText(i, 2, JSONUtils.toString(entity, "description"));
-            table.setText(i, 3, JSONUtils.toString(entity, "processId"));
-            table.setText(i, 4, JSONUtils.toString(entity, "taskId"));
-            table.setText(i, 5, JSONUtils.toString(entity, "eventName"));
+            table.setText(i, 2, JSONUtils.toString(entity, "processId"));
+            table.setText(i, 3, JSONUtils.toString(entity, "taskId"));
+            table.setText(i, 4, JSONUtils.toString(entity, "eventName"));
         }
     }
 
@@ -118,7 +116,7 @@ public class ReadAllEmailPreferenceRulePanel extends CRUDReadAllComposite {
 
     @Override
     protected void configureCreateButton() {
-        createButton.setText("CreateEmailPreferenceRule");
+        createButton.setText("Create");
         createButton.setVisible(true);
     }
 }

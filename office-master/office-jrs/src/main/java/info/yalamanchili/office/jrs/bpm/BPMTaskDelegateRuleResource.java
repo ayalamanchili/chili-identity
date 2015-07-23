@@ -49,7 +49,7 @@ public class BPMTaskDelegateRuleResource {
         bPMTaskDelegateRuleDao.save(entity);
     }
 
-    @Path("/id")
+    @Path("/{id}")
     @GET
     public BPMTaskDelegateRule read(@PathParam("id") Long id) {
         return bPMTaskDelegateRuleDao.findById(id);

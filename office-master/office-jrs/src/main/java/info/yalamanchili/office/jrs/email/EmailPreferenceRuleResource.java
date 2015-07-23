@@ -57,7 +57,7 @@ public class EmailPreferenceRuleResource {
     }
 
     @GET
-    @Path("/id")
+    @Path("/{id}")
     public EmailPreferenceRule read(@PathParam("id") Long id) {
         return emailPreferenceRuleDao.findById(id);
     }

@@ -30,8 +30,8 @@ public class ChiliAdminMenu extends Composite {
 
     protected void configureAdminMenu() {
         chiliAdminMenuBar.addItem("Resource Bundles", chiliAdminMenuResourceBundles);
-        chiliAdminMenuBar.addItem("BPMTaskDelegateRule", chiliAdminMenubpmTaskDelegate);
-        chiliAdminMenuBar.addItem("EmailPreferenceRule", chiliAdminMenuEmailPreferenceRule);
+        chiliAdminMenuBar.addItem("BPM Task Delegate Rule", chiliAdminMenubpmTaskDelegate);
+        chiliAdminMenuBar.addItem("Email Preference Rule", chiliAdminMenuEmailPreferenceRule);
         chiliAdminMenuBar.addStyleName("entityMenuBar");
     }
     Command chiliAdminMenuResourceBundles = new Command() {
