@@ -42,7 +42,7 @@ public class ProfileReportsService {
     @Transactional
     public void generateEmployeBasicInfoReport(String email) {
         List<EmployeeBasicInfoReportDto> res = new ArrayList<>();
-        for (Employee emp : EmployeeDao.instance().query(0, 2000)) {
+        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee", "Employee")) {
             EmployeeBasicInfoReportDto dto = mapper.map(emp, EmployeeBasicInfoReportDto.class);
             dto.setEmail(EmployeeDao.instance().getPrimaryEmail(emp));
             dto.setType(emp.getEmployeeType().getName());
@@ -58,7 +58,7 @@ public class ProfileReportsService {
     @Transactional
     public void generateProfileReport(String email) {
         List<EmployeProfileDto> res = new ArrayList();
-        for (Employee emp : EmployeeDao.instance().query(0, 1000)) {
+        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee", "Employee")) {
             EmployeProfileDto dto = new EmployeProfileDto();
             dto.setFirstName(emp.getFirstName());
             dto.setLastName(emp.getLastName());
