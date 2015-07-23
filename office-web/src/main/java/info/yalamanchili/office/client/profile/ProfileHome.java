@@ -21,17 +21,15 @@ import info.yalamanchili.office.client.profile.certification.MuitiSelectCertific
 import info.yalamanchili.office.client.profile.emergencycnt.ReadAllEmergencyContactsPopupPanel;
 import info.yalamanchili.office.client.profile.phone.ReadAllPhonesPopupPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.ReadAllClientInfoPopupPanel;
-import info.yalamanchili.office.client.profile.preferences.UpdatePreferencesPanel;
 import info.yalamanchili.office.client.profile.skill.MultiSelectSkillWidget;
 import info.yalamanchili.office.client.profile.skillset.CreateSkillSetPanel;
 import info.yalamanchili.office.client.profile.skillset.ReadSkillSetPopupPanel;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.companycontact.ReadAllCompanyContactPanel;
-import info.yalamanchili.office.client.profile.benefits.RetirementPlanOptInPanel;
-import info.yalamanchili.office.client.profile.benefits.RetirementPlanOptOutPanel;
 import info.yalamanchili.office.client.profile.benefits.RetirementPlanReadPanel;
 import info.yalamanchili.office.client.profile.empdoc.ReadAllEmpDocsPopupPanel;
 import info.yalamanchili.office.client.profile.employee.ReadEmployeePopupPanel;
+import info.yalamanchili.office.client.profile.preferences.PreferencesPanel;
 import info.yalamanchili.office.client.profile.privacy.ReadAllPrivacySettingPopupPanel;
 import java.util.logging.Logger;
 
@@ -316,7 +314,7 @@ public class ProfileHome extends ALComposite {
                                 if (arg0 != null && preferences != null) {
                                     preferencesPanel.clear();
                                     preferencesPanel.setContent(
-                                            new UpdatePreferencesPanel(preferences));
+                                            new PreferencesPanel(preferences));
                                 }
                             }
                         });

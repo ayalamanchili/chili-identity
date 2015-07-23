@@ -26,7 +26,6 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.chili.gwt.crud.CreateComposite;
 import info.yalamanchili.office.client.profile.password.ResetPasswordPanel;
-import info.yalamanchili.office.client.profile.preferences.UpdatePreferencesPanel;
 import info.yalamanchili.office.client.profile.role.MultiSelectRoleWidget;
 import info.yalamanchili.office.client.profile.skillset.ReadSkillSetPanel;
 import info.yalamanchili.office.client.profile.skillset.TreeSkillSetPanel;
@@ -36,15 +35,16 @@ import info.yalamanchili.office.client.companycontact.CompanyContactOptionsPanel
 import info.yalamanchili.office.client.companycontact.ReadAllCompanyContactPanel;
 import info.yalamanchili.office.client.profile.empdoc.EmpDocOptionsPanel;
 import info.yalamanchili.office.client.profile.empdoc.ReadAllEmpDocsPanel;
+import info.yalamanchili.office.client.profile.preferences.PreferencesPanel;
 import info.yalamanchili.office.client.profile.privacy.PrivacyOptionsPanel;
 import info.yalamanchili.office.client.profile.privacy.ReadAllPrivacySettngsPanel;
 import info.yalamanchili.office.client.profile.selfservice.ReadAllServiceTicketsPanel;
 import java.util.logging.Logger;
 
 public class TreeEmployeePanel extends TreePanelComposite {
-    
+
     private static TreeEmployeePanel instance;
-    
+
     public static TreeEmployeePanel instance() {
         return instance;
     }
@@ -66,7 +66,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected static final String DEACTIVATION_USER_NODE = "deactivation";
     protected TreeSkillSetPanel skillSetTreePanel;
     protected TreeEmpReportsPanel empReportsPanel;
-    
+
     public TreeEmployeePanel(JSONObject emp) {
         super();
         instance = this;
@@ -76,21 +76,21 @@ public class TreeEmployeePanel extends TreePanelComposite {
         String name = JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName");
         init(name, OfficeWelcome.constants);
     }
-    
+
     @Override
     protected void addListeners() {
         // TODO Auto-generated method stub
     }
-    
+
     @Override
     protected void configure() {
     }
-    
+
     @Override
     public boolean expandTree() {
         return true;
     }
-    
+
     @Override
     protected void addWidgets() {
         addFirstChildLink("Addresses", ADDRESS_NODE);
@@ -124,7 +124,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         }
         this.rootItem.setState(true);
     }
-    
+
     @Override
     public void treeNodeSelected(String entityNodeKey) {
         if (ADDRESS_NODE.equals(entityNodeKey)) {
@@ -189,7 +189,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
                             }
                         });
             }
-            
+
         }
         if (PREFERENCES_NODE.equals(entityNodeKey)) {
             HttpService.HttpServiceAsync.instance().doGet(getPreferencesURI(), OfficeWelcome.instance().getHeaders(), true,
@@ -199,11 +199,11 @@ public class TreeEmployeePanel extends TreePanelComposite {
                             JSONObject preferences = JSONParser.parseLenient(arg0).isObject();
                             if (arg0 != null && preferences != null) {
                                 TabPanel.instance().myOfficePanel.entityPanel.clear();
-                                TabPanel.instance().myOfficePanel.entityPanel.add(new UpdatePreferencesPanel(preferences));
+                                TabPanel.instance().myOfficePanel.entityPanel.add(new PreferencesPanel(preferences));
                             }
                         }
                     });
-            
+
         }
         if (ROLES_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
@@ -212,7 +212,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         if (RESET_PASSWORD_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ResetPasswordPanel(CreateComposite.CreateCompositeType.CREATE));
-            
+
         } //TODO review
         if (skillSetTreePanel != null) {
             skillSetTreePanel.treeNodeSelected(entityNodeKey);
@@ -221,21 +221,21 @@ public class TreeEmployeePanel extends TreePanelComposite {
             empReportsPanel.treeNodeSelected(entityNodeKey);
         }
     }
-    
+
     @Override
     public void loadEntity() {
     }
-    
+
     @Override
     public void showEntity() {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadEmployeePanel(getEntityId()));
     }
-    
+
     protected String getPreferencesURI() {
         return OfficeWelcome.constants.root_url() + "employee/preferences/" + getEntityId();
     }
-    
+
     protected String getDeactivateuserURL() {
         return OfficeWelcome.constants.root_url() + "admin/deactivateuser/" + getEntityId();
     }

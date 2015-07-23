@@ -12,8 +12,11 @@ import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.email.ReadAllEmailPreferenceRulePanel;
+import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
 /**
@@ -23,7 +26,6 @@ import java.util.logging.Logger;
 public class ReadAllUserEmailPreferences extends CRUDReadAllComposite {
 
     private static Logger logger = Logger.getLogger(ReadAllEmailPreferenceRulePanel.class.getName());
-    public static ReadAllEmailPreferenceRulePanel instance;
 
     public ReadAllUserEmailPreferences() {
         initTable("UserEmailPreferenceRule", OfficeWelcome.constants);
@@ -51,7 +53,8 @@ public class ReadAllUserEmailPreferences extends CRUDReadAllComposite {
 
     @Override
     public void postDeleteSuccess() {
-
+        new ResponseStatusWidget().show("Successfully deleted email rule");
+        this.refresh();
     }
 
     @Override
@@ -72,8 +75,13 @@ public class ReadAllUserEmailPreferences extends CRUDReadAllComposite {
     }
 
     public String getEmailUrl(Integer start, String limit) {
-        return OfficeWelcome.constants.root_url() + "email_preferencerule/currentuser/" + start.toString() + "/"
-                + limit;
+        if (TabPanel.instance().myOfficePanel.isVisible()) {
+            return OfficeWelcome.constants.root_url() + "email_preferencerule/user/" + start.toString() + "/"
+                    + limit + "?employeeId=" + JSONUtils.toString(TreeEmployeePanel.instance().getEntity(), "employeeId");
+        } else {
+            return OfficeWelcome.constants.root_url() + "email_preferencerule/user/" + start.toString() + "/"
+                    + limit;
+        }
     }
 
     @Override

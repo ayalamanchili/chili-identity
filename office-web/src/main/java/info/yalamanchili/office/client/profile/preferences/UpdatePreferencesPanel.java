@@ -74,7 +74,6 @@ public class UpdatePreferencesPanel extends UpdateComposite {
     @Override
     protected void addWidgets() {
         addField("enableEmailNotifications", false, false, DataType.BOOLEAN_FIELD);
-        entityFieldsPanel.add(new ManageEmailPreferences());
     }
     
     @Override
