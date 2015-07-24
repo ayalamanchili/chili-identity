@@ -123,28 +123,30 @@ public class TravelAuthorizationService {
         TravelTransportation travelTransportation = entity.getTravelTransportation();
         if (travelTransportation != null) {
             //TravelTransportationType info
-            switch (travelTransportation.getTravelTransportationType()) {
-                case AIR:
-                    data.getData().put("travelTransportationTypeAir", "true");
-                    break;
-                case BUS:
-                    data.getData().put("travelTransportationTypeBus", "true");
-                    break;
-                case RAILWAY:
-                    data.getData().put("travelTransportationTypeRailway", "true");
-                    break;
-                case OTHER:
-                    data.getData().put("travelTransportationTypeOther", "true");
-                    break;
-                case COMPANY_VEHICLE:
-                    data.getData().put("travelTransportationTypeCompany", "true");
-                    break;
-                case PRIVATE_VEHICLE:
-                    data.getData().put("travelTransportationTypePrivate", "true");
-                    break;
-                case RENTAL_VEHICLE:
-                    data.getData().put("travelTransportationTypeRental", "true");
-                    break;
+            if (travelTransportation.getTravelTransportationType() != null) {
+                switch (travelTransportation.getTravelTransportationType()) {
+                    case AIR:
+                        data.getData().put("travelTransportationTypeAir", "true");
+                        break;
+                    case BUS:
+                        data.getData().put("travelTransportationTypeBus", "true");
+                        break;
+                    case RAILWAY:
+                        data.getData().put("travelTransportationTypeRailway", "true");
+                        break;
+                    case OTHER:
+                        data.getData().put("travelTransportationTypeOther", "true");
+                        break;
+                    case COMPANY_VEHICLE:
+                        data.getData().put("travelTransportationTypeCompany", "true");
+                        break;
+                    case PRIVATE_VEHICLE:
+                        data.getData().put("travelTransportationTypePrivate", "true");
+                        break;
+                    case RENTAL_VEHICLE:
+                        data.getData().put("travelTransportationTypeRental", "true");
+                        break;
+                }
             }
             //Travel Transportation ExpensePaymentType info
 //            switch (travelTransportation.getExpensePaymentType()) {
