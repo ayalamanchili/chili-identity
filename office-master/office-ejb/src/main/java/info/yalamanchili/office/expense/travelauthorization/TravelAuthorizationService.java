@@ -227,8 +227,10 @@ public class TravelAuthorizationService {
                 if (!Strings.isNullOrEmpty(justification.getRentalVehicleJustification())) {
                     data.getData().put("rentalVehicleJustification", justification.getRentalVehicleJustification());
                 }
-                if (justification.getTravelRentalVehicleType().equals(TravelRentalVehicleType.OTHER)) {
-                    data.getData().put("otherVehicleTypeJustification", justification.getOtherVehicleTypeJustification());
+                if (justification.getTravelRentalVehicleType() != null) {
+                    if (justification.getTravelRentalVehicleType().equals(TravelRentalVehicleType.OTHER)) {
+                        data.getData().put("otherVehicleTypeJustification", justification.getOtherVehicleTypeJustification());
+                    }
                 }
                 if (justification.getEstimatedCostOfOtherTransportation() != null) {
                     data.getData().put("estimatedCostOfOtherTransportation", justification.getEstimatedCostOfOtherTransportation().setScale(2, BigDecimal.ROUND_UP).toString());
