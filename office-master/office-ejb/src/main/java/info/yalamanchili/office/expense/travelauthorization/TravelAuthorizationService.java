@@ -169,60 +169,61 @@ public class TravelAuthorizationService {
 
                 }
             }
-            if (entity.getTravelTransportation().getTravelTransportationType().equals(TravelTransportationType.AIR)) {
-                if (travelTransportation.getTotalTransportationCost() != null) {
-                    data.getData().put("totalTransportationCost", travelTransportation.getTotalTransportationCost().setScale(2, BigDecimal.ROUND_UP).toString());
+            if (entity.getTravelTransportation().getTravelTransportationType() != null) {
+                if (entity.getTravelTransportation().getTravelTransportationType().equals(TravelTransportationType.AIR)) {
+                    if (travelTransportation.getTotalTransportationCost() != null) {
+                        data.getData().put("totalTransportationCost", travelTransportation.getTotalTransportationCost().setScale(2, BigDecimal.ROUND_UP).toString());
+                    }
+                }
+                if (entity.getTravelTransportation().getTravelTransportationType().equals(TravelTransportationType.BUS)) {
+                    if (travelTransportation.getTotalTransportationCost() != null) {
+                        data.getData().put("totalTransportationCost", travelTransportation.getTotalTransportationCost().setScale(2, BigDecimal.ROUND_UP).toString());
+                    }
+                }
+                if (entity.getTravelTransportation().getTravelTransportationType().equals(TravelTransportationType.RAILWAY)) {
+                    if (travelTransportation.getTotalTransportationCost() != null) {
+                        data.getData().put("totalTransportationCost", travelTransportation.getTotalTransportationCost().setScale(2, BigDecimal.ROUND_UP).toString());
+                    }
+                }
+                if (entity.getTravelTransportation().getTravelTransportationType().equals(TravelTransportationType.OTHER)) {
+                    if (travelTransportation.getTotalTransportationCost() != null) {
+                        data.getData().put("totalTransportationCost", travelTransportation.getTotalTransportationCost().setScale(2, BigDecimal.ROUND_UP).toString());
+                    }
+                }
+                if (entity.getTravelTransportation().getTravelTransportationType().equals(TravelTransportationType.COMPANY_VEHICLE)) {
+                    if (travelTransportation.getCostPerMile() != null) {
+                        data.getData().put("companyVehicleCostPerMile", travelTransportation.getCostPerMile().setScale(2, BigDecimal.ROUND_UP).toString());
+                    }
+                    if (travelTransportation.getTotalMiles() != null) {
+                        data.getData().put("companyVehicleMiles", travelTransportation.getTotalMiles().setScale(2, BigDecimal.ROUND_UP).toString());
+                    }
+                    if (travelTransportation.getTotalTransportationCost() != null) {
+                        data.getData().put("totalTransportationCostCompanyVehicle", travelTransportation.getTotalTransportationCost().setScale(2, BigDecimal.ROUND_UP).toString());
+                    }
+                }
+                if (entity.getTravelTransportation().getTravelTransportationType().equals(TravelTransportationType.PRIVATE_VEHICLE)) {
+                    if (travelTransportation.getCostPerMile() != null) {
+                        data.getData().put("privateVehicleMiles", travelTransportation.getCostPerMile().setScale(2, BigDecimal.ROUND_UP).toString());
+                    }
+                    if (travelTransportation.getTotalMiles() != null) {
+                        data.getData().put("privateVehicleCostPerMile", travelTransportation.getTotalMiles().setScale(2, BigDecimal.ROUND_UP).toString());
+                    }
+                    if (travelTransportation.getTotalTransportationCost() != null) {
+                        data.getData().put("totalTransportationCostPrivateVehicle", travelTransportation.getTotalTransportationCost().setScale(2, BigDecimal.ROUND_UP).toString());
+                    }
+                    switch (travelTransportation.getExpensePaymentType()) {
+                        case EMPLOYEE_EXPENSE:
+                            data.getData().put("rentalVehiclePaymentType-EE", "true");
+                            break;
+                        case PURCHASING_CARD:
+                            data.getData().put("rentalVehiclePaymentType-PC", "true");
+                            break;
+                        case PO:
+                            data.getData().put("rentalVehiclePaymentType-PO", "true");
+                            break;
+                    }
                 }
             }
-            if (entity.getTravelTransportation().getTravelTransportationType().equals(TravelTransportationType.BUS)) {
-                if (travelTransportation.getTotalTransportationCost() != null) {
-                    data.getData().put("totalTransportationCost", travelTransportation.getTotalTransportationCost().setScale(2, BigDecimal.ROUND_UP).toString());
-                }
-            }
-            if (entity.getTravelTransportation().getTravelTransportationType().equals(TravelTransportationType.RAILWAY)) {
-                if (travelTransportation.getTotalTransportationCost() != null) {
-                    data.getData().put("totalTransportationCost", travelTransportation.getTotalTransportationCost().setScale(2, BigDecimal.ROUND_UP).toString());
-                }
-            }
-            if (entity.getTravelTransportation().getTravelTransportationType().equals(TravelTransportationType.OTHER)) {
-                if (travelTransportation.getTotalTransportationCost() != null) {
-                    data.getData().put("totalTransportationCost", travelTransportation.getTotalTransportationCost().setScale(2, BigDecimal.ROUND_UP).toString());
-                }
-            }
-            if (entity.getTravelTransportation().getTravelTransportationType().equals(TravelTransportationType.COMPANY_VEHICLE)) {
-                if (travelTransportation.getCostPerMile() != null) {
-                    data.getData().put("companyVehicleCostPerMile", travelTransportation.getCostPerMile().setScale(2, BigDecimal.ROUND_UP).toString());
-                }
-                if (travelTransportation.getTotalMiles() != null) {
-                    data.getData().put("companyVehicleMiles", travelTransportation.getTotalMiles().setScale(2, BigDecimal.ROUND_UP).toString());
-                }
-                if (travelTransportation.getTotalTransportationCost() != null) {
-                    data.getData().put("totalTransportationCostCompanyVehicle", travelTransportation.getTotalTransportationCost().setScale(2, BigDecimal.ROUND_UP).toString());
-                }
-            }
-            if (entity.getTravelTransportation().getTravelTransportationType().equals(TravelTransportationType.PRIVATE_VEHICLE)) {
-                if (travelTransportation.getCostPerMile() != null) {
-                    data.getData().put("privateVehicleMiles", travelTransportation.getCostPerMile().setScale(2, BigDecimal.ROUND_UP).toString());
-                }
-                if (travelTransportation.getTotalMiles() != null) {
-                    data.getData().put("privateVehicleCostPerMile", travelTransportation.getTotalMiles().setScale(2, BigDecimal.ROUND_UP).toString());
-                }
-                if (travelTransportation.getTotalTransportationCost() != null) {
-                    data.getData().put("totalTransportationCostPrivateVehicle", travelTransportation.getTotalTransportationCost().setScale(2, BigDecimal.ROUND_UP).toString());
-                }
-                switch (travelTransportation.getExpensePaymentType()) {
-                    case EMPLOYEE_EXPENSE:
-                        data.getData().put("rentalVehiclePaymentType-EE", "true");
-                        break;
-                    case PURCHASING_CARD:
-                        data.getData().put("rentalVehiclePaymentType-PC", "true");
-                        break;
-                    case PO:
-                        data.getData().put("rentalVehiclePaymentType-PO", "true");
-                        break;
-                }
-            }
-
             if (travelTransportation.getTravelRentalVehicleJustification() != null) {
                 //TravelRentalVehicleJustification Information
                 TravelRentalVehicleJustification justification = travelTransportation.getTravelRentalVehicleJustification();
@@ -237,8 +238,10 @@ public class TravelAuthorizationService {
                 if (justification.getEstimatedCostOfOtherTransportation() != null) {
                     data.getData().put("estimatedCostOfOtherTransportation", justification.getEstimatedCostOfOtherTransportation().setScale(2, BigDecimal.ROUND_UP).toString());
                 }
-                if (travelTransportation.getTotalTransportationCost() != null) {
-                    data.getData().put("totalTransportationCostRentalVehicle", travelTransportation.getTotalTransportationCost().setScale(2, BigDecimal.ROUND_UP).toString());
+                if (travelTransportation.getTotalTransportationCost().equals(TravelTransportationType.PRIVATE_VEHICLE)) {
+                    if (travelTransportation.getTotalTransportationCost() != null) {
+                        data.getData().put("totalTransportationCostRentalVehicle", travelTransportation.getTotalTransportationCost().setScale(2, BigDecimal.ROUND_UP).toString());
+                    }
                 }
                 //TravelRentalVehicleType info
                 if (justification.getExpenseRentalPaymentType() != null) {
