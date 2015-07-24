@@ -211,16 +211,18 @@ public class TravelAuthorizationService {
                     if (travelTransportation.getTotalTransportationCost() != null) {
                         data.getData().put("totalTransportationCostPrivateVehicle", travelTransportation.getTotalTransportationCost().setScale(2, BigDecimal.ROUND_UP).toString());
                     }
-                    switch (travelTransportation.getExpensePaymentType()) {
-                        case EMPLOYEE_EXPENSE:
-                            data.getData().put("rentalVehiclePaymentType-EE", "true");
-                            break;
-                        case PURCHASING_CARD:
-                            data.getData().put("rentalVehiclePaymentType-PC", "true");
-                            break;
-                        case PO:
-                            data.getData().put("rentalVehiclePaymentType-PO", "true");
-                            break;
+                    if (travelTransportation.getExpensePaymentType() != null) {
+                        switch (travelTransportation.getExpensePaymentType()) {
+                            case EMPLOYEE_EXPENSE:
+                                data.getData().put("rentalVehiclePaymentType-EE", "true");
+                                break;
+                            case PURCHASING_CARD:
+                                data.getData().put("rentalVehiclePaymentType-PC", "true");
+                                break;
+                            case PO:
+                                data.getData().put("rentalVehiclePaymentType-PO", "true");
+                                break;
+                        }
                     }
                 }
             }
