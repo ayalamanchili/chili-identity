@@ -41,5 +41,4 @@ public interface OfficeCacheKeys {
     /**
      * holds key values for email messaging with address
      */
-    String EMAILS = "emails";
 }

@@ -6,6 +6,7 @@ package info.yalamanchili.office.dao.profile;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.chili.dao.CRUDDao;
+import info.chili.email.CEmail;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
@@ -48,7 +49,7 @@ public class EmailDao extends CRUDDao<Email> {
     @Override
     @Caching(evict = {
         @CacheEvict(value = OfficeCacheKeys.EMPLOYEES, allEntries = true),
-        @CacheEvict(value = OfficeCacheKeys.EMAILS, allEntries = true)
+        @CacheEvict(value = CEmail.EMAILS_CACHE_KEY, allEntries = true)
     })
     public Email save(Email entity) {
         if (entity.getId() != null) {
@@ -70,7 +71,7 @@ public class EmailDao extends CRUDDao<Email> {
     public void delete(Long id) {
         Email email = em.find(Email.class, id);
         Contact contact = ContactDao.instance().findById(email.getContact().getId());
-        
+
         if (contact instanceof Employee) {
             Employee emp = (Employee) contact;
             if (emp.getEmails().size() == 1) {

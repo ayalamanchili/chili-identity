@@ -10,6 +10,7 @@ package info.yalamanchili.office.jrs.profile;
 import info.chili.commons.SearchUtils;
 import info.chili.spring.SpringContext;
 import info.chili.dao.CRUDDao;
+import info.chili.email.CEmail;
 import info.chili.jpa.validation.Validate;
 import info.chili.reporting.ReportGenerator;
 import info.chili.service.jrs.types.Entry;
@@ -270,7 +271,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @Path("/email/{empId}")
     @Caching(evict = {
         @CacheEvict(value = OfficeCacheKeys.EMPLOYEES, allEntries = true),
-        @CacheEvict(value = OfficeCacheKeys.EMAILS, allEntries = true)
+        @CacheEvict(value = CEmail.EMAILS_CACHE_KEY, allEntries = true)
     })
     public void addEmail(@PathParam("empId") Long empId, Email email) {
         Employee emp = (Employee) getDao().findById(empId);

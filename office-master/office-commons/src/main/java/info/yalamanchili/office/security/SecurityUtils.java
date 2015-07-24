@@ -12,7 +12,6 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.security.acl.AclClass;
 import info.yalamanchili.office.entity.security.acl.AclSid;
 import javax.persistence.EntityManager;
-import org.jasypt.digest.StandardStringDigester;
 import org.jasypt.digest.StringDigester;
 import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;

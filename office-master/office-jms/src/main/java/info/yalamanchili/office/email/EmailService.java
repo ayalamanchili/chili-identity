@@ -10,11 +10,11 @@ package info.yalamanchili.office.email;
 import com.google.common.base.Strings;
 import com.google.common.xml.XmlEscapers;
 import info.chili.commons.HtmlUtils;
+import info.chili.email.CEmail;
 import info.chili.email.dao.UserEmailPreferenceRuleDao;
 import info.chili.exception.FaultEventException;
 import info.chili.exception.FaultEventPayload;
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.cache.OfficeCacheManager;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -167,23 +167,20 @@ public class EmailService {
     }
 
     public Boolean notificationsEnabled(Email emailObj, String emailAddress) {
-        if (officeCacheManager.contains(OfficeCacheKeys.EMAILS, emailAddress)) {
-            return (Boolean) officeCacheManager.get(OfficeCacheKeys.EMAILS, emailAddress);
+        if (officeCacheManager.contains(CEmail.EMAILS_CACHE_KEY, emailAddress)) {
+            return (Boolean) officeCacheManager.get(CEmail.EMAILS_CACHE_KEY, emailAddress);
         }
         info.yalamanchili.office.entity.profile.Email email = findEmail(emailAddress);
         if (email != null && email.getContact() instanceof Employee) {
             Employee emp = (Employee) findEmail(emailAddress).getContact();
             //TODO check active?
-            if (!emp.getPreferences().getEnableEmailNotifications()) {
-                officeCacheManager.put(OfficeCacheKeys.EMAILS, emailAddress, false);
-                return false;
-            }
-            if (disableEmailByRules(emp, emailObj, emailAddress)) {
+            if (!emp.getPreferences().getEnableEmailNotifications() || disableEmailByRules(emp, emailObj, emailAddress)) {
+                officeCacheManager.put(CEmail.EMAILS_CACHE_KEY, emailAddress, false);
                 return false;
             }
 
         }
-        officeCacheManager.put(OfficeCacheKeys.EMAILS, emailAddress, true);
+        officeCacheManager.put(CEmail.EMAILS_CACHE_KEY, emailAddress, true);
         return true;
     }
 
@@ -202,6 +199,7 @@ public class EmailService {
     protected EntityManager em;
 
 //TODO update to return just emp preferecnes
+    //TODO use cache
     public info.yalamanchili.office.entity.profile.Email findEmail(String emailAddress) {
         Query getEmailQ = em.createQuery("from " + info.yalamanchili.office.entity.profile.Email.class.getCanonicalName() + " where emailHash=:emailAddressParam");
         getEmailQ.setParameter("emailAddressParam", SecurityUtils.hash(emailAddress));
