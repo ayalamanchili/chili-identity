@@ -123,12 +123,10 @@ public class ReadAllTravelAuthorizationPanel extends CRUDReadAllComposite {
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         String status = JSONUtils.toString(entity, "status");
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CEO)) {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
         } else {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE, row, JSONUtils.toString(entity, "id"));
-        }
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_USER)) {
             if ((TravelAuthorizationStatus.PENDING_CEO_APPROVAL.name().equals(status))    || 
                 (TravelAuthorizationStatus.APPROVED.name().equals(status))                || 
                 (TravelAuthorizationStatus.REJECTED.name().equals(status))) {
