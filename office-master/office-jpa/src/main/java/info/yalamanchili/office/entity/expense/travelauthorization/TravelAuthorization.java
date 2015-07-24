@@ -154,6 +154,7 @@ public class TravelAuthorization extends AbstractEntity {
     /**
      *
      */
+    @NotNull(message = "{travel.totalEstimatedTripExpences.not.empty.msg}")
     private BigDecimal totalEstimatedTripExpences;
 
     /**
