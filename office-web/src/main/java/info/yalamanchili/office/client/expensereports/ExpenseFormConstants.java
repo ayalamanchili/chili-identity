@@ -30,4 +30,11 @@ public interface ExpenseFormConstants {
     String PROJECT_NUMBER="projectNumber";
     String TRAVEL_EXPENSE="TravelExpense";
     String EXPENSE_ITEMS="expenseItems";
+    String EXPENSE_DATE="expenseDate";
+    String PURPOSE="purpose";
+    String DESCRIPTION="description";
+    String REMARK="remark";
+    String AMOUNT="amount";
+    String CATEGORY="category";
+    
 }
