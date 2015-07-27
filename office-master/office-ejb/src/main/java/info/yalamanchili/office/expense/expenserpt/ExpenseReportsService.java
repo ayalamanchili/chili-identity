@@ -149,7 +149,7 @@ public class ExpenseReportsService {
         data.getData().put("comment", allComment);
         byte[] pdf = PDFUtils.generatePdf(data);
         return Response.ok(pdf)
-                .header("content-disposition", "filename = self-review.pdf")
+                .header("content-disposition", "filename = Expense-Report.pdf")
                 .header("Content-Length", pdf)
                 .build();
     }
