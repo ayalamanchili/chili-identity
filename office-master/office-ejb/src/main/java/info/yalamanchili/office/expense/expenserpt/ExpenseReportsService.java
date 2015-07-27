@@ -25,8 +25,10 @@ import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseCategory;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseItem;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport;
+import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReportStatus;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.template.TemplateService;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.ws.rs.core.Response;
@@ -46,32 +48,33 @@ public class ExpenseReportsService {
     @Autowired
     protected ExpenseReportsDao expenseReportsDao;
 
-    public ExpenseReport save(ExpeneseReportSaveDto dto) {
+    public ExpenseReport save(ExpenseReportSaveDto dto) {
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         ExpenseReport entity = mapper.map(dto, ExpenseReport.class);
         entity.setEmployee(emp);
+        entity.setStatus(ExpenseReportStatus.PENDING_APPROVAL);
+        entity.setSubmittedDate(new Date());
         ExpenseCategoryDao expenseCategoryDao = ExpenseCategoryDao.instance();
         for (ExpenseItem item : entity.getExpenseItems()) {
             item.setCategory(expenseCategoryDao.findById(item.getCategory().getId()));
-//            item.setExpenseReport(entity);
         }
-        entity = expenseReportsDao.getEntityManager().merge(entity);
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("entity", entity);
+        vars.put("currentEmployee", emp); 
+        entity = expenseReportsDao.save(entity);
         vars.put("entityId", entity.getId());
-        vars.put("currentEmployee", emp);
-        if (OfficeSecurityService.instance().hasRole(info.yalamanchili.office.OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
-            entity.setBpmProcessId(OfficeBPMService.instance().startProcess("corp_emp_expense_report_process", vars));
-        } else {
-            entity.setBpmProcessId(OfficeBPMService.instance().startProcess("assoc_emp_expense_report_process", vars));
-        }
+//        if (OfficeSecurityService.instance().hasRole(info.yalamanchili.office.OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+//            entity.setBpmProcessId(OfficeBPMService.instance().startProcess("corp_emp_expense_report_process", vars));
+//        } else {
+//            entity.setBpmProcessId(OfficeBPMService.instance().startProcess("assoc_emp_expense_report_process", vars));
+//        }
         return entity;
     }
 
-    public ExpeneseReportSaveDto read(Long id) {
+    public ExpenseReportSaveDto read(Long id) {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
-        return mapper.map(expenseReportsDao.findById(id), ExpeneseReportSaveDto.class);
+        return mapper.map(expenseReportsDao.findById(id), ExpenseReportSaveDto.class);
     }
 
     public void delete(Long id) {
