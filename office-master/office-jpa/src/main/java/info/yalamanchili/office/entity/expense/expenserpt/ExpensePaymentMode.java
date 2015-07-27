@@ -15,5 +15,5 @@ package info.yalamanchili.office.entity.expense.expenserpt;
 public enum ExpensePaymentMode {
 
     PERSONAL_CARD,
-    AMEX_CARD;
+    CORPORATE_CARD;
 }
