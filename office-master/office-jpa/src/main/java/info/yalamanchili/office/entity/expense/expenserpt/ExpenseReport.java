@@ -115,7 +115,7 @@ public class ExpenseReport extends AbstractEntity {
      */
     @Enumerated(EnumType.STRING)
     @NotNull(message = "{expensereport.expenseFormPurpose.not.empty.msg}")
-    private ExpenseFormPurpose expenseFormPurpose;
+    private ExpenseFormPurpose expenseFormType;
     /**
      *
      */
@@ -344,14 +344,14 @@ public class ExpenseReport extends AbstractEntity {
      *
      */
     public ExpenseFormPurpose getExpenseFormPurpose() {
-        return expenseFormPurpose;
+        return expenseFormType;
     }
 
     /**
      *
      */
     public void setExpenseFormPurpose(ExpenseFormPurpose expenseFormPurpose) {
-        this.expenseFormPurpose = expenseFormPurpose;
+        this.expenseFormType = expenseFormPurpose;
     }
 
     /**
@@ -367,5 +367,4 @@ public class ExpenseReport extends AbstractEntity {
     public void setExpenseReimbursePaymentMode(ExpenseReimbursePaymentMode expenseReimbursePaymentMode) {
         this.expenseReimbursePaymentMode = expenseReimbursePaymentMode;
     }
-
 }
