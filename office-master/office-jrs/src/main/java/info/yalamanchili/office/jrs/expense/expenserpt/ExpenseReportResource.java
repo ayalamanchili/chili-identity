@@ -12,7 +12,7 @@ import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.expense.expenserpt.ExpenseReportsDao;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport;
-import info.yalamanchili.office.expense.expenserpt.ExpeneseReportSaveDto;
+import info.yalamanchili.office.expense.expenserpt.ExpenseReportSaveDto;
 import info.yalamanchili.office.expense.expenserpt.ExpenseReportsService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
@@ -26,6 +26,7 @@ import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -42,26 +43,22 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("request")
 public class ExpenseReportResource extends CRUDResource<ExpenseReport> {
 
+    @Autowired
+    public ExpenseReportsDao expenseReportsDao;
+
     @PUT
     @Validate
     @Path("/save")
     @CacheEvict(value = OfficeCacheKeys.EXPENSE, allEntries = true)
-    public ExpenseReport save(ExpeneseReportSaveDto dto) {
-        return ExpenseReportsService.instance().save(dto);
-    }
-
-    @PUT
-    @Validate
-    @Override
-    public ExpenseReport save(ExpenseReport entity) {
-        throw new UnsupportedOperationException();
+    public ExpenseReport save(ExpenseReportSaveDto dto) {
+       return ExpenseReportsService.instance().save(dto);
     }
 
     @GET
     @Path("/{id}")
     @Transactional(readOnly = true)
     @Override
-    public ExpeneseReportSaveDto read(@PathParam("id") Long id) {
+    public ExpenseReportSaveDto read(@PathParam("id") Long id) {
         return ExpenseReportsService.instance().read(id);
     }
 
@@ -69,8 +66,8 @@ public class ExpenseReportResource extends CRUDResource<ExpenseReport> {
     @Path("/{start}/{limit}")
     public ExpenseReportResource.ExpenseReportsTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         ExpenseReportResource.ExpenseReportsTable tableObj = new ExpenseReportResource.ExpenseReportsTable();
-        tableObj.setEntities(getDao().query(start, limit));
-        tableObj.setSize(getDao().size());
+        tableObj.setEntities(expenseReportsDao.queryAll(start, limit));
+        tableObj.setSize(expenseReportsDao.size());
         return tableObj;
     }
 
