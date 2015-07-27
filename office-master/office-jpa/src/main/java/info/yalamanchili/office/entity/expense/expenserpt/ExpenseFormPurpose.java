@@ -14,6 +14,6 @@ package info.yalamanchili.office.entity.expense.expenserpt;
  */
 public enum ExpenseFormPurpose {
 
-    TRAVEL,
-    GENERAL;
+    TRAVEL_EXPENSE,
+    GENERAL_EXPENSE;
 }
