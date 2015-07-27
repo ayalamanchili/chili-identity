@@ -21,6 +21,7 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import static info.yalamanchili.office.client.expense.travelauthorization.TravelAuthConstants.EMPLOYEE;
 import java.util.logging.Logger;
 
 /**
@@ -31,15 +32,16 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
 
     private static Logger logger = Logger.getLogger(ReadAllExpenseReportsPanel.class.getName());
     public static ReadAllExpenseReportsPanel instance;
+    protected String url;
 
     public ReadAllExpenseReportsPanel() {
         instance = this;
         initTable("ExpenseReports", OfficeWelcome.constants);
     }
 
-    public ReadAllExpenseReportsPanel(String parentId) {
+    public ReadAllExpenseReportsPanel(String url) {
         instance = this;
-        this.parentId = parentId;
+        this.url = url;
         initTable("ExpenseReports", OfficeWelcome.constants);
     }
 
@@ -59,11 +61,11 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                postDeleteSuccess();
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
     }
 
     @Override
@@ -81,14 +83,14 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
 
     @Override
     public void preFetchTable(int start) {
-        HttpService.HttpServiceAsync.instance().doGet(getReadAllExpenseItemURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
+        HttpService.HttpServiceAsync.instance().doGet(getReadAllExpenseReportURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), false,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                logger.info("rrr:" + result);
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        logger.info("rrr:" + result);
+                        postFetchTable(result);
+                    }
+                });
     }
 
     @Override
@@ -106,12 +108,13 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
+//            JSONObject emp = (JSONObject) entity.get(EMPLOYEE);
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
             table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             FileField reportL = new FileField("Print", ChiliClientConfig.instance().getFileDownloadUrl() + "expensereport/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id"));
             table.setWidget(i, 4, reportL);
-            table.setText(i, 5, JSONUtils.toString(entity, "status"));
+            table.setText(i, 5, JSONUtils.formatEnumString(entity, "status"));
         }
     }
 
@@ -124,7 +127,7 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
         return OfficeWelcome.instance().constants.root_url() + "expensereport/delete/" + entityId;
     }
 
-    private String getReadAllExpenseItemURL(Integer start, String tableSize) {
+    private String getReadAllExpenseReportURL(Integer start, String tableSize) {
         return OfficeWelcome.constants.root_url() + "expensereport/" + start.toString() + "/" + tableSize.toString();
     }
 }
