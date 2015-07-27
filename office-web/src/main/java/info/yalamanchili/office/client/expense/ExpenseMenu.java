@@ -36,13 +36,13 @@ public class ExpenseMenu extends Composite {
 
     protected void configureExpenseMenu() {
 
-        expenseMenuBar.addItem("AdvanceRequisition", expensadvancerequisitionCmd);
+        expenseMenuBar.addItem("Advance Requisition", expensadvancerequisitionCmd);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_GC_IMMIGRATION, Auth.ROLE.ROLE_H1B_IMMIGRATION)) {
-            expenseMenuBar.addItem("CheckRequisition", expensimmigrationcheckrequisitionCmd);
+            expenseMenuBar.addItem("Check Requisition", expensimmigrationcheckrequisitionCmd);
         }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_USER)) {
-            expenseMenuBar.addItem("ExpenseReports", expenseReportsMaintainenceCmd);
-            expenseMenuBar.addItem("ExpenseCategories", expenseCategoriesMaintainenceCmd);
+            expenseMenuBar.addItem("Expense Reports", expenseReportsMaintainenceCmd);
+            expenseMenuBar.addItem("Expense Categories", expenseCategoriesMaintainenceCmd);
         }
         expenseMenuBar.addItem("Travel Authorization", travelEcpenseMaintainenceCmd);
         expenseMenuBar.addStyleName("entityMenuBar");
