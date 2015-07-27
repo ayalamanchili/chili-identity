@@ -19,6 +19,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -154,7 +155,7 @@ public class TravelAuthorization extends AbstractEntity {
     /**
      *
      */
-    @NotNull(message = "{travel.totalEstimatedTripExpences.not.empty.msg}")
+    @Min(1)
     private BigDecimal totalEstimatedTripExpences;
 
     /**
