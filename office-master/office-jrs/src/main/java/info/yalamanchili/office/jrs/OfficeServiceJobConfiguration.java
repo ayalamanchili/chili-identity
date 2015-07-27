@@ -103,9 +103,4 @@ public class OfficeServiceJobConfiguration {
     public void sendIncompleteProfileEmails() {
         ProfileReportsService.instance().sendMissingProfileInfoEmail();
     }
-
-    @ManagedOperation
-    public void generateSkillSetReport() {
-        RecruitingReportsService.instance().generateEmployeeSkillSetReport();
-    }
 }
