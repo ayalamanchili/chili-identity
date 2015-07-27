@@ -22,6 +22,7 @@ import javax.persistence.TemporalType;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
@@ -41,11 +42,12 @@ public class ExpenseReport extends AbstractEntity {
     /**
      *
      */
-    @NotEmpty(message = "{expenseitem.name.not.empty.msg}")
+    @NotEmpty(message = "{expensereport.name.not.empty.msg}")
     private String name;
     /**
      *
      */
+    @NotEmpty(message = "{expensereport.location.not.empty.msg}")
     private String location;
     /**
      *
@@ -54,16 +56,16 @@ public class ExpenseReport extends AbstractEntity {
     /**
      *
      */
-    @NotNull(message = "{expenseitem.startDate.not.empty.msg}")
+    @NotNull(message = "{expensereport.startDate.not.empty.msg}")
     @Temporal(TemporalType.DATE)
-    @org.hibernate.annotations.Index(name = "EXP_RPT_STRT_DT")
+//    @org.hibernate.annotations.Index(name = "EXP_RPT_STRT_DT")
     private Date startDate;
     /**
      *
      */
     @NotNull(message = "{expenseitem.endDate.not.empty.msg}")
     @Temporal(TemporalType.DATE)
-    @org.hibernate.annotations.Index(name = "EXP_RPT_END_DT")
+//    @org.hibernate.annotations.Index(name = "EXP_RPT_END_DT")
     private Date endDate;
     /**
      *
@@ -112,10 +114,12 @@ public class ExpenseReport extends AbstractEntity {
      *
      */
     @Enumerated(EnumType.STRING)
+    @NotNull(message = "{expensereport.expenseFormPurpose.not.empty.msg}")
     private ExpenseFormPurpose expenseFormPurpose;
     /**
      *
      */
+    @NotNull(message = "{expensereport.paymentmode.not.empty.msg}")
     @Enumerated(EnumType.STRING)
     private ExpenseReimbursePaymentMode expenseReimbursePaymentMode;
 
@@ -282,6 +286,7 @@ public class ExpenseReport extends AbstractEntity {
     /**
      *
      */
+    @XmlTransient
     public List<ExpenseItem> getExpenseItems() {
         return expenseItems;
     }
