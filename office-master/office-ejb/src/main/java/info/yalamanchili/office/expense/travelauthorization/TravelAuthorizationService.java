@@ -240,8 +240,8 @@ public class TravelAuthorizationService {
                 if (justification.getEstimatedCostOfOtherTransportation() != null) {
                     data.getData().put("estimatedCostOfOtherTransportation", justification.getEstimatedCostOfOtherTransportation().setScale(2, BigDecimal.ROUND_UP).toString());
                 }
-                if (travelTransportation.getTotalTransportationCost().equals(TravelTransportationType.PRIVATE_VEHICLE)) {
-                    if (travelTransportation.getTotalTransportationCost() != null) {
+                if (travelTransportation.getTotalTransportationCost() != null) {
+                    if (travelTransportation.getTotalTransportationCost().equals(TravelTransportationType.PRIVATE_VEHICLE)) {
                         data.getData().put("totalTransportationCostRentalVehicle", travelTransportation.getTotalTransportationCost().setScale(2, BigDecimal.ROUND_UP).toString());
                     }
                 }
