@@ -55,17 +55,17 @@ public class CreateExpenseItemPanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         expensePaymentMode = new EnumField(OfficeWelcome.constants,
-                EXPENSE_PAYMENT_MODE, "TravelExpense", false, true, ExpensePaymentMode.names(), Alignment.HORIZONTAL);
-        expenseDate = new DateField(OfficeWelcome.constants, "expenseDate", "TravelExpense", false, true, Alignment.HORIZONTAL);
-        purpose = new TextAreaField(OfficeWelcome.constants, "purpose", "TravelExpense", false, true, Alignment.HORIZONTAL);
-        description = new TextAreaField(OfficeWelcome.constants, "description", "TravelExpense", false, false, Alignment.HORIZONTAL);
-        remark = new TextAreaField(OfficeWelcome.constants, "remark", "TravelExpense", false, false, Alignment.HORIZONTAL);
-        amount = new CurrencyField(OfficeWelcome.constants, "amount", "TravelExpense", false, true, Alignment.HORIZONTAL);
+                EXPENSE_PAYMENT_MODE, TRAVEL_EXPENSE, false, true, ExpensePaymentMode.names(), Alignment.HORIZONTAL);
+        expenseDate = new DateField(OfficeWelcome.constants, EXPENSE_DATE, TRAVEL_EXPENSE, false, true, Alignment.HORIZONTAL);
+        purpose = new TextAreaField(OfficeWelcome.constants, PURPOSE, TRAVEL_EXPENSE, false, true, Alignment.HORIZONTAL);
+        description = new TextAreaField(OfficeWelcome.constants, DESCRIPTION, TRAVEL_EXPENSE, false, false, Alignment.HORIZONTAL);
+        remark = new TextAreaField(OfficeWelcome.constants, REMARK, TRAVEL_EXPENSE, false, false, Alignment.HORIZONTAL);
+        amount = new CurrencyField(OfficeWelcome.constants, AMOUNT, TRAVEL_EXPENSE, false, true, Alignment.HORIZONTAL);
         expenseDate.getElement().getStyle().setProperty("float", "left");
         purpose.getElement().getStyle().setProperty("float", "left");
         amount.getElement().getStyle().setProperty("float", "left");
         entityFieldsPanel.add(expenseDate);
-        addDropDown("category", selectCategoryWidgetF);
+        addDropDown(CATEGORY, selectCategoryWidgetF);
         entityFieldsPanel.add(amount);
         entityFieldsPanel.add(expensePaymentMode);
         entityFieldsPanel.add(purpose);
@@ -93,24 +93,24 @@ public class CreateExpenseItemPanel extends CreateComposite {
     @Override
     public JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
-        entity.put("category", selectCategoryWidgetF.getSelectedObject());
+        entity.put(CATEGORY, selectCategoryWidgetF.getSelectedObject());
         if (expensePaymentMode.getValue() != null) {
-            entity.put("expensePaymentMode", new JSONString(expensePaymentMode.getValue()));
+            entity.put(EXPENSE_PAYMENT_MODE, new JSONString(expensePaymentMode.getValue()));
         }
         if (expenseDate.getDate() != null) {
-            entity.put("expenseDate", new JSONString(DateUtils.toDateString(expenseDate.getDate())));
+            entity.put(EXPENSE_DATE, new JSONString(DateUtils.toDateString(expenseDate.getDate())));
         }
         if (description.getValue() != null) {
-            entity.put("description", new JSONString(description.getValue()));
+            entity.put(PURPOSE, new JSONString(description.getValue()));
         }
         if (purpose.getValue() != null) {
-            entity.put("purpose", new JSONString(purpose.getValue()));
+            entity.put(DESCRIPTION, new JSONString(purpose.getValue()));
         }
         if (remark.getValue() != null) {
-            entity.put("remark", new JSONString(remark.getValue()));
+            entity.put(REMARK, new JSONString(remark.getValue()));
         }
         if (amount.getCurrency() != null) {
-            entity.put("amount", new JSONString(amount.getCurrency().toString()));
+            entity.put(AMOUNT, new JSONString(amount.getCurrency().toString()));
         }
         return entity;
     }
@@ -138,7 +138,7 @@ public class CreateExpenseItemPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully ExpenseItem Created");
+        new ResponseStatusWidget().show("Expense Item Successfully Created");
         TabPanel.instance().expensePanel.sidePanelTop.clear();
         TabPanel.instance().expensePanel.sidePanelTop.add(new ExpenseItemSidePanel());
         TabPanel.instance().expensePanel.entityPanel.clear();
