@@ -26,6 +26,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -37,13 +38,12 @@ import org.hibernate.search.annotations.Field;
 @XmlType
 public class ExpenseItem extends AbstractEntity {
 
-    @Transient
     private static final long serialVersionUID = 1L;
     /*
      *
      */
     @Temporal(TemporalType.DATE)
-    @NotNull(message = "{expenseDate.not.empty.msg}")
+    @NotNull(message = "{expenseitem.expenseDate.not.empty.msg}")
     private Date expenseDate;
     /*
      *
@@ -54,11 +54,12 @@ public class ExpenseItem extends AbstractEntity {
      *
      */
     @Lob
+    @NotEmpty(message = "{expenseitem.purpose.not.empty.msg}")
     private String purpose;
     /*
      *
      */
-    @NotNull(message = "{amount.not.empty.msg}")
+    @NotNull(message = "{expenseitem.amount.not.empty.msg}")
     private BigDecimal amount;
     /*
      *
@@ -77,6 +78,7 @@ public class ExpenseItem extends AbstractEntity {
      */
     @Enumerated(EnumType.STRING)
     @Field
+    @NotNull(message = "{expenseitem.paymentmode.not.empty.msg}")
     private ExpensePaymentMode expensePaymentMode;
     /*
      *   GETTERS and SETTERS
