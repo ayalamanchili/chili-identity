@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlRootElement
 @XmlType
-public class ExpeneseReportSaveDto extends ExpenseReport {
+public class ExpenseReportSaveDto extends ExpenseReport {
 
     protected List<ExpenseItem> expenseItems;
 
