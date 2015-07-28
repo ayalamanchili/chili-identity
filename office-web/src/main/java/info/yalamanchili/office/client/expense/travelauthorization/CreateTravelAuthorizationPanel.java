@@ -129,7 +129,7 @@ public class CreateTravelAuthorizationPanel extends CreateComposite implements C
         entityFieldsPanel.add(meals);
         entityFieldsPanel.add(mealsItemPanel);
         entityFieldsPanel.add(emptyLine);
-        addField(TOTAL_ESTIMATED_TRIP_EXPENCES, false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        addField(TOTAL_ESTIMATED_TRIP_EXPENCES, true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(emptyLine);
         alignFields(DEFAULT_FIELD_WIDTH);
         totalEstimatedTripExpencesF = (CurrencyField) fields.get("totalEstimatedTripExpences");
