@@ -13,7 +13,6 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.widgets.ClickableLink;
-import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 import java.util.logging.Logger;
 
@@ -42,9 +41,9 @@ public class ExpenseReportsSidePanel extends ALComposite implements ClickHandler
 
     @Override
     protected void addWidgets() {
-        if (Auth.isAdmin() || Auth.isHR()) {
+//        if (Auth.isAdmin() || Auth.isHR()) {
             expenseCategoryReportsSidePanel.add(createExpenseReportsLink);
-        }
+//        }
     }
 
     @Override
