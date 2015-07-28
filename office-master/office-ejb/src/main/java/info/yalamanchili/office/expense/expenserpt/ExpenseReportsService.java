@@ -133,7 +133,7 @@ public class ExpenseReportsService {
             data.getData().put("description" + i, item.getDescription());
             data.getData().put("purpose" + i, item.getPurpose());
             data.getData().put("remark" + i, item.getRemark());
-            data.getData().put("itemStartDate", new SimpleDateFormat("MM-dd-yyyy").format(item.getExpenseDate()));
+            data.getData().put("itemStartDate" + i, new SimpleDateFormat("MM-dd-yyyy").format(item.getExpenseDate()));
             data.getData().put("amount" + i, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
             itemTotal = itemTotal.add(item.getAmount());
             i++;
