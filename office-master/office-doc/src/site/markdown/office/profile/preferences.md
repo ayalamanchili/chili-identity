@@ -1,16 +1,14 @@
 Preferences
 =========
 - [Login to Portal](../../office/forgot-password.html "Login")
-- ***Navigate to Profile --> Preferences --> Click Enable Email Notifications**
-- This is basically providing user with option to disable/enable notifications at account level under preferences.
-- Employee can disable and enable the email notifications which is in preferences
-- Here you can set the individual user preferences currently we can turn on and off the email notifications for the users.
+- An user be able to disable and enable specific email notification in preferences
+
 
 Preferences
 ----
 ![alt text](../../images/preferences_profile.png "Preferences")
 
-Adding Preferences Rule
+How to Disable certain email notifications
 =========
 
 - ***Navigate to Profile --> Preferences --> Manage Email Preferences --> Add Rule Name to Disable the Email Notification **
