@@ -3,6 +3,8 @@
  */
 package info.yalamanchili.office.client.profile.address;
 
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -19,14 +21,16 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.data.CountryFactory;
+import info.chili.gwt.data.IndiaStatesFactory;
 import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.BooleanField;
+import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.profile.ProfileHome;
 
-public class CreateAddressPanel extends CreateComposite {
+public class CreateAddressPanel extends CreateComposite implements ChangeHandler {
 
     private static Logger logger = Logger.getLogger(CreateAddressPanel.class.getName());
     protected static HTML notifyChangeInstructions = new HTML("<h5>Please choose <strong>Notify Change</strong> check box if you are changing to a new address</span><span style=\\\"line-height: 20.7999992370605px;\\\"> that needs to communicated to other departments (Payroll, HR and Health Insurance)</h5>");
@@ -109,6 +113,7 @@ public class CreateAddressPanel extends CreateComposite {
         if (notifyChangeF != null) {
             notifyChangeF.getBox().addClickHandler(this);
         }
+        countriesF.listBox.addChangeHandler(this);
     }
 
     @Override
@@ -144,6 +149,8 @@ public class CreateAddressPanel extends CreateComposite {
             notifyChangeInstructions2.setVisible(false);
         }
     }
+    EnumField statesF;
+    EnumField countriesF;
 
     @Override
     protected void addWidgets() {
@@ -151,8 +158,8 @@ public class CreateAddressPanel extends CreateComposite {
         addField("street2", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("city", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("state", false, true, DataType.ENUM_FIELD, Alignment.HORIZONTAL);
-        addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
         addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
+        addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
         addField("zip", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
         if (CreateAddressPanelType.ALL.equals(type)) {
             addDropDown("addressType", new SelectAddressTypeWidget(false, false));
@@ -164,6 +171,8 @@ public class CreateAddressPanel extends CreateComposite {
             addField("notifyHealthInsurance", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("changeNotes", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         }
+        statesF = (EnumField) fields.get("state");
+        countriesF = (EnumField) fields.get("country");
         alignFields();
     }
 
@@ -180,4 +189,17 @@ public class CreateAddressPanel extends CreateComposite {
             return OfficeWelcome.constants.root_url() + "employee/address/" + TreeEmployeePanel.instance().getEntityId();
         }
     }
+
+    @Override
+    public void onChange(ChangeEvent event) {
+        switch (countriesF.getValue()) {
+            case "USA":
+                statesF.setValues(USAStatesFactory.getStates().toArray(new String[0]));
+                break;
+            case "INDIA":
+                statesF.setValues(IndiaStatesFactory.getStates().toArray(new String[0]));
+                break;
+        }
+    }
+
 }
