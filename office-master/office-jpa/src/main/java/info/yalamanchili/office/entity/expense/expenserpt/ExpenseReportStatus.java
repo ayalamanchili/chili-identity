@@ -14,7 +14,8 @@ package info.yalamanchili.office.entity.expense.expenserpt;
 public enum ExpenseReportStatus {
 
     PENDING_APPROVAL,
-    PENDING_DISPATCH_APPROVAL,
+    PENDING_PAYROLL_APPROVAL,
+    PENDING_CEO_APPROVAL,
     REJECTED,
-    COMPLETED;
+    APPROVED;
 }
