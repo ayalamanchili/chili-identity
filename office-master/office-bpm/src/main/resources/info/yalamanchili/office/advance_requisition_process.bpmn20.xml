@@ -75,7 +75,7 @@
         </sequenceFlow>
         <userTask id="advanceRequisitionFinalApprovalTask" 
                   name="Advance Requisition Final Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" 
-                  activiti:candidateGroups="ROLE_ADMIN">
+                  activiti:candidateGroups="ROLE_CEO">
             <documentation>
                 Advance Requisition Final Approval Task
                 Employee Name  : #{currentEmployee.firstName} #{currentEmployee.lastName}
