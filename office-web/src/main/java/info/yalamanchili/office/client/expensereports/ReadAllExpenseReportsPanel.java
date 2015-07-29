@@ -108,8 +108,8 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-//            JSONObject emp = (JSONObject) entity.get(EMPLOYEE);
-            table.setText(i, 1, JSONUtils.toString(entity, "name"));
+            JSONObject emp = (JSONObject) entity.get(EMPLOYEE);
+            table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
             table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             FileField reportL = new FileField("Print", ChiliClientConfig.instance().getFileDownloadUrl() + "expensereport/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id"));
