@@ -64,11 +64,11 @@ public class ExpenseReportsService {
         vars.put("currentEmployee", emp);
         entity = expenseReportsDao.save(entity);
         vars.put("entityId", entity.getId());
-//        if (OfficeSecurityService.instance().hasRole(info.yalamanchili.office.OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
-//            entity.setBpmProcessId(OfficeBPMService.instance().startProcess("corp_emp_expense_report_process", vars));
-//        } else {
-//            entity.setBpmProcessId(OfficeBPMService.instance().startProcess("assoc_emp_expense_report_process", vars));
-//        }
+        if (entity.getExpenseFormPurpose() != null && entity.getExpenseFormPurpose().name().equals("GENERAL_EXPENSE")) {
+            entity.setStatus(ExpenseReportStatus.PENDING_PAYROLL_APPROVAL);
+        } else {
+            entity.setStatus(ExpenseReportStatus.PENDING_APPROVAL);
+        }
         return entity;
     }
 
@@ -126,18 +126,54 @@ public class ExpenseReportsService {
             data.getSignatures().add(approvedBysignature);
         }
 
+// Ecpense Item General 
         Integer i = 1;
+        Integer p = 1;
         BigDecimal itemTotal = new BigDecimal(0);
+        BigDecimal itemAmex = new BigDecimal(0);
+        BigDecimal itemPersonal = new BigDecimal(0);
+        Integer a = 1;
         for (ExpenseItem item : entity.getExpenseItems()) {
-            data.getData().put("sl" + i, i.toString());
-            data.getData().put("description" + i, item.getDescription());
-            data.getData().put("purpose" + i, item.getPurpose());
-            data.getData().put("remark" + i, item.getRemark());
-            data.getData().put("itemStartDate" + i, new SimpleDateFormat("MM-dd-yyyy").format(item.getExpenseDate()));
-            data.getData().put("amount" + i, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
-            itemTotal = itemTotal.add(item.getAmount());
-            i++;
+            if (entity.getExpenseFormPurpose() != null && entity.getExpenseFormPurpose().name().equals("GENERAL_EXPENSE")) {
+                data.getData().put("sl" + i, i.toString());
+                data.getData().put("description" + i, item.getDescription());
+                data.getData().put("purpose" + i, item.getPurpose());
+                data.getData().put("remark" + i, item.getRemark());
+                data.getData().put("category" + i, item.getCategory().getName());
+                data.getData().put("itemStartDate" + i, new SimpleDateFormat("MM-dd-yyyy").format(item.getExpenseDate()));
+                data.getData().put("amount" + i, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                itemTotal = itemTotal.add(item.getAmount());
+                i++;
+            } else {
+                // Expanse Item Personal 
+
+
+//                for (ExpenseItem items : entity.getExpenseItems()) {
+                if (item.getExpensePaymentMode() != null && item.getExpensePaymentMode().name().equals("PERSONAL_CARD")) {
+//            data.getData().put("category" + p, items.getCategory().getName());
+                    data.getData().put("p-purpose" + p, item.getPurpose());
+                    data.getData().put("p-itemStartDate" + p, new SimpleDateFormat("MM-dd-yyyy").format(item.getExpenseDate()));
+                    data.getData().put("p-amount" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                    itemPersonal = itemPersonal.add(item.getAmount());
+                    p++;
+                } else {
+                    //Expanse Item Amex
+
+//                        for (ExpenseItem itemsAmex : entity.getExpenseItems()) {
+                    data.getData().put("a-purpose" + a, item.getPurpose());
+                    data.getData().put("a-itemStartDate" + a, new SimpleDateFormat("MM-dd-yyyy").format(item.getExpenseDate()));
+                    data.getData().put("a-amount" + a, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                    itemAmex = itemAmex.add(item.getAmount());
+                    a++;
+                }
+
+            }
+//                }
+
+//            }
         }
+        data.getData().put("p-itemTotal", itemPersonal.setScale(2, BigDecimal.ROUND_UP).toString());
+        data.getData().put("a-itemTotal", itemAmex.setScale(2, BigDecimal.ROUND_UP).toString());
         data.getData().put("itemTotal", itemTotal.setScale(2, BigDecimal.ROUND_UP).toString());
 
         //Comment
