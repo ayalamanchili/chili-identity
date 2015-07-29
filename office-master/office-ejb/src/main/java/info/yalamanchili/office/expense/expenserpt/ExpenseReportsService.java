@@ -13,6 +13,7 @@ import info.chili.commons.pdf.PDFUtils;
 import info.chili.commons.pdf.PdfDocumentData;
 import info.chili.security.Signature;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.dao.expense.expenserpt.ExpenseCategoryDao;
@@ -53,7 +54,11 @@ public class ExpenseReportsService {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         ExpenseReport entity = mapper.map(dto, ExpenseReport.class);
         entity.setEmployee(emp);
-        entity.setStatus(ExpenseReportStatus.PENDING_APPROVAL);
+        if (entity.getExpenseFormPurpose() != null && entity.getExpenseFormPurpose().name().equals("GENERAL_EXPENSE")) {
+            entity.setStatus(ExpenseReportStatus.PENDING_PAYROLL_APPROVAL);
+        } else {
+            entity.setStatus(ExpenseReportStatus.PENDING_APPROVAL);
+        }
         entity.setSubmittedDate(new Date());
         ExpenseCategoryDao expenseCategoryDao = ExpenseCategoryDao.instance();
         for (ExpenseItem item : entity.getExpenseItems()) {
@@ -64,10 +69,10 @@ public class ExpenseReportsService {
         vars.put("currentEmployee", emp);
         entity = expenseReportsDao.save(entity);
         vars.put("entityId", entity.getId());
-        if (entity.getExpenseFormPurpose() != null && entity.getExpenseFormPurpose().name().equals("GENERAL_EXPENSE")) {
-            entity.setStatus(ExpenseReportStatus.PENDING_PAYROLL_APPROVAL);
+        if (OfficeSecurityService.instance().hasRole(info.yalamanchili.office.OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+            entity.setBpmProcessId(OfficeBPMService.instance().startProcess("corp_emp_expense_report_process", vars));
         } else {
-            entity.setStatus(ExpenseReportStatus.PENDING_APPROVAL);
+            entity.setBpmProcessId(OfficeBPMService.instance().startProcess("assoc_emp_expense_report_process", vars));
         }
         return entity;
     }
@@ -103,7 +108,10 @@ public class ExpenseReportsService {
         data.getData().put("submittedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getSubmittedDate()));
         data.getSignatures().add(preparedBysignature);
         String prepareByStr = preparedBy.getLastName() + ", " + preparedBy.getFirstName();
+        String getcompany = preparedBy.getCompany().getName();
         data.getData().put("name", prepareByStr);
+        data.getData().put("systemSoftTechnologies-LLC", getcompany);
+        data.getData().put("systemSoftTechnologies-INC", getcompany);
         data.getData().put("department", entity.getDepartment());
         data.getData().put("location", entity.getLocation());
         data.getData().put("projectName", entity.getProjectName());
@@ -155,7 +163,7 @@ public class ExpenseReportsService {
                     p++;
                 } else {
                     //Expanse Item Amex
-                    data.getData().put("a-category" + p, item.getCategory().getName());
+                    data.getData().put("a-category" + a, item.getCategory().getName());
                     data.getData().put("a-purpose" + a, item.getPurpose());
                     data.getData().put("a-itemStartDate" + a, new SimpleDateFormat("MM-dd-yyyy").format(item.getExpenseDate()));
                     data.getData().put("a-amount" + a, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
@@ -164,6 +172,7 @@ public class ExpenseReportsService {
                 }
             }
         }
+
         data.getData().put("p-itemTotal", itemPersonal.setScale(2, BigDecimal.ROUND_UP).toString());
         data.getData().put("a-itemTotal", itemAmex.setScale(2, BigDecimal.ROUND_UP).toString());
         data.getData().put("itemTotal", itemTotal.setScale(2, BigDecimal.ROUND_UP).toString());
