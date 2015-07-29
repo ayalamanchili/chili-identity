@@ -48,7 +48,7 @@ public class ExpenseReport extends AbstractEntity {
      *
      */
     @NotEmpty(message = "{expensereport.location.not.empty.msg}")
-    private String location;
+        private String location;
     /**
      *
      */
@@ -115,7 +115,7 @@ public class ExpenseReport extends AbstractEntity {
      */
     @Enumerated(EnumType.STRING)
     @NotNull(message = "{expensereport.expenseFormPurpose.not.empty.msg}")
-    private ExpenseFormPurpose expenseFormType;
+    private ExpenseFormPurpose expenseFormPurpose;
     /**
      *
      */
@@ -340,20 +340,13 @@ public class ExpenseReport extends AbstractEntity {
         serialVersionUID = aSerialVersionUID;
     }
 
-    /**
-     *
-     */
     public ExpenseFormPurpose getExpenseFormPurpose() {
-        return expenseFormType;
+        return expenseFormPurpose;
     }
 
-    /**
-     *
-     */
     public void setExpenseFormPurpose(ExpenseFormPurpose expenseFormPurpose) {
-        this.expenseFormType = expenseFormPurpose;
+        this.expenseFormPurpose = expenseFormPurpose;
     }
-
     /**
      *
      */
