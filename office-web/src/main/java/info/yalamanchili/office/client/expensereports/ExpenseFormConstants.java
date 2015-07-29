@@ -16,8 +16,9 @@ public interface ExpenseFormConstants {
     
     int DEFAULT_FIELD_WIDTH = 340;
     int DEFAULT_ITEM_FIELD_WIDTH = 330;
-    int DEFAULT_DES_FIELD_WIDTH = 320;
-    int DEFAULT_PMT_FIELD_WIDTH = 335;
+    int DEFAULT_DIFF_FIELD_WIDTH = 250;
+    int DEFAULT_CAT_FIELD_WIDTH = 240;
+    int DEFAULT_DESC_FIELD_WIDTH = 260;
     // Travel Transportation Panel
     String EXPENSE_FORM_PURPOSE="expenseFormPurpose";
     String EXPENSE_PAYMENT_MODE="expensePaymentMode";
@@ -28,7 +29,8 @@ public interface ExpenseFormConstants {
     String END_DATE="endDate";
     String PROJECT_NAME="projectName";
     String PROJECT_NUMBER="projectNumber";
-    String TRAVEL_EXPENSE="TravelExpense";
+    String EXPENSE_REPORT="ExpenseReport";
+    String EXPENSE_ITEM="ExpenseItem";
     String EXPENSE_ITEMS="expenseItems";
     String EXPENSE_DATE="expenseDate";
     String PURPOSE="purpose";
