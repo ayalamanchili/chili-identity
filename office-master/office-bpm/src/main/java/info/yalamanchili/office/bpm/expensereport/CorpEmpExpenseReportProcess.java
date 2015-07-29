@@ -55,19 +55,29 @@ public class CorpEmpExpenseReportProcess implements TaskListener {
         }
         //Status
         String status = (String) dt.getExecution().getVariable("status");
-        if (status.equalsIgnoreCase("approved")) {
-            entity.setStatus(ExpenseReportStatus.PENDING_APPROVAL);
-        } else {
-            entity.setStatus(ExpenseReportStatus.REJECTED);
+        if (dt.getTaskDefinitionKey().equals("expenseReportMgrApprovalTask")) {
+            if (status.equalsIgnoreCase("approved")) {
+                entity.setStatus(ExpenseReportStatus.PENDING_PAYROLL_APPROVAL);
+            } else {
+                entity.setStatus(ExpenseReportStatus.REJECTED);
+            }
         }
-        if (dt.getTaskDefinitionKey().equals("expenseReportPayrollApprovalTask") && ExpenseReportStatus.PENDING_DISPATCH_APPROVAL.equals(entity.getStatus())) {
-            entity.setStatus(ExpenseReportStatus.COMPLETED);
+        if (dt.getTaskDefinitionKey().equals("expenseReportPayrollApprovalTask") && ExpenseReportStatus.PENDING_PAYROLL_APPROVAL.equals(entity.getStatus())) {
+            if (status.equalsIgnoreCase("approved")) {
+                entity.setStatus(ExpenseReportStatus.PENDING_CEO_APPROVAL);
+            } else {
+                entity.setStatus(ExpenseReportStatus.REJECTED);
+            }
+        }
+
+        if (dt.getTaskDefinitionKey().equals("expenseReportFinalApprovalTask") && ExpenseReportStatus.PENDING_CEO_APPROVAL.equals(entity.getStatus())) {
+            if (status.equalsIgnoreCase("approved")) {
+                entity.setStatus(ExpenseReportStatus.APPROVED);
+            } else {
+                entity.setStatus(ExpenseReportStatus.REJECTED);
+            }
         }
         ExpenseReportsDao.instance().save(entity);
-        if (dt.getTaskDefinitionKey().equals("expenseReportFinalApprovalTask") && ExpenseReportStatus.PENDING_APPROVAL.equals(entity.getStatus())
-                || dt.getTaskDefinitionKey().equals("expenseReportFinalApprovalTask") && ExpenseReportStatus.PENDING_APPROVAL.equals(entity.getStatus())) {
-            return;
-        }
         new GenericTaskCompleteNotification().notify(dt);
     }
 
