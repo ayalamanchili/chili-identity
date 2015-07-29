@@ -18,6 +18,7 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import info.chili.gwt.crud.CRUDComposite;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.date.DateUtils;
+import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.StringField;
@@ -79,15 +80,15 @@ public class CreateExpenseReportPanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         expenseFormPurpose = new EnumField(OfficeWelcome.constants,
-                EXPENSE_FORM_PURPOSE, TRAVEL_EXPENSE, false, true, ExpenseFormPurpose.names(), Alignment.HORIZONTAL);
+                EXPENSE_FORM_PURPOSE, EXPENSE_REPORT, false, true, ExpenseFormPurpose.names(), Alignment.HORIZONTAL);
         expenseReimbursePaymentMode = new EnumField(OfficeWelcome.constants,
-                EXPENSE_REIMBURSE_PMT_MODE, TRAVEL_EXPENSE, false, true, ExpenseReimbursePaymentMode.names(), Alignment.HORIZONTAL);
-        name = new StringField(OfficeWelcome.constants, NAME, TRAVEL_EXPENSE, false, true, Alignment.HORIZONTAL);
-        location = new StringField(OfficeWelcome.constants, LOCATION, TRAVEL_EXPENSE, false, true, Alignment.HORIZONTAL);
-        startDate = new DateField(OfficeWelcome.constants, START_DATE, TRAVEL_EXPENSE, false, true, Alignment.HORIZONTAL);
-        endDate = new DateField(OfficeWelcome.constants, END_DATE, TRAVEL_EXPENSE, false, true, Alignment.HORIZONTAL);
-        projectName = new StringField(OfficeWelcome.constants, PROJECT_NAME, TRAVEL_EXPENSE, false, false, Alignment.HORIZONTAL);
-        projectNumber = new StringField(OfficeWelcome.constants, PROJECT_NUMBER, TRAVEL_EXPENSE, false, false, Alignment.HORIZONTAL);
+                EXPENSE_REIMBURSE_PMT_MODE, EXPENSE_REPORT, false, true, ExpenseReimbursePaymentMode.names(), Alignment.HORIZONTAL);
+        name = new StringField(OfficeWelcome.constants, NAME, EXPENSE_REPORT, false, true, Alignment.HORIZONTAL);
+        location = new StringField(OfficeWelcome.constants, LOCATION, EXPENSE_REPORT, false, true, Alignment.HORIZONTAL);
+        startDate = new DateField(OfficeWelcome.constants, START_DATE, EXPENSE_REPORT, false, true, Alignment.HORIZONTAL);
+        endDate = new DateField(OfficeWelcome.constants, END_DATE, EXPENSE_REPORT, false, true, Alignment.HORIZONTAL);
+        projectName = new StringField(OfficeWelcome.constants, PROJECT_NAME, EXPENSE_REPORT, false, false, Alignment.HORIZONTAL);
+        projectNumber = new StringField(OfficeWelcome.constants, PROJECT_NUMBER, EXPENSE_REPORT, false, false, Alignment.HORIZONTAL);
         name.getElement().getStyle().setProperty("float", "left");
         startDate.getElement().getStyle().setProperty("float", "left");
         projectName.getElement().getStyle().setProperty("float", "left");
@@ -110,11 +111,11 @@ public class CreateExpenseReportPanel extends CreateComposite {
     protected void configure() {
         expenseFormPurpose.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         name.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
-        location.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
+        location.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
         startDate.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
-        endDate.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
+        endDate.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
         projectName.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
-        projectNumber.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
+        projectNumber.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
         expenseReimbursePaymentMode.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         generalInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         expenseInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
