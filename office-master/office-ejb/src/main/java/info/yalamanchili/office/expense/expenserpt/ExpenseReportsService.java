@@ -107,10 +107,10 @@ public class ExpenseReportsService {
         data.getSignatures().add(preparedBysignature);
         String prepareByStr = preparedBy.getLastName() + ", " + preparedBy.getFirstName();
         data.getData().put("name", prepareByStr);
-        if (preparedBy.getCompany().getName() != null) {
-            String company = preparedBy.getCompany().getName();
-            data.getData().put("systemSoftTechnologies-LLC", company);
-            data.getData().put("systemSoftTechnologies-INC", company);
+        if (preparedBy.getCompany()==null|| preparedBy.getCompany().getName().equals("System Soft Technologies LLC")) {
+            data.getData().put("systemSoftTechnologies-LLC", "true");
+        } else if (preparedBy.getCompany().getName().equals("System Soft Technologies INC")) {
+            data.getData().put("systemSoftTechnologies-INC", "true");
         }
         data.getData().put("department", entity.getDepartment());
         data.getData().put("location", entity.getLocation());
