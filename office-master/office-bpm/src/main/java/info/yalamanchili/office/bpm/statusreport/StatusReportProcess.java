@@ -8,6 +8,7 @@
 package info.yalamanchili.office.bpm.statusreport;
 
 import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
+import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
 import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
 import info.yalamanchili.office.dao.employee.statusreport.StatusReportDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
@@ -26,6 +27,9 @@ public class StatusReportProcess extends RuleBasedTaskDelegateListner {
 
     @Override
     public void processTask(DelegateTask dt) {
+        if ("create".equals(dt.getEventName())) {
+            new GenericTaskCreateNotification().notify(dt);
+        }
         if ("complete".equals(dt.getEventName())) {
             StatusReport request = getRequestFromTask(dt);
             if (request == null) {
