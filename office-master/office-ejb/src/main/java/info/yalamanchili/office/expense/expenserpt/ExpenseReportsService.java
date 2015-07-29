@@ -91,12 +91,10 @@ public class ExpenseReportsService {
 
     public Response getReport(Long id) {
         ExpenseReport entity = expenseReportsDao.findById(id);
-        Employee employee = entity.getEmployee();
         EmployeeDao employeeDao = EmployeeDao.instance();
         OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
         PdfDocumentData data = new PdfDocumentData();
         data.setKeyStoreName(securityConfiguration.getKeyStoreName());
-//        data.setTemplateUrl("/templates/pdf/expense-report-template.pdf");
         if (entity.getExpenseFormPurpose() != null && entity.getExpenseFormPurpose().name().equals("GENERAL_EXPENSE")) {
             data.setTemplateUrl("/templates/pdf/expense-report-template.pdf");
         } else {
@@ -108,10 +106,12 @@ public class ExpenseReportsService {
         data.getData().put("submittedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getSubmittedDate()));
         data.getSignatures().add(preparedBysignature);
         String prepareByStr = preparedBy.getLastName() + ", " + preparedBy.getFirstName();
-        String getcompany = preparedBy.getCompany().getName();
         data.getData().put("name", prepareByStr);
-        data.getData().put("systemSoftTechnologies-LLC", getcompany);
-        data.getData().put("systemSoftTechnologies-INC", getcompany);
+        if (preparedBy.getCompany().getName() != null) {
+            String company = preparedBy.getCompany().getName();
+            data.getData().put("systemSoftTechnologies-LLC", company);
+            data.getData().put("systemSoftTechnologies-INC", company);
+        }
         data.getData().put("department", entity.getDepartment());
         data.getData().put("location", entity.getLocation());
         data.getData().put("projectName", entity.getProjectName());
