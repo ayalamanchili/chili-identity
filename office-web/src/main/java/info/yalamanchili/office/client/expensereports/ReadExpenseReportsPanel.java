@@ -77,15 +77,15 @@ public class ReadExpenseReportsPanel extends ReadComposite {
     protected void addWidgets() {
         logger.info("ReadExpenseReportsPanel + addWidgets");
         expenseFormPurpose = new EnumField(OfficeWelcome.constants,
-                EXPENSE_FORM_PURPOSE, TRAVEL_EXPENSE, false, true, ExpenseFormPurpose.names(), Alignment.HORIZONTAL);
+                EXPENSE_FORM_PURPOSE, TRAVEL_EXPENSE, true, true, ExpenseFormPurpose.names(), Alignment.HORIZONTAL);
         expenseReimbursePaymentMode = new EnumField(OfficeWelcome.constants,
-                EXPENSE_REIMBURSE_PMT_MODE, TRAVEL_EXPENSE, false, true, ExpenseReimbursePaymentMode.names(), Alignment.HORIZONTAL);
-        name = new StringField(OfficeWelcome.constants, NAME, TRAVEL_EXPENSE, false, true, Alignment.HORIZONTAL);
-        location = new StringField(OfficeWelcome.constants, LOCATION, TRAVEL_EXPENSE, false, true, Alignment.HORIZONTAL);
-        startDate = new DateField(OfficeWelcome.constants, START_DATE, TRAVEL_EXPENSE, false, true, Alignment.HORIZONTAL);
-        endDate = new DateField(OfficeWelcome.constants, END_DATE, TRAVEL_EXPENSE, false, true, Alignment.HORIZONTAL);
-        projectName = new StringField(OfficeWelcome.constants, PROJECT_NAME, TRAVEL_EXPENSE, false, false, Alignment.HORIZONTAL);
-        projectNumber = new StringField(OfficeWelcome.constants, PROJECT_NUMBER, TRAVEL_EXPENSE, false, false, Alignment.HORIZONTAL);
+                EXPENSE_REIMBURSE_PMT_MODE, TRAVEL_EXPENSE, true, true, ExpenseReimbursePaymentMode.names(), Alignment.HORIZONTAL);
+        name = new StringField(OfficeWelcome.constants, NAME, TRAVEL_EXPENSE, true, true, Alignment.HORIZONTAL);
+        location = new StringField(OfficeWelcome.constants, LOCATION, TRAVEL_EXPENSE, true, true, Alignment.HORIZONTAL);
+        startDate = new DateField(OfficeWelcome.constants, START_DATE, TRAVEL_EXPENSE, true, true, Alignment.HORIZONTAL);
+        endDate = new DateField(OfficeWelcome.constants, END_DATE, TRAVEL_EXPENSE, true, true, Alignment.HORIZONTAL);
+        projectName = new StringField(OfficeWelcome.constants, PROJECT_NAME, TRAVEL_EXPENSE, true, false, Alignment.HORIZONTAL);
+        projectNumber = new StringField(OfficeWelcome.constants, PROJECT_NUMBER, TRAVEL_EXPENSE, true, false, Alignment.HORIZONTAL);
         name.getElement().getStyle().setProperty("float", "left");
         startDate.getElement().getStyle().setProperty("float", "left");
         projectName.getElement().getStyle().setProperty("float", "left");
