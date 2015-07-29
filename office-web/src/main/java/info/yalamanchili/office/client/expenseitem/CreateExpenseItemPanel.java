@@ -55,12 +55,12 @@ public class CreateExpenseItemPanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         expensePaymentMode = new EnumField(OfficeWelcome.constants,
-                EXPENSE_PAYMENT_MODE, TRAVEL_EXPENSE, false, true, ExpensePaymentMode.names(), Alignment.HORIZONTAL);
-        expenseDate = new DateField(OfficeWelcome.constants, EXPENSE_DATE, TRAVEL_EXPENSE, false, true, Alignment.HORIZONTAL);
-        purpose = new TextAreaField(OfficeWelcome.constants, PURPOSE, TRAVEL_EXPENSE, false, true, Alignment.HORIZONTAL);
-        description = new TextAreaField(OfficeWelcome.constants, DESCRIPTION, TRAVEL_EXPENSE, false, false, Alignment.HORIZONTAL);
-        remark = new TextAreaField(OfficeWelcome.constants, REMARK, TRAVEL_EXPENSE, false, false, Alignment.HORIZONTAL);
-        amount = new CurrencyField(OfficeWelcome.constants, AMOUNT, TRAVEL_EXPENSE, false, true, Alignment.HORIZONTAL);
+                EXPENSE_PAYMENT_MODE, EXPENSE_ITEM, false, true, ExpensePaymentMode.names(), Alignment.HORIZONTAL);
+        expenseDate = new DateField(OfficeWelcome.constants, EXPENSE_DATE, EXPENSE_ITEM, false, true, Alignment.HORIZONTAL);
+        purpose = new TextAreaField(OfficeWelcome.constants, PURPOSE, EXPENSE_ITEM, false, true, Alignment.HORIZONTAL);
+        description = new TextAreaField(OfficeWelcome.constants, DESCRIPTION, EXPENSE_ITEM, false, false, Alignment.HORIZONTAL);
+        remark = new TextAreaField(OfficeWelcome.constants, REMARK, EXPENSE_ITEM, false, false, Alignment.HORIZONTAL);
+        amount = new CurrencyField(OfficeWelcome.constants, AMOUNT, EXPENSE_ITEM, false, true, Alignment.HORIZONTAL);
         expenseDate.getElement().getStyle().setProperty("float", "left");
         purpose.getElement().getStyle().setProperty("float", "left");
         amount.getElement().getStyle().setProperty("float", "left");
@@ -77,13 +77,13 @@ public class CreateExpenseItemPanel extends CreateComposite {
     @Override
     protected void configure() {
         create.setVisible(false);
-        expensePaymentMode.getLabel().getElement().getStyle().setWidth(DEFAULT_PMT_FIELD_WIDTH, Style.Unit.PX);
+        expensePaymentMode.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
         expenseDate.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
         purpose.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
-        description.getLabel().getElement().getStyle().setWidth(DEFAULT_DES_FIELD_WIDTH, Style.Unit.PX);
+        description.getLabel().getElement().getStyle().setWidth(DEFAULT_DESC_FIELD_WIDTH, Style.Unit.PX);
         remark.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
         amount.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
-        selectCategoryWidgetF.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
+        selectCategoryWidgetF.getLabel().getElement().getStyle().setWidth(DEFAULT_CAT_FIELD_WIDTH, Style.Unit.PX);
     }
 
     @Override
