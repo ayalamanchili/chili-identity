@@ -13,10 +13,11 @@ package info.yalamanchili.office.client.expensereports;
  */
 public enum ExpenseReportStatus {
 
-    Pending_Approval,
-    Pending_Dispatch_Approval,
-    Rejected,
-    Completed;
+    PENDING_APPROVAL,
+    PENDING_PAYROLL_APPROVAL,
+    PENDING_CEO_APPROVAL,
+    REJECTED,
+    APPROVED;
 
     public static String[] names() {
         ExpenseReportStatus[] values = values();
