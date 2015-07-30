@@ -19,9 +19,13 @@
                      activiti:expression="#{homeAddressChangeProcessBean.sendAddressChangeRequestSubmittedEmail(entity)}" />
         <sequenceFlow sourceRef="sendAddressChangeRequestReceivedEmail" targetRef="sendAddressChangeRequestEEMNotifyEmail" />
         <serviceTask id="sendAddressChangeRequestEEMNotifyEmail" 
-                    name="Address Change Request EEM Team Notification Email" 
-                    activiti:expression="#{homeAddressChangeProcessBean.sendAddressChangeRequestEEMNotificationEmail(entity)}" />        
-        <sequenceFlow sourceRef="sendAddressChangeRequestEEMNotifyEmail" targetRef="createTasks" />
+                     name="Address Change Request EEM Team Notification Email" 
+                     activiti:expression="#{homeAddressChangeProcessBean.sendAddressChangeRequestEEMNotificationEmail(entity)}" />        
+        <sequenceFlow sourceRef="sendAddressChangeRequestEEMNotifyEmail" targetRef="publishToExternalSystems" />
+        <serviceTask id="publishToExternalSystems" 
+                     name="Publish update to external systems" 
+                     activiti:expression="#{homeAddressChangeProcessBean.publishToExternalSystems(entity)}" />  
+        <sequenceFlow sourceRef="publishToExternalSystems" targetRef="createTasks" />      
         <inclusiveGateway id="createTasks" />
         <!-- Parallel Payroll Dept Task-->
         <sequenceFlow sourceRef="createTasks"

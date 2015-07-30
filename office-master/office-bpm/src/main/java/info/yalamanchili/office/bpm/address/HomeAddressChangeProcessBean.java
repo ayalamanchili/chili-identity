@@ -8,6 +8,8 @@
  */
 package info.yalamanchili.office.bpm.address;
 
+import info.chili.jms.adapter.CMessage;
+import info.chili.jms.adapter.CMessagingService;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
@@ -67,5 +69,9 @@ public class HomeAddressChangeProcessBean {
         email.setSubject("Address update request complete");
         email.setBody("Your Address request has been completed");
         messagingService.sendEmail(email);
+    }
+
+    public void publishToExternalSystems(Address address) {
+        CMessagingService.instance().send(new CMessage("info.yalamanchili.office.integration.AddressPublishService", address));
     }
 }
