@@ -59,13 +59,13 @@ public class ExpenseReportResource extends CRUDResource<ExpenseReport> {
        return ExpenseReportsService.instance().save(dto);
     }
 
-    @PUT
-    @Validate
-    public ExpenseReport update(ExpenseReportSaveDto dto) {
-        Mapper mapper = (Mapper) SpringContext.getBean("mapper");
-        ExpenseReport entity = mapper.map(dto, ExpenseReport.class);
-        return expenseReportsDao.save(entity);
-    }
+//    @PUT
+//    @Validate
+//    public ExpenseReport update(ExpenseReportSaveDto dto) {
+//        Mapper mapper = (Mapper) SpringContext.getBean("mapper");
+//        ExpenseReport entity = mapper.map(dto, ExpenseReport.class);
+//        return expenseReportsDao.save(entity);
+//    }
     
     @GET
     @Path("/{id}")
@@ -79,14 +79,14 @@ public class ExpenseReportResource extends CRUDResource<ExpenseReport> {
     @Path("/{start}/{limit}")
     public ExpenseReportResource.ExpenseReportsTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         ExpenseReportResource.ExpenseReportsTable tableObj = new ExpenseReportResource.ExpenseReportsTable();
-        if (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_ADMIN.name())) {
+//        if (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_ADMIN.name())) {
             tableObj.setEntities(expenseReportsDao.queryAll(start, limit));
             tableObj.setSize(expenseReportsDao.size());
-        } else {
-             Employee currentEmp = OfficeSecurityService.instance().getCurrentUser();
-             tableObj.setEntities(expenseReportsDao.queryForEmployee(currentEmp.getId(), start, limit));
-             tableObj.setSize(expenseReportsDao.size(currentEmp.getId()));
-        }
+//        } else {
+//             Employee currentEmp = OfficeSecurityService.instance().getCurrentUser();
+//             tableObj.setEntities(expenseReportsDao.queryForEmployee(currentEmp.getId(), start, limit));
+//             tableObj.setSize(expenseReportsDao.size(currentEmp.getId()));
+//        }
         return tableObj;
     }
 
