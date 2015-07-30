@@ -18,7 +18,6 @@ import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.entity.employee.statusreport.CorporateStatusReport;
 import info.yalamanchili.office.entity.employee.statusreport.CropStatusReportStatus;
-
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import java.text.SimpleDateFormat;
@@ -62,12 +61,18 @@ public class CorporateStatusReportService {
         if (reportsToMgr != null) {
             email.addTo(reportsToMgr.getPrimaryEmail().getEmail());
         }
+        Employee reportsToSupervisor = CompanyContactDao.instance().getCompanyContactForEmployee(entity.getEmployee(), "Supervisor");
+        if (reportsToSupervisor != null) {
+            email.addTo(reportsToSupervisor.getPrimaryEmail().getEmail());
+        }
+
         email.setSubject("Weekly Status Report submitted for " + entity.getEmployee().getFirstName() + " " + entity.getEmployee().getLastName() + " for " + new SimpleDateFormat("dd-MMM-yyyy").format(entity.getReportStartDate()) + "-" + new SimpleDateFormat("dd-MMM-yyyy").format(entity.getReportEndDate()));
         email.setHtml(Boolean.TRUE);
         email.setRichText(Boolean.TRUE);
         email.setBody(entity.getReport());
         email.setEmailPreferenceRuleId(CORPORATE_STATUS_REPORT_SUBMITTED_EMAIL);
         MessagingService.instance().sendEmail(email);
+
     }
     protected static final String DIFF_STYLE = "<head>\n"
             + "<style>\n"

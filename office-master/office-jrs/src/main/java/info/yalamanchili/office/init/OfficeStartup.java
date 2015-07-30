@@ -425,6 +425,7 @@ public class OfficeStartup {
         //Company Contact Type
         getCompanyContactReportsTo();
         getCompanyContactPerf();
+        getCompanyContactsupervisor();
         //vendor
         techSysVendor();
         sstechSubcontractor();
@@ -714,6 +715,20 @@ public class OfficeStartup {
             CompanyContactType CompanyContact = new CompanyContactType();
             CompanyContact.setName("Reports_To");
             CompanyContact.setDescription("Reports_To Manager");
+            return em.merge(CompanyContact);
+        }
+    }
+
+    protected CompanyContactType getCompanyContactsupervisor() {
+        Query getEmployeeTypeQuery = em.createQuery("from " + CompanyContactType.class.getCanonicalName()
+                + " where name=:nameParam");
+        getEmployeeTypeQuery.setParameter("nameParam", "Supervisor");
+        if (getEmployeeTypeQuery.getResultList().size() > 0) {
+            return (CompanyContactType) getEmployeeTypeQuery.getResultList().get(0);
+        } else {
+            CompanyContactType CompanyContact = new CompanyContactType();
+            CompanyContact.setName("Supervisor");
+            CompanyContact.setDescription("Supervisor");
             return em.merge(CompanyContact);
         }
     }

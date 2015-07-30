@@ -3,6 +3,8 @@
  */
 package info.yalamanchili.office.client.profile.address;
 
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -17,11 +19,13 @@ import java.util.logging.Logger;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.data.CountryFactory;
+import info.chili.gwt.data.IndiaStatesFactory;
 import info.chili.gwt.data.USAStatesFactory;
+import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 
-public class UpdateAddressPanel extends UpdateComposite {
+public class UpdateAddressPanel extends UpdateComposite implements ChangeHandler{
 
     private static Logger logger = Logger.getLogger(UpdateAddressPanel.class.getName());
 
@@ -63,16 +67,16 @@ public class UpdateAddressPanel extends UpdateComposite {
         logger.info(entity.toString());
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postUpdateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postUpdateSuccess(arg0);
+            }
+        });
     }
 
     protected void populateComments() {
@@ -101,6 +105,8 @@ public class UpdateAddressPanel extends UpdateComposite {
         }
         populateComments();
     }
+    EnumField statesF;
+    EnumField countriesF;
 
     @Override
     protected void addListeners() {
@@ -109,8 +115,7 @@ public class UpdateAddressPanel extends UpdateComposite {
 
     @Override
     protected void configure() {
-        // TODO Auto-generated method stub
-    }
+        countriesF.listBox.addChangeHandler(this);    }
 
     @Override
     protected void addWidgets() {
@@ -129,7 +134,21 @@ public class UpdateAddressPanel extends UpdateComposite {
             addField("notifyChange", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("changeNotes", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         }
+        statesF = (EnumField) fields.get("state");
+        countriesF = (EnumField) fields.get("country");
         alignFields();
+    }
+
+    @Override
+    public void onChange(ChangeEvent event) {
+        switch (countriesF.getValue()) {
+            case "USA":
+                statesF.setValues(USAStatesFactory.getStates().toArray(new String[0]));
+                break;
+            case "INDIA":
+                statesF.setValues(IndiaStatesFactory.getStates().toArray(new String[0]));
+                break;
+        }
     }
 
     @Override
