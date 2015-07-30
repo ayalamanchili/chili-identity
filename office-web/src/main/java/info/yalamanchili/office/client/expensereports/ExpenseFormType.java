@@ -12,12 +12,12 @@ package info.yalamanchili.office.client.expensereports;
  *
  * @author Madhu.Badiginchala
  */
-public enum ExpenseFormPurpose {
+public enum ExpenseFormType {
     TRAVEL_EXPENSE,
     GENERAL_EXPENSE;
     
     public static String[] names() {
-        ExpenseFormPurpose[] values = values();
+        ExpenseFormType[] values = values();
         String[] names = new String[values.length];
         for (int i = 0; i < values.length; i++) {
             names[i] = values[i].name();

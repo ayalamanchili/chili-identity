@@ -11,14 +11,13 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
-import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDComposite;
 import info.chili.gwt.crud.UpdateComposite;
-import info.chili.gwt.date.DateUtils;
+import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.StringField;
@@ -56,8 +55,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
             + "</ul>");
     HTML emptyLine = new HTML("<br/>");
 
-    EnumField expenseFormPurpose;
-    StringField name;
+    EnumField expenseFormType;
     StringField location;
     DateField startDate;
     DateField endDate;
@@ -89,30 +87,13 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        if (expenseFormPurpose.getValue() != null) {
-            entity.put(EXPENSE_FORM_PURPOSE, new JSONString(expenseFormPurpose.getValue()));
-        }
-        if (name.getValue() != null) {
-            entity.put(NAME, new JSONString(name.getValue()));
-        }
-        if (location.getValue() != null) {
-            entity.put(LOCATION, new JSONString(location.getValue()));
-        }
-        if (startDate.getDate() != null) {
-            entity.put(START_DATE, new JSONString(DateUtils.toDateString(startDate.getDate())));
-        }
-        if (endDate.getDate() != null) {
-            entity.put(END_DATE, new JSONString(DateUtils.toDateString(endDate.getDate())));
-        }
-        if (projectName.getValue() != null) {
-            entity.put(PROJECT_NAME, new JSONString(projectName.getValue()));
-        }
-        if (projectNumber.getValue() != null) {
-            entity.put(PROJECT_NUMBER, new JSONString(projectNumber.getValue()));
-        }
-        if (expenseReimbursePaymentMode.getValue() != null) {
-            entity.put(EXPENSE_REIMBURSE_PMT_MODE, new JSONString(expenseReimbursePaymentMode.getValue()));
-        }
+        assignEntityValueFromField(EXPENSE_FORM_TYPE, entity);
+        assignEntityValueFromField(LOCATION, entity);
+        assignEntityValueFromField(START_DATE, entity);
+        assignEntityValueFromField(END_DATE, entity);
+        assignEntityValueFromField(PROJECT_NAME, entity);
+        assignEntityValueFromField(PROJECT_NUMBER, entity);
+        assignEntityValueFromField(EXPENSE_REIMBURSE_PMT_MODE, entity);
         JSONArray items = new JSONArray();
         int i = 0;
         for (UpdateExpenseItemPanel panel : updateItemPanels) {
@@ -147,30 +128,13 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        if (entity.get(EXPENSE_FORM_PURPOSE) != null) {
-            expenseFormPurpose.selectValue(entity.get(EXPENSE_FORM_PURPOSE).isString().stringValue());
-        }
-        if (entity.get(NAME) != null) {
-            name.setValue(entity.get(NAME).isString().stringValue());
-        }
-        if (entity.get(LOCATION) != null) {
-            location.setValue(entity.get(LOCATION).isString().stringValue());
-        }
-        if (entity.get(START_DATE) != null) {
-            startDate.setValue(entity.get(START_DATE).isString().stringValue());
-        }
-        if (entity.get(END_DATE) != null) {
-            endDate.setValue(entity.get(END_DATE).isString().stringValue());
-        }
-        if (entity.get(PROJECT_NAME) != null) {
-            projectName.setValue(entity.get(PROJECT_NAME).isString().stringValue());
-        }
-        if (entity.get(PROJECT_NUMBER) != null) {
-            projectNumber.setValue(entity.get(PROJECT_NUMBER).isString().stringValue());
-        }
-        if (entity.get(EXPENSE_REIMBURSE_PMT_MODE) != null) {
-            expenseReimbursePaymentMode.selectValue(entity.get(EXPENSE_REIMBURSE_PMT_MODE).isString().stringValue());
-        }
+        assignFieldValueFromEntity(EXPENSE_FORM_TYPE, entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity(LOCATION, entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity(START_DATE, entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity(END_DATE, entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity(PROJECT_NAME, entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity(PROJECT_NUMBER, entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity(EXPENSE_REIMBURSE_PMT_MODE, entity, DataType.ENUM_FIELD);
         JSONArray expenseItems = JSONUtils.toJSONArray(entity.get("expenseItems"));
         populateExpenseItems(expenseItems);
     }
@@ -198,8 +162,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
 
     @Override
     protected void configure() {
-        expenseFormPurpose.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
-        name.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
+        expenseFormType.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         location.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
         startDate.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         endDate.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
@@ -212,30 +175,25 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
-        expenseFormPurpose = new EnumField(OfficeWelcome.constants,
-                EXPENSE_FORM_PURPOSE, EXPENSE_REPORT, false, true, ExpenseFormPurpose.names(), Alignment.HORIZONTAL);
-        expenseReimbursePaymentMode = new EnumField(OfficeWelcome.constants,
-                EXPENSE_REIMBURSE_PMT_MODE, EXPENSE_REPORT, false, true, ExpenseReimbursePaymentMode.names(), Alignment.HORIZONTAL);
-        name = new StringField(OfficeWelcome.constants, NAME, EXPENSE_REPORT, false, true, Alignment.HORIZONTAL);
-        location = new StringField(OfficeWelcome.constants, LOCATION, EXPENSE_REPORT, false, true, Alignment.HORIZONTAL);
-        startDate = new DateField(OfficeWelcome.constants, START_DATE, EXPENSE_REPORT, false, true, Alignment.HORIZONTAL);
-        endDate = new DateField(OfficeWelcome.constants, END_DATE, EXPENSE_REPORT, false, true, Alignment.HORIZONTAL);
-        projectName = new StringField(OfficeWelcome.constants, PROJECT_NAME, EXPENSE_REPORT, false, false, Alignment.HORIZONTAL);
-        projectNumber = new StringField(OfficeWelcome.constants, PROJECT_NUMBER, EXPENSE_REPORT, false, false, Alignment.HORIZONTAL);
-        name.getElement().getStyle().setProperty("float", "left");
-        startDate.getElement().getStyle().setProperty("float", "left");
-        projectName.getElement().getStyle().setProperty("float", "left");
-        entityFieldsPanel.add(expenseFormPurpose);
+        addEnumField(EXPENSE_FORM_TYPE, false, true, ExpenseFormType.names(), Alignment.HORIZONTAL);
+        expenseFormType = (EnumField) fields.get(EXPENSE_FORM_TYPE);
         entityFieldsPanel.add(generalInfo);
-        entityFieldsPanel.add(name);
-        entityFieldsPanel.add(location);
-        entityFieldsPanel.add(startDate);
-        entityFieldsPanel.add(endDate);
-        entityFieldsPanel.add(projectName);
-        entityFieldsPanel.add(projectNumber);
-        entityFieldsPanel.add(expenseReimbursePaymentMode);
+        addField(LOCATION, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        location = (StringField) fields.get(LOCATION);
+        addField(START_DATE, false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        startDate = (DateField) fields.get(START_DATE);
+        addField(END_DATE, false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        endDate = (DateField) fields.get(END_DATE);
+        addField(PROJECT_NAME, false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        projectName = (StringField) fields.get(PROJECT_NAME);
+        addField(PROJECT_NUMBER, false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        projectNumber = (StringField) fields.get(PROJECT_NUMBER);
+        addEnumField(EXPENSE_REIMBURSE_PMT_MODE, false, true, ExpenseReimbursePaymentMode.names(), Alignment.HORIZONTAL);
+        expenseReimbursePaymentMode = (EnumField) fields.get(EXPENSE_REIMBURSE_PMT_MODE);
         entityFieldsPanel.add(expenseInfo);
-        alignFields();
+//        startDate.getElement().getStyle().setProperty("float", "left");
+//        projectName.getElement().getStyle().setProperty("float", "left");
+//        location.getElement().getStyle().setProperty("float", "left");
         alignFields();
     }
 
