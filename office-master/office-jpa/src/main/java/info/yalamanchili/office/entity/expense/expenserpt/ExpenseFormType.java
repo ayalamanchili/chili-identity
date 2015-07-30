@@ -12,7 +12,7 @@ package info.yalamanchili.office.entity.expense.expenserpt;
  *
  * @author Madhu.Badiginchala
  */
-public enum ExpenseFormPurpose {
+public enum ExpenseFormType {
 
     TRAVEL_EXPENSE,
     GENERAL_EXPENSE;
