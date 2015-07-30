@@ -20,7 +20,6 @@
             <documentation>
                 Employee Expense Report Manager Approval Task
                 Employee Name       : #{currentEmployee.firstName} #{currentEmployee.lastName}
-                Name                : #{entity.name}
                 Location/Purpose    : #{entity.location}
                 Start Date          : #{entity.startDate}
                 End Date            : #{entity.endDate}
@@ -59,7 +58,7 @@
                       targetRef="mgrApprovalGateway" />
         <exclusiveGateway id="mgrApprovalGateway" />
         <sequenceFlow sourceRef="mgrApprovalGateway" 
-                      targetRef="expenseReportPayrollApprovalTask">
+                      targetRef="expenseReportFinalApprovalTask">
             <conditionExpression xsi:type="tFormalExpression">
                 ${status == 'approved'}
             </conditionExpression>
@@ -70,68 +69,13 @@
                 ${status == 'rejected'}
             </conditionExpression>
         </sequenceFlow>
-        <!-- Payroll approval task-->
-        <userTask id="expenseReportPayrollApprovalTask" 
-                  name="Expense Report Payroll Dept Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}"
-                  activiti:candidateGroups="ROLE_PAYROLL_AND_BENIFITS">
-            <documentation>
-                Employee Expense Report Payroll Dept Approval Task
-                Employee Name       : #{currentEmployee.firstName} #{currentEmployee.lastName}
-                Name                : #{entity.name}
-                Location/Purpose    : #{entity.location}
-                Start Date          : #{entity.startDate}
-                End Date            : #{entity.endDate}
-
-            </documentation>
-            <extensionElements>
-                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.expensereport.CorpEmpExpenseReportProcess" />
-                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.expensereport.CorpEmpExpenseReportProcess" />
-                
-                <activiti:formProperty id="status" 
-                                       name="Approved?"
-                                       required="true"
-                                       type="enum">
-                    <activiti:value id="approved" name="approved"/>
-                    <activiti:value id="rejected" name="rejected"/>
-                </activiti:formProperty>
-                <activiti:formProperty id="notes" 
-                                       name="Notes"
-                                       required="false" 
-                                       type="string" />
-            </extensionElements> 
-        </userTask>
-        <!-- Task escalation email after 48 hours-->
-        <boundaryEvent id="expenseReportPayrollApprovalTaskEscalationTimer"
-                       cancelActivity="false" 
-                       attachedToRef="expenseReportPayrollApprovalTask">
-            <timerEventDefinition> 
-                <timeDuration>PT48H</timeDuration> 
-            </timerEventDefinition>
-        </boundaryEvent>
-       <serviceTask id="expenseReportPayrollApprovalTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
-        <!--desision-->
-        <sequenceFlow sourceRef="expenseReportPayrollApprovalTask" 
-                      targetRef="finalApprovalGateway" />
-        <exclusiveGateway id="finalApprovalGateway" />
-        <sequenceFlow sourceRef="finalApprovalGateway" 
-                      targetRef="expenseReportFinalApprovalTask">
-            <conditionExpression xsi:type="tFormalExpression">
-                ${status == 'approved'}
-            </conditionExpression>
-        </sequenceFlow>
-        <sequenceFlow sourceRef="finalApprovalGateway" 
-                      targetRef="expenseReportEnd">
-            <conditionExpression xsi:type="tFormalExpression">
-                ${status == 'rejected'}
-            </conditionExpression>
-        </sequenceFlow>
+        <!-- CEO approval task-->
         <userTask id="expenseReportFinalApprovalTask" 
                   name="Expense Report Final Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" 
-                  activiti:candidateGroups="ROLE_ADMIN">
+                  activiti:candidateGroups="ROLE_CEO">
             <documentation>
                 Employee Expense Report Final Approval Task
                 Employee Name       : #{currentEmployee.firstName} #{currentEmployee.lastName}
-                Name                : #{entity.name}
                 Location/Purpose    : #{entity.location}
                 Start Date          : #{entity.startDate}
                 End Date            : #{entity.endDate}
@@ -168,12 +112,66 @@
                       targetRef="finalApprovalTaskGateway" />
         <exclusiveGateway id="finalApprovalTaskGateway" />
         <sequenceFlow sourceRef="finalApprovalTaskGateway" 
-                      targetRef="expenseReportEnd">
+                      targetRef="expenseReportPayrollApprovalTask">
             <conditionExpression xsi:type="tFormalExpression">
                 ${status == 'approved'}
             </conditionExpression>
         </sequenceFlow>
         <sequenceFlow sourceRef="finalApprovalTaskGateway" 
+                      targetRef="expenseReportEnd">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'rejected'}
+            </conditionExpression>
+        </sequenceFlow>
+        <!-- Payroll approval task-->
+        <userTask id="expenseReportPayrollApprovalTask" 
+                  name="Expense Report Payroll Dept Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}"
+                  activiti:candidateGroups="ROLE_PAYROLL_AND_BENIFITS">
+            <documentation>
+                Employee Expense Report Payroll Dept Approval Task
+                Employee Name       : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Location/Purpose    : #{entity.location}
+                Start Date          : #{entity.startDate}
+                End Date            : #{entity.endDate}
+
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.expensereport.CorpEmpExpenseReportProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.expensereport.CorpEmpExpenseReportProcess" />
+                
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <!-- Task escalation email after 48 hours-->
+        <boundaryEvent id="expenseReportPayrollApprovalTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="expenseReportPayrollApprovalTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+       <serviceTask id="expenseReportPayrollApprovalTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <!--desision-->
+        <sequenceFlow sourceRef="expenseReportPayrollApprovalTask" 
+                      targetRef="finalApprovalGateway" />
+        <exclusiveGateway id="finalApprovalGateway" />
+        <sequenceFlow sourceRef="finalApprovalGateway" 
+                      targetRef="expenseReportEnd">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="finalApprovalGateway" 
                       targetRef="expenseReportEnd">
             <conditionExpression xsi:type="tFormalExpression">
                 ${status == 'rejected'}
