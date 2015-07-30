@@ -9,9 +9,12 @@ package info.yalamanchili.office.jrs.expense.expenserpt;
 
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
+import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.expense.expenserpt.ExpenseReportsDao;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.expense.expenserpt.ExpenseReportSaveDto;
 import info.yalamanchili.office.expense.expenserpt.ExpenseReportsService;
 import info.yalamanchili.office.jrs.CRUDResource;
@@ -66,8 +69,14 @@ public class ExpenseReportResource extends CRUDResource<ExpenseReport> {
     @Path("/{start}/{limit}")
     public ExpenseReportResource.ExpenseReportsTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         ExpenseReportResource.ExpenseReportsTable tableObj = new ExpenseReportResource.ExpenseReportsTable();
+        if (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_ADMIN.name())) {
         tableObj.setEntities(expenseReportsDao.queryAll(start, limit));
         tableObj.setSize(expenseReportsDao.size());
+        } else {
+             Employee currentEmp = OfficeSecurityService.instance().getCurrentUser();
+             tableObj.setEntities(expenseReportsDao.queryForEmployee(currentEmp.getId(), start, limit));
+             tableObj.setSize(expenseReportsDao.size(currentEmp.getId()));
+        }
         return tableObj;
     }
 
@@ -89,7 +98,7 @@ public class ExpenseReportResource extends CRUDResource<ExpenseReport> {
 
     @Override
     public CRUDDao getDao() {
-        return ExpenseReportsDao.instance();
+        return expenseReportsDao.instance();
     }
 
     @XmlRootElement
