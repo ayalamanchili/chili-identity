@@ -13,6 +13,7 @@ import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.CurrencyField;
+import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.TextAreaField;
@@ -22,7 +23,6 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.expensecategory.SelectExpenseCategoryWidget;
 import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.*;
 import info.yalamanchili.office.client.expensereports.ExpensePaymentMode;
-import java.math.BigDecimal;
 import java.util.logging.Logger;
 
 /**
@@ -61,7 +61,6 @@ public class ReadExpenseItemPanel extends ReadComposite {
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String response) {
-                        logger.info("read ec6 response" + response);
                         entity = (JSONObject) JSONParser.parseLenient(response);
                         populateFieldsFromEntity(entity);
                     }
@@ -71,25 +70,12 @@ public class ReadExpenseItemPanel extends ReadComposite {
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity(CATEGORY, entity, null);
-        if (entity.get(EXPENSE_PAYMENT_MODE) != null) {
-            expensePaymentMode.selectValue(entity.get(EXPENSE_PAYMENT_MODE).isString().stringValue());
-        }
-        if (entity.get(DESCRIPTION) != null) {
-            description.setValue(entity.get(DESCRIPTION).isString().stringValue());
-        }
-        if (entity.get(EXPENSE_DATE) != null) {
-            expenseDate.setValue(entity.get(EXPENSE_DATE).isString().stringValue());
-        }
-        if (entity.get(AMOUNT) != null) {
-            amount.setValue(new BigDecimal(entity.get(AMOUNT).isString().stringValue()), false);
-        }
-        if (entity.get(PURPOSE) != null) {
-            purpose.setValue(entity.get(PURPOSE).isString().stringValue());
-        }
-        if (entity.get(REMARK) != null) {
-            remark.setValue(entity.get(REMARK).isString().stringValue());
-        }
-        logger.info("dddddd");
+        assignFieldValueFromEntity(EXPENSE_PAYMENT_MODE, entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity(DESCRIPTION, entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity(EXPENSE_DATE, entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity(AMOUNT, entity, DataType.CURRENCY_FIELD);
+        assignFieldValueFromEntity(PURPOSE, entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity(REMARK, entity, DataType.TEXT_AREA_FIELD);
     }
 
     @Override
@@ -101,7 +87,7 @@ public class ReadExpenseItemPanel extends ReadComposite {
         expensePaymentMode.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
         expenseDate.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
         purpose.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
-        description.getLabel().getElement().getStyle().setWidth(DEFAULT_DESC_FIELD_WIDTH, Style.Unit.PX);
+        description.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
         remark.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
         amount.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
         selectCategoryWidgetF.getLabel().getElement().getStyle().setWidth(DEFAULT_CAT_FIELD_WIDTH, Style.Unit.PX);
@@ -109,25 +95,23 @@ public class ReadExpenseItemPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        expensePaymentMode = new EnumField(OfficeWelcome.constants,
-                EXPENSE_PAYMENT_MODE, EXPENSE_ITEM, true, true, ExpensePaymentMode.names(), Alignment.HORIZONTAL);
-        expenseDate = new DateField(OfficeWelcome.constants, EXPENSE_DATE, EXPENSE_ITEM, true, true, Alignment.HORIZONTAL);
-        purpose = new TextAreaField(OfficeWelcome.constants, PURPOSE, EXPENSE_ITEM, true, true, Alignment.HORIZONTAL);
-        description = new TextAreaField(OfficeWelcome.constants, DESCRIPTION, EXPENSE_ITEM, true, false, Alignment.HORIZONTAL);
-        remark = new TextAreaField(OfficeWelcome.constants, REMARK, EXPENSE_ITEM, true, false, Alignment.HORIZONTAL);
-        amount = new CurrencyField(OfficeWelcome.constants, AMOUNT, EXPENSE_ITEM, true, true, Alignment.HORIZONTAL);
-        expenseDate.getElement().getStyle().setProperty("float", "left");
-        purpose.getElement().getStyle().setProperty("float", "left");
-        amount.getElement().getStyle().setProperty("float", "left");
-        entityFieldsPanel.add(expenseDate);
+        addField(EXPENSE_DATE, true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        expenseDate = (DateField) fields.get(EXPENSE_DATE);
+        addField(PURPOSE, true, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        purpose = (TextAreaField) fields.get(PURPOSE);
         addDropDown(CATEGORY, selectCategoryWidgetF);
-        entityFieldsPanel.add(amount);
-        entityFieldsPanel.add(expensePaymentMode);
-        entityFieldsPanel.add(purpose);
-        entityFieldsPanel.add(description);
-        entityFieldsPanel.add(remark);
+        addField(AMOUNT, true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        amount = (CurrencyField) fields.get(AMOUNT);
+        addEnumField(EXPENSE_PAYMENT_MODE, true, true, ExpensePaymentMode.names(), Alignment.HORIZONTAL);
+        expensePaymentMode = (EnumField) fields.get(EXPENSE_PAYMENT_MODE);
+        addField(DESCRIPTION, true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        description = (TextAreaField) fields.get(DESCRIPTION);
+        addField(REMARK, true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        remark = (TextAreaField) fields.get(REMARK);
+//        expenseDate.getElement().getStyle().setProperty("float", "left");
+//        purpose.getElement().getStyle().setProperty("float", "left");
+//        amount.getElement().getStyle().setProperty("float", "left");
         alignFields();
-        logger.info("ccccccc");
     }
 
     @Override
