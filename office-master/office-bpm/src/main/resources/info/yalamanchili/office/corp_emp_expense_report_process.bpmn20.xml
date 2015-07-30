@@ -71,7 +71,7 @@
         </sequenceFlow>
         <!-- CEO approval task-->
         <userTask id="expenseReportFinalApprovalTask" 
-                  name="Expense Report Final Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" 
+                  name="Expense Report CEO Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" 
                   activiti:candidateGroups="ROLE_CEO">
             <documentation>
                 Employee Expense Report Final Approval Task
@@ -125,7 +125,7 @@
         </sequenceFlow>
         <!-- Payroll approval task-->
         <userTask id="expenseReportPayrollApprovalTask" 
-                  name="Expense Report Payroll Dept Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}"
+                  name="Expense Report Payroll Dept Final Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}"
                   activiti:candidateGroups="ROLE_PAYROLL_AND_BENIFITS">
             <documentation>
                 Employee Expense Report Payroll Dept Approval Task
