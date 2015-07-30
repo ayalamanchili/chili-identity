@@ -61,11 +61,9 @@ public class CorporateStatusReportService {
         if (reportsToMgr != null) {
             email.addTo(reportsToMgr.getPrimaryEmail().getEmail());
         }
-        Employee reportsToSupervisor = CompanyContactDao.instance().getCompanyContactForEmployee(entity.getEmployee(), "Supervisor");
-        if (reportsToSupervisor != null) {
-            email.addTo(reportsToSupervisor.getPrimaryEmail().getEmail());
+        for (Employee supervisor : CompanyContactDao.instance().getCompanyContactsForEmployee(entity.getEmployee(), "Supervisor")) {
+            email.addTo(supervisor.getPrimaryEmail().getEmail());
         }
-
         email.setSubject("Weekly Status Report submitted for " + entity.getEmployee().getFirstName() + " " + entity.getEmployee().getLastName() + " for " + new SimpleDateFormat("dd-MMM-yyyy").format(entity.getReportStartDate()) + "-" + new SimpleDateFormat("dd-MMM-yyyy").format(entity.getReportEndDate()));
         email.setHtml(Boolean.TRUE);
         email.setRichText(Boolean.TRUE);

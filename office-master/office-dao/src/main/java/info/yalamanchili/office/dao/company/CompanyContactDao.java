@@ -12,6 +12,7 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.company.CompanyContact;
 import info.yalamanchili.office.entity.profile.Employee;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -46,6 +47,14 @@ public class CompanyContactDao extends CRUDDao<CompanyContact> {
         query.setParameter("empParam", employee);
         query.setParameter("typeParam", companyContactType);
         return query.getResultList();
+    }
+
+    public List<Employee> getCompanyContactsForEmployee(Employee emp, String companyContactType) {
+        List<Employee> res = new ArrayList();
+        for (CompanyContact cc : getCompanyContact(emp, companyContactType)) {
+            res.add(cc.getContact());
+        }
+        return res;
     }
 
     public Employee getCompanyContactForEmployee(Employee emp, String companyContactType) {
