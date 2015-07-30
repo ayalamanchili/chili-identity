@@ -80,8 +80,8 @@ public class ExpenseReportResource extends CRUDResource<ExpenseReport> {
     public ExpenseReportResource.ExpenseReportsTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         ExpenseReportResource.ExpenseReportsTable tableObj = new ExpenseReportResource.ExpenseReportsTable();
         if (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_ADMIN.name())) {
-        tableObj.setEntities(expenseReportsDao.queryAll(start, limit));
-        tableObj.setSize(expenseReportsDao.size());
+            tableObj.setEntities(expenseReportsDao.queryAll(start, limit));
+            tableObj.setSize(expenseReportsDao.size());
         } else {
              Employee currentEmp = OfficeSecurityService.instance().getCurrentUser();
              tableObj.setEntities(expenseReportsDao.queryForEmployee(currentEmp.getId(), start, limit));
