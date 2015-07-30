@@ -203,6 +203,6 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "expensereport/save";
+        return OfficeWelcome.constants.root_url() + "expensereport/";
     }
 }
