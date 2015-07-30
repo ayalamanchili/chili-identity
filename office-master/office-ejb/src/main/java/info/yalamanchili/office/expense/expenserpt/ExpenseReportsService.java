@@ -54,7 +54,7 @@ public class ExpenseReportsService {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         ExpenseReport entity = mapper.map(dto, ExpenseReport.class);
         entity.setEmployee(emp);
-//        entity.setStatus(ExpenseReportStatus.PENDING_MANAGER_APPROVAL);
+        entity.setStatus(ExpenseReportStatus.PENDING_MANAGER_APPROVAL);
         entity.setSubmittedDate(new Date());
         ExpenseCategoryDao expenseCategoryDao = ExpenseCategoryDao.instance();
         for (ExpenseItem item : entity.getExpenseItems()) {
@@ -78,7 +78,7 @@ public class ExpenseReportsService {
     public void delete(Long id) {
         ExpenseReport entity = expenseReportsDao.findById(id);
         //TODO use processid
-        OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getApprovedBy(), true);
+        OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getApprovedByManager(), true);
         expenseReportsDao.delete(id);
     }
 
@@ -88,7 +88,7 @@ public class ExpenseReportsService {
         OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
         PdfDocumentData data = new PdfDocumentData();
         data.setKeyStoreName(securityConfiguration.getKeyStoreName());
-        if (entity.getExpenseFormPurpose() != null && entity.getExpenseFormPurpose().name().equals("GENERAL_EXPENSE")) {
+        if (entity.getExpenseFormType() != null && entity.getExpenseFormType().name().equals("GENERAL_EXPENSE")) {
             data.setTemplateUrl("/templates/pdf/expense-report-template.pdf");
         } else {
             data.setTemplateUrl("/templates/pdf/travel-expenses-form.pdf");
@@ -121,9 +121,9 @@ public class ExpenseReportsService {
                     break;
             }
         }
-        if (entity.getApprovedBy() != null) {
-            Employee approver = employeeDao.findEmployeWithEmpId(entity.getApprovedBy());
-            Signature approvedBysignature = new Signature(approver.getEmployeeId(), approver.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "approverSignature", DateUtils.dateToCalendar(entity.getApprovedDate()), employeeDao.getPrimaryEmail(approver), null);
+        if (entity.getApprovedByManager() != null) {
+            Employee approver = employeeDao.findEmployeWithEmpId(entity.getApprovedByManager());
+            Signature approvedBysignature = new Signature(approver.getEmployeeId(), approver.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "approverSignature", DateUtils.dateToCalendar(entity.getApprovedByManagerDate()), employeeDao.getPrimaryEmail(approver), null);
             data.getSignatures().add(approvedBysignature);
         }
 // Ecpense Item General 
@@ -135,7 +135,7 @@ public class ExpenseReportsService {
         BigDecimal amountDue = new BigDecimal(0);
         Integer a = 1;
         for (ExpenseItem item : entity.getExpenseItems()) {
-            if (entity.getExpenseFormPurpose() != null && entity.getExpenseFormPurpose().name().equals("GENERAL_EXPENSE")) {
+            if ((entity.getExpenseFormType()) != null && entity.getExpenseFormType().name().equals("GENERAL_EXPENSE")) {
                 data.getData().put("sl" + i, i.toString());
                 data.getData().put("description" + i, item.getDescription());
                 data.getData().put("purpose" + i, item.getPurpose());
