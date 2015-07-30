@@ -19,9 +19,11 @@ import info.chili.gwt.fields.FileField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import static info.yalamanchili.office.client.expense.travelauthorization.TravelAuthConstants.EMPLOYEE;
+import info.yalamanchili.office.client.expense.travelauthorization.TravelAuthorizationStatus;
 import java.util.logging.Logger;
 
 /**
@@ -120,7 +122,18 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+        String status = JSONUtils.toString(entity, "status");
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CEO)) {
+            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+        } else {
+            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE, row, JSONUtils.toString(entity, "id"));
+            if ((ExpenseReportStatus.PENDING_CEO_APPROVAL.name().equals(status))        || 
+                (ExpenseReportStatus.PENDING_PAYROLL_APPROVAL.name().equals(status))    || 
+                (ExpenseReportStatus.APPROVED.name().equals(status))                    || 
+                (ExpenseReportStatus.REJECTED.name().equals(status))) {
+                createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
+            }
+        }
     }
 
     private String getDeleteURL(String entityId) {
