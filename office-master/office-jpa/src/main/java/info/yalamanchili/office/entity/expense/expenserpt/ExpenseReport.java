@@ -42,13 +42,8 @@ public class ExpenseReport extends AbstractEntity {
     /**
      *
      */
-    @NotEmpty(message = "{expensereport.name.not.empty.msg}")
-    private String name;
-    /**
-     *
-     */
     @NotEmpty(message = "{expensereport.location.not.empty.msg}")
-        private String location;
+    private String location;
     /**
      *
      */
@@ -58,14 +53,12 @@ public class ExpenseReport extends AbstractEntity {
      */
     @NotNull(message = "{expensereport.startDate.not.empty.msg}")
     @Temporal(TemporalType.DATE)
-//    @org.hibernate.annotations.Index(name = "EXP_RPT_STRT_DT")
     private Date startDate;
     /**
      *
      */
     @NotNull(message = "{expenseitem.endDate.not.empty.msg}")
     @Temporal(TemporalType.DATE)
-//    @org.hibernate.annotations.Index(name = "EXP_RPT_END_DT")
     private Date endDate;
     /**
      *
@@ -79,16 +72,35 @@ public class ExpenseReport extends AbstractEntity {
      *
      */
     @Temporal(TemporalType.DATE)
+    @org.hibernate.annotations.Index(name = "EXP_SUB_DTE")
     private Date submittedDate;
     /**
      *
      */
-    private String approvedBy;
+    private String approvedByManager;
     /**
      *
      */
     @Temporal(javax.persistence.TemporalType.DATE)
-    private Date approvedDate;
+    private Date approvedByManagerDate;
+    /**
+     *
+     */
+    private String approvedByPayroll;
+    /**
+     *
+     */
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date approvedByPayrollDate;
+    /**
+     *
+     */
+    private String approvedByCEO;
+    /**
+     *
+     */
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date approvedByCEODate;
     /**
      *
      */
@@ -115,7 +127,7 @@ public class ExpenseReport extends AbstractEntity {
      */
     @Enumerated(EnumType.STRING)
     @NotNull(message = "{expensereport.expenseFormPurpose.not.empty.msg}")
-    private ExpenseFormPurpose expenseFormPurpose;
+    private ExpenseFormType expenseFormType;
     /**
      *
      */
@@ -131,20 +143,6 @@ public class ExpenseReport extends AbstractEntity {
 
     /**
      * GETTERS and SETTERS
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     *
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     *
      */
     public String getLocation() {
         return location;
@@ -244,34 +242,6 @@ public class ExpenseReport extends AbstractEntity {
     /**
      *
      */
-    public String getApprovedBy() {
-        return approvedBy;
-    }
-
-    /**
-     *
-     */
-    public void setApprovedBy(String approvedBy) {
-        this.approvedBy = approvedBy;
-    }
-
-    /**
-     *
-     */
-    public Date getApprovedDate() {
-        return approvedDate;
-    }
-
-    /**
-     *
-     */
-    public void setApprovedDate(Date approvedDate) {
-        this.approvedDate = approvedDate;
-    }
-
-    /**
-     *
-     */
     public Employee getEmployee() {
         return employee;
     }
@@ -340,13 +310,6 @@ public class ExpenseReport extends AbstractEntity {
         serialVersionUID = aSerialVersionUID;
     }
 
-    public ExpenseFormPurpose getExpenseFormPurpose() {
-        return expenseFormPurpose;
-    }
-
-    public void setExpenseFormPurpose(ExpenseFormPurpose expenseFormPurpose) {
-        this.expenseFormPurpose = expenseFormPurpose;
-    }
     /**
      *
      */
@@ -360,4 +323,61 @@ public class ExpenseReport extends AbstractEntity {
     public void setExpenseReimbursePaymentMode(ExpenseReimbursePaymentMode expenseReimbursePaymentMode) {
         this.expenseReimbursePaymentMode = expenseReimbursePaymentMode;
     }
+
+    public String getApprovedByManager() {
+        return approvedByManager;
+    }
+
+    public void setApprovedByManager(String approvedByManager) {
+        this.approvedByManager = approvedByManager;
+    }
+
+    public Date getApprovedByManagerDate() {
+        return approvedByManagerDate;
+    }
+
+    public void setApprovedByManagerDate(Date approvedByManagerDate) {
+        this.approvedByManagerDate = approvedByManagerDate;
+    }
+
+    public String getApprovedByPayroll() {
+        return approvedByPayroll;
+    }
+
+    public void setApprovedByPayroll(String approvedByPayroll) {
+        this.approvedByPayroll = approvedByPayroll;
+    }
+
+    public Date getApprovedByPayrollDate() {
+        return approvedByPayrollDate;
+    }
+
+    public void setApprovedByPayrollDate(Date approvedByPayrollDate) {
+        this.approvedByPayrollDate = approvedByPayrollDate;
+    }
+
+    public String getApprovedByCEO() {
+        return approvedByCEO;
+    }
+
+    public void setApprovedByCEO(String approvedByCEO) {
+        this.approvedByCEO = approvedByCEO;
+    }
+
+    public Date getApprovedByCEODate() {
+        return approvedByCEODate;
+    }
+
+    public void setApprovedByCEODate(Date approvedByCEODate) {
+        this.approvedByCEODate = approvedByCEODate;
+    }
+
+    public ExpenseFormType getExpenseFormType() {
+        return expenseFormType;
+    }
+
+    public void setExpenseFormType(ExpenseFormType expenseFormType) {
+        this.expenseFormType = expenseFormType;
+    }
+
 }
