@@ -9,6 +9,7 @@ package info.yalamanchili.office.jrs.expense.expenserpt;
 
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.expense.expenserpt.ExpenseReportsDao;
@@ -29,6 +30,7 @@ import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Scope;
@@ -57,6 +59,14 @@ public class ExpenseReportResource extends CRUDResource<ExpenseReport> {
        return ExpenseReportsService.instance().save(dto);
     }
 
+    @PUT
+    @Validate
+    public ExpenseReport update(ExpenseReportSaveDto dto) {
+        Mapper mapper = (Mapper) SpringContext.getBean("mapper");
+        ExpenseReport entity = mapper.map(dto, ExpenseReport.class);
+        return expenseReportsDao.save(entity);
+    }
+    
     @GET
     @Path("/{id}")
     @Transactional(readOnly = true)
