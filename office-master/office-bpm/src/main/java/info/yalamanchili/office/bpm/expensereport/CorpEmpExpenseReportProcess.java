@@ -18,6 +18,7 @@ import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReportStatus;
 import info.yalamanchili.office.entity.profile.Employee;
+import java.util.Date;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
 
@@ -57,22 +58,28 @@ public class CorpEmpExpenseReportProcess implements TaskListener {
         String status = (String) dt.getExecution().getVariable("status");
         if (dt.getTaskDefinitionKey().equals("expenseReportMgrApprovalTask")) {
             if (status.equalsIgnoreCase("approved")) {
-                entity.setStatus(ExpenseReportStatus.PENDING_PAYROLL_APPROVAL);
+                entity.setStatus(ExpenseReportStatus.PENDING_CEO_APPROVAL);
+                entity.setApprovedByManager(OfficeSecurityService.instance().getCurrentUser().getEmployeeId());
+                entity.setApprovedByManagerDate(new Date());
             } else {
                 entity.setStatus(ExpenseReportStatus.REJECTED);
             }
         }
-        if (dt.getTaskDefinitionKey().equals("expenseReportPayrollApprovalTask") && ExpenseReportStatus.PENDING_PAYROLL_APPROVAL.equals(entity.getStatus())) {
+        if (dt.getTaskDefinitionKey().equals("expenseReportFinalApprovalTask") && ExpenseReportStatus.PENDING_CEO_APPROVAL.equals(entity.getStatus())) {
             if (status.equalsIgnoreCase("approved")) {
-                entity.setStatus(ExpenseReportStatus.PENDING_CEO_APPROVAL);
+                entity.setStatus(ExpenseReportStatus.PENDING_PAYROLL_APPROVAL);
+                entity.setApprovedByCEO(OfficeSecurityService.instance().getCurrentUser().getEmployeeId());
+                entity.setApprovedByCEODate(new Date());
             } else {
                 entity.setStatus(ExpenseReportStatus.REJECTED);
             }
         }
 
-        if (dt.getTaskDefinitionKey().equals("expenseReportFinalApprovalTask") && ExpenseReportStatus.PENDING_CEO_APPROVAL.equals(entity.getStatus())) {
+        if (dt.getTaskDefinitionKey().equals("expenseReportPayrollApprovalTask") && ExpenseReportStatus.PENDING_PAYROLL_APPROVAL.equals(entity.getStatus())) {
             if (status.equalsIgnoreCase("approved")) {
                 entity.setStatus(ExpenseReportStatus.APPROVED);
+                entity.setApprovedByPayroll(OfficeSecurityService.instance().getCurrentUser().getEmployeeId());
+                entity.setApprovedByPayrollDate(new Date());
             } else {
                 entity.setStatus(ExpenseReportStatus.REJECTED);
             }
@@ -84,7 +91,8 @@ public class CorpEmpExpenseReportProcess implements TaskListener {
     private void assignExpenseReportTask(DelegateTask dt) {
         Employee emp = (Employee) dt.getExecution().getVariable("currentEmployee");
         Employee reportsToEmp = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Reports_To");
-        if (emp.getEmployeeType().getName().equals("Corporate Employee") && reportsToEmp != null) {
+//        if (emp.getEmployeeType().getName().equals("Corporate Employee") && reportsToEmp != null) {
+        if (reportsToEmp != null) {
             dt.addCandidateUser(reportsToEmp.getEmployeeId());
         } else {
             dt.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_HR_ADMINSTRATION.name());
