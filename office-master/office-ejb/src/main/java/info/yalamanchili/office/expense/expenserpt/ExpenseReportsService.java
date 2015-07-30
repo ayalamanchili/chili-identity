@@ -54,11 +54,7 @@ public class ExpenseReportsService {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         ExpenseReport entity = mapper.map(dto, ExpenseReport.class);
         entity.setEmployee(emp);
-        if (entity.getExpenseFormPurpose() != null && entity.getExpenseFormPurpose().name().equals("GENERAL_EXPENSE")) {
-            entity.setStatus(ExpenseReportStatus.PENDING_PAYROLL_APPROVAL);
-        } else {
-            entity.setStatus(ExpenseReportStatus.PENDING_APPROVAL);
-        }
+//        entity.setStatus(ExpenseReportStatus.PENDING_MANAGER_APPROVAL);
         entity.setSubmittedDate(new Date());
         ExpenseCategoryDao expenseCategoryDao = ExpenseCategoryDao.instance();
         for (ExpenseItem item : entity.getExpenseItems()) {
@@ -69,12 +65,9 @@ public class ExpenseReportsService {
         vars.put("currentEmployee", emp);
         entity = expenseReportsDao.save(entity);
         vars.put("entityId", entity.getId());
-        if (OfficeSecurityService.instance().hasRole(info.yalamanchili.office.OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
-            entity.setBpmProcessId(OfficeBPMService.instance().startProcess("corp_emp_expense_report_process", vars));
-        } else {
-            entity.setBpmProcessId(OfficeBPMService.instance().startProcess("assoc_emp_expense_report_process", vars));
-        }
+        entity.setBpmProcessId(OfficeBPMService.instance().startProcess("corp_emp_expense_report_process", vars));    
         return entity;
+
     }
 
     public ExpenseReportSaveDto read(Long id) {
@@ -107,7 +100,7 @@ public class ExpenseReportsService {
         data.getSignatures().add(preparedBysignature);
         String prepareByStr = preparedBy.getLastName() + ", " + preparedBy.getFirstName();
         data.getData().put("name", prepareByStr);
-        if (preparedBy.getCompany()==null|| preparedBy.getCompany().getName().equals("System Soft Technologies LLC")) {
+        if (preparedBy.getCompany() == null || preparedBy.getCompany().getName().equals("System Soft Technologies LLC")) {
             data.getData().put("systemSoftTechnologies-LLC", "true");
         } else if (preparedBy.getCompany().getName().equals("System Soft Technologies INC")) {
             data.getData().put("systemSoftTechnologies-INC", "true");
