@@ -65,7 +65,7 @@ public class ExpenseReportsService {
         vars.put("currentEmployee", emp);
         entity = expenseReportsDao.save(entity);
         vars.put("entityId", entity.getId());
-        entity.setBpmProcessId(OfficeBPMService.instance().startProcess("corp_emp_expense_report_process", vars));    
+        entity.setBpmProcessId(OfficeBPMService.instance().startProcess("corp_emp_expense_report_process", vars));
         return entity;
 
     }
@@ -98,6 +98,7 @@ public class ExpenseReportsService {
         Signature preparedBysignature = new Signature(preparedBy.getEmployeeId(), preparedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(entity.getSubmittedDate()), employeeDao.getPrimaryEmail(preparedBy), null);
         data.getData().put("submittedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getSubmittedDate()));
         data.getSignatures().add(preparedBysignature);
+
         String prepareByStr = preparedBy.getLastName() + ", " + preparedBy.getFirstName();
         data.getData().put("name", prepareByStr);
         if (preparedBy.getCompany() == null || preparedBy.getCompany().getName().equals("System Soft Technologies LLC")) {
@@ -121,11 +122,7 @@ public class ExpenseReportsService {
                     break;
             }
         }
-        if (entity.getApprovedByManager() != null) {
-            Employee approver = employeeDao.findEmployeWithEmpId(entity.getApprovedByManager());
-            Signature approvedBysignature = new Signature(approver.getEmployeeId(), approver.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "approverSignature", DateUtils.dateToCalendar(entity.getApprovedByManagerDate()), employeeDao.getPrimaryEmail(approver), null);
-            data.getSignatures().add(approvedBysignature);
-        }
+
 // Ecpense Item General 
         Integer i = 1;
         Integer p = 1;
@@ -148,7 +145,9 @@ public class ExpenseReportsService {
             } else {
                 // Expanse Item Personal 
                 if (item.getExpensePaymentMode() != null && item.getExpensePaymentMode().name().equals("PERSONAL_CARD")) {
-                    data.getData().put("p-category" + p, item.getCategory().getName());
+                    if (item.getCategory() != null) {
+                        data.getData().put("p-category" + p, item.getCategory().getName());
+                    }
                     data.getData().put("p-purpose" + p, item.getPurpose());
                     data.getData().put("p-itemStartDate" + p, new SimpleDateFormat("MM-dd-yyyy").format(item.getExpenseDate()));
                     data.getData().put("p-amount" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
@@ -177,6 +176,31 @@ public class ExpenseReportsService {
         for (Comment comment : cmnts) {
             allComment = allComment + ". " + comment.getComment();
         }
+
+
+        if (entity.getApprovedByCEO() != null) {
+            Employee ceo = employeeDao.findEmployeWithEmpId(entity.getApprovedByCEO());
+            if (ceo != null) {
+                Signature approvedsignature = new Signature(ceo.getEmployeeId(), ceo.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "ceoApprovalBy", DateUtils.dateToCalendar(entity.getApprovedByCEODate()), employeeDao.getPrimaryEmail(ceo), null);
+                data.getSignatures().add(approvedsignature);
+                data.getData().put("approvedByCEODate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getApprovedByCEODate()));
+            }
+        }
+
+        if ((entity.getExpenseFormType()) != null && entity.getExpenseFormType().name().equals("TRAVEL_EXPENSE")) {
+            if (entity.getApprovedByPayroll() != null) {
+                Employee ceo = employeeDao.findEmployeWithEmpId(entity.getApprovedByPayroll());
+                if (ceo != null) {
+                    Signature approvedsignature = new Signature(ceo.getEmployeeId(), ceo.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "payrollApprovalBy", DateUtils.dateToCalendar(entity.getApprovedByPayrollDate()), employeeDao.getPrimaryEmail(ceo), null);
+                    data.getSignatures().add(approvedsignature);
+                    data.getData().put("approvedByPayrollDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getApprovedByPayrollDate()));
+                }
+            }
+        }
+        String approvedByPayroll = entity.getApprovedByPayroll();
+        data.getData().put("namePayroll", approvedByPayroll);
+        data.getData().put("PayrollDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getApprovedByPayrollDate()));
+
         data.getData().put("comment", allComment);
         byte[] pdf = PDFUtils.generatePdf(data);
         return Response.ok(pdf)
