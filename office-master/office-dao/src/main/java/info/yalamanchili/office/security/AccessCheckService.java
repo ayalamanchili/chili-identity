@@ -15,7 +15,6 @@ import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
-import java.util.Objects;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -68,14 +67,20 @@ public class AccessCheckService {
     protected boolean hasContactType(String companyContactType, Employee employee) {
         return CompanyContactDao.instance().getCompanyContactForEmployee(employee, companyContactType) != null;
     }
+//TODO avoid recurssion & caching?
 
     protected boolean canAccess(String companyContactType, Employee employee, Employee currentUser) {
         Employee companyContact = CompanyContactDao.instance().getCompanyContactForEmployee(employee, companyContactType);
         while (companyContact != null) {
             if (companyContact.getId().equals(currentUser.getId())) {
                 return true;
-            } else if (!Objects.equals(CompanyContactDao.instance().getCompanyContactForEmployee(companyContact, companyContactType).getId(), employee.getId())) {
-                return canAccess(companyContactType, companyContact, currentUser);
+            } else {
+                Employee cc = CompanyContactDao.instance().getCompanyContactForEmployee(companyContact, companyContactType);
+                if (cc != null && cc.getId().equals(employee.getId())) {
+                    break;
+                } else {
+                    return canAccess(companyContactType, companyContact, currentUser);
+                }
             }
         }
         return false;

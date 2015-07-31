@@ -56,7 +56,7 @@ public class CompanyContactDao extends CRUDDao<CompanyContact> {
         }
         return res;
     }
-
+//TODO caching
     public Employee getCompanyContactForEmployee(Employee emp, String companyContactType) {
         List<CompanyContact> contacts = getCompanyContact(emp, companyContactType);
         if (contacts.size() > 0) {
