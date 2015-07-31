@@ -19,7 +19,6 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.fields.EnumField;
-import info.chili.gwt.fields.IntegerField;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
 import static info.yalamanchili.office.client.expense.travelauthorization.TravelAuthConstants.*;
@@ -33,12 +32,12 @@ public class TravelAccommodationPanel extends ALComposite implements ClickHandle
 
     protected FlowPanel panel = new FlowPanel();
 
-    IntegerField numberOfLodgingNights;
+    CurrencyField numberOfLodgingNights;
     CurrencyField lodgingCostPerNight;
     CurrencyField totalLodgingCost;
     //
     EnumField expenseAccommodationPaymentType;
-    
+
     boolean readyOnly;
     JSONObject entity;
 
@@ -70,7 +69,7 @@ public class TravelAccommodationPanel extends ALComposite implements ClickHandle
 
     @Override
     protected void addWidgets() {
-        numberOfLodgingNights = new IntegerField(OfficeWelcome.constants,
+        numberOfLodgingNights = new CurrencyField(OfficeWelcome.constants,
                 NUM_OF_LODGING_NIGHTS, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         lodgingCostPerNight = new CurrencyField(OfficeWelcome.constants,
                 LODGING_COST_PER_NIGHT, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
@@ -87,7 +86,7 @@ public class TravelAccommodationPanel extends ALComposite implements ClickHandle
 
     protected final void populateFields() {
         if (entity.get(NUM_OF_LODGING_NIGHTS) != null) {
-            numberOfLodgingNights.setInteger(Integer.valueOf(entity.get(NUM_OF_LODGING_NIGHTS).isString().stringValue()));
+            numberOfLodgingNights.setValue(new BigDecimal(entity.get(NUM_OF_LODGING_NIGHTS).isString().stringValue()), false);
         }
         if (entity.get(LODGING_COST_PER_NIGHT) != null) {
             lodgingCostPerNight.setValue(new BigDecimal(entity.get(LODGING_COST_PER_NIGHT).isString().stringValue()), false);
@@ -102,8 +101,8 @@ public class TravelAccommodationPanel extends ALComposite implements ClickHandle
 
     public JSONObject getObject() {
         entity = new JSONObject();
-        if (numberOfLodgingNights.getInteger() != null) {
-            entity.put(NUM_OF_LODGING_NIGHTS, new JSONString(numberOfLodgingNights.getInteger().toString()));
+        if (numberOfLodgingNights.getCurrency() != null) {
+            entity.put(NUM_OF_LODGING_NIGHTS, new JSONString(numberOfLodgingNights.getCurrency().toString()));
         }
         if (lodgingCostPerNight.getCurrency() != null) {
             entity.put(LODGING_COST_PER_NIGHT, new JSONString(lodgingCostPerNight.getCurrency().toString()));
@@ -121,15 +120,15 @@ public class TravelAccommodationPanel extends ALComposite implements ClickHandle
     public void onClick(ClickEvent event) {
 
     }
-    
+
     @Override
     public void onBlur(BlurEvent event) {
-        if (numberOfLodgingNights.getInteger() != null && lodgingCostPerNight.getCurrency() != null) {
-            totalLodgingCost.setValue(lodgingCostPerNight.getCurrency().multiply(BigDecimal.valueOf(numberOfLodgingNights.getInteger())), readyOnly);
+        if (numberOfLodgingNights.getCurrency() != null && lodgingCostPerNight.getCurrency() != null) {
+            totalLodgingCost.setValue(lodgingCostPerNight.getCurrency().multiply(numberOfLodgingNights.getCurrency()), readyOnly);
         }
         onChange();
     }
-    
+
     protected void onChange() {
 
     }
