@@ -15,6 +15,7 @@ import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
+import java.util.Objects;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -73,7 +74,7 @@ public class AccessCheckService {
         while (companyContact != null) {
             if (companyContact.getId().equals(currentUser.getId())) {
                 return true;
-            } else {
+            } else if (!Objects.equals(CompanyContactDao.instance().getCompanyContactForEmployee(companyContact, companyContactType).getId(), employee.getId())) {
                 return canAccess(companyContactType, companyContact, currentUser);
             }
         }

@@ -57,7 +57,8 @@ public class ProfileReportsService {
             res.add(dto);
         }
         String[] columnOrder = new String[]{"firstName", "lastName", "startDate", "dateOfBirth", "type", "branch", "phoneNumber", "jobTitle", "email"};
-        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Employee-Basic-Info-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);    }
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Employee-Basic-Info-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
+    }
 
     @Async
     @Transactional
@@ -163,6 +164,10 @@ public class ProfileReportsService {
                 emailBody.append("<li>No emergency contacts information available</li>").append("</br>");
                 profileCompleteCounter--;
             }
+            if (emp.getSkillSet().getPractice() == null) {
+                emailBody.append("<li>No skill set information available</li>").append("</br>");
+                profileCompleteCounter--;
+            }
             if (profileCompleteCounter < 10) {
                 Email email = new Email();
                 email.addTo(emp.getPrimaryEmail().getEmail());
@@ -170,7 +175,7 @@ public class ProfileReportsService {
                 email.setRichText(true);
                 email.setSubject("Please review and complete your profile information");
                 StringBuilder emailBodyTitle = new StringBuilder();
-                emailBodyTitle.insert(0, "Your profile information is not complete. </br> <h4>Its very criticle to have the up-to date information since all departments rely on this information for Correspondance, Immigration, etc...</h4> </br> Please take a couple of minutes to review and update your information. </br>");
+                emailBodyTitle.insert(0, "Your profile information is not complete. </br> <h4>Its very criticle to have the up-to date information since all departments rely on this information for Correspondance, Immigration, Projects, etc...</h4> </br> Please take a couple of minutes to review and update your information. </br>");
                 emailBodyTitle.append("<a href=\"https://apps.sstech.us/site/office/forgot-password.html\">How can i login:</a>").append("</br>");
                 emailBodyTitle.append("<a href=\"https://apps.sstech.us/site/office/profile/profile.html\">How can i update my profile:</a>").append("</br>");
                 emailBodyTitle.append("<h5>Missing information:</h5>").append("</br>");
