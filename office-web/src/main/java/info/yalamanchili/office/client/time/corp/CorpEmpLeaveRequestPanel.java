@@ -60,7 +60,7 @@ public class CorpEmpLeaveRequestPanel extends CreateComposite {
         } else {
             entity.put("employee", new JSONObject());
         }
-        JSONArray notifyEmployeesList = employeesSB.getValues();
+        JSONArray notifyEmployeesList = employeesMSB.getValues();
         if (notifyEmployeesList.size() > 0) {
             entity.put("notifyEmployees", notifyEmployeesList);
         }
@@ -134,7 +134,7 @@ public class CorpEmpLeaveRequestPanel extends CreateComposite {
         addEnumField("category", false, true, LeaveRequestTimeCategory.names(), Alignment.HORIZONTAL);
         addField("notes", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Add team members to be notified"));
-        entityFieldsPanel.add(employeesSB);
+        entityFieldsPanel.add(employeesMSB);
         alignFields();
     }
 
@@ -162,7 +162,7 @@ public class CorpEmpLeaveRequestPanel extends CreateComposite {
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "corporate-timesheet/submit-leave-request";
     }
-    MultiSelectSuggestBox employeesSB = new MultiSelectSuggestBox() {
+    MultiSelectSuggestBox employeesMSB = new MultiSelectSuggestBox() {
         @Override
         public void initTosSuggesBox() {
             HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
