@@ -23,7 +23,6 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.expensecategory.SelectExpenseCategoryWidget;
 import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.*;
-import info.yalamanchili.office.client.expensereports.ExpenseFormType;
 import info.yalamanchili.office.client.expensereports.ExpensePaymentMode;
 import java.util.logging.Logger;
 
@@ -67,9 +66,6 @@ public class CreateExpenseItemPanel extends CreateComposite {
         description = (TextAreaField) fields.get(DESCRIPTION);
         addField(REMARK, false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         remark = (TextAreaField) fields.get(REMARK);
-//        expenseDate.getElement().getStyle().setProperty("float", "left");
-//        purpose.getElement().getStyle().setProperty("float", "left");
-//        amount.getElement().getStyle().setProperty("float", "left");
         alignFields();
     }
 

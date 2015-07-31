@@ -108,9 +108,6 @@ public class ReadExpenseItemPanel extends ReadComposite {
         description = (TextAreaField) fields.get(DESCRIPTION);
         addField(REMARK, true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         remark = (TextAreaField) fields.get(REMARK);
-//        expenseDate.getElement().getStyle().setProperty("float", "left");
-//        purpose.getElement().getStyle().setProperty("float", "left");
-//        amount.getElement().getStyle().setProperty("float", "left");
         alignFields();
     }
 

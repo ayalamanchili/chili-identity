@@ -191,9 +191,6 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
         addEnumField(EXPENSE_REIMBURSE_PMT_MODE, false, true, ExpenseReimbursePaymentMode.names(), Alignment.HORIZONTAL);
         expenseReimbursePaymentMode = (EnumField) fields.get(EXPENSE_REIMBURSE_PMT_MODE);
         entityFieldsPanel.add(expenseInfo);
-//        startDate.getElement().getStyle().setProperty("float", "left");
-//        projectName.getElement().getStyle().setProperty("float", "left");
-//        location.getElement().getStyle().setProperty("float", "left");
         alignFields();
     }
 

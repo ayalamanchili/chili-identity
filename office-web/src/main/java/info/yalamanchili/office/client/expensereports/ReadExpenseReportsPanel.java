@@ -91,9 +91,6 @@ public class ReadExpenseReportsPanel extends ReadComposite {
         addEnumField(EXPENSE_REIMBURSE_PMT_MODE, true, true, ExpenseReimbursePaymentMode.names(), Alignment.HORIZONTAL);
         expenseReimbursePaymentMode = (EnumField) fields.get(EXPENSE_REIMBURSE_PMT_MODE);
         entityFieldsPanel.add(expenseInfo);
-//        startDate.getElement().getStyle().setProperty("float", "left");
-//        projectName.getElement().getStyle().setProperty("float", "left");
-//        location.getElement().getStyle().setProperty("float", "left");
         alignFields();
     }
 
@@ -128,7 +125,7 @@ public class ReadExpenseReportsPanel extends ReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        logger.info("asdf" + entity.toString());
+        logger.info("INFO:" + entity.toString());
         assignFieldValueFromEntity(EXPENSE_FORM_TYPE, entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity(LOCATION, entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity(START_DATE, entity, DataType.DATE_FIELD);

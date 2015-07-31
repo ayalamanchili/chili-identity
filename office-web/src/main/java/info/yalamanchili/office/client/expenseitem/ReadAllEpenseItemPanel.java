@@ -82,7 +82,7 @@ public class ReadAllEpenseItemPanel extends CRUDReadAllComposite {
                 new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String result) {
-                logger.info("rrr:" + result);
+                logger.info("INFO:" + result);
                 postFetchTable(result);
             }
         });

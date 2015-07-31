@@ -23,7 +23,6 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import static info.yalamanchili.office.client.expense.travelauthorization.TravelAuthConstants.EMPLOYEE;
-import info.yalamanchili.office.client.expense.travelauthorization.TravelAuthorizationStatus;
 import java.util.logging.Logger;
 
 /**
@@ -132,6 +131,9 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
                 (ExpenseReportStatus.APPROVED.name().equals(status))                    || 
                 (ExpenseReportStatus.REJECTED.name().equals(status))) {
                 createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
+            }
+            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS)) {
+                createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE, row, JSONUtils.toString(entity, "id"));
             }
         }
     }

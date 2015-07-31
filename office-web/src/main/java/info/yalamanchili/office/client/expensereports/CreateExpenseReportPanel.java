@@ -91,9 +91,6 @@ public class CreateExpenseReportPanel extends CreateComposite {
         projectNumber = (StringField) fields.get(PROJECT_NUMBER);
         addEnumField(EXPENSE_REIMBURSE_PMT_MODE, false, true, ExpenseReimbursePaymentMode.names(), Alignment.HORIZONTAL);
         expenseReimbursePaymentMode = (EnumField) fields.get(EXPENSE_REIMBURSE_PMT_MODE);
-//        startDate.getElement().getStyle().setProperty("float", "left");
-//        projectName.getElement().getStyle().setProperty("float", "left");
-//        location.getElement().getStyle().setProperty("float", "left");
         entityFieldsPanel.add(expenseInfo);
         entityFieldsPanel.add(addItemL);
         alignFields();
@@ -191,7 +188,7 @@ public class CreateExpenseReportPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "expensereport/save";
+        return OfficeWelcome.constants.root_url() + "expensereport/submit";
 
     }
 }
