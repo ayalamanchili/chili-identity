@@ -12,13 +12,16 @@ import info.chili.jpa.validation.Validate;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
+import info.yalamanchili.office.dao.expense.expenserpt.ExpenseCategoryDao;
 import info.yalamanchili.office.dao.expense.expenserpt.ExpenseReportsDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.entity.expense.expenserpt.ExpenseItem;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.expense.expenserpt.ExpenseReportSaveDto;
 import info.yalamanchili.office.expense.expenserpt.ExpenseReportsService;
 import info.yalamanchili.office.jrs.CRUDResource;
+import info.yalamanchili.office.security.AccessCheck;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -53,19 +56,25 @@ public class ExpenseReportResource extends CRUDResource<ExpenseReport> {
 
     @PUT
     @Validate
-    @Path("/save")
+    @Path("/submit")
     @CacheEvict(value = OfficeCacheKeys.EXPENSE, allEntries = true)
-    public ExpenseReport save(ExpenseReportSaveDto dto) {
+    public ExpenseReport submit(ExpenseReportSaveDto dto) {
        return ExpenseReportsService.instance().save(dto);
     }
 
-//    @PUT
-//    @Validate
-//    public ExpenseReport update(ExpenseReportSaveDto dto) {
-//        Mapper mapper = (Mapper) SpringContext.getBean("mapper");
-//        ExpenseReport entity = mapper.map(dto, ExpenseReport.class);
-//        return expenseReportsDao.save(entity);
-//    }
+    @PUT
+    @Validate
+    @Path("/save")
+    public ExpenseReport save(ExpenseReportSaveDto dto) {
+        Mapper mapper = (Mapper) SpringContext.getBean("mapper");
+        ExpenseReport entity = mapper.map(dto, ExpenseReport.class);
+        ExpenseCategoryDao expenseCategoryDao = ExpenseCategoryDao.instance();
+        for (ExpenseItem item : entity.getExpenseItems()) {
+            item.setCategory(expenseCategoryDao.findById(item.getCategory().getId()));
+        }
+        return ExpenseReportsDao.instance().save(entity);
+    }
+
     
     @GET
     @Path("/{id}")
@@ -79,14 +88,27 @@ public class ExpenseReportResource extends CRUDResource<ExpenseReport> {
     @Path("/{start}/{limit}")
     public ExpenseReportResource.ExpenseReportsTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         ExpenseReportResource.ExpenseReportsTable tableObj = new ExpenseReportResource.ExpenseReportsTable();
-//        if (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_ADMIN.name())) {
+        if ((OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_ADMIN.name()))                 ||
+            (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name()))  ||
+            (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_CEO.name())))                  {
             tableObj.setEntities(expenseReportsDao.queryAll(start, limit));
             tableObj.setSize(expenseReportsDao.size());
-//        } else {
-//             Employee currentEmp = OfficeSecurityService.instance().getCurrentUser();
-//             tableObj.setEntities(expenseReportsDao.queryForEmployee(currentEmp.getId(), start, limit));
-//             tableObj.setSize(expenseReportsDao.size(currentEmp.getId()));
-//        }
+        } else {
+             Employee currentEmp = OfficeSecurityService.instance().getCurrentUser();
+             tableObj.setEntities(expenseReportsDao.queryForEmployee(currentEmp.getId(), start, limit));
+             tableObj.setSize(expenseReportsDao.size(currentEmp.getId()));
+        }
+        return tableObj;
+    }
+    
+    
+    @GET
+    @Path("/{employeeId}/{start}/{limit}")
+    @AccessCheck(companyContacts = {"Perf_Eval_Manager", "Reports_To"}, roles = {"ROLE_ADMIN"})
+    public ExpenseReportResource.ExpenseReportsTable getExpenseReportForEmployee(@PathParam("employeeId") Long employeeId, @PathParam("start") int start, @PathParam("limit") int limit) {
+        ExpenseReportResource.ExpenseReportsTable tableObj = new ExpenseReportResource.ExpenseReportsTable();
+        tableObj.setEntities(expenseReportsDao.queryForEmployee(employeeId, start, limit));
+        tableObj.setSize(expenseReportsDao.size(employeeId));
         return tableObj;
     }
 
