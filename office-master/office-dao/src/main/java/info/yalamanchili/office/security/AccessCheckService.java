@@ -15,6 +15,7 @@ import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
+import java.util.List;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -53,7 +54,7 @@ public class AccessCheckService {
             return true;
         }
         for (String cc : accessCheck.companyContacts()) {
-            boolean canAccess = canAccess(cc, employee, currentUser);
+            boolean canAccess = canAccess(cc, employee.getId(), currentUser);
             if (canAccess) {
                 return true;
             }
@@ -69,17 +70,17 @@ public class AccessCheckService {
     }
 //TODO avoid recurssion & caching?
 
-    protected boolean canAccess(String companyContactType, Employee employee, Employee currentUser) {
-        Employee companyContact = CompanyContactDao.instance().getCompanyContactForEmployee(employee, companyContactType);
-        while (companyContact != null) {
-            if (companyContact.getId().equals(currentUser.getId())) {
+    protected boolean canAccess(String companyContactType, Long employeeId, Employee currentUser) {
+        List<Long> ids = CompanyContactDao.instance().getCompanyContactIds(employeeId, companyContactType);
+        while (ids.size() > 0) {
+            if (ids.contains(currentUser.getId())) {
                 return true;
             } else {
-                Employee cc = CompanyContactDao.instance().getCompanyContactForEmployee(companyContact, companyContactType);
-                if (cc != null && cc.getId().equals(employee.getId())) {
+                Long cc = CompanyContactDao.instance().getCompanyContactIdForEmployeeId(ids.get(0), companyContactType);
+                if (cc != null && cc.equals(employeeId)) {
                     break;
                 } else {
-                    return canAccess(companyContactType, companyContact, currentUser);
+                    return canAccess(companyContactType, cc, currentUser);
                 }
             }
         }

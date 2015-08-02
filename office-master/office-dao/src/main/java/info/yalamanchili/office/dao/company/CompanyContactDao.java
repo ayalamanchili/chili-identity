@@ -49,6 +49,13 @@ public class CompanyContactDao extends CRUDDao<CompanyContact> {
         return query.getResultList();
     }
 
+    public List<Long> getCompanyContactIds(Long employeeId, String companyContactType) {
+        TypedQuery<Long> query = em.createQuery("select contact.id from " + CompanyContact.class.getCanonicalName() + " where employee.id=:empParam and type.name=:typeParam and contact.user.enabled=true", Long.class);
+        query.setParameter("empParam", employeeId);
+        query.setParameter("typeParam", companyContactType);
+        return query.getResultList();
+    }
+
     public List<Employee> getCompanyContactsForEmployee(Employee emp, String companyContactType) {
         List<Employee> res = new ArrayList();
         for (CompanyContact cc : getCompanyContact(emp, companyContactType)) {
@@ -57,10 +64,20 @@ public class CompanyContactDao extends CRUDDao<CompanyContact> {
         return res;
     }
 //TODO caching
+
     public Employee getCompanyContactForEmployee(Employee emp, String companyContactType) {
         List<CompanyContact> contacts = getCompanyContact(emp, companyContactType);
         if (contacts.size() > 0) {
             return contacts.get(0).getContact();
+        } else {
+            return null;
+        }
+    }
+
+    public Long getCompanyContactIdForEmployeeId(Long employeeId, String companyContactType) {
+        List<Long> contacts = getCompanyContactIds(employeeId, companyContactType);
+        if (contacts.size() > 0) {
+            return contacts.get(0);
         } else {
             return null;
         }
