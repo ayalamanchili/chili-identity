@@ -176,24 +176,24 @@ public class ExpenseReportsService {
                     //Expanse Item Amex
                     if (item.getCategory().getName().equals("Air Fare")) {
                         data.getData().put("Air Fare", "true");
-                        data.getData().put("aair-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                        data.getData().put("aair-category" + a, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
                     }
                     if (item.getCategory().getName().equals("Hotel")) {
                         data.getData().put("Hotel", "true");
-                        data.getData().put("ahotel-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                        data.getData().put("ahotel-category" + a, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
                     }
                     if (item.getCategory().getName().equals("Auto Rental Tolls, parking Taxi, Gas")) {
                         data.getData().put("Auto Rental Tolls, parking Taxi, Gas", "true");
-                        data.getData().put("aauto-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                        data.getData().put("aauto-category" + a, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
                     }
                     if (item.getCategory().getName().equals("Client Entertainment")) {
                         data.getData().put("Client Entertainment", "true");
-                        data.getData().put("aclient-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                        data.getData().put("aclient-category" + a, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
                     }
                     if (item.getCategory().getName().equals("Miscellaneous")) {
                         data.getData().put("Miscellaneous", "true");
 
-                        data.getData().put("amis-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                        data.getData().put("amis-category" + a, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
                     }
                     data.getData().put("a-purpose" + a, item.getPurpose());
                     data.getData().put("a-itemStartDate" + a, new SimpleDateFormat("MM-dd-yyyy").format(item.getExpenseDate()));
