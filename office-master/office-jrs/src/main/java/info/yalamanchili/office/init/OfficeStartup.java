@@ -433,8 +433,11 @@ public class OfficeStartup {
         getJAVACertification();
         getDOTNETCertification();
         //Expenses
-        getTravelExpenseCategory();
-        getPerdiemExpenseCategory();
+        getAirFareExpenseCategory();
+        getAutoExpenseCategory();
+        getClientExpenseCategory();
+        getHotelExpenseCategory();
+        getMisExpenseCategory();
         //TAE
         techSysClient();
 
@@ -681,27 +684,63 @@ public class OfficeStartup {
         }
     }
 
-    protected ExpenseCategory getTravelExpenseCategory() {
-        ExpenseCategory travelCategory = QueryUtils.findEntity(em, ExpenseCategory.class, "name", "TRAVEL");
+    protected ExpenseCategory getHotelExpenseCategory() {
+        ExpenseCategory travelCategory = QueryUtils.findEntity(em, ExpenseCategory.class, "name", "Hotel");
         if (travelCategory == null) {
             ExpenseCategory employeetype = new ExpenseCategory();
-            employeetype.setName("TRAVEL");
-            employeetype.setDescription("TRAVEL Employee Expenses");
+            employeetype.setName("Hotel");
+            employeetype.setDescription("Hotel Expenses");
             return em.merge(employeetype);
         } else {
             return travelCategory;
         }
     }
 
-    protected ExpenseCategory getPerdiemExpenseCategory() {
-        ExpenseCategory perdiemCategory = QueryUtils.findEntity(em, ExpenseCategory.class, "name", "PERDIEM");
+    protected ExpenseCategory getAirFareExpenseCategory() {
+        ExpenseCategory perdiemCategory = QueryUtils.findEntity(em, ExpenseCategory.class, "name", "AirFare");
         if (perdiemCategory == null) {
             ExpenseCategory employeetype = new ExpenseCategory();
-            employeetype.setName("PERDIEM");
-            employeetype.setDescription("PERDIEM Employee Expenses");
+            employeetype.setName("AirFare");
+            employeetype.setDescription("Air Fare Expenses");
             return em.merge(employeetype);
         } else {
             return perdiemCategory;
+        }
+    }
+
+    protected ExpenseCategory getAutoExpenseCategory() {
+        ExpenseCategory travelCategory = QueryUtils.findEntity(em, ExpenseCategory.class, "name", "Auto");
+        if (travelCategory == null) {
+            ExpenseCategory employeetype = new ExpenseCategory();
+            employeetype.setName("Auto");
+            employeetype.setDescription("Auto Rental Tolls, parking Taxi, Gas Expenses");
+            return em.merge(employeetype);
+        } else {
+            return travelCategory;
+        }
+    }
+
+    protected ExpenseCategory getClientExpenseCategory() {
+        ExpenseCategory travelCategory = QueryUtils.findEntity(em, ExpenseCategory.class, "name", "ClientEntertainment");
+        if (travelCategory == null) {
+            ExpenseCategory employeetype = new ExpenseCategory();
+            employeetype.setName("ClientEntertainment");
+            employeetype.setDescription("Client Entertainment Expenses");
+            return em.merge(employeetype);
+        } else {
+            return travelCategory;
+        }
+    }
+
+    protected ExpenseCategory getMisExpenseCategory() {
+        ExpenseCategory travelCategory = QueryUtils.findEntity(em, ExpenseCategory.class, "name", "Miscellaneous");
+        if (travelCategory == null) {
+            ExpenseCategory employeetype = new ExpenseCategory();
+            employeetype.setName("Miscellaneous");
+            employeetype.setDescription("Miscellaneous Expenses");
+            return em.merge(employeetype);
+        } else {
+            return travelCategory;
         }
     }
 
