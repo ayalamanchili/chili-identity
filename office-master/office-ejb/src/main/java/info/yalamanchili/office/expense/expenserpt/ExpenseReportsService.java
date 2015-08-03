@@ -146,7 +146,26 @@ public class ExpenseReportsService {
                 // Expanse Item Personal 
                 if (item.getExpensePaymentMode() != null && item.getExpensePaymentMode().name().equals("PERSONAL_CARD")) {
                     if (item.getCategory() != null) {
-                        data.getData().put("p-category" + p, item.getCategory().getName());
+                        if (item.getCategory().getName().equals("Air Fare")) {
+                            data.getData().put("Air Fare", "true");
+                            data.getData().put("air-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                        }
+                        if (item.getCategory().getName().equals("Hotel")) {
+                            data.getData().put("Hotel", "true");
+                            data.getData().put("hotel-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                        }
+                        if (item.getCategory().getName().equals("Auto Rental Tolls, parking Taxi, Gas")) {
+                            data.getData().put("Auto Rental Tolls, parking Taxi, Gas", "true");
+                            data.getData().put("auto-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                        }
+                        if (item.getCategory().getName().equals("Client Entertainment")) {
+                            data.getData().put("Client Entertainment", "true");
+                            data.getData().put("client-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                        }
+                        if (item.getCategory().getName().equals("Miscellaneous")) {
+                            data.getData().put("Miscellaneous", "true");
+                            data.getData().put("mis-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                        }
                     }
                     data.getData().put("p-purpose" + p, item.getPurpose());
                     data.getData().put("p-itemStartDate" + p, new SimpleDateFormat("MM-dd-yyyy").format(item.getExpenseDate()));
@@ -155,7 +174,27 @@ public class ExpenseReportsService {
                     p++;
                 } else {
                     //Expanse Item Amex
-                    data.getData().put("a-category" + a, item.getCategory().getName());
+                    if (item.getCategory().getName().equals("Air Fare")) {
+                        data.getData().put("Air Fare", "true");
+                        data.getData().put("aair-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                    }
+                    if (item.getCategory().getName().equals("Hotel")) {
+                        data.getData().put("Hotel", "true");
+                        data.getData().put("ahotel-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                    }
+                    if (item.getCategory().getName().equals("Auto Rental Tolls, parking Taxi, Gas")) {
+                        data.getData().put("Auto Rental Tolls, parking Taxi, Gas", "true");
+                        data.getData().put("aauto-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                    }
+                    if (item.getCategory().getName().equals("Client Entertainment")) {
+                        data.getData().put("Client Entertainment", "true");
+                        data.getData().put("aclient-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                    }
+                    if (item.getCategory().getName().equals("Miscellaneous")) {
+                        data.getData().put("Miscellaneous", "true");
+
+                        data.getData().put("amis-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                    }
                     data.getData().put("a-purpose" + a, item.getPurpose());
                     data.getData().put("a-itemStartDate" + a, new SimpleDateFormat("MM-dd-yyyy").format(item.getExpenseDate()));
                     data.getData().put("a-amount" + a, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
@@ -197,10 +236,17 @@ public class ExpenseReportsService {
                 }
             }
         }
-        String approvedByPayroll = entity.getApprovedByPayroll();
-        data.getData().put("namePayroll", approvedByPayroll);
-        data.getData().put("PayrollDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getApprovedByPayrollDate()));
+        if ((entity.getExpenseFormType()) != null && entity.getExpenseFormType().name().equals("GENERAL_EXPENSE")) {
+            if (entity.getApprovedByPayroll() != null) {
+                Employee name = employeeDao.findEmployeWithEmpId(entity.getApprovedByPayroll());
+                if (name != null) {
+                    String approvedByPayroll = entity.getApprovedByPayroll();
+                    data.getData().put("namePayroll", approvedByPayroll);
+                    data.getData().put("PayrollDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getApprovedByPayrollDate()));
+                }
+            }
 
+        }
         data.getData().put("comment", allComment);
         byte[] pdf = PDFUtils.generatePdf(data);
         return Response.ok(pdf)
