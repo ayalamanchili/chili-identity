@@ -20,9 +20,11 @@
             <documentation>
                 Employee Expense Report Manager Approval Task
                 Employee Name       : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Expense Form Type   : #{entity.expenseFormType}
                 Location/Purpose    : #{entity.location}
                 Start Date          : #{entity.startDate}
                 End Date            : #{entity.endDate}
+                Total Amount        : #{entity.totalExpenses}
 
             </documentation>
             <extensionElements>
@@ -76,9 +78,12 @@
             <documentation>
                 Employee Expense Report Final Approval Task
                 Employee Name       : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Expense Form Type   : #{entity.expenseFormType}
                 Location/Purpose    : #{entity.location}
                 Start Date          : #{entity.startDate}
                 End Date            : #{entity.endDate}
+                Total Amount        : #{entity.totalExpenses}
+                
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.expensereport.CorpEmpExpenseReportProcess" />
@@ -125,14 +130,16 @@
         </sequenceFlow>
         <!-- Payroll approval task-->
         <userTask id="expenseReportPayrollApprovalTask" 
-                  name="Expense Report Payroll Dept Final Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}"
-                  activiti:candidateGroups="ROLE_PAYROLL_AND_BENIFITS">
+                  name="Expense Report Accounts Payable Dispatch Final Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}"
+                  activiti:candidateGroups="ROLE_ACCOUNTS_PAYABLE">
             <documentation>
                 Employee Expense Report Payroll Dept Approval Task
                 Employee Name       : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Expense Form Type   : #{entity.expenseFormType}
                 Location/Purpose    : #{entity.location}
                 Start Date          : #{entity.startDate}
                 End Date            : #{entity.endDate}
+                Total Amount        : #{entity.totalExpenses}
 
             </documentation>
             <extensionElements>
