@@ -8,6 +8,7 @@
 package info.yalamanchili.office.client.expensereports;
 
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -25,9 +26,11 @@ import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.expenseitem.CreateExpenseItemPanel;
 import info.yalamanchili.office.client.expenseitem.UpdateExpenseItemPanel;
 import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.*;
 import java.math.BigDecimal;
@@ -42,7 +45,10 @@ import java.util.logging.Logger;
 public class UpdateExpenseReportPanel extends UpdateComposite {
 
     private Logger logger = Logger.getLogger(UpdateExpenseReportPanel.class.getName());
-    protected List<UpdateExpenseItemPanel> updateItemPanels = new ArrayList<UpdateExpenseItemPanel>();
+    protected List<UpdateExpenseItemPanel> updateItemPanels = new ArrayList<>();
+    protected List<CreateExpenseItemPanel> expenseItemPanels = new ArrayList<>();
+    protected ClickableLink addItemL = new ClickableLink("Add Expense Item");
+    protected ClickableLink removeItemL = new ClickableLink("Remove Expense Item");
     protected static HTML generalInfo = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
             + "<strong style=\"color:#555555\">General Expense Information</strong></p>\n"
@@ -102,9 +108,22 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
         for (UpdateExpenseItemPanel panel : updateItemPanels) {
             items.set(i, panel.populateEntityFromFields());
             JSONObject entityObj = (JSONObject) items.get(i);
-            BigDecimal eAmount= new BigDecimal(JSONUtils.toString(entityObj, AMOUNT));
-            totalExpensesAmount = totalExpensesAmount.add(eAmount);
+            if (!JSONUtils.toString(entityObj, AMOUNT).isEmpty()) {
+                BigDecimal eAmount= new BigDecimal(JSONUtils.toString(entityObj, AMOUNT));
+                totalExpensesAmount = totalExpensesAmount.add(eAmount);
+            }
             i++;
+        }
+        if (expenseItemPanels.size() > 0) {  
+            for (CreateExpenseItemPanel panel : expenseItemPanels) {
+                items.set(i, panel.populateEntityFromFields());
+                JSONObject entityObj = (JSONObject) items.get(i);
+                if (!JSONUtils.toString(entityObj, AMOUNT).isEmpty()) {
+                    BigDecimal eAmount= new BigDecimal(JSONUtils.toString(entityObj, AMOUNT));
+                    totalExpensesAmount = totalExpensesAmount.add(eAmount);
+                }
+                i++;
+            }
         }
         entity.put(EXPENSE_ITEMS, items);
         entity.put(TOTAL_EXPENSES, new JSONString((totalExpensesAmount).abs().toString()));
@@ -165,6 +184,8 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
 
     @Override
     protected void addListeners() {
+        addItemL.addClickHandler(this);
+        removeItemL.addClickHandler(this);
     }
 
     @Override
@@ -178,6 +199,8 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
         expenseReimbursePaymentMode.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         generalInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         expenseInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        addItemL.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        removeItemL.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
     }
 
     @Override
@@ -198,6 +221,8 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
         addEnumField(EXPENSE_REIMBURSE_PMT_MODE, false, true, ExpenseReimbursePaymentMode.names(), Alignment.HORIZONTAL);
         expenseReimbursePaymentMode = (EnumField) fields.get(EXPENSE_REIMBURSE_PMT_MODE);
         entityFieldsPanel.add(expenseInfo);
+        entityFieldsPanel.add(addItemL);
+        entityFieldsPanel.add(removeItemL);
         alignFields();
     }
 
@@ -208,5 +233,27 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "expensereport/save";
+    }
+    
+        @Override
+    public void onClick(ClickEvent event) {
+        if (event.getSource().equals(addItemL)) {
+            CreateExpenseItemPanel panel = new CreateExpenseItemPanel();
+            expenseItemPanels.add(panel);
+            entityFieldsPanel.add(panel);
+        }
+        if (event.getSource().equals(removeItemL)) {
+            if (expenseItemPanels.size() > 0) {   
+                int i = expenseItemPanels.size();
+                expenseItemPanels.get(i-1).removeFromParent();
+                expenseItemPanels.remove(i-1);
+            }
+            if (updateItemPanels.size() > 0) {   
+                int i = updateItemPanels.size();
+                updateItemPanels.get(i-1).removeFromParent();
+                updateItemPanels.remove(i-1);
+            }
+        }
+        super.onClick(event);
     }
 }
