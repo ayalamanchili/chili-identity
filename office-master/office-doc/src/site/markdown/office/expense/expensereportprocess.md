@@ -16,13 +16,12 @@ How To Approve Expense Report Process for Reports_To Manager Task
 ----
  - Navigate to Home --> MY Tasks --> view
 
-![alt text](../../images/expense/espense-pending-manager-approval-task.png "Travel Authorization")
+![alt text](../../images/expense/expense-pending-manager-approval-task.png "Travel Authorization")
 Expense Report Process for CEO Process
 ----
 - Navigate to Expense --> Expense Reports --> Search --> view
-- Same as above process for the CEO also.
-
-![alt text](../../images/expense/expense-ceo-approval-process.png "Travel Authorization")
+- Same as above process for the CEO also
+![alt text](../../images/expense/pending-ceo-approval.png "Travel Authorization")
 
 Email For CEO
 ----
@@ -37,16 +36,16 @@ How To View Expense Report Process for Accounts Payable Dept
 ----
  - Navigate to Expense --> Expense Reports --> Search --> view
  - Same as above process for the Accounts Payable Dept also.
-![alt text](../../images/expense/view-expense-report.png "Travel Authorization")
+![alt text](../../images/expense/pending-accounts-approval.png "Travel Authorization")
 
 Email For Accounts Payable Dept
 ----
-![alt text](../../images/expense/Email_reportsto-manager.png "Travel Authorization")
+![alt text](../../images/expense/email_accounts.png "Travel Authorization")
 
 How To Approve Expense Report Process for Accounts Payable Dept
 ----
  - Navigate to Home --> MY Tasks --> view
-![alt text](../../images/expense/expense-pending-manager-approval-task.png "Travel Authorization")
+![alt text](../../images/expense/expense-pending-accounts-approval-task.png "Travel Authorization")
 Approved Expense Report
 ----
 ![alt text](../../images/expense/approved-expense-report.png "Travel Authorization")
