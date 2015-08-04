@@ -97,6 +97,7 @@ public class CreateExpenseReportPanel extends CreateComposite {
         expenseReimbursePaymentMode = (EnumField) fields.get(EXPENSE_REIMBURSE_PMT_MODE);
         entityFieldsPanel.add(expenseInfo);
         entityFieldsPanel.add(addItemL);
+        entityFieldsPanel.add(removeItemL);
         alignFields();
     }
 
@@ -139,8 +140,10 @@ public class CreateExpenseReportPanel extends CreateComposite {
             for (CreateExpenseItemPanel panel : expenseItemPanels) {
                 items.set(i, panel.populateEntityFromFields());
                 JSONObject entityObj = (JSONObject) items.get(i);
-                BigDecimal eAmount= new BigDecimal(JSONUtils.toString(entityObj, AMOUNT));
-                totalExpensesAmount = totalExpensesAmount.add(eAmount);
+                if (!JSONUtils.toString(entityObj, AMOUNT).isEmpty()) {
+                    BigDecimal eAmount= new BigDecimal(JSONUtils.toString(entityObj, AMOUNT));
+                    totalExpensesAmount = totalExpensesAmount.add(eAmount);
+                }
                 i++;
         }
             entity.put(EXPENSE_ITEMS, items);
@@ -177,6 +180,13 @@ public class CreateExpenseReportPanel extends CreateComposite {
             CreateExpenseItemPanel panel = new CreateExpenseItemPanel();
             expenseItemPanels.add(panel);
             entityFieldsPanel.add(panel);
+        }
+        if (event.getSource().equals(removeItemL)) {
+            if (expenseItemPanels.size() > 0) {   
+                int i = expenseItemPanels.size();
+                expenseItemPanels.get(i-1).removeFromParent();
+                expenseItemPanels.remove(i-1);
+        }
         }
         super.onClick(event);
     }
