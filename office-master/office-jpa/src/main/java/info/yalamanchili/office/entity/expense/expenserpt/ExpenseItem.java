@@ -18,7 +18,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -60,6 +60,7 @@ public class ExpenseItem extends AbstractEntity {
      *
      */
     @NotNull(message = "{expenseitem.amount.not.empty.msg}")
+    @Min(1)
     private BigDecimal amount;
     /*
      *
