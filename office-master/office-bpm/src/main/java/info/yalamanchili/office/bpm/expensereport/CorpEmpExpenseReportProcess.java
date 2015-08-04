@@ -91,7 +91,6 @@ public class CorpEmpExpenseReportProcess implements TaskListener {
     private void assignExpenseReportTask(DelegateTask dt) {
         Employee emp = (Employee) dt.getExecution().getVariable("currentEmployee");
         Employee reportsToEmp = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Reports_To");
-//        if (emp.getEmployeeType().getName().equals("Corporate Employee") && reportsToEmp != null) {
         if (reportsToEmp != null) {
             dt.addCandidateUser(reportsToEmp.getEmployeeId());
         } else {
