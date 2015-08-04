@@ -357,12 +357,14 @@
         <module>office-jpa</module>
         <module>office-jms</module>
         <module>office-dao</module>
+         <module>office-bpm</module>
         <module>office-ejb</module>
+        <module>office-integration</module>
         <!--<module>office-toolbox</module>-->
         <module>office-jrs</module>
         <!-- web -->
         <!--<module>../office-web</module> -->
-        <module>office-bpm</module>
+       
     </modules>
     <build>
         <plugins>

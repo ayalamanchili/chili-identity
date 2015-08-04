@@ -72,6 +72,6 @@ public class HomeAddressChangeProcessBean {
     }
 
     public void publishToExternalSystems(Address address) {
-        CMessagingService.instance().send(new CMessage("info.yalamanchili.office.integration.AddressPublishService", address));
+        CMessagingService.instance().send(new CMessage("info.yalamanchili.office.integration.address.AddressPublishService", address));
     }
 }

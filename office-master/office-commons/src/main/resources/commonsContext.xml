@@ -22,6 +22,7 @@
                 <entry key="bean:name=OfficeSeviceConfiguration" value-ref="officeServiceConfiguration" />
                 <entry key="bean:name=OfficeSecurityConfiguration" value-ref="officeSecurityConfiguration" />
                 <entry key="bean:name=OfficeServiceJobConfiguration" value-ref="officeServiceJobConfiguration" />
+                <entry key="bean:name=ExternalServiceConfiguration" value-ref="externalServiceConfiguration" />
                 <entry key="bean:name=AclDataInit" value-ref="aclDataInit" />
             </map>
         </property>
@@ -29,4 +30,5 @@
     
     <util:properties id="officeProperties" location="classpath:office-service.properties" />  
     <util:properties id="officeFeatureFlipperProperties" location="classpath:office-feature-flipper.properties" />  
+    <util:properties id="officeExternalServicesProperties" location="classpath:office-external-services.properties" />  
 </beans>
