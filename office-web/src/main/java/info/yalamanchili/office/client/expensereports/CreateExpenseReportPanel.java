@@ -11,23 +11,27 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import info.chili.gwt.crud.CRUDComposite;
 import info.chili.gwt.crud.CreateComposite;
+import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.expenseitem.CreateExpenseItemPanel;
 import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -42,7 +46,7 @@ public class CreateExpenseReportPanel extends CreateComposite {
     protected ClickableLink addItemL = new ClickableLink("Add Expense Item");
     protected ClickableLink removeItemL = new ClickableLink("Remove Expense Item");
     protected List<CreateExpenseItemPanel> expenseItemPanels = new ArrayList<>();
-
+    
     protected static HTML generalInfo = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
             + "<strong style=\"color:#555555\">General Expense Information</strong></p>\n"
@@ -120,6 +124,7 @@ public class CreateExpenseReportPanel extends CreateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
+        BigDecimal totalExpensesAmount = BigDecimal.ZERO;
         entity = new JSONObject();
         assignEntityValueFromField(EXPENSE_FORM_TYPE, entity);
         assignEntityValueFromField(LOCATION, entity);
@@ -128,15 +133,19 @@ public class CreateExpenseReportPanel extends CreateComposite {
         assignEntityValueFromField(PROJECT_NAME, entity);
         assignEntityValueFromField(PROJECT_NUMBER, entity);
         assignEntityValueFromField(EXPENSE_REIMBURSE_PMT_MODE, entity);
-        if (expenseItemPanels.size() > 0) {
+        if (expenseItemPanels.size() > 0) {          
             JSONArray items = new JSONArray();
             int i = 0;
             for (CreateExpenseItemPanel panel : expenseItemPanels) {
                 items.set(i, panel.populateEntityFromFields());
+                JSONObject entityObj = (JSONObject) items.get(i);
+                BigDecimal eAmount= new BigDecimal(JSONUtils.toString(entityObj, AMOUNT));
+                totalExpensesAmount = totalExpensesAmount.add(eAmount);
                 i++;
-            }
+        }
             entity.put(EXPENSE_ITEMS, items);
         }
+        entity.put(TOTAL_EXPENSES, new JSONString((totalExpensesAmount).abs().toString()));
         return entity;
     }
 
