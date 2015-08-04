@@ -8,7 +8,12 @@
 package info.yalamanchili.office.client.expensereports;
 
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
@@ -40,13 +45,12 @@ import java.util.logging.Logger;
  *
  * @author Prasanthi.p
  */
-public class CreateExpenseReportPanel extends CreateComposite {
+public class CreateExpenseReportPanel extends CreateComposite implements ChangeHandler, BlurHandler {
 
     private Logger logger = Logger.getLogger(CreateExpenseReportPanel.class.getName());
     protected ClickableLink addItemL = new ClickableLink("Add Expense Item");
     protected ClickableLink removeItemL = new ClickableLink("Remove Expense Item");
     protected List<CreateExpenseItemPanel> expenseItemPanels = new ArrayList<>();
-    
     protected static HTML generalInfo = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
             + "<strong style=\"color:#555555\">General Expense Information</strong></p>\n"
@@ -65,7 +69,6 @@ public class CreateExpenseReportPanel extends CreateComposite {
         super(type);
         initCreateComposite("ExpenseReport", OfficeWelcome.constants);
     }
-
     EnumField expenseFormType;
     StringField location;
     DateField startDate;
@@ -119,6 +122,9 @@ public class CreateExpenseReportPanel extends CreateComposite {
 
     @Override
     protected void addListeners() {
+        expenseFormType.listBox.addChangeHandler(this);
+        projectName.getTextbox().addBlurHandler(this);
+        projectNumber.getTextbox().addBlurHandler(this);
         addItemL.addClickHandler(this);
         removeItemL.addClickHandler(this);
     }
@@ -134,18 +140,18 @@ public class CreateExpenseReportPanel extends CreateComposite {
         assignEntityValueFromField(PROJECT_NAME, entity);
         assignEntityValueFromField(PROJECT_NUMBER, entity);
         assignEntityValueFromField(EXPENSE_REIMBURSE_PMT_MODE, entity);
-        if (expenseItemPanels.size() > 0) {          
+        if (expenseItemPanels.size() > 0) {
             JSONArray items = new JSONArray();
             int i = 0;
             for (CreateExpenseItemPanel panel : expenseItemPanels) {
                 items.set(i, panel.populateEntityFromFields());
                 JSONObject entityObj = (JSONObject) items.get(i);
                 if (!JSONUtils.toString(entityObj, AMOUNT).isEmpty()) {
-                    BigDecimal eAmount= new BigDecimal(JSONUtils.toString(entityObj, AMOUNT));
+                    BigDecimal eAmount = new BigDecimal(JSONUtils.toString(entityObj, AMOUNT));
                     totalExpensesAmount = totalExpensesAmount.add(eAmount);
                 }
                 i++;
-        }
+            }
             entity.put(EXPENSE_ITEMS, items);
         }
         entity.put(TOTAL_EXPENSES, new JSONString((totalExpensesAmount).abs().toString()));
@@ -156,18 +162,17 @@ public class CreateExpenseReportPanel extends CreateComposite {
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
+            @Override
+            public void onFailure(Throwable arg0) {
+                logger.info(arg0.getMessage());
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        logger.info(arg0.getMessage());
-                        handleErrorResponse(arg0);
-                    }
-
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postCreateSuccess(arg0);
+            }
+        });
     }
 
     @Override
@@ -182,11 +187,11 @@ public class CreateExpenseReportPanel extends CreateComposite {
             entityFieldsPanel.add(panel);
         }
         if (event.getSource().equals(removeItemL)) {
-            if (expenseItemPanels.size() > 0) {   
+            if (expenseItemPanels.size() > 0) {
                 int i = expenseItemPanels.size();
-                expenseItemPanels.get(i-1).removeFromParent();
-                expenseItemPanels.remove(i-1);
-        }
+                expenseItemPanels.get(i - 1).removeFromParent();
+                expenseItemPanels.remove(i - 1);
+            }
         }
         super.onClick(event);
     }
@@ -207,5 +212,28 @@ public class CreateExpenseReportPanel extends CreateComposite {
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "expensereport/submit";
 
+    }
+
+    protected void renderproject(boolean render) {
+        projectName.setVisible(render);
+        projectNumber.setVisible(render);
+    }
+
+    @Override
+    public void onChange(ChangeEvent event) {
+        if (event.getSource().equals(expenseFormType.listBox)) {
+            if (expenseFormType.getValue().equals(ExpenseFormType.GENERAL_EXPENSE.name())) {
+                renderproject(false);
+            }
+        }
+        if (event.getSource().equals(expenseFormType.listBox)) {
+            if (expenseFormType.getValue().equals(ExpenseFormType.TRAVEL_EXPENSE.name())) {
+                renderproject(true);
+            }
+        }
+    }
+
+    @Override
+    public void onBlur(BlurEvent event) {
     }
 }
