@@ -194,8 +194,6 @@ public class CreateExpenseReportPanel extends CreateComposite {
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Expense Form Successfully Created");
-        TabPanel.instance().expensePanel.sidePanelTop.clear();
-        TabPanel.instance().expensePanel.sidePanelTop.add(new ExpenseReportsSidePanel());
         TabPanel.instance().expensePanel.entityPanel.clear();
         TabPanel.instance().expensePanel.entityPanel.add(new ReadAllExpenseReportsPanel());
     }
