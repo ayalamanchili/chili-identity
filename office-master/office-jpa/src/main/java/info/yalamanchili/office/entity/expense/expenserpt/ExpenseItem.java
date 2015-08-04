@@ -59,7 +59,6 @@ public class ExpenseItem extends AbstractEntity {
     /*
      *
      */
-    @NotNull(message = "{expenseitem.amount.not.empty.msg}")
     @Min(1)
     private BigDecimal amount;
     /*
