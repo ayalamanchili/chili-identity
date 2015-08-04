@@ -23,6 +23,7 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import static info.yalamanchili.office.client.expense.travelauthorization.TravelAuthConstants.EMPLOYEE;
+import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.*;
 import java.util.logging.Logger;
 
 /**
@@ -88,7 +89,7 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
-                        logger.info("rrr:" + result);
+                        logger.info("Info:" + result);
                         postFetchTable(result);
                     }
                 });
@@ -98,10 +99,13 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Name"));
-        table.setText(0, 2, getKeyValue("StartDate"));
-        table.setText(0, 3, getKeyValue("EndDate"));
-        table.setText(0, 4, getKeyValue("Print"));
-        table.setText(0, 5, getKeyValue("Status"));
+        table.setText(0, 2, getKeyValue("Form_Type"));
+        table.setText(0, 3, getKeyValue("StartDate"));
+        table.setText(0, 4, getKeyValue("EndDate"));
+        table.setText(0, 5, getKeyValue("Total Amount"));
+        table.setText(0, 6, getKeyValue("Print"));
+        table.setText(0, 7, getKeyValue("Status"));
+
     }
 
     @Override
@@ -111,11 +115,13 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
             addOptionsWidget(i, entity);
             JSONObject emp = (JSONObject) entity.get(EMPLOYEE);
             table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
-            table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 2, JSONUtils.toString(entity, EXPENSE_FORM_TYPE ));
+            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, START_DATE), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, END_DATE), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 5, JSONUtils.toString(entity, TOTAL_EXPENSES ));
             FileField reportL = new FileField("Print", ChiliClientConfig.instance().getFileDownloadUrl() + "expensereport/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id"));
-            table.setWidget(i, 4, reportL);
-            table.setText(i, 5, JSONUtils.formatEnumString(entity, "status"));
+            table.setWidget(i, 6, reportL);
+            table.setText(i, 7, JSONUtils.formatEnumString(entity, "status"));  
         }
     }
 
@@ -132,7 +138,7 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
                 (ExpenseReportStatus.REJECTED.name().equals(status))) {
                 createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
             }
-            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS)) {
+            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ACCOUNTS_PAYABLE)) {
                 createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE, row, JSONUtils.toString(entity, "id"));
             }
         }
