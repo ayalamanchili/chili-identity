@@ -9,6 +9,7 @@ package info.yalamanchili.office.entity.expense.expenserpt;
 
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.profile.Employee;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -20,6 +21,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -134,7 +136,8 @@ public class ExpenseReport extends AbstractEntity {
     @NotNull(message = "{expensereport.paymentmode.not.empty.msg}")
     @Enumerated(EnumType.STRING)
     private ExpenseReimbursePaymentMode expenseReimbursePaymentMode;
-
+    
+    private BigDecimal totalExpenses;
     /**
      *
      */
@@ -309,14 +312,12 @@ public class ExpenseReport extends AbstractEntity {
     public static void setSerialVersionUID(long aSerialVersionUID) {
         serialVersionUID = aSerialVersionUID;
     }
-
     /**
      *
      */
     public ExpenseReimbursePaymentMode getExpenseReimbursePaymentMode() {
         return expenseReimbursePaymentMode;
     }
-
     /**
      *
      */
@@ -379,5 +380,14 @@ public class ExpenseReport extends AbstractEntity {
     public void setExpenseFormType(ExpenseFormType expenseFormType) {
         this.expenseFormType = expenseFormType;
     }
+    
+    public BigDecimal getTotalExpenses() {
+        return totalExpenses;
+    }
+
+    public void setTotalExpenses(BigDecimal totalExpenses) {
+        this.totalExpenses = totalExpenses;
+    }
+
 
 }
