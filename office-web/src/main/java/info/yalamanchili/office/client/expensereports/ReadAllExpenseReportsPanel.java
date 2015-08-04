@@ -100,9 +100,9 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Name"));
         table.setText(0, 2, getKeyValue("Form_Type"));
-        table.setText(0, 3, getKeyValue("StartDate"));
-        table.setText(0, 4, getKeyValue("EndDate"));
-        table.setText(0, 5, getKeyValue("Total Amount"));
+        table.setText(0, 3, getKeyValue("Start_Date"));
+        table.setText(0, 4, getKeyValue("End_Date"));
+        table.setText(0, 5, getKeyValue("Total_Amount"));
         table.setText(0, 6, getKeyValue("Print"));
         table.setText(0, 7, getKeyValue("Status"));
 
@@ -149,6 +149,9 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
     }
 
     private String getReadAllExpenseReportURL(Integer start, String tableSize) {
+        if (url != null) {
+            return url;
+        }
         return OfficeWelcome.constants.root_url() + "expensereport/" + start.toString() + "/" + tableSize.toString();
     }
 }
