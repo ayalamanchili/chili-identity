@@ -11,6 +11,7 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -29,6 +30,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.expenseitem.UpdateExpenseItemPanel;
 import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -87,6 +89,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
+        BigDecimal totalExpensesAmount = BigDecimal.ZERO;
         assignEntityValueFromField(EXPENSE_FORM_TYPE, entity);
         assignEntityValueFromField(LOCATION, entity);
         assignEntityValueFromField(START_DATE, entity);
@@ -98,9 +101,13 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
         int i = 0;
         for (UpdateExpenseItemPanel panel : updateItemPanels) {
             items.set(i, panel.populateEntityFromFields());
+            JSONObject entityObj = (JSONObject) items.get(i);
+            BigDecimal eAmount= new BigDecimal(JSONUtils.toString(entityObj, AMOUNT));
+            totalExpensesAmount = totalExpensesAmount.add(eAmount);
             i++;
         }
         entity.put(EXPENSE_ITEMS, items);
+        entity.put(TOTAL_EXPENSES, new JSONString((totalExpensesAmount).abs().toString()));
         logger.info(entity.toString());
         return entity;
     }
