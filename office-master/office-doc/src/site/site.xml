@@ -110,6 +110,10 @@
                 <item name="Create Travel Authorization" href="/office/expense/travelauthorization.html"/>
                 <item name="Travel Authorization Process" href="/office/expense/travelauthorizationprocess.html">
                 </item>
+                <item name="Create Expense Report" href="/office/expense/submitexpensereport.html">
+                </item>
+                <item name="Expense Report Process" href="/office/expense/expensereportprocess.html">
+                </item>
                 <item name="Trouble Accessing Portal" href="/office/accountresettask.html" collapse="true">
                     <item name="Account Reset" href="/office/accountresettask.html"/>
                     <item name="Forgot Password" href="/office/forgot-password.html"/>
