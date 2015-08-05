@@ -164,7 +164,7 @@ public class ProfileReportsService {
                 emailBody.append("<li>No emergency contacts information available</li>").append("</br>");
                 profileCompleteCounter--;
             }
-            if (emp.getSkillSet().getPractice() == null) {
+            if (emp.getSkillSet() == null || emp.getSkillSet().getPractice() == null) {
                 emailBody.append("<li>No skill set information available</li>").append("</br>");
                 profileCompleteCounter--;
             }
