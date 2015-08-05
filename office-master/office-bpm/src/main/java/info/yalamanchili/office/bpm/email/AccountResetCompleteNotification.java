@@ -11,7 +11,7 @@ import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.types.AccountReset;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.email.Email;
+import info.chili.email.Email;
 import info.yalamanchili.office.jms.MessagingService;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;

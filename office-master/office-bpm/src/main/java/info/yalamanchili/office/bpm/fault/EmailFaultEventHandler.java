@@ -9,7 +9,7 @@
 package info.yalamanchili.office.bpm.fault;
 
 import info.chili.exception.FaultEventPayload;
-import info.yalamanchili.office.email.Email;
+import info.chili.email.Email;
 import info.yalamanchili.office.jms.MessagingService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

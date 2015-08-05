@@ -15,7 +15,7 @@ import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.employee.statusreport.CorporateStatusReportDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
-import info.yalamanchili.office.email.Email;
+import info.chili.email.Email;
 import info.yalamanchili.office.entity.employee.statusreport.CorporateStatusReport;
 import info.yalamanchili.office.entity.employee.statusreport.CropStatusReportStatus;
 import info.yalamanchili.office.entity.profile.Employee;

@@ -9,7 +9,7 @@ package info.yalamanchili.office.bpm.email;
 
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.BPMUtils;
-import info.yalamanchili.office.email.Email;
+import info.chili.email.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import org.activiti.engine.delegate.DelegateTask;

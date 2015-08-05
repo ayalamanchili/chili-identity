@@ -14,7 +14,7 @@ import info.yalamanchili.office.dao.employee.statusreport.CorporateStatusReportD
 import info.yalamanchili.office.dao.message.NotificationGroupDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.time.TimePeriodDao;
-import info.yalamanchili.office.email.Email;
+import info.chili.email.Email;
 import info.yalamanchili.office.employee.probeval.ProbationPeriodEvaluationInitiator;
 import info.yalamanchili.office.entity.message.NotificationGroup;
 import info.yalamanchili.office.entity.profile.Employee;

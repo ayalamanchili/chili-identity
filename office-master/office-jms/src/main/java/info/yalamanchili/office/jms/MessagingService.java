@@ -5,7 +5,7 @@ package info.yalamanchili.office.jms;
 
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
-import info.yalamanchili.office.email.Email;
+import info.chili.email.Email;
 import info.yalamanchili.office.email.EmailService;
 import org.springframework.stereotype.Component;
 

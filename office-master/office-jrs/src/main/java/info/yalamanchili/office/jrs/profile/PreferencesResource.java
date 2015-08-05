@@ -8,8 +8,7 @@
 package info.yalamanchili.office.jrs.profile;
 
 import info.chili.dao.CRUDDao;
-import info.chili.email.CEmail;
-import info.yalamanchili.office.cache.OfficeCacheKeys;
+import info.chili.email.Email;
 import info.yalamanchili.office.dao.profile.PreferencesDao;
 import info.yalamanchili.office.entity.profile.Preferences;
 import info.yalamanchili.office.jrs.CRUDResource;
@@ -33,7 +32,7 @@ public class PreferencesResource extends CRUDResource<Preferences> {
     public PreferencesDao preferencesDao;
 
     @PUT
-    @CacheEvict(value = CEmail.EMAILS_CACHE_KEY, allEntries = true)
+    @CacheEvict(value = Email.EMAILS_CACHE_KEY, allEntries = true)
     public Preferences save(Preferences entity) {
         return preferencesDao.save(entity);
     }

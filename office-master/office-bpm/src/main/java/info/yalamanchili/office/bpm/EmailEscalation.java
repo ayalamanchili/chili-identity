@@ -8,7 +8,7 @@
 package info.yalamanchili.office.bpm;
 
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.email.Email;
+import info.chili.email.Email;
 import info.yalamanchili.office.jms.MessagingService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateExecution;

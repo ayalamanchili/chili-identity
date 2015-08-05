@@ -9,6 +9,7 @@
 package info.yalamanchili.office.bpm.rule;
 
 import info.chili.bpm.task.AbstractRuleBasedTaskDelegateListner;
+import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
 import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
 import org.activiti.engine.delegate.DelegateTask;
 
@@ -20,7 +21,12 @@ public class RuleBasedTaskDelegateListner extends AbstractRuleBasedTaskDelegateL
 
     @Override
     public void processTask(DelegateTask task) {
-        new GenericTaskCreateNotification().notify(task);
+        if ("create".equals(task.getEventName()) || "assignment".equals(task.getEventName())) {
+            new GenericTaskCreateNotification().notify(task);
+        }
+        if ("complete".equals(task.getEventName())) {
+            new GenericTaskCompleteNotification().notify(task);
+        }
     }
 
 }

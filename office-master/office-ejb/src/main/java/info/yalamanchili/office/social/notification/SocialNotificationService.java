@@ -8,7 +8,7 @@
 package info.yalamanchili.office.social.notification;
 
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
-import info.yalamanchili.office.email.Email;
+import info.chili.email.Email;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.social.Post;
 import info.yalamanchili.office.entity.social.PostFile;

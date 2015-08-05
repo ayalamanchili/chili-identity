@@ -11,7 +11,7 @@ import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.dao.employee.ProbationPeriodEvaluationDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
-import info.yalamanchili.office.email.Email;
+import info.chili.email.Email;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.employee.ProbationPeriodEvaluation;
 import info.yalamanchili.office.entity.profile.Branch;

@@ -3,7 +3,7 @@
  */
 package info.yalamanchili.office.jrs;
 
-import info.chili.email.CEmail;
+import info.chili.email.Email;
 import info.chili.jpa.validation.Validate;
 import info.chili.security.dao.CRoleDao;
 import info.chili.security.domain.CRole;
@@ -101,7 +101,7 @@ public class AdminResource {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR_ADMINSTRATION','ROLE_RELATIONSHIP','ROLE_SYSTEM_AND_NETWORK_ADMIN')")
     @Caching(evict = {
         @CacheEvict(value = OfficeCacheKeys.EMPLOYEES, allEntries = true),
-        @CacheEvict(value = CEmail.EMAILS_CACHE_KEY, allEntries = true)
+        @CacheEvict(value = Email.EMAILS_CACHE_KEY, allEntries = true)
     })
     public void deactivateuser(@PathParam("empId") Long empId) {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
@@ -139,7 +139,7 @@ public class AdminResource {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Caching(evict = {
         @CacheEvict(value = OfficeCacheKeys.LOGIN, allEntries = true),
-        @CacheEvict(value = CEmail.EMAILS_CACHE_KEY, allEntries = true)
+        @CacheEvict(value = Email.EMAILS_CACHE_KEY, allEntries = true)
     })
     public void addUserRoles(@PathParam("empId") Long empId, @QueryParam("id") List<Long> ids) {
         Employee emp = em.find(Employee.class, empId);
@@ -155,7 +155,7 @@ public class AdminResource {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Caching(evict = {
         @CacheEvict(value = OfficeCacheKeys.LOGIN, allEntries = true),
-        @CacheEvict(value = CEmail.EMAILS_CACHE_KEY, allEntries = true)
+        @CacheEvict(value = Email.EMAILS_CACHE_KEY, allEntries = true)
     })
     public void removeUserRoles(@PathParam("empId") Long empId, @QueryParam("id") List<Long> ids) {
         EmployeeDao empDao = (EmployeeDao) SpringContext.getBean(EmployeeDao.class);

@@ -9,8 +9,6 @@
 package info.yalamanchili.office.bpm.perfeval;
 
 import com.google.common.base.Strings;
-import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
-import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
 import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
 import info.yalamanchili.office.dao.employee.PerformanceEvaluationDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
@@ -34,13 +32,12 @@ public class AssociatePerfEvalProcess extends RuleBasedTaskDelegateListner {
 
     @Override
     public void processTask(DelegateTask task) {
+        super.processTask(task);    
         if ("create".equals(task.getEventName())) {
             perfEvalTaskCreated(task);
-            new GenericTaskCreateNotification().notify(task);
         }
         if ("complete".equals(task.getEventName())) {
             perfEvalTaskCompleted(task);
-            new GenericTaskCompleteNotification().notify(task);
         }
 
     }

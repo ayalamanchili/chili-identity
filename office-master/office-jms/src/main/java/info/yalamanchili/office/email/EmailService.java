@@ -7,10 +7,10 @@
  */
 package info.yalamanchili.office.email;
 
+import info.chili.email.Email;
 import com.google.common.base.Strings;
 import com.google.common.xml.XmlEscapers;
 import info.chili.commons.HtmlUtils;
-import info.chili.email.CEmail;
 import info.chili.email.dao.UserEmailPreferenceRuleDao;
 import info.chili.exception.FaultEventException;
 import info.chili.exception.FaultEventPayload;
@@ -40,6 +40,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
@@ -54,15 +55,15 @@ import org.thymeleaf.context.Context;
 @Component
 @Transactional
 public class EmailService {
-
+    
     private static Logger logger = Logger.getLogger(EmailService.class.getName());
     protected JavaMailSender mailSender;
     @Autowired
     protected OfficeServiceConfiguration officeServiceConfiguration;
-
+    
     @Autowired
     protected OfficeCacheManager officeCacheManager;
-
+    
     @Async
     @Transactional
     public void sendEmail(final Email email) {
@@ -70,7 +71,7 @@ public class EmailService {
         if (tos.length < 1) {
             return;
         }
-
+        
         MimeMessagePreparator preparator = new MimeMessagePreparator() {
             public void prepare(MimeMessage mimeMessage) throws Exception {
                 MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
@@ -89,7 +90,7 @@ public class EmailService {
             throw new FaultEventException(new FaultEventPayload(email, Email.class.getCanonicalName()), false, ex);
         }
     }
-
+    
     protected String processEmailBodyFromTemplate(Email email) {
         Context emailCtx = new Context();
         Map<String, Object> ctx = email.getContext();
@@ -101,7 +102,7 @@ public class EmailService {
         }
         return TemplateService.instance().processTemplate(getTemplateName(email), emailCtx);
     }
-
+    
     protected String getTemplateName(Email email) {
         if (email.getTemplateName() != null) {
             return email.getTemplateName();
@@ -114,7 +115,7 @@ public class EmailService {
             return "default_email_template.html";
         }
     }
-
+    
     protected void cleanEmailHtmlBody(Email email) {
         if (email.isRichText()) {
             email.setBody(HtmlUtils.cleanData(email.getBody()));
@@ -123,7 +124,7 @@ public class EmailService {
             email.setBody(XmlEscapers.xmlAttributeEscaper().escape(email.getBody()));
         }
     }
-
+    
     protected void processAttchments(MimeMessageHelper message, Email email) throws MessagingException {
         for (String attachmentName : email.getAttachments()) {
             File attachment = new File(officeServiceConfiguration.getContentManagementLocationRoot() + attachmentName);
@@ -132,7 +133,7 @@ public class EmailService {
             }
         }
     }
-
+    
     private Address[] convertToEmailAddress(Set<String> emails) {
         List<Address> addresses = new ArrayList<>();
         emails.stream().forEach((emailAddress) -> {
@@ -150,7 +151,7 @@ public class EmailService {
         });
         return addresses.toArray(new Address[addresses.size()]);
     }
-
+    
     protected Set<String> filterEmails(Email emailObj, Set<String> emails) {
         Set<String> result = new HashSet<>();
         if (OfficeServiceConfiguration.instance().isFilterEmails()) {
@@ -163,30 +164,39 @@ public class EmailService {
                 result.add(email);
             });
         }
+        emailObj.setTos(emails);
+        logEmailEvent(emailObj);
         return result;
     }
-
+    
+    @Autowired
+    protected MongoOperations mongoTemplate;
+    
+    protected void logEmailEvent(Email email) {
+        mongoTemplate.save(email);
+    }
+    
     public Boolean notificationsEnabled(Email emailObj, String emailAddress) {
-        if (officeCacheManager.contains(CEmail.EMAILS_CACHE_KEY, emailAddress)) {
-            return (Boolean) officeCacheManager.get(CEmail.EMAILS_CACHE_KEY, emailAddress);
+        if (officeCacheManager.contains(Email.EMAILS_CACHE_KEY, emailAddress)) {
+            return (Boolean) officeCacheManager.get(Email.EMAILS_CACHE_KEY, emailAddress);
         }
         info.yalamanchili.office.entity.profile.Email email = findEmail(emailAddress);
         if (email != null && email.getContact() instanceof Employee) {
             Employee emp = (Employee) findEmail(emailAddress).getContact();
             //TODO check active?
             if (!emp.getPreferences().getEnableEmailNotifications() || disableEmailByRules(emp, emailObj, emailAddress)) {
-                officeCacheManager.put(CEmail.EMAILS_CACHE_KEY, emailAddress, false);
+                officeCacheManager.put(Email.EMAILS_CACHE_KEY, emailAddress, false);
                 return false;
             }
-
+            
         }
-        officeCacheManager.put(CEmail.EMAILS_CACHE_KEY, emailAddress, true);
+        officeCacheManager.put(Email.EMAILS_CACHE_KEY, emailAddress, true);
         return true;
     }
-
+    
     @Autowired
     protected UserEmailPreferenceRuleDao userEmailPreferenceRuleDao;
-
+    
     protected boolean disableEmailByRules(Employee emp, Email emailObj, String emailAddress) {
         if (!Strings.isNullOrEmpty(emailObj.getEmailPreferenceRuleId()) && userEmailPreferenceRuleDao.findRuleForUser(emp.getEmployeeId(), emailObj.getEmailPreferenceRuleId()) != null) {
             return true;
@@ -194,7 +204,7 @@ public class EmailService {
         //TODO check process and task related stuff
         return false;
     }
-
+    
     @PersistenceContext
     protected EntityManager em;
 
@@ -210,11 +220,11 @@ public class EmailService {
             return null;
         }
     }
-
+    
     public void setMailSender(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
-
+    
     public static EmailService instance() {
         return SpringContext.getBean(EmailService.class);
     }
