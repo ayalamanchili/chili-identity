@@ -17,6 +17,7 @@ import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.fields.FileField;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.FormatUtils;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
@@ -35,8 +36,9 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
     private static Logger logger = Logger.getLogger(ReadAllExpenseReportsPanel.class.getName());
     public static ReadAllExpenseReportsPanel instance;
     protected String url;
-
+    
     public ReadAllExpenseReportsPanel() {
+        logger.info("in read all ");
         instance = this;
         initTable("ExpenseReports", OfficeWelcome.constants);
     }
@@ -85,6 +87,7 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
 
     @Override
     public void preFetchTable(int start) {
+        logger.info("in read all - prefetch");
         HttpService.HttpServiceAsync.instance().doGet(getReadAllExpenseReportURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), false,
                 new ALAsyncCallback<String>() {
                     @Override
@@ -105,7 +108,6 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
         table.setText(0, 5, getKeyValue("Total_Amount"));
         table.setText(0, 6, getKeyValue("Print"));
         table.setText(0, 7, getKeyValue("Status"));
-
     }
 
     @Override
@@ -118,10 +120,10 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
             table.setText(i, 2, JSONUtils.toString(entity, EXPENSE_FORM_TYPE ));
             table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, START_DATE), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, END_DATE), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 5, JSONUtils.toString(entity, TOTAL_EXPENSES ));
+            table.setText(i, 5, FormatUtils.formarCurrency(JSONUtils.toString(entity, TOTAL_EXPENSES )));
             FileField reportL = new FileField("Print", ChiliClientConfig.instance().getFileDownloadUrl() + "expensereport/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id"));
             table.setWidget(i, 6, reportL);
-            table.setText(i, 7, JSONUtils.formatEnumString(entity, "status"));  
+            table.setText(i, 7, JSONUtils.formatEnumString(entity, "status"));
         }
     }
 
@@ -149,6 +151,7 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
     }
 
     private String getReadAllExpenseReportURL(Integer start, String tableSize) {
+           logger.info("in read all - getReadAllExpenseReportURL");
         if (url != null) {
             return url;
         }
