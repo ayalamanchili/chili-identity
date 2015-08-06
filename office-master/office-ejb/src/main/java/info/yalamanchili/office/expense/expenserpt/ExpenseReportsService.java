@@ -22,6 +22,7 @@ import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseItem;
+import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReceipt;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReportStatus;
 import info.yalamanchili.office.entity.ext.Comment;
@@ -59,8 +60,12 @@ public class ExpenseReportsService {
         ExpenseCategoryDao expenseCategoryDao = ExpenseCategoryDao.instance();
         for (ExpenseItem item : entity.getExpenseItems()) {
             item.setCategory(expenseCategoryDao.findById(item.getCategory().getId()));
+            item.setExpenseReport(entity);
         }
-        Map<String, Object> vars = new HashMap<String, Object>();
+        for (ExpenseReceipt receipt : entity.getExpenseReceipts()) {
+            receipt.setExpenseReport(entity);
+        }
+        Map<String, Object> vars = new HashMap<>();
         vars.put("entity", entity);
         vars.put("currentEmployee", emp);
         entity = expenseReportsDao.save(entity);
@@ -72,6 +77,7 @@ public class ExpenseReportsService {
 
     public ExpenseReportSaveDto read(Long id) {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
+        ExpenseReport e = expenseReportsDao.findById(id);
         return mapper.map(expenseReportsDao.findById(id), ExpenseReportSaveDto.class);
     }
 
@@ -131,7 +137,7 @@ public class ExpenseReportsService {
         BigDecimal itemPersonal = new BigDecimal(0);
         BigDecimal amountDue = new BigDecimal(0);
         Integer a = 1;
-            for (ExpenseItem item : entity.getExpenseItems()) {
+        for (ExpenseItem item : entity.getExpenseItems()) {
             if ((entity.getExpenseFormType()) != null && entity.getExpenseFormType().name().equals("GENERAL_EXPENSE")) {
                 data.getData().put("sl" + i, i.toString());
                 data.getData().put("description" + i, item.getDescription());
@@ -215,7 +221,6 @@ public class ExpenseReportsService {
         for (Comment comment : cmnts) {
             allComment = allComment + ". " + comment.getComment();
         }
-
 
         if (entity.getApprovedByCEO() != null) {
             Employee ceo = employeeDao.findEmployeWithEmpId(entity.getApprovedByCEO());

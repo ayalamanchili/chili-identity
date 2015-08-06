@@ -22,6 +22,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
@@ -81,6 +82,13 @@ public class ExpenseItem extends AbstractEntity {
     @Field
     @NotNull(message = "{expenseitem.paymentmode.not.empty.msg}")
     private ExpensePaymentMode expensePaymentMode;
+    /**
+     *
+     * @return
+     */
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_EXP_RPT_ITMS")
+    protected ExpenseReport expenseReport;
     /*
      *   GETTERS and SETTERS
      */
@@ -179,6 +187,15 @@ public class ExpenseItem extends AbstractEntity {
 
     public void setExpensePaymentMode(ExpensePaymentMode expensePaymentMode) {
         this.expensePaymentMode = expensePaymentMode;
+    }
+
+    @XmlTransient
+    public ExpenseReport getExpenseReport() {
+        return expenseReport;
+    }
+
+    public void setExpenseReport(ExpenseReport expenseReport) {
+        this.expenseReport = expenseReport;
     }
 
 }

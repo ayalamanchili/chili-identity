@@ -9,14 +9,12 @@
 package info.yalamanchili.office.entity.expense.expenserpt;
 
 import info.chili.jpa.AbstractEntity;
-import info.yalamanchili.office.entity.FileType;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
@@ -33,13 +31,18 @@ public class ExpenseReceipt extends AbstractEntity {
 
     @Transient
     private static final long serialVersionUID = 1L;
-
+    /**
+     *
+     */
+    protected String name;
+    /**
+     *
+     */
     protected String fileURL;
-    @Enumerated(EnumType.STRING)
-    protected FileType fileType;
-//    @ManyToOne(cascade = CascadeType.MERGE)
-//    @ForeignKey(name = "FK_ExpRpt_Receipt")
-//    protected ExpenseReport expenseReport;
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_EXP_RPT_RCPTS")
+    protected ExpenseReport expenseReport;
 
     public String getFileURL() {
         return fileURL;
@@ -49,20 +52,21 @@ public class ExpenseReceipt extends AbstractEntity {
         this.fileURL = fileURL;
     }
 
-    public FileType getFileType() {
-        return fileType;
+    public String getName() {
+        return name;
     }
 
-    public void setFileType(FileType fileType) {
-        this.fileType = fileType;
+    public void setName(String name) {
+        this.name = name;
     }
 
-//    public ExpenseReport getExpenseReport() {
-//        return expenseReport;
-//    }
-//
-//    public void setExpenseReport(ExpenseReport expenseReport) {
-//        this.expenseReport = expenseReport;
-//    }
+    @XmlTransient
+    public ExpenseReport getExpenseReport() {
+        return expenseReport;
+    }
+
+    public void setExpenseReport(ExpenseReport expenseReport) {
+        this.expenseReport = expenseReport;
+    }
 
 }

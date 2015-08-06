@@ -10,13 +10,13 @@ package info.yalamanchili.office.entity.expense.expenserpt;
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
@@ -112,9 +112,9 @@ public class ExpenseReport extends AbstractEntity {
     /**
      *
      */
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "expenseReport", cascade = CascadeType.ALL)
     @Valid
-    private List<ExpenseItem> expenseItems;
+    protected List<ExpenseItem> expenseItems;
     /**
      *
      */
@@ -141,10 +141,9 @@ public class ExpenseReport extends AbstractEntity {
     /**
      *
      */
-//    @OneToMany(mappedBy = "expenseReport", cascade = CascadeType.ALL)
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "expenseReport", cascade = CascadeType.ALL)
     @Valid
-    protected List<ExpenseReceipt> expenseReceipt;
+    protected List<ExpenseReceipt> expenseReceipts;
 
     /**
      *
@@ -266,9 +265,13 @@ public class ExpenseReport extends AbstractEntity {
 
     /**
      *
+     * @return 
      */
     @XmlTransient
     public List<ExpenseItem> getExpenseItems() {
+        if (this.expenseItems == null) {
+            this.expenseItems = new ArrayList();
+        }
         return expenseItems;
     }
 
@@ -365,12 +368,16 @@ public class ExpenseReport extends AbstractEntity {
         return approvedByCEODate;
     }
 
-    public List<ExpenseReceipt> getExpenseReceipt() {
-        return expenseReceipt;
+    @XmlTransient
+    public List<ExpenseReceipt> getExpenseReceipts() {
+        if (this.expenseReceipts == null) {
+            this.expenseReceipts = new ArrayList();
+        }
+        return expenseReceipts;
     }
 
-    public void setExpenseReceipt(List<ExpenseReceipt> expenseReceipt) {
-        this.expenseReceipt = expenseReceipt;
+    public void setExpenseReceipts(List<ExpenseReceipt> expenseReceipts) {
+        this.expenseReceipts = expenseReceipts;
     }
 
     public void setApprovedByCEODate(Date approvedByCEODate) {

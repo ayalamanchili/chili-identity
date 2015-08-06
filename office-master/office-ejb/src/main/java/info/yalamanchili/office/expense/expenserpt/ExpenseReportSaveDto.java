@@ -9,6 +9,7 @@
 package info.yalamanchili.office.expense.expenserpt;
 
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseItem;
+import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReceipt;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,13 +29,15 @@ public class ExpenseReportSaveDto extends ExpenseReport {
 
     protected List<ExpenseItem> expenseItems;
 
+    protected List<ExpenseReceipt> expenseReceipts;
+
     @Override
     @XmlElement
     @Size(min = 1, message = "{expenseitem.min.size.msg}")
     @Valid
     public List<ExpenseItem> getExpenseItems() {
         if (this.expenseItems == null) {
-            this.expenseItems = new ArrayList<ExpenseItem>();
+            this.expenseItems = new ArrayList<>();
         }
         return expenseItems;
     }
@@ -43,4 +46,19 @@ public class ExpenseReportSaveDto extends ExpenseReport {
     public void setExpenseItems(List<ExpenseItem> expenseItems) {
         this.expenseItems = expenseItems;
     }
+
+    @XmlElement
+    @Override
+    public List<ExpenseReceipt> getExpenseReceipts() {
+        if (this.expenseReceipts == null) {
+            this.expenseReceipts = new ArrayList();
+        }
+        return expenseReceipts;
+    }
+
+    @Override
+    public void setExpenseReceipts(List<ExpenseReceipt> expenseReceipts) {
+        this.expenseReceipts = expenseReceipts;
+    }
+
 }
