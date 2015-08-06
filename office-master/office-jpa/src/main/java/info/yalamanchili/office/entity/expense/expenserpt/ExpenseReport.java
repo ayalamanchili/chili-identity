@@ -16,12 +16,12 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -88,12 +88,12 @@ public class ExpenseReport extends AbstractEntity {
     /**
      *
      */
-    private String approvedByPayroll;
+    private String approvedByAccountsDept;
     /**
      *
      */
     @Temporal(javax.persistence.TemporalType.DATE)
-    private Date approvedByPayrollDate;
+    private Date approvedByAccountsDeptDate;
     /**
      *
      */
@@ -136,8 +136,16 @@ public class ExpenseReport extends AbstractEntity {
     @NotNull(message = "{expensereport.paymentmode.not.empty.msg}")
     @Enumerated(EnumType.STRING)
     private ExpenseReimbursePaymentMode expenseReimbursePaymentMode;
-    
+
     private BigDecimal totalExpenses;
+    /**
+     *
+     */
+//    @OneToMany(mappedBy = "expenseReport", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Valid
+    protected List<ExpenseReceipt> expenseReceipt;
+
     /**
      *
      */
@@ -312,12 +320,14 @@ public class ExpenseReport extends AbstractEntity {
     public static void setSerialVersionUID(long aSerialVersionUID) {
         serialVersionUID = aSerialVersionUID;
     }
+
     /**
      *
      */
     public ExpenseReimbursePaymentMode getExpenseReimbursePaymentMode() {
         return expenseReimbursePaymentMode;
     }
+
     /**
      *
      */
@@ -341,20 +351,20 @@ public class ExpenseReport extends AbstractEntity {
         this.approvedByManagerDate = approvedByManagerDate;
     }
 
-    public String getApprovedByPayroll() {
-        return approvedByPayroll;
+    public String getApprovedByAccountsDept() {
+        return approvedByAccountsDept;
     }
 
-    public void setApprovedByPayroll(String approvedByPayroll) {
-        this.approvedByPayroll = approvedByPayroll;
+    public void setApprovedByAccountsDept(String approvedByAccountsDept) {
+        this.approvedByAccountsDept = approvedByAccountsDept;
     }
 
-    public Date getApprovedByPayrollDate() {
-        return approvedByPayrollDate;
+    public Date getApprovedByAccountsDeptDate() {
+        return approvedByAccountsDeptDate;
     }
 
-    public void setApprovedByPayrollDate(Date approvedByPayrollDate) {
-        this.approvedByPayrollDate = approvedByPayrollDate;
+    public void setApprovedByAccountsDeptDate(Date approvedByAccountsDeptDate) {
+        this.approvedByAccountsDeptDate = approvedByAccountsDeptDate;
     }
 
     public String getApprovedByCEO() {
@@ -369,6 +379,14 @@ public class ExpenseReport extends AbstractEntity {
         return approvedByCEODate;
     }
 
+    public List<ExpenseReceipt> getExpenseReceipt() {
+        return expenseReceipt;
+    }
+
+    public void setExpenseReceipt(List<ExpenseReceipt> expenseReceipt) {
+        this.expenseReceipt = expenseReceipt;
+    }
+
     public void setApprovedByCEODate(Date approvedByCEODate) {
         this.approvedByCEODate = approvedByCEODate;
     }
@@ -380,7 +398,7 @@ public class ExpenseReport extends AbstractEntity {
     public void setExpenseFormType(ExpenseFormType expenseFormType) {
         this.expenseFormType = expenseFormType;
     }
-    
+
     public BigDecimal getTotalExpenses() {
         return totalExpenses;
     }
@@ -388,6 +406,5 @@ public class ExpenseReport extends AbstractEntity {
     public void setTotalExpenses(BigDecimal totalExpenses) {
         this.totalExpenses = totalExpenses;
     }
-
 
 }
