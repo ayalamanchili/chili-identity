@@ -1,3 +1,4 @@
+
 /**
  * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
  */
@@ -39,7 +40,6 @@ public class AssociatePerfEvalProcess extends RuleBasedTaskDelegateListner {
         if ("complete".equals(task.getEventName())) {
             perfEvalTaskCompleted(task);
         }
-
     }
 
     protected void perfEvalTaskCreated(DelegateTask task) {
@@ -47,7 +47,6 @@ public class AssociatePerfEvalProcess extends RuleBasedTaskDelegateListner {
     }
 
     protected void savePerformanceEvaluation(DelegateTask task) {
-        Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         PerformanceEvaluation entity = getPerformanceEvaluationFromTask(task);
         if ("eemApprovalTask".equals(task.getTaskDefinitionKey())) {
             entity.setStage(PerformanceEvaluationStage.Manager_Review);

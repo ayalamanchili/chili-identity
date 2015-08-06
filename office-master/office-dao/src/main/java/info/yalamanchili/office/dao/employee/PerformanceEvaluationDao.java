@@ -55,7 +55,7 @@ public class PerformanceEvaluationDao extends CRUDDao<PerformanceEvaluation> {
             isCorporateEmployee = true;
         }
         for (PerformanceEvaluation perfEval : query.getResultList()) {
-            if (enableUpdate(perfEval, emp)&& isCorporateEmployee && perfEval.getQuestions().size() <= 4) {
+            if (enableUpdate(perfEval, emp) && isCorporateEmployee && perfEval.getQuestions().size() <= 4) {
                 perfEval.setEnableManagerReview(true);
             } else {
                 perfEval.setEnableManagerReview(false);
@@ -118,7 +118,7 @@ public class PerformanceEvaluationDao extends CRUDDao<PerformanceEvaluation> {
             }
         } //Consultant employee review
         else {
-            if (OfficeSecurityService.instance().hasAnyRole(OfficeRole.ROLE_RELATIONSHIP.name(), OfficeRole.ROLE_H1B_IMMIGRATION.name())) {
+            if (OfficeSecurityService.instance().hasAnyRole(OfficeRole.ROLE_RELATIONSHIP.name(), OfficeRole.ROLE_H1B_IMMIGRATION.name(), OfficeRole.ROLE_IT_DEVELOPER.name())) {
                 return;
             }
         }
