@@ -78,8 +78,8 @@ public class CorpEmpExpenseReportProcess implements TaskListener {
         if (dt.getTaskDefinitionKey().equals("expenseReportPayrollApprovalTask") && ExpenseReportStatus.PENDING_PAYROLL_APPROVAL.equals(entity.getStatus())) {
             if (status.equalsIgnoreCase("approved")) {
                 entity.setStatus(ExpenseReportStatus.APPROVED);
-                entity.setApprovedByPayroll(OfficeSecurityService.instance().getCurrentUser().getEmployeeId());
-                entity.setApprovedByPayrollDate(new Date());
+                entity.setApprovedByAccountsDept(OfficeSecurityService.instance().getCurrentUser().getEmployeeId());
+                entity.setApprovedByAccountsDeptDate(new Date());
             } else {
                 entity.setStatus(ExpenseReportStatus.REJECTED);
             }
