@@ -39,7 +39,6 @@ import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.drive.ReadAllFiles;
 import info.yalamanchili.office.client.expenseitem.CreateExpenseItemPanel;
 import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.*;
 import info.yalamanchili.office.client.resources.OfficeImages;
@@ -214,7 +213,6 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
 
                     @Override
                     public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
                         uploadImage(arg0);
                     }
                 });

@@ -39,5 +39,5 @@ public interface ExpenseFormConstants {
     String AMOUNT="amount";
     String CATEGORY="category";
     String TOTAL_EXPENSES="totalExpenses";
-    String EXPENSE_RECEIPT="expenseReceipt";
+    String EXPENSE_RECEIPT="expenseReceipts";
 }
