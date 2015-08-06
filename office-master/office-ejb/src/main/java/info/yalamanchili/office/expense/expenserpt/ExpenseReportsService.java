@@ -131,7 +131,7 @@ public class ExpenseReportsService {
         BigDecimal itemPersonal = new BigDecimal(0);
         BigDecimal amountDue = new BigDecimal(0);
         Integer a = 1;
-        for (ExpenseItem item : entity.getExpenseItems()) {
+            for (ExpenseItem item : entity.getExpenseItems()) {
             if ((entity.getExpenseFormType()) != null && entity.getExpenseFormType().name().equals("GENERAL_EXPENSE")) {
                 data.getData().put("sl" + i, i.toString());
                 data.getData().put("description" + i, item.getDescription());
@@ -227,22 +227,22 @@ public class ExpenseReportsService {
         }
 
         if ((entity.getExpenseFormType()) != null && entity.getExpenseFormType().name().equals("TRAVEL_EXPENSE")) {
-            if (entity.getApprovedByPayroll() != null) {
-                Employee ceo = employeeDao.findEmployeWithEmpId(entity.getApprovedByPayroll());
+            if (entity.getApprovedByAccountsDept() != null) {
+                Employee ceo = employeeDao.findEmployeWithEmpId(entity.getApprovedByAccountsDept());
                 if (ceo != null) {
-                    Signature approvedsignature = new Signature(ceo.getEmployeeId(), ceo.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "payrollApprovalBy", DateUtils.dateToCalendar(entity.getApprovedByPayrollDate()), employeeDao.getPrimaryEmail(ceo), null);
+                    Signature approvedsignature = new Signature(ceo.getEmployeeId(), ceo.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "payrollApprovalBy", DateUtils.dateToCalendar(entity.getApprovedByAccountsDeptDate()), employeeDao.getPrimaryEmail(ceo), null);
                     data.getSignatures().add(approvedsignature);
-                    data.getData().put("approvedByPayrollDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getApprovedByPayrollDate()));
+                    data.getData().put("approvedByPayrollDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getApprovedByAccountsDeptDate()));
                 }
             }
         }
         if ((entity.getExpenseFormType()) != null && entity.getExpenseFormType().name().equals("GENERAL_EXPENSE")) {
-            if (entity.getApprovedByPayroll() != null) {
-                Employee name = employeeDao.findEmployeWithEmpId(entity.getApprovedByPayroll());
+            if (entity.getApprovedByAccountsDept() != null) {
+                Employee name = employeeDao.findEmployeWithEmpId(entity.getApprovedByAccountsDept());
                 if (name != null) {
-                    String approvedByPayroll = entity.getApprovedByPayroll();
+                    String approvedByPayroll = entity.getApprovedByAccountsDept();
                     data.getData().put("namePayroll", approvedByPayroll);
-                    data.getData().put("PayrollDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getApprovedByPayrollDate()));
+                    data.getData().put("PayrollDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getApprovedByAccountsDeptDate()));
                 }
             }
 
