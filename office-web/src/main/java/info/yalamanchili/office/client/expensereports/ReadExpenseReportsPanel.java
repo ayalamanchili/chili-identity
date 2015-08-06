@@ -11,13 +11,18 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
+import info.chili.gwt.fields.FileField;
+import info.chili.gwt.fields.ImageField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
@@ -38,6 +43,7 @@ public class ReadExpenseReportsPanel extends ReadComposite {
     private static ReadExpenseReportsPanel instance;
     private static Logger logger = Logger.getLogger(ReadExpenseItemPanel.class.getName());
     protected List<ReadExpenseItemPanel> readItemsPanels = new ArrayList<ReadExpenseItemPanel>();
+    protected HorizontalPanel attachmentsPanel = new HorizontalPanel();
 
     protected static HTML generalInfo = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
@@ -133,6 +139,13 @@ public class ReadExpenseReportsPanel extends ReadComposite {
         assignFieldValueFromEntity(PROJECT_NAME, entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity(PROJECT_NUMBER, entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity(EXPENSE_REIMBURSE_PMT_MODE, entity, DataType.ENUM_FIELD);
+        JSONArray expenseReceipts = JSONUtils.toJSONArray(entity.get(EXPENSE_RECEIPT));
+        logger.info("sizexxxxx" + expenseReceipts.size());
+        logger.info("expenseReceiptsyyyyy" + expenseReceipts);
+        if (expenseReceipts != null) {
+            logger.info("inside");
+            populateExpenseReceipt(expenseReceipts);
+        }
         JSONArray expenseItems = JSONUtils.toJSONArray(entity.get(EXPENSE_ITEMS));
         populateExpenseItems(expenseItems);
     }
@@ -143,6 +156,27 @@ public class ReadExpenseReportsPanel extends ReadComposite {
                 ReadExpenseItemPanel panel = new ReadExpenseItemPanel(items.get(i).isObject());
                 readItemsPanels.add(panel);
                 entityFieldsPanel.add(panel);
+            }
+        }
+    }
+
+    protected void populateExpenseReceipt(JSONArray items) {
+        logger.info("sizezzz" + items.size());
+        for (int i = 0; i < items.size(); i++) {
+            JSONObject expenseReceipt = (JSONObject) items.get(i);
+            logger.info("in read:" + expenseReceipt + "i");
+            if (items.get(i).isObject() != null) {
+              if ("IMAGE".equals(JSONUtils.toString(expenseReceipt, "fileType"))) {
+                ImageField imageField = new ImageField("Image", JSONUtils.toString(expenseReceipt, "fileURL"), JSONUtils.toString(expenseReceipt, "id"), 100, 100, false);
+                imageField.addStyleName("postImage");
+                attachmentsPanel.add(imageField);
+                }
+              if ("FILE".equals(JSONUtils.toString(expenseReceipt, "fileType"))) {
+                String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(expenseReceipt, "fileURL") + "&entityId=" + JSONUtils.toString(expenseReceipt, "id");
+                FileField fileField = new FileField(fileURL);
+                fileField.addStyleName("postFile");
+                attachmentsPanel.add(fileField);
+                }
             }
         }
     }
