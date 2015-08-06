@@ -310,20 +310,6 @@ public class ExpenseReport extends AbstractEntity {
     /**
      *
      */
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
-    /**
-     *
-     */
-    public static void setSerialVersionUID(long aSerialVersionUID) {
-        serialVersionUID = aSerialVersionUID;
-    }
-
-    /**
-     *
-     */
     public ExpenseReimbursePaymentMode getExpenseReimbursePaymentMode() {
         return expenseReimbursePaymentMode;
     }

@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -173,6 +174,7 @@ public class EmailService {
     protected MongoOperations mongoTemplate;
     
     protected void logEmailEvent(Email email) {
+    email.setSentTimeStamp(new Date());
         mongoTemplate.save(email);
     }
     
