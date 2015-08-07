@@ -181,15 +181,6 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
             if (upload.getFilename() != null && !"".equals(upload.getFilename().trim())) {
                 JSONObject expenseReceipt = new JSONObject();
                 expenseReceipt.put("fileURL", fileUploadPanel.getFileName(upload));
-                expenseReceipt.put("fileType", new JSONString("IMAGE"));
-                if (FileUtils.isImage(fileUploadPanel.getFileName(upload).stringValue())) {
-                    expenseReceipt.put("fileType", new JSONString("IMAGE"));
-                } else if (FileUtils.isDocument(fileUploadPanel.getFileName(upload).stringValue())) {
-                    expenseReceipt.put("fileType", new JSONString("FILE"));
-                } else {
-                    Window.alert("Unsupported file extension");
-                    throw new RuntimeException("unsupported file type");
-                }
                 expenseReceipts.set(i, expenseReceipt);
                 logger.info("create in side size" + i + " " + expenseReceipt);
                 i++;
@@ -226,6 +217,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         JSONObject post = (JSONObject) JSONParser.parseLenient(postString);
         JSONArray expenseReceipts = JSONUtils.toJSONArray(post.get(EXPENSE_RECEIPT));
         logger.info(fileUploadPanel.toString());
+        logger.info(expenseReceipts.toString());
         fileUploadPanel.upload(expenseReceipts, "fileURL");
     }
 

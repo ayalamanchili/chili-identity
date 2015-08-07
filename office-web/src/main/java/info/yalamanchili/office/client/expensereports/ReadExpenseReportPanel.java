@@ -35,12 +35,12 @@ import java.util.logging.Logger;
  * @author Prasanthi.p
  */
 public class ReadExpenseReportPanel extends ReadComposite {
-
+    
     private static ReadExpenseReportPanel instance;
     private static Logger logger = Logger.getLogger(ReadExpenseItemPanel.class.getName());
     protected List<ReadExpenseItemPanel> readItemsPanels = new ArrayList<ReadExpenseItemPanel>();
     protected HorizontalPanel attachmentsPanel = new HorizontalPanel();
-
+    
     protected static HTML generalInfo = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
             + "<strong style=\"color:#555555\">General Expense Information</strong></p>\n"
@@ -54,7 +54,7 @@ public class ReadExpenseReportPanel extends ReadComposite {
             + "<ul>\n"
             + "</ul>");
     HTML emptyLine = new HTML("<br/>");
-
+    
     EnumField expenseFormType;
     StringField location;
     DateField startDate;
@@ -62,19 +62,19 @@ public class ReadExpenseReportPanel extends ReadComposite {
     StringField projectName;
     StringField projectNumber;
     EnumField expenseReimbursePaymentMode;
-
+    
     public static ReadExpenseReportPanel instance() {
         return instance;
     }
-
+    
     public ReadExpenseReportPanel(String id) {
         initReadComposite(id, "ExpenseReport", OfficeWelcome.constants);
     }
-
+    
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
-
+    
     @Override
     protected void addWidgets() {
         addEnumField(EXPENSE_FORM_TYPE, true, true, ExpenseFormType.names(), Alignment.HORIZONTAL);
@@ -95,7 +95,7 @@ public class ReadExpenseReportPanel extends ReadComposite {
         entityFieldsPanel.add(expenseInfo);
         alignFields();
     }
-
+    
     @Override
     protected void configure() {
         expenseFormType.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
@@ -108,11 +108,11 @@ public class ReadExpenseReportPanel extends ReadComposite {
         generalInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         expenseInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
     }
-
+    
     @Override
     protected void addListeners() {
     }
-
+    
     @Override
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
@@ -120,11 +120,12 @@ public class ReadExpenseReportPanel extends ReadComposite {
                     @Override
                     public void onResponse(String response) {
                         entity = (JSONObject) JSONParser.parseLenient(response);
+                        logger.info(entity.toString());
                         populateFieldsFromEntity(entity);
                     }
                 });
     }
-
+    
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity(EXPENSE_FORM_TYPE, entity, DataType.ENUM_FIELD);
@@ -141,7 +142,7 @@ public class ReadExpenseReportPanel extends ReadComposite {
             populateExpenseReceipt(expenseReceipts);
         }
     }
-
+    
     protected void populateExpenseItems(JSONArray items) {
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).isObject() != null) {
@@ -151,11 +152,11 @@ public class ReadExpenseReportPanel extends ReadComposite {
             }
         }
     }
-
+    
     protected void populateExpenseReceipt(JSONArray items) {
         entityFieldsPanel.add(new ReadAllExpenseReceiptsPanel(items));
     }
-
+    
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "expensereport/" + entityId;

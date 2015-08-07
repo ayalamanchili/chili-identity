@@ -66,7 +66,9 @@ public class ReadAllExpenseReceiptsPanel extends CRUDReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
-            String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "fileUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
+            logger.info(entity.toString());
+            String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "fileURL") + "&entityId=" + JSONUtils.toString(entity, "id");
+            logger.info("ddddddddddd" + fileURL);
             FileField fileField = new FileField(fileURL);
             table.setWidget(i, 2, fileField);
         }
@@ -77,7 +79,7 @@ public class ReadAllExpenseReceiptsPanel extends CRUDReadAllComposite {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_DRIVE)) {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
         } else {
-            String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "fileUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
+            String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "fileURL") + "&entityId=" + JSONUtils.toString(entity, "id");
             FileField fileField = new FileField("Download", fileURL);
             table.setWidget(row, 0, fileField);
         }
@@ -89,6 +91,7 @@ public class ReadAllExpenseReceiptsPanel extends CRUDReadAllComposite {
 
     @Override
     public void deleteClicked(String entityId) {
+
         if (Window.confirm("Are you sure? All Files details will be deleted")) {
             HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
@@ -112,7 +115,7 @@ public class ReadAllExpenseReceiptsPanel extends CRUDReadAllComposite {
     }
 
     private String getDeleteURL(String entityId) {
-        return OfficeWelcome.instance().constants.root_url() + "expense-report/files/delete/" + entityId;
+        return OfficeWelcome.instance().constants.root_url() + "e/files/delete/" + entityId;
     }
 
 }
