@@ -102,7 +102,12 @@ public class ReadAllEventServicePanel extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+        createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, getEnitityIDAttribute()));
+    }
+
+    @Override
+    protected String getEnitityIDAttribute() {
+        return "_id";
     }
 
     @Override
