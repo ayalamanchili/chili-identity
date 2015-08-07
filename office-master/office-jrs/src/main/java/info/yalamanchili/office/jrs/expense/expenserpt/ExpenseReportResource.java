@@ -58,24 +58,24 @@ public class ExpenseReportResource extends CRUDResource<ExpenseReport> {
     @Validate
     @Path("/submit")
     @CacheEvict(value = OfficeCacheKeys.EXPENSE, allEntries = true)
-    public ExpenseReport submit(ExpenseReportSaveDto dto) {
-       return ExpenseReportsService.instance().save(dto);
+    public ExpenseReportSaveDto submit(ExpenseReportSaveDto dto) {
+        return ExpenseReportsService.instance().save(dto);
     }
 
     @PUT
     @Validate
     @Path("/save")
-    public ExpenseReport save(ExpenseReportSaveDto dto) {
+    public ExpenseReportSaveDto save(ExpenseReportSaveDto dto) {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         ExpenseReport entity = mapper.map(dto, ExpenseReport.class);
         ExpenseCategoryDao expenseCategoryDao = ExpenseCategoryDao.instance();
         for (ExpenseItem item : entity.getExpenseItems()) {
             item.setCategory(expenseCategoryDao.findById(item.getCategory().getId()));
         }
-        return ExpenseReportsDao.instance().save(entity);
+        entity = ExpenseReportsDao.instance().save(entity);
+        return mapper.map(entity, ExpenseReportSaveDto.class);
     }
 
-    
     @GET
     @Path("/{id}")
     @Transactional(readOnly = true)
@@ -88,20 +88,19 @@ public class ExpenseReportResource extends CRUDResource<ExpenseReport> {
     @Path("/{start}/{limit}")
     public ExpenseReportResource.ExpenseReportsTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         ExpenseReportResource.ExpenseReportsTable tableObj = new ExpenseReportResource.ExpenseReportsTable();
-        if ((OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_ADMIN.name()))                 ||
-            (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_ACCOUNTS_PAYABLE.name()))  ||
-            (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_CEO.name())))                  {
+        if ((OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_ADMIN.name()))
+                || (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_ACCOUNTS_PAYABLE.name()))
+                || (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_CEO.name()))) {
             tableObj.setEntities(expenseReportsDao.queryAll(start, limit));
             tableObj.setSize(expenseReportsDao.size());
         } else {
-             Employee currentEmp = OfficeSecurityService.instance().getCurrentUser();
-             tableObj.setEntities(expenseReportsDao.queryForEmployee(currentEmp.getId(), start, limit));
-             tableObj.setSize(expenseReportsDao.size(currentEmp.getId()));
+            Employee currentEmp = OfficeSecurityService.instance().getCurrentUser();
+            tableObj.setEntities(expenseReportsDao.queryForEmployee(currentEmp.getId(), start, limit));
+            tableObj.setSize(expenseReportsDao.size(currentEmp.getId()));
         }
         return tableObj;
     }
-    
-    
+
     @GET
     @Path("/{employeeId}/{start}/{limit}")
     @AccessCheck(companyContacts = {"Perf_Eval_Manager", "Reports_To"}, roles = {"ROLE_ADMIN"})

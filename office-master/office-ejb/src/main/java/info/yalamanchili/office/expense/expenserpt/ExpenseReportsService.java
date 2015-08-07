@@ -50,7 +50,7 @@ public class ExpenseReportsService {
     @Autowired
     protected ExpenseReportsDao expenseReportsDao;
 
-    public ExpenseReport save(ExpenseReportSaveDto dto) {
+    public ExpenseReportSaveDto save(ExpenseReportSaveDto dto) {
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         ExpenseReport entity = mapper.map(dto, ExpenseReport.class);
@@ -71,7 +71,7 @@ public class ExpenseReportsService {
         entity = expenseReportsDao.save(entity);
         vars.put("entityId", entity.getId());
         entity.setBpmProcessId(OfficeBPMService.instance().startProcess("corp_emp_expense_report_process", vars));
-        return entity;
+        return mapper.map(entity, ExpenseReportSaveDto.class);
 
     }
 
