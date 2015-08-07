@@ -110,16 +110,4 @@ public class ReadAllEventServicePanel extends CRUDReadAllComposite {
         return "_id";
     }
 
-    @Override
-    protected void createButtonClicked() {
-        TabPanel.instance().getChiliAdminPanel().sidePanelTop.clear();
-        TabPanel.instance().getChiliAdminPanel().entityPanel.clear();
-        TabPanel.instance().getChiliAdminPanel().entityPanel.add(new CreateEventServicePanel());
-    }
-
-    @Override
-    protected void configureCreateButton() {
-        createButton.setText("Create");
-        createButton.setVisible(true);
-    }
 }
