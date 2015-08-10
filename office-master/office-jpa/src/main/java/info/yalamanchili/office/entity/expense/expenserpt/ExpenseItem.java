@@ -66,6 +66,10 @@ public class ExpenseItem extends AbstractEntity {
     /*
      *
      */
+    protected BigDecimal expenseMiles;
+    /*
+     *
+     */
     @Lob
     private String remark;
     /*
@@ -197,5 +201,14 @@ public class ExpenseItem extends AbstractEntity {
     public void setExpenseReport(ExpenseReport expenseReport) {
         this.expenseReport = expenseReport;
     }
+    /*
+     *
+     */
+    public BigDecimal getExpenseMiles() {
+        return expenseMiles;
+    }
 
+    public void setExpenseMiles(BigDecimal expenseMiles) {
+        this.expenseMiles = expenseMiles;
+    }
 }

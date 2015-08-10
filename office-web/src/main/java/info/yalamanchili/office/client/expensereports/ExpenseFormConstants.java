@@ -40,4 +40,6 @@ public interface ExpenseFormConstants {
     String CATEGORY="category";
     String TOTAL_EXPENSES="totalExpenses";
     String EXPENSE_RECEIPT="expenseReceipts";
+    String EXPENSE_MILES="expenseMiles";
+
 }

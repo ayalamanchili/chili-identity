@@ -172,6 +172,11 @@ public class ExpenseReportsService {
                             data.getData().put("Miscellaneous", "true");
                             data.getData().put("mis-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
                         }
+                        if (item.getCategory().getName().equals("Personal Auto")) {
+                            data.getData().put("Personal Auto", "true");
+                            data.getData().put("miles" + p, item.getExpenseMiles().setScale(2, BigDecimal.ROUND_UP).toString());
+                            data.getData().put("miles-amount" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                        }
                     }
                     data.getData().put("p-purpose" + p, item.getPurpose());
                     data.getData().put("p-itemStartDate" + p, new SimpleDateFormat("MM-dd-yyyy").format(item.getExpenseDate()));
