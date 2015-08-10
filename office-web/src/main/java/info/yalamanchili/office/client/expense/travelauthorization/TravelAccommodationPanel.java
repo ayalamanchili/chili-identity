@@ -124,7 +124,7 @@ public class TravelAccommodationPanel extends ALComposite implements ClickHandle
     @Override
     public void onBlur(BlurEvent event) {
         if (numberOfLodgingNights.getCurrency() != null && lodgingCostPerNight.getCurrency() != null) {
-            totalLodgingCost.setValue(lodgingCostPerNight.getCurrency().multiply(numberOfLodgingNights.getCurrency()), readyOnly);
+            totalLodgingCost.setValue(lodgingCostPerNight.getCurrency().multiply(numberOfLodgingNights.getCurrency()).setScale(2), readyOnly);
         }
         onChange();
     }
