@@ -17,7 +17,6 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.HTML;
@@ -33,7 +32,6 @@ import info.chili.gwt.fields.FileuploadField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
-import info.chili.gwt.utils.FileUtils;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -79,10 +77,6 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
             + "</ul>");
     HTML emptyLine = new HTML("<br/>");
 
-    public CreateExpenseReportPanel(CreateComposite.CreateCompositeType type) {
-        super(type);
-        initCreateComposite("ExpenseReport", OfficeWelcome.constants);
-    }
     EnumField expenseFormType;
     StringField location;
     DateField startDate;
@@ -90,6 +84,12 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     StringField projectName;
     StringField projectNumber;
     EnumField expenseReimbursePaymentMode;
+    boolean isGeneralExpenseItem = false;
+
+    public CreateExpenseReportPanel(CreateComposite.CreateCompositeType type) {
+        super(type);
+        initCreateComposite("ExpenseReport", OfficeWelcome.constants);
+    }
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
@@ -216,6 +216,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     protected void uploadImage(String postString) {
         JSONObject post = (JSONObject) JSONParser.parseLenient(postString);
         JSONArray expenseReceipts = JSONUtils.toJSONArray(post.get(EXPENSE_RECEIPT));
+        logger.info("sizeaaaa" + expenseReceipts.size());
         logger.info(fileUploadPanel.toString());
         logger.info(expenseReceipts.toString());
         fileUploadPanel.upload(expenseReceipts, "fileURL");
@@ -224,7 +225,13 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addItemL)) {
-            CreateExpenseItemPanel panel = new CreateExpenseItemPanel();
+            CreateExpenseItemPanel panel = null;
+            if (expenseFormType.getValue().equals(ExpenseFormType.GENERAL_EXPENSE.name())) {
+                panel = new CreateExpenseItemPanel(isGeneralExpenseItem);
+                logger.info("boolean: " + isGeneralExpenseItem);
+            } else {
+                panel = new CreateExpenseItemPanel();
+            }
             expenseItemPanels.add(panel);
             entityFieldsPanel.add(panel);
         }
@@ -273,11 +280,13 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         if (event.getSource().equals(expenseFormType.listBox)) {
             if (expenseFormType.getValue().equals(ExpenseFormType.GENERAL_EXPENSE.name())) {
                 renderproject(false);
+                isGeneralExpenseItem = true;
             }
         }
         if (event.getSource().equals(expenseFormType.listBox)) {
             if (expenseFormType.getValue().equals(ExpenseFormType.TRAVEL_EXPENSE.name())) {
                 renderproject(true);
+                isGeneralExpenseItem = false;
             }
         }
     }
