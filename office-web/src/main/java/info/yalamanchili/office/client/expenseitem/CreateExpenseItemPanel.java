@@ -15,6 +15,7 @@ import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.CurrencyField;
@@ -47,10 +48,18 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
     TextAreaField description;
     CurrencyField amount;
     TextAreaField remark;
+    boolean isGeneralExpenseItem = false;
     IntegerField expenseMiles;
+
 
     public CreateExpenseItemPanel() {
         super(CreateComposite.CreateCompositeType.CREATE);
+        initCreateComposite("ExpenseItem", OfficeWelcome.constants);
+    }
+    
+    public CreateExpenseItemPanel(boolean isGeneralExpenseItem) {
+        super(CreateComposite.CreateCompositeType.CREATE);
+        this.isGeneralExpenseItem = isGeneralExpenseItem;
         initCreateComposite("ExpenseItem", OfficeWelcome.constants);
     }
 
@@ -64,7 +73,9 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
         expenseDate = (DateField) fields.get(EXPENSE_DATE);
         addField(PURPOSE, false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         purpose = (TextAreaField) fields.get(PURPOSE);
-        addDropDown(CATEGORY, selectCategoryWidgetF);
+        if (!isGeneralExpenseItem) {
+            addDropDown(CATEGORY, selectCategoryWidgetF);
+        }
         addEnumField(EXPENSE_PAYMENT_MODE, false, true, ExpensePaymentMode.names(), Alignment.HORIZONTAL);
         expensePaymentMode = (EnumField) fields.get(EXPENSE_PAYMENT_MODE);
         addField(EXPENSE_MILES, false, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
@@ -101,6 +112,9 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
     public JSONObject populateEntityFromFields() {
         entity = new JSONObject();
         entity.put(CATEGORY, selectCategoryWidgetF.getSelectedObject());
+        if (isGeneralExpenseItem) {
+            entity.put(CATEGORY, new JSONString("GENERAL"));
+        }
         assignEntityValueFromField(EXPENSE_PAYMENT_MODE, entity);
         assignEntityValueFromField(EXPENSE_DATE, entity);
         assignEntityValueFromField(PURPOSE, entity);
@@ -110,6 +124,7 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
         assignEntityValueFromField(EXPENSE_MILES, entity);
         return entity;
     }
+    
 
     @Override
     protected void createButtonClicked() {
@@ -135,8 +150,6 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Expense Item Successfully Created");
-        TabPanel.instance().expensePanel.sidePanelTop.clear();
-        TabPanel.instance().expensePanel.sidePanelTop.add(new ExpenseItemSidePanel());
         TabPanel.instance().expensePanel.entityPanel.clear();
         TabPanel.instance().expensePanel.entityPanel.add(new ReadAllEpenseItemPanel());
     }
