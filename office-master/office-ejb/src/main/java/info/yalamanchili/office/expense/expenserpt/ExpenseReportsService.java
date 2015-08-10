@@ -11,6 +11,7 @@ package info.yalamanchili.office.expense.expenserpt;
 import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
 import info.chili.commons.pdf.PdfDocumentData;
+import info.chili.jpa.QueryUtils;
 import info.chili.security.Signature;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
@@ -21,6 +22,8 @@ import info.yalamanchili.office.dao.expense.expenserpt.ExpenseReportsDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.entity.expense.expenserpt.ExpenseCategory;
+import info.yalamanchili.office.entity.expense.expenserpt.ExpenseFormType;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseItem;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReceipt;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport;
@@ -59,7 +62,11 @@ public class ExpenseReportsService {
         entity.setSubmittedDate(new Date());
         ExpenseCategoryDao expenseCategoryDao = ExpenseCategoryDao.instance();
         for (ExpenseItem item : entity.getExpenseItems()) {
-            item.setCategory(expenseCategoryDao.findById(item.getCategory().getId()));
+            if (dto.getExpenseFormType().equals(ExpenseFormType.GENERAL_EXPENSE)) {
+                item.setCategory(QueryUtils.findEntity(expenseCategoryDao.getEntityManager(), ExpenseCategory.class, "name", "General"));
+            } else {
+                item.setCategory(expenseCategoryDao.findById(item.getCategory().getId()));
+            }
             item.setExpenseReport(entity);
         }
         for (ExpenseReceipt receipt : entity.getExpenseReceipts()) {

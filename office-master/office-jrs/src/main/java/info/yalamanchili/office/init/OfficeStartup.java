@@ -439,6 +439,7 @@ public class OfficeStartup {
         getHotelExpenseCategory();
         getMisExpenseCategory();
         getPersonalAutoCategory();
+        getGeneralCategory();
         //TAE
         techSysClient();
 
@@ -739,6 +740,18 @@ public class OfficeStartup {
             ExpenseCategory employeetype = new ExpenseCategory();
             employeetype.setName("Miscellaneous");
             employeetype.setDescription("Miscellaneous Expenses");
+            return em.merge(employeetype);
+        } else {
+            return travelCategory;
+        }
+    }
+
+    protected ExpenseCategory getGeneralCategory() {
+        ExpenseCategory travelCategory = QueryUtils.findEntity(em, ExpenseCategory.class, "name", "General");
+        if (travelCategory == null) {
+            ExpenseCategory employeetype = new ExpenseCategory();
+            employeetype.setName("General");
+            employeetype.setDescription("General Expenses");
             return em.merge(employeetype);
         } else {
             return travelCategory;

@@ -66,14 +66,7 @@ public class ExpenseReportResource extends CRUDResource<ExpenseReport> {
     @Validate
     @Path("/save")
     public ExpenseReportSaveDto save(ExpenseReportSaveDto dto) {
-        Mapper mapper = (Mapper) SpringContext.getBean("mapper");
-        ExpenseReport entity = mapper.map(dto, ExpenseReport.class);
-        ExpenseCategoryDao expenseCategoryDao = ExpenseCategoryDao.instance();
-        for (ExpenseItem item : entity.getExpenseItems()) {
-            item.setCategory(expenseCategoryDao.findById(item.getCategory().getId()));
-        }
-        entity = ExpenseReportsDao.instance().save(entity);
-        return mapper.map(entity, ExpenseReportSaveDto.class);
+        return ExpenseReportsService.instance().save(dto);
     }
 
     @GET
