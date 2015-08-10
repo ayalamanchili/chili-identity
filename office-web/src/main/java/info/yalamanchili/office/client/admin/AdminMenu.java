@@ -27,8 +27,8 @@ import info.yalamanchili.office.client.admin.subcontractor.ReadAllSubcontractors
 import info.yalamanchili.office.client.admin.subcontractor.SubcontractorSidePanel;
 import info.yalamanchili.office.client.admin.vendor.ReadAllVendorsPanel;
 import info.yalamanchili.office.client.admin.vendor.VendorsSidePanel;
-import info.yalamanchili.office.client.analytics.EventsSidePanel;
-import info.yalamanchili.office.client.analytics.ReadAllEventsPanel;
+import info.yalamanchili.office.client.analytics.event.EventsSidePanel;
+import info.yalamanchili.office.client.analytics.event.ReadAllEventsPanel;
 import info.yalamanchili.office.client.company.CompanySidePanel;
 import info.yalamanchili.office.client.company.ReadAllCompanyPanel;
 import info.yalamanchili.office.client.ext.externalReferences.ReadAllExternalRefPanel;

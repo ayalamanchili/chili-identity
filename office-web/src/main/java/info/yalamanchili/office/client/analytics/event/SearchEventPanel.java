@@ -5,7 +5,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.client.analytics;
+package info.yalamanchili.office.client.analytics.event;
 
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;

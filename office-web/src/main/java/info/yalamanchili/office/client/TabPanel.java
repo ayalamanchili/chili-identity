@@ -30,6 +30,7 @@ import info.yalamanchili.office.client.admin.client.ClientSidePanel;
 import info.yalamanchili.office.client.admin.client.ReadAllClientsPanel;
 import info.yalamanchili.office.client.advancerequisition.AdvanceRequisitionSidePanel;
 import info.yalamanchili.office.client.advancerequisition.ReadAllAdvanceRequisitionPanel;
+import info.yalamanchili.office.client.analytics.emailevent.EmailEventSidePanel;
 import info.yalamanchili.office.client.chiliadmin.ChiliAdminMenu;
 import info.yalamanchili.office.client.drive.SearchDrivePanel;
 import info.yalamanchili.office.client.expense.ExpenseMenu;
@@ -291,6 +292,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     public void selectChiliAdminPanel() {
         clearEntityPanel(chiliAdminPanel);
         chiliAdminPanel.entityTitlePanel.add(new ChiliAdminMenu());
+        chiliAdminPanel.sidePanelTop.add(new EmailEventSidePanel());
         chiliAdminPanel.entityPanel.add(new ReadAllci18nResourceBundlesPanel());
     }
 
