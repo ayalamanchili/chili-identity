@@ -91,7 +91,7 @@ public class ExpenseReportsService {
     public void delete(Long id) {
         ExpenseReport entity = expenseReportsDao.findById(id);
         //TODO use processid
-        OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getApprovedByManager(), true);
+        OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
         expenseReportsDao.delete(id);
     }
 
