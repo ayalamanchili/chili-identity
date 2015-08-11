@@ -135,13 +135,14 @@ public class EmployeeService {
         prefs.setEnableEmailNotifications(Boolean.TRUE);
         emp.setPreferences(prefs);
 
-        //Create On Boarding Employe process
-        OfficeBPMIdentityService.instance().createUser(employeeId);
-        // BPMTimeService.instance().startNewEmpTimeProcess(emp);
+        //Create BPM User
+        if (emp.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
+            OfficeBPMIdentityService.instance().createUser(employeeId);
+        }
+        //Start on boarding process
         Map<String, Object> obj = new HashMap<>();
-        obj.put("employee", emp);
+        obj.put("entity", emp);
         OfficeBPMService.instance().startProcess("on_boarding_employee_process", obj);
-
         Email email = new Email();
         email.setEmail(employee.getEmail());
         email.setPrimaryEmail(true);

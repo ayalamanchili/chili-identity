@@ -16,7 +16,7 @@
         <sequenceFlow id="flow1" sourceRef="onBoardingEmployeeProcessStart" targetRef="onBoardingEmployeeProcessStart" />
         <serviceTask id="sendOnBoardingEmployeeProcessRequestReceivedEmail" 
                      name="On Boarding Employee Process Request Received Email" 
-                     activiti:expression="#{OnBoardingEmployeeProcessBean.sendOnBoardingEmployeeRequestSubmittedEmail(entity)}" />                            
+                     activiti:expression="#{OnBoardingEmployeeProcessBean.sendEmployeeOnBoardingEmail(entity)}" />                            
         <!-- end-->
         <endEvent id="onBoardingEmployeeProcessEnd" />
     </process>
