@@ -76,7 +76,6 @@ public class AdminResource {
     @Path("/ping")
     @GET
     public void ping() {
-        
     }
 
     @Path("/changepassword/{empId}")
@@ -117,6 +116,17 @@ public class AdminResource {
     public String createUser(EmployeeCreateDto employee) {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
         return employeeService.createUser(employee);
+    }
+
+    @Path("/createOnBoardingEmployee")
+    @PUT
+    @Produces("application/text")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RELATIONSHIP','ROLE_SYSTEM_AND_NETWORK_ADMIN')")
+    @CacheEvict(value = "employees", allEntries = true)
+    @Validate
+    public String createOnBoardingEmployee(EmployeeCreateDto employee) {
+        EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
+        return employeeService.createOnBoardingEmployee(employee);
     }
 
     @GET

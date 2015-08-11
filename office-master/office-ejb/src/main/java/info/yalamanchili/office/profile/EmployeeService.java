@@ -57,8 +57,8 @@ public class EmployeeService {
     public String createUser(EmployeeCreateDto employee) {
         Employee emp = mapper.map(employee, Employee.class);
         emp.setEmployeeType(em.find(EmployeeType.class, emp.getEmployeeType().getId()));
-        if(emp.getCompany()!=null){
-        emp.setCompany(em.find(Company.class, employee.getCompany().getId()));
+        if (emp.getCompany() != null) {
+            emp.setCompany(em.find(Company.class, employee.getCompany().getId()));
         }
         String employeeId = generateEmployeeId(employee);
         String empType = emp.getEmployeeType().getName();
@@ -91,6 +91,59 @@ public class EmployeeService {
             OfficeBPMService.instance().startProcess("new_corp_employee_process", obj);
 
         }
+
+        Email email = new Email();
+        email.setEmail(employee.getEmail());
+        email.setPrimaryEmail(true);
+        emp.addEmail(email);
+        emp = EmployeeDao.instance().save(emp);
+        emp = em.merge(emp);
+        //create cert
+        OfficeSecurityService.instance().createUserCert(emp, null, null);
+        //Email notification
+        if (empType.equals("Corporate Employee") || empType.equals("Employee")) {
+            profileNotificationService.sendNewUserCreatedNotification(emp);
+        }
+        return emp.getId().toString();
+    }
+
+    public String createOnBoardingEmployee(EmployeeCreateDto employee) {
+        Employee emp = mapper.map(employee, Employee.class);
+        emp.setEmployeeType(em.find(EmployeeType.class, emp.getEmployeeType().getId()));
+        if (emp.getCompany() != null) {
+            emp.setCompany(em.find(Company.class, employee.getCompany().getId()));
+        }
+        String employeeId = generateEmployeeId(employee);
+        String empType = emp.getEmployeeType().getName();
+        if (empType.equals("Corporate Employee") || empType.equals("Employee")) {
+            //Create CUser
+            CUser user = mapper.map(employee, CUser.class);
+            user.setPasswordHash(SecurityUtils.encodePassword(user.getPasswordHash(), null));
+            user.setUsername(employeeId);
+            user.setEnabled(true);
+            if (empType.equals("Corporate Employee")) {
+                user.addRole(CRoleDao.instance().findRoleByName(OfficeRole.ROLE_CORPORATE_EMPLOYEE.name()));
+            }
+            user.addRole((CRole) EntityQueryUtils.findEntity(em, CRole.class, "rolename", OfficeRole.ROLE_USER.name()));
+            user = OfficeSecurityService.instance().createCuser(user);
+            emp.setUser(user);
+        }
+
+        //Create employee with basic information
+        emp.setEmployeeId(employeeId);
+        Preferences prefs = new Preferences();
+        prefs.setEnableEmailNotifications(Boolean.TRUE);
+        emp.setPreferences(prefs);
+
+        //Create On Boarding Employe process
+        if (emp.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
+            OfficeBPMIdentityService.instance().createUser(employeeId);
+            // BPMTimeService.instance().startNewEmpTimeProcess(emp);
+            Map<String, Object> obj = new HashMap<>();
+            obj.put("employee", emp);
+            OfficeBPMService.instance().startProcess("on_boarding_employee_process", obj);
+        }
+
         Email email = new Email();
         email.setEmail(employee.getEmail());
         email.setPrimaryEmail(true);
