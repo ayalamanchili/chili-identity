@@ -10,10 +10,12 @@ package info.yalamanchili.office.client.expensereports;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.Window;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
+import info.chili.gwt.crud.TableRowOptionsWidget.OptionsType;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.fields.FileField;
 import info.chili.gwt.rpc.HttpService;
@@ -36,7 +38,7 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
     private static Logger logger = Logger.getLogger(ReadAllExpenseReportsPanel.class.getName());
     public static ReadAllExpenseReportsPanel instance;
     protected String url;
-    
+
     public ReadAllExpenseReportsPanel() {
         logger.info("in read all ");
         instance = this;
@@ -106,8 +108,7 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
         table.setText(0, 3, getKeyValue("Start_Date"));
         table.setText(0, 4, getKeyValue("End_Date"));
         table.setText(0, 5, getKeyValue("Total_Amount"));
-        table.setText(0, 6, getKeyValue("Print"));
-        table.setText(0, 7, getKeyValue("Status"));
+        table.setText(0, 6, getKeyValue("Status"));
     }
 
     @Override
@@ -117,32 +118,30 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
             addOptionsWidget(i, entity);
             JSONObject emp = (JSONObject) entity.get(EMPLOYEE);
             table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
-            table.setText(i, 2, JSONUtils.toString(entity, EXPENSE_FORM_TYPE ));
+            table.setText(i, 2, JSONUtils.toString(entity, EXPENSE_FORM_TYPE));
             table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, START_DATE), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, END_DATE), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 5, FormatUtils.formarCurrency(JSONUtils.toString(entity, TOTAL_EXPENSES )));
-            FileField reportL = new FileField("Print", ChiliClientConfig.instance().getFileDownloadUrl() + "expensereport/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id"));
-            table.setWidget(i, 6, reportL);
-            table.setText(i, 7, JSONUtils.formatEnumString(entity, "status"));
+            table.setText(i, 5, FormatUtils.formarCurrency(JSONUtils.toString(entity, TOTAL_EXPENSES)));
+            table.setText(i, 6, JSONUtils.formatEnumString(entity, "status"));
         }
+    }
+
+    @Override
+    public void printClicked(String entityId) {
+        Window.open(ChiliClientConfig.instance().getFileDownloadUrl() + "expensereport/report" + "&passthrough=true" + "&id=" + entityId, "_blank", "");
     }
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         String status = JSONUtils.toString(entity, "status");
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CEO)) {
-            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), OptionsType.READ, OptionsType.UPDATE, OptionsType.DELETE, OptionsType.PRINT), row, JSONUtils.toString(entity, "id"));
+        } else if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ACCOUNTS_PAYABLE)) {
+            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), OptionsType.READ, OptionsType.PRINT), row, JSONUtils.toString(entity, "id"));
+        } else if ((ExpenseReportStatus.PENDING_MANAGER_APPROVAL.name().equals(status))) {
+            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), OptionsType.READ, OptionsType.UPDATE, OptionsType.PRINT), row, JSONUtils.toString(entity, "id"));
         } else {
-            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE, row, JSONUtils.toString(entity, "id"));
-            if ((ExpenseReportStatus.PENDING_CEO_APPROVAL.name().equals(status))        || 
-                (ExpenseReportStatus.PENDING_PAYROLL_APPROVAL.name().equals(status))    || 
-                (ExpenseReportStatus.APPROVED.name().equals(status))                    || 
-                (ExpenseReportStatus.REJECTED.name().equals(status))) {
-                createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
-            }
-            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ACCOUNTS_PAYABLE)) {
-                createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE, row, JSONUtils.toString(entity, "id"));
-            }
+            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), OptionsType.READ, OptionsType.PRINT), row, JSONUtils.toString(entity, "id"));
         }
     }
 
@@ -151,7 +150,7 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
     }
 
     private String getReadAllExpenseReportURL(Integer start, String tableSize) {
-           logger.info("in read all - getReadAllExpenseReportURL");
+        logger.info("in read all - getReadAllExpenseReportURL");
         if (url != null) {
             return url;
         }
