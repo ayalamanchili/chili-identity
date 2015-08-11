@@ -53,6 +53,8 @@ public class OfficeRoles {
         ROLE_CHILI_ADMIN,
         ROLE_CRP_STATUS_RPT_MGR,
         ROLE_CEO,
+        ROLE_E_VERIFY_MGR,
+        ROLE_BACKGROUND_SCREENING_MGR,
     }
     public final static Map<String, String> rolesMessages = new HashMap<String, String>();
 
@@ -90,5 +92,7 @@ public class OfficeRoles {
         rolesMessages.put(OfficeRole.ROLE_CHILI_ADMIN.name(), "Chili Admin");
         rolesMessages.put(OfficeRole.ROLE_CRP_STATUS_RPT_MGR.name(), " Status Report Manager");
         rolesMessages.put(OfficeRole.ROLE_CEO.name(), "CEO");
+        rolesMessages.put(OfficeRole.ROLE_E_VERIFY_MGR.name(), "E Verify Manager");
+        rolesMessages.put(OfficeRole.ROLE_BACKGROUND_SCREENING_MGR.name(), "BackGround Screening Manager");
     }
 }

@@ -118,15 +118,15 @@ public class AdminResource {
         return employeeService.createUser(employee);
     }
 
-    @Path("/createOnBoardingEmployee")
+    @Path("/onBoardEmployee")
     @PUT
     @Produces("application/text")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RELATIONSHIP','ROLE_SYSTEM_AND_NETWORK_ADMIN')")
     @CacheEvict(value = "employees", allEntries = true)
     @Validate
-    public String createOnBoardingEmployee(EmployeeCreateDto employee) {
+    public String onBoardEmployee(EmployeeCreateDto employee) {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
-        return employeeService.createOnBoardingEmployee(employee);
+        return employeeService.onBoardEmployee(employee);
     }
 
     @GET

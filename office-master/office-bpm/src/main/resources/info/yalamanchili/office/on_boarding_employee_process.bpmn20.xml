@@ -16,26 +16,7 @@
         <sequenceFlow id="flow1" sourceRef="onBoardingEmployeeProcessStart" targetRef="onBoardingEmployeeProcessStart" />
         <serviceTask id="sendOnBoardingEmployeeProcessRequestReceivedEmail" 
                      name="On Boarding Employee Process Request Received Email" 
-                     activiti:expression="#{OnBoardingEmployeeProcessBean.sendOnBoardingEmployeeRequestSubmittedEmail(entity)}" />
-        
-        
-        
-        <!-- Task escalation email after 7 days-->
-        <boundaryEvent id="emailEscalationTimer"
-                       cancelActivity="false" 
-                       attachedToRef="onBoardingEmployeeProcessApprovalTask">
-            <timerEventDefinition> 
-                <timeDuration>PT168H</timeDuration> 
-            </timerEventDefinition>
-        </boundaryEvent>
-        <sequenceFlow sourceRef="emailEscalationTimer" 
-                      targetRef="taskEmailEscalation" />
-        <serviceTask
-            id="taskEmailEscalation"
-            name="Task Email Escalation"
-            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
-        </serviceTask>
-        <sequenceFlow id="flow4" sourceRef="onBoardingEmployeeProcessApprovalTask" targetRef="onBoardingEmployeeProcessEnd" />
+                     activiti:expression="#{OnBoardingEmployeeProcessBean.sendOnBoardingEmployeeRequestSubmittedEmail(entity)}" />                            
         <!-- end-->
         <endEvent id="onBoardingEmployeeProcessEnd" />
     </process>

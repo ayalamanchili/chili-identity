@@ -33,7 +33,9 @@ public class Auth {
         ROLE_BULK_IMPORT,
         ROLE_CHILI_ADMIN,
         ROLE_CRP_STATUS_RPT_MGR,
-        ROLE_CEO
+        ROLE_CEO,
+        ROLE_E_VERIFY_MGR,
+        ROLE_BACKGROUND_SCREENING_MGR
     }
 
     public static boolean isAdmin() {

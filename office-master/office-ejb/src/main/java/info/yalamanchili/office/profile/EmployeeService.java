@@ -107,7 +107,7 @@ public class EmployeeService {
         return emp.getId().toString();
     }
 
-    public String createOnBoardingEmployee(EmployeeCreateDto employee) {
+    public String onBoardEmployee(EmployeeCreateDto employee) {
         Employee emp = mapper.map(employee, Employee.class);
         emp.setEmployeeType(em.find(EmployeeType.class, emp.getEmployeeType().getId()));
         if (emp.getCompany() != null) {
@@ -136,13 +136,11 @@ public class EmployeeService {
         emp.setPreferences(prefs);
 
         //Create On Boarding Employe process
-        if (emp.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
-            OfficeBPMIdentityService.instance().createUser(employeeId);
-            // BPMTimeService.instance().startNewEmpTimeProcess(emp);
-            Map<String, Object> obj = new HashMap<>();
-            obj.put("employee", emp);
-            OfficeBPMService.instance().startProcess("on_boarding_employee_process", obj);
-        }
+        OfficeBPMIdentityService.instance().createUser(employeeId);
+        // BPMTimeService.instance().startNewEmpTimeProcess(emp);
+        Map<String, Object> obj = new HashMap<>();
+        obj.put("employee", emp);
+        OfficeBPMService.instance().startProcess("on_boarding_employee_process", obj);
 
         Email email = new Email();
         email.setEmail(employee.getEmail());
