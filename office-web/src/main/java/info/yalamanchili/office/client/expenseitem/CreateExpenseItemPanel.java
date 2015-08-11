@@ -31,8 +31,6 @@ import info.yalamanchili.office.client.expensecategory.SelectExpenseCategoryWidg
 import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.*;
 import info.yalamanchili.office.client.expensereports.ExpensePaymentMode;
 import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
 import java.util.logging.Logger;
 
 /**
@@ -123,6 +121,7 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
         assignEntityValueFromField(PURPOSE, entity);
         assignEntityValueFromField(DESCRIPTION, entity);
         assignEntityValueFromField(REMARK, entity);
+        assignEntityValueFromField(EXPENSE_MILES, entity);
         assignEntityValueFromField(AMOUNT, entity);
         return entity;
     }

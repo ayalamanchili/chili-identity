@@ -32,13 +32,13 @@ import info.yalamanchili.office.client.expensereports.ExpensePaymentMode;
 public class UpdateExpenseItemPanel extends UpdateComposite {
 
     SelectExpenseCategoryWidget selectCategoryWidgetF = new SelectExpenseCategoryWidget(false, true);
-
     EnumField expensePaymentMode;
     DateField expenseDate;
     TextAreaField purpose;
     TextAreaField description;
     CurrencyField amount;
     TextAreaField remark;
+    CurrencyField expenseMiles;
 
     public UpdateExpenseItemPanel(JSONObject entity) {
         initUpdateComposite(entity, "ExpenseItem", OfficeWelcome.constants);
@@ -52,6 +52,7 @@ public class UpdateExpenseItemPanel extends UpdateComposite {
         assignEntityValueFromField(PURPOSE, entity);
         assignEntityValueFromField(DESCRIPTION, entity);
         assignEntityValueFromField(REMARK, entity);
+        assignEntityValueFromField(EXPENSE_MILES, entity);
         assignEntityValueFromField(AMOUNT, entity);
         return entity;
     }
@@ -60,16 +61,16 @@ public class UpdateExpenseItemPanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postUpdateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postUpdateSuccess(arg0);
+            }
+        });
     }
 
     @Override
@@ -78,6 +79,7 @@ public class UpdateExpenseItemPanel extends UpdateComposite {
         assignFieldValueFromEntity(EXPENSE_PAYMENT_MODE, entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity(DESCRIPTION, entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity(EXPENSE_DATE, entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity(EXPENSE_MILES, entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity(AMOUNT, entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity(PURPOSE, entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity(REMARK, entity, DataType.TEXT_AREA_FIELD);
@@ -102,6 +104,7 @@ public class UpdateExpenseItemPanel extends UpdateComposite {
         purpose.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
         description.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
         remark.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
+        expenseMiles.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
         amount.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
         selectCategoryWidgetF.getLabel().getElement().getStyle().setWidth(DEFAULT_CAT_FIELD_WIDTH, Style.Unit.PX);
     }
@@ -113,6 +116,8 @@ public class UpdateExpenseItemPanel extends UpdateComposite {
         addField(PURPOSE, false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         purpose = (TextAreaField) fields.get(PURPOSE);
         addDropDown(CATEGORY, selectCategoryWidgetF);
+        addField(EXPENSE_MILES, false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        expenseMiles = (CurrencyField) fields.get(EXPENSE_MILES);
         addField(AMOUNT, false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         amount = (CurrencyField) fields.get(AMOUNT);
         addEnumField(EXPENSE_PAYMENT_MODE, false, true, ExpensePaymentMode.names(), Alignment.HORIZONTAL);

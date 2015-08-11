@@ -63,7 +63,7 @@ public class ExpenseReportsService {
         ExpenseCategoryDao expenseCategoryDao = ExpenseCategoryDao.instance();
         for (ExpenseItem item : entity.getExpenseItems()) {
             if (dto.getExpenseFormType().equals(ExpenseFormType.GENERAL_EXPENSE)) {
-                item.setCategory(QueryUtils.findEntity(expenseCategoryDao.getEntityManager(), ExpenseCategory.class, "name", "General"));
+                item.setCategory((ExpenseCategory) QueryUtils.findEntity(expenseCategoryDao.getEntityManager(), ExpenseCategory.class, "name", "General"));
             } else {
                 item.setCategory(expenseCategoryDao.findById(item.getCategory().getId()));
             }
@@ -142,7 +142,6 @@ public class ExpenseReportsService {
         BigDecimal itemTotal = new BigDecimal(0);
         BigDecimal itemAmex = new BigDecimal(0);
         BigDecimal itemPersonal = new BigDecimal(0);
-        BigDecimal totalMiles = new BigDecimal(0.50);
         BigDecimal amountDue = new BigDecimal(0);
         Integer a = 1;
         for (ExpenseItem item : entity.getExpenseItems()) {
@@ -182,8 +181,7 @@ public class ExpenseReportsService {
                         }
                         if (item.getCategory().getName().equals("Personal Auto")) {
                             data.getData().put("Personal Auto", "true");
-                            totalMiles = totalMiles.multiply(item.getExpenseMiles());
-                            data.getData().put("miles" + p, totalMiles.setScale(2, BigDecimal.ROUND_UP).toString());
+                            data.getData().put("miles" + p, item.getExpenseMiles().setScale(2, BigDecimal.ROUND_UP).toString());
                             data.getData().put("miles-amount" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
                         }
                     }

@@ -34,13 +34,13 @@ public class ReadExpenseItemPanel extends ReadComposite {
     private static ReadExpenseItemPanel instance;
     private static Logger logger = Logger.getLogger(ReadExpenseItemPanel.class.getName());
     SelectExpenseCategoryWidget selectCategoryWidgetF = new SelectExpenseCategoryWidget(false, true);
-
     EnumField expensePaymentMode;
     DateField expenseDate;
     TextAreaField purpose;
     TextAreaField description;
     CurrencyField amount;
     TextAreaField remark;
+    CurrencyField expenseMiles;
 
     public static ReadExpenseItemPanel instance() {
         return instance;
@@ -59,12 +59,12 @@ public class ReadExpenseItemPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity);
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                populateFieldsFromEntity(entity);
+            }
+        });
     }
 
     @Override
@@ -73,6 +73,7 @@ public class ReadExpenseItemPanel extends ReadComposite {
         assignFieldValueFromEntity(EXPENSE_PAYMENT_MODE, entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity(DESCRIPTION, entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity(EXPENSE_DATE, entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity(EXPENSE_MILES, entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity(AMOUNT, entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity(PURPOSE, entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity(REMARK, entity, DataType.TEXT_AREA_FIELD);
@@ -89,6 +90,7 @@ public class ReadExpenseItemPanel extends ReadComposite {
         purpose.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
         description.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
         remark.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
+        expenseMiles.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
         amount.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
         selectCategoryWidgetF.getLabel().getElement().getStyle().setWidth(DEFAULT_CAT_FIELD_WIDTH, Style.Unit.PX);
     }
@@ -100,6 +102,8 @@ public class ReadExpenseItemPanel extends ReadComposite {
         addField(PURPOSE, true, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         purpose = (TextAreaField) fields.get(PURPOSE);
         addDropDown(CATEGORY, selectCategoryWidgetF);
+        addField(EXPENSE_MILES, true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        expenseMiles = (CurrencyField) fields.get(EXPENSE_MILES);
         addField(AMOUNT, true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         amount = (CurrencyField) fields.get(AMOUNT);
         addEnumField(EXPENSE_PAYMENT_MODE, true, true, ExpensePaymentMode.names(), Alignment.HORIZONTAL);
