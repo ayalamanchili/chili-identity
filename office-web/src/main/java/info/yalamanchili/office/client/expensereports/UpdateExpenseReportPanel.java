@@ -109,17 +109,17 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
             items.set(i, panel.populateEntityFromFields());
             JSONObject entityObj = (JSONObject) items.get(i);
             if (!JSONUtils.toString(entityObj, AMOUNT).isEmpty()) {
-                BigDecimal eAmount= new BigDecimal(JSONUtils.toString(entityObj, AMOUNT));
+                BigDecimal eAmount = new BigDecimal(JSONUtils.toString(entityObj, AMOUNT));
                 totalExpensesAmount = totalExpensesAmount.add(eAmount);
             }
             i++;
         }
-        if (expenseItemPanels.size() > 0) {  
+        if (expenseItemPanels.size() > 0) {
             for (CreateExpenseItemPanel panel : expenseItemPanels) {
                 items.set(i, panel.populateEntityFromFields());
                 JSONObject entityObj = (JSONObject) items.get(i);
                 if (!JSONUtils.toString(entityObj, AMOUNT).isEmpty()) {
-                    BigDecimal eAmount= new BigDecimal(JSONUtils.toString(entityObj, AMOUNT));
+                    BigDecimal eAmount = new BigDecimal(JSONUtils.toString(entityObj, AMOUNT));
                     totalExpensesAmount = totalExpensesAmount.add(eAmount);
                 }
                 i++;
@@ -234,8 +234,8 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "expensereport/save";
     }
-    
-        @Override
+
+    @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addItemL)) {
             CreateExpenseItemPanel panel = new CreateExpenseItemPanel();
@@ -243,15 +243,15 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
             entityFieldsPanel.add(panel);
         }
         if (event.getSource().equals(removeItemL)) {
-            if (expenseItemPanels.size() > 0) {   
+            if (expenseItemPanels.size() > 0) {
                 int i = expenseItemPanels.size();
-                expenseItemPanels.get(i-1).removeFromParent();
-                expenseItemPanels.remove(i-1);
+                expenseItemPanels.get(i - 1).removeFromParent();
+                expenseItemPanels.remove(i - 1);
             }
-            if (updateItemPanels.size() > 0) {   
+            if (updateItemPanels.size() > 0) {
                 int i = updateItemPanels.size();
-                updateItemPanels.get(i-1).removeFromParent();
-                updateItemPanels.remove(i-1);
+                updateItemPanels.get(i - 1).removeFromParent();
+                updateItemPanels.remove(i - 1);
             }
         }
         super.onClick(event);

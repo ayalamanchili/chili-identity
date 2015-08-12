@@ -29,7 +29,6 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.expensecategory.SelectExpenseCategoryWidget;
 import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.*;
-import info.yalamanchili.office.client.expensereports.ExpenseFormType;
 import info.yalamanchili.office.client.expensereports.ExpensePaymentMode;
 import java.math.BigDecimal;
 import java.util.logging.Logger;
@@ -39,7 +38,7 @@ import java.util.logging.Logger;
  * @author Prasanthi.p
  */
 public class CreateExpenseItemPanel extends CreateComposite implements ChangeHandler, BlurHandler, ClickHandler {
-
+    
     private Logger logger = Logger.getLogger(CreateExpenseItemPanel.class.getName());
     SelectExpenseCategoryWidget selectCategoryWidgetF = new SelectExpenseCategoryWidget(false, true);
     EnumField expensePaymentMode;
@@ -50,22 +49,22 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
     TextAreaField remark;
     boolean isGeneralExpenseItem = false;
     CurrencyField expenseMiles;
-
+    
     public CreateExpenseItemPanel() {
         super(CreateComposite.CreateCompositeType.CREATE);
         initCreateComposite("ExpenseItem", OfficeWelcome.constants);
     }
-
+    
     public CreateExpenseItemPanel(boolean isGeneralExpenseItem) {
         super(CreateComposite.CreateCompositeType.CREATE);
         this.isGeneralExpenseItem = isGeneralExpenseItem;
         initCreateComposite("ExpenseItem", OfficeWelcome.constants);
     }
-
+    
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
-
+    
     @Override
     protected void addWidgets() {
         addField(EXPENSE_DATE, false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
@@ -74,9 +73,9 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
         purpose = (TextAreaField) fields.get(PURPOSE);
         if (!isGeneralExpenseItem) {
             addDropDown(CATEGORY, selectCategoryWidgetF);
-            addEnumField(EXPENSE_PAYMENT_MODE, false, true, ExpensePaymentMode.names(), Alignment.HORIZONTAL);
-            expensePaymentMode = (EnumField) fields.get(EXPENSE_PAYMENT_MODE);
         }
+        addEnumField(EXPENSE_PAYMENT_MODE, false, true, ExpensePaymentMode.names(), Alignment.HORIZONTAL);
+        expensePaymentMode = (EnumField) fields.get(EXPENSE_PAYMENT_MODE);
         addField(EXPENSE_MILES, false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         expenseMiles = (CurrencyField) fields.get(EXPENSE_MILES);
         addField(AMOUNT, false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
@@ -87,7 +86,7 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
         remark = (TextAreaField) fields.get(REMARK);
         alignFields();
     }
-
+    
     @Override
     protected void configure() {
         create.setVisible(false);
@@ -101,25 +100,23 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
         selectCategoryWidgetF.getLabel().getElement().getStyle().setWidth(DEFAULT_CAT_FIELD_WIDTH, Style.Unit.PX);
         expenseMiles.setVisible(false);
     }
-
+    
     @Override
     protected void addListeners() {
         expensePaymentMode.listBox.addChangeHandler(this);
         expenseMiles.getTextbox().addBlurHandler(this);
         selectCategoryWidgetF.getListBox().addChangeHandler(this);
     }
-
+    
     @Override
     public JSONObject populateEntityFromFields() {
         entity = new JSONObject();
         if (isGeneralExpenseItem) {
             entity.put(CATEGORY, new JSONString("General"));
-            entity.put(EXPENSE_PAYMENT_MODE, new JSONString("GENERAL"));
         } else {
             entity.put(CATEGORY, selectCategoryWidgetF.getSelectedObject());
-            entity.put(EXPENSE_PAYMENT_MODE, entity);
         }
-//        assignEntityValueFromField(EXPENSE_PAYMENT_MODE, entity);
+        assignEntityValueFromField(EXPENSE_PAYMENT_MODE, entity);
         assignEntityValueFromField(EXPENSE_DATE, entity);
         assignEntityValueFromField(PURPOSE, entity);
         assignEntityValueFromField(DESCRIPTION, entity);
@@ -128,40 +125,40 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
         assignEntityValueFromField(AMOUNT, entity);
         return entity;
     }
-
+    
     @Override
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                logger.info(arg0.getMessage());
-                handleErrorResponse(arg0);
-            }
-
-            @Override
-            public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        logger.info(arg0.getMessage());
+                        handleErrorResponse(arg0);
+                    }
+                    
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
     }
-
+    
     @Override
     protected void addButtonClicked() {
     }
-
+    
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Expense Item Successfully Created");
         TabPanel.instance().expensePanel.entityPanel.clear();
         TabPanel.instance().expensePanel.entityPanel.add(new ReadAllEpenseItemPanel());
     }
-
+    
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "expenseitem";
     }
-
+    
     @Override
     public void onChange(ChangeEvent event) {
         if (event.getSource().equals(selectCategoryWidgetF.getListBox())) {
@@ -173,13 +170,14 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
                 expenseMiles.setVisible(false);
             }
         }
-
+        
     }
-
+    
     @Override
     public void onBlur(BlurEvent event) {
         if (event.getSource().equals(expenseMiles.getTextbox())) {
             amount.setValue(new BigDecimal(expenseMiles.getValue()).multiply(new BigDecimal("0.50")).setScale(2), false);
         }
     }
+    
 }
