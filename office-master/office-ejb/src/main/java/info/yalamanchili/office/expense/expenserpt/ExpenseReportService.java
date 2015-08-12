@@ -56,12 +56,8 @@ public class ExpenseReportService {
     public ExpenseReportSaveDto save(ExpenseReportSaveDto dto) {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         ExpenseReport entity = mapper.map(dto, ExpenseReport.class);
-        Employee emp = null;
         if (entity.getId() == null) {
-            emp = OfficeSecurityService.instance().getCurrentUser();
-            entity.setEmployee(emp);
-        } else {
-            emp = expenseReportsDao.findById(dto.getId()).getEmployee();
+            entity.setEmployee(OfficeSecurityService.instance().getCurrentUser());
         }
         entity.setStatus(ExpenseReportStatus.PENDING_MANAGER_APPROVAL);
         entity.setSubmittedDate(new Date());
@@ -77,15 +73,17 @@ public class ExpenseReportService {
         for (ExpenseReceipt receipt : entity.getExpenseReceipts()) {
             receipt.setExpenseReport(entity);
         }
-        Map<String, Object> vars = new HashMap<>();
-        vars.put("entity", entity);
-        vars.put("currentEmployee", emp);
-        entity = expenseReportsDao.save(entity);
-        vars.put("entityId", entity.getId());
-        entity.setBpmProcessId(OfficeBPMService.instance().startProcess("expense_report_process", vars));
-        OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
+        if (entity.getId() == null) {
+            Map<String, Object> vars = new HashMap<>();
+            vars.put("entity", entity);
+            vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
+            entity = expenseReportsDao.save(entity);
+            vars.put("entityId", entity.getId());
+            entity.setBpmProcessId(OfficeBPMService.instance().startProcess("expense_report_process", vars));
+        } else {
+            //TODO   update entity
+        }
         return mapper.map(entity, ExpenseReportSaveDto.class);
-
     }
 
     public ExpenseReportSaveDto read(Long id) {
