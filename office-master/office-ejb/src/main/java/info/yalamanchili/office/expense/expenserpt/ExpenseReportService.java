@@ -48,16 +48,21 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-public class ExpenseReportsService {
+public class ExpenseReportService {
 
     @Autowired
     protected ExpenseReportsDao expenseReportsDao;
 
     public ExpenseReportSaveDto save(ExpenseReportSaveDto dto) {
-        Employee emp = OfficeSecurityService.instance().getCurrentUser();
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         ExpenseReport entity = mapper.map(dto, ExpenseReport.class);
-        entity.setEmployee(emp);
+        Employee emp = null;
+        if (entity.getId() == null) {
+            emp = OfficeSecurityService.instance().getCurrentUser();
+            entity.setEmployee(emp);
+        } else {
+            emp = expenseReportsDao.findById(dto.getId()).getEmployee();
+        }
         entity.setStatus(ExpenseReportStatus.PENDING_MANAGER_APPROVAL);
         entity.setSubmittedDate(new Date());
         ExpenseCategoryDao expenseCategoryDao = ExpenseCategoryDao.instance();
@@ -77,7 +82,8 @@ public class ExpenseReportsService {
         vars.put("currentEmployee", emp);
         entity = expenseReportsDao.save(entity);
         vars.put("entityId", entity.getId());
-        entity.setBpmProcessId(OfficeBPMService.instance().startProcess("corp_emp_expense_report_process", vars));
+        entity.setBpmProcessId(OfficeBPMService.instance().startProcess("expense_report_process", vars));
+        OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
         return mapper.map(entity, ExpenseReportSaveDto.class);
 
     }
@@ -271,7 +277,7 @@ public class ExpenseReportsService {
                 .build();
     }
 
-    public static ExpenseReportsService instance() {
-        return SpringContext.getBean(ExpenseReportsService.class);
+    public static ExpenseReportService instance() {
+        return SpringContext.getBean(ExpenseReportService.class);
     }
 }

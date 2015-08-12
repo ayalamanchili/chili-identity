@@ -9,10 +9,8 @@
 package info.yalamanchili.office.bpm.expensereport;
 
 import info.chili.service.jrs.exception.ServiceException;
-import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
-import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
-import info.yalamanchili.office.dao.company.CompanyContactDao;
+import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
 import info.yalamanchili.office.dao.expense.expenserpt.ExpenseReportsDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport;
@@ -20,29 +18,19 @@ import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReportStatus;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.Date;
 import org.activiti.engine.delegate.DelegateTask;
-import org.activiti.engine.delegate.TaskListener;
 
 /**
  *
  * @author ayalamanchili
  */
-public class CorpEmpExpenseReportProcess implements TaskListener {
+public class ExpenseReportProcess extends RuleBasedTaskDelegateListner {
 
     @Override
-    public void notify(DelegateTask dt) {
-        if ("create".equals(dt.getEventName())) {
-            expenseReportTaskCreated(dt);
+    public void processTask(DelegateTask task) {
+        super.processTask(task);
+        if ("complete".equals(task.getEventName())) {
+            expenseReportTaskCompleted(task);
         }
-        if ("complete".equals(dt.getEventName())) {
-            expenseReportTaskCompleted(dt);
-        }
-    }
-
-    private void expenseReportTaskCreated(DelegateTask dt) {
-        if (dt.getTaskDefinitionKey().equals("expenseReportMgrApprovalTask")) {
-            assignExpenseReportTask(dt);
-        }
-        new GenericTaskCreateNotification().notify(dt);
     }
 
     private void expenseReportTaskCompleted(DelegateTask dt) {
@@ -86,16 +74,6 @@ public class CorpEmpExpenseReportProcess implements TaskListener {
         }
         ExpenseReportsDao.instance().save(entity);
         new GenericTaskCompleteNotification().notify(dt);
-    }
-
-    private void assignExpenseReportTask(DelegateTask dt) {
-        Employee emp = (Employee) dt.getExecution().getVariable("currentEmployee");
-        Employee reportsToEmp = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Reports_To");
-        if (reportsToEmp != null) {
-            dt.addCandidateUser(reportsToEmp.getEmployeeId());
-        } else {
-            dt.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_HR_ADMINSTRATION.name());
-        }
     }
 
     protected ExpenseReport getRequestFromTask(DelegateTask task) {

@@ -9,17 +9,14 @@ package info.yalamanchili.office.jrs.expense.expenserpt;
 
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
-import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
-import info.yalamanchili.office.dao.expense.expenserpt.ExpenseCategoryDao;
 import info.yalamanchili.office.dao.expense.expenserpt.ExpenseReportsDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
-import info.yalamanchili.office.entity.expense.expenserpt.ExpenseItem;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.expense.expenserpt.ExpenseReportSaveDto;
-import info.yalamanchili.office.expense.expenserpt.ExpenseReportsService;
+import info.yalamanchili.office.expense.expenserpt.ExpenseReportService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.security.AccessCheck;
 import java.util.List;
@@ -33,7 +30,6 @@ import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Scope;
@@ -59,14 +55,14 @@ public class ExpenseReportResource extends CRUDResource<ExpenseReport> {
     @Path("/submit")
     @CacheEvict(value = OfficeCacheKeys.EXPENSE, allEntries = true)
     public ExpenseReportSaveDto submit(ExpenseReportSaveDto dto) {
-        return ExpenseReportsService.instance().save(dto);
+        return ExpenseReportService.instance().save(dto);
     }
 
     @PUT
     @Validate
     @Path("/save")
     public ExpenseReportSaveDto save(ExpenseReportSaveDto dto) {
-        return ExpenseReportsService.instance().save(dto);
+        return ExpenseReportService.instance().save(dto);
     }
 
     @GET
@@ -74,7 +70,7 @@ public class ExpenseReportResource extends CRUDResource<ExpenseReport> {
     @Transactional(readOnly = true)
     @Override
     public ExpenseReportSaveDto read(@PathParam("id") Long id) {
-        return ExpenseReportsService.instance().read(id);
+        return ExpenseReportService.instance().read(id);
     }
 
     @GET
@@ -110,14 +106,14 @@ public class ExpenseReportResource extends CRUDResource<ExpenseReport> {
     @CacheEvict(value = OfficeCacheKeys.EXPENSE, allEntries = true)
     @Override
     public void delete(@PathParam("id") Long id) {
-        ExpenseReportsService.instance().delete(id);
+        ExpenseReportService.instance().delete(id);
     }
 
     @GET
     @Path("/report")
     @Produces({"application/pdf"})
     public Response getReport(@QueryParam("id") Long id) {
-        return ExpenseReportsService.instance().getReport(id);
+        return ExpenseReportService.instance().getReport(id);
     }
 
     @Override
