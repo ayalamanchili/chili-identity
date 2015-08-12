@@ -61,11 +61,12 @@ public class EmployeeService {
             emp.setCompany(em.find(Company.class, employee.getCompany().getId()));
         }
         String employeeId = generateEmployeeId(employee);
+        String generatepassword = generatepassword();
         String empType = emp.getEmployeeType().getName();
         if (empType.equals("Corporate Employee") || empType.equals("Employee")) {
             //Create CUser
             CUser user = mapper.map(employee, CUser.class);
-            user.setPasswordHash(SecurityUtils.encodePassword(user.getPasswordHash(), null));
+            user.setPasswordHash(generatepassword);
             user.setUsername(employeeId);
             user.setEnabled(true);
             if (empType.equals("Corporate Employee")) {
@@ -114,11 +115,12 @@ public class EmployeeService {
             emp.setCompany(em.find(Company.class, employee.getCompany().getId()));
         }
         String employeeId = generateEmployeeId(employee);
+        String generatepass = generatepassword();
         String empType = emp.getEmployeeType().getName();
         if (empType.equals("Corporate Employee") || empType.equals("Employee")) {
             //Create CUser
             CUser user = mapper.map(employee, CUser.class);
-            user.setPasswordHash(SecurityUtils.encodePassword(user.getPasswordHash(), null));
+            user.setPasswordHash(generatepass);
             user.setUsername(employeeId);
             user.setEnabled(true);
             if (empType.equals("Corporate Employee")) {

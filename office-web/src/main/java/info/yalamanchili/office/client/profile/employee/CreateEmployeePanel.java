@@ -42,7 +42,6 @@ public class CreateEmployeePanel extends CreateComposite {
     @Override
     public JSONObject populateEntityFromFields() {
         JSONObject employee = new JSONObject();
-        assignEntityValueFromField("passwordHash", employee);
         assignEntityValueFromField("firstName", employee);
         assignEntityValueFromField("middleInitial", employee);
         assignEntityValueFromField("lastName", employee);
@@ -89,7 +88,6 @@ public class CreateEmployeePanel extends CreateComposite {
         addField("dateOfBirth", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("sex", false, true, Sex.names(), Alignment.HORIZONTAL);
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("passwordHash", false, true, DataType.PASSWORD_FIELD, Alignment.HORIZONTAL);
         addField("jobTitle", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("branch", false, true, Branch.names(), Alignment.HORIZONTAL);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_GC_IMMIGRATION)) {

@@ -45,7 +45,7 @@ public class OnBoardingEmployeeProcessBean {
         Map<String, Object> emailCtx = new HashMap<>();
         emailCtx.put("employeeName", "asdf");
         //TODO use correct email template
-//        email.setTemplateName("home_address_update_template.html");
+        email.setTemplateName("on_board_employee_template.html");
         email.setContext(emailCtx);
         email.setHtml(Boolean.TRUE);
         //adding attachements
