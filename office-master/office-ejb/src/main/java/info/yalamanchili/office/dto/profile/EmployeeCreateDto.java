@@ -8,18 +8,16 @@
 package info.yalamanchili.office.dto.profile;
 
 import info.yalamanchili.office.entity.Company;
+import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Branch;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.Sex;
 import info.yalamanchili.office.entity.profile.WorkStatus;
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -59,6 +57,8 @@ public class EmployeeCreateDto implements Serializable {
 //    @Size(min = 6, message = "{user.passwordHash.length.invalid.msg}")
     protected String passwordHash;
     protected Company company;
+
+    protected Address address;
 
     public String getFirstName() {
         return firstName;
@@ -186,6 +186,14 @@ public class EmployeeCreateDto implements Serializable {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     @Override
