@@ -40,7 +40,6 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
     protected String url;
 
     public ReadAllExpenseReportsPanel() {
-        logger.info("in read all ");
         instance = this;
         initTable("ExpenseReports", OfficeWelcome.constants);
     }
@@ -89,7 +88,6 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
 
     @Override
     public void preFetchTable(int start) {
-        logger.info("in read all - prefetch");
         HttpService.HttpServiceAsync.instance().doGet(getReadAllExpenseReportURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), false,
                 new ALAsyncCallback<String>() {
                     @Override
@@ -150,7 +148,6 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
     }
 
     private String getReadAllExpenseReportURL(Integer start, String tableSize) {
-        logger.info("in read all - getReadAllExpenseReportURL");
         if (url != null) {
             return url;
         }
