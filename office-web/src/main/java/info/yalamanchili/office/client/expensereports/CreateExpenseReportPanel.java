@@ -182,12 +182,9 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
                 JSONObject expenseReceipt = new JSONObject();
                 expenseReceipt.put("fileURL", fileUploadPanel.getFileName(upload));
                 expenseReceipts.set(i, expenseReceipt);
-                logger.info("create in side size" + i + " " + expenseReceipt);
                 i++;
             }
             entity.put(EXPENSE_RECEIPT, expenseReceipts);
-            int x = expenseReceipts.size();
-            logger.info("create out side size" + x);
         }
         return entity;
     }
@@ -216,7 +213,6 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     protected void uploadImage(String postString) {
         JSONObject post = (JSONObject) JSONParser.parseLenient(postString);
         JSONArray expenseReceipts = JSONUtils.toJSONArray(post.get(EXPENSE_RECEIPT));
-        logger.info("sizeaaaa" + expenseReceipts.size());
         logger.info(fileUploadPanel.toString());
         logger.info(expenseReceipts.toString());
         fileUploadPanel.upload(expenseReceipts, "fileURL");
@@ -228,7 +224,6 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
             CreateExpenseItemPanel panel = null;
             if (expenseFormType.getValue().equals(ExpenseFormType.GENERAL_EXPENSE.name())) {
                 panel = new CreateExpenseItemPanel(isGeneralExpenseItem);
-                logger.info("boolean: " + isGeneralExpenseItem);
             } else {
                 panel = new CreateExpenseItemPanel();
             }
