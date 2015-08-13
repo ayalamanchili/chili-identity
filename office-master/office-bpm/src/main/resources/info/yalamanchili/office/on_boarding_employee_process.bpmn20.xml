@@ -13,10 +13,11 @@
     <process id="on_boarding_employee_process">
         <startEvent id="onBoardingEmployeeProcessStart">
         </startEvent>
-        <sequenceFlow id="flow1" sourceRef="onBoardingEmployeeProcessStart" targetRef="onBoardingEmployeeProcessStart" />
-        <serviceTask id="sendOnBoardingEmployeeProcessRequestReceivedEmail" 
+        <sequenceFlow id="flow1" sourceRef="onBoardingEmployeeProcessStart" targetRef="sendStartOnBoardingEmail" />
+        <serviceTask id="sendStartOnBoardingEmail" 
                      name="On Boarding Employee Process Request Received Email" 
-                     activiti:expression="#{OnBoardingEmployeeProcessBean.sendEmployeeOnBoardingEmail(entity)}" />                            
+                     activiti:expression="#{OnBoardingEmployeeProcessBean.sendEmployeeOnBoardingEmail(entity)}" />    
+        <sequenceFlow id="flow2" sourceRef="sendStartOnBoardingEmail" targetRef="onBoardingEmployeeProcessEnd" />                        
         <!-- end-->
         <endEvent id="onBoardingEmployeeProcessEnd" />
     </process>

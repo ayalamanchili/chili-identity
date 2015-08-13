@@ -45,7 +45,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class EmployeeService {
-
+    
     private final static Logger logger = Logger.getLogger(EmployeeService.class.getName());
     //TODO remove extended
     @PersistenceContext
@@ -54,7 +54,7 @@ public class EmployeeService {
     protected ProfileNotificationService profileNotificationService;
     @Autowired
     protected Mapper mapper;
-
+    
     public String createUser(EmployeeCreateDto employee) {
         Employee emp = mapper.map(employee, Employee.class);
         emp.setEmployeeType(em.find(EmployeeType.class, emp.getEmployeeType().getId()));
@@ -91,9 +91,9 @@ public class EmployeeService {
             Map<String, Object> obj = new HashMap<>();
             obj.put("employee", emp);
             OfficeBPMService.instance().startProcess("new_corp_employee_process", obj);
-
+            
         }
-
+        
         Email email = new Email();
         email.setEmail(employee.getEmail());
         email.setPrimaryEmail(true);
@@ -108,16 +108,16 @@ public class EmployeeService {
         }
         return emp.getId().toString();
     }
-
+    
     public String onBoardEmployee(EmployeeCreateDto employee) {
         Employee emp = mapper.map(employee, Employee.class);
         emp.setEmployeeType(em.find(EmployeeType.class, emp.getEmployeeType().getId()));
         if (emp.getCompany() != null) {
             emp.setCompany(em.find(Company.class, employee.getCompany().getId()));
         }
-//        if (emp.getAddress() != null) {
-//            emp.setAddress(employee.getAddress());
-//        }
+        if (employee.getAddress() != null) {
+            emp.addAddress(employee.getAddress());
+        }
         String employeeId = generateEmployeeId(employee);
         String generatepass = generatepassword();
         String empType = emp.getEmployeeType().getName();
@@ -157,13 +157,9 @@ public class EmployeeService {
         emp = em.merge(emp);
         //create cert
         OfficeSecurityService.instance().createUserCert(emp, null, null);
-        //Email notification
-        if (empType.equals("Corporate Employee") || empType.equals("Employee")) {
-            profileNotificationService.sendNewUserCreatedNotification(emp);
-        }
         return emp.getId().toString();
     }
-
+    
     private String generateEmployeeId(EmployeeCreateDto emp) {
         String empId = emp.getFirstName().toLowerCase().charAt(0) + emp.getLastName().toLowerCase();
         javax.persistence.Query findUserQuery = em.createQuery("from Employee where employeeId=:empIdParam");
@@ -176,7 +172,7 @@ public class EmployeeService {
         }
         return empId;
     }
-
+    
     public CUser changePassword(Long empId, User user) {
         CUser user1 = getEmployee(empId).getUser();
         String oldpswd = SecurityUtils.encodePassword(user.getOldPassword(), null);
@@ -186,17 +182,17 @@ public class EmployeeService {
         } else {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.password", "Old Password Doesn't Match");
         }
-
+        
     }
-
+    
     public CUser resetPassword(Long empId, User user) {
         CUser user1 = getEmployee(empId).getUser();
         user1.setPasswordHash(SecurityUtils.encodePassword(user.getNewPassword(), null));
         profileNotificationService.sendResetPasswordNotification(getEmployee(empId), user.getNewPassword());
         return em.merge(user1);
-
+        
     }
-
+    
     public void deactivateUser(Long empId) {
         Employee emp = getEmployee(empId);
         if (!emp.isActive()) {
@@ -207,9 +203,9 @@ public class EmployeeService {
         user1.setEnabled(false);
         profileNotificationService.sendEmployeeDeactivationNotification(getEmployee(empId));
         em.merge(user1);
-
+        
     }
-
+    
     public String generatepassword() {
         final int PASSWORD_LENGTH = 6;
         StringBuilder sb = new StringBuilder();
@@ -218,7 +214,7 @@ public class EmployeeService {
         }
         return sb.toString();
     }
-
+    
     private Employee getEmployee(Long empId) {
         Employee employee = em.find(Employee.class, empId);
         if (employee == null) {
@@ -228,7 +224,7 @@ public class EmployeeService {
             return employee;
         }
     }
-
+    
     public static EmployeeService instance() {
         return SpringContext.getBean(EmployeeService.class);
     }
