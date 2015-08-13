@@ -48,10 +48,9 @@ public class OfficeSecurityService {
     }
 
     public EmployeeLoginDto login(CUser user) {
-        TypedQuery<Employee> query = em.createQuery("from Employee emp where emp.user.username=:userNameParam and emp.user.passwordHash=:passwordParam", Employee.class);
+        TypedQuery<Employee> query = em.createQuery("from Employee emp where emp.user.username=:userNameParam", Employee.class);
         query.setParameter("userNameParam", user.getUsername().toLowerCase());
-        query.setParameter("passwordParam", SecurityUtils.encodePassword(user.getPasswordHash(), null));
-
+//        query.setParameter("passwordParam", SecurityUtils.encodePassword(user.getPasswordHash(), null));
         try {
             Mapper mapper = (Mapper) SpringContext.getBean("mapper");
             Employee emp = query.getSingleResult();
