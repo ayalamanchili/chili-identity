@@ -99,6 +99,9 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
         amount.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
         selectCategoryWidgetF.getLabel().getElement().getStyle().setWidth(DEFAULT_CAT_FIELD_WIDTH, Style.Unit.PX);
         expenseMiles.setVisible(false);
+        if (isGeneralExpenseItem) {
+            expensePaymentMode.setVisible(false);
+        }
     }
 
     @Override
@@ -113,10 +116,13 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
         entity = new JSONObject();
         if (isGeneralExpenseItem) {
             entity.put(CATEGORY, new JSONString("General"));
-            entity.put(CATEGORY, new JSONString("GENERAL"));
         } else {
             entity.put(CATEGORY, selectCategoryWidgetF.getSelectedObject());
-            entity.put(EXPENSE_PAYMENT_MODE, entity);
+        }
+        if (isGeneralExpenseItem) {
+            entity.put(EXPENSE_PAYMENT_MODE, new JSONString(ExpensePaymentMode.PERSONAL_CARD.name()));
+        } else {
+            assignEntityValueFromField(EXPENSE_PAYMENT_MODE, entity);
         }
         assignEntityValueFromField(EXPENSE_DATE, entity);
         assignEntityValueFromField(PURPOSE, entity);
@@ -131,17 +137,18 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                logger.info(arg0.getMessage());
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        logger.info(arg0.getMessage());
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
+
     }
 
     @Override
