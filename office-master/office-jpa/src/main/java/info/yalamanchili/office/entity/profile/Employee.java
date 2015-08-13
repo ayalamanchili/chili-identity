@@ -122,6 +122,12 @@ public class Employee extends Contact {
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Company_Employees")
     protected Company company;
+    /*
+    *
+    */
+    @OneToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_Address_Employees")
+    protected Address address;
     /**
      * @generated
      */
@@ -210,6 +216,15 @@ public class Employee extends Contact {
      */
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
+    }
+    
+    @XmlElement
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     /**
