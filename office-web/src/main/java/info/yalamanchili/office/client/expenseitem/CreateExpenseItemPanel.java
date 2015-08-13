@@ -73,9 +73,9 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
         purpose = (TextAreaField) fields.get(PURPOSE);
         if (!isGeneralExpenseItem) {
             addDropDown(CATEGORY, selectCategoryWidgetF);
-            addEnumField(EXPENSE_PAYMENT_MODE, false, true, ExpensePaymentMode.names(), Alignment.HORIZONTAL);
-            expensePaymentMode = (EnumField) fields.get(EXPENSE_PAYMENT_MODE);
         }
+        addEnumField(EXPENSE_PAYMENT_MODE, false, true, ExpensePaymentMode.names(), Alignment.HORIZONTAL);
+        expensePaymentMode = (EnumField) fields.get(EXPENSE_PAYMENT_MODE);
         addField(EXPENSE_MILES, false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         expenseMiles = (CurrencyField) fields.get(EXPENSE_MILES);
         addField(AMOUNT, false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
@@ -90,7 +90,9 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
     @Override
     protected void configure() {
         create.setVisible(false);
-        expensePaymentMode.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
+        if (isGeneralExpenseItem) {
+            expensePaymentMode.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
+        }
         expenseDate.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
         purpose.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
         description.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
@@ -99,9 +101,6 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
         amount.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
         selectCategoryWidgetF.getLabel().getElement().getStyle().setWidth(DEFAULT_CAT_FIELD_WIDTH, Style.Unit.PX);
         expenseMiles.setVisible(false);
-        if (isGeneralExpenseItem) {
-            expensePaymentMode.setVisible(false);
-        }
     }
 
     @Override
@@ -116,14 +115,13 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
         entity = new JSONObject();
         if (isGeneralExpenseItem) {
             entity.put(CATEGORY, new JSONString("General"));
-        } else {
-            entity.put(CATEGORY, selectCategoryWidgetF.getSelectedObject());
-        }
-        if (isGeneralExpenseItem) {
+            assignEntityValueFromField(EXPENSE_PAYMENT_MODE, entity);
             entity.put(EXPENSE_PAYMENT_MODE, new JSONString(ExpensePaymentMode.PERSONAL_CARD.name()));
         } else {
+            entity.put(CATEGORY, selectCategoryWidgetF.getSelectedObject());
             assignEntityValueFromField(EXPENSE_PAYMENT_MODE, entity);
         }
+        assignEntityValueFromField(EXPENSE_PAYMENT_MODE, entity);
         assignEntityValueFromField(EXPENSE_DATE, entity);
         assignEntityValueFromField(PURPOSE, entity);
         assignEntityValueFromField(DESCRIPTION, entity);
@@ -148,7 +146,6 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
                         postCreateSuccess(arg0);
                     }
                 });
-
     }
 
     @Override
@@ -187,4 +184,5 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
             amount.setValue(new BigDecimal(expenseMiles.getValue()).multiply(new BigDecimal("0.50")).setScale(2), false);
         }
     }
+
 }

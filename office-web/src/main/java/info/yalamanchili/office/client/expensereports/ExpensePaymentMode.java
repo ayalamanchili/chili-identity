@@ -15,8 +15,7 @@ package info.yalamanchili.office.client.expensereports;
 public enum ExpensePaymentMode {
 
     PERSONAL_CARD,
-    CORPORATE_CARD,
-    GENERAL;
+    CORPORATE_CARD;
 
     public static String[] names() {
         ExpensePaymentMode[] values = values();
