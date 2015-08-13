@@ -21,6 +21,7 @@ import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.profile.EmployeeCreateDto;
 import info.yalamanchili.office.dto.security.User;
 import info.yalamanchili.office.entity.Company;
+import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
@@ -114,6 +115,9 @@ public class EmployeeService {
         if (emp.getCompany() != null) {
             emp.setCompany(em.find(Company.class, employee.getCompany().getId()));
         }
+//        if (emp.getAddress() != null) {
+//            emp.setAddress(employee.getAddress());
+//        }
         String employeeId = generateEmployeeId(employee);
         String generatepass = generatepassword();
         String empType = emp.getEmployeeType().getName();
@@ -144,7 +148,7 @@ public class EmployeeService {
         //Start on boarding process
         Map<String, Object> obj = new HashMap<>();
         obj.put("entity", emp);
-        OfficeBPMService.instance().startProcess("on_boarding_employee_process", obj);
+//        OfficeBPMService.instance().startProcess("on_boarding_employee_process", obj);
         Email email = new Email();
         email.setEmail(employee.getEmail());
         email.setPrimaryEmail(true);
