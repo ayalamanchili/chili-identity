@@ -56,9 +56,6 @@ public class ExpenseReportService {
     public ExpenseReportSaveDto save(ExpenseReportSaveDto dto) {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         ExpenseReport entity = mapper.map(dto, ExpenseReport.class);
-        if (entity.getId() == null) {
-            entity.setEmployee(OfficeSecurityService.instance().getCurrentUser());
-        }
         entity.setStatus(ExpenseReportStatus.PENDING_MANAGER_APPROVAL);
         entity.setSubmittedDate(new Date());
         ExpenseCategoryDao expenseCategoryDao = ExpenseCategoryDao.instance();
@@ -72,6 +69,11 @@ public class ExpenseReportService {
         }
         for (ExpenseReceipt receipt : entity.getExpenseReceipts()) {
             receipt.setExpenseReport(entity);
+        }
+        if (entity.getId() == null) {
+            entity.setEmployee(OfficeSecurityService.instance().getCurrentUser());
+        } else {
+            expenseReportsDao.save(entity);
         }
         if (entity.getId() == null) {
             Map<String, Object> vars = new HashMap<>();
