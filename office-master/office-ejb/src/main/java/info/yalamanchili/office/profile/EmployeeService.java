@@ -16,9 +16,11 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
 import info.yalamanchili.office.bpm.OfficeBPMService;
+import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.profile.EmployeeCreateDto;
+import info.yalamanchili.office.dto.profile.OnBoardingEmployeeDto;
 import info.yalamanchili.office.dto.security.User;
 import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.profile.Address;
@@ -109,15 +111,13 @@ public class EmployeeService {
         return emp.getId().toString();
     }
     
-    public String onBoardEmployee(EmployeeCreateDto employee) {
+    public String onBoardEmployee(OnBoardingEmployeeDto employee) {
         Employee emp = mapper.map(employee, Employee.class);
         emp.setEmployeeType(em.find(EmployeeType.class, emp.getEmployeeType().getId()));
         if (emp.getCompany() != null) {
             emp.setCompany(em.find(Company.class, employee.getCompany().getId()));
         }
-        if (employee.getAddress() != null) {
-            emp.addAddress(employee.getAddress());
-        }
+
         String employeeId = generateEmployeeId(employee);
         String generatepass = generatepassword();
         String empType = emp.getEmployeeType().getName();
@@ -140,19 +140,31 @@ public class EmployeeService {
         Preferences prefs = new Preferences();
         prefs.setEnableEmailNotifications(Boolean.TRUE);
         emp.setPreferences(prefs);
-
+        
+        //Create Address for Employee
+        Address address = new Address();
+        address = employee.getAddress();
+        emp.getAddresss().add(address);  
+        address.setContact(emp);
+        
         //Create BPM User
-        if (emp.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
+//        if (emp.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
             OfficeBPMIdentityService.instance().createUser(employeeId);
-        }
-        //Start on boarding process
-        Map<String, Object> obj = new HashMap<>();
-        obj.put("entity", emp);
+            // BPMTimeService.instance().startNewEmpTimeProcess(emp);
+            Map<String, Object> obj = new HashMap<>();
+            obj.put("employee", emp);        
+//        }
+        
+        
+//        //Start on boarding process
+//        Map<String, Object> obj = new HashMap<>();
+//        obj.put("entity", emp);
 //        OfficeBPMService.instance().startProcess("on_boarding_employee_process", obj);
         Email email = new Email();
         email.setEmail(employee.getEmail());
         email.setPrimaryEmail(true);
         emp.addEmail(email);
+        
         emp = EmployeeDao.instance().save(emp);
         emp = em.merge(emp);
         //create cert
