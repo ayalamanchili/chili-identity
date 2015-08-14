@@ -37,6 +37,7 @@ import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.security.EmployeeLoginDto;
 import info.yalamanchili.office.dto.profile.EmployeeCreateDto;
+import info.yalamanchili.office.dto.profile.OnBoardingEmployeeDto;
 import info.yalamanchili.office.dto.security.User;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -124,7 +125,7 @@ public class AdminResource {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RELATIONSHIP','ROLE_SYSTEM_AND_NETWORK_ADMIN')")
     @CacheEvict(value = "employees", allEntries = true)
     @Validate
-    public String onBoardEmployee(EmployeeCreateDto employee) {
+    public String onBoardEmployee(OnBoardingEmployeeDto employee) {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
         return employeeService.onBoardEmployee(employee);
     }
