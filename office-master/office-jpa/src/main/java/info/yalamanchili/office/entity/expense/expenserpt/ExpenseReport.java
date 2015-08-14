@@ -142,7 +142,6 @@ public class ExpenseReport extends AbstractEntity {
      *
      */
     @OneToMany(mappedBy = "expenseReport", cascade = CascadeType.ALL)
-    @Valid
     protected List<ExpenseReceipt> expenseReceipts;
 
     /**

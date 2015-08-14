@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.expense.expenserpt;
 
+import com.google.common.base.Strings;
 import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
 import info.chili.commons.pdf.PdfDocumentData;
@@ -53,7 +54,7 @@ public class ExpenseReportService {
     @Autowired
     protected ExpenseReportsDao expenseReportsDao;
 
-    public ExpenseReportSaveDto save(ExpenseReportSaveDto dto) {
+    public ExpenseReportSaveDto submit(ExpenseReportSaveDto dto) {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         ExpenseReport entity = mapper.map(dto, ExpenseReport.class);
         entity.setStatus(ExpenseReportStatus.PENDING_MANAGER_APPROVAL);
@@ -68,22 +69,46 @@ public class ExpenseReportService {
             item.setExpenseReport(entity);
         }
         for (ExpenseReceipt receipt : entity.getExpenseReceipts()) {
+            if (!Strings.isNullOrEmpty(receipt.getFileURL())) {
+                receipt.setExpenseReport(entity);
+            }
+        }
+        entity.setEmployee(OfficeSecurityService.instance().getCurrentUser());
+        Map<String, Object> vars = new HashMap<>();
+        vars.put("entity", entity);
+        vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
+        entity = expenseReportsDao.save(entity);
+        vars.put("entityId", entity.getId());
+        entity.setBpmProcessId(OfficeBPMService.instance().startProcess("expense_report_process", vars));
+        return mapper.map(entity, ExpenseReportSaveDto.class);
+    }
+
+    public ExpenseReportSaveDto save(ExpenseReportSaveDto dto) {
+        Mapper mapper = (Mapper) SpringContext.getBean("mapper");
+        ExpenseReport entity = expenseReportsDao.save(dto);
+        ExpenseCategoryDao expenseCategoryDao = ExpenseCategoryDao.instance();
+        //removing existing items
+        for (ExpenseItem item : entity.getExpenseItems()) {
+            item.setExpenseReport(null);
+            expenseReportsDao.getEntityManager().remove(item);
+        }
+        //add/update items
+        for (ExpenseItem item : dto.getExpenseItems()) {
+            if (dto.getExpenseFormType().equals(ExpenseFormType.GENERAL_EXPENSE)) {
+                item.setCategory((ExpenseCategory) QueryUtils.findEntity(expenseCategoryDao.getEntityManager(), ExpenseCategory.class, "name", "General"));
+            } else {
+                item.setCategory(expenseCategoryDao.findById(item.getCategory().getId()));
+            }
+            item.setExpenseReport(entity);
+            expenseReportsDao.getEntityManager().merge(item);
+        }
+        for (ExpenseReceipt receipt : entity.getExpenseReceipts()) {
+            receipt.setExpenseReport(null);
+            expenseReportsDao.getEntityManager().remove(receipt);
+        }
+        for (ExpenseReceipt receipt : entity.getExpenseReceipts()) {
             receipt.setExpenseReport(entity);
-        }
-        if (entity.getId() == null) {
-            entity.setEmployee(OfficeSecurityService.instance().getCurrentUser());
-        } else {
-            expenseReportsDao.save(entity);
-        }
-        if (entity.getId() == null) {
-            Map<String, Object> vars = new HashMap<>();
-            vars.put("entity", entity);
-            vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
-            entity = expenseReportsDao.save(entity);
-            vars.put("entityId", entity.getId());
-            entity.setBpmProcessId(OfficeBPMService.instance().startProcess("expense_report_process", vars));
-        } else {
-            //TODO   update entity
+            expenseReportsDao.getEntityManager().merge(receipt);
         }
         return mapper.map(entity, ExpenseReportSaveDto.class);
     }

@@ -55,7 +55,7 @@ public class ExpenseReportResource extends CRUDResource<ExpenseReport> {
     @Path("/submit")
     @CacheEvict(value = OfficeCacheKeys.EXPENSE, allEntries = true)
     public ExpenseReportSaveDto submit(ExpenseReportSaveDto dto) {
-        return ExpenseReportService.instance().save(dto);
+        return ExpenseReportService.instance().submit(dto);
     }
 
     @PUT

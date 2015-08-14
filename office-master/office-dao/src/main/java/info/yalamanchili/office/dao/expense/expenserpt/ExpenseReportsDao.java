@@ -34,7 +34,7 @@ public class ExpenseReportsDao extends CRUDDao<ExpenseReport> {
     @Override
     @CacheEvict(value = OfficeCacheKeys.EXPENSE, allEntries = true)
     public ExpenseReport save(ExpenseReport entity) {
-        return em.merge(entity);
+        return super.save(entity);
     }
 
     @Override
