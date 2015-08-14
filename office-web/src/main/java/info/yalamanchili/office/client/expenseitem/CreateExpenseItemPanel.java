@@ -73,9 +73,9 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
         purpose = (TextAreaField) fields.get(PURPOSE);
         if (!isGeneralExpenseItem) {
             addDropDown(CATEGORY, selectCategoryWidgetF);
+            addEnumField(EXPENSE_PAYMENT_MODE, false, true, ExpensePaymentMode.names(), Alignment.HORIZONTAL);
+            expensePaymentMode = (EnumField) fields.get(EXPENSE_PAYMENT_MODE);
         }
-        addEnumField(EXPENSE_PAYMENT_MODE, false, true, ExpensePaymentMode.names(), Alignment.HORIZONTAL);
-        expensePaymentMode = (EnumField) fields.get(EXPENSE_PAYMENT_MODE);
         addField(EXPENSE_MILES, false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         expenseMiles = (CurrencyField) fields.get(EXPENSE_MILES);
         addField(AMOUNT, false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
@@ -90,8 +90,9 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
     @Override
     protected void configure() {
         create.setVisible(false);
-        if (isGeneralExpenseItem) {
+        if (!isGeneralExpenseItem) {
             expensePaymentMode.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
+            selectCategoryWidgetF.getLabel().getElement().getStyle().setWidth(DEFAULT_CAT_FIELD_WIDTH, Style.Unit.PX);
         }
         expenseDate.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
         purpose.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
@@ -99,15 +100,17 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
         remark.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
         expenseMiles.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
         amount.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
-        selectCategoryWidgetF.getLabel().getElement().getStyle().setWidth(DEFAULT_CAT_FIELD_WIDTH, Style.Unit.PX);
         expenseMiles.setVisible(false);
     }
 
     @Override
     protected void addListeners() {
-        expensePaymentMode.listBox.addChangeHandler(this);
+        if (!isGeneralExpenseItem) {
+            expensePaymentMode.listBox.addChangeHandler(this);
+            selectCategoryWidgetF.getListBox().addChangeHandler(this);
+        }
         expenseMiles.getTextbox().addBlurHandler(this);
-        selectCategoryWidgetF.getListBox().addChangeHandler(this);
+
     }
 
     @Override
