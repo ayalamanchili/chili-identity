@@ -50,7 +50,7 @@ import java.util.logging.Logger;
  * @author Prasanthi.p
  */
 public class CreateExpenseReportPanel extends CreateComposite implements ChangeHandler, BlurHandler {
-
+    
     private Logger logger = Logger.getLogger(CreateExpenseReportPanel.class.getName());
     protected ClickableLink addItemL = new ClickableLink("Add Expense Item");
     protected ClickableLink removeItemL = new ClickableLink("Remove Expense Item");
@@ -76,7 +76,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
             + "<ul>\n"
             + "</ul>");
     HTML emptyLine = new HTML("<br/>");
-
+    
     EnumField expenseFormType;
     StringField location;
     DateField startDate;
@@ -85,16 +85,16 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     StringField projectNumber;
     EnumField expenseReimbursePaymentMode;
     boolean isGeneralExpenseItem = false;
-
+    
     public CreateExpenseReportPanel(CreateComposite.CreateCompositeType type) {
         super(type);
         initCreateComposite("ExpenseReport", OfficeWelcome.constants);
     }
-
+    
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
-
+    
     @Override
     protected void addWidgets() {
         addEnumField(EXPENSE_FORM_TYPE, false, true, ExpenseFormType.names(), Alignment.HORIZONTAL);
@@ -120,7 +120,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         entityFieldsPanel.add(removeItemL);
         alignFields();
     }
-
+    
     @Override
     protected void configure() {
         expenseFormType.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
@@ -137,7 +137,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         fileUploadPanel.setVisible(false);
         setButtonText("Submit");
     }
-
+    
     @Override
     protected void addListeners() {
         expenseFormType.listBox.addChangeHandler(this);
@@ -147,7 +147,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         removeItemL.addClickHandler(this);
         fileUploadIcon.addClickHandler(this);
     }
-
+    
     @Override
     protected JSONObject populateEntityFromFields() {
         BigDecimal totalExpensesAmount = BigDecimal.ZERO;
@@ -174,21 +174,23 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
             entity.put(EXPENSE_ITEMS, items);
         }
         entity.put(TOTAL_EXPENSES, new JSONString((totalExpensesAmount).abs().toString()));
-
+        
         JSONArray expenseReceipts = new JSONArray();
         int i = 0;
         for (FileUpload upload : fileUploadPanel.getFileUploads()) {
-            if (upload.getFilename() != null && !"".equals(upload.getFilename().trim())) {
+            logger.info("Dddddddd" + upload.getFilename());
+            if (upload.getFilename() != null && !upload.getFilename().trim().isEmpty()) {
                 JSONObject expenseReceipt = new JSONObject();
                 expenseReceipt.put("fileURL", fileUploadPanel.getFileName(upload));
                 expenseReceipts.set(i, expenseReceipt);
                 i++;
             }
             entity.put(EXPENSE_RECEIPT, expenseReceipts);
+            logger.info(entity.toString());
         }
         return entity;
     }
-
+    
     @Override
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
@@ -198,18 +200,18 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
                         logger.info(arg0.getMessage());
                         handleErrorResponse(arg0);
                     }
-
+                    
                     @Override
                     public void onSuccess(String arg0) {
                         uploadImage(arg0);
                     }
                 });
     }
-
+    
     @Override
     protected void addButtonClicked() {
     }
-
+    
     protected void uploadImage(String postString) {
         JSONObject post = (JSONObject) JSONParser.parseLenient(postString);
         JSONArray expenseReceipts = JSONUtils.toJSONArray(post.get(EXPENSE_RECEIPT));
@@ -217,7 +219,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         logger.info(expenseReceipts.toString());
         fileUploadPanel.upload(expenseReceipts, "fileURL");
     }
-
+    
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addItemL)) {
@@ -246,30 +248,30 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         }
         super.onClick(event);
     }
-
+    
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Expense Form Successfully Created");
         TabPanel.instance().expensePanel.entityPanel.clear();
         TabPanel.instance().expensePanel.entityPanel.add(new ReadAllExpenseReportsPanel());
     }
-
+    
     @Override
     protected CRUDComposite getChildWidget(int childIndexWidget) {
         return expenseItemPanels.get(childIndexWidget);
     }
-
+    
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "expensereport/submit";
-
+        
     }
-
+    
     protected void renderproject(boolean render) {
         projectName.setVisible(render);
         projectNumber.setVisible(render);
     }
-
+    
     @Override
     public void onChange(ChangeEvent event) {
         if (event.getSource().equals(expenseFormType.listBox)) {
@@ -285,7 +287,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
             }
         }
     }
-
+    
     @Override
     public void onBlur(BlurEvent event) {
     }

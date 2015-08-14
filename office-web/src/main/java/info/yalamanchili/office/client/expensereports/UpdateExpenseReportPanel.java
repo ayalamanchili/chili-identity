@@ -205,7 +205,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
-        addEnumField(EXPENSE_FORM_TYPE, false, true, ExpenseFormType.names(), Alignment.HORIZONTAL);
+        addEnumField(EXPENSE_FORM_TYPE, true, true, ExpenseFormType.names(), Alignment.HORIZONTAL);
         expenseFormType = (EnumField) fields.get(EXPENSE_FORM_TYPE);
         entityFieldsPanel.add(generalInfo);
         addField(LOCATION, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -238,7 +238,12 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addItemL)) {
-            CreateExpenseItemPanel panel = new CreateExpenseItemPanel();
+            CreateExpenseItemPanel panel = null;
+            if (expenseFormType.getValue().equals(ExpenseFormType.GENERAL_EXPENSE.name())) {
+                panel = new CreateExpenseItemPanel(true);
+            } else {
+                panel = new CreateExpenseItemPanel();
+            }
             expenseItemPanels.add(panel);
             entityFieldsPanel.add(panel);
         }
