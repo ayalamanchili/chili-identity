@@ -71,7 +71,6 @@ public class ReadAllExpenseReceiptsPanel extends CRUDReadAllComposite {
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
             logger.info(entity.toString());
             String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "fileURL") + "&entityId=" + JSONUtils.toString(entity, "id");
-            logger.info("ddddddddddd" + fileURL);
             FileField fileField = new FileField(fileURL);
             table.setWidget(i, 2, fileField);
         }

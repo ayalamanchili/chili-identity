@@ -22,6 +22,7 @@ import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
+import info.chili.gwt.fields.FileuploadField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
@@ -32,6 +33,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.expenseitem.CreateExpenseItemPanel;
 import info.yalamanchili.office.client.expenseitem.UpdateExpenseItemPanel;
+import static info.yalamanchili.office.client.expensereports.CreateExpenseReportPanel.receiptsInfo;
 import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -49,6 +51,13 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
     protected List<CreateExpenseItemPanel> expenseItemPanels = new ArrayList<>();
     protected ClickableLink addItemL = new ClickableLink("Add Expense Item");
     protected ClickableLink removeItemL = new ClickableLink("Remove Expense Item");
+    FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "ExpenseReceipt", "", "ExpenseReceipt/fileURL", false, true) {
+        @Override
+        public void onUploadComplete(String res) {
+            postUpdateSuccess(null);
+        }
+    };
+
     protected static HTML generalInfo = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
             + "<strong style=\"color:#555555\">General Expense Information</strong></p>\n"
@@ -161,8 +170,12 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
         assignFieldValueFromEntity(PROJECT_NAME, entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity(PROJECT_NUMBER, entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity(EXPENSE_REIMBURSE_PMT_MODE, entity, DataType.ENUM_FIELD);
-        JSONArray expenseItems = JSONUtils.toJSONArray(entity.get("expenseItems"));
+        JSONArray expenseItems = JSONUtils.toJSONArray(entity.get(EXPENSE_ITEMS));
         populateExpenseItems(expenseItems);
+        JSONArray expenseReceipts = JSONUtils.toJSONArray(entity.get(EXPENSE_RECEIPT));
+        if (expenseReceipts != null) {
+            populateExpenseReceipt(expenseReceipts);
+        }
     }
 
     protected void populateExpenseItems(JSONArray items) {
@@ -173,6 +186,10 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
                 entityFieldsPanel.add(panel);
             }
         }
+    }
+
+    protected void populateExpenseReceipt(JSONArray items) {
+        entityFieldsPanel.add(new ReadAllExpenseReceiptsPanel(items));
     }
 
     @Override
@@ -220,6 +237,8 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
         projectNumber = (StringField) fields.get(PROJECT_NUMBER);
         addEnumField(EXPENSE_REIMBURSE_PMT_MODE, false, true, ExpenseReimbursePaymentMode.names(), Alignment.HORIZONTAL);
         expenseReimbursePaymentMode = (EnumField) fields.get(EXPENSE_REIMBURSE_PMT_MODE);
+        entityFieldsPanel.add(receiptsInfo);
+        entityFieldsPanel.add(fileUploadPanel);
         entityFieldsPanel.add(expenseInfo);
         entityFieldsPanel.add(addItemL);
         entityFieldsPanel.add(removeItemL);

@@ -22,7 +22,6 @@ import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Image;
 import info.chili.gwt.crud.CRUDComposite;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
@@ -39,7 +38,6 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.expenseitem.CreateExpenseItemPanel;
 import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.*;
-import info.yalamanchili.office.client.resources.OfficeImages;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,13 +48,12 @@ import java.util.logging.Logger;
  * @author Prasanthi.p
  */
 public class CreateExpenseReportPanel extends CreateComposite implements ChangeHandler, BlurHandler {
-    
+
     private Logger logger = Logger.getLogger(CreateExpenseReportPanel.class.getName());
     protected ClickableLink addItemL = new ClickableLink("Add Expense Item");
     protected ClickableLink removeItemL = new ClickableLink("Remove Expense Item");
     protected List<CreateExpenseItemPanel> expenseItemPanels = new ArrayList<>();
-    HorizontalPanel buttonsPanel = new HorizontalPanel();
-    Image fileUploadIcon = new Image(OfficeImages.INSTANCE.fileAttachmentIcon());
+    
     FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "ExpenseReceipt", "", "ExpenseReceipt/fileURL", false, true) {
         @Override
         public void onUploadComplete(String res) {
@@ -75,8 +72,14 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
             + "\n"
             + "<ul>\n"
             + "</ul>");
+    protected static HTML receiptsInfo = new HTML("\n"
+            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
+            + "<strong style=\"color:#555555\">Receipts</strong></p>\n"
+            + "\n"
+            + "<ul>\n"
+            + "</ul>");
     HTML emptyLine = new HTML("<br/>");
-    
+
     EnumField expenseFormType;
     StringField location;
     DateField startDate;
@@ -85,16 +88,16 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     StringField projectNumber;
     EnumField expenseReimbursePaymentMode;
     boolean isGeneralExpenseItem = false;
-    
+
     public CreateExpenseReportPanel(CreateComposite.CreateCompositeType type) {
         super(type);
         initCreateComposite("ExpenseReport", OfficeWelcome.constants);
     }
-    
+
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
-    
+
     @Override
     protected void addWidgets() {
         addEnumField(EXPENSE_FORM_TYPE, false, true, ExpenseFormType.names(), Alignment.HORIZONTAL);
@@ -112,15 +115,15 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         projectNumber = (StringField) fields.get(PROJECT_NUMBER);
         addEnumField(EXPENSE_REIMBURSE_PMT_MODE, false, true, ExpenseReimbursePaymentMode.names(), Alignment.HORIZONTAL);
         expenseReimbursePaymentMode = (EnumField) fields.get(EXPENSE_REIMBURSE_PMT_MODE);
-        buttonsPanel.add(fileUploadPanel);
-        buttonsPanel.add(fileUploadIcon);
-        entityFieldsPanel.add(buttonsPanel);
+        entityFieldsPanel.add(receiptsInfo);
+        entityFieldsPanel.add(fileUploadPanel);
         entityFieldsPanel.add(expenseInfo);
         entityFieldsPanel.add(addItemL);
         entityFieldsPanel.add(removeItemL);
+
         alignFields();
     }
-    
+
     @Override
     protected void configure() {
         expenseFormType.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
@@ -134,10 +137,9 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         expenseInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         addItemL.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         removeItemL.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-        fileUploadPanel.setVisible(false);
         setButtonText("Submit");
     }
-    
+
     @Override
     protected void addListeners() {
         expenseFormType.listBox.addChangeHandler(this);
@@ -145,9 +147,8 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         projectNumber.getTextbox().addBlurHandler(this);
         addItemL.addClickHandler(this);
         removeItemL.addClickHandler(this);
-        fileUploadIcon.addClickHandler(this);
     }
-    
+
     @Override
     protected JSONObject populateEntityFromFields() {
         BigDecimal totalExpensesAmount = BigDecimal.ZERO;
@@ -174,11 +175,10 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
             entity.put(EXPENSE_ITEMS, items);
         }
         entity.put(TOTAL_EXPENSES, new JSONString((totalExpensesAmount).abs().toString()));
-        
+
         JSONArray expenseReceipts = new JSONArray();
         int i = 0;
         for (FileUpload upload : fileUploadPanel.getFileUploads()) {
-            logger.info("Dddddddd" + upload.getFilename());
             if (upload.getFilename() != null && !upload.getFilename().trim().isEmpty()) {
                 JSONObject expenseReceipt = new JSONObject();
                 expenseReceipt.put("fileURL", fileUploadPanel.getFileName(upload));
@@ -186,11 +186,10 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
                 i++;
             }
             entity.put(EXPENSE_RECEIPT, expenseReceipts);
-            logger.info(entity.toString());
         }
         return entity;
     }
-    
+
     @Override
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
@@ -200,26 +199,26 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
                         logger.info(arg0.getMessage());
                         handleErrorResponse(arg0);
                     }
-                    
+
                     @Override
                     public void onSuccess(String arg0) {
-                        uploadImage(arg0);
+                        uploadReceipts(arg0);
                     }
                 });
     }
-    
+
     @Override
     protected void addButtonClicked() {
     }
-    
-    protected void uploadImage(String postString) {
+
+    protected void uploadReceipts(String postString) {
         JSONObject post = (JSONObject) JSONParser.parseLenient(postString);
         JSONArray expenseReceipts = JSONUtils.toJSONArray(post.get(EXPENSE_RECEIPT));
         logger.info(fileUploadPanel.toString());
         logger.info(expenseReceipts.toString());
         fileUploadPanel.upload(expenseReceipts, "fileURL");
     }
-    
+
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addItemL)) {
@@ -239,55 +238,46 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
                 expenseItemPanels.remove(i - 1);
             }
         }
-        if (event.getSource().equals(fileUploadIcon)) {
-            if (fileUploadPanel.isVisible()) {
-                fileUploadPanel.setVisible(false);
-            } else {
-                fileUploadPanel.setVisible(true);
-            }
-        }
         super.onClick(event);
     }
-    
+
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Expense Form Successfully Created");
         TabPanel.instance().expensePanel.entityPanel.clear();
         TabPanel.instance().expensePanel.entityPanel.add(new ReadAllExpenseReportsPanel());
     }
-    
+
     @Override
     protected CRUDComposite getChildWidget(int childIndexWidget) {
         return expenseItemPanels.get(childIndexWidget);
     }
-    
+
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "expensereport/submit";
-        
+
     }
-    
+
     protected void renderproject(boolean render) {
         projectName.setVisible(render);
         projectNumber.setVisible(render);
     }
-    
+
     @Override
     public void onChange(ChangeEvent event) {
         if (event.getSource().equals(expenseFormType.listBox)) {
             if (expenseFormType.getValue().equals(ExpenseFormType.GENERAL_EXPENSE.name())) {
                 renderproject(false);
                 isGeneralExpenseItem = true;
-            }
-        }
-        if (event.getSource().equals(expenseFormType.listBox)) {
-            if (expenseFormType.getValue().equals(ExpenseFormType.TRAVEL_EXPENSE.name())) {
+            } else if (expenseFormType.getValue().equals(ExpenseFormType.TRAVEL_EXPENSE.name())) {
                 renderproject(true);
                 isGeneralExpenseItem = false;
             }
+            expenseFormType.setReadOnly(true);
         }
     }
-    
+
     @Override
     public void onBlur(BlurEvent event) {
     }
