@@ -9,7 +9,6 @@
 package info.yalamanchili.office.dto.profile;
 
 import info.yalamanchili.office.entity.profile.Address;
-import java.io.Serializable;
 import javax.validation.Valid;
 import javax.xml.bind.annotation.XmlRootElement;
 
