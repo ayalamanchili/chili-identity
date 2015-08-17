@@ -5,14 +5,18 @@
  */
 package info.yalamanchili.office.client.profile.employee;
 
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.data.CountryFactory;
+import info.chili.gwt.data.IndiaStatesFactory;
 import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.FileuploadField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
@@ -31,7 +35,7 @@ import java.util.logging.Logger;
  *
  * @author Madhu.Badiginchala
  */
-public class CreateEmployeeOnboardingPanel extends CreateComposite {
+public class CreateEmployeeOnboardingPanel extends CreateComposite implements ChangeHandler {
 
     private static Logger logger = Logger.getLogger(CreateEmployeePanel.class.getName());
     protected SelectCompanyWidget selectCompnayWidget = new SelectCompanyWidget(false, true, Alignment.HORIZONTAL);
@@ -41,8 +45,11 @@ public class CreateEmployeeOnboardingPanel extends CreateComposite {
             postCreateSuccess(null);
         }
     };
-    
+
     HTML emptyLine = new HTML("<br/>");
+
+    EnumField statesF;
+    EnumField countriesF;
 
     public CreateEmployeeOnboardingPanel(CreateCompositeType type) {
         super(type);
@@ -76,7 +83,7 @@ public class CreateEmployeeOnboardingPanel extends CreateComposite {
             assignEntityValueFromField("ssn", employee);
         }
         employee.put("imageURL", empImageUploadPanel.getFileName());
-        
+
         assignEntityValueFromField("street1", address);
         assignEntityValueFromField("street2", address);
         assignEntityValueFromField("city", address);
@@ -91,6 +98,7 @@ public class CreateEmployeeOnboardingPanel extends CreateComposite {
     @Override
     protected void addListeners() {
         // TODO Auto-generated method stub
+        countriesF.listBox.addChangeHandler(this);
     }
 
     @Override
@@ -122,11 +130,12 @@ public class CreateEmployeeOnboardingPanel extends CreateComposite {
         addField("street1", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("street2", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("city", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("state", false, true, DataType.ENUM_FIELD, Alignment.HORIZONTAL);
+//        addField("state", false, true, DataType.ENUM_FIELD, Alignment.HORIZONTAL);
         addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
         addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
         addField("zip", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
-        entityFieldsPanel.add(emptyLine);
+        countriesF = (EnumField) fields.get("country");
+        statesF = (EnumField) fields.get("state");
         entityFieldsPanel.add(empImageUploadPanel);
         entityFieldsPanel.add(emptyLine);
         alignFields();
@@ -166,6 +175,18 @@ public class CreateEmployeeOnboardingPanel extends CreateComposite {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmployeesPanel());
 
+    }
+
+    @Override
+    public void onChange(ChangeEvent event) {
+        switch (countriesF.getValue()) {
+            case "USA":
+                statesF.setValues(USAStatesFactory.getStates().toArray(new String[0]));
+                break;
+            case "INDIA":
+                statesF.setValues(IndiaStatesFactory.getStates().toArray(new String[0]));
+                break;
+        }
     }
 
     @Override
