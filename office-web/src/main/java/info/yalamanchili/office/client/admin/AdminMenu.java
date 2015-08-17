@@ -69,6 +69,7 @@ public class AdminMenu extends Composite {
         adminMenuBar.addStyleName("entityMenuBar");
     }
     Command notificationGroupMaintainenceCmd = new Command() {
+        @Override
         public void execute() {
             TabPanel.instance().getAdminPanel().entityPanel.clear();
             TabPanel.instance().getAdminPanel().sidePanelTop.clear();
@@ -77,6 +78,7 @@ public class AdminMenu extends Composite {
         }
     };
     Command clientsMaintainenceCmd = new Command() {
+        @Override
         public void execute() {
             TabPanel.instance().getAdminPanel().entityPanel.clear();
             TabPanel.instance().getAdminPanel().sidePanelTop.clear();
