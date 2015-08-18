@@ -69,4 +69,10 @@ public class PublicAdminResource {
     public void accountReset(AccountReset account) {
         BPMProfileService.instance().startAccountResetProcess(account);
     }
+
+    @Path("/ping")
+    @GET
+    public String ping() {
+        return "hello world";
+    }
 }
