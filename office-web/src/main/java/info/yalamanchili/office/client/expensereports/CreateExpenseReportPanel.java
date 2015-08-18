@@ -135,6 +135,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         expenseReimbursePaymentMode.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         generalInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         expenseInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        receiptsInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         addItemL.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         removeItemL.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         setButtonText("Submit");

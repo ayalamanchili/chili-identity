@@ -9,7 +9,6 @@
 package info.yalamanchili.office.bpm.expensereport;
 
 import info.chili.service.jrs.exception.ServiceException;
-import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
 import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
 import info.yalamanchili.office.dao.expense.expenserpt.ExpenseReportsDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
@@ -73,7 +72,6 @@ public class ExpenseReportProcess extends RuleBasedTaskDelegateListner {
             }
         }
         ExpenseReportsDao.instance().save(entity);
-        new GenericTaskCompleteNotification().notify(dt);
     }
 
     protected ExpenseReport getRequestFromTask(DelegateTask task) {

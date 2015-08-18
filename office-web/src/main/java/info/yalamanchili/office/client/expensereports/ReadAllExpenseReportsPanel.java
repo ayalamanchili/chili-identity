@@ -99,12 +99,12 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
 
     @Override
     public void createTableHeader() {
-        table.setText(0, 0, getKeyValue("Table_Action"));
+        table.setText(0, 0, getKeyValue("Table Action"));
         table.setText(0, 1, getKeyValue("Name"));
-        table.setText(0, 2, getKeyValue("Form_Type"));
-        table.setText(0, 3, getKeyValue("Start_Date"));
-        table.setText(0, 4, getKeyValue("End_Date"));
-        table.setText(0, 5, getKeyValue("Total_Amount"));
+        table.setText(0, 2, getKeyValue("Type"));
+        table.setText(0, 3, getKeyValue("Start Date"));
+        table.setText(0, 4, getKeyValue("End Date"));
+        table.setText(0, 5, getKeyValue("Total Amount"));
         table.setText(0, 6, getKeyValue("Status"));
     }
 
@@ -119,7 +119,7 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
             table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, START_DATE), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, END_DATE), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 5, FormatUtils.formarCurrency(JSONUtils.toString(entity, TOTAL_EXPENSES)));
-            table.setText(i, 6, JSONUtils.formatEnumString(entity, "status"));
+            setEnumColumn(i, 6, entity, ExpenseReportStatus.class.getSimpleName(), "status");
         }
     }
 

@@ -79,7 +79,7 @@ public class ReadAllExpenseReceiptsPanel extends CRUDReadAllComposite {
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_DRIVE)) {
-            createOptionsWidget(TableRowOptionsWidget.OptionsType.UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+            createOptionsWidget(TableRowOptionsWidget.OptionsType.DELETE, row, JSONUtils.toString(entity, "id"));
         } else {
             String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "fileURL") + "&entityId=" + JSONUtils.toString(entity, "id");
             FileField fileField = new FileField("Download", fileURL);

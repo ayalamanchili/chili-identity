@@ -14,9 +14,11 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.CRUDComposite;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
@@ -70,6 +72,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
             + "\n"
             + "<ul>\n"
             + "</ul>");
+
     HTML emptyLine = new HTML("<br/>");
 
     EnumField expenseFormType;
@@ -79,6 +82,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
     StringField projectName;
     StringField projectNumber;
     EnumField expenseReimbursePaymentMode;
+    JSONArray expenseReceipts = new JSONArray();
 
     public UpdateExpenseReportPanel(String id) {
         initUpdateComposite(id, "ExpenseReport", OfficeWelcome.constants);
@@ -136,6 +140,17 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
         }
         entity.put(EXPENSE_ITEMS, items);
         entity.put(TOTAL_EXPENSES, new JSONString((totalExpensesAmount).abs().toString()));
+        
+        int j = expenseReceipts.size();
+        for (FileUpload upload : fileUploadPanel.getFileUploads()) {
+            if (upload.getFilename() != null && !upload.getFilename().trim().isEmpty()) {
+                JSONObject expenseReceipt = new JSONObject();
+                expenseReceipt.put("fileURL", fileUploadPanel.getFileName(upload));
+                expenseReceipts.set(j, expenseReceipt);
+                j++;
+            }
+        }
+        entity.put(EXPENSE_RECEIPT, expenseReceipts);
         logger.info(entity.toString());
         return entity;
     }
@@ -172,7 +187,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
         assignFieldValueFromEntity(EXPENSE_REIMBURSE_PMT_MODE, entity, DataType.ENUM_FIELD);
         JSONArray expenseItems = JSONUtils.toJSONArray(entity.get(EXPENSE_ITEMS));
         populateExpenseItems(expenseItems);
-        JSONArray expenseReceipts = JSONUtils.toJSONArray(entity.get(EXPENSE_RECEIPT));
+        expenseReceipts = JSONUtils.toJSONArray(entity.get(EXPENSE_RECEIPT));
         if (expenseReceipts != null) {
             populateExpenseReceipt(expenseReceipts);
         }

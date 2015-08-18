@@ -40,7 +40,7 @@ public class ExpenseReceipt extends AbstractEntity {
      */
     protected String fileURL;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @ForeignKey(name = "FK_EXP_RPT_RCPTS")
     protected ExpenseReport expenseReport;
 

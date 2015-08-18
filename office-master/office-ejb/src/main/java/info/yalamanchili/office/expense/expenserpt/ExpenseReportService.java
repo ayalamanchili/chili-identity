@@ -102,13 +102,12 @@ public class ExpenseReportService {
             item.setExpenseReport(entity);
             expenseReportsDao.getEntityManager().merge(item);
         }
-        for (ExpenseReceipt receipt : entity.getExpenseReceipts()) {
-            receipt.setExpenseReport(null);
-            expenseReportsDao.getEntityManager().remove(receipt);
-        }
-        for (ExpenseReceipt receipt : entity.getExpenseReceipts()) {
-            receipt.setExpenseReport(entity);
-            expenseReportsDao.getEntityManager().merge(receipt);
+
+        for (ExpenseReceipt receipt : dto.getExpenseReceipts()) {
+            if (receipt.getId() == null) {
+                receipt.setExpenseReport(entity);
+                expenseReportsDao.getEntityManager().merge(receipt);
+            }
         }
         return mapper.map(entity, ExpenseReportSaveDto.class);
     }
