@@ -60,6 +60,7 @@ public class ReadStatusReportPanel extends ReadComposite {
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         JSONObject reportDocument = entity.get("reportDocument").isObject();
+        assignFieldValueFromEntity("jobTitle", entity.get("employee").isObject(), DataType.STRING_FIELD);
         assignFieldValueFromEntity("projectDescription", reportDocument, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("reportStartDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("reportEndDate", entity, DataType.DATE_FIELD);
@@ -119,6 +120,7 @@ public class ReadStatusReportPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
+        addField("jobTitle", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("projectDescription", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("reportStartDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("reportEndDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
