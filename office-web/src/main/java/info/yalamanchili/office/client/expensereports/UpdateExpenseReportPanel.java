@@ -18,7 +18,6 @@ import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import info.chili.gwt.callback.ALAsyncCallback;
-import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.CRUDComposite;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
@@ -49,8 +48,7 @@ import java.util.logging.Logger;
 public class UpdateExpenseReportPanel extends UpdateComposite {
 
     private Logger logger = Logger.getLogger(UpdateExpenseReportPanel.class.getName());
-    protected List<UpdateExpenseItemPanel> updateItemPanels = new ArrayList<>();
-    protected List<CreateExpenseItemPanel> expenseItemPanels = new ArrayList<>();
+    protected List<CRUDComposite> updateItemPanels = new ArrayList<>();
     protected ClickableLink addItemL = new ClickableLink("Add Expense Item");
     protected ClickableLink removeItemL = new ClickableLink("Remove Expense Item");
     FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "ExpenseReceipt", "", "ExpenseReceipt/fileURL", false, true) {
@@ -118,18 +116,19 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
         assignEntityValueFromField(EXPENSE_REIMBURSE_PMT_MODE, entity);
         JSONArray items = new JSONArray();
         int i = 0;
-        for (UpdateExpenseItemPanel panel : updateItemPanels) {
-            items.set(i, panel.populateEntityFromFields());
-            JSONObject entityObj = (JSONObject) items.get(i);
-            if (!JSONUtils.toString(entityObj, AMOUNT).isEmpty()) {
-                BigDecimal eAmount = new BigDecimal(JSONUtils.toString(entityObj, AMOUNT));
-                totalExpensesAmount = totalExpensesAmount.add(eAmount);
-            }
-            i++;
-        }
-        if (expenseItemPanels.size() > 0) {
-            for (CreateExpenseItemPanel panel : expenseItemPanels) {
-                items.set(i, panel.populateEntityFromFields());
+        for (CRUDComposite panel : updateItemPanels) {
+            if (panel instanceof UpdateExpenseItemPanel) {
+                UpdateExpenseItemPanel updatePanel = (UpdateExpenseItemPanel) panel;
+                items.set(i, updatePanel.populateEntityFromFields());
+                JSONObject entityObj = (JSONObject) items.get(i);
+                if (!JSONUtils.toString(entityObj, AMOUNT).isEmpty()) {
+                    BigDecimal eAmount = new BigDecimal(JSONUtils.toString(entityObj, AMOUNT));
+                    totalExpensesAmount = totalExpensesAmount.add(eAmount);
+                }
+                i++;
+            } else if (panel instanceof CreateExpenseItemPanel) {
+                CreateExpenseItemPanel createPanel = (CreateExpenseItemPanel) panel;
+                items.set(i, createPanel.populateEntityFromFields());
                 JSONObject entityObj = (JSONObject) items.get(i);
                 if (!JSONUtils.toString(entityObj, AMOUNT).isEmpty()) {
                     BigDecimal eAmount = new BigDecimal(JSONUtils.toString(entityObj, AMOUNT));
@@ -137,10 +136,11 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
                 }
                 i++;
             }
+
         }
         entity.put(EXPENSE_ITEMS, items);
         entity.put(TOTAL_EXPENSES, new JSONString((totalExpensesAmount).abs().toString()));
-        
+
         int j = expenseReceipts.size();
         for (FileUpload upload : fileUploadPanel.getFileUploads()) {
             if (upload.getFilename() != null && !upload.getFilename().trim().isEmpty()) {
@@ -188,8 +188,10 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
         JSONArray expenseItems = JSONUtils.toJSONArray(entity.get(EXPENSE_ITEMS));
         populateExpenseItems(expenseItems);
         expenseReceipts = JSONUtils.toJSONArray(entity.get(EXPENSE_RECEIPT));
-        if (expenseReceipts != null) {
-            populateExpenseReceipt(expenseReceipts);
+        if (expenseReceipts.size() > 0) {
+            if (expenseReceipts != null) {
+                populateExpenseReceipt(expenseReceipts);
+            }
         }
     }
 
@@ -278,15 +280,10 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
             } else {
                 panel = new CreateExpenseItemPanel();
             }
-            expenseItemPanels.add(panel);
+            updateItemPanels.add(panel);
             entityFieldsPanel.add(panel);
         }
         if (event.getSource().equals(removeItemL)) {
-            if (expenseItemPanels.size() > 0) {
-                int i = expenseItemPanels.size();
-                expenseItemPanels.get(i - 1).removeFromParent();
-                expenseItemPanels.remove(i - 1);
-            }
             if (updateItemPanels.size() > 0) {
                 int i = updateItemPanels.size();
                 updateItemPanels.get(i - 1).removeFromParent();

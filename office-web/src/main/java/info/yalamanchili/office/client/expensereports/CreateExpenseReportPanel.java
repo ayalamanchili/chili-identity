@@ -21,7 +21,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import info.chili.gwt.crud.CRUDComposite;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
@@ -53,7 +52,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     protected ClickableLink addItemL = new ClickableLink("Add Expense Item");
     protected ClickableLink removeItemL = new ClickableLink("Remove Expense Item");
     protected List<CreateExpenseItemPanel> expenseItemPanels = new ArrayList<>();
-    
+
     FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "ExpenseReceipt", "", "ExpenseReceipt/fileURL", false, true) {
         @Override
         public void onUploadComplete(String res) {
@@ -176,18 +175,19 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
             entity.put(EXPENSE_ITEMS, items);
         }
         entity.put(TOTAL_EXPENSES, new JSONString((totalExpensesAmount).abs().toString()));
-
         JSONArray expenseReceipts = new JSONArray();
-        int i = 0;
-        for (FileUpload upload : fileUploadPanel.getFileUploads()) {
-            if (upload.getFilename() != null && !upload.getFilename().trim().isEmpty()) {
-                JSONObject expenseReceipt = new JSONObject();
-                expenseReceipt.put("fileURL", fileUploadPanel.getFileName(upload));
-                expenseReceipts.set(i, expenseReceipt);
-                i++;
+        if (!fileUploadPanel.isEmpty()) {
+            int i = 0;
+            for (FileUpload upload : fileUploadPanel.getFileUploads()) {
+                if (upload.getFilename() != null && !upload.getFilename().trim().isEmpty()) {
+                    JSONObject expenseReceipt = new JSONObject();
+                    expenseReceipt.put("fileURL", fileUploadPanel.getFileName(upload));
+                    expenseReceipts.set(i, expenseReceipt);
+                    i++;
+                }
             }
-            entity.put(EXPENSE_RECEIPT, expenseReceipts);
         }
+        entity.put(EXPENSE_RECEIPT, expenseReceipts);
         return entity;
     }
 
@@ -231,12 +231,14 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
             }
             expenseItemPanels.add(panel);
             entityFieldsPanel.add(panel);
+            logger.info("Items While Add Main" + expenseItemPanels.size());
         }
         if (event.getSource().equals(removeItemL)) {
             if (expenseItemPanels.size() > 0) {
                 int i = expenseItemPanels.size();
                 expenseItemPanels.get(i - 1).removeFromParent();
                 expenseItemPanels.remove(i - 1);
+                logger.info("Items While Remove Main" + expenseItemPanels.size());
             }
         }
         super.onClick(event);
