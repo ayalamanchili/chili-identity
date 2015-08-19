@@ -110,5 +110,11 @@ public class EmployeeOnBoarding extends AbstractEntity {
     public void setStartedBy(String startedBy) {
         this.startedBy = startedBy;
     }
+
+    @Override
+    public String toString() {
+        return "EmployeeOnBoarding{" + "startedDate=" + startedDate + ", status=" + status + ", employee=" + employee + ", bpmProcessId=" + bpmProcessId + ", startedBy=" + startedBy + '}';
+    }
  
+    
 }
