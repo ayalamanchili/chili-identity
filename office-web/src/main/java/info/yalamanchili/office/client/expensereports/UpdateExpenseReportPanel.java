@@ -140,7 +140,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
         }
         entity.put(EXPENSE_ITEMS, items);
         entity.put(TOTAL_EXPENSES, new JSONString((totalExpensesAmount).abs().toString()));
-        
+           
         int j = expenseReceipts.size();
         for (FileUpload upload : fileUploadPanel.getFileUploads()) {
             if (upload.getFilename() != null && !upload.getFilename().trim().isEmpty()) {
@@ -151,7 +151,9 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
                 j++;
             }
         }
-        entity.put(EXPENSE_RECEIPT, expenseReceipts);
+        if (expenseReceipts.size() > 0) {
+            entity.put(EXPENSE_RECEIPT, expenseReceipts);
+        }
         logger.info(entity.toString());
         return entity;
     }
@@ -174,7 +176,6 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
     
     protected void uploadReceipts(String postString) {
         JSONObject post = (JSONObject) JSONParser.parseLenient(postString);
-        logger.info("daasasdfasdf" + post.toString());
         fileUploadPanel.upload(JSONUtils.toJSONArray(post.get(EXPENSE_RECEIPT)), "fileURL");
     }
     
