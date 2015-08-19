@@ -182,6 +182,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
                 if (upload.getFilename() != null && !upload.getFilename().trim().isEmpty()) {
                     JSONObject expenseReceipt = new JSONObject();
                     expenseReceipt.put("fileURL", fileUploadPanel.getFileName(upload));
+                    expenseReceipt.put("name", new JSONString("File Name"));
                     expenseReceipts.set(i, expenseReceipt);
                     i++;
                 }
