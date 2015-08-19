@@ -56,7 +56,6 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "ExpenseReceipt", "", "ExpenseReceipt/fileURL", false, true) {
         @Override
         public void onUploadComplete(String res) {
-            logger.info("file uploaded22");
             postCreateSuccess(null);
         }
     };
