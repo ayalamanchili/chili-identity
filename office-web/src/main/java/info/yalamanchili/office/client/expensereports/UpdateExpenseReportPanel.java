@@ -146,7 +146,6 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
             if (upload.getFilename() != null && !upload.getFilename().trim().isEmpty()) {
                 JSONObject expenseReceipt = new JSONObject();
                 expenseReceipt.put("fileURL", fileUploadPanel.getFileName(upload));
-                // name added
                 expenseReceipt.put("name", new JSONString("File Name"));
                 expenseReceipts.set(j, expenseReceipt);
                 j++;
