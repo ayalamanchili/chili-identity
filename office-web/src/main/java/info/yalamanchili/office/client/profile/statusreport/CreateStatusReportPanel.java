@@ -148,7 +148,7 @@ public class CreateStatusReportPanel extends CreateComposite {
         StringField p4 = (StringField) fields.get("projectPhase4Deliverable");
         p4.getTextbox().setVisibleLength(90);
         setBackgroundText();
-        
+
     }
 
     protected void formatTextAreaFields() {
@@ -168,7 +168,7 @@ public class CreateStatusReportPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-       
+        addField("jobTitle", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("projectDescription", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("reportStartDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("reportEndDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
@@ -208,6 +208,8 @@ public class CreateStatusReportPanel extends CreateComposite {
         addField("preview", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("submitForApproval", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         alignFields();
+        StringField jobTitle = (StringField) fields.get("jobTitle");
+        jobTitle.setValue(JSONUtils.toString(OfficeWelcome.instance().employee, "jobTitle"));
     }
 
     @Override

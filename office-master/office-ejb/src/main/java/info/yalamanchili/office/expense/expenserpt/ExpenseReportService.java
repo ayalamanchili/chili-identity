@@ -102,11 +102,11 @@ public class ExpenseReportService {
             item.setExpenseReport(entity);
             expenseReportsDao.getEntityManager().merge(item);
         }
-
         for (ExpenseReceipt receipt : dto.getExpenseReceipts()) {
             if (receipt.getId() == null) {
                 receipt.setExpenseReport(entity);
-                expenseReportsDao.getEntityManager().merge(receipt);
+                entity.getExpenseReceipts().add(receipt);
+                expenseReportsDao.getEntityManager().merge(entity);
             }
         }
         return mapper.map(entity, ExpenseReportSaveDto.class);

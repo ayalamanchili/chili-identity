@@ -46,7 +46,7 @@ import java.util.logging.Logger;
  * @author Prasanthi.p
  */
 public class UpdateExpenseReportPanel extends UpdateComposite {
-
+    
     private Logger logger = Logger.getLogger(UpdateExpenseReportPanel.class.getName());
     protected List<CRUDComposite> updateItemPanels = new ArrayList<>();
     protected ClickableLink addItemL = new ClickableLink("Add Expense Item");
@@ -57,7 +57,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
             postUpdateSuccess(null);
         }
     };
-
+    
     protected static HTML generalInfo = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
             + "<strong style=\"color:#555555\">General Expense Information</strong></p>\n"
@@ -70,9 +70,9 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
             + "\n"
             + "<ul>\n"
             + "</ul>");
-
+    
     HTML emptyLine = new HTML("<br/>");
-
+    
     EnumField expenseFormType;
     StringField location;
     DateField startDate;
@@ -81,11 +81,11 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
     StringField projectNumber;
     EnumField expenseReimbursePaymentMode;
     JSONArray expenseReceipts = new JSONArray();
-
+    
     public UpdateExpenseReportPanel(String id) {
         initUpdateComposite(id, "ExpenseReport", OfficeWelcome.constants);
     }
-
+    
     @Override
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
@@ -95,15 +95,15 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
                         logger.info(response);
                         entity = (JSONObject) JSONParser.parseLenient(response);
                         populateFieldsFromEntity(entity);
-
+                        
                     }
                 });
     }
-
+    
     protected String getReadURI() {
         return OfficeWelcome.constants.root_url() + "expensereport/" + entityId;
     }
-
+    
     @Override
     protected JSONObject populateEntityFromFields() {
         BigDecimal totalExpensesAmount = BigDecimal.ZERO;
@@ -136,11 +136,11 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
                 }
                 i++;
             }
-
+            
         }
         entity.put(EXPENSE_ITEMS, items);
         entity.put(TOTAL_EXPENSES, new JSONString((totalExpensesAmount).abs().toString()));
-
+        
         int j = expenseReceipts.size();
         for (FileUpload upload : fileUploadPanel.getFileUploads()) {
             if (upload.getFilename() != null && !upload.getFilename().trim().isEmpty()) {
@@ -156,7 +156,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
         logger.info(entity.toString());
         return entity;
     }
-
+    
     @Override
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
@@ -165,19 +165,25 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
                     public void onFailure(Throwable arg0) {
                         handleErrorResponse(arg0);
                     }
-
+                    
                     @Override
                     public void onSuccess(String arg0) {
-                        postUpdateSuccess(arg0);
+                        uploadReceipts(arg0);
                     }
                 });
     }
-
+    
+    protected void uploadReceipts(String postString) {
+        JSONObject post = (JSONObject) JSONParser.parseLenient(postString);
+        logger.info("daasasdfasdf" + post.toString());
+        fileUploadPanel.upload(JSONUtils.toJSONArray(post.get(EXPENSE_RECEIPT)), "fileURL");
+    }
+    
     @Override
     protected CRUDComposite getChildWidget(int childIndexWidget) {
         return updateItemPanels.get(childIndexWidget);
     }
-
+    
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity(EXPENSE_FORM_TYPE, entity, DataType.ENUM_FIELD);
@@ -196,7 +202,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
             }
         }
     }
-
+    
     protected void populateExpenseItems(JSONArray items) {
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).isObject() != null) {
@@ -206,24 +212,24 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
             }
         }
     }
-
+    
     protected void populateExpenseReceipt(JSONArray items) {
         entityFieldsPanel.add(new ReadAllExpenseReceiptsPanel(items));
     }
-
+    
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated Employee Expense Form Information");
         TabPanel.instance().expensePanel.entityPanel.clear();
         TabPanel.instance().expensePanel.entityPanel.add(new ReadAllExpenseReportsPanel());
     }
-
+    
     @Override
     protected void addListeners() {
         addItemL.addClickHandler(this);
         removeItemL.addClickHandler(this);
     }
-
+    
     @Override
     protected void configure() {
         expenseFormType.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
@@ -238,7 +244,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
         addItemL.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         removeItemL.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
     }
-
+    
     @Override
     protected void addWidgets() {
         addEnumField(EXPENSE_FORM_TYPE, true, true, ExpenseFormType.names(), Alignment.HORIZONTAL);
@@ -263,16 +269,16 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
         entityFieldsPanel.add(removeItemL);
         alignFields();
     }
-
+    
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
-
+    
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "expensereport/save";
     }
-
+    
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addItemL)) {

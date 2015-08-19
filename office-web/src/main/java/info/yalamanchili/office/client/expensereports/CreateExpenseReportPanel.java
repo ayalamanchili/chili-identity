@@ -216,8 +216,6 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     protected void uploadReceipts(String postString) {
         JSONObject post = (JSONObject) JSONParser.parseLenient(postString);
         JSONArray expenseReceipts = JSONUtils.toJSONArray(post.get(EXPENSE_RECEIPT));
-        logger.info(fileUploadPanel.toString());
-        logger.info(expenseReceipts.toString());
         fileUploadPanel.upload(expenseReceipts, "fileURL");
     }
 
