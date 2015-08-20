@@ -26,6 +26,7 @@ import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.expenseitem.ReadExpenseItemPanel;
 import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.*;
+import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -69,6 +70,11 @@ public class ReadExpenseReportPanel extends ReadComposite {
 
     public ReadExpenseReportPanel(String id) {
         initReadComposite(id, "ExpenseReport", OfficeWelcome.constants);
+        populateComments();
+    }
+    
+    protected final void populateComments() {                           
+        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport"));
     }
 
     @Override
