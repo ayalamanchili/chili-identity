@@ -34,6 +34,7 @@ import info.yalamanchili.office.entity.ext.Comment;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -51,13 +52,13 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class ExpenseReportService {
-
+    
     @Autowired
     protected ExpenseReportsDao expenseReportsDao;
-
+    
     @Autowired
     protected ExpenseItemDao expenseItemDao;
-
+    
     public ExpenseReportSaveDto submit(ExpenseReportSaveDto dto) {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         ExpenseReport entity = mapper.map(dto, ExpenseReport.class);
@@ -86,17 +87,19 @@ public class ExpenseReportService {
         entity.setBpmProcessId(OfficeBPMService.instance().startProcess("expense_report_process", vars));
         return mapper.map(entity, ExpenseReportSaveDto.class);
     }
-
+    
     public ExpenseReportSaveDto save(ExpenseReportSaveDto dto) {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         ExpenseReport entity = expenseReportsDao.save(dto);
         ExpenseCategoryDao expenseCategoryDao = ExpenseCategoryDao.instance();
         //removing existing items
+        List<ExpenseItem> itemsToRemove = new ArrayList<>();
         for (ExpenseItem item : entity.getExpenseItems()) {
-            if (item.getId() != null) {
-                item.setExpenseReport(null);
-                expenseReportsDao.getEntityManager().remove(item);
-            }
+            itemsToRemove.add(item);
+        }
+        for (ExpenseItem item : itemsToRemove) {
+            expenseItemDao.delete(item.getId());
+            entity.getExpenseItems().remove(item);
         }
         //add/update items
         for (ExpenseItem item : dto.getExpenseItems()) {
@@ -117,20 +120,20 @@ public class ExpenseReportService {
         }
         return mapper.map(entity, ExpenseReportSaveDto.class);
     }
-
+    
     public ExpenseReportSaveDto read(Long id) {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         ExpenseReport e = expenseReportsDao.findById(id);
         return mapper.map(expenseReportsDao.findById(id), ExpenseReportSaveDto.class);
     }
-
+    
     public void delete(Long id) {
         ExpenseReport entity = expenseReportsDao.findById(id);
         //TODO use processid
         OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
         expenseReportsDao.delete(id);
     }
-
+    
     public Response getReport(Long id) {
         ExpenseReport entity = expenseReportsDao.findById(id);
         EmployeeDao employeeDao = EmployeeDao.instance();
@@ -147,7 +150,7 @@ public class ExpenseReportService {
         Signature preparedBysignature = new Signature(preparedBy.getEmployeeId(), preparedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(entity.getSubmittedDate()), employeeDao.getPrimaryEmail(preparedBy), null);
         data.getData().put("submittedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getSubmittedDate()));
         data.getSignatures().add(preparedBysignature);
-
+        
         String prepareByStr = preparedBy.getLastName() + ", " + preparedBy.getFirstName();
         data.getData().put("name", prepareByStr);
         if (preparedBy.getCompany() == null || preparedBy.getCompany().getName().equals("System Soft Technologies LLC")) {
@@ -256,7 +259,7 @@ public class ExpenseReportService {
                 }
             }
         }
-
+        
         data.getData().put("p-itemTotal", itemPersonal.setScale(2, BigDecimal.ROUND_UP).toString());
         data.getData().put("a-itemTotal", itemAmex.setScale(2, BigDecimal.ROUND_UP).toString());
         data.getData().put("itemTotal", itemTotal.setScale(2, BigDecimal.ROUND_UP).toString());
@@ -268,7 +271,7 @@ public class ExpenseReportService {
         for (Comment comment : cmnts) {
             allComment = allComment + ". " + comment.getComment();
         }
-
+        
         if (entity.getApprovedByCEO() != null) {
             Employee ceo = employeeDao.findEmployeWithEmpId(entity.getApprovedByCEO());
             if (ceo != null) {
@@ -277,7 +280,7 @@ public class ExpenseReportService {
                 data.getData().put("approvedByCEODate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getApprovedByCEODate()));
             }
         }
-
+        
         if ((entity.getExpenseFormType()) != null && entity.getExpenseFormType().name().equals("TRAVEL_EXPENSE")) {
             if (entity.getApprovedByAccountsDept() != null) {
                 Employee ceo = employeeDao.findEmployeWithEmpId(entity.getApprovedByAccountsDept());
@@ -297,7 +300,7 @@ public class ExpenseReportService {
                     data.getData().put("PayrollDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getApprovedByAccountsDeptDate()));
                 }
             }
-
+            
         }
         data.getData().put("comment", allComment);
         byte[] pdf = PDFUtils.generatePdf(data);
@@ -306,7 +309,7 @@ public class ExpenseReportService {
                 .header("Content-Length", pdf)
                 .build();
     }
-
+    
     public static ExpenseReportService instance() {
         return SpringContext.getBean(ExpenseReportService.class);
     }

@@ -264,7 +264,7 @@ public class ExpenseReport extends AbstractEntity {
 
     /**
      *
-     * @return 
+     * @return
      */
     @XmlTransient
     public List<ExpenseItem> getExpenseItems() {
