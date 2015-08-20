@@ -19,6 +19,7 @@ import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.dao.expense.expenserpt.ExpenseCategoryDao;
+import info.yalamanchili.office.dao.expense.expenserpt.ExpenseItemDao;
 import info.yalamanchili.office.dao.expense.expenserpt.ExpenseReportsDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
@@ -53,6 +54,9 @@ public class ExpenseReportService {
 
     @Autowired
     protected ExpenseReportsDao expenseReportsDao;
+
+    @Autowired
+    protected ExpenseItemDao expenseItemDao;
 
     public ExpenseReportSaveDto submit(ExpenseReportSaveDto dto) {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
@@ -89,8 +93,10 @@ public class ExpenseReportService {
         ExpenseCategoryDao expenseCategoryDao = ExpenseCategoryDao.instance();
         //removing existing items
         for (ExpenseItem item : entity.getExpenseItems()) {
-            item.setExpenseReport(null);
-            expenseReportsDao.getEntityManager().remove(item);
+            if (item.getId() != null) {
+                item.setExpenseReport(null);
+                expenseItemDao.delete(item.getId());
+            }
         }
         //add/update items
         for (ExpenseItem item : dto.getExpenseItems()) {
