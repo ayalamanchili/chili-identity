@@ -8,8 +8,10 @@
 package info.yalamanchili.office.client.expenseitem;
 
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.fields.DataType;
@@ -18,12 +20,14 @@ import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.expensecategory.SelectExpenseCategoryWidget;
 import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.*;
 import info.yalamanchili.office.client.expensereports.ExpensePaymentMode;
+import info.yalamanchili.office.client.expensereports.UpdateExpenseReportPanel;
 
 /**
  *
@@ -39,8 +43,11 @@ public class UpdateExpenseItemPanel extends UpdateComposite {
     CurrencyField amount;
     TextAreaField remark;
     CurrencyField expenseMiles;
+    UpdateExpenseReportPanel parentPanel;
+    ClickableLink deleteB = new ClickableLink("Remove Item");
 
-    public UpdateExpenseItemPanel(JSONObject entity) {
+    public UpdateExpenseItemPanel(UpdateExpenseReportPanel parent, JSONObject entity) {
+        this.parentPanel = parent;
         initUpdateComposite(entity, "ExpenseItem", OfficeWelcome.constants);
     }
 
@@ -61,16 +68,16 @@ public class UpdateExpenseItemPanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postUpdateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postUpdateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -94,6 +101,7 @@ public class UpdateExpenseItemPanel extends UpdateComposite {
 
     @Override
     protected void addListeners() {
+        deleteB.addClickHandler(this);
     }
 
     @Override
@@ -127,6 +135,7 @@ public class UpdateExpenseItemPanel extends UpdateComposite {
         addField(REMARK, false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         remark = (TextAreaField) fields.get(REMARK);
         alignFields();
+        entityActionsPanel.add(deleteB);
     }
 
     @Override
@@ -136,5 +145,25 @@ public class UpdateExpenseItemPanel extends UpdateComposite {
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "expenseitem";
+    }
+
+    protected String getDeleteURI() {
+        return OfficeWelcome.constants.root_url() + "expenseitem/delete/" + getEntityId();
+    }
+
+    @Override
+    public void onClick(ClickEvent event) {
+        if (event.getSource().equals(deleteB)) {
+            parentPanel.removePanel();
+            HttpService.HttpServiceAsync.instance().doPut(getDeleteURI(), entity.toString(),
+                    OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+
+                        @Override
+                        public void onResponse(String arg0) {
+                            new ResponseStatusWidget().show("Successfully Deleted Employee ExpenseItem Information");
+                        }
+                    });
+        }
+        super.onClick(event);
     }
 }

@@ -26,11 +26,17 @@ import org.springframework.stereotype.Repository;
 @Scope("prototype")
 public class ExpenseItemDao extends CRUDDao<ExpenseItem> {
 
-    @CacheEvict(value = OfficeCacheKeys.EMPLOYEES, allEntries = true)
+    @CacheEvict(value = OfficeCacheKeys.EXPENSE, allEntries = true)
     @Override
     public ExpenseItem save(ExpenseItem entity) {
         entity.setCategory(em.find(ExpenseCategory.class, entity.getCategory().getId()));
         return super.save(entity);
+    }
+
+    @CacheEvict(value = OfficeCacheKeys.EXPENSE, allEntries = true)
+    @Override
+    public void delete(Long id) {
+        delete(findById(id));
     }
 
     public ExpenseItemDao() {

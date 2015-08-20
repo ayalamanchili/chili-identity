@@ -91,7 +91,7 @@ public class ExpenseItem extends AbstractEntity {
      *
      * @return
      */
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @ForeignKey(name = "FK_EXP_RPT_ITMS")
     protected ExpenseReport expenseReport;
     /*
