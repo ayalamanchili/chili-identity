@@ -66,6 +66,7 @@ public class ExpenseItem extends AbstractEntity {
     /*
      *
      */
+    @Min(1)
     protected BigDecimal expenseMiles;
     /*
      *

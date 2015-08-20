@@ -95,7 +95,7 @@ public class ExpenseReportService {
         for (ExpenseItem item : entity.getExpenseItems()) {
             if (item.getId() != null) {
                 item.setExpenseReport(null);
-                expenseItemDao.delete(item.getId());
+                expenseReportsDao.getEntityManager().remove(item);
             }
         }
         //add/update items

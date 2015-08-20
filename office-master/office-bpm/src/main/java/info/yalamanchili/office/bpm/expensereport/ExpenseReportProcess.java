@@ -11,6 +11,7 @@ package info.yalamanchili.office.bpm.expensereport;
 import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
 import info.yalamanchili.office.dao.expense.expenserpt.ExpenseReportsDao;
+import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReportStatus;
@@ -37,6 +38,10 @@ public class ExpenseReportProcess extends RuleBasedTaskDelegateListner {
         if (entity == null) {
             return;
         }
+        //Notes
+        String notes = (String) dt.getExecution().getVariable("notes");
+        CommentDao.instance().addComment(notes, entity);
+        //
         Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
         if (currentUser.getEmployeeId().equals(entity.getEmployee().getEmployeeId())) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.self.approve.corp.expenseReport", "You cannot approve your expenseReport task");

@@ -9,6 +9,11 @@
 package info.yalamanchili.office.entity.profile.ext;
 
 import info.chili.jpa.AbstractHandleEntity;
+import java.util.Date;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Temporal;
+import org.hibernate.search.annotations.Field;
 
 /**
  *
@@ -16,15 +21,20 @@ import info.chili.jpa.AbstractHandleEntity;
  */
 public class Dependent extends AbstractHandleEntity {
     
-     private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
     /**
-     *
      */
     private String firstName;
     /**
-     *
      */
     private String lastName;
+    
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date dateOfBirth;
+    
+    @Enumerated(EnumType.STRING)
+    @Field
+    private Relationship relationship;
 
     public String getFirstName() {
         return firstName;
@@ -42,4 +52,20 @@ public class Dependent extends AbstractHandleEntity {
         this.lastName = lastName;
     }
 
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public Relationship getRelationship() {
+        return relationship;
+    }
+
+    public void setRelationship(Relationship relationship) {
+        this.relationship = relationship;
+    }
+    
 }
