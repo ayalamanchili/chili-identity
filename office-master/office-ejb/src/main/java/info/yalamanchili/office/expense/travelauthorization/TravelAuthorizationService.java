@@ -32,6 +32,7 @@ import info.yalamanchili.office.entity.expense.travelauthorization.TravelTranspo
 import info.yalamanchili.office.entity.expense.travelauthorization.TravelTransportationType;
 import static info.yalamanchili.office.entity.expense.travelauthorization.TravelTransportationType.OTHER;
 import static info.yalamanchili.office.entity.expense.travelauthorization.TravelTransportationType.RAILWAY;
+import info.yalamanchili.office.entity.ext.Comment;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.security.AccessCheck;
 import java.math.BigDecimal;
@@ -103,7 +104,7 @@ public class TravelAuthorizationService {
         data.getData().put("department", entity.getDepartment());
         data.getData().put("travelDestination", entity.getTravelDestination());
         data.getData().put("reasonForTravel", entity.getReasonForTravel());
-        data.getData().put("additionalComments", entity.getAdditionalComments());
+//        data.getData().put("additionalComments", entity.getAdditionalComments());
         data.getData().put("travelOrigin", entity.getTravelOrigin());
         if (entity.getTotalEstimatedTripExpences() != null) {
             data.getData().put("totalEstimatedTripExpences", entity.getTotalEstimatedTripExpences().setScale(2, BigDecimal.ROUND_UP).toString());
@@ -368,6 +369,12 @@ public class TravelAuthorizationService {
                         data.getData().put("foodOtherExpensePaymentType-PC", "true");
                         break;
                 }
+            }
+        }
+        List<Comment> cmnts = CommentDao.instance().findAll(entity.getId(), entity.getClass().getCanonicalName());
+        for (Integer i = 0; i < 3; i++) {
+            if (cmnts.size() > i) {
+                data.getData().put("additionalComments" + i.toString(), cmnts.get(i).getUpdatedBy() + ":" + cmnts.get(i).getComment() + ":" + entity.getAdditionalComments());
             }
         }
         if (entity.getManagerApprovalBy() != null) {
