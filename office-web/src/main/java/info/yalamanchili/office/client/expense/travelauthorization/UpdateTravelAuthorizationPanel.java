@@ -22,6 +22,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import static info.yalamanchili.office.client.expense.travelauthorization.TravelAuthConstants.*;
 import static info.yalamanchili.office.client.expense.travelauthorization.UpdateTravelAuthorizationPanel.tripInfoHelpText;
+import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import java.math.BigDecimal;
 import java.util.logging.Logger;
 
@@ -78,6 +79,7 @@ public class UpdateTravelAuthorizationPanel extends UpdateComposite {
         assignEntityValueFromField(TRAVEL_TYPE, entity);
         assignEntityValueFromField(DEPARTURE_DATE, entity);
         assignEntityValueFromField(RETURN_DATE, entity);
+        assignEntityValueFromField(TRAVEL_ORIGIN, entity);
         assignEntityValueFromField(TRAVEL_DESTINATION, entity);
         assignEntityValueFromField(REASON_FOR_TRAVEL, entity);
         entity.put(TRAVEL_TRANSPORTATION, travelTransportationItem.getObject());
@@ -110,6 +112,7 @@ public class UpdateTravelAuthorizationPanel extends UpdateComposite {
         assignFieldValueFromEntity(TRAVEL_TYPE, entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity(DEPARTURE_DATE, entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity(RETURN_DATE, entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity(TRAVEL_ORIGIN, entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity(TRAVEL_DESTINATION, entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity(REASON_FOR_TRAVEL, entity, DataType.TEXT_AREA_FIELD);
         if (entity.get(TRAVEL_TRANSPORTATION) != null) {
@@ -126,7 +129,7 @@ public class UpdateTravelAuthorizationPanel extends UpdateComposite {
             mealsItemPanel = new TravelFoodPanel(entity.get(TRAVEL_FOOD).isObject(), false);
             entityFieldsPanel.add(mealsItemPanel);
         }
-       
+       populateComments();
     }
 
     protected BigDecimal calculateTotalCost(TravelTransportationPanel transportation, TravelAccommodationPanel lodging, TravelFoodPanel meals) {
@@ -166,6 +169,10 @@ public class UpdateTravelAuthorizationPanel extends UpdateComposite {
     @Override
     protected void configure() {
     }
+    
+    protected final void populateComments() {
+        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.expense.travelauthorization.TravelAuthorization"));
+    }
 
     @Override
     protected void addWidgets() {
@@ -173,6 +180,7 @@ public class UpdateTravelAuthorizationPanel extends UpdateComposite {
         entityFieldsPanel.add(tripInfoHelpText);
         addField(DEPARTURE_DATE, false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField(RETURN_DATE, false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField(TRAVEL_ORIGIN, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField(TRAVEL_DESTINATION, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField(REASON_FOR_TRAVEL, false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(estimatedExpensesHelpText);
