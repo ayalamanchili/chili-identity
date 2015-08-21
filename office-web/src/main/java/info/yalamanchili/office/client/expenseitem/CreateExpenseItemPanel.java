@@ -18,7 +18,6 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.callback.ALAsyncCallback;
-import info.chili.gwt.crud.CRUDComposite;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.fields.DataType;
@@ -35,7 +34,6 @@ import info.yalamanchili.office.client.expensecategory.SelectExpenseCategoryWidg
 import info.yalamanchili.office.client.expensereports.CreateExpenseReportPanel;
 import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.*;
 import info.yalamanchili.office.client.expensereports.ExpensePaymentMode;
-import info.yalamanchili.office.client.expensereports.UpdateExpenseReportPanel;
 import java.math.BigDecimal;
 import java.util.logging.Logger;
 
