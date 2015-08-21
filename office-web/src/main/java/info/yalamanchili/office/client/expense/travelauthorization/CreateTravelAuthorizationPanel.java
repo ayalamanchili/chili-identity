@@ -75,8 +75,10 @@ public class CreateTravelAuthorizationPanel extends CreateComposite implements C
         assignEntityValueFromField(TRAVEL_TYPE, entity);
         assignEntityValueFromField(DEPARTURE_DATE, entity);
         assignEntityValueFromField(RETURN_DATE, entity);
+        assignEntityValueFromField(TRAVEL_ORIGIN, entity);
         assignEntityValueFromField(TRAVEL_DESTINATION, entity);
         assignEntityValueFromField(REASON_FOR_TRAVEL, entity);
+        assignEntityValueFromField(ADDITIONAL_COMMENTS, entity);
         entity.put(TRAVEL_TRANSPORTATION, travelTransportationItem.getObject());
         entity.put(TRAVEL_ACCOMMODATION, lodgingItemPanel.getObject());
         entity.put(TRAVEL_FOOD, mealsItemPanel.getObject());
@@ -118,8 +120,10 @@ public class CreateTravelAuthorizationPanel extends CreateComposite implements C
         entityFieldsPanel.add(tripInfoHelpText);
         addField(DEPARTURE_DATE, false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField(RETURN_DATE, false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField(TRAVEL_ORIGIN, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField(TRAVEL_DESTINATION, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField(REASON_FOR_TRAVEL, false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField(ADDITIONAL_COMMENTS, false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(estimatedExpensesHelpText);
         entityFieldsPanel.add(tacHelpText);
         entityFieldsPanel.add(transportation);
