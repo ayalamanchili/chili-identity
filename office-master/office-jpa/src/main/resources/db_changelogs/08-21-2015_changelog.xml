@@ -22,15 +22,5 @@
                    tableName="travelauthorization_aud">
             <column name="travelOrigin" type="varchar(255)"/>
         </addColumn>
-                <addColumn catalogName="office"
-                   schemaName="public"
-                   tableName="travelauthorization">
-            <column name="additionalComments" type="varchar(255)"/>
-        </addColumn>
-        <addColumn catalogName="office"
-                   schemaName="public"
-                   tableName="travelauthorization_aud">
-            <column name="additionalComments" type="varchar(255)"/>
-        </addColumn>
     </changeSet>
 </databaseChangeLog>
