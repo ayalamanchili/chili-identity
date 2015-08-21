@@ -157,7 +157,15 @@ public class TravelAuthorization extends AbstractEntity {
      */
     @Min(1)
     private BigDecimal totalEstimatedTripExpences;
-
+    /*
+    /
+    */
+    @NotNull(message = "{travel.origin.not.empty.msg}")
+    private String travelOrigin;
+       /*
+    /
+    */
+    private String additionalComments;
     /**
      *
      */
@@ -338,6 +346,22 @@ public class TravelAuthorization extends AbstractEntity {
 
     public void setTotalEstimatedTripExpences(BigDecimal totalEstimatedTripExpences) {
         this.totalEstimatedTripExpences = totalEstimatedTripExpences;
+    }
+
+    public String getAdditionalComments() {
+        return additionalComments;
+    }
+
+    public void setAdditionalComments(String additionalComments) {
+        this.additionalComments = additionalComments;
+    }
+
+    public String getTravelOrigin() {
+        return travelOrigin;
+    }
+
+    public void setTravelOrigin(String travelOrigin) {
+        this.travelOrigin = travelOrigin;
     }
 
     @Override
