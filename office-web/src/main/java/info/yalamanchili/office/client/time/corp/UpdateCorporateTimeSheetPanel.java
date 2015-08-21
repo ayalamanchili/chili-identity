@@ -13,6 +13,8 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.DateField;
+import info.chili.gwt.fields.FloatField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -52,16 +54,16 @@ public class UpdateCorporateTimeSheetPanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postUpdateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postUpdateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -105,12 +107,28 @@ public class UpdateCorporateTimeSheetPanel extends UpdateComposite {
     }
 
     @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        FloatField hourF = (FloatField) fields.get("hours");
+        DateField startDateF = (DateField) fields.get("startDate");
+        DateField endDateF = (DateField) fields.get("endDate");
+        if (startDateF.getDate() != null && endDateF.getDate() != null && startDateF.getDate().after(endDateF.getDate())) {
+            endDateF.setMessage("End Date must be equal to or after Start Date");
+            return false;
+        }
+        if (hourF.getFloat() != null && hourF.getFloat() % 4 != 0) {
+            hourF.setMessage("Leave request can only be applied for half or full days");
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
 
     @Override
     protected boolean enableViewTasks() {
-        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION,Auth.ROLE.ROLE_CORPORATE_TIME_REPORTS,Auth.ROLE.ROLE_TIME);
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION, Auth.ROLE.ROLE_CORPORATE_TIME_REPORTS, Auth.ROLE.ROLE_TIME);
     }
 
     @Override

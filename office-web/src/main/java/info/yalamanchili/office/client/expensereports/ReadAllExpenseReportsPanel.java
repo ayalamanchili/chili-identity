@@ -152,4 +152,19 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
         }
         return OfficeWelcome.constants.root_url() + "expensereport/" + start.toString() + "/" + tableSize.toString();
     }
+
+    @Override
+    protected boolean showDocumentationLink() {
+        return true;
+    }
+
+    @Override
+    protected String getDocumentationLink() {
+        return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "expense/submitexpensereport.html";
+    }
+
+    @Override
+    protected boolean autoShowDocumentation() {
+        return true;
+    }
 }
