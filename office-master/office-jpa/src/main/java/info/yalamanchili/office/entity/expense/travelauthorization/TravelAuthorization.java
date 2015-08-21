@@ -19,6 +19,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -165,6 +166,7 @@ public class TravelAuthorization extends AbstractEntity {
        /*
     /
     */
+    @Transient
     private String additionalComments;
     /**
      *
