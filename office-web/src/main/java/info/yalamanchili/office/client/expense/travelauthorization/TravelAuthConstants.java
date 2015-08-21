@@ -33,6 +33,8 @@ public interface TravelAuthConstants {
     String DEPARTURE_DATE="departureDate";
     String RETURN_DATE="returnDate";
     String TRAVEL_DESTINATION="travelDestination";
+    String TRAVEL_ORIGIN="travelOrigin";
+    String ADDITIONAL_COMMENTS="additionalComments";
     String REASON_FOR_TRAVEL="reasonForTravel";
     String TRAVEL_TRANSPORTATION="travelTransportation";
     String TRAVEL_ACCOMMODATION="travelAccommodation";
