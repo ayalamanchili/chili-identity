@@ -100,6 +100,7 @@ public class ReadTravelAuthorizationPanel extends ReadComposite {
         entityFieldsPanel.add(tripInfoHelpText);
         addField(DEPARTURE_DATE, true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField(RETURN_DATE, true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField(TRAVEL_ORIGIN, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField(TRAVEL_DESTINATION, true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField(REASON_FOR_TRAVEL, true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(estimatedExpensesHelpText);
