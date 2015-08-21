@@ -12,10 +12,13 @@ import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.CRUDComposite;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.fields.DataType;
@@ -24,12 +27,15 @@ import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.expensecategory.SelectExpenseCategoryWidget;
+import info.yalamanchili.office.client.expensereports.CreateExpenseReportPanel;
 import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.*;
 import info.yalamanchili.office.client.expensereports.ExpensePaymentMode;
+import info.yalamanchili.office.client.expensereports.UpdateExpenseReportPanel;
 import java.math.BigDecimal;
 import java.util.logging.Logger;
 
@@ -49,12 +55,27 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
     TextAreaField remark;
     boolean isGeneralExpenseItem = false;
     CurrencyField expenseMiles;
+    CreateExpenseReportPanel parentPanel;
+    ClickableLink deleteB = new ClickableLink("Remove Item");
+
+    public CreateExpenseItemPanel(CreateExpenseReportPanel parent) {
+        super(CreateComposite.CreateCompositeType.CREATE);
+        initCreateComposite("ExpenseItem", OfficeWelcome.constants);
+        this.parentPanel = parent;
+    }
 
     public CreateExpenseItemPanel() {
         super(CreateComposite.CreateCompositeType.CREATE);
         initCreateComposite("ExpenseItem", OfficeWelcome.constants);
     }
 
+    public CreateExpenseItemPanel(CreateExpenseReportPanel parent, boolean isGeneralExpenseItem) {
+        super(CreateComposite.CreateCompositeType.CREATE);
+        this.isGeneralExpenseItem = isGeneralExpenseItem;
+        initCreateComposite("ExpenseItem", OfficeWelcome.constants);
+        this.parentPanel = parent;
+    }
+    
     public CreateExpenseItemPanel(boolean isGeneralExpenseItem) {
         super(CreateComposite.CreateCompositeType.CREATE);
         this.isGeneralExpenseItem = isGeneralExpenseItem;
@@ -85,6 +106,7 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
         addField(REMARK, false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         remark = (TextAreaField) fields.get(REMARK);
         alignFields();
+        entityActionsPanel.add(deleteB);
     }
 
     @Override
@@ -110,7 +132,7 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
             selectCategoryWidgetF.getListBox().addChangeHandler(this);
         }
         expenseMiles.getTextbox().addBlurHandler(this);
-
+        deleteB.addClickHandler(this);
     }
 
     @Override
@@ -166,6 +188,10 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "expenseitem";
     }
+    
+    protected String getDeleteURI() {
+        return OfficeWelcome.constants.root_url() + "expenseitem/delete/" + getEntityId();
+    }
 
     @Override
     public void onChange(ChangeEvent event) {
@@ -186,6 +212,22 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
         if (event.getSource().equals(expenseMiles.getTextbox())) {
             amount.setValue(new BigDecimal(expenseMiles.getValue()).multiply(new BigDecimal("0.50")).setScale(2), false);
         }
+    }
+
+    @Override
+    public void onClick(ClickEvent event) {
+        if (event.getSource().equals(deleteB)) {
+            parentPanel.removePanel();
+            HttpService.HttpServiceAsync.instance().doPut(getDeleteURI(), entity.toString(),
+                    OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+
+                        @Override
+                        public void onResponse(String arg0) {
+                            new ResponseStatusWidget().show("Successfully Deleted Employee ExpenseItem Information");
+                        }
+                    });
+        }
+        super.onClick(event);
     }
 
 }
