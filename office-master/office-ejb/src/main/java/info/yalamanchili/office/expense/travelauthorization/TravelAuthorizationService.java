@@ -62,11 +62,11 @@ public class TravelAuthorizationService {
         entity.setEmployee(emp);
         entity.setDateRequested(new Date());
         entity.setStatus(TravelAuthorizationStatus.PENDING_MANAGER_APPROVAL);
-        String notes = entity.getAdditionalComments();
-        CommentDao.instance().addComment(notes, entity);
         vars.put("entity", entity);
         vars.put("currentEmployee", emp);
         entity = travelAuthorizationDao.save(entity);
+        String notes = entity.getAdditionalComments();
+        CommentDao.instance().addComment(notes, entity);
         vars.put("entityId", entity.getId());
         String processId = OfficeBPMService.instance().startProcess("travel_authorization_process", vars);
         entity.setBpmProcessId(processId);
