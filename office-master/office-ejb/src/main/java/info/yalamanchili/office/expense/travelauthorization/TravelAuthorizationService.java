@@ -103,6 +103,8 @@ public class TravelAuthorizationService {
         data.getData().put("department", entity.getDepartment());
         data.getData().put("travelDestination", entity.getTravelDestination());
         data.getData().put("reasonForTravel", entity.getReasonForTravel());
+        data.getData().put("additionalComments", entity.getAdditionalComments());
+        data.getData().put("travelOrigin", entity.getTravelOrigin());
         if (entity.getTotalEstimatedTripExpences() != null) {
             data.getData().put("totalEstimatedTripExpences", entity.getTotalEstimatedTripExpences().setScale(2, BigDecimal.ROUND_UP).toString());
         }
