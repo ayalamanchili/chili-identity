@@ -1,6 +1,6 @@
 How to submit Travel Authorization Request
 ==========
- - [Login to Portal](../../office/forgot-password.html "Travel Authorization")
+ - [Login to Portal](../../office/forgot-password.html "Login")
  - Navigate to Expense --> Travel Authorization--> Submit Travel Authorization
  - Employee submits the travel authorization request after entering all the relevant details
  - Reports_To Manager will review and approve/reject the request. Approved request will be send to CEO for final approval.
