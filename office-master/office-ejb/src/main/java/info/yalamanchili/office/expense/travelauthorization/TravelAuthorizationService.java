@@ -18,6 +18,7 @@ import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.chili.bpm.types.Task;
 import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.dao.expense.travelauthorization.TravelAuthorizationDao;
+import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import static info.yalamanchili.office.entity.expense.travelauthorization.ExpensePaymentType.EMPLOYEE_EXPENSE;
@@ -61,6 +62,8 @@ public class TravelAuthorizationService {
         entity.setEmployee(emp);
         entity.setDateRequested(new Date());
         entity.setStatus(TravelAuthorizationStatus.PENDING_MANAGER_APPROVAL);
+        String notes = entity.getAdditionalComments();
+        CommentDao.instance().addComment(notes, entity);
         vars.put("entity", entity);
         vars.put("currentEmployee", emp);
         entity = travelAuthorizationDao.save(entity);
