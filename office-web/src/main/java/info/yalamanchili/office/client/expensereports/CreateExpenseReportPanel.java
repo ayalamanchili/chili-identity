@@ -50,7 +50,6 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
 
     private Logger logger = Logger.getLogger(CreateExpenseReportPanel.class.getName());
     protected ClickableLink addItemL = new ClickableLink("Add Expense Item");
-    protected ClickableLink removeItemL = new ClickableLink("Remove Expense Item");
     protected List<CreateExpenseItemPanel> expenseItemPanels = new ArrayList<>();
 
     FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "ExpenseReceipt", "", "ExpenseReceipt/fileURL", false, true) {
@@ -118,7 +117,6 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         entityFieldsPanel.add(fileUploadPanel);
         entityFieldsPanel.add(expenseInfo);
         entityFieldsPanel.add(addItemL);
-        entityFieldsPanel.add(removeItemL);
         alignFields();
     }
 
@@ -135,7 +133,6 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         expenseInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         receiptsInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         addItemL.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-        removeItemL.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         setButtonText("Submit");
     }
 
@@ -145,7 +142,6 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         projectName.getTextbox().addBlurHandler(this);
         projectNumber.getTextbox().addBlurHandler(this);
         addItemL.addClickHandler(this);
-        removeItemL.addClickHandler(this);
     }
 
     @Override
@@ -217,8 +213,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
             JSONObject post = (JSONObject) JSONParser.parseLenient(postString);
             JSONArray expenseReceipts = JSONUtils.toJSONArray(post.get(EXPENSE_RECEIPT));
             fileUploadPanel.upload(expenseReceipts, "fileURL");
-        }
-        else {
+        } else {
             postCreateSuccess(null);
         }
     }
@@ -228,21 +223,22 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         if (event.getSource().equals(addItemL)) {
             CreateExpenseItemPanel panel = null;
             if (expenseFormType.getValue().equals(ExpenseFormType.GENERAL_EXPENSE.name())) {
-                panel = new CreateExpenseItemPanel(isGeneralExpenseItem);
+                panel = new CreateExpenseItemPanel(this,isGeneralExpenseItem);
             } else {
-                panel = new CreateExpenseItemPanel();
+                panel = new CreateExpenseItemPanel(this);
             }
             expenseItemPanels.add(panel);
             entityFieldsPanel.add(panel);
         }
-        if (event.getSource().equals(removeItemL)) {
-            if (expenseItemPanels.size() > 0) {
-                int i = expenseItemPanels.size();
-                expenseItemPanels.get(i - 1).removeFromParent();
-                expenseItemPanels.remove(i - 1);
-            }
-        }
         super.onClick(event);
+    }
+
+    public void removePanel() {
+        if (expenseItemPanels.size() > 0) {
+            int i = expenseItemPanels.size();
+            expenseItemPanels.get(i - 1).removeFromParent();
+            expenseItemPanels.remove(i - 1);
+        }
     }
 
     @Override
