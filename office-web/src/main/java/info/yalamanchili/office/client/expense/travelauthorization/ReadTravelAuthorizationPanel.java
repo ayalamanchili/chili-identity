@@ -54,7 +54,7 @@ public class ReadTravelAuthorizationPanel extends ReadComposite {
 
     @Override
     public void loadEntity(String entityId) {
-      
+
     }
 
     protected final void populateComments() {
@@ -67,6 +67,7 @@ public class ReadTravelAuthorizationPanel extends ReadComposite {
         assignFieldValueFromEntity(TRAVEL_TYPE, entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity(DEPARTURE_DATE, entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity(RETURN_DATE, entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity(TRAVEL_ORIGIN, entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity(TRAVEL_DESTINATION, entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity(REASON_FOR_TRAVEL, entity, DataType.STRING_FIELD);
         entityFieldsPanel.add(transportation);
@@ -100,7 +101,7 @@ public class ReadTravelAuthorizationPanel extends ReadComposite {
         entityFieldsPanel.add(tripInfoHelpText);
         addField(DEPARTURE_DATE, true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField(RETURN_DATE, true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField(TRAVEL_ORIGIN, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField(TRAVEL_ORIGIN, true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField(TRAVEL_DESTINATION, true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField(REASON_FOR_TRAVEL, true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(estimatedExpensesHelpText);

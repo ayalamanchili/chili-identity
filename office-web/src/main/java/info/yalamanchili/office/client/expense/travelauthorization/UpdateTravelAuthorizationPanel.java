@@ -129,7 +129,7 @@ public class UpdateTravelAuthorizationPanel extends UpdateComposite {
             mealsItemPanel = new TravelFoodPanel(entity.get(TRAVEL_FOOD).isObject(), false);
             entityFieldsPanel.add(mealsItemPanel);
         }
-       populateComments();
+        populateComments();
     }
 
     protected BigDecimal calculateTotalCost(TravelTransportationPanel transportation, TravelAccommodationPanel lodging, TravelFoodPanel meals) {
@@ -169,9 +169,9 @@ public class UpdateTravelAuthorizationPanel extends UpdateComposite {
     @Override
     protected void configure() {
     }
-    
+
     protected final void populateComments() {
-        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.expense.travelauthorization.TravelAuthorization"));
+        entityActionsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.expense.travelauthorization.TravelAuthorization"));
     }
 
     @Override

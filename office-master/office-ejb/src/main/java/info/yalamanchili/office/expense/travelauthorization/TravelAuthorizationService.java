@@ -104,7 +104,6 @@ public class TravelAuthorizationService {
         data.getData().put("department", entity.getDepartment());
         data.getData().put("travelDestination", entity.getTravelDestination());
         data.getData().put("reasonForTravel", entity.getReasonForTravel());
-//        data.getData().put("additionalComments", entity.getAdditionalComments());
         data.getData().put("travelOrigin", entity.getTravelOrigin());
         if (entity.getTotalEstimatedTripExpences() != null) {
             data.getData().put("totalEstimatedTripExpences", entity.getTotalEstimatedTripExpences().setScale(2, BigDecimal.ROUND_UP).toString());
@@ -154,13 +153,6 @@ public class TravelAuthorizationService {
                         break;
                 }
             }
-            //Travel Transportation ExpensePaymentType info
-//            switch (travelTransportation.getExpensePaymentType()) {
-//                case EMPLOYEE_EXPENSE:
-//                    data.getData().put("privateVehiclePaymentType-EE", "true");
-//                    break;
-//
-//            }
             if (travelTransportation.getExpensePaymentType() != null) {
                 switch (travelTransportation.getExpensePaymentType()) {
                     case EMPLOYEE_EXPENSE:
@@ -372,10 +364,9 @@ public class TravelAuthorizationService {
             }
         }
         List<Comment> cmnts = CommentDao.instance().findAll(entity.getId(), entity.getClass().getCanonicalName());
-        for (Integer i = 0; i < 3; i++) {
-            if (cmnts.size() > i) {
-                data.getData().put("additionalComments" + i.toString(), cmnts.get(i).getUpdatedBy() + ":" + cmnts.get(i).getComment() + ":" + entity.getAdditionalComments());
-            }
+        if (cmnts.size() > 0) {
+            Comment additionalCmt = cmnts.get(0);
+            data.getData().put("additionalComments", additionalCmt.getComment());
         }
         if (entity.getManagerApprovalBy() != null) {
             Employee manager = employeeDao.findEmployeWithEmpId(entity.getManagerApprovalBy());
