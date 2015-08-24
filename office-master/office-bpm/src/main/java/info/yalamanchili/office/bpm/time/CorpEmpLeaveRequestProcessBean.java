@@ -57,6 +57,8 @@ public class CorpEmpLeaveRequestProcessBean {
         noValidationsCategories.add(TimeSheetCategory.Bereavement);
         noValidationsCategories.add(TimeSheetCategory.Maternity);
         noValidationsCategories.add(TimeSheetCategory.Other);
+        noValidationsCategories.add(TimeSheetCategory.TDL_UNPAID);
+
     }
 
     public void sendLeaveRequestRejectedEmail(Employee employee) {
