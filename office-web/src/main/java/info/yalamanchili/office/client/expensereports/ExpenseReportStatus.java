@@ -14,7 +14,7 @@ package info.yalamanchili.office.client.expensereports;
 public enum ExpenseReportStatus {
 
     PENDING_MANAGER_APPROVAL,
-    PENDING_PAYROLL_APPROVAL,
+    PENDING_ACCOUNTS_PAYABLE_DISPATCH,
     PENDING_CEO_APPROVAL,
     REJECTED,
     APPROVED;
