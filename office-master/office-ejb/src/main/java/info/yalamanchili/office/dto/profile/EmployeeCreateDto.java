@@ -53,7 +53,6 @@ public class EmployeeCreateDto implements Serializable {
     protected EmployeeType employeeType;
     @Pattern(regexp = "(^(\\d{9})$)", message = "{invalid.ssn.format}")
     protected String ssn;
-    @NotEmpty(message = "{user.passwordHash.not.empty.msg}")
     @Size(min = 6, message = "{user.passwordHash.length.invalid.msg}")
     protected String passwordHash;
     protected Company company;
