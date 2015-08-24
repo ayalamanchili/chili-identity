@@ -32,7 +32,9 @@ public enum TimeSheetCategory {
      * used to accumulate hours on a monthly basis
      */
     PTO_ACCRUED,
-    PTO_USED;
+    PTO_USED,
+    TDL_PAID,
+    TDL_UNPAID;
 
     public static List<TimeSheetCategory> getLeaveSpentCheckedCategories() {
         List<TimeSheetCategory> res = new ArrayList<TimeSheetCategory>();
@@ -48,6 +50,7 @@ public enum TimeSheetCategory {
         res.add(Bereavement);
         res.add(Maternity);
         res.add(Other);
+        res.add(TDL_UNPAID);
         return res;
     }
 
