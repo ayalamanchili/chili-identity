@@ -1,0 +1,37 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package info.yalamanchili.office.dao.invite;
+
+import info.chili.spring.SpringContext;
+import info.yalamanchili.office.entity.profile.invite.InviteCode;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.stereotype.Component;
+
+/**
+ *
+ * @author Madhu.Badiginchala
+ */
+@Component
+@Scope("prototype")
+public class InviteCodeDao {
+    
+    @Autowired
+    protected MongoOperations mongoTemplate;
+    
+    public void save(InviteCode entity) {
+        mongoTemplate.save(entity);
+    }
+      
+    public static InviteCodeDao instance() {
+        return SpringContext.getBean(InviteCodeDao.class);
+    }
+    
+}
