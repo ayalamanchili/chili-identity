@@ -120,7 +120,8 @@ public class ExpenseReportService {
                 expenseReportsDao.getEntityManager().merge(entity);
             }
         }
-        startExpenseReportProcess(entity);
+        entity.setBpmProcessId(startExpenseReportProcess(entity));
+        entity = expenseReportsDao.save(entity);
         return mapper.map(entity, ExpenseReportSaveDto.class);
     }
 
