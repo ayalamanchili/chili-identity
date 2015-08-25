@@ -13,6 +13,7 @@ import info.yalamanchili.office.dao.invite.InviteCodeDao;
 import info.yalamanchili.office.email.MailUtils;
 import info.chili.email.Email;
 import info.yalamanchili.office.entity.profile.invite.InviteCode;
+import info.yalamanchili.office.entity.profile.invite.TypeOfInvitation;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,9 +38,15 @@ public class InvitationCodeGenerator {
     @Autowired
     protected MailUtils mailUtils;
 
-    public void codeGenerator(InviteCode entity) {
+    public void invite(InviteCode entity) {
         Map<String, Object> vars = new HashMap<>();
         entity.setInvitationCode(uuidGen());
+        if (entity.getInvitationType().getTypeOfInvitation().equals(TypeOfInvitation.EMPLOYEE_ONBOARDING)) {
+            entity.getInvitationType().setEmailTemplateName("send_onboarding_invitation_email_template.html");
+        }
+        else {
+            entity.getInvitationType().setEmailTemplateName("send_onboarding_invitation_email_template.html");
+        }
         vars.put("entity", entity);
         inviteCodeDao.save(entity);
         sendInvitationRequestEmail(entity);
@@ -49,11 +56,11 @@ public class InvitationCodeGenerator {
         Email email = new Email();
         email.addTo(entity.getEmail());
         StringBuilder subject = new StringBuilder();
-        subject.append("System Soft Technologies - Onboarding Invitation");
+        subject.append("System Soft Invitation");
         email.setSubject(subject.toString());
         Map<String, Object> emailCtx = new HashMap<>();
 //        emailCtx.put("employeeName", address.getContact().getFirstName() + " " + address.getContact().getLastName());
-        email.setTemplateName("home_address_update_template.html");
+        email.setTemplateName(entity.getInvitationType().getEmailTemplateName());
 //        email.setContext(emailCtx);
         email.setHtml(Boolean.TRUE);
         MessagingService.instance().sendEmail(email);

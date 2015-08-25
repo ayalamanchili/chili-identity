@@ -38,10 +38,12 @@ public class CreateOnboardingInvitationPanel extends CreateComposite {
     @Override
     public JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
-        assignEntityValueFromField("typeOfInvitation", entity);
+        JSONObject invitationType = new JSONObject();
+        assignEntityValueFromField("typeOfInvitation", invitationType);
         assignEntityValueFromField("validFromDate", entity);
         assignEntityValueFromField("expiryDate", entity);
         assignEntityValueFromField("email", entity);
+        entity.put("invitationType", invitationType);
         return entity;
     }
 
@@ -117,7 +119,7 @@ public class CreateOnboardingInvitationPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "on-board/invite-request";
+        return OfficeWelcome.constants.root_url() + "invite/invite";
     }
     
 }

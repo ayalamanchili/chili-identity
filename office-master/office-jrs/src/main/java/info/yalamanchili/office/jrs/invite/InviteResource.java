@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Madhu.Badiginchala
  */
-@Path("secured/on-board")
+@Path("secured/invite")
 @Produces("application/json")
 @Consumes("application/json")
 @Component
@@ -34,9 +34,9 @@ public class InviteResource {
 
     @PUT
     @Validate
-    @Path("/invite-request")
-    public void submitOnboardInvitationRequest(InviteCode entity) {
-        InvitationCodeGenerator.instance().codeGenerator(entity);
+    @Path("/invite")
+    public void submitInviteRequest(InviteCode entity) {
+        InvitationCodeGenerator.instance().invite(entity);
     }
     
     
