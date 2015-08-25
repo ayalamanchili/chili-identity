@@ -90,29 +90,36 @@ public class ImmigrationCheckRequisitionService {
         data.getData().put("purpose", entity.getPurpose());
         data.getData().put("caseType", entity.getCaseType().name());
         data.getData().put("mailingAddress", entity.getMailingAddress());
-        data.getData().put("accountDeptReceivedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getAccountDeptReceivedDate()));
-        data.getData().put("checkIssuedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getCheckIssuedDate()));
-        data.getData().put("approvedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getApprovedDate()));
-        String accountedBy = entity.getAccountedBy().getLastName()+ ", " + entity.getAccountedBy().getFirstName();
-        data.getData().put("accountedBy", accountedBy);
-
+        if (entity.getAccountDeptReceivedDate() != null) {
+            data.getData().put("accountDeptReceivedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getAccountDeptReceivedDate()));
+        }
+        if (entity.getCheckIssuedDate() != null) {
+            data.getData().put("checkIssuedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getCheckIssuedDate()));
+        }
+        if (entity.getApprovedDate() != null) {
+            data.getData().put("approvedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getApprovedDate()));
+        }
+        if (entity.getAccountedBy() != null) {
+            String accountedBy = entity.getAccountedBy().getLastName() + ", " + entity.getAccountedBy().getFirstName();
+            data.getData().put("accountedBy", accountedBy);
+        }
 
         Integer i = 1;
         BigDecimal itemTotal = new BigDecimal(0);
         for (CheckRequisitionItem item : entity.getItems()) {
-            data.getData().put("sl"+ i, i.toString());
-            data.getData().put("itemName"+ i, item.getItemName());
-            data.getData().put("itemDesc"+ i, item.getItemDesc());
-            data.getData().put("itemAmount"+ i, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+            data.getData().put("sl" + i, i.toString());
+            data.getData().put("itemName" + i, item.getItemName());
+            data.getData().put("itemDesc" + i, item.getItemDesc());
+            data.getData().put("itemAmount" + i, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
             itemTotal = itemTotal.add(item.getAmount());
             i++;
         }
         data.getData().put("itemTotal", itemTotal.setScale(2, BigDecimal.ROUND_UP).toString());
-        
+
         //Comment
         List<Comment> cmnts = CommentDao.instance().findAll(entity.getId(), entity.getClass().getCanonicalName());
         String allComment = "";
-        for (Comment comment: cmnts) {
+        for (Comment comment : cmnts) {
             allComment = allComment + ". " + comment.getComment();
         }
         data.getData().put("comment", allComment);

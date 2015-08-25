@@ -13,6 +13,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.user.client.Window;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.CRUDReadAllComposite;
@@ -135,7 +136,6 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
         table.setText(0, 2, getKeyValue("Report End Date"));
         table.setText(0, 3, getKeyValue("Stage"));
         table.setText(0, 4, getKeyValue("Copy"));
-        table.setText(0, 5, getKeyValue("Print"));
     }
 
     @Override
@@ -156,8 +156,6 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
                 }
             });
             table.setWidget(i, 4, copyL);
-            FileField reportL = new FileField("Print", ChiliClientConfig.instance().getFileDownloadUrl() + "statusreport/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id"));
-            table.setWidget(i, 5, reportL);
         }
     }
 
@@ -175,11 +173,16 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
     }
 
     @Override
+    public void printClicked(String entityId) {
+        Window.open(ChiliClientConfig.instance().getFileDownloadUrl() + "statusreport/report" + "&passthrough=true" + "&id=" + entityId, "_blank", "");
+    }
+
+    @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_RELATIONSHIP)) {
-            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE, TableRowOptionsWidget.OptionsType.PRINT), row, JSONUtils.toString(entity, "id"));
         } else {
-            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE, row, JSONUtils.toString(entity, "id"));
+            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.PRINT), row, JSONUtils.toString(entity, "id"));
         }
     }
 

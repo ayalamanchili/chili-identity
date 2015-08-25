@@ -35,6 +35,7 @@ import info.yalamanchili.office.client.companycontact.CompanyContactOptionsPanel
 import info.yalamanchili.office.client.companycontact.ReadAllCompanyContactPanel;
 import info.yalamanchili.office.client.profile.empdoc.EmpDocOptionsPanel;
 import info.yalamanchili.office.client.profile.empdoc.ReadAllEmpDocsPanel;
+import info.yalamanchili.office.client.profile.password.DeactivatationPanel;
 import info.yalamanchili.office.client.profile.preferences.PreferencesPanel;
 import info.yalamanchili.office.client.profile.privacy.PrivacyOptionsPanel;
 import info.yalamanchili.office.client.profile.privacy.ReadAllPrivacySettngsPanel;
@@ -180,15 +181,17 @@ public class TreeEmployeePanel extends TreePanelComposite {
             //TabPanel.instance().myOfficePanel.entityPanel.add(new CreateEmpDocPanel(getEntityId()));
         }
         if (DEACTIVATION_USER_NODE.equals(entityNodeKey)) {
-            if (Window.confirm("Are you sure! Do you want to deactivate this Employee?")) {
-                HttpService.HttpServiceAsync.instance().doPut(getDeactivateuserURL(), null, OfficeWelcome.instance().getHeaders(), true,
-                        new ALAsyncCallback<String>() {
-                            @Override
-                            public void onResponse(String arg0) {
-                                new ResponseStatusWidget().show("Successfully deactivated User");
-                            }
-                        });
-            }
+//            if (Window.confirm("Are you sure! Do you want to deactivate this Employee?")) {
+//                HttpService.HttpServiceAsync.instance().doPut(getDeactivateuserURL(), null, OfficeWelcome.instance().getHeaders(), true,
+//                        new ALAsyncCallback<String>() {
+//                            @Override
+//                            public void onResponse(String arg0) {
+//                                new ResponseStatusWidget().show("Successfully deactivated User");
+//                            }
+//                        });
+//            }
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new DeactivatationPanel(CreateComposite.CreateCompositeType.CREATE));
 
         }
         if (PREFERENCES_NODE.equals(entityNodeKey)) {

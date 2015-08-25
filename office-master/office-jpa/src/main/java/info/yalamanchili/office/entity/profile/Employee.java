@@ -119,6 +119,10 @@ public class Employee extends Contact {
     /**
      * @generated
      */
+    protected Date endDate;
+    /**
+     * @generated
+     */
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Company_Employees")
     protected Company company;
@@ -210,7 +214,8 @@ public class Employee extends Contact {
      */
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
-    }    
+    }
+
     /**
      * @generated
      */
@@ -447,6 +452,14 @@ public class Employee extends Contact {
      */
     public void setWorkStatus(WorkStatus workStatus) {
         this.workStatus = workStatus;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     @Override

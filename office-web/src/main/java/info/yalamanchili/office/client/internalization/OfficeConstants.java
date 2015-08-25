@@ -1,6 +1,3 @@
-/**
- * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
- */
 package info.yalamanchili.office.client.internalization;
 
 /**
@@ -5923,6 +5920,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String ExpenseReportStatus_APPROVED();
 
   /**
+   * Translated "Pending Accounts Payable Dispatch".
+   * 
+   * @return translated "Pending Accounts Payable Dispatch"
+   */
+  @DefaultStringValue("Pending Accounts Payable Dispatch")
+  @Key("ExpenseReportStatus_PENDING_ACCOUNTS_PAYABLE_DISPATCH")
+  String ExpenseReportStatus_PENDING_ACCOUNTS_PAYABLE_DISPATCH();
+
+  /**
    * Translated "Pending CEO Approval".
    * 
    * @return translated "Pending CEO Approval"
@@ -5939,15 +5945,6 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Pending Manager Approval")
   @Key("ExpenseReportStatus_PENDING_MANAGER_APPROVAL")
   String ExpenseReportStatus_PENDING_MANAGER_APPROVAL();
-
-  /**
-   * Translated "Pending Accounts Approval".
-   * 
-   * @return translated "Pending Accounts Approval"
-   */
-  @DefaultStringValue("Pending Accounts Approval")
-  @Key("ExpenseReportStatus_PENDING_PAYROLL_APPROVAL")
-  String ExpenseReportStatus_PENDING_PAYROLL_APPROVAL();
 
   /**
    * Translated "Rejected".
@@ -10810,6 +10807,24 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String TravelAuthorizationStatus_REJECTED();
 
   /**
+   * Translated "Additional Comments".
+   * 
+   * @return translated "Additional Comments"
+   */
+  @DefaultStringValue("Additional Comments")
+  @Key("TravelAuthorization_additionalComments")
+  String TravelAuthorization_additionalComments();
+
+  /**
+   * Translated "Additional Comments".
+   * 
+   * @return translated "Additional Comments"
+   */
+  @DefaultStringValue("Additional Comments")
+  @Key("TravelAuthorization_additionalComments_info")
+  String TravelAuthorization_additionalComments_info();
+
+  /**
    * Translated "Payment Mode For Banquet".
    * 
    * @return translated "Payment Mode For Banquet"
@@ -11231,6 +11246,24 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Travel Destination")
   @Key("TravelAuthorization_travelDestination_info")
   String TravelAuthorization_travelDestination_info();
+
+  /**
+   * Translated "Travel Origin".
+   * 
+   * @return translated "Travel Origin"
+   */
+  @DefaultStringValue("Travel Origin")
+  @Key("TravelAuthorization_travelOrigin")
+  String TravelAuthorization_travelOrigin();
+
+  /**
+   * Translated "Travel Origin".
+   * 
+   * @return translated "Travel Origin"
+   */
+  @DefaultStringValue("Travel Origin")
+  @Key("TravelAuthorization_travelOrigin_info")
+  String TravelAuthorization_travelOrigin_info();
 
   /**
    * Translated "Rental Vehicle Type".

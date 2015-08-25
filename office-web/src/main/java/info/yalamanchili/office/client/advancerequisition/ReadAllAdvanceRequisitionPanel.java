@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.advancerequisition;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.Window;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.CRUDReadAllComposite;
@@ -102,7 +103,6 @@ public class ReadAllAdvanceRequisitionPanel extends CRUDReadAllComposite {
         table.setText(0, 3, getKeyValue("Amount"));
         table.setText(0, 4, getKeyValue("NeededBy"));
         table.setText(0, 5, getKeyValue("Status"));
-        table.setText(0, 6, getKeyValue("Print"));
     }
 
     @Override
@@ -116,17 +116,20 @@ public class ReadAllAdvanceRequisitionPanel extends CRUDReadAllComposite {
             table.setText(i, 3, FormatUtils.formarCurrency(JSONUtils.toString(entity, "amount")));
             table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "neededBy"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 5, JSONUtils.formatEnumString(entity, "status"));
-            FileField reportL = new FileField("Print", ChiliClientConfig.instance().getFileDownloadUrl() + "advancerequisition/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id"));
-            table.setWidget(i, 6, reportL);
         }
+    }
+
+    @Override
+    public void printClicked(String entityId) {
+        Window.open(ChiliClientConfig.instance().getFileDownloadUrl() + "advancerequisition/report" + "&passthrough=true" + "&id=" + entityId, "_blank", "");
     }
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN)) {
-            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE, TableRowOptionsWidget.OptionsType.PRINT), row, JSONUtils.toString(entity, "id"));
         } else {
-            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
+            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.PRINT), row, JSONUtils.toString(entity, "id"));
         }
     }
 

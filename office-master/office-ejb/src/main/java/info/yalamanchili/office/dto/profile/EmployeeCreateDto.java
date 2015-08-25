@@ -42,6 +42,7 @@ public class EmployeeCreateDto implements Serializable {
     protected String imageURL;
     @NotNull(message = "{startDate.not.empty.msg}")
     protected Date startDate;
+    protected Date endDate;
     @Email(message = "Enter a valid email address ")
     @NotEmpty(message = "{email.not.empty.msg}")
     protected String email;
@@ -183,6 +184,14 @@ public class EmployeeCreateDto implements Serializable {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     @Override
