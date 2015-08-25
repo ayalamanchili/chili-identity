@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.expenseitem;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
@@ -154,15 +155,17 @@ public class UpdateExpenseItemPanel extends UpdateComposite {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(deleteB)) {
-            parentPanel.removePanel();
-            HttpService.HttpServiceAsync.instance().doPut(getDeleteURI(), entity.toString(),
-                    OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            if (Window.confirm("Are you sure to delete the expense item?")) {
+                parentPanel.removePanel();
+                HttpService.HttpServiceAsync.instance().doPut(getDeleteURI(), entity.toString(),
+                        OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
 
-                        @Override
-                        public void onResponse(String arg0) {
-                            new ResponseStatusWidget().show("Successfully Deleted Employee ExpenseItem Information");
-                        }
-                    });
+                            @Override
+                            public void onResponse(String arg0) {
+                                new ResponseStatusWidget().show("Successfully Deleted ExpenseItem Information");
+                            }
+                        });
+            }
         }
         super.onClick(event);
     }
