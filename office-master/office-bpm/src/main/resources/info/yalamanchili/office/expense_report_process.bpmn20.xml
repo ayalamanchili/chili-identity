@@ -25,7 +25,9 @@
                 Start Date          : #{entity.startDate}
                 End Date            : #{entity.endDate}
                 Total Amount        : #{entity.totalExpenses}
-
+                Detailed instructions below:
+                https://apps.sstech.us/site/office/expense/expensereportprocess.html
+                
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.expensereport.ExpenseReportProcess" />
@@ -83,7 +85,8 @@
                 Start Date          : #{entity.startDate}
                 End Date            : #{entity.endDate}
                 Total Amount        : #{entity.totalExpenses}
-                
+                Detailed instructions below:
+                https://apps.sstech.us/site/office/expense/expensereportprocess.html
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.expensereport.ExpenseReportProcess" />
@@ -117,7 +120,7 @@
                       targetRef="finalApprovalTaskGateway" />
         <exclusiveGateway id="finalApprovalTaskGateway" />
         <sequenceFlow sourceRef="finalApprovalTaskGateway" 
-                      targetRef="expenseReportPayrollApprovalTask">
+                      targetRef="expenseReportAccountsPayableTask">
             <conditionExpression xsi:type="tFormalExpression">
                 ${status == 'approved'}
             </conditionExpression>
@@ -128,19 +131,20 @@
                 ${status == 'rejected'}
             </conditionExpression>
         </sequenceFlow>
-        <!-- Payroll approval task-->
-        <userTask id="expenseReportPayrollApprovalTask" 
-                  name="Expense Report Accounts Payable Dispatch Final Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}"
+        <!-- Accounts Payable approval task-->
+        <userTask id="expenseReportAccountsPayableTask" 
+                  name="Expense Report Accounts Payable Payment Dispatch Task for ${currentEmployee.firstName} ${currentEmployee.lastName}"
                   activiti:candidateGroups="ROLE_ACCOUNTS_PAYABLE">
             <documentation>
-                Employee Expense Report Payroll Dept Approval Task
+                Employee Expense Report Accounts Payable Payment Dispatch Task.
                 Employee Name       : #{currentEmployee.firstName} #{currentEmployee.lastName}
                 Expense Form Type   : #{entity.expenseFormType}
                 Location/Purpose    : #{entity.location}
                 Start Date          : #{entity.startDate}
                 End Date            : #{entity.endDate}
                 Total Amount        : #{entity.totalExpenses}
-
+                Detailed instructions below:
+                https://apps.sstech.us/site/office/expense/expensereportprocess.html
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.expensereport.ExpenseReportProcess" />
@@ -155,21 +159,21 @@
                 </activiti:formProperty>
                 <activiti:formProperty id="notes" 
                                        name="Notes"
-                                       required="false" 
+                                       required="true" 
                                        type="string" />
             </extensionElements> 
         </userTask>
         <!-- Task escalation email after 48 hours-->
-        <boundaryEvent id="expenseReportPayrollApprovalTaskEscalationTimer"
+        <boundaryEvent id="expenseReportAccountsPayableTaskEscalationTimer"
                        cancelActivity="false" 
-                       attachedToRef="expenseReportPayrollApprovalTask">
+                       attachedToRef="expenseReportAccountsPayableTask">
             <timerEventDefinition> 
                 <timeDuration>PT48H</timeDuration> 
             </timerEventDefinition>
         </boundaryEvent>
-        <serviceTask id="expenseReportPayrollApprovalTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <serviceTask id="expenseReportAccountsPayableTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
         <!--desision-->
-        <sequenceFlow sourceRef="expenseReportPayrollApprovalTask" 
+        <sequenceFlow sourceRef="expenseReportAccountsPayableTask" 
                       targetRef="finalApprovalGateway" />
         <exclusiveGateway id="finalApprovalGateway" />
         <sequenceFlow sourceRef="finalApprovalGateway" 

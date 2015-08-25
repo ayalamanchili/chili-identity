@@ -59,7 +59,7 @@ public class ExpenseReportProcess extends RuleBasedTaskDelegateListner {
         }
         if (dt.getTaskDefinitionKey().equals("expenseReportFinalApprovalTask") && ExpenseReportStatus.PENDING_CEO_APPROVAL.equals(entity.getStatus())) {
             if (status.equalsIgnoreCase("approved")) {
-                entity.setStatus(ExpenseReportStatus.PENDING_PAYROLL_APPROVAL);
+                entity.setStatus(ExpenseReportStatus.PENDING_ACCOUNTS_PAYABLE_DISPATCH);
                 entity.setApprovedByCEO(OfficeSecurityService.instance().getCurrentUser().getEmployeeId());
                 entity.setApprovedByCEODate(new Date());
             } else {
@@ -67,7 +67,7 @@ public class ExpenseReportProcess extends RuleBasedTaskDelegateListner {
             }
         }
 
-        if (dt.getTaskDefinitionKey().equals("expenseReportPayrollApprovalTask") && ExpenseReportStatus.PENDING_PAYROLL_APPROVAL.equals(entity.getStatus())) {
+        if (dt.getTaskDefinitionKey().equals("expenseReportAccountsPayableTask") && ExpenseReportStatus.PENDING_ACCOUNTS_PAYABLE_DISPATCH.equals(entity.getStatus())) {
             if (status.equalsIgnoreCase("approved")) {
                 entity.setStatus(ExpenseReportStatus.APPROVED);
                 entity.setApprovedByAccountsDept(OfficeSecurityService.instance().getCurrentUser().getEmployeeId());

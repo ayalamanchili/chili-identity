@@ -115,7 +115,7 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
             addOptionsWidget(i, entity);
             JSONObject emp = (JSONObject) entity.get(EMPLOYEE);
             table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
-            table.setText(i, 2, JSONUtils.toString(entity, EXPENSE_FORM_TYPE));
+            setEnumColumn(i, 2, entity, ExpenseReportStatus.class.getSimpleName(), EXPENSE_FORM_TYPE);
             table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, START_DATE), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, END_DATE), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 5, FormatUtils.formarCurrency(JSONUtils.toString(entity, TOTAL_EXPENSES)));
