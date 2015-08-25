@@ -12,8 +12,9 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.invite.InviteCodeDao;
 import info.yalamanchili.office.email.MailUtils;
 import info.chili.email.Email;
+import info.yalamanchili.office.dao.invite.InvitationTypeDao;
+import info.yalamanchili.office.entity.profile.invite.InvitationType;
 import info.yalamanchili.office.entity.profile.invite.InviteCode;
-import info.yalamanchili.office.entity.profile.invite.TypeOfInvitation;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,12 +42,8 @@ public class InvitationCodeGenerator {
     public void invite(InviteCode entity) {
         Map<String, Object> vars = new HashMap<>();
         entity.setInvitationCode(uuidGen());
-        if (entity.getInvitationType().getTypeOfInvitation().equals(TypeOfInvitation.EMPLOYEE_ONBOARDING)) {
-            entity.getInvitationType().setEmailTemplateName("send_onboarding_invitation_email_template.html");
-        }
-        else {
-            entity.getInvitationType().setEmailTemplateName("send_onboarding_invitation_email_template.html");
-        }
+        InvitationType type = InvitationTypeDao.instance().find(entity.getInvitationType().getTypeOfInvitation());
+        entity.setInvitationType(type);
         vars.put("entity", entity);
         inviteCodeDao.save(entity);
         sendInvitationRequestEmail(entity);
