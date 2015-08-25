@@ -51,7 +51,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         assignEntityValueFromField("lastName", entity);
         assignEntityValueFromField("dateOfBirth", entity);
         assignEntityValueFromField("sex", entity);
-        if ((Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION) && Auth.isCorporateEmployee(entity)) || (Auth.hasAnyOfRoles(ROLE.ROLE_RELATIONSHIP) && Auth.isConsultantEmployee(entity))) {
+        if ((Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION) && Auth.isCorporateEmployee(entity)) || (Auth.hasAnyOfRoles(ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_CONSULTANT_TIME_ADMIN) && Auth.isConsultantEmployee(entity))) {
             assignEntityValueFromField("startDate", entity);
         }
         assignEntityValueFromField("jobTitle", entity);
@@ -106,7 +106,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("dateOfBirth", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
-        if ((Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION) && Auth.isCorporateEmployee(entity)) || (Auth.hasAnyOfRoles(ROLE.ROLE_RELATIONSHIP) && Auth.isConsultantEmployee(entity))) {
+        if ((Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION) && Auth.isCorporateEmployee(entity)) || (Auth.hasAnyOfRoles(ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_CONSULTANT_TIME_ADMIN) && Auth.isConsultantEmployee(entity))) {
             assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         }
         if (fields.containsKey("employeeType")) {
@@ -148,7 +148,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         addField("lastName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("dateOfBirth", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("sex", false, true, Sex.names(), Alignment.HORIZONTAL);
-        if ((Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION) && Auth.isCorporateEmployee(entity)) || (Auth.hasAnyOfRoles(ROLE.ROLE_RELATIONSHIP,ROLE.ROLE_CONSULTANT_TIME_ADMIN) && Auth.isConsultantEmployee(entity))) {
+        if ((Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION) && Auth.isCorporateEmployee(entity)) || (Auth.hasAnyOfRoles(ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_CONSULTANT_TIME_ADMIN) && Auth.isConsultantEmployee(entity))) {
             addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         }
         addField("jobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
