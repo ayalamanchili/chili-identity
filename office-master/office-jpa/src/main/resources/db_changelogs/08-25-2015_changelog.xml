@@ -16,11 +16,12 @@
                    schemaName="public"
                    tableName="contact">
             <column name="endDate" type="date"/>
-            <addColumn catalogName="office"
+        </addColumn>
+        <addColumn catalogName="office"
                        schemaName="public"
                        tableName="contact_aud">
-                <column name="endDate" type="date"/>
-            </addColumn>
-        </addColumn>      
+            <column name="endDate" type="date"/>
+        </addColumn>
+    </addColumn>      
     </changeSet>
 </databaseChangeLog>
