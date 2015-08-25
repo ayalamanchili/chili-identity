@@ -34,7 +34,6 @@ import info.yalamanchili.office.entity.ext.Comment;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -79,13 +78,21 @@ public class ExpenseReportService {
             }
         }
         entity.setEmployee(OfficeSecurityService.instance().getCurrentUser());
+        entity = expenseReportsDao.save(entity);
+        entity.setBpmProcessId(startExpenseReportProcess(entity));
+        entity = expenseReportsDao.save(entity);
+        return mapper.map(entity, ExpenseReportSaveDto.class);
+    }
+
+    protected String startExpenseReportProcess(ExpenseReport entity) {
+        if (entity.getBpmProcessId() != null) {
+            OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
+        }
         Map<String, Object> vars = new HashMap<>();
         vars.put("entity", entity);
         vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
-        entity = expenseReportsDao.save(entity);
         vars.put("entityId", entity.getId());
-        entity.setBpmProcessId(OfficeBPMService.instance().startProcess("expense_report_process", vars));
-        return mapper.map(entity, ExpenseReportSaveDto.class);
+        return OfficeBPMService.instance().startProcess("expense_report_process", vars);
     }
 
     public ExpenseReportSaveDto save(ExpenseReportSaveDto dto) {
@@ -113,6 +120,7 @@ public class ExpenseReportService {
                 expenseReportsDao.getEntityManager().merge(entity);
             }
         }
+        startExpenseReportProcess(entity);
         return mapper.map(entity, ExpenseReportSaveDto.class);
     }
 
