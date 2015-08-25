@@ -21,7 +21,6 @@
                        schemaName="public"
                        tableName="contact_aud">
             <column name="endDate" type="date"/>
-        </addColumn>
-    </addColumn>      
+        </addColumn>  
     </changeSet>
 </databaseChangeLog>
