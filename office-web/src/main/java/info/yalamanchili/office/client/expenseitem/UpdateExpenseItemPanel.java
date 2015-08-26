@@ -9,7 +9,7 @@ package info.yalamanchili.office.client.expenseitem;
 
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.BlurEvent;
-import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
@@ -37,7 +37,7 @@ import java.math.BigDecimal;
  *
  * @author Prasanthi.p
  */
-public class UpdateExpenseItemPanel extends UpdateComposite {
+public class UpdateExpenseItemPanel extends UpdateComposite implements BlurHandler {
 
     SelectExpenseCategoryWidget selectCategoryWidgetF = new SelectExpenseCategoryWidget(false, true);
     EnumField expensePaymentMode;
@@ -57,9 +57,9 @@ public class UpdateExpenseItemPanel extends UpdateComposite {
 
     @Override
     public JSONObject populateEntityFromFields() {
-        if (selectCategoryWidgetF.getSelectedObject().get("value").isString().stringValue().trim().equals("Personal Auto")) {
-            amount.setValue(new BigDecimal(expenseMiles.getValue()).multiply(new BigDecimal("0.50")).setScale(2), false);
-        }
+//        if (selectCategoryWidgetF.getSelectedObject().get("value").isString().stringValue().trim().equals("Personal Auto")) {
+//            amount.setValue(new BigDecimal(expenseMiles.getValue()).multiply(new BigDecimal("0.50")).setScale(2), false);
+//        }
         entity.put(CATEGORY, selectCategoryWidgetF.getSelectedObject());
         assignEntityValueFromField(EXPENSE_PAYMENT_MODE, entity);
         assignEntityValueFromField(EXPENSE_DATE, entity);
@@ -109,6 +109,7 @@ public class UpdateExpenseItemPanel extends UpdateComposite {
     @Override
     protected void addListeners() {
         deleteB.addClickHandler(this);
+        expenseMiles.getTextbox().addBlurHandler(this);
     }
 
     @Override
@@ -149,6 +150,13 @@ public class UpdateExpenseItemPanel extends UpdateComposite {
     protected void addWidgetsBeforeCaptionPanel() {
     }
 
+    @Override
+    public void onBlur(BlurEvent event) {
+        if (event.getSource().equals(expenseMiles.getTextbox())) {
+            amount.setValue(new BigDecimal(expenseMiles.getValue()).multiply(new BigDecimal("0.50")).setScale(2), false);
+        }
+    }
+    
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "expenseitem";
