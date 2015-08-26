@@ -205,8 +205,9 @@ public class EmployeeService {
         
     }
     
-    public void deactivateUser(Long empId) {
+    public void deactivateUser(Long empId,EmployeeCreateDto dto) {
         Employee emp = getEmployee(empId);
+//        EmployeeCreateDto dtoobj = dto.getEndDate();
         if (!emp.isActive()) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.request", "Employee already deactivated");
         }
