@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.expensereports;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.Window;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.config.ChiliClientConfig;
@@ -138,8 +139,22 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
         } else if ((ExpenseReportStatus.PENDING_MANAGER_APPROVAL.name().equals(status))) {
             createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), OptionsType.READ, OptionsType.UPDATE, OptionsType.PRINT), row, JSONUtils.toString(entity, "id"));
         } else {
-            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), OptionsType.READ, OptionsType.PRINT), row, JSONUtils.toString(entity, "id"));
+            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), OptionsType.READ, OptionsType.PRINT, OptionsType.COPY), row, JSONUtils.toString(entity, "id"));
         }
+    }
+
+    @Override
+    public void copyClicked(String entityId) {
+        HttpService.HttpServiceAsync.instance().doGet(OfficeWelcome.constants.root_url() + "expense-report/clone/" + entityId, OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String arg0) {
+                        logger.info(arg0);
+                        new ResponseStatusWidget().show("Copy created. Plase update and save.");
+                        TabPanel.instance().expensePanel.entityPanel.clear();
+                        TabPanel.instance().expensePanel.entityPanel.add(new UpdateExpenseReportPanel(JSONParser.parseLenient(arg0).isObject()));
+                    }
+                });
     }
 
     private String getDeleteURL(String entityId) {

@@ -93,6 +93,10 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
         initUpdateComposite(id, "ExpenseReport", OfficeWelcome.constants);
     }
 
+    public UpdateExpenseReportPanel(JSONObject object) {
+        initUpdateComposite(object, "ExpenseReport", OfficeWelcome.constants);
+    }
+
     @Override
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
