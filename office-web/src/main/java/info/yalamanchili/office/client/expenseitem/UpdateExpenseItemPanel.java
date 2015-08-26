@@ -8,6 +8,8 @@
 package info.yalamanchili.office.client.expenseitem;
 
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
@@ -29,6 +31,7 @@ import info.yalamanchili.office.client.expensecategory.SelectExpenseCategoryWidg
 import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.*;
 import info.yalamanchili.office.client.expensereports.ExpensePaymentMode;
 import info.yalamanchili.office.client.expensereports.UpdateExpenseReportPanel;
+import java.math.BigDecimal;
 
 /**
  *
@@ -54,6 +57,9 @@ public class UpdateExpenseItemPanel extends UpdateComposite {
 
     @Override
     public JSONObject populateEntityFromFields() {
+        if (selectCategoryWidgetF.getSelectedObject().get("value").isString().stringValue().trim().equals("Personal Auto")) {
+            amount.setValue(new BigDecimal(expenseMiles.getValue()).multiply(new BigDecimal("0.50")).setScale(2), false);
+        }
         entity.put(CATEGORY, selectCategoryWidgetF.getSelectedObject());
         assignEntityValueFromField(EXPENSE_PAYMENT_MODE, entity);
         assignEntityValueFromField(EXPENSE_DATE, entity);
@@ -169,4 +175,5 @@ public class UpdateExpenseItemPanel extends UpdateComposite {
         }
         super.onClick(event);
     }
+
 }
