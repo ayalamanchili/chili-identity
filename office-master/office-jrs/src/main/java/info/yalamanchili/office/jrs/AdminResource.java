@@ -103,9 +103,9 @@ public class AdminResource {
         @CacheEvict(value = OfficeCacheKeys.EMPLOYEES, allEntries = true),
         @CacheEvict(value = Email.EMAILS_CACHE_KEY, allEntries = true)
     })
-    public void deactivateuser(@PathParam("empId") Long empId) {
+    public void deactivateuser(@PathParam("empId") EmployeeCreateDto dto) {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
-        employeeService.deactivateUser(empId);
+//        employeeService.deactivateUser(dto);
     }
 
     @Path("/createuser")
