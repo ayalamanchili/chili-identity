@@ -208,6 +208,7 @@
         <profile>
             <id>test</id>
             <build> 
+                <finalName>office-test</finalName>
                 <filters>
                     <filter>src/main/resources/env/logging-test.properties</filter>
                 </filters>
@@ -226,6 +227,7 @@
         <profile>
             <id>prod</id>
             <build> 
+                <finalName>office-prod</finalName>
                 <filters>
                     <filter>src/main/resources/env/logging-prod.properties</filter>
                 </filters>
