@@ -57,9 +57,6 @@ public class UpdateExpenseItemPanel extends UpdateComposite implements BlurHandl
 
     @Override
     public JSONObject populateEntityFromFields() {
-//        if (selectCategoryWidgetF.getSelectedObject().get("value").isString().stringValue().trim().equals("Personal Auto")) {
-//            amount.setValue(new BigDecimal(expenseMiles.getValue()).multiply(new BigDecimal("0.50")).setScale(2), false);
-//        }
         entity.put(CATEGORY, selectCategoryWidgetF.getSelectedObject());
         assignEntityValueFromField(EXPENSE_PAYMENT_MODE, entity);
         assignEntityValueFromField(EXPENSE_DATE, entity);
