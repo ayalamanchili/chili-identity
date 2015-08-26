@@ -10,9 +10,11 @@ package info.yalamanchili.office.entity.profile.invite;
 
 import info.chili.document.AbstractDocument;
 import java.util.Date;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -22,21 +24,21 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 @XmlRootElement
 @XmlType
-public class InviteCode extends AbstractDocument{
-    
+public class InviteCode extends AbstractDocument {
+
     @Indexed
     protected String invitationCode;
-    
+
     @Indexed
     protected Date expiryDate;
-    
+
     @Indexed
     protected Date validFromDate;
-    
+
     @Indexed
     protected String email;
     
-    @Indexed
+    @DBRef
     protected InvitationType invitationType;
 
     public String getInvitationCode() {
@@ -71,6 +73,7 @@ public class InviteCode extends AbstractDocument{
         this.email = email;
     }
 
+    @XmlElement
     public InvitationType getInvitationType() {
         return invitationType;
     }
@@ -78,5 +81,5 @@ public class InviteCode extends AbstractDocument{
     public void setInvitationType(InvitationType invitationType) {
         this.invitationType = invitationType;
     }
-    
+
 }

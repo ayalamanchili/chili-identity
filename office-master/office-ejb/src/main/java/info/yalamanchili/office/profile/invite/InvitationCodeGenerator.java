@@ -40,12 +40,11 @@ public class InvitationCodeGenerator {
     protected MailUtils mailUtils;
 
     public void invite(InviteCode entity) {
-        Map<String, Object> vars = new HashMap<>();
         entity.setInvitationCode(uuidGen());
         InvitationType type = InvitationTypeDao.instance().find(entity.getInvitationType().getTypeOfInvitation());
         entity.setInvitationType(type);
-        vars.put("entity", entity);
         inviteCodeDao.save(entity);
+        //send email
         sendInvitationRequestEmail(entity);
     }
 
@@ -56,9 +55,9 @@ public class InvitationCodeGenerator {
         subject.append("System Soft Invitation");
         email.setSubject(subject.toString());
         Map<String, Object> emailCtx = new HashMap<>();
-//        emailCtx.put("employeeName", address.getContact().getFirstName() + " " + address.getContact().getLastName());
+        emailCtx.put("invitationCode", entity.getInvitationCode());
         email.setTemplateName(entity.getInvitationType().getEmailTemplateName());
-//        email.setContext(emailCtx);
+        email.setContext(emailCtx);
         email.setHtml(Boolean.TRUE);
         MessagingService.instance().sendEmail(email);
     }
