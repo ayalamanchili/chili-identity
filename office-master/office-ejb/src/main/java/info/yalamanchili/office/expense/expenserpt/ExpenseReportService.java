@@ -38,11 +38,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -129,6 +133,12 @@ public class ExpenseReportService {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         ExpenseReport e = expenseReportsDao.findById(id);
         return mapper.map(expenseReportsDao.findById(id), ExpenseReportSaveDto.class);
+    }
+
+    public ExpenseReportSaveDto clone(Long id) {
+        ExpenseReport entity = expenseReportsDao.clone(id, "submittedDate", "approvedByManager", "approvedByManagerDate", "approvedByAccountsDept", "approvedByAccountsDeptDate", "approvedByCEO", "approvedByCEODate", "bpmProcessId", "status", "totalExpenses", "expenseReceipts");
+        Mapper mapper = (Mapper) SpringContext.getBean("mapper");
+        return mapper.map(entity, ExpenseReportSaveDto.class);
     }
 
     public void delete(Long id) {

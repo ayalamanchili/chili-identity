@@ -74,6 +74,14 @@ public class ExpenseReportResource extends CRUDResource<ExpenseReport> {
     }
 
     @GET
+    @Transactional(readOnly = true)
+    @Path("/clone/{id}")
+    @Override
+    public ExpenseReportSaveDto clone(@PathParam("id") Long id) {
+        return ExpenseReportService.instance().clone(id);
+    }
+
+    @GET
     @Path("/{start}/{limit}")
     public ExpenseReportResource.ExpenseReportsTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         ExpenseReportResource.ExpenseReportsTable tableObj = new ExpenseReportResource.ExpenseReportsTable();

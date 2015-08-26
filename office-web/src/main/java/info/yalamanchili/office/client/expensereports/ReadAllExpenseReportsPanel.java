@@ -133,11 +133,11 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
     protected void addOptionsWidget(int row, JSONObject entity) {
         String status = JSONUtils.toString(entity, "status");
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CEO)) {
-            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), OptionsType.READ, OptionsType.UPDATE, OptionsType.DELETE, OptionsType.PRINT), row, JSONUtils.toString(entity, "id"));
+            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), OptionsType.READ, OptionsType.UPDATE, OptionsType.DELETE, OptionsType.PRINT, OptionsType.COPY), row, JSONUtils.toString(entity, "id"));
         } else if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ACCOUNTS_PAYABLE)) {
-            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), OptionsType.READ, OptionsType.PRINT), row, JSONUtils.toString(entity, "id"));
+            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), OptionsType.READ, OptionsType.PRINT, OptionsType.COPY), row, JSONUtils.toString(entity, "id"));
         } else if ((ExpenseReportStatus.PENDING_MANAGER_APPROVAL.name().equals(status))) {
-            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), OptionsType.READ, OptionsType.UPDATE, OptionsType.PRINT), row, JSONUtils.toString(entity, "id"));
+            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), OptionsType.READ, OptionsType.UPDATE, OptionsType.PRINT, OptionsType.COPY), row, JSONUtils.toString(entity, "id"));
         } else {
             createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), OptionsType.READ, OptionsType.PRINT, OptionsType.COPY), row, JSONUtils.toString(entity, "id"));
         }
@@ -145,7 +145,7 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
 
     @Override
     public void copyClicked(String entityId) {
-        HttpService.HttpServiceAsync.instance().doGet(OfficeWelcome.constants.root_url() + "expense-report/clone/" + entityId, OfficeWelcome.instance().getHeaders(), true,
+        HttpService.HttpServiceAsync.instance().doGet(OfficeWelcome.constants.root_url() + "expensereport/clone/" + entityId, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String arg0) {
