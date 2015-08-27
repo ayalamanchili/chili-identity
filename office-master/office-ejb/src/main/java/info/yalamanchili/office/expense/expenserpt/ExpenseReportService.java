@@ -82,18 +82,22 @@ public class ExpenseReportService {
             }
         }
         entity.setEmployee(OfficeSecurityService.instance().getCurrentUser());
+        String approvalManager = entity.getApprovalManager();
         entity = expenseReportsDao.save(entity);
-        entity.setBpmProcessId(startExpenseReportProcess(entity));
+        entity.setBpmProcessId(startExpenseReportProcess(approvalManager, entity));
         entity = expenseReportsDao.save(entity);
         return mapper.map(entity, ExpenseReportSaveDto.class);
     }
 
-    protected String startExpenseReportProcess(ExpenseReport entity) {
+    protected String startExpenseReportProcess(String approvalManager, ExpenseReport entity) {
         if (entity.getBpmProcessId() != null) {
             OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
         }
         Map<String, Object> vars = new HashMap<>();
         vars.put("entity", entity);
+        if (!Strings.isNullOrEmpty(approvalManager)) {
+            vars.put("approvalManager", approvalManager.trim());
+        }
         vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
         vars.put("entityId", entity.getId());
         return OfficeBPMService.instance().startProcess("expense_report_process", vars);
@@ -124,14 +128,13 @@ public class ExpenseReportService {
                 expenseReportsDao.getEntityManager().merge(entity);
             }
         }
-        entity.setBpmProcessId(startExpenseReportProcess(entity));
+        entity.setBpmProcessId(startExpenseReportProcess(null, entity));
         entity = expenseReportsDao.save(entity);
         return mapper.map(entity, ExpenseReportSaveDto.class);
     }
 
     public ExpenseReportSaveDto read(Long id) {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
-        ExpenseReport e = expenseReportsDao.findById(id);
         return mapper.map(expenseReportsDao.findById(id), ExpenseReportSaveDto.class);
     }
 

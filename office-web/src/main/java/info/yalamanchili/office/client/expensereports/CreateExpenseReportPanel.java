@@ -13,6 +13,7 @@ import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -21,6 +22,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDComposite;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
@@ -33,13 +35,17 @@ import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.chili.gwt.widgets.SuggestBox;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.expenseitem.CreateExpenseItemPanel;
 import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.*;
+import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -99,6 +105,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     @Override
     protected void addWidgets() {
         addEnumField(EXPENSE_FORM_TYPE, false, true, ExpenseFormType.names(), Alignment.HORIZONTAL);
+        entityFieldsPanel.add(approvalManager);
         expenseFormType = (EnumField) fields.get(EXPENSE_FORM_TYPE);
         entityFieldsPanel.add(generalInfo);
         addField(LOCATION, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -133,7 +140,22 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         expenseInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         receiptsInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         addItemL.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        approvalManager.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH + 5, Style.Unit.PX);
         setButtonText("Submit");
+        approvalManager.setVisible(false);
+        HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
+                if (values != null) {
+                    approvalManager.loadData(values);
+                }
+            }
+        });
+    }
+
+    private String getEmployeeIdsDropDownUrl() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=employeeId&column=firstName&column=lastName&employee-type=Corporate Employee");
     }
 
     @Override
@@ -148,6 +170,9 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     protected JSONObject populateEntityFromFields() {
         BigDecimal totalExpensesAmount = BigDecimal.ZERO;
         entity = new JSONObject();
+        if (approvalManager.getSelectedObject() != null) {
+            entity.put("approvalManager", approvalManager.getSelectedObject().get("id").isString());
+        }
         assignEntityValueFromField(EXPENSE_FORM_TYPE, entity);
         assignEntityValueFromField(LOCATION, entity);
         assignEntityValueFromField(START_DATE, entity);
@@ -184,6 +209,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
             }
         }
         entity.put(EXPENSE_RECEIPT, expenseReceipts);
+        logger.info(entity.toString());
         return entity;
     }
 
@@ -223,7 +249,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         if (event.getSource().equals(addItemL)) {
             CreateExpenseItemPanel panel = null;
             if (expenseFormType.getValue().equals(ExpenseFormType.GENERAL_EXPENSE.name())) {
-                panel = new CreateExpenseItemPanel(this,isGeneralExpenseItem);
+                panel = new CreateExpenseItemPanel(this, isGeneralExpenseItem);
             } else {
                 panel = new CreateExpenseItemPanel(this);
             }
@@ -264,12 +290,15 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         projectNumber.setVisible(render);
     }
 
+    SuggestBox approvalManager = new SuggestBox(OfficeWelcome.constants, "approvalManager", "ApprovalManager", false, false, Alignment.HORIZONTAL);
+
     @Override
     public void onChange(ChangeEvent event) {
         if (event.getSource().equals(expenseFormType.listBox)) {
             if (expenseFormType.getValue().equals(ExpenseFormType.GENERAL_EXPENSE.name())) {
                 renderproject(false);
                 isGeneralExpenseItem = true;
+                approvalManager.setVisible(true);
             } else if (expenseFormType.getValue().equals(ExpenseFormType.TRAVEL_EXPENSE.name())) {
                 renderproject(true);
                 isGeneralExpenseItem = false;

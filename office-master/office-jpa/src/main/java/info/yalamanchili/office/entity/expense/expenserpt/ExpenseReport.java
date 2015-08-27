@@ -21,6 +21,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -143,6 +144,11 @@ public class ExpenseReport extends AbstractEntity {
      */
     @OneToMany(mappedBy = "expenseReport", cascade = CascadeType.ALL)
     protected List<ExpenseReceipt> expenseReceipts;
+    /**
+     *
+     */
+    @Transient
+    protected String approvalManager;
 
     /**
      *
@@ -397,6 +403,19 @@ public class ExpenseReport extends AbstractEntity {
 
     public void setTotalExpenses(BigDecimal totalExpenses) {
         this.totalExpenses = totalExpenses;
+    }
+
+    public String getApprovalManager() {
+        return approvalManager;
+    }
+
+    public void setApprovalManager(String approvalManager) {
+        this.approvalManager = approvalManager;
+    }
+
+    @Override
+    public String toString() {
+        return "ExpenseReport{" + "location=" + location + ", department=" + department + ", startDate=" + startDate + ", endDate=" + endDate + ", projectName=" + projectName + ", projectNumber=" + projectNumber + ", submittedDate=" + submittedDate + ", approvedByManager=" + approvedByManager + ", approvedByManagerDate=" + approvedByManagerDate + ", approvedByAccountsDept=" + approvedByAccountsDept + ", approvedByAccountsDeptDate=" + approvedByAccountsDeptDate + ", approvedByCEO=" + approvedByCEO + ", approvedByCEODate=" + approvedByCEODate + ", bpmProcessId=" + bpmProcessId + ", status=" + status + ", expenseFormType=" + expenseFormType + ", expenseReimbursePaymentMode=" + expenseReimbursePaymentMode + ", totalExpenses=" + totalExpenses + ", proposedApprovalManager=" + approvalManager + '}';
     }
 
 }
