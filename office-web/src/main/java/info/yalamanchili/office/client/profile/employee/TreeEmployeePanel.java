@@ -181,15 +181,6 @@ public class TreeEmployeePanel extends TreePanelComposite {
             //TabPanel.instance().myOfficePanel.entityPanel.add(new CreateEmpDocPanel(getEntityId()));
         }
         if (DEACTIVATION_USER_NODE.equals(entityNodeKey)) {
-//            if (Window.confirm("Are you sure! Do you want to deactivate this Employee?")) {
-//                HttpService.HttpServiceAsync.instance().doPut(getDeactivateuserURL(), null, OfficeWelcome.instance().getHeaders(), true,
-//                        new ALAsyncCallback<String>() {
-//                            @Override
-//                            public void onResponse(String arg0) {
-//                                new ResponseStatusWidget().show("Successfully deactivated User");
-//                            }
-//                        });
-//            }
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new DeactivatationPanel(CreateComposite.CreateCompositeType.CREATE));
 

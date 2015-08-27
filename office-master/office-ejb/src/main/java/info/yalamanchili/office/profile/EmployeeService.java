@@ -47,7 +47,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class EmployeeService {
-    
+
     private final static Logger logger = Logger.getLogger(EmployeeService.class.getName());
     //TODO remove extended
     @PersistenceContext
@@ -56,7 +56,7 @@ public class EmployeeService {
     protected ProfileNotificationService profileNotificationService;
     @Autowired
     protected Mapper mapper;
-    
+
     public String createUser(EmployeeCreateDto employee) {
         Employee emp = mapper.map(employee, Employee.class);
         emp.setEmployeeType(em.find(EmployeeType.class, emp.getEmployeeType().getId()));
@@ -93,9 +93,9 @@ public class EmployeeService {
             Map<String, Object> obj = new HashMap<>();
             obj.put("employee", emp);
             OfficeBPMService.instance().startProcess("new_corp_employee_process", obj);
-            
+
         }
-        
+
         Email email = new Email();
         email.setEmail(employee.getEmail());
         email.setPrimaryEmail(true);
@@ -110,7 +110,7 @@ public class EmployeeService {
         }
         return emp.getId().toString();
     }
-    
+
     public String onBoardEmployee(OnBoardingEmployeeDto employee) {
         Employee emp = mapper.map(employee, Employee.class);
         emp.setEmployeeType(em.find(EmployeeType.class, emp.getEmployeeType().getId()));
@@ -140,22 +140,21 @@ public class EmployeeService {
         Preferences prefs = new Preferences();
         prefs.setEnableEmailNotifications(Boolean.TRUE);
         emp.setPreferences(prefs);
-        
+
         //Create Address for Employee
         Address address = new Address();
         address = employee.getAddress();
-        emp.getAddresss().add(address);  
+        emp.getAddresss().add(address);
         address.setContact(emp);
-        
+
         //Create BPM User
 //        if (emp.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
-            OfficeBPMIdentityService.instance().createUser(employeeId);
-            // BPMTimeService.instance().startNewEmpTimeProcess(emp);
-            Map<String, Object> obj = new HashMap<>();
-            obj.put("employee", emp);        
+        OfficeBPMIdentityService.instance().createUser(employeeId);
+        // BPMTimeService.instance().startNewEmpTimeProcess(emp);
+        Map<String, Object> obj = new HashMap<>();
+        obj.put("employee", emp);
 //        }
-        
-        
+
 //        //Start on boarding process
 //        Map<String, Object> obj = new HashMap<>();
 //        obj.put("entity", emp);
@@ -164,14 +163,14 @@ public class EmployeeService {
         email.setEmail(employee.getEmail());
         email.setPrimaryEmail(true);
         emp.addEmail(email);
-        
+
         emp = EmployeeDao.instance().save(emp);
         emp = em.merge(emp);
         //create cert
         OfficeSecurityService.instance().createUserCert(emp, null, null);
         return emp.getId().toString();
     }
-    
+
     private String generateEmployeeId(EmployeeCreateDto emp) {
         String empId = emp.getFirstName().toLowerCase().charAt(0) + emp.getLastName().toLowerCase();
         javax.persistence.Query findUserQuery = em.createQuery("from Employee where employeeId=:empIdParam");
@@ -184,7 +183,7 @@ public class EmployeeService {
         }
         return empId;
     }
-    
+
     public CUser changePassword(Long empId, User user) {
         CUser user1 = getEmployee(empId).getUser();
         String oldpswd = SecurityUtils.encodePassword(user.getOldPassword(), null);
@@ -194,31 +193,36 @@ public class EmployeeService {
         } else {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.password", "Old Password Doesn't Match");
         }
-        
+
     }
-    
+
     public CUser resetPassword(Long empId, User user) {
         CUser user1 = getEmployee(empId).getUser();
         user1.setPasswordHash(SecurityUtils.encodePassword(user.getNewPassword(), null));
         profileNotificationService.sendResetPasswordNotification(getEmployee(empId), user.getNewPassword());
         return em.merge(user1);
-        
+
     }
-    
-    public void deactivateUser(Long empId,EmployeeCreateDto dto) {
+
+    public void deactivateUser(Long empId, EmployeeCreateDto dto) {
         Employee emp = getEmployee(empId);
-//        EmployeeCreateDto dtoobj = dto.getEndDate();
         if (!emp.isActive()) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.request", "Employee already deactivated");
         }
+        if (dto.getEndDate() == null) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.request", "End Date is required to deactivate the employee");
+        }
+        emp.setEndDate(dto.getEndDate());
+        emp = em.merge(emp);
         OfficeBPMIdentityService.instance().deleteUser(emp.getEmployeeId());
         CUser user1 = emp.getUser();
         user1.setEnabled(false);
-        profileNotificationService.sendEmployeeDeactivationNotification(getEmployee(empId));
+        Employee curUser = OfficeSecurityService.instance().getCurrentUser();
+        profileNotificationService.sendEmployeeDeactivationNotification(curUser.getFirstName(), getEmployee(empId));
         em.merge(user1);
-        
+
     }
-    
+
     public String generatepassword() {
         final int PASSWORD_LENGTH = 6;
         StringBuilder sb = new StringBuilder();
@@ -227,7 +231,7 @@ public class EmployeeService {
         }
         return sb.toString();
     }
-    
+
     private Employee getEmployee(Long empId) {
         Employee employee = em.find(Employee.class, empId);
         if (employee == null) {
@@ -237,7 +241,7 @@ public class EmployeeService {
             return employee;
         }
     }
-    
+
     public static EmployeeService instance() {
         return SpringContext.getBean(EmployeeService.class);
     }

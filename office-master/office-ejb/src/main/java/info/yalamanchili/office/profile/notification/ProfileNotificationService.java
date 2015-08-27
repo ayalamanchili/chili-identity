@@ -121,12 +121,12 @@ public class ProfileNotificationService {
 
     @Async
     @Transactional
-    public void sendEmployeeDeactivationNotification(Employee emp) {
-        String[] roles = {OfficeRole.ROLE_ADMIN.name(), OfficeRole.ROLE_HR.name(), OfficeRole.ROLE_EXPENSE.name()};
+    public void sendEmployeeDeactivationNotification(String deactivateBy, Employee emp) {
+        String[] roles = {OfficeRole.ROLE_ADMIN.name(), OfficeRole.ROLE_HR_ADMINSTRATION.name(), OfficeRole.ROLE_CONSULTANT_TIME_ADMIN.name()};
         Email email = new Email();
         email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject("Employee Deactivated ");
-        String messageText = "Employee  " + emp.getFirstName() + "," + emp.getLastName() + " Account Is Deactivated ";
+        String messageText = "Employee  " + emp.getFirstName() + "," + emp.getLastName() + " Account Is Deactivated by:" + deactivateBy;
         email.setBody(messageText);
         messagingService.sendEmail(email);
     }
