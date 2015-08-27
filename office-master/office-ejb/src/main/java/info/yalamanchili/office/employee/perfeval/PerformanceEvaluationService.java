@@ -350,7 +350,7 @@ public class PerformanceEvaluationService {
             }
         } else {
             //assoc emp
-            Signature employeeSignature = new Signature(employee.getEmployeeId(), employee.getEmployeeId(), securityConfig.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(evaluation.getEvaluationDate()), employeeDao.getPrimaryEmail(employee), null);
+            Signature employeeSignature = new Signature(employee.getEmployeeId(), employee.getEmployeeId(), securityConfig.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(evaluation.getAcceptDate()), employeeDao.getPrimaryEmail(employee), null);
             data.getSignatures().add(employeeSignature);
         }
         data.getData().put("employeeTitle", employee.getJobTitle());
