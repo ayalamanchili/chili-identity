@@ -82,6 +82,9 @@ public class CorpEmpLeaveRequestProcessBean {
         if (ts.getCategory().equals(TimeSheetCategory.PTO_USED)) {
             dao.deductPTOUsedHours(ts);
         }
+        if (ts.getCategory().equals(TimeSheetCategory.TDL_PAID)) {
+            dao.deductPTOUsedHours(ts);
+        }
     }
 
     protected CorporateTimeSheet getTimeSheetFromExecution(DelegateExecution execution) {
