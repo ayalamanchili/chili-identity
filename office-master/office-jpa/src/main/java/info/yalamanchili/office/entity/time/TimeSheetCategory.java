@@ -39,6 +39,7 @@ public enum TimeSheetCategory {
     public static List<TimeSheetCategory> getLeaveSpentCheckedCategories() {
         List<TimeSheetCategory> res = new ArrayList<TimeSheetCategory>();
         res.add(PTO_USED);
+        res.add(TDL_PAID);
         return res;
     }
 
@@ -50,6 +51,7 @@ public enum TimeSheetCategory {
         res.add(Bereavement);
         res.add(Maternity);
         res.add(Other);
+        res.add(TDL_PAID);
         res.add(TDL_UNPAID);
         return res;
     }

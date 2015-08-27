@@ -80,6 +80,9 @@ public class CorpEmpLeaveRequestCancelProcess implements TaskListener {
         if (ts.getCategory().equals(TimeSheetCategory.PTO_USED) && TimeSheetStatus.Approved.equals(ts.getStatus())) {
             dao.addPTOUsedHours(ts);
         }
+        if (ts.getCategory().equals(TimeSheetCategory.TDL_PAID) && TimeSheetStatus.Approved.equals(ts.getStatus())) {
+            dao.addPTOUsedHours(ts);
+        }
         if (ts.getBpmProcessId() != null && !ts.getBpmProcessId().isEmpty()) {
             deleteApprovalTask(ts.getBpmProcessId());
         }
