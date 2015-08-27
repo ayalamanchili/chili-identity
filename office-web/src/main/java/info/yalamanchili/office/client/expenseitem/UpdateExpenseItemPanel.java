@@ -8,6 +8,8 @@
 package info.yalamanchili.office.client.expenseitem;
 
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
@@ -29,12 +31,13 @@ import info.yalamanchili.office.client.expensecategory.SelectExpenseCategoryWidg
 import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.*;
 import info.yalamanchili.office.client.expensereports.ExpensePaymentMode;
 import info.yalamanchili.office.client.expensereports.UpdateExpenseReportPanel;
+import java.math.BigDecimal;
 
 /**
  *
  * @author Prasanthi.p
  */
-public class UpdateExpenseItemPanel extends UpdateComposite {
+public class UpdateExpenseItemPanel extends UpdateComposite implements BlurHandler {
 
     SelectExpenseCategoryWidget selectCategoryWidgetF = new SelectExpenseCategoryWidget(false, true);
     EnumField expensePaymentMode;
@@ -103,6 +106,7 @@ public class UpdateExpenseItemPanel extends UpdateComposite {
     @Override
     protected void addListeners() {
         deleteB.addClickHandler(this);
+        expenseMiles.getTextbox().addBlurHandler(this);
     }
 
     @Override
@@ -144,6 +148,13 @@ public class UpdateExpenseItemPanel extends UpdateComposite {
     }
 
     @Override
+    public void onBlur(BlurEvent event) {
+        if (event.getSource().equals(expenseMiles.getTextbox())) {
+            amount.setValue(new BigDecimal(expenseMiles.getValue()).multiply(new BigDecimal("0.50")).setScale(2), false);
+        }
+    }
+    
+    @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "expenseitem";
     }
@@ -169,4 +180,5 @@ public class UpdateExpenseItemPanel extends UpdateComposite {
         }
         super.onClick(event);
     }
+
 }

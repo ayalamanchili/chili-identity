@@ -93,6 +93,10 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
         initUpdateComposite(id, "ExpenseReport", OfficeWelcome.constants);
     }
 
+    public UpdateExpenseReportPanel(JSONObject object) {
+        initUpdateComposite(object, "ExpenseReport", OfficeWelcome.constants);
+    }
+
     @Override
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
@@ -166,8 +170,9 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
     }
 
     protected final void populateComments() {
-//        entityActionsPanel.add(expenseReceiptInfo);
-        entityActionsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport"));
+        if (!getEntityId().isEmpty()) {
+            entityActionsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport"));
+        }
     }
 
     @Override
@@ -287,11 +292,16 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "expensereport/save";
+        if (!getEntityId().isEmpty()) {
+            return OfficeWelcome.constants.root_url() + "expensereport/save";
+        } else {
+            return OfficeWelcome.constants.root_url() + "expensereport/submit";
+        }
     }
 
     @Override
-    public void onClick(ClickEvent event) {
+    public void onClick(ClickEvent event
+    ) {
         if (event.getSource().equals(addItemL)) {
             CreateExpenseItemPanel panel = null;
             if (expenseFormType.getValue().equals(ExpenseFormType.GENERAL_EXPENSE.name())) {
