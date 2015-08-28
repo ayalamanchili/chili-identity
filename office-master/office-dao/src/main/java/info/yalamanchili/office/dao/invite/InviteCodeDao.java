@@ -13,6 +13,8 @@ import info.yalamanchili.office.entity.profile.invite.InviteCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 /**
@@ -28,6 +30,12 @@ public class InviteCodeDao {
     
     public void save(InviteCode entity) {
         mongoTemplate.save(entity);
+    }
+    
+        public InviteCode find(String invitationCode) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("invitationCode").is(invitationCode));
+        return mongoTemplate.findOne(query, InviteCode.class);
     }
       
     public static InviteCodeDao instance() {

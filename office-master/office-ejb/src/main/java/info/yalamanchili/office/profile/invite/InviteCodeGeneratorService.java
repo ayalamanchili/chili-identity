@@ -12,8 +12,8 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.invite.InviteCodeDao;
 import info.yalamanchili.office.email.MailUtils;
 import info.chili.email.Email;
-import info.yalamanchili.office.dao.invite.InvitationTypeDao;
-import info.yalamanchili.office.entity.profile.invite.InvitationType;
+import info.yalamanchili.office.dao.invite.InviteTypeDao;
+import info.yalamanchili.office.entity.profile.invite.InviteType;
 import info.yalamanchili.office.entity.profile.invite.InviteCode;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.HashMap;
@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Scope("prototype")
 @Transactional
-public class InvitationCodeGenerator {
+public class InviteCodeGeneratorService {
 
     @Autowired
     protected InviteCodeDao inviteCodeDao;
@@ -39,13 +39,13 @@ public class InvitationCodeGenerator {
     @Autowired
     protected MailUtils mailUtils;
 
-    public void invite(InviteCode entity) {
+    public void inviteCodeGeneration(InviteCode entity) {
         entity.setInvitationCode(uuidGen());
-        InvitationType type = InvitationTypeDao.instance().find(entity.getInvitationType().getTypeOfInvitation());
-        entity.setInvitationType(type);
+        InviteType type = InviteTypeDao.instance().find(entity.getInviteType().getInvitationType());
+        entity.setInviteType(type);
         inviteCodeDao.save(entity);
         //send email
-        sendInvitationRequestEmail(entity);
+//        sendInvitationRequestEmail(entity);
     }
 
     public void sendInvitationRequestEmail(InviteCode entity) {
@@ -56,7 +56,7 @@ public class InvitationCodeGenerator {
         email.setSubject(subject.toString());
         Map<String, Object> emailCtx = new HashMap<>();
         emailCtx.put("invitationCode", entity.getInvitationCode());
-        email.setTemplateName(entity.getInvitationType().getEmailTemplateName());
+        email.setTemplateName(entity.getInviteType().getEmailTemplateName());
         email.setContext(emailCtx);
         email.setHtml(Boolean.TRUE);
         MessagingService.instance().sendEmail(email);
@@ -67,8 +67,8 @@ public class InvitationCodeGenerator {
         return uuid;
     }
 
-    public static InvitationCodeGenerator instance() {
-        return SpringContext.getBean(InvitationCodeGenerator.class);
+    public static InviteCodeGeneratorService instance() {
+        return SpringContext.getBean(InviteCodeGeneratorService.class);
     }
 
 }

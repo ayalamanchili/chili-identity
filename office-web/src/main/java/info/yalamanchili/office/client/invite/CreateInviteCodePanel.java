@@ -27,13 +27,13 @@ import java.util.logging.Logger;
  *
  * @author Madhu.Badiginchala
  */
-public class CreateOnboardingInvitationPanel extends CreateComposite {
+public class CreateInviteCodePanel extends CreateComposite {
     
-    private static Logger logger = Logger.getLogger(CreateOnboardingInvitationPanel.class.getName());
+    private static Logger logger = Logger.getLogger(CreateInviteCodePanel.class.getName());
 
     HTML emptyLine = new HTML("<br/>");
 
-    public CreateOnboardingInvitationPanel(CreateCompositeType type) {
+    public CreateInviteCodePanel(CreateCompositeType type) {
         super(type);
         initCreateComposite("InviteCode", OfficeWelcome.constants);
     }
@@ -41,12 +41,12 @@ public class CreateOnboardingInvitationPanel extends CreateComposite {
     @Override
     public JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
-        JSONObject invitationType = new JSONObject();
-        assignEntityValueFromField("typeOfInvitation", invitationType);
+        JSONObject inviteType = new JSONObject();
+        assignEntityValueFromField("invitationType", inviteType);
         assignEntityValueFromField("validFromDate", entity);
         assignEntityValueFromField("expiryDate", entity);
         assignEntityValueFromField("email", entity);
-        entity.put("invitationType", invitationType);
+        entity.put("inviteType", inviteType);
         return entity;
     }
 
@@ -64,7 +64,7 @@ public class CreateOnboardingInvitationPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addEnumField("typeOfInvitation", false, true, TypeOfInvitation.names(), Alignment.HORIZONTAL);
+        addEnumField("invitationType", false, true, InvitationType.names(), Alignment.HORIZONTAL);
         addField("validFromDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("expiryDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("email", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);

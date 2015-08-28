@@ -10,7 +10,8 @@ package info.yalamanchili.office.jrs.invite;
 
 import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.entity.profile.invite.InviteCode;
-import info.yalamanchili.office.profile.invite.InvitationCodeGenerator;
+import info.yalamanchili.office.profile.invite.InviteCodeGeneratorService;
+import info.yalamanchili.office.profile.invite.InviteCodeValidationService;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -29,14 +30,21 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 @Scope("request")
-public class InviteResource {
+public class InviteCodeResource {
 
 
     @PUT
     @Validate
     @Path("/invite")
     public void submitInviteRequest(InviteCode entity) {
-        InvitationCodeGenerator.instance().invite(entity);
+        InviteCodeGeneratorService.instance().inviteCodeGeneration(entity);
+    }
+    
+    @PUT
+    @Validate
+    @Path("/validate")
+    public void inviteCodeValidation(String inviteCode) {
+        InviteCodeValidationService.instance().inviteCodeValidator(inviteCode);
     }
     
     

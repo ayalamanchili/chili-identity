@@ -8,48 +8,11 @@
  */
 package info.yalamanchili.office.entity.profile.invite;
 
-import info.chili.document.AbstractDocument;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 /**
  *
  * @author Madhu.Badiginchala
  */
-@Document
-@XmlRootElement
-@XmlType
-public class InvitationType extends AbstractDocument{
-    
-    protected TypeOfInvitation typeOfInvitation;
-    
-    protected String description;
-    
-    protected String emailTemplateName;
-
-    public TypeOfInvitation getTypeOfInvitation() {
-        return typeOfInvitation;
-    }
-
-    public void setTypeOfInvitation(TypeOfInvitation typeOfInvitation) {
-        this.typeOfInvitation = typeOfInvitation;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getEmailTemplateName() {
-        return emailTemplateName;
-    }
-
-    public void setEmailTemplateName(String emailTemplateName) {
-        this.emailTemplateName = emailTemplateName;
-    }
-    
+public enum InvitationType {
+    EMPLOYEE_ONBOARDING,
+    CLIENT_ONBOARDING;
 }

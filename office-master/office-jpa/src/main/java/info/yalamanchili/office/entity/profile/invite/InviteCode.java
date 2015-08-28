@@ -39,7 +39,7 @@ public class InviteCode extends AbstractDocument {
     protected String email;
     
     @DBRef
-    protected InvitationType invitationType;
+    protected InviteType inviteType;
 
     public String getInvitationCode() {
         return invitationCode;
@@ -74,12 +74,13 @@ public class InviteCode extends AbstractDocument {
     }
 
     @XmlElement
-    public InvitationType getInvitationType() {
-        return invitationType;
+    public InviteType getInviteType() {
+        return inviteType;
     }
 
-    public void setInvitationType(InvitationType invitationType) {
-        this.invitationType = invitationType;
+    public void setInviteType(InviteType inviteType) {
+        this.inviteType = inviteType;
     }
+ 
 
 }
