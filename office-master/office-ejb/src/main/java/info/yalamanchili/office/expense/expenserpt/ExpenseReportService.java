@@ -38,15 +38,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -74,6 +70,8 @@ public class ExpenseReportService {
             } else {
                 item.setCategory(expenseCategoryDao.findById(item.getCategory().getId()));
             }
+            item.setId(null);
+            item.setVersion(null);
             item.setExpenseReport(entity);
         }
         for (ExpenseReceipt receipt : entity.getExpenseReceipts()) {
