@@ -24,8 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class InviteCodeValidationService {
     
-     public void inviteCodeValidator(String code) {
-         InviteCode inviteCode = InviteCodeDao.instance().find(code);
+     public void inviteCodeValidator(InviteCode code) {
+         InviteCode inviteCode = InviteCodeDao.instance().find(code.getInvitationCode());
          System.out.println(inviteCode.toString());
 
     }

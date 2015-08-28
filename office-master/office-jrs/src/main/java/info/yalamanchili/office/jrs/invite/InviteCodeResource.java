@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Madhu.Badiginchala
  */
-@Path("secured/invite")
+@Path("secured/invitecode")
 @Produces("application/json")
 @Consumes("application/json")
 @Component
@@ -32,20 +32,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("request")
 public class InviteCodeResource {
 
-
     @PUT
     @Validate
     @Path("/invite")
-    public void submitInviteRequest(InviteCode entity) {
+    public void invite(InviteCode entity) {
         InviteCodeGeneratorService.instance().inviteCodeGeneration(entity);
     }
-    
+
     @PUT
     @Validate
     @Path("/validate")
-    public void inviteCodeValidation(String inviteCode) {
-        InviteCodeValidationService.instance().inviteCodeValidator(inviteCode);
+    public void validate(InviteCode entity) {
+        
     }
-    
-    
+
 }

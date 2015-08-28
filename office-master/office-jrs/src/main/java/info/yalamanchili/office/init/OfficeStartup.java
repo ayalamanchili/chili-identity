@@ -53,6 +53,8 @@ import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,6 +64,9 @@ public class OfficeStartup {
 
     @PersistenceContext
     protected EntityManager em;
+    @Autowired
+    protected MongoOperations mongoTemplate;
+
     protected CUser userUser;
     protected CUser rohanUser;
     protected CUser pavanUser;
@@ -419,6 +424,11 @@ public class OfficeStartup {
         getEmployeeType();
         getSubContractorEmployeeType();
         get1099EmployeeType();
+//        InvitationType invititationType = new InvitationType();
+//        invititationType.setTypeOfInvitation(TypeOfInvitation.CLIENT_ONBOARDING);
+//        invititationType.setDescription("Employee On Baording");
+//        
+//        mongoTemplate.save(invititationType);
     }
 
     protected void initTestData() {

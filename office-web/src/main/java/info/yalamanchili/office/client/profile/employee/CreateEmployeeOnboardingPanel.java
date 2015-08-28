@@ -54,8 +54,8 @@ public class CreateEmployeeOnboardingPanel extends CreateComposite implements Ch
     EnumField statesF;
     EnumField countriesF;
 
-    public CreateEmployeeOnboardingPanel(CreateCompositeType type) {
-        super(type);
+    public CreateEmployeeOnboardingPanel() {
+        super(CreateCompositeType.CREATE);
         initCreateComposite("Employee", OfficeWelcome.constants);
     }
 

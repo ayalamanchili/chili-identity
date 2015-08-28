@@ -15,7 +15,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.yalamanchili.office.client.Auth.ROLE;
-import info.yalamanchili.office.client.invite.CreateOnboardingInvitationPanel;
 
 public class EmployeeSidePanel extends ALComposite implements ClickHandler {
 
@@ -32,8 +31,8 @@ public class EmployeeSidePanel extends ALComposite implements ClickHandler {
     @Override
     protected void addListeners() {
         createEmployeeLink.addClickHandler(this);
-        createEmployeeOnboardingLink.addClickHandler(this); 
-        sendOnboardingInviteCodeLink.addClickHandler(this); 
+        createEmployeeOnboardingLink.addClickHandler(this);
+        sendOnboardingInviteCodeLink.addClickHandler(this);
     }
 
     @Override
@@ -59,11 +58,11 @@ public class EmployeeSidePanel extends ALComposite implements ClickHandler {
         }
         if (clickEvent.getSource().equals(createEmployeeOnboardingLink)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateEmployeeOnboardingPanel(CreateCompositeType.CREATE));
+            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateEmployeeOnboardingPanel());
         }
         if (clickEvent.getSource().equals(sendOnboardingInviteCodeLink)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateOnboardingInvitationPanel(CreateCompositeType.CREATE));
+//            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateOnboardingInvitationPanel(CreateCompositeType.CREATE));
         }
     }
 }
