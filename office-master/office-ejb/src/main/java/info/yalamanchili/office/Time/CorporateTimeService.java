@@ -119,7 +119,6 @@ public class CorporateTimeService {
         CorporateTimeSummary summary = new CorporateTimeSummary();
         //PTO
         summary.setUsedPTOHours(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.PTO_USED, TimeSheetStatus.Approved, new Date()));
-        summary.setUsedPTOHours(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.TDL_PAID, TimeSheetStatus.Approved, new Date()));
         summary.setAvailablePTOHours(corporateTimeSheetDao.getPTOAccruedTimeSheet(employee).getHours());
         summary.setTotalPTOHours(summary.getAvailablePTOHours());
         //Total
