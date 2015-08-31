@@ -25,6 +25,11 @@
                 Start Date          : #{entity.startDate}
                 End Date            : #{entity.endDate}
                 Total Amount        : #{entity.totalExpenses}
+                
+                Navigate to view Expense Report:
+                Expense > Expense Reports > Search > Click View > Table Action column > Click View Icon (or)
+                Expense > Expense Reports > Table Action column > Click View Icon
+                
                 Detailed instructions below:
                 https://apps.sstech.us/site/office/expense/expensereportprocess.html
                 
@@ -85,6 +90,11 @@
                 Start Date          : #{entity.startDate}
                 End Date            : #{entity.endDate}
                 Total Amount        : #{entity.totalExpenses}
+                
+                Navigate to view Expense Report:
+                Expense > Expense Reports > Search > Click View > Table Action column > Click View Icon (or)
+                Expense > Expense Reports > Table Action column > Click View Icon
+                
                 Detailed instructions below:
                 https://apps.sstech.us/site/office/expense/expensereportprocess.html
             </documentation>
@@ -143,6 +153,11 @@
                 Start Date          : #{entity.startDate}
                 End Date            : #{entity.endDate}
                 Total Amount        : #{entity.totalExpenses}
+                
+                Navigate to view Expense Report:
+                Expense > Expense Reports > Search > Click View > Table Action column > Click View Icon (or)
+                Expense > Expense Reports > Table Action column > Click View Icon
+                
                 Detailed instructions below:
                 https://apps.sstech.us/site/office/expense/expensereportprocess.html
             </documentation>

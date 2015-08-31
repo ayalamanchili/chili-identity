@@ -179,16 +179,8 @@ public class ExpenseReportService {
         data.getData().put("projectNumber", entity.getProjectNumber());
         data.getData().put("startDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getStartDate()));
         data.getData().put("endDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getEndDate()));
-        if (entity.getExpenseReimbursePaymentMode() != null) {
-            switch (entity.getExpenseReimbursePaymentMode()) {
-                case ACH:
-                    data.getData().put("achType", "true");
-                    break;
-                case MAIL_CHECK:
-                    data.getData().put("mailcheckType", "true");
-                    break;
-            }
-        }
+        data.getData().put("mailcheckType", "true");
+ 
 
 // Ecpense Item General 
         Integer i = 1;

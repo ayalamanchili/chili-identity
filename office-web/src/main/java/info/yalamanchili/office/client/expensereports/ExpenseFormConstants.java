@@ -22,7 +22,6 @@ public interface ExpenseFormConstants {
     // Travel Transportation Panel
     String EXPENSE_FORM_TYPE="expenseFormType";
     String EXPENSE_PAYMENT_MODE="expensePaymentMode";
-    String EXPENSE_REIMBURSE_PMT_MODE="expenseReimbursePaymentMode";
     String NAME="name";
     String LOCATION="location";
     String START_DATE="startDate";

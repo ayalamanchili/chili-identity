@@ -71,7 +71,6 @@ public class ReadExpenseReportPanel extends ReadComposite {
     DateField endDate;
     StringField projectName;
     StringField projectNumber;
-    EnumField expenseReimbursePaymentMode;
 
     public static ReadExpenseReportPanel instance() {
         return instance;
@@ -83,7 +82,6 @@ public class ReadExpenseReportPanel extends ReadComposite {
     }
 
     protected final void populateComments() {
-//        entityActionsPanel.add(expenseReceiptInfo);
         entityActionsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport"));
     }
 
@@ -106,8 +104,6 @@ public class ReadExpenseReportPanel extends ReadComposite {
         projectName = (StringField) fields.get(PROJECT_NAME);
         addField(PROJECT_NUMBER, true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         projectNumber = (StringField) fields.get(PROJECT_NUMBER);
-        addEnumField(EXPENSE_REIMBURSE_PMT_MODE, true, true, ExpenseReimbursePaymentMode.names(), Alignment.HORIZONTAL);
-        expenseReimbursePaymentMode = (EnumField) fields.get(EXPENSE_REIMBURSE_PMT_MODE);
         entityFieldsPanel.add(expenseInfo);
         alignFields();
     }
@@ -120,9 +116,9 @@ public class ReadExpenseReportPanel extends ReadComposite {
         endDate.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
         projectName.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         projectNumber.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
-        expenseReimbursePaymentMode.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         generalInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         expenseInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        expenseReceiptInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
     }
 
     @Override
@@ -150,7 +146,6 @@ public class ReadExpenseReportPanel extends ReadComposite {
         assignFieldValueFromEntity(END_DATE, entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity(PROJECT_NAME, entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity(PROJECT_NUMBER, entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity(EXPENSE_REIMBURSE_PMT_MODE, entity, DataType.ENUM_FIELD);
         JSONArray expenseItems = JSONUtils.toJSONArray(entity.get(EXPENSE_ITEMS));
         populateExpenseItems(expenseItems);
         JSONArray expenseReceipts = JSONUtils.toJSONArray(entity.get(EXPENSE_RECEIPT));

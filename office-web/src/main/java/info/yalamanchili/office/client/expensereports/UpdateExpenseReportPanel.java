@@ -77,6 +77,13 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
             + "\n"
             + "<ul>\n"
             + "</ul>");
+    
+    protected static HTML notes = new HTML("\n"
+            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
+            + "<strong style=\"color:#555555\">Note: Please mail expense original receipts to Tampa office.</strong></p>\n"
+            + "\n"
+            + "<ul>\n"
+            + "</ul>");
 
     HTML emptyLine = new HTML("<br/>");
 
@@ -86,7 +93,6 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
     DateField endDate;
     StringField projectName;
     StringField projectNumber;
-    EnumField expenseReimbursePaymentMode;
     JSONArray expenseReceipts = new JSONArray();
 
     public UpdateExpenseReportPanel(String id) {
@@ -124,7 +130,6 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
         assignEntityValueFromField(END_DATE, entity);
         assignEntityValueFromField(PROJECT_NAME, entity);
         assignEntityValueFromField(PROJECT_NUMBER, entity);
-        assignEntityValueFromField(EXPENSE_REIMBURSE_PMT_MODE, entity);
         JSONArray items = new JSONArray();
         int i = 0;
         for (CRUDComposite panel : updateItemPanels) {
@@ -209,7 +214,6 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
         assignFieldValueFromEntity(END_DATE, entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity(PROJECT_NAME, entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity(PROJECT_NUMBER, entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity(EXPENSE_REIMBURSE_PMT_MODE, entity, DataType.ENUM_FIELD);
         JSONArray expenseItems = JSONUtils.toJSONArray(entity.get(EXPENSE_ITEMS));
         populateExpenseItems(expenseItems);
         expenseReceipts = JSONUtils.toJSONArray(entity.get(EXPENSE_RECEIPT));
@@ -256,10 +260,11 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
         endDate.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
         projectName.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         projectNumber.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
-        expenseReimbursePaymentMode.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         generalInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         expenseInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         addItemL.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        expenseReceiptInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        notes.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
     }
 
     @Override
@@ -277,8 +282,6 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
         projectName = (StringField) fields.get(PROJECT_NAME);
         addField(PROJECT_NUMBER, false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         projectNumber = (StringField) fields.get(PROJECT_NUMBER);
-        addEnumField(EXPENSE_REIMBURSE_PMT_MODE, false, true, ExpenseReimbursePaymentMode.names(), Alignment.HORIZONTAL);
-        expenseReimbursePaymentMode = (EnumField) fields.get(EXPENSE_REIMBURSE_PMT_MODE);
         entityFieldsPanel.add(receiptsInfo);
         entityFieldsPanel.add(fileUploadPanel);
         entityFieldsPanel.add(expenseInfo);

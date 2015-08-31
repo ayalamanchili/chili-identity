@@ -134,9 +134,6 @@ public class ExpenseReport extends AbstractEntity {
     /**
      *
      */
-    @NotNull(message = "{expensereport.paymentmode.not.empty.msg}")
-    @Enumerated(EnumType.STRING)
-    private ExpenseReimbursePaymentMode expenseReimbursePaymentMode;
 
     private BigDecimal totalExpenses;
     /**
@@ -315,20 +312,6 @@ public class ExpenseReport extends AbstractEntity {
         this.status = status;
     }
 
-    /**
-     *
-     */
-    public ExpenseReimbursePaymentMode getExpenseReimbursePaymentMode() {
-        return expenseReimbursePaymentMode;
-    }
-
-    /**
-     *
-     */
-    public void setExpenseReimbursePaymentMode(ExpenseReimbursePaymentMode expenseReimbursePaymentMode) {
-        this.expenseReimbursePaymentMode = expenseReimbursePaymentMode;
-    }
-
     public String getApprovedByManager() {
         return approvedByManager;
     }
@@ -415,7 +398,9 @@ public class ExpenseReport extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "ExpenseReport{" + "location=" + location + ", department=" + department + ", startDate=" + startDate + ", endDate=" + endDate + ", projectName=" + projectName + ", projectNumber=" + projectNumber + ", submittedDate=" + submittedDate + ", approvedByManager=" + approvedByManager + ", approvedByManagerDate=" + approvedByManagerDate + ", approvedByAccountsDept=" + approvedByAccountsDept + ", approvedByAccountsDeptDate=" + approvedByAccountsDeptDate + ", approvedByCEO=" + approvedByCEO + ", approvedByCEODate=" + approvedByCEODate + ", bpmProcessId=" + bpmProcessId + ", status=" + status + ", expenseFormType=" + expenseFormType + ", expenseReimbursePaymentMode=" + expenseReimbursePaymentMode + ", totalExpenses=" + totalExpenses + ", proposedApprovalManager=" + approvalManager + '}';
+        return "ExpenseReport{" + "location=" + location + ", department=" + department + ", startDate=" + startDate + ", endDate=" + endDate + ", projectName=" + projectName + ", projectNumber=" + projectNumber + ", submittedDate=" + submittedDate + ", approvedByManager=" + approvedByManager + ", approvedByManagerDate=" + approvedByManagerDate + ", approvedByAccountsDept=" + approvedByAccountsDept + ", approvedByAccountsDeptDate=" + approvedByAccountsDeptDate + ", approvedByCEO=" + approvedByCEO + ", approvedByCEODate=" + approvedByCEODate + ", employee=" + employee + ", expenseItems=" + expenseItems + ", bpmProcessId=" + bpmProcessId + ", status=" + status + ", expenseFormType=" + expenseFormType + ", totalExpenses=" + totalExpenses + ", expenseReceipts=" + expenseReceipts + ", approvalManager=" + approvalManager + '}';
     }
+
+    
 
 }
