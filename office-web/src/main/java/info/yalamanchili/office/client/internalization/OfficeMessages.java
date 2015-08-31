@@ -2,7 +2,7 @@ package info.yalamanchili.office.client.internalization;
 
 /**
  * Interface to represent the messages contained in resource bundle:
- * 	/home/ayalamanchili/sstech/office/office-web/src/main/java/info/yalamanchili/office/client/internalization/OfficeMessages.properties'.
+ * 	C:/codebase/sstech/office-git/office/office-web/src/main/java/info/yalamanchili/office/client/internalization/OfficeMessages.properties'.
  */
 public interface OfficeMessages extends com.google.gwt.i18n.client.Messages {
   
