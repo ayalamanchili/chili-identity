@@ -52,10 +52,11 @@
         <class>info.chili.security.domain.CRole</class>
         <class>info.chili.security.domain.CUser</class>
         <!--Security ACL-->
-        <class>info.yalamanchili.office.entity.security.acl.AclSid</class>
-        <class>info.yalamanchili.office.entity.security.acl.AclClass</class>
-        <class>info.yalamanchili.office.entity.security.acl.AclObjectIdentity</class>
-        <class>info.yalamanchili.office.entity.security.acl.AclEntry</class>
+        <class>info.chili.security.domain.acl.AclSid</class>
+        <class>info.chili.security.domain.acl.AclClass</class>
+        <class>info.chili.security.domain.acl.AclObjectIdentity</class>
+        <class>info.chili.security.domain.acl.AclEntry</class>
+        
         <class>info.yalamanchili.office.entity.bulkimport.BulkImportMessage</class>
         <class>info.yalamanchili.office.entity.privacy.PrivacySetting</class>
         <!-- i18n-->
