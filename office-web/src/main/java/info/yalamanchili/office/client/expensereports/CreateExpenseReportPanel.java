@@ -36,6 +36,7 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.widgets.SuggestBox;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.expenseitem.CreateExpenseItemPanel;
@@ -86,7 +87,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
             + "\n"
             + "<ul>\n"
             + "</ul>");
-        
+
     HTML emptyLine = new HTML("<br/>");
 
     EnumField expenseFormType;
@@ -158,7 +159,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     }
 
     private String getEmployeeIdsDropDownUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=employeeId&column=firstName&column=lastName&employee-type=Corporate Employee");
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_GENERAL_EXPENSE_MANAGER.name() + "/0/10000");
     }
 
     @Override
