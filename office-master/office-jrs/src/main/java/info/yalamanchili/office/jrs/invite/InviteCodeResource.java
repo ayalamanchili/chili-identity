@@ -43,7 +43,7 @@ public class InviteCodeResource {
     @Validate
     @Path("/validate")
     public void validate(InviteCode entity) {
-        
+       InviteCodeValidationService.instance().inviteCodeValidator(entity);
     }
 
 }

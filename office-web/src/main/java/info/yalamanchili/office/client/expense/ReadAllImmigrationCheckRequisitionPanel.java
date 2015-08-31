@@ -16,8 +16,8 @@ import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
+import info.chili.gwt.crud.TableRowOptionsWidget.OptionsType;
 import info.chili.gwt.date.DateUtils;
-import info.chili.gwt.fields.FileField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.FormatUtils;
 import info.chili.gwt.utils.JSONUtils;
@@ -116,14 +116,28 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
     public void printClicked(String entityId) {
         Window.open(ChiliClientConfig.instance().getFileDownloadUrl() + "checkrequisition/report" + "&passthrough=true" + "&id=" + entityId, "_blank", "");
     }
+    
+    @Override
+    public void copyClicked(String entityId) {
+        HttpService.HttpServiceAsync.instance().doGet(OfficeWelcome.constants.root_url() + "checkrequisition/clone/" + entityId, OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String arg0) {
+                        logger.info(arg0);
+                        new ResponseStatusWidget().show("Copy created. Plase update and save.");
+                        TabPanel.instance().expensePanel.entityPanel.clear();
+                        TabPanel.instance().expensePanel.entityPanel.add(new CreateImmigrationCheckRequisitionPanel());
+                    }
+                });
+    }
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
 
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN)) {
-            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE, TableRowOptionsWidget.OptionsType.PRINT), row, JSONUtils.toString(entity, "id"));
+            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), OptionsType.READ, OptionsType.UPDATE, OptionsType.DELETE, OptionsType.PRINT, OptionsType.COPY ), row, JSONUtils.toString(entity, "id"));
         } else {
-            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.PRINT), row, JSONUtils.toString(entity, "id"));
+            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), OptionsType.READ, OptionsType.PRINT, OptionsType.COPY), row, JSONUtils.toString(entity, "id"));
         }
     }
 

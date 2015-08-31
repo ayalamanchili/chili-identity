@@ -122,7 +122,7 @@ public class CreateInviteCodePanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "invite/invite";
+        return OfficeWelcome.constants.root_url() + "invitecode/invite";
     }
     
 }
