@@ -119,7 +119,7 @@
                       targetRef="finalApprovalTaskGateway" />
         <exclusiveGateway id="finalApprovalTaskGateway" />
         <sequenceFlow sourceRef="finalApprovalTaskGateway" 
-                      targetRef="advanceRequisitionEnd">
+                      targetRef="advanceRequisitionAccountsPayableTask">
             <conditionExpression xsi:type="tFormalExpression">
                 ${status == 'approved'}
             </conditionExpression>

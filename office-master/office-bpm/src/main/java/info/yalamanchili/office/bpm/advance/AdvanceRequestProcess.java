@@ -69,7 +69,7 @@ public class AdvanceRequestProcess implements TaskListener {
                 payrollOrManagerApprovalTaskComplete(entity, task);
                 break;
             case "advanceRequisitionFinalApprovalTask":
-                adminApprovalTaskComplete(entity, task);
+                ceoApprovalTaskComplete(entity, task);
                 break;
             case "advanceRequisitionAccountsPayableTask":
                 accountsPayableTaskComplete(entity, task);
@@ -102,7 +102,7 @@ public class AdvanceRequestProcess implements TaskListener {
         AdvanceRequisitionDao.instance().save(entity);
     }
 
-    protected void adminApprovalTaskComplete(AdvanceRequisition entity, DelegateTask task) {
+    protected void ceoApprovalTaskComplete(AdvanceRequisition entity, DelegateTask task) {
         String approvedAmountVar = (String) task.getExecution().getVariable("approvedAmount");
         BigDecimal approvedAmount;
         try {
