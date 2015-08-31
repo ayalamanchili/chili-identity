@@ -925,6 +925,24 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String AdvanceRequisition_status_info();
 
   /**
+   * Translated "Initial Approval Manager".
+   * 
+   * @return translated "Initial Approval Manager"
+   */
+  @DefaultStringValue("Initial Approval Manager")
+  @Key("ApprovalManager_approvalManager")
+  String ApprovalManager_approvalManager();
+
+  /**
+   * Translated "By default your manager will get the approval task if you want to this to be sent to different manager please select.".
+   * 
+   * @return translated "By default your manager will get the approval task if you want to this to be sent to different manager please select."
+   */
+  @DefaultStringValue("By default your manager will get the approval task if you want to this to be sent to different manager please select.")
+  @Key("ApprovalManager_approvalManager_info")
+  String ApprovalManager_approvalManager_info();
+
+  /**
    * Translated "Assigned To".
    * 
    * @return translated "Assigned To"
@@ -7061,6 +7079,42 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Requested Date")
   @Key("ImmigrationCheckRequisition_requestedDate_info")
   String ImmigrationCheckRequisition_requestedDate_info();
+
+  /**
+   * Translated "Invitee's Email".
+   * 
+   * @return translated "Invitee's Email"
+   */
+  @DefaultStringValue("Invitee's Email")
+  @Key("InviteCode_email")
+  String InviteCode_email();
+
+  /**
+   * Translated "Invitation Valid To".
+   * 
+   * @return translated "Invitation Valid To"
+   */
+  @DefaultStringValue("Invitation Valid To")
+  @Key("InviteCode_expiryDate")
+  String InviteCode_expiryDate();
+
+  /**
+   * Translated "Invitation Type".
+   * 
+   * @return translated "Invitation Type"
+   */
+  @DefaultStringValue("Invitation Type")
+  @Key("InviteCode_typeOfInvitation")
+  String InviteCode_typeOfInvitation();
+
+  /**
+   * Translated "Invitation Valid From".
+   * 
+   * @return translated "Invitation Valid From"
+   */
+  @DefaultStringValue("Invitation Valid From")
+  @Key("InviteCode_validFromDate")
+  String InviteCode_validFromDate();
 
   /**
    * Translated "Description".
