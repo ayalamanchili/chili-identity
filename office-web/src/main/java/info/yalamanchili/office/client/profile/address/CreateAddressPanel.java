@@ -113,7 +113,9 @@ public class CreateAddressPanel extends CreateComposite implements ChangeHandler
         if (notifyChangeF != null) {
             notifyChangeF.getBox().addClickHandler(this);
         }
-        countriesF.listBox.addChangeHandler(this);
+        if (countriesF != null) {
+            countriesF.listBox.addChangeHandler(this);
+        }
     }
 
     @Override
