@@ -74,7 +74,6 @@ public class ExpenseReport extends AbstractEntity {
     /**
      *
      */
-    @NotNull(message = "{expensereport.paymentmode.not.empty.msg}")
     @Enumerated(EnumType.STRING)
     private ExpenseReimbursePaymentMode expenseReimbursePaymentMode;
     /**
