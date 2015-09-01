@@ -92,7 +92,7 @@ public class AdvanceRequestProcess implements TaskListener {
         //Status
         String status = (String) task.getExecution().getVariable("status");
         if (status.equalsIgnoreCase("approved")) {
-            entity.setStatus(AdvanceRequisitionStatus.Pending_Final_Approval);
+            entity.setStatus(AdvanceRequisitionStatus.Pending_CEO_Approval);
             entity.setApprovedBy(OfficeSecurityService.instance().getCurrentUser().getEmployeeId());
             entity.setApprovedDate(new Date());
         } else {

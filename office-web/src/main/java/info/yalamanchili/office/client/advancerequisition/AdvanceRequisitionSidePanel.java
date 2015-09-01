@@ -20,8 +20,6 @@ import info.chili.gwt.utils.Utils;
 import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.SuggestBox;
-import info.yalamanchili.office.client.Auth;
-import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import java.util.Map;
@@ -52,7 +50,7 @@ public class AdvanceRequisitionSidePanel extends ALComposite implements ClickHan
 
     @Override
     protected void configure() {
-         HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+        HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
                 logger.info(entityString);
@@ -67,13 +65,10 @@ public class AdvanceRequisitionSidePanel extends ALComposite implements ClickHan
     @Override
     protected void addWidgets() {
         advanceRequisitionSidePanel.add(createAdvanceRequisitionLink);
-//        advanceRequisitionSidePanel.add(Utils.getLineSeperatorTag("Search"));
-
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_ACCOUNTS_PAYABLE)) {
-            advanceRequisitionSidePanel.add(Utils.getLineSeperatorTag("Search"));
-            advanceRequisitionSidePanel.add(employeeSB);
-            advanceRequisitionSidePanel.add(viewB);
-        }
+        advanceRequisitionSidePanel.add(Utils.getLineSeperatorTag("Search"));
+        advanceRequisitionSidePanel.add(Utils.getLineSeperatorTag("Search"));
+        advanceRequisitionSidePanel.add(employeeSB);
+        advanceRequisitionSidePanel.add(viewB);
     }
 
     @Override

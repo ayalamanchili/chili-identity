@@ -288,12 +288,12 @@ public class ExpenseReportService {
         }
 
         if ((entity.getExpenseFormType()) != null && entity.getExpenseFormType().name().equals("TRAVEL_EXPENSE")) {
-            if (entity.getApprovalManager() != null) {
-                Employee ceo = employeeDao.findEmployeWithEmpId(entity.getApprovalManager());
-                if (ceo != null) {
-                    Signature approvedsignature = new Signature(ceo.getEmployeeId(), ceo.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "payrollApprovalBy", DateUtils.dateToCalendar(entity.getApprovedByManagerDate()), employeeDao.getPrimaryEmail(ceo), null);
+            if (entity.getApprovedByManager() != null) {
+                Employee manager = employeeDao.findEmployeWithEmpId(entity.getApprovedByManager());
+                if (manager != null) {
+                    Signature approvedsignature = new Signature(manager.getEmployeeId(), manager.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "approvedByManager", DateUtils.dateToCalendar(entity.getApprovedByManagerDate()), employeeDao.getPrimaryEmail(manager), null);
                     data.getSignatures().add(approvedsignature);
-                    data.getData().put("approvedByPayrollDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getApprovedByManagerDate()));
+                    data.getData().put("approvedByManagerDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getApprovedByManagerDate()));
                 }
             }
         }
