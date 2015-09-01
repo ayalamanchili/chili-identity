@@ -74,6 +74,12 @@ public class ExpenseReport extends AbstractEntity {
     /**
      *
      */
+    @NotNull(message = "{expensereport.paymentmode.not.empty.msg}")
+    @Enumerated(EnumType.STRING)
+    private ExpenseReimbursePaymentMode expenseReimbursePaymentMode;
+    /**
+     *
+    */ 
     @Temporal(TemporalType.DATE)
     @org.hibernate.annotations.Index(name = "EXP_SUB_DTE")
     private Date submittedDate;
@@ -396,11 +402,26 @@ public class ExpenseReport extends AbstractEntity {
         this.approvalManager = approvalManager;
     }
 
-    @Override
-    public String toString() {
-        return "ExpenseReport{" + "location=" + location + ", department=" + department + ", startDate=" + startDate + ", endDate=" + endDate + ", projectName=" + projectName + ", projectNumber=" + projectNumber + ", submittedDate=" + submittedDate + ", approvedByManager=" + approvedByManager + ", approvedByManagerDate=" + approvedByManagerDate + ", approvedByAccountsDept=" + approvedByAccountsDept + ", approvedByAccountsDeptDate=" + approvedByAccountsDeptDate + ", approvedByCEO=" + approvedByCEO + ", approvedByCEODate=" + approvedByCEODate + ", employee=" + employee + ", expenseItems=" + expenseItems + ", bpmProcessId=" + bpmProcessId + ", status=" + status + ", expenseFormType=" + expenseFormType + ", totalExpenses=" + totalExpenses + ", expenseReceipts=" + expenseReceipts + ", approvalManager=" + approvalManager + '}';
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
+    public static void setSerialVersionUID(long serialVersionUID) {
+        ExpenseReport.serialVersionUID = serialVersionUID;
+    }
+
+    public ExpenseReimbursePaymentMode getExpenseReimbursePaymentMode() {
+        return expenseReimbursePaymentMode;
+    }
+
+    public void setExpenseReimbursePaymentMode(ExpenseReimbursePaymentMode expenseReimbursePaymentMode) {
+        this.expenseReimbursePaymentMode = expenseReimbursePaymentMode;
+    }
+
+    @Override
+    public String toString() {
+        return "ExpenseReport{" + "location=" + location + ", department=" + department + ", startDate=" + startDate + ", endDate=" + endDate + ", projectName=" + projectName + ", projectNumber=" + projectNumber + ", expenseReimbursePaymentMode=" + expenseReimbursePaymentMode + ", submittedDate=" + submittedDate + ", approvedByManager=" + approvedByManager + ", approvedByManagerDate=" + approvedByManagerDate + ", approvedByAccountsDept=" + approvedByAccountsDept + ", approvedByAccountsDeptDate=" + approvedByAccountsDeptDate + ", approvedByCEO=" + approvedByCEO + ", approvedByCEODate=" + approvedByCEODate + ", employee=" + employee + ", expenseItems=" + expenseItems + ", bpmProcessId=" + bpmProcessId + ", status=" + status + ", expenseFormType=" + expenseFormType + ", totalExpenses=" + totalExpenses + ", expenseReceipts=" + expenseReceipts + ", approvalManager=" + approvalManager + '}';
+    }
     
 
 }
