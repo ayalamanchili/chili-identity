@@ -18,6 +18,7 @@ import info.yalamanchili.office.dao.expense.AdvanceRequisitionDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.chili.email.Email;
+import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.expense.AdvanceRequisition;
 import info.yalamanchili.office.entity.expense.AdvanceRequisitionStatus;
@@ -49,7 +50,7 @@ public class AdvanceRequestProcess implements TaskListener {
             saveAdvanceRequisition(task);
             assignAdvanceRequisitionTask(task);
         }
-        new GenericTaskCreateNotification().notify(task);
+        new GenericTaskCreateNotification().notifyWithMoreRoles(task, OfficeRole.ROLE_ACCOUNTS_PAYABLE.name());
     }
 
     protected void advanceRequestTaskCompleted(DelegateTask task) {
@@ -57,6 +58,8 @@ public class AdvanceRequestProcess implements TaskListener {
         if (entity == null) {
             return;
         }
+        String notes = (String) task.getExecution().getVariable("notes");
+        CommentDao.instance().addComment(notes, entity);
         Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
         if (currentUser.getEmployeeId().equals(entity.getEmployee().getEmployeeId())) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.self.approve.corp.advancerequisition", "You cannot approve your advancerequisition task");
@@ -66,7 +69,10 @@ public class AdvanceRequestProcess implements TaskListener {
                 payrollOrManagerApprovalTaskComplete(entity, task);
                 break;
             case "advanceRequisitionFinalApprovalTask":
-                adminApprovalTaskComplete(entity, task);
+                ceoApprovalTaskComplete(entity, task);
+                break;
+            case "advanceRequisitionAccountsPayableTask":
+                accountsPayableTaskComplete(entity, task);
                 break;
         }
     }
@@ -96,7 +102,31 @@ public class AdvanceRequestProcess implements TaskListener {
         AdvanceRequisitionDao.instance().save(entity);
     }
 
-    protected void adminApprovalTaskComplete(AdvanceRequisition entity, DelegateTask task) {
+    protected void ceoApprovalTaskComplete(AdvanceRequisition entity, DelegateTask task) {
+        String approvedAmountVar = (String) task.getExecution().getVariable("approvedAmount");
+        BigDecimal approvedAmount;
+        try {
+            approvedAmount = new BigDecimal(approvedAmountVar);
+        } catch (NumberFormatException ex) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.approved.amount", "Approved amount must be a valid amount eg: 99.99 ");
+        }
+        entity.setAmount(approvedAmount);
+        //Notes
+        String notes = (String) task.getExecution().getVariable("notes");
+        CommentDao.instance().addComment(notes, entity);
+        //Status
+        String status = (String) task.getExecution().getVariable("status");
+        if (status.equalsIgnoreCase("approved")) {
+            entity.setStatus(AdvanceRequisitionStatus.Pending_Accounts_Payable_Dipatch);
+            notifyAccountsPayableDept(entity);
+        } else {
+            entity.setStatus(AdvanceRequisitionStatus.Rejected);
+        }
+        AdvanceRequisitionDao.instance().save(entity);
+        new GenericTaskCompleteNotification().notifyWithMoreRoles(task, OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name());
+    }
+
+    protected void accountsPayableTaskComplete(AdvanceRequisition entity, DelegateTask task) {
         String approvedAmountVar = (String) task.getExecution().getVariable("approvedAmount");
         BigDecimal approvedAmount;
         try {
@@ -117,7 +147,6 @@ public class AdvanceRequestProcess implements TaskListener {
             entity.setStatus(AdvanceRequisitionStatus.Rejected);
         }
         AdvanceRequisitionDao.instance().save(entity);
-        new GenericTaskCompleteNotification().notifyWithMoreRoles(task, OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name());
     }
 
     protected void saveAdvanceRequisition(DelegateTask task) {

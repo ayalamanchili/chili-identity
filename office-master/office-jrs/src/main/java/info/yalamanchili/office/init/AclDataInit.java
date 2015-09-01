@@ -9,9 +9,9 @@ package info.yalamanchili.office.init;
 
 import info.chili.commons.EntityQueryUtils;
 import info.chili.security.domain.CUser;
+import info.chili.security.domain.acl.AclClass;
+import info.chili.security.domain.acl.AclSid;
 import info.yalamanchili.office.entity.profile.SkillSet;
-import info.yalamanchili.office.entity.security.acl.AclClass;
-import info.yalamanchili.office.entity.security.acl.AclSid;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.EntityManager;

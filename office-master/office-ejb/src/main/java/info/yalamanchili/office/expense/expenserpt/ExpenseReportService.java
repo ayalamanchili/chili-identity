@@ -180,7 +180,6 @@ public class ExpenseReportService {
         data.getData().put("startDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getStartDate()));
         data.getData().put("endDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getEndDate()));
         data.getData().put("mailcheckType", "true");
- 
 
 // Ecpense Item General 
         Integer i = 1;
@@ -289,12 +288,12 @@ public class ExpenseReportService {
         }
 
         if ((entity.getExpenseFormType()) != null && entity.getExpenseFormType().name().equals("TRAVEL_EXPENSE")) {
-            if (entity.getApprovedByAccountsDept() != null) {
-                Employee ceo = employeeDao.findEmployeWithEmpId(entity.getApprovedByAccountsDept());
+            if (entity.getApprovalManager() != null) {
+                Employee ceo = employeeDao.findEmployeWithEmpId(entity.getApprovalManager());
                 if (ceo != null) {
-                    Signature approvedsignature = new Signature(ceo.getEmployeeId(), ceo.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "payrollApprovalBy", DateUtils.dateToCalendar(entity.getApprovedByAccountsDeptDate()), employeeDao.getPrimaryEmail(ceo), null);
+                    Signature approvedsignature = new Signature(ceo.getEmployeeId(), ceo.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "payrollApprovalBy", DateUtils.dateToCalendar(entity.getApprovedByManagerDate()), employeeDao.getPrimaryEmail(ceo), null);
                     data.getSignatures().add(approvedsignature);
-                    data.getData().put("approvedByPayrollDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getApprovedByAccountsDeptDate()));
+                    data.getData().put("approvedByPayrollDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getApprovedByManagerDate()));
                 }
             }
         }

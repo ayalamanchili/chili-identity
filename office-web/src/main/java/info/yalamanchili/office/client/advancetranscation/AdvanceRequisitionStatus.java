@@ -18,6 +18,7 @@ public enum AdvanceRequisitionStatus {
     Pending,
     Pending_Initial_Approval,
     Pending_Final_Approval,
+    Pending_Accounts_Payable_Dipatch,
     Approved,
     //TODO remove pending
     Completed,

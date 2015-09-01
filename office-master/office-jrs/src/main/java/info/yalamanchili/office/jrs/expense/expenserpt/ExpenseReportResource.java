@@ -100,7 +100,7 @@ public class ExpenseReportResource extends CRUDResource<ExpenseReport> {
 
     @GET
     @Path("/{employeeId}/{start}/{limit}")
-    @AccessCheck(companyContacts = {"Perf_Eval_Manager", "Reports_To"}, roles = {"ROLE_ADMIN", "ROLE_CEO", "ROLE_ACCOUNTS_PAYABLE"}, strictOrderCheck = false)
+    @AccessCheck(companyContacts = {"Perf_Eval_Manager", "Reports_To"}, roles = {"ROLE_ADMIN", "ROLE_CEO", "ROLE_ACCOUNTS_PAYABLE", "ROLE_PAYROLL_AND_BENIFITS", "ROLE_GENERAL_EXPENSE_MANAGER"}, strictOrderCheck = false)
     public ExpenseReportResource.ExpenseReportsTable getExpenseReportForEmployee(@PathParam("employeeId") Long employeeId, @PathParam("start") int start, @PathParam("limit") int limit) {
         ExpenseReportResource.ExpenseReportsTable tableObj = new ExpenseReportResource.ExpenseReportsTable();
         tableObj.setEntities(expenseReportsDao.queryForEmployee(employeeId, start, limit));
