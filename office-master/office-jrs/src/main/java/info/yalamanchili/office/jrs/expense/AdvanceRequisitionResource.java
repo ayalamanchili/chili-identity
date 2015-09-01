@@ -104,7 +104,7 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
 
     @GET
     @Path("/{employeeId}/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PAYROLL_AND_BENIFITS','ROLE_ACCOUNTS_PAYABLE')")
+    @AccessCheck(companyContacts = {"Perf_Eval_Manager", "Reports_To"}, roles = {"ROLE_ADMIN", "ROLE_CEO", "ROLE_PAYROLL_AND_BENIFITS", "ROLE_ACCOUNTS_PAYABLE"}, strictOrderCheck = false)
     public AdvanceRequisitionTable getAdvanceRequisitionsForEmployee(@PathParam("employeeId") Long employeeId, @PathParam("start") int start, @PathParam("limit") int limit) {
         AdvanceRequisitionTable tableObj = new AdvanceRequisitionTable();
         tableObj.setEntities(advanceRequisitionDao.queryForEmployee(employeeId, start, limit));
