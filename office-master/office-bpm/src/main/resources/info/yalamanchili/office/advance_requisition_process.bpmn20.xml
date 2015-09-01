@@ -74,10 +74,10 @@
             </conditionExpression>
         </sequenceFlow>
         <userTask id="advanceRequisitionFinalApprovalTask" 
-                  name="Advance Requisition Final Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" 
+                  name="Advance Requisition CEO Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" 
                   activiti:candidateGroups="ROLE_CEO">
             <documentation>
-                Advance Requisition Final Approval Task
+                Advance Requisition CEO Approval Task
                 Employee Name  : #{currentEmployee.firstName} #{currentEmployee.lastName}
                 Amount         : #{entity.amount}
                 Purpose        : #{entity.purpose}
@@ -135,7 +135,7 @@
                   name="Advance Requisition Accounts Payable Payment Dispatch Task for ${currentEmployee.firstName} ${currentEmployee.lastName}"
                   activiti:candidateGroups="ROLE_ACCOUNTS_PAYABLE">
             <documentation>
-                Advance Requisition Final Approval Task
+                Advance Requisition Accounts Payable Payment Dispatch Approval Task
                 Employee Name  : #{currentEmployee.firstName} #{currentEmployee.lastName}
                 Amount         : #{entity.amount}
                 Purpose        : #{entity.purpose}
