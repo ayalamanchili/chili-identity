@@ -74,6 +74,9 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
 
     @Override
     public void updateClicked(String entityId) {
+        logger.info("in update clicked");
+        TabPanel.instance().expensePanel.entityPanel.clear();
+        TabPanel.instance().expensePanel.entityPanel.add(new UpdateImmigrationCheckRequisitionPanel(entityId));
     }
 
     @Override

@@ -15,6 +15,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.yalamanchili.office.client.Auth.ROLE;
+import info.yalamanchili.office.client.invite.CreateInviteCodePanel;
 
 public class EmployeeSidePanel extends ALComposite implements ClickHandler {
 
@@ -62,7 +63,7 @@ public class EmployeeSidePanel extends ALComposite implements ClickHandler {
         }
         if (clickEvent.getSource().equals(sendOnboardingInviteCodeLink)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-//            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateOnboardingInvitationPanel(CreateCompositeType.CREATE));
+            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateInviteCodePanel(CreateCompositeType.CREATE));
         }
     }
 }

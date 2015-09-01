@@ -11,7 +11,6 @@ package info.yalamanchili.office.client.expense;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.crud.CRUDReadAllComposite;
-import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.utils.FormatUtils;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -55,8 +54,8 @@ public class ReadAllImmigrationCheckRequisitionItems extends CRUDReadAllComposit
 
     @Override
     public void createTableHeader() {
-        table.setText(0, 0, getKeyValue("Table_Action"));
-        table.setText(0, 1, getKeyValue("Name"));
+        table.setText(0, 0, getKeyValue("Name"));
+        table.setText(0, 1, getKeyValue("Description"));
         table.setText(0, 2, getKeyValue("Amount"));
     }
 
@@ -64,17 +63,15 @@ public class ReadAllImmigrationCheckRequisitionItems extends CRUDReadAllComposit
     public void fillData(JSONArray entities) {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
-            addOptionsWidget(i, entity);
-            table.setText(i, 1, JSONUtils.toString(entity, "itemName"));
-            table.setText(i, 2, JSONUtils.toString(entity, "itemDesc"));
-            table.setText(i, 3, FormatUtils.formarCurrency(JSONUtils.toString(entity, "amount")));
+            table.setText(i, 0, JSONUtils.toString(entity, "itemName"));
+            table.setText(i, 1, JSONUtils.toString(entity, "itemDesc"));
+            table.setText(i, 2, FormatUtils.formarCurrency(JSONUtils.toString(entity, "amount")));
         }
     }
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
-
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

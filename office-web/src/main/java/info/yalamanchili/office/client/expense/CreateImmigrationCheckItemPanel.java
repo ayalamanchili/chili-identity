@@ -8,23 +8,40 @@
  */
 package info.yalamanchili.office.client.expense;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.widgets.ClickableLink;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Sadipan.B
  */
-public class CreateImmigrationCheckItemPanel extends CreateComposite {    
+public class CreateImmigrationCheckItemPanel extends CreateComposite implements ClickHandler {  
+    
+    private Logger logger = Logger.getLogger(CreateImmigrationCheckItemPanel.class.getName());
+    CreateImmigrationCheckRequisitionPanel parentPanel;
+    ClickableLink deleteB = new ClickableLink("Remove Item");
     
     public CreateImmigrationCheckItemPanel() {
         super(CreateComposite.CreateCompositeType.CREATE);
         initCreateComposite("CheckRequisitionItem", OfficeWelcome.constants);
     }
     
+    public CreateImmigrationCheckItemPanel(CreateImmigrationCheckRequisitionPanel parent) {
+        super(CreateComposite.CreateCompositeType.CREATE);
+        initCreateComposite("CheckRequisitionItem", OfficeWelcome.constants);
+        this.parentPanel = parent;
+    }
+       
     @Override
     public JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();        
@@ -39,8 +56,9 @@ public class CreateImmigrationCheckItemPanel extends CreateComposite {
     protected void addWidgets() {
         addField("itemName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("itemDesc", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("amount", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        addField("amount", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         alignFields();
+        entityActionsPanel.add(deleteB);
     }
 
     @Override
@@ -57,6 +75,7 @@ public class CreateImmigrationCheckItemPanel extends CreateComposite {
 
     @Override
     protected void addListeners() {
+        deleteB.addClickHandler(this);
     }
 
     @Override
@@ -72,6 +91,26 @@ public class CreateImmigrationCheckItemPanel extends CreateComposite {
     protected String getURI() {
         return null;
     }
-        
+    
+    @Override
+    public void onClick(ClickEvent event) {
+        if (event.getSource().equals(deleteB)) {
+            logger.info("in OnClick");
+            parentPanel.removePanel();
+            logger.info("after OnClick");
+            HttpService.HttpServiceAsync.instance().doPut(getDeleteURI(), entity.toString(),
+                    OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
 
+                        @Override
+                        public void onResponse(String arg0) {
+                            new ResponseStatusWidget().show("Successfully Deleted Employee ExpenseItem Information");
+                        }
+                    });
+        }
+        super.onClick(event);
+    }
+
+    protected String getDeleteURI() {
+        return OfficeWelcome.constants.root_url() + "checkrequisition/delete/" + getEntityId();
+    }
 }
