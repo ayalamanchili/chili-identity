@@ -50,7 +50,7 @@ public class AdvanceRequestProcess implements TaskListener {
             saveAdvanceRequisition(task);
             assignAdvanceRequisitionTask(task);
         }
-        new GenericTaskCreateNotification().notifyWithMoreRoles(task, OfficeRole.ROLE_ACCOUNTS_PAYABLE.name());
+        new GenericTaskCreateNotification().notifyWithMoreRoles(task, OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name(), OfficeRole.ROLE_ACCOUNTS_PAYABLE.name());
     }
 
     protected void advanceRequestTaskCompleted(DelegateTask task) {
@@ -169,8 +169,9 @@ public class AdvanceRequestProcess implements TaskListener {
         Employee reportsToEmp = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Reports_To");
         if (emp.getEmployeeType().getName().equals("Corporate Employee") && reportsToEmp != null) {
             task.addCandidateUser(reportsToEmp.getEmployeeId());
+        } else {
+            task.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name());
         }
-        task.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name());
     }
 
     public void notifyAccountsPayableDept(AdvanceRequisition entity) {
