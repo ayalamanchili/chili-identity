@@ -9,7 +9,6 @@
 package info.yalamanchili.office.entity.expense;
 
 import info.chili.jpa.AbstractEntity;
-import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.profile.Employee;
 
 import java.math.BigDecimal;
@@ -24,12 +23,15 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -40,13 +42,12 @@ import org.hibernate.search.annotations.Field;
 @XmlRootElement
 @XmlType
 public class ImmigrationCheckRequisition extends AbstractEntity {
-    
+
     private static long serialVersionUID = 1L;
     /**
      *
      */
     @Temporal(javax.persistence.TemporalType.DATE)
-    @NotNull(message = "{requestedDate.not.empty.msg}")
     private Date requestedDate;
     /**
      *
@@ -54,7 +55,7 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
     @Temporal(javax.persistence.TemporalType.DATE)
     @NotNull(message = "{neededBy.not.empty.msg}")
     private Date neededByDate;
-    /**     
+    /**
      *
      */
     @NotNull(message = "{amount.not.empty.msg}")
@@ -77,18 +78,18 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
     private String purpose;
     /**
      *
-     */    
-    
+     */
+    @NotEmpty
     private String attorneyName;
 
     /**
      *
      */
-    private Employee submittedBy;
+    private String submittedBy;
     /**
      *
      */
-    private Employee approvedBy;
+    private String approvedBy;
     /**
      *
      */
@@ -97,7 +98,7 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
     /**
      *
      */
-    private Employee accountedBy;
+    private String accountedBy;
     /**
      *
      */
@@ -112,35 +113,30 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
      *
      */
     @ManyToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_Company_ImmigrationCheckReqs")
-    @NotNull(message = "{immigration.check.requisition.company.not.empty.msg}")
-    private Company company;
-    /**
-     *
-     */
-//    @ManyToOne(cascade = CascadeType.MERGE)
-//    @ForeignKey(name = "FK_Employee_ImmigrationCheckReqs")
+    @ForeignKey(name = "FK_Employee_ImmigrationCheckReqs")
     @NotNull(message = "{immigration.check.requisition.employee.not.empty.msg}")
-    private String employee;
+    private Employee employee;
     /**
      *
      */
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Size(min = 1, message = "{checkitem.min.size.msg}")
+    @Valid
     private List<CheckRequisitionItem> items;
     /**
      *
      */
     @Enumerated(EnumType.STRING)
     @Field
-    @NotNull(message = "{immigration.check.requisition.status.not.empty.msg}")
     private ImmigrationCheckRequisitionStatus status;
     /**
-     * 
+     *
      */
     private String bpmProcessId;
+
     /**
-    * GETTERS and SETTERS
-    */
+     * GETTERS and SETTERS
+     */
     public Date getRequestedDate() {
         return requestedDate;
     }
@@ -188,7 +184,7 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
     public void setPurpose(String purpose) {
         this.purpose = purpose;
     }
-    
+
     public String getAttorneyName() {
         return attorneyName;
     }
@@ -197,19 +193,19 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
         this.attorneyName = attorneyName;
     }
 
-    public Employee getSubmittedBy() {
+    public String getSubmittedBy() {
         return submittedBy;
     }
 
-    public void setSubmittedBy(Employee submittedBy) {
+    public void setSubmittedBy(String submittedBy) {
         this.submittedBy = submittedBy;
     }
 
-    public Employee getApprovedBy() {
+    public String getApprovedBy() {
         return approvedBy;
     }
 
-    public void setApprovedBy(Employee approvedBy) {
+    public void setApprovedBy(String approvedBy) {
         this.approvedBy = approvedBy;
     }
 
@@ -221,11 +217,11 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
         this.approvedDate = approvedDate;
     }
 
-    public Employee getAccountedBy() {
+    public String getAccountedBy() {
         return accountedBy;
     }
 
-    public void setAccountedBy(Employee accountedBy) {
+    public void setAccountedBy(String accountedBy) {
         this.accountedBy = accountedBy;
     }
 
@@ -245,19 +241,11 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
         this.accountDeptReceivedDate = accountDeptReceivedDate;
     }
 
-    public Company getCompany() {
-        return company;
-    }
-
-    public void setCompany(Company company) {
-        this.company = company;
-    }
-
-    public String getEmployee() {
+    public Employee getEmployee() {
         return employee;
     }
 
-    public void setEmployee(String employee) {
+    public void setEmployee(Employee employee) {
         this.employee = employee;
     }
 
@@ -287,7 +275,7 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "ImmigrationCheckRequisition{" + "requestedDate=" + requestedDate + ", neededByDate=" + neededByDate + ", amount=" + amount + ", mailingAddress=" + mailingAddress + ", caseType=" + caseType + ", purpose=" + purpose + ", submittedBy=" + submittedBy + ", approvedBy=" + approvedBy + ", approvedDate=" + approvedDate + ", accountedBy=" + accountedBy + ", checkIssuedDate=" + checkIssuedDate + ", accountDeptReceivedDate=" + accountDeptReceivedDate + ", company=" + company + ", employee=" + employee + ", items=" + items + ", status=" + status + ", bpmProcessId=" + bpmProcessId + '}';
+        return "ImmigrationCheckRequisition{" + "requestedDate=" + requestedDate + ", neededByDate=" + neededByDate + ", amount=" + amount + ", mailingAddress=" + mailingAddress + ", caseType=" + caseType + ", purpose=" + purpose + ", attorneyName=" + attorneyName + ", submittedBy=" + submittedBy + ", approvedBy=" + approvedBy + ", approvedDate=" + approvedDate + ", accountedBy=" + accountedBy + ", checkIssuedDate=" + checkIssuedDate + ", accountDeptReceivedDate=" + accountDeptReceivedDate + ", items=" + items + ", status=" + status + ", bpmProcessId=" + bpmProcessId + '}';
     }
 
 }

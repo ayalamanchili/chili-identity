@@ -12,15 +12,12 @@ package info.yalamanchili.office.client.expense;
  * @author benerji.v
  */
 public enum ImmigrationCheckRequisitionStatus {
-    Open,
-    //TODO remove pending
-    Pending,
-    Pending_Initial_Approval,
-    Pending_Final_Approval,
-    Approved,
-    //TODO remove pending
-    Completed,
-    Rejected;
+
+    PENDING_APPROVAL,
+    PENDING_ACCOUNTS_PAYABLE_DISPATCH,
+    COMPLETE,
+    REJECTED;
+
     public static String[] names() {
         ImmigrationCheckRequisitionStatus[] values = values();
         String[] names = new String[values.length];

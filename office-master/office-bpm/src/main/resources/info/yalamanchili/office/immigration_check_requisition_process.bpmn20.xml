@@ -14,12 +14,12 @@
         <startEvent id="immigrationCheckRequisitionStart"/>
         
         <!-- Manager approval task-->
-        <sequenceFlow  sourceRef="immigrationCheckRequisitionStart" targetRef="payrollDeptApprovalTask" />
-        <userTask id="payrollDeptApprovalTask" 
-                  name="Immigration Check Approval by Payroll Dept for ${Employee}">
+        <sequenceFlow  sourceRef="immigrationCheckRequisitionStart" targetRef="checkRequestApprovalTask" />
+        <userTask id="checkRequestApprovalTask" 
+                  name="Immigration Check Approval by for ${employeeName}">
             <documentation>
                 Check Requisition Detail
-                Submitted By    : #{entity.submittedBy.firstName} #{entity.submittedBy.lastName}
+                Submitted By    : #{entity.submittedBy}
                 Amount          : #{entity.amount}
                 Purpose         : #{entity.purpose}
                 Needed By Date  : #{entity.neededByDate}
@@ -27,10 +27,6 @@
                 MailingAddress  : #{entity.mailingAddress}
                 caseType        : #{entity.caseType}
                 attorney        : #{entity.attorneyName}
-                approvedBy      : #{entity.approvedBy.firstName} #{entity.approvedBy.lastName}
-                approvedDate    : #{entity.approvedDate}
-                accountedBy     : #{entity.accountedBy.firstName} #{entity.accountedBy.lastName}
-                company         : #{entity.company.name}
                 status          : #{entity.status}
                 Follow instructions from below:
                 https://apps.sstech.us/site/office/expense/immigrationcheckprocess.html
@@ -38,10 +34,6 @@
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.immigration.ImmigrationCheckRequestProcess" />
                 <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.immigration.ImmigrationCheckRequestProcess" />
-                <activiti:formProperty id="approvedAmount" 
-                                       name="Approved Amount"
-                                       required="true" 
-                                       type="string" />
                 <activiti:formProperty id="status" 
                                        name="Approved?"
                                        required="true"
@@ -56,18 +48,18 @@
             </extensionElements> 
         </userTask>
         <!-- Task escalation email after 48 hours-->
-        <boundaryEvent id="payrollDeptApprovalTaskEscalationTimer"
+        <boundaryEvent id="checkRequestApprovalTaskEscalationTimer"
                        cancelActivity="false" 
-                       attachedToRef="payrollDeptApprovalTask">
+                       attachedToRef="checkRequestApprovalTask">
             <timerEventDefinition> 
                 <timeDuration>PT48H</timeDuration> 
             </timerEventDefinition>
         </boundaryEvent>
-        <sequenceFlow sourceRef="payrollDeptApprovalTaskEscalationTimer" 
-                      targetRef="payrollDeptApprovalTaskEscalation" />
-        <serviceTask id="payrollDeptApprovalTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <sequenceFlow sourceRef="checkRequestApprovalTaskEscalationTimer" 
+                      targetRef="checkRequestApprovalTaskEscalation" />
+        <serviceTask id="checkRequestApprovalTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
         <!--desision-->
-        <sequenceFlow sourceRef="payrollDeptApprovalTask" 
+        <sequenceFlow sourceRef="checkRequestApprovalTask" 
                       targetRef="approvalGateway" />
         <exclusiveGateway id="approvalGateway" />
         <sequenceFlow sourceRef="approvalGateway" 
@@ -83,11 +75,11 @@
             </conditionExpression>
         </sequenceFlow>
         <userTask id="accountDeptDispatchTask" 
-                  name="Immigration Check Dispatch by Accounts Dept for ${Employee}" 
+                  name="Immigration Check Dispatch Task for Accounts Payable Dept for ${employeeName}" 
                   activiti:candidateGroups="ROLE_ACCOUNTS_PAYABLE">
             <documentation>
                 Check Requisition Detail
-                Submitted By    : #{entity.submittedBy.firstName} #{entity.submittedBy.lastName}
+                Submitted By    : #{entity.submittedBy}
                 Amount          : #{entity.amount}
                 Purpose         : #{entity.purpose}
                 Needed By Date  : #{entity.neededByDate}
@@ -95,19 +87,14 @@
                 MailingAddress  : #{entity.mailingAddress}
                 caseType        : #{entity.caseType}
                 attorney        : #{entity.attorneyName}
-                approvedBy      : #{entity.approvedBy.firstName} #{entity.approvedBy.lastName}
+                approvedBy      : #{entity.approvedBy}
                 approvedDate    : #{entity.approvedDate}
-                accountedBy     : #{entity.accountedBy.firstName} #{entity.accountedBy.lastName}
-                company         : #{entity.company.name}
+                accountedBy     : #{entity.accountedBy}
                 status          : #{entity.status}
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.immigration.ImmigrationCheckRequestProcess" />
                 <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.immigration.ImmigrationCheckRequestProcess" />
-                <activiti:formProperty id="approvedAmount" 
-                                       name="Approved Amount"
-                                       required="true" 
-                                       type="string" />
                 <activiti:formProperty id="status" 
                                        name="Approved?"
                                        required="true"

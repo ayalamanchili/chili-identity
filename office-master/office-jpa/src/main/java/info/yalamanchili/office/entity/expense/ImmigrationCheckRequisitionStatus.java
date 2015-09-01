@@ -12,15 +12,10 @@ package info.yalamanchili.office.entity.expense;
  *
  * @author Sadipan.B
  */
-
 public enum ImmigrationCheckRequisitionStatus {
-    Open,
-    //TODO remove pending
-    Pending,
-    Pending_Initial_Approval,
-    Pending_Final_Approval,
-    Approved,
-    //TODO remove pending
-    Completed,
-    Rejected,
+
+    PENDING_APPROVAL,
+    PENDING_ACCOUNTS_PAYABLE_DISPATCH,
+    COMPLETE,
+    REJECTED
 }

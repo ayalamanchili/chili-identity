@@ -95,10 +95,12 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Employee"));
-        table.setText(0, 2, getKeyValue("Amount"));
-        table.setText(0, 3, getKeyValue("RequestedDate"));
-        table.setText(0, 4, getKeyValue("NeededByDate"));
-        table.setText(0, 5, getKeyValue("Status"));
+        table.setText(0, 2, getKeyValue("caseType"));
+        table.setText(0, 3, getKeyValue("attorneyName"));
+        table.setText(0, 4, getKeyValue("company"));
+        table.setText(0, 5, getKeyValue("Amount"));
+        table.setText(0, 6, getKeyValue("RequestedDate"));
+        table.setText(0, 7, getKeyValue("Status"));
     }
 
     @Override
@@ -106,12 +108,17 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-//            JSONObject emp = (JSONObject) entity.get("employee");
-            table.setText(i, 1, JSONUtils.toString(entity, "employee"));
-            table.setText(i, 2, FormatUtils.formarCurrency(JSONUtils.toString(entity, "amount")));
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "requestedDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "neededByDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 5, JSONUtils.formatEnumString(entity, "status"));
+            JSONObject emp = (JSONObject) entity.get("employee");
+            table.setText(i, 1, JSONUtils.toString(emp, "firstName"));
+            table.setText(i, 2, JSONUtils.toString(entity, "caseType"));
+            table.setText(i, 3, JSONUtils.toString(entity, "attorneyName"));
+            if (emp.get("company") != null) {
+                table.setText(i, 4, JSONUtils.toString(emp.get("company"), "name"));
+            }
+
+            table.setText(i, 5, FormatUtils.formarCurrency(JSONUtils.toString(entity, "amount")));
+            table.setText(i, 6, DateUtils.getFormatedDate(JSONUtils.toString(entity, "requestedDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 7, JSONUtils.formatEnumString(entity, "status"));
         }
     }
 
@@ -119,7 +126,7 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
     public void printClicked(String entityId) {
         Window.open(ChiliClientConfig.instance().getFileDownloadUrl() + "checkrequisition/report" + "&passthrough=true" + "&id=" + entityId, "_blank", "");
     }
-    
+
     @Override
     public void copyClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(OfficeWelcome.constants.root_url() + "checkrequisition/clone/" + entityId, OfficeWelcome.instance().getHeaders(), true,
@@ -138,7 +145,7 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
     protected void addOptionsWidget(int row, JSONObject entity) {
 
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN)) {
-            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), OptionsType.READ, OptionsType.UPDATE, OptionsType.DELETE, OptionsType.PRINT, OptionsType.COPY ), row, JSONUtils.toString(entity, "id"));
+            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), OptionsType.READ, OptionsType.UPDATE, OptionsType.DELETE, OptionsType.PRINT, OptionsType.COPY), row, JSONUtils.toString(entity, "id"));
         } else {
             createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), OptionsType.READ, OptionsType.PRINT, OptionsType.COPY), row, JSONUtils.toString(entity, "id"));
         }

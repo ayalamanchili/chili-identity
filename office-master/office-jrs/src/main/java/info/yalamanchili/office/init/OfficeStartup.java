@@ -390,6 +390,13 @@ public class OfficeStartup {
         rule2.setBpmTaskId("expenseReportMgrApprovalTask");
         rule2.setRuleName("managerAssignmentRuleEvaluator");
         em.merge(rule2);
+
+        BPMTaskDelegateRule rule3 = new BPMTaskDelegateRule();
+        rule3.setBpmProcessId("immigration_check_requisition_process");
+        rule3.setBpmTaskId("checkRequestApprovalTask");
+        rule3.setRuleName("employeeIdAssignmentRuleEvaluator");
+        rule3.setAttributeData("adminadmin");
+        em.merge(rule3);
     }
 
     /**

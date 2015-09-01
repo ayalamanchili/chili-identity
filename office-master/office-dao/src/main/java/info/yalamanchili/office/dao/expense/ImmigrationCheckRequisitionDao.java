@@ -64,7 +64,6 @@ public class ImmigrationCheckRequisitionDao extends CRUDDao<ImmigrationCheckRequ
     @Override
     @CacheEvict(value = OfficeCacheKeys.IMMIGRATION_CHECK, allEntries = true)
     public ImmigrationCheckRequisition save(ImmigrationCheckRequisition entity) {
-        entity.setCompany(em.find(Company.class, entity.getCompany().getId()));
         return super.save(entity);
     }
 

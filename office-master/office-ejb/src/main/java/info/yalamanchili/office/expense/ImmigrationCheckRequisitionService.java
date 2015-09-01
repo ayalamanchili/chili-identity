@@ -13,16 +13,18 @@ import info.chili.commons.pdf.PdfDocumentData;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
-import info.chili.bpm.types.Task;
 import info.yalamanchili.office.dao.expense.ImmigrationCheckRequisitionDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.expense.CheckRequisitionItem;
 import info.yalamanchili.office.entity.expense.ImmigrationCheckRequisition;
+import info.yalamanchili.office.entity.expense.ImmigrationCheckRequisitionStatus;
 import info.yalamanchili.office.entity.ext.Comment;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,24 +46,19 @@ public class ImmigrationCheckRequisitionService {
     protected ImmigrationCheckRequisitionDao immigrationCheckRequisitionDao;
 
     public void submitImmigrationCheckRequisition(ImmigrationCheckRequisition entity) {
+        entity.setSubmittedBy(OfficeSecurityService.instance().getCurrentUserName());
+        entity.setRequestedDate(new Date());
+        entity.setEmployee(EmployeeDao.instance().findById(entity.getEmployee().getId()));
+        entity.setStatus(ImmigrationCheckRequisitionStatus.PENDING_APPROVAL);
+        entity = immigrationCheckRequisitionDao.save(entity);
         Map<String, Object> vars = new HashMap<>();
-        Employee emp = OfficeSecurityService.instance().getCurrentUser();
-        entity.setSubmittedBy(emp);
         vars.put("entity", entity);
-        vars.put("Employee", entity.getEmployee());
-        vars.put("currentEmployee", emp);
+        vars.put("entityId", entity.getId());
+        vars.put("employeeName", entity.getEmployee().getFirstName() + " " + entity.getEmployee().getLastName());
+        vars.put("currentEmployee", EmployeeDao.instance().findEmployeWithEmpId(entity.getSubmittedBy()));
         String processId = OfficeBPMService.instance().startProcess("immigration_check_requisition_process", vars);
         entity.setBpmProcessId(processId);
-    }
-
-    protected Task getTaskForTicket(ImmigrationCheckRequisition immigrationCheckRequisition) {
-        OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
-        List<Task> tasks = taskService.getTasksForProcessId(immigrationCheckRequisition.getBpmProcessId());
-        if (tasks.size() > 0) {
-            return tasks.get(0);
-        } else {
-            return null;
-        }
+        immigrationCheckRequisitionDao.save(entity);
     }
 
     public void delete(Long id) {
@@ -69,7 +66,7 @@ public class ImmigrationCheckRequisitionService {
         OfficeBPMTaskService.instance().deleteAllTasksForProcessId(ticket.getBpmProcessId(), true);
         immigrationCheckRequisitionDao.delete(id);
     }
-    
+
     public ImmigrationCheckRequisition read(Long id) {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         return mapper.map(immigrationCheckRequisitionDao.findById(id), ImmigrationCheckRequisition.class);
@@ -85,11 +82,14 @@ public class ImmigrationCheckRequisitionService {
         PdfDocumentData data = new PdfDocumentData();
         data.setTemplateUrl("/templates/pdf/check-request-template.pdf");
 
-        Employee preparedBy = entity.getSubmittedBy();
-        String prepareByStr = preparedBy.getLastName() + ", " + preparedBy.getFirstName();
+        Employee preparedBy = EmployeeDao.instance().findEmployeWithEmpId(entity.getSubmittedBy());
+        if (preparedBy != null) {
+            String prepareByStr = preparedBy.getLastName() + ", " + preparedBy.getFirstName();
+            data.getData().put("submittedBy", prepareByStr);
+        }
         data.getData().put("attorneyName", entity.getAttorneyName());
-        data.getData().put("submittedBy", prepareByStr);
-        data.getData().put("employee", entity.getEmployee());
+
+        data.getData().put("employee", entity.getEmployee().getFirstName() + entity.getEmployee().getLastName());
         data.getData().put("requestedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getRequestedDate()));
         data.getData().put("neededByDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getNeededByDate()));
         if (entity.getAmount() != null) {
@@ -107,11 +107,11 @@ public class ImmigrationCheckRequisitionService {
         if (entity.getApprovedDate() != null) {
             data.getData().put("approvedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getApprovedDate()));
         }
-        if (entity.getAccountedBy() != null) {
-            String accountedBy = entity.getAccountedBy().getLastName() + ", " + entity.getAccountedBy().getFirstName();
-            data.getData().put("accountedBy", accountedBy);
+        Employee accountedBy = EmployeeDao.instance().findEmployeWithEmpId(entity.getSubmittedBy());
+        if (accountedBy != null) {
+            String accountedByStr = accountedBy.getLastName() + ", " + accountedBy.getFirstName();
+            data.getData().put("accountedBy", accountedByStr);
         }
-
         Integer i = 1;
         BigDecimal itemTotal = new BigDecimal(0);
         for (CheckRequisitionItem item : entity.getItems()) {
