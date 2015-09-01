@@ -46,4 +46,5 @@
     <include file="db_changelogs/08-17-2015_changelog.xml"/>
     <include file="db_changelogs/08-21-2015_changelog.xml"/> 
     <include file="db_changelogs/08-25-2015_changelog.xml"/>   
+    <include file="db_changelogs/sql/adv-req-ceo-approval-status-change.sql"/>   
 </databaseChangeLog>
