@@ -94,6 +94,15 @@ public class ImmigrationCheckRequisitionResource extends CRUDResource<Immigratio
     public Response getReport(@QueryParam("id") Long id) {
         return ImmigrationCheckRequisitionService.instance().getReport(immigrationCheckRequisitionDao.findById(id));
     }
+    
+    @GET
+    @Transactional(readOnly = true)
+    @Path("/clone/{id}")
+    @Override
+    public ImmigrationCheckRequisition clone(@PathParam("id") Long id) {
+        return ImmigrationCheckRequisitionService.instance().clone(id);
+    }
+    
 
     @XmlRootElement
     @XmlType

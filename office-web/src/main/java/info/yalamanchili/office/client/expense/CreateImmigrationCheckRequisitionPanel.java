@@ -13,6 +13,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.chili.gwt.crud.CRUDComposite;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
@@ -34,9 +35,9 @@ import java.util.logging.Logger;
 public class CreateImmigrationCheckRequisitionPanel extends CreateComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(CreateImmigrationCheckRequisitionPanel.class.getName());
-    protected SelectCompanyWidget selectCompnayWidget = new SelectCompanyWidget(true, true, Alignment.HORIZONTAL);
+    protected SelectCompanyWidget selectCompanyWidget = new SelectCompanyWidget(true, true, Alignment.HORIZONTAL);
     protected ClickableLink addItemL = new ClickableLink("Add Check Item");
-    protected List<CreateImmigrationCheckItemPanel> checkItemPanels = new ArrayList<CreateImmigrationCheckItemPanel>();
+    protected List<CreateImmigrationCheckItemPanel> checkItemPanels = new ArrayList<>();
 
     public CreateImmigrationCheckRequisitionPanel() {
         super(CreateCompositeType.CREATE);
@@ -60,8 +61,8 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
         assignEntityValueFromField("purpose", entity);                
         assignEntityValueFromField("employee", entity);
         
-        if (fields.containsKey("company") && selectCompnayWidget.getSelectedObject() != null) {
-            JSONObject company = selectCompnayWidget.getSelectedObject();          
+        if (fields.containsKey("company") && selectCompanyWidget.getSelectedObject() != null) {
+            JSONObject company = selectCompanyWidget.getSelectedObject();          
             company.put("name", company.get("value"));
             entity.put("company", company);
         }
@@ -109,7 +110,7 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addItemL)) {
-            CreateImmigrationCheckItemPanel panel = new CreateImmigrationCheckItemPanel();
+            CreateImmigrationCheckItemPanel panel = new CreateImmigrationCheckItemPanel(this);
             checkItemPanels.add(panel);
             entityFieldsPanel.add(panel);
         }
@@ -118,7 +119,7 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Request Submited, please wait for email notification within 48 hours for Email confirmation");
+        new ResponseStatusWidget().show("Check Request Form Successfully Created");
         TabPanel.instance().expensePanel.entityPanel.clear();
         TabPanel.instance().expensePanel.entityPanel.add(new ReadAllImmigrationCheckRequisitionPanel());
         GenericPopup.instance().hide();
@@ -128,13 +129,18 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
     protected void addListeners() {
         addItemL.addClickHandler(this);
     }
-//DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL
 
     @Override
     protected void configure() {
         setButtonText("Submit");
     }
 
+    @Override
+    protected CRUDComposite getChildWidget(int childIndexWidget) {
+        return checkItemPanels.get(childIndexWidget);
+    }
+    
+    
     @Override
     protected void addWidgets() {
         addField("attorneyName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -145,7 +151,7 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
         addField("requestedDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Check Details"));
         addField("employee", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addDropDown("company", selectCompnayWidget);
+        addDropDown("company", selectCompanyWidget);
         addEnumField("caseType", false, true, ImmigrationCaseType.names(), Alignment.HORIZONTAL);                              
         
         entityFieldsPanel.add(addItemL);
@@ -155,6 +161,15 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
+    }
+    
+    public void removePanel() {
+        logger.info("in removePanel");
+        if (checkItemPanels.size() > 0) {
+            int i = checkItemPanels.size();
+            checkItemPanels.get(i - 1).removeFromParent();
+            checkItemPanels.remove(i - 1);
+        }
     }
 
     @Override

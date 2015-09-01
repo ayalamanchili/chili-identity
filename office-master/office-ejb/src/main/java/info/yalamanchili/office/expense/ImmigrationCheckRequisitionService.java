@@ -8,10 +8,8 @@
  */
 package info.yalamanchili.office.expense;
 
-import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
 import info.chili.commons.pdf.PdfDocumentData;
-import info.chili.security.Signature;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
@@ -25,11 +23,11 @@ import info.yalamanchili.office.entity.ext.Comment;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.ws.rs.core.Response;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -49,7 +47,6 @@ public class ImmigrationCheckRequisitionService {
         Map<String, Object> vars = new HashMap<>();
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
         entity.setSubmittedBy(emp);
-//        entity.setRequestedDate(new Date());
         vars.put("entity", entity);
         vars.put("Employee", entity.getEmployee());
         vars.put("currentEmployee", emp);
@@ -71,6 +68,17 @@ public class ImmigrationCheckRequisitionService {
         ImmigrationCheckRequisition ticket = immigrationCheckRequisitionDao.findById(id);
         OfficeBPMTaskService.instance().deleteAllTasksForProcessId(ticket.getBpmProcessId(), true);
         immigrationCheckRequisitionDao.delete(id);
+    }
+    
+    public ImmigrationCheckRequisition read(Long id) {
+        Mapper mapper = (Mapper) SpringContext.getBean("mapper");
+        return mapper.map(immigrationCheckRequisitionDao.findById(id), ImmigrationCheckRequisition.class);
+    }
+
+    public ImmigrationCheckRequisition clone(Long id) {
+        ImmigrationCheckRequisition entity = immigrationCheckRequisitionDao.clone(id, "submittedDate", "approvedByManager", "approvedByManagerDate", "approvedByAccountsDept", "approvedByAccountsDeptDate", "approvedByCEO", "approvedByCEODate", "bpmProcessId", "status", "totalExpenses", "expenseReceipts");
+        Mapper mapper = (Mapper) SpringContext.getBean("mapper");
+        return mapper.map(entity, ImmigrationCheckRequisition.class);
     }
 
     public Response getReport(ImmigrationCheckRequisition entity) {
