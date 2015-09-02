@@ -150,7 +150,7 @@ public class ExpenseReport extends AbstractEntity {
      *
      */
     @Transient
-    protected String approvalManager;
+    protected Long approvalManagerId;
 
     /**
      *
@@ -393,12 +393,12 @@ public class ExpenseReport extends AbstractEntity {
         this.totalExpenses = totalExpenses;
     }
 
-    public String getApprovalManager() {
-        return approvalManager;
+    public Long getApprovalManagerId() {
+        return approvalManagerId;
     }
 
-    public void setApprovalManager(String approvalManager) {
-        this.approvalManager = approvalManager;
+    public void setApprovalManagerId(Long approvalManagerId) {
+        this.approvalManagerId = approvalManagerId;
     }
 
     public static long getSerialVersionUID() {
@@ -419,7 +419,7 @@ public class ExpenseReport extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "ExpenseReport{" + "location=" + location + ", department=" + department + ", startDate=" + startDate + ", endDate=" + endDate + ", projectName=" + projectName + ", projectNumber=" + projectNumber + ", expenseReimbursePaymentMode=" + expenseReimbursePaymentMode + ", submittedDate=" + submittedDate + ", approvedByManager=" + approvedByManager + ", approvedByManagerDate=" + approvedByManagerDate + ", approvedByAccountsDept=" + approvedByAccountsDept + ", approvedByAccountsDeptDate=" + approvedByAccountsDeptDate + ", approvedByCEO=" + approvedByCEO + ", approvedByCEODate=" + approvedByCEODate + ", employee=" + employee + ", expenseItems=" + expenseItems + ", bpmProcessId=" + bpmProcessId + ", status=" + status + ", expenseFormType=" + expenseFormType + ", totalExpenses=" + totalExpenses + ", expenseReceipts=" + expenseReceipts + ", approvalManager=" + approvalManager + '}';
+        return "ExpenseReport{" + "location=" + location + ", department=" + department + ", startDate=" + startDate + ", endDate=" + endDate + ", projectName=" + projectName + ", projectNumber=" + projectNumber + ", expenseReimbursePaymentMode=" + expenseReimbursePaymentMode + ", submittedDate=" + submittedDate + ", approvedByManager=" + approvedByManager + ", approvedByManagerDate=" + approvedByManagerDate + ", approvedByAccountsDept=" + approvedByAccountsDept + ", approvedByAccountsDeptDate=" + approvedByAccountsDeptDate + ", approvedByCEO=" + approvedByCEO + ", approvedByCEODate=" + approvedByCEODate + ", employee=" + employee + ", expenseItems=" + expenseItems + ", bpmProcessId=" + bpmProcessId + ", status=" + status + ", expenseFormType=" + expenseFormType + ", totalExpenses=" + totalExpenses + ", expenseReceipts=" + expenseReceipts + ", approvalManager=" + approvalManagerId + '}';
     }
     
 

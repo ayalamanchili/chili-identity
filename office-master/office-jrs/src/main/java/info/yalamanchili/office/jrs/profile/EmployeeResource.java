@@ -170,7 +170,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @Path("/employees-by-role/dropdown/{role}/{start}/{limit}")
     @Cacheable(OfficeCacheKeys.EMPLOYEES)
     public List<Entry> getEmployeesWithRoleDropDown(@PathParam("role") String role, @PathParam("start") int start, @PathParam("limit") int limit) {
-        List<Entry> result = new ArrayList<Entry>();
+        List<Entry> result = new ArrayList<>();
         Map<String, String> values = EmployeeDao.instance().getEmpByRoleEntityMap(start, limit, role);
         for (String key : values.keySet()) {
             result.add(new Entry(key, values.get(key)));

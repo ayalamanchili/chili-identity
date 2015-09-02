@@ -222,7 +222,7 @@ public class EmployeeDao extends CRUDDao<Employee> {
     }
 
     public Map<String, String> getEmpByRoleEntityMap(int start, int limit, String role) {
-        Map<String, String> res = new HashMap<String, String>();
+        Map<String, String> res = new HashMap<>();
         CRole crole = QueryUtils.findEntity(getEntityManager(), CRole.class, "rolename", role);
         Query q = getEntityManager().createNativeQuery("SELECT emp.id, emp.firstName,emp.lastName from CONTACT emp INNER JOIN CUSER cuser ON cuser.userId=emp.user_userId INNER JOIN USERROLES userRoles ON userRoles.UserId=cuser.userId where cuser.enabled= TRUE and userRoles.RoleId=" + crole.getRoleId());
         for (Object obj : q.getResultList()) {

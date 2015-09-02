@@ -184,7 +184,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         BigDecimal totalExpensesAmount = BigDecimal.ZERO;
         entity = new JSONObject();
         if (approvalManager.getSelectedObject() != null) {
-            entity.put("approvalManager", approvalManager.getSelectedObject().get("id").isString());
+            entity.put("approvalManagerId", approvalManager.getSelectedObject().get("id").isString());
         }
         assignEntityValueFromField(EXPENSE_FORM_TYPE, entity);
         assignEntityValueFromField(LOCATION, entity);
