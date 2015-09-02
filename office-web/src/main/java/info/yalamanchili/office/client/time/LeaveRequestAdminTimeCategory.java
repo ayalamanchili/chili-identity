@@ -19,8 +19,8 @@ public enum LeaveRequestAdminTimeCategory {
     JuryDuty,
     Bereavement,
     Maternity,
-    TDL_UNPAID,
-    TDL_PAID;
+    TDL_UnPaid,
+    TDL_Paid;
 
     public static String[] names() {
         LeaveRequestAdminTimeCategory[] values = values();
