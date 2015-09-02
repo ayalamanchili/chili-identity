@@ -155,9 +155,21 @@ public class EmployeeDao extends CRUDDao<Employee> {
     @Transactional(readOnly = true)
     @Override
     public List<Employee> sqlSearch(String searchText, int start, int limit, List<String> columns) {
-        Query searchQ = getEntityManager().createQuery("FROM " + Employee.class.getCanonicalName() + " WHERE user.enabled= TRUE and (firstName LIKE :firstNameParam OR lastName LIKE :lastNameParam)");
-        searchQ.setParameter("firstNameParam", '%' + searchText + '%');
-        searchQ.setParameter("lastNameParam", '%' + searchText + '%');
+        return sqlSearch(searchText, start, limit, columns, false);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Employee> sqlSearch(String searchText, int start, int limit, List<String> columns, boolean includeDeactivated) {
+        String queryStr = null;
+        if (includeDeactivated) {
+            queryStr = "FROM " + Employee.class.getCanonicalName() + " WHERE (upper(firstName) LIKE :firstNameParam OR upper(lastName) LIKE :lastNameParam)";
+
+        } else {
+            queryStr = "FROM " + Employee.class.getCanonicalName() + " WHERE user.enabled= TRUE and (upper(firstName) LIKE :firstNameParam OR upper(lastName) LIKE :lastNameParam)";
+        }
+        Query searchQ = getEntityManager().createQuery(queryStr);
+        searchQ.setParameter("firstNameParam", '%' + searchText.toUpperCase() + '%');
+        searchQ.setParameter("lastNameParam", '%' + searchText.toUpperCase() + '%');
         searchQ.setFirstResult(start);
         searchQ.setMaxResults(limit);
         return searchQ.getResultList();
