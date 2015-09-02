@@ -28,6 +28,7 @@ import info.yalamanchili.office.entity.expense.expenserpt.ExpenseCategory;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseFormType;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseItem;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReceipt;
+import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReimbursePaymentMode;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReportStatus;
 import info.yalamanchili.office.entity.ext.Comment;
@@ -62,6 +63,7 @@ public class ExpenseReportService {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         ExpenseReport entity = mapper.map(dto, ExpenseReport.class);
         entity.setStatus(ExpenseReportStatus.PENDING_MANAGER_APPROVAL);
+        entity.setExpenseReimbursePaymentMode(ExpenseReimbursePaymentMode.MAIL_CHECK);
         entity.setSubmittedDate(new Date());
         ExpenseCategoryDao expenseCategoryDao = ExpenseCategoryDao.instance();
         for (ExpenseItem item : entity.getExpenseItems()) {
@@ -80,21 +82,21 @@ public class ExpenseReportService {
             }
         }
         entity.setEmployee(OfficeSecurityService.instance().getCurrentUser());
-        String approvalManager = entity.getApprovalManager();
+        Long approvalManagerId = entity.getApprovalManagerId();
         entity = expenseReportsDao.save(entity);
-        entity.setBpmProcessId(startExpenseReportProcess(approvalManager, entity));
+        entity.setBpmProcessId(startExpenseReportProcess(approvalManagerId, entity));
         entity = expenseReportsDao.save(entity);
         return mapper.map(entity, ExpenseReportSaveDto.class);
     }
 
-    protected String startExpenseReportProcess(String approvalManager, ExpenseReport entity) {
+    protected String startExpenseReportProcess(Long approvalManagerId, ExpenseReport entity) {
         if (entity.getBpmProcessId() != null) {
             OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
         }
         Map<String, Object> vars = new HashMap<>();
         vars.put("entity", entity);
-        if (!Strings.isNullOrEmpty(approvalManager)) {
-            vars.put("approvalManager", approvalManager.trim());
+        if (approvalManagerId != null) {
+            vars.put("approvalManager", EmployeeDao.instance().findById(approvalManagerId).getEmployeeId());
         }
         vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
         vars.put("entityId", entity.getId());
