@@ -53,6 +53,14 @@ public class ImmigrationCheckRequisitionResource extends CRUDResource<Immigratio
     public void submitImmigrationCheckRequest(ImmigrationCheckRequisition entity) {
         ImmigrationCheckRequisitionService.instance().submitImmigrationCheckRequisition(entity);
     }
+    
+    @PUT
+    @Validate
+    @Path("/save-check-requisition-request")
+    @CacheEvict(value = OfficeCacheKeys.IMMIGRATION_CHECK, allEntries = true)
+    public void saveImmigrationCheckRequest(ImmigrationCheckRequisition entity) {
+        ImmigrationCheckRequisitionService.instance().saveImmigrationCheckRequisition(entity);
+    }
 
     @PUT
     @Override

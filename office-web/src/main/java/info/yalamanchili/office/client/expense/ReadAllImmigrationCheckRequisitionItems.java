@@ -23,6 +23,12 @@ import java.util.logging.Logger;
 public class ReadAllImmigrationCheckRequisitionItems extends CRUDReadAllComposite {
 
     private static Logger logger = Logger.getLogger(ReadAllImmigrationCheckRequisitionItems.class.getName());
+    public static ReadAllImmigrationCheckRequisitionItems instance;
+    
+    public ReadAllImmigrationCheckRequisitionItems() {
+        instance = this;
+        initTable("ExpenseItem", OfficeWelcome.constants);
+    }
 
     public ReadAllImmigrationCheckRequisitionItems(JSONArray items) {
         initTable("ImmigrationCheckRequisitionItem", items, OfficeWelcome.constants);

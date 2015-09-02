@@ -66,7 +66,6 @@ public class UpdateImmigrationCheckItemPanel extends UpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-            logger.info("im in FieldsFromEntity");
         assignFieldValueFromEntity("itemName", entity, DataType.STRING_FIELD );
         assignFieldValueFromEntity("itemDesc", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("amount", entity, DataType.CURRENCY_FIELD);
@@ -76,24 +75,21 @@ public class UpdateImmigrationCheckItemPanel extends UpdateComposite {
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated Immigration Check Item");
         TabPanel.instance().expensePanel.entityPanel.clear();
-//        TabPanel.instance().expensePanel.entityPanel.add(new ReadAllImmigrationCheckRequisitionItems());
+        TabPanel.instance().expensePanel.entityPanel.add(new ReadAllImmigrationCheckRequisitionItems());
     }
 
     @Override
     protected void addListeners() {
-         logger.info("im in addlisteners");
         deleteB.addClickHandler(this);
     }
 
     @Override
     protected void configure() {
-        logger.info("im in configure");
        update.setVisible(false);
     }
 
     @Override
     protected void addWidgets() {
-        logger.info("im in add");
         addField("itemName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("itemDesc", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("amount", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);

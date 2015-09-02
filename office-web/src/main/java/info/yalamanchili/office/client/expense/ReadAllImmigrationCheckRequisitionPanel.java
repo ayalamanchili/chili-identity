@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.expense;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.Window;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.config.ChiliClientConfig;
@@ -74,7 +75,6 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
 
     @Override
     public void updateClicked(String entityId) {
-        logger.info("in update clicked");
         TabPanel.instance().expensePanel.entityPanel.clear();
         TabPanel.instance().expensePanel.entityPanel.add(new UpdateImmigrationCheckRequisitionPanel(entityId));
     }
@@ -136,7 +136,7 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
                         logger.info(arg0);
                         new ResponseStatusWidget().show("Copy created. Plase update and save.");
                         TabPanel.instance().expensePanel.entityPanel.clear();
-                        TabPanel.instance().expensePanel.entityPanel.add(new CreateImmigrationCheckRequisitionPanel());
+                        TabPanel.instance().expensePanel.entityPanel.add(new UpdateImmigrationCheckRequisitionPanel(JSONParser.parseLenient(arg0).isObject()));
                     }
                 });
     }
