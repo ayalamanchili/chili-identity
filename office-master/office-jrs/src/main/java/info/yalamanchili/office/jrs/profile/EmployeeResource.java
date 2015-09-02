@@ -378,7 +378,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     public List<info.yalamanchili.office.dto.profile.EmployeeDto> searchEmployee(@PathParam("start") int start,
             @PathParam("limit") int limit, @QueryParam("text") String text, @QueryParam("column") List<String> columns, @QueryParam("includeDeactivated") boolean includeDeactivated) {
         List<info.yalamanchili.office.dto.profile.EmployeeDto> employees = new ArrayList<>();
-        for (Object empObj : employeeDao.sqlSearch(text, start, limit, columns,includeDeactivated)) {
+        for (Object empObj : employeeDao.sqlSearch(text, start, limit, columns, includeDeactivated)) {
             employees.add(info.yalamanchili.office.dto.profile.EmployeeDto.map(mapper, (Employee) empObj));
         }
         return employees;
@@ -386,7 +386,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
 
     @PUT
     @Path("/searchEmployee/{start}/{limit}")
-    public List<info.yalamanchili.office.dto.profile.EmployeeDto> searchEmployee(EmployeeSearchDto entity, @PathParam("start") int start, @PathParam("limit") int limit) {
+    public List<info.yalamanchili.office.dto.profile.EmployeeDto> searchEmployee(EmployeeSearchDto entity, @PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("includeDeactivated") boolean includeDeactivated) {
         List<info.yalamanchili.office.dto.profile.EmployeeDto> employees = new ArrayList<info.yalamanchili.office.dto.profile.EmployeeDto>();
         List<Employee> result = null;
         if (entity.getCompanyContacts().size() > 0 && entity.getCompanyContacts().get(0).getContact() != null) {
@@ -394,7 +394,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         } else if (entity.getUser() != null && entity.getUser().getRoles().size() > 0) {
             result = OfficeSecurityService.instance().getUsersWithRoles(start, limit, entity.getUser().getRoles().iterator().next().getRolename());
         } else {
-            result = getDao().search(mapper.map(entity, Employee.class), start, limit);
+            result = getDao().search(mapper.map(entity, Employee.class), start, limit, new SearchUtils.SearchCriteria());
         }
         for (Object empObj : result) {
             employees.add(info.yalamanchili.office.dto.profile.EmployeeDto.map(mapper, (Employee) empObj));
@@ -412,12 +412,12 @@ public class EmployeeResource extends CRUDResource<Employee> {
         if (entity.getCompanyContacts().size() > 0) {
             size = 1000l;
         } else {
-            size = SearchUtils.getSearchSize(getDao().getEntityManager(), mapper.map(entity, Employee.class));
+            size = SearchUtils.getSearchSize(getDao().getEntityManager(), mapper.map(entity, Employee.class), new SearchUtils.SearchCriteria());
         }
         int start = 0;
         int limit = 100;
         do {
-            data.addAll(searchEmployee(entity, start, limit));
+            data.addAll(searchEmployee(entity, start, limit, false));
             start = start + limit;
         } while ((start + limit) < size);
         return ReportGenerator.generateReport(data, reportName, format, OfficeServiceConfiguration.instance().getContentManagementLocationRoot());

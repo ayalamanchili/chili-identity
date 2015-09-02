@@ -60,6 +60,8 @@ public class SearchEmployeePanel extends SearchComposite {
         addField("middleInitial", DataType.STRING_FIELD);
         addField("lastName", DataType.STRING_FIELD);
         addField("employeeId", DataType.STRING_FIELD);
+        addField("startDate", DataType.DATE_FIELD);
+        addField("endDate", DataType.DATE_FIELD);
         if (Auth.isCorporateEmployee()) {
             String[] employeeTypeStrs = {"Corporate Employee", "Employee", "Subcontractor", "1099 Contractor"};
             addEnumField("employeeType", false, false, employeeTypeStrs);
@@ -84,6 +86,8 @@ public class SearchEmployeePanel extends SearchComposite {
         //branch
         assignEntityValueFromField("branch", entity);
         assignEntityValueFromField("employeeId", entity);
+        assignEntityValueFromField("startDate", entity);
+        assignEntityValueFromField("endDate", entity);
         if (Auth.isCorporateEmployee()) {
             //employeetype
             JSONObject employeeType = new JSONObject();

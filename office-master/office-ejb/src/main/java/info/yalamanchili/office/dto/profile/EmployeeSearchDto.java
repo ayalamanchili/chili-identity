@@ -13,6 +13,7 @@ import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -24,7 +25,44 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class EmployeeSearchDto extends Employee {
 
+    protected Date startDateFrom;
+    protected Date startDateTo;
+    protected Date endDateFrom;
+    protected Date endDateTo;
+
     protected List<CompanyContact> companyContacts;
+
+    public Date getStartDateFrom() {
+        return startDateFrom;
+    }
+
+    public void setStartDateFrom(Date startDateFrom) {
+        this.startDateFrom = startDateFrom;
+    }
+
+    public Date getStartDateTo() {
+        return startDateTo;
+    }
+
+    public void setStartDateTo(Date startDateTo) {
+        this.startDateTo = startDateTo;
+    }
+
+    public Date getEndDateFrom() {
+        return endDateFrom;
+    }
+
+    public void setEndDateFrom(Date endDateFrom) {
+        this.endDateFrom = endDateFrom;
+    }
+
+    public Date getEndDateTo() {
+        return endDateTo;
+    }
+
+    public void setEndDateTo(Date endDateTo) {
+        this.endDateTo = endDateTo;
+    }
 
     @XmlElement
     public List<CompanyContact> getCompanyContacts() {
