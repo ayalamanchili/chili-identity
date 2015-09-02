@@ -87,6 +87,12 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
             + "\n"
             + "<ul>\n"
             + "</ul>");
+    protected static HTML approver = new HTML("\n"
+            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
+            + "<strong style=\"color:#555555\">Note: If you would like to specify other 'Approver' instead of 'Report_To' manager, please mention in the below field.</strong></p>\n"
+            + "\n"
+            + "<ul>\n"
+            + "</ul>");
 
     HTML emptyLine = new HTML("<br/>");
 
@@ -110,6 +116,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     @Override
     protected void addWidgets() {
         addEnumField(EXPENSE_FORM_TYPE, false, true, ExpenseFormType.names(), Alignment.HORIZONTAL);
+        entityFieldsPanel.add(approver);
         entityFieldsPanel.add(approvalManager);
         expenseFormType = (EnumField) fields.get(EXPENSE_FORM_TYPE);
         entityFieldsPanel.add(generalInfo);
@@ -144,9 +151,11 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         receiptsInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         addItemL.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         notes.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        approver.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         approvalManager.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH + 5, Style.Unit.PX);
         setButtonText("Submit");
         approvalManager.setVisible(false);
+        approver.setVisible(false);
         HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
@@ -302,6 +311,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
                 renderproject(false);
                 isGeneralExpenseItem = true;
                 approvalManager.setVisible(true);
+                approver.setVisible(true);
             } else if (expenseFormType.getValue().equals(ExpenseFormType.TRAVEL_EXPENSE.name())) {
                 renderproject(true);
                 isGeneralExpenseItem = false;
