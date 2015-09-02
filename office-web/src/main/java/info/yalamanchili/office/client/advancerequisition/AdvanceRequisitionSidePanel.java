@@ -66,7 +66,6 @@ public class AdvanceRequisitionSidePanel extends ALComposite implements ClickHan
     protected void addWidgets() {
         advanceRequisitionSidePanel.add(createAdvanceRequisitionLink);
         advanceRequisitionSidePanel.add(Utils.getLineSeperatorTag("Search"));
-        advanceRequisitionSidePanel.add(Utils.getLineSeperatorTag("Search"));
         advanceRequisitionSidePanel.add(employeeSB);
         advanceRequisitionSidePanel.add(viewB);
     }
