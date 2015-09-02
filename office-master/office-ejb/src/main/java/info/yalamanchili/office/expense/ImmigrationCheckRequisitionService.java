@@ -60,6 +60,11 @@ public class ImmigrationCheckRequisitionService {
         entity.setBpmProcessId(processId);
         immigrationCheckRequisitionDao.save(entity);
     }
+    
+    public void saveImmigrationCheckRequisition(ImmigrationCheckRequisition entity) {
+        entity.setEmployee(EmployeeDao.instance().findById(entity.getEmployee().getId()));
+        immigrationCheckRequisitionDao.getEntityManager().merge(entity);
+    }
 
     public void delete(Long id) {
         ImmigrationCheckRequisition ticket = immigrationCheckRequisitionDao.findById(id);
@@ -73,7 +78,7 @@ public class ImmigrationCheckRequisitionService {
     }
 
     public ImmigrationCheckRequisition clone(Long id) {
-        ImmigrationCheckRequisition entity = immigrationCheckRequisitionDao.clone(id, "submittedDate", "approvedByManager", "approvedByManagerDate", "approvedByAccountsDept", "approvedByAccountsDeptDate", "approvedByCEO", "approvedByCEODate", "bpmProcessId", "status", "totalExpenses", "expenseReceipts");
+        ImmigrationCheckRequisition entity = immigrationCheckRequisitionDao.clone(id, "amount", "submittedBy","requestedDate", "approvedBy", "approvedDate", "accountedBy", "checkIssuedDate", "accountDeptReceivedDate", "status", "bpmProcessId", "employee");
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         return mapper.map(entity, ImmigrationCheckRequisition.class);
     }

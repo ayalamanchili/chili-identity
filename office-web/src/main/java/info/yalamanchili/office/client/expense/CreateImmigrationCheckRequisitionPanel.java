@@ -14,6 +14,8 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDComposite;
 import info.chili.gwt.crud.CreateComposite;
@@ -22,7 +24,6 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
-import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.Auth;
@@ -46,6 +47,15 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
     protected ClickableLink addItemL = new ClickableLink("Add Check Item");
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false, Alignment.HORIZONTAL);
     protected List<CreateImmigrationCheckItemPanel> checkItemPanels = new ArrayList<>();
+
+    protected static HTML checkItem = new HTML("\n"
+            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
+            + "<strong style=\"color:#555555\">Check Items Information</strong></p>\n"
+            + "\n"
+            + "<ul>\n"
+            + "</ul>");
+
+    HTML emptyLine = new HTML("<br/>");
 
     public CreateImmigrationCheckRequisitionPanel() {
         super(CreateCompositeType.CREATE);
@@ -132,6 +142,8 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
 
     @Override
     protected void configure() {
+        checkItem.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        addItemL.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         setButtonText("Submit");
         HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
@@ -161,8 +173,8 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
         addField("mailingAddress", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("neededByDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("purpose", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        entityFieldsPanel.add(getLineSeperatorTag("Check Details"));
         addEnumField("caseType", false, true, ImmigrationCaseType.names(), Alignment.HORIZONTAL);
+        entityFieldsPanel.add(checkItem);
         entityFieldsPanel.add(addItemL);
         alignFields();
     }
@@ -172,7 +184,6 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
     }
 
     public void removePanel() {
-        logger.info("in removePanel");
         if (checkItemPanels.size() > 0) {
             int i = checkItemPanels.size();
             checkItemPanels.get(i - 1).removeFromParent();

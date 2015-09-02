@@ -119,7 +119,7 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
     /**
      *
      */
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
     @Size(min = 1, message = "{checkitem.min.size.msg}")
     @Valid
     private List<CheckRequisitionItem> items;

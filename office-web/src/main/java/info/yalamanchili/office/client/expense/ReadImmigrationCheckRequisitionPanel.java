@@ -14,7 +14,9 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
@@ -31,6 +33,7 @@ public class ReadImmigrationCheckRequisitionPanel extends ReadComposite {
     private static ReadImmigrationCheckRequisitionPanel instance;
     private static Logger logger = Logger.getLogger(ReadImmigrationCheckRequisitionPanel.class.getName());
     SelectEmployeeWidget selectEmployeeWidgetF = new SelectEmployeeWidget("Employee", false, true);
+    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false, Alignment.HORIZONTAL);
 
     public static ReadImmigrationCheckRequisitionPanel instance() {
         return instance;
@@ -66,11 +69,12 @@ public class ReadImmigrationCheckRequisitionPanel extends ReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("employee", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("amount", entity, DataType.CURRENCY_FIELD);
-        assignFieldValueFromEntity("requestedDate", entity, DataType.DATE_FIELD);
+//        assignFieldValueFromEntity("employee", employeeSB.getSelectedObject(), null);
+        assignFieldValueFromEntity("attorneyName", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("mailingAddress", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("neededByDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("purpose", entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("caseType", entity, DataType.ENUM_FIELD);
     }
 
     @Override
@@ -85,11 +89,13 @@ public class ReadImmigrationCheckRequisitionPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addField("employee", true, false, DataType.STRING_FIELD);
-        addField("amount", true, false, DataType.CURRENCY_FIELD);
-        addField("requestedDate", true, false, DataType.DATE_FIELD);
-        addField("neededByDate", true, false, DataType.DATE_FIELD);
-        addEnumField("status", true, false, ImmigrationCheckRequisitionStatus.names());
+        entityFieldsPanel.add(employeeSB);
+        addField("attorneyName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("mailingAddress", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("neededByDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("purpose", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addEnumField("caseType", false, true, ImmigrationCaseType.names(), Alignment.HORIZONTAL);
+        alignFields();
     }
 
     @Override

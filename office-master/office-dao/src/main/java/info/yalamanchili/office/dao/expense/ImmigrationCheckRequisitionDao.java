@@ -11,8 +11,6 @@ package info.yalamanchili.office.dao.expense;
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
-import info.yalamanchili.office.entity.Company;
-import info.yalamanchili.office.entity.expense.AdvanceRequisition;
 import info.yalamanchili.office.entity.expense.ImmigrationCheckRequisition;
 import java.util.List;
 import javax.persistence.EntityManager;

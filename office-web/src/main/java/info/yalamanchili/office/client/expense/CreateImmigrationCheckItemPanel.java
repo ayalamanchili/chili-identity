@@ -95,9 +95,7 @@ public class CreateImmigrationCheckItemPanel extends CreateComposite implements 
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(deleteB)) {
-            logger.info("in OnClick");
             parentPanel.removePanel();
-            logger.info("after OnClick");
             HttpService.HttpServiceAsync.instance().doPut(getDeleteURI(), entity.toString(),
                     OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
 
