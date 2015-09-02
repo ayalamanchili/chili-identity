@@ -46,6 +46,8 @@ import info.yalamanchili.office.entity.profile.Sex;
 import info.yalamanchili.office.entity.profile.Skill;
 import info.yalamanchili.office.entity.profile.SkillSet;
 import info.yalamanchili.office.entity.profile.TechnologyGroup;
+import info.yalamanchili.office.entity.profile.invite.InvitationType;
+import info.yalamanchili.office.entity.profile.invite.InviteType;
 import info.yalamanchili.office.entity.social.Post;
 import info.yalamanchili.office.security.SecurityUtils;
 import java.math.BigDecimal;
@@ -431,11 +433,6 @@ public class OfficeStartup {
         getEmployeeType();
         getSubContractorEmployeeType();
         get1099EmployeeType();
-//        InvitationType invititationType = new InvitationType();
-//        invititationType.setTypeOfInvitation(TypeOfInvitation.CLIENT_ONBOARDING);
-//        invititationType.setDescription("Employee On Baording");
-//        
-//        mongoTemplate.save(invititationType);
     }
 
     protected void initTestData() {
@@ -477,6 +474,13 @@ public class OfficeStartup {
         privacySetting.setPrivacyMode(PrivacyMode.PUBLIC);
         privacySetting.setEmployee(userEmp);
         em.merge(privacySetting);
+
+        //Invite Type on boarding
+        InviteType invititationType = new InviteType();
+        invititationType.setInvitationType(InvitationType.CLIENT_ONBOARDING);
+        invititationType.setDescription("Employee On Baording");
+//        invititationType.setEmailTemplateName("on-boardng-invite-email.xhtml");
+        mongoTemplate.save(invititationType);
 
     }
 

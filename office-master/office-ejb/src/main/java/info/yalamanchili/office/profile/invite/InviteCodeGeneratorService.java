@@ -16,8 +16,6 @@ import info.yalamanchili.office.dao.invite.InviteTypeDao;
 import info.yalamanchili.office.entity.profile.invite.InviteType;
 import info.yalamanchili.office.entity.profile.invite.InviteCode;
 import info.yalamanchili.office.jms.MessagingService;
-import java.util.HashMap;
-import java.util.Map;
 import org.springframework.stereotype.Component;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,20 +43,15 @@ public class InviteCodeGeneratorService {
         entity.setInviteType(type);
         inviteCodeDao.save(entity);
         //send email
-//        sendInvitationRequestEmail(entity);
+        sendInvitationRequestEmail(entity);
     }
 
     public void sendInvitationRequestEmail(InviteCode entity) {
         Email email = new Email();
         email.addTo(entity.getEmail());
-        StringBuilder subject = new StringBuilder();
-        subject.append("System Soft Invitation");
-        email.setSubject(subject.toString());
-        Map<String, Object> emailCtx = new HashMap<>();
-        emailCtx.put("invitationCode", entity.getInvitationCode());
-        email.setTemplateName(entity.getInviteType().getEmailTemplateName());
-        email.setContext(emailCtx);
-        email.setHtml(Boolean.TRUE);
+        email.setSubject("System Soft Invitation");
+        String messageText = "http://localhost:9090/office-web/?inviteCode=" + entity.getInvitationCode();
+        email.setBody(messageText);
         MessagingService.instance().sendEmail(email);
     }
 

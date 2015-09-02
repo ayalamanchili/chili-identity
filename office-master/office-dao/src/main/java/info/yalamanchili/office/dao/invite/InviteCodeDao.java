@@ -24,22 +24,22 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("prototype")
 public class InviteCodeDao {
-    
+
     @Autowired
     protected MongoOperations mongoTemplate;
-    
+
     public void save(InviteCode entity) {
         mongoTemplate.save(entity);
     }
-    
-        public InviteCode find(String invitationCode) {
+
+    public InviteCode find(String invitationCode) {
         Query query = new Query();
         query.addCriteria(Criteria.where("invitationCode").is(invitationCode));
         return mongoTemplate.findOne(query, InviteCode.class);
     }
-      
+
     public static InviteCodeDao instance() {
         return SpringContext.getBean(InviteCodeDao.class);
     }
-    
+
 }

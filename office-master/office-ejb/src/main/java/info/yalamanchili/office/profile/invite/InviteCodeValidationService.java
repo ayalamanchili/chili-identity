@@ -12,6 +12,7 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.invite.InviteCodeDao;
 import info.yalamanchili.office.entity.profile.invite.InviteCode;
 import java.util.Date;
+import javax.ws.rs.core.Response;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,18 +25,17 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("prototype")
 @Transactional
 public class InviteCodeValidationService {
-    
-     public void inviteCodeValidator(InviteCode code) {
-         InviteCode inviteCode = InviteCodeDao.instance().find(code.getInvitationCode());
-         Date todayDate = new Date();
-         System.out.println(inviteCode.toString());
-         System.out.println(todayDate);
-         if ((todayDate.compareTo(inviteCode.getValidFromDate()) >= 0) &&
-             (todayDate.compareTo(inviteCode.getExpiryDate()) <= 0))  {
-             System.out.println("good");
-         }
+
+    public Response inviteCodeValidator(InviteCode code) {
+        InviteCode inviteCode = InviteCodeDao.instance().find(code.getInvitationCode());
+        Date todayDate = new Date();
+        if ((todayDate.compareTo(inviteCode.getValidFromDate()) >= 0)
+                && (todayDate.compareTo(inviteCode.getExpiryDate()) <= 0)) {
+            return Response.ok().build();
+        }
+        return Response.status(Response.Status.BAD_REQUEST).build();
     }
-    
+
     public static InviteCodeValidationService instance() {
         return SpringContext.getBean(InviteCodeValidationService.class);
     }

@@ -45,7 +45,6 @@ public class OfficeLifeCycle implements SmartLifecycle {
         System.out
                 .println("-------------------Office Startup--------------------------------");
         isRunning = true;
-        officeStartup.startup();
         OfficeServiceConfiguration config = (OfficeServiceConfiguration) SpringContext.getBean("officeServiceConfiguration");
         if (config.getInitEmbeddedMongo()) {
             try {
@@ -61,6 +60,7 @@ public class OfficeLifeCycle implements SmartLifecycle {
 
             }
         }
+        officeStartup.startup();
     }
 
     @Override
