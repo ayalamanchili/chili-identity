@@ -36,8 +36,9 @@ import org.springframework.transaction.annotation.Transactional;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.security.EmployeeLoginDto;
+import info.yalamanchili.office.dto.onboarding.InitiateOnBoardingDto;
 import info.yalamanchili.office.dto.profile.EmployeeCreateDto;
-import info.yalamanchili.office.dto.profile.OnBoardingEmployeeDto;
+import info.yalamanchili.office.dto.onboarding.OnBoardingEmployeeDto;
 import info.yalamanchili.office.dto.security.User;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -119,10 +120,18 @@ public class AdminResource {
         return employeeService.createUser(employee);
     }
 
-    @Path("/onBoardEmployee")
+    @Path("/initiate-onboarding")
+    @PUT
+    @PreAuthorize("hasAnyRole('Role_ROLE_ON_BOARDING_MGR')")
+    @Validate
+    public void initiateOnBoarding(InitiateOnBoardingDto dto) {
+        EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
+        employeeService.initiateOnBoarding(dto);
+    }
+
+    @Path("/on-board-employee")
     @PUT
     @Produces("application/text")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RELATIONSHIP','ROLE_SYSTEM_AND_NETWORK_ADMIN')")
     @CacheEvict(value = "employees", allEntries = true)
     @Validate
     public String onBoardEmployee(OnBoardingEmployeeDto employee) {

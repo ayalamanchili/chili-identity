@@ -13,9 +13,11 @@ import info.yalamanchili.office.entity.profile.invite.InviteCode;
 import info.yalamanchili.office.profile.invite.InviteCodeGeneratorService;
 import info.yalamanchili.office.profile.invite.InviteCodeValidationService;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,15 +37,16 @@ public class InviteCodeResource {
     @PUT
     @Validate
     @Path("/invite")
-    public void invite(InviteCode entity) {
-        InviteCodeGeneratorService.instance().inviteCodeGeneration(entity);
+    public void invite(InviteCode entity, @DefaultValue("true") @QueryParam("sendEmail") boolean sendEmail) {
+        InviteCodeGeneratorService.instance().generate(entity, sendEmail);
     }
 
     @PUT
     @Validate
     @Path("/validate")
-    public void validate(InviteCode entity) {
-       InviteCodeValidationService.instance().inviteCodeValidator(entity);
+    @Produces("application/text")
+    public String validate(InviteCode entity) {
+        return InviteCodeValidationService.instance().inviteCodeValidator(entity);
     }
 
 }

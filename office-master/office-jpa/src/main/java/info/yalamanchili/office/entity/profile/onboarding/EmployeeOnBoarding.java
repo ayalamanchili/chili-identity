@@ -24,6 +24,7 @@ import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -54,9 +55,13 @@ public class EmployeeOnBoarding extends AbstractEntity {
     /**
      *
      */
+    @NotEmpty
+    protected String email;
+    /**
+     *
+     */
     @OneToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_EMP_ON_BRD")
-    @NotNull
     protected Employee employee;
     /**
      *
@@ -67,10 +72,10 @@ public class EmployeeOnBoarding extends AbstractEntity {
      *
      */
     protected String startedBy;
-    /**
-     *  Getters and Setters
-     */
 
+    /**
+     * Getters and Setters
+     */
     public Date getStartedDate() {
         return startedDate;
     }
@@ -85,6 +90,14 @@ public class EmployeeOnBoarding extends AbstractEntity {
 
     public void setStatus(OnBoardingStatus status) {
         this.status = status;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Employee getEmployee() {
@@ -115,6 +128,5 @@ public class EmployeeOnBoarding extends AbstractEntity {
     public String toString() {
         return "EmployeeOnBoarding{" + "startedDate=" + startedDate + ", status=" + status + ", employee=" + employee + ", bpmProcessId=" + bpmProcessId + ", startedBy=" + startedBy + '}';
     }
- 
-    
+
 }

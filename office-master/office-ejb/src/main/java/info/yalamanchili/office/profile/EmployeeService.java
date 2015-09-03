@@ -8,6 +8,7 @@
 package info.yalamanchili.office.profile;
 
 import info.chili.commons.EntityQueryUtils;
+import info.chili.document.dao.SerializedEntityDao;
 import info.chili.security.dao.CRoleDao;
 import info.chili.security.domain.CRole;
 import info.chili.security.domain.CUser;
@@ -16,11 +17,12 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
 import info.yalamanchili.office.bpm.OfficeBPMService;
-import info.yalamanchili.office.dao.profile.AddressDao;
+import info.yalamanchili.office.dao.invite.InviteCodeDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.dto.onboarding.InitiateOnBoardingDto;
 import info.yalamanchili.office.dto.profile.EmployeeCreateDto;
-import info.yalamanchili.office.dto.profile.OnBoardingEmployeeDto;
+import info.yalamanchili.office.dto.onboarding.OnBoardingEmployeeDto;
 import info.yalamanchili.office.dto.security.User;
 import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.profile.Address;
@@ -28,13 +30,20 @@ import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.Preferences;
+import info.yalamanchili.office.entity.profile.invite.InvitationType;
+import info.yalamanchili.office.entity.profile.invite.InviteCode;
+import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
+import info.yalamanchili.office.entity.profile.onboarding.OnBoardingStatus;
+import info.yalamanchili.office.profile.invite.InviteCodeGeneratorService;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import info.yalamanchili.office.security.SecurityUtils;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.apache.commons.lang.time.DateUtils;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -63,7 +72,7 @@ public class EmployeeService {
         if (emp.getCompany() != null) {
             emp.setCompany(em.find(Company.class, employee.getCompany().getId()));
         }
-        String employeeId = generateEmployeeId(employee);
+        String employeeId = generateEmployeeId(employee.getFirstName(), employee.getLastName(), employee.getDateOfBirth());
         String generatepassword = generatepassword();
         String empType = emp.getEmployeeType().getName();
         if (empType.equals("Corporate Employee") || empType.equals("Employee")) {
@@ -89,7 +98,6 @@ public class EmployeeService {
         //Create BPM User
         if (emp.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
             OfficeBPMIdentityService.instance().createUser(employeeId);
-            // BPMTimeService.instance().startNewEmpTimeProcess(emp);
             Map<String, Object> obj = new HashMap<>();
             obj.put("employee", emp);
             OfficeBPMService.instance().startProcess("new_corp_employee_process", obj);
@@ -111,14 +119,28 @@ public class EmployeeService {
         return emp.getId().toString();
     }
 
+    public void initiateOnBoarding(InitiateOnBoardingDto dto) {
+        InviteCode code = InviteCodeGeneratorService.instance().generate(InvitationType.CLIENT_ONBOARDING, dto.getEmail(), new Date(), DateUtils.addDays(new Date(), 7), false);
+        SerializedEntityDao.instance().save(dto, code.getClass().getCanonicalName(), code.getId());
+        EmployeeOnBoarding onboarding = new EmployeeOnBoarding();
+        onboarding.setEmail(dto.getEmail());
+        onboarding.setStartedBy(OfficeSecurityService.instance().getCurrentUserName());
+        onboarding.setStartedDate(new Date());
+        onboarding.setStatus(OnBoardingStatus.Pending_Initial_Document_Submission);
+        em.merge(onboarding);
+        InviteCodeGeneratorService.instance().sendInviteCodeEmail(code);
+    }
+
     public String onBoardEmployee(OnBoardingEmployeeDto employee) {
         Employee emp = mapper.map(employee, Employee.class);
-        emp.setEmployeeType(em.find(EmployeeType.class, emp.getEmployeeType().getId()));
-        if (emp.getCompany() != null) {
-            emp.setCompany(em.find(Company.class, employee.getCompany().getId()));
+        InviteCode code = InviteCodeDao.instance().find(employee.getInviteCode().trim());
+        InitiateOnBoardingDto initiateDto = (InitiateOnBoardingDto) SerializedEntityDao.instance().findAndConvert(code.getClass().getCanonicalName(), code.getId());
+        emp.setEmployeeType(em.find(EmployeeType.class, initiateDto.getEmployeeType().getId()));
+        if (initiateDto.getCompany() != null) {
+            emp.setCompany(em.find(Company.class, initiateDto.getCompany().getId()));
         }
-
-        String employeeId = generateEmployeeId(employee);
+        emp.setStartDate(initiateDto.getStartDate());
+        String employeeId = generateEmployeeId(employee.getFirstName(), employee.getLastName(), employee.getDateOfBirth());
         String generatepass = generatepassword();
         String empType = emp.getEmployeeType().getName();
         if (empType.equals("Corporate Employee") || empType.equals("Employee")) {
@@ -148,19 +170,18 @@ public class EmployeeService {
         address.setContact(emp);
 
         //Create BPM User
-//        if (emp.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
-        OfficeBPMIdentityService.instance().createUser(employeeId);
-        // BPMTimeService.instance().startNewEmpTimeProcess(emp);
-        Map<String, Object> obj = new HashMap<>();
-        obj.put("employee", emp);
-//        }
+        if (emp.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
+            OfficeBPMIdentityService.instance().createUser(employeeId);
+            Map<String, Object> obj = new HashMap<>();
+            obj.put("employee", emp);
+        }
 
 //        //Start on boarding process
 //        Map<String, Object> obj = new HashMap<>();
 //        obj.put("entity", emp);
 //        OfficeBPMService.instance().startProcess("on_boarding_employee_process", obj);
         Email email = new Email();
-        email.setEmail(employee.getEmail());
+        email.setEmail(initiateDto.getEmail());
         email.setPrimaryEmail(true);
         emp.addEmail(email);
 
@@ -171,12 +192,12 @@ public class EmployeeService {
         return emp.getId().toString();
     }
 
-    private String generateEmployeeId(EmployeeCreateDto emp) {
-        String empId = emp.getFirstName().toLowerCase().charAt(0) + emp.getLastName().toLowerCase();
+    private String generateEmployeeId(String firstName, String lastName, Date dateofBirth) {
+        String empId = firstName.toLowerCase().charAt(0) + lastName.toLowerCase();
         javax.persistence.Query findUserQuery = em.createQuery("from Employee where employeeId=:empIdParam");
         findUserQuery.setParameter("empIdParam", empId);
         if (findUserQuery.getResultList().size() > 0) {
-            empId = empId + Integer.toString(emp.getDateOfBirth().getDate());
+            empId = empId + Integer.toString(dateofBirth.getDate());
         }
         if (empId.contains(" ")) {
             empId = empId.replace(" ", "_");

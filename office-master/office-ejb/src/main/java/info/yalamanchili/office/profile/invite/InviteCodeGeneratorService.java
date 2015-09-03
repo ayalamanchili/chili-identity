@@ -13,9 +13,11 @@ import info.yalamanchili.office.dao.invite.InviteCodeDao;
 import info.yalamanchili.office.email.MailUtils;
 import info.chili.email.Email;
 import info.yalamanchili.office.dao.invite.InviteTypeDao;
+import info.yalamanchili.office.entity.profile.invite.InvitationType;
 import info.yalamanchili.office.entity.profile.invite.InviteType;
 import info.yalamanchili.office.entity.profile.invite.InviteCode;
 import info.yalamanchili.office.jms.MessagingService;
+import java.util.Date;
 import org.springframework.stereotype.Component;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,16 +39,25 @@ public class InviteCodeGeneratorService {
     @Autowired
     protected MailUtils mailUtils;
 
-    public void inviteCodeGeneration(InviteCode entity) {
-        entity.setInvitationCode(uuidGen());
-        InviteType type = InviteTypeDao.instance().find(entity.getInviteType().getInvitationType());
-        entity.setInviteType(type);
-        inviteCodeDao.save(entity);
-        //send email
-        sendInvitationRequestEmail(entity);
+    public InviteCode generate(InvitationType type, String email, Date vaidDate, Date expiryDate, boolean sendEmail) {
+        InviteCode code = new InviteCode();
+        code.setInviteType(InviteTypeDao.instance().find(type));
+        code.setValidFromDate(vaidDate);
+        code.setExpiryDate(expiryDate);
+        code.setEmail(email);
+        return generate(code, sendEmail);
     }
 
-    public void sendInvitationRequestEmail(InviteCode entity) {
+    public InviteCode generate(InviteCode entity, boolean sendEmail) {
+        entity.setInvitationCode(uuidGen());
+        inviteCodeDao.save(entity);
+        if (sendEmail) {
+            sendInviteCodeEmail(entity);
+        }
+        return entity;
+    }
+
+    public void sendInviteCodeEmail(InviteCode entity) {
         Email email = new Email();
         email.addTo(entity.getEmail());
         email.setSubject("System Soft Invitation");

@@ -9,7 +9,10 @@
 package info.yalamanchili.office.entity.profile.invite;
 
 import info.chili.document.AbstractDocument;
+import info.chili.document.SerializedEntity;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -37,7 +40,7 @@ public class InviteCode extends AbstractDocument {
 
     @Indexed
     protected String email;
-    
+
     @DBRef
     protected InviteType inviteType;
 
@@ -81,6 +84,5 @@ public class InviteCode extends AbstractDocument {
     public void setInviteType(InviteType inviteType) {
         this.inviteType = inviteType;
     }
- 
 
 }

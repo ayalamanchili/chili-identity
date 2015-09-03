@@ -53,6 +53,7 @@ public class OfficeRoles {
         ROLE_CHILI_ADMIN,
         ROLE_CRP_STATUS_RPT_MGR,
         ROLE_CEO,
+        ROLE_ON_BOARDING_MGR,
         ROLE_E_VERIFY_MGR,
         ROLE_BACKGROUND_SCREENING_MGR,
         ROLE_GENERAL_EXPENSE_MANAGER,
@@ -93,9 +94,10 @@ public class OfficeRoles {
         rolesMessages.put(OfficeRole.ROLE_CHILI_ADMIN.name(), "Chili Admin");
         rolesMessages.put(OfficeRole.ROLE_CRP_STATUS_RPT_MGR.name(), " Status Report Manager");
         rolesMessages.put(OfficeRole.ROLE_CEO.name(), "CEO");
+        rolesMessages.put(OfficeRole.ROLE_ON_BOARDING_MGR.name(), "On Boarding Manager");
         rolesMessages.put(OfficeRole.ROLE_E_VERIFY_MGR.name(), "E Verify Manager");
         rolesMessages.put(OfficeRole.ROLE_BACKGROUND_SCREENING_MGR.name(), "BackGround Screening Manager");
         rolesMessages.put(OfficeRole.ROLE_GENERAL_EXPENSE_MANAGER.name(), "General Expense Manager");
-        
+
     }
 }

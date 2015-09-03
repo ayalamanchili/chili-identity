@@ -8,11 +8,11 @@
  */
 package info.yalamanchili.office.profile.invite;
 
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.invite.InviteCodeDao;
 import info.yalamanchili.office.entity.profile.invite.InviteCode;
 import java.util.Date;
-import javax.ws.rs.core.Response;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,14 +26,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class InviteCodeValidationService {
 
-    public Response inviteCodeValidator(InviteCode code) {
+    public String inviteCodeValidator(InviteCode code) {
         InviteCode inviteCode = InviteCodeDao.instance().find(code.getInvitationCode());
         Date todayDate = new Date();
         if ((todayDate.compareTo(inviteCode.getValidFromDate()) >= 0)
                 && (todayDate.compareTo(inviteCode.getExpiryDate()) <= 0)) {
-            return Response.ok().build();
+            return code.getInvitationCode();
         }
-        return Response.status(Response.Status.BAD_REQUEST).build();
+        throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.invitationcode", "Invalid Invitation Code");
     }
 
     public static InviteCodeValidationService instance() {
