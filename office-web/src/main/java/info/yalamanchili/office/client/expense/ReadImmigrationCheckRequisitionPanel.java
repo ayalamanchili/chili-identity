@@ -33,7 +33,7 @@ public class ReadImmigrationCheckRequisitionPanel extends ReadComposite {
     private static ReadImmigrationCheckRequisitionPanel instance;
     private static Logger logger = Logger.getLogger(ReadImmigrationCheckRequisitionPanel.class.getName());
     SelectEmployeeWidget selectEmployeeWidgetF = new SelectEmployeeWidget("Employee", false, true);
-    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false, Alignment.HORIZONTAL);
+    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", true, false, Alignment.HORIZONTAL);
 
     public static ReadImmigrationCheckRequisitionPanel instance() {
         return instance;
@@ -69,7 +69,8 @@ public class ReadImmigrationCheckRequisitionPanel extends ReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-//        assignFieldValueFromEntity("employee", employeeSB.getSelectedObject(), null);
+        JSONObject emp = (JSONObject) entity.get("employee");
+        employeeSB.setValue(emp.get("firstName").isString().stringValue());
         assignFieldValueFromEntity("attorneyName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("mailingAddress", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("neededByDate", entity, DataType.DATE_FIELD);
@@ -90,11 +91,11 @@ public class ReadImmigrationCheckRequisitionPanel extends ReadComposite {
     @Override
     protected void addWidgets() {
         entityFieldsPanel.add(employeeSB);
-        addField("attorneyName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("mailingAddress", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("neededByDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("purpose", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        addEnumField("caseType", false, true, ImmigrationCaseType.names(), Alignment.HORIZONTAL);
+        addField("attorneyName", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("mailingAddress", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("neededByDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("purpose", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addEnumField("caseType", true, true, ImmigrationCaseType.names(), Alignment.HORIZONTAL);
         alignFields();
     }
 

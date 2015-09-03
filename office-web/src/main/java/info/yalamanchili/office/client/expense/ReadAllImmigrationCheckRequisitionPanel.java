@@ -95,9 +95,9 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Employee"));
-        table.setText(0, 2, getKeyValue("caseType"));
-        table.setText(0, 3, getKeyValue("attorneyName"));
-        table.setText(0, 4, getKeyValue("company"));
+        table.setText(0, 2, getKeyValue("CaseType"));
+        table.setText(0, 3, getKeyValue("AttorneyName"));
+        table.setText(0, 4, getKeyValue("Company"));
         table.setText(0, 5, getKeyValue("Amount"));
         table.setText(0, 6, getKeyValue("RequestedDate"));
         table.setText(0, 7, getKeyValue("Status"));

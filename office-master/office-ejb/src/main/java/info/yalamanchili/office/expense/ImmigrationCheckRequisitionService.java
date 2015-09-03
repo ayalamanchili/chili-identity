@@ -62,7 +62,6 @@ public class ImmigrationCheckRequisitionService {
     }
     
     public void saveImmigrationCheckRequisition(ImmigrationCheckRequisition entity) {
-        entity.setEmployee(EmployeeDao.instance().findById(entity.getEmployee().getId()));
         immigrationCheckRequisitionDao.getEntityManager().merge(entity);
     }
 
