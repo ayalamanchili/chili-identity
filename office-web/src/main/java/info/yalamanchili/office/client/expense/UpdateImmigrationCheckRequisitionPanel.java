@@ -52,6 +52,7 @@ public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite impl
 
     public UpdateImmigrationCheckRequisitionPanel(String id) {
         initUpdateComposite(id, "ImmigrationCheckRequisition", OfficeWelcome.constants);
+        employeeSB.setVisible(false);
     }
 
     public UpdateImmigrationCheckRequisitionPanel(JSONObject object) {
@@ -83,7 +84,9 @@ public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite impl
         assignEntityValueFromField("mailingAddress", entity);
         assignEntityValueFromField("neededByDate", entity);
         assignEntityValueFromField("purpose", entity);
-        entity.put("employee", employeeSB.getSelectedObject());
+        if (getEntityId().isEmpty()) {
+            entity.put("employee", employeeSB.getSelectedObject());
+        }
         assignEntityValueFromField("caseType", entity);
         JSONArray items = new JSONArray();
         int i = 0;
@@ -97,7 +100,7 @@ public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite impl
                     amount = amount.add(eAmount);
                 }
                 i++;
-        } else if (panel instanceof CreateImmigrationCheckItemPanel) {
+            } else if (panel instanceof CreateImmigrationCheckItemPanel) {
                 CreateImmigrationCheckItemPanel createPanel = (CreateImmigrationCheckItemPanel) panel;
                 items.set(i, createPanel.populateEntityFromFields());
                 JSONObject entityObj = (JSONObject) items.get(i);
@@ -107,7 +110,7 @@ public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite impl
                 }
                 i++;
             }
-        }       
+        }
         entity.put("items", items);
         entity.put("amount", new JSONString((amount).abs().toString()));
         logger.info(entity.toString());
