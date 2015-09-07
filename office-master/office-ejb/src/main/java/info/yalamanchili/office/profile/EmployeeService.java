@@ -8,6 +8,7 @@
 package info.yalamanchili.office.profile;
 
 import info.chili.commons.EntityQueryUtils;
+import info.chili.dao.AbstractHandleEntityDao;
 import info.chili.document.dao.SerializedEntityDao;
 import info.chili.security.dao.CRoleDao;
 import info.chili.security.domain.CRole;
@@ -177,22 +178,22 @@ public class EmployeeService {
         address = employee.getAddress();
         emp.getAddresss().add(address);
         address.setContact(emp);
-        
+
         //Update BankAccount Information for Employee
         BankAccount bankAccount = new BankAccount();
         bankAccount = employee.getBankAccount();
-        BankAccountDao.instance().save(bankAccount);
-        
+        BankAccountDao.instance().save(bankAccount, emp.getId(), emp.getClass().getCanonicalName());
+
         //Update Dependent Information for Employee
         Dependent dependent = new Dependent();
         dependent = employee.getDependent();
-        DependentDao.instance().save(dependent);
-       
+        DependentDao.instance().save(dependent, emp.getId(), emp.getClass().getCanonicalName());
+
         //Update Additional Information for Employee
         EmployeeAdditionalDetails employeeAdditionalDetails = new EmployeeAdditionalDetails();
         employeeAdditionalDetails = employee.getEmployeeAdditionalDetails();
-        EmployeeAdditionalDetailsDao.instance().save(employeeAdditionalDetails);
-        
+        EmployeeAdditionalDetailsDao.instance().save(employeeAdditionalDetails, emp.getId(), emp.getClass().getCanonicalName());
+
         //Create BPM User
         if (emp.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
             OfficeBPMIdentityService.instance().createUser(employeeId);

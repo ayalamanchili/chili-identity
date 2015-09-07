@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -5,24 +8,28 @@
  */
 package info.yalamanchili.office.dao.profile.ext;
 
-import info.chili.dao.CRUDDao;
+import info.chili.dao.AbstractHandleEntityDao;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.profile.ext.EmployeeAdditionalDetails;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author Madhu.Badiginchala
  */
-public class EmployeeAdditionalDetailsDao extends CRUDDao<EmployeeAdditionalDetails> {
+@Repository
+@Scope("prototype")
+public class EmployeeAdditionalDetailsDao extends AbstractHandleEntityDao<EmployeeAdditionalDetails> {
+    
+    @PersistenceContext
+    protected EntityManager em;
 
     public EmployeeAdditionalDetailsDao() {
         super(EmployeeAdditionalDetails.class);
     }
-
-    @PersistenceContext
-    protected EntityManager em;
 
     @Override
     public EntityManager getEntityManager() {
@@ -30,7 +37,7 @@ public class EmployeeAdditionalDetailsDao extends CRUDDao<EmployeeAdditionalDeta
     }
 
     public static EmployeeAdditionalDetailsDao instance() {
-        return SpringContext.getBean(EmployeeAdditionalDetails.class);
+        return SpringContext.getBean(EmployeeAdditionalDetailsDao.class);
     }
 
 }

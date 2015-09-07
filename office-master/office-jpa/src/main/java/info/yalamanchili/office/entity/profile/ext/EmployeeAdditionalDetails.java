@@ -12,6 +12,9 @@ import info.chili.jpa.AbstractHandleEntity;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
 /**
@@ -19,6 +22,9 @@ import org.hibernate.search.annotations.Field;
  * @author Madhu.Badiginchala
  */
 @Entity
+@Audited
+@XmlRootElement
+@XmlType
 public class EmployeeAdditionalDetails extends AbstractHandleEntity {
     
     private static final long serialVersionUID = 1L;

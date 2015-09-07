@@ -27,13 +27,11 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
-import info.yalamanchili.office.client.profile.contact.Branch;
 import info.yalamanchili.office.client.profile.contact.Sex;
 import info.yalamanchili.office.client.profile.contact.WorkStatus;
 import info.yalamanchili.office.client.profile.employee.CreateEmployeePanel;
 import info.yalamanchili.office.client.profile.employee.EmployeeSidePanel;
 import info.yalamanchili.office.client.profile.employee.ReadAllEmployeesPanel;
-import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWidget;
 import java.util.logging.Logger;
 
 /**
@@ -60,6 +58,9 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ChangeHa
     public JSONObject populateEntityFromFields() {
         JSONObject employee = new JSONObject();
         JSONObject address = new JSONObject();
+        JSONObject bankinfo = new JSONObject();
+        JSONObject dependent = new JSONObject();
+        JSONObject additionalInfo = new JSONObject();
         assignEntityValueFromField("firstName", employee);
         assignEntityValueFromField("middleInitial", employee);
         assignEntityValueFromField("lastName", employee);
@@ -71,7 +72,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ChangeHa
         if (Auth.isAdmin()) {
             assignEntityValueFromField("ssn", employee);
         }
-
+        // Address Information
         assignEntityValueFromField("street1", address);
         assignEntityValueFromField("street2", address);
         assignEntityValueFromField("city", address);
@@ -79,6 +80,25 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ChangeHa
         assignEntityValueFromField("country", address);
         assignEntityValueFromField("zip", address);
         employee.put("address", address);
+        // Bank Account Information
+        assignEntityValueFromField("accountFirstName", bankinfo);
+        assignEntityValueFromField("accountLastName", bankinfo);
+        assignEntityValueFromField("bankName", bankinfo);
+        assignEntityValueFromField("bankRoutingNumber", bankinfo);
+        assignEntityValueFromField("bankAccountNumber", bankinfo);
+        employee.put("bankinfo", bankinfo);
+        // Dependent Information
+        assignEntityValueFromField("firstName", dependent);
+        assignEntityValueFromField("lastName", dependent);
+        assignEntityValueFromField("dateOfBirth", dependent);
+        assignEntityValueFromField("relationship", dependent);
+        employee.put("dependent", dependent);
+        // Additional Information
+        assignEntityValueFromField("referredBy", additionalInfo);
+        assignEntityValueFromField("maritalStatus", additionalInfo);
+        assignEntityValueFromField("ethnicity", additionalInfo);
+        employee.put("additionalInfo", additionalInfo);
+        // 
         employee.put("inviteCode", new JSONString(invitationCode));
         logger.info("employee" + employee.toString());
         return employee;
@@ -111,10 +131,24 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ChangeHa
         addField("street1", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("street2", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("city", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-//        addField("state", false, true, DataType.ENUM_FIELD, Alignment.HORIZONTAL);
         addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
         addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
         addField("zip", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(getLineSeperatorTag("Bank Account Information"));
+        addField("accountFirstName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("accountLastName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("bankName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("bankRoutingNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("bankAccountNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(getLineSeperatorTag("Dependent's Information"));
+        addField("firstName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("lastName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("dateOfBirth", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addEnumField("relationship", false, true, Relationship.names(), Alignment.HORIZONTAL);
+        entityFieldsPanel.add(getLineSeperatorTag("Additinal Information"));
+        addField("referredBy", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("maritalStatus", false, true, MaritalStatus.names(), Alignment.HORIZONTAL);
+        addEnumField("ethnicity", false, true, Ethnicity.names(), Alignment.HORIZONTAL);
         countriesF = (EnumField) fields.get("country");
         statesF = (EnumField) fields.get("state");
         entityFieldsPanel.add(emptyLine);

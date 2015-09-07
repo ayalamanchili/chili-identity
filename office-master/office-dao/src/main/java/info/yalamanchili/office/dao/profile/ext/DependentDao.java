@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -5,7 +8,7 @@
  */
 package info.yalamanchili.office.dao.profile.ext;
 
-import info.chili.dao.CRUDDao;
+import info.chili.dao.AbstractHandleEntityDao;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.profile.ext.Dependent;
 import javax.persistence.EntityManager;
@@ -19,14 +22,14 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 @Scope("prototype")
-public class DependentDao extends CRUDDao<Dependent> {
+public class DependentDao extends AbstractHandleEntityDao<Dependent> {
+
+    @PersistenceContext
+    protected EntityManager em;
 
     public DependentDao() {
         super(Dependent.class);
     }
-    
-    @PersistenceContext
-    protected EntityManager em;
 
     @Override
     public EntityManager getEntityManager() {
