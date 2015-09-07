@@ -10,6 +10,7 @@ package info.yalamanchili.office.entity.profile.ext;
 
 import info.chili.jpa.AbstractHandleEntity;
 import java.util.Date;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Temporal;
@@ -19,6 +20,7 @@ import org.hibernate.search.annotations.Field;
  *
  * @author Madhu.Badiginchala
  */
+@Entity
 public class Dependent extends AbstractHandleEntity {
     
     private static final long serialVersionUID = 1L;

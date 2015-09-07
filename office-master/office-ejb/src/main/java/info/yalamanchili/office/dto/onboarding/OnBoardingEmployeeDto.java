@@ -8,9 +8,12 @@
  */
 package info.yalamanchili.office.dto.onboarding;
 
+import info.yalamanchili.office.entity.expense.BankAccount;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Sex;
 import info.yalamanchili.office.entity.profile.WorkStatus;
+import info.yalamanchili.office.entity.profile.ext.Dependent;
+import info.yalamanchili.office.entity.profile.ext.EmployeeAdditionalDetails;
 import java.io.Serializable;
 import java.util.Date;
 import javax.validation.Valid;
@@ -74,6 +77,15 @@ public class OnBoardingEmployeeDto implements Serializable {
 
     @Valid
     private Address address;
+    
+    @Valid
+    private BankAccount bankAccount;
+    
+    @Valid
+    private Dependent dependent;
+    
+    @Valid
+    private EmployeeAdditionalDetails employeeAdditionalDetails;
 
     public String getFirstName() {
         return firstName;
@@ -162,5 +174,31 @@ public class OnBoardingEmployeeDto implements Serializable {
     public void setAddress(Address address) {
         this.address = address;
     }
+
+    public BankAccount getBankAccount() {
+        return bankAccount;
+    }
+
+    public void setBankAccount(BankAccount bankAccount) {
+        this.bankAccount = bankAccount;
+    }
+
+    public Dependent getDependent() {
+        return dependent;
+    }
+
+    public void setDependent(Dependent dependent) {
+        this.dependent = dependent;
+    }
+
+    public EmployeeAdditionalDetails getEmployeeAdditionalDetails() {
+        return employeeAdditionalDetails;
+    }
+
+    public void setEmployeeAdditionalDetails(EmployeeAdditionalDetails employeeAdditionalDetails) {
+        this.employeeAdditionalDetails = employeeAdditionalDetails;
+    }
+    
+    
 
 }

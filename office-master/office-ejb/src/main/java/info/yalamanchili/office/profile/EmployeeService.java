@@ -17,19 +17,25 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
 import info.yalamanchili.office.bpm.OfficeBPMService;
+import info.yalamanchili.office.dao.expense.BankAccountDao;
 import info.yalamanchili.office.dao.invite.InviteCodeDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.profile.ext.DependentDao;
+import info.yalamanchili.office.dao.profile.ext.EmployeeAdditionalDetailsDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.onboarding.InitiateOnBoardingDto;
 import info.yalamanchili.office.dto.profile.EmployeeCreateDto;
 import info.yalamanchili.office.dto.onboarding.OnBoardingEmployeeDto;
 import info.yalamanchili.office.dto.security.User;
 import info.yalamanchili.office.entity.Company;
+import info.yalamanchili.office.entity.expense.BankAccount;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.Preferences;
+import info.yalamanchili.office.entity.profile.ext.Dependent;
+import info.yalamanchili.office.entity.profile.ext.EmployeeAdditionalDetails;
 import info.yalamanchili.office.entity.profile.invite.InvitationType;
 import info.yalamanchili.office.entity.profile.invite.InviteCode;
 import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
@@ -140,6 +146,9 @@ public class EmployeeService {
             emp.setCompany(em.find(Company.class, initiateDto.getCompany().getId()));
         }
         emp.setStartDate(initiateDto.getStartDate());
+        emp.setWorkStatus(employee.getWorkStatus());
+        emp.setSsn(employee.getSsn());
+        emp.setBranch(initiateDto.getBranch());
         String employeeId = generateEmployeeId(employee.getFirstName(), employee.getLastName(), employee.getDateOfBirth());
         String generatepass = generatepassword();
         String empType = emp.getEmployeeType().getName();
@@ -163,12 +172,27 @@ public class EmployeeService {
         prefs.setEnableEmailNotifications(Boolean.TRUE);
         emp.setPreferences(prefs);
 
-        //Create Address for Employee
+        //Update Address for Employee
         Address address = new Address();
         address = employee.getAddress();
         emp.getAddresss().add(address);
         address.setContact(emp);
-
+        
+        //Update BankAccount Information for Employee
+        BankAccount bankAccount = new BankAccount();
+        bankAccount = employee.getBankAccount();
+        BankAccountDao.instance().save(bankAccount);
+        
+        //Update Dependent Information for Employee
+        Dependent dependent = new Dependent();
+        dependent = employee.getDependent();
+        DependentDao.instance().save(dependent);
+       
+        //Update Additional Information for Employee
+        EmployeeAdditionalDetails employeeAdditionalDetails = new EmployeeAdditionalDetails();
+        employeeAdditionalDetails = employee.getEmployeeAdditionalDetails();
+        EmployeeAdditionalDetailsDao.instance().save(employeeAdditionalDetails);
+        
         //Create BPM User
         if (emp.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
             OfficeBPMIdentityService.instance().createUser(employeeId);

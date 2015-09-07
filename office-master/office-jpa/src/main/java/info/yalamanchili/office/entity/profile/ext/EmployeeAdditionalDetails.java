@@ -9,6 +9,7 @@
 package info.yalamanchili.office.entity.profile.ext;
 
 import info.chili.jpa.AbstractHandleEntity;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import org.hibernate.search.annotations.Field;
@@ -17,6 +18,7 @@ import org.hibernate.search.annotations.Field;
  *
  * @author Madhu.Badiginchala
  */
+@Entity
 public class EmployeeAdditionalDetails extends AbstractHandleEntity {
     
     private static final long serialVersionUID = 1L;
