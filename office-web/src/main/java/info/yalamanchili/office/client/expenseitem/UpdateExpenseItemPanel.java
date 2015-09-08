@@ -47,11 +47,13 @@ public class UpdateExpenseItemPanel extends UpdateComposite implements BlurHandl
     CurrencyField amount;
     TextAreaField remark;
     CurrencyField expenseMiles;
-    UpdateExpenseReportPanel parentPanel;
     ClickableLink deleteB = new ClickableLink("Remove Item");
+    protected String parentId;
+    boolean isGeneralExpenseItem = false;
 
-    public UpdateExpenseItemPanel(UpdateExpenseReportPanel parent, JSONObject entity) {
-        this.parentPanel = parent;
+    public UpdateExpenseItemPanel(String parentId, JSONObject entity, boolean isGeneralExpense) {
+        this.parentId = parentId;
+        this.isGeneralExpenseItem = isGeneralExpense;
         initUpdateComposite(entity, "ExpenseItem", OfficeWelcome.constants);
     }
 
@@ -153,7 +155,7 @@ public class UpdateExpenseItemPanel extends UpdateComposite implements BlurHandl
             amount.setValue(new BigDecimal(expenseMiles.getValue()).multiply(new BigDecimal("0.50")).setScale(2), false);
         }
     }
-    
+
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "expenseitem";
@@ -167,13 +169,13 @@ public class UpdateExpenseItemPanel extends UpdateComposite implements BlurHandl
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(deleteB)) {
             if (Window.confirm("Are you sure to delete the expense item?")) {
-                parentPanel.removePanel();
                 HttpService.HttpServiceAsync.instance().doPut(getDeleteURI(), entity.toString(),
                         OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-
                             @Override
                             public void onResponse(String arg0) {
                                 new ResponseStatusWidget().show("Successfully Deleted ExpenseItem Information");
+                                TabPanel.instance().expensePanel.entityPanel.clear();
+                                TabPanel.instance().expensePanel.entityPanel.add(new UpdateExpenseReportPanel(parentId));
                             }
                         });
             }

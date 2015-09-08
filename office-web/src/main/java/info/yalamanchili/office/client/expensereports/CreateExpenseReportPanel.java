@@ -260,11 +260,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addItemL)) {
             CreateExpenseItemPanel panel = null;
-            if (expenseFormType.getValue().equals(ExpenseFormType.GENERAL_EXPENSE.name())) {
-                panel = new CreateExpenseItemPanel(this, isGeneralExpenseItem);
-            } else {
-                panel = new CreateExpenseItemPanel(this);
-            }
+            panel = new CreateExpenseItemPanel(this, isGeneralExpenseItem);
             expenseItemPanels.add(panel);
             entityFieldsPanel.add(panel);
         }

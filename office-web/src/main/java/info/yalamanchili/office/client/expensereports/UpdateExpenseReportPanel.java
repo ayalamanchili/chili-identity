@@ -77,7 +77,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
             + "\n"
             + "<ul>\n"
             + "</ul>");
-    
+
     protected static HTML notes = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
             + "<strong style=\"color:#555555\">Note: Please mail expense original receipts to Tampa office.</strong></p>\n"
@@ -228,7 +228,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
     protected void populateExpenseItems(JSONArray items) {
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).isObject() != null) {
-                UpdateExpenseItemPanel panel = new UpdateExpenseItemPanel(this, items.get(i).isObject());
+                UpdateExpenseItemPanel panel = new UpdateExpenseItemPanel(getEntityId(), items.get(i).isObject(), isGeneralExpenseItem());
                 updateItemPanels.add(panel);
                 entityFieldsPanel.add(panel);
             }
@@ -303,19 +303,17 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
     }
 
     @Override
-    public void onClick(ClickEvent event
-    ) {
+    public void onClick(ClickEvent event) {
         if (event.getSource().equals(addItemL)) {
-            CreateExpenseItemPanel panel = null;
-            if (expenseFormType.getValue().equals(ExpenseFormType.GENERAL_EXPENSE.name())) {
-                panel = new CreateExpenseItemPanel(true);
-            } else {
-                panel = new CreateExpenseItemPanel();
-            }
+            CreateExpenseItemPanel panel = new CreateExpenseItemPanel(this, true);
             updateItemPanels.add(panel);
             entityFieldsPanel.add(panel);
         }
         super.onClick(event);
+    }
+
+    protected boolean isGeneralExpenseItem() {
+        return expenseFormType.getValue().equals(ExpenseFormType.GENERAL_EXPENSE.name());
     }
 
     public void removePanel() {

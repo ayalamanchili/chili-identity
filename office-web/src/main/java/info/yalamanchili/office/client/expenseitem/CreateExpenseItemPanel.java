@@ -18,6 +18,7 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.CRUDComposite;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.fields.DataType;
@@ -31,7 +32,6 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.expensecategory.SelectExpenseCategoryWidget;
-import info.yalamanchili.office.client.expensereports.CreateExpenseReportPanel;
 import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.*;
 import info.yalamanchili.office.client.expensereports.ExpensePaymentMode;
 import java.math.BigDecimal;
@@ -53,28 +53,9 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
     TextAreaField remark;
     boolean isGeneralExpenseItem = false;
     CurrencyField expenseMiles;
-    CreateExpenseReportPanel parentPanel;
     ClickableLink deleteB = new ClickableLink("Remove Item");
 
-    public CreateExpenseItemPanel(CreateExpenseReportPanel parent) {
-        super(CreateComposite.CreateCompositeType.CREATE);
-        initCreateComposite("ExpenseItem", OfficeWelcome.constants);
-        this.parentPanel = parent;
-    }
-
-    public CreateExpenseItemPanel() {
-        super(CreateComposite.CreateCompositeType.CREATE);
-        initCreateComposite("ExpenseItem", OfficeWelcome.constants);
-    }
-
-    public CreateExpenseItemPanel(CreateExpenseReportPanel parent, boolean isGeneralExpenseItem) {
-        super(CreateComposite.CreateCompositeType.CREATE);
-        this.isGeneralExpenseItem = isGeneralExpenseItem;
-        initCreateComposite("ExpenseItem", OfficeWelcome.constants);
-        this.parentPanel = parent;
-    }
-    
-    public CreateExpenseItemPanel(boolean isGeneralExpenseItem) {
+    public CreateExpenseItemPanel(CRUDComposite parent, boolean isGeneralExpenseItem) {
         super(CreateComposite.CreateCompositeType.CREATE);
         this.isGeneralExpenseItem = isGeneralExpenseItem;
         initCreateComposite("ExpenseItem", OfficeWelcome.constants);
@@ -138,7 +119,6 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
         entity = new JSONObject();
         if (isGeneralExpenseItem) {
             entity.put(CATEGORY, new JSONString("General"));
-            assignEntityValueFromField(EXPENSE_PAYMENT_MODE, entity);
             entity.put(EXPENSE_PAYMENT_MODE, new JSONString(ExpensePaymentMode.PERSONAL_CARD.name()));
         } else {
             entity.put(CATEGORY, selectCategoryWidgetF.getSelectedObject());
@@ -186,7 +166,7 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "expenseitem";
     }
-    
+
     protected String getDeleteURI() {
         return OfficeWelcome.constants.root_url() + "expenseitem/delete/" + getEntityId();
     }
@@ -215,15 +195,17 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(deleteB)) {
-            parentPanel.removePanel();
-            HttpService.HttpServiceAsync.instance().doPut(getDeleteURI(), entity.toString(),
-                    OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            this.removeFromParent();
+            if (!getEntityId().isEmpty()) {
+                HttpService.HttpServiceAsync.instance().doPut(getDeleteURI(), entity.toString(),
+                        OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
 
-                        @Override
-                        public void onResponse(String arg0) {
-                            new ResponseStatusWidget().show("Successfully Deleted Employee ExpenseItem Information");
-                        }
-                    });
+                            @Override
+                            public void onResponse(String arg0) {
+                                new ResponseStatusWidget().show("Successfully Deleted Employee ExpenseItem Information");
+                            }
+                        });
+            }
         }
         super.onClick(event);
     }

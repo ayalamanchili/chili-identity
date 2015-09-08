@@ -8,7 +8,6 @@
 package info.yalamanchili.office.dao.expense.expenserpt;
 
 import info.chili.dao.CRUDDao;
-import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseCategory;
@@ -37,12 +36,7 @@ public class ExpenseItemDao extends CRUDDao<ExpenseItem> {
     @CacheEvict(value = OfficeCacheKeys.EXPENSE, allEntries = true)
     @Override
     public void delete(Long id) {
-        ExpenseItem entity = findById(id);
-        if (entity.getExpenseReport().getExpenseItems().size() == 1) {
-            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "expense.report.min.items", "Expense Report should hve atleast one item.");
-        } else {
-            delete(findById(id));
-        }
+        super.delete(id);
     }
 
     public ExpenseItemDao() {
