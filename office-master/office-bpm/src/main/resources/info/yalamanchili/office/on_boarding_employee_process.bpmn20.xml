@@ -7,18 +7,17 @@
 <definitions
     xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
     targetNamespace="http://www.bpmnwithactiviti.org"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:activiti="http://activiti.org/bpmn">
  
     <process id="on_boarding_employee_process">
-        <startEvent id="onBoardingEmployeeProcessStart">
-        </startEvent>
-        <sequenceFlow id="flow1" sourceRef="onBoardingEmployeeProcessStart" targetRef="sendStartOnBoardingEmail" />
+        
+        <startEvent id="onBoardingEmployeeProcessStart" />
+       
+        <sequenceFlow sourceRef="onBoardingEmployeeProcessStart" targetRef="sendStartOnBoardingEmail" />
+        
         <serviceTask id="sendStartOnBoardingEmail" 
                      name="On Boarding Employee Process Request Received Email" 
-                     activiti:expression="#{OnBoardingEmployeeProcessBean.sendEmployeeOnBoardingEmail(entity)}" />    
-        <sequenceFlow id="flow2" sourceRef="sendStartOnBoardingEmail" targetRef="onBoardingEmployeeProcessEnd" />                        
-        <!-- end-->
+                     activiti:expression="#{onBoardingEmployeeProcessBean.sendEmployeeOnBoardingEmail(entity)}" />    
         <endEvent id="onBoardingEmployeeProcessEnd" />
     </process>
 </definitions>
