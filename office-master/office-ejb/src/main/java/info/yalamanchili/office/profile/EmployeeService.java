@@ -178,18 +178,7 @@ public class EmployeeService {
         address = employee.getAddress();
         emp.getAddresss().add(address);
         address.setContact(emp);
-
-        //Create BPM User
-        if (emp.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
-            OfficeBPMIdentityService.instance().createUser(employeeId);
-            Map<String, Object> obj = new HashMap<>();
-            obj.put("employee", emp);
-        }
-
-//        //Start on boarding process
-//        Map<String, Object> obj = new HashMap<>();
-//        obj.put("entity", emp);
-//        OfficeBPMService.instance().startProcess("on_boarding_employee_process", obj);
+        
         Email email = new Email();
         email.setEmail(initiateDto.getEmail());
         email.setPrimaryEmail(true);
@@ -197,6 +186,14 @@ public class EmployeeService {
 
         emp = EmployeeDao.instance().save(emp);
         emp = em.merge(emp);
+
+        //Create BPM User
+        if (emp.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
+            OfficeBPMIdentityService.instance().createUser(employeeId);
+            Map<String, Object> obj = new HashMap<>();
+            obj.put("entity", emp);
+            OfficeBPMService.instance().startProcess("on_boarding_employee_process", obj);
+        }
         
         //Update BankAccount Information for Employee
         BankAccount bankAccount = new BankAccount();
