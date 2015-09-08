@@ -2,6 +2,7 @@ How to submit Expense Report Request
 ==========
  - [Login to Portal](../../office/forgot-password.html "Login")
  - Navigate to Expense --> Expense Report --> Create Expense Report
+ - For General Expense *** If employee would like to specify other 'Approver' instead of 'Report_To' manager, select Initial Approval Manager name also .***
  - Employee submits the Expense Report request after entering all the relevant details
  - Reports_To Manager will review and approve/reject the request. Approved request will be send to CEO for final approval.
  - CEO will review the approved request and approve/reject the request 
