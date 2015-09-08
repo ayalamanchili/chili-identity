@@ -58,9 +58,9 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ChangeHa
     public JSONObject populateEntityFromFields() {
         JSONObject employee = new JSONObject();
         JSONObject address = new JSONObject();
-        JSONObject bankinfo = new JSONObject();
+        JSONObject bankAccount = new JSONObject();
         JSONObject dependent = new JSONObject();
-        JSONObject additionalInfo = new JSONObject();
+        JSONObject employeeAdditionalDetails = new JSONObject();
         assignEntityValueFromField("firstName", employee);
         assignEntityValueFromField("middleInitial", employee);
         assignEntityValueFromField("lastName", employee);
@@ -81,23 +81,29 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ChangeHa
         assignEntityValueFromField("zip", address);
         employee.put("address", address);
         // Bank Account Information
-        assignEntityValueFromField("accountFirstName", bankinfo);
-        assignEntityValueFromField("accountLastName", bankinfo);
-        assignEntityValueFromField("bankName", bankinfo);
-        assignEntityValueFromField("bankRoutingNumber", bankinfo);
-        assignEntityValueFromField("bankAccountNumber", bankinfo);
-        employee.put("bankinfo", bankinfo);
+        assignEntityValueFromField("accountFirstName", bankAccount);
+        assignEntityValueFromField("accountLastName", bankAccount);
+        assignEntityValueFromField("bankName", bankAccount);
+        assignEntityValueFromField("bankRoutingNumber", bankAccount);
+        assignEntityValueFromField("bankAccountNumber", bankAccount);
+        bankAccount.put("targetEntityName", new JSONString("targetEntityName"));
+        bankAccount.put("targetEntityId", new JSONString("0"));
+        employee.put("bankAccount", bankAccount);
         // Dependent Information
         assignEntityValueFromField("firstName", dependent);
         assignEntityValueFromField("lastName", dependent);
         assignEntityValueFromField("dateOfBirth", dependent);
         assignEntityValueFromField("relationship", dependent);
+        dependent.put("targetEntityName", new JSONString("targetEntityName"));
+        dependent.put("targetEntityId", new JSONString("0"));
         employee.put("dependent", dependent);
         // Additional Information
-        assignEntityValueFromField("referredBy", additionalInfo);
-        assignEntityValueFromField("maritalStatus", additionalInfo);
-        assignEntityValueFromField("ethnicity", additionalInfo);
-        employee.put("additionalInfo", additionalInfo);
+        assignEntityValueFromField("referredBy", employeeAdditionalDetails);
+        assignEntityValueFromField("maritalStatus", employeeAdditionalDetails);
+        assignEntityValueFromField("ethnicity", employeeAdditionalDetails);
+        employeeAdditionalDetails.put("targetEntityName", new JSONString("targetEntityName"));
+        employeeAdditionalDetails.put("targetEntityId", new JSONString("0"));
+        employee.put("employeeAdditionalDetails", employeeAdditionalDetails);
         // 
         employee.put("inviteCode", new JSONString(invitationCode));
         logger.info("employee" + employee.toString());
@@ -139,7 +145,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ChangeHa
         addField("accountLastName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("bankName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("bankRoutingNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("bankAccountNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("bankAccountNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);    
         entityFieldsPanel.add(getLineSeperatorTag("Dependent's Information"));
         addField("firstName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("lastName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
