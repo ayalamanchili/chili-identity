@@ -166,7 +166,7 @@ public class EmployeeService {
             user = OfficeSecurityService.instance().createCuser(user);
             emp.setUser(user);
         }
-
+        
         //Create employee with basic information
         emp.setEmployeeId(employeeId);
         Preferences prefs = new Preferences();
@@ -178,21 +178,6 @@ public class EmployeeService {
         address = employee.getAddress();
         emp.getAddresss().add(address);
         address.setContact(emp);
-
-        //Update BankAccount Information for Employee
-        BankAccount bankAccount = new BankAccount();
-        bankAccount = employee.getBankAccount();
-        BankAccountDao.instance().save(bankAccount, emp.getId(), emp.getClass().getCanonicalName());
-
-        //Update Dependent Information for Employee
-        Dependent dependent = new Dependent();
-        dependent = employee.getDependent();
-        DependentDao.instance().save(dependent, emp.getId(), emp.getClass().getCanonicalName());
-
-        //Update Additional Information for Employee
-        EmployeeAdditionalDetails employeeAdditionalDetails = new EmployeeAdditionalDetails();
-        employeeAdditionalDetails = employee.getEmployeeAdditionalDetails();
-        EmployeeAdditionalDetailsDao.instance().save(employeeAdditionalDetails, emp.getId(), emp.getClass().getCanonicalName());
 
         //Create BPM User
         if (emp.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
@@ -212,6 +197,22 @@ public class EmployeeService {
 
         emp = EmployeeDao.instance().save(emp);
         emp = em.merge(emp);
+        
+        //Update BankAccount Information for Employee
+        BankAccount bankAccount = new BankAccount();
+        bankAccount = employee.getBankAccount();
+        BankAccountDao.instance().save(bankAccount, emp.getId(), emp.getClass().getCanonicalName());
+
+        //Update Dependent Information for Employee
+        Dependent dependent = new Dependent();
+        dependent = employee.getDependent();
+        DependentDao.instance().save(dependent, emp.getId(), emp.getClass().getCanonicalName());
+
+        //Update Additional Information for Employee
+        EmployeeAdditionalDetails employeeAdditionalDetails = new EmployeeAdditionalDetails();
+        employeeAdditionalDetails = employee.getEmployeeAdditionalDetails();
+        EmployeeAdditionalDetailsDao.instance().save(employeeAdditionalDetails, emp.getId(), emp.getClass().getCanonicalName());
+        
         //create cert
         OfficeSecurityService.instance().createUserCert(emp, null, null);
         return emp.getId().toString();
