@@ -90,8 +90,8 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ChangeHa
         bankAccount.put("targetEntityId", new JSONString("0"));
         employee.put("bankAccount", bankAccount);
         // Dependent Information
-        assignEntityValueFromField("firstName", dependent);
-        assignEntityValueFromField("lastName", dependent);
+        assignEntityValueFromField("dfirstName", dependent);
+        assignEntityValueFromField("dlastName", dependent);
         assignEntityValueFromField("dateOfBirth", dependent);
         assignEntityValueFromField("relationship", dependent);
         dependent.put("targetEntityName", new JSONString("targetEntityName"));
@@ -147,8 +147,8 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ChangeHa
         addField("bankRoutingNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("bankAccountNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);    
         entityFieldsPanel.add(getLineSeperatorTag("Dependent's Information"));
-        addField("firstName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("lastName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("dfirstName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("dlastName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("dateOfBirth", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("relationship", false, true, Relationship.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Additinal Information"));
