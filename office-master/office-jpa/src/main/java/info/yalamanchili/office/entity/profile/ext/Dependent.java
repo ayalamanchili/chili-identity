@@ -32,10 +32,10 @@ public class Dependent extends AbstractHandleEntity {
     private static final long serialVersionUID = 1L;
     /**
      */
-    private String firstName;
+    private String dfirstName;
     /**
      */
-    private String lastName;
+    private String dlastName;
     
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date dateOfBirth;
@@ -44,20 +44,20 @@ public class Dependent extends AbstractHandleEntity {
     @Field
     private Relationship relationship;
 
-    public String getFirstName() {
-        return firstName;
+    public String getDfirstName() {
+        return dfirstName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setDfirstName(String dfirstName) {
+        this.dfirstName = dfirstName;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getDlastName() {
+        return dlastName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setDlastName(String dlastName) {
+        this.dlastName = dlastName;
     }
 
     public Date getDateOfBirth() {
