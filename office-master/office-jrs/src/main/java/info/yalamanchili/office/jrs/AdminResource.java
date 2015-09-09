@@ -35,11 +35,16 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
+import info.yalamanchili.office.dao.profile.onboarding.EmployeeOnBoardingDao;
 import info.yalamanchili.office.dao.security.EmployeeLoginDto;
 import info.yalamanchili.office.dto.onboarding.InitiateOnBoardingDto;
 import info.yalamanchili.office.dto.profile.EmployeeCreateDto;
 import info.yalamanchili.office.dto.onboarding.OnBoardingEmployeeDto;
 import info.yalamanchili.office.dto.security.User;
+import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
@@ -65,6 +70,8 @@ public class AdminResource {
     protected ProfileNotificationService profileNotificationService;
     @Autowired
     public EmployeeDao employeeDao;
+    @Autowired
+    public EmployeeOnBoardingDao employeeOnBoardingDao;
     @PersistenceContext
     EntityManager em;
 
@@ -138,6 +145,15 @@ public class AdminResource {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
         return employeeService.onBoardEmployee(employee);
     }
+    
+    @GET
+    @Path("/{start}/{limit}")
+    public AdminResource.EmployeeTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
+        AdminResource.EmployeeTable tableObj = new AdminResource.EmployeeTable();
+        tableObj.setEntities(employeeOnBoardingDao.query(start, limit));
+        tableObj.setSize(employeeOnBoardingDao.size());
+        return tableObj;
+    }
 
     @GET
     @Path("/roles/{empId}/{start}/{limit}")
@@ -195,5 +211,32 @@ public class AdminResource {
     @GET
     public Employee getCurrentUser() {
         return securityService.getCurrentUser();
+    }
+    
+    @XmlRootElement
+    @XmlType
+    public static class EmployeeTable implements java.io.Serializable {
+
+        protected Long size;
+        protected List<EmployeeOnBoarding> entities;
+
+        public Long getSize() {
+            return size;
+        }
+
+        public void setSize(Long size) {
+            this.size = size;
+        }
+
+        @XmlElement
+        public List<EmployeeOnBoarding> getEntities() {
+            return entities;
+        }
+
+        public void setEntities(List<EmployeeOnBoarding> entities) {
+            this.entities = entities;
+        }
+ 
+        
     }
 }
