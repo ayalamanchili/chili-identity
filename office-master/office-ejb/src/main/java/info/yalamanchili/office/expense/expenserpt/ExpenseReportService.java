@@ -118,7 +118,8 @@ public class ExpenseReportService {
                     item.setCategory(expenseCategoryDao.findById(item.getCategory().getId()));
                 }
                 item.setExpenseReport(entity);
-                expenseReportsDao.getEntityManager().merge(item);
+                item = expenseReportsDao.getEntityManager().merge(item);
+                entity.getExpenseItems().add(item);
             }
         }
         for (ExpenseReceipt receipt : dto.getExpenseReceipts()) {

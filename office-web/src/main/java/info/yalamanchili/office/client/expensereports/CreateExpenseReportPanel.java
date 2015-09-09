@@ -41,7 +41,6 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.expenseitem.CreateExpenseItemPanel;
 import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.*;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -181,7 +180,6 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        BigDecimal totalExpensesAmount = BigDecimal.ZERO;
         entity = new JSONObject();
         if (approvalManager.getSelectedObject() != null) {
             entity.put("approvalManagerId", approvalManager.getSelectedObject().get("id").isString());
@@ -197,16 +195,10 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
             int i = 0;
             for (CreateExpenseItemPanel panel : expenseItemPanels) {
                 items.set(i, panel.populateEntityFromFields());
-                JSONObject entityObj = (JSONObject) items.get(i);
-                if (!JSONUtils.toString(entityObj, AMOUNT).isEmpty()) {
-                    BigDecimal eAmount = new BigDecimal(JSONUtils.toString(entityObj, AMOUNT));
-                    totalExpensesAmount = totalExpensesAmount.add(eAmount);
-                }
                 i++;
             }
             entity.put(EXPENSE_ITEMS, items);
         }
-        entity.put(TOTAL_EXPENSES, new JSONString((totalExpensesAmount).abs().toString()));
         JSONArray expenseReceipts = new JSONArray();
         if (!fileUploadPanel.isEmpty()) {
             int i = 0;

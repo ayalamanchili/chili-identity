@@ -9,10 +9,13 @@ package info.yalamanchili.office.jrs.expense.expenserpt;
 
 import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.expense.expenserpt.ExpenseItemDao;
+import info.yalamanchili.office.dao.expense.expenserpt.ExpenseReportsDao;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseItem;
+import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.xml.bind.annotation.XmlElement;
@@ -43,6 +46,17 @@ public class ExpenseItemResource extends CRUDResource<ExpenseItem> {
         tableObj.setEntities(getDao().query(start, limit));
         tableObj.setSize(getDao().size());
         return tableObj;
+    }
+
+    @PUT
+    @Path("/delete/{id}")
+    @Override
+    public void delete(@PathParam("id") Long id) {
+        ExpenseItem item = expenseItemDao.findById(id);
+        ExpenseReport report = item.getExpenseReport();
+        report.getExpenseItems().remove(item);
+        report.updateTotalAmount();
+        getDao().delete(id);
     }
 
     @Override

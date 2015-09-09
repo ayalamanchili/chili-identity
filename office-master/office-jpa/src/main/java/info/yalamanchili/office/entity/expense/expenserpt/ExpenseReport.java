@@ -19,6 +19,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PostPersist;
+import javax.persistence.PostUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -78,7 +80,7 @@ public class ExpenseReport extends AbstractEntity {
     private ExpenseReimbursePaymentMode expenseReimbursePaymentMode;
     /**
      *
-    */ 
+     */
     @Temporal(TemporalType.DATE)
     @org.hibernate.annotations.Index(name = "EXP_SUB_DTE")
     private Date submittedDate;
@@ -417,10 +419,19 @@ public class ExpenseReport extends AbstractEntity {
         this.expenseReimbursePaymentMode = expenseReimbursePaymentMode;
     }
 
+    @PostPersist
+    @PostUpdate
+    public void updateTotalAmount() {
+        BigDecimal totalAmount = BigDecimal.ZERO.setScale(2);
+        for (ExpenseItem item : this.getExpenseItems()) {
+            totalAmount = totalAmount.add(item.getAmount());
+        }
+        this.setTotalExpenses(totalAmount);
+    }
+
     @Override
     public String toString() {
         return "ExpenseReport{" + "location=" + location + ", department=" + department + ", startDate=" + startDate + ", endDate=" + endDate + ", projectName=" + projectName + ", projectNumber=" + projectNumber + ", expenseReimbursePaymentMode=" + expenseReimbursePaymentMode + ", submittedDate=" + submittedDate + ", approvedByManager=" + approvedByManager + ", approvedByManagerDate=" + approvedByManagerDate + ", approvedByAccountsDept=" + approvedByAccountsDept + ", approvedByAccountsDeptDate=" + approvedByAccountsDeptDate + ", approvedByCEO=" + approvedByCEO + ", approvedByCEODate=" + approvedByCEODate + ", bpmProcessId=" + bpmProcessId + ", status=" + status + ", expenseFormType=" + expenseFormType + ", totalExpenses=" + totalExpenses + ", approvalManagerId=" + approvalManagerId + '}';
     }
-    
 
 }

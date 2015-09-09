@@ -123,7 +123,6 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        BigDecimal totalExpensesAmount = BigDecimal.ZERO;
         assignEntityValueFromField(EXPENSE_FORM_TYPE, entity);
         assignEntityValueFromField(LOCATION, entity);
         assignEntityValueFromField(START_DATE, entity);
@@ -136,27 +135,15 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
             if (panel instanceof UpdateExpenseItemPanel) {
                 UpdateExpenseItemPanel updatePanel = (UpdateExpenseItemPanel) panel;
                 items.set(i, updatePanel.populateEntityFromFields());
-                JSONObject entityObj = (JSONObject) items.get(i);
-                if (!JSONUtils.toString(entityObj, AMOUNT).isEmpty()) {
-                    BigDecimal eAmount = new BigDecimal(JSONUtils.toString(entityObj, AMOUNT));
-                    totalExpensesAmount = totalExpensesAmount.add(eAmount);
-                }
                 i++;
             } else if (panel instanceof CreateExpenseItemPanel) {
                 CreateExpenseItemPanel createPanel = (CreateExpenseItemPanel) panel;
                 items.set(i, createPanel.populateEntityFromFields());
-                JSONObject entityObj = (JSONObject) items.get(i);
-                if (!JSONUtils.toString(entityObj, AMOUNT).isEmpty()) {
-                    BigDecimal eAmount = new BigDecimal(JSONUtils.toString(entityObj, AMOUNT));
-                    totalExpensesAmount = totalExpensesAmount.add(eAmount);
-                }
                 i++;
             }
 
         }
         entity.put(EXPENSE_ITEMS, items);
-        entity.put(TOTAL_EXPENSES, new JSONString((totalExpensesAmount).abs().toString()));
-
         int j = expenseReceipts.size();
         for (FileUpload upload : fileUploadPanel.getFileUploads()) {
             if (upload.getFilename() != null && !upload.getFilename().trim().isEmpty()) {
