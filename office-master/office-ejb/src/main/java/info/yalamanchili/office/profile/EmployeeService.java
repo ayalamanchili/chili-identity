@@ -23,6 +23,7 @@ import info.yalamanchili.office.dao.invite.InviteCodeDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.ext.DependentDao;
 import info.yalamanchili.office.dao.profile.ext.EmployeeAdditionalDetailsDao;
+import info.yalamanchili.office.dao.profile.onboarding.EmployeeOnBoardingDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.onboarding.InitiateOnBoardingDto;
 import info.yalamanchili.office.dto.profile.EmployeeCreateDto;
@@ -141,6 +142,7 @@ public class EmployeeService {
     public String onBoardEmployee(OnBoardingEmployeeDto employee) {
         Employee emp = mapper.map(employee, Employee.class);
         InviteCode code = InviteCodeDao.instance().find(employee.getInviteCode().trim());
+        EmployeeOnBoarding onboarding = EmployeeOnBoardingDao.instance().findByEmail(code.getEmail());
         InitiateOnBoardingDto initiateDto = (InitiateOnBoardingDto) SerializedEntityDao.instance().findAndConvert(code.getClass().getCanonicalName(), code.getId());
         emp.setEmployeeType(em.find(EmployeeType.class, initiateDto.getEmployeeType().getId()));
         if (initiateDto.getCompany() != null) {
@@ -186,7 +188,10 @@ public class EmployeeService {
 
         emp = EmployeeDao.instance().save(emp);
         emp = em.merge(emp);
-
+        
+        onboarding.setEmployee(emp);
+        em.merge(onboarding);
+    
         //Create BPM User
         if (emp.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
             OfficeBPMIdentityService.instance().createUser(employeeId);
