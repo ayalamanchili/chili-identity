@@ -51,21 +51,21 @@ public class CorporateTimeAccuralService {
                 BigDecimal beforeHours = ptoAccruedTS.getHours();
                 //India Team
                 if (Branch.Hyderabad.equals(emp.getBranch())) {
-                    if (DateUtils.differenceInMonths(startDate, new Date()) > 6) {
+                    int diffInMonths = DateUtils.differenceInMonths(startDate, new Date());
+                    if (diffInMonths > 6) {
                         //After probation period employee leave 
                         // after 6 months if employee joined in first 15 days of the month
-                        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd");
-                        int day=Integer.parseInt(simpleDateFormat.format(startDate));
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd");
+                        int day = Integer.parseInt(simpleDateFormat.format(startDate));
                         //1.5 day leave will be added to current month last day
-                        if(DateUtils.differenceInMonths(startDate, new Date())>7){
+                        if (diffInMonths > 7) {
                             ptoAccruedTS.setHours(ptoAccruedTS.getHours().add(TimeAccuralConstants.indiaTeamMonthlyAccrual));
+                        } else {
+                            if (((diffInMonths == 7)) & (day >= 1 && day <= 15)) {
+                                ptoAccruedTS.setHours(ptoAccruedTS.getHours().add(TimeAccuralConstants.indiaTeamMonthlyAccrual));
+                            }
                         }
-                        else {
-                            if(((DateUtils.differenceInMonths(startDate, new Date())== 7)) & (day>=1 && day<=15))
-                                            
-                            ptoAccruedTS.setHours(ptoAccruedTS.getHours().add(TimeAccuralConstants.indiaTeamMonthlyAccrual));
-                        }
-                        }
+                    }
                 } else {
                     //All Other Branches
                     if (today.before(DateUtils.getNextDay(startDate, 30))) {
