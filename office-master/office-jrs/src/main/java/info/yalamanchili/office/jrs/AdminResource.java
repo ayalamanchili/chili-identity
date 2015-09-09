@@ -147,7 +147,7 @@ public class AdminResource {
     }
     
     @GET
-    @Path("/{start}/{limit}")
+    @Path("/on-board-employee/{start}/{limit}")
     public AdminResource.EmployeeTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         AdminResource.EmployeeTable tableObj = new AdminResource.EmployeeTable();
         tableObj.setEntities(employeeOnBoardingDao.query(start, limit));
