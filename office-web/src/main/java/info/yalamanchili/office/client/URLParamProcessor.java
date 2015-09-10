@@ -9,12 +9,6 @@
 package info.yalamanchili.office.client;
 
 import com.google.gwt.user.client.Window;
-import info.chili.gwt.callback.ALAsyncCallback;
-import info.chili.gwt.rpc.HttpService;
-import info.chili.gwt.widgets.GenericPopup;
-import info.chili.gwt.widgets.ResponseStatusWidget;
-import info.yalamanchili.office.client.drive.DriveTreePanel;
-import info.yalamanchili.office.client.profile.email.CreateEmailPanel;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;

@@ -12,8 +12,8 @@ import com.google.common.base.Strings;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.RootPanel;
 import info.chili.gwt.rpc.HttpService;
-import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.onboarding.EmployeeOnboardingPanel;
 import java.util.List;
 
@@ -31,7 +31,8 @@ public class InvitationCodeValidator {
                     new AsyncCallback<String>() {
                         @Override
                         public void onSuccess(String arg0) {
-                            new GenericPopup(new EmployeeOnboardingPanel(arg0)).show();
+                            RootPanel.get().clear();
+                            RootPanel.get().add(new EmployeeOnboardingPanel(arg0));
                         }
 
                         @Override

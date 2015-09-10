@@ -10,15 +10,23 @@ package info.yalamanchili.office.jrs.profile;
 
 import info.yalamanchili.office.dao.expense.BankAccountDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dto.onboarding.OnBoardingEmployeeDto;
 import info.yalamanchili.office.entity.expense.BankAccount;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.profile.EmployeeFormsService;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import javax.ws.rs.core.Response;
 
 /**
  *
@@ -28,10 +36,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 @Scope("request")
+@Produces("application/json")
+@Consumes("application/json")
 public class EmployeeFormsResource {
 
     @Autowired
-    public BankAccountDao bankAccountDao;
+    protected EmployeeFormsService employeeFormsService;
 
     @GET
     @Path("/ach/{id}")
@@ -44,4 +54,40 @@ public class EmployeeFormsResource {
         return ba;
     }
 
+    @GET
+    @Path("/ach-report/{id}")
+    @Produces({"application/pdf"})
+    public Response printACHForm(@PathParam("id") Long employeeId) {
+        Employee emp = EmployeeDao.instance().findById(employeeId);
+        return employeeFormsService.printACHForm(emp);
+    }
+
+    @Autowired
+    protected Mapper mapper;
+
+    @GET
+    @Path("/joining-form/{id}")
+    public JoiningFormDto getJoiningForm(@PathParam("id") Long employeeId) {
+        Employee emp = EmployeeDao.instance().findById(employeeId);
+        JoiningFormDto dto = mapper.map(emp, JoiningFormDto.class);
+        BankAccount ba = BankAccountDao.instance().find(emp);
+        dto.setBankAccount(ba);
+        //TODO set dependents
+        //TODO additional details
+        return dto;
+    }
+
+    @GET
+    @Path("/joining-form-report/{id}")
+    @Produces({"application/pdf"})
+    public Response printJoiningForm(@PathParam("id") Long employeeId) {
+        Employee emp = EmployeeDao.instance().findById(employeeId);
+        return employeeFormsService.printJoiningForm(emp);
+    }
+
+    @XmlRootElement
+    @XmlType
+    public static class JoiningFormDto extends OnBoardingEmployeeDto {
+
+    }
 }

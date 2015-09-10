@@ -29,20 +29,13 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class EmployeeFormsService {
-    
-    public BankAccount getACHForm(Employee emp) {
-//TODO generate joining for the emp details and additional details
-        BankAccount ba = BankAccountDao.instance().find(emp);
-        return ba;
-    }
-    
 
     public Response printJoiningForm(Employee emp) {
 //TODO generate joining for the emp details and additional details
         EmployeeAdditionalDetails ead = EmployeeAdditionalDetailsDao.instance().find(emp);
         Dependent dep = DependentDao.instance().find(emp);
         PdfDocumentData data = new PdfDocumentData();
-        
+
         data.setTemplateUrl("/templates/pdf/Joining-form-fillable-template.pdf");
 
         byte[] pdf = PDFUtils.generatePdf(data);
@@ -56,6 +49,7 @@ public class EmployeeFormsService {
         BankAccount ba = BankAccountDao.instance().find(emp);
         PdfDocumentData data = new PdfDocumentData();
         data.setTemplateUrl("/templates/pdf/ach-direct-deposit-form-template.pdf");
+        data.getData().put("accountNumber", ba.getBankAccountNumber());
         //TODO fill ach with emp and bank account details
         byte[] pdf = PDFUtils.generatePdf(data);
         return Response.ok(pdf)
