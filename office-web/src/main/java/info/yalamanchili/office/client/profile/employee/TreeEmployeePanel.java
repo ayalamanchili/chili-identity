@@ -19,10 +19,8 @@ import info.yalamanchili.office.client.profile.cllientinfo.ClientInfoOptionsPane
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
-import com.google.gwt.user.client.Window;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.utils.JSONUtils;
-import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.chili.gwt.crud.CreateComposite;
 import info.yalamanchili.office.client.profile.password.ResetPasswordPanel;
@@ -65,8 +63,10 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected static final String ROLES_NODE = "roles";
     protected static final String RESET_PASSWORD_NODE = "resetpassword";
     protected static final String DEACTIVATION_USER_NODE = "deactivation";
+    protected static final String EMPLOYEE_FORMS = "employeeForms";
     protected TreeSkillSetPanel skillSetTreePanel;
     protected TreeEmpReportsPanel empReportsPanel;
+    protected TreeEmpDocsPanel empDocsPanel;
 
     public TreeEmployeePanel(JSONObject emp) {
         super();
@@ -74,6 +74,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         this.entity = emp;
         skillSetTreePanel = new TreeSkillSetPanel(getEntityId());
         empReportsPanel = new TreeEmpReportsPanel(getEntityId());
+        empDocsPanel = new TreeEmpDocsPanel(emp);
         String name = JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName");
         init(name, OfficeWelcome.constants);
     }
@@ -111,6 +112,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
             addFirstChildLink("Roles", ROLES_NODE);
         }
         addFirstChildLink("Reports", REPORTS_NODE, empReportsPanel);
+        addFirstChildLink("Forms", EMPLOYEE_FORMS, empDocsPanel);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP) && Auth.isEmployee(entity)) {
             addFirstChildLink("Reset Password", RESET_PASSWORD_NODE);
         }
@@ -213,6 +215,9 @@ public class TreeEmployeePanel extends TreePanelComposite {
         }
         if (empReportsPanel != null) {
             empReportsPanel.treeNodeSelected(entityNodeKey);
+        }
+        if (empDocsPanel != null) {
+            empDocsPanel.treeNodeSelected(entityNodeKey);
         }
     }
 

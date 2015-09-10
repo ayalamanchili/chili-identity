@@ -70,8 +70,7 @@ public class AdminResource {
     protected ProfileNotificationService profileNotificationService;
     @Autowired
     public EmployeeDao employeeDao;
-    @Autowired
-    public EmployeeOnBoardingDao employeeOnBoardingDao;
+
     @PersistenceContext
     EntityManager em;
 
@@ -146,14 +145,6 @@ public class AdminResource {
         return employeeService.onBoardEmployee(employee);
     }
     
-    @GET
-    @Path("/on-board-employee/{start}/{limit}")
-    public AdminResource.EmployeeTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
-        AdminResource.EmployeeTable tableObj = new AdminResource.EmployeeTable();
-        tableObj.setEntities(employeeOnBoardingDao.query(start, limit));
-        tableObj.setSize(employeeOnBoardingDao.size());
-        return tableObj;
-    }
 
     @GET
     @Path("/roles/{empId}/{start}/{limit}")
@@ -211,32 +202,5 @@ public class AdminResource {
     @GET
     public Employee getCurrentUser() {
         return securityService.getCurrentUser();
-    }
-    
-    @XmlRootElement
-    @XmlType
-    public static class EmployeeTable implements java.io.Serializable {
-
-        protected Long size;
-        protected List<EmployeeOnBoarding> entities;
-
-        public Long getSize() {
-            return size;
-        }
-
-        public void setSize(Long size) {
-            this.size = size;
-        }
-
-        @XmlElement
-        public List<EmployeeOnBoarding> getEntities() {
-            return entities;
-        }
-
-        public void setEntities(List<EmployeeOnBoarding> entities) {
-            this.entities = entities;
-        }
- 
-        
     }
 }

@@ -9,8 +9,11 @@
 package info.yalamanchili.office.client.expense.bnkacct;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
 import java.util.logging.Logger;
@@ -27,8 +30,21 @@ public class ReadBankAcctWidget extends ReadComposite {
         initReadComposite(entity, "BankAccount", OfficeWelcome.constants);
     }
 
+    public ReadBankAcctWidget(String id) {
+        initReadComposite(id, "ACHForm", OfficeWelcome.constants);
+    }
+
     @Override
     public void loadEntity(String entityId) {
+        HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        logger.info(entity.toString());
+                        populateFieldsFromEntity(entity);
+                    }
+                });
     }
 
     @Override
@@ -64,6 +80,6 @@ public class ReadBankAcctWidget extends ReadComposite {
 
     @Override
     protected String getURI() {
-        return "";
+        return OfficeWelcome.constants.root_url() + "employee-forms/" + entityId;
     }
 }
