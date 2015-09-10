@@ -17,15 +17,15 @@ import java.util.logging.Logger;
  *
  * @author Madhu.Badiginchala
  */
-public class TreeEmpDocsPanel extends TreePanelComposite {
+public class TreeEmpFormsPanel extends TreePanelComposite {
 
-    private static Logger logger = Logger.getLogger(TreeEmpDocsPanel.class.getName());
-    protected static final String READALL_ACH_PANEL = "ReadAll_ACH_Panel";
-    protected static final String READALL_JOINING_FORM_PANEL = "ReadAll_Joining_Form_Panel";
+    private static Logger logger = Logger.getLogger(TreeEmpFormsPanel.class.getName());
+    protected static final String ACH_FORM = "ach";
+    protected static final String JOINING_FORM = "joining-form";
     protected String employeeId;
 
-    public TreeEmpDocsPanel(JSONObject emp) {
-        this.employeeId = JSONUtils.toString(emp, "employeeId");
+    public TreeEmpFormsPanel(JSONObject emp) {
+        this.employeeId = JSONUtils.toString(emp, "id");
         init("Forms", OfficeWelcome.constants);
     }
 
@@ -39,18 +39,18 @@ public class TreeEmpDocsPanel extends TreePanelComposite {
 
     @Override
     protected void addWidgets() {
-        addFirstChildLink("ACH Form", READALL_ACH_PANEL);
-        addFirstChildLink("Joining Form", READALL_JOINING_FORM_PANEL);
+        addFirstChildLink("ACH Form", ACH_FORM);
+        addFirstChildLink("Joining Form", JOINING_FORM);
     }
 
     @Override
     public void treeNodeSelected(String entityNodeKey) {
-        if (READALL_ACH_PANEL.equals(entityNodeKey)) {
+        if (ACH_FORM.equals(entityNodeKey)) {
             logger.info("employeeid: " + employeeId);
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
             TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadBankAcctWidget(employeeId));
         }
-        if (READALL_JOINING_FORM_PANEL.equals(entityNodeKey)) {
+        if (JOINING_FORM.equals(entityNodeKey)) {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
 //            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllJoiningFormPanel(employeeId));
         }

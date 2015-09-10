@@ -66,7 +66,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected static final String EMPLOYEE_FORMS = "employeeForms";
     protected TreeSkillSetPanel skillSetTreePanel;
     protected TreeEmpReportsPanel empReportsPanel;
-    protected TreeEmpDocsPanel empDocsPanel;
+    protected TreeEmpFormsPanel empDocsPanel;
 
     public TreeEmployeePanel(JSONObject emp) {
         super();
@@ -74,7 +74,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         this.entity = emp;
         skillSetTreePanel = new TreeSkillSetPanel(getEntityId());
         empReportsPanel = new TreeEmpReportsPanel(getEntityId());
-        empDocsPanel = new TreeEmpDocsPanel(emp);
+        empDocsPanel = new TreeEmpFormsPanel(emp);
         String name = JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName");
         init(name, OfficeWelcome.constants);
     }
@@ -112,7 +112,9 @@ public class TreeEmployeePanel extends TreePanelComposite {
             addFirstChildLink("Roles", ROLES_NODE);
         }
         addFirstChildLink("Reports", REPORTS_NODE, empReportsPanel);
-        addFirstChildLink("Forms", EMPLOYEE_FORMS, empDocsPanel);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ON_BOARDING_MGR)) {
+            addFirstChildLink("Forms", EMPLOYEE_FORMS, empDocsPanel);
+        }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP) && Auth.isEmployee(entity)) {
             addFirstChildLink("Reset Password", RESET_PASSWORD_NODE);
         }

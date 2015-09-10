@@ -12,11 +12,9 @@ import info.yalamanchili.office.dao.expense.BankAccountDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.expense.BankAccount;
 import info.yalamanchili.office.entity.profile.Employee;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -36,7 +34,7 @@ public class EmployeeFormsResource {
     public BankAccountDao bankAccountDao;
 
     @GET
-    @Path("/{id}")
+    @Path("/ach/{id}")
     public BankAccount getBankAccount(@PathParam("id") Long employeeId) {
         Employee emp = null;
         if (employeeId != null) {

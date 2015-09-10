@@ -80,6 +80,6 @@ public class ReadBankAcctWidget extends ReadComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "employee-forms/" + entityId;
+        return OfficeWelcome.constants.root_url() + "employee-forms/ach/" + entityId;
     }
 }
