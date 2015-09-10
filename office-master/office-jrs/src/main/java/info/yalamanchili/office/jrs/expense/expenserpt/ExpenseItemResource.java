@@ -8,8 +8,8 @@
 package info.yalamanchili.office.jrs.expense.expenserpt;
 
 import info.chili.dao.CRUDDao;
+import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.office.dao.expense.expenserpt.ExpenseItemDao;
-import info.yalamanchili.office.dao.expense.expenserpt.ExpenseReportsDao;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseItem;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport;
 import info.yalamanchili.office.jrs.CRUDResource;
@@ -54,6 +54,9 @@ public class ExpenseItemResource extends CRUDResource<ExpenseItem> {
     public void delete(@PathParam("id") Long id) {
         ExpenseItem item = expenseItemDao.findById(id);
         ExpenseReport report = item.getExpenseReport();
+        if (report.getExpenseItems().size() == 1) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "min.item.count", "Expense Report should have atleat one item.");
+        }
         report.getExpenseItems().remove(item);
         report.updateTotalAmount();
         getDao().delete(id);

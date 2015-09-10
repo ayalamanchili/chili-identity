@@ -8,10 +8,12 @@
 package info.yalamanchili.office.dao.expense.expenserpt;
 
 import info.chili.dao.CRUDDao;
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseCategory;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseItem;
+import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.cache.annotation.CacheEvict;
@@ -36,6 +38,10 @@ public class ExpenseItemDao extends CRUDDao<ExpenseItem> {
     @CacheEvict(value = OfficeCacheKeys.EXPENSE, allEntries = true)
     @Override
     public void delete(Long id) {
+        ExpenseItem item = findById(id);
+        ExpenseReport report = item.getExpenseReport();
+        report.getExpenseItems().remove(item);
+        report.updateTotalAmount();
         super.delete(id);
     }
 

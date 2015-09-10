@@ -14,6 +14,7 @@ import info.chili.commons.pdf.PDFUtils;
 import info.chili.commons.pdf.PdfDocumentData;
 import info.chili.jpa.QueryUtils;
 import info.chili.security.Signature;
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
@@ -104,6 +105,9 @@ public class ExpenseReportService {
     }
 
     public ExpenseReportSaveDto save(ExpenseReportSaveDto dto) {
+        if (!dto.getEmployee().getEmployeeId().equals(OfficeSecurityService.instance().getCurrentUserName())) {
+             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.update.report", "Only the employee who submitted the report can update it");
+        }
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         ExpenseReport entity = expenseReportsDao.save(dto);
         ExpenseCategoryDao expenseCategoryDao = ExpenseCategoryDao.instance();
