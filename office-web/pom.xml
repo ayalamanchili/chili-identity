@@ -169,6 +169,12 @@
             <version>2.17.0</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>info.yalamanchili.office</groupId>
+            <artifactId>office-jpa</artifactId>
+            <version>1.2-SNAPSHOT</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
     <build>
         <finalName>office-web</finalName>

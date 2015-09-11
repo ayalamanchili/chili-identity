@@ -38,6 +38,18 @@ public class BankAccount extends AbstractHandleEntity {
      *
      */
     protected String bankName;
+    
+    protected String bankAddress1;
+    
+    protected String bankAddress2;
+    
+    protected boolean isACHBlock;
+
+    
+
+    protected AccountType accountType;
+
+    
     /**
      *
      */
@@ -75,6 +87,22 @@ public class BankAccount extends AbstractHandleEntity {
     public void setBankName(String bankName) {
         this.bankName = bankName;
     }
+    
+    public String getBankAddress1() {
+        return bankAddress1;
+    }
+
+    public String getBankAddress2() {
+        return bankAddress2;
+    }
+
+    public void setBankAddress1(String bankAddress1) {
+        this.bankAddress1 = bankAddress1;
+    }
+
+    public void setBankAddress2(String bankAddress2) {
+        this.bankAddress2 = bankAddress2;
+    }
 
     public String getBankRoutingNumber() {
         return bankRoutingNumber;
@@ -90,6 +118,22 @@ public class BankAccount extends AbstractHandleEntity {
 
     public void setBankAccountNumber(String bankAccountNumber) {
         this.bankAccountNumber = bankAccountNumber;
+    }
+    
+    public void setIsACHBlock(boolean isACHBlock) {
+        this.isACHBlock = isACHBlock;
+    }
+
+    public boolean isIsACHBlock() {
+        return isACHBlock;
+    }
+    
+    public AccountType getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
     }
 
 }

@@ -33,6 +33,7 @@ import info.yalamanchili.office.client.profile.employee.CreateEmployeePanel;
 import info.yalamanchili.office.client.profile.employee.EmployeeSidePanel;
 import info.yalamanchili.office.client.profile.employee.ReadAllEmployeesPanel;
 import java.util.logging.Logger;
+import info.yalamanchili.office.entity.expense.AccountType;
 
 /**
  *
@@ -86,6 +87,10 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ChangeHa
         assignEntityValueFromField("bankName", bankAccount);
         assignEntityValueFromField("bankRoutingNumber", bankAccount);
         assignEntityValueFromField("bankAccountNumber", bankAccount);
+        assignEntityValueFromField("bankAddress1", bankAccount);
+        assignEntityValueFromField("bankAddress2", bankAccount);
+        assignEntityValueFromField("accountType", bankAccount);
+        //assignEntityValueFromField("isACHBlock", bankAccount);
         bankAccount.put("targetEntityName", new JSONString("targetEntityName"));
         bankAccount.put("targetEntityId", new JSONString("0"));
         employee.put("bankAccount", bankAccount);
@@ -145,13 +150,18 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ChangeHa
         addField("accountLastName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("bankName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("bankRoutingNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("bankAccountNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);    
+        addField("bankAccountNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        
+        addField("bankAddress1",false,true,DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("bankAddress2",false,false,DataType.STRING_FIELD,Alignment.HORIZONTAL);
+        addEnumField("accountType",false,true,AccountType.names(),Alignment.HORIZONTAL);
+        
         entityFieldsPanel.add(getLineSeperatorTag("Dependent's Information"));
         addField("dfirstName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("dlastName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("dateOfBirth", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("relationship", false, true, Relationship.names(), Alignment.HORIZONTAL);
-        entityFieldsPanel.add(getLineSeperatorTag("Additinal Information"));
+        entityFieldsPanel.add(getLineSeperatorTag("Additional Information"));
         addField("referredBy", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("maritalStatus", false, true, MaritalStatus.names(), Alignment.HORIZONTAL);
         addEnumField("ethnicity", false, true, Ethnicity.names(), Alignment.HORIZONTAL);
