@@ -38,6 +38,8 @@ public class CreateBankAcctWidget extends CreateComposite {
         assignEntityValueFromField("bankName", entity);
         assignEntityValueFromField("bankRoutingNumber", entity);
         assignEntityValueFromField("bankAccountNumber", entity);
+        assignEntityValueFromField("accountType", entity);
+        assignEntityValueFromField("achBlocked", entity);
         entity.put("targetEntityName", new JSONString("targetEntityName"));
         entity.put("targetEntityId", new JSONString("0"));
         return entity;
@@ -74,6 +76,8 @@ public class CreateBankAcctWidget extends CreateComposite {
         addField("bankName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("bankRoutingNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("bankAccountNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("accountType", false, true, AccountType.names(), Alignment.HORIZONTAL);
+        addField("achBlocked", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 

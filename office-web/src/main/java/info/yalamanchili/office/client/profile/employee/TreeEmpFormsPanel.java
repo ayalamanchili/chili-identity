@@ -9,6 +9,7 @@ import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.expense.bnkacct.ReadBankAcctWidget;
 import info.yalamanchili.office.client.gwt.TreePanelComposite;
 import info.yalamanchili.office.client.onboarding.ReadACHPanel;
 import java.util.logging.Logger;
@@ -48,7 +49,7 @@ public class TreeEmpFormsPanel extends TreePanelComposite {
         if (ACH_FORM.equals(entityNodeKey)) {
             logger.info("employeeid: " + employeeId);
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadACHPanel(employeeId));
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadBankAcctWidget(employeeId));
             TabPanel.instance().getMyOfficePanel().entityPanel.add(this);
         }
         if (JOINING_FORM.equals(entityNodeKey)) {

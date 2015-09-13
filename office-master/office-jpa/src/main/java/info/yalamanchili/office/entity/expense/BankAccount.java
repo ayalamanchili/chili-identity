@@ -10,6 +10,8 @@ package info.yalamanchili.office.entity.expense;
 
 import info.chili.jpa.AbstractHandleEntity;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.envers.Audited;
@@ -38,27 +40,33 @@ public class BankAccount extends AbstractHandleEntity {
      *
      */
     protected String bankName;
-    
-    protected String bankAddress1;
-    
-    protected String bankAddress2;
-    
-    protected boolean isACHBlock;
-
-    
-
-    protected AccountType accountType;
-
-    
     /**
      *
      */
-    @NotEmpty (message = "{bankRoutingNumber.not.empty.msg}")
+    protected String bankAddress1;
+    /**
+     *
+     */
+    protected String bankAddress2;
+    /**
+     *
+     */
+    protected boolean achBlocked;
+    /**
+     *
+     */
+    @Enumerated(EnumType.STRING)
+    protected AccountType accountType;
+
+    /**
+     *
+     */
+    @NotEmpty(message = "{bankRoutingNumber.not.empty.msg}")
     protected String bankRoutingNumber;
     /**
      *
      */
-    @NotEmpty (message = "{bankAccountNumber.not.empty.msg}")
+    @NotEmpty(message = "{bankAccountNumber.not.empty.msg}")
     protected String bankAccountNumber;
 
     public BankAccount() {
@@ -87,7 +95,7 @@ public class BankAccount extends AbstractHandleEntity {
     public void setBankName(String bankName) {
         this.bankName = bankName;
     }
-    
+
     public String getBankAddress1() {
         return bankAddress1;
     }
@@ -119,15 +127,15 @@ public class BankAccount extends AbstractHandleEntity {
     public void setBankAccountNumber(String bankAccountNumber) {
         this.bankAccountNumber = bankAccountNumber;
     }
-    
-    public void setIsACHBlock(boolean isACHBlock) {
-        this.isACHBlock = isACHBlock;
+
+    public void setAchBlocked(boolean achBlocked) {
+        this.achBlocked = achBlocked;
     }
 
-    public boolean isIsACHBlock() {
-        return isACHBlock;
+    public boolean isAchBlocked() {
+        return achBlocked;
     }
-    
+
     public AccountType getAccountType() {
         return accountType;
     }

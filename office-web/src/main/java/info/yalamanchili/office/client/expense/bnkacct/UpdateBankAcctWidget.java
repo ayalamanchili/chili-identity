@@ -35,6 +35,8 @@ public class UpdateBankAcctWidget extends UpdateComposite {
         assignEntityValueFromField("bankName", entity);
         assignEntityValueFromField("bankRoutingNumber", entity);
         assignEntityValueFromField("bankAccountNumber", entity);
+        assignEntityValueFromField("accountType", entity);
+        assignEntityValueFromField("achBlocked", entity);
         return entity;
     }
 
@@ -54,6 +56,8 @@ public class UpdateBankAcctWidget extends UpdateComposite {
         assignFieldValueFromEntity("bankName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("bankRoutingNumber", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("bankAccountNumber", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("accountType", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("achBlocked", entity, DataType.STRING_FIELD);
     }
 
     @Override
@@ -73,6 +77,8 @@ public class UpdateBankAcctWidget extends UpdateComposite {
         addField("bankName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("bankRoutingNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("bankAccountNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("accountType", false, true, AccountType.names(), Alignment.HORIZONTAL);
+        addField("achBlocked", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 

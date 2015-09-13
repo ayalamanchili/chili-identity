@@ -16,7 +16,6 @@ import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.entity.expense.AccountType;
 import java.util.logging.Logger;
 
 /**
@@ -32,7 +31,7 @@ public class ReadBankAcctWidget extends ReadComposite {
     }
 
     public ReadBankAcctWidget(String id) {
-        initReadComposite(id, "ACHForm", OfficeWelcome.constants);
+        initReadComposite(id, "BankAccount", OfficeWelcome.constants);
     }
 
     @Override
@@ -55,10 +54,8 @@ public class ReadBankAcctWidget extends ReadComposite {
         assignFieldValueFromEntity("bankName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("bankRoutingNumber", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("bankAccountNumber", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("bankAddress1", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("bankAddress2", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("accountType", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("isACHBlock",entity,DataType.BOOLEAN_FIELD);
+        assignFieldValueFromEntity("achBlocked", entity, DataType.BOOLEAN_FIELD);
     }
 
     @Override
@@ -76,10 +73,8 @@ public class ReadBankAcctWidget extends ReadComposite {
         addField("bankName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("bankRoutingNumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("bankAccountNumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("bankAddress1",true,false,DataType.STRING_FIELD,Alignment.HORIZONTAL);
-        addField("bankAddress2",true,false,DataType.STRING_FIELD,Alignment.HORIZONTAL);
-        addEnumField("bankAddress1",true,false,AccountType.names(),Alignment.HORIZONTAL);
-        
+        addEnumField("accountType", true, false, AccountType.names(), Alignment.HORIZONTAL);
+        addField("achBlocked", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 

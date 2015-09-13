@@ -184,7 +184,7 @@ public class EmployeeFormsService {
         if(ba.getBankAddress2()!=null || ba.getBankAddress2()!="")
             data.getData().put("bankAddress2", ba.getBankAddress2());
         
-        data.getData().put("isACHBlock", String.valueOf(ba.isIsACHBlock()));
+        data.getData().put("isACHBlock", String.valueOf(ba.isAchBlocked()));
         //bank address
         //phone number
         //ACH reversal mode

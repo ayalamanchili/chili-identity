@@ -27,13 +27,13 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
+import info.yalamanchili.office.client.expense.bnkacct.AccountType;
 import info.yalamanchili.office.client.profile.contact.Sex;
 import info.yalamanchili.office.client.profile.contact.WorkStatus;
 import info.yalamanchili.office.client.profile.employee.CreateEmployeePanel;
 import info.yalamanchili.office.client.profile.employee.EmployeeSidePanel;
 import info.yalamanchili.office.client.profile.employee.ReadAllEmployeesPanel;
 import java.util.logging.Logger;
-import info.yalamanchili.office.entity.expense.AccountType;
 
 /**
  *
@@ -196,10 +196,10 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ChangeHa
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Created Employee");
-        TabPanel.instance().myOfficePanel.sidePanelTop.clear();
-        TabPanel.instance().myOfficePanel.sidePanelTop.add(new EmployeeSidePanel());
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmployeesPanel());
+//        TabPanel.instance().myOfficePanel.sidePanelTop.clear();
+//        TabPanel.instance().myOfficePanel.sidePanelTop.add(new EmployeeSidePanel());
+//        TabPanel.instance().myOfficePanel.entityPanel.clear();
+//        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmployeesPanel());
 
     }
 
