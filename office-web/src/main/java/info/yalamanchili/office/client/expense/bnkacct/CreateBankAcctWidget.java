@@ -77,7 +77,7 @@ public class CreateBankAcctWidget extends CreateComposite {
         addField("bankRoutingNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("bankAccountNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("accountType", false, true, AccountType.names(), Alignment.HORIZONTAL);
-        addField("achBlocked", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("achBlocked", false, true, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
