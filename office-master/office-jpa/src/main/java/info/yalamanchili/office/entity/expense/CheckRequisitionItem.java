@@ -11,9 +11,12 @@ package info.yalamanchili.office.entity.expense;
 import info.chili.jpa.AbstractEntity;
 import java.math.BigDecimal;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 
 /**
@@ -25,26 +28,31 @@ import org.hibernate.envers.Audited;
 @XmlRootElement
 @XmlType
 public class CheckRequisitionItem extends AbstractEntity {
-    
+
     private static long serialVersionUID = 1L;
     /**
-    *
-    */
+     *
+     */
     @NotNull(message = "{itemName.not.empty.msg}")
     private String itemName;
     /**
-    *
-    */
+     *
+     */
     @NotNull(message = "{itemDesc.not.empty.msg}")
     private String itemDesc;
     /**
-    *
-    */    
+     *
+     */
     @NotNull(message = "{itemAmount.not.empty.msg}")
     private BigDecimal amount;
+
+    @ManyToOne
+    @ForeignKey(name = "FK_IMMG_CHK_REQ_ITMS")
+    protected ImmigrationCheckRequisition immigrationCheckRequisition;
+
     /**
-    *   GETTERS & SETTERS
-    */
+     * GETTERS & SETTERS
+     */
     public String getItemName() {
         return itemName;
     }
@@ -69,10 +77,18 @@ public class CheckRequisitionItem extends AbstractEntity {
         this.itemDesc = itemDesc;
     }
 
+    public ImmigrationCheckRequisition getImmigrationCheckRequisition() {
+        return immigrationCheckRequisition;
+    }
+
+    @XmlTransient
+    public void setImmigrationCheckRequisition(ImmigrationCheckRequisition immigrationCheckRequisition) {
+        this.immigrationCheckRequisition = immigrationCheckRequisition;
+    }
+
     @Override
     public String toString() {
         return "CheckRequisitionItem{" + "itemName=" + itemName + ", itemDesc=" + itemDesc + ", amount=" + amount + '}';
     }
-    
- 
+
 }

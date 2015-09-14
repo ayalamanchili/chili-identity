@@ -14,7 +14,7 @@ import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
 import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
-import info.yalamanchili.office.dao.expense.AdvanceRequisitionDao;
+import info.yalamanchili.office.dao.expense.advreq.AdvanceRequisitionDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.chili.email.Email;

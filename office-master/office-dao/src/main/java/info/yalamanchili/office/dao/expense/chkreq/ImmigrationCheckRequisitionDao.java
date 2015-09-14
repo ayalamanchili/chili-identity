@@ -6,7 +6,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.dao.expense;
+package info.yalamanchili.office.dao.expense.chkreq;
 
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;

@@ -12,7 +12,7 @@ package info.yalamanchili.office.bpm.immigration;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
 import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
-import info.yalamanchili.office.dao.expense.ImmigrationCheckRequisitionDao;
+import info.yalamanchili.office.dao.expense.chkreq.ImmigrationCheckRequisitionDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;

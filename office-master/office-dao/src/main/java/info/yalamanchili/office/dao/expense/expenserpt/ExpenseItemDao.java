@@ -8,7 +8,6 @@
 package info.yalamanchili.office.dao.expense.expenserpt;
 
 import info.chili.dao.CRUDDao;
-import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseCategory;

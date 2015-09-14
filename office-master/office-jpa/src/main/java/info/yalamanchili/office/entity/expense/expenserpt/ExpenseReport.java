@@ -19,8 +19,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.PostPersist;
-import javax.persistence.PostUpdate;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -419,8 +419,8 @@ public class ExpenseReport extends AbstractEntity {
         this.expenseReimbursePaymentMode = expenseReimbursePaymentMode;
     }
 
-    @PostPersist
-    @PostUpdate
+    @PrePersist
+    @PreUpdate
     public void updateTotalAmount() {
         BigDecimal totalAmount = BigDecimal.ZERO.setScale(2);
         for (ExpenseItem item : this.getExpenseItems()) {

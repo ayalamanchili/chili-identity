@@ -39,11 +39,6 @@ public class ReadImmigrationCheckRequisitionPanel extends ReadComposite {
         return instance;
     }
 
-    public ReadImmigrationCheckRequisitionPanel(JSONObject entity) {
-        instance = this;
-        initReadComposite(entity, "ImmigrationCheckRequisition", OfficeWelcome.constants);
-    }
-
     public ReadImmigrationCheckRequisitionPanel(String id) {
         instance = this;
         initReadComposite(id, "ImmigrationCheckRequisition", OfficeWelcome.constants);

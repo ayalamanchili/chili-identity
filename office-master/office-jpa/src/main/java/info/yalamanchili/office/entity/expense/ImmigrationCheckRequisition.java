@@ -12,6 +12,7 @@ import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.profile.Employee;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -21,11 +22,12 @@ import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
@@ -112,16 +114,14 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
      *
      */
     @ManyToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_Employee_ImmigrationCheckReqs")
+    @ForeignKey(name = "FK_Emp_ImgCheckReqs")
     @NotNull(message = "{immigration.check.requisition.employee.not.empty.msg}")
     private Employee employee;
     /**
      *
      */
-    @OneToMany(cascade = CascadeType.ALL)
-    @Size(min = 1, message = "{checkitem.min.size.msg}")
-    @Valid
-    private List<CheckRequisitionItem> items;
+    @OneToMany(mappedBy = "immigrationCheckRequisition", cascade = CascadeType.ALL)
+    protected List<CheckRequisitionItem> items;
     /**
      *
      */
@@ -248,7 +248,11 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
         this.employee = employee;
     }
 
+    @XmlTransient
     public List<CheckRequisitionItem> getItems() {
+        if (this.items == null) {
+            this.items = new ArrayList();
+        }
         return items;
     }
 
@@ -270,6 +274,16 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
 
     public void setBpmProcessId(String bpmProcessId) {
         this.bpmProcessId = bpmProcessId;
+    }
+
+    @PrePersist
+    @PreUpdate
+    public void updateTotalAmount() {
+        BigDecimal totalAmount = BigDecimal.ZERO.setScale(2);
+        for (CheckRequisitionItem item : this.getItems()) {
+            totalAmount = totalAmount.add(item.getAmount());
+        }
+        this.setAmount(amount);
     }
 
     @Override

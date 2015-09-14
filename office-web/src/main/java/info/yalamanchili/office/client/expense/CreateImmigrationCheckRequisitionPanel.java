@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.client.expense;
 
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.URL;
@@ -144,6 +145,7 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
     protected void configure() {
         checkItem.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         addItemL.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        employeeSB.getLabel().getElement().getStyle().setWidth(145, Style.Unit.PX);
         setButtonText("Submit");
         HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
@@ -193,6 +195,6 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "checkrequisition/submit-check-requisition-request";
+        return OfficeWelcome.constants.root_url() + "checkrequisition/submit";
     }
 }

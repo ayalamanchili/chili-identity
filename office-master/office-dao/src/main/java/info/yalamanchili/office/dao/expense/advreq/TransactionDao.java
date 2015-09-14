@@ -5,10 +5,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.dao.expense;
+package info.yalamanchili.office.dao.expense.advreq;
 
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.dao.expense.BankAccountDao;
+import info.yalamanchili.office.dao.expense.CheckDao;
 import info.yalamanchili.office.entity.expense.AdvanceRequisition;
 import info.yalamanchili.office.entity.expense.BankAccount;
 import info.yalamanchili.office.entity.expense.Check;

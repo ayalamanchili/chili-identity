@@ -128,7 +128,7 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
     }
 
     @Override
-    public void copyClicked(String entityId) {
+    public void copyClicked(final String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(OfficeWelcome.constants.root_url() + "checkrequisition/clone/" + entityId, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
@@ -136,7 +136,7 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
                         logger.info(arg0);
                         new ResponseStatusWidget().show("Copy created. Plase update and save.");
                         TabPanel.instance().expensePanel.entityPanel.clear();
-                        TabPanel.instance().expensePanel.entityPanel.add(new UpdateImmigrationCheckRequisitionPanel(JSONParser.parseLenient(arg0).isObject()));
+                        TabPanel.instance().expensePanel.entityPanel.add(new UpdateImmigrationCheckRequisitionPanel(entityId));
                     }
                 });
     }

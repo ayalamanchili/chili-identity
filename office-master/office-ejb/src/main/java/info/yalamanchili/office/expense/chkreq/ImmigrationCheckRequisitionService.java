@@ -6,22 +6,29 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.expense;
+package info.yalamanchili.office.expense.chkreq;
 
 import info.chili.commons.pdf.PDFUtils;
 import info.chili.commons.pdf.PdfDocumentData;
+import info.chili.jpa.QueryUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
-import info.yalamanchili.office.dao.expense.ImmigrationCheckRequisitionDao;
+import info.yalamanchili.office.dao.expense.chkreq.CheckRequisitionItemDao;
+import info.yalamanchili.office.dao.expense.chkreq.ImmigrationCheckRequisitionDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.expense.CheckRequisitionItem;
 import info.yalamanchili.office.entity.expense.ImmigrationCheckRequisition;
 import info.yalamanchili.office.entity.expense.ImmigrationCheckRequisitionStatus;
+import info.yalamanchili.office.entity.expense.expenserpt.ExpenseCategory;
+import info.yalamanchili.office.entity.expense.expenserpt.ExpenseFormType;
+import info.yalamanchili.office.entity.expense.expenserpt.ExpenseItem;
+import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport;
 import info.yalamanchili.office.entity.ext.Comment;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.expense.expenserpt.ExpenseReportSaveDto;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -44,13 +51,23 @@ public class ImmigrationCheckRequisitionService {
 
     @Autowired
     protected ImmigrationCheckRequisitionDao immigrationCheckRequisitionDao;
+    @Autowired
+    protected CheckRequisitionItemDao checkRequisitionItemDao;
 
-    public void submitImmigrationCheckRequisition(ImmigrationCheckRequisition entity) {
+    @Autowired
+    protected Mapper mapper;
+
+    public void submitImmigrationCheckRequisition(ImmigrationCheckRequisitionSaveDto dto) {
+        ImmigrationCheckRequisition entity = mapper.map(dto, ImmigrationCheckRequisition.class);
         entity.setSubmittedBy(OfficeSecurityService.instance().getCurrentUserName());
         entity.setRequestedDate(new Date());
         entity.setEmployee(EmployeeDao.instance().findById(entity.getEmployee().getId()));
-        entity.setStatus(ImmigrationCheckRequisitionStatus.PENDING_APPROVAL);
         entity = immigrationCheckRequisitionDao.save(entity);
+        entity.setStatus(ImmigrationCheckRequisitionStatus.PENDING_APPROVAL);
+        for (CheckRequisitionItem item : dto.getItems()) {
+            item.setImmigrationCheckRequisition(entity);
+            checkRequisitionItemDao.save(item);
+        }
         Map<String, Object> vars = new HashMap<>();
         vars.put("entity", entity);
         vars.put("entityId", entity.getId());
@@ -58,10 +75,20 @@ public class ImmigrationCheckRequisitionService {
         vars.put("currentEmployee", EmployeeDao.instance().findEmployeWithEmpId(entity.getSubmittedBy()));
         String processId = OfficeBPMService.instance().startProcess("immigration_check_requisition_process", vars);
         entity.setBpmProcessId(processId);
-        immigrationCheckRequisitionDao.save(entity);
     }
-    
-    public void saveImmigrationCheckRequisition(ImmigrationCheckRequisition entity) {
+
+    public void saveImmigrationCheckRequisition(ImmigrationCheckRequisitionSaveDto dto) {
+        ImmigrationCheckRequisition entity = immigrationCheckRequisitionDao.save(dto);
+        //add/update items
+        for (CheckRequisitionItem item : dto.getItems()) {
+            if (item.getId() != null) {
+                checkRequisitionItemDao.save(item);
+            } else {
+                item.setImmigrationCheckRequisition(entity);
+                item = checkRequisitionItemDao.getEntityManager().merge(item);
+                entity.getItems().add(item);
+            }
+        }
         immigrationCheckRequisitionDao.getEntityManager().merge(entity);
     }
 
@@ -71,13 +98,12 @@ public class ImmigrationCheckRequisitionService {
         immigrationCheckRequisitionDao.delete(id);
     }
 
-    public ImmigrationCheckRequisition read(Long id) {
-        Mapper mapper = (Mapper) SpringContext.getBean("mapper");
-        return mapper.map(immigrationCheckRequisitionDao.findById(id), ImmigrationCheckRequisition.class);
+    public ImmigrationCheckRequisitionSaveDto read(Long id) {
+        return mapper.map(immigrationCheckRequisitionDao.findById(id), ImmigrationCheckRequisitionSaveDto.class);
     }
 
     public ImmigrationCheckRequisition clone(Long id) {
-        ImmigrationCheckRequisition entity = immigrationCheckRequisitionDao.clone(id, "amount", "submittedBy","requestedDate", "approvedBy", "approvedDate", "accountedBy", "checkIssuedDate", "accountDeptReceivedDate", "status", "bpmProcessId", "employee");
+        ImmigrationCheckRequisition entity = immigrationCheckRequisitionDao.clone(id, "amount", "submittedBy", "requestedDate", "approvedBy", "approvedDate", "accountedBy", "checkIssuedDate", "accountDeptReceivedDate", "status", "bpmProcessId", "employee");
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         return mapper.map(entity, ImmigrationCheckRequisition.class);
     }

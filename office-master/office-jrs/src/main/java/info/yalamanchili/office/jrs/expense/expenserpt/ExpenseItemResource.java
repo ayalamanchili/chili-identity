@@ -52,6 +52,7 @@ public class ExpenseItemResource extends CRUDResource<ExpenseItem> {
     @Path("/delete/{id}")
     @Override
     public void delete(@PathParam("id") Long id) {
+        //TODO is this code duplicated??
         ExpenseItem item = expenseItemDao.findById(id);
         ExpenseReport report = item.getExpenseReport();
         if (report.getExpenseItems().size() == 1) {

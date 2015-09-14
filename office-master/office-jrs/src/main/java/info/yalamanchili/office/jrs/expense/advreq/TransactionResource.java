@@ -5,11 +5,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.jrs.expense;
+package info.yalamanchili.office.jrs.expense.advreq;
 
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
-import info.yalamanchili.office.dao.expense.TransactionDao;
+import info.yalamanchili.office.dao.expense.advreq.TransactionDao;
 import info.yalamanchili.office.entity.expense.Transaction;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;

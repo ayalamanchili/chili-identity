@@ -28,23 +28,22 @@ import java.util.logging.Logger;
  * @author Madhu.Badiginchala
  */
 public class UpdateImmigrationCheckItemPanel extends UpdateComposite {
-    
+
     private static Logger logger = Logger.getLogger(UpdateImmigrationCheckItemPanel.class.getName());
-    UpdateImmigrationCheckRequisitionPanel parentPanel;
     ClickableLink deleteB = new ClickableLink("Remove Item");
-    
-    public UpdateImmigrationCheckItemPanel(UpdateImmigrationCheckRequisitionPanel parent, JSONObject entity) {
-        logger.info("im in check item" + entity);
-        this.parentPanel = parent;
+    protected String parentId;
+
+    public UpdateImmigrationCheckItemPanel(String parentId, JSONObject entity) {
+        this.parentId = parentId;
         initUpdateComposite(entity, "CheckRequisitionItem", OfficeWelcome.constants);
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject entity = new JSONObject();        
+        JSONObject entity = new JSONObject();
         assignEntityValueFromField("itemName", entity);
         assignEntityValueFromField("itemDesc", entity);
-        assignEntityValueFromField("amount", entity);        
+        assignEntityValueFromField("amount", entity);
         return entity;
     }
 
@@ -66,7 +65,7 @@ public class UpdateImmigrationCheckItemPanel extends UpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("itemName", entity, DataType.STRING_FIELD );
+        assignFieldValueFromEntity("itemName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("itemDesc", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("amount", entity, DataType.CURRENCY_FIELD);
     }
@@ -85,7 +84,7 @@ public class UpdateImmigrationCheckItemPanel extends UpdateComposite {
 
     @Override
     protected void configure() {
-       update.setVisible(false);
+        update.setVisible(false);
     }
 
     @Override
@@ -103,29 +102,30 @@ public class UpdateImmigrationCheckItemPanel extends UpdateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "checkrequisition";
+        return "";
     }
-    
+
     protected String getDeleteURI() {
-        return OfficeWelcome.constants.root_url() + "checkrequisition/delete/" + getEntityId();
+        return OfficeWelcome.constants.root_url() + "check-requisition-item/delete/" + getEntityId();
     }
 
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(deleteB)) {
             if (Window.confirm("Are you sure to delete the Check Item?")) {
-                parentPanel.removePanel();
                 HttpService.HttpServiceAsync.instance().doPut(getDeleteURI(), entity.toString(),
                         OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
 
                             @Override
                             public void onResponse(String arg0) {
                                 new ResponseStatusWidget().show("Successfully Deleted Check Information");
+                                TabPanel.instance().expensePanel.entityPanel.clear();
+                                TabPanel.instance().expensePanel.entityPanel.add(new UpdateImmigrationCheckRequisitionPanel(parentId));
                             }
                         });
             }
         }
         super.onClick(event);
     }
-    
+
 }

@@ -10,7 +10,6 @@ package info.yalamanchili.office.client.expense;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -26,8 +25,6 @@ import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
-import info.chili.gwt.widgets.SuggestBox;
-import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
@@ -35,7 +32,6 @@ import static info.yalamanchili.office.client.expense.CreateImmigrationCheckRequ
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -48,15 +44,9 @@ public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite impl
     protected SelectCompanyWidget selectCompanyWidget = new SelectCompanyWidget(true, true, Alignment.HORIZONTAL);
     protected ClickableLink addItemL = new ClickableLink("Add Check Item");
     protected List<CRUDComposite> updateItemPanels = new ArrayList<>();
-    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false, Alignment.HORIZONTAL);
 
     public UpdateImmigrationCheckRequisitionPanel(String id) {
         initUpdateComposite(id, "ImmigrationCheckRequisition", OfficeWelcome.constants);
-        employeeSB.setVisible(false);
-    }
-
-    public UpdateImmigrationCheckRequisitionPanel(JSONObject object) {
-        initUpdateComposite(object, "ImmigrationCheckRequisition", OfficeWelcome.constants);
     }
 
     @Override
@@ -84,9 +74,6 @@ public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite impl
         assignEntityValueFromField("mailingAddress", entity);
         assignEntityValueFromField("neededByDate", entity);
         assignEntityValueFromField("purpose", entity);
-        if (getEntityId().isEmpty()) {
-            entity.put("employee", employeeSB.getSelectedObject());
-        }
         assignEntityValueFromField("caseType", entity);
         JSONArray items = new JSONArray();
         int i = 0;
@@ -147,7 +134,7 @@ public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite impl
     protected void populateCheckItems(JSONArray items) {
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).isObject() != null) {
-                UpdateImmigrationCheckItemPanel panel = new UpdateImmigrationCheckItemPanel(this, items.get(i).isObject());
+                UpdateImmigrationCheckItemPanel panel = new UpdateImmigrationCheckItemPanel(getEntityId(), items.get(i).isObject());
                 updateItemPanels.add(panel);
                 entityFieldsPanel.add(panel);
             }
@@ -171,20 +158,6 @@ public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite impl
         checkItem.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         addItemL.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         setButtonText("Submit");
-        HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String entityString) {
-                logger.info(entityString);
-                Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
-                if (values != null) {
-                    employeeSB.loadData(values);
-                }
-            }
-        });
-    }
-
-    private String getEmployeeIdsDropDownUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_USER.name() + "/0/10000");
     }
 
     @Override
@@ -194,7 +167,6 @@ public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite impl
 
     @Override
     protected void addWidgets() {
-        entityFieldsPanel.add(employeeSB);
         addField("attorneyName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("mailingAddress", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("neededByDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
@@ -212,9 +184,9 @@ public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite impl
     @Override
     protected String getURI() {
         if (!getEntityId().isEmpty()) {
-            return OfficeWelcome.constants.root_url() + "checkrequisition/save-check-requisition-request";
+            return OfficeWelcome.constants.root_url() + "checkrequisition/save";
         } else {
-            return OfficeWelcome.constants.root_url() + "checkrequisition/submit-check-requisition-request";
+            return OfficeWelcome.constants.root_url() + "checkrequisition/submit";
         }
     }
 

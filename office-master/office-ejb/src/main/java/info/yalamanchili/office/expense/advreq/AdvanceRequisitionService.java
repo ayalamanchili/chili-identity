@@ -6,7 +6,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.expense;
+package info.yalamanchili.office.expense.advreq;
 
 import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
@@ -17,7 +17,7 @@ import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.chili.bpm.types.Task;
 import info.yalamanchili.office.config.OfficeSecurityConfiguration;
-import info.yalamanchili.office.dao.expense.AdvanceRequisitionDao;
+import info.yalamanchili.office.dao.expense.advreq.AdvanceRequisitionDao;
 import info.yalamanchili.office.dao.expense.BankAccountDao;
 import info.yalamanchili.office.dao.expense.CheckDao;
 import info.yalamanchili.office.dao.ext.CommentDao;

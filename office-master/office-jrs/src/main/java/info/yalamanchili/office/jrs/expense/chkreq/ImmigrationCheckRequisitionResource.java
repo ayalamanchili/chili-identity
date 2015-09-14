@@ -6,14 +6,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.jrs.expense;
+package info.yalamanchili.office.jrs.expense.chkreq;
 
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
-import info.yalamanchili.office.dao.expense.ImmigrationCheckRequisitionDao;
+import info.yalamanchili.office.dao.expense.chkreq.ImmigrationCheckRequisitionDao;
 import info.yalamanchili.office.entity.expense.ImmigrationCheckRequisition;
-import info.yalamanchili.office.expense.ImmigrationCheckRequisitionService;
+import info.yalamanchili.office.expense.chkreq.ImmigrationCheckRequisitionSaveDto;
+import info.yalamanchili.office.expense.chkreq.ImmigrationCheckRequisitionService;
+import info.yalamanchili.office.expense.expenserpt.ExpenseReportSaveDto;
+import info.yalamanchili.office.expense.expenserpt.ExpenseReportService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
 import javax.ws.rs.GET;
@@ -48,27 +51,27 @@ public class ImmigrationCheckRequisitionResource extends CRUDResource<Immigratio
 
     @PUT
     @Validate
-    @Path("/submit-check-requisition-request")
+    @Path("/submit")
     @CacheEvict(value = OfficeCacheKeys.IMMIGRATION_CHECK, allEntries = true)
-    public void submitImmigrationCheckRequest(ImmigrationCheckRequisition entity) {
-        ImmigrationCheckRequisitionService.instance().submitImmigrationCheckRequisition(entity);
-    }
-    
-    @PUT
-    @Validate
-    @Path("/save-check-requisition-request")
-    @CacheEvict(value = OfficeCacheKeys.IMMIGRATION_CHECK, allEntries = true)
-    public void saveImmigrationCheckRequest(ImmigrationCheckRequisition entity) {
-        ImmigrationCheckRequisitionService.instance().saveImmigrationCheckRequisition(entity);
+    public void submitImmigrationCheckRequest(ImmigrationCheckRequisitionSaveDto dto) {
+        ImmigrationCheckRequisitionService.instance().submitImmigrationCheckRequisition(dto);
     }
 
     @PUT
-    @Override
     @Validate
-    @PreAuthorize("hasAnyRole('ROLE_EXPENSE')")
+    @Path("/save")
     @CacheEvict(value = OfficeCacheKeys.IMMIGRATION_CHECK, allEntries = true)
-    public ImmigrationCheckRequisition save(ImmigrationCheckRequisition entity) {
-        return super.save(entity);
+    public ImmigrationCheckRequisitionSaveDto save(ImmigrationCheckRequisitionSaveDto dto) {
+        ImmigrationCheckRequisitionService.instance().saveImmigrationCheckRequisition(dto);
+        return dto;
+    }
+
+    @GET
+    @Path("/{id}")
+    @Transactional(readOnly = true)
+    @Override
+    public ImmigrationCheckRequisitionSaveDto read(@PathParam("id") Long id) {
+        return ImmigrationCheckRequisitionService.instance().read(id);
     }
 
     @Override
@@ -101,7 +104,7 @@ public class ImmigrationCheckRequisitionResource extends CRUDResource<Immigratio
     public Response getReport(@QueryParam("id") Long id) {
         return ImmigrationCheckRequisitionService.instance().getReport(immigrationCheckRequisitionDao.findById(id));
     }
-    
+
     @GET
     @Transactional(readOnly = true)
     @Path("/clone/{id}")
@@ -109,7 +112,6 @@ public class ImmigrationCheckRequisitionResource extends CRUDResource<Immigratio
     public ImmigrationCheckRequisition clone(@PathParam("id") Long id) {
         return ImmigrationCheckRequisitionService.instance().clone(id);
     }
-    
 
     @XmlRootElement
     @XmlType

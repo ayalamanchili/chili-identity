@@ -19,7 +19,7 @@ import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
-import info.yalamanchili.office.dao.expense.AdvanceRequisitionDao;
+import info.yalamanchili.office.dao.expense.advreq.AdvanceRequisitionDao;
 import info.yalamanchili.office.dao.privacy.PrivacySettingDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.selfserv.ServiceTicketDao;

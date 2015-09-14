@@ -5,20 +5,20 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.jrs.expense;
+package info.yalamanchili.office.jrs.expense.advreq;
 
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
-import info.yalamanchili.office.dao.expense.AdvanceRequisitionDao;
+import info.yalamanchili.office.dao.expense.advreq.AdvanceRequisitionDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.expense.AdvanceRequisition;
 import info.yalamanchili.office.entity.expense.Transaction;
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.expense.AdvanceRequisitionService;
+import info.yalamanchili.office.expense.advreq.AdvanceRequisitionService;
 import info.yalamanchili.office.jrs.CRUDResource;
-import info.yalamanchili.office.jrs.expense.TransactionResource.TransactionTable;
+import info.yalamanchili.office.jrs.expense.advreq.TransactionResource.TransactionTable;
 import info.yalamanchili.office.security.AccessCheck;
 import java.util.List;
 import javax.ws.rs.GET;

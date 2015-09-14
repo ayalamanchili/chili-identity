@@ -5,7 +5,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.dao.expense;
+package info.yalamanchili.office.dao.expense.advreq;
 
 import info.chili.dao.CRUDDao;
 import info.chili.service.jrs.exception.ServiceException;
@@ -13,6 +13,8 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
+import info.yalamanchili.office.dao.expense.BankAccountDao;
+import info.yalamanchili.office.dao.expense.CheckDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.expense.AdvanceRequisition;
 import info.yalamanchili.office.entity.expense.BankAccount;
