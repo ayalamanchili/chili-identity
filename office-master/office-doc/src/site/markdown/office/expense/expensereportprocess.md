@@ -1,10 +1,10 @@
 Expense Report Work Flow process
 ==========
 ![alt text](../../images/expense/Expense-Request-Process-Flow.png "Expense Reports")
-How To View Expense Report Process for Reports_To Manager
+
+As a manager how do i view and print the report submitted by my team
 ----
- - ***how to view report***
- - navigation from Expense--> Expense--> submit report
+
  - Navigate to Expense --> Expense Reports --> Search --> view
  - once view and validate the all the details go back to home page in review and approve the task
 ![alt text](../../images/expense/expense-reportsto-manager.png "Expense Reports")
