@@ -21,6 +21,7 @@ import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.ext.Dependent;
 import info.yalamanchili.office.entity.profile.ext.EmployeeAdditionalDetails;
 import info.yalamanchili.office.profile.EmployeeFormsService;
+import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -78,6 +79,9 @@ public class EmployeeFormsResource {
         JoiningFormsDto dto = new JoiningFormsDto();
         Employee emp = EmployeeDao.instance().findById(employeeId);
         dto.setEmployee(emp);
+        List<Address> listOfAddress = emp.getAddresss();
+        Address address = listOfAddress.get(0);
+        dto.setAddress(address);
         Dependent dep = DependentDao.instance().find(emp);
         dto.setDependents(dep);
         EmployeeAdditionalDetails empAddnlDetails = EmployeeAdditionalDetailsDao.instance().find(emp);

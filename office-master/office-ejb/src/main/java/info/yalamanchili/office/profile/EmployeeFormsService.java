@@ -52,7 +52,7 @@ public class EmployeeFormsService {
         data.setTemplateUrl("/templates/pdf/Joining-form-fillable-template.pdf");
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         Date dateOfBirth = emp.getDateOfBirth();
-        Date depDateOfBirth = dep.getDateOfBirth();
+        Date depDateOfBirth = dep.getDdateOfBirth();
 
         //print joining form @radhika
         data.getData().put("fmName", emp.getFirstName());

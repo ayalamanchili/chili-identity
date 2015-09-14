@@ -86,17 +86,17 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ChangeHa
         assignEntityValueFromField("bankName", bankAccount);
         assignEntityValueFromField("bankRoutingNumber", bankAccount);
         assignEntityValueFromField("bankAccountNumber", bankAccount);
-        assignEntityValueFromField("bankAccountAddress1", bankAccount);
-        assignEntityValueFromField("bankAccountAddress2", bankAccount);
+        assignEntityValueFromField("bankAddress1", bankAccount);
+        assignEntityValueFromField("bankAddress1", bankAccount);
         assignEntityValueFromField("accountType", bankAccount);
-        assignEntityValueFromField("IsACHBlocked", bankAccount);
+        assignEntityValueFromField("achBlocked", bankAccount);
         bankAccount.put("targetEntityName", new JSONString("targetEntityName"));
         bankAccount.put("targetEntityId", new JSONString("0"));
         employee.put("bankAccount", bankAccount);
         // Dependent Information
         assignEntityValueFromField("dfirstName", dependent);
         assignEntityValueFromField("dlastName", dependent);
-        assignEntityValueFromField("dateOfBirth", dependent);
+        assignEntityValueFromField("ddateOfBirth", dependent);
         assignEntityValueFromField("relationship", dependent);
         dependent.put("targetEntityName", new JSONString("targetEntityName"));
         dependent.put("targetEntityId", new JSONString("0"));
@@ -150,16 +150,14 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ChangeHa
         addField("bankName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("bankRoutingNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("bankAccountNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        
-        addField("bankAccountAddress1",false,true,DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("bankAccountAddress2",false,false,DataType.STRING_FIELD,Alignment.HORIZONTAL);
+        addField("bankAddress1",false,true,DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("bankAddress2",false,false,DataType.STRING_FIELD,Alignment.HORIZONTAL);
         addEnumField("accountType",false,true,AccountType.names(),Alignment.HORIZONTAL);
-        addField("IsACHBlocked", false, true, DataType.BOOLEAN_FIELD,Alignment.HORIZONTAL);
-        
+        addField("achBlocked", false, true, DataType.BOOLEAN_FIELD,Alignment.HORIZONTAL);   
         entityFieldsPanel.add(getLineSeperatorTag("Dependent's Information"));
         addField("dfirstName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("dlastName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("dateOfBirth", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("ddateOfBirth", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("relationship", false, true, Relationship.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Additional Information"));
         addField("referredBy", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);

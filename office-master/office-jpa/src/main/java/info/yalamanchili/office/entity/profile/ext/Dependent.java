@@ -38,7 +38,7 @@ public class Dependent extends AbstractHandleEntity {
     private String dlastName;
     
     @Temporal(javax.persistence.TemporalType.DATE)
-    private Date dateOfBirth;
+    private Date ddateOfBirth;
     
     @Enumerated(EnumType.STRING)
     @Field
@@ -60,14 +60,14 @@ public class Dependent extends AbstractHandleEntity {
         this.dlastName = dlastName;
     }
 
-    public Date getDateOfBirth() {
-        return dateOfBirth;
+    public Date getDdateOfBirth() {
+        return ddateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+    public void setDdateOfBirth(Date ddateOfBirth) {
+        this.ddateOfBirth = ddateOfBirth;
     }
-
+    
     public Relationship getRelationship() {
         return relationship;
     }

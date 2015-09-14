@@ -5,6 +5,7 @@
  */
 package info.yalamanchili.office.dto.onboarding;
 
+import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.ext.Dependent;
 import info.yalamanchili.office.entity.profile.ext.EmployeeAdditionalDetails;
@@ -25,6 +26,8 @@ public class JoiningFormsDto implements Serializable {
     protected EmployeeAdditionalDetails empAddnlDetails;
     
     protected Dependent dependents;
+    
+    protected Address address;
 
     public Employee getEmployee() {
         return employee;
@@ -49,7 +52,13 @@ public class JoiningFormsDto implements Serializable {
     public void setDependents(Dependent dependents) {
         this.dependents = dependents;
     }
-    
-    
-    
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
 }
