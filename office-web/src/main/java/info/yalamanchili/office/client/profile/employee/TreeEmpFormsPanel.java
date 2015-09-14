@@ -16,6 +16,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.expense.bnkacct.ReadBankAcctWidget;
 import info.yalamanchili.office.client.gwt.TreePanelComposite;
+import info.yalamanchili.office.client.onboarding.ReadJoiningFormPanel;
 import java.util.logging.Logger;
 
 /**
@@ -29,6 +30,7 @@ public class TreeEmpFormsPanel extends TreePanelComposite {
     protected static final String JOINING_FORM = "joining-form";
     protected String employeeId;
     protected Anchor printACHL = new Anchor("Print");
+    protected Anchor printJoiningFormL = new Anchor("Print");
 
     public TreeEmpFormsPanel(JSONObject emp) {
         this.employeeId = JSONUtils.toString(emp, "id");
@@ -41,6 +43,13 @@ public class TreeEmpFormsPanel extends TreePanelComposite {
             @Override
             public void onClick(ClickEvent event) {
                 Window.open(ChiliClientConfig.instance().getFileDownloadUrl() + "employee-forms/ach-report/" + TreeEmployeePanel.instance().getEntityId() + "&passthrough=true", "_blank", "");
+            }
+        });
+        
+        printJoiningFormL.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                Window.open(ChiliClientConfig.instance().getFileDownloadUrl() + "employee-forms/joining-form-report/" + TreeEmployeePanel.instance().getEntityId() + "&passthrough=true", "_blank", "");
             }
         });
     }
@@ -58,14 +67,14 @@ public class TreeEmpFormsPanel extends TreePanelComposite {
     @Override
     public void treeNodeSelected(String entityNodeKey) {
         if (ACH_FORM.equals(entityNodeKey)) {
-            logger.info("employeeid: " + employeeId);
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
             TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadBankAcctWidget(employeeId));
             TabPanel.instance().getMyOfficePanel().entityPanel.add(printACHL);
         }
         if (JOINING_FORM.equals(entityNodeKey)) {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-//            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllJoiningFormPanel(employeeId));
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadJoiningFormPanel(employeeId));
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(printJoiningFormL);
         }
     }
 
