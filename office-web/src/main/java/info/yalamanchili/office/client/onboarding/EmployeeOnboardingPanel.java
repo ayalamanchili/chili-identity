@@ -43,7 +43,6 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ChangeHa
 
     private static Logger logger = Logger.getLogger(CreateEmployeePanel.class.getName());
     protected SelectCompanyWidget selectCompnayWidget = new SelectCompanyWidget(false, true, Alignment.HORIZONTAL);
-
     HTML emptyLine = new HTML("<br/>");
 
     EnumField statesF;
@@ -87,10 +86,10 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ChangeHa
         assignEntityValueFromField("bankName", bankAccount);
         assignEntityValueFromField("bankRoutingNumber", bankAccount);
         assignEntityValueFromField("bankAccountNumber", bankAccount);
-        assignEntityValueFromField("bankAddress1", bankAccount);
-        assignEntityValueFromField("bankAddress2", bankAccount);
+        assignEntityValueFromField("bankAccountAddress1", bankAccount);
+        assignEntityValueFromField("bankAccountAddress2", bankAccount);
         assignEntityValueFromField("accountType", bankAccount);
-        //assignEntityValueFromField("isACHBlock", bankAccount);
+        assignEntityValueFromField("IsACHBlocked", bankAccount);
         bankAccount.put("targetEntityName", new JSONString("targetEntityName"));
         bankAccount.put("targetEntityId", new JSONString("0"));
         employee.put("bankAccount", bankAccount);
@@ -152,9 +151,10 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ChangeHa
         addField("bankRoutingNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("bankAccountNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         
-        addField("bankAddress1",false,true,DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("bankAddress2",false,false,DataType.STRING_FIELD,Alignment.HORIZONTAL);
+        addField("bankAccountAddress1",false,true,DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("bankAccountAddress2",false,false,DataType.STRING_FIELD,Alignment.HORIZONTAL);
         addEnumField("accountType",false,true,AccountType.names(),Alignment.HORIZONTAL);
+        addField("IsACHBlocked", false, true, DataType.BOOLEAN_FIELD,Alignment.HORIZONTAL);
         
         entityFieldsPanel.add(getLineSeperatorTag("Dependent's Information"));
         addField("dfirstName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);

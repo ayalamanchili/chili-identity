@@ -54,6 +54,10 @@ public class ReadACHPanel extends ReadComposite implements ClickHandler {
         assignFieldValueFromEntity("bankName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("bankRoutingNumber", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("bankAccountNumber", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("bankAccountAddress1", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("bankAccountAddress2", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("accountType", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("IsACHBlocked", entity, DataType.BOOLEAN_FIELD);
     }
 
     @Override
@@ -72,6 +76,10 @@ public class ReadACHPanel extends ReadComposite implements ClickHandler {
         addField("bankName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("bankRoutingNumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("bankAccountNumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("bankAccountAddress1", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("bankAccountAddress1", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("accountType",true,true,DataType.ENUM_FIELD,Alignment.HORIZONTAL);
+        addField("IsACHBlocked",true,true,DataType.BOOLEAN_FIELD,Alignment.HORIZONTAL);
         entityFieldsPanel.add(printL);
         alignFields();
     }

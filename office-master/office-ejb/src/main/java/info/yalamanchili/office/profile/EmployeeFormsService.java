@@ -14,6 +14,7 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.expense.BankAccountDao;
 import info.yalamanchili.office.dao.profile.ext.DependentDao;
 import info.yalamanchili.office.dao.profile.ext.EmployeeAdditionalDetailsDao;
+import info.yalamanchili.office.entity.expense.AccountType;
 import info.yalamanchili.office.entity.expense.BankAccount;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.ClientInformation;
@@ -168,34 +169,38 @@ public class EmployeeFormsService {
         for (Address address : emp.getAddresss()) {
             String street2 = address.getStreet2();
             String zip = address.getZip();
-            data.getData().put("address1", address.getStreet1());
-            if (street2 != null || !"".equals(street2)) {
-                data.getData().put("address1", " , " + street2);
+           
+            if (street2 == null || "".equals(street2)) {
+                data.getData().put("address1", address.getStreet1());
             }
-            data.getData().put("address2", address.getCity() + " , " + address.getState() + " , " + address.getCountry());
-            if (zip != null || !"".equals(zip)) {
-                data.getData().put("address2", " ," + zip);
+            else
+                 data.getData().put("address1", address.getStreet1()+" , " + street2);
+            
+            if (zip == null || "".equals(zip)) {
+                data.getData().put("address2", address.getCity() + " , " + address.getState() + " , " + address.getCountry());  
             }
+            else
+                data.getData().put("address2", address.getCity() + " , " + address.getState() + " , " + address.getCountry()+" ," + zip);
         }
         data.getData().put("accountNumber", ba.getBankAccountNumber());
         data.getData().put("routingNumber", ba.getBankRoutingNumber());
         
-        data.getData().put("accountType", ba.getAccountType().name());
+        
         data.getData().put("bankName", ba.getBankName());
         //TODO no need address1 and address2
-        data.getData().put("bankAddress1", ba.getBankAddress1());
-        if (ba.getBankAddress2() != null || ba.getBankAddress2() != "") {
-            data.getData().put("bankAddress2", ba.getBankAddress2());
-        }
-        
+        if(ba.getBankAddress1()!=null || !"".equals(ba.getBankAddress1()))
+            data.getData().put("bankAccountAddress1", ba.getBankAddress1());
+       if(ba.getBankAddress2()!=null || !"".equals(ba.getBankAddress2()))
+           data.getData().put("bankAccountAddress2",ba.getBankAddress2());
+        /*
+        if(ba.getAccountType().equals(AccountType.CHECKING))
+            data.getData().put("checkingAccountType", String.valueOf(true));
+        else
+            data.getData().put("savingsAccountType", String.valueOf(true));
         data.getData().put("isACHBlock", String.valueOf(ba.isAchBlocked()));
-        //bank address
-        //phone number
-        //ACH reversal mode
-
-        //name
-        //signature
-        //date
+       
+                */
+        
         //TODO fill ach with emp and bank account details
         byte[] pdf = PDFUtils.generatePdf(data);
         
