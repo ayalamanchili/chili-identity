@@ -14,7 +14,6 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.expense.BankAccountDao;
 import info.yalamanchili.office.dao.profile.ext.DependentDao;
 import info.yalamanchili.office.dao.profile.ext.EmployeeAdditionalDetailsDao;
-import info.yalamanchili.office.dto.onboarding.JoiningFormDto;
 import info.yalamanchili.office.entity.expense.BankAccount;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.ClientInformation;
@@ -42,15 +41,6 @@ public class EmployeeFormsService {
      * @param emp
      * @return 
      */
-    public JoiningFormDto getJoiningForm(Employee emp) {
-        JoiningFormDto dto = new JoiningFormDto();
-        dto.setEmployee(emp);
-        //additional details
-        //dependents
-        // emergency contacts
-//           fill the joining form dto with all necessary details
-        return dto;
-    }
     
     public Response printJoiningForm(Employee emp) {
 //TODO  update this method to call the getJoiningForm method and use it to populate the pdf.

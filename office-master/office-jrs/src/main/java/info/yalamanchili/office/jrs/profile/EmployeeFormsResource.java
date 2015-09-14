@@ -9,10 +9,17 @@
 package info.yalamanchili.office.jrs.profile;
 
 import info.yalamanchili.office.dao.expense.BankAccountDao;
+import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.profile.ext.DependentDao;
+import info.yalamanchili.office.dao.profile.ext.EmployeeAdditionalDetailsDao;
+import info.yalamanchili.office.dto.onboarding.JoiningFormsDto;
 import info.yalamanchili.office.dto.onboarding.OnBoardingEmployeeDto;
 import info.yalamanchili.office.entity.expense.BankAccount;
+import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.ext.Dependent;
+import info.yalamanchili.office.entity.profile.ext.EmployeeAdditionalDetails;
 import info.yalamanchili.office.profile.EmployeeFormsService;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -67,16 +74,17 @@ public class EmployeeFormsResource {
 
     @GET
     @Path("/joining-form/{id}")
-    public JoiningFormDto getJoiningForm(@PathParam("id") Long employeeId) {
+    public JoiningFormsDto getJoiningForm(@PathParam("id") Long employeeId) {
+        JoiningFormsDto dto = new JoiningFormsDto();
         Employee emp = EmployeeDao.instance().findById(employeeId);
-        JoiningFormDto dto = mapper.map(emp, JoiningFormDto.class);
-        BankAccount ba = BankAccountDao.instance().find(emp);
-        dto.setBankAccount(ba);
-        //TODO set dependents
-        //TODO additional details
+        dto.setEmployee(emp);
+        Dependent dep = DependentDao.instance().find(emp);
+        dto.setDependents(dep);
+        EmployeeAdditionalDetails empAddnlDetails = EmployeeAdditionalDetailsDao.instance().find(emp);
+        dto.setEmpAddnlDetails(empAddnlDetails);
         return dto;
     }
-
+   
     @GET
     @Path("/joining-form-report/{id}")
     @Produces({"application/pdf"})
