@@ -14,6 +14,7 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.expense.BankAccountDao;
 import info.yalamanchili.office.dao.profile.ext.DependentDao;
 import info.yalamanchili.office.dao.profile.ext.EmployeeAdditionalDetailsDao;
+import info.yalamanchili.office.dto.onboarding.JoiningFormsDto;
 import info.yalamanchili.office.entity.expense.AccountType;
 import info.yalamanchili.office.entity.expense.BankAccount;
 import info.yalamanchili.office.entity.profile.Address;
@@ -26,6 +27,7 @@ import info.yalamanchili.office.entity.profile.ext.Dependent;
 import info.yalamanchili.office.entity.profile.ext.EmployeeAdditionalDetails;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import javax.ws.rs.core.Response;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -42,6 +44,18 @@ public class EmployeeFormsService {
      * @param emp
      * @return 
      */
+    public JoiningFormsDto getJoiningForm(Employee emp) {       
+        JoiningFormsDto dto = new JoiningFormsDto();
+        dto.setEmployee(emp);
+        List<Address> listOfAddress = emp.getAddresss();
+        Address address = listOfAddress.get(0);
+        dto.setAddress(address);
+        EmployeeAdditionalDetails empAddnlDetails = EmployeeAdditionalDetailsDao.instance().find(emp);
+        dto.setEmpAddnlDetails(empAddnlDetails);
+        return dto;
+    }
+    
+    
     
     public Response printJoiningForm(Employee emp) {
 //TODO  update this method to call the getJoiningForm method and use it to populate the pdf.
@@ -84,7 +98,7 @@ public class EmployeeFormsService {
                 data.getData().put("residentialAddress", address.getStreet1());
                 String street2 = address.getStreet2();
                 if (street2 != null || !"".equals(street2)) {
-                    data.getData().put("residentialAddress", " , " + street2);
+                    data.getData().put("residentialAddress1", " , " + street2);
                 }
                 data.getData().put("csz", address.getCity() + " , " + address.getState());
                 String zip = address.getZip();
@@ -188,18 +202,22 @@ public class EmployeeFormsService {
         
         data.getData().put("bankName", ba.getBankName());
         //TODO no need address1 and address2
-        if(ba.getBankAddress1()!=null || !"".equals(ba.getBankAddress1()))
+        
             data.getData().put("bankAccountAddress1", ba.getBankAddress1());
-       if(ba.getBankAddress2()!=null || !"".equals(ba.getBankAddress2()))
+       if(!"".equals(ba.getBankAddress2()) || ba.getBankAddress2()!=null)
            data.getData().put("bankAccountAddress2",ba.getBankAddress2());
-        /*
-        if(ba.getAccountType().equals(AccountType.CHECKING))
-            data.getData().put("checkingAccountType", String.valueOf(true));
+        
+        if(!ba.getAccountType().equals(AccountType.CHECKING))
+            data.getData().put("savingsAccountType", "true");
         else
-            data.getData().put("savingsAccountType", String.valueOf(true));
-        data.getData().put("isACHBlock", String.valueOf(ba.isAchBlocked()));
+            data.getData().put("checkingAccountType", "true");
+        
+        if(ba.isAchBlocked()==true){
+           data.getData().put("achReversalBlockYes","true");
+        }
+        data.getData().put("achReversalBlockNo", "true");
        
-                */
+             
         
         //TODO fill ach with emp and bank account details
         byte[] pdf = PDFUtils.generatePdf(data);
