@@ -191,9 +191,14 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         addField("evaluationActualStartDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("evaluationPeriodEndDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         if (TabPanel.instance().myOfficePanel.isVisible() && Auth.hasAnyOfRoles(ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_RELATIONSHIP)) {
-            addField("approvedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONSULTANT_TIME_ADMIN)) {
+                addField("approvedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+                addField("hrApprovalBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            } else {
+                addField("approvedBy", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+                addField("hrApprovalBy", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            }
             addField("approvedDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-            addField("hrApprovalBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("hrApprovalDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
             addField("acceptDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         }

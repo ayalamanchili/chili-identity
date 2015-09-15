@@ -285,7 +285,7 @@ public class UpdateStatusReportPanel extends UpdateComposite {
         addField("accomplishments", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("scheduledActivities", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_RELATIONSHIP)) {
-            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN)) {
+            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN,Auth.ROLE.ROLE_CONSULTANT_TIME_ADMIN)) {
                 addField("preparedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
                 addField("approvedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             } else {
