@@ -5,7 +5,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.client.expense;
+package info.yalamanchili.office.client.expense.chkreq;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
@@ -115,7 +115,6 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
             if (emp.get("company") != null) {
                 table.setText(i, 4, JSONUtils.toString(emp.get("company"), "name"));
             }
-
             table.setText(i, 5, FormatUtils.formarCurrency(JSONUtils.toString(entity, "amount")));
             table.setText(i, 6, DateUtils.getFormatedDate(JSONUtils.toString(entity, "requestedDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 7, JSONUtils.formatEnumString(entity, "status"));
@@ -136,7 +135,7 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
                         logger.info(arg0);
                         new ResponseStatusWidget().show("Copy created. Plase update and save.");
                         TabPanel.instance().expensePanel.entityPanel.clear();
-                        TabPanel.instance().expensePanel.entityPanel.add(new UpdateImmigrationCheckRequisitionPanel(entityId));
+                        TabPanel.instance().expensePanel.entityPanel.add(new UpdateImmigrationCheckRequisitionPanel(JSONParser.parseLenient(arg0).isObject()));
                     }
                 });
     }

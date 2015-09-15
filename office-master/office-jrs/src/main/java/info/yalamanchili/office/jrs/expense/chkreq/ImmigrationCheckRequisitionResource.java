@@ -15,9 +15,8 @@ import info.yalamanchili.office.dao.expense.chkreq.ImmigrationCheckRequisitionDa
 import info.yalamanchili.office.entity.expense.ImmigrationCheckRequisition;
 import info.yalamanchili.office.expense.chkreq.ImmigrationCheckRequisitionSaveDto;
 import info.yalamanchili.office.expense.chkreq.ImmigrationCheckRequisitionService;
-import info.yalamanchili.office.expense.expenserpt.ExpenseReportSaveDto;
-import info.yalamanchili.office.expense.expenserpt.ExpenseReportService;
 import info.yalamanchili.office.jrs.CRUDResource;
+import info.yalamanchili.office.security.AccessCheck;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -81,11 +80,21 @@ public class ImmigrationCheckRequisitionResource extends CRUDResource<Immigratio
 
     @GET
     @Path("/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_EXPENSE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_H1B_IMMIGRATION','ROLE_ACCOUNTS_PAYABLE','ROLE_CEO')")
     public ImmigrationCheckRequisitionTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         ImmigrationCheckRequisitionTable tableObj = new ImmigrationCheckRequisitionTable();
         tableObj.setEntities(getDao().query(start, limit));
         tableObj.setSize(getDao().size());
+        return tableObj;
+    }
+
+    @GET
+    @Path("/{employeeId}/{start}/{limit}")
+    @AccessCheck(companyContacts = {"Perf_Eval_Manager", "Reports_To"}, roles = {"ROLE_ADMIN", "ROLE_CEO", "ROLE_ACCOUNTS_PAYABLE", "ROLE_H1B_IMMIGRATION"}, strictOrderCheck = false)
+    public ImmigrationCheckRequisitionTable getExpenseReportForEmployee(@PathParam("employeeId") Long employeeId, @PathParam("start") int start, @PathParam("limit") int limit) {
+        ImmigrationCheckRequisitionTable tableObj = new ImmigrationCheckRequisitionTable();
+        tableObj.setEntities(immigrationCheckRequisitionDao.queryForEmployee(employeeId, start, limit));
+        tableObj.setSize(10l);
         return tableObj;
     }
 
@@ -109,7 +118,7 @@ public class ImmigrationCheckRequisitionResource extends CRUDResource<Immigratio
     @Transactional(readOnly = true)
     @Path("/clone/{id}")
     @Override
-    public ImmigrationCheckRequisition clone(@PathParam("id") Long id) {
+    public ImmigrationCheckRequisitionSaveDto clone(@PathParam("id") Long id) {
         return ImmigrationCheckRequisitionService.instance().clone(id);
     }
 

@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.client.expense;
 
+import info.yalamanchili.office.client.expense.chkreq.ReadAllImmigrationCheckRequisitionPanel;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuBar;
@@ -14,6 +15,7 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.advancerequisition.AdvanceRequisitionSidePanel;
 import info.yalamanchili.office.client.advancerequisition.ReadAllAdvanceRequisitionPanel;
+import info.yalamanchili.office.client.expense.chkreq.ImmigrationCheckRequisitionSidePanel;
 import info.yalamanchili.office.client.expense.travelauthorization.ReadAllTravelAuthorizationPanel;
 import info.yalamanchili.office.client.expense.travelauthorization.TravelAuthorizationSidePanel;
 import info.yalamanchili.office.client.expensecategory.ExpenseCategorySidePanel;
@@ -66,6 +68,7 @@ public class ExpenseMenu extends Composite {
             TabPanel.instance().getExpensePanel().entityPanel.clear();
             TabPanel.instance().getExpensePanel().sidePanelTop.clear();
             TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllImmigrationCheckRequisitionPanel());
+            TabPanel.instance().getExpensePanel().sidePanelTop.add(new ImmigrationCheckRequisitionSidePanel());
         }
     };
     Command expenseReportsMaintainenceCmd = new Command() {

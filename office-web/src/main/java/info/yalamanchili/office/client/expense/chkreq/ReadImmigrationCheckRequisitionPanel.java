@@ -5,8 +5,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.client.expense;
+package info.yalamanchili.office.client.expense.chkreq;
 
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -80,7 +81,7 @@ public class ReadImmigrationCheckRequisitionPanel extends ReadComposite {
 
     @Override
     protected void configure() {
-
+        employeeSB.getLabel().getElement().getStyle().setWidth(145, Style.Unit.PX);
     }
 
     @Override

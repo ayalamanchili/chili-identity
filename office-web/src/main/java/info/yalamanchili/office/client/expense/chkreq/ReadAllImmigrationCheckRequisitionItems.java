@@ -6,7 +6,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.client.expense;
+package info.yalamanchili.office.client.expense.chkreq;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;

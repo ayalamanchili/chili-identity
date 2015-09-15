@@ -44,7 +44,7 @@ public class ImmigrationCheckRequisitionDao extends CRUDDao<ImmigrationCheckRequ
 
     @Cacheable(value = OfficeCacheKeys.IMMIGRATION_CHECK, key = "{#root.methodName,#start,#limit}")
     public List<ImmigrationCheckRequisition> queryAll(Integer start, Integer limit) {
-        Query findAllQuery = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " order by dateRequested DESC", entityCls);
+        Query findAllQuery = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " order by requestedDate DESC", entityCls);
         findAllQuery.setFirstResult(start);
         findAllQuery.setMaxResults(limit);
         return findAllQuery.getResultList();
@@ -52,7 +52,7 @@ public class ImmigrationCheckRequisitionDao extends CRUDDao<ImmigrationCheckRequ
 
     @Cacheable(value = OfficeCacheKeys.IMMIGRATION_CHECK, key = "{#root.methodName,#employeeId,#start,#limit}")
     public List<ImmigrationCheckRequisition> queryForEmployee(Long employeeId, Integer start, Integer limit) {
-        Query findAllQuery = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " where employee.id=:employeeIdParam order by dateRequested DESC", entityCls);
+        Query findAllQuery = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " where employee.id=:employeeIdParam order by requestedDate DESC", entityCls);
         findAllQuery.setParameter("employeeIdParam", employeeId);
         findAllQuery.setFirstResult(start);
         findAllQuery.setMaxResults(limit);

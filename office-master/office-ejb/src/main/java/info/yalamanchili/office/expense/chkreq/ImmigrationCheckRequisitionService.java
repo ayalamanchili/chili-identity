@@ -66,6 +66,8 @@ public class ImmigrationCheckRequisitionService {
         entity.setStatus(ImmigrationCheckRequisitionStatus.PENDING_APPROVAL);
         for (CheckRequisitionItem item : dto.getItems()) {
             item.setImmigrationCheckRequisition(entity);
+            item.setId(null);
+            item.setVersion(null);
             checkRequisitionItemDao.save(item);
         }
         Map<String, Object> vars = new HashMap<>();
@@ -102,10 +104,9 @@ public class ImmigrationCheckRequisitionService {
         return mapper.map(immigrationCheckRequisitionDao.findById(id), ImmigrationCheckRequisitionSaveDto.class);
     }
 
-    public ImmigrationCheckRequisition clone(Long id) {
+    public ImmigrationCheckRequisitionSaveDto clone(Long id) {
         ImmigrationCheckRequisition entity = immigrationCheckRequisitionDao.clone(id, "amount", "submittedBy", "requestedDate", "approvedBy", "approvedDate", "accountedBy", "checkIssuedDate", "accountDeptReceivedDate", "status", "bpmProcessId", "employee");
-        Mapper mapper = (Mapper) SpringContext.getBean("mapper");
-        return mapper.map(entity, ImmigrationCheckRequisition.class);
+        return mapper.map(entity, ImmigrationCheckRequisitionSaveDto.class);
     }
 
     public Response getReport(ImmigrationCheckRequisition entity) {

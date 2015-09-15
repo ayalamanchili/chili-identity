@@ -5,7 +5,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.client.expense;
+package info.yalamanchili.office.client.expense.chkreq;
 
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -122,7 +122,7 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addItemL)) {
-            CreateImmigrationCheckItemPanel panel = new CreateImmigrationCheckItemPanel(this);
+            CreateImmigrationCheckItemPanel panel = new CreateImmigrationCheckItemPanel();
             checkItemPanels.add(panel);
             entityFieldsPanel.add(panel);
         }
