@@ -38,6 +38,7 @@ public class Auth {
         ROLE_E_VERIFY_MGR,
         ROLE_BACKGROUND_SCREENING_MGR,
         ROLE_GENERAL_EXPENSE_MANAGER,
+        ROLE_TRAVEL_BOOKING_MANAGER,
     }
 
     public static boolean isAdmin() {

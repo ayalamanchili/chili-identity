@@ -16,6 +16,7 @@ public enum TravelAuthorizationStatus {
 
     PENDING_MANAGER_APPROVAL,
     PENDING_CEO_APPROVAL,
+    PENDING_TRAVEL_BOOKING,
     APPROVED,
     REJECTED,
 }

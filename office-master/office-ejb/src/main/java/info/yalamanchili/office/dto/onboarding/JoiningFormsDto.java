@@ -13,6 +13,7 @@ import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.ext.Dependent;
 import info.yalamanchili.office.entity.profile.ext.EmployeeAdditionalDetails;
 import java.io.Serializable;
+import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -28,7 +29,7 @@ public class JoiningFormsDto implements Serializable {
     
     protected EmployeeAdditionalDetails empAddnlDetails;
     
-    protected Dependent dependents;
+    protected List<Dependent> dependent;
     
     protected Address address;
 
@@ -48,12 +49,12 @@ public class JoiningFormsDto implements Serializable {
         this.empAddnlDetails = empAddnlDetails;
     }
 
-    public Dependent getDependents() {
-        return dependents;
+    public List<Dependent> getDependent() {
+        return dependent;
     }
 
-    public void setDependents(Dependent dependents) {
-        this.dependents = dependents;
+    public void setDependent(List<Dependent> dependent) {
+        this.dependent = dependent;
     }
 
     public Address getAddress() {
