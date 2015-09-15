@@ -1,3 +1,7 @@
+--
+-- System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+--
+
 CREATE TABLE `ImmigrationCheckRequisition` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `version` int(11) DEFAULT NULL,

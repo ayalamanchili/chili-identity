@@ -162,7 +162,6 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
 
     @Override
     protected void createButtonClicked() {
-        TabPanel.instance().getExpensePanel().sidePanelTop.clear();
         TabPanel.instance().expensePanel.entityPanel.clear();
         TabPanel.instance().expensePanel.entityPanel.add(new CreateImmigrationCheckRequisitionPanel(CreateComposite.CreateCompositeType.CREATE));
     }
