@@ -315,27 +315,6 @@
                     <autoversionsubmodules>true</autoversionsubmodules>
                 </configuration>
             </plugin>
-            <!-- deploy to local folder-->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>wagon-maven-plugin</artifactId>
-                <version>1.0-beta-3</version>
-                <executions>
-                    <execution>
-                        <id>upload-jar-to-folder</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>upload</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <fromDir>${project.build.directory}</fromDir>
-                    <includes>*</includes>
-                    <url>file:///E:/Dropbox</url>
-                    <toDir>portal-deployments</toDir>
-                </configuration>
-            </plugin> 
         </plugins>
     </build>
     <scm>
