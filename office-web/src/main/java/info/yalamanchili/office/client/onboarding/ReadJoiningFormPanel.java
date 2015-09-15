@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.client.onboarding;
 
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.HTML;
@@ -18,8 +19,11 @@ import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.profile.contact.Sex;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -28,7 +32,8 @@ import java.util.logging.Logger;
  */
 public class ReadJoiningFormPanel extends ReadComposite {
 
-private static Logger logger = Logger.getLogger(ReadJoiningFormPanel.class.getName());
+    private static Logger logger = Logger.getLogger(ReadJoiningFormPanel.class.getName());
+    protected List<ReadDependentsPanel> readItemsPanels = new ArrayList<ReadDependentsPanel>();
 
     HTML emptyLine = new HTML("<br/>");
 
@@ -56,7 +61,6 @@ private static Logger logger = Logger.getLogger(ReadJoiningFormPanel.class.getNa
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         JSONObject employee = (JSONObject) entity.get("employee");
-        JSONObject dependents = (JSONObject) entity.get("dependents");
         JSONObject empAddnlDetails = (JSONObject) entity.get("empAddnlDetails");
         JSONObject address = (JSONObject) entity.get("address");
         assignFieldValueFromEntity("firstName", employee, DataType.STRING_FIELD);
@@ -70,23 +74,31 @@ private static Logger logger = Logger.getLogger(ReadJoiningFormPanel.class.getNa
         assignFieldValueFromEntity("country", address, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("state", address, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("zip", address, DataType.LONG_FIELD);
-        assignFieldValueFromEntity("dfirstName", dependents, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("dlastName", dependents, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("ddateOfBirth", dependents, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("relationship", dependents, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("referredBy", empAddnlDetails, DataType.STRING_FIELD);
         assignFieldValueFromEntity("maritalStatus", empAddnlDetails, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("ethnicity", empAddnlDetails, DataType.ENUM_FIELD);
+        JSONArray dependents = JSONUtils.toJSONArray(entity.get("dependent"));
+        populateDependents(dependents);
+    }
+
+    protected void populateDependents(JSONArray items) {
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).isObject() != null) {
+                ReadDependentsPanel panel = new ReadDependentsPanel(items.get(i).isObject());
+                readItemsPanels.add(panel);
+                entityFieldsPanel.add(panel);
+            }
+        }
     }
 
     @Override
     protected void addListeners() {
-        
+
     }
 
     @Override
     protected void configure() {
-       
+
     }
 
     @Override
@@ -102,22 +114,18 @@ private static Logger logger = Logger.getLogger(ReadJoiningFormPanel.class.getNa
         addEnumField("country", true, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
         addEnumField("state", true, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
         addField("zip", true, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
-        entityFieldsPanel.add(getLineSeperatorTag("Dependent's Information"));
-        addField("dfirstName", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("dlastName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("ddateOfBirth", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addEnumField("relationship", true, true, Relationship.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Additional Information"));
         addField("referredBy", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("maritalStatus", true, true, MaritalStatus.names(), Alignment.HORIZONTAL);
         addEnumField("ethnicity", true, true, Ethnicity.names(), Alignment.HORIZONTAL);
+        entityFieldsPanel.add(getLineSeperatorTag("Dependent's Information"));
         entityFieldsPanel.add(emptyLine);
         alignFields();
     }
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-       
+
     }
 
     @Override

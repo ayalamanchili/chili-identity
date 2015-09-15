@@ -16,6 +16,7 @@ import info.yalamanchili.office.entity.profile.ext.Dependent;
 import info.yalamanchili.office.entity.profile.ext.EmployeeAdditionalDetails;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
@@ -82,7 +83,7 @@ public class OnBoardingEmployeeDto implements Serializable {
     private BankAccount bankAccount;
     
     @Valid
-    private Dependent dependent;
+    private List<Dependent> dependent;
     
     @Valid
     private EmployeeAdditionalDetails employeeAdditionalDetails;
@@ -183,11 +184,11 @@ public class OnBoardingEmployeeDto implements Serializable {
         this.bankAccount = bankAccount;
     }
 
-    public Dependent getDependent() {
+    public List<Dependent> getDependent() {
         return dependent;
     }
 
-    public void setDependent(Dependent dependent) {
+    public void setDependent(List<Dependent> dependent) {
         this.dependent = dependent;
     }
 

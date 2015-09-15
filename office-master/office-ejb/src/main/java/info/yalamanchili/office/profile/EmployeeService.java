@@ -8,7 +8,6 @@
 package info.yalamanchili.office.profile;
 
 import info.chili.commons.EntityQueryUtils;
-import info.chili.dao.AbstractHandleEntityDao;
 import info.chili.document.dao.SerializedEntityDao;
 import info.chili.security.dao.CRoleDao;
 import info.chili.security.domain.CRole;
@@ -206,9 +205,9 @@ public class EmployeeService {
         BankAccountDao.instance().save(bankAccount, emp.getId(), emp.getClass().getCanonicalName());
 
         //Update Dependent Information for Employee
-        Dependent dependent = new Dependent();
-        dependent = employee.getDependent();
-        DependentDao.instance().save(dependent, emp.getId(), emp.getClass().getCanonicalName());
+        for (Dependent dependent : employee.getDependent()) {
+             DependentDao.instance().save(dependent, emp.getId(), emp.getClass().getCanonicalName());
+        }
 
         //Update Additional Information for Employee
         EmployeeAdditionalDetails employeeAdditionalDetails = new EmployeeAdditionalDetails();
