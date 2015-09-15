@@ -22,7 +22,6 @@ public class EmployeeSidePanel extends ALComposite implements ClickHandler {
     private static Logger logger = Logger.getLogger(EmployeeSidePanel.class.getName());
     public FlowPanel employeeSidePanel = new FlowPanel();
     ClickableLink createEmployeeLink = new ClickableLink("Create Employee");
-    ClickableLink createEmployeeOnboardingLink = new ClickableLink("Employee Onboarding");
 
     public EmployeeSidePanel() {
         init(employeeSidePanel);
@@ -31,7 +30,6 @@ public class EmployeeSidePanel extends ALComposite implements ClickHandler {
     @Override
     protected void addListeners() {
         createEmployeeLink.addClickHandler(this);
-        createEmployeeOnboardingLink.addClickHandler(this);
     }
 
     @Override
@@ -44,9 +42,6 @@ public class EmployeeSidePanel extends ALComposite implements ClickHandler {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_TIME, ROLE.ROLE_SYSTEM_AND_NETWORK_ADMIN)) {
             employeeSidePanel.add(createEmployeeLink);
         }
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ON_BOARDING_MGR)) {
-            employeeSidePanel.add(createEmployeeOnboardingLink);
-        }
         employeeSidePanel.add(new SearchEmployeePanel());
     }
 
@@ -55,10 +50,6 @@ public class EmployeeSidePanel extends ALComposite implements ClickHandler {
         if (clickEvent.getSource().equals(createEmployeeLink)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new CreateEmployeePanel(CreateCompositeType.CREATE));
-        }
-        if (clickEvent.getSource().equals(createEmployeeOnboardingLink)) {
-            TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new InitiateOnBoardingPanel());
         }
     }
 }

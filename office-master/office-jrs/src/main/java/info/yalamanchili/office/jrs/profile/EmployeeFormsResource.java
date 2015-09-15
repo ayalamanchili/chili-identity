@@ -72,18 +72,8 @@ public class EmployeeFormsResource {
     @GET
     @Path("/joining-form/{id}")
     public JoiningFormsDto getJoiningForm(@PathParam("id") Long employeeId) {
-        JoiningFormsDto dto = new JoiningFormsDto();
         Employee emp = EmployeeDao.instance().findById(employeeId);
-        dto.setEmployee(emp);
-        List<Address> listOfAddress = emp.getAddresss();
-        Address address = listOfAddress.get(0);
-        dto.setAddress(address);
-        String className = emp.getClass().getCanonicalName();
-        List<Dependent> dependent = DependentDao.instance().findAll(employeeId, className);
-        dto.setDependent(dependent);    
-        EmployeeAdditionalDetails empAddnlDetails = EmployeeAdditionalDetailsDao.instance().find(emp);
-        dto.setEmpAddnlDetails(empAddnlDetails);
-        return dto;
+        return employeeFormsService.getJoiningForm(emp);
     }
 
     @GET
