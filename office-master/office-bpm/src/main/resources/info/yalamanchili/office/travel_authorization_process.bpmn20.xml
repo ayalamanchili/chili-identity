@@ -85,7 +85,7 @@
                   activiti:candidateGroups="ROLE_CEO">
             <documentation>
                 Travel Authorization Final Approval Task
-               Employee Name               : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Employee Name               : #{currentEmployee.firstName} #{currentEmployee.lastName}
                 Departure Date              : #{entity.departureDate}
                 Return Date                 : #{entity.returnDate} 
                 Travel Destination          : #{entity.travelDestination}
@@ -119,32 +119,77 @@
             </extensionElements> 
         </userTask>
         <!-- Task escalation email after 48 hours-->
-        <boundaryEvent id="travelAuthorizationFinalApprovalTaskEscalationTimer"
+        <boundaryEvent id="travelAuthorizationCEOApprovalTaskEscalationTimer"
                        cancelActivity="false" 
                        attachedToRef="travelAuthorizationCEOApprovalTask">
             <timerEventDefinition> 
                 <timeDuration>PT48H</timeDuration> 
             </timerEventDefinition>
         </boundaryEvent>
-        <sequenceFlow sourceRef="travelAuthorizationFinalApprovalTaskEscalationTimer" 
-                      targetRef="travelAuthorizationFinalApprovalTaskEscalation" />
-        <serviceTask id="travelAuthorizationFinalApprovalTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <sequenceFlow sourceRef="travelAuthorizationCEOApprovalTaskEscalationTimer" 
+                      targetRef="travelAuthorizationCEOApprovalTaskEscalation" />
+        <serviceTask id="travelAuthorizationCEOApprovalTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
         <!--desision-->
         <sequenceFlow sourceRef="travelAuthorizationCEOApprovalTask" 
                       targetRef="finalApprovalTaskGateway" />
         <exclusiveGateway id="finalApprovalTaskGateway" />
         <sequenceFlow sourceRef="finalApprovalTaskGateway" 
-                      targetRef="travelAuthorizationEnd">
+                      targetRef="travelAuthorizationBookingTask">
             <conditionExpression xsi:type="tFormalExpression">
                 ${status == 'approved'}
             </conditionExpression>
         </sequenceFlow>
-        <sequenceFlow sourceRef="finalApprovalTaskGateway" 
+        <sequenceFlow sourceRef="approvalGateway" 
                       targetRef="travelAuthorizationEnd">
             <conditionExpression xsi:type="tFormalExpression">
                 ${status == 'rejected'}
             </conditionExpression>
         </sequenceFlow>
+        <!-- travel auth booking task-->
+        <userTask id="travelAuthorizationBookingTask" 
+                  name="Travel Authorization Booking Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" 
+                 activiti:candidateGroups="ROLE_TRAVEL_BOOKING_MANAGER">
+            <documentation>
+                Travel Authorization Booking Task
+                Employee Name               : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Departure Date              : #{entity.departureDate}
+                Return Date                 : #{entity.returnDate} 
+                Travel Destination          : #{entity.travelDestination}
+                TotalTransportationCost     : $#{entity.getTravelTransportation().totalTransportationCost}
+                Total Lodging Cost          : $#{entity.getTravelAccommodation().totalLodgingCost}
+                Total Cost Of Food          : $#{entity.getTravelFood().conferenceFee}
+                Total Cost Of Banquet       : $#{entity.getTravelFood().totalCostOfBanquet}
+                Other Expenses              : $#{entity.getTravelFood().otherExpences}
+                Reason                      : #{entity.reasonForTravel}
+                Status                      : #{entity.status}
+                
+                Estimated Trip Cost         : $#{entity.totalEstimatedTripExpences} 
+                Please follow the instructions below to review and complete the approval.
+                https://apps.sstech.us/site/office/expense/travelauthorizationprocess.html
+              
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.travelauthorization.TravelAuthorizationProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.travelauthorization.TravelAuthorizationProcess" />
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="true" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <!-- Task escalation email after 48 hours-->
+        <boundaryEvent id="travelAuthorizationBookingTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="travelAuthorizationBookingTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="travelAuthorizationBookingTaskEscalationTimer" 
+                      targetRef="travelAuthorizationBookingTaskEscalation" />
+        <serviceTask id="travelAuthorizationBookingTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <sequenceFlow sourceRef="travelAuthorizationBookingTask" 
+                             targetRef="travelAuthorizationEnd" /> 
         <endEvent id="travelAuthorizationEnd" />
     </process>
 </definitions>

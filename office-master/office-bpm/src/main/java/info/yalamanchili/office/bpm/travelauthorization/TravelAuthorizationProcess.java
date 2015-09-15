@@ -49,6 +49,9 @@ public class TravelAuthorizationProcess extends RuleBasedTaskDelegateListner {
             case "travelAuthorizationCEOApprovalTask":
                 ceoApprovalTaskComplete(entity, task);
                 break;
+            case "travelAuthorizationBookingTask":
+                travelBookingManagerApprovalTaskComplete(entity, task);
+                break;
         }
     }
 
@@ -78,7 +81,7 @@ public class TravelAuthorizationProcess extends RuleBasedTaskDelegateListner {
         //Status
         String status = (String) task.getExecution().getVariable("status");
         if (status.equalsIgnoreCase("approved")) {
-            entity.setStatus(TravelAuthorizationStatus.APPROVED);
+            entity.setStatus(TravelAuthorizationStatus.PENDING_TRAVEL_BOOKING);
             entity.setCeoApprovalBy(OfficeSecurityService.instance().getCurrentUser().getEmployeeId());
             entity.setCeoApprovalDate(new Date());
             new GenericTaskCompleteNotification().notify(task);
@@ -88,6 +91,15 @@ public class TravelAuthorizationProcess extends RuleBasedTaskDelegateListner {
         }
         TravelAuthorizationDao.instance().save(entity);
         task.getExecution().setVariable("entity", entity);
+    }
+
+    protected void travelBookingManagerApprovalTaskComplete(TravelAuthorization entity, DelegateTask task) {
+        //Notes
+        String notes = (String) task.getExecution().getVariable("notes");
+        CommentDao.instance().addComment(notes, entity);
+        entity.setStatus(TravelAuthorizationStatus.APPROVED);
+        new GenericTaskCompleteNotification().notify(task);
+        TravelAuthorizationDao.instance().save(entity);
     }
 
     protected TravelAuthorization getRequestFromTask(DelegateTask task) {
