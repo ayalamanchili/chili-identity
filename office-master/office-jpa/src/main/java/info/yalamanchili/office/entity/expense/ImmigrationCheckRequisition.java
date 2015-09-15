@@ -283,7 +283,7 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
         for (CheckRequisitionItem item : this.getItems()) {
             totalAmount = totalAmount.add(item.getAmount());
         }
-        this.setAmount(amount);
+        this.setAmount(totalAmount);
     }
 
     @Override
