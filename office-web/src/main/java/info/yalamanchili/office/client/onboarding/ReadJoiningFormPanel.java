@@ -38,11 +38,11 @@ public class ReadJoiningFormPanel extends ReadComposite {
     HTML emptyLine = new HTML("<br/>");
 
     public ReadJoiningFormPanel(JSONObject entity) {
-        initReadComposite(entity, "JoiningForm", OfficeWelcome.constants);
+        initReadComposite(entity, "Employee", OfficeWelcome.constants);
     }
 
     public ReadJoiningFormPanel(String id) {
-        initReadComposite(id, "JoiningForm", OfficeWelcome.constants);
+        initReadComposite(id, "Employee", OfficeWelcome.constants);
     }
 
     @Override

@@ -92,7 +92,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         assignEntityValueFromField("bankRoutingNumber", bankAccount);
         assignEntityValueFromField("bankAccountNumber", bankAccount);
         assignEntityValueFromField("bankAddress1", bankAccount);
-        assignEntityValueFromField("bankAddress1", bankAccount);
+        assignEntityValueFromField("bankAddress2", bankAccount);
         assignEntityValueFromField("accountType", bankAccount);
         assignEntityValueFromField("achBlocked", bankAccount);
         bankAccount.put("targetEntityName", new JSONString("targetEntityName"));
