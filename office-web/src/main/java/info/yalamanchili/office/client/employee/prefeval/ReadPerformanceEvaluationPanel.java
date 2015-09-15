@@ -135,7 +135,7 @@ public class ReadPerformanceEvaluationPanel extends ReadComposite {
 
     @Override
     protected boolean enableAudit() {
-        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION);
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_RELATIONSHIP);
     }
 
     @Override
