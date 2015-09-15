@@ -9,12 +9,10 @@
 package info.yalamanchili.office.jrs.profile;
 
 import info.yalamanchili.office.dao.expense.BankAccountDao;
-import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.ext.DependentDao;
 import info.yalamanchili.office.dao.profile.ext.EmployeeAdditionalDetailsDao;
 import info.yalamanchili.office.dto.onboarding.JoiningFormsDto;
-import info.yalamanchili.office.dto.onboarding.OnBoardingEmployeeDto;
 import info.yalamanchili.office.entity.expense.BankAccount;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -27,8 +25,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -82,13 +78,14 @@ public class EmployeeFormsResource {
         List<Address> listOfAddress = emp.getAddresss();
         Address address = listOfAddress.get(0);
         dto.setAddress(address);
-        Dependent dep = DependentDao.instance().find(emp);
-        dto.setDependents(dep);
+        String className = emp.getClass().getCanonicalName();
+        List<Dependent> dependent = DependentDao.instance().findAll(employeeId, className);
+        dto.setDependent(dependent);    
         EmployeeAdditionalDetails empAddnlDetails = EmployeeAdditionalDetailsDao.instance().find(emp);
         dto.setEmpAddnlDetails(empAddnlDetails);
         return dto;
     }
-   
+
     @GET
     @Path("/joining-form-report/{id}")
     @Produces({"application/pdf"})
@@ -97,9 +94,4 @@ public class EmployeeFormsResource {
         return employeeFormsService.printJoiningForm(emp);
     }
 
-    @XmlRootElement
-    @XmlType
-    public static class JoiningFormDto extends OnBoardingEmployeeDto {
-
-    }
 }

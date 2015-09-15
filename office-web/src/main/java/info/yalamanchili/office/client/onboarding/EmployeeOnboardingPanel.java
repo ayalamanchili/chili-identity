@@ -10,10 +10,14 @@ package info.yalamanchili.office.client.onboarding;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.data.CountryFactory;
 import info.chili.gwt.data.IndiaStatesFactory;
@@ -22,27 +26,29 @@ import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.expense.bnkacct.AccountType;
 import info.yalamanchili.office.client.profile.contact.Sex;
 import info.yalamanchili.office.client.profile.contact.WorkStatus;
 import info.yalamanchili.office.client.profile.employee.CreateEmployeePanel;
-import info.yalamanchili.office.client.profile.employee.EmployeeSidePanel;
-import info.yalamanchili.office.client.profile.employee.ReadAllEmployeesPanel;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
  *
  * @author Madhu.Badiginchala
  */
-public class EmployeeOnboardingPanel extends UpdateComposite implements ChangeHandler {
+public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHandler, ChangeHandler {
 
     private static Logger logger = Logger.getLogger(CreateEmployeePanel.class.getName());
     protected SelectCompanyWidget selectCompnayWidget = new SelectCompanyWidget(false, true, Alignment.HORIZONTAL);
+    protected ClickableLink addDependentsL = new ClickableLink("Add Dependents");
+    protected List<CreateDependentsPanel> createDependentsPanel = new ArrayList<>();
     HTML emptyLine = new HTML("<br/>");
 
     EnumField statesF;
@@ -59,7 +65,6 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ChangeHa
         JSONObject employee = new JSONObject();
         JSONObject address = new JSONObject();
         JSONObject bankAccount = new JSONObject();
-        JSONObject dependent = new JSONObject();
         JSONObject employeeAdditionalDetails = new JSONObject();
         assignEntityValueFromField("firstName", employee);
         assignEntityValueFromField("middleInitial", employee);
@@ -94,13 +99,15 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ChangeHa
         bankAccount.put("targetEntityId", new JSONString("0"));
         employee.put("bankAccount", bankAccount);
         // Dependent Information
-        assignEntityValueFromField("dfirstName", dependent);
-        assignEntityValueFromField("dlastName", dependent);
-        assignEntityValueFromField("ddateOfBirth", dependent);
-        assignEntityValueFromField("relationship", dependent);
-        dependent.put("targetEntityName", new JSONString("targetEntityName"));
-        dependent.put("targetEntityId", new JSONString("0"));
-        employee.put("dependent", dependent);
+        if (createDependentsPanel.size() > 0) {
+            JSONArray dependent = new JSONArray();
+            int i = 0;
+            for (CreateDependentsPanel panel : createDependentsPanel) {
+                dependent.set(i, panel.populateEntityFromFields());
+                i++;
+            }
+            employee.put("dependent", dependent);
+        }
         // Additional Information
         assignEntityValueFromField("referredBy", employeeAdditionalDetails);
         assignEntityValueFromField("maritalStatus", employeeAdditionalDetails);
@@ -118,11 +125,12 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ChangeHa
     protected void addListeners() {
         // TODO Auto-generated method stub
         countriesF.listBox.addChangeHandler(this);
+        addDependentsL.addClickHandler(this);
     }
 
     @Override
     protected void configure() {
-        // TODO Auto-generated method stub
+        addDependentsL.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
     }
 
     @Override
@@ -150,19 +158,16 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ChangeHa
         addField("bankName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("bankRoutingNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("bankAccountNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("bankAddress1",false,true,DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("bankAddress2",false,false,DataType.STRING_FIELD,Alignment.HORIZONTAL);
-        addEnumField("accountType",false,true,AccountType.names(),Alignment.HORIZONTAL);
-        addField("achBlocked", false, true, DataType.BOOLEAN_FIELD,Alignment.HORIZONTAL);   
-        entityFieldsPanel.add(getLineSeperatorTag("Dependent's Information"));
-        addField("dfirstName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("dlastName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("ddateOfBirth", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addEnumField("relationship", false, true, Relationship.names(), Alignment.HORIZONTAL);
+        addField("bankAddress1", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("bankAddress2", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("accountType", false, true, AccountType.names(), Alignment.HORIZONTAL);
+        addField("achBlocked", false, true, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Additional Information"));
         addField("referredBy", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("maritalStatus", false, true, MaritalStatus.names(), Alignment.HORIZONTAL);
         addEnumField("ethnicity", false, true, Ethnicity.names(), Alignment.HORIZONTAL);
+        entityFieldsPanel.add(getLineSeperatorTag("Dependent's Information"));
+        entityFieldsPanel.add(addDependentsL);
         countriesF = (EnumField) fields.get("country");
         statesF = (EnumField) fields.get("state");
         entityFieldsPanel.add(emptyLine);
@@ -194,11 +199,6 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ChangeHa
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Created Employee");
-//        TabPanel.instance().myOfficePanel.sidePanelTop.clear();
-//        TabPanel.instance().myOfficePanel.sidePanelTop.add(new EmployeeSidePanel());
-//        TabPanel.instance().myOfficePanel.entityPanel.clear();
-//        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmployeesPanel());
-
     }
 
     @Override
@@ -231,5 +231,16 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ChangeHa
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
 
+    }
+
+    @Override
+    public void onClick(ClickEvent event) {
+        if (event.getSource().equals(addDependentsL)) {
+            CreateDependentsPanel panel = null;
+            panel = new CreateDependentsPanel();
+            createDependentsPanel.add(panel);
+            entityFieldsPanel.add(panel);
+        }
+        super.onClick(event);
     }
 }
