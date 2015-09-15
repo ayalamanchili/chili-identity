@@ -26,6 +26,8 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.EXPENSE_FORM_TYPE;
+import info.yalamanchili.office.client.expensereports.ExpenseReportStatus;
 import java.util.logging.Logger;
 
 /**
@@ -110,14 +112,14 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
             addOptionsWidget(i, entity);
             JSONObject emp = (JSONObject) entity.get("employee");
             table.setText(i, 1, JSONUtils.toString(emp, "firstName"));
-            table.setText(i, 2, JSONUtils.toString(entity, "caseType"));
+            setEnumColumn(i, 2, entity, ImmigrationCaseType.class.getSimpleName(), "caseType");
             table.setText(i, 3, JSONUtils.toString(entity, "attorneyName"));
             if (emp.get("company") != null) {
                 table.setText(i, 4, JSONUtils.toString(emp.get("company"), "name"));
             }
             table.setText(i, 5, FormatUtils.formarCurrency(JSONUtils.toString(entity, "amount")));
             table.setText(i, 6, DateUtils.getFormatedDate(JSONUtils.toString(entity, "requestedDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 7, JSONUtils.formatEnumString(entity, "status"));
+            setEnumColumn(i, 7, entity, ImmigrationCheckRequisitionStatus.class.getSimpleName(), "status");
         }
     }
 
