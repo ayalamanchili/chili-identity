@@ -152,6 +152,7 @@ public class EmployeeFormsService {
                     data.getData().put("childName2", dep.getDfirstName() + " , " + depLastName);
                 }
                 data.getData().put("childDOB2", sdf.format(depDateOfBirth));
+            }
         }
 
         //section 3 : Project Details
@@ -207,7 +208,7 @@ public class EmployeeFormsService {
                 }
             }
         }
-        
+
         byte[] pdf = PDFUtils.generatePdf(data);
         return Response.ok(pdf)
                 .header("content-disposition", "filename = Joining-form-fillable.pdf")
