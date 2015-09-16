@@ -8,9 +8,12 @@
  */
 package info.yalamanchili.office.profile;
 
+import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
 import info.chili.commons.pdf.PdfDocumentData;
+import info.chili.security.Signature;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.dao.expense.BankAccountDao;
 import info.yalamanchili.office.dao.profile.ext.DependentDao;
 import info.yalamanchili.office.dao.profile.ext.EmployeeAdditionalDetailsDao;
@@ -23,8 +26,11 @@ import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.EmergencyContact;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.Phone;
+import info.yalamanchili.office.entity.profile.Sex;
 import info.yalamanchili.office.entity.profile.ext.Dependent;
 import info.yalamanchili.office.entity.profile.ext.EmployeeAdditionalDetails;
+import info.yalamanchili.office.entity.profile.ext.Ethnicity;
+import info.yalamanchili.office.entity.profile.ext.MaritalStatus;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -64,24 +70,35 @@ public class EmployeeFormsService {
         EmployeeAdditionalDetails ead = EmployeeAdditionalDetailsDao.instance().find(emp);
         Dependent dep = DependentDao.instance().find(emp);
         PdfDocumentData data = new PdfDocumentData();
-
+        //JoiningFormsDto jfDto=getJoiningForm(emp);
+       
         data.setTemplateUrl("/templates/pdf/Joining-form-fillable-template.pdf");
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         Date dateOfBirth = emp.getDateOfBirth();
         Date depDateOfBirth = dep.getDdateOfBirth();
 
         //print joining form @radhika
-        data.getData().put("fmName", emp.getFirstName());
+    
         String empMiddleInitial = emp.getMiddleInitial();
-        if (empMiddleInitial != null) {
-            data.getData().put("fmName", " " + empMiddleInitial);
+        if (empMiddleInitial == null) {
+            
+            data.getData().put("fmName", emp.getFirstName());
+        }else{
+            data.getData().put("fmName", emp.getFirstName()+" " + empMiddleInitial);
         }
+            
         data.getData().put("lastName", emp.getLastName());
         data.getData().put("dateOfBirth", sdf.format(dateOfBirth));
 
-        //gender doubt
+        if(emp.getSex().equals(Sex.MALE)){
+            data.getData().put("genderMale", "true");
+        }else{
+            data.getData().put("genderFemale", "true");
+        }
         //education 
-        data.getData().put("maritalStatus", ead.getMaritalStatus().name());
+       
+                 
+        data.getData().put("maritalStatus",ead.getMaritalStatus().name());
         for (Email email : emp.getEmails()) {
             if (email.getEmailType() != null) {
                 if ("Personal".equals(email.getEmailType().toString())) {
@@ -94,36 +111,44 @@ public class EmployeeFormsService {
             if (phone.getPhoneType() != null) {
               if ("Cell".equals(phone.getPhoneType().toString())) {
                 data.getData().put("cellPhone", phone.getPhoneNumber());
-              } else {
-                data.getData().put("homePhone", phone.getPhoneNumber());
-              }
+              } else if("Home".equals(phone.getPhoneType().toString())){
+                  data.getData().put("homePhone", phone.getPhoneNumber());
+              } 
             }
         }
         for (Address address : emp.getAddresss()) {
             if (address.getAddressType() != null) {
                 if ("Home".equals(address.getAddressType().toString())) {
-                    data.getData().put("residentialAddress", address.getStreet1());
+                    
                     String street2 = address.getStreet2();
-                    if (street2 != null || !"".equals(street2)) {
-                        data.getData().put("residentialAddress1", " , " + street2);
+                    if (street2 == null || "".equals(street2)) {
+                        data.getData().put("residentialAddress1", address.getStreet1());
+                    }else{
+                        data.getData().put("residentialAddress1", address.getStreet1()+" , " + street2);
                     }
-                    data.getData().put("csz", address.getCity() + " , " + address.getState());
                     String zip = address.getZip();
-                    if (zip != null) {
-                        data.getData().put("csz", " , " + zip);
+                    if (zip == null) {
+                        data.getData().put("residentialAddress2", address.getCity() + " , " + address.getState());
+                    }
+                    else{
+                        data.getData().put("residentialAddress2", address.getCity() + " , " + address.getState()+" , "+zip);
                     }
                 }
             }
         }
 
-        data.getData().put("ethnicity", ead.getEthnicity().name());
+        if(ead.getEthnicity().equals(Ethnicity.Asian)){
+            data.getData().put("asian","true");
+        }else if(ead.getEthnicity().equals(Ethnicity.Latino_Hispanic)){
+            data.getData().put("hispanicLatino", "true");
+        }
         data.getData().put("referredBy", ead.getReferredBy());
 
         //section 2: Dependents
-        data.getData().put("nameOfSpouse", dep.getDfirstName());
+        data.getData().put("spouseName", dep.getDfirstName());
         String depLastName = dep.getDlastName();
         if (depLastName != null || !"".equals(depLastName)) {
-            data.getData().put("nameOfSpouse", " , " + depLastName);
+            data.getData().put("spouseName", " , " + depLastName);
         }
         data.getData().put("spouseDOB", sdf.format(depDateOfBirth));
 
@@ -152,15 +177,15 @@ public class EmployeeFormsService {
         for (Address address : emp.getAddresss()) {
             if (address.getAddressType() != null) {
                 if ("Office".equals(address.getAddressType().toString())) {
-                    data.getData().put("officeAddress", address.getStreet1());
+                    data.getData().put("wlStreet1", address.getStreet1());
                     String street2 = address.getStreet2();
                     if (street2 != null || !"".equals(street2)) {
-                        data.getData().put("officeAddress", " , " + street2);
+                        data.getData().put("wlStreet1", " , " + street2);
                     }
-                    data.getData().put("officeCSZ", address.getCity() + " , " + address.getState());
+                    data.getData().put("wlStreet2", address.getCity() + " , " + address.getState());
                     String zip = address.getZip();
                     if (zip != null) {
-                        data.getData().put("officeCSZ", " , " + zip);
+                        data.getData().put("wlStreet2", " , " + zip);
                     }
                 }
             }
@@ -170,17 +195,26 @@ public class EmployeeFormsService {
         for (EmergencyContact emergencyContact : emp.getEmergencyContacts()) {
             if ((emergencyContact.getContact() != null)
                     && (emergencyContact.getRelation() != null)) {
-                data.getData().put("ecName", emergencyContact.getContact().getFirstName());
-                data.getData().put("ecRelation", emergencyContact.getRelation());
+                data.getData().put("ecName2", emergencyContact.getContact().getFirstName());
+                data.getData().put("ecRelation2", emergencyContact.getRelation());
                 for (Phone phone : emergencyContact.getContact().getPhones()) {
-                    data.getData().put("ecPhone", phone.getPhoneNumber());
+                    data.getData().put("ecPhone2", phone.getPhoneNumber());
                 }
                 for (Address address1 : emergencyContact.getContact().getAddresss()) {
-                    data.getData().put("ecAddress", address1.getStreet1() + "," + address1.getCity() + "," + address1.getState() + "," + address1.getCountry());
+                    data.getData().put("ecAddress2", address1.getStreet1() + "," + address1.getCity() + "," + address1.getState() + "," + address1.getCountry());
                 }
             }
         }
-
+        
+        /*
+        Employee employee=jfDto.getEmployee();
+        String middleInitial=employee.getMiddleInitial();
+        if(middleInitial==null || middleInitial==""){
+            data.getData().put("fmName", employee.getFirstName());
+        }else{
+            data.getData().put("fmName", employee.getFirstName()+" "+middleInitial);
+        }
+        */
         byte[] pdf = PDFUtils.generatePdf(data);
         return Response.ok(pdf)
                 .header("content-disposition", "filename = Joining-form-fillable.pdf")
@@ -190,9 +224,10 @@ public class EmployeeFormsService {
 
     public Response printACHForm(Employee emp) {
         BankAccount ba = BankAccountDao.instance().find(emp);
+        
         PdfDocumentData data = new PdfDocumentData();
         data.setTemplateUrl("/templates/pdf/ach-direct-deposit-form-template.pdf");
-
+        
         //print ACH Form with the employee and bank details. @radhika
         data.getData().put("employeeName", emp.getLastName() + " , " + emp.getFirstName());
         for (Address address : emp.getAddresss()) {
@@ -228,12 +263,14 @@ public class EmployeeFormsService {
             data.getData().put("checkingAccountType", "true");
         }
 
-        if (ba.isAchBlocked() == true) {
-            data.getData().put("achReversalBlockYes", "true");
+        if (ba.isAchBlocked()==false) {
+            data.getData().put("achReversalBlockNo", "no");
+        }else if(ba.isAchBlocked()==true){
+             data.getData().put("achReversalBlockYes", "yes");
+              data.getData().put("achReversalBlockNo", "yes");
         }
-        data.getData().put("achReversalBlockNo", "true");
-
-        //TODO fill ach with emp and bank account details
+        
+       //TODO fill ach with emp and bank account details
         byte[] pdf = PDFUtils.generatePdf(data);
 
         return Response.ok(pdf)
