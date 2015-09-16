@@ -31,7 +31,8 @@ public enum WorkStatus {
      * @generated
      */
     L2EAD,
-    CITIZEN;
+    CITIZEN,
+    H4_EAD;
 
     public static String[] names() {
         WorkStatus[] values = values();

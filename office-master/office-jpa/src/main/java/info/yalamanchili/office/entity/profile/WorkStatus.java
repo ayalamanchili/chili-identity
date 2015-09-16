@@ -31,5 +31,6 @@ public enum WorkStatus {
      * @generated
      */
     CITIZEN,
-    L2EAD
+    L2EAD,
+    H4_EAD
 }
