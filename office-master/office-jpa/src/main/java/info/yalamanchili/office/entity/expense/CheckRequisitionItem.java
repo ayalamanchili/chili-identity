@@ -12,6 +12,7 @@ import info.chili.jpa.AbstractEntity;
 import java.math.BigDecimal;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -44,6 +45,7 @@ public class CheckRequisitionItem extends AbstractEntity {
      *
      */
     @NotNull(message = "{itemAmount.not.empty.msg}")
+    @Min(1)
     private BigDecimal amount;
 
     @ManyToOne

@@ -249,7 +249,6 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
         projectNumber.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
         generalInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         expenseInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-        addItemL.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         expenseReceiptInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         notes.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
     }

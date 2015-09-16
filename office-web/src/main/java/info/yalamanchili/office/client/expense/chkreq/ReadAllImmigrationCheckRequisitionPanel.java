@@ -150,6 +150,7 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
         }
     }
 
+
     private String getDeleteURL(String entityId) {
         return OfficeWelcome.instance().constants.root_url() + "checkrequisition/delete/" + entityId;
     }
