@@ -1,4 +1,3 @@
-
 /**
  * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
  */
@@ -33,7 +32,7 @@ public class AssociatePerfEvalProcess extends RuleBasedTaskDelegateListner {
 
     @Override
     public void processTask(DelegateTask task) {
-        super.processTask(task);    
+        super.processTask(task);
         if ("create".equals(task.getEventName())) {
             perfEvalTaskCreated(task);
         }
@@ -78,6 +77,7 @@ public class AssociatePerfEvalProcess extends RuleBasedTaskDelegateListner {
             Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
             entity.setHrApprovalBy(currentUser.getEmployeeId());
             entity.setHrApprovalDate(new Date());
+            entity.setStage(PerformanceEvaluationStage.Manager_Review);
             if (!Strings.isNullOrEmpty(notes)) {
                 entity.setHrComments(notes);
             }
