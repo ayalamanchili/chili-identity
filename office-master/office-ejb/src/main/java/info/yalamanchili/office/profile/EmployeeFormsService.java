@@ -87,9 +87,10 @@ public class EmployeeFormsService {
         }
 
         data.getData().put("maritalStatus", ead.getMaritalStatus().name());
+        
         for (Email email : emp.getEmails()) {
             if (email.getEmailType() != null) {
-                if ("Personal".equals(email.getEmailType().toString())) {
+                if ("Personal".equals(email.getEmailType())) {
                     data.getData().put("email", email.getEmail() + "  ");
                 }
             }
@@ -97,9 +98,9 @@ public class EmployeeFormsService {
 
         for (Phone phone : emp.getPhones()) {
             if (phone.getPhoneType() != null) {
-                if ("Cell".equals(phone.getPhoneType().toString())) {
+                if ("Cell".equals(phone.getPhoneType())) {
                     data.getData().put("cellPhone", phone.getPhoneNumber());
-                } else if ("Home".equals(phone.getPhoneType().toString())) {
+                } else if ("Home".equals(phone.getPhoneType())) {
                     data.getData().put("homePhone", phone.getPhoneNumber());
                 }
             }
@@ -123,10 +124,20 @@ public class EmployeeFormsService {
             data.getData().put("asian", "true");
         } else if (ead.getEthnicity().equals(Ethnicity.Latino_Hispanic)) {
             data.getData().put("hispanicLatino", "true");
+        }else if(ead.getEthnicity().equals(Ethnicity.AmericanIndian_AlaskaNative)){
+            data.getData().put("americanIndian","true");
+        }else if(ead.getEthnicity().equals(Ethnicity.Black_AfricanAmerican)){
+            data.getData().put("black", "true");
+        }else if(ead.getEthnicity().equals(Ethnicity.NativeHawaiian_OtherPacificIslander)){
+            data.getData().put("hawalian", "true");
+        }else if(ead.getEthnicity().equals(Ethnicity.White)){
+            data.getData().put("white", "true");
         }
+        
         data.getData().put("referredBy", ead.getReferredBy());
 
         //section 2: Dependents
+        int counter=0;
         for (Dependent dep : dto.getDependent()) {
             if (dep.getRelationship().equals(Relationship.Spouse)) {
                 Date depDateOfBirth = dep.getDdateOfBirth();
@@ -137,6 +148,7 @@ public class EmployeeFormsService {
                 }
                 data.getData().put("spouseDOB", sdf.format(depDateOfBirth));
             } else if (dep.getRelationship().equals(Relationship.Child1)) {
+                counter++;
                 Date depDateOfBirth = dep.getDdateOfBirth();
                 data.getData().put("childName1", dep.getDfirstName());
                 String depLastName = dep.getDlastName();
@@ -145,6 +157,7 @@ public class EmployeeFormsService {
                 }
                 data.getData().put("childDOB1", sdf.format(depDateOfBirth));
             } else if (dep.getRelationship().equals(Relationship.Child2)) {
+                counter++;
                 Date depDateOfBirth = dep.getDdateOfBirth();
                 data.getData().put("childName2", dep.getDfirstName());
                 String depLastName = dep.getDlastName();
@@ -154,6 +167,7 @@ public class EmployeeFormsService {
                 data.getData().put("childDOB2", sdf.format(depDateOfBirth));
             }
         }
+        data.getData().put("numberOfChildren", String.valueOf(counter));
 
         //section 3 : Project Details
         for (ClientInformation clientInfo : emp.getClientInformations()) {
@@ -175,6 +189,7 @@ public class EmployeeFormsService {
                 }
             }
         }
+       
 
         //company address [work location]
         for (Address address : emp.getAddresss()) {
@@ -208,7 +223,7 @@ public class EmployeeFormsService {
                 }
             }
         }
-
+      
         byte[] pdf = PDFUtils.generatePdf(data);
         return Response.ok(pdf)
                 .header("content-disposition", "filename = Joining-form-fillable.pdf")
@@ -263,6 +278,9 @@ public class EmployeeFormsService {
             data.getData().put("achReversalBlockYes", "true");
         }
 
+        data.getData().put("Name", emp.getFirstName()+" "+emp.getLastName());
+        SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");
+        data.getData().put("Date", sdf.format(emp.getStartDate()));
         //TODO fill ach with emp and bank account details
         byte[] pdf = PDFUtils.generatePdf(data);
 
