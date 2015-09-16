@@ -10,6 +10,7 @@ package info.yalamanchili.office.expense.chkreq;
 
 import info.yalamanchili.office.entity.expense.CheckRequisitionItem;
 import info.yalamanchili.office.entity.expense.ImmigrationCheckRequisition;
+import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
@@ -32,6 +33,9 @@ public class ImmigrationCheckRequisitionSaveDto extends ImmigrationCheckRequisit
     @Size(min = 1, message = "{checkitem.min.size.msg}")
     @Valid
     public List<CheckRequisitionItem> getItems() {
+        if (this.items == null) {
+            this.items = new ArrayList();
+        }
         return items;
     }
 
