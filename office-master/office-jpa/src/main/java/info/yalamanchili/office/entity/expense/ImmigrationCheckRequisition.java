@@ -122,7 +122,6 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
     /**
      *
      */
-    @Size(min = 1, message = "{checkitem.min.size.msg}")
     @OneToMany(mappedBy = "immigrationCheckRequisition", cascade = CascadeType.ALL)
     protected List<CheckRequisitionItem> items;
     /**
