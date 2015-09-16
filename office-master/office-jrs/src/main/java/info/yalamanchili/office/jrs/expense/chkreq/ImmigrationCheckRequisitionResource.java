@@ -51,6 +51,7 @@ public class ImmigrationCheckRequisitionResource extends CRUDResource<Immigratio
     @PUT
     @Validate
     @Path("/submit")
+    @PreAuthorize("hasAnyRole('ROLE_GC_IMMIGRATION','ROLE_H1B_IMMIGRATION')")
     @CacheEvict(value = OfficeCacheKeys.IMMIGRATION_CHECK, allEntries = true)
     public void submitImmigrationCheckRequest(ImmigrationCheckRequisitionSaveDto dto) {
         ImmigrationCheckRequisitionService.instance().submitImmigrationCheckRequisition(dto);
@@ -59,6 +60,7 @@ public class ImmigrationCheckRequisitionResource extends CRUDResource<Immigratio
     @PUT
     @Validate
     @Path("/save")
+    @PreAuthorize("hasAnyRole('ROLE_GC_IMMIGRATION','ROLE_H1B_IMMIGRATION')")
     @CacheEvict(value = OfficeCacheKeys.IMMIGRATION_CHECK, allEntries = true)
     public ImmigrationCheckRequisitionSaveDto save(ImmigrationCheckRequisitionSaveDto dto) {
         ImmigrationCheckRequisitionService.instance().saveImmigrationCheckRequisition(dto);
