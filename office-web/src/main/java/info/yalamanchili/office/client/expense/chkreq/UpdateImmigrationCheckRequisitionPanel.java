@@ -169,7 +169,6 @@ public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite impl
     @Override
     protected void configure() {
         checkItem.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-        addItemL.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         setButtonText("Submit");
         if (entityId == null) {
             employeeSB.getLabel().getElement().getStyle().setWidth(145, Style.Unit.PX);

@@ -144,7 +144,6 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
     @Override
     protected void configure() {
         checkItem.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-        addItemL.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         employeeSB.getLabel().getElement().getStyle().setWidth(145, Style.Unit.PX);
         setButtonText("Submit");
         HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
