@@ -33,9 +33,6 @@ public class ImmigrationCheckRequisitionSaveDto extends ImmigrationCheckRequisit
     @Size(min = 1, message = "{checkitem.min.size.msg}")
     @Valid
     public List<CheckRequisitionItem> getItems() {
-        if (this.items == null) {
-            this.items = new ArrayList();
-        }
         return items;
     }
 
