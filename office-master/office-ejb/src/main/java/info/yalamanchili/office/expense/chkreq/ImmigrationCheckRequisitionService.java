@@ -8,12 +8,14 @@
  */
 package info.yalamanchili.office.expense.chkreq;
 
+import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
 import info.chili.commons.pdf.PdfDocumentData;
-import info.chili.jpa.QueryUtils;
+import info.chili.security.Signature;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
+import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.dao.expense.chkreq.CheckRequisitionItemDao;
 import info.yalamanchili.office.dao.expense.chkreq.ImmigrationCheckRequisitionDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
@@ -22,13 +24,8 @@ import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.expense.CheckRequisitionItem;
 import info.yalamanchili.office.entity.expense.ImmigrationCheckRequisition;
 import info.yalamanchili.office.entity.expense.ImmigrationCheckRequisitionStatus;
-import info.yalamanchili.office.entity.expense.expenserpt.ExpenseCategory;
-import info.yalamanchili.office.entity.expense.expenserpt.ExpenseFormType;
-import info.yalamanchili.office.entity.expense.expenserpt.ExpenseItem;
-import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport;
 import info.yalamanchili.office.entity.ext.Comment;
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.expense.expenserpt.ExpenseReportSaveDto;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -112,14 +109,17 @@ public class ImmigrationCheckRequisitionService {
     public Response getReport(ImmigrationCheckRequisition entity) {
         PdfDocumentData data = new PdfDocumentData();
         data.setTemplateUrl("/templates/pdf/check-request-template.pdf");
-
+        OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
+        data.setKeyStoreName(securityConfiguration.getKeyStoreName());
         Employee preparedBy = EmployeeDao.instance().findEmployeWithEmpId(entity.getSubmittedBy());
+        EmployeeDao employeeDao = EmployeeDao.instance();
         if (preparedBy != null) {
             String prepareByStr = preparedBy.getLastName() + ", " + preparedBy.getFirstName();
             data.getData().put("submittedBy", prepareByStr);
+            Signature approvedBysignature = new Signature(preparedBy.getEmployeeId(), preparedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "submittedBySignature", DateUtils.dateToCalendar(entity.getApprovedDate()), employeeDao.getPrimaryEmail(preparedBy), null);
+            data.getSignatures().add(approvedBysignature);
         }
         data.getData().put("attorneyName", entity.getAttorneyName());
-
         data.getData().put("employee", entity.getEmployee().getFirstName() + entity.getEmployee().getLastName());
         data.getData().put("requestedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getRequestedDate()));
         data.getData().put("neededByDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getNeededByDate()));
@@ -135,10 +135,17 @@ public class ImmigrationCheckRequisitionService {
         if (entity.getCheckIssuedDate() != null) {
             data.getData().put("checkIssuedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getCheckIssuedDate()));
         }
+        if (entity.getApprovedBy() != null) {
+            Employee approvedBy = EmployeeDao.instance().findEmployeWithEmpId(entity.getApprovedBy());
+            if (approvedBy != null) {
+                Signature approvedBysignature = new Signature(approvedBy.getEmployeeId(), approvedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "approvedBySignature", DateUtils.dateToCalendar(entity.getApprovedDate()), employeeDao.getPrimaryEmail(approvedBy), null);
+                data.getSignatures().add(approvedBysignature);
+            }
+        }
         if (entity.getApprovedDate() != null) {
             data.getData().put("approvedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getApprovedDate()));
         }
-        Employee accountedBy = EmployeeDao.instance().findEmployeWithEmpId(entity.getSubmittedBy());
+        Employee accountedBy = EmployeeDao.instance().findEmployeWithEmpId(entity.getAccountedBy());
         if (accountedBy != null) {
             String accountedByStr = accountedBy.getLastName() + ", " + accountedBy.getFirstName();
             data.getData().put("accountedBy", accountedByStr);
