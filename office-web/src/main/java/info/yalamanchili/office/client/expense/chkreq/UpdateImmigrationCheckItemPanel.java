@@ -40,7 +40,6 @@ public class UpdateImmigrationCheckItemPanel extends UpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject entity = new JSONObject();
         assignEntityValueFromField("itemName", entity);
         assignEntityValueFromField("itemDesc", entity);
         assignEntityValueFromField("amount", entity);
