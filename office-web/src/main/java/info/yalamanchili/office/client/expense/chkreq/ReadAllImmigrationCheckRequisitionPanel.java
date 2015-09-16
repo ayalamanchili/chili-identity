@@ -144,13 +144,14 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN)) {
+        String status = JSONUtils.toString(entity, "status");
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_GC_IMMIGRATION,Auth.ROLE.ROLE_H1B_IMMIGRATION) || ImmigrationCheckRequisitionStatus.PENDING_APPROVAL.name().equals(status)) {
             createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), OptionsType.READ, OptionsType.UPDATE, OptionsType.DELETE, OptionsType.PRINT, OptionsType.COPY), row, JSONUtils.toString(entity, "id"));
         } else {
             createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), OptionsType.READ, OptionsType.PRINT, OptionsType.COPY), row, JSONUtils.toString(entity, "id"));
         }
     }
+
 
     private String getDeleteURL(String entityId) {
         return OfficeWelcome.instance().constants.root_url() + "checkrequisition/delete/" + entityId;
