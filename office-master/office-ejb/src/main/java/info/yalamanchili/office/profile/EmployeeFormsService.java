@@ -31,6 +31,7 @@ import info.yalamanchili.office.entity.profile.ext.Dependent;
 import info.yalamanchili.office.entity.profile.ext.EmployeeAdditionalDetails;
 import info.yalamanchili.office.entity.profile.ext.Ethnicity;
 import info.yalamanchili.office.entity.profile.ext.MaritalStatus;
+import info.yalamanchili.office.entity.profile.ext.Relationship;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -46,12 +47,6 @@ import org.springframework.stereotype.Component;
 @Scope("request")
 public class EmployeeFormsService {
 
-    /**
-     * returns the joining form details of the employee for viewing purpose.
-     *
-     * @param emp
-     * @return
-     */
     public JoiningFormsDto getJoiningForm(Employee emp) {
         JoiningFormsDto dto = new JoiningFormsDto();
         dto.setEmployee(emp);
@@ -66,39 +61,32 @@ public class EmployeeFormsService {
     }
 
     public Response printJoiningForm(Employee emp) {
-//TODO  update this method to call the getJoiningForm method and use it to populate the pdf.
-        EmployeeAdditionalDetails ead = EmployeeAdditionalDetailsDao.instance().find(emp);
-        Dependent dep = DependentDao.instance().find(emp);
+        JoiningFormsDto dto = getJoiningForm(emp);
+        EmployeeAdditionalDetails ead = dto.getEmpAddnlDetails();
         PdfDocumentData data = new PdfDocumentData();
-        //JoiningFormsDto jfDto=getJoiningForm(emp);
-       
+
         data.setTemplateUrl("/templates/pdf/Joining-form-fillable-template.pdf");
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         Date dateOfBirth = emp.getDateOfBirth();
-        Date depDateOfBirth = dep.getDdateOfBirth();
 
         //print joining form @radhika
-    
         String empMiddleInitial = emp.getMiddleInitial();
         if (empMiddleInitial == null) {
-            
             data.getData().put("fmName", emp.getFirstName());
-        }else{
-            data.getData().put("fmName", emp.getFirstName()+" " + empMiddleInitial);
+        } else {
+            data.getData().put("fmName", emp.getFirstName() + " " + empMiddleInitial);
         }
-            
+
         data.getData().put("lastName", emp.getLastName());
         data.getData().put("dateOfBirth", sdf.format(dateOfBirth));
 
-        if(emp.getSex().equals(Sex.MALE)){
+        if (emp.getSex().equals(Sex.MALE)) {
             data.getData().put("genderMale", "true");
-        }else{
+        } else {
             data.getData().put("genderFemale", "true");
         }
-        //education 
-       
-                 
-        data.getData().put("maritalStatus",ead.getMaritalStatus().name());
+
+        data.getData().put("maritalStatus", ead.getMaritalStatus().name());
         for (Email email : emp.getEmails()) {
             if (email.getEmailType() != null) {
                 if ("Personal".equals(email.getEmailType().toString())) {
@@ -109,48 +97,62 @@ public class EmployeeFormsService {
 
         for (Phone phone : emp.getPhones()) {
             if (phone.getPhoneType() != null) {
-              if ("Cell".equals(phone.getPhoneType().toString())) {
-                data.getData().put("cellPhone", phone.getPhoneNumber());
-              } else if("Home".equals(phone.getPhoneType().toString())){
-                  data.getData().put("homePhone", phone.getPhoneNumber());
-              } 
-            }
-        }
-        for (Address address : emp.getAddresss()) {
-            if (address.getAddressType() != null) {
-                if ("Home".equals(address.getAddressType().toString())) {
-                    
-                    String street2 = address.getStreet2();
-                    if (street2 == null || "".equals(street2)) {
-                        data.getData().put("residentialAddress1", address.getStreet1());
-                    }else{
-                        data.getData().put("residentialAddress1", address.getStreet1()+" , " + street2);
-                    }
-                    String zip = address.getZip();
-                    if (zip == null) {
-                        data.getData().put("residentialAddress2", address.getCity() + " , " + address.getState());
-                    }
-                    else{
-                        data.getData().put("residentialAddress2", address.getCity() + " , " + address.getState()+" , "+zip);
-                    }
+                if ("Cell".equals(phone.getPhoneType().toString())) {
+                    data.getData().put("cellPhone", phone.getPhoneNumber());
+                } else if ("Home".equals(phone.getPhoneType().toString())) {
+                    data.getData().put("homePhone", phone.getPhoneNumber());
                 }
             }
         }
+        for (Address address : emp.getAddresss()) {
+            String street2 = address.getStreet2();
+            if (street2 == null || "".equals(street2)) {
+                data.getData().put("residentialAddress1", address.getStreet1());
+            } else {
+                data.getData().put("residentialAddress1", address.getStreet1() + " , " + street2);
+            }
+            String zip = address.getZip();
+            if (zip == null) {
+                data.getData().put("residentialAddress2", address.getCity() + " , " + address.getState());
+            } else {
+                data.getData().put("residentialAddress2", address.getCity() + " , " + address.getState() + " , " + zip);
+            }
+        }
 
-        if(ead.getEthnicity().equals(Ethnicity.Asian)){
-            data.getData().put("asian","true");
-        }else if(ead.getEthnicity().equals(Ethnicity.Latino_Hispanic)){
+        if (ead.getEthnicity().equals(Ethnicity.Asian)) {
+            data.getData().put("asian", "true");
+        } else if (ead.getEthnicity().equals(Ethnicity.Latino_Hispanic)) {
             data.getData().put("hispanicLatino", "true");
         }
         data.getData().put("referredBy", ead.getReferredBy());
 
         //section 2: Dependents
-        data.getData().put("spouseName", dep.getDfirstName());
-        String depLastName = dep.getDlastName();
-        if (depLastName != null || !"".equals(depLastName)) {
-            data.getData().put("spouseName", " , " + depLastName);
+        for (Dependent dep : dto.getDependent()) {
+            if (dep.getRelationship().equals(Relationship.Spouse)) {
+                Date depDateOfBirth = dep.getDdateOfBirth();
+                data.getData().put("spouseName", dep.getDfirstName());
+                String depLastName = dep.getDlastName();
+                if (depLastName != null || !"".equals(depLastName)) {
+                    data.getData().put("spouseName", dep.getDfirstName() + " , " + depLastName);
+                }
+                data.getData().put("spouseDOB", sdf.format(depDateOfBirth));
+            } else if (dep.getRelationship().equals(Relationship.Child1)) {
+                Date depDateOfBirth = dep.getDdateOfBirth();
+                data.getData().put("childName1", dep.getDfirstName());
+                String depLastName = dep.getDlastName();
+                if (depLastName != null || !"".equals(depLastName)) {
+                    data.getData().put("childName1", dep.getDfirstName() + " , " + depLastName);
+                }
+                data.getData().put("childDOB1", sdf.format(depDateOfBirth));
+            } else if (dep.getRelationship().equals(Relationship.Child2)) {
+                Date depDateOfBirth = dep.getDdateOfBirth();
+                data.getData().put("childName2", dep.getDfirstName());
+                String depLastName = dep.getDlastName();
+                if (depLastName != null || !"".equals(depLastName)) {
+                    data.getData().put("childName2", dep.getDfirstName() + " , " + depLastName);
+                }
+                data.getData().put("childDOB2", sdf.format(depDateOfBirth));
         }
-        data.getData().put("spouseDOB", sdf.format(depDateOfBirth));
 
         //section 3 : Project Details
         for (ClientInformation clientInfo : emp.getClientInformations()) {
@@ -206,15 +208,6 @@ public class EmployeeFormsService {
             }
         }
         
-        /*
-        Employee employee=jfDto.getEmployee();
-        String middleInitial=employee.getMiddleInitial();
-        if(middleInitial==null || middleInitial==""){
-            data.getData().put("fmName", employee.getFirstName());
-        }else{
-            data.getData().put("fmName", employee.getFirstName()+" "+middleInitial);
-        }
-        */
         byte[] pdf = PDFUtils.generatePdf(data);
         return Response.ok(pdf)
                 .header("content-disposition", "filename = Joining-form-fillable.pdf")
@@ -224,10 +217,10 @@ public class EmployeeFormsService {
 
     public Response printACHForm(Employee emp) {
         BankAccount ba = BankAccountDao.instance().find(emp);
-        
+
         PdfDocumentData data = new PdfDocumentData();
         data.setTemplateUrl("/templates/pdf/ach-direct-deposit-form-template.pdf");
-        
+
         //print ACH Form with the employee and bank details. @radhika
         data.getData().put("employeeName", emp.getLastName() + " , " + emp.getFirstName());
         for (Address address : emp.getAddresss()) {
@@ -263,14 +256,13 @@ public class EmployeeFormsService {
             data.getData().put("checkingAccountType", "true");
         }
 
-        if (ba.isAchBlocked()==false) {
-            data.getData().put("achReversalBlockNo", "no");
-        }else if(ba.isAchBlocked()==true){
-             data.getData().put("achReversalBlockYes", "yes");
-              data.getData().put("achReversalBlockNo", "yes");
+        if (ba.isAchBlocked() == false) {
+            data.getData().put("achReversalBlockNo", "true");
+        } else if (ba.isAchBlocked() == true) {
+            data.getData().put("achReversalBlockYes", "true");
         }
-        
-       //TODO fill ach with emp and bank account details
+
+        //TODO fill ach with emp and bank account details
         byte[] pdf = PDFUtils.generatePdf(data);
 
         return Response.ok(pdf)

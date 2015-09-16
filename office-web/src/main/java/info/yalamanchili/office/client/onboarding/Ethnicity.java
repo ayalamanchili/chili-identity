@@ -15,7 +15,11 @@ package info.yalamanchili.office.client.onboarding;
 public enum Ethnicity {
     
     Latino_Hispanic,
-    Asian;
+    Asian,
+    AmericanIndian_AlaskaNative,
+    Black_AfricanAmerican,
+    NativeHawaiian_OtherPacificIslander,
+    White;
     
     public static String[] names() {
         Ethnicity[] values = values();

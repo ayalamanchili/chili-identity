@@ -76,7 +76,7 @@ public class InitiateOnBoardingPanel extends CreateComposite {
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("On boarding invite sent");
         TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-        TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllOnBoardingPanel());
+        TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmployeeOnBoardingPanel());
     }
 
     @Override

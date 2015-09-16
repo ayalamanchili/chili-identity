@@ -13,8 +13,7 @@ package info.yalamanchili.office.entity.profile.ext;
  * @author Madhu.Badiginchala
  */
 public enum Relationship {
-    Mother,
-    Father,
-    Brother,
-    Spouse;
+    Spouse,
+    Child1,
+    Child2;
 }

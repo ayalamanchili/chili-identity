@@ -13,7 +13,12 @@ package info.yalamanchili.office.entity.profile.ext;
  * @author Madhu.Badiginchala
  */
 public enum Ethnicity {
+
     Latino_Hispanic,
     Asian,
-    
+    AmericanIndian_AlaskaNative,
+    Black_AfricanAmerican,
+    NativeHawaiian_OtherPacificIslander,
+    White;
+
 }

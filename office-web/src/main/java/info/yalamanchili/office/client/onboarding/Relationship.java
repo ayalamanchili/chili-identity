@@ -14,9 +14,9 @@ package info.yalamanchili.office.client.onboarding;
  */
 public enum Relationship {
 
-    Mother,
-    Father,
-    Brother;
+    Spouse,
+    Child1,
+    Child2;
 
     public static String[] names() {
         Relationship[] values = values();
