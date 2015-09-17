@@ -46,8 +46,14 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
     private static Logger logger = Logger.getLogger(CreateImmigrationCheckRequisitionPanel.class.getName());
     protected SelectCompanyWidget selectCompanyWidget = new SelectCompanyWidget(true, true, Alignment.HORIZONTAL);
     protected ClickableLink addItemL = new ClickableLink("Add Check Item");
-    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false, Alignment.HORIZONTAL);
-    protected List<CreateImmigrationCheckItemPanel> checkItemPanels = new ArrayList<>();
+    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, true, Alignment.HORIZONTAL);
+    public List<CreateImmigrationCheckItemPanel> checkItemPanels = new ArrayList<>();
+
+    protected static CreateImmigrationCheckRequisitionPanel instance;
+
+    public static CreateImmigrationCheckRequisitionPanel instance() {
+        return instance;
+    }
 
     protected static HTML checkItem = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
@@ -60,11 +66,13 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
 
     public CreateImmigrationCheckRequisitionPanel() {
         super(CreateCompositeType.CREATE);
+        instance = this;
         initCreateComposite("ImmigrationCheckRequisition", OfficeWelcome.constants);
     }
 
     public CreateImmigrationCheckRequisitionPanel(CreateComposite.CreateCompositeType type) {
         super(type);
+        instance = this;
         initCreateComposite("ImmigrationCheckRequisition", OfficeWelcome.constants);
     }
 

@@ -48,14 +48,22 @@ public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite impl
     private Logger logger = Logger.getLogger(UpdateImmigrationCheckRequisitionPanel.class.getName());
     protected SelectCompanyWidget selectCompanyWidget = new SelectCompanyWidget(true, true, Alignment.HORIZONTAL);
     protected ClickableLink addItemL = new ClickableLink("Add Check Item");
-    protected List<CRUDComposite> updateItemPanels = new ArrayList<>();
-    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false, Alignment.HORIZONTAL);
+    public List<CRUDComposite> updateItemPanels = new ArrayList<>();
+    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, true, Alignment.HORIZONTAL);
+
+    protected static UpdateImmigrationCheckRequisitionPanel instance;
+
+    public static UpdateImmigrationCheckRequisitionPanel instance() {
+        return instance;
+    }
 
     public UpdateImmigrationCheckRequisitionPanel(JSONObject entity) {
+        instance = this;
         initUpdateComposite(entity, "ImmigrationCheckRequisition", OfficeWelcome.constants);
     }
 
     public UpdateImmigrationCheckRequisitionPanel(String id) {
+        instance = this;
         initUpdateComposite(id, "ImmigrationCheckRequisition", OfficeWelcome.constants);
     }
 

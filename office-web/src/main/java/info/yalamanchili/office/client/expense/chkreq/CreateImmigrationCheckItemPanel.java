@@ -89,6 +89,7 @@ public class CreateImmigrationCheckItemPanel extends CreateComposite implements 
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(deleteB)) {
             this.removeFromParent();
+            CreateImmigrationCheckRequisitionPanel.instance().checkItemPanels.remove(this);
             if (entityId != null) {
                 HttpService.HttpServiceAsync.instance().doPut(getDeleteURI(), entity.toString(),
                         OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {

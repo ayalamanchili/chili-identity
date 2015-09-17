@@ -111,17 +111,22 @@ public class UpdateImmigrationCheckItemPanel extends UpdateComposite {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(deleteB)) {
-            if (Window.confirm("Are you sure to delete the Check Item?")) {
-                HttpService.HttpServiceAsync.instance().doPut(getDeleteURI(), entity.toString(),
-                        OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            if (entityId == null) {
+                this.removeFromParent();
+                UpdateImmigrationCheckRequisitionPanel.instance().updateItemPanels.remove(this);
+            } else {
+                if (Window.confirm("Are you sure to delete the Check Item?")) {
+                    HttpService.HttpServiceAsync.instance().doPut(getDeleteURI(), entity.toString(),
+                            OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
 
-                            @Override
-                            public void onResponse(String arg0) {
-                                new ResponseStatusWidget().show("Successfully Deleted Check Information");
-                                TabPanel.instance().expensePanel.entityPanel.clear();
-                                TabPanel.instance().expensePanel.entityPanel.add(new UpdateImmigrationCheckRequisitionPanel(parentId));
-                            }
-                        });
+                                @Override
+                                public void onResponse(String arg0) {
+                                    new ResponseStatusWidget().show("Successfully Deleted Check Information");
+                                    TabPanel.instance().expensePanel.entityPanel.clear();
+                                    TabPanel.instance().expensePanel.entityPanel.add(new UpdateImmigrationCheckRequisitionPanel(parentId));
+                                }
+                            });
+                }
             }
         }
         super.onClick(event);
