@@ -54,7 +54,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
 
     private Logger logger = Logger.getLogger(CreateExpenseReportPanel.class.getName());
     protected ClickableLink addItemL = new ClickableLink("Add Expense Item");
-    protected List<CreateExpenseItemPanel> expenseItemPanels = new ArrayList<>();
+    public List<CreateExpenseItemPanel> expenseItemPanels = new ArrayList<>();
 
     FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "ExpenseReceipt", "", "ExpenseReceipt/fileURL", false, true) {
         @Override
@@ -103,8 +103,15 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     StringField projectNumber;
     boolean isGeneralExpenseItem = false;
 
+    protected static CreateExpenseReportPanel instance;
+
+    public static CreateExpenseReportPanel instance() {
+        return instance;
+    }
+
     public CreateExpenseReportPanel(CreateComposite.CreateCompositeType type) {
         super(type);
+        instance = this;
         initCreateComposite("ExpenseReport", OfficeWelcome.constants);
     }
 

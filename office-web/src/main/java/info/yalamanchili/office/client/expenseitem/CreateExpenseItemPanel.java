@@ -32,6 +32,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.expensecategory.SelectExpenseCategoryWidget;
+import info.yalamanchili.office.client.expensereports.CreateExpenseReportPanel;
 import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.*;
 import info.yalamanchili.office.client.expensereports.ExpensePaymentMode;
 import java.math.BigDecimal;
@@ -196,6 +197,7 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(deleteB)) {
             this.removeFromParent();
+            CreateExpenseReportPanel.instance().expenseItemPanels.remove(this);
             if (!getEntityId().isEmpty()) {
                 HttpService.HttpServiceAsync.instance().doPut(getDeleteURI(), entity.toString(),
                         OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {

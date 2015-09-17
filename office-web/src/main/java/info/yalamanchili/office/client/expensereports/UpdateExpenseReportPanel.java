@@ -37,7 +37,6 @@ import info.yalamanchili.office.client.expenseitem.UpdateExpenseItemPanel;
 import static info.yalamanchili.office.client.expensereports.CreateExpenseReportPanel.receiptsInfo;
 import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.*;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -49,7 +48,7 @@ import java.util.logging.Logger;
 public class UpdateExpenseReportPanel extends UpdateComposite {
 
     private Logger logger = Logger.getLogger(UpdateExpenseReportPanel.class.getName());
-    protected List<CRUDComposite> updateItemPanels = new ArrayList<>();
+    public List<CRUDComposite> updateItemPanels = new ArrayList<>();
     protected ClickableLink addItemL = new ClickableLink("Add Expense Item");
     FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "ExpenseReceipt", "", "ExpenseReceipt/fileURL", false, true) {
         @Override
@@ -95,11 +94,19 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
     StringField projectNumber;
     JSONArray expenseReceipts = new JSONArray();
 
+    protected static UpdateExpenseReportPanel instance;
+
+    public static UpdateExpenseReportPanel instance() {
+        return instance;
+    }
+
     public UpdateExpenseReportPanel(String id) {
+        instance = this;
         initUpdateComposite(id, "ExpenseReport", OfficeWelcome.constants);
     }
 
     public UpdateExpenseReportPanel(JSONObject object) {
+        instance = this;
         initUpdateComposite(object, "ExpenseReport", OfficeWelcome.constants);
     }
 
