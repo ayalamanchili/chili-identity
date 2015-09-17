@@ -45,15 +45,15 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class ImmigrationCheckRequisitionService {
-
+    
     @Autowired
     protected ImmigrationCheckRequisitionDao immigrationCheckRequisitionDao;
     @Autowired
     protected CheckRequisitionItemDao checkRequisitionItemDao;
-
+    
     @Autowired
     protected Mapper mapper;
-
+    
     public void submitImmigrationCheckRequisition(ImmigrationCheckRequisitionSaveDto dto) {
         ImmigrationCheckRequisition entity = mapper.map(dto, ImmigrationCheckRequisition.class);
         entity.setSubmittedBy(OfficeSecurityService.instance().getCurrentUserName());
@@ -63,8 +63,6 @@ public class ImmigrationCheckRequisitionService {
         entity.setStatus(ImmigrationCheckRequisitionStatus.PENDING_APPROVAL);
         for (CheckRequisitionItem item : dto.getItems()) {
             item.setImmigrationCheckRequisition(entity);
-            item.setId(null);
-            item.setVersion(null);
             checkRequisitionItemDao.save(item);
         }
         Map<String, Object> vars = new HashMap<>();
@@ -75,7 +73,7 @@ public class ImmigrationCheckRequisitionService {
         String processId = OfficeBPMService.instance().startProcess("immigration_check_requisition_process", vars);
         entity.setBpmProcessId(processId);
     }
-
+    
     public void saveImmigrationCheckRequisition(ImmigrationCheckRequisitionSaveDto dto) {
         ImmigrationCheckRequisition entity = immigrationCheckRequisitionDao.save(dto);
         //add/update items
@@ -90,22 +88,27 @@ public class ImmigrationCheckRequisitionService {
         }
         immigrationCheckRequisitionDao.getEntityManager().merge(entity);
     }
-
+    
     public void delete(Long id) {
         ImmigrationCheckRequisition ticket = immigrationCheckRequisitionDao.findById(id);
         OfficeBPMTaskService.instance().deleteAllTasksForProcessId(ticket.getBpmProcessId(), true);
         immigrationCheckRequisitionDao.delete(id);
     }
-
+    
     public ImmigrationCheckRequisitionSaveDto read(Long id) {
         return mapper.map(immigrationCheckRequisitionDao.findById(id), ImmigrationCheckRequisitionSaveDto.class);
     }
-
+    
     public ImmigrationCheckRequisitionSaveDto clone(Long id) {
         ImmigrationCheckRequisition entity = immigrationCheckRequisitionDao.clone(id, "amount", "submittedBy", "requestedDate", "approvedBy", "approvedDate", "accountedBy", "checkIssuedDate", "accountDeptReceivedDate", "status", "bpmProcessId", "employee");
-        return mapper.map(entity, ImmigrationCheckRequisitionSaveDto.class);
+        ImmigrationCheckRequisitionSaveDto res = mapper.map(entity, ImmigrationCheckRequisitionSaveDto.class);
+        for (CheckRequisitionItem item : res.getItems()) {
+            item.setId(null);
+            item.setVersion(null);
+        }
+        return res;
     }
-
+    
     public Response getReport(ImmigrationCheckRequisition entity) {
         PdfDocumentData data = new PdfDocumentData();
         data.setTemplateUrl("/templates/pdf/check-request-template.pdf");
@@ -174,9 +177,9 @@ public class ImmigrationCheckRequisitionService {
                 .header("content-disposition", "filename = check-requisition.pdf")
                 .header("Content-Length", pdf)
                 .build();
-
+        
     }
-
+    
     public static ImmigrationCheckRequisitionService instance() {
         return SpringContext.getBean(ImmigrationCheckRequisitionService.class);
     }

@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.expense.travelauthorization;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.URL;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -48,6 +49,16 @@ public class TravelAuthorizationSidePanel extends ALComposite implements ClickHa
 
     @Override
     protected void configure() {
+        Timer timer = new Timer() {
+            @Override
+            public void run() {
+                loadEmployeeSuggestions();
+            }
+        };
+        timer.schedule(2000);
+    }
+
+    protected void loadEmployeeSuggestions() {
         HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {

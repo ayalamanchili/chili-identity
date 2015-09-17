@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.expensereports;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.URL;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -49,15 +50,25 @@ public class ExpenseReportsSidePanel extends ALComposite implements ClickHandler
 
     @Override
     protected void configure() {
+        Timer timer = new Timer() {
+            @Override
+            public void run() {
+                loadEmployeeSuggestions();
+            }
+        };
+        timer.schedule(2000);
+    }
+
+    protected void loadEmployeeSuggestions() {
         HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-        @Override
-        public void onResponse(String entityString) {
-        logger.info(entityString);
-        Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
-        if (values != null) {
-           employeeSB.loadData(values);
-        }
-        }
+            @Override
+            public void onResponse(String entityString) {
+                logger.info(entityString);
+                Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
+                if (values != null) {
+                    employeeSB.loadData(values);
+                }
+            }
         });
     }
 
@@ -81,7 +92,7 @@ public class ExpenseReportsSidePanel extends ALComposite implements ClickHandler
             TabPanel.instance().expensePanel.entityPanel.add(new ReadAllExpenseReportsPanel(getTravelAuthURL(0, "10")));
         }
     }
-    
+
     private String getTravelAuthURL(Integer start, String limit) {
         return OfficeWelcome.constants.root_url() + "expensereport/" + employeeSB.getKey() + "/" + start.toString() + "/"
                 + limit.toString();
