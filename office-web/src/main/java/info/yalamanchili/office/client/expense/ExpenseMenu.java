@@ -41,9 +41,9 @@ public class ExpenseMenu extends Composite {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN)) {
             expenseMenuBar.addItem("Expense Categories", expenseCategoriesMaintainenceCmd);
         }
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_ACCOUNTS_PAYABLE, Auth.ROLE.ROLE_CEO, Auth.ROLE.ROLE_GC_IMMIGRATION)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_ACCOUNTS_PAYABLE, Auth.ROLE.ROLE_CEO, Auth.ROLE.ROLE_GC_IMMIGRATION, Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS)) {
             expenseMenuBar.addItem("Check Requisition", expensimmigrationcheckrequisitionCmd);
-        }  
+        }
         expenseMenuBar.addItem("Expense Reports", expenseReportsMaintainenceCmd);
         expenseMenuBar.addItem("Travel Authorization", travelEcpenseMaintainenceCmd);
         expenseMenuBar.addStyleName("entityMenuBar");
