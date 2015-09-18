@@ -67,7 +67,7 @@
         <sequenceFlow sourceRef="formsValidationGateway" 
                       targetRef="backGroundAndDrugScreeningTestTask">
             <conditionExpression xsi:type="tFormalExpression">
-                ${status == 'approved' and entity.employeeType == 'Corporate Employee'}
+                ${status == 'approved' and entity.employeeType.name == 'Corporate Employee'}
             </conditionExpression>
         </sequenceFlow>
         <sequenceFlow sourceRef="formsValidationGateway" 
@@ -205,17 +205,9 @@
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
                 <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
-                
-                <activiti:formProperty id="status" 
-                                       name="Approved?"
-                                       required="true"
-                                       type="enum">
-                    <activiti:value id="approved" name="approved"/>
-                    <activiti:value id="rejected" name="rejected"/>
-                </activiti:formProperty>
                 <activiti:formProperty id="notes" 
                                        name="Notes"
-                                       required="false" 
+                                       required="true" 
                                        type="string" />
             </extensionElements> 
         </userTask>
@@ -232,20 +224,7 @@
         <serviceTask id="payrollRegistrationTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
 <!--          Payroll Registration Task :  Decision -->
         <sequenceFlow sourceRef="payrollRegistrationTask" 
-                      targetRef="payrollRegistrationGateway" />
-        <exclusiveGateway id="payrollRegistrationGateway" />
-        <sequenceFlow sourceRef="payrollRegistrationGateway" 
-                      targetRef="sendInformationToOtherSystemsTask">
-            <conditionExpression xsi:type="tFormalExpression">
-                ${status == 'approved'}
-            </conditionExpression>
-        </sequenceFlow>
-        <sequenceFlow sourceRef="payrollRegistrationGateway" 
-                      targetRef="onBoardingEmployeeProcessEnd">
-            <conditionExpression xsi:type="tFormalExpression">
-                ${status == 'rejected'}
-            </conditionExpression>
-        </sequenceFlow>
+                      targetRef="sendInformationToOtherSystemsTask" />
         
 <!--         Send Information To Other Systems Task -->
         <serviceTask id="sendInformationToOtherSystemsTask" 

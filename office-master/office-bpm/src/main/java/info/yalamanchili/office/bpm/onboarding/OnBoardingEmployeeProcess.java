@@ -14,7 +14,6 @@ import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.profile.onboarding.EmployeeOnBoardingDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
-import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReportStatus;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
 import info.yalamanchili.office.entity.profile.onboarding.OnBoardingStatus;
@@ -42,6 +41,19 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
         }
     }
 
+    protected void onBoardingFormsAndDataValidationTaskCompleted(Employee entity, DelegateTask dt) {
+        String status = (String) dt.getExecution().getVariable("status");
+        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
+        if (status.equalsIgnoreCase("approved")) {
+            if (entity.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
+                empOnBoarding.setStatus(OnBoardingStatus.Pending_Background_Check);
+            } else {
+                empOnBoarding.setStatus(OnBoardingStatus.Pending_EVerify);
+            }
+        }
+        EmployeeOnBoardingDao.instance().save(empOnBoarding);
+    }
+
     private void employeeOnBoardingTaskCompleted(DelegateTask dt) {
         Employee entity = getRequestFromTask(dt);
         EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
@@ -56,6 +68,21 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
         if (currentUser.getEmployeeId().equals(entity.getEmployeeId())) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.self.approve.corp.expenseReport", "You cannot approve your expenseReport task");
         }
+        switch (dt.getTaskDefinitionKey()) {
+            case "onBoardingFormsAndDataValidationTask":
+                onBoardingFormsAndDataValidationTaskCompleted(entity, dt);
+                break;
+            case "backGroundAndDrugScreeningTestTask":
+//                ceoApprovalTaskComplete(entity, dt);
+                break;
+            case "eVerifyTask":
+//                travelBookingManagerApprovalTaskComplete(entity, dt);
+                break;
+            case "payrollRegistrationTask":
+//                travelBookingManagerApprovalTaskComplete(entity, dt);
+                break;
+        }
+
         //Status
         String status = (String) dt.getExecution().getVariable("status");
         if ((dt.getTaskDefinitionKey().equals("onBoardingFormsAndDataValidationTask")) && OnBoardingStatus.Pending_Document_Verification.equals(empOnBoarding.getStatus())) {
@@ -79,7 +106,7 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
                 empOnBoarding.setStatus(OnBoardingStatus.Pending_Payroll_Registration);
             }
         }
-        
+
         EmployeeOnBoardingDao.instance().save(empOnBoarding);
     }
 
