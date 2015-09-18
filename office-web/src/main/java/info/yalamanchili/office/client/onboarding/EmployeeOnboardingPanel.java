@@ -225,7 +225,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "admin/on-board-employee";
+        return OfficeWelcome.constants.root_url() + "on-board-employee/on-board-employee";
     }
 
     @Override

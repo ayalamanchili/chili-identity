@@ -104,6 +104,6 @@ public class InitiateOnBoardingPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "admin/initiate-onboarding";
+        return OfficeWelcome.constants.root_url() + "on-board-employee/initiate-onboarding";
     }
 }

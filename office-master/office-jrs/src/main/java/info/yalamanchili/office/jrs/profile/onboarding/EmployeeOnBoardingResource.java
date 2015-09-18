@@ -8,11 +8,17 @@
  */
 package info.yalamanchili.office.jrs.profile.onboarding;
 
+import info.chili.jpa.validation.Validate;
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.profile.onboarding.EmployeeOnBoardingDao;
+import info.yalamanchili.office.dto.onboarding.InitiateOnBoardingDto;
+import info.yalamanchili.office.dto.onboarding.OnBoardingEmployeeDto;
 import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
+import info.yalamanchili.office.profile.EmployeeService;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -20,7 +26,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,6 +55,25 @@ public class EmployeeOnBoardingResource {
         tableObj.setSize(employeeOnBoardingDao.size());
         return tableObj;
     }
+    @Path("/initiate-onboarding")
+    @PUT
+    @PreAuthorize("hasAnyRole('Role_ROLE_ON_BOARDING_MGR')")
+    @Validate
+    public void initiateOnBoarding(InitiateOnBoardingDto dto) {
+        EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
+        employeeService.initiateOnBoarding(dto);
+    }
+
+    @Path("/on-board-employee")
+    @PUT
+    @Produces("application/text")
+    @CacheEvict(value = "employees", allEntries = true)
+    @Validate
+    public String onBoardEmployee(OnBoardingEmployeeDto employee) {
+        EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
+        return employeeService.onBoardEmployee(employee);
+    }
+    
 
     @XmlRootElement
     @XmlType

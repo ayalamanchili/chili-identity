@@ -126,24 +126,6 @@ public class AdminResource {
         return employeeService.createUser(employee);
     }
 
-    @Path("/initiate-onboarding")
-    @PUT
-    @PreAuthorize("hasAnyRole('Role_ROLE_ON_BOARDING_MGR')")
-    @Validate
-    public void initiateOnBoarding(InitiateOnBoardingDto dto) {
-        EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
-        employeeService.initiateOnBoarding(dto);
-    }
-
-    @Path("/on-board-employee")
-    @PUT
-    @Produces("application/text")
-    @CacheEvict(value = "employees", allEntries = true)
-    @Validate
-    public String onBoardEmployee(OnBoardingEmployeeDto employee) {
-        EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
-        return employeeService.onBoardEmployee(employee);
-    }
     
 
     @GET
