@@ -69,7 +69,7 @@ public class OnBoardingEmployeeProcessBean {
         MessagingService.instance().sendEmail(email);
     }
 
-    public void sendInformationToOtherSystemsTask(Employee emp) {
+    public void sendInformationToOtherSystems(Employee emp) {
         System.out.println("sendInformationToOtherSystemsTask");
     }
     

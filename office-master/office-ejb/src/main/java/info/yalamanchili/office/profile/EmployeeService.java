@@ -188,6 +188,7 @@ public class EmployeeService {
         emp = EmployeeDao.instance().save(emp);
         emp = em.merge(emp);
         
+        onboarding.setStatus(OnBoardingStatus.Pending_Document_Verification);
         onboarding.setEmployee(emp);
         em.merge(onboarding);
     

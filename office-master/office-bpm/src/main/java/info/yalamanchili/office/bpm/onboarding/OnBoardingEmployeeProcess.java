@@ -12,8 +12,12 @@ import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
 import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
 import info.yalamanchili.office.dao.ext.CommentDao;
+import info.yalamanchili.office.dao.profile.onboarding.EmployeeOnBoardingDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReportStatus;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
+import info.yalamanchili.office.entity.profile.onboarding.OnBoardingStatus;
 import org.activiti.engine.delegate.DelegateTask;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -40,6 +44,7 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
 
     private void employeeOnBoardingTaskCompleted(DelegateTask dt) {
         Employee entity = getRequestFromTask(dt);
+        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
         if (entity == null) {
             return;
         }
@@ -53,14 +58,29 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
         }
         //Status
         String status = (String) dt.getExecution().getVariable("status");
-        if (dt.getTaskDefinitionKey().equals("onBoardingFormsAndDataValidationTask")) {
+        if ((dt.getTaskDefinitionKey().equals("onBoardingFormsAndDataValidationTask")) && OnBoardingStatus.Pending_Document_Verification.equals(empOnBoarding.getStatus())) {
             if (status.equalsIgnoreCase("approved")) {
-                System.out.println("APPROVED APPROVED");
-            } else {
-                System.out.println("REJECTED REJECTED");
+                if (entity.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
+                    empOnBoarding.setStatus(OnBoardingStatus.Pending_Background_Check);
+                } else {
+                    empOnBoarding.setStatus(OnBoardingStatus.Pending_EVerify);
+                }
             }
         }
-
+        if (entity.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
+            if ((dt.getTaskDefinitionKey().equals("backGroundAndDrugScreeningTestTask")) && OnBoardingStatus.Pending_Background_Check.equals(empOnBoarding.getStatus())) {
+                if (status.equalsIgnoreCase("approved")) {
+                    empOnBoarding.setStatus(OnBoardingStatus.Pending_EVerify);
+                }
+            }
+        }
+        if ((dt.getTaskDefinitionKey().equals("eVerifyTask")) && OnBoardingStatus.Pending_EVerify.equals(empOnBoarding.getStatus())) {
+            if (status.equalsIgnoreCase("approved")) {
+                empOnBoarding.setStatus(OnBoardingStatus.Pending_Payroll_Registration);
+            }
+        }
+        
+        EmployeeOnBoardingDao.instance().save(empOnBoarding);
     }
 
     protected Employee getRequestFromTask(DelegateTask task) {

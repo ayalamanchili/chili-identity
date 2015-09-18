@@ -48,6 +48,18 @@ public class EmployeeOnBoardingDao extends CRUDDao<EmployeeOnBoarding> {
             return entity;
         }
     }
+    
+    public EmployeeOnBoarding findByEmployeeId(Long id) {
+        String L = entityCls.getCanonicalName();
+        Query findQuery = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " where employee_id=:employeeIdParam ");
+        findQuery.setParameter("employeeIdParam", id);
+        if (findQuery.getResultList().size() > 1) {
+            return null;
+        } else {
+            EmployeeOnBoarding entity = (EmployeeOnBoarding) findQuery.getResultList().get(0);
+            return entity;
+        }
+    }
 
     public static EmployeeOnBoardingDao instance() {
         return SpringContext.getBean(EmployeeOnBoardingDao.class);
