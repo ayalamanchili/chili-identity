@@ -45,13 +45,13 @@ public class ReadEmployeePanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                logger.info("this is the response from the server" + response);
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        logger.info("this is the response from the server" + response);
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                    }
+                });
 
     }
 
@@ -78,7 +78,7 @@ public class ReadEmployeePanel extends ReadComposite {
             assignFieldValueFromEntity("ssn", entity, DataType.STRING_FIELD);
         }
         assignFieldValueFromEntity("employeeType", entity, null);
-        if (Auth.isAdmin()) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONSULTANT_TIME_ADMIN, ROLE.ROLE_RELATIONSHIP)) {
             assignFieldValueFromEntity("status", entity, DataType.BOOLEAN_FIELD);
         }
     }
@@ -108,14 +108,14 @@ public class ReadEmployeePanel extends ReadComposite {
         addField("jobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("branch", true, false, Branch.names(), Alignment.HORIZONTAL);
         addField("hoursPerWeek", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_HR,Auth.ROLE.ROLE_GC_IMMIGRATION)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_GC_IMMIGRATION)) {
             addEnumField("workStatus", true, false, WorkStatus.names(), Alignment.HORIZONTAL);
         }
         addDropDown("company", selectCompnayWidget);
         if (Auth.isAdmin()) {
             addField("ssn", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         }
-        if (Auth.isAdmin()) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONSULTANT_TIME_ADMIN, ROLE.ROLE_RELATIONSHIP)) {
             addField("status", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         }
         alignFields();
