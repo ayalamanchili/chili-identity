@@ -32,6 +32,7 @@ import info.yalamanchili.office.entity.profile.ext.EmployeeAdditionalDetails;
 import info.yalamanchili.office.entity.profile.ext.Ethnicity;
 import info.yalamanchili.office.entity.profile.ext.MaritalStatus;
 import info.yalamanchili.office.entity.profile.ext.Relationship;
+import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -233,10 +234,12 @@ public class EmployeeFormsService {
 
     public Response printACHForm(Employee emp) {
         BankAccount ba = BankAccountDao.instance().find(emp);
+        OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
 
         PdfDocumentData data = new PdfDocumentData();
         data.setTemplateUrl("/templates/pdf/ach-direct-deposit-form-template.pdf");
-
+        data.setKeyStoreName(securityConfiguration.getKeyStoreName());
+        
         //print ACH Form with the employee and bank details. @radhika
         data.getData().put("employeeName", emp.getLastName() + " , " + emp.getFirstName());
         for (Address address : emp.getAddresss()) {
@@ -277,10 +280,16 @@ public class EmployeeFormsService {
         } else if (ba.isAchBlocked() == true) {
             data.getData().put("achReversalBlockYes", "true");
         }
+        EmployeeOnBoarding onboarding=new EmployeeOnBoarding();
+        Date onboardingDate=onboarding.getStartedDate();
 
         data.getData().put("Name", emp.getFirstName()+" "+emp.getLastName());
         SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");
-        data.getData().put("Date", sdf.format(emp.getStartDate()));
+        data.getData().put("Date", sdf.format(onboardingDate));
+        
+         Signature signature = new Signature(emp.getEmployeeId(), emp.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "Signature", DateUtils.dateToCalendar(onboardingDate), emp.getPrimaryEmail().toString(), null);
+         data.getSignatures().add(signature);
+         
         //TODO fill ach with emp and bank account details
         byte[] pdf = PDFUtils.generatePdf(data);
 
