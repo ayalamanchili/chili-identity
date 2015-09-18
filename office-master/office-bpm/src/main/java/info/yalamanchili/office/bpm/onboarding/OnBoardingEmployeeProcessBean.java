@@ -8,6 +8,7 @@
 package info.yalamanchili.office.bpm.onboarding;
 
 import info.chili.email.Email;
+import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
 import info.yalamanchili.office.dao.drive.FileDao;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -32,11 +33,9 @@ public class OnBoardingEmployeeProcessBean {
     protected MailUtils mailUtils;
     @Autowired
     FileDao fileDao;
-
+    protected final String[] ON_BOARDING_FORMS_LIST = {"W2_On_Boarding", "I9_On_Boarding"};
+    //
     public void sendEmployeeOnBoardingEmail(Employee emp) {
-        //send email to employee 
-        //Create a email template (with necessary instructions)
-        //attach the forms needed.
         Email email = new Email();
         email.addTo(emp.getPrimaryEmail().getEmail());
         StringBuilder subject = new StringBuilder();
@@ -44,11 +43,9 @@ public class OnBoardingEmployeeProcessBean {
         email.setSubject(subject.toString());
         Map<String, Object> emailCtx = new HashMap<>();
         emailCtx.put("employeeName", "asdf");
-        //TODO use correct email template
         email.setTemplateName("on_board_employee_template.html");
         email.setContext(emailCtx);
         email.setHtml(Boolean.TRUE);
-        //adding attachements
         for (String fileName : ON_BOARDING_FORMS_LIST) {
             if (fileDao.getFilePath(fileName) != null) {
                 email.getAttachments().add(fileDao.getFilePath(fileName));
@@ -58,8 +55,27 @@ public class OnBoardingEmployeeProcessBean {
     }
 
     public void sendEmployeeOnBoardingCompletedEmail(Employee emp) {
+        Email email = new Email();
+        email.addTo(emp.getPrimaryEmail().getEmail());
+        StringBuilder subject = new StringBuilder();
+        subject.append("System Soft employee on boarding completed!");
+        email.setSubject(subject.toString());
+        Map<String, Object> emailCtx = new HashMap<>();
+        emailCtx.put("employeeName", "asdf");
+        // TODO new template for completed email
+        email.setTemplateName("on_board_employee_template.html");
+        email.setContext(emailCtx);
+        email.setHtml(Boolean.TRUE);
+        MessagingService.instance().sendEmail(email);
     }
 
-    protected final String[] ON_BOARDING_FORMS_LIST = {"W2_On_Boarding", "I9_On_Boarding"};
+    public void sendInformationToOtherSystemsTask(Employee emp) {
+        System.out.println("sendInformationToOtherSystemsTask");
+    }
+    
+    public void createServiceTicketforNetworkDept(Employee emp) {
+        System.out.println("createServiceTicketforNetworkDept");
+    }
+    
 
 }

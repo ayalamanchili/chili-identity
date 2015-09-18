@@ -7,6 +7,7 @@
 <definitions
     xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
     targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:activiti="http://activiti.org/bpmn">
  
     <process id="on_boarding_employee_process">
@@ -15,9 +16,264 @@
        
         <sequenceFlow sourceRef="onBoardingEmployeeProcessStart" targetRef="sendStartOnBoardingEmail" />
         
+        <!-- Initiate On Boarding Process by Sending Email to Employee -->
         <serviceTask id="sendStartOnBoardingEmail" 
                      name="On Boarding Employee Process Request Received Email" 
                      activiti:expression="#{onBoardingEmployeeProcessBean.sendEmployeeOnBoardingEmail(entity)}" />    
+        
+        <sequenceFlow sourceRef="sendStartOnBoardingEmail" targetRef="onBoardingFormsAndDataValidationTask" />
+        
+        <!-- On Boarding Form and Data Validation task : OnBoarding_Manager-->
+        <userTask id="onBoardingFormsAndDataValidationTask" 
+                  name="On Boarding Forms and Data Validation task for ${entity.firstName} ${entity.lastName}" 
+                  activiti:candidateGroups="ROLE_ON_BOARDING_MGR">
+            <documentation>
+                On Boarding Forms and Data Validation Task
+                Employee Name       : #{entity.firstName} #{entity.lastName}
+                Start Date          : #{entity.startDate}
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+<!--          On Boarding Form and Data Validation task : Task escalation email after 48 hours-->
+        <boundaryEvent id="onBoardingFormsAndDataValidationTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="onBoardingFormsAndDataValidationTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="onBoardingFormsAndDataValidationTaskEscalationTimer" 
+                      targetRef="onBoardingFormsAndDataValidationTaskEscalation" />
+        <serviceTask id="onBoardingFormsAndDataValidationTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+<!--          On Boarding Form and Data Validation task : Decision -->
+        <sequenceFlow sourceRef="onBoardingFormsAndDataValidationTask" 
+                      targetRef="formsValidationGateway" />
+        <exclusiveGateway id="formsValidationGateway" />
+        <sequenceFlow sourceRef="formsValidationGateway" 
+                      targetRef="backGroundAndDrugScreeningTestTask">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved' and entity.employeeType == 'Corporate Employee'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="formsValidationGateway" 
+                      targetRef="eVerifyTask">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="formsValidationGateway" 
+                      targetRef="onBoardingEmployeeProcessEnd">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'rejected'}
+            </conditionExpression>
+        </sequenceFlow>
+        
+<!--         BackGround And Drug Screening Test Task : ROLE_BACKGROUND_SCREENING_MGR-->
+        <userTask id="backGroundAndDrugScreeningTestTask" 
+                  name="BackGround And Drug Screening Test Task  for ${entity.firstName} ${entity.lastName}" 
+                  activiti:candidateGroups="ROLE_BACKGROUND_SCREENING_MGR">
+            <documentation>
+                BackGround And Drug Screening Test Task
+                Employee Name       : #{entity.firstName} #{entity.lastName}
+                Start Date          : #{entity.startDate}
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+<!--          BackGround And Drug Screening Test Task : Task escalation email after 48 hours-->
+        <boundaryEvent id="backGroundAndDrugScreeningTestTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="backGroundAndDrugScreeningTestTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="backGroundAndDrugScreeningTestTaskEscalationTimer" 
+                      targetRef="backGroundAndDrugScreeningTestTaskEscalation" />
+        <serviceTask id="backGroundAndDrugScreeningTestTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+<!--          BackGround And Drug Screening Test Task : Decision -->
+        <sequenceFlow sourceRef="backGroundAndDrugScreeningTestTask" 
+                      targetRef="backGroundAndDrugScreeningGateway" />
+        <exclusiveGateway id="backGroundAndDrugScreeningGateway" />
+        <sequenceFlow sourceRef="backGroundAndDrugScreeningGateway" 
+                      targetRef="eVerifyTask">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="backGroundAndDrugScreeningGateway" 
+                      targetRef="onBoardingEmployeeProcessEnd">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'rejected'}
+            </conditionExpression>
+        </sequenceFlow>
+       
+        
+<!--         E Verify Manager task : E_Verify_Manager-->
+        <userTask id="eVerifyTask" 
+                  name="E Verify Task for ${entity.firstName} ${entity.lastName}" 
+                  activiti:candidateGroups="ROLE_E_VERIFY_MGR">
+            <documentation>
+                E Verify Task for E_Verify Manager
+                Employee Name       : #{entity.firstName} #{entity.lastName}
+                Start Date          : #{entity.startDate}
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+<!--          E Verify Manager task : Task escalation email after 48 hours-->
+        <boundaryEvent id="eVerifyTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="eVerifyTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="eVerifyTaskEscalationTimer" 
+                      targetRef="eVerifyTaskEscalation" />
+        <serviceTask id="eVerifyTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+<!--          E Verify Manager task : Decision -->
+        <sequenceFlow sourceRef="eVerifyTask" 
+                      targetRef="eVerifyTaskGateway" />
+        <exclusiveGateway id="eVerifyTaskGateway" />
+        <sequenceFlow sourceRef="eVerifyTaskGateway" 
+                      targetRef="payrollRegistrationTask">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="eVerifyTaskGateway" 
+                      targetRef="onBoardingEmployeeProcessEnd">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'rejected'}
+            </conditionExpression>
+        </sequenceFlow>
+        
+        
+<!--         Payroll Registration Task :  Payroll Department -->
+        <userTask id="payrollRegistrationTask" 
+                  name="Payroll Registration Task for ${entity.firstName} ${entity.lastName}" 
+                  activiti:candidateGroups="ROLE_PAYROLL_AND_BENIFITS">
+            <documentation>
+                Payroll Registration Task for Payroll Department
+                Employee Name       : #{entity.firstName} #{entity.lastName}
+                Start Date          : #{entity.startDate}
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+<!--          Payroll Registration Task :  Task escalation email after 48 hours-->
+        <boundaryEvent id="payrollRegistrationTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="payrollRegistrationTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="payrollRegistrationTaskEscalationTimer" 
+                      targetRef="payrollRegistrationTaskEscalation" />
+        <serviceTask id="payrollRegistrationTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+<!--          Payroll Registration Task :  Decision -->
+        <sequenceFlow sourceRef="payrollRegistrationTask" 
+                      targetRef="payrollRegistrationGateway" />
+        <exclusiveGateway id="payrollRegistrationGateway" />
+        <sequenceFlow sourceRef="payrollRegistrationGateway" 
+                      targetRef="sendInformationToOtherSystemsTask">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="payrollRegistrationGateway" 
+                      targetRef="onBoardingEmployeeProcessEnd">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'rejected'}
+            </conditionExpression>
+        </sequenceFlow>
+        
+<!--         Send Information To Other Systems Task -->
+        <serviceTask id="sendInformationToOtherSystemsTask" 
+                     name="Send information to Other Systems Task" 
+                     activiti:expression="#{onBoardingEmployeeProcessBean.sendInformationToOtherSystems(entity)}" />  
+        
+        <sequenceFlow sourceRef="sendInformationToOtherSystemsTask" targetRef="sendEmployeeOnBoardingCompletedEmail" />
+        
+<!--         Send Confirmation And Welcome Email to Employee -->
+        <serviceTask id="sendEmployeeOnBoardingCompletedEmail" 
+                     name="Send Confirmation And Welcome Email to Employee Task" 
+                     activiti:expression="#{onBoardingEmployeeProcessBean.sendEmployeeOnBoardingCompletedEmail(entity)}" />  
+        
+        <sequenceFlow sourceRef="sendEmployeeOnBoardingCompletedEmail" 
+                      targetRef="createServiceTicketforNetworkDept">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${entity.employeeType == 'Corporate Employee'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="sendEmployeeOnBoardingCompletedEmail" targetRef="onBoardingEmployeeProcessEnd" />
+        
+<!--         Create Service Ticket For Network Department -->
+        <serviceTask id="createServiceTicketforNetworkDept" 
+                     name="Create Service Ticket For Network Department Task" 
+                     activiti:expression="#{onBoardingEmployeeProcessBean.createServiceTicketforNetworkDept(entity)}" />  
+        
+        <sequenceFlow sourceRef="createServiceTicketforNetworkDept" targetRef="onBoardingEmployeeProcessEnd" />
+        
         <endEvent id="onBoardingEmployeeProcessEnd" />
     </process>
 </definitions>
