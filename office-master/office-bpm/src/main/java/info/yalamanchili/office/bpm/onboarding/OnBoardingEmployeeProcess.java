@@ -83,14 +83,20 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
     protected void  payrollRegistrationTaskCompleted(Employee entity, DelegateTask dt){
         String status = (String) dt.getExecution().getVariable("status");
         EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
-        if (status.equalsIgnoreCase("approved")) {
-            empOnBoarding.setStatus(OnBoardingStatus.Complete);
-            new GenericTaskCompleteNotification().notify(dt);
-        }
+        empOnBoarding.setStatus(OnBoardingStatus.Complete);
+        new GenericTaskCompleteNotification().notify(dt);
         EmployeeOnBoardingDao.instance().save(empOnBoarding);
         dt.getExecution().setVariable("entity", entity);
     }
+    /*
+    protected void sendInfoToOtherSystemsTaskCompleted(Employee entity,DelegateTask dt){
+        
+    }
     
+    protected void createServiceTicketForNetworkDept(Employee entity,DelegateTask dt){
+        
+    }
+    */
    protected Employee getRequestFromTask(DelegateTask task) {
         Employee entity = (Employee) task.getExecution().getVariable("entity");
         if (entity != null) {
@@ -127,9 +133,12 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
             case "payrollRegistrationTask":
                  payrollRegistrationTaskCompleted(entity, dt);
                 break;
-            case "sendInformationToOtherSystemsTask":
-            case "sendEmployeeOnBoardingCompletedEmail":
+           /* case "sendInformationToOtherSystemsTask":
+                 sendInfoToOtherSystemsTaskCompleted(entity, dt);
             case "createServiceTicketforNetworkDept":
+                createServiceTicketForNetworkDept(entity, dt);
+            case "sendEmployeeOnBoardingCompletedEmail":
+            */
         }
     }  
         
