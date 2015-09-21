@@ -9,6 +9,7 @@
 package info.yalamanchili.office.bpm.onboarding;
 
 import info.chili.service.jrs.exception.ServiceException;
+import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
 import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
 import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
 import info.yalamanchili.office.dao.ext.CommentDao;
@@ -47,13 +48,64 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
         if (status.equalsIgnoreCase("approved")) {
             if (entity.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
                 empOnBoarding.setStatus(OnBoardingStatus.Pending_Background_Check);
+                new GenericTaskCompleteNotification().notify(dt);
             } else {
                 empOnBoarding.setStatus(OnBoardingStatus.Pending_EVerify);
+                new GenericTaskCompleteNotification().notify(dt);
             }
         }
         EmployeeOnBoardingDao.instance().save(empOnBoarding);
+        dt.getExecution().setVariable("entity", entity);
     }
-
+      
+    protected void  backgroundAndDrugScreeningTaskCompleted(Employee entity, DelegateTask dt){
+        String status = (String) dt.getExecution().getVariable("status");
+        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
+        if (status.equalsIgnoreCase("approved")) {
+            empOnBoarding.setStatus(OnBoardingStatus.Pending_EVerify);
+             new GenericTaskCompleteNotification().notify(dt);
+        }
+        EmployeeOnBoardingDao.instance().save(empOnBoarding);
+        dt.getExecution().setVariable("entity", entity);
+    }
+    
+    protected void  eVerifyTaskCompleted(Employee entity, DelegateTask dt){
+        String status = (String) dt.getExecution().getVariable("status");
+        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
+        if (status.equalsIgnoreCase("approved")) {
+            empOnBoarding.setStatus(OnBoardingStatus.Pending_Payroll_Registration);
+            new GenericTaskCompleteNotification().notify(dt);
+        }
+        EmployeeOnBoardingDao.instance().save(empOnBoarding);
+        dt.getExecution().setVariable("entity", entity);
+    }
+    
+    protected void  payrollRegistrationTaskCompleted(Employee entity, DelegateTask dt){
+        String status = (String) dt.getExecution().getVariable("status");
+        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
+        empOnBoarding.setStatus(OnBoardingStatus.Complete);
+        new GenericTaskCompleteNotification().notify(dt);
+        EmployeeOnBoardingDao.instance().save(empOnBoarding);
+        dt.getExecution().setVariable("entity", entity);
+    }
+    /*
+    protected void sendInfoToOtherSystemsTaskCompleted(Employee entity,DelegateTask dt){
+        
+    }
+    
+    protected void createServiceTicketForNetworkDept(Employee entity,DelegateTask dt){
+        
+    }
+    */
+   protected Employee getRequestFromTask(DelegateTask task) {
+        Employee entity = (Employee) task.getExecution().getVariable("entity");
+        if (entity != null) {
+            return entity;
+        }
+        return null;
+        }
+       
+   
     private void employeeOnBoardingTaskCompleted(DelegateTask dt) {
         Employee entity = getRequestFromTask(dt);
         EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
@@ -73,17 +125,26 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
                 onBoardingFormsAndDataValidationTaskCompleted(entity, dt);
                 break;
             case "backGroundAndDrugScreeningTestTask":
-//                ceoApprovalTaskComplete(entity, dt);
+                 backgroundAndDrugScreeningTaskCompleted(entity, dt);
                 break;
             case "eVerifyTask":
-//                travelBookingManagerApprovalTaskComplete(entity, dt);
+                 eVerifyTaskCompleted(entity, dt);    
                 break;
             case "payrollRegistrationTask":
-//                travelBookingManagerApprovalTaskComplete(entity, dt);
+                 payrollRegistrationTaskCompleted(entity, dt);
                 break;
+           /* case "sendInformationToOtherSystemsTask":
+                 sendInfoToOtherSystemsTaskCompleted(entity, dt);
+            case "createServiceTicketforNetworkDept":
+                createServiceTicketForNetworkDept(entity, dt);
+            case "sendEmployeeOnBoardingCompletedEmail":
+            */
         }
-
+    }  
+        
+        /*
         //Status
+        
         String status = (String) dt.getExecution().getVariable("status");
         if ((dt.getTaskDefinitionKey().equals("onBoardingFormsAndDataValidationTask")) && OnBoardingStatus.Pending_Document_Verification.equals(empOnBoarding.getStatus())) {
             if (status.equalsIgnoreCase("approved")) {
@@ -109,13 +170,5 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
 
         EmployeeOnBoardingDao.instance().save(empOnBoarding);
     }
-
-    protected Employee getRequestFromTask(DelegateTask task) {
-        Employee entity = (Employee) task.getExecution().getVariable("entity");
-        if (entity != null) {
-            return entity;
-        }
-        return null;
-    }
-
+    */
 }
