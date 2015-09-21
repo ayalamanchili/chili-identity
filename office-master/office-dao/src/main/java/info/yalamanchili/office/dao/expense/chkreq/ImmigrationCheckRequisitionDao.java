@@ -33,7 +33,8 @@ public class ImmigrationCheckRequisitionDao extends CRUDDao<ImmigrationCheckRequ
     private EntityManager em;
 
     @Override
-    @Cacheable(OfficeCacheKeys.IMMIGRATION_CHECK)
+//    @Cacheable(value = OfficeCacheKeys.IMMIGRATION_CHECK, key = "{#root.methodName,#id}")
+    //TODO fix issue with lazy init after caching result on print. 
     public ImmigrationCheckRequisition findById(Long id) {
         ImmigrationCheckRequisition entity = super.findById(id);
         if (entity == null) {
