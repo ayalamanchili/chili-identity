@@ -241,7 +241,7 @@
         <sequenceFlow sourceRef="sendEmployeeOnBoardingCompletedEmail" 
                       targetRef="createServiceTicketforNetworkDept">
             <conditionExpression xsi:type="tFormalExpression">
-                ${entity.employeeType == 'Corporate Employee'}
+                ${entity.employeeType.name == 'Corporate Employee'}
             </conditionExpression>
         </sequenceFlow>
         <sequenceFlow sourceRef="sendEmployeeOnBoardingCompletedEmail" targetRef="onBoardingEmployeeProcessEnd" />

@@ -43,6 +43,7 @@ public class OnBoardingEmployeeProcessBean {
         email.setSubject(subject.toString());
         Map<String, Object> emailCtx = new HashMap<>();
         emailCtx.put("employeeName", "asdf");
+        emailCtx.put("currentEmployee", "cemp");
         email.setTemplateName("on_board_employee_template.html");
         email.setContext(emailCtx);
         email.setHtml(Boolean.TRUE);
@@ -62,6 +63,7 @@ public class OnBoardingEmployeeProcessBean {
         email.setSubject(subject.toString());
         Map<String, Object> emailCtx = new HashMap<>();
         emailCtx.put("employeeName", "asdf");
+        emailCtx.put("currentEmployee", "bcde");
         // TODO new template for completed email
         email.setTemplateName("on_board_employee_template.html");
         email.setContext(emailCtx);
