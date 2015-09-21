@@ -45,35 +45,45 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class ImmigrationCheckRequisitionService {
-    
+
     @Autowired
     protected ImmigrationCheckRequisitionDao immigrationCheckRequisitionDao;
     @Autowired
     protected CheckRequisitionItemDao checkRequisitionItemDao;
-    
+
     @Autowired
     protected Mapper mapper;
-    
+
     public void submitImmigrationCheckRequisition(ImmigrationCheckRequisitionSaveDto dto) {
         ImmigrationCheckRequisition entity = mapper.map(dto, ImmigrationCheckRequisition.class);
         entity.setSubmittedBy(OfficeSecurityService.instance().getCurrentUserName());
         entity.setRequestedDate(new Date());
         entity.setEmployee(EmployeeDao.instance().findById(entity.getEmployee().getId()));
-        entity = immigrationCheckRequisitionDao.save(entity);
         entity.setStatus(ImmigrationCheckRequisitionStatus.PENDING_APPROVAL);
-        for (CheckRequisitionItem item : dto.getItems()) {
+        for (CheckRequisitionItem item : entity.getItems()) {
+            item.setId(null);
+            item.setVersion(null);
             item.setImmigrationCheckRequisition(entity);
-            checkRequisitionItemDao.save(item);
+        }
+        entity = immigrationCheckRequisitionDao.save(entity);
+        //TODO if removed the total amount is not being calcluated incorrectly.
+        entity.updateTotalAmount();
+        entity.setBpmProcessId(startExpenseReportProcess(entity));
+        entity = immigrationCheckRequisitionDao.save(entity);
+    }
+
+    protected String startExpenseReportProcess(ImmigrationCheckRequisition entity) {
+        if (entity.getBpmProcessId() != null) {
+            OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
         }
         Map<String, Object> vars = new HashMap<>();
         vars.put("entity", entity);
-        vars.put("entityId", entity.getId());
+        vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
         vars.put("employeeName", entity.getEmployee().getFirstName() + " " + entity.getEmployee().getLastName());
-        vars.put("currentEmployee", EmployeeDao.instance().findEmployeWithEmpId(entity.getSubmittedBy()));
-        String processId = OfficeBPMService.instance().startProcess("immigration_check_requisition_process", vars);
-        entity.setBpmProcessId(processId);
+        vars.put("entityId", entity.getId());
+        return OfficeBPMService.instance().startProcess("immigration_check_requisition_process", vars);
     }
-    
+
     public void saveImmigrationCheckRequisition(ImmigrationCheckRequisitionSaveDto dto) {
         ImmigrationCheckRequisition entity = immigrationCheckRequisitionDao.save(dto);
         //add/update items
@@ -88,17 +98,17 @@ public class ImmigrationCheckRequisitionService {
         }
         immigrationCheckRequisitionDao.getEntityManager().merge(entity);
     }
-    
+
     public void delete(Long id) {
         ImmigrationCheckRequisition ticket = immigrationCheckRequisitionDao.findById(id);
         OfficeBPMTaskService.instance().deleteAllTasksForProcessId(ticket.getBpmProcessId(), true);
         immigrationCheckRequisitionDao.delete(id);
     }
-    
+
     public ImmigrationCheckRequisitionSaveDto read(Long id) {
         return mapper.map(immigrationCheckRequisitionDao.findById(id), ImmigrationCheckRequisitionSaveDto.class);
     }
-    
+
     public ImmigrationCheckRequisitionSaveDto clone(Long id) {
         ImmigrationCheckRequisition entity = immigrationCheckRequisitionDao.clone(id, "amount", "submittedBy", "requestedDate", "approvedBy", "approvedDate", "accountedBy", "checkIssuedDate", "accountDeptReceivedDate", "status", "bpmProcessId", "employee");
         ImmigrationCheckRequisitionSaveDto res = mapper.map(entity, ImmigrationCheckRequisitionSaveDto.class);
@@ -108,7 +118,7 @@ public class ImmigrationCheckRequisitionService {
         }
         return res;
     }
-    
+
     public Response getReport(ImmigrationCheckRequisition entity) {
         PdfDocumentData data = new PdfDocumentData();
         data.setTemplateUrl("/templates/pdf/check-request-template.pdf");
@@ -177,9 +187,9 @@ public class ImmigrationCheckRequisitionService {
                 .header("content-disposition", "filename = check-requisition.pdf")
                 .header("Content-Length", pdf)
                 .build();
-        
+
     }
-    
+
     public static ImmigrationCheckRequisitionService instance() {
         return SpringContext.getBean(ImmigrationCheckRequisitionService.class);
     }

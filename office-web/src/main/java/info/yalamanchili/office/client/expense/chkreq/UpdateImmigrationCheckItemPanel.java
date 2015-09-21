@@ -111,7 +111,7 @@ public class UpdateImmigrationCheckItemPanel extends UpdateComposite {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(deleteB)) {
-            if (entityId == null) {
+            if (getEntityId() == null || getEntityId().isEmpty()) {
                 this.removeFromParent();
                 UpdateImmigrationCheckRequisitionPanel.instance().updateItemPanels.remove(this);
             } else {

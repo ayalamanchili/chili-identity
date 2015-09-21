@@ -11,7 +11,6 @@ package info.yalamanchili.office.bpm.immigration;
 
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
-import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
 import info.yalamanchili.office.dao.expense.chkreq.ImmigrationCheckRequisitionDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
@@ -27,11 +26,9 @@ import org.activiti.engine.delegate.DelegateTask;
  */
 public class ImmigrationCheckRequestProcess extends RuleBasedTaskDelegateListner {
 
-    @Override
+   @Override
     public void processTask(DelegateTask task) {
-        if ("create".equals(task.getEventName())) {
-            new GenericTaskCreateNotification().notify(task);
-        }
+        super.processTask(task);
         if ("complete".equals(task.getEventName())) {
             immigrationCheckRequestTaskCompleted(task);
         }

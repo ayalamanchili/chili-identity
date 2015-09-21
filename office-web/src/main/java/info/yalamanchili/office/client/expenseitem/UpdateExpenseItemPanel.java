@@ -27,7 +27,6 @@ import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.expense.chkreq.UpdateImmigrationCheckRequisitionPanel;
 import info.yalamanchili.office.client.expensecategory.SelectExpenseCategoryWidget;
 import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.*;
 import info.yalamanchili.office.client.expensereports.ExpensePaymentMode;
@@ -169,7 +168,7 @@ public class UpdateExpenseItemPanel extends UpdateComposite implements BlurHandl
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(deleteB)) {
-            if (entityId == null) {
+            if (getEntityId() == null || getEntityId().isEmpty()) {
                 this.removeFromParent();
                 UpdateExpenseReportPanel.instance().updateItemPanels.remove(this);
             } else {
