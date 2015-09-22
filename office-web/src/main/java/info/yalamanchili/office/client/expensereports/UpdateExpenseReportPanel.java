@@ -278,7 +278,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
         entityFieldsPanel.add(receiptsInfo);
         entityFieldsPanel.add(fileUploadPanel);
         entityFieldsPanel.add(expenseInfo);
-        entityFieldsPanel.add(addItemL);
+        entityActionsPanel.add(addItemL);
         alignFields();
     }
 

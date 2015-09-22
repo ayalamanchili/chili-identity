@@ -139,7 +139,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         entityFieldsPanel.add(receiptsInfo);
         entityFieldsPanel.add(fileUploadPanel);
         entityFieldsPanel.add(expenseInfo);
-        entityFieldsPanel.add(addItemL);
+        entityActionsPanel.add(addItemL);
         entityFieldsPanel.add(notes);
         alignFields();
     }

@@ -213,7 +213,7 @@ public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite impl
         addField("purpose", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addEnumField("caseType", false, true, ImmigrationCaseType.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(checkItem);
-        entityFieldsPanel.add(addItemL);
+        entityActionsPanel.add(addItemL);
         alignFields();
     }
 
