@@ -106,7 +106,7 @@ public class ExpenseReportService {
 
     public ExpenseReportSaveDto save(ExpenseReportSaveDto dto) {
         if (!dto.getEmployee().getEmployeeId().equals(OfficeSecurityService.instance().getCurrentUserName())) {
-             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.update.report", "Only the employee who submitted the report can update it");
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.update.report", "Only the employee who submitted the report can update it");
         }
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         ExpenseReport entity = expenseReportsDao.save(dto);
@@ -145,6 +145,9 @@ public class ExpenseReportService {
 
     public ExpenseReportSaveDto clone(Long id) {
         ExpenseReport entity = expenseReportsDao.clone(id, "submittedDate", "approvedByManager", "approvedByManagerDate", "approvedByAccountsDept", "approvedByAccountsDeptDate", "approvedByCEO", "approvedByCEODate", "bpmProcessId", "status", "totalExpenses", "expenseReceipts");
+        if (!entity.getEmployee().getEmployeeId().equals(OfficeSecurityService.instance().getCurrentUserName())) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.clone.report", "Only your expense reports can be cloned");
+        }
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         return mapper.map(entity, ExpenseReportSaveDto.class);
     }
