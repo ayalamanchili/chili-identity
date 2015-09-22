@@ -119,9 +119,10 @@ public class EmployeeService {
         emp = em.merge(emp);
         //create cert
         OfficeSecurityService.instance().createUserCert(emp, null, null);
+        Employee currentEmp=OfficeSecurityService.instance().getCurrentUser();
         //Email notification
         if (empType.equals("Corporate Employee") || empType.equals("Employee")) {
-            profileNotificationService.sendNewUserCreatedNotification(emp);
+            profileNotificationService.sendNewUserCreatedNotification(currentEmp,emp);
         }
         return emp.getId().toString();
     }
@@ -167,7 +168,7 @@ public class EmployeeService {
             user = OfficeSecurityService.instance().createCuser(user);
             emp.setUser(user);
         }
-        
+
         //Create employee with basic information
         emp.setEmployeeId(employeeId);
         Preferences prefs = new Preferences();
@@ -179,7 +180,7 @@ public class EmployeeService {
         address = employee.getAddress();
         emp.getAddresss().add(address);
         address.setContact(emp);
-        
+
         Email email = new Email();
         email.setEmail(initiateDto.getEmail());
         email.setPrimaryEmail(true);
@@ -187,19 +188,20 @@ public class EmployeeService {
 
         emp = EmployeeDao.instance().save(emp);
         emp = em.merge(emp);
-        
+
         onboarding.setStatus(OnBoardingStatus.Pending_Document_Verification);
         onboarding.setEmployee(emp);
         em.merge(onboarding);
-    
+
         //Create BPM User
         if (emp.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
             OfficeBPMIdentityService.instance().createUser(employeeId);
             Map<String, Object> obj = new HashMap<>();
             obj.put("entity", emp);
+            obj.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
             OfficeBPMService.instance().startProcess("on_boarding_employee_process", obj);
         }
-        
+
         //Update BankAccount Information for Employee
         BankAccount bankAccount = new BankAccount();
         bankAccount = employee.getBankAccount();
@@ -207,14 +209,14 @@ public class EmployeeService {
 
         //Update Dependent Information for Employee
         for (Dependent dependent : employee.getDependent()) {
-             DependentDao.instance().save(dependent, emp.getId(), emp.getClass().getCanonicalName());
+            DependentDao.instance().save(dependent, emp.getId(), emp.getClass().getCanonicalName());
         }
 
         //Update Additional Information for Employee
         EmployeeAdditionalDetails employeeAdditionalDetails = new EmployeeAdditionalDetails();
         employeeAdditionalDetails = employee.getEmployeeAdditionalDetails();
         EmployeeAdditionalDetailsDao.instance().save(employeeAdditionalDetails, emp.getId(), emp.getClass().getCanonicalName());
-        
+
         //create cert
         OfficeSecurityService.instance().createUserCert(emp, null, null);
         return emp.getId().toString();
