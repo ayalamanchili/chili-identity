@@ -63,7 +63,6 @@ public class OnBoardingEmployeeProcessBean {
         email.setSubject(subject.toString());
         Map<String, Object> emailCtx = new HashMap<>();
         emailCtx.put("employeeName", "abc");
-        emailCtx.put("currentEmployee", "bcde");
         // TODO new template for completed email
         email.setTemplateName("on_board_employee_template.html");
         email.setContext(emailCtx);

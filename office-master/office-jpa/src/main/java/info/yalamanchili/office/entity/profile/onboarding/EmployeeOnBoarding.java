@@ -49,6 +49,13 @@ public class EmployeeOnBoarding extends AbstractEntity {
     /**
      *
      */
+    /*
+    @Temporal(javax.persistence.TemporalType.DATE)
+    @NotNull
+    protected Date submittedDate;
+    /**
+     * 
+     */
     @Enumerated(EnumType.STRING)
     @Field
     protected OnBoardingStatus status;

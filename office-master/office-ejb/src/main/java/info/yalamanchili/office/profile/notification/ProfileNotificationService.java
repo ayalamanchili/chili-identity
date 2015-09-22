@@ -12,6 +12,7 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.chili.email.Email;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.Feedback.Feedback;
 import info.yalamanchili.office.entity.message.Message;
@@ -57,12 +58,12 @@ public class ProfileNotificationService {
 
     @Async
     @Transactional
-    public void sendNewUserCreatedNotification(Employee employee) {
+    public void sendNewUserCreatedNotification(Employee currentEmployee, Employee employee) {
         String[] roles = {OfficeRole.ROLE_ADMIN.name(), OfficeRole.ROLE_HR.name(), OfficeRole.ROLE_RELATIONSHIP.name()};
         Email email = new Email();
         email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject("New System Soft Office User Created");
-        String messageText = "New User " + employee.getFirstName() + "," + employee.getLastName() + "," + employee.getEmployeeId() + " Is Created";
+        String messageText = "New User " + employee.getFirstName() + " , " + employee.getLastName() + " , " + employee.getEmployeeId() + " Is Created By "+currentEmployee.getFirstName()+" "+currentEmployee.getLastName();
         email.setBody(messageText);
         messagingService.sendEmail(email);
 
@@ -71,7 +72,7 @@ public class ProfileNotificationService {
         newUserEmailObj.setHtml(Boolean.TRUE);
         newUserEmailObj.addTo(EmployeeDao.instance().getPrimaryEmail(employee));
         newUserEmailObj.setSubject("Welcome to System Soft Portal");
-        String messageTextforuser = "Your Username and Employee Id is:" + employee.getEmployeeId() + ": \n Please follow the instructions to login https://apps.sstech.us/site/office/forgot-password.html";
+        String messageTextforuser = "Your Username and Employee Id is:" + employee.getEmployeeId() +" : \n Please follow the instructions to login https://apps.sstech.us/site/office/forgot-password.html";
         newUserEmailObj.setBody(messageTextforuser);
         messagingService.sendEmail(newUserEmailObj);
     }

@@ -141,34 +141,5 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
             */
         }
     }  
-        
-        /*
-        //Status
-        
-        String status = (String) dt.getExecution().getVariable("status");
-        if ((dt.getTaskDefinitionKey().equals("onBoardingFormsAndDataValidationTask")) && OnBoardingStatus.Pending_Document_Verification.equals(empOnBoarding.getStatus())) {
-            if (status.equalsIgnoreCase("approved")) {
-                if (entity.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
-                    empOnBoarding.setStatus(OnBoardingStatus.Pending_Background_Check);
-                } else {
-                    empOnBoarding.setStatus(OnBoardingStatus.Pending_EVerify);
-                }
-            }
-        }
-        if (entity.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
-            if ((dt.getTaskDefinitionKey().equals("backGroundAndDrugScreeningTestTask")) && OnBoardingStatus.Pending_Background_Check.equals(empOnBoarding.getStatus())) {
-                if (status.equalsIgnoreCase("approved")) {
-                    empOnBoarding.setStatus(OnBoardingStatus.Pending_EVerify);
-                }
-            }
-        }
-        if ((dt.getTaskDefinitionKey().equals("eVerifyTask")) && OnBoardingStatus.Pending_EVerify.equals(empOnBoarding.getStatus())) {
-            if (status.equalsIgnoreCase("approved")) {
-                empOnBoarding.setStatus(OnBoardingStatus.Pending_Payroll_Registration);
-            }
-        }
-
-        EmployeeOnBoardingDao.instance().save(empOnBoarding);
-    }
-    */
+       
 }
