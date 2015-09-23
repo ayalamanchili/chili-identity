@@ -51,6 +51,8 @@
         <!--Security-->
         <class>info.chili.security.domain.CRole</class>
         <class>info.chili.security.domain.CUser</class>
+        <class>info.chili.security.domain.CIPAddress</class>
+        <class>info.chili.security.domain.CUserIPAddress</class>
         <!--Security ACL-->
         <class>info.chili.security.domain.acl.AclSid</class>
         <class>info.chili.security.domain.acl.AclClass</class>

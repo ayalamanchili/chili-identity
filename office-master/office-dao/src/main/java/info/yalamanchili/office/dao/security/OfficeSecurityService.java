@@ -3,18 +3,20 @@
  */
 package info.yalamanchili.office.dao.security;
 
+import com.google.common.base.Strings;
 import info.chili.commons.DateUtils;
 import info.chili.jpa.QueryUtils;
 import info.chili.security.SecurityService;
+import info.chili.security.dao.CIPAddressDao;
 import info.chili.security.dao.CRoleDao;
 import info.chili.security.domain.CRole;
 import info.chili.security.domain.CUser;
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.security.SecurityUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -47,10 +49,12 @@ public class OfficeSecurityService {
         return em.merge(user);
     }
 
-    public EmployeeLoginDto login(CUser user) {
+    public EmployeeLoginDto login(CUser user, String ipAddress) {
+        if (hasAnyRole(OfficeRole.ROLE_CORPORATE_EMPLOYEE.name()) && !Strings.isNullOrEmpty(ipAddress) && !CIPAddressDao.instance().isValidIP(ipAddress)) {
+           throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "not.authorized.remoteip", "not.authorized.remoteip");
+        }
         TypedQuery<Employee> query = em.createQuery("from Employee emp where emp.user.username=:userNameParam", Employee.class);
         query.setParameter("userNameParam", user.getUsername().toLowerCase());
-//        query.setParameter("passwordParam", SecurityUtils.encodePassword(user.getPasswordHash(), null));
         try {
             Mapper mapper = (Mapper) SpringContext.getBean("mapper");
             Employee emp = query.getSingleResult();
@@ -63,6 +67,11 @@ public class OfficeSecurityService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Deprecated
+    public EmployeeLoginDto login(CUser user) {
+        return login(user, null);
     }
 
     public String getCurrentUserName() {

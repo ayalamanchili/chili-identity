@@ -19,15 +19,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class OfficeFeatureFlipper {
 
-    @Value("#{officeFeatureFlipperProperties['enablePersistedResourceBundles']}")
-    protected Boolean enablePersistedResourceBundles;
+    @Value("#{officeFeatureFlipperProperties['enableIPFiltering']}")
+    protected Boolean enableIPFiltering;
 
-    public Boolean getEnablePersistedResourceBundles() {
-        return enablePersistedResourceBundles;
+    public Boolean getEnableIPFiltering() {
+        return enableIPFiltering;
     }
 
-    public void setEnablePersistedResourceBundles(Boolean enablePersistedResourceBundles) {
-        this.enablePersistedResourceBundles = enablePersistedResourceBundles;
+    public void setEnableIPFiltering(Boolean enableIPFiltering) {
+        this.enableIPFiltering = enableIPFiltering;
     }
 
     public static OfficeFeatureFlipper instance() {

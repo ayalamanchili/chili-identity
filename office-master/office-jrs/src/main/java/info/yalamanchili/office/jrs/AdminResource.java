@@ -35,16 +35,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
-import info.yalamanchili.office.dao.profile.onboarding.EmployeeOnBoardingDao;
+import info.yalamanchili.office.config.OfficeFeatureFlipper;
 import info.yalamanchili.office.dao.security.EmployeeLoginDto;
-import info.yalamanchili.office.dto.onboarding.InitiateOnBoardingDto;
 import info.yalamanchili.office.dto.profile.EmployeeCreateDto;
-import info.yalamanchili.office.dto.onboarding.OnBoardingEmployeeDto;
 import info.yalamanchili.office.dto.security.User;
-import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.ws.rs.HeaderParam;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
@@ -76,9 +71,13 @@ public class AdminResource {
 
     @Path("/login")
     @PUT
-    @Cacheable(value = OfficeCacheKeys.LOGIN, key = "#user.username")
-    public EmployeeLoginDto login(CUser user) {
-        return mapper.map(securityService.login(user), EmployeeLoginDto.class);
+    @Cacheable(value = OfficeCacheKeys.LOGIN, key = "#user.username.concat('-').concat(#ipAddress)")
+    public EmployeeLoginDto login(CUser user, @HeaderParam("remote-ip") String ipAddress) {
+        if (OfficeFeatureFlipper.instance().getEnableIPFiltering()) {
+            return mapper.map(securityService.login(user, ipAddress), EmployeeLoginDto.class);
+        } else {
+            return mapper.map(securityService.login(user), EmployeeLoginDto.class);
+        }
     }
 
     @Path("/ping")
@@ -125,8 +124,6 @@ public class AdminResource {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
         return employeeService.createUser(employee);
     }
-
-    
 
     @GET
     @Path("/roles/{empId}/{start}/{limit}")
