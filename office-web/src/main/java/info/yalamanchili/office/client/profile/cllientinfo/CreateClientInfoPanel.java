@@ -30,6 +30,7 @@ import info.yalamanchili.office.client.admin.vendorlocation.SelectVendorLocation
 import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
+import info.yalamanchili.office.client.admin.client.CreateClientPanel;
 import info.yalamanchili.office.client.admin.subcntrcontact.SelectSubcontractorContactWidget;
 import info.yalamanchili.office.client.admin.subcntrlocation.SelectSubcontractorLocationWidget;
 import info.yalamanchili.office.client.admin.subcontractor.SelectSubcontractorWidget;
@@ -228,10 +229,18 @@ public class CreateClientInfoPanel extends CreateComposite {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addClientL)) {
-            new GenericPopup(new GenericBPMStartFormPanel("AddNewClientRequest", "add_new_client_request_1")).show();
+            if (Auth.hasAnyOfRoles(ROLE.ROLE_CONSULTANT_TIME_ADMIN)) {
+                new GenericPopup(new CreateClientPanel(CreateCompositeType.CREATE)).show();
+            } else {
+                new GenericPopup(new GenericBPMStartFormPanel("AddNewClientRequest", "add_new_client_request_1")).show();
+            }
         }
         if (event.getSource().equals(addVendorL)) {
-            new GenericPopup(new GenericBPMStartFormPanel("AddNewVendorRequest", "add_new_vendor_request_1")).show();
+            if (Auth.hasAnyOfRoles(ROLE.ROLE_CONSULTANT_TIME_ADMIN)) {
+                new GenericPopup(new CreateClientPanel(CreateCompositeType.CREATE)).show();
+            } else {
+                new GenericPopup(new GenericBPMStartFormPanel("AddNewVendorRequest", "add_new_vendor_request_1")).show();
+            }
         }
 
         if ((ReadAllClientInfoPanel.instance().numberOfRecords > 0) && (event.getSource().equals(endPreviousProjectFlagField.getBox()))) {
