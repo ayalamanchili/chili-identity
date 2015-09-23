@@ -27,7 +27,7 @@ public class CreateDependentsPanel extends CreateComposite implements ClickHandl
 
     public CreateDependentsPanel() {
         super(CreateComposite.CreateCompositeType.CREATE);
-        initCreateComposite("Dependents", OfficeWelcome.constants);
+        initCreateComposite("Dependent", OfficeWelcome.constants);
     }
 
     @Override
