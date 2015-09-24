@@ -5,6 +5,7 @@ package info.yalamanchili.office.jrs;
 
 import info.chili.email.Email;
 import info.chili.jpa.validation.Validate;
+import info.chili.security.dao.CIPAddressDao;
 import info.chili.security.dao.CRoleDao;
 import info.chili.security.domain.CRole;
 import info.chili.security.domain.CUser;
@@ -73,6 +74,7 @@ public class AdminResource {
     @PUT
     @Cacheable(value = OfficeCacheKeys.LOGIN, key = "#user.username.concat('-').concat(#ipAddress)")
     public EmployeeLoginDto login(CUser user, @HeaderParam("remote-ip") String ipAddress) {
+        CIPAddressDao.instance().recordUserIP(ipAddress);
         if (OfficeFeatureFlipper.instance().getEnableIPFiltering()) {
             return mapper.map(securityService.login(user, ipAddress), EmployeeLoginDto.class);
         } else {
