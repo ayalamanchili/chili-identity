@@ -123,7 +123,7 @@ public class ImmigrationCheckRequisitionService {
         PdfDocumentData data = new PdfDocumentData();
         Employee emp = entity.getEmployee();
         if (emp.getCompany() != null && emp.getCompany().getName().equals("TechPillars")) {
-            data.setTemplateUrl("/templates/pdf/check-request-tech-template.pdf");
+            data.setTemplateUrl("/templates/pdf/check-request-tp-template.pdf");
         } else {
             data.setTemplateUrl("/templates/pdf/check-request-template.pdf");
         }
@@ -133,13 +133,13 @@ public class ImmigrationCheckRequisitionService {
         Employee preparedBy = EmployeeDao.instance().findEmployeWithEmpId(entity.getSubmittedBy());
         EmployeeDao employeeDao = EmployeeDao.instance();
         if (preparedBy != null) {
-            String prepareByStr = preparedBy.getLastName() + ", " + preparedBy.getFirstName();
+            String prepareByStr = preparedBy.getLastName() + " , " + preparedBy.getFirstName();
             data.getData().put("submittedBy", prepareByStr);
             Signature approvedBysignature = new Signature(preparedBy.getEmployeeId(), preparedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "submittedBySignature", DateUtils.dateToCalendar(entity.getApprovedDate()), employeeDao.getPrimaryEmail(preparedBy), null);
             data.getSignatures().add(approvedBysignature);
         }
         data.getData().put("attorneyName", entity.getAttorneyName());
-        data.getData().put("employee", entity.getEmployee().getFirstName() + entity.getEmployee().getLastName());
+        data.getData().put("employee", entity.getEmployee().getFirstName() + "," + entity.getEmployee().getLastName());
         data.getData().put("requestedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getRequestedDate()));
         data.getData().put("neededByDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getNeededByDate()));
         if (entity.getAmount() != null) {
@@ -166,7 +166,7 @@ public class ImmigrationCheckRequisitionService {
         }
         Employee accountedBy = EmployeeDao.instance().findEmployeWithEmpId(entity.getAccountedBy());
         if (accountedBy != null) {
-            String accountedByStr = accountedBy.getLastName() + ", " + accountedBy.getFirstName();
+            String accountedByStr = accountedBy.getLastName() + " , " + accountedBy.getFirstName();
             data.getData().put("accountedBy", accountedByStr);
         }
         Integer i = 1;
