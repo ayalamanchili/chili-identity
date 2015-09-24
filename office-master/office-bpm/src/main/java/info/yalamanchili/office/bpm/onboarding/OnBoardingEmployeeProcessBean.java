@@ -42,7 +42,7 @@ public class OnBoardingEmployeeProcessBean {
         subject.append("System Soft employee on boarding email");
         email.setSubject(subject.toString());
         Map<String, Object> emailCtx = new HashMap<>();
-        emailCtx.put("employeeName", emp.getFirstName()+" "+emp.getLastName());
+        emailCtx.put("employeeName", emp.getLastName()+" , "+emp.getFirstName());
         emailCtx.put("currentEmployee", "cemp");
         email.setTemplateName("on_board_employee_template.html");
         email.setContext(emailCtx);
@@ -62,7 +62,7 @@ public class OnBoardingEmployeeProcessBean {
         subject.append("System Soft employee on boarding completed!");
         email.setSubject(subject.toString());
         Map<String, Object> emailCtx = new HashMap<>();
-        emailCtx.put("employeeName", emp.getFirstName()+" "+emp.getLastName());
+        emailCtx.put("employeeName", emp.getLastName()+" , "+emp.getFirstName());
         // TODO new template for completed email
         email.setTemplateName("on_board_employee_template.html");
         email.setContext(emailCtx);

@@ -66,7 +66,7 @@ public class InviteCodeGeneratorService {
         subject.append("System Soft Invitation");
         email.setSubject(subject.toString());
         Map<String, Object> emailCtx = new HashMap<>();
-        emailCtx.put("invitationCode", entity.getInvitationCode());
+        emailCtx.put("invitationCode", "http://localhost:9090/office-web/?inviteCode="+entity.getInvitationCode());
         email.setTemplateName("send_onboarding_invitation_eamil_template.html");
         String messageText = "http://localhost:9090/office-web/?inviteCode=" + entity.getInvitationCode();
         email.setContext(emailCtx);
