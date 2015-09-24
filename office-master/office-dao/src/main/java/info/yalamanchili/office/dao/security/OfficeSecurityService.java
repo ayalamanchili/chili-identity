@@ -50,6 +50,7 @@ public class OfficeSecurityService {
     }
 
     public EmployeeLoginDto login(CUser user, String ipAddress) {
+        CIPAddressDao.instance().recordUserIP(ipAddress);
         if (hasAnyRole(OfficeRole.ROLE_CORPORATE_EMPLOYEE.name()) && !Strings.isNullOrEmpty(ipAddress) && !CIPAddressDao.instance().isValidIP(ipAddress)) {
            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "not.authorized.remoteip", "not.authorized.remoteip");
         }

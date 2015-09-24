@@ -26,6 +26,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.expense.chkreq.UpdateImmigrationCheckRequisitionPanel;
 import java.util.logging.Logger;
 
 /**
@@ -134,7 +135,6 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
         table.setText(0, 1, getKeyValue("Report Start Date"));
         table.setText(0, 2, getKeyValue("Report End Date"));
         table.setText(0, 3, getKeyValue("Stage"));
-        table.setText(0, 4, getKeyValue("Copy"));
     }
 
     @Override
@@ -145,20 +145,10 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
             table.setText(i, 1, DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportStartDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
             table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportEndDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
             table.setText(i, 3, JSONUtils.toString(entity, "stage"));
-            ClickableLink copyL = new ClickableLink("Create Copy");
-            copyL.setTitle(JSONUtils.toString(entity, "id"));
-            copyL.addClickHandler(new ClickHandler() {
-
-                @Override
-                public void onClick(ClickEvent event) {
-                    createCopy(((ClickableLink) event.getSource()).getTitle());
-                }
-            });
-            table.setWidget(i, 4, copyL);
         }
     }
 
-    protected void createCopy(String entityId) {
+    /*protected void createCopy(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(OfficeWelcome.constants.root_url() + "statusreport/clone/" + entityId, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
 
@@ -169,7 +159,22 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
                         TabPanel.instance().homePanel.entityPanel.add(new UpdateStatusReportPanel(JSONParser.parseLenient(arg0).isObject()));
                     }
                 });
+    }*/
+    @Override
+    public void copyClicked(final String entityId) {
+        HttpService.HttpServiceAsync.instance().doGet(OfficeWelcome.constants.root_url() + "statusreport/clone/" + entityId, OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String arg0) {
+                        logger.info(arg0);
+                        new ResponseStatusWidget().show("Copy created. Plase update and save.");
+                        //TabPanel.instance().expensePanel.entityPanel.clear();
+                        TabPanel.instance().homePanel.entityPanel.clear();
+                        TabPanel.instance().homePanel.entityPanel.add(new UpdateStatusReportPanel(JSONParser.parseLenient(arg0).isObject()));
+                    }
+                });
     }
+
 
     @Override
     public void printClicked(String entityId) {
@@ -179,9 +184,9 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_RELATIONSHIP)) {
-            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE, TableRowOptionsWidget.OptionsType.PRINT), row, JSONUtils.toString(entity, "id"));
+            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE, TableRowOptionsWidget.OptionsType.PRINT, TableRowOptionsWidget.OptionsType.COPY), row, JSONUtils.toString(entity, "id"));
         } else {
-            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.PRINT), row, JSONUtils.toString(entity, "id"));
+            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.PRINT, TableRowOptionsWidget.OptionsType.COPY), row, JSONUtils.toString(entity, "id"));
         }
     }
 
