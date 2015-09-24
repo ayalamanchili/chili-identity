@@ -121,7 +121,13 @@ public class ImmigrationCheckRequisitionService {
 
     public Response getReport(ImmigrationCheckRequisition entity) {
         PdfDocumentData data = new PdfDocumentData();
-        data.setTemplateUrl("/templates/pdf/check-request-template.pdf");
+        Employee emp = entity.getEmployee();
+        if (emp.getCompany() != null && emp.getCompany().getName().equals("TechPillars")) {
+            data.setTemplateUrl("/templates/pdf/check-request-tech-template.pdf");
+        } else {
+            data.setTemplateUrl("/templates/pdf/check-request-template.pdf");
+        }
+
         OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
         data.setKeyStoreName(securityConfiguration.getKeyStoreName());
         Employee preparedBy = EmployeeDao.instance().findEmployeWithEmpId(entity.getSubmittedBy());
