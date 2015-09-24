@@ -55,8 +55,15 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
     EnumField countriesF;
     protected String invitationCode;
 
+    protected static EmployeeOnboardingPanel instance;
+
+    public static EmployeeOnboardingPanel instance() {
+        return instance;
+    }
+
     public EmployeeOnboardingPanel(String inviteCode) {
         this.invitationCode = inviteCode;
+        instance = this;
         initUpdateComposite(entity, "Employee", OfficeWelcome.constants);
     }
 
@@ -237,10 +244,19 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addDependentsL)) {
             CreateDependentsPanel panel = null;
-            panel = new CreateDependentsPanel();
+            int i = createDependentsPanel.size();
+            panel = new CreateDependentsPanel(this, i + 1);
             createDependentsPanel.add(panel);
             entityFieldsPanel.add(panel);
         }
         super.onClick(event);
     }
+
+    public void removePanel(int i) {
+        if (createDependentsPanel.size() > 0) {
+            createDependentsPanel.get(i).removeFromParent();
+            createDependentsPanel.remove(i - 1);
+        }
+    }
+
 }
