@@ -24,10 +24,14 @@ public class CreateDependentsPanel extends CreateComposite implements ClickHandl
 
     private Logger logger = Logger.getLogger(CreateDependentsPanel.class.getName());
     ClickableLink deleteB = new ClickableLink("Remove Dependent");
+    EmployeeOnboardingPanel parentPanel;
+    private int index;
 
-    public CreateDependentsPanel() {
+    public CreateDependentsPanel(EmployeeOnboardingPanel parent, int idx) {
         super(CreateComposite.CreateCompositeType.CREATE);
         initCreateComposite("Dependent", OfficeWelcome.constants);
+        this.index = idx;
+        this.parentPanel = parent;
     }
 
     @Override
@@ -91,7 +95,7 @@ public class CreateDependentsPanel extends CreateComposite implements ClickHandl
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(deleteB)) {
-            this.removeFromParent();
+            parentPanel.removePanel(index);
         }
         super.onClick(event);
     }
