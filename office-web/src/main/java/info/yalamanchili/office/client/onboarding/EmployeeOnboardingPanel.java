@@ -14,8 +14,10 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import info.chili.gwt.crud.UpdateComposite;
@@ -24,8 +26,10 @@ import info.chili.gwt.data.IndiaStatesFactory;
 import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.EnumField;
+import info.chili.gwt.fields.FileuploadField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
@@ -50,6 +54,38 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
     protected ClickableLink addDependentsL = new ClickableLink("Add Dependents");
     protected List<CreateDependentsPanel> createDependentsPanel = new ArrayList<>();
     HTML emptyLine = new HTML("<br/>");
+
+    protected static HTML formsInfo = new HTML("\n"
+            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
+            + "<strong style=\"color:#555555\">Please upload W2_Form and I9_Form</strong></p>\n"
+            + "\n"
+            + "<ul>\n"
+            + "</ul>");
+    protected static HTML bankInfo = new HTML("\n"
+            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
+            + "<strong style=\"color:#555555\">Bank Account Information</strong></p>\n"
+            + "\n"
+            + "<ul>\n"
+            + "</ul>");
+    protected static HTML additionalInfo = new HTML("\n"
+            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
+            + "<strong style=\"color:#555555\">Additional Information</strong></p>\n"
+            + "\n"
+            + "<ul>\n"
+            + "</ul>");
+    protected static HTML depsInfo = new HTML("\n"
+            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
+            + "<strong style=\"color:#555555\">Dependents Information</strong></p>\n"
+            + "\n"
+            + "<ul>\n"
+            + "</ul>");
+
+    FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "Forms", "", "Forms/fileURL", false, true) {
+        @Override
+        public void onUploadComplete(String res) {
+            postUpdateSuccess(null);
+        }
+    };
 
     EnumField statesF;
     EnumField countriesF;
@@ -124,6 +160,24 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         employee.put("employeeAdditionalDetails", employeeAdditionalDetails);
         // 
         employee.put("inviteCode", new JSONString(invitationCode));
+
+        JSONArray Onboardingforms = new JSONArray();
+
+        if (!fileUploadPanel.isEmpty()) {
+            logger.info("fileUploadPanel :" + fileUploadPanel);
+            int i = 0;
+            for (FileUpload upload : fileUploadPanel.getFileUploads()) {
+                logger.info("upload :" + upload);
+                if (upload.getFilename() != null && !upload.getFilename().trim().isEmpty()) {
+                    JSONObject forms = new JSONObject();
+                    forms.put("fileURL", fileUploadPanel.getFileName(upload));
+                    forms.put("name", new JSONString("File Name"));
+                    Onboardingforms.set(i, forms);
+                    i++;
+                }
+            }
+        }
+        employee.put("forms", Onboardingforms);
         logger.info("employee" + employee.toString());
         return employee;
     }
@@ -137,7 +191,10 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
 
     @Override
     protected void configure() {
-        addDependentsL.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        bankInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        additionalInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        formsInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        depsInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
     }
 
     @Override
@@ -159,7 +216,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
         addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
         addField("zip", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
-        entityFieldsPanel.add(getLineSeperatorTag("Bank Account Information"));
+        entityFieldsPanel.add(bankInfo);
         addField("accountFirstName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("accountLastName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("bankName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -169,11 +226,13 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         addField("bankAddress2", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("accountType", false, true, AccountType.names(), Alignment.HORIZONTAL);
         addField("achBlocked", false, true, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-        entityFieldsPanel.add(getLineSeperatorTag("Additional Information"));
+        entityFieldsPanel.add(additionalInfo);
         addField("referredBy", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("maritalStatus", false, true, MaritalStatus.names(), Alignment.HORIZONTAL);
         addEnumField("ethnicity", false, true, Ethnicity.names(), Alignment.HORIZONTAL);
-        entityFieldsPanel.add(getLineSeperatorTag("Dependent's Information"));
+        entityFieldsPanel.add(formsInfo);
+        entityFieldsPanel.add(fileUploadPanel);
+        entityFieldsPanel.add(depsInfo);
         entityFieldsPanel.add(addDependentsL);
         countriesF = (EnumField) fields.get("country");
         statesF = (EnumField) fields.get("state");
@@ -198,9 +257,19 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
 
                     @Override
                     public void onSuccess(String arg0) {
-                        postUpdateSuccess(arg0);
+                        uploadReceipts(arg0);
                     }
                 });
+    }
+
+    protected void uploadReceipts(String postString) {
+        if (!fileUploadPanel.isEmpty()) {
+            JSONObject post = (JSONObject) JSONParser.parseLenient(postString);
+            JSONArray employeeforms = JSONUtils.toJSONArray(post.get("forms"));
+            fileUploadPanel.upload(employeeforms, "fileURL");
+        } else {
+            postUpdateSuccess(null);
+        }
     }
 
     @Override
@@ -245,7 +314,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         if (event.getSource().equals(addDependentsL)) {
             CreateDependentsPanel panel = null;
             int i = createDependentsPanel.size();
-            panel = new CreateDependentsPanel(this, i + 1);
+            panel = new CreateDependentsPanel(this, i);
             createDependentsPanel.add(panel);
             entityFieldsPanel.add(panel);
         }
@@ -255,7 +324,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
     public void removePanel(int i) {
         if (createDependentsPanel.size() > 0) {
             createDependentsPanel.get(i).removeFromParent();
-            createDependentsPanel.remove(i - 1);
+            createDependentsPanel.remove(i);
         }
     }
 
