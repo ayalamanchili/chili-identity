@@ -29,6 +29,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Level;
 import javax.mail.Address;
@@ -56,15 +57,15 @@ import org.thymeleaf.context.Context;
 @Component
 @Transactional
 public class EmailService {
-    
+
     private static Logger logger = Logger.getLogger(EmailService.class.getName());
     protected JavaMailSender mailSender;
     @Autowired
     protected OfficeServiceConfiguration officeServiceConfiguration;
-    
+
     @Autowired
     protected OfficeCacheManager officeCacheManager;
-    
+
     @Async
     @Transactional
     public void sendEmail(final Email email) {
@@ -72,14 +73,17 @@ public class EmailService {
         if (tos.length < 1) {
             return;
         }
-        
         MimeMessagePreparator preparator = new MimeMessagePreparator() {
             public void prepare(MimeMessage mimeMessage) throws Exception {
                 MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
                 mimeMessage.setRecipients(Message.RecipientType.BCC, tos);
                 mimeMessage.setSubject(email.getSubject());
                 message.setText(processEmailBodyFromTemplate(email), true);
+                processHeaders(mimeMessage, email);
                 processAttchments(message, email);
+                message.getMimeMessage().saveChanges();
+                String str = message.getMimeMessage().getMessageID();
+                System.out.println(str);
             }
         };
         try {
@@ -91,7 +95,7 @@ public class EmailService {
             throw new FaultEventException(new FaultEventPayload(email, Email.class.getCanonicalName()), false, ex);
         }
     }
-    
+
     protected String processEmailBodyFromTemplate(Email email) {
         Context emailCtx = new Context();
         Map<String, Object> ctx = email.getContext();
@@ -103,7 +107,7 @@ public class EmailService {
         }
         return TemplateService.instance().processTemplate(getTemplateName(email), emailCtx);
     }
-    
+
     protected String getTemplateName(Email email) {
         if (email.getTemplateName() != null) {
             return email.getTemplateName();
@@ -116,7 +120,7 @@ public class EmailService {
             return "default_email_template.html";
         }
     }
-    
+
     protected void cleanEmailHtmlBody(Email email) {
         if (email.isRichText()) {
             email.setBody(HtmlUtils.cleanData(email.getBody()));
@@ -125,7 +129,15 @@ public class EmailService {
             email.setBody(XmlEscapers.xmlAttributeEscaper().escape(email.getBody()));
         }
     }
-    
+
+    protected void processHeaders(MimeMessage mimeMessage, Email email) throws MessagingException {
+        if (email.getHeaders() != null) {
+            for (Entry<String, String> e : email.getHeaders().entrySet()) {
+                mimeMessage.setHeader(e.getKey(), e.getValue());
+            }
+        }
+    }
+
     protected void processAttchments(MimeMessageHelper message, Email email) throws MessagingException {
         for (String attachmentName : email.getAttachments()) {
             File attachment = new File(officeServiceConfiguration.getContentManagementLocationRoot() + attachmentName);
@@ -134,7 +146,7 @@ public class EmailService {
             }
         }
     }
-    
+
     private Address[] convertToEmailAddress(Set<String> emails) {
         List<Address> addresses = new ArrayList<>();
         emails.stream().forEach((emailAddress) -> {
@@ -152,7 +164,7 @@ public class EmailService {
         });
         return addresses.toArray(new Address[addresses.size()]);
     }
-    
+
     protected Set<String> filterEmails(Email emailObj, Set<String> emails) {
         Set<String> result = new HashSet<>();
         if (OfficeServiceConfiguration.instance().isFilterEmails()) {
@@ -169,15 +181,15 @@ public class EmailService {
         logEmailEvent(emailObj);
         return result;
     }
-    
+
     @Autowired
     protected MongoOperations mongoTemplate;
-    
+
     protected void logEmailEvent(Email email) {
-    email.setSentTimeStamp(new Date());
+        email.setSentTimeStamp(new Date());
         mongoTemplate.save(email);
     }
-    
+
     public Boolean notificationsEnabled(Email emailObj, String emailAddress) {
         if (officeCacheManager.contains(Email.EMAILS_CACHE_KEY, emailAddress)) {
             return (Boolean) officeCacheManager.get(Email.EMAILS_CACHE_KEY, emailAddress);
@@ -190,15 +202,15 @@ public class EmailService {
                 officeCacheManager.put(Email.EMAILS_CACHE_KEY, emailAddress, false);
                 return false;
             }
-            
+
         }
         officeCacheManager.put(Email.EMAILS_CACHE_KEY, emailAddress, true);
         return true;
     }
-    
+
     @Autowired
     protected UserEmailPreferenceRuleDao userEmailPreferenceRuleDao;
-    
+
     protected boolean disableEmailByRules(Employee emp, Email emailObj, String emailAddress) {
         if (!Strings.isNullOrEmpty(emailObj.getEmailPreferenceRuleId()) && userEmailPreferenceRuleDao.findRuleForUser(emp.getEmployeeId(), emailObj.getEmailPreferenceRuleId()) != null) {
             return true;
@@ -206,7 +218,7 @@ public class EmailService {
         //TODO check process and task related stuff
         return false;
     }
-    
+
     @PersistenceContext
     protected EntityManager em;
 
@@ -222,11 +234,11 @@ public class EmailService {
             return null;
         }
     }
-    
+
     public void setMailSender(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
-    
+
     public static EmailService instance() {
         return SpringContext.getBean(EmailService.class);
     }

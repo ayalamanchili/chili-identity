@@ -7,7 +7,6 @@
  */
 package info.yalamanchili.office.jrs;
 
-import info.chili.jms.adapter.CMessagingService;
 import info.yalamanchili.office.Time.AssociateTimeAccuralService;
 import info.yalamanchili.office.Time.CorporateTimeAccuralService;
 import info.yalamanchili.office.Time.TimeJobService;
@@ -16,9 +15,9 @@ import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.SkillSetDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.TimePeriodDao;
+import info.yalamanchili.office.email.ReceiveEmailsService;
 import info.yalamanchili.office.employee.perfeval.PerformanceEvaluationQuestionsFactory;
 import info.yalamanchili.office.employee.probeval.ProbationPeriodEvaluationQuestionsFactory;
-import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.reports.profile.ProfileReportsService;
 import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.stereotype.Component;
@@ -103,5 +102,10 @@ public class OfficeServiceJobConfiguration {
     @ManagedOperation
     public void sendIncompleteProfileEmails() {
         ProfileReportsService.instance().sendMissingProfileInfoEmail();
+    }
+
+    @ManagedOperation
+    public void receiveEmails() {
+        ReceiveEmailsService.instance().processNewMessages();
     }
 }

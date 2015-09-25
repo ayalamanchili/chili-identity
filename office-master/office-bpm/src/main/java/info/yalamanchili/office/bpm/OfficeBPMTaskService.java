@@ -99,6 +99,10 @@ public class OfficeBPMTaskService {
         bpmTaskService.resolveTask(taskId);
     }
 
+    public void completeTaskOnBehalf(String taskId, List<Entry> request, String email) {
+
+    }
+
     public void completeTask(String taskId, List<Entry> request) {
         Map<String, Object> vars = new HashMap<>();
         if (request != null) {

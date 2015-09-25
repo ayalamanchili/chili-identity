@@ -47,6 +47,7 @@ public class GenericTaskCreateNotification implements TaskListener {
         String messageText = "Task is Created. Please complete.\n Details: \n Name: " + delegateTask.getName() + " \n Description:" + delegateTask.getDescription();
         email.setHtml(Boolean.TRUE);
         email.setBody(messageText);
+        email.getHeaders().put("task-id", delegateTask.getId());
         messagingService.sendEmail(email);
     }
 
