@@ -9,13 +9,9 @@
 package info.yalamanchili.office.client.ext.externalReferences;
 
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
-import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
-import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.TabPanel;
 import java.util.logging.Logger;
 
 /**
@@ -70,10 +66,10 @@ public class ReadExternalRefPanel extends ReadComposite {
 
     @Override
     protected boolean enableClone() {
-        return true;
+        return false;
     }
 
-    @Override
+   /* @Override
     protected void cloneClicked() {
         HttpServiceAsync.instance().doGet(getURI() + "/clone/" + getEntityId(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
@@ -86,4 +82,5 @@ public class ReadExternalRefPanel extends ReadComposite {
                     }
                 });
     }
+    */
 }
