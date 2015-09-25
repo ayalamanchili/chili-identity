@@ -69,18 +69,4 @@ public class ReadExternalRefPanel extends ReadComposite {
         return false;
     }
 
-   /* @Override
-    protected void cloneClicked() {
-        HttpServiceAsync.instance().doGet(getURI() + "/clone/" + getEntityId(), OfficeWelcome.instance().getHeaders(), true,
-                new ALAsyncCallback<String>() {
-
-                    @Override
-                    public void onResponse(String arg0) {
-                        logger.info(arg0);
-                        TabPanel.instance().adminPanel.entityPanel.clear();
-                        TabPanel.instance().adminPanel.entityPanel.add(new UpdateExternalReferencesPanel(JSONParser.parseLenient(arg0).isObject()));
-                    }
-                });
-    }
-    */
-}
+   }
