@@ -7,8 +7,6 @@
  */
 package info.yalamanchili.office.client.profile.statusreport;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
@@ -21,12 +19,10 @@ import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
-import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.expense.chkreq.UpdateImmigrationCheckRequisitionPanel;
 import java.util.logging.Logger;
 
 /**
@@ -148,18 +144,6 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
         }
     }
 
-    /*protected void createCopy(String entityId) {
-        HttpService.HttpServiceAsync.instance().doGet(OfficeWelcome.constants.root_url() + "statusreport/clone/" + entityId, OfficeWelcome.instance().getHeaders(), true,
-                new ALAsyncCallback<String>() {
-
-                    @Override
-                    public void onResponse(String arg0) {
-                        new ResponseStatusWidget().show("Copy created. Plase update and save.");
-                        TabPanel.instance().homePanel.entityPanel.clear();
-                        TabPanel.instance().homePanel.entityPanel.add(new UpdateStatusReportPanel(JSONParser.parseLenient(arg0).isObject()));
-                    }
-                });
-    }*/
     @Override
     public void copyClicked(final String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(OfficeWelcome.constants.root_url() + "statusreport/clone/" + entityId, OfficeWelcome.instance().getHeaders(), true,
@@ -168,7 +152,6 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
                     public void onResponse(String arg0) {
                         logger.info(arg0);
                         new ResponseStatusWidget().show("Copy created. Plase update and save.");
-                        //TabPanel.instance().expensePanel.entityPanel.clear();
                         TabPanel.instance().homePanel.entityPanel.clear();
                         TabPanel.instance().homePanel.entityPanel.add(new UpdateStatusReportPanel(JSONParser.parseLenient(arg0).isObject()));
                     }

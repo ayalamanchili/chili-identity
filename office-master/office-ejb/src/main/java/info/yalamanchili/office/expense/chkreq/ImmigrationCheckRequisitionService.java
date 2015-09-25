@@ -133,7 +133,7 @@ public class ImmigrationCheckRequisitionService {
         Employee preparedBy = EmployeeDao.instance().findEmployeWithEmpId(entity.getSubmittedBy());
         EmployeeDao employeeDao = EmployeeDao.instance();
         if (preparedBy != null) {
-            String prepareByStr = preparedBy.getLastName() + " , " + preparedBy.getFirstName();
+            String prepareByStr = preparedBy.getLastName() + " ," + preparedBy.getFirstName();
             data.getData().put("submittedBy", prepareByStr);
             Signature approvedBysignature = new Signature(preparedBy.getEmployeeId(), preparedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "submittedBySignature", DateUtils.dateToCalendar(entity.getApprovedDate()), employeeDao.getPrimaryEmail(preparedBy), null);
             data.getSignatures().add(approvedBysignature);
