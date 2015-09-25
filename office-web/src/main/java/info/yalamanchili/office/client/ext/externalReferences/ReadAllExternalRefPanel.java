@@ -9,11 +9,13 @@ package info.yalamanchili.office.client.ext.externalReferences;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -90,7 +92,20 @@ public class ReadAllExternalRefPanel extends CRUDReadAllComposite {
         TabPanel.instance().getAdminPanel().entityPanel.clear();
         TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllExternalRefPanel());
     }
-
+    
+     @Override
+    public void copyClicked(final String entityId) {
+        HttpService.HttpServiceAsync.instance().doGet(OfficeWelcome.constants.root_url() + "external-ref/clone/" + entityId, OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String arg0) {
+                        logger.info(arg0);
+                        new ResponseStatusWidget().show("Copy created. Please update and save.");
+                        TabPanel.instance().adminPanel.entityPanel.clear();
+                        TabPanel.instance().adminPanel.entityPanel.add(new UpdateExternalReferencesPanel(JSONParser.parseLenient(arg0).isObject()));
+                    }
+                });
+    }
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().getAdminPanel().entityPanel.clear();
@@ -120,7 +135,7 @@ public class ReadAllExternalRefPanel extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+        createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE, TableRowOptionsWidget.OptionsType.COPY), row, JSONUtils.toString(entity, "id"));
     }
 
     @Override
