@@ -103,10 +103,11 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
         table.setText(0, 2, getKeyValue("Start Date"));
         table.setText(0, 3, getKeyValue("End Date"));
         table.setText(0, 4, getKeyValue("Status"));
-        if (TabPanel.instance().homePanel.isVisible()) {
+       /* if (TabPanel.instance().homePanel.isVisible()) {
             table.setText(0, 5, getKeyValue("Copy"));
         }
-        table.setText(0, 6, getKeyValue("Compare"));
+        */
+        table.setText(0, 5, getKeyValue("Compare"));
     }
 
     @Override
@@ -120,7 +121,7 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
             table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportStartDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportEndDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 4, JSONUtils.toString(entity, "status"));
-            if (TabPanel.instance().homePanel.isVisible()) {
+           /* if (TabPanel.instance().homePanel.isVisible()) {
                 ClickableLink copyL = new ClickableLink("Create Copy");
                 copyL.setTitle(JSONUtils.toString(entity, "id"));
                 copyL.addClickHandler(new ClickHandler() {
@@ -131,7 +132,9 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
                 });
                 table.setWidget(i, 5, copyL);
             }
+            */
             //Compare
+            if (TabPanel.instance().homePanel.isVisible()) {
             ClickableLink compareL = new ClickableLink("Compare");
             compareL.setTitle(JSONUtils.toString(entity, "id"));
             compareL.addClickHandler(new ClickHandler() {
@@ -140,8 +143,9 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
                     compare(((ClickableLink) event.getSource()).getTitle());
                 }
             });
-            table.setWidget(i, 6, compareL);
+            table.setWidget(i, 5, compareL);
         }
+    }
     }
 
     protected void compare(String entityId) {
@@ -166,8 +170,21 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
      }
      }-*/;
 
-    protected void createCopy(String entityId) {
+    /*protected void createCopy(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(OfficeWelcome.constants.root_url() + "corporate-statusreport/clone/" + entityId, OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String arg0) {
+                        logger.info(arg0);
+                        new ResponseStatusWidget().show("Copy created. Plase update and save.");
+                        TabPanel.instance().homePanel.entityPanel.clear();
+                        TabPanel.instance().homePanel.entityPanel.add(new CreateCorporateStatusReportPanel(JSONParser.parseLenient(arg0).isObject()));
+                    }
+                });
+    }*/
+    
+    public void copyClicked(final String entityId){
+         HttpService.HttpServiceAsync.instance().doGet(OfficeWelcome.constants.root_url() + "corporate-statusreport/clone/" + entityId, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String arg0) {
@@ -182,9 +199,9 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         if (TabPanel.instance().homePanel.isVisible()) {
-            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE, TableRowOptionsWidget.OptionsType.COPY), row, JSONUtils.toString(entity, "id"));
         } else {
-            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
+            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.COPY), row, JSONUtils.toString(entity, "id"));
         }
     }
 
