@@ -2,7 +2,7 @@ package info.yalamanchili.office.client.internalization;
 
 /**
  * Interface to represent the constants contained in resource bundle:
- * 	'/home/ayalamanchili/sstech/office/office-web/src/main/java/info/yalamanchili/office/client/internalization/OfficeConstants.properties'.
+ * 	'C:/codebase/sstech/office-git/office/office-web/src/main/java/info/yalamanchili/office/client/internalization/OfficeConstants.properties'.
  */
 public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWithLookup {
   
@@ -1105,6 +1105,42 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String BankAccount_accountLastName_info();
 
   /**
+   * Translated "Account Type".
+   * 
+   * @return translated "Account Type"
+   */
+  @DefaultStringValue("Account Type")
+  @Key("BankAccount_accountType")
+  String BankAccount_accountType();
+
+  /**
+   * Translated "Bank Account Type. Eg: Checkings, Savings".
+   * 
+   * @return translated "Bank Account Type. Eg: Checkings, Savings"
+   */
+  @DefaultStringValue("Bank Account Type. Eg: Checkings, Savings")
+  @Key("BankAccount_accountType_info")
+  String BankAccount_accountType_info();
+
+  /**
+   * Translated "Is ACH Blocked?".
+   * 
+   * @return translated "Is ACH Blocked?"
+   */
+  @DefaultStringValue("Is ACH Blocked?")
+  @Key("BankAccount_achBlocked")
+  String BankAccount_achBlocked();
+
+  /**
+   * Translated "Some account have ACH blocked please indicate if yes.".
+   * 
+   * @return translated "Some account have ACH blocked please indicate if yes."
+   */
+  @DefaultStringValue("Some account have ACH blocked please indicate if yes.")
+  @Key("BankAccount_achBlocked_info")
+  String BankAccount_achBlocked_info();
+
+  /**
    * Translated "Bank Account Number".
    * 
    * @return translated "Bank Account Number"
@@ -1121,6 +1157,42 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Bank Account Number")
   @Key("BankAccount_bankAccountNumber_info")
   String BankAccount_bankAccountNumber_info();
+
+  /**
+   * Translated "Bank Address 1".
+   * 
+   * @return translated "Bank Address 1"
+   */
+  @DefaultStringValue("Bank Address 1")
+  @Key("BankAccount_bankAddress1")
+  String BankAccount_bankAddress1();
+
+  /**
+   * Translated "Bank Address 1".
+   * 
+   * @return translated "Bank Address 1"
+   */
+  @DefaultStringValue("Bank Address 1")
+  @Key("BankAccount_bankAddress1_info")
+  String BankAccount_bankAddress1_info();
+
+  /**
+   * Translated "Bank Address 2".
+   * 
+   * @return translated "Bank Address 2"
+   */
+  @DefaultStringValue("Bank Address 2")
+  @Key("BankAccount_bankAddress2")
+  String BankAccount_bankAddress2();
+
+  /**
+   * Translated "Bank Address 2".
+   * 
+   * @return translated "Bank Address 2"
+   */
+  @DefaultStringValue("Bank Address 2")
+  @Key("BankAccount_bankAddress2_info")
+  String BankAccount_bankAddress2_info();
 
   /**
    * Translated "Bank Name".
@@ -1337,6 +1409,24 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Amount")
   @Key("CheckRequisitionItem_amount_info")
   String CheckRequisitionItem_amount_info();
+
+  /**
+   * Translated "Item Desc".
+   * 
+   * @return translated "Item Desc"
+   */
+  @DefaultStringValue("Item Desc")
+  @Key("CheckRequisitionItem_itemDesc")
+  String CheckRequisitionItem_itemDesc();
+
+  /**
+   * Translated "Item Desc".
+   * 
+   * @return translated "Item Desc"
+   */
+  @DefaultStringValue("Item Desc")
+  @Key("CheckRequisitionItem_itemDesc_info")
+  String CheckRequisitionItem_itemDesc_info();
 
   /**
    * Translated "Item Name".
@@ -3814,6 +3904,24 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String CorpEmpLeaveRequest_category_info();
 
   /**
+   * Translated "Created Time Stamp".
+   * 
+   * @return translated "Created Time Stamp"
+   */
+  @DefaultStringValue("Created Time Stamp")
+  @Key("CorpEmpLeaveRequest_createdTimeStamp")
+  String CorpEmpLeaveRequest_createdTimeStamp();
+
+  /**
+   * Translated "Created Time Stamp".
+   * 
+   * @return translated "Created Time Stamp"
+   */
+  @DefaultStringValue("Created Time Stamp")
+  @Key("CorpEmpLeaveRequest_createdTimeStamp_info")
+  String CorpEmpLeaveRequest_createdTimeStamp_info();
+
+  /**
    * Translated "End Date ".
    * 
    * @return translated "End Date "
@@ -4183,6 +4291,24 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String CorrectClientInformationRequest_correctionDetails_info();
 
   /**
+   * Translated "End Date".
+   * 
+   * @return translated "End Date"
+   */
+  @DefaultStringValue("End Date")
+  @Key("Deactivatation_endDate")
+  String Deactivatation_endDate();
+
+  /**
+   * Translated "End Date".
+   * 
+   * @return translated "End Date"
+   */
+  @DefaultStringValue("End Date")
+  @Key("Deactivatation_endDate_info")
+  String Deactivatation_endDate_info();
+
+  /**
    * Translated "Department".
    * 
    * @return translated "Department"
@@ -4199,6 +4325,78 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Department/Role who is responsible for processing the ticket")
   @Key("Department_department_info")
   String Department_department_info();
+
+  /**
+   * Translated "Dependent Date Of Birth".
+   * 
+   * @return translated "Dependent Date Of Birth"
+   */
+  @DefaultStringValue("Dependent Date Of Birth")
+  @Key("Dependent_ddateOfBirth")
+  String Dependent_ddateOfBirth();
+
+  /**
+   * Translated "Dependent Date Of Birth".
+   * 
+   * @return translated "Dependent Date Of Birth"
+   */
+  @DefaultStringValue("Dependent Date Of Birth")
+  @Key("Dependent_ddateOfBirth_info")
+  String Dependent_ddateOfBirth_info();
+
+  /**
+   * Translated "Dependent First Name".
+   * 
+   * @return translated "Dependent First Name"
+   */
+  @DefaultStringValue("Dependent First Name")
+  @Key("Dependent_dfirstName")
+  String Dependent_dfirstName();
+
+  /**
+   * Translated "Dependent First Name".
+   * 
+   * @return translated "Dependent First Name"
+   */
+  @DefaultStringValue("Dependent First Name")
+  @Key("Dependent_dfirstName_info")
+  String Dependent_dfirstName_info();
+
+  /**
+   * Translated "Dependent Last Name".
+   * 
+   * @return translated "Dependent Last Name"
+   */
+  @DefaultStringValue("Dependent Last Name")
+  @Key("Dependent_dlastName")
+  String Dependent_dlastName();
+
+  /**
+   * Translated "Dependent Last Name".
+   * 
+   * @return translated "Dependent Last Name"
+   */
+  @DefaultStringValue("Dependent Last Name")
+  @Key("Dependent_dlastName_info")
+  String Dependent_dlastName_info();
+
+  /**
+   * Translated "Relationship".
+   * 
+   * @return translated "Relationship"
+   */
+  @DefaultStringValue("Relationship")
+  @Key("Dependent_relationship")
+  String Dependent_relationship();
+
+  /**
+   * Translated "Relationship".
+   * 
+   * @return translated "Relationship"
+   */
+  @DefaultStringValue("Relationship")
+  @Key("Dependent_relationship_info")
+  String Dependent_relationship_info();
 
   /**
    * Translated "Action Name".
@@ -4930,6 +5128,168 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String EmployeeType_name_info();
 
   /**
+   * Translated "Account First Name".
+   * 
+   * @return translated "Account First Name"
+   */
+  @DefaultStringValue("Account First Name")
+  @Key("Employee_accountFirstName")
+  String Employee_accountFirstName();
+
+  /**
+   * Translated "Account First Name".
+   * 
+   * @return translated "Account First Name"
+   */
+  @DefaultStringValue("Account First Name")
+  @Key("Employee_accountFirstName_info")
+  String Employee_accountFirstName_info();
+
+  /**
+   * Translated "Account Last Name".
+   * 
+   * @return translated "Account Last Name"
+   */
+  @DefaultStringValue("Account Last Name")
+  @Key("Employee_accountLastName")
+  String Employee_accountLastName();
+
+  /**
+   * Translated "Account Last Name".
+   * 
+   * @return translated "Account Last Name"
+   */
+  @DefaultStringValue("Account Last Name")
+  @Key("Employee_accountLastName_info")
+  String Employee_accountLastName_info();
+
+  /**
+   * Translated "Account Type".
+   * 
+   * @return translated "Account Type"
+   */
+  @DefaultStringValue("Account Type")
+  @Key("Employee_accountType")
+  String Employee_accountType();
+
+  /**
+   * Translated "Account Type".
+   * 
+   * @return translated "Account Type"
+   */
+  @DefaultStringValue("Account Type")
+  @Key("Employee_accountType_info")
+  String Employee_accountType_info();
+
+  /**
+   * Translated "ACH Blocked".
+   * 
+   * @return translated "ACH Blocked"
+   */
+  @DefaultStringValue("ACH Blocked")
+  @Key("Employee_achBlocked")
+  String Employee_achBlocked();
+
+  /**
+   * Translated "ACH Blocked".
+   * 
+   * @return translated "ACH Blocked"
+   */
+  @DefaultStringValue("ACH Blocked")
+  @Key("Employee_achBlocked_info")
+  String Employee_achBlocked_info();
+
+  /**
+   * Translated "Account Number".
+   * 
+   * @return translated "Account Number"
+   */
+  @DefaultStringValue("Account Number")
+  @Key("Employee_bankAccountNumber")
+  String Employee_bankAccountNumber();
+
+  /**
+   * Translated "Account Number".
+   * 
+   * @return translated "Account Number"
+   */
+  @DefaultStringValue("Account Number")
+  @Key("Employee_bankAccountNumber_info")
+  String Employee_bankAccountNumber_info();
+
+  /**
+   * Translated "Bank Address".
+   * 
+   * @return translated "Bank Address"
+   */
+  @DefaultStringValue("Bank Address")
+  @Key("Employee_bankAddress1")
+  String Employee_bankAddress1();
+
+  /**
+   * Translated "Bank Address".
+   * 
+   * @return translated "Bank Address"
+   */
+  @DefaultStringValue("Bank Address")
+  @Key("Employee_bankAddress1_info")
+  String Employee_bankAddress1_info();
+
+  /**
+   * Translated "Bank Address".
+   * 
+   * @return translated "Bank Address"
+   */
+  @DefaultStringValue("Bank Address")
+  @Key("Employee_bankAddress2")
+  String Employee_bankAddress2();
+
+  /**
+   * Translated "Bank Address".
+   * 
+   * @return translated "Bank Address"
+   */
+  @DefaultStringValue("Bank Address")
+  @Key("Employee_bankAddress2_info")
+  String Employee_bankAddress2_info();
+
+  /**
+   * Translated "Bank Name".
+   * 
+   * @return translated "Bank Name"
+   */
+  @DefaultStringValue("Bank Name")
+  @Key("Employee_bankName")
+  String Employee_bankName();
+
+  /**
+   * Translated "Bank Name".
+   * 
+   * @return translated "Bank Name"
+   */
+  @DefaultStringValue("Bank Name")
+  @Key("Employee_bankName_info")
+  String Employee_bankName_info();
+
+  /**
+   * Translated "Routing Number".
+   * 
+   * @return translated "Routing Number"
+   */
+  @DefaultStringValue("Routing Number")
+  @Key("Employee_bankRoutingNumber")
+  String Employee_bankRoutingNumber();
+
+  /**
+   * Translated "Routing Number".
+   * 
+   * @return translated "Routing Number"
+   */
+  @DefaultStringValue("Routing Number")
+  @Key("Employee_bankRoutingNumber_info")
+  String Employee_bankRoutingNumber_info();
+
+  /**
    * Translated "Branch ".
    * 
    * @return translated "Branch "
@@ -5110,6 +5470,42 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Employee_employee_info();
 
   /**
+   * Translated "End Date".
+   * 
+   * @return translated "End Date"
+   */
+  @DefaultStringValue("End Date")
+  @Key("Employee_endDate")
+  String Employee_endDate();
+
+  /**
+   * Translated "End Date of the employee".
+   * 
+   * @return translated "End Date of the employee"
+   */
+  @DefaultStringValue("End Date of the employee")
+  @Key("Employee_endDate_info")
+  String Employee_endDate_info();
+
+  /**
+   * Translated "Ethnicity".
+   * 
+   * @return translated "Ethnicity"
+   */
+  @DefaultStringValue("Ethnicity")
+  @Key("Employee_ethnicity")
+  String Employee_ethnicity();
+
+  /**
+   * Translated "Ethnicity".
+   * 
+   * @return translated "Ethnicity"
+   */
+  @DefaultStringValue("Ethnicity")
+  @Key("Employee_ethnicity_info")
+  String Employee_ethnicity_info();
+
+  /**
    * Translated "First Name".
    * 
    * @return translated "First Name"
@@ -5164,11 +5560,11 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Employee_jobTitle();
 
   /**
-   * Translated "JobTitle of the employeeper".
+   * Translated "JobTitle of the employee".
    * 
-   * @return translated "JobTitle of the employeeper"
+   * @return translated "JobTitle of the employee"
    */
-  @DefaultStringValue("JobTitle of the employeeper")
+  @DefaultStringValue("JobTitle of the employee")
   @Key("Employee_jobTitle_info")
   String Employee_jobTitle_info();
 
@@ -5189,6 +5585,24 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Last Name of the employee")
   @Key("Employee_lastName_info")
   String Employee_lastName_info();
+
+  /**
+   * Translated "Marital Status".
+   * 
+   * @return translated "Marital Status"
+   */
+  @DefaultStringValue("Marital Status")
+  @Key("Employee_maritalStatus")
+  String Employee_maritalStatus();
+
+  /**
+   * Translated "Marital Status".
+   * 
+   * @return translated "Marital Status"
+   */
+  @DefaultStringValue("Marital Status")
+  @Key("Employee_maritalStatus_info")
+  String Employee_maritalStatus_info();
 
   /**
    * Translated "Middle Initial".
@@ -5225,6 +5639,24 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("password of the employee used to login")
   @Key("Employee_passwordHash_info")
   String Employee_passwordHash_info();
+
+  /**
+   * Translated "Referred By".
+   * 
+   * @return translated "Referred By"
+   */
+  @DefaultStringValue("Referred By")
+  @Key("Employee_referredBy")
+  String Employee_referredBy();
+
+  /**
+   * Translated "Referred By".
+   * 
+   * @return translated "Referred By"
+   */
+  @DefaultStringValue("Referred By")
+  @Key("Employee_referredBy_info")
+  String Employee_referredBy_info();
 
   /**
    * Translated "Role".
@@ -5443,20 +5875,20 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Employee_vendorName_info();
 
   /**
-   * Translated "WorkStatus".
+   * Translated "Work Status".
    * 
-   * @return translated "WorkStatus"
+   * @return translated "Work Status"
    */
-  @DefaultStringValue("WorkStatus")
+  @DefaultStringValue("Work Status")
   @Key("Employee_workStatus")
   String Employee_workStatus();
 
   /**
-   * Translated "WorkStatus".
+   * Translated "Work Status".
    * 
-   * @return translated "WorkStatus"
+   * @return translated "Work Status"
    */
-  @DefaultStringValue("WorkStatus")
+  @DefaultStringValue("Work Status")
   @Key("Employee_workStatus_info")
   String Employee_workStatus_info();
 
@@ -6937,6 +7369,42 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String ForgotPassword_employeeId_info();
 
   /**
+   * Translated "Complete".
+   * 
+   * @return translated "Complete"
+   */
+  @DefaultStringValue("Complete")
+  @Key("ImmigrationCheckRequisitionStatus_COMPLETE")
+  String ImmigrationCheckRequisitionStatus_COMPLETE();
+
+  /**
+   * Translated "Pending Accounts Payable Dispatch".
+   * 
+   * @return translated "Pending Accounts Payable Dispatch"
+   */
+  @DefaultStringValue("Pending Accounts Payable Dispatch")
+  @Key("ImmigrationCheckRequisitionStatus_PENDING_ACCOUNTS_PAYABLE_DISPATCH")
+  String ImmigrationCheckRequisitionStatus_PENDING_ACCOUNTS_PAYABLE_DISPATCH();
+
+  /**
+   * Translated "Pending Approval".
+   * 
+   * @return translated "Pending Approval"
+   */
+  @DefaultStringValue("Pending Approval")
+  @Key("ImmigrationCheckRequisitionStatus_PENDING_APPROVAL")
+  String ImmigrationCheckRequisitionStatus_PENDING_APPROVAL();
+
+  /**
+   * Translated "Rejected".
+   * 
+   * @return translated "Rejected"
+   */
+  @DefaultStringValue("Rejected")
+  @Key("ImmigrationCheckRequisitionStatus_REJECTED")
+  String ImmigrationCheckRequisitionStatus_REJECTED();
+
+  /**
    * Translated "Amount".
    * 
    * @return translated "Amount"
@@ -7081,6 +7549,78 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String ImmigrationCheckRequisition_requestedDate_info();
 
   /**
+   * Translated "Branch".
+   * 
+   * @return translated "Branch"
+   */
+  @DefaultStringValue("Branch")
+  @Key("InitiateOnBoarding_branch")
+  String InitiateOnBoarding_branch();
+
+  /**
+   * Translated "Branch".
+   * 
+   * @return translated "Branch"
+   */
+  @DefaultStringValue("Branch")
+  @Key("InitiateOnBoarding_branch_info")
+  String InitiateOnBoarding_branch_info();
+
+  /**
+   * Translated "Email".
+   * 
+   * @return translated "Email"
+   */
+  @DefaultStringValue("Email")
+  @Key("InitiateOnBoarding_email")
+  String InitiateOnBoarding_email();
+
+  /**
+   * Translated "Email".
+   * 
+   * @return translated "Email"
+   */
+  @DefaultStringValue("Email")
+  @Key("InitiateOnBoarding_email_info")
+  String InitiateOnBoarding_email_info();
+
+  /**
+   * Translated "Start Date".
+   * 
+   * @return translated "Start Date"
+   */
+  @DefaultStringValue("Start Date")
+  @Key("InitiateOnBoarding_startDate")
+  String InitiateOnBoarding_startDate();
+
+  /**
+   * Translated "Start Date".
+   * 
+   * @return translated "Start Date"
+   */
+  @DefaultStringValue("Start Date")
+  @Key("InitiateOnBoarding_startDate_info")
+  String InitiateOnBoarding_startDate_info();
+
+  /**
+   * Translated "Work Status ".
+   * 
+   * @return translated "Work Status "
+   */
+  @DefaultStringValue("Work Status ")
+  @Key("InitiateOnBoarding_workStatus")
+  String InitiateOnBoarding_workStatus();
+
+  /**
+   * Translated "Work Status ".
+   * 
+   * @return translated "Work Status "
+   */
+  @DefaultStringValue("Work Status ")
+  @Key("InitiateOnBoarding_workStatus_info")
+  String InitiateOnBoarding_workStatus_info();
+
+  /**
    * Translated "Invitee's Email".
    * 
    * @return translated "Invitee's Email"
@@ -7088,6 +7628,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Invitee's Email")
   @Key("InviteCode_email")
   String InviteCode_email();
+
+  /**
+   * Translated "Invitee's Email".
+   * 
+   * @return translated "Invitee's Email"
+   */
+  @DefaultStringValue("Invitee's Email")
+  @Key("InviteCode_email_info")
+  String InviteCode_email_info();
 
   /**
    * Translated "Invitation Valid To".
@@ -7099,6 +7648,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String InviteCode_expiryDate();
 
   /**
+   * Translated "Invitation Valid To".
+   * 
+   * @return translated "Invitation Valid To"
+   */
+  @DefaultStringValue("Invitation Valid To")
+  @Key("InviteCode_expiryDate_info")
+  String InviteCode_expiryDate_info();
+
+  /**
    * Translated "Invitation Type".
    * 
    * @return translated "Invitation Type"
@@ -7108,6 +7666,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String InviteCode_typeOfInvitation();
 
   /**
+   * Translated "Invitation Type".
+   * 
+   * @return translated "Invitation Type"
+   */
+  @DefaultStringValue("Invitation Type")
+  @Key("InviteCode_typeOfInvitation_info")
+  String InviteCode_typeOfInvitation_info();
+
+  /**
    * Translated "Invitation Valid From".
    * 
    * @return translated "Invitation Valid From"
@@ -7115,6 +7682,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Invitation Valid From")
   @Key("InviteCode_validFromDate")
   String InviteCode_validFromDate();
+
+  /**
+   * Translated "Invitation Valid From".
+   * 
+   * @return translated "Invitation Valid From"
+   */
+  @DefaultStringValue("Invitation Valid From")
+  @Key("InviteCode_validFromDate_info")
+  String InviteCode_validFromDate_info();
 
   /**
    * Translated "Description".
@@ -8791,6 +9367,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Role_ROLE_GC_IMMIGRATION();
 
   /**
+   * Translated "General Expense Manager".
+   * 
+   * @return translated "General Expense Manager"
+   */
+  @DefaultStringValue("General Expense Manager")
+  @Key("Role_ROLE_GENERAL_EXPENSE_MANAGER")
+  String Role_ROLE_GENERAL_EXPENSE_MANAGER();
+
+  /**
    * Translated "H1B Immigration".
    * 
    * @return translated "H1B Immigration"
@@ -8854,6 +9439,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Role_ROLE_IT_DEVELOPER();
 
   /**
+   * Translated "On Boarding Manager".
+   * 
+   * @return translated "On Boarding Manager"
+   */
+  @DefaultStringValue("On Boarding Manager")
+  @Key("Role_ROLE_ON_BOARDING_MGR")
+  String Role_ROLE_ON_BOARDING_MGR();
+
+  /**
    * Translated "Payroll and Benefits".
    * 
    * @return translated "Payroll and Benefits"
@@ -8915,6 +9509,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Time")
   @Key("Role_ROLE_TIME")
   String Role_ROLE_TIME();
+
+  /**
+   * Translated "Travel Booking Manager".
+   * 
+   * @return translated "Travel Booking Manager"
+   */
+  @DefaultStringValue("Travel Booking Manager")
+  @Key("Role_ROLE_TRAVEL_BOOKING_MANAGER")
+  String Role_ROLE_TRAVEL_BOOKING_MANAGER();
 
   /**
    * Translated "User".
@@ -10852,6 +11455,24 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String TravelAuthorizationStatus_PENDING_MANAGER_APPROVAL();
 
   /**
+   * Translated "Pending Travel Booking Approval".
+   * 
+   * @return translated "Pending Travel Booking Approval"
+   */
+  @DefaultStringValue("Pending Travel Booking Approval")
+  @Key("TravelAuthorizationStatus_PENDING_TRAVEL_BOOKING")
+  String TravelAuthorizationStatus_PENDING_TRAVEL_BOOKING();
+
+  /**
+   * Translated "Pending Travel Booking Manager Approval".
+   * 
+   * @return translated "Pending Travel Booking Manager Approval"
+   */
+  @DefaultStringValue("Pending Travel Booking Manager Approval")
+  @Key("TravelAuthorizationStatus_PENDING_TRAVEL_BOOKING_MANAGER_APPROVAL")
+  String TravelAuthorizationStatus_PENDING_TRAVEL_BOOKING_MANAGER_APPROVAL();
+
+  /**
    * Translated "Rejected".
    * 
    * @return translated "Rejected"
@@ -11869,6 +12490,24 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Year_year();
 
   /**
+   * Translated "Checking".
+   * 
+   * @return translated "Checking"
+   */
+  @DefaultStringValue("Checking")
+  @Key("accountType_CHECKING")
+  String accountType_CHECKING();
+
+  /**
+   * Translated "Savings".
+   * 
+   * @return translated "Savings"
+   */
+  @DefaultStringValue("Savings")
+  @Key("accountType_SAVINGS")
+  String accountType_SAVINGS();
+
+  /**
    * Translated "Employee Expense".
    * 
    * @return translated "Employee Expense"
@@ -11894,6 +12533,42 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Purchasing Card")
   @Key("banquetExpensePaymentMode_PURCHASING_CARD")
   String banquetExpensePaymentMode_PURCHASING_CARD();
+
+  /**
+   * Translated "Amendment".
+   * 
+   * @return translated "Amendment"
+   */
+  @DefaultStringValue("Amendment")
+  @Key("caseType_AMENDMENT")
+  String caseType_AMENDMENT();
+
+  /**
+   * Translated "Extension H1b".
+   * 
+   * @return translated "Extension H1b"
+   */
+  @DefaultStringValue("Extension H1b")
+  @Key("caseType_ENTENSION_H1B")
+  String caseType_ENTENSION_H1B();
+
+  /**
+   * Translated "New H1b".
+   * 
+   * @return translated "New H1b"
+   */
+  @DefaultStringValue("New H1b")
+  @Key("caseType_NEW_H1B")
+  String caseType_NEW_H1B();
+
+  /**
+   * Translated "Transfer H1b".
+   * 
+   * @return translated "Transfer H1b"
+   */
+  @DefaultStringValue("Transfer H1b")
+  @Key("caseType_TRANSFER_H1B")
+  String caseType_TRANSFER_H1B();
 
   /**
    * Translated "Jury Duty".
@@ -12472,6 +13147,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String role_ROLE_GC_IMMIGRATION();
 
   /**
+   * Translated "General Expense Manager".
+   * 
+   * @return translated "General Expense Manager"
+   */
+  @DefaultStringValue("General Expense Manager")
+  @Key("role_ROLE_GENERAL_EXPENSE_MANAGER")
+  String role_ROLE_GENERAL_EXPENSE_MANAGER();
+
+  /**
    * Translated "H1B Immigration".
    * 
    * @return translated "H1B Immigration"
@@ -12535,6 +13219,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String role_ROLE_IT_DEVELOPER();
 
   /**
+   * Translated "On Boarding Manager".
+   * 
+   * @return translated "On Boarding Manager"
+   */
+  @DefaultStringValue("On Boarding Manager")
+  @Key("role_ROLE_ON_BOARDING_MGR")
+  String role_ROLE_ON_BOARDING_MGR();
+
+  /**
    * Translated "Payroll and Benefits".
    * 
    * @return translated "Payroll and Benefits"
@@ -12596,6 +13289,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Time")
   @Key("role_ROLE_TIME")
   String role_ROLE_TIME();
+
+  /**
+   * Translated "Travel Booking Manager".
+   * 
+   * @return translated "Travel Booking Manager"
+   */
+  @DefaultStringValue("Travel Booking Manager")
+  @Key("role_ROLE_TRAVEL_BOOKING_MANAGER")
+  String role_ROLE_TRAVEL_BOOKING_MANAGER();
 
   /**
    * Translated "User".
@@ -12830,6 +13532,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("H1B")
   @Key("workStatus_H1B")
   String workStatus_H1B();
+
+  /**
+   * Translated "H4-EAD".
+   * 
+   * @return translated "H4-EAD"
+   */
+  @DefaultStringValue("H4-EAD")
+  @Key("workStatus_H4_EAD")
+  String workStatus_H4_EAD();
 
   /**
    * Translated "L2EAD".
