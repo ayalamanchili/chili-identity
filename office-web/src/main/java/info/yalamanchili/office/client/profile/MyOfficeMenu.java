@@ -13,6 +13,8 @@ import com.google.gwt.user.client.ui.MenuBar;
 import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.fields.FileField;
 import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.Auth.ROLE;
+import info.yalamanchili.office.client.admin.hr.ReadAllProspectsPanel;
 import info.yalamanchili.office.client.contacttype.CompanyContactTypeSidePanel;
 import info.yalamanchili.office.client.contacttype.ReadAllCompanyContactTypePanel;
 import info.yalamanchili.office.client.onboarding.OnBoardingSidePanel;
@@ -44,6 +46,9 @@ public class MyOfficeMenu extends Composite {
             myOfficeMenuBar.addItem("AddressType", addressTypesMaintainenceCmd);
             myOfficeMenuBar.addItem("EmailType", emailTypesMaintainenceCmd);
             myOfficeMenuBar.addItem("ContactType", companyContactTypeMaintainenceCmd);
+        }
+        if(Auth.hasAnyOfRoles(ROLE.ROLE_CEO, ROLE.ROLE_HR, ROLE.ROLE_RECRUITER)){
+            myOfficeMenuBar.addItem("Prospects", prospectsMaintainenceCmd);
         }
         myOfficeMenuBar.addItem("Information", corpEmpInfo);
         myOfficeMenuBar.addStyleName("entityMenuBar");
@@ -110,6 +115,13 @@ public class MyOfficeMenu extends Composite {
             TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
             TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmployeeOnBoardingPanel());
             TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new OnBoardingSidePanel());
+        }
+    };
+    Command prospectsMaintainenceCmd = new Command() {
+        public void execute() {
+            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+            TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllProspectsPanel());
         }
     };
 }
