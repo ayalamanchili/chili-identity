@@ -109,12 +109,16 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             JSONObject emp = (JSONObject) entity.get("employee");
-            table.setText(i, 1, JSONUtils.toString(emp, "firstName"));
+            if (emp != null) {
+                table.setText(i, 1, JSONUtils.toString(emp, "firstName"));
+                if (emp.get("company") != null) {
+                    table.setText(i, 4, JSONUtils.toString(emp.get("company"), "name"));
+                }
+            } else {
+                table.setText(i, 1, JSONUtils.toString(entity, "employeeName"));
+            }
             setEnumColumn(i, 2, entity, ImmigrationCaseType.class.getSimpleName(), "caseType");
             table.setText(i, 3, JSONUtils.toString(entity, "attorneyName"));
-            if (emp.get("company") != null) {
-                table.setText(i, 4, JSONUtils.toString(emp.get("company"), "name"));
-            }
             table.setText(i, 5, FormatUtils.formarCurrency(JSONUtils.toString(entity, "amount")));
             table.setText(i, 6, DateUtils.getFormatedDate(JSONUtils.toString(entity, "requestedDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             setEnumColumn(i, 7, entity, ImmigrationCheckRequisitionStatus.class.getSimpleName(), "status");
@@ -143,13 +147,12 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         String status = JSONUtils.toString(entity, "status");
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_GC_IMMIGRATION,Auth.ROLE.ROLE_H1B_IMMIGRATION) || ImmigrationCheckRequisitionStatus.PENDING_APPROVAL.name().equals(status)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_GC_IMMIGRATION, Auth.ROLE.ROLE_H1B_IMMIGRATION) || ImmigrationCheckRequisitionStatus.PENDING_APPROVAL.name().equals(status)) {
             createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), OptionsType.READ, OptionsType.UPDATE, OptionsType.DELETE, OptionsType.PRINT, OptionsType.COPY), row, JSONUtils.toString(entity, "id"));
         } else {
             createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), OptionsType.READ, OptionsType.PRINT, OptionsType.COPY), row, JSONUtils.toString(entity, "id"));
         }
     }
-
 
     private String getDeleteURL(String entityId) {
         return OfficeWelcome.instance().constants.root_url() + "checkrequisition/delete/" + entityId;

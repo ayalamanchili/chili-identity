@@ -49,5 +49,6 @@
     <include file="db_changelogs/09-01-2015_changelog.xml"/>  
     <include file="db_changelogs/09-12-2015_changelog.xml"/>      
     <include file="db_changelogs/09-15-2015_changelog.xml"/>      
-    <include file="db_changelogs/09-28-2015_changelog.xml"/>      
+    <include file="db_changelogs/09-28-2015_changelog.xml"/>    
+    <include file="db_changelogs/09-28-2015-2_changelog.xml"/>      
 </databaseChangeLog>

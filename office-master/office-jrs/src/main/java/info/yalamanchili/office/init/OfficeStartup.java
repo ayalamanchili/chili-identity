@@ -484,11 +484,11 @@ public class OfficeStartup {
 //        invititationType.setEmailTemplateName("on-boardng-invite-email.xhtml");
         mongoTemplate.save(invititationType);
 
-//        CIPAddress ipAddress = new CIPAddress();
-//        ipAddress.setAddressType(CIPAddressType.GLOBAL_VALIDATED);
-//        ipAddress.setName("Local IP");
-//        ipAddress.setIpAddress("127.0.0.1");
-//        em.merge(ipAddress);
+        CIPAddress ipAddress = new CIPAddress();
+        ipAddress.setAddressType(CIPAddressType.GLOBAL_VALIDATED);
+        ipAddress.setName("Local IP");
+        ipAddress.setIpAddress("127.0.0.1");
+        em.merge(ipAddress);
         
         CIPAddress ipAddress2 = new CIPAddress();
         ipAddress2.setAddressType(CIPAddressType.GLOBAL_VALIDATED);

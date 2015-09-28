@@ -58,7 +58,9 @@ public class ImmigrationCheckRequisitionService {
         ImmigrationCheckRequisition entity = mapper.map(dto, ImmigrationCheckRequisition.class);
         entity.setSubmittedBy(OfficeSecurityService.instance().getCurrentUserName());
         entity.setRequestedDate(new Date());
-        entity.setEmployee(EmployeeDao.instance().findById(entity.getEmployee().getId()));
+        if (entity.getEmployee() != null) {
+            entity.setEmployee(EmployeeDao.instance().findById(entity.getEmployee().getId()));
+        }
         entity.setStatus(ImmigrationCheckRequisitionStatus.PENDING_APPROVAL);
         for (CheckRequisitionItem item : entity.getItems()) {
             item.setId(null);
@@ -79,7 +81,11 @@ public class ImmigrationCheckRequisitionService {
         Map<String, Object> vars = new HashMap<>();
         vars.put("entity", entity);
         vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
-        vars.put("employeeName", entity.getEmployee().getFirstName() + " " + entity.getEmployee().getLastName());
+        if (entity.getEmployee() != null) {
+            vars.put("employeeName", entity.getEmployee().getFirstName() + " " + entity.getEmployee().getLastName());
+        } else {
+            vars.put("employeeName", entity.getEmployeeName());
+        }
         vars.put("entityId", entity.getId());
         return OfficeBPMService.instance().startProcess("immigration_check_requisition_process", vars);
     }
@@ -122,12 +128,11 @@ public class ImmigrationCheckRequisitionService {
     public Response getReport(ImmigrationCheckRequisition entity) {
         PdfDocumentData data = new PdfDocumentData();
         Employee emp = entity.getEmployee();
-        if (emp.getCompany() != null && emp.getCompany().getName().equals("TechPillars")) {
+        if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals("TechPillars")) {
             data.setTemplateUrl("/templates/pdf/check-request-tp-template.pdf");
         } else {
             data.setTemplateUrl("/templates/pdf/check-request-template.pdf");
         }
-
         OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
         data.setKeyStoreName(securityConfiguration.getKeyStoreName());
         Employee preparedBy = EmployeeDao.instance().findEmployeWithEmpId(entity.getSubmittedBy());
@@ -139,7 +144,11 @@ public class ImmigrationCheckRequisitionService {
             data.getSignatures().add(approvedBysignature);
         }
         data.getData().put("attorneyName", entity.getAttorneyName());
-        data.getData().put("employee", entity.getEmployee().getFirstName() + "," + entity.getEmployee().getLastName());
+        if (entity.getEmployee() != null) {
+            data.getData().put("employee", entity.getEmployee().getFirstName() + "," + entity.getEmployee().getLastName());
+        } else {
+            data.getData().put("employee", entity.getEmployeeName());
+        }
         data.getData().put("requestedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getRequestedDate()));
         data.getData().put("neededByDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getNeededByDate()));
         if (entity.getAmount() != null) {

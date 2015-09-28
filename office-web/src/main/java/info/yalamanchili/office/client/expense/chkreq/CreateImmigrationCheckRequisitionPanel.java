@@ -84,7 +84,11 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
         assignEntityValueFromField("mailingAddress", entity);
         assignEntityValueFromField("neededByDate", entity);
         assignEntityValueFromField("purpose", entity);
-        entity.put("employee", employeeSB.getSelectedObject());
+        if (employeeSB.getSelectedObject() != null) {
+            entity.put("employee", employeeSB.getSelectedObject());
+        } else {
+            entity.put("employeeName", new JSONString(employeeSB.getValue()));
+        }
         assignEntityValueFromField("caseType", entity);
         if (checkItemPanels.size() > 0) {
             JSONArray items = new JSONArray();
@@ -198,6 +202,15 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
             checkItemPanels.get(i - 1).removeFromParent();
             checkItemPanels.remove(i - 1);
         }
+    }
+
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        if (entity.get("employee") == null && entity.get("employeeName") != null && entity.get("employeeName").isString().stringValue().trim().isEmpty()) {
+            employeeSB.setMessage("Please choose a employee");
+            return false;
+        }
+        return true;
     }
 
     @Override

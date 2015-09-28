@@ -116,8 +116,11 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
      */
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Emp_ImgCheckReqs")
-    @NotNull(message = "{immigration.check.requisition.employee.not.empty.msg}")
     private Employee employee;
+    /**
+     *
+     */
+    protected String employeeName;
     /**
      *
      */
@@ -239,6 +242,14 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
 
     public void setAccountDeptReceivedDate(Date accountDeptReceivedDate) {
         this.accountDeptReceivedDate = accountDeptReceivedDate;
+    }
+
+    public String getEmployeeName() {
+        return employeeName;
+    }
+
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
     }
 
     public Employee getEmployee() {
