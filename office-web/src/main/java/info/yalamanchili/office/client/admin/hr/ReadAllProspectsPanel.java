@@ -65,7 +65,7 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
         table.setText(0, 2, getKeyValue("Screened By"));
         table.setText(0, 3, getKeyValue("Start Date"));
         table.setText(0, 4, getKeyValue("Referred By"));
-        table.setText(0, 5, getKeyValue("processDocSentDate"));
+        table.setText(0, 5, getKeyValue("ProcessDocSentDate"));
         table.setText(0, 6, getKeyValue("Status"));
     }
 
