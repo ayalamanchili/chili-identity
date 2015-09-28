@@ -38,6 +38,7 @@ public interface OfficeCacheKeys {
     String TRAVEL_AUTH = "travelauth";
     String EXPENSE = "expense";
     String TIME = "time";
+    String PROSPECT = "prospect";
     /**
      * holds key values for email messaging with address
      */

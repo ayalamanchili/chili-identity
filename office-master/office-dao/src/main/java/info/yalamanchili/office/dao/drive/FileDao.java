@@ -10,7 +10,6 @@ package info.yalamanchili.office.dao.drive;
 import info.chili.spring.SpringContext;
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.QueryUtils;
-import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.entity.drive.File;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -31,7 +30,7 @@ public class FileDao extends CRUDDao<File> {
     public String getFilePath(String fileName) {
         File file = QueryUtils.findEntity(em, File.class, "name", fileName);
         if (file != null) {
-            return OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + file.getFileUrl().replace("entityId", file.getId().toString());
+            return file.getFileUrl().replace("entityId", file.getId().toString());
         } else {
             return null;
         }
