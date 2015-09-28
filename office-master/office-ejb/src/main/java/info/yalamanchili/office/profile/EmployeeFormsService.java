@@ -17,6 +17,7 @@ import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.dao.expense.BankAccountDao;
 import info.yalamanchili.office.dao.profile.ext.DependentDao;
 import info.yalamanchili.office.dao.profile.ext.EmployeeAdditionalDetailsDao;
+import info.yalamanchili.office.dao.profile.onboarding.EmployeeOnBoardingDao;
 import info.yalamanchili.office.dto.onboarding.JoiningFormsDto;
 import info.yalamanchili.office.entity.expense.AccountType;
 import info.yalamanchili.office.entity.expense.BankAccount;
@@ -30,7 +31,6 @@ import info.yalamanchili.office.entity.profile.Sex;
 import info.yalamanchili.office.entity.profile.ext.Dependent;
 import info.yalamanchili.office.entity.profile.ext.EmployeeAdditionalDetails;
 import info.yalamanchili.office.entity.profile.ext.Ethnicity;
-import info.yalamanchili.office.entity.profile.ext.MaritalStatus;
 import info.yalamanchili.office.entity.profile.ext.Relationship;
 import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
 import java.text.SimpleDateFormat;
@@ -88,7 +88,7 @@ public class EmployeeFormsService {
         }
 
         data.getData().put("maritalStatus", ead.getMaritalStatus().name());
-        
+
         for (Email email : emp.getEmails()) {
             if (email.getEmailType() != null) {
                 if ("Personal".equals(email.getEmailType())) {
@@ -125,20 +125,20 @@ public class EmployeeFormsService {
             data.getData().put("asian", "true");
         } else if (ead.getEthnicity().equals(Ethnicity.Latino_Hispanic)) {
             data.getData().put("hispanicLatino", "true");
-        }else if(ead.getEthnicity().equals(Ethnicity.AmericanIndian_AlaskaNative)){
-            data.getData().put("americanIndian","true");
-        }else if(ead.getEthnicity().equals(Ethnicity.Black_AfricanAmerican)){
+        } else if (ead.getEthnicity().equals(Ethnicity.AmericanIndian_AlaskaNative)) {
+            data.getData().put("americanIndian", "true");
+        } else if (ead.getEthnicity().equals(Ethnicity.Black_AfricanAmerican)) {
             data.getData().put("black", "true");
-        }else if(ead.getEthnicity().equals(Ethnicity.NativeHawaiian_OtherPacificIslander)){
+        } else if (ead.getEthnicity().equals(Ethnicity.NativeHawaiian_OtherPacificIslander)) {
             data.getData().put("hawalian", "true");
-        }else if(ead.getEthnicity().equals(Ethnicity.White)){
+        } else if (ead.getEthnicity().equals(Ethnicity.White)) {
             data.getData().put("white", "true");
         }
-        
+
         data.getData().put("referredBy", ead.getReferredBy());
 
         //section 2: Dependents
-        int counter=0;
+        int counter = 0;
         for (Dependent dep : dto.getDependent()) {
             if (dep.getRelationship().equals(Relationship.Spouse)) {
                 Date depDateOfBirth = dep.getDdateOfBirth();
@@ -190,7 +190,6 @@ public class EmployeeFormsService {
                 }
             }
         }
-       
 
         //company address [work location]
         for (Address address : emp.getAddresss()) {
@@ -224,7 +223,7 @@ public class EmployeeFormsService {
                 }
             }
         }
-      
+
         byte[] pdf = PDFUtils.generatePdf(data);
         return Response.ok(pdf)
                 .header("content-disposition", "filename = Joining-form-fillable.pdf")
@@ -239,7 +238,7 @@ public class EmployeeFormsService {
         PdfDocumentData data = new PdfDocumentData();
         data.setTemplateUrl("/templates/pdf/ach-direct-deposit-form-template.pdf");
         data.setKeyStoreName(securityConfiguration.getKeyStoreName());
-        
+
         //print ACH Form with the employee and bank details. @radhika
         data.getData().put("employeeName", emp.getLastName() + " , " + emp.getFirstName());
         for (Address address : emp.getAddresss()) {
@@ -280,16 +279,16 @@ public class EmployeeFormsService {
         } else if (ba.isAchBlocked() == true) {
             data.getData().put("achReversalBlockYes", "true");
         }
-        EmployeeOnBoarding onboarding=new EmployeeOnBoarding();
-        Date onboardingDate=onboarding.getStartedDate();
+        EmployeeOnBoarding onboarding = EmployeeOnBoardingDao.instance().findByEmployeeId(emp.getId());
+        Date onboardingDate = onboarding.getStartedDate();
 
-        data.getData().put("Name", emp.getFirstName()+" "+emp.getLastName());
-        SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");
+        data.getData().put("Name", emp.getFirstName() + " " + emp.getLastName());
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         data.getData().put("Date", sdf.format(onboardingDate));
-        
-         Signature signature = new Signature(emp.getEmployeeId(), emp.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "Signature", DateUtils.dateToCalendar(onboardingDate), emp.getPrimaryEmail().toString(), null);
-         data.getSignatures().add(signature);
-         
+
+        Signature signature = new Signature(emp.getEmployeeId(), emp.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "Signature", DateUtils.dateToCalendar(onboardingDate), onboarding.getEmail(), null);
+        data.getSignatures().add(signature);
+
         //TODO fill ach with emp and bank account details
         byte[] pdf = PDFUtils.generatePdf(data);
 

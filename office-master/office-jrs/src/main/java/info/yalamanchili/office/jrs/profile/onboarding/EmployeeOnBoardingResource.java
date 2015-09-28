@@ -14,7 +14,7 @@ import info.yalamanchili.office.dao.profile.onboarding.EmployeeOnBoardingDao;
 import info.yalamanchili.office.dto.onboarding.InitiateOnBoardingDto;
 import info.yalamanchili.office.dto.onboarding.OnBoardingEmployeeDto;
 import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
-import info.yalamanchili.office.profile.EmployeeService;
+import info.yalamanchili.office.profile.EmployeeOnBoardingService;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -55,13 +55,14 @@ public class EmployeeOnBoardingResource {
         tableObj.setSize(employeeOnBoardingDao.size());
         return tableObj;
     }
+
     @Path("/initiate-onboarding")
     @PUT
     @PreAuthorize("hasAnyRole('Role_ROLE_ON_BOARDING_MGR')")
     @Validate
     public void initiateOnBoarding(InitiateOnBoardingDto dto) {
-        EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
-        employeeService.initiateOnBoarding(dto);
+        EmployeeOnBoardingService employeeOnBoardingService = (EmployeeOnBoardingService) SpringContext.getBean("employeeOnBoardingService");
+        employeeOnBoardingService.initiateOnBoarding(dto);
     }
 
     @Path("/on-board-employee")
@@ -70,10 +71,9 @@ public class EmployeeOnBoardingResource {
     @CacheEvict(value = "employees", allEntries = true)
     @Validate
     public String onBoardEmployee(OnBoardingEmployeeDto employee) {
-        EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
-        return employeeService.onBoardEmployee(employee);
+        EmployeeOnBoardingService employeeOnBoardingService = (EmployeeOnBoardingService) SpringContext.getBean("employeeOnBoardingService");
+        return employeeOnBoardingService.onBoardEmployee(employee);
     }
-    
 
     @XmlRootElement
     @XmlType
