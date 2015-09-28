@@ -63,12 +63,12 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                    }
+                });
         entityFieldsPanel.add(new ReadAllTicketComments(getEntityId()));
         //TODO this should be checking self emp
         if (Auth.isConsultantEmployee()) {
@@ -86,6 +86,8 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
         assignFieldValueFromEntity("description", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("type", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("assignedTo", entity, null);
+        assignFieldValueFromEntity("ticketNumber", entity, DataType.STRING_FIELD);
+
         roleWidget.setSelectedValue(entity.get("departmentAssigned").isObject(), "roleId");
         statusF.setValues(TicketStatus.validStatusFor(TicketStatus.valueOf(JSONUtils.toString(entity, "status"))));
     }
@@ -103,6 +105,7 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
         entity.put("departmentAssigned", assignedToDept);
         //Assigned to 
         entity.put("assignedTo", assignedToF.getSelectedObject());
+        assignEntityValueFromField("ticketNumber", entity);
         //comment
         JSONArray comments = new JSONArray();
         JSONObject comment = new JSONObject();
@@ -130,6 +133,7 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
         addEnumField("status", false, false, TicketStatus.names());
         addDropDown("departmentAssigned", roleWidget);
         addDropDown("assignedTo", assignedToF);
+        addField("ticketNumber", true, false, DataType.STRING_FIELD);
         addField("comment", false, true, DataType.TEXT_AREA_FIELD);
         statusF = (EnumField) fields.get("status");
         typeF = (EnumField) fields.get("type");
@@ -156,19 +160,19 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
         if (processClientSideValidations()) {
             HttpService.HttpServiceAsync.instance().doPut(getUpdateURI(), populateEntityFromFields().toString(), OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
-                @Override
-                public void onResponse(String arg0) {
-                    new ResponseStatusWidget().show("Updated Service Ticket");
-                    if (TabPanel.instance().myOfficePanel.isVisible()) {
-                        TabPanel.instance().myOfficePanel.entityPanel.clear();
-                        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllServiceTicketsPanel(TreeEmployeePanel.instance().getEntityId()));
-                    }
-                    if (TabPanel.instance().homePanel.isVisible()) {
-                        TabPanel.instance().homePanel.entityPanel.clear();
-                        TabPanel.instance().homePanel.entityPanel.add(new ReadAllServiceTicketsPanel());
-                    }
-                }
-            });
+                        @Override
+                        public void onResponse(String arg0) {
+                            new ResponseStatusWidget().show("Updated Service Ticket");
+                            if (TabPanel.instance().myOfficePanel.isVisible()) {
+                                TabPanel.instance().myOfficePanel.entityPanel.clear();
+                                TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllServiceTicketsPanel(TreeEmployeePanel.instance().getEntityId()));
+                            }
+                            if (TabPanel.instance().homePanel.isVisible()) {
+                                TabPanel.instance().homePanel.entityPanel.clear();
+                                TabPanel.instance().homePanel.entityPanel.add(new ReadAllServiceTicketsPanel());
+                            }
+                        }
+                    });
         }
     }
 

@@ -58,11 +58,11 @@ public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                postDeleteSuccess();
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
     }
 
     protected String getDeleteURL(String entityId) {
@@ -91,11 +91,11 @@ public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllSelfServiceURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        postFetchTable(result);
+                    }
+                });
     }
 
     @Override
@@ -108,6 +108,8 @@ public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
         table.setText(0, 5, getKeyValue("Department"));
         table.setText(0, 6, getKeyValue("Assigned To"));
         table.setText(0, 7, getKeyValue("CreatedTimeStamp"));
+        table.setText(0, 8, getKeyValue("Number"));
+
     }
 
     @Override
@@ -125,6 +127,8 @@ public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
                 table.setText(i, 6, JSONUtils.toString(entity.get("assignedTo").isObject(), "firstName"));
             }
             table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "createdTimeStamp"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 8, JSONUtils.toString(entity, "ticketNumber"));
+
         }
     }
 
