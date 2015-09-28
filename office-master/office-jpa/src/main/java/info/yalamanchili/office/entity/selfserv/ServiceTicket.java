@@ -188,4 +188,18 @@ public class ServiceTicket extends AbstractEntity {
     public String descriptionToText() {
         return HtmlUtils.htmlToText(getDescription());
     }
+    /**
+     *
+     */
+    @Transient
+    protected String ticketNumber;
+
+    public String getTicketNumber() {
+        return "SST-" + String.format("%03d", getId());
+    }
+
+    public void setTicketNumber(String ticketNumber) {
+        this.ticketNumber = ticketNumber;
+    }
+
 }
