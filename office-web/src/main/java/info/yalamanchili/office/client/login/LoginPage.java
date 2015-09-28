@@ -167,6 +167,16 @@ public class LoginPage extends Composite {
             }
 
             @Override
+            public void onFailure(Throwable err) {
+                if (err.getMessage().contains("not.authorized.")) {
+//                    new GenericPopup(new RequestRemoteAccessPanel()).show();
+                    new ResponseStatusWidget().show("Access to ESS Portal is limited to corporate firewall. Please contact system administrator");
+                } else {
+                    super.onFailure(err);
+                }
+            }
+
+            @Override
             public String getFailureMessage() {
                 return failureMessage;
             }

@@ -7,16 +7,23 @@
  */
 package info.yalamanchili.office.jrs;
 
+import com.google.common.base.Strings;
+import info.chili.security.dto.RemoteAccessRequestDto;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.profile.BPMProfileService;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.bpm.types.AccountReset;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.security.User;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.profile.EmployeeService;
+import java.util.HashMap;
+import java.util.Map;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -61,6 +68,20 @@ public class PublicAdminResource {
         user.setNewPassword(tempPassword);
         employeeService.resetPassword(emp.getId(), user);
         return EmployeeDao.instance().getPrimaryEmail(emp);
+    }
+
+    @Path("/remote-access-exception")
+    @PUT
+    @PreAuthorize("permitAll")
+    public void requestRemoteAccess(@HeaderParam("X-Forwarded-For") String ipAddress, RemoteAccessRequestDto dto) {
+        if (Strings.isNullOrEmpty(ipAddress)) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "not.authorized.blankip", "not.authorized.blankip");
+        }
+        dto.setRemoteIp(ipAddress);
+        Map<String, Object> obj = new HashMap<>();
+        obj.put("entity", dto);
+        obj.put("currentEmployee", EmployeeDao.instance().findEmployeWithEmpId(dto.getUserId()));
+        OfficeBPMService.instance().startProcess("external-access-exception-request", obj);
     }
 
     @Path("/account_reset")
