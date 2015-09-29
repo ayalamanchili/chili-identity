@@ -114,17 +114,17 @@ public class CreateClientInfoPanel extends CreateComposite {
     protected void addButtonClicked() {
         HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                logger.info(arg0.getMessage());
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        logger.info(arg0.getMessage());
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
 
     }
 
@@ -158,7 +158,7 @@ public class CreateClientInfoPanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         //Basic
-        addField("consultantJobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("consultantJobTitle", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         //client
         entityFieldsPanel.add(getLineSeperatorTag("Client & Vendor Information"));
         addDropDown("client", new SelectClientWidget(false, true, Alignment.HORIZONTAL));
@@ -217,8 +217,10 @@ public class CreateClientInfoPanel extends CreateComposite {
             addField("terminationNotice", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("notes", false, false, DataType.RICH_TEXT_AREA);
         }
-        StringField jobTitleF = (StringField) fields.get("consultantJobTitle");
-        jobTitleF.setValue(TreeEmployeePanel.instance().getEntity().get("jobTitle").isString().stringValue());
+        if (TreeEmployeePanel.instance().getEntity().get("jobTitle") != null) {
+            StringField jobTitleF = (StringField) fields.get("consultantJobTitle");
+            jobTitleF.setValue(TreeEmployeePanel.instance().getEntity().get("jobTitle").isString().stringValue());
+        }
         alignFields();
     }
 
