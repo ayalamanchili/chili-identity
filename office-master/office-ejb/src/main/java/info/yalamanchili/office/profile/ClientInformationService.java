@@ -57,14 +57,6 @@ public class ClientInformationService {
     @Autowired
     protected ClientInformationDao clientInformationDao;
 
-    public String getBisInformation(Long employeeId) {
-        String bisEmployeeId = ExternalRefDao.instance().getExternalRefId("BIS", Employee.class, employeeId.toString());
-        
-        //call bis service with bis id to get the response json.
-        //convert the json data to html and return.
-        return null;
-    }
-
     public void addClientInformation(Long empId, ClientInformation ci) {
         Employee emp = (Employee) em.find(Employee.class, empId);
         if (ci.getClient() != null) {
