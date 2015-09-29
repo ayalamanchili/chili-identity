@@ -195,7 +195,7 @@ public class ServiceTicket extends AbstractEntity {
     protected String ticketNumber;
 
     public String getTicketNumber() {
-        return "SST-" + String.format("%03d", getId());
+        return "SST-" + String.format("%04d", getId());
     }
 
     public void setTicketNumber(String ticketNumber) {
