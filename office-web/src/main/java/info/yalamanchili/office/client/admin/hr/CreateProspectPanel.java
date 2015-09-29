@@ -6,79 +6,106 @@
 package info.yalamanchili.office.client.admin.hr;
 
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONString;
-import info.chili.gwt.composite.SelectComposite;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
+import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.FileuploadField;
+import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
-import org.apache.log4j.Logger;
+import info.yalamanchili.office.client.TabPanel;
+import java.util.logging.Logger;
 
 /**
  *
  * @author radhika.mukkala
  */
 public class CreateProspectPanel extends CreateComposite {
+
     private static Logger logger = Logger.getLogger(CreateProspectPanel.class.getName());
-     FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "Prospect", "fileUrl", "Prospect/fileUrl", true) {
+    FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "Prospect", "resumeURL", "Prospect/fileUrl", true) {
         @Override
         public void onUploadComplete(String res) {
             postCreateSuccess(null);
         }
     };
-     
-     public CreateProspectPanel(CreateComposite.CreateCompositeType type) {
+
+    public CreateProspectPanel(CreateComposite.CreateCompositeType type) {
         super(type);
         initCreateComposite("Prospect", OfficeWelcome.constants);
     }
-     
-     @Override
+
+    @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
-        assignEntityValueFromField("Conversation Date", entity);
-        assignEntityValueFromField("ScreenedBy", entity);
-        
-        entity.put("fileUrl", resumeUploadPanel.getFileName());
+        assignEntityValueFromField("conversationDate", entity);
+        assignEntityValueFromField("screenedBy", entity);
+        entity.put("resumeURL", resumeUploadPanel.getFileName());
         logger.info("ddd" + entity);
         return entity;
     }
 
     @Override
     protected void createButtonClicked() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+                new AsyncCallback<String>() {
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
+
+                    @Override
+                    public void onSuccess(String arg0) {
+                        uploadImage(arg0);
+                    }
+                });
+    }
+
+    protected void uploadImage(String entityId) {
+        resumeUploadPanel.upload(entityId.trim());
     }
 
     @Override
     protected void addButtonClicked() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     protected void postCreateSuccess(String result) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        new ResponseStatusWidget().show("Successfully Prospect Created");
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProspectsPanel());
     }
 
     @Override
     protected void addListeners() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     protected void configure() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     protected void addWidgets() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        addField("conversationDate", false, true, DataType.DATE_FIELD);
+        addField("screenedBy", false, false, DataType.STRING_FIELD);
+        entityFieldsPanel.add(resumeUploadPanel);
     }
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     protected String getURI() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return OfficeWelcome.constants.root_url() + "prospect/";
+    }
+
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        if (resumeUploadPanel.isEmpty()) {
+            resumeUploadPanel.setMessage("Please select a file");
+            return false;
+        }
+        return true;
     }
 }
