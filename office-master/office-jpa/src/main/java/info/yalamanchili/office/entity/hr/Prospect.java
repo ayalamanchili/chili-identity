@@ -10,7 +10,9 @@ package info.yalamanchili.office.entity.hr;
 
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.profile.Contact;
+import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.Phone;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -21,6 +23,7 @@ import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
+import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -38,12 +41,26 @@ public class Prospect extends AbstractEntity{
     @OneToOne(cascade = CascadeType.ALL)
     @ForeignKey(name="FK_Contact_Prospect")
     protected Contact contact;
-    
-    /*@OneToOne(cascade = CascadeType.ALL)
-    protected Employee emp; */
-    
+       
+     
+    @NotEmpty(message = "{firstName.not.empty.msg}")
+    @Field
+    @org.hibernate.annotations.Index(name = "PROSPECT_FST_NM")
+    protected String firstName;
+   
+    @NotEmpty(message = "{lastName.not.empty.msg}")
+    @Field
+    @org.hibernate.annotations.Index(name = "PROSPECT_LST_NM")
+    protected String lastName;
+
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date startDate;
+    
+    //@OneToMany(mappedBy = "prospect", cascade = CascadeType.ALL)
+    protected Email email;
+    
+    //@OneToMany(mappedBy = "prospect", cascade = CascadeType.ALL)
+    protected Phone phone;
     
     protected String screenedBy;
     protected String referredBy;
@@ -111,5 +128,36 @@ public class Prospect extends AbstractEntity{
 
     public ProspectStatus getStatus() {
         return status;
+    }
+     public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setEmail(Email email) {
+        this.email = email;
+    }
+
+    public void setPhone(Phone phone) {
+        this.phone = phone;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public Email getEmail() {
+        return email;
+    }
+
+    public Phone getPhone() {
+        return phone;
     }
 }

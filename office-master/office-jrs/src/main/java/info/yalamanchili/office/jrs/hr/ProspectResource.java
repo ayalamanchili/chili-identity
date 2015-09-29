@@ -72,6 +72,7 @@ public class ProspectResource extends CRUDResource<Prospect> {
     }
 
     @PUT
+    @Path("/save")
     @Validate
     @Override
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR', 'ROLE_CEO', 'ROLE_RECRUITER')")

@@ -10,6 +10,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
@@ -17,6 +18,7 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.expense.chkreq.ImmigrationCaseType;
 import java.util.logging.Logger;
 
 /**
@@ -61,25 +63,27 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
-        table.setText(0, 1, getKeyValue("Name"));
-        table.setText(0, 2, getKeyValue("Screened By"));
-        table.setText(0, 3, getKeyValue("Start Date"));
-        table.setText(0, 4, getKeyValue("Referred By"));
-        table.setText(0, 5, getKeyValue("ProcessDocSentDate"));
-        table.setText(0, 6, getKeyValue("Status"));
+        table.setText(0, 1, getKeyValue("First Name"));
+        table.setText(0, 2, getKeyValue("Last Name"));
+        table.setText(0, 3, getKeyValue("Screened By"));
+        table.setText(0, 4, getKeyValue("Start Date"));
+        table.setText(0, 5, getKeyValue("Referred By"));
+        table.setText(0, 6, getKeyValue("ProcessDocSentDate"));
+        table.setText(0, 7, getKeyValue("Status"));
     }
 
     @Override
     public void fillData(JSONArray entities) {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
-            JSONObject contact = (JSONObject) entity.get("contact");
-            table.setText(i, 1, JSONUtils.toString(contact, "firstName") + " " + JSONUtils.toString(contact, "lastName"));
-            table.setText(i, 2, JSONUtils.toString(entity, "screenedBy"));
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 4, JSONUtils.toString(entity, "referredBy"));
-            table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, "processDocSentDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 6, JSONUtils.formatEnumString(entity, "status"));
+            addOptionsWidget(i, entity);
+            table.setText(i, 1, JSONUtils.toString(entity, "firstName"));
+            table.setText(i, 2, JSONUtils.toString(entity, "lastName"));
+            table.setText(i, 3, JSONUtils.toString(entity, "screenedBy"));
+            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 5, JSONUtils.toString(entity, "referredBy"));
+            table.setText(i, 6, DateUtils.getFormatedDate(JSONUtils.toString(entity, "processDocSentDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            setEnumColumn(i, 7, entity, ProspectStatus.class.getSimpleName(), "status");
 
         }
     }
@@ -115,7 +119,19 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        //TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateProspectsPanel(entityId));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateProspectsPanel(entityId));
+    }
+
+    @Override
+    protected void configureCreateButton() {
+        createButton.setText("Create Prospect");
+        createButton.setVisible(true);
+    }
+
+    @Override
+    protected void createButtonClicked() {
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new CreateProspectPanel(CreateComposite.CreateCompositeType.CREATE));
     }
 
     @Override

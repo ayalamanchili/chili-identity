@@ -17,14 +17,15 @@ import info.yalamanchili.office.client.OfficeWelcome;
  *
  * @author radhika.mukkala
  */
-public class ReadProspectsPanel extends ReadComposite{
-    
+public class ReadProspectsPanel extends ReadComposite {
+
     private static ReadProspectsPanel instance;
-    
+
     public static ReadProspectsPanel instance() {
         return instance;
     }
-     public ReadProspectsPanel(JSONObject entity) {
+
+    public ReadProspectsPanel(JSONObject entity) {
         instance = this;
         initReadComposite(entity, "Prospect", OfficeWelcome.constants);
     }
@@ -37,52 +38,57 @@ public class ReadProspectsPanel extends ReadComposite{
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                    }
+                });
     }
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+        assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("screenedBy", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("contactDetails", entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("email", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("phone", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("referredBy", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("processDocSentDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
+        //assignFieldValueFromEntity("processDocSentDate", entity, DataType.DATE_FIELD);
     }
 
     @Override
     protected void addListeners() {
-        
+
     }
 
     @Override
     protected void configure() {
-        
+
     }
 
     @Override
     protected void addWidgets() {
+        addField("firstName", true, false, DataType.STRING_FIELD);
+        addField("lastName", true, false, DataType.STRING_FIELD);
         addField("startDate", true, false, DataType.DATE_FIELD);
-        addField("screenedBy", true, false, DataType.STRING_FIELD);
-        addField("name", true, false, DataType.STRING_FIELD);
-        addField("contactDetails", true, false, DataType.TEXT_AREA_FIELD);
         addField("referredBy", true, false, DataType.STRING_FIELD);
-        addField("processDocSentDate", true, false, DataType.DATE_FIELD);
+        addField("email", true, false, DataType.STRING_FIELD);
+        addField("phone", true, false, DataType.STRING_FIELD);
+        addField("screenedBy", true, false, DataType.STRING_FIELD);
+        addEnumField("status", true, false, ProspectStatus.names());
     }
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-        
+
     }
 
     @Override
     protected String getURI() {
-       return OfficeWelcome.constants.root_url() + "prospect/" + entityId;
+        return OfficeWelcome.constants.root_url() + "prospect/" + entityId;
     }
-    
+
 }
