@@ -44,7 +44,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("prototype")
 @Transactional
 public class OfficeSecurityService {
-    
+
     private final static Logger logger = Logger.getLogger(OfficeSecurityService.class.getName());
     @PersistenceContext
     protected EntityManager em;
@@ -53,15 +53,15 @@ public class OfficeSecurityService {
     public CUser createCuser(CUser user) {
         return em.merge(user);
     }
-    
+
     @Autowired
     protected RuntimeService bpmRuntimeService;
-    
+
     public EmployeeLoginDto login(CUser user, String ipAddress) {
-        if (Strings.isNullOrEmpty(ipAddress)) {
-            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "not.authorized.blankip", "not.authorized.blankip");
-        }
-        if (hasAnyRole(OfficeRole.ROLE_CORPORATE_EMPLOYEE.name()) && !CIPAddressDao.instance().isValidIP(ipAddress)) {
+//        if (Strings.isNullOrEmpty(ipAddress)) {
+//            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "not.authorized.blankip", "not.authorized.blankip");
+//        }
+        if (!Strings.isNullOrEmpty(ipAddress) && hasAnyRole(OfficeRole.ROLE_CORPORATE_EMPLOYEE.name()) && !CIPAddressDao.instance().isValidIP(ipAddress)) {
             RemoteAccessRequestDto dto = new RemoteAccessRequestDto();
             dto.setUserId(OfficeSecurityService.instance().getCurrentUserName());
             dto.setRemoteIp(ipAddress);
@@ -86,12 +86,12 @@ public class OfficeSecurityService {
             throw new RuntimeException(e);
         }
     }
-    
+
     @Deprecated
     public EmployeeLoginDto login(CUser user) {
         return login(user, null);
     }
-    
+
     public String getCurrentUserName() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
@@ -99,7 +99,7 @@ public class OfficeSecurityService {
         }
         return null;
     }
-    
+
     public Employee getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null) {
@@ -115,7 +115,7 @@ public class OfficeSecurityService {
             return null;
         }
     }
-    
+
     public List<String> getCurrentUserRoles() {
         SecurityContext context = SecurityContextHolder.getContext();
         if (context == null) {
@@ -131,7 +131,7 @@ public class OfficeSecurityService {
         }
         return roles;
     }
-    
+
     public boolean hasAnyRole(String... roles) {
         SecurityContext context = SecurityContextHolder.getContext();
         if (context == null) {
@@ -141,7 +141,7 @@ public class OfficeSecurityService {
         if (authentication == null) {
             return false;
         }
-        
+
         for (GrantedAuthority auth : authentication.getAuthorities()) {
             for (String role : roles) {
                 if (role.equals(auth.getAuthority())) {
@@ -151,11 +151,11 @@ public class OfficeSecurityService {
         }
         return false;
     }
-    
+
     public boolean hasRole(String role) {
         return hasAnyRole(role);
     }
-    
+
     public boolean isValidEmployeeId(String employeeId) {
         TypedQuery<Employee> getUserQuery = em.createQuery("from " + Employee.class.getName() + " where employeeId=:employeeIdParam", Employee.class);
         getUserQuery.setParameter("employeeIdParam", employeeId);
@@ -165,7 +165,7 @@ public class OfficeSecurityService {
             return false;
         }
     }
-    
+
     public Employee findEmployee(String employeeId) {
         TypedQuery<Employee> getUserQuery = em.createQuery("from " + Employee.class.getName() + " where employeeId=:employeeIdParam", Employee.class);
         getUserQuery.setParameter("employeeIdParam", employeeId);
@@ -175,12 +175,12 @@ public class OfficeSecurityService {
             return null;
         }
     }
-    
+
     public Employee findEmployeeBySSN(String ssn) {
         StandardStringDigester officeStringDigester = (StandardStringDigester) SpringContext.getBean("officeStringDigester");
         return QueryUtils.findEntity(em, Employee.class, "ssnHash", officeStringDigester.digest(ssn));
     }
-    
+
     public List<String> getUserRoles(Employee employee) {
         List<String> roles = new ArrayList<String>();
         if (employee.getUser() != null) {
@@ -190,7 +190,7 @@ public class OfficeSecurityService {
         }
         return roles;
     }
-    
+
     public List<Employee> getUsersWithRoles(int start, int limit, String role) {
         CRole crole = QueryUtils.findEntity(em, CRole.class, "rolename", role);
         Query query = em.createNativeQuery("SELECT * from CONTACT emp INNER JOIN CUSER cuser ON cuser.userId=emp.user_userId INNER JOIN USERROLES userRoles ON userRoles.UserId=cuser.userId where cuser.enabled= TRUE and userRoles.RoleId=" + crole.getRoleId(), Employee.class);
@@ -198,17 +198,17 @@ public class OfficeSecurityService {
         query.setMaxResults(limit);
         return query.getResultList();
     }
-    
+
     public void syncOfficeRoles() {
         for (OfficeRole role : OfficeRole.values()) {
             CRoleDao.instance().createRole(role.name());
         }
     }
-    
+
     public CRole getRole(OfficeRole role) {
         return QueryUtils.findEntity(em, CRole.class, "rolename", role.name());
     }
-    
+
     @Async
     @Transactional
     public void syncUserCerts() {
@@ -222,14 +222,14 @@ public class OfficeSecurityService {
         for (Employee emp : empQuery.getResultList()) {
             createUserCert(emp, securityconfig, securityService);
         }
-        
+
     }
-    
+
     @Transactional
     public void createUserCert(String employeeId) {
         createUserCert(EmployeeDao.instance().findEmployeWithEmpId(employeeId), null, null);
     }
-    
+
     @Async
     @Transactional
     public void createUserCert(Employee emp, OfficeSecurityConfiguration securityconfig, SecurityService securityService) {
@@ -249,7 +249,7 @@ public class OfficeSecurityService {
                 securityconfig.getKeyStorePassword(), issuer, subject, securityconfig.getCertSignatureAlgorithm(), securityconfig.getKeyAlgorithm(), securityconfig.getKeySize());
         securityService.initKeyStore(securityconfig.getKeyStoreType(), securityconfig.getKeyStoreName(), securityconfig.getKeyStorePassword(), securityconfig.getKeyStorePath());
     }
-    
+
     public static OfficeSecurityService instance() {
         return SpringContext.getBean(OfficeSecurityService.class);
     }
