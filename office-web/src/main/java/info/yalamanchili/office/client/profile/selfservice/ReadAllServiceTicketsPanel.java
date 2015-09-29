@@ -101,14 +101,14 @@ public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
-        table.setText(0, 1, getKeyValue("Employee"));
-        table.setText(0, 2, getKeyValue("Subject"));
-        table.setText(0, 3, getKeyValue("Type"));
-        table.setText(0, 4, getKeyValue("Status"));
-        table.setText(0, 5, getKeyValue("Department"));
-        table.setText(0, 6, getKeyValue("Assigned To"));
-        table.setText(0, 7, getKeyValue("CreatedTimeStamp"));
-        table.setText(0, 8, getKeyValue("Number"));
+        table.setText(0, 1, getKeyValue("Number"));
+        table.setText(0, 2, getKeyValue("Employee"));
+        table.setText(0, 3, getKeyValue("Subject"));
+        table.setText(0, 4, getKeyValue("Type"));
+        table.setText(0, 5, getKeyValue("Status"));
+        table.setText(0, 6, getKeyValue("Department"));
+        table.setText(0, 7, getKeyValue("Assigned To"));
+        table.setText(0, 8, getKeyValue("CreatedTimeStamp"));
 
     }
 
@@ -117,18 +117,17 @@ public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
+            table.setText(i, 1, JSONUtils.toString(entity, "ticketNumber"));
             JSONObject emp = (JSONObject) entity.get("employee");
-            table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
-            table.setText(i, 2, JSONUtils.toString(entity, "subject"));
-            table.setText(i, 3, JSONUtils.toString(entity, "type"));
-            table.setText(i, 4, JSONUtils.toString(entity, "status"));
-            setEnumColumn(i, 5, entity.get("departmentAssigned").isObject(), "role", "rolename");
+            table.setText(i, 2, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
+            table.setText(i, 3, JSONUtils.toString(entity, "subject"));
+            table.setText(i, 4, JSONUtils.toString(entity, "type"));
+            table.setText(i, 5, JSONUtils.toString(entity, "status"));
+            setEnumColumn(i, 6, entity.get("departmentAssigned").isObject(), "role", "rolename");
             if (entity.get("assignedTo") != null) {
-                table.setText(i, 6, JSONUtils.toString(entity.get("assignedTo").isObject(), "firstName"));
+                table.setText(i, 7, JSONUtils.toString(entity.get("assignedTo").isObject(), "firstName"));
             }
-            table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "createdTimeStamp"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 8, JSONUtils.toString(entity, "ticketNumber"));
-
+            table.setText(i, 8, DateUtils.getFormatedDate(JSONUtils.toString(entity, "createdTimeStamp"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
         }
     }
 
