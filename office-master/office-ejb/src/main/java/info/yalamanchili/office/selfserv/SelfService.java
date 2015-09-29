@@ -59,7 +59,7 @@ public class SelfService {
     protected EntityManager em;
 
     public String createServiceTicket(Employee emp, ServiceTicket ticket) {
-        ticket.setDepartmentAssigned(CRoleDao.instance().findRoleByName(getDepartmentToAssign(ticket).name()));
+        ticket.setDepartmentAssigned(CRoleDao.instance().findRoleByName("ROLE_SELFSERVICE_TRIAGE"));
         ticket.setStatus(TicketStatus.Open);
         ticket.setEmployee(emp);
         ticket.setCreatedTimeStamp(new Date());
