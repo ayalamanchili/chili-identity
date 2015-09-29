@@ -10,7 +10,6 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
-import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
@@ -74,7 +73,6 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
     public void fillData(JSONArray entities) {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
-            addOptionsWidget(i, entity);
             JSONObject contact = (JSONObject) entity.get("contact");
             table.setText(i, 1, JSONUtils.toString(contact, "firstName") + " " + JSONUtils.toString(contact, "lastName"));
             table.setText(i, 2, JSONUtils.toString(entity, "screenedBy"));
@@ -118,18 +116,6 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
     public void updateClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         //TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateProspectsPanel(entityId));
-    }
-
-    @Override
-    protected void configureCreateButton() {
-        createButton.setText("Create Prospect");
-        createButton.setVisible(true);
-    }
-
-    @Override
-    protected void createButtonClicked() {
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new CreateProspectPanel(CreateComposite.CreateCompositeType.CREATE));
     }
 
     @Override
