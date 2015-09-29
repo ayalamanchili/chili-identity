@@ -158,7 +158,7 @@ public class CreateClientInfoPanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         //Basic
-        addField("consultantJobTitle", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("consultantJobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         //client
         entityFieldsPanel.add(getLineSeperatorTag("Client & Vendor Information"));
         addDropDown("client", new SelectClientWidget(false, true, Alignment.HORIZONTAL));

@@ -13,6 +13,7 @@ import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.dao.client.ClientDao;
 import info.yalamanchili.office.dao.client.SubcontractorDao;
 import info.yalamanchili.office.dao.client.VendorDao;
+import info.yalamanchili.office.dao.ext.ExternalRefDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.BillingRateDao;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
@@ -55,6 +56,14 @@ public class ClientInformationService {
     protected ProfileNotificationService ProfileNotificationService;
     @Autowired
     protected ClientInformationDao clientInformationDao;
+
+    public String getBisInformation(Long employeeId) {
+        String bisEmployeeId = ExternalRefDao.instance().getExternalRefId("BIS", Employee.class, employeeId.toString());
+        
+        //call bis service with bis id to get the response json.
+        //convert the json data to html and return.
+        return null;
+    }
 
     public void addClientInformation(Long empId, ClientInformation ci) {
         Employee emp = (Employee) em.find(Employee.class, empId);

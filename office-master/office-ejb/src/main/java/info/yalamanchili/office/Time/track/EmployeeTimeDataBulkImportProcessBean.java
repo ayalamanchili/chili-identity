@@ -69,11 +69,11 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDoc
         Set<String> employeeIdsNotFound = new HashSet();
         for (Date entryDate : getDates(timeEntries)) {
             for (String empExtRefId : getEmployeeIds(timeEntries)) {
-                if (ExternalRefDao.instance().findReferenceEntity(empExtRefId) == null) {
+                if (ExternalRefDao.instance().getExternalRefId("Avantel", empExtRefId) == null) {
                     employeeIdsNotFound.add(empExtRefId);
                     continue;
                 }
-                Employee emp = (Employee) ExternalRefDao.instance().findReferenceEntity(empExtRefId);
+                Employee emp = (Employee) ExternalRefDao.instance().getExternalRefId("Avantel", empExtRefId);
                 Map<String, BigDecimal> hoursPerType = new HashMap();
                 // RECEPTION actual time
                 StringBuilder notes = new StringBuilder();
@@ -126,13 +126,12 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDoc
             notes.append(timeEntry.describe()).append("\n");
         }
         long hours = minutes / 60;
-        long mins  = minutes % 60;
+        long mins = minutes % 60;
         String totaltime = " ";
         if (mins > 0 && mins < 10) {
-            totaltime = hours+"."+"0"+mins;
-        }
-        else {
-            totaltime = hours+"."+mins;
+            totaltime = hours + "." + "0" + mins;
+        } else {
+            totaltime = hours + "." + mins;
         }
         return new BigDecimal(totaltime);
     }
@@ -146,13 +145,12 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDoc
         Date timeOut = entries.get(entries.size() - 1).getEntryTimeStamp();
         minutes = minutes + TimeUnit.MILLISECONDS.toMinutes(timeOut.getTime() - timeIn.getTime());
         long hours = minutes / 60;
-        long mins  = minutes % 60;
+        long mins = minutes % 60;
         String totaltime = " ";
         if (mins > 0 && mins < 10) {
-            totaltime = hours+"."+"0"+mins;
-        }
-        else {
-            totaltime = hours+"."+mins;
+            totaltime = hours + "." + "0" + mins;
+        } else {
+            totaltime = hours + "." + mins;
         }
         return new BigDecimal(totaltime);
     }

@@ -66,6 +66,12 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
     }
 
     @GET
+    @Path("/bis-info/{id}")
+    protected String getBISInformation(@PathParam("id") Long id) {
+        return clientInformationService.getBisInformation(id);
+    }
+
+    @GET
     @Path("/dropdown/employee")
     @Transactional(propagation = Propagation.NEVER)
     public List<Entry> getDropDown(@QueryParam("employeeId") Long employeeId) {

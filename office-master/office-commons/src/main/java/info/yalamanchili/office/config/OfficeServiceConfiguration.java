@@ -101,6 +101,11 @@ public class OfficeServiceConfiguration {
      *
      */
     protected String allowedFileExtensions = "doc,docx,rtf,txt,ppt,pptx,xls,xlsx,pdf,png,jpg,jpeg,bmp,gif,htm,html";
+    /**
+     *
+     */
+    @Value("#{officeProperties['bisEndpoint']}")
+    protected String bisEndpoint;
 
     public void setAdminEmail(String adminEmail) {
         this.adminEmail = adminEmail;
@@ -265,6 +270,15 @@ public class OfficeServiceConfiguration {
     @ManagedOperation
     public void clearCache(String cacheName) {
         OfficeCacheManager.instance().clearCache(cacheName);
+    }
+
+    @ManagedAttribute
+    public String getBisEndpoint() {
+        return bisEndpoint;
+    }
+
+    public void setBisEndpoint(String bisEndpoint) {
+        this.bisEndpoint = bisEndpoint;
     }
 
     @ManagedOperation

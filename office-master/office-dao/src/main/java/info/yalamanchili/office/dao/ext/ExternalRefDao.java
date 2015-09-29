@@ -10,12 +10,12 @@ package info.yalamanchili.office.dao.ext;
 
 import info.chili.dao.AbstractHandleEntityDao;
 import info.chili.jpa.AbstractEntity;
-import info.chili.jpa.QueryUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.ext.ExternalRef;
-import info.yalamanchili.office.entity.profile.Employee;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
@@ -30,13 +30,19 @@ public class ExternalRefDao extends AbstractHandleEntityDao<ExternalRef> {
     @PersistenceContext
     protected EntityManager em;
 
-    public AbstractEntity findReferenceEntity(String externalRefId) {
-        ExternalRef externalRef = QueryUtils.findEntity(em, ExternalRef.class, "externalId", externalRefId);
-        if (externalRef != null) {
-            return em.find(Employee.class, externalRef.getTargetEntityId());
-        } else {
-            return null;
-        }
+    public AbstractEntity getExternalRefId(String externalSource, String externalId) {
+        Query query = em.createQuery("from " + ExternalRef.class.getCanonicalName() + " where source=:sourceParam and externalId=:externalIdParam");
+        query.setParameter("sourceParam", externalSource);
+        query.setParameter("externalIdParam", externalId);
+        return (AbstractEntity) query.getSingleResult();
+    }
+
+    public String getExternalRefId(String externalSource, Class targetClassName, String targetEntityId) {
+        TypedQuery<String> query = em.createQuery("select externalId from " + ExternalRef.class.getCanonicalName() + " where source=:sourceParam and targetEntityName=:targetEntityNameParam and targetEntityId=:targetEntityIdParam", String.class);
+        query.setParameter("sourceParam", externalSource);
+        query.setParameter("targetEntityNameParam", targetClassName.getCanonicalName());
+        query.setParameter("targetEntityIdParam", targetEntityId);
+        return query.getSingleResult();
     }
 
     public ExternalRefDao() {

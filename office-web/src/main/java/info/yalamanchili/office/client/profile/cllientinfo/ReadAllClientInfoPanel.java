@@ -3,6 +3,8 @@
  */
 package info.yalamanchili.office.client.profile.cllientinfo;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.Auth;
@@ -18,18 +20,21 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.utils.FormatUtils;
+import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 
-public class ReadAllClientInfoPanel extends CRUDReadAllComposite {
+public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements ClickHandler {
 
     private static ReadAllClientInfoPanel instance;
 
     public static ReadAllClientInfoPanel instance() {
         return instance;
     }
+
+    protected ClickableLink getBISInformation = new ClickableLink("View BIS Information");
 
     public ReadAllClientInfoPanel(String parentId) {
         instance = this;
@@ -47,6 +52,19 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite {
                     }
                 });
 
+    }
+
+    @Override
+    protected void addListeners() {
+        super.addListeners();
+        getBISInformation.addClickHandler(this);
+    }
+
+    @Override
+    protected void configure() {
+        super.configure();
+        //TODO show this link to only employee with "BIS_VIEW" role (new)
+        tablePanel.add(getBISInformation);
     }
 
     @Override
@@ -145,5 +163,17 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite {
             table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
             table.setText(i, 8, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
         }
+    }
+
+    @Override
+    public void onClick(ClickEvent event) {
+        if (event.getSource().equals(getBISInformation)) {
+            getBISInformation();
+        }
+        super.onClick(event);
+    }
+
+    protected void getBISInformation() {
+        Window.alert("Not ready yet");
     }
 }
