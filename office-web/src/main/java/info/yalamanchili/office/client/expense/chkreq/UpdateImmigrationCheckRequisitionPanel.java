@@ -89,7 +89,11 @@ public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite impl
     protected JSONObject populateEntityFromFields() {
         BigDecimal amount = BigDecimal.ZERO;
         if (entityId == null) {
-            entity.put("employee", employeeSB.getSelectedObject());
+            if (employeeSB.getSelectedObject() != null) {
+                entity.put("employee", employeeSB.getSelectedObject());
+            } else {
+                entity.put("employeeName", new JSONString(employeeSB.getValue()));
+            }
         }
         assignEntityValueFromField("attorneyName", entity);
         assignEntityValueFromField("mailingAddress", entity);

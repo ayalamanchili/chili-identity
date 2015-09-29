@@ -116,7 +116,7 @@ public class ImmigrationCheckRequisitionService {
     }
 
     public ImmigrationCheckRequisitionSaveDto clone(Long id) {
-        ImmigrationCheckRequisition entity = immigrationCheckRequisitionDao.clone(id, "amount", "submittedBy", "requestedDate", "approvedBy", "approvedDate", "accountedBy", "checkIssuedDate", "accountDeptReceivedDate", "status", "bpmProcessId", "employee");
+        ImmigrationCheckRequisition entity = immigrationCheckRequisitionDao.clone(id, "amount", "submittedBy", "employeeName", "requestedDate", "approvedBy", "approvedDate", "accountedBy", "checkIssuedDate", "accountDeptReceivedDate", "status", "bpmProcessId", "employee");
         ImmigrationCheckRequisitionSaveDto res = mapper.map(entity, ImmigrationCheckRequisitionSaveDto.class);
         for (CheckRequisitionItem item : res.getItems()) {
             item.setId(null);
