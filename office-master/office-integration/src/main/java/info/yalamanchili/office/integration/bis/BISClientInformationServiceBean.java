@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.integration.bis;
 
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.ext.ExternalRefDao;
@@ -22,22 +23,28 @@ import org.springframework.web.client.RestTemplate;
  *
  * @author ayalamanchili
  */
-@Component("bisService")
+@Component("bisClientInformationService")
 @Scope("request")
-public class BISServiceBean {
+public class BISClientInformationServiceBean {
 
     @Autowired
     protected RestTemplate restTemplate;
+    protected final String BIS_CONTEXT_ROOT = "/BISRESTFUL/api/Billing";
 
-    public String getBisInformation(Long employeeId) {
+    public String getClientInformation(Long employeeId) {
         String bisEmployeeId = ExternalRefDao.instance().getExternalRefId("BIS", Employee.class, employeeId);
-        String url = OfficeServiceConfiguration.instance().getBisEndpoint() + "/BISRESTFUL/api/Billing/GetCPDDetailsbyId/" + bisEmployeeId;
+        if (bisEmployeeId == null) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "NO.EXTERNAL.REF.PRESENT", "cannot fetch bis information for this employee");
+            //TODO create a manual task or admin email
+        }
+        //TODO externalize the values
+        String url = OfficeServiceConfiguration.instance().getBisEndpoint() + BIS_CONTEXT_ROOT + "/GetCPDDetailsbyId/" + bisEmployeeId;
         ResponseEntity<String> res = restTemplate.getForEntity(url, String.class);
         return res.getBody();
     }
 
-    public static BISServiceBean instance() {
-        return (BISServiceBean) SpringContext.getBean("bisService");
+    public static BISClientInformationServiceBean instance() {
+        return (BISClientInformationServiceBean) SpringContext.getBean("bisClientInformationService");
     }
 
 }

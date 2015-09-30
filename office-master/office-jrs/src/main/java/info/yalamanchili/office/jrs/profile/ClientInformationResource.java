@@ -13,7 +13,7 @@ import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.profile.BillingRate;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.integration.bis.BISServiceBean;
+import info.yalamanchili.office.integration.bis.BISClientInformationServiceBean;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.profile.ClientInformationService;
 import java.util.ArrayList;
@@ -69,7 +69,7 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
     @GET
     @Path("/bis-info/{id}")
     public String getBISInformation(@PathParam("id") Long id) {
-        return BISServiceBean.instance().getBisInformation(id);
+        return BISClientInformationServiceBean.instance().getClientInformation(id);
     }
 
     @GET
