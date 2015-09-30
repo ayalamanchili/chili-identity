@@ -55,6 +55,14 @@ public class EmployeeOnBoardingResource {
         tableObj.setSize(employeeOnBoardingDao.size());
         return tableObj;
     }
+    
+    @GET
+    @Path("/{invitationCode}")
+    @Transactional(readOnly = true)
+    public OnBoardingEmployeeDto read(@PathParam("invitationCode") String invitationCode) {
+        EmployeeOnBoardingService employeeOnBoardingService = (EmployeeOnBoardingService) SpringContext.getBean("employeeOnBoardingService");
+        return employeeOnBoardingService.getOnboardingInfo(invitationCode);
+    }
 
     @Path("/initiate-onboarding")
     @PUT

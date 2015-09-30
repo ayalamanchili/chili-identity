@@ -26,10 +26,12 @@ import info.yalamanchili.office.dao.profile.onboarding.EmployeeOnBoardingDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.onboarding.InitiateOnBoardingDto;
 import info.yalamanchili.office.dto.onboarding.OnBoardingEmployeeDto;
+import info.yalamanchili.office.dto.profile.EmergencyContactDto;
 import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.expense.BankAccount;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Email;
+import info.yalamanchili.office.entity.profile.EmergencyContact;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.Preferences;
@@ -79,6 +81,14 @@ public class EmployeeOnBoardingService {
         onboarding.setStatus(OnBoardingStatus.Pending_Initial_Document_Submission);
         em.merge(onboarding);
         InviteCodeGeneratorService.instance().sendInviteCodeEmail(code);
+    }
+    
+    public OnBoardingEmployeeDto getOnboardingInfo(String invitationCode) {
+        InviteCode code = InviteCodeDao.instance().find(invitationCode);
+        EmployeeOnBoarding onboarding = EmployeeOnBoardingDao.instance().findByEmail(code.getEmail());
+        //TODO
+        OnBoardingEmployeeDto dto = new OnBoardingEmployeeDto();
+        return dto;
     }
 
     public String onBoardEmployee(OnBoardingEmployeeDto employee) {
@@ -130,6 +140,12 @@ public class EmployeeOnBoardingService {
 
         emp = EmployeeDao.instance().save(emp);
         emp = em.merge(emp);
+        
+        //Update Emergency Contact for Employee
+        for (EmergencyContactDto emerContact : employee.getEmergencyContact()) {
+            EmergencyContactService emerService = new EmergencyContactService();
+            emerService.addEmergencyContact(emp.getId(), emerContact);
+        }
 
         onboarding.setStatus(OnBoardingStatus.Pending_Document_Verification);
         onboarding.setEmployee(emp);
