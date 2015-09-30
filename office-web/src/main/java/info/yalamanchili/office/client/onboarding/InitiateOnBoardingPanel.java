@@ -18,7 +18,6 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
-import info.yalamanchili.office.client.expense.bnkacct.ReadBankAcctWidget;
 import info.yalamanchili.office.client.practice.CreatePracticePanel;
 import info.yalamanchili.office.client.profile.contact.Branch;
 import info.yalamanchili.office.client.profile.contact.WorkStatus;
@@ -92,7 +91,7 @@ public class InitiateOnBoardingPanel extends CreateComposite {
         addField("email", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addDropDown("employeeType", new SelectEmployeeTypeWidget(false, true));
         addDropDown("company", new SelectCompanyWidget(false, true, Alignment.HORIZONTAL));
-        addField("startDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("branch", false, false, Branch.names(), Alignment.HORIZONTAL);
         addEnumField("workStatus", false, false, WorkStatus.names(), Alignment.HORIZONTAL);
         alignFields();

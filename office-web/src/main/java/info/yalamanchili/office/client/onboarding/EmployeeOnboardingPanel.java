@@ -20,6 +20,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.data.CountryFactory;
 import info.chili.gwt.data.IndiaStatesFactory;
@@ -52,7 +53,9 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
     private static Logger logger = Logger.getLogger(CreateEmployeePanel.class.getName());
     protected SelectCompanyWidget selectCompnayWidget = new SelectCompanyWidget(false, true, Alignment.HORIZONTAL);
     protected ClickableLink addDependentsL = new ClickableLink("Add Dependents");
+    protected ClickableLink addEmerContact = new ClickableLink("Add Emergency Contacts");
     protected List<CreateDependentsPanel> createDependentsPanel = new ArrayList<>();
+    protected List<CreateEmergencyContactWidget> createEmergencyContactPanel = new ArrayList<>();
     HTML emptyLine = new HTML("<br/>");
 
     protected static HTML formsInfo = new HTML("\n"
@@ -76,6 +79,12 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
     protected static HTML depsInfo = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
             + "<strong style=\"color:#555555\">Dependents Information</strong></p>\n"
+            + "\n"
+            + "<ul>\n"
+            + "</ul>");
+    protected static HTML emerInfo = new HTML("\n"
+            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
+            + "<strong style=\"color:#555555\">Emergency Contact Information</strong></p>\n"
             + "\n"
             + "<ul>\n"
             + "</ul>");
@@ -151,6 +160,16 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
             }
             employee.put("dependent", dependent);
         }
+        // Emergency Contact Information
+        if (createEmergencyContactPanel.size() > 0) {
+            JSONArray emergencyContact = new JSONArray();
+            int i = 0;
+            for (CreateEmergencyContactWidget panel : createEmergencyContactPanel) {
+                emergencyContact.set(i, panel.populateEntityFromFields());
+                i++;
+            }
+            employee.put("emergencyContact", emergencyContact);
+        }
         // Additional Information
         assignEntityValueFromField("referredBy", employeeAdditionalDetails);
         assignEntityValueFromField("maritalStatus", employeeAdditionalDetails);
@@ -164,10 +183,8 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         JSONArray Onboardingforms = new JSONArray();
 
         if (!fileUploadPanel.isEmpty()) {
-            logger.info("fileUploadPanel :" + fileUploadPanel);
             int i = 0;
             for (FileUpload upload : fileUploadPanel.getFileUploads()) {
-                logger.info("upload :" + upload);
                 if (upload.getFilename() != null && !upload.getFilename().trim().isEmpty()) {
                     JSONObject forms = new JSONObject();
                     forms.put("fileURL", fileUploadPanel.getFileName(upload));
@@ -187,6 +204,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         // TODO Auto-generated method stub
         countriesF.listBox.addChangeHandler(this);
         addDependentsL.addClickHandler(this);
+        addEmerContact.addClickHandler(this);
     }
 
     @Override
@@ -195,6 +213,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         additionalInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         formsInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         depsInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        emerInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
     }
 
     @Override
@@ -220,20 +239,22 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         addField("accountFirstName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("accountLastName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("bankName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("bankRoutingNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("bankRoutingNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("bankAccountNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("bankAddress1", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("bankAddress1", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("bankAddress2", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("accountType", false, true, AccountType.names(), Alignment.HORIZONTAL);
-        addField("achBlocked", false, true, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        addField("achBlocked", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(additionalInfo);
-        addField("referredBy", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("referredBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("maritalStatus", false, true, MaritalStatus.names(), Alignment.HORIZONTAL);
-        addEnumField("ethnicity", false, true, Ethnicity.names(), Alignment.HORIZONTAL);
+        addEnumField("ethnicity", false, false, Ethnicity.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(formsInfo);
         entityFieldsPanel.add(fileUploadPanel);
         entityFieldsPanel.add(depsInfo);
         entityFieldsPanel.add(addDependentsL);
+        entityFieldsPanel.add(emerInfo);
+        entityFieldsPanel.add(addEmerContact);
         countriesF = (EnumField) fields.get("country");
         statesF = (EnumField) fields.get("state");
         entityFieldsPanel.add(emptyLine);
@@ -314,17 +335,36 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         if (event.getSource().equals(addDependentsL)) {
             CreateDependentsPanel panel = null;
             int i = createDependentsPanel.size();
+            logger.info("im in employeeonboarding post adddepbef " + i);
             panel = new CreateDependentsPanel(this, i);
             createDependentsPanel.add(panel);
             entityFieldsPanel.add(panel);
+            logger.info("im in employeeonboarding post adddep " + i);
+        } else if (event.getSource().equals(addEmerContact)) {
+            CreateEmergencyContactWidget panel = null;
+            int x = createEmergencyContactPanel.size();
+            logger.info("im in employeeonboarding post addEmerContactbef " + x);
+            panel = new CreateEmergencyContactWidget(CreateComposite.CreateCompositeType.ADD, this, x);
+            createEmergencyContactPanel.add(panel);
+            entityFieldsPanel.add(panel);
+            logger.info("im in employeeonboarding post addEmerContact " + x);
         }
         super.onClick(event);
     }
 
     public void removePanel(int i) {
+        logger.info("im in employeeonboarding post removePanel " + i);
         if (createDependentsPanel.size() > 0) {
             createDependentsPanel.get(i).removeFromParent();
             createDependentsPanel.remove(i);
+        }
+    }
+
+    public void removeEmergencyContactPanel(int x) {
+        logger.info("im in employeeonboarding post removeEmergencyContactPanel " + x);
+        if (createEmergencyContactPanel.size() > 0) {
+            createEmergencyContactPanel.get(x).removeFromParent();
+            createEmergencyContactPanel.remove(x);
         }
     }
 

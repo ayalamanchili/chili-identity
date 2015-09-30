@@ -43,6 +43,7 @@ public class InitiateOnBoardingDto implements Serializable {
      *
      */
     @Email
+    @NotNull
     protected String email;
     /**
      *

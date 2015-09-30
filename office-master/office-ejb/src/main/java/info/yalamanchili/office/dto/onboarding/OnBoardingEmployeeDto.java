@@ -8,8 +8,10 @@
  */
 package info.yalamanchili.office.dto.onboarding;
 
+import info.yalamanchili.office.dto.profile.EmergencyContactDto;
 import info.yalamanchili.office.entity.expense.BankAccount;
 import info.yalamanchili.office.entity.profile.Address;
+import info.yalamanchili.office.entity.profile.EmergencyContact;
 import info.yalamanchili.office.entity.profile.Sex;
 import info.yalamanchili.office.entity.profile.WorkStatus;
 import info.yalamanchili.office.entity.profile.ext.Dependent;
@@ -87,6 +89,9 @@ public class OnBoardingEmployeeDto implements Serializable {
     
     @Valid
     private EmployeeAdditionalDetails employeeAdditionalDetails;
+    
+    @Valid
+    private List<EmergencyContactDto> emergencyContact;
 
     public String getFirstName() {
         return firstName;
@@ -199,7 +204,15 @@ public class OnBoardingEmployeeDto implements Serializable {
     public void setEmployeeAdditionalDetails(EmployeeAdditionalDetails employeeAdditionalDetails) {
         this.employeeAdditionalDetails = employeeAdditionalDetails;
     }
-    
-    
+
+    public List<EmergencyContactDto> getEmergencyContact() {
+        return emergencyContact;
+    }
+
+    public void setEmergencyContact(List<EmergencyContactDto> emergencyContact) {
+        this.emergencyContact = emergencyContact;
+    }
+
+
 
 }

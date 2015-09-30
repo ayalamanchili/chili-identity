@@ -5218,38 +5218,38 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Employee_bankAccountNumber_info();
 
   /**
-   * Translated "Bank Address".
+   * Translated "Bank Address 1".
    * 
-   * @return translated "Bank Address"
+   * @return translated "Bank Address 1"
    */
-  @DefaultStringValue("Bank Address")
+  @DefaultStringValue("Bank Address 1")
   @Key("Employee_bankAddress1")
   String Employee_bankAddress1();
 
   /**
-   * Translated "Bank Address".
+   * Translated "Bank Address 1".
    * 
-   * @return translated "Bank Address"
+   * @return translated "Bank Address 1"
    */
-  @DefaultStringValue("Bank Address")
+  @DefaultStringValue("Bank Address 1")
   @Key("Employee_bankAddress1_info")
   String Employee_bankAddress1_info();
 
   /**
-   * Translated "Bank Address".
+   * Translated "Bank Address 2".
    * 
-   * @return translated "Bank Address"
+   * @return translated "Bank Address 2"
    */
-  @DefaultStringValue("Bank Address")
+  @DefaultStringValue("Bank Address 2")
   @Key("Employee_bankAddress2")
   String Employee_bankAddress2();
 
   /**
-   * Translated "Bank Address".
+   * Translated "Bank Address 2".
    * 
-   * @return translated "Bank Address"
+   * @return translated "Bank Address 2"
    */
-  @DefaultStringValue("Bank Address")
+  @DefaultStringValue("Bank Address 2")
   @Key("Employee_bankAddress2_info")
   String Employee_bankAddress2_info();
 
@@ -9493,6 +9493,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Role_ROLE_SALES_AND_MARKETING();
 
   /**
+   * Translated "Self Service Triage".
+   * 
+   * @return translated "Self Service Triage"
+   */
+  @DefaultStringValue("Self Service Triage")
+  @Key("Role_ROLE_SELFSERVICE_TRIAGE")
+  String Role_ROLE_SELFSERVICE_TRIAGE();
+
+  /**
    * Translated "System and Network Administration".
    * 
    * @return translated "System and Network Administration"
@@ -9617,6 +9626,24 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Subject of the self SelfService")
   @Key("SelfService_subject_info")
   String SelfService_subject_info();
+
+  /**
+   * Translated "Ticket Number".
+   * 
+   * @return translated "Ticket Number"
+   */
+  @DefaultStringValue("Ticket Number")
+  @Key("SelfService_ticketNumber")
+  String SelfService_ticketNumber();
+
+  /**
+   * Translated "Ticket Number".
+   * 
+   * @return translated "Ticket Number"
+   */
+  @DefaultStringValue("Ticket Number")
+  @Key("SelfService_ticketNumber_info")
+  String SelfService_ticketNumber_info();
 
   /**
    * Translated "Type ".
@@ -13271,6 +13298,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Sales and Marketing")
   @Key("role_ROLE_SALES_AND_MARKETING")
   String role_ROLE_SALES_AND_MARKETING();
+
+  /**
+   * Translated "Self Service Triage".
+   * 
+   * @return translated "Self Service Triage"
+   */
+  @DefaultStringValue("Self Service Triage")
+  @Key("role_ROLE_SELFSERVICE_TRIAGE")
+  String role_ROLE_SELFSERVICE_TRIAGE();
 
   /**
    * Translated "System and Network Administration".
