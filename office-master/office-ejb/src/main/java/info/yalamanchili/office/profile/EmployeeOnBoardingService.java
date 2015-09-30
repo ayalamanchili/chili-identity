@@ -83,9 +83,13 @@ public class EmployeeOnBoardingService {
         InviteCodeGeneratorService.instance().sendInviteCodeEmail(code);
     }
     
-//    public OnBoardingEmployeeDto getOnboardingInfo(inviteCode invCde) {
-//        InviteCode code = InviteCodeDao.instance().find(employee.getInviteCode().trim());
-//    }
+    public OnBoardingEmployeeDto getOnboardingInfo(String invitationCode) {
+        InviteCode code = InviteCodeDao.instance().find(invitationCode);
+        EmployeeOnBoarding onboarding = EmployeeOnBoardingDao.instance().findByEmail(code.getEmail());
+        //TODO
+        OnBoardingEmployeeDto dto = new OnBoardingEmployeeDto();
+        return dto;
+    }
 
     public String onBoardEmployee(OnBoardingEmployeeDto employee) {
         Employee emp = mapper.map(employee, Employee.class);

@@ -20,6 +20,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.data.CountryFactory;
@@ -109,7 +110,25 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
     public EmployeeOnboardingPanel(String inviteCode) {
         this.invitationCode = inviteCode;
         instance = this;
-        initUpdateComposite(entity, "Employee", OfficeWelcome.constants);
+        initUpdateComposite(invitationCode, "Employee", OfficeWelcome.constants);
+    }
+
+    @Override
+    public void loadEntity(String invitationCode) {
+        HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        logger.info(response);
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+
+                    }
+                });
+    }
+
+    protected String getReadURI() {
+        return OfficeWelcome.constants.root_url() + "on-board-employee/" + invitationCode;
     }
 
     @Override
