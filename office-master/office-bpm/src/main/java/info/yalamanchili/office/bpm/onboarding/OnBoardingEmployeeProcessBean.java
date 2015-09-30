@@ -31,9 +31,7 @@ public class OnBoardingEmployeeProcessBean {
 
     @Autowired
     protected MailUtils mailUtils;
-    @Autowired
-    FileDao fileDao;
-    protected final String[] ON_BOARDING_FORMS_LIST = {"W2_On_Boarding", "I9_On_Boarding"};
+
     //
     public void sendEmployeeOnBoardingEmail(Employee emp) {
         Email email = new Email();
@@ -47,11 +45,6 @@ public class OnBoardingEmployeeProcessBean {
         email.setTemplateName("on_board_employee_template.html");
         email.setContext(emailCtx);
         email.setHtml(Boolean.TRUE);
-        for (String fileName : ON_BOARDING_FORMS_LIST) {
-            if (fileDao.getFilePath(fileName) != null) {
-                email.getAttachments().add(fileDao.getFilePath(fileName));
-            }
-        }
         MessagingService.instance().sendEmail(email);
     }
 
