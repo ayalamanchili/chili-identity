@@ -56,11 +56,11 @@ public class Prospect extends AbstractEntity{
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date startDate;
     
-    //@OneToMany(mappedBy = "prospect", cascade = CascadeType.ALL)
-    protected Email email;
+    /*//@OneToMany(mappedBy = "prospect", cascade = CascadeType.ALL)
+    protected String email;
     
     //@OneToMany(mappedBy = "prospect", cascade = CascadeType.ALL)
-    protected Phone phone;
+    protected int phone;*/
     
     protected String screenedBy;
     protected String referredBy;
@@ -137,14 +137,6 @@ public class Prospect extends AbstractEntity{
         this.lastName = lastName;
     }
 
-    public void setEmail(Email email) {
-        this.email = email;
-    }
-
-    public void setPhone(Phone phone) {
-        this.phone = phone;
-    }
-
     public String getFirstName() {
         return firstName;
     }
@@ -153,11 +145,4 @@ public class Prospect extends AbstractEntity{
         return lastName;
     }
 
-    public Email getEmail() {
-        return email;
-    }
-
-    public Phone getPhone() {
-        return phone;
-    }
-}
+ }

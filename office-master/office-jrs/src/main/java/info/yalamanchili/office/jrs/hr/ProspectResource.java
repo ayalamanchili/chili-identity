@@ -10,15 +10,10 @@ package info.yalamanchili.office.jrs.hr;
 
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
-import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
-import info.yalamanchili.office.dao.client.ClientDao;
 import info.yalamanchili.office.dao.hr.ProspectDao;
-import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.hr.Prospect;
 import info.yalamanchili.office.jrs.CRUDResource;
-import info.yalamanchili.office.jrs.client.ClientResource;
-import info.yalamanchili.office.profile.ContactService;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -26,7 +21,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.QueryParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -36,7 +30,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -62,7 +55,7 @@ public class ProspectResource extends CRUDResource<Prospect> {
 
     @GET
     @Path("/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR', 'ROLE_CEO', 'ROLE_RECRUITER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR', 'ROLE_CEO', 'ROLE_RECRUITER', 'ROLE_ON_BOARDING_MGR')")
     @Cacheable(OfficeCacheKeys.PROSPECT)
     public ProspectResource.ProspectTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         ProspectResource.ProspectTable tableObj = new ProspectResource.ProspectTable();
@@ -75,7 +68,7 @@ public class ProspectResource extends CRUDResource<Prospect> {
     @Path("/save")
     @Validate
     @Override
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR', 'ROLE_CEO', 'ROLE_RECRUITER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR', 'ROLE_CEO', 'ROLE_RECRUITER', 'ROLE_ON_BOARDING_MGR')")
     @CacheEvict(value = OfficeCacheKeys.PROSPECT, allEntries = true)
     public Prospect save(Prospect prospect) {
         return super.save(prospect);
@@ -84,7 +77,7 @@ public class ProspectResource extends CRUDResource<Prospect> {
     @PUT
     @Path("/delete/{id}")
     @Override
-    @PreAuthorize("hasAnyRole('ROLE_RECRUITER','ROLE_HR','ROLE_CEO','ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR', 'ROLE_CEO', 'ROLE_RECRUITER', 'ROLE_ON_BOARDING_MGR')")
     @CacheEvict(value = OfficeCacheKeys.PROSPECT, allEntries = true)
     public void delete(@PathParam("id") Long id) {
         super.delete(id);

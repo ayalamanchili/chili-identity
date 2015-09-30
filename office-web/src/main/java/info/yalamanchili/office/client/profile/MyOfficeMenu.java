@@ -47,7 +47,7 @@ public class MyOfficeMenu extends Composite {
             myOfficeMenuBar.addItem("EmailType", emailTypesMaintainenceCmd);
             myOfficeMenuBar.addItem("ContactType", companyContactTypeMaintainenceCmd);
         }
-        if(Auth.hasAnyOfRoles(ROLE.ROLE_CEO, ROLE.ROLE_HR, ROLE.ROLE_RECRUITER)){
+        if(Auth.hasAnyOfRoles(ROLE.ROLE_CEO, ROLE.ROLE_HR, ROLE.ROLE_RECRUITER, ROLE.ROLE_ON_BOARDING_MGR)){
             myOfficeMenuBar.addItem("Prospects", prospectsMaintainenceCmd);
         }
         myOfficeMenuBar.addItem("Information", corpEmpInfo);

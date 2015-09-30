@@ -107,7 +107,7 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
         assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("email", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("phone", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("phone", entity, DataType.LONG_FIELD);
         assignFieldValueFromEntity("referredBy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
     }
@@ -134,7 +134,7 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
         addField("lastName", false, true, DataType.STRING_FIELD);
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("email", false, true, DataType.STRING_FIELD);
-        addField("phone", false, true, DataType.STRING_FIELD);
+        addField("phone", false, true, DataType.LONG_FIELD);
         addField("referredBy", false, true, DataType.STRING_FIELD);
         addEnumField("status", false, true, ProspectStatus.names());
 

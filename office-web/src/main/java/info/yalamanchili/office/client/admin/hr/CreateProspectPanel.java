@@ -98,8 +98,9 @@ public class CreateProspectPanel extends CreateComposite {
         addField("email", false, true, DataType.STRING_FIELD);
         addField("phone", false, true, DataType.STRING_FIELD);
         addField("screenedBy", false, false, DataType.STRING_FIELD);
-        entityFieldsPanel.add(resumeUploadPanel);
         addEnumField("status", false, true, ProspectStatus.names());
+        entityFieldsPanel.add(resumeUploadPanel);
+        
     }
 
     @Override

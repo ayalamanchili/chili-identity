@@ -53,7 +53,7 @@ public class ReadProspectsPanel extends ReadComposite {
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("screenedBy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("email", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("phone", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("phone", entity, DataType.LONG_FIELD);
         assignFieldValueFromEntity("referredBy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
         //assignFieldValueFromEntity("processDocSentDate", entity, DataType.DATE_FIELD);
@@ -76,7 +76,7 @@ public class ReadProspectsPanel extends ReadComposite {
         addField("startDate", true, false, DataType.DATE_FIELD);
         addField("referredBy", true, false, DataType.STRING_FIELD);
         addField("email", true, false, DataType.STRING_FIELD);
-        addField("phone", true, false, DataType.STRING_FIELD);
+        addField("phone", true, false, DataType.LONG_FIELD);
         addField("screenedBy", true, false, DataType.STRING_FIELD);
         addEnumField("status", true, false, ProspectStatus.names());
     }
