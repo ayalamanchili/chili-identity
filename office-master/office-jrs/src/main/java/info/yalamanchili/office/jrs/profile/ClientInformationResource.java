@@ -68,7 +68,7 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
 
     @GET
     @Path("/bis-info/{id}")
-    protected String getBISInformation(@PathParam("id") Long id) {
+    public String getBISInformation(@PathParam("id") Long id) {
         return BISServiceBean.instance().getBisInformation(id);
     }
 

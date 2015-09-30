@@ -9,7 +9,7 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:securityContext.xml,classpath:applicationContext.xml,classpath:jmxContext.xml,classpath:aopContext.xml;classpath:persistenceContext.xml;classpath:templateContext.xml;classpath:emailContext.xml;classpath:commonsContext.xml;classpath:activitiContext.xml;classpath:cacheContext.xml;classpath:mongoContext.xml;classpath:cjmsContext.xml</param-value>
+        <param-value>classpath:securityContext.xml,classpath:applicationContext.xml,classpath:jmxContext.xml,classpath:aopContext.xml;classpath:persistenceContext.xml;classpath:templateContext.xml;classpath:emailContext.xml;classpath:commonsContext.xml;classpath:activitiContext.xml;classpath:cacheContext.xml;classpath:mongoContext.xml;classpath:cjmsContext.xml;classpath:crestContext.xml</param-value>
     </context-param>
 
     <listener>

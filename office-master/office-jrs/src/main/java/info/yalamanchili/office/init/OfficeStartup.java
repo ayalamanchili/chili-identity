@@ -28,6 +28,7 @@ import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.company.CompanyContactType;
 import info.yalamanchili.office.entity.drive.Folder;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseCategory;
+import info.yalamanchili.office.entity.ext.ExternalRef;
 import info.yalamanchili.office.entity.practice.Practice;
 import info.yalamanchili.office.entity.privacy.PrivacyData;
 import info.yalamanchili.office.entity.privacy.PrivacyMode;
@@ -489,12 +490,19 @@ public class OfficeStartup {
         ipAddress.setName("Local IP");
         ipAddress.setIpAddress("127.0.0.1");
         em.merge(ipAddress);
-        
+
         CIPAddress ipAddress2 = new CIPAddress();
         ipAddress2.setAddressType(CIPAddressType.GLOBAL_VALIDATED);
         ipAddress2.setName("Local IPV6");
         ipAddress2.setIpAddress("0:0:0:0:0:0:0:1");
         em.merge(ipAddress2);
+
+        ExternalRef bisRef = new ExternalRef();
+        bisRef.setExternalId("666");
+        bisRef.setSource("BIS");
+        bisRef.setTargetEntityId(adminEmp.getId());
+        bisRef.setTargetEntityName(Employee.class.getCanonicalName());
+        em.merge(bisRef);
         //
     }
 
