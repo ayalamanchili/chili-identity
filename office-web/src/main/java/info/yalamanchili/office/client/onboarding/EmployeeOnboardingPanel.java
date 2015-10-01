@@ -12,6 +12,7 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -110,16 +111,18 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
     public EmployeeOnboardingPanel(String inviteCode) {
         this.invitationCode = inviteCode;
         instance = this;
+        logger.info("im in constructor");
         initUpdateComposite(invitationCode, "Employee", OfficeWelcome.constants);
     }
 
     @Override
     public void loadEntity(String invitationCode) {
-        HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
+        logger.info("im in loadEntity");
+        HttpService.HttpServiceAsync.instance().doGet(getReadURI(invitationCode), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String response) {
-                        logger.info(response);
+                        logger.info("loadentity response" + response);
                         entity = (JSONObject) JSONParser.parseLenient(response);
                         populateFieldsFromEntity(entity);
 
@@ -127,8 +130,8 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
                 });
     }
 
-    protected String getReadURI() {
-        return OfficeWelcome.constants.root_url() + "on-board-employee/" + invitationCode;
+    protected String getReadURI(String invitationCode) {
+        return URL.encode(OfficeWelcome.constants.root_url() + "on-board-employee/getdetails/" + invitationCode);
     }
 
     @Override
@@ -346,6 +349,8 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+        assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
 
     }
 

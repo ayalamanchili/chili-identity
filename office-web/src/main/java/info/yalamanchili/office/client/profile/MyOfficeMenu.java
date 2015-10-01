@@ -42,14 +42,15 @@ public class MyOfficeMenu extends Composite {
 
         if (Auth.isAdmin()) {
             myOfficeMenuBar.addItem("OnBoarding", onBoardingInfo);
+		if(Auth.hasAnyOfRoles(ROLE.ROLE_CEO, ROLE.ROLE_HR, ROLE.ROLE_RECRUITER, ROLE.ROLE_ON_BOARDING_MGR)){
+            myOfficeMenuBar.addItem("Prospects", prospectsMaintainenceCmd);
+        }
             myOfficeMenuBar.addItem("PhoneType", phoneTypesMaintainenceCmd);
             myOfficeMenuBar.addItem("AddressType", addressTypesMaintainenceCmd);
             myOfficeMenuBar.addItem("EmailType", emailTypesMaintainenceCmd);
             myOfficeMenuBar.addItem("ContactType", companyContactTypeMaintainenceCmd);
         }
-        if(Auth.hasAnyOfRoles(ROLE.ROLE_CEO, ROLE.ROLE_HR, ROLE.ROLE_RECRUITER, ROLE.ROLE_ON_BOARDING_MGR)){
-            myOfficeMenuBar.addItem("Prospects", prospectsMaintainenceCmd);
-        }
+        
         myOfficeMenuBar.addItem("Information", corpEmpInfo);
         myOfficeMenuBar.addStyleName("entityMenuBar");
     }

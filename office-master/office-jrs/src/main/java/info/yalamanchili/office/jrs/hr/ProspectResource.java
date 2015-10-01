@@ -12,11 +12,11 @@ import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.hr.ProspectDao;
+import info.yalamanchili.office.dto.prospect.ProspectDto;
 import info.yalamanchili.office.entity.hr.Prospect;
 import info.yalamanchili.office.jrs.CRUDResource;
+import info.yalamanchili.office.prospect.ProspectService;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -24,6 +24,7 @@ import javax.ws.rs.PathParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -40,18 +41,20 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Scope("request")
 @Transactional
-public class ProspectResource extends CRUDResource<Prospect> {
+public class ProspectResource extends CRUDResource<ProspectDto> {
 
     @Autowired
     public ProspectDao prospectDao;
-
-    @PersistenceContext
-    protected EntityManager em;
+    
+    @Autowired
+    public ProspectService prospectService;
 
     @Override
     public CRUDDao getDao() {
         return prospectDao;
     }
+    @Autowired
+    protected Mapper mapper;
 
     @GET
     @Path("/{start}/{limit}")
@@ -70,10 +73,33 @@ public class ProspectResource extends CRUDResource<Prospect> {
     @Override
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR', 'ROLE_CEO', 'ROLE_RECRUITER', 'ROLE_ON_BOARDING_MGR')")
     @CacheEvict(value = OfficeCacheKeys.PROSPECT, allEntries = true)
-    public Prospect save(Prospect prospect) {
-        return super.save(prospect);
+    public ProspectDto save(ProspectDto prospect) {
+        return prospectService.save(prospect);
     }
-
+    
+//    @PUT
+//    @Validate
+//    public Prospect submit(Prospect entity) {
+//        //return prospectDao.save(entity);
+//        return (Prospect) getDao().save(mapper.map(entity, Prospect.class));
+//    }
+    
+    @PUT
+    @Path("/update")
+    @Validate
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR', 'ROLE_CEO', 'ROLE_RECRUITER', 'ROLE_ON_BOARDING_MGR')")
+    @CacheEvict(value = OfficeCacheKeys.PROSPECT, allEntries = true)
+    public ProspectDto update(ProspectDto prospect) {
+        return prospectService.save(prospect);
+    }
+    
+    @GET
+    @Override
+    @Path("/{id}")
+    public ProspectDto read(@PathParam("id") Long id) {
+        return prospectService.read(id);
+    }
+    
     @PUT
     @Path("/delete/{id}")
     @Override
