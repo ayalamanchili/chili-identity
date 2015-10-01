@@ -16,6 +16,7 @@ import info.yalamanchili.office.dto.prospect.ProspectDto;
 import info.yalamanchili.office.entity.hr.Prospect;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.prospect.ProspectService;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -45,7 +46,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
 
     @Autowired
     public ProspectDao prospectDao;
-    
+
     @Autowired
     public ProspectService prospectService;
 
@@ -61,8 +62,12 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR', 'ROLE_CEO', 'ROLE_RECRUITER', 'ROLE_ON_BOARDING_MGR')")
     @Cacheable(OfficeCacheKeys.PROSPECT)
     public ProspectResource.ProspectTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
+        List<ProspectDto> res = new ArrayList<>();
+        for (Prospect entity : prospectDao.query(start, limit)) {
+            res.add(ProspectDto.map(mapper, entity));
+        }
         ProspectResource.ProspectTable tableObj = new ProspectResource.ProspectTable();
-        tableObj.setEntities(getDao().query(start, limit));
+        tableObj.setEntities(res);
         tableObj.setSize(getDao().size());
         return tableObj;
     }
@@ -76,14 +81,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     public ProspectDto save(ProspectDto prospect) {
         return prospectService.save(prospect);
     }
-    
-//    @PUT
-//    @Validate
-//    public Prospect submit(Prospect entity) {
-//        //return prospectDao.save(entity);
-//        return (Prospect) getDao().save(mapper.map(entity, Prospect.class));
-//    }
-    
+
     @PUT
     @Path("/update")
     @Validate
@@ -92,14 +90,14 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     public ProspectDto update(ProspectDto prospect) {
         return prospectService.save(prospect);
     }
-    
+
     @GET
     @Override
     @Path("/{id}")
     public ProspectDto read(@PathParam("id") Long id) {
         return prospectService.read(id);
     }
-    
+
     @PUT
     @Path("/delete/{id}")
     @Override
@@ -114,7 +112,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     public static class ProspectTable implements java.io.Serializable {
 
         protected Long size;
-        protected List<Prospect> entities;
+        protected List<ProspectDto> entities;
 
         public Long getSize() {
             return size;
@@ -125,11 +123,11 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
         }
 
         @XmlElement
-        public List<Prospect> getEntities() {
+        public List<ProspectDto> getEntities() {
             return entities;
         }
 
-        public void setEntities(List<Prospect> entities) {
+        public void setEntities(List<ProspectDto> entities) {
             this.entities = entities;
         }
     }

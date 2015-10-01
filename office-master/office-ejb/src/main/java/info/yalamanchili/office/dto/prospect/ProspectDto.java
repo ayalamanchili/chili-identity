@@ -47,13 +47,13 @@ public class ProspectDto implements Serializable {
 
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date startDate;
-    
+
     protected String screenedBy;
     protected String referredBy;
-    
+
     @NotEmpty(message = "{resumeUrl.not.empty.msg}")
     protected String resumeURL;
-    
+
     @Enumerated(EnumType.STRING)
     protected ProspectStatus status;
 
@@ -149,13 +149,11 @@ public class ProspectDto implements Serializable {
         ProspectDto prospectContact = mapper.map(entity, ProspectDto.class);
         mapper.map(entity.getContact(), prospectContact);
         if (entity.getContact().getPhones().size() > 0) {
-            mapper.map(entity.getContact().getPhones().get(0), prospectContact);
-            if (entity.getContact().getPhones().get(0).getPhoneNumber() != null) {
-                mapper.map(entity.getContact().getPhones().get(0).getPhoneNumber(), prospectContact);
-            }
-
+            prospectContact.setPhoneNumber(entity.getContact().getPhones().get(0).getPhoneNumber());
         }
-        prospectContact.setEmail(EmployeeDao.instance().getPrimaryEmail(entity.getContact().getId()));
+        if (entity.getContact().getEmails().size() > 0) {
+            prospectContact.setEmail(entity.getContact().getEmails().get(0).getEmail());
+        }
         prospectContact.setId(entity.getId());
         return prospectContact;
     }

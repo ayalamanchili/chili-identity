@@ -41,12 +41,10 @@ public class CreateProspectPanel extends CreateComposite {
         JSONObject entity = new JSONObject();
         assignEntityValueFromField("firstName", entity);
         assignEntityValueFromField("lastName", entity);
-        assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("referredBy", entity);
         assignEntityValueFromField("email", entity);
-        assignEntityValueFromField("phone", entity);
+        assignEntityValueFromField("phoneNumber", entity);
         assignEntityValueFromField("screenedBy", entity);
-        assignEntityValueFromField("status", entity);
         entity.put("resumeURL", resumeUploadPanel.getFileName());
         logger.info("ddd" + entity);
 
@@ -69,7 +67,6 @@ public class CreateProspectPanel extends CreateComposite {
                 });
     }
 
-  
     @Override
     protected void addButtonClicked() {
     }
@@ -93,14 +90,12 @@ public class CreateProspectPanel extends CreateComposite {
     protected void addWidgets() {
         addField("firstName", false, true, DataType.STRING_FIELD);
         addField("lastName", false, true, DataType.STRING_FIELD);
-        addField("startDate", false, true, DataType.DATE_FIELD);
         addField("referredBy", false, true, DataType.STRING_FIELD);
         addField("email", false, true, DataType.STRING_FIELD);
-        addField("phone", false, true, DataType.STRING_FIELD);
+        addField("phoneNumber", false, true, DataType.STRING_FIELD);
         addField("screenedBy", false, false, DataType.STRING_FIELD);
-        addEnumField("status", false, true, ProspectStatus.names());
         entityFieldsPanel.add(resumeUploadPanel);
-        
+
     }
 
     @Override
@@ -109,15 +104,7 @@ public class CreateProspectPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
+        logger.info("URI");
         return OfficeWelcome.constants.root_url() + "prospect/save";
-    }
-
-    @Override
-    protected boolean processClientSideValidations(JSONObject entity) {
-        if (resumeUploadPanel.isEmpty()) {
-            resumeUploadPanel.setMessage("Please select a file");
-            return false;
-        }
-        return true;
     }
 }

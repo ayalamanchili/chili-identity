@@ -34,37 +34,27 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlRootElement
 @Entity
 @Audited
-public class Prospect extends AbstractEntity{
+public class Prospect extends AbstractEntity {
+
     private static final long serialVersionUID = 1L;
-    
+
     @OneToOne(cascade = CascadeType.ALL)
-    @ForeignKey(name="FK_Contact_Prospect")
+    @ForeignKey(name = "FK_Contact_Prospect")
     @Valid
     protected Contact contact;
-       
-     
-    @NotEmpty(message = "{firstName.not.empty.msg}")
-    @Field
-    @org.hibernate.annotations.Index(name = "PROSPECT_FST_NM")
-    protected String firstName;
-   
-    @NotEmpty(message = "{lastName.not.empty.msg}")
-    @Field
-    @org.hibernate.annotations.Index(name = "PROSPECT_LST_NM")
-    protected String lastName;
 
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date startDate;
-        
+
     protected String screenedBy;
     protected String referredBy;
-    
+
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date processDocSentDate;
 
     @NotEmpty(message = "{resumeUrl.not.empty.msg}")
     protected String resumeURL;
-    
+
     @Enumerated(EnumType.STRING)
     protected ProspectStatus status;
 
@@ -95,6 +85,7 @@ public class Prospect extends AbstractEntity{
     public void setStatus(ProspectStatus status) {
         this.status = status;
     }
+
     @XmlElement
     public Contact getContact() {
         return contact;
@@ -123,25 +114,10 @@ public class Prospect extends AbstractEntity{
     public ProspectStatus getStatus() {
         return status;
     }
-     public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
 
     @Override
     public String toString() {
-        return "Prospect{" + "contact=" + contact + ", firstName=" + firstName + ", lastName=" + lastName + ", startDate=" + startDate + ", screenedBy=" + screenedBy + ", referredBy=" + referredBy + ", processDocSentDate=" + processDocSentDate + ", resumeURL=" + resumeURL + ", status=" + status + '}';
+        return "Prospect{" + "contact=" + contact + ", startDate=" + startDate + ", screenedBy=" + screenedBy + ", referredBy=" + referredBy + ", processDocSentDate=" + processDocSentDate + ", resumeURL=" + resumeURL + ", status=" + status + '}';
     }
 
- }
+}

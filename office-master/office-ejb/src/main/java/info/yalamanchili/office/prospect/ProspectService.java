@@ -8,7 +8,7 @@
  */
 package info.yalamanchili.office.prospect;
 
-import info.chili.commons.BeanMapper;
+import com.google.common.base.Strings;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.hr.ProspectDao;
 import info.yalamanchili.office.dto.prospect.ProspectDto;
@@ -17,6 +17,7 @@ import info.yalamanchili.office.entity.hr.ProspectStatus;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Phone;
+import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.dozer.Mapper;
@@ -36,76 +37,75 @@ public class ProspectService {
     protected EntityManager em;
     @Autowired
     protected Mapper mapper;
-    
+
     @Autowired
     protected ProspectDao prospectDao;
 
-    public ProspectDto save(ProspectDto ec) {
-        //TODO user dozer mapping?
-        Mapper mapper = (Mapper) SpringContext.getBean("mapper");
-        Prospect entity = mapper.map(ec, Prospect.class);
+    public ProspectDto save(ProspectDto dto) {
+        Prospect entity = mapper.map(dto, Prospect.class);
         entity.setStatus(ProspectStatus.IN_PROGRESS);
+        entity.setStartDate(new Date());
         Contact contact = new Contact();
-        contact.setFirstName(ec.getFirstName());
-        contact.setLastName(ec.getLastName());
+        contact.setFirstName(dto.getFirstName());
+        contact.setLastName(dto.getLastName());
 
-        if ((ec.getEmail() != null) && (!ec.getEmail().isEmpty())) {
+        if (!Strings.isNullOrEmpty(dto.getEmail())) {
             Email email = new Email();
-            email.setEmail(ec.getEmail());
+            email.setEmail(dto.getEmail());
             email.setPrimaryEmail(Boolean.TRUE);
             contact.addEmail(email);
         }
         //phone
-        if (ec.getPhoneNumber() != null) {
+        if (!Strings.isNullOrEmpty(dto.getPhoneNumber())) {
             Phone phone = new Phone();
             contact.addPhone(phone);
-            phone.setPhoneNumber(ec.getPhoneNumber());
+            phone.setPhoneNumber(dto.getPhoneNumber());
         }
         //contact
         contact = em.merge(contact);
         entity.setContact(contact);
-        entity = em.merge(entity);
-        
-        return ec;
+        em.merge(entity);
+        return dto;
     }
-    
+
     public ProspectDto read(Long id) {
         Prospect ec = prospectDao.findById(id);
         return ProspectDto.map(mapper, ec);
     }
-    
-     public static ProspectService instance() {
+
+    public static ProspectService instance() {
         return SpringContext.getBean(ProspectService.class);
     }
-     
-     public ProspectDto update(ProspectDto ec) {
-        //TODO user dozer mapping?
-        Mapper mapper = (Mapper) SpringContext.getBean("mapper");
-        Prospect entity = mapper.map(ec, Prospect.class);
-        prospectDao.save(entity);
-        
-        Prospect ecEntity = em.find(Prospect.class, ec.getId());
-        ecEntity = (Prospect) BeanMapper.merge(ec, ecEntity);
-        
-        Contact contact = ecEntity.getContact();
-        
-        if ((ec.getEmail() != null) && (!ec.getEmail().isEmpty())) {
-            Email email = new Email();
-            email.setEmail(ec.getEmail());
-            email.setPrimaryEmail(Boolean.TRUE);
-            contact.addEmail(email);
+
+    public ProspectDto update(ProspectDto dto) {
+        Prospect entity = mapper.map(dto, Prospect.class);
+        entity = prospectDao.save(entity);
+        Contact contact = entity.getContact();
+        if (contact.getEmails().size() <= 0) {
+            if (!Strings.isNullOrEmpty(dto.getEmail())) {
+                Email email = new Email();
+                email.setEmail(dto.getEmail());
+                email.setPrimaryEmail(Boolean.TRUE);
+                contact.addEmail(email);
+            }
+        } else {
+            //TODO update existing email
+
         }
         //phone
-        if (ec.getPhoneNumber() != null) {
-            Phone phone = new Phone();
-            contact.addPhone(phone);
-            phone.setPhoneNumber(ec.getPhoneNumber());
+        if (contact.getPhones().size() <= 0) {
+            if (!Strings.isNullOrEmpty(dto.getPhoneNumber())) {
+                Phone phone = new Phone();
+                phone.setPhoneNumber(dto.getPhoneNumber());
+                contact.addPhone(phone);
+            }
+        } else {
+            //TODO update existing phone
         }
         //contact
         contact = em.merge(contact);
         entity.setContact(contact);
-        entity = em.merge(entity);
-        
-        return ec;
+        em.merge(entity);
+        return dto;
     }
 }
