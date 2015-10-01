@@ -8,9 +8,10 @@
  */
 package info.yalamanchili.office.dao.hr;
 
+import info.chili.commons.BeanMapper;
 import info.chili.dao.CRUDDao;
-import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.hr.Prospect;
+import info.yalamanchili.office.entity.profile.Contact;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.context.annotation.Scope;
@@ -31,13 +32,20 @@ public class ProspectDao extends CRUDDao<Prospect>{
         super(Prospect.class);
     }
     
+    public Prospect save(Prospect entity) {
+        if (entity.getId() != null) {
+            Prospect updateProspect = null;
+            updateProspect = super.save(entity);
+            Contact contact = em.find(Contact.class, entity.getContact());
+            updateProspect.setContact((Contact) BeanMapper.merge(entity.getContact(), contact));
+            return em.merge(updateProspect);
+        }
+        return super.save(entity);
+    }
+    
     @Override
     public EntityManager getEntityManager() {
         return em;
     }
-    
-    public static ProspectDao instance() {
-        return SpringContext.getBean(ProspectDao.class);
-    }
-    
+
 }

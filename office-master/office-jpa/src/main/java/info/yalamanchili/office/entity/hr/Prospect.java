@@ -10,9 +10,6 @@ package info.yalamanchili.office.entity.hr;
 
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.profile.Contact;
-import info.yalamanchili.office.entity.profile.Email;
-import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.entity.profile.Phone;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -20,6 +17,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
+import javax.validation.Valid;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
@@ -40,6 +39,7 @@ public class Prospect extends AbstractEntity{
     
     @OneToOne(cascade = CascadeType.ALL)
     @ForeignKey(name="FK_Contact_Prospect")
+    @Valid
     protected Contact contact;
        
      
@@ -55,13 +55,7 @@ public class Prospect extends AbstractEntity{
 
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date startDate;
-    
-    /*//@OneToMany(mappedBy = "prospect", cascade = CascadeType.ALL)
-    protected String email;
-    
-    //@OneToMany(mappedBy = "prospect", cascade = CascadeType.ALL)
-    protected int phone;*/
-    
+        
     protected String screenedBy;
     protected String referredBy;
     
@@ -101,7 +95,7 @@ public class Prospect extends AbstractEntity{
     public void setStatus(ProspectStatus status) {
         this.status = status;
     }
-
+    @XmlElement
     public Contact getContact() {
         return contact;
     }
@@ -143,6 +137,11 @@ public class Prospect extends AbstractEntity{
 
     public String getLastName() {
         return lastName;
+    }
+
+    @Override
+    public String toString() {
+        return "Prospect{" + "contact=" + contact + ", firstName=" + firstName + ", lastName=" + lastName + ", startDate=" + startDate + ", screenedBy=" + screenedBy + ", referredBy=" + referredBy + ", processDocSentDate=" + processDocSentDate + ", resumeURL=" + resumeURL + ", status=" + status + '}';
     }
 
  }
