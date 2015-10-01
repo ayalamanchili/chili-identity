@@ -48,13 +48,20 @@ public class ReadBISClientInformationPanel extends ReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("BillingRate", entity, null);
-        assignFieldValueFromEntity("BillingRateDuration", entity, null);
-        assignFieldValueFromEntity("CPDCreatedBy", entity, null);
-        assignFieldValueFromEntity("CPDCreatedDate", entity, null);
-        assignFieldValueFromEntity("CPDCreatedUserId", entity, null);
-        assignFieldValueFromEntity("CPDLastModifiedBy", entity, null);
-        assignFieldValueFromEntity("CPDLastModifiedDate", entity, null);
+        assignFieldValueFromEntity("BillingRate", entity, DataType.CURRENCY_FIELD);
+        assignFieldValueFromEntity("BillingRateDuration", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("CPDCreatedBy", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("CPDCreatedDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("CPDCreatedUserId", entity, DataType.INTEGER_FIELD);
+        assignFieldValueFromEntity("CPDLastModifiedBy", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("CPDLastModifiedDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("CPDLastModifiedUserDepartmentId", entity, DataType.INTEGER_FIELD);
+        assignFieldValueFromEntity("CPDLastModifiedUserId", entity, DataType.INTEGER_FIELD);
+        assignFieldValueFromEntity("CPDProject_EndDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("CPDProject_StartDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("ClientLocationId", entity, DataType.INTEGER_FIELD);
+        assignFieldValueFromEntity("ClientLocationTitle", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("ClientLocation_Address", entity, DataType.STRING_FIELD);
     }
 
     @Override
@@ -67,13 +74,20 @@ public class ReadBISClientInformationPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addField("BillingRate", true, false, DataType.INTEGER_FIELD);
+        addField("BillingRate", true, false, DataType.CURRENCY_FIELD);
         addField("BillingRateDuration", true, false, DataType.STRING_FIELD);
         addField("CPDCreatedBy", true, false, DataType.STRING_FIELD);
         addField("CPDCreatedDate", true, false, DataType.DATE_FIELD);
         addField("CPDCreatedUserId", true, false, DataType.INTEGER_FIELD);
         addField("CPDLastModifiedBy", true, false, DataType.STRING_FIELD);
         addField("CPDLastModifiedDate", true, false, DataType.DATE_FIELD);
+        addField("CPDLastModifiedUserDepartmentId", true, false, DataType.INTEGER_FIELD);
+        addField("CPDLastModifiedUserId", true, false, DataType.INTEGER_FIELD);
+        addField("CPDProject_EndDate", true, false, DataType.DATE_FIELD);
+        addField("CPDProject_StartDate", true, false, DataType.DATE_FIELD);
+        addField("ClientLocationId", true, false, DataType.INTEGER_FIELD);
+        addField("ClientLocationTitle", true, false, DataType.STRING_FIELD);
+        addField("ClientLocation_Address", true, false, DataType.STRING_FIELD);
     }
 
     @Override
