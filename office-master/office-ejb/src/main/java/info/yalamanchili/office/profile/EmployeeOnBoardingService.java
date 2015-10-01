@@ -19,6 +19,7 @@ import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.dao.expense.BankAccountDao;
 import info.yalamanchili.office.dao.invite.InviteCodeDao;
+import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.ext.DependentDao;
 import info.yalamanchili.office.dao.profile.ext.EmployeeAdditionalDetailsDao;
@@ -30,10 +31,12 @@ import info.yalamanchili.office.dto.profile.EmergencyContactDto;
 import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.expense.BankAccount;
 import info.yalamanchili.office.entity.profile.Address;
+import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.EmergencyContact;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
+import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.entity.profile.Preferences;
 import info.yalamanchili.office.entity.profile.ext.Dependent;
 import info.yalamanchili.office.entity.profile.ext.EmployeeAdditionalDetails;
@@ -82,12 +85,15 @@ public class EmployeeOnBoardingService {
         em.merge(onboarding);
         InviteCodeGeneratorService.instance().sendInviteCodeEmail(code);
     }
-    
+
     public OnBoardingEmployeeDto getOnboardingInfo(String invitationCode) {
-        InviteCode code = InviteCodeDao.instance().find(invitationCode);
+        String invCde = invitationCode.trim();
+        InviteCode code = InviteCodeDao.instance().find(invCde);
         EmployeeOnBoarding onboarding = EmployeeOnBoardingDao.instance().findByEmail(code.getEmail());
-        //TODO
+        Contact contact = ContactDao.instance().findByEmail(onboarding.getEmail());
         OnBoardingEmployeeDto dto = new OnBoardingEmployeeDto();
+        dto.setFirstName(contact.getFirstName());
+        dto.setLastName(contact.getLastName());
         return dto;
     }
 
@@ -140,11 +146,38 @@ public class EmployeeOnBoardingService {
 
         emp = EmployeeDao.instance().save(emp);
         emp = em.merge(emp);
-        
+
         //Update Emergency Contact for Employee
-        for (EmergencyContactDto emerContact : employee.getEmergencyContact()) {
-            EmergencyContactService emerService = new EmergencyContactService();
-            emerService.addEmergencyContact(emp.getId(), emerContact);
+        for (EmergencyContactDto ec : employee.getEmergencyContact()) {
+            Contact contact = new Contact();
+            contact.setFirstName(ec.getFirstName());
+            contact.setLastName(ec.getLastName());
+            contact.setSex(ec.getSex());
+            //Email
+
+            if ((ec.getEmail() != null) && (!ec.getEmail().isEmpty())) {
+                Email em = new Email();
+                em.setEmail(ec.getEmail());
+                em.setPrimaryEmail(Boolean.TRUE);
+                contact.addEmail(em);
+            }
+            //phone
+            if (ec.getPhoneNumber() != null) {
+                Phone phone = new Phone();
+                contact.addPhone(phone);
+                phone.setPhoneNumber(ec.getPhoneNumber());
+                phone.setCountryCode(ec.getCountryCode());
+                phone.setExtension(ec.getExtension());
+            }
+            //contact
+            contact = em.merge(contact);
+            //emergencycontact
+            EmergencyContact emergencyCnt = new EmergencyContact();
+            emergencyCnt.setEcPrimary(ec.getEcPrimary());
+            emergencyCnt.setRelation(ec.getRelation());
+            emergencyCnt.setContact(contact);
+            emergencyCnt.setEmployee(emp);
+            em.merge(emergencyCnt);
         }
 
         onboarding.setStatus(OnBoardingStatus.Pending_Document_Verification);

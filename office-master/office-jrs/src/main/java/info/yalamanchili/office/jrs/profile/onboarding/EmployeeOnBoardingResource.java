@@ -57,9 +57,8 @@ public class EmployeeOnBoardingResource {
     }
     
     @GET
-    @Path("/{invitationCode}")
-    @Transactional(readOnly = true)
-    public OnBoardingEmployeeDto read(@PathParam("invitationCode") String invitationCode) {
+    @Path("/getdetails/{invitationCode}")
+    public OnBoardingEmployeeDto getdetails(@PathParam("invitationCode") String invitationCode) {
         EmployeeOnBoardingService employeeOnBoardingService = (EmployeeOnBoardingService) SpringContext.getBean("employeeOnBoardingService");
         return employeeOnBoardingService.getOnboardingInfo(invitationCode);
     }
