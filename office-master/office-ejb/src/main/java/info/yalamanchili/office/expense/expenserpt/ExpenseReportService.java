@@ -41,6 +41,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.ws.rs.core.Response;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -143,8 +145,13 @@ public class ExpenseReportService {
         return mapper.map(expenseReportsDao.findById(id), ExpenseReportSaveDto.class);
     }
 
+    private static final Log log = LogFactory.getLog(ExpenseReportService.class);
+
     public ExpenseReportSaveDto clone(Long id) {
         ExpenseReport entity = expenseReportsDao.clone(id, "submittedDate", "approvedByManager", "approvedByManagerDate", "approvedByAccountsDept", "approvedByAccountsDeptDate", "approvedByCEO", "approvedByCEODate", "bpmProcessId", "status", "totalExpenses", "expenseReceipts");
+        log.debug("-------------- entity ---------------- :" + entity);
+        log.debug("-------------- entity ---------------- :" + entity.getEmployee());
+        log.debug("-------------- entity ---------------- :" + OfficeSecurityService.instance().getCurrentUserName());
         if (!entity.getEmployee().getEmployeeId().equals(OfficeSecurityService.instance().getCurrentUserName())) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.clone.report", "Only your expense reports can be cloned");
         }
