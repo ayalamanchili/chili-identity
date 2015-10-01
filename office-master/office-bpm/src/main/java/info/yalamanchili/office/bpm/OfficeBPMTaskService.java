@@ -17,6 +17,7 @@ import info.chili.bpm.types.HistoricTask;
 import info.chili.bpm.types.HistoricTask.HistoricTaskTable;
 import info.chili.bpm.types.Task;
 import info.chili.bpm.types.Task.TaskTable;
+import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -37,7 +38,11 @@ import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.task.TaskQuery;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -99,8 +104,16 @@ public class OfficeBPMTaskService {
         bpmTaskService.resolveTask(taskId);
     }
 
-    public void completeTaskOnBehalf(String taskId, List<Entry> request, String email) {
-
+    @Transactional
+    public void completeTaskOnBehalf(String taskId, List<Entry> request, String email) throws ServiceException {
+        Employee emp = EmployeeDao.instance().findByEmail(email);
+        Authentication auth = new UsernamePasswordAuthenticationToken(emp.getUser().getUsername(), emp.getUser().getPasswordHash(), null);
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        try {
+            completeTask(taskId, request);
+        } catch (Exception e) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.complete.task", "Error approving task from email reply");
+        }
     }
 
     public void completeTask(String taskId, List<Entry> request) {

@@ -12,10 +12,12 @@ import com.google.common.base.Strings;
 import com.google.common.xml.XmlEscapers;
 import info.chili.commons.HtmlUtils;
 import info.chili.email.dao.UserEmailPreferenceRuleDao;
+import info.chili.email.domain.TaskEmail;
 import info.chili.exception.FaultEventException;
 import info.chili.exception.FaultEventPayload;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.cache.OfficeCacheManager;
+import info.yalamanchili.office.config.OfficeFeatureFlipper;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.security.SecurityUtils;
@@ -82,8 +84,9 @@ public class EmailService {
                 processHeaders(mimeMessage, email);
                 processAttchments(message, email);
                 message.getMimeMessage().saveChanges();
-                String str = message.getMimeMessage().getMessageID();
-                System.out.println(str);
+                if (OfficeFeatureFlipper.instance().getEnableEmailTaskCompletion()) {
+                    logTaskEmail(email, message.getMimeMessage().getMessageID());
+                }
             }
         };
         try {
@@ -93,6 +96,15 @@ public class EmailService {
             logger.info(ex.getMessage());
             ex.printStackTrace();
             throw new FaultEventException(new FaultEventPayload(email, Email.class.getCanonicalName()), false, ex);
+        }
+    }
+
+    protected void logTaskEmail(Email email, String msgId) {
+        if (!Strings.isNullOrEmpty(msgId) && email.getHeaders().containsKey("task-id")) {
+            TaskEmail taskemail = new TaskEmail();
+            taskemail.setMessageId(msgId);
+            taskemail.setTaskId(email.getHeaders().get("task-id"));
+            mongoTemplate.save(taskemail);
         }
     }
 

@@ -29,6 +29,17 @@ public class OfficeFeatureFlipper {
     public void setEnableIPFiltering(Boolean enableIPFiltering) {
         this.enableIPFiltering = enableIPFiltering;
     }
+    
+    @Value("#{officeFeatureFlipperProperties['enableEmailTaskCompletion']}")
+    protected Boolean enableEmailTaskCompletion;
+
+    public Boolean getEnableEmailTaskCompletion() {
+        return enableEmailTaskCompletion;
+    }
+
+    public void setEnableEmailTaskCompletion(Boolean enableEmailTaskCompletion) {
+        this.enableEmailTaskCompletion = enableEmailTaskCompletion;
+    }
 
     public static OfficeFeatureFlipper instance() {
         return SpringContext.getBean(OfficeFeatureFlipper.class);

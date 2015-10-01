@@ -183,11 +183,13 @@ public class EmployeeDao extends CRUDDao<Employee> {
         return query.getResultList();
     }
 
-    public Employee findByEmail(String email) {
-        TypedQuery<Employee> qry = em.createQuery("from " + Employee.class.getCanonicalName() + " emails.email=:emailParam and user.enabled=true", Employee.class);
-        qry.setParameter("emailParam", email);
-        if (qry.getResultList().size() > 0) {
-            return qry.getResultList().get(0);
+        //TODO use cache
+    public Employee findByEmail(String emailAddress) {
+        Query getEmailQ = em.createQuery("from " + info.yalamanchili.office.entity.profile.Email.class.getCanonicalName() + " where emailHash=:emailAddressParam");
+        getEmailQ.setParameter("emailAddressParam", info.yalamanchili.office.security.SecurityUtils.hash(emailAddress));
+        if (getEmailQ.getResultList().size() > 0) {
+            info.yalamanchili.office.entity.profile.Email email = (info.yalamanchili.office.entity.profile.Email) getEmailQ.getResultList().get(0);
+            return (Employee) email.getContact();
         } else {
             return null;
         }
