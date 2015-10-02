@@ -10,6 +10,8 @@ package info.yalamanchili.office.bpm.email;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.BPMUtils;
 import info.chili.email.Email;
+import info.chili.service.jrs.types.Entry;
+import info.yalamanchili.office.bpm.OfficeBPMFormService;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -64,5 +66,43 @@ public class GenericTaskCreateNotification implements TaskListener {
             }
         }
         return emails;
+    }
+
+    //******
+
+    public void sendTaskEmail(DelegateTask delegateTask, Boolean notifyEmployee, String... notifyRoles) {
+        MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
+        Email email = new Email();
+        email.setTos(getEmails(delegateTask, notifyEmployee, notifyRoles));
+        email.setSubject("Task Created:" + delegateTask.getName());
+        String messageText = "Task is Created. Please complete.\n Details: \n Name: " + delegateTask.getName() + " \n Description:" + delegateTask.getDescription();
+        email.setHtml(Boolean.TRUE);
+        email.setRichText(true);
+        email.setBody(buildForm(delegateTask.getId()));
+        email.getHeaders().put("task-id", delegateTask.getId());
+        messagingService.sendEmail(email);
+    }
+
+    public String buildForm(String taskId) {
+        OfficeBPMFormService bpmFormService = (OfficeBPMFormService) SpringContext.getBean("officeBPMFormService");
+        StringBuilder form = new StringBuilder();
+        form.append("<form method=\"post\" action=\"/office/resources/public/web/bpm/task/").append(taskId).append("\">");
+        for (info.chili.bpm.types.FormProperty property : bpmFormService.getTaskFormProperties(taskId)) {
+            form.append(property.getName()).append(" : ");
+            if (property.getType().getName().equals("string")) {
+                form.append("<input type=\"text\" name=\"").append(property.getId()).append("\"/>");
+            }
+            if (property.getType().getName().equals("enum")) {
+                form.append("<select name=\"" + property.getId() + "\">");
+                for (Entry entry : property.getType().getValues()) {
+                    form.append("<option value=\"").append(entry.getId()).append("\">").append(entry.getValue()).append("</option>");
+                }
+                form.append("</select>");
+            }
+            form.append("</br>");
+        }
+        form.append("<input type=\"submit\" value=\"Submit\"> ");
+        form.append("</form>");
+        return form.toString();
     }
 }
