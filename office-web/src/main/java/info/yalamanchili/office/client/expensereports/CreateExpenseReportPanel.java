@@ -18,6 +18,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.HTML;
@@ -278,6 +279,14 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         new ResponseStatusWidget().show("Expense Form Successfully Created");
         TabPanel.instance().expensePanel.entityPanel.clear();
         TabPanel.instance().expensePanel.entityPanel.add(new ReadAllExpenseReportsPanel());
+    }
+
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        if (expenseItemPanels.size() > 0 && (fileUploadPanel.getFileUploads() == null || fileUploadPanel.getFileUploads().size() <= 0 || fileUploadPanel.getFileUploads().get(0).getFilename().isEmpty())) {
+            return Window.confirm("You expense report does not have any receipts attached so will not be processed. Are you sure you still want to submit?");
+        }
+        return true;
     }
 
     @Override
