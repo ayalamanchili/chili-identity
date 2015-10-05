@@ -7,15 +7,21 @@
  */
 package info.yalamanchili.office.client.profile.selfservice;
 
+import com.axeiya.gwtckeditor.client.CKEditor;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
-import info.chili.gwt.fields.RichTextField;
+import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.profile.statusreport.Editor;
 import java.util.logging.Logger;
 
 /**
@@ -25,11 +31,30 @@ import java.util.logging.Logger;
 public class CreateServiceTicketPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateServiceTicketPanel.class.getName());
-    RichTextField descriptionF;
+    CKEditor descriptionF;
+    FlowPanel panel=new FlowPanel();
+    EnumField typeF=new EnumField(OfficeWelcome.constants, "type", "TicketStatus", false, false, TicketStatus.names(), Alignment.HORIZONTAL);
+    
 
     public CreateServiceTicketPanel(CreateComposite.CreateCompositeType type) {
         super(type);
         initCreateComposite("SelfService", OfficeWelcome.constants);
+    }
+    
+    
+    public final void populateFieldsFromEntity(final JSONObject entity) {
+        logger.info(entity.toString());
+        
+        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                populateReport(entity);
+            }
+        });
+    }
+
+    protected final void populateReport(final JSONObject entity) {
+        descriptionF.setHTML(JSONUtils.toString(entity, "description"));
     }
 
     @Override
@@ -74,15 +99,26 @@ public class CreateServiceTicketPanel extends CreateComposite {
 
     @Override
     protected void configure() {
-        descriptionF = (RichTextField) fields.get("description");
-        descriptionF.setWidth("100%");
+       
     }
 
     @Override
     protected void addWidgets() {
         addField("subject", false, true, DataType.STRING_FIELD);
-        addField("description", false, false, DataType.RICH_TEXT_AREA);
-        addEnumField("type", false, true, TicketType.names());
+        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                addReportField();
+            }
+        });
+         addEnumField("type", false, false, TicketStatus.names());
+    }
+    protected final void addReportField() {
+        descriptionF = Editor.getEditor(false);
+    }
+
+    public void setHtml(String html) {
+        descriptionF.setData(html);
     }
 
     @Override
