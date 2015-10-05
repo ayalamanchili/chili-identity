@@ -40,6 +40,8 @@ public class Auth {
         ROLE_GENERAL_EXPENSE_MANAGER,
         ROLE_TRAVEL_BOOKING_MANAGER,
         ROLE_SELFSERVICE_TRIAGE,
+        ROLE_BIS_VIEW,
+
     }
 
     public static boolean isAdmin() {
