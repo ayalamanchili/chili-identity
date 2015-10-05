@@ -89,12 +89,11 @@ public class EmployeeOnBoardingService {
     public OnBoardingEmployeeDto getOnboardingInfo(String invitationCode) {
         String invCde = invitationCode.trim();
         InviteCode code = InviteCodeDao.instance().find(invCde);
-        EmployeeOnBoarding onboarding = EmployeeOnBoardingDao.instance().findByEmail(code.getEmail());
-        Contact contact = ContactDao.instance().findByEmail(onboarding.getEmail());
-        OnBoardingEmployeeDto dto = new OnBoardingEmployeeDto();
-        dto.setFirstName(contact.getFirstName());
-        dto.setLastName(contact.getLastName());
-        return dto;
+        Contact cnt = ContactDao.instance().findByEmail(code.getEmail());
+        OnBoardingEmployeeDto res = new OnBoardingEmployeeDto();
+        res.setFirstName(cnt.getFirstName());
+        res.setLastName(cnt.getLastName());
+        return res;
     }
 
     public String onBoardEmployee(OnBoardingEmployeeDto employee) {

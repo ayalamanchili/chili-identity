@@ -12,7 +12,7 @@ import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.entity.profile.Contact;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+import javax.persistence.Query;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
@@ -40,12 +40,13 @@ public class ContactDao extends CRUDDao<Contact> {
         return SpringContext.getBean(ContactDao.class);
     }
 
-    public Contact findByEmail(String email) {
-        String L = Contact.class.getCanonicalName();
-        TypedQuery<Contact> qry = getEntityManager().createQuery("from " + Contact.class.getCanonicalName() + " where emails.email=:emailParam ", Contact.class);
-        qry.setParameter("emailParam", email);
-        if (qry.getResultList().size() > 0) {
-            return qry.getResultList().get(0);
+    //TODO use cache
+    public Contact findByEmail(String emailAddress) {
+        Query getEmailQ = em.createQuery("from " + info.yalamanchili.office.entity.profile.Email.class.getCanonicalName() + " where emailHash=:emailAddressParam");
+        getEmailQ.setParameter("emailAddressParam", info.yalamanchili.office.security.SecurityUtils.hash(emailAddress));
+        if (getEmailQ.getResultList().size() > 0) {
+            info.yalamanchili.office.entity.profile.Email email = (info.yalamanchili.office.entity.profile.Email) getEmailQ.getResultList().get(0);
+            return email.getContact();
         } else {
             return null;
         }
