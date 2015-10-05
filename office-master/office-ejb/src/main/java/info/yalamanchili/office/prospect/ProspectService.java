@@ -77,10 +77,12 @@ public class ProspectService {
         return SpringContext.getBean(ProspectService.class);
     }
 
-    public ProspectDto update(ProspectDto dto) {
+    public Prospect update(ProspectDto dto) {
         Prospect entity = mapper.map(dto, Prospect.class);
         entity = prospectDao.save(entity);
         Contact contact = entity.getContact();
+        contact.setFirstName(dto.getFirstName());
+        contact.setLastName(dto.getLastName());
         if (contact.getEmails().size() <= 0) {
             if (!Strings.isNullOrEmpty(dto.getEmail())) {
                 Email email = new Email();
@@ -90,7 +92,7 @@ public class ProspectService {
             }
         } else {
             //TODO update existing email
-
+            contact.getEmails().get(0).setEmail(dto.getEmail());
         }
         //phone
         if (contact.getPhones().size() <= 0) {
@@ -101,11 +103,14 @@ public class ProspectService {
             }
         } else {
             //TODO update existing phone
+            contact.getPhones().get(0).setPhoneNumber(dto.getPhoneNumber());
         }
         //contact
         contact = em.merge(contact);
         entity.setContact(contact);
-        em.merge(entity);
-        return dto;
+        prospectDao.getEntityManager().merge(entity);
+        //em.merge(entity);
+        return entity;
+         
     }
 }
