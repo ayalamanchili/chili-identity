@@ -9,6 +9,7 @@
 package info.yalamanchili.office.selfserv;
 
 import info.chili.audit.AuditChageDto;
+import info.chili.audit.AuditService;
 import info.chili.commons.HtmlUtils;
 import info.chili.security.dao.CRoleDao;
 import info.chili.service.jrs.types.Entry;
@@ -28,7 +29,6 @@ import info.yalamanchili.office.entity.selfserv.ServiceTicket;
 import info.yalamanchili.office.entity.selfserv.TicketComment;
 import info.yalamanchili.office.entity.selfserv.TicketStatus;
 import info.yalamanchili.office.jms.MessagingService;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -36,8 +36,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -146,7 +144,7 @@ public class SelfService {
         OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
         Task task = getTaskForTicket(ticket);
         if (task != null) {
-            List<Entry> vars = new ArrayList<Entry>();
+            List<Entry> vars = new ArrayList<>();
             //Used to make sure that tasks is not complete from My Tasks
             Entry entry = new Entry("check-flag", "true");
             vars.add(entry);
@@ -180,14 +178,18 @@ public class SelfService {
         StringBuilder subject = new StringBuilder();
         subject.append(commentAuthor.getFirstName()).append(" ").append(commentAuthor.getLastName()).append(" updated ticket:").append(comment.getTicket().getSubject());
         email.setSubject(subject.toString());
-        Map<String, Object> emailCtx = new HashMap<String, Object>();
+        Map<String, Object> emailCtx = new HashMap<>();
         emailCtx.put("currentComment", comment);
         emailCtx.put("ticket", comment.getTicket());
         emailCtx.put("ticketDepartment", OfficeRoles.rolesMessages.get(comment.getTicket().getDepartmentAssigned().getRolename()));
-        List<TicketComment> comments = new ArrayList<TicketComment>();
+        List<TicketComment> comments = new ArrayList<>();
         comments.addAll(comment.getTicket().getComments());
         emailCtx.put("comments", comments);
+        try{
         emailCtx.put("changes", determineChanges(comment.getTicket()));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         email.setTemplateName("service_ticket_template.html");
         email.setContext(emailCtx);
         email.setHtml(Boolean.TRUE);
@@ -195,34 +197,34 @@ public class SelfService {
     }
 
     protected List<AuditChageDto> determineChanges(ServiceTicket ticket) {
-        List<AuditChageDto> changes = new ArrayList<AuditChageDto>();
-//        ServiceTicket previousVersion = (ServiceTicket) AuditService.instance().getLatestVersion(ServiceTicket.class, ticket.getId());
-//        if (!previousVersion.getStatus().equals(ticket.getStatus())) {
-//            AuditChageDto change = new AuditChageDto();
-//            change.setPropertyName("Status");
-//            change.setNewValue(ticket.getStatus().name());
-//            change.setOldValue(previousVersion.getStatus().name());
-//            changes.add(change);
-//        }
-//        if (!previousVersion.getDepartmentAssigned().getRolename().equals(ticket.getDepartmentAssigned().getRolename())) {
-//            AuditChageDto change = new AuditChageDto();
-//            change.setPropertyName("Department");
-//            change.setNewValue(OfficeRoles.rolesMessages.get(ticket.getDepartmentAssigned().getRolename()));
-//            change.setOldValue(OfficeRoles.rolesMessages.get(previousVersion.getDepartmentAssigned().getRolename()));
-//            changes.add(change);
-//        }
-//        if (previousVersion.getAssignedTo() != null && !previousVersion.getAssignedTo().getEmployeeId().equals(ticket.getAssignedTo().getEmployeeId())) {
-//            AuditChageDto change = new AuditChageDto();
-//            change.setPropertyName("Assigned To");
-//            change.setNewValue(ticket.getAssignedTo().getFirstName());
-//            change.setOldValue(previousVersion.getAssignedTo().getFirstName());
-//            changes.add(change);
-//        }
+        List<AuditChageDto> changes = new ArrayList<>();
+        ServiceTicket previousVersion = (ServiceTicket) AuditService.instance().mostRecentVersion(ServiceTicket.class, ticket.getId());
+        if (!previousVersion.getStatus().equals(ticket.getStatus())) {
+            AuditChageDto change = new AuditChageDto();
+            change.setPropertyName("Status");
+            change.setNewValue(ticket.getStatus().name());
+            change.setOldValue(previousVersion.getStatus().name());
+            changes.add(change);
+        }
+        if (!previousVersion.getDepartmentAssigned().getRolename().equals(ticket.getDepartmentAssigned().getRolename())) {
+            AuditChageDto change = new AuditChageDto();
+            change.setPropertyName("Department");
+            change.setNewValue(OfficeRoles.rolesMessages.get(ticket.getDepartmentAssigned().getRolename()));
+            change.setOldValue(OfficeRoles.rolesMessages.get(previousVersion.getDepartmentAssigned().getRolename()));
+            changes.add(change);
+        }
+        if (previousVersion.getAssignedTo() != null && !previousVersion.getAssignedTo().getEmployeeId().equals(ticket.getAssignedTo().getEmployeeId())) {
+            AuditChageDto change = new AuditChageDto();
+            change.setPropertyName("Assigned To");
+            change.setNewValue(ticket.getAssignedTo().getFirstName());
+            change.setOldValue(previousVersion.getAssignedTo().getFirstName());
+            changes.add(change);
+        }
         return changes;
     }
 
     protected Set<String> getTicketNotificationGroup(TicketComment comment) {
-        Set<String> notificationGroup = new HashSet<String>();
+        Set<String> notificationGroup = new HashSet<>();
         //employee who created the ticket;
         Employee emp = comment.getTicket().getEmployee();
 //        if (TicketStatus.Resolved.equals(comment.getTicket().getStatus()) || TicketStatus.Rejected.equals(comment.getTicket().getStatus())) {
