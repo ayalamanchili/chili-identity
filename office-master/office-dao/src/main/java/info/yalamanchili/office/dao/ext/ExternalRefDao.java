@@ -42,7 +42,11 @@ public class ExternalRefDao extends AbstractHandleEntityDao<ExternalRef> {
         query.setParameter("sourceParam", externalSource);
         query.setParameter("targetEntityNameParam", targetClassName.getCanonicalName());
         query.setParameter("targetEntityIdParam", targetEntityId);
-        return query.getSingleResult();
+        if (query.getResultList().size() > 0) {
+            return query.getResultList().get(0);
+        } else {
+            return null;
+        }
     }
 
     public ExternalRefDao() {
