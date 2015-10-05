@@ -32,19 +32,17 @@ public class CreateServiceTicketPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateServiceTicketPanel.class.getName());
     CKEditor descriptionF;
-    FlowPanel panel=new FlowPanel();
-    EnumField typeF=new EnumField(OfficeWelcome.constants, "type", "TicketStatus", false, false, TicketStatus.names(), Alignment.HORIZONTAL);
-    
+    FlowPanel panel = new FlowPanel();
+    EnumField typeF = new EnumField(OfficeWelcome.constants, "type", "TicketStatus", false, false, TicketStatus.names(), Alignment.HORIZONTAL);
 
     public CreateServiceTicketPanel(CreateComposite.CreateCompositeType type) {
         super(type);
         initCreateComposite("SelfService", OfficeWelcome.constants);
     }
-    
-    
+
     public final void populateFieldsFromEntity(final JSONObject entity) {
         logger.info(entity.toString());
-        
+
         Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
             @Override
             public void execute() {
@@ -99,7 +97,7 @@ public class CreateServiceTicketPanel extends CreateComposite {
 
     @Override
     protected void configure() {
-       
+
     }
 
     @Override
@@ -111,8 +109,9 @@ public class CreateServiceTicketPanel extends CreateComposite {
                 addReportField();
             }
         });
-         addEnumField("type", false, false, TicketStatus.names());
+        addEnumField("type", false, false, TicketStatus.names());
     }
+
     protected final void addReportField() {
         descriptionF = Editor.getEditor(false);
     }

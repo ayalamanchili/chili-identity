@@ -13,10 +13,12 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.EnumField;
+import info.chili.gwt.fields.RichTextField;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
@@ -79,6 +81,8 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
         typeF.setReadOnly(readOnly);
     }
 
+    RichTextField descriptionF;
+
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("employee", entity, null);
@@ -98,6 +102,11 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
         assignEntityValueFromField("description", entity);
         assignEntityValueFromField("type", entity);
         assignEntityValueFromField("status", entity);
+        if (JSONUtils.toString(entity, "status").equalsIgnoreCase("Open")) {
+            entityFieldsPanel.add(inProgressHelpText);
+        } else if (JSONUtils.toString(entity, "status").equalsIgnoreCase("InProgress")) {
+            entityFieldsPanel.add(resolvedHelpText);
+        }
         //assigned to dept
         JSONObject assignedToDept = new JSONObject();
         assignedToDept.put("roleId", roleWidget.getSelectedObject().get("id"));
@@ -122,14 +131,31 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
 
     @Override
     protected void configure() {
+
     }
+
+    protected static HTML inProgressHelpText = new HTML("\n"
+            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
+            + "<strong style=\"color:#555555\">Please change the staus of the ticket to In Progress and assign it to right dept and person with a comment and click update</strong></p>\n"
+            + "\n"
+            + "<ul>\n"
+            + "</ul>");
+    protected static HTML resolvedHelpText = new HTML("\n"
+            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
+            + "<strong style=\"color:#555555\">To resolve a ticket please cahnge the status to Resloved, add comment and click update.</strong></p>\n"
+            + "\n"
+            + "<ul>\n"
+            + "</ul>");
 
     @Override
     protected void addWidgets() {
         addDropDown("employee", selectEmployeeWidgetF);
         addField("subject", true, true, DataType.STRING_FIELD);
         addField("description", true, false, DataType.RICH_TEXT_AREA);
+        descriptionF = (RichTextField) fields.get("description");
+        descriptionF.setHeightAndWidth("8em", "100%");
         addEnumField("type", false, true, TicketType.names());
+        entityFieldsPanel.add(inProgressHelpText);
         addEnumField("status", false, false, TicketStatus.names());
         addDropDown("departmentAssigned", roleWidget);
         addDropDown("assignedTo", assignedToF);
