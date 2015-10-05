@@ -12,7 +12,10 @@ import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
+import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
 /**
@@ -22,7 +25,8 @@ import java.util.logging.Logger;
 public class ReadBISClientInformationPanel extends ReadComposite {
 
     private static ReadBISClientInformationPanel instance;
-    private static Logger logger = Logger.getLogger(ReadClientInfoPanel.class.getName());
+    private static Logger logger = Logger.getLogger(ReadBISClientInformationPanel.class.getName());
+    SelectEmployeeWithRoleWidget selectRecruiterWidget = new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER, false, false, Alignment.HORIZONTAL);
 
     public ReadBISClientInformationPanel(String id) {
         instance = this;
@@ -122,19 +126,21 @@ public class ReadBISClientInformationPanel extends ReadComposite {
         assignFieldValueFromEntity("SignedCopyofWorkOrder", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("SpecialInvoiceInstructions", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("SpecialNotes", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("SubContractorAgentEmail", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("SubContractorAgentName", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("SubContractorAgentPhoneNo", entity, DataType.INTEGER_FIELD);
-        assignFieldValueFromEntity("SubContractorCertificateofInsurance", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("SubContractorComments", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("SubContractorContactPerson", entity, DataType.INTEGER_FIELD);
-        assignFieldValueFromEntity("SubContractorW9Form", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("SubContractorWorkOrderNo", entity, DataType.INTEGER_FIELD);
-        assignFieldValueFromEntity("SubContractor_ID", entity, DataType.INTEGER_FIELD);
-        assignFieldValueFromEntity("SubContractor_Invoice_Frequency_ID", entity, DataType.INTEGER_FIELD);
-        assignFieldValueFromEntity("SubContractor_Name", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("SubContractor_OvertimePayRate", entity, DataType.CURRENCY_FIELD);
-        assignFieldValueFromEntity("SubContractor_PayRate", entity, DataType.CURRENCY_FIELD);
+        if (Auth.isSubContractor(getEmployee())) {
+            assignFieldValueFromEntity("SubContractorAgentEmail", entity, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("SubContractorAgentName", entity, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("SubContractorAgentPhoneNo", entity, DataType.INTEGER_FIELD);
+            assignFieldValueFromEntity("SubContractorCertificateofInsurance", entity, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("SubContractorComments", entity, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("SubContractorContactPerson", entity, DataType.INTEGER_FIELD);
+            assignFieldValueFromEntity("SubContractorW9Form", entity, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("SubContractorWorkOrderNo", entity, DataType.INTEGER_FIELD);
+            assignFieldValueFromEntity("SubContractor_ID", entity, DataType.INTEGER_FIELD);
+            assignFieldValueFromEntity("SubContractor_Invoice_Frequency_ID", entity, DataType.INTEGER_FIELD);
+            assignFieldValueFromEntity("SubContractor_Name", entity, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("SubContractor_OvertimePayRate", entity, DataType.CURRENCY_FIELD);
+            assignFieldValueFromEntity("SubContractor_PayRate", entity, DataType.CURRENCY_FIELD);
+        }
         assignFieldValueFromEntity("TerminationNoticeProvided", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("TimesheetRequirement", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("Updated_By", entity, DataType.STRING_FIELD);
@@ -149,6 +155,10 @@ public class ReadBISClientInformationPanel extends ReadComposite {
         assignFieldValueFromEntity("Vendor_Name", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("VisaStatus", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("W4Filled", entity, DataType.BOOLEAN_FIELD);
+    }
+
+    protected JSONObject getEmployee() {
+        return TreeEmployeePanel.instance().getEntity();
     }
 
     @Override
@@ -235,19 +245,22 @@ public class ReadBISClientInformationPanel extends ReadComposite {
         addField("SignedCopyofWorkOrder", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("SpecialInvoiceInstructions", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("SpecialNotes", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("SubContractorAgentEmail", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("SubContractorAgentName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("SubContractorAgentPhoneNo", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
-        addField("SubContractorCertificateofInsurance", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("SubContractorComments", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("SubContractorContactPerson", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
-        addField("SubContractorW9Form", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("SubContractorWorkOrderNo", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
-        addField("SubContractor_ID", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
-        addField("SubContractor_Invoice_Frequency_ID", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
-        addField("SubContractor_Name", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("SubContractor_OvertimePayRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-        addField("SubContractor_PayRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        if (Auth.isSubContractor(getEmployee())) {
+            entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
+            addField("SubContractorAgentEmail", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField("SubContractorAgentName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField("SubContractorAgentPhoneNo", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+            addField("SubContractorCertificateofInsurance", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField("SubContractorComments", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField("SubContractorContactPerson", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+            addField("SubContractorW9Form", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField("SubContractorWorkOrderNo", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+            addField("SubContractor_ID", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+            addField("SubContractor_Invoice_Frequency_ID", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+            addField("SubContractor_Name", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField("SubContractor_OvertimePayRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+            addField("SubContractor_PayRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        }
         addField("TerminationNoticeProvided", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("TimesheetRequirement", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("Updated_By", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
