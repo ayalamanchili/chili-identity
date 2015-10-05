@@ -140,8 +140,12 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
 
     @Override
     protected String getURI() {
-       
+
+        if (!getEntityId().isEmpty()) {
             return OfficeWelcome.constants.root_url() + "prospect/update";
-        
+        } else {
+            return OfficeWelcome.constants.root_url() + "prospect/save";
+        }
+
     }
-     }
+}
