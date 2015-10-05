@@ -67,7 +67,6 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
         table.setText(0, 3, getKeyValue("Screened By"));
         table.setText(0, 4, getKeyValue("Start Date"));
         table.setText(0, 5, getKeyValue("Referred By"));
-       // table.setText(0, 6, getKeyValue("ProcessDocSentDate"));
         table.setText(0, 6, getKeyValue("Status"));
     }
 
@@ -81,7 +80,6 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
             table.setText(i, 3, JSONUtils.toString(entity, "screenedBy"));
             table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 5, JSONUtils.toString(entity, "referredBy"));
-            //table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, "processDocSentDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             setEnumColumn(i, 6, entity, ProspectStatus.class.getSimpleName(), "status");
 
         }
