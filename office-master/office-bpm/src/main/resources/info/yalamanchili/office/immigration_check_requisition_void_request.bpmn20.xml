@@ -11,6 +11,7 @@
         <userTask id="immigrationCheckRequestVoidTask" name="Check Requisition Void Request For ${currentEmployee.firstName} ${currentEmployee.lastName}" activiti:candidateGroups="ROLE_ACCOUNTS_PAYABLE">
             <documentation>
                 Immigration Check Request Void Task has been created. 
+                Please collect the check from immigration department and process the void request to complete the task.
                 Check Requisition Detail:
                 Submitted By    : #{entity.submittedBy}
                 Amount          : #{entity.amount}

@@ -44,7 +44,6 @@ public class ImmigrationCheckRequisitionVoidProcess implements TaskListener {
     }
 
     protected void assignCheckVoidRequestTask(DelegateTask task) {
-        Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         task.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_ACCOUNTS_PAYABLE.name());
     }
 
@@ -56,7 +55,7 @@ public class ImmigrationCheckRequisitionVoidProcess implements TaskListener {
         String notes = (String) task.getExecution().getVariable("notes");
         CommentDao.instance().addComment(notes, entity);
         Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
-        if (currentUser.getEmployeeId().equals(entity.getEmployee().getEmployeeId())) {
+        if (entity.getEmployee() != null && currentUser.getEmployeeId().equals(entity.getEmployee().getEmployeeId())) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.self.approve.corp.immigrationcheckrequisition", "You cannot approve your Immigration Check Requisition task");
         }
         String status = (String) task.getExecution().getVariable("status");
@@ -69,19 +68,9 @@ public class ImmigrationCheckRequisitionVoidProcess implements TaskListener {
     }
 
     protected void checkVoidRequestApproved(ImmigrationCheckRequisition entity, DelegateTask task) {
-        //Notes
-        String notes = (String) task.getExecution().getVariable("notes");
-        CommentDao.instance().addComment(notes, entity);
-        //Status
-        String status = (String) task.getExecution().getVariable("status");
-        if (status.equalsIgnoreCase("approved")) {
-            entity.setStatus(ImmigrationCheckRequisitionStatus.VOIDED);
-            entity.setApprovedBy(OfficeSecurityService.instance().getCurrentUser().getEmployeeId());
-            entity.setApprovedDate(new Date());
-        } else if (status.equalsIgnoreCase("rejected")) {
-            entity.setStatus(ImmigrationCheckRequisitionStatus.REJECTED);
-            new GenericTaskCompleteNotification().notify(task);
-        }
+        entity.setStatus(ImmigrationCheckRequisitionStatus.VOIDED);
+        entity.setApprovedBy(OfficeSecurityService.instance().getCurrentUser().getEmployeeId());
+        entity.setApprovedDate(new Date());
     }
 
     protected ImmigrationCheckRequisition getRequestFromTask(DelegateTask task) {

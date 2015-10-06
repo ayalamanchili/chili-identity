@@ -7,7 +7,6 @@
  */
 package info.yalamanchili.office.client.expense.chkreq;
 
-import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
@@ -23,7 +22,6 @@ import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.FormatUtils;
 import info.chili.gwt.utils.JSONUtils;
-import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -70,10 +68,7 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
 
     @Override
     public void cancelClicked(final String entityId) {
-
-        if (Window.confirm("Your request will be submitted for approval. Are you sure? You want to cancel the check Request")) {
-            logger.info("urlllllll");
-            logger.info(URL.encode(getCancelURL(entityId)));
+        if (Window.confirm("Are you sure you want to submit a void check request?")) {
             HttpService.HttpServiceAsync.instance().doGet(getCancelURL(entityId), OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
                         @Override
@@ -171,11 +166,17 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         String status = JSONUtils.toString(entity, "status");
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_GC_IMMIGRATION, Auth.ROLE.ROLE_H1B_IMMIGRATION) && ImmigrationCheckRequisitionStatus.PENDING_APPROVAL.name().equals(status)) {
-            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), OptionsType.READ, OptionsType.UPDATE, OptionsType.DELETE, OptionsType.PRINT, OptionsType.COPY, OptionsType.CANCEL), row, JSONUtils.toString(entity, "id"));
-        }
-        else {
-            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), OptionsType.READ, OptionsType.PRINT, OptionsType.COPY), row, JSONUtils.toString(entity, "id"));
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_GC_IMMIGRATION, Auth.ROLE.ROLE_H1B_IMMIGRATION)) {
+            if (ImmigrationCheckRequisitionStatus.PENDING_APPROVAL.name().equals(status)) {
+                createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), OptionsType.READ, OptionsType.UPDATE, OptionsType.PRINT, OptionsType.COPY), row, JSONUtils.toString(entity, "id"));
+            } else if (ImmigrationCheckRequisitionStatus.COMPLETE.name().equals(status)) {
+                createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), OptionsType.READ, OptionsType.PRINT, OptionsType.COPY, OptionsType.CANCEL), row, JSONUtils.toString(entity, "id"));
+            } else {
+                createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), OptionsType.READ, OptionsType.PRINT, OptionsType.COPY), row, JSONUtils.toString(entity, "id"));
+            }
+
+        } else {
+            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), OptionsType.READ, OptionsType.PRINT), row, JSONUtils.toString(entity, "id"));
         }
     }
 
