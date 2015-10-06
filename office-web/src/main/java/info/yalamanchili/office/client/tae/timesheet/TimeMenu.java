@@ -10,8 +10,7 @@ package info.yalamanchili.office.client.tae.timesheet;
 import info.yalamanchili.office.client.time.corp.CorporateTimeSummaryPanel;
 import info.yalamanchili.office.client.time.corp.CorporateTimeSummarySidePanel;
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.MenuBar;
+import info.chili.gwt.widgets.CMenuBar;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.TabPanel;
@@ -33,29 +32,22 @@ import info.yalamanchili.office.client.time.corp.ReadCurrentCorpLeavesPanel;
  *
  * @author ayalamanchili
  */
-public class TimeMenu extends Composite {
+public class TimeMenu extends CMenuBar {
 
-    MenuBar tAEMenuBar = new MenuBar(false);
-
-    public TimeMenu() {
-        initWidget(tAEMenuBar);
-        configureTAEMenu();
-    }
-
-    protected void configureTAEMenu() {
-        tAEMenuBar.addItem("Summary", summaryMaintainenceCmd);
+    @Override
+    protected void configureMenu() {
+        addMenuItem("Summary", "Summary", summaryMaintainenceCmd);
         if (Auth.isCorporateEmployee()) {
-            tAEMenuBar.addItem("Corporate Time", corpTimeMaintainenceCmd);
+            addMenuItem("Corporate Time", "Corporate Time", corpTimeMaintainenceCmd);
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_PAYROLL_AND_BENIFITS, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_CONSULTANT_TIME_REPORTS)) {
-            tAEMenuBar.addItem("Employee Time", consultantTimeMaintainenceCmd);
+            addMenuItem("Employee Time", "Employee Time", consultantTimeMaintainenceCmd);
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_CORPORATE_TIME_REPORTS, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_PAYROLL_AND_BENIFITS, ROLE.ROLE_BULK_IMPORT)) {
-            tAEMenuBar.addItem("Attendance", attendenceCmd);
+            addMenuItem("Attendance", "Attendance", attendenceCmd);
         }
-        tAEMenuBar.addStyleName("entityMenuBar");
     }
-    Command summaryMaintainenceCmd = new Command() {
+    static Command summaryMaintainenceCmd = new Command() {
         @Override
         public void execute() {
             TabPanel.instance().getTimePanel().entityPanel.clear();
@@ -73,7 +65,7 @@ public class TimeMenu extends Composite {
             }
         }
     };
-    Command corpTimeMaintainenceCmd = new Command() {
+    static Command corpTimeMaintainenceCmd = new Command() {
         @Override
         public void execute() {
             TabPanel.instance().getTimePanel().entityPanel.clear();
@@ -81,7 +73,7 @@ public class TimeMenu extends Composite {
             TabPanel.instance().getTimePanel().sidePanelTop.add(new CorporateTimeSidePanel());
         }
     };
-    Command attendenceCmd = new Command() {
+    static Command attendenceCmd = new Command() {
         @Override
         public void execute() {
             TabPanel.instance().getTimePanel().entityPanel.clear();
@@ -90,7 +82,7 @@ public class TimeMenu extends Composite {
             TabPanel.instance().getTimePanel().sidePanelTop.add(new AttendenceSidePanel());
         }
     };
-    Command consultantTimeMaintainenceCmd = new Command() {
+    static Command consultantTimeMaintainenceCmd = new Command() {
         @Override
         public void execute() {
             TabPanel.instance().getTimePanel().entityPanel.clear();
@@ -98,7 +90,7 @@ public class TimeMenu extends Composite {
             TabPanel.instance().getTimePanel().sidePanelTop.add(new ConsultantTimeSidePanel());
         }
     };
-    Command timeSheetPeriodsMaintainenceCmd = new Command() {
+    static Command timeSheetPeriodsMaintainenceCmd = new Command() {
         @Override
         public void execute() {
             TabPanel.instance().getTimePanel().entityPanel.clear();
@@ -111,7 +103,7 @@ public class TimeMenu extends Composite {
             }
         }
     };
-    Command timeSheetsMaintainenceCmd = new Command() {
+    static Command timeSheetsMaintainenceCmd = new Command() {
         @Override
         public void execute() {
             TabPanel.instance().getTimePanel().entityPanel.clear();
@@ -124,7 +116,7 @@ public class TimeMenu extends Composite {
             }
         }
     };
-    Command bonusPaymentsMaintainenceCmd = new Command() {
+    static Command bonusPaymentsMaintainenceCmd = new Command() {
         @Override
         public void execute() {
             TabPanel.instance().getTimePanel().entityPanel.clear();

@@ -70,7 +70,6 @@
     font-size: 12pt;
     font-family: Tahoma;
     color: #000000;
-
 }
 @sprite .gwt-TabLayoutPanelTabs{
     gwt-image: "tabButton";
@@ -278,19 +277,42 @@ legend {
         color: #666666;
     }*/
 
-.gwt-MenuItem-selected:hover{
+.gwt-MenuItem-selectedMI:hover{
     background-color: blue_mid;
     font-color:#666666;
     -webkit-transition-property: background-color;  
     -webkit-transition-duration: 0.1s;  
     -webkit-transition-timing-function: linear, ease-in;  
+} 
+.y-gwt-entityActionsPanel{
+    padding-top: 6px;
+}
+.baseFieldHorizontal {
+    padding: 2px;
+}
+.baseFieldVertical {
+    padding: 2px; 
+}
+.y-gwt-MenuItem{
+    padding-top: 10px;
+    padding-left: 20px;
+    font-size:14px;
+    cursor:pointer;
+    text-align: center;
+    width: 150px;
+}
+.y-gwt-MenuItem-selectedMI {
+    padding-top: 10px;
+    padding-left: 20px;
+    font-size:16px; 
+    font-weight: bold;
+    cursor:pointer;
+    text-align: center;
+    width: 150px;
 }    
-
-.gwt-MenuItem-selected {
-    /*    background-color: #dae6fe;*/
-    font-color:white;
-
-}    
+.gwt-MenuBar.gwt-MenuBar-horizontal.entityMenuBar{
+    padding-top: 10px;
+}
 .tfFieldHeader{
     font-family: Arial,Helvetica,sans-serif;
     font-size: large;

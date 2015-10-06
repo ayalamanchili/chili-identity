@@ -9,7 +9,7 @@
     <!-- had to use px since ie has issues with em https://code.google.com/p/google-web-toolkit/issues/detail?id=7029
     -->
     <g:DockLayoutPanel ui:field='entityDockPanel' unit='PX' styleName="{style.entityLayout}">
-        <g:north size='32'>
+        <g:north size='40'>
             <g:FlowPanel ui:field='entityTitlePanel'>
             </g:FlowPanel>
         </g:north>

@@ -8,8 +8,7 @@
 package info.yalamanchili.office.client.reports;
 
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.MenuBar;
+import info.chili.gwt.widgets.CMenuBar;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.TabPanel;
@@ -26,37 +25,30 @@ import info.yalamanchili.office.client.profile.statusreport.CorporateStatusRepor
  *
  * @author prasanthi.p
  */
-public class ReportsMenu extends Composite {
+public class ReportsMenu extends CMenuBar {
 
-    MenuBar reportsMenuBar = new MenuBar(false);
-
-    public ReportsMenu() {
-        initWidget(reportsMenuBar);
-        configureReportsMenu();
-    }
-
-    protected void configureReportsMenu() {
+    @Override
+    protected void configureMenu() {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP)) {
-            reportsMenuBar.addItem("Profile Reports", profileReportsMaintainenceCmd);
+            addMenuItem("Profile Reports", "Profile Reports", profileReportsMaintainenceCmd);
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_EXPENSE, ROLE.ROLE_TIME, ROLE.ROLE_ACCOUNT_VIEW)) {
-            reportsMenuBar.addItem("Contracts", contractingMaintainenceCmd);
+            addMenuItem("Contracts", "Contracts", contractingMaintainenceCmd);
         }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
-            reportsMenuBar.addItem("Perf Evaluations", performanceEvaluationsReportsMaintainenceCmd);
+            addMenuItem("Perf Evaluations", "Perf Evaluations", performanceEvaluationsReportsMaintainenceCmd);
         }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CRP_STATUS_RPT_MGR, Auth.ROLE.ROLE_ADMIN)) {
-            reportsMenuBar.addItem("Status Report", corporatestatusReportsMaintainenceCmd);
+            addMenuItem("Status Report", "Status Report", corporatestatusReportsMaintainenceCmd);
         }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_HR, ROLE.ROLE_PRB_EVALUATIONS_MANAGER)) {
-            reportsMenuBar.addItem("Probation Period", probperformanceEvaluationsReportsMaintainenceCmd);
+            addMenuItem("Probation Period", "Probation Period", probperformanceEvaluationsReportsMaintainenceCmd);
         }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
-            reportsMenuBar.addItem("Retirement Plan", retirementPlanReportsMaintainenceCmd);
+            addMenuItem("Retirement Plan", "Retirement Plan", retirementPlanReportsMaintainenceCmd);
         }
-        reportsMenuBar.addStyleName("entityMenuBar");
     }
-    Command contractingMaintainenceCmd = new Command() {
+    static Command contractingMaintainenceCmd = new Command() {
         @Override
         public void execute() {
             TabPanel.instance().getReportingPanel().entityPanel.clear();
@@ -65,7 +57,7 @@ public class ReportsMenu extends Composite {
             TabPanel.instance().getReportingPanel().sidePanelTop.add(new ContractsSidePanel());
         }
     };
-    Command profileReportsMaintainenceCmd = new Command() {
+    static Command profileReportsMaintainenceCmd = new Command() {
         @Override
         public void execute() {
             TabPanel.instance().getReportingPanel().entityPanel.clear();
@@ -73,7 +65,7 @@ public class ReportsMenu extends Composite {
             TabPanel.instance().getReportingPanel().sidePanelTop.add(new ProfileReportsSidePanel());
         }
     };
-    Command performanceEvaluationsReportsMaintainenceCmd = new Command() {
+    static Command performanceEvaluationsReportsMaintainenceCmd = new Command() {
         @Override
         public void execute() {
             TabPanel.instance().getReportingPanel().entityPanel.clear();
@@ -81,7 +73,7 @@ public class ReportsMenu extends Composite {
             TabPanel.instance().getReportingPanel().sidePanelTop.add(new PerfEvaluationReportsSidePanel());
         }
     };
-    Command probperformanceEvaluationsReportsMaintainenceCmd = new Command() {
+    static Command probperformanceEvaluationsReportsMaintainenceCmd = new Command() {
         @Override
         public void execute() {
             TabPanel.instance().getReportingPanel().entityPanel.clear();
@@ -89,7 +81,7 @@ public class ReportsMenu extends Composite {
             TabPanel.instance().getReportingPanel().sidePanelTop.add(new ProbatioPeriodPerfEvaluationReportsSidePanel());
         }
     };
-    Command retirementPlanReportsMaintainenceCmd = new Command() {
+    static Command retirementPlanReportsMaintainenceCmd = new Command() {
         @Override
         public void execute() {
             TabPanel.instance().getReportingPanel().entityPanel.clear();
@@ -97,7 +89,7 @@ public class ReportsMenu extends Composite {
             TabPanel.instance().getReportingPanel().sidePanelTop.add(new RetirementPlanOptInSidePanal());
         }
     };
-    Command corporatestatusReportsMaintainenceCmd = new Command() {
+    static Command corporatestatusReportsMaintainenceCmd = new Command() {
         @Override
         public void execute() {
             TabPanel.instance().getReportingPanel().entityPanel.clear();

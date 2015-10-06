@@ -11,8 +11,7 @@ import info.yalamanchili.office.client.recruiting.reports.SkillSetSearchPanel;
 import info.yalamanchili.office.client.recruiting.skillsettag.SkillSetTagSidePanel;
 import info.yalamanchili.office.client.recruiting.skillsettag.ReadAllSkillSetTagPanel;
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.MenuBar;
+import info.chili.gwt.widgets.CMenuBar;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.practice.PracticeSidePanel;
@@ -29,27 +28,20 @@ import info.yalamanchili.office.client.recruiting.reports.ResumeSearchWidget;
  *
  * @author prasanthi.p
  */
-public class RecruitingMenu extends Composite {
+public class RecruitingMenu extends CMenuBar {
 
-    MenuBar recruitingMenuBar = new MenuBar(false);
-
-    public RecruitingMenu() {
-        initWidget(recruitingMenuBar);
-        configureRecruitingMenu();
-    }
-
-    protected void configureRecruitingMenu() {
+    @Override
+    protected void configureMenu() {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_RECRUITER)) {
-            recruitingMenuBar.addItem("Skills", skillsMaintainenceCmd);
-            recruitingMenuBar.addItem("Certifications", certificationsMaintainenceCmd);
-            recruitingMenuBar.addItem("Practice", practiceMaintainenceCmd);
-            recruitingMenuBar.addItem("TechnologyGroup", technologyGroupMaintainenceCmd);
-            recruitingMenuBar.addItem("SkillSet Tags", skillSetTagsMaintainenceCmd);
-            recruitingMenuBar.addItem("Find Candidates", reportsCmd);
+            addMenuItem("Skills", "Skills", skillsMaintainenceCmd);
+            addMenuItem("Certifications", "Certifications", certificationsMaintainenceCmd);
+            addMenuItem("Practice", "Practice", practiceMaintainenceCmd);
+            addMenuItem("TechnologyGroup", "TechnologyGroup", technologyGroupMaintainenceCmd);
+            addMenuItem("SkillSet Tags", "SkillSet Tags", skillSetTagsMaintainenceCmd);
+            addMenuItem("Find Candidates", "Find Candidates", reportsCmd);
         }
-        recruitingMenuBar.addStyleName("entityMenuBar");
     }
-    Command skillSetTagsMaintainenceCmd = new Command() {
+    static Command skillSetTagsMaintainenceCmd = new Command() {
         @Override
         public void execute() {
             TabPanel.instance().getRecruitingPanel().entityPanel.clear();
@@ -60,7 +52,7 @@ public class RecruitingMenu extends Composite {
             TabPanel.instance().getRecruitingPanel().sidePanelBottom.clear();
         }
     };
-    Command practiceMaintainenceCmd = new Command() {
+    static Command practiceMaintainenceCmd = new Command() {
         @Override
         public void execute() {
             TabPanel.instance().getRecruitingPanel().entityPanel.clear();
@@ -70,7 +62,7 @@ public class RecruitingMenu extends Composite {
             TabPanel.instance().getRecruitingPanel().sidePanelBottom.clear();
         }
     };
-    Command technologyGroupMaintainenceCmd = new Command() {
+    static Command technologyGroupMaintainenceCmd = new Command() {
         @Override
         public void execute() {
             TabPanel.instance().getRecruitingPanel().entityPanel.clear();
@@ -80,7 +72,7 @@ public class RecruitingMenu extends Composite {
             TabPanel.instance().getRecruitingPanel().sidePanelBottom.clear();
         }
     };
-    Command reportsCmd = new Command() {
+    static Command reportsCmd = new Command() {
         @Override
         public void execute() {
             TabPanel.instance().getRecruitingPanel().entityPanel.clear();
@@ -90,7 +82,7 @@ public class RecruitingMenu extends Composite {
             TabPanel.instance().getRecruitingPanel().sidePanelBottom.add(new ResumeSearchWidget());
         }
     };
-    Command skillsMaintainenceCmd = new Command() {
+    static Command skillsMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getRecruitingPanel().clear();
             TabPanel.instance().getRecruitingPanel().entityPanel.clear();
@@ -100,7 +92,7 @@ public class RecruitingMenu extends Composite {
             TabPanel.instance().getRecruitingPanel().sidePanelTop.add(new SkillSidePanel());
         }
     };
-    Command certificationsMaintainenceCmd = new Command() {
+    static Command certificationsMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getRecruitingPanel().entityPanel.clear();
             TabPanel.instance().getRecruitingPanel().sidePanelTop.clear();
