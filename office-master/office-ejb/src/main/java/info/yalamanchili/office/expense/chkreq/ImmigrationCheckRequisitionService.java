@@ -53,6 +53,19 @@ public class ImmigrationCheckRequisitionService {
 
     @Autowired
     protected Mapper mapper;
+    
+    public void checkVoidRequest(Long id){
+        ImmigrationCheckRequisition icr=ImmigrationCheckRequisitionDao.instance().findById(id);
+        Map<String, Object> vars = new HashMap<>();
+        icr.setStatus(ImmigrationCheckRequisitionStatus.PENDING_VOID);
+        vars.put("entity", icr);
+        vars.put("entityId", icr.getId());
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
+        vars.put("currentEmployee", emp);
+        OfficeBPMService.instance().startProcess("immigration_check_requisition_void_request", vars);
+        icr = immigrationCheckRequisitionDao.save(icr);
+    }
+
 
     public void submitImmigrationCheckRequisition(ImmigrationCheckRequisitionSaveDto dto) {
         ImmigrationCheckRequisition entity = mapper.map(dto, ImmigrationCheckRequisition.class);
@@ -124,7 +137,8 @@ public class ImmigrationCheckRequisitionService {
         }
         return res;
     }
-
+    
+    
     public Response getReport(ImmigrationCheckRequisition entity) {
         PdfDocumentData data = new PdfDocumentData();
         Employee emp = entity.getEmployee();

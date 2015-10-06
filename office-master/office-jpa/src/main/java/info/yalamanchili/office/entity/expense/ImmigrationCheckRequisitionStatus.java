@@ -17,5 +17,7 @@ public enum ImmigrationCheckRequisitionStatus {
     PENDING_APPROVAL,
     PENDING_ACCOUNTS_PAYABLE_DISPATCH,
     COMPLETE,
+    PENDING_VOID,
+    VOIDED,
     REJECTED
 }

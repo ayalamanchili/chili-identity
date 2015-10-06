@@ -10,6 +10,7 @@ package info.yalamanchili.office.jrs.expense.chkreq;
 
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
+import info.yalamanchili.office.Time.CorporateTimeService;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.expense.chkreq.ImmigrationCheckRequisitionDao;
 import info.yalamanchili.office.entity.expense.ImmigrationCheckRequisition;
@@ -122,6 +123,12 @@ public class ImmigrationCheckRequisitionResource extends CRUDResource<Immigratio
     @Override
     public ImmigrationCheckRequisitionSaveDto clone(@PathParam("id") Long id) {
         return ImmigrationCheckRequisitionService.instance().clone(id);
+    }
+    
+    @GET
+    @Path("/check-request-void/{id}")
+    public void checkRequisitionVoid(@PathParam("id") Long id) {
+        ImmigrationCheckRequisitionService.instance().checkVoidRequest(id);
     }
 
     @XmlRootElement
