@@ -40,7 +40,7 @@ public class ImmigrationCheckRequisitionVoidProcess implements TaskListener {
 
     protected void immigrationCheckRequestVoidTaskCreated(DelegateTask task) {
         assignCheckVoidRequestTask(task);
-        new GenericTaskCreateNotification().notifyWithMoreRoles(task, OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name(), OfficeRoles.OfficeRole.ROLE_ACCOUNTS_PAYABLE.name());
+        new GenericTaskCreateNotification().notifyWithMoreRoles(task, OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name());
     }
 
     protected void assignCheckVoidRequestTask(DelegateTask task) {
@@ -64,7 +64,6 @@ public class ImmigrationCheckRequisitionVoidProcess implements TaskListener {
             checkVoidRequestApproved(entity, task);
         } else {
             entity.setStatus(ImmigrationCheckRequisitionStatus.REJECTED);
-            new GenericTaskCompleteNotification().notify(task);
         }
         new GenericTaskCompleteNotification().notify(task);
     }
@@ -83,7 +82,6 @@ public class ImmigrationCheckRequisitionVoidProcess implements TaskListener {
             entity.setStatus(ImmigrationCheckRequisitionStatus.REJECTED);
             new GenericTaskCompleteNotification().notify(task);
         }
-        //ImmigrationCheckRequisitionDao.instance().save(entity);
     }
 
     protected ImmigrationCheckRequisition getRequestFromTask(DelegateTask task) {
