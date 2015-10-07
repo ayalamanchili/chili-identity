@@ -9,8 +9,6 @@
 package info.yalamanchili.office.security;
 
 import info.chili.service.jrs.exception.ServiceException;
-import info.yalamanchili.office.privacy.PrivacyAware;
-import info.yalamanchili.office.privacy.PrivacyService;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
