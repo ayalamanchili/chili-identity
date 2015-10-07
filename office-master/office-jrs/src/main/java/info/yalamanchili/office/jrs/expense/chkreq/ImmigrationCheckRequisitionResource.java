@@ -86,8 +86,8 @@ public class ImmigrationCheckRequisitionResource extends CRUDResource<Immigratio
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_H1B_IMMIGRATION','ROLE_ACCOUNTS_PAYABLE','ROLE_CEO')")
     public ImmigrationCheckRequisitionTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         ImmigrationCheckRequisitionTable tableObj = new ImmigrationCheckRequisitionTable();
-        tableObj.setEntities(getDao().query(start, limit));
-        tableObj.setSize(getDao().size());
+        tableObj.setEntities(immigrationCheckRequisitionDao.queryAll(start, limit));
+        tableObj.setSize(immigrationCheckRequisitionDao.size());
         return tableObj;
     }
 

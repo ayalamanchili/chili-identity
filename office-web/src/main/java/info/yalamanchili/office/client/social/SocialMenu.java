@@ -8,9 +8,7 @@
 package info.yalamanchili.office.client.social;
 
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.MenuBar;
+import info.chili.gwt.widgets.CMenuBar;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.social.company.CompanyFeedHome;
 import info.yalamanchili.office.client.social.employee.EmployeeFeedHome;
@@ -19,21 +17,13 @@ import info.yalamanchili.office.client.social.employee.EmployeeFeedHome;
  *
  * @author raghu
  */
-public class SocialMenu extends Composite {
+public class SocialMenu extends CMenuBar {
 
-    MenuBar tAEMenuBar = new MenuBar(false);
-    FlowPanel panel = new FlowPanel();
     private static boolean IsEmployeeFeedSelected = true;
 
-    public SocialMenu() {
-        initWidget(tAEMenuBar);
-        configureSocialMenu();
-    }
-
-    protected void configureSocialMenu() {
-        tAEMenuBar.addItem("Employee Feed", employeefeedCmd);
-        tAEMenuBar.addItem("System Soft Feed", systemsoftfeedCmd);
-        tAEMenuBar.addStyleName("entityMenuBar");
+    protected void configureMenu() {
+        addMenuItem("Employee Feed", "Employee Feed", employeefeedCmd);
+        addMenuItem("System Soft Feed", "System Soft Feed", systemsoftfeedCmd);
     }
 
     public static boolean isEmployeedFeedSelected() {
@@ -43,7 +33,7 @@ public class SocialMenu extends Composite {
     public static boolean isCompanyFeedSelected() {
         return !IsEmployeeFeedSelected;
     }
-    Command employeefeedCmd = new Command() {
+    static Command employeefeedCmd = new Command() {
         public void execute() {
             IsEmployeeFeedSelected = true;
             TabPanel.instance().getSocialPanel().entityPanel.clear();
@@ -51,7 +41,7 @@ public class SocialMenu extends Composite {
             TabPanel.instance().getSocialPanel().entityPanel.add(new EmployeeFeedHome());
         }
     };
-    Command systemsoftfeedCmd = new Command() {
+    static Command systemsoftfeedCmd = new Command() {
         public void execute() {
             IsEmployeeFeedSelected = false;
             TabPanel.instance().getSocialPanel().entityPanel.clear();

@@ -9,8 +9,7 @@ package info.yalamanchili.office.client.expense;
 
 import info.yalamanchili.office.client.expense.chkreq.ReadAllImmigrationCheckRequisitionPanel;
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.MenuBar;
+import info.chili.gwt.widgets.CMenuBar;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.advancerequisition.AdvanceRequisitionSidePanel;
@@ -27,29 +26,23 @@ import info.yalamanchili.office.client.expensereports.ReadAllExpenseReportsPanel
  *
  * @author Prashanthi
  */
-public class ExpenseMenu extends Composite {
+public class ExpenseMenu extends CMenuBar {
 
-    MenuBar expenseMenuBar = new MenuBar(false);
-
-    public ExpenseMenu() {
-        initWidget(expenseMenuBar);
-        configureExpenseMenu();
-    }
-
-    protected void configureExpenseMenu() {
-        expenseMenuBar.addItem("Advance Requisition", expensadvancerequisitionCmd);
+    @Override
+    protected void configureMenu() {
+        addMenuItem("Advance Requisition", "Advance Requisition", expensadvancerequisitionCmd);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN)) {
-            expenseMenuBar.addItem("Expense Categories", expenseCategoriesMaintainenceCmd);
+            addMenuItem("Expense Categories", "Expense Categories", expenseCategoriesMaintainenceCmd);
         }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_ACCOUNTS_PAYABLE, Auth.ROLE.ROLE_CEO, Auth.ROLE.ROLE_GC_IMMIGRATION, Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS)) {
-            expenseMenuBar.addItem("Check Requisition", expensimmigrationcheckrequisitionCmd);
+            addMenuItem("Check Requisition", "Check Requisition", expensimmigrationcheckrequisitionCmd);
         }
-        expenseMenuBar.addItem("Expense Reports", expenseReportsMaintainenceCmd);
-        expenseMenuBar.addItem("Travel Authorization", travelEcpenseMaintainenceCmd);
-        expenseMenuBar.addStyleName("entityMenuBar");
+        addMenuItem("Expense Reports", "Expense Reports", expenseReportsMaintainenceCmd);
+        addMenuItem("Travel Authorization", "Travel Authorization", travelEcpenseMaintainenceCmd);
+
     }
 
-    Command expenseCategoriesMaintainenceCmd = new Command() {
+    static Command expenseCategoriesMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getExpensePanel().entityPanel.clear();
             TabPanel.instance().getExpensePanel().sidePanelTop.clear();
@@ -57,7 +50,7 @@ public class ExpenseMenu extends Composite {
             TabPanel.instance().getExpensePanel().sidePanelTop.add(new ExpenseCategorySidePanel());
         }
     };
-    Command expensadvancerequisitionCmd = new Command() {
+    static Command expensadvancerequisitionCmd = new Command() {
         public void execute() {
             TabPanel.instance().getExpensePanel().entityPanel.clear();
             TabPanel.instance().getExpensePanel().sidePanelTop.clear();
@@ -65,7 +58,7 @@ public class ExpenseMenu extends Composite {
             TabPanel.instance().getExpensePanel().sidePanelTop.add(new AdvanceRequisitionSidePanel());
         }
     };
-    Command expensimmigrationcheckrequisitionCmd = new Command() {
+    static Command expensimmigrationcheckrequisitionCmd = new Command() {
         public void execute() {
             TabPanel.instance().getExpensePanel().entityPanel.clear();
             TabPanel.instance().getExpensePanel().sidePanelTop.clear();
@@ -73,7 +66,7 @@ public class ExpenseMenu extends Composite {
             TabPanel.instance().getExpensePanel().sidePanelTop.add(new ImmigrationCheckRequisitionSidePanel());
         }
     };
-    Command expenseReportsMaintainenceCmd = new Command() {
+    static Command expenseReportsMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getExpensePanel().entityPanel.clear();
             TabPanel.instance().getExpensePanel().sidePanelTop.clear();
@@ -82,7 +75,7 @@ public class ExpenseMenu extends Composite {
 
         }
     };
-    Command travelEcpenseMaintainenceCmd = new Command() {
+    static Command travelEcpenseMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getExpensePanel().entityPanel.clear();
             TabPanel.instance().getExpensePanel().sidePanelTop.clear();

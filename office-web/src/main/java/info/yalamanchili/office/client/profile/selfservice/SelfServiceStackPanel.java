@@ -57,7 +57,7 @@ public class SelfServiceStackPanel extends ALComposite implements ClickHandler {
         }
         if (event.getSource().equals(createServiceTicket)) {
             TabPanel.instance().getHomePanel().entityPanel.clear();
-            TabPanel.instance().getHomePanel().entityPanel.add(new CreateServiceTicketPanel(CreateComposite.CreateCompositeType.CREATE));
+            TabPanel.instance().getHomePanel().entityPanel.add(new CreateServiceTicketPanel());
         }
     }
 

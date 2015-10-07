@@ -24,7 +24,7 @@ import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
-import info.chili.gwt.fields.TextAreaField;
+import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ClickableLink;
@@ -48,10 +48,10 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
     SelectExpenseCategoryWidget selectCategoryWidgetF = new SelectExpenseCategoryWidget(false, true);
     EnumField expensePaymentMode;
     DateField expenseDate;
-    TextAreaField purpose;
-    TextAreaField description;
+    StringField purpose;
+    StringField description;
     CurrencyField amount;
-    TextAreaField remark;
+//    TextAreaField remark;
     boolean isGeneralExpenseItem = false;
     CurrencyField expenseMiles;
     ClickableLink deleteB = new ClickableLink("Remove Item");
@@ -70,8 +70,8 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
     protected void addWidgets() {
         addField(EXPENSE_DATE, false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         expenseDate = (DateField) fields.get(EXPENSE_DATE);
-        addField(PURPOSE, false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        purpose = (TextAreaField) fields.get(PURPOSE);
+        addField(PURPOSE, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        purpose = (StringField) fields.get(PURPOSE);
         if (!isGeneralExpenseItem) {
             addDropDown(CATEGORY, selectCategoryWidgetF);
         }
@@ -81,10 +81,10 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
         expenseMiles = (CurrencyField) fields.get(EXPENSE_MILES);
         addField(AMOUNT, false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         amount = (CurrencyField) fields.get(AMOUNT);
-        addField(DESCRIPTION, false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        description = (TextAreaField) fields.get(DESCRIPTION);
-        addField(REMARK, false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        remark = (TextAreaField) fields.get(REMARK);
+        addField(DESCRIPTION, false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        description = (StringField) fields.get(DESCRIPTION);
+//        addField(REMARK, false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+//        remark = (TextAreaField) fields.get(REMARK);
         alignFields();
         entityActionsPanel.add(deleteB);
     }
@@ -99,7 +99,7 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
         expenseDate.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
         purpose.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
         description.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
-        remark.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
+//        remark.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
         expenseMiles.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
         amount.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
         expenseMiles.setVisible(false);
@@ -129,7 +129,7 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
         assignEntityValueFromField(EXPENSE_DATE, entity);
         assignEntityValueFromField(PURPOSE, entity);
         assignEntityValueFromField(DESCRIPTION, entity);
-        assignEntityValueFromField(REMARK, entity);
+//        assignEntityValueFromField(REMARK, entity);
         assignEntityValueFromField(EXPENSE_MILES, entity);
         assignEntityValueFromField(AMOUNT, entity);
         return entity;

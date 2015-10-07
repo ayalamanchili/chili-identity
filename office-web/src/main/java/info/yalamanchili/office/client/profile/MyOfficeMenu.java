@@ -8,10 +8,9 @@ import info.yalamanchili.office.client.profile.employee.EmployeeSidePanel;
 import info.yalamanchili.office.client.profile.employee.ReadAllEmployeesPanel;
 
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.MenuBar;
 import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.fields.FileField;
+import info.chili.gwt.widgets.CMenuBar;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.admin.hr.ReadAllProspectsPanel;
@@ -28,34 +27,26 @@ import info.yalamanchili.office.client.profile.employeetype.EmployeeTypeSidePane
 import info.yalamanchili.office.client.profile.phonetype.PhoneTypeSidePanel;
 import info.yalamanchili.office.client.profile.phonetype.ReadAllPhoneTypePanel;
 
-public class MyOfficeMenu extends Composite {
+public class MyOfficeMenu extends CMenuBar {
 
-    MenuBar myOfficeMenuBar = new MenuBar(false);
-
-    public MyOfficeMenu() {
-        initWidget(myOfficeMenuBar);
-        configureAdminMenu();
-    }
-
-    protected void configureAdminMenu() {
-        myOfficeMenuBar.addItem("Employees", employeeMaintainenceCmd);
-
+    @Override
+    protected void configureMenu() {
+        addMenuItem("Employees", "Employees", employeeMaintainenceCmd);
         if (Auth.isAdmin()) {
-            myOfficeMenuBar.addItem("OnBoarding", onBoardingInfo);
+            addMenuItem("OnBoarding", "OnBoarding", onBoardingInfo);
         }
-        if(Auth.hasAnyOfRoles(ROLE.ROLE_CEO, ROLE.ROLE_HR, ROLE.ROLE_RECRUITER, ROLE.ROLE_ON_BOARDING_MGR, ROLE.ROLE_ADMIN)){
-            myOfficeMenuBar.addItem("Prospects", prospectsMaintainenceCmd);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_CEO, ROLE.ROLE_HR, ROLE.ROLE_RECRUITER, ROLE.ROLE_ON_BOARDING_MGR, ROLE.ROLE_ADMIN)) {
+            addMenuItem("Prospects", "Prospects", prospectsMaintainenceCmd);
         }
-        if(Auth.isAdmin()){
-            myOfficeMenuBar.addItem("PhoneType", phoneTypesMaintainenceCmd);
-            myOfficeMenuBar.addItem("AddressType", addressTypesMaintainenceCmd);
-            myOfficeMenuBar.addItem("EmailType", emailTypesMaintainenceCmd);
-            myOfficeMenuBar.addItem("ContactType", companyContactTypeMaintainenceCmd);
+        if (Auth.isAdmin()) {
+            addMenuItem("PhoneType", "PhoneType", phoneTypesMaintainenceCmd);
+            addMenuItem("AddressType", "AddressType", addressTypesMaintainenceCmd);
+            addMenuItem("EmailType", "EmailType", emailTypesMaintainenceCmd);
+            addMenuItem("ContactType", "ContactType", companyContactTypeMaintainenceCmd);
         }
-        myOfficeMenuBar.addItem("Information", corpEmpInfo);
-        myOfficeMenuBar.addStyleName("entityMenuBar");
+        addMenuItem("Information", "Information", corpEmpInfo);
     }
-    Command employeeMaintainenceCmd = new Command() {
+    static Command employeeMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
             TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
@@ -63,7 +54,7 @@ public class MyOfficeMenu extends Composite {
             TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new EmployeeSidePanel());
         }
     };
-    Command employeeTypesMaintainenceCmd = new Command() {
+    static Command employeeTypesMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
             TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
@@ -71,7 +62,7 @@ public class MyOfficeMenu extends Composite {
             TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new EmployeeTypeSidePanel());
         }
     };
-    Command phoneTypesMaintainenceCmd = new Command() {
+    static Command phoneTypesMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
             TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
@@ -79,7 +70,7 @@ public class MyOfficeMenu extends Composite {
             TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new PhoneTypeSidePanel());
         }
     };
-    Command addressTypesMaintainenceCmd = new Command() {
+    static Command addressTypesMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
             TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
@@ -87,7 +78,7 @@ public class MyOfficeMenu extends Composite {
             TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new AddressTypeSidePanel());
         }
     };
-    Command emailTypesMaintainenceCmd = new Command() {
+    static Command emailTypesMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
             TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
@@ -95,7 +86,7 @@ public class MyOfficeMenu extends Composite {
             TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new EmailTypeSidePanel());
         }
     };
-    Command companyContactTypeMaintainenceCmd = new Command() {
+    static Command companyContactTypeMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
             TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
@@ -103,7 +94,7 @@ public class MyOfficeMenu extends Composite {
             TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new CompanyContactTypeSidePanel());
         }
     };
-    Command corpEmpInfo = new Command() {
+    static Command corpEmpInfo = new Command() {
         public void execute() {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
             TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
@@ -111,7 +102,7 @@ public class MyOfficeMenu extends Composite {
             TabPanel.instance().getMyOfficePanel().sidePanelTop.add(reportL);
         }
     };
-    Command onBoardingInfo = new Command() {
+    static Command onBoardingInfo = new Command() {
         public void execute() {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
             TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
@@ -119,7 +110,7 @@ public class MyOfficeMenu extends Composite {
             TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new OnBoardingSidePanel());
         }
     };
-    Command prospectsMaintainenceCmd = new Command() {
+    static Command prospectsMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
             TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();

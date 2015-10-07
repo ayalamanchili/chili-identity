@@ -7,21 +7,15 @@
  */
 package info.yalamanchili.office.client.profile.selfservice;
 
-import com.axeiya.gwtckeditor.client.CKEditor;
-import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
-import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
-import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.profile.statusreport.Editor;
 import java.util.logging.Logger;
 
 /**
@@ -31,8 +25,73 @@ import java.util.logging.Logger;
 public class CreateServiceTicketPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateServiceTicketPanel.class.getName());
-    CKEditor descriptionF;
-    FlowPanel panel = new FlowPanel();
+    ServiceTicketPanel panel=new ServiceTicketPanel(false);
+    
+    public CreateServiceTicketPanel() {
+        super(CreateCompositeType.CREATE);
+        initCreateComposite("SelfService", OfficeWelcome.constants);
+    }
+    @Override
+    protected JSONObject populateEntityFromFields() {
+        entity = new JSONObject();
+        assignEntityValueFromField("subject", entity);
+        entity.put(panel.toString(), panel.getObject());
+        logger.info(entity.toString());
+        return entity;
+
+    }
+    @Override
+    protected void addWidgets() {
+        addField("subject", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(panel);
+    }
+
+    @Override
+    protected void createButtonClicked() {
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+                new AsyncCallback<String>() {
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        logger.info(arg0.getMessage());
+                        handleErrorResponse(arg0);
+                    }
+
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
+    }
+
+    @Override
+    protected void addButtonClicked() {
+    }
+
+    @Override
+    protected void postCreateSuccess(String result) {
+        new ResponseStatusWidget().show("Submitted Service Ticket");
+        TabPanel.instance().homePanel.entityPanel.clear();
+        TabPanel.instance().homePanel.entityPanel.add(new ReadAllServiceTicketsPanel());
+    }
+
+    @Override
+    protected void addListeners() {
+    }
+
+    @Override
+    protected void configure() {
+        setButtonText("Submit");
+    }
+
+    @Override
+    protected void addWidgetsBeforeCaptionPanel() {
+    }
+
+    @Override
+    protected String getURI() {
+        return OfficeWelcome.constants.root_url() + "selfservice/create-ticket/currentuser";
+    }
+   /* FlowPanel panel = new FlowPanel();
     EnumField typeF = new EnumField(OfficeWelcome.constants, "type", "TicketStatus", false, false, TicketStatus.names(), Alignment.HORIZONTAL);
 
     public CreateServiceTicketPanel(CreateComposite.CreateCompositeType type) {
@@ -137,5 +196,5 @@ public class CreateServiceTicketPanel extends CreateComposite {
     @Override
     protected String getDocumentationLink() {
         return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "selfservice/open-ticket.html";
-    }
+    } */
 }

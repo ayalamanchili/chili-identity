@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.admin;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuBar;
+import info.chili.gwt.widgets.CMenuBar;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.TabPanel;
@@ -39,36 +40,30 @@ import info.yalamanchili.office.client.ext.question.ReadAllQuestionPanel;
  *
  * @author anuyalamanchili
  */
-public class AdminMenu extends Composite {
+public class AdminMenu extends CMenuBar {
 
-    MenuBar adminMenuBar = new MenuBar(false);
+    @Override
+    protected void configureMenu() {
+        addMenuItem("Clients", "Clients", clientsMaintainenceCmd);
+        addMenuItem("Projects", "Projects", projectsMaintainenceCmd);
+        addMenuItem("Vendors", "Vendors", vendorsMaintainenceCmd);
+        addMenuItem("Subcontractors", "Subcontractors", subcontractorsMaintainenceCmd);
+        addMenuItem("SOW's", "SOW's", sowMaintainenceCmd);
+        addMenuItem("Notification Groups", "Notification Groups", notificationGroupMaintainenceCmd);
+        addMenuItem("Question", "Question", questionMaintainenceCmd);
 
-    public AdminMenu() {
-        initWidget(adminMenuBar);
-        configureAdminMenu();
-    }
-
-    protected void configureAdminMenu() {
-        adminMenuBar.addItem("Clients", clientsMaintainenceCmd);
-        adminMenuBar.addItem("Projects", projectsMaintainenceCmd);
-        adminMenuBar.addItem("Vendors", vendorsMaintainenceCmd);
-        adminMenuBar.addItem("Subcontractors", subcontractorsMaintainenceCmd);
-        adminMenuBar.addItem("SOW's", sowMaintainenceCmd);
-        adminMenuBar.addItem("Notification Groups", notificationGroupMaintainenceCmd);
-        adminMenuBar.addItem("Question", questionMaintainenceCmd);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_BULK_IMPORT, ROLE.ROLE_ADMIN)) {
-            adminMenuBar.addItem("External Refs", externalReferencesMaintainenceCmd);
-            adminMenuBar.addItem("Bulk Import", bulkImportMaintainenceCmd);
+            addMenuItem("External Refs", "External Refs", externalReferencesMaintainenceCmd);
+            addMenuItem("Bulk Import", "Bulk Import", bulkImportMaintainenceCmd);
         }
         if (Auth.isAdmin()) {
-            adminMenuBar.addItem("Activity", activityMaintainenceCmd);
+            addMenuItem("Activity", "Activity", activityMaintainenceCmd);
         }
         if (Auth.isAdmin()) {
-            adminMenuBar.addItem("Company", companyMaintainenceCmd);
+            addMenuItem("Company", "Company", companyMaintainenceCmd);
         }
-        adminMenuBar.addStyleName("entityMenuBar");
     }
-    Command notificationGroupMaintainenceCmd = new Command() {
+    static Command notificationGroupMaintainenceCmd = new Command() {
         @Override
         public void execute() {
             TabPanel.instance().getAdminPanel().entityPanel.clear();
@@ -77,7 +72,7 @@ public class AdminMenu extends Composite {
             TabPanel.instance().getAdminPanel().sidePanelTop.add(new NotificationGroupSidePanel());
         }
     };
-    Command clientsMaintainenceCmd = new Command() {
+    static Command clientsMaintainenceCmd = new Command() {
         @Override
         public void execute() {
             TabPanel.instance().getAdminPanel().entityPanel.clear();
@@ -86,7 +81,7 @@ public class AdminMenu extends Composite {
             TabPanel.instance().getAdminPanel().sidePanelTop.add(new ClientSidePanel());
         }
     };
-    Command externalReferencesMaintainenceCmd = new Command() {
+    static Command externalReferencesMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getAdminPanel().entityPanel.clear();
             TabPanel.instance().getAdminPanel().sidePanelTop.clear();
@@ -94,7 +89,7 @@ public class AdminMenu extends Composite {
 
         }
     };
-    Command projectsMaintainenceCmd = new Command() {
+    static Command projectsMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getAdminPanel().entityPanel.clear();
             TabPanel.instance().getAdminPanel().sidePanelTop.clear();
@@ -102,7 +97,7 @@ public class AdminMenu extends Composite {
             TabPanel.instance().getAdminPanel().sidePanelTop.add(new ProjectSidePanel());
         }
     };
-    Command sowMaintainenceCmd = new Command() {
+    static Command sowMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getAdminPanel().entityPanel.clear();
             TabPanel.instance().getAdminPanel().sidePanelTop.clear();
@@ -110,7 +105,7 @@ public class AdminMenu extends Composite {
             TabPanel.instance().getAdminPanel().sidePanelTop.add(new SOWSidePanel());
         }
     };
-    Command vendorsMaintainenceCmd = new Command() {
+    static Command vendorsMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getAdminPanel().entityPanel.clear();
             TabPanel.instance().getAdminPanel().sidePanelTop.clear();
@@ -118,7 +113,7 @@ public class AdminMenu extends Composite {
             TabPanel.instance().getAdminPanel().sidePanelTop.add(new VendorsSidePanel());
         }
     };
-    Command subcontractorsMaintainenceCmd = new Command() {
+    static Command subcontractorsMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getAdminPanel().entityPanel.clear();
             TabPanel.instance().getAdminPanel().sidePanelTop.clear();
@@ -126,7 +121,7 @@ public class AdminMenu extends Composite {
             TabPanel.instance().getAdminPanel().sidePanelTop.add(new SubcontractorSidePanel());
         }
     };
-    Command bulkImportMaintainenceCmd = new Command() {
+    static Command bulkImportMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getAdminPanel().entityPanel.clear();
             TabPanel.instance().getAdminPanel().sidePanelTop.clear();
@@ -134,7 +129,7 @@ public class AdminMenu extends Composite {
             TabPanel.instance().getAdminPanel().sidePanelTop.add(new BulkImportSidePanel());
         }
     };
-    Command questionMaintainenceCmd = new Command() {
+    static Command questionMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getAdminPanel().entityPanel.clear();
             TabPanel.instance().getAdminPanel().sidePanelTop.clear();
@@ -142,7 +137,7 @@ public class AdminMenu extends Composite {
             TabPanel.instance().getAdminPanel().sidePanelTop.add(new QuestionSidePanel());
         }
     };
-    Command activityMaintainenceCmd = new Command() {
+    static Command activityMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getAdminPanel().entityPanel.clear();
             TabPanel.instance().getAdminPanel().sidePanelTop.clear();
@@ -151,7 +146,7 @@ public class AdminMenu extends Composite {
 
         }
     };
-    Command companyMaintainenceCmd = new Command() {
+    static Command companyMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getAdminPanel().entityPanel.clear();
             TabPanel.instance().getAdminPanel().sidePanelTop.clear();
