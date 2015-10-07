@@ -32,6 +32,7 @@ import info.yalamanchili.office.client.analytics.event.EventsSidePanel;
 import info.yalamanchili.office.client.analytics.event.ReadAllEventsPanel;
 import info.yalamanchili.office.client.company.CompanySidePanel;
 import info.yalamanchili.office.client.company.ReadAllCompanyPanel;
+import info.yalamanchili.office.client.ext.externalReferences.ExternalSidePanel;
 import info.yalamanchili.office.client.ext.externalReferences.ReadAllExternalRefPanel;
 import info.yalamanchili.office.client.ext.question.QuestionSidePanel;
 import info.yalamanchili.office.client.ext.question.ReadAllQuestionPanel;
@@ -86,6 +87,7 @@ public class AdminMenu extends CMenuBar {
             TabPanel.instance().getAdminPanel().entityPanel.clear();
             TabPanel.instance().getAdminPanel().sidePanelTop.clear();
             TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllExternalRefPanel());
+            TabPanel.instance().getAdminPanel().sidePanelTop.add(new ExternalSidePanel());
 
         }
     };

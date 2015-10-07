@@ -20,6 +20,7 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
+import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
 /**
@@ -48,6 +49,11 @@ public class ReadAllExternalRefPanel extends CRUDReadAllComposite {
         initTable("External Referance", OfficeWelcome.constants);
     }
 
+    public ReadAllExternalRefPanel(JSONArray array) {
+        instance = this;
+        initTable("External Referance", array, OfficeWelcome.constants);
+    }
+
     @Override
     public void preFetchTable(final int start) {
         HttpService.HttpServiceAsync.instance().doGet(getExternalRefsUrl(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
@@ -67,6 +73,7 @@ public class ReadAllExternalRefPanel extends CRUDReadAllComposite {
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().adminPanel.sidePanelTop.clear();
+        TabPanel.instance().adminPanel.sidePanelTop.add(new ExternalSidePanel());
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadExternalRefPanel(getEntity(entityId)));
     }
@@ -88,12 +95,10 @@ public class ReadAllExternalRefPanel extends CRUDReadAllComposite {
     @Override
     public void postDeleteSuccess() {
         TabPanel.instance().getAdminPanel().entityPanel.clear();
-        TabPanel.instance().getAdminPanel().sidePanelTop.clear();
-        TabPanel.instance().getAdminPanel().entityPanel.clear();
         TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllExternalRefPanel());
     }
-    
-     @Override
+
+    @Override
     public void copyClicked(final String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(OfficeWelcome.constants.root_url() + "external-ref/clone/" + entityId, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
@@ -106,6 +111,7 @@ public class ReadAllExternalRefPanel extends CRUDReadAllComposite {
                     }
                 });
     }
+
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().getAdminPanel().entityPanel.clear();
@@ -141,7 +147,6 @@ public class ReadAllExternalRefPanel extends CRUDReadAllComposite {
     @Override
     protected void createButtonClicked() {
         TabPanel.instance().getAdminPanel().entityPanel.clear();
-        TabPanel.instance().getAdminPanel().sidePanelTop.clear();
         TabPanel.instance().getAdminPanel().entityPanel.add(new CreateExternalReferencesPanel(parentId, targetClassName));
     }
 

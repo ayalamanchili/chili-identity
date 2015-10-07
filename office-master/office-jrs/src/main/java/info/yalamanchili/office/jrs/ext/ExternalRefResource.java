@@ -80,6 +80,17 @@ public class ExternalRefResource {
         return table;
 
     }
+    
+    
+//    @GET
+//    @Path("/dropdown/{start}/{limit}")
+//    @Transactional(propagation = Propagation.NEVER)
+//    @Cacheable(OfficeCacheKeys.SKILL)
+//    @Override
+//    public List<Entry> getDropDown(@PathParam("start") int start, @PathParam("limit") int limit,
+//            @QueryParam("column") List<String> columns) {
+//        return super.getDropDown(start, limit, columns);
+//    }
 
     @XmlRootElement
     @XmlType
