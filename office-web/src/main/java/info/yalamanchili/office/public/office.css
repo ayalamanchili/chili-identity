@@ -299,7 +299,6 @@ legend {
     font-size:14px;
     cursor:pointer;
     text-align: center;
-    width: 150px;
 }
 .y-gwt-MenuItem-selectedMI {
     padding-top: 10px;
@@ -308,7 +307,6 @@ legend {
     font-weight: bold;
     cursor:pointer;
     text-align: center;
-    width: 150px;
 }    
 .gwt-MenuBar.gwt-MenuBar-horizontal.entityMenuBar{
     padding-top: 10px;

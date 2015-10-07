@@ -89,7 +89,7 @@ public class CompanyContactTypeResource extends CRUDResource<CompanyContactType>
 
     @XmlRootElement
     @XmlType
-    public static class CompanyContactTypeTable {
+    public static class CompanyContactTypeTable implements java.io.Serializable {
 
         protected Long size;
         protected List<CompanyContactType> entities;
