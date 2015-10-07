@@ -8,10 +8,14 @@
  */
 package info.yalamanchili.office.jrs.ext;
 
+import info.chili.commons.SearchUtils;
+import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.dao.ext.ExternalRefDao;
 import info.yalamanchili.office.entity.ext.ExternalRef;
+import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
+import javax.persistence.Query;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -38,7 +42,7 @@ import org.springframework.transaction.annotation.Transactional;
 //TODO create abstractREsource for ext
 @Produces("application/json")
 @Consumes("application/json")
-public class ExternalRefResource {
+public class ExternalRefResource extends CRUDResource<ExternalRef> {
 
     @Autowired
     public ExternalRefDao externalRefDao;
@@ -46,12 +50,14 @@ public class ExternalRefResource {
     @PUT
     @PreAuthorize("hasAnyRole('ROLE_BULK_IMPORT')")
     @Validate
-    public void save(ExternalRef externalRef) {
-        externalRefDao.save(externalRef);
+    @Override
+    public ExternalRef save(ExternalRef externalRef) {
+        return externalRefDao.save(externalRef);
     }
 
     @GET
     @Path("/clone/{id}")
+    @Override
     public ExternalRef clone(@PathParam("id") Long id) {
         return externalRefDao.clone(id);
     }
@@ -66,6 +72,7 @@ public class ExternalRefResource {
     @PUT
     @Path("/delete/{id}")
     @PreAuthorize("hasAnyRole('ROLE_BULK_IMPORT')")
+    @Override
     public void delete(@PathParam("id") Long id) {
         externalRefDao.delete(id);
     }
@@ -78,19 +85,23 @@ public class ExternalRefResource {
         table.setEntities(extrefs);
         table.setSize(externalRefDao.size());
         return table;
-
     }
-    
-    
-//    @GET
-//    @Path("/dropdown/{start}/{limit}")
-//    @Transactional(propagation = Propagation.NEVER)
-//    @Cacheable(OfficeCacheKeys.SKILL)
-//    @Override
-//    public List<Entry> getDropDown(@PathParam("start") int start, @PathParam("limit") int limit,
-//            @QueryParam("column") List<String> columns) {
-//        return super.getDropDown(start, limit, columns);
-//    }
+
+    @PUT
+    @Path("/search/{start}/{limit}")
+    @Transactional(readOnly = true)
+    @Override
+    public List<ExternalRef> search(ExternalRef entity, @PathParam("start") int start, @PathParam("limit") int limit) {
+        Query searchQuery = SearchUtils.getSearchQuery(externalRefDao.getEntityManager(), entity, new SearchUtils.SearchCriteria());
+        searchQuery.setFirstResult(start);
+        searchQuery.setMaxResults(limit);
+        return searchQuery.getResultList();
+    }
+
+    @Override
+    public CRUDDao getDao() {
+        return null;
+    }
 
     @XmlRootElement
     @XmlType

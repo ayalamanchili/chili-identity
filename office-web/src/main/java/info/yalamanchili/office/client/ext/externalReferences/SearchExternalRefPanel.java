@@ -11,12 +11,9 @@ import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
-import info.chili.gwt.utils.JSONUtils;
-import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.SearchComposite;
-import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -33,30 +30,11 @@ public class SearchExternalRefPanel extends SearchComposite {
 
     @Override
     protected void populateSearchSuggestBox() {
-        HttpService.HttpServiceAsync.instance().doGet(getexternalidDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String entityString) {
-                Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
-                loadSearchSuggestions(values.values());
-            }
-        });
-    }
-
-    protected String getexternalidDropDownUrl() {
-        //TODO think about the limit
-        return OfficeWelcome.constants.root_url() + "external-ref/dropdown/0/10000?column=id&column=externalId";
     }
 
     @Override
     protected void populateAdvancedSuggestBoxes() {
-        HttpService.HttpServiceAsync.instance().doGet(getexternalidDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String entityString) {
-                Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
-                SuggestBox sb = (SuggestBox) fields.get("externalId");
-                sb.loadData(values.values());
-            }
-        });
+
     }
 
     @Override
@@ -69,15 +47,19 @@ public class SearchExternalRefPanel extends SearchComposite {
 
     @Override
     protected void addWidgets() {
+        addField("source", DataType.STRING_FIELD);
         addField("externalId", DataType.STRING_FIELD);
-        addField("targetEntityId", DataType.STRING_FIELD);
+        addField("targetEntityId", DataType.LONG_FIELD);
+        addField("targetEntityName", DataType.STRING_FIELD);
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
         assignEntityValueFromField("externalId", entity);
+        assignEntityValueFromField("source", entity);
         assignEntityValueFromField("targetEntityId", entity);
+        assignEntityValueFromField("targetEntityName", entity);
         logger.info(entity.toString());
         return entity;
     }
@@ -122,5 +104,10 @@ public class SearchExternalRefPanel extends SearchComposite {
     protected String getSearchURI(Integer start, Integer limit) {
         return URL.encode(OfficeWelcome.constants.root_url() + "external-ref/search/" + start.toString() + "/"
                 + limit.toString());
+    }
+
+    @Override
+    protected boolean disableRegularSearch() {
+        return true;
     }
 }
