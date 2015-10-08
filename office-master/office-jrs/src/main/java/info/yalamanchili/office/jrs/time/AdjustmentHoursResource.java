@@ -62,7 +62,7 @@ public class AdjustmentHoursResource extends CRUDResource<AdjustmentHours> {
 
     @XmlRootElement
     @XmlType
-    public static class BopnusPaymentTable {
+    public static class BopnusPaymentTable implements java.io.Serializable {
 
         protected Long size;
         protected List<AdjustmentHours> entities;

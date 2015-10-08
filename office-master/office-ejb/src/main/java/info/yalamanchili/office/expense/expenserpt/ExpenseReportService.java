@@ -222,7 +222,6 @@ public class ExpenseReportService {
                 if (item.getExpensePaymentMode() != null) {
                     data.getData().put("remark" + i, item.getExpensePaymentMode().name());
                 }
-                data.getData().put("" + i, item.getRemark());
                 data.getData().put("category" + i, item.getCategory().getName());
                 data.getData().put("itemStartDate" + i, new SimpleDateFormat("MM-dd-yyyy").format(item.getExpenseDate()));
                 data.getData().put("amount" + i, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
