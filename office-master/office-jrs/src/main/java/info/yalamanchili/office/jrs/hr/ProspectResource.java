@@ -108,33 +108,33 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
     }
-    
+
     /*In Normal Prospect Search, If we search by referredBy name, it is giving the following error:
-    Internal Server Error
-    description: The server encountered an internal error that prevented it from fulfilling this request.
-    */
-    
+     Internal Server Error
+     description: The server encountered an internal error that prevented it from fulfilling this request.
+     */
     /* In Advanced Search it is giving us the error like below:
-    Thu Oct 08 19:55:19 GMT+530 2015 info.chili.gwt.callback.ALAsyncCallback
-    INFO: {"Error":{"description":"org.hibernate.hql.ast.QuerySyntaxException: 
-    ProspectDto is not mapped 
-    [SELECT DISTINCT prospectDto FROM ProspectDto prospectDto 
-    WHERE prospectDto.firstName LIKE '%Radhika%' 
-    AND prospectDto.referredBy LIKE '%Prasanthi%']"
-    "reasonCode":"INTERNAL_ERROR","source":"SYSTEM"}}
-    */
-    
-    /*@PUT
-    @Path("/search/{start}/{limit}")
+     Thu Oct 08 19:55:19 GMT+530 2015 info.chili.gwt.callback.ALAsyncCallback
+     INFO: {"Error":{"description":"org.hibernate.hql.ast.QuerySyntaxException: 
+     ProspectDto is not mapped 
+     [SELECT DISTINCT prospectDto FROM ProspectDto prospectDto 
+     WHERE prospectDto.firstName LIKE '%Radhika%' 
+     AND prospectDto.referredBy LIKE '%Prasanthi%']"
+     "reasonCode":"INTERNAL_ERROR","source":"SYSTEM"}}
+     */
+    @PUT
+    @Path("/search-prospect/{start}/{limit}")
     @Transactional(readOnly = true)
-    @Override
-    public List<ProspectDto> search(ProspectDto entity, @PathParam("start") int start, @PathParam("limit") int limit) {
+    public List<ProspectDto> search(Prospect entity, @PathParam("start") int start, @PathParam("limit") int limit) {
+        List<ProspectDto> res = new ArrayList();
         Query searchQuery = SearchUtils.getSearchQuery(prospectDao.getEntityManager(), entity, new SearchUtils.SearchCriteria());
         searchQuery.setFirstResult(start);
         searchQuery.setMaxResults(limit);
-        return searchQuery.getResultList();
-    }*/
-    
+        for (Object p : searchQuery.getResultList()) {
+            res.add(ProspectDto.map(mapper, (Prospect) p));
+        }
+        return res;
+    }
 
     @XmlRootElement
     @XmlType
