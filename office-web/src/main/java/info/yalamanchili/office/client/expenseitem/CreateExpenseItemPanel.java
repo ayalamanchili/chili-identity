@@ -35,6 +35,7 @@ import info.yalamanchili.office.client.expensecategory.SelectExpenseCategoryWidg
 import info.yalamanchili.office.client.expensereports.CreateExpenseReportPanel;
 import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.*;
 import info.yalamanchili.office.client.expensereports.ExpensePaymentMode;
+import info.yalamanchili.office.client.expensereports.UpdateExpenseReportPanel;
 import java.math.BigDecimal;
 import java.util.logging.Logger;
 
@@ -55,9 +56,11 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
     boolean isGeneralExpenseItem = false;
     CurrencyField expenseMiles;
     ClickableLink deleteB = new ClickableLink("Remove Item");
+    CRUDComposite parent;
 
     public CreateExpenseItemPanel(CRUDComposite parent, boolean isGeneralExpenseItem) {
         super(CreateComposite.CreateCompositeType.CREATE);
+        this.parent = parent;
         this.isGeneralExpenseItem = isGeneralExpenseItem;
         initCreateComposite("ExpenseItem", OfficeWelcome.constants);
     }
@@ -120,7 +123,7 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
         entity = new JSONObject();
         if (isGeneralExpenseItem) {
             entity.put(CATEGORY, new JSONString("General"));
-  //          entity.put(EXPENSE_PAYMENT_MODE, new JSONString(ExpensePaymentMode.PERSONAL_CARD.name()));
+            //          entity.put(EXPENSE_PAYMENT_MODE, new JSONString(ExpensePaymentMode.PERSONAL_CARD.name()));
         } else {
             entity.put(CATEGORY, selectCategoryWidgetF.getSelectedObject());
             assignEntityValueFromField(EXPENSE_PAYMENT_MODE, entity);
@@ -197,7 +200,11 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(deleteB)) {
             this.removeFromParent();
-            CreateExpenseReportPanel.instance().expenseItemPanels.remove(this);
+            if (parent instanceof CreateExpenseReportPanel) {
+                CreateExpenseReportPanel.instance().expenseItemPanels.remove(this);
+            } else if (parent instanceof UpdateExpenseReportPanel) {
+                UpdateExpenseReportPanel.instance().updateItemPanels.remove(this);
+            }
             if (!getEntityId().isEmpty()) {
                 HttpService.HttpServiceAsync.instance().doPut(getDeleteURI(), entity.toString(),
                         OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
