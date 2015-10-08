@@ -23,9 +23,9 @@ public @interface AccessCheck {
 
     String employeePropertyName() default "";
 
-    String[] roles();
+    String[] roles() default {};
 
-    String[] companyContacts();
-    
+    String[] companyContacts() default {};
+
     boolean strictOrderCheck() default true;
 }

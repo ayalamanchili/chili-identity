@@ -64,6 +64,7 @@ public class ImmigrationCheckRequisitionVoidProcess implements TaskListener {
         } else {
             entity.setStatus(ImmigrationCheckRequisitionStatus.REJECTED);
         }
+        ImmigrationCheckRequisitionDao.instance().save(entity);
         new GenericTaskCompleteNotification().notify(task);
     }
 

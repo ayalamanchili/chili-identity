@@ -61,6 +61,7 @@ public class ExpenseReportResource extends CRUDResource<ExpenseReport> {
     @PUT
     @Validate
     @Path("/save")
+    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_CEO", "ROLE_ACCOUNTS_PAYABLE", "ROLE_GENERAL_EXPENSE_MANAGER"}, employeePropertyName = "employee")
     public ExpenseReportSaveDto save(ExpenseReportSaveDto dto) {
         return ExpenseReportService.instance().save(dto);
     }
@@ -126,7 +127,7 @@ public class ExpenseReportResource extends CRUDResource<ExpenseReport> {
 
     @Override
     public CRUDDao getDao() {
-        return expenseReportsDao.instance();
+        return expenseReportsDao;
     }
 
     @XmlRootElement

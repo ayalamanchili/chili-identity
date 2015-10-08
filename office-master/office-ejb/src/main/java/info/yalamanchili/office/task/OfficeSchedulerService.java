@@ -60,9 +60,9 @@ public class OfficeSchedulerService {
     }
 
     /**
-     * runs 10 15 AM every sunday
+     * runs 10 15 AM every WEDNESDAY
      */
-    @Scheduled(cron = "0 15 10 ? * SUN")
+    @Scheduled(cron = "0 15 10 ? * WED")
     public void syncWeeklyTimePeriods() {
         TimePeriodDao.instance().syncWeeklyTimePeriods();
     }
