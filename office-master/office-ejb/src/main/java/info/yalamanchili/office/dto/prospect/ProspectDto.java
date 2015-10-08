@@ -8,12 +8,13 @@
  */
 package info.yalamanchili.office.dto.prospect;
 
-import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.hr.ProspectStatus;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -26,10 +27,9 @@ import org.hibernate.validator.constraints.NotEmpty;
  *
  * @author radhika.mukkala
  */
-@XmlRootElement(name = "EmergencyContact")
+@XmlRootElement(name = "Prospect")
 @XmlType
 public class ProspectDto implements Serializable {
-
     protected Long id;
 
     @NotEmpty(message = "{firstName.not.empty.msg}")
@@ -39,6 +39,7 @@ public class ProspectDto implements Serializable {
     protected String lastName;
 
     @Email(message = "Enter a valid email address")
+    @NotEmpty(message = "{prospect.email.not.empty.msg}")
     protected String email;
 
     @NotEmpty(message = "{prospect.phoneNumber.not.empty.msg}")
@@ -49,11 +50,13 @@ public class ProspectDto implements Serializable {
     protected Date startDate;
 
     protected String screenedBy;
+    @NotEmpty(message="{referredBy.not.empty.msg")
     protected String referredBy;
 
     @NotEmpty(message = "{resumeUrl.not.empty.msg}")
     protected String resumeURL;
 
+    
     @Enumerated(EnumType.STRING)
     protected ProspectStatus status;
 
@@ -153,8 +156,7 @@ public class ProspectDto implements Serializable {
         }
         if (entity.getContact().getEmails().size() > 0) {
             prospectContact.setEmail(entity.getContact().getEmails().get(0).getEmail());
-        }
-        prospectContact.setId(entity.getId());
+        }prospectContact.setId(entity.getId());
         return prospectContact;
     }
 }

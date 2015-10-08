@@ -14,6 +14,7 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 
@@ -24,6 +25,8 @@ import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 public class ReadProspectsPanel extends ReadComposite {
 
     private static ReadProspectsPanel instance;
+        SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "screenedBy", "Employee", true, false);
+
 
     public static ReadProspectsPanel instance() {
         return instance;
@@ -57,14 +60,20 @@ public class ReadProspectsPanel extends ReadComposite {
    
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+        JSONObject emp = (JSONObject) entity.get("employee");
         assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("screenedBy", entity, DataType.STRING_FIELD);
+        //assignFieldValueFromEntity("screenedBy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("email", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("phoneNumber", entity, DataType.LONG_FIELD);
         assignFieldValueFromEntity("referredBy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
+        if (emp != null) {
+            employeeSB.setValue(emp.get("screenedBy").isString().stringValue());
+        } /*else {
+            employeeSB.setValue(JSONUtils.toString(entity, "screenedBy"));
+        }*/
         //assignFieldValueFromEntity("processDocSentDate", entity, DataType.DATE_FIELD);
     }
 
@@ -86,7 +95,8 @@ public class ReadProspectsPanel extends ReadComposite {
         addField("referredBy", true, false, DataType.STRING_FIELD);
         addField("email", true, false, DataType.STRING_FIELD);
         addField("phoneNumber", true, false, DataType.LONG_FIELD);
-        addField("screenedBy", true, false, DataType.STRING_FIELD);
+        //addField("screenedBy", true, false, DataType.STRING_FIELD);
+        entityFieldsPanel.add(employeeSB);
         addEnumField("status", true, false, ProspectStatus.names());
     }
 
