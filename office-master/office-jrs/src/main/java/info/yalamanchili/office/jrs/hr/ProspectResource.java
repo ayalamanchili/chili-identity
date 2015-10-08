@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.jrs.hr;
 
+import info.chili.commons.SearchUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
@@ -18,6 +19,7 @@ import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.prospect.ProspectService;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Query;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -106,6 +108,33 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
     }
+    
+    /*In Normal Prospect Search, If we search by referredBy name, it is giving the following error:
+    Internal Server Error
+    description: The server encountered an internal error that prevented it from fulfilling this request.
+    */
+    
+    /* In Advanced Search it is giving us the error like below:
+    Thu Oct 08 19:55:19 GMT+530 2015 info.chili.gwt.callback.ALAsyncCallback
+    INFO: {"Error":{"description":"org.hibernate.hql.ast.QuerySyntaxException: 
+    ProspectDto is not mapped 
+    [SELECT DISTINCT prospectDto FROM ProspectDto prospectDto 
+    WHERE prospectDto.firstName LIKE '%Radhika%' 
+    AND prospectDto.referredBy LIKE '%Prasanthi%']"
+    "reasonCode":"INTERNAL_ERROR","source":"SYSTEM"}}
+    */
+    
+    /*@PUT
+    @Path("/search/{start}/{limit}")
+    @Transactional(readOnly = true)
+    @Override
+    public List<ProspectDto> search(ProspectDto entity, @PathParam("start") int start, @PathParam("limit") int limit) {
+        Query searchQuery = SearchUtils.getSearchQuery(prospectDao.getEntityManager(), entity, new SearchUtils.SearchCriteria());
+        searchQuery.setFirstResult(start);
+        searchQuery.setMaxResults(limit);
+        return searchQuery.getResultList();
+    }*/
+    
 
     @XmlRootElement
     @XmlType

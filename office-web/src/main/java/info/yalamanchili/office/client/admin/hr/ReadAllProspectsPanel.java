@@ -45,6 +45,7 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
 
     @Override
     public void preFetchTable(int start) {
+        logger.info(getReadAllProspectsURL(start, OfficeWelcome.constants.tableSize()));
         HttpService.HttpServiceAsync.instance().doGet(getReadAllProspectsURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), false,
                 new ALAsyncCallback<String>() {
                     @Override
@@ -78,12 +79,23 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
+            logger.info("entity:"+entity);
             table.setText(i, 1, JSONUtils.toString(entity, "firstName"));
             table.setText(i, 2, JSONUtils.toString(entity, "lastName"));
-            table.setText(i, 3, JSONUtils.toString(entity, "screenedBy"));
+            //table.setText(i, 3, JSONUtils.toString(entity, "screenedBy"));
             table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 5, JSONUtils.toString(entity, "referredBy"));
             setEnumColumn(i, 6, entity, ProspectStatus.class.getSimpleName(), "status");
+            
+            // Because of these commented lines we got "ClassCastException"
+            //while retrieving the record after the first record
+            
+            /*JSONObject emp = (JSONObject) entity.get("screenedBy");
+            if (emp != null) {
+                table.setText(i, 3, JSONUtils.toString(emp, "screenedBy"));
+            } else {
+                table.setText(i, 3, JSONUtils.toString(entity, "screenedBy"));
+            }*/
 
         }
     }
