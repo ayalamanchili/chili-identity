@@ -79,6 +79,9 @@ public class ProspectService {
 
     public Prospect update(ProspectDto dto) {
         Prospect entity = mapper.map(dto, Prospect.class);
+        if(entity.getStatus()==null){
+            entity.setStatus(ProspectStatus.IN_PROGRESS);
+        }
         entity = prospectDao.save(entity);
         Contact contact = entity.getContact();
         contact.setFirstName(dto.getFirstName());

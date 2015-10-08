@@ -10,11 +10,13 @@ package info.yalamanchili.office.entity.hr;
 
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.profile.Contact;
+import info.yalamanchili.office.entity.profile.Employee;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.validation.Valid;
@@ -42,11 +44,13 @@ public class Prospect extends AbstractEntity {
     @ForeignKey(name = "FK_Contact_Prospect")
     @Valid
     protected Contact contact;
-
+       
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date startDate;
 
     protected String screenedBy;
+    
+    @NotEmpty(message="{referredBy.not.empty.msg")
     protected String referredBy;
 
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -119,5 +123,5 @@ public class Prospect extends AbstractEntity {
     public String toString() {
         return "Prospect{" + "contact=" + contact + ", startDate=" + startDate + ", screenedBy=" + screenedBy + ", referredBy=" + referredBy + ", processDocSentDate=" + processDocSentDate + ", resumeURL=" + resumeURL + ", status=" + status + '}';
     }
-
+    
 }

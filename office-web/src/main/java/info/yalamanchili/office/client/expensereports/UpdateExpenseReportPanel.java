@@ -298,7 +298,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addItemL)) {
-            CreateExpenseItemPanel panel = new CreateExpenseItemPanel(this, true);
+            CreateExpenseItemPanel panel = new CreateExpenseItemPanel(this, isGeneralExpenseItem());
             updateItemPanels.add(panel);
             entityFieldsPanel.add(panel);
         }

@@ -13,6 +13,7 @@ import info.chili.gwt.fields.FileField;
 import info.chili.gwt.widgets.CMenuBar;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
+import info.yalamanchili.office.client.admin.hr.ProspectsSidePanel;
 import info.yalamanchili.office.client.admin.hr.ReadAllProspectsPanel;
 import info.yalamanchili.office.client.contacttype.CompanyContactTypeSidePanel;
 import info.yalamanchili.office.client.contacttype.ReadAllCompanyContactTypePanel;
@@ -114,6 +115,7 @@ public class MyOfficeMenu extends CMenuBar {
         public void execute() {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
             TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
+            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new ProspectsSidePanel());
             TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllProspectsPanel());
         }
     };
