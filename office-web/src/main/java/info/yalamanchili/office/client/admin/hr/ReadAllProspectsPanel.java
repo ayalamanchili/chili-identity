@@ -18,6 +18,7 @@ import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -78,25 +79,13 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
     public void fillData(JSONArray entities) {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
-            addOptionsWidget(i, entity);
-            logger.info("entity:"+entity);
+            addOptionsWidget(i, entity);;
             table.setText(i, 1, JSONUtils.toString(entity, "firstName"));
             table.setText(i, 2, JSONUtils.toString(entity, "lastName"));
-            //table.setText(i, 3, JSONUtils.toString(entity, "screenedBy"));
+            table.setText(i, 3, JSONUtils.toString(entity, "screenedBy"));
             table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 5, JSONUtils.toString(entity, "referredBy"));
             setEnumColumn(i, 6, entity, ProspectStatus.class.getSimpleName(), "status");
-            
-            // Because of these commented lines we got "ClassCastException"
-            //while retrieving the record after the first record
-            
-            /*JSONObject emp = (JSONObject) entity.get("screenedBy");
-            if (emp != null) {
-                table.setText(i, 3, JSONUtils.toString(emp, "screenedBy"));
-            } else {
-                table.setText(i, 3, JSONUtils.toString(entity, "screenedBy"));
-            }*/
-
         }
     }
 
@@ -148,7 +137,19 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE), row, JSONUtils.toString(entity, "id"));
+        createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE);
+    }
+
+    @Override
+    protected boolean enableQuickView() {
+        return true;
+    }
+
+    @Override
+    protected void onQuickView(int row, String id) {
+        if (!id.isEmpty()) {
+            new GenericPopup(new ReadProspectsPanel(id)).show();
+        }
     }
 
 }
