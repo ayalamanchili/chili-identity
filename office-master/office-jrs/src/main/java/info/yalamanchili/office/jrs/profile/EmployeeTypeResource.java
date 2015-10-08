@@ -69,7 +69,7 @@ public class EmployeeTypeResource extends CRUDResource<EmployeeType> {
 
     @XmlRootElement
     @XmlType
-    public static class EmployeeTypeTable {
+    public static class EmployeeTypeTable implements java.io.Serializable {
 
         protected Long size;
         protected List<EmployeeType> entities;

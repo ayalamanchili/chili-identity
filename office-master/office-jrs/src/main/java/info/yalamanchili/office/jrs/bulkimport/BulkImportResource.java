@@ -138,7 +138,7 @@ public class BulkImportResource extends CRUDResource<BulkImport> {
 
     @XmlRootElement
     @XmlType
-    public static class BulkImportMessageTable {
+    public static class BulkImportMessageTable implements java.io.Serializable {
 
         protected Long size;
         protected List<BulkImportMessage> entities;
@@ -163,7 +163,7 @@ public class BulkImportResource extends CRUDResource<BulkImport> {
 
     @XmlRootElement
     @XmlType
-    public static class BulkImportEntityTable {
+    public static class BulkImportEntityTable implements java.io.Serializable {
 
         protected Long size;
         protected List<BulkImportEntity> entities;
