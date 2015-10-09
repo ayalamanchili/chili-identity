@@ -55,6 +55,7 @@ public class CreateProspectPanel extends CreateComposite {
         assignEntityValueFromField("email", entity);
         assignEntityValueFromField("phoneNumber", entity);
         assignEntityValueFromField("screenedBy", entity);
+        assignEntityValueFromField("processDocSentDate", entity);
         entity.put("resumeURL", resumeUploadPanel.getFileName());
         return entity;
     }
@@ -118,6 +119,7 @@ public class CreateProspectPanel extends CreateComposite {
         addField("email", false, false, DataType.STRING_FIELD);
         addField("phoneNumber", false, false, DataType.STRING_FIELD);
         addField("screenedBy", false, true, DataType.STRING_FIELD);
+        addField("processDocSentDate", false, true, DataType.DATE_FIELD);
         entityFieldsPanel.add(resumeUploadPanel);
 
     }
@@ -130,16 +132,16 @@ public class CreateProspectPanel extends CreateComposite {
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "prospect/save";
     }
-//    @Override
-//    protected boolean processClientSideValidations(JSONObject entity) {
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
 //        if (entity.get("screenedBy") == null) {
 //            employeeSB.setMessage("Please choose a employee");
 //            return false;
 //        }
-//        if (resumeUploadPanel.isEmpty()) {
-//            resumeUploadPanel.setMessage("Please select a file");
-//            return false;
-//        }
-//        return true;
-//    }
+        if (resumeUploadPanel.isEmpty()) {
+            resumeUploadPanel.setMessage("Please select a file");
+            return false;
+        }
+        return true;
+    }
 }
