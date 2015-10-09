@@ -9,6 +9,7 @@ CREATE TABLE `prospect` (
   `resumeURL` varchar(255) NOT NULL,
   `screenedBy` varchar(255) DEFAULT NULL,
   `startDate` date DEFAULT NULL,
+  `processDocSentDate` date DEFAULT NULL,
   `status` varchar(255) DEFAULT NULL,
   `contact_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),

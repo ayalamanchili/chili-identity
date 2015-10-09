@@ -59,6 +59,17 @@ public class ProspectDto implements Serializable {
     
     @Enumerated(EnumType.STRING)
     protected ProspectStatus status;
+    
+    @Temporal(javax.persistence.TemporalType.DATE)
+    protected Date processDocSentDate;
+
+    public Date getProcessDocSentDate() {
+        return processDocSentDate;
+    }
+
+    public void setProcessDocSentDate(Date processDocSentDate) {
+        this.processDocSentDate = processDocSentDate;
+    }
 
     public ProspectDto() {
     }
