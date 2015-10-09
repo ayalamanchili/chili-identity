@@ -68,6 +68,10 @@ public class SearchProspectsPanel extends SearchComposite {
         addField("firstName", DataType.STRING_FIELD);
         addField("lastName", DataType.STRING_FIELD);
         addField("referredBy", DataType.STRING_FIELD);
+        addField("startDate", DataType.DATE_FIELD);
+        addField("email", DataType.STRING_FIELD);
+        addField("phoneNumber", DataType.LONG_FIELD);
+        addEnumField("status", false, true, ProspectStatus.names());
     }
     
     @Override
@@ -77,6 +81,10 @@ public class SearchProspectsPanel extends SearchComposite {
         assignEntityValueFromField("firstName", contact);
         assignEntityValueFromField("lastName", contact);
         assignEntityValueFromField("referredBy", entity);
+        assignEntityValueFromField("startDate", entity);
+        assignEntityValueFromField("email", contact);
+        assignEntityValueFromField("phoneNumber", contact);
+        assignEntityValueFromField("status", entity);
         entity.put("contact", contact);
         logger.info(entity.toString());
         return entity;
