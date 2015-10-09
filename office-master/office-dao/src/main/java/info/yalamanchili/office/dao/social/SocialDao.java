@@ -68,7 +68,7 @@ public class SocialDao {
 
     public Post createCompanyPost(Post newcompanypost) {
         newcompanypost.setEmployee(securityService.getCurrentUser());
-        Company company = companyDao.findByCompanyName("System Soft Technologies");
+        Company company = companyDao.findByCompanyName("System Soft Technologies INC");
         if (company == null) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.company", "company not found");
         }
