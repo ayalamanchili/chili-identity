@@ -132,16 +132,4 @@ public class CreateProspectPanel extends CreateComposite {
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "prospect/save";
     }
-    @Override
-    protected boolean processClientSideValidations(JSONObject entity) {
-//        if (entity.get("screenedBy") == null) {
-//            employeeSB.setMessage("Please choose a employee");
-//            return false;
-//        }
-        if (resumeUploadPanel.isEmpty()) {
-            resumeUploadPanel.setMessage("Please select a file");
-            return false;
-        }
-        return true;
-    }
-}
+ }
