@@ -19,6 +19,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.Window;
+import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.utils.FormatUtils;
 import info.chili.gwt.widgets.ClickableLink;
@@ -92,9 +93,9 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_RELATIONSHIP, Auth.ROLE.ROLE_TIME, Auth.ROLE.ROLE_RECRUITER, ROLE.ROLE_HR)) {
-            createOptionsWidget(OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE);
         } else {
-            createOptionsWidget(OptionsType.READ, row, JSONUtils.toString(entity, "id"));
+            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ);
         }
     }
 
@@ -108,6 +109,11 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
     public void viewClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadClientInfoPanel(getEntity(entityId)));
+    }
+
+    @Override
+    protected boolean enableQuickView() {
+        return true;
     }
 
     @Override
@@ -190,4 +196,5 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
     protected String getBISInfoUrl() {
         return OfficeWelcome.constants.root_url() + "clientinformation/bis-info/" + TreeEmployeePanel.instance().getEntityId();
     }
+
 }
