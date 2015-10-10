@@ -7,7 +7,10 @@
  */
 package info.yalamanchili.office.client.profile.selfservice;
 
+import com.axeiya.gwtckeditor.client.CKEditor;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
@@ -16,6 +19,7 @@ import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.profile.statusreport.Editor;
 import java.util.logging.Logger;
 
 /**
@@ -25,7 +29,7 @@ import java.util.logging.Logger;
 public class CreateServiceTicketPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateServiceTicketPanel.class.getName());
-    ServiceTicketPanel panel = new ServiceTicketPanel(false);
+    CKEditor descriptionF;
 
     public CreateServiceTicketPanel() {
         super(CreateCompositeType.CREATE);
@@ -37,7 +41,7 @@ public class CreateServiceTicketPanel extends CreateComposite {
         entity = new JSONObject();
         assignEntityValueFromField("subject", entity);
         assignEntityValueFromField("type", entity);
-        entity.put("description", panel.getObject());
+        entity.put("description", new JSONString(descriptionF.getHTML()));
         logger.info(entity.toString());
         return entity;
 
@@ -47,24 +51,35 @@ public class CreateServiceTicketPanel extends CreateComposite {
     protected void addWidgets() {
         addField("subject", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("type", false, true, TicketType.names(), Alignment.HORIZONTAL);
-        entityFieldsPanel.add(panel);
+        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                addReportField();
+            }
+        });
+        alignFields();
+    }
+
+    protected final void addReportField() {
+        descriptionF = Editor.getEditor(false);
+        entityFieldsPanel.add(descriptionF);
     }
 
     @Override
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        logger.info(arg0.getMessage());
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                logger.info(arg0.getMessage());
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postCreateSuccess(arg0);
+            }
+        });
     }
 
     @Override
