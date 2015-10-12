@@ -14,8 +14,7 @@ The request will be sent to "Accounts Payable" team for approval.
 
 And a notification mail sent to payroll team regarding check void request.
 ----
-
-
+![alt text](../../images/expense/check-payroll-notification.png "Check Requisition")
 
 Accounts Payable team only can approve the task
 ----
