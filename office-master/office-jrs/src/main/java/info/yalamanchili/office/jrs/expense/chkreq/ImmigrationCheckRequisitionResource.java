@@ -83,7 +83,7 @@ public class ImmigrationCheckRequisitionResource extends CRUDResource<Immigratio
 
     @GET
     @Path("/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_H1B_IMMIGRATION','ROLE_ACCOUNTS_PAYABLE','ROLE_CEO')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_H1B_IMMIGRATION','ROLE_ACCOUNTS_PAYABLE','ROLE_CEO','ROLE_PAYROLL_AND_BENIFITS')")
     public ImmigrationCheckRequisitionTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         ImmigrationCheckRequisitionTable tableObj = new ImmigrationCheckRequisitionTable();
         tableObj.setEntities(immigrationCheckRequisitionDao.queryAll(start, limit));
@@ -93,7 +93,7 @@ public class ImmigrationCheckRequisitionResource extends CRUDResource<Immigratio
 
     @GET
     @Path("/{employeeId}/{start}/{limit}")
-    @AccessCheck(companyContacts = {"Perf_Eval_Manager", "Reports_To"}, roles = {"ROLE_ADMIN", "ROLE_CEO", "ROLE_ACCOUNTS_PAYABLE", "ROLE_H1B_IMMIGRATION"}, strictOrderCheck = false)
+    @AccessCheck(companyContacts = {"Perf_Eval_Manager", "Reports_To"}, roles = {"ROLE_ADMIN", "ROLE_CEO", "ROLE_ACCOUNTS_PAYABLE", "ROLE_H1B_IMMIGRATION", "ROLE_PAYROLL_AND_BENIFITS"}, strictOrderCheck = false)
     public ImmigrationCheckRequisitionTable getExpenseReportForEmployee(@PathParam("employeeId") Long employeeId, @PathParam("start") int start, @PathParam("limit") int limit) {
         ImmigrationCheckRequisitionTable tableObj = new ImmigrationCheckRequisitionTable();
         tableObj.setEntities(immigrationCheckRequisitionDao.queryForEmployee(employeeId, start, limit));
@@ -124,7 +124,7 @@ public class ImmigrationCheckRequisitionResource extends CRUDResource<Immigratio
     public ImmigrationCheckRequisitionSaveDto clone(@PathParam("id") Long id) {
         return ImmigrationCheckRequisitionService.instance().clone(id);
     }
-    
+
     @GET
     @Path("/check-request-void/{id}")
     public void checkRequisitionVoid(@PathParam("id") Long id) {
