@@ -54,15 +54,9 @@ public class CreateProspectPanel extends CreateComposite {
         assignEntityValueFromField("referredBy", entity);
         assignEntityValueFromField("email", entity);
         assignEntityValueFromField("phoneNumber", entity);
-        //assignEntityValueFromField("screenedBy", entity);
-        if (employeeSB.getSelectedObject() != null) {
-            entity.put("screenedBy", employeeSB.getSelectedObject());
-        }/*else {
-            entity.put("screenedBy", new JSONString(employeeSB.getValue()));
-        }*/
+        assignEntityValueFromField("screenedBy", entity);
+        assignEntityValueFromField("processDocSentDate", entity);
         entity.put("resumeURL", resumeUploadPanel.getFileName());
-        logger.info("ddd" + entity);
-
         return entity;
     }
 
@@ -112,6 +106,7 @@ public class CreateProspectPanel extends CreateComposite {
             }
         });
     }
+
     private String getEmployeeIdsDropDownUrl() {
         return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Corporate Employee&employee-type=Employee");
     }
@@ -121,10 +116,10 @@ public class CreateProspectPanel extends CreateComposite {
         addField("firstName", false, true, DataType.STRING_FIELD);
         addField("lastName", false, true, DataType.STRING_FIELD);
         addField("referredBy", false, true, DataType.STRING_FIELD);
-        addField("email", false, true, DataType.STRING_FIELD);
-        addField("phoneNumber", false, true, DataType.STRING_FIELD);
-        //addField("screenedBy", false, false, DataType.STRING_FIELD);
-        entityFieldsPanel.add(employeeSB);
+        addField("email", false, false, DataType.STRING_FIELD);
+        addField("phoneNumber", false, false, DataType.STRING_FIELD);
+        addField("screenedBy", false, true, DataType.STRING_FIELD);
+        addField("processDocSentDate", false, true, DataType.DATE_FIELD);
         entityFieldsPanel.add(resumeUploadPanel);
 
     }
@@ -135,19 +130,6 @@ public class CreateProspectPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-        logger.info("URI");
         return OfficeWelcome.constants.root_url() + "prospect/save";
     }
-    @Override
-    protected boolean processClientSideValidations(JSONObject entity) {
-        if (entity.get("screenedBy") == null) {
-            employeeSB.setMessage("Please choose a employee");
-            return false;
-        }
-        if (resumeUploadPanel.isEmpty()) {
-            resumeUploadPanel.setMessage("Please select a file");
-            return false;
-        }
-        return true;
-    }
-}
+ }

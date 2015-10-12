@@ -107,6 +107,7 @@
                 <item name="Submit Advance Requisition" href="/office/expense/advance.html"/>
                 <item name="Advance Requisition Process" href="/office/expense/advancerequestprocess.html"/>
                 <item name="Check Requisition Process" href="/office/expense/checkrequisitionprocess.html"/>
+                <item name="Check Requisition Void Process" href="/office/expense/checkrequisitionvoidprocess.html"/>
                 <item name="Create Travel Authorization" href="/office/expense/travelauthorization.html"/>
                 <item name="Travel Authorization Process" href="/office/expense/travelauthorizationprocess.html">
                 </item>

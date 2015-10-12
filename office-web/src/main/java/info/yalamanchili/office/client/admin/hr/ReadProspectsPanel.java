@@ -64,17 +64,12 @@ public class ReadProspectsPanel extends ReadComposite {
         assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
-        //assignFieldValueFromEntity("screenedBy", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("screenedBy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("email", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("phoneNumber", entity, DataType.LONG_FIELD);
         assignFieldValueFromEntity("referredBy", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("processDocSentDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
-        if (emp != null) {
-            employeeSB.setValue(emp.get("screenedBy").isString().stringValue());
-        } /*else {
-            employeeSB.setValue(JSONUtils.toString(entity, "screenedBy"));
-        }*/
-        //assignFieldValueFromEntity("processDocSentDate", entity, DataType.DATE_FIELD);
     }
 
     @Override
@@ -95,8 +90,8 @@ public class ReadProspectsPanel extends ReadComposite {
         addField("referredBy", true, false, DataType.STRING_FIELD);
         addField("email", true, false, DataType.STRING_FIELD);
         addField("phoneNumber", true, false, DataType.LONG_FIELD);
-        //addField("screenedBy", true, false, DataType.STRING_FIELD);
-        entityFieldsPanel.add(employeeSB);
+        addField("screenedBy", true, false, DataType.STRING_FIELD);
+        addField("processDocSentDate", true, false, DataType.DATE_FIELD);
         addEnumField("status", true, false, ProspectStatus.names());
     }
 

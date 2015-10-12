@@ -4,7 +4,6 @@
 CREATE TABLE `prospect` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `version` int(11) DEFAULT NULL,
-  `processDocSentDate` date DEFAULT NULL,
   `referredBy` varchar(255) DEFAULT NULL,
   `resumeURL` varchar(255) NOT NULL,
   `screenedBy` varchar(255) DEFAULT NULL,
@@ -20,7 +19,6 @@ CREATE TABLE `prospect_aud` (
   `id` bigint(20) NOT NULL,
   `REV` bigint(20) NOT NULL,
   `REVTYPE` tinyint(4) DEFAULT NULL,
-  `processDocSentDate` date DEFAULT NULL,
   `referredBy` varchar(255) DEFAULT NULL,
   `resumeURL` varchar(255) DEFAULT NULL,
   `screenedBy` varchar(255) DEFAULT NULL,

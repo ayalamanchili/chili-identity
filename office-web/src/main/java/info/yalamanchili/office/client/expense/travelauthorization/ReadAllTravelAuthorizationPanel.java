@@ -19,11 +19,13 @@ import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.FormatUtils;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import static info.yalamanchili.office.client.expense.travelauthorization.TravelAuthConstants.*;
+import info.yalamanchili.office.client.expensereports.ReadExpenseReportPanel;
 import java.util.logging.Logger;
 
 /**
@@ -126,13 +128,13 @@ public class ReadAllTravelAuthorizationPanel extends CRUDReadAllComposite {
     protected void addOptionsWidget(int row, JSONObject entity) {
         String status = JSONUtils.toString(entity, "status");
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CEO)) {
-            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE, TableRowOptionsWidget.OptionsType.PRINT), row, JSONUtils.toString(entity, "id"));
+            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE,TableRowOptionsWidget.OptionsType.PRINT);
         } else {
-            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.PRINT), row, JSONUtils.toString(entity, "id"));
+            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.PRINT);
             if ((TravelAuthorizationStatus.PENDING_CEO_APPROVAL.name().equals(status))
                     || (TravelAuthorizationStatus.APPROVED.name().equals(status))
                     || (TravelAuthorizationStatus.REJECTED.name().equals(status))) {
-                createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.PRINT), row, JSONUtils.toString(entity, "id"));
+                createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.PRINT);
             }
         }
     }
@@ -166,5 +168,14 @@ public class ReadAllTravelAuthorizationPanel extends CRUDReadAllComposite {
     @Override
     protected boolean autoShowDocumentation() {
         return true;
+    }
+     @Override
+    protected boolean enableQuickView() {
+        return true;
+    }
+
+    @Override
+    protected void onQuickView(int row, String id) {
+        new GenericPopup(new ReadTravelAuthorizationPanel(getEntity(id)), Window.getClientWidth() / 3, 0).show();
     }
 }

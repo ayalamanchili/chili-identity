@@ -29,6 +29,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
+
 /**
  *
  * @author ayalamanchili
@@ -118,17 +119,17 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
             table.setText(i, 4, JSONUtils.toString(entity, "status"));
             //Compare
             if (TabPanel.instance().homePanel.isVisible()) {
-            ClickableLink compareL = new ClickableLink("Compare");
-            compareL.setTitle(JSONUtils.toString(entity, "id"));
-            compareL.addClickHandler(new ClickHandler() {
-                @Override
-                public void onClick(ClickEvent event) {
-                    compare(((ClickableLink) event.getSource()).getTitle());
-                }
-            });
-            table.setWidget(i, 5, compareL);
+                ClickableLink compareL = new ClickableLink("Compare");
+                compareL.setTitle(JSONUtils.toString(entity, "id"));
+                compareL.addClickHandler(new ClickHandler() {
+                    @Override
+                    public void onClick(ClickEvent event) {
+                        compare(((ClickableLink) event.getSource()).getTitle());
+                    }
+                });
+                table.setWidget(i, 5, compareL);
+            }
         }
-    }
     }
 
     protected void compare(String entityId) {
@@ -153,9 +154,8 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
      }
      }-*/;
 
-     
-    public void copyClicked(final String entityId){
-         HttpService.HttpServiceAsync.instance().doGet(OfficeWelcome.constants.root_url() + "corporate-statusreport/clone/" + entityId, OfficeWelcome.instance().getHeaders(), true,
+    public void copyClicked(final String entityId) {
+        HttpService.HttpServiceAsync.instance().doGet(OfficeWelcome.constants.root_url() + "corporate-statusreport/clone/" + entityId, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String arg0) {
@@ -170,9 +170,9 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         if (TabPanel.instance().homePanel.isVisible()) {
-            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE, TableRowOptionsWidget.OptionsType.COPY), row, JSONUtils.toString(entity, "id"));
+            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE, TableRowOptionsWidget.OptionsType.COPY);
         } else {
-            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.COPY), row, JSONUtils.toString(entity, "id"));
+            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.COPY);
         }
     }
 

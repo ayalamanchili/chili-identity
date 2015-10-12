@@ -125,5 +125,9 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
     private String getReadAllContractsURL(Integer start, String limit) {
         return OfficeWelcome.constants.root_url() + "contract/" + start.toString() + "/" + limit.toString();
     }
+    @Override
+    protected boolean enableQuickView() {
+        return true;
+    }
 
 }
