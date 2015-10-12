@@ -12,7 +12,6 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.crud.CRUDReadAllComposite;
-import info.chili.gwt.crud.TableRowOptionsWidget.OptionsType;
 import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
 
 import com.google.gwt.json.client.JSONArray;
@@ -135,6 +134,10 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
                         postDeleteSuccess();
                     }
                 });
+    }
+
+    protected boolean enablePersistedQuickView() {
+        return true;
     }
 
     @Override

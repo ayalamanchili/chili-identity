@@ -36,22 +36,6 @@ import java.util.logging.Logger;
  */
 public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
 
-    @Override
-    protected void createOptionsWidget(TableRowOptionsWidget.OptionsType type, final int row, final String id) {
-        TableRowOptionsWidget rowOptionsWidget = new TableRowOptionsWidget(type, id) {
-            @Override
-            protected void onQuickView() {
-                ReadAllCorporateStatusReportsPanel.this.onQuickView(row, id);
-            }
-
-            @Override
-            public void onMouseOut(MouseOutEvent event) {
-
-            }
-        };
-        createOptionsWidget(rowOptionsWidget, row, id);
-    }
-
     private static Logger logger = Logger.getLogger(ReadAllCorporateStatusReportsPanel.class.getName());
     public static ReadAllCorporateStatusReportsPanel instance;
     protected boolean searchResultsTable = false;
@@ -154,6 +138,7 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
      }
      }-*/;
 
+    @Override
     public void copyClicked(final String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(OfficeWelcome.constants.root_url() + "corporate-statusreport/clone/" + entityId, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
@@ -239,6 +224,11 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
         if (!id.isEmpty()) {
             new GenericPopup(new ReadCorporateStatusReportPanel(id), Window.getClientWidth() / 3, 0).show();
         }
+    }
+
+    @Override
+    protected boolean enablePersistedQuickView() {
+        return true;
     }
 
     protected String getDeleteURL(String entityId) {
