@@ -19,6 +19,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
@@ -82,6 +83,13 @@ public class Vendor extends AbstractEntity {
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "Vendor_AcctPayContacts")
     protected List<Contact> acctPayContacts;
+    
+    @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL)
+    protected List<Project> vendorProjects;
+    
+    @OneToMany(mappedBy = "middleVendor", cascade = CascadeType.ALL)
+    protected List<Project> middleVendorProjects;
+   
 
     public String getName() {
         return name;
@@ -175,6 +183,24 @@ public class Vendor extends AbstractEntity {
         }
         getContacts().add(contact);
     }
+
+    public List<Project> getVendorProjects() {
+        return vendorProjects;
+    }
+
+    public void setVendorProjects(List<Project> vendorProjects) {
+        this.vendorProjects = vendorProjects;
+    }
+
+    public List<Project> getMiddleVendorProjects() {
+        return middleVendorProjects;
+    }
+
+    public void setMiddleVendorProjects(List<Project> middleVendorProjects) {
+        this.middleVendorProjects = middleVendorProjects;
+    }
+    
+    
 
     @Override
     public String toString() {

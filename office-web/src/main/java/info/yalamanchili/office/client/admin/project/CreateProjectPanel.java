@@ -8,6 +8,7 @@
 package info.yalamanchili.office.client.admin.project;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.JSONUtils;
@@ -16,8 +17,10 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.admin.client.SelectClientWidget;
 import info.yalamanchili.office.client.admin.client.TreeClientPanel;
+import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
 import java.util.logging.Logger;
 
 /**
@@ -29,6 +32,7 @@ public class CreateProjectPanel extends CreateComposite {
     private static Logger logger = Logger.getLogger(CreateProjectPanel.class.getName());
     protected boolean showClient;
     SelectClientWidget clientT = new SelectClientWidget(showClient, false);
+    SelectVendorWidget selectVendor = new SelectVendorWidget(false, true);
     String clntId = null;
 
     public CreateProjectPanel(CreateComposite.CreateCompositeType type, boolean showClient) {
@@ -45,6 +49,10 @@ public class CreateProjectPanel extends CreateComposite {
         assignEntityValueFromField("description", project);
         assignEntityValueFromField("startDate", project);
         assignEntityValueFromField("endDate", project);
+        assignEntityValueFromField("vendor", project);
+        assignEntityValueFromField("purchaseOrderNo", project);
+        assignEntityValueFromField("subContractorWorkOrderNo", project);
+        assignEntityValueFromField("middleVendor", project);
         logger.info(project.toString());
         return project;
     }
@@ -74,12 +82,16 @@ public class CreateProjectPanel extends CreateComposite {
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Project Successfully Created");
+        String id = JSONUtils.toString(JSONParser.parseLenient(result), "id");
         TabPanel.instance().adminPanel.entityPanel.clear();
         if (!showClient) {
             TabPanel.instance().adminPanel.entityPanel.add(new ReadAllProjectsPanel(clntId));
             TabPanel.instance().adminPanel.entityPanel.add(new ProjectOptionsPanel());
         } else {
-            TabPanel.instance().adminPanel.entityPanel.add(new ReadAllProjectsPanel());
+            TabPanel.instance().adminPanel.sidePanelTop.clear();
+            TabPanel.instance().adminPanel.sidePanelTop.add(new TreeProjectPanel(id));
+            TabPanel.instance().adminPanel.entityPanel.clear();
+            TabPanel.instance().adminPanel.entityPanel.add(new ReadAllProjectsPanel(id));
         }
     }
 
@@ -97,10 +109,13 @@ public class CreateProjectPanel extends CreateComposite {
         addField("description", false, false, DataType.RICH_TEXT_AREA);
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
+        addDropDown("vendor", new SelectVendorWidget(false, true));
+        addField("purchaseOrderNo", false, true, DataType.STRING_FIELD);
+        addField("subContractorWorkOrderNo", false, true, DataType.STRING_FIELD);
+        addDropDown("middleVendor", new SelectVendorWidget(false, true));
         if (showClient) {
             addDropDown("client", new SelectClientWidget(false, true));
         }
-
     }
 
     @Override
