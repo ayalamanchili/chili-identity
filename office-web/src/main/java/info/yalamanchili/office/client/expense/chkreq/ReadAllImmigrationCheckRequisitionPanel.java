@@ -22,6 +22,7 @@ import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.FormatUtils;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -168,15 +169,15 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
         String status = JSONUtils.toString(entity, "status");
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_GC_IMMIGRATION, Auth.ROLE.ROLE_H1B_IMMIGRATION)) {
             if (ImmigrationCheckRequisitionStatus.PENDING_APPROVAL.name().equals(status)) {
-                createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), OptionsType.READ, OptionsType.UPDATE, OptionsType.PRINT, OptionsType.COPY), row, JSONUtils.toString(entity, "id"));
+                createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.PRINT,TableRowOptionsWidget.OptionsType.COPY);
             } else if (ImmigrationCheckRequisitionStatus.COMPLETE.name().equals(status)) {
-                createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), OptionsType.READ, OptionsType.PRINT, OptionsType.COPY, OptionsType.CANCEL), row, JSONUtils.toString(entity, "id"));
+                createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.PRINT, TableRowOptionsWidget.OptionsType.COPY,TableRowOptionsWidget.OptionsType.CANCEL);
             } else {
-                createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), OptionsType.READ, OptionsType.PRINT, OptionsType.COPY), row, JSONUtils.toString(entity, "id"));
+                createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.PRINT, TableRowOptionsWidget.OptionsType.COPY);
             }
 
         } else {
-            createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), OptionsType.READ, OptionsType.PRINT), row, JSONUtils.toString(entity, "id"));
+            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.PRINT);
         }
     }
 
@@ -202,5 +203,14 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
         }
         return OfficeWelcome.constants.root_url() + "checkrequisition/" + start.toString() + "/"
                 + limit.toString();
+    }
+    @Override
+    protected boolean enableQuickView() {
+        return true;
+    }
+
+    @Override
+    protected void onQuickView(int row, String id) {
+        new GenericPopup(new ReadImmigrationCheckRequisitionPanel(JSONUtils.toString(getEntity(id), "id")), Window.getClientWidth() / 3, 0).show();
     }
 }
