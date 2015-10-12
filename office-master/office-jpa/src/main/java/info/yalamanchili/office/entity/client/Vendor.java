@@ -17,6 +17,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
@@ -84,10 +85,10 @@ public class Vendor extends AbstractEntity {
     @JoinTable(name = "Vendor_AcctPayContacts")
     protected List<Contact> acctPayContacts;
     
-    @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     protected List<Project> vendorProjects;
     
-    @OneToMany(mappedBy = "middleVendor", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "middleVendor", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     protected List<Project> middleVendorProjects;
    
 

@@ -8,7 +8,6 @@
 package info.yalamanchili.office.client.admin.project;
 
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.JSONUtils;
@@ -17,7 +16,6 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.rpc.HttpService;
-import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.admin.client.SelectClientWidget;
 import info.yalamanchili.office.client.admin.client.TreeClientPanel;
 import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
@@ -33,7 +31,10 @@ public class CreateProjectPanel extends CreateComposite {
     protected boolean showClient;
     SelectClientWidget clientT = new SelectClientWidget(showClient, false);
     SelectVendorWidget selectVendor = new SelectVendorWidget(false, true);
+    SelectVendorWidget selectMiddleVendor = new SelectVendorWidget(false, true);
     String clntId = null;
+    String vendorID = null;
+    String midVendorID = null;
 
     public CreateProjectPanel(CreateComposite.CreateCompositeType type, boolean showClient) {
         super(type);
@@ -43,18 +44,16 @@ public class CreateProjectPanel extends CreateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject project = new JSONObject();
+        entity = new JSONObject();
 
-        assignEntityValueFromField("name", project);
-        assignEntityValueFromField("description", project);
-        assignEntityValueFromField("startDate", project);
-        assignEntityValueFromField("endDate", project);
-        assignEntityValueFromField("vendor", project);
-        assignEntityValueFromField("purchaseOrderNo", project);
-        assignEntityValueFromField("subContractorWorkOrderNo", project);
-        assignEntityValueFromField("middleVendor", project);
-        logger.info(project.toString());
-        return project;
+        assignEntityValueFromField("name", entity);
+        assignEntityValueFromField("description", entity);
+        assignEntityValueFromField("startDate", entity);
+        assignEntityValueFromField("endDate", entity);
+        assignEntityValueFromField("purchaseOrderNo", entity);
+        assignEntityValueFromField("subContractorWorkOrderNo", entity);
+        logger.info("Entity :" + entity.toString());
+        return entity;
     }
 
     @Override
@@ -88,10 +87,7 @@ public class CreateProjectPanel extends CreateComposite {
             TabPanel.instance().adminPanel.entityPanel.add(new ReadAllProjectsPanel(clntId));
             TabPanel.instance().adminPanel.entityPanel.add(new ProjectOptionsPanel());
         } else {
-            TabPanel.instance().adminPanel.sidePanelTop.clear();
-            TabPanel.instance().adminPanel.sidePanelTop.add(new TreeProjectPanel(id));
-            TabPanel.instance().adminPanel.entityPanel.clear();
-            TabPanel.instance().adminPanel.entityPanel.add(new ReadAllProjectsPanel(id));
+            TabPanel.instance().adminPanel.entityPanel.add(new ReadAllProjectsPanel());
         }
     }
 
@@ -109,10 +105,10 @@ public class CreateProjectPanel extends CreateComposite {
         addField("description", false, false, DataType.RICH_TEXT_AREA);
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
-        addDropDown("vendor", new SelectVendorWidget(false, true));
+        addDropDown("vendor", selectVendor);
         addField("purchaseOrderNo", false, true, DataType.STRING_FIELD);
         addField("subContractorWorkOrderNo", false, true, DataType.STRING_FIELD);
-        addDropDown("middleVendor", new SelectVendorWidget(false, true));
+        addDropDown("middleVendor", selectMiddleVendor);
         if (showClient) {
             addDropDown("client", new SelectClientWidget(false, true));
         }
@@ -130,6 +126,8 @@ public class CreateProjectPanel extends CreateComposite {
         } else {
             clntId = TreeClientPanel.instance().getEntityId();
         }
-        return OfficeWelcome.constants.root_url() + "client/project/" + clntId;
+        vendorID = JSONUtils.toString(selectVendor.getSelectedObject(), "id");
+        midVendorID = JSONUtils.toString(selectMiddleVendor.getSelectedObject(), "id");
+        return OfficeWelcome.constants.root_url() + "client/project/" + clntId  + "/" +  vendorID  + "/" +  midVendorID;
     }
 }
