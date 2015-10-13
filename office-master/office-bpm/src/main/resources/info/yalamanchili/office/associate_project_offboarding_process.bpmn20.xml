@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<definitions
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:activiti="http://activiti.org/bpmn">
+    
+    <process id="associate_project_offboarding_process">
+        <startEvent id="projectOffBoardingTaskCreated" />
+        <sequenceFlow sourceRef="projectOffBoardingTaskCreated" targetRef="projectOffBoardingTask" />
+        <!--Project Offboarding task created-->
+        <userTask id="projectOffBoardingTask" 
+                  name="Project Offboarding Task"
+                  activiti:candidateGroups="ROLE_ADMIN">
+            <documentation> 
+                Associate Project Offboarding Task Details:
+                Please update project end date to this employee and complete this task
+                Employee                : ${currentEmployee.firstName} ${currentEmployee.lastName}
+                Client Name             : ${projectDetails.clientName}
+                Vendor Name             : ${projectDetails.vendorName}
+                End Date                : ${projectDetails.endDate}
+                Notes                   : ${projectDetails.notes}                
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="true" 
+                                       type="string" />
+            </extensionElements>         
+        </userTask>
+        <sequenceFlow id="flow3" sourceRef="projectOffBoardingTask" targetRef="projectOffBoardingTaskEnd" />
+        <!-- Task escalation email after 2 days-->
+        <boundaryEvent id="emailEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="projectOffBoardingTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="emailEscalationTimer" 
+                      targetRef="taskEmailEscalation" />
+        <serviceTask
+            id="taskEmailEscalation"
+            name="Task Email Escalation"
+            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
+        </serviceTask>
+        <!-- end-->
+        <endEvent id="projectOffBoardingTaskEnd" />
+    </process>
+</definitions>

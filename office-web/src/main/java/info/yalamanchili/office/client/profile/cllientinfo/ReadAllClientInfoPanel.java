@@ -26,6 +26,7 @@ import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
+import info.yalamanchili.office.client.project.offboarding.ReadAllProjectEndDetailsPanel;
 import java.util.logging.Logger;
 
 public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements ClickHandler {
@@ -147,6 +148,7 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(TreeEmployeePanel.instance().getEntityId()));
         TabPanel.instance().myOfficePanel.entityPanel.add(new ClientInfoOptionsPanel());
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProjectEndDetailsPanel());
     }
 
     @Override
