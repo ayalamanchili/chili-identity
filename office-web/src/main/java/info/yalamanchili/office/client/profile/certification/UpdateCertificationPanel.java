@@ -30,6 +30,8 @@ public class UpdateCertificationPanel extends UpdateComposite {
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("name", entity);
         assignEntityValueFromField("description", entity);
+        assignEntityValueFromField("certificationVendor", entity);
+        assignEntityValueFromField("certificationCode", entity);
         return entity;
     }
 
@@ -55,6 +57,8 @@ public class UpdateCertificationPanel extends UpdateComposite {
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("certificationVendor", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("certificationCode", entity, DataType.STRING_FIELD);
     }
 
     @Override
@@ -76,6 +80,8 @@ public class UpdateCertificationPanel extends UpdateComposite {
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD);
         addField("description", false, false, DataType.STRING_FIELD);
+        addField("certificationVendor", false, true, DataType.STRING_FIELD);
+        addField("certificationCode", false, false, DataType.STRING_FIELD);
     }
 
     @Override

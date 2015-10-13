@@ -35,6 +35,8 @@ public class CreateCertificationPanel extends CreateComposite {
         JSONObject certification = new JSONObject();
         assignEntityValueFromField("name", certification);
         assignEntityValueFromField("description", certification);
+        assignEntityValueFromField("certificationVendor", certification);
+        assignEntityValueFromField("certificationCode", certification);
         logger.info(certification.toString());
         return certification;
 
@@ -83,6 +85,8 @@ public class CreateCertificationPanel extends CreateComposite {
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD);
         addField("description", false, false, DataType.STRING_FIELD);
+        addField("certificationVendor", false, false, DataType.STRING_FIELD);
+        addField("certificationCode", false, false, DataType.STRING_FIELD);
     }
 
     @Override
