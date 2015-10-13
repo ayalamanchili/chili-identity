@@ -37,12 +37,12 @@
         <addColumn catalogName="office"
                    schemaName="public"
                    tableName="vendor">
-            <column name="invoiceFrequency" type="invoiceFrequency"/>
+            <column name="invoiceFrequency" type="varchar(255)"/>
         </addColumn>
         <addColumn catalogName="office"
                    schemaName="public"
                    tableName="vendor_aud">
-            <column name="invoiceFrequency" type="invoiceFrequency"/>
+            <column name="invoiceFrequency" type="varchar(255)"/>
         </addColumn>
     </changeSet>
 </databaseChangeLog>

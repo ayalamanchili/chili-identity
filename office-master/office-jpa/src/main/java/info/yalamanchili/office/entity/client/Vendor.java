@@ -85,9 +85,6 @@ public class Vendor extends AbstractEntity {
     @JoinTable(name = "Vendor_AcctPayContacts")
     protected List<Contact> acctPayContacts;
 
-    @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL)
-    protected List<Project> projects;
-
     protected String website;
     protected String paymentTerms;
     @Enumerated(EnumType.STRING)
@@ -184,26 +181,6 @@ public class Vendor extends AbstractEntity {
             return;
         }
         getContacts().add(contact);
-    }
-
-    @XmlTransient
-    public List<Project> getProjects() {
-        if (this.projects == null) {
-            this.projects = new ArrayList<Project>();
-        }
-        return projects;
-    }
-
-    public void setProjects(List<Project> projects) {
-        this.projects = projects;
-    }
-
-    public void addProject(Project project) {
-        if (project == null) {
-            return;
-        }
-        getProjects().add(project);
-        project.setVendor(this);
     }
 
     public String getWebsite() {

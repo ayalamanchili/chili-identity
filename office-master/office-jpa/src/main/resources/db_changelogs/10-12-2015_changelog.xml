@@ -25,6 +25,16 @@
             <column name="vendor_id" type="bigint"/>
         </addColumn>
         <addColumn catalogName="office"
+                       schemaName="public"
+                       tableName="project">
+            <column name="middleVendor_id" type="bigint"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="project_aud">
+            <column name="middleVendor_id" type="bigint"/>
+        </addColumn>
+        <addColumn catalogName="office"
                    schemaName="public"
                    tableName="project">
             <column name="purchaseOrderNo" type="varchar(255)"/>
@@ -35,18 +45,23 @@
             <column name="purchaseOrderNo" type="varchar(255)"/>
         </addColumn>
         <addColumn catalogName="office"
-                           schemaName="public"
-                           tableName="project">
+                   schemaName="public"
+                   tableName="project">
             <column name="subContractorWorkOrderNo" type="varchar(255)"/>
         </addColumn>
         <addColumn catalogName="office"
-                       schemaName="public"
-                       tableName="project_aud">
+                   schemaName="public"
+                   tableName="project_aud">
             <column name="subContractorWorkOrderNo" type="varchar(255)"/>
         </addColumn>
-    <addForeignKeyConstraint baseColumnNames="vendor_id"
+        <addForeignKeyConstraint baseColumnNames="vendor_id"
                                  baseTableName="project"
                                  constraintName="FK_Vendor_Projects"
+                                 referencedColumnNames="id"
+                                 referencedTableName="vendor"/>
+        <addForeignKeyConstraint baseColumnNames="middleVendor_id"
+                                 baseTableName="project"
+                                 constraintName="FK_MiddleVendor_Projects"
                                  referencedColumnNames="id"
                                  referencedTableName="vendor"/>
     </changeSet>

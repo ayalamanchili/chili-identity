@@ -69,6 +69,10 @@ public class Project extends AbstractEntity {
 
     protected String subContractorWorkOrderNo;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @ForeignKey(name = "FK_MiddleVendor_Projects")
+    protected Vendor middleVendor;
+
     public String getName() {
         return name;
     }
@@ -153,6 +157,13 @@ public class Project extends AbstractEntity {
         this.subContractorWorkOrderNo = subContractorWorkOrderNo;
     }
 
+    public Vendor getMiddleVendor() {
+        return middleVendor;
+    }
+
+    public void setMiddleVendor(Vendor middleVendor) {
+        this.middleVendor = middleVendor;
+    }
 
     @Override
     public String toString() {

@@ -33,8 +33,10 @@ public class CreateProjectPanel extends CreateComposite {
     protected boolean showClient;
     SelectClientWidget clientT = new SelectClientWidget(showClient, false,Alignment.HORIZONTAL);
     SelectVendorWidget selectVendor = new SelectVendorWidget(false, true,Alignment.HORIZONTAL);
+    SelectVendorWidget selectMiddleVendor = new SelectVendorWidget(false, true,Alignment.HORIZONTAL);
     String clntId = null;
     String vendorID = null;
+    String midVendorID = null;
 
     public CreateProjectPanel(CreateComposite.CreateCompositeType type, boolean showClient) {
         super(type);
@@ -51,6 +53,7 @@ public class CreateProjectPanel extends CreateComposite {
         assignEntityValueFromField("endDate", entity);
         assignEntityValueFromField("purchaseOrderNo", entity);
         assignEntityValueFromField("subContractorWorkOrderNo", entity);
+        entity.put("vendor", selectVendor.getSelectedObject());
         logger.info(entity.toString());
         return entity;
     }
@@ -108,6 +111,7 @@ public class CreateProjectPanel extends CreateComposite {
         addDropDown("vendor", selectVendor);
         addField("purchaseOrderNo", false, true, DataType.STRING_FIELD,Alignment.HORIZONTAL);
         addField("subContractorWorkOrderNo", false, true, DataType.STRING_FIELD,Alignment.HORIZONTAL);
+        addDropDown("middleVendor", selectMiddleVendor);
         if (showClient) {
             addDropDown("client", new SelectClientWidget(false, true,Alignment.HORIZONTAL));
         }
@@ -127,6 +131,7 @@ public class CreateProjectPanel extends CreateComposite {
             clntId = TreeClientPanel.instance().getEntityId();
         }
         vendorID = JSONUtils.toString(selectVendor.getSelectedObject(), "id");
-        return OfficeWelcome.constants.root_url() + "client/project/" + clntId + "/" + vendorID;
+        midVendorID = JSONUtils.toString(selectMiddleVendor.getSelectedObject(), "id");
+        return OfficeWelcome.constants.root_url() + "client/project/" + clntId + "/" + vendorID  + "/" +  midVendorID;
     }
 }
