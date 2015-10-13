@@ -143,9 +143,6 @@ public class ReadAllTimeRecordsPanel extends CRUDReadAllComposite implements Cli
     private String getReadAllTimeRecordsURL(Integer start, String limit) {
         return OfficeWelcome.constants.root_url() + "timerecord/employee/" + parentId + "/" + start.toString() + "/" + limit;
     }
-    @Override
-    protected boolean enablePersistedQuickView(){
-        return true;
-    }
+    
 
 }
