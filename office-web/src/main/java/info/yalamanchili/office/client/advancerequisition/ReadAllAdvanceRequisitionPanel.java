@@ -165,4 +165,8 @@ public class ReadAllAdvanceRequisitionPanel extends CRUDReadAllComposite {
     protected void onQuickView(int row, String id) {
         new GenericPopup(new ReadAdvanceRequisitionPanel(JSONUtils.toString(getEntity(id), "id")), Window.getClientWidth() / 3, 0).show();
     }
+    @Override
+    protected boolean enablePersistedQuickView(){
+        return true;
+    }
 }

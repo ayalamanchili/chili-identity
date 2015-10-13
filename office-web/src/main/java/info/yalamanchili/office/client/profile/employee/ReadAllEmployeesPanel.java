@@ -160,4 +160,8 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateEmployeePanel(getEntity(entityId)));
     }
+    @Override
+    public boolean enablePersistedQuickView(){
+        return true;
+    }
 }

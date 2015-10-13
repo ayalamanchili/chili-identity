@@ -16,7 +16,6 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
-import info.chili.gwt.crud.TableRowOptionsWidget.OptionsType;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.FormatUtils;
@@ -192,5 +191,9 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
     @Override
     protected void onQuickView(int row, String id) {
         new GenericPopup(new ReadExpenseReportPanel(JSONUtils.toString(getEntity(id), "id")), Window.getClientWidth() / 3, 0).show();
+    }
+    @Override
+    protected boolean enablePersistedQuickView(){
+        return true;
     }
 }

@@ -213,4 +213,8 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
     protected void onQuickView(int row, String id) {
         new GenericPopup(new ReadImmigrationCheckRequisitionPanel(JSONUtils.toString(getEntity(id), "id")), Window.getClientWidth() / 3, 0).show();
     }
+    @Override
+    protected boolean enablePersistedQuickView(){
+        return true;
+    }
 }
