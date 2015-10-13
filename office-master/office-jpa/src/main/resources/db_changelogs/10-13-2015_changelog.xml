@@ -11,43 +11,38 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
     
-    <changeSet author="mbadiginchala" id="project-add">
+    <changeSet author="mbadiginchala" id="client-add">
         <preConditions onFail="WARN"> 
         </preConditions>
         <addColumn catalogName="office"
                    schemaName="public"
-                   tableName="project">
-            <column name="vendor_id" type="bigint"/>
+                   tableName="client">
+            <column name="website" type="varchar(255)"/>
         </addColumn>
         <addColumn catalogName="office"
                    schemaName="public"
-                   tableName="project_aud">
-            <column name="vendor_id" type="bigint"/>
+                   tableName="client_aud">
+            <column name="website" type="varchar(255)"/>
         </addColumn>
         <addColumn catalogName="office"
                    schemaName="public"
-                   tableName="project">
-            <column name="purchaseOrderNo" type="varchar(255)"/>
+                   tableName="client">
+            <column name="paymentTerms" type="varchar(255)"/>
         </addColumn>
         <addColumn catalogName="office"
                    schemaName="public"
-                   tableName="project_aud">
-            <column name="purchaseOrderNo" type="varchar(255)"/>
+                   tableName="client_aud">
+            <column name="paymentTerms" type="varchar(255)"/>
         </addColumn>
         <addColumn catalogName="office"
-                           schemaName="public"
-                           tableName="project">
-            <column name="subContractorWorkOrderNo" type="varchar(255)"/>
+                   schemaName="public"
+                   tableName="client">
+            <column name="invoiceFrequency" type="invoiceFrequency"/>
         </addColumn>
         <addColumn catalogName="office"
-                       schemaName="public"
-                       tableName="project_aud">
-            <column name="subContractorWorkOrderNo" type="varchar(255)"/>
+                   schemaName="public"
+                   tableName="client_aud">
+            <column name="invoiceFrequency" type="invoiceFrequency"/>
         </addColumn>
-    <addForeignKeyConstraint baseColumnNames="vendor_id"
-                                 baseTableName="project"
-                                 constraintName="FK_Vendor_Projects"
-                                 referencedColumnNames="id"
-                                 referencedTableName="vendor"/>
     </changeSet>
 </databaseChangeLog>

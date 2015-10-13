@@ -13,7 +13,6 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -43,37 +42,32 @@ public class Project extends AbstractEntity {
     @NotEmpty(message = "{project.not.empty.msg}")
     @org.hibernate.annotations.Index(name = "PRJ_NM")
     protected String name;
-    
+
     @Lob
     protected String description;
-    
+
     @Temporal(javax.persistence.TemporalType.DATE)
     @NotNull(message = "{startDate.not.empty.msg}")
     protected Date startDate;
-    
+
     @Temporal(javax.persistence.TemporalType.DATE)
     @NotNull(message = "{endDate.not.empty.msg}")
     protected Date endDate;
-    
+
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Client_Projects")
     protected Client client;
-    
+
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     protected List<StatementOfWork> SOWS;
-    
+
     @ManyToOne(cascade = CascadeType.ALL)
     @ForeignKey(name = "FK_Vendor_Projects")
     protected Vendor vendor;
-    
+
     protected String purchaseOrderNo;
-    
+
     protected String subContractorWorkOrderNo;
-    
-    @ManyToOne(cascade = CascadeType.ALL)
-    @ForeignKey(name = "FK_MiddleVendor_Projects")
-    protected Vendor middleVendor;
-    
 
     public String getName() {
         return name;
@@ -159,13 +153,6 @@ public class Project extends AbstractEntity {
         this.subContractorWorkOrderNo = subContractorWorkOrderNo;
     }
 
-    public Vendor getMiddleVendor() {
-        return middleVendor;
-    }
-
-    public void setMiddleVendor(Vendor middleVendor) {
-        this.middleVendor = middleVendor;
-    }
 
     @Override
     public String toString() {

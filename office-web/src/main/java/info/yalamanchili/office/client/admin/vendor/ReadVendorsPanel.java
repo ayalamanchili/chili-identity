@@ -14,6 +14,8 @@ import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
+import info.yalamanchili.office.client.admin.client.InvoiceFrequency;
 
 /**
  *
@@ -52,6 +54,10 @@ public class ReadVendorsPanel extends ReadComposite {
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("vendorType", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("website", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("paymentTerms", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
     }
 
     @Override
@@ -64,8 +70,13 @@ public class ReadVendorsPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addField("name", true, false, DataType.STRING_FIELD);
-        addField("description", true, false, DataType.STRING_FIELD);
+        addField("name", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("description", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("vendorType", false, false, VendorType.names(), Alignment.HORIZONTAL);
+        addField("website", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("paymentTerms", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("invoiceFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+        alignFields();
     }
 
     @Override

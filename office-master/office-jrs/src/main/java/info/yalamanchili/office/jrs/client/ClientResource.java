@@ -117,15 +117,14 @@ public class ClientResource extends CRUDResource<Client> {
      */
     @PUT
     @Validate
-    @Path("/project/{clientId}/{vendorID}/{midVendorID}")
+    @Path("/project/{clientId}/{vendorID}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
-    public void addProject(@PathParam("clientId") Long clientId, @PathParam("vendorID") Long venID, @PathParam("midVendorID") Long midVenID, Project project) {
+    public Project addProject(@PathParam("clientId") Long clientId, @PathParam("vendorID") Long venID, Project project) {
         Client clnt = (Client) getDao().findById(clientId);
         Vendor vndr = vendorDao.findById(venID);
-        Vendor midVndr = vendorDao.findById(midVenID);
-        project.setVendor(vndr);
-        project.setMiddleVendor(midVndr);
+        vndr.addProject(project);
         clnt.addProject(project);
+        return project;
     }
 
     @GET

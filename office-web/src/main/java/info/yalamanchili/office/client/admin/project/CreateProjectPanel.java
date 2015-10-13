@@ -17,6 +17,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.admin.client.SelectClientWidget;
 import info.yalamanchili.office.client.admin.client.TreeClientPanel;
 import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
@@ -30,12 +31,10 @@ public class CreateProjectPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateProjectPanel.class.getName());
     protected boolean showClient;
-    SelectClientWidget clientT = new SelectClientWidget(showClient, false);
-    SelectVendorWidget selectVendor = new SelectVendorWidget(false, true);
-    SelectVendorWidget selectMiddleVendor = new SelectVendorWidget(false, true);
+    SelectClientWidget clientT = new SelectClientWidget(showClient, false,Alignment.HORIZONTAL);
+    SelectVendorWidget selectVendor = new SelectVendorWidget(false, true,Alignment.HORIZONTAL);
     String clntId = null;
     String vendorID = null;
-    String midVendorID = null;
 
     public CreateProjectPanel(CreateComposite.CreateCompositeType type, boolean showClient) {
         super(type);
@@ -46,14 +45,13 @@ public class CreateProjectPanel extends CreateComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         entity = new JSONObject();
-
         assignEntityValueFromField("name", entity);
         assignEntityValueFromField("description", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
         assignEntityValueFromField("purchaseOrderNo", entity);
         assignEntityValueFromField("subContractorWorkOrderNo", entity);
-        logger.info("Entity :" + entity.toString());
+        logger.info(entity.toString());
         return entity;
     }
 
@@ -74,6 +72,7 @@ public class CreateProjectPanel extends CreateComposite {
 
                     @Override
                     public void onSuccess(String arg0) {
+                        logger.info("success logged");
                         postCreateSuccess(arg0);
                     }
                 });
@@ -102,17 +101,17 @@ public class CreateProjectPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("name", false, true, DataType.STRING_FIELD);
-        addField("description", false, false, DataType.RICH_TEXT_AREA);
-        addField("startDate", false, true, DataType.DATE_FIELD);
-        addField("endDate", false, true, DataType.DATE_FIELD);
+        addField("name", false, true, DataType.STRING_FIELD,Alignment.HORIZONTAL);
+        addField("description", false, false, DataType.TEXT_AREA_FIELD,Alignment.HORIZONTAL);
+        addField("startDate", false, true, DataType.DATE_FIELD,Alignment.HORIZONTAL);
+        addField("endDate", false, true, DataType.DATE_FIELD,Alignment.HORIZONTAL);
         addDropDown("vendor", selectVendor);
-        addField("purchaseOrderNo", false, true, DataType.STRING_FIELD);
-        addField("subContractorWorkOrderNo", false, true, DataType.STRING_FIELD);
-        addDropDown("middleVendor", selectMiddleVendor);
+        addField("purchaseOrderNo", false, true, DataType.STRING_FIELD,Alignment.HORIZONTAL);
+        addField("subContractorWorkOrderNo", false, true, DataType.STRING_FIELD,Alignment.HORIZONTAL);
         if (showClient) {
-            addDropDown("client", new SelectClientWidget(false, true));
+            addDropDown("client", new SelectClientWidget(false, true,Alignment.HORIZONTAL));
         }
+        alignFields();
     }
 
     @Override
@@ -128,7 +127,6 @@ public class CreateProjectPanel extends CreateComposite {
             clntId = TreeClientPanel.instance().getEntityId();
         }
         vendorID = JSONUtils.toString(selectVendor.getSelectedObject(), "id");
-        midVendorID = JSONUtils.toString(selectMiddleVendor.getSelectedObject(), "id");
-        return OfficeWelcome.constants.root_url() + "client/project/" + clntId  + "/" +  vendorID  + "/" +  midVendorID;
+        return OfficeWelcome.constants.root_url() + "client/project/" + clntId + "/" + vendorID;
     }
 }

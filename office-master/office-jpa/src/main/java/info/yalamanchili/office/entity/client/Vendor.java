@@ -17,7 +17,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
@@ -43,6 +42,7 @@ import org.hibernate.validator.constraints.NotEmpty;
         = @UniqueConstraint(columnNames = {"name"}))
 @Unique(entity = Vendor.class, fields = {"name"}, message = "{vendor.name.not.unique.msg}")
 public class Vendor extends AbstractEntity {
+
     @Transient
     private static final long serialVersionUID = 1L;
     /**
@@ -84,13 +84,14 @@ public class Vendor extends AbstractEntity {
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "Vendor_AcctPayContacts")
     protected List<Contact> acctPayContacts;
-    
-    @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    protected List<Project> vendorProjects;
-    
-    @OneToMany(mappedBy = "middleVendor", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    protected List<Project> middleVendorProjects;
-   
+
+    @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL)
+    protected List<Project> projects;
+
+    protected String website;
+    protected String paymentTerms;
+    @Enumerated(EnumType.STRING)
+    private InvoiceFrequency invoiceFrequency;
 
     public String getName() {
         return name;
@@ -185,23 +186,49 @@ public class Vendor extends AbstractEntity {
         getContacts().add(contact);
     }
 
-    public List<Project> getVendorProjects() {
-        return vendorProjects;
+    @XmlTransient
+    public List<Project> getProjects() {
+        if (this.projects == null) {
+            this.projects = new ArrayList<Project>();
+        }
+        return projects;
     }
 
-    public void setVendorProjects(List<Project> vendorProjects) {
-        this.vendorProjects = vendorProjects;
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
     }
 
-    public List<Project> getMiddleVendorProjects() {
-        return middleVendorProjects;
+    public void addProject(Project project) {
+        if (project == null) {
+            return;
+        }
+        getProjects().add(project);
+        project.setVendor(this);
     }
 
-    public void setMiddleVendorProjects(List<Project> middleVendorProjects) {
-        this.middleVendorProjects = middleVendorProjects;
+    public String getWebsite() {
+        return website;
     }
-    
-    
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getPaymentTerms() {
+        return paymentTerms;
+    }
+
+    public void setPaymentTerms(String paymentTerms) {
+        this.paymentTerms = paymentTerms;
+    }
+
+    public InvoiceFrequency getInvoiceFrequency() {
+        return invoiceFrequency;
+    }
+
+    public void setInvoiceFrequency(InvoiceFrequency invoiceFrequency) {
+        this.invoiceFrequency = invoiceFrequency;
+    }
 
     @Override
     public String toString() {

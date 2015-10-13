@@ -11,8 +11,10 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.admin.client.SelectClientWidget;
+import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
 
 /**
  *
@@ -21,7 +23,8 @@ import info.yalamanchili.office.client.admin.client.SelectClientWidget;
 public class ReadProjectPanel extends ReadComposite {
 
     private static ReadProjectPanel instance;
-    SelectClientWidget selectClientWidget = new SelectClientWidget(true, false);
+    SelectClientWidget selectClientWidget = new SelectClientWidget(true, false,Alignment.HORIZONTAL);
+    SelectVendorWidget selectVendor = new SelectVendorWidget(false, true,Alignment.HORIZONTAL);
 
     public static ReadProjectPanel instance() {
         return instance;
@@ -51,9 +54,13 @@ public class ReadProjectPanel extends ReadComposite {
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("description", entity, DataType.RICH_TEXT_AREA);
+        assignFieldValueFromEntity("description", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("vendor", entity, null);
+        selectVendor.setReadOnly(true);
+        assignFieldValueFromEntity("purchaseOrderNo", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("subContractorWorkOrderNo", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("client", entity, null);
         selectClientWidget.setReadOnly(true);
     }
@@ -68,11 +75,15 @@ public class ReadProjectPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addField("name", false, true, DataType.STRING_FIELD);
-        addField("description", false, false, DataType.RICH_TEXT_AREA);
-        addField("startDate", false, true, DataType.DATE_FIELD);
-        addField("endDate", false, true, DataType.DATE_FIELD);
+        addField("name", false, true, DataType.STRING_FIELD,Alignment.HORIZONTAL);
+        addField("description", false, false, DataType.TEXT_AREA_FIELD,Alignment.HORIZONTAL);
+        addField("startDate", false, true, DataType.DATE_FIELD,Alignment.HORIZONTAL);
+        addField("endDate", false, true, DataType.DATE_FIELD,Alignment.HORIZONTAL);
+        addDropDown("vendor", selectVendor);
+        addField("purchaseOrderNo", false, true, DataType.STRING_FIELD,Alignment.HORIZONTAL);
+        addField("subContractorWorkOrderNo", false, true, DataType.STRING_FIELD,Alignment.HORIZONTAL);
         addDropDown("client", selectClientWidget);
+        alignFields();
     }
 
     @Override

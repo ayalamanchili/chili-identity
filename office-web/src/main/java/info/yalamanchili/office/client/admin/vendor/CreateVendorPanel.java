@@ -17,7 +17,8 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.rpc.HttpService;
-import info.chili.gwt.widgets.GenericPopup;
+import info.chili.gwt.utils.Alignment;
+import info.yalamanchili.office.client.admin.client.InvoiceFrequency;
 import java.util.logging.Logger;
 
 /**
@@ -39,6 +40,9 @@ public class CreateVendorPanel extends CreateComposite {
         assignEntityValueFromField("name", vendor);
         assignEntityValueFromField("description", vendor);
         assignEntityValueFromField("vendorType", vendor);
+        assignEntityValueFromField("website", vendor);
+        assignEntityValueFromField("paymentTerms", vendor);
+        assignEntityValueFromField("invoiceFrequency", vendor);
         logger.info(vendor.toString());
         return vendor;
     }
@@ -67,12 +71,12 @@ public class CreateVendorPanel extends CreateComposite {
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Vendor Created");
-        GenericPopup.instance().hide();
+//        GenericPopup.instance().hide();
         String id = JSONUtils.toString(JSONParser.parseLenient(result), "id");
         TabPanel.instance().adminPanel.sidePanelTop.clear();
         TabPanel.instance().adminPanel.sidePanelTop.add(new TreeVendorsPanel(id));
         TabPanel.instance().adminPanel.entityPanel.clear();
-        TabPanel.instance().adminPanel.entityPanel.add(new ReadVendorsPanel(id));
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorsPanel(id));
     }
 
     @Override
@@ -85,9 +89,13 @@ public class CreateVendorPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("name", false, true, DataType.STRING_FIELD);
-        addField("description", false, false, DataType.STRING_FIELD);
-        addEnumField("vendorType", false, false, VendorType.names());
+        addField("name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("vendorType", false, false, VendorType.names(), Alignment.HORIZONTAL);
+        addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("invoiceFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+        alignFields();
     }
 
     @Override

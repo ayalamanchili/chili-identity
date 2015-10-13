@@ -40,6 +40,7 @@ public class ReadAllProjectsPanel extends CRUDReadAllComposite {
 
     public ReadAllProjectsPanel() {
         instance = this;
+        logger.info("In Read all projects panel");
         initTable("Project", OfficeWelcome.constants);
     }
 
@@ -66,7 +67,6 @@ public class ReadAllProjectsPanel extends CRUDReadAllComposite {
 
     @Override
     public void fillData(JSONArray entities) {
-
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
@@ -88,6 +88,8 @@ public class ReadAllProjectsPanel extends CRUDReadAllComposite {
 
     @Override
     public void viewClicked(String entityId) {
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadProjectPanel(entityId));
     }
 
     @Override
