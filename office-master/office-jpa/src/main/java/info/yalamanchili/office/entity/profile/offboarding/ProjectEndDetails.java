@@ -30,9 +30,11 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class ProjectEndDetails extends AbstractEntity {
     @Transient
     private static final long serialVersionUID = 1L;
-    
+    @NotEmpty
     protected String clientName;
+    @NotEmpty
     protected String vendorName;
+    @NotNull
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date endDate;
     protected String notes;
