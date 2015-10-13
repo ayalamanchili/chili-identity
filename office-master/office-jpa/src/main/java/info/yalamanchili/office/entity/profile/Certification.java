@@ -10,7 +10,6 @@ package info.yalamanchili.office.entity.profile;
 import info.chili.jpa.validation.Unique;
 import info.chili.jpa.AbstractEntity;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -34,6 +33,8 @@ public class Certification extends AbstractEntity {
     @org.hibernate.annotations.Index(name = "CERT_NM")
     protected String name;
     protected String description;
+    protected String certificationVendor;
+    protected String certificationCode;
 
     public Certification() {
     }
@@ -54,8 +55,24 @@ public class Certification extends AbstractEntity {
         this.description = description;
     }
 
+    public String getCertificationVendor() {
+        return certificationVendor;
+    }
+
+    public void setCertificationVendor(String certificationVendor) {
+        this.certificationVendor = certificationVendor;
+    }
+
+    public String getCertificationCode() {
+        return certificationCode;
+    }
+
+    public void setCertificationCode(String certificationCode) {
+        this.certificationCode = certificationCode;
+    }
+
     @Override
     public String toString() {
-        return "Certification{" + "name=" + name + ", description=" + description + '}';
+        return "Certification{" + "name=" + name + ", description=" + description + ", certificationVendor=" + certificationVendor + ", certificationCode=" + certificationCode + '}';
     }
 }
