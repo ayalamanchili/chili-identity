@@ -8,6 +8,7 @@
 package info.yalamanchili.office.client.recruiting.skillsettag;
 
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -136,7 +137,7 @@ public class CreateSkillSetTagPanel extends CreateComposite {
     }
 
     protected String getCreateAndAddUrl() {
-        return OfficeWelcome.constants.root_url() + "skillsettag/create-add-tag/" + skillSetId + "/" + nameF.getValue();
+        return URL.encode(OfficeWelcome.constants.root_url() + "skillsettag/create-add-tag/" + skillSetId + "/" + nameF.getValue());
     }
 
     @Override
