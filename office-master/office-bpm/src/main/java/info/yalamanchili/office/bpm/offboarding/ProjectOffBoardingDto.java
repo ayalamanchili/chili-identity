@@ -6,48 +6,47 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.entity.profile.offboarding;
+package info.yalamanchili.office.bpm.offboarding;
 
-import info.chili.jpa.AbstractEntity;
+import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Entity;
-import javax.persistence.Temporal;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
  * @author radhika.mukkala
  */
-@Entity
-@Audited
 @XmlRootElement
 @XmlType
-public class ProjectEndDetails extends AbstractEntity {
-    @Transient
-    private static final long serialVersionUID = 1L;
+public class ProjectOffBoardingDto implements Serializable {
+
+    /**
+     *
+     */
     @NotEmpty
     protected String clientName;
+    /**
+     *
+     */
     @NotEmpty
     protected String vendorName;
+    /**
+     *
+     */
     @NotNull
-    @Temporal(javax.persistence.TemporalType.DATE)
     protected Date endDate;
+    /**
+     *
+     */
+    protected Long employeeId;
+    /**
+     *
+     */
     protected String notes;
-    protected String bpmProcessId;
 
-    public String getBpmProcessId() {
-        return bpmProcessId;
-    }
-
-    public void setBpmProcessId(String bpmProcessId) {
-        this.bpmProcessId = bpmProcessId;
-    }
-    
     public String getClientName() {
         return clientName;
     }
@@ -80,12 +79,16 @@ public class ProjectEndDetails extends AbstractEntity {
         this.notes = notes;
     }
 
+    public Long getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
+    }
+
     @Override
     public String toString() {
         return "ProjectEndDetails{" + "clientName=" + clientName + ", vendorName=" + vendorName + ", endDate=" + endDate + ", notes=" + notes + '}';
-    }
-
-    public Object getEmployee() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

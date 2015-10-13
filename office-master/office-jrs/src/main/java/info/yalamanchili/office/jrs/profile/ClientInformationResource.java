@@ -16,6 +16,8 @@ import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.integration.bis.BISClientInformationServiceBean;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.profile.ClientInformationService;
+import info.yalamanchili.office.bpm.offboarding.ProjectOffBoardingDto;
+import info.yalamanchili.office.project.offboarding.ProjectOffBoardingService;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -122,6 +124,13 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
         res.setEntities(ci.getBillingRates());
         res.setSize(Long.valueOf(ci.getBillingRates().size()));
         return res;
+    }
+    
+    @PUT
+    @Validate
+    @Path("/project-off-boarding")
+    public void projectOffBoarding(ProjectOffBoardingDto dto) {
+        ProjectOffBoardingService.instance().startProjectOffBoardingTask(dto);
     }
 
     @XmlRootElement

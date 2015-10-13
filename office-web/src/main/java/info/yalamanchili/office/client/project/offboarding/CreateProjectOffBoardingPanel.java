@@ -6,6 +6,7 @@
 package info.yalamanchili.office.client.project.offboarding;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
@@ -39,12 +40,16 @@ public class CreateProjectOffBoardingPanel extends CreateComposite {
         assignEntityValueFromField("vendorName", entity);
         assignEntityValueFromField("endDate", entity);
         assignEntityValueFromField("notes", entity);
+        if (TabPanel.instance().myOfficePanel.isVisible()) {
+            entity.put("employeeId", new JSONString(TreeEmployeePanel.instance().getEntityId()));
+        } else if (TabPanel.instance().profilePanel.isVisible()) {
+            entity.put("employeeId", new JSONString(OfficeWelcome.instance().employeeId));
+        }
         return entity;
     }
 
     @Override
     protected void createButtonClicked() {
-        
 
     }
 
@@ -63,7 +68,7 @@ public class CreateProjectOffBoardingPanel extends CreateComposite {
                         postCreateSuccess(arg0);
                     }
                 });
-        
+
     }
 
     @Override
@@ -72,7 +77,6 @@ public class CreateProjectOffBoardingPanel extends CreateComposite {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(TreeEmployeePanel.instance().getEntityId()));
         TabPanel.instance().myOfficePanel.entityPanel.add(new ClientInfoOptionsPanel());
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProjectEndDetailsPanel());
 
     }
 
@@ -82,7 +86,7 @@ public class CreateProjectOffBoardingPanel extends CreateComposite {
 
     @Override
     protected void configure() {
-        
+
     }
 
     @Override
@@ -100,6 +104,6 @@ public class CreateProjectOffBoardingPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "project-end-details/save";
+        return OfficeWelcome.constants.root_url() + "clientinformation/project-off-boarding";
     }
 }

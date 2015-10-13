@@ -38,5 +38,4 @@
     <cache name="email-pref-rules" maxElementsInMemory="10000" eternal="true" overflowToDisk="true" />
     <cache name="user-email-pref-rules" maxElementsInMemory="10000" eternal="true" overflowToDisk="true" />
     <cache name="prospect" maxElementsInMemory="10000" eternal="true" overflowToDisk="true" />
-    <cache name="projOffBoarding" maxElementsInMemory="10000" eternal="true" overflowToDisk="true" />
 </ehcache>

@@ -20,10 +20,10 @@
                 Associate Project Offboarding Task Details:
                 Please update project end date to this employee and complete this task
                 Employee                : ${currentEmployee.firstName} ${currentEmployee.lastName}
-                Client Name             : ${projectDetails.clientName}
-                Vendor Name             : ${projectDetails.vendorName}
-                End Date                : ${projectDetails.endDate}
-                Notes                   : ${projectDetails.notes}                
+                Client Name             : ${entity.clientName}
+                Vendor Name             : ${entity.vendorName}
+                End Date                : ${entity.endDate}
+                Notes                   : ${entity.notes}                
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />

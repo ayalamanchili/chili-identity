@@ -26,7 +26,6 @@ import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
-import info.yalamanchili.office.client.project.offboarding.ReadAllProjectEndDetailsPanel;
 import java.util.logging.Logger;
 
 public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements ClickHandler {
@@ -68,7 +67,6 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
     @Override
     protected void configure() {
         super.configure();
-        //TODO show this link to only employee with "BIS_VIEW" role (new)
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_BIS_VIEW)) {
             tablePanel.add(getBISInformation);
         }
@@ -148,7 +146,6 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(TreeEmployeePanel.instance().getEntityId()));
         TabPanel.instance().myOfficePanel.entityPanel.add(new ClientInfoOptionsPanel());
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProjectEndDetailsPanel());
     }
 
     @Override
@@ -190,7 +187,6 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
                     new ALAsyncCallback<String>() {
                         @Override
                         public void onResponse(String arg0) {
-                            logger.info(arg0);
                             TabPanel.instance().myOfficePanel.entityPanel.clear();
                             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllBISClientInformationPanel(JSONUtils.toJSONArray(JSONParser.parseLenient(arg0).isObject().get("result"))));
                         }
