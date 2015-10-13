@@ -11,13 +11,15 @@ import info.chili.gwt.crud.CreateComposite.CreateCompositeType;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import info.yalamanchili.office.client.Auth.ROLE;
+import info.yalamanchili.office.client.project.offboarding.CreateProjectOffBoardingPanel;
 
 public class ClientInfoOptionsPanel extends ALComposite implements ClickHandler {
 
-    protected HorizontalPanel panel = new HorizontalPanel();
+    protected VerticalPanel panel = new VerticalPanel();
     protected ClickableLink addClientInfoLink = new ClickableLink("Add Client Information");
+    protected ClickableLink submitProjectEndDetails = new ClickableLink("Submit project End Details");
 
     public ClientInfoOptionsPanel() {
         init(panel);
@@ -26,6 +28,7 @@ public class ClientInfoOptionsPanel extends ALComposite implements ClickHandler 
     @Override
     protected void addListeners() {
         addClientInfoLink.addClickHandler(this);
+        submitProjectEndDetails.addClickHandler(this);
     }
 
     @Override
@@ -40,7 +43,7 @@ public class ClientInfoOptionsPanel extends ALComposite implements ClickHandler 
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_TIME, ROLE.ROLE_RECRUITER, ROLE.ROLE_HR)) {
             panel.add(addClientInfoLink);
         }
-
+        panel.add(submitProjectEndDetails);
     }
 
     @Override
@@ -48,6 +51,10 @@ public class ClientInfoOptionsPanel extends ALComposite implements ClickHandler 
         if (arg0.getSource().equals(addClientInfoLink)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new CreateClientInfoPanel(CreateCompositeType.ADD));
+        }
+        if (arg0.getSource().equals(submitProjectEndDetails)) {
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateProjectOffBoardingPanel(CreateCompositeType.ADD));
         }
     }
 }
