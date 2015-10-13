@@ -151,5 +151,9 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
             new GenericPopup(new ReadProspectsPanel(id)).show();
         }
     }
+    @Override
+    protected boolean enablePersistedQuickView(){
+        return true;
+    }
 
 }

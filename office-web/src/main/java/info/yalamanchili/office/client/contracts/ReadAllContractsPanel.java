@@ -129,5 +129,9 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
     protected boolean enableQuickView() {
         return true;
     }
+    @Override
+    protected boolean enablePersistedQuickView(){
+        return true;
+    }
 
 }

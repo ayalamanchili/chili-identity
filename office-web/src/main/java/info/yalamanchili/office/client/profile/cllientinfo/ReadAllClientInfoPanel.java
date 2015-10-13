@@ -136,6 +136,7 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
                 });
     }
 
+    @Override
     protected boolean enablePersistedQuickView() {
         return true;
     }
