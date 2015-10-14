@@ -23,7 +23,7 @@
                 Client Name             : ${entity.clientName}
                 Vendor Name             : ${entity.vendorName}
                 End Date                : ${entity.endDate}
-                Notes                   : ${entity.notes}                
+                Notes                   : ${entity.notes}                   
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
@@ -34,7 +34,6 @@
                                        type="string" />
             </extensionElements>         
         </userTask>
-        <sequenceFlow id="flow3" sourceRef="projectOffBoardingTask" targetRef="projectOffBoardingTaskEnd" />
         <!-- Task escalation email after 2 days-->
         <boundaryEvent id="emailEscalationTimer"
                        cancelActivity="false" 
@@ -50,7 +49,152 @@
             name="Task Email Escalation"
             activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
         </serviceTask>
-        <!-- end-->
-        <endEvent id="projectOffBoardingTaskEnd" />
+        <sequenceFlow id="flow3" sourceRef="projectOffBoardingTask" targetRef="fork" />
+        <parallelGateway id="fork" />
+        <sequenceFlow sourceRef="fork" targetRef="projectOffBoardingPayrollTask" />
+        <sequenceFlow sourceRef="fork" targetRef="projectOffBoardingBillingTask" />
+        <sequenceFlow sourceRef="fork" targetRef="projectOffBoardingContractsTask" />
+        
+        <userTask id="projectOffBoardingPayrollTask" name="Project OffBoarding Payroll Task" activiti:candidateGroups="ROLE_PAYROLL_AND_BENIFITS">
+            <documentation> 
+                Associate Project Offboarding Payroll Task Details:
+                Please update payroll systems and complete this task:
+                Employee                : ${currentEmployee.firstName} ${currentEmployee.lastName}
+                Client Name             : ${entity.clientName}
+                Vendor Name             : ${entity.vendorName}
+                End Date                : ${entity.endDate}
+                Notes                   : ${entity.notes}                
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="true" 
+                                       type="string" />
+            </extensionElements>         
+        </userTask>
+        <sequenceFlow sourceRef="projectOffBoardingPayrollTask" targetRef="join" />
+        <boundaryEvent id="emailEscalationTimer1"
+                       cancelActivity="false" 
+                       attachedToRef="projectOffBoardingPayrollTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="emailEscalationTimer1" 
+                      targetRef="taskEmailEscalation1" />
+        <serviceTask
+            id="taskEmailEscalation1"
+            name="Task Email Escalation1"
+            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
+        </serviceTask>
+
+        <userTask id="projectOffBoardingBillingTask" name="Project OffBoarding Billing Task" activiti:candidateGroups="ROLE_BILLING">
+            <documentation> 
+                Associate Project Offboarding Billing Task Details:
+                Please update billing records for this employee and complete this task:
+                Employee                : ${currentEmployee.firstName} ${currentEmployee.lastName}
+                Client Name             : ${entity.clientName}
+                Vendor Name             : ${entity.vendorName}
+                End Date                : ${entity.endDate}
+                Notes                   : ${entity.notes}               
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="true" 
+                                       type="string" />
+            </extensionElements>         
+        </userTask>
+        <sequenceFlow sourceRef="projectOffBoardingBillingTask" targetRef="join" />
+        <boundaryEvent id="emailEscalationTimer2"
+                       cancelActivity="false" 
+                       attachedToRef="projectOffBoardingBillingTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="emailEscalationTimer2" 
+                      targetRef="taskEmailEscalation2" />
+        <serviceTask
+            id="taskEmailEscalation2"
+            name="Task Email Escalation2"
+            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
+        </serviceTask>
+
+        <userTask id="projectOffBoardingContractsTask" name="Project OffBoarding Contracts Task" activiti:candidateGroups="ROLE_CONTRACTS_ADMIN">
+            <documentation> 
+                Associate Project Offboarding Contracts Task Details:
+                Please update contracts records for this employee and complete this task:
+                Employee                : ${currentEmployee.firstName} ${currentEmployee.lastName}
+                Client Name             : ${entity.clientName}
+                Vendor Name             : ${entity.vendorName}
+                End Date                : ${entity.endDate}
+                Notes                   : ${entity.notes}        
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="true" 
+                                       type="string" />
+            </extensionElements>         
+        </userTask>
+        <sequenceFlow sourceRef="projectOffBoardingContractsTask" targetRef="join" />
+        <boundaryEvent id="emailEscalationTimer3"
+                       cancelActivity="false" 
+                       attachedToRef="projectOffBoardingContractsTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="emailEscalationTimer3" 
+                      targetRef="taskEmailEscalation3" />
+        <serviceTask
+            id="taskEmailEscalation3"
+            name="Task Email Escalation3"
+            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
+        </serviceTask>
+        <parallelGateway id="join" />
+        <sequenceFlow sourceRef="join" targetRef="projectOffBoardingValidationTask" />
+        <userTask id="projectOffBoardingValidationTask" name="Project OffBoarding Validation Task" activiti:candidateGroups="ROLE_ADMIN">
+            <documentation> 
+                Associate Project Offboarding Validation Task Details:
+                Please validate offboarding details for this employee and complete this task:
+                Employee                : ${currentEmployee.firstName} ${currentEmployee.lastName}
+                Client Name             : ${entity.clientName}
+                Vendor Name             : ${entity.vendorName}
+                End Date                : ${entity.endDate}
+                Notes                   : ${entity.notes}                
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="true" 
+                                       type="string" />
+            </extensionElements>         
+        </userTask>
+        <boundaryEvent id="emailEscalationTimer4"
+                       cancelActivity="false" 
+                       attachedToRef="projectOffBoardingValidationTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="emailEscalationTimer4" 
+                      targetRef="taskEmailEscalation4" />
+        <serviceTask
+            id="taskEmailEscalation4"
+            name="Task Email Escalation4"
+            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
+        </serviceTask>
+        <sequenceFlow  sourceRef="projectOffBoardingValidationTask" targetRef="end" />
+        <endEvent id="end" />
     </process>
 </definitions>
