@@ -33,8 +33,8 @@ public class Certification extends AbstractEntity {
     @org.hibernate.annotations.Index(name = "CERT_NM")
     protected String name;
     protected String description;
-    protected String certificationVendor;
-    protected String certificationCode;
+//    protected String certificationVendor;
+//    protected String certificationCode;
 
     public Certification() {
     }
@@ -55,24 +55,26 @@ public class Certification extends AbstractEntity {
         this.description = description;
     }
 
-    public String getCertificationVendor() {
-        return certificationVendor;
-    }
-
-    public void setCertificationVendor(String certificationVendor) {
-        this.certificationVendor = certificationVendor;
-    }
-
-    public String getCertificationCode() {
-        return certificationCode;
-    }
-
-    public void setCertificationCode(String certificationCode) {
-        this.certificationCode = certificationCode;
-    }
+//    public String getCertificationVendor() {
+//        return certificationVendor;
+//    }
+//
+//    public void setCertificationVendor(String certificationVendor) {
+//        this.certificationVendor = certificationVendor;
+//    }
+//
+//    public String getCertificationCode() {
+//        return certificationCode;
+//    }
+//
+//    public void setCertificationCode(String certificationCode) {
+//        this.certificationCode = certificationCode;
+//    }
 
     @Override
     public String toString() {
-        return "Certification{" + "name=" + name + ", description=" + description + ", certificationVendor=" + certificationVendor + ", certificationCode=" + certificationCode + '}';
+        return "Certification{" + "name=" + name + ", description=" + description + '}';
     }
+
+   
 }
