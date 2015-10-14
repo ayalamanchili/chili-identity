@@ -57,10 +57,10 @@ public class ReadProjectPanel extends ReadComposite {
         assignFieldValueFromEntity("description", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("vendor", entity, null);
-        selectVendor.setReadOnly(true);
-        assignFieldValueFromEntity("purchaseOrderNo", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("subContractorWorkOrderNo", entity, DataType.STRING_FIELD);
+//        assignFieldValueFromEntity("vendor", entity, null);
+//        selectVendor.setReadOnly(true);
+//        assignFieldValueFromEntity("purchaseOrderNo", entity, DataType.STRING_FIELD);
+//        assignFieldValueFromEntity("subContractorWorkOrderNo", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("client", entity, null);
         selectClientWidget.setReadOnly(true);
     }
@@ -79,9 +79,9 @@ public class ReadProjectPanel extends ReadComposite {
         addField("description", false, false, DataType.TEXT_AREA_FIELD,Alignment.HORIZONTAL);
         addField("startDate", false, true, DataType.DATE_FIELD,Alignment.HORIZONTAL);
         addField("endDate", false, true, DataType.DATE_FIELD,Alignment.HORIZONTAL);
-        addDropDown("vendor", selectVendor);
-        addField("purchaseOrderNo", false, true, DataType.STRING_FIELD,Alignment.HORIZONTAL);
-        addField("subContractorWorkOrderNo", false, true, DataType.STRING_FIELD,Alignment.HORIZONTAL);
+//        addDropDown("vendor", selectVendor);
+//        addField("purchaseOrderNo", false, true, DataType.STRING_FIELD,Alignment.HORIZONTAL);
+//        addField("subContractorWorkOrderNo", false, true, DataType.STRING_FIELD,Alignment.HORIZONTAL);
         addDropDown("client", selectClientWidget);
         alignFields();
     }

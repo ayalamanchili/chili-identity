@@ -17,7 +17,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.rpc.HttpService;
-import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.widgets.GenericPopup;
 import java.util.logging.Logger;
 
 /**
@@ -25,8 +25,7 @@ import java.util.logging.Logger;
  * @author Prashanthi
  */
 public class CreateClientPanel extends CreateComposite {
-
-    private static Logger logger = Logger.getLogger(CreateClientPanel.class.getName());
+ private static Logger logger = Logger.getLogger(CreateClientPanel.class.getName());
 
     public CreateClientPanel(CreateComposite.CreateCompositeType type) {
         super(type);
@@ -39,9 +38,6 @@ public class CreateClientPanel extends CreateComposite {
 
         assignEntityValueFromField("name", clnt);
         assignEntityValueFromField("description", clnt);
-        assignEntityValueFromField("website", clnt);
-        assignEntityValueFromField("paymentTerms", clnt);
-        assignEntityValueFromField("invoiceFrequency", clnt);
         logger.info(clnt.toString());
         return clnt;
     }
@@ -70,11 +66,12 @@ public class CreateClientPanel extends CreateComposite {
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully created Client");
+        GenericPopup.instance().hide();
         String id = JSONUtils.toString(JSONParser.parseLenient(result), "id");
         TabPanel.instance().adminPanel.sidePanelTop.clear();
         TabPanel.instance().adminPanel.sidePanelTop.add(new TreeClientPanel(id));
         TabPanel.instance().adminPanel.entityPanel.clear();
-        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientsPanel(id));
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientsPanel(id));;
     }
 
     @Override
@@ -87,12 +84,8 @@ public class CreateClientPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("name", false, true, DataType.STRING_FIELD,Alignment.HORIZONTAL);
-        addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addEnumField("invoiceFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
-        alignFields();
+        addField("name", false, true, DataType.STRING_FIELD);
+        addField("description", false, false, DataType.STRING_FIELD);
     }
 
     @Override

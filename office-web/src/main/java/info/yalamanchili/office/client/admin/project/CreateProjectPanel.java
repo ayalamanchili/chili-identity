@@ -51,9 +51,9 @@ public class CreateProjectPanel extends CreateComposite {
         assignEntityValueFromField("description", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
-        assignEntityValueFromField("purchaseOrderNo", entity);
-        assignEntityValueFromField("subContractorWorkOrderNo", entity);
-        entity.put("vendor", selectVendor.getSelectedObject());
+//        assignEntityValueFromField("purchaseOrderNo", entity);
+//        assignEntityValueFromField("subContractorWorkOrderNo", entity);
+//        entity.put("vendor", selectVendor.getSelectedObject());
         logger.info(entity.toString());
         return entity;
     }
@@ -108,10 +108,10 @@ public class CreateProjectPanel extends CreateComposite {
         addField("description", false, false, DataType.TEXT_AREA_FIELD,Alignment.HORIZONTAL);
         addField("startDate", false, true, DataType.DATE_FIELD,Alignment.HORIZONTAL);
         addField("endDate", false, true, DataType.DATE_FIELD,Alignment.HORIZONTAL);
-        addDropDown("vendor", selectVendor);
-        addField("purchaseOrderNo", false, true, DataType.STRING_FIELD,Alignment.HORIZONTAL);
-        addField("subContractorWorkOrderNo", false, true, DataType.STRING_FIELD,Alignment.HORIZONTAL);
-        addDropDown("middleVendor", selectMiddleVendor);
+//        addDropDown("vendor", selectVendor);
+//        addField("purchaseOrderNo", false, true, DataType.STRING_FIELD,Alignment.HORIZONTAL);
+//        addField("subContractorWorkOrderNo", false, true, DataType.STRING_FIELD,Alignment.HORIZONTAL);
+//        addDropDown("middleVendor", selectMiddleVendor);
         if (showClient) {
             addDropDown("client", new SelectClientWidget(false, true,Alignment.HORIZONTAL));
         }
@@ -130,8 +130,8 @@ public class CreateProjectPanel extends CreateComposite {
         } else {
             clntId = TreeClientPanel.instance().getEntityId();
         }
-        vendorID = JSONUtils.toString(selectVendor.getSelectedObject(), "id");
-        midVendorID = JSONUtils.toString(selectMiddleVendor.getSelectedObject(), "id");
-        return OfficeWelcome.constants.root_url() + "client/project/" + clntId + "/" + vendorID  + "/" +  midVendorID;
+//        vendorID = JSONUtils.toString(selectVendor.getSelectedObject(), "id");
+//        midVendorID = JSONUtils.toString(selectMiddleVendor.getSelectedObject(), "id");
+        return OfficeWelcome.constants.root_url() + "client/project/" + clntId;
     }
 }

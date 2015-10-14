@@ -13,7 +13,6 @@ import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.client.ClientDao;
-import info.yalamanchili.office.dao.client.VendorDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dto.profile.ContactDto;
@@ -22,7 +21,6 @@ import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.dto.profile.ContactDto.ContactDtoTable;
-import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.client.ProjectResource.ProjectTable;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
@@ -61,8 +59,6 @@ public class ClientResource extends CRUDResource<Client> {
 
     @Autowired
     public ClientDao clientDao;
-    @Autowired
-    public VendorDao vendorDao;
     @Autowired
     protected ContactService contactService;
     @PersistenceContext
@@ -117,16 +113,11 @@ public class ClientResource extends CRUDResource<Client> {
      */
     @PUT
     @Validate
-    @Path("/project/{clientId}/{vendorID}/{midVendorID}")
+    @Path("/project/{clientId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
-    public Project addProject(@PathParam("clientId") Long clientId, @PathParam("vendorID") Long venID, @PathParam("midVendorID") Long midVenID,Project project) {
+    public void addProject(@PathParam("clientId") Long clientId, Project project) {
         Client clnt = (Client) getDao().findById(clientId);
-        Vendor vndr = vendorDao.findById(venID);
-        Vendor midVndr = vendorDao.findById(midVenID);
-        project.setVendor(vndr);
-        project.setMiddleVendor(midVndr);
         clnt.addProject(project);
-        return project;
     }
 
     @GET
