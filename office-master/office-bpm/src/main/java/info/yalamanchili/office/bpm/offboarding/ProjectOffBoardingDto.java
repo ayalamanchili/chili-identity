@@ -26,17 +26,17 @@ public class ProjectOffBoardingDto implements Serializable {
     /**
      *
      */
-    @NotEmpty
+    @NotEmpty(message = "{clientName.not.empty}")
     protected String clientName;
     /**
      *
      */
-    @NotEmpty
+    @NotEmpty(message="{vendorName.not.empty}")
     protected String vendorName;
     /**
      *
      */
-    @NotNull
+    @NotNull(message="{endDate.not.null}")
     protected Date endDate;
     /**
      *

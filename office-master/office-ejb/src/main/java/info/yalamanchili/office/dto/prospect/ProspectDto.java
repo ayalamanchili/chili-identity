@@ -50,7 +50,7 @@ public class ProspectDto implements Serializable {
     protected Date startDate;
 
     protected String screenedBy;
-    @NotEmpty(message="{referredBy.not.empty.msg")
+    @NotEmpty(message="{referredBy.not.empty.msg}")
     protected String referredBy;
 
     @NotEmpty(message = "{resumeUrl.not.empty.msg}")
