@@ -197,7 +197,8 @@ public class ReadAllConsultantTimeSheetsPanel extends CRUDReadAllComposite {
                 cancelLeaveRequest(link.getTitle());
             }
             if (link.getText().contains("Update")) {
-                new GenericPopup(new ConsultantEmpLeaveRequestUpdatePanel(getEntity(link.getTitle()))).show();
+                TabPanel.instance().getTimePanel().entityPanel.clear();
+                TabPanel.instance().getTimePanel().entityPanel.add(new ConsultantEmpLeaveRequestUpdatePanel(getEntity(link.getTitle())));
             }
         } else {
             super.onClick(event);

@@ -14,6 +14,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.crud.CreateComposite;
+import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.GenericPopup;
 import java.util.logging.Logger;
@@ -49,7 +50,8 @@ public class ConsultantTimeSummarySidePanel extends ALComposite implements Click
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(submitLeaveRequest)) {
-            new GenericPopup(new ConsultantEmpLeaveRequestPanel(CreateComposite.CreateCompositeType.CREATE)).show();
+            TabPanel.instance().getTimePanel().entityPanel.clear();
+            TabPanel.instance().getTimePanel().entityPanel.add(new ConsultantEmpLeaveRequestPanel(CreateComposite.CreateCompositeType.CREATE));
         }
     }
 }

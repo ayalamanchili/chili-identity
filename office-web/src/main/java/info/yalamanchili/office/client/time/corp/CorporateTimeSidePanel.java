@@ -156,12 +156,13 @@ public class CorporateTimeSidePanel extends ALComposite implements ClickHandler 
 
     @Override
     public void onClick(ClickEvent event) {
-       /* if (event.getSource().equals(createtimeSheetlink)) {
-            TabPanel.instance().timePanel.entityPanel.clear();
-            TabPanel.instance().timePanel.entityPanel.add(new CreateCorporateTimeSheetPanel(CreateComposite.CreateCompositeType.CREATE));
-        }*/
-         if (event.getSource().equals(submitLeaveRequest)) {
-            new GenericPopup(new CorpEmpLeaveRequestPanel(CreateComposite.CreateCompositeType.CREATE)).show();
+        /* if (event.getSource().equals(createtimeSheetlink)) {
+         TabPanel.instance().timePanel.entityPanel.clear();
+         TabPanel.instance().timePanel.entityPanel.add(new CreateCorporateTimeSheetPanel(CreateComposite.CreateCompositeType.CREATE));
+         }*/
+        if (event.getSource().equals(submitLeaveRequest)) {
+            TabPanel.instance().getTimePanel().entityPanel.clear();
+            TabPanel.instance().getTimePanel().entityPanel.add(new CorpEmpLeaveRequestPanel(CreateComposite.CreateCompositeType.CREATE));
         }
         if (employeeSB.getSelectedObject() != null && event.getSource().equals(showTimeSheetsForEmpB)) {
             TabPanel.instance().getTimePanel().entityPanel.clear();
