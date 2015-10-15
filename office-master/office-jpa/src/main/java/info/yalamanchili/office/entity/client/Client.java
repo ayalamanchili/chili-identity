@@ -55,10 +55,10 @@ public class Client extends AbstractEntity {
     protected List<Contact> contacts;
     @ManyToMany(cascade = CascadeType.MERGE)
     protected List<Vendor> vendors;
-//    protected String website;
-//    protected String paymentTerms;
-//    @Enumerated(EnumType.STRING)
-//    private InvoiceFrequency invoiceFrequency;
+    protected String website;
+    protected String paymentTerms;
+    @Enumerated(EnumType.STRING)
+    private InvoiceFrequency invoiceFrequency;
 
     public void setVendors(List<Vendor> vendors) {
         this.vendors = vendors;
@@ -163,29 +163,30 @@ public class Client extends AbstractEntity {
 //      contact.setClient(this);
     }
 
-//    public String getWebsite() {
-//        return website;
-//    }
-//
-//    public void setWebsite(String website) {
-//        this.website = website;
-//    }
-//
-//    public String getPaymentTerms() {
-//        return paymentTerms;
-//    }
-//
-//    public void setPaymentTerms(String paymentTerms) {
-//        this.paymentTerms = paymentTerms;
-//    }
-//
-//    public InvoiceFrequency getInvoiceFrequency() {
-//        return invoiceFrequency;
-//    }
-//
-//    public void setInvoiceFrequency(InvoiceFrequency invoiceFrequency) {
-//        this.invoiceFrequency = invoiceFrequency;
-//    }
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getPaymentTerms() {
+        return paymentTerms;
+    }
+
+    public void setPaymentTerms(String paymentTerms) {
+        this.paymentTerms = paymentTerms;
+    }
+
+    public InvoiceFrequency getInvoiceFrequency() {
+        return invoiceFrequency;
+    }
+
+    public void setInvoiceFrequency(InvoiceFrequency invoiceFrequency) {
+        this.invoiceFrequency = invoiceFrequency;
+    }
+
 
     @Override
     public String toString() {
