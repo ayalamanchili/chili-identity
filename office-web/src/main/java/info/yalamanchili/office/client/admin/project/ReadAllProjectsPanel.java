@@ -40,7 +40,6 @@ public class ReadAllProjectsPanel extends CRUDReadAllComposite {
 
     public ReadAllProjectsPanel() {
         instance = this;
-        logger.info("In Read all projects panel");
         initTable("Project", OfficeWelcome.constants);
     }
 

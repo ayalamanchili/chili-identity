@@ -46,16 +46,15 @@ public class CreateProjectPanel extends CreateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        entity = new JSONObject();
-        assignEntityValueFromField("name", entity);
-        assignEntityValueFromField("description", entity);
-        assignEntityValueFromField("startDate", entity);
-        assignEntityValueFromField("endDate", entity);
-//        assignEntityValueFromField("purchaseOrderNo", entity);
-//        assignEntityValueFromField("subContractorWorkOrderNo", entity);
-//        entity.put("vendor", selectVendor.getSelectedObject());
-        logger.info(entity.toString());
-        return entity;
+        JSONObject project = new JSONObject();
+        assignEntityValueFromField("name", project);
+        assignEntityValueFromField("description", project);
+        assignEntityValueFromField("startDate", project);
+        assignEntityValueFromField("endDate", project);
+        assignEntityValueFromField("purchaseOrderNo", project);
+        assignEntityValueFromField("subContractorWorkOrderNo", project);
+        logger.info(project.toString());
+        return project;
     }
 
     @Override
@@ -108,10 +107,10 @@ public class CreateProjectPanel extends CreateComposite {
         addField("description", false, false, DataType.TEXT_AREA_FIELD,Alignment.HORIZONTAL);
         addField("startDate", false, true, DataType.DATE_FIELD,Alignment.HORIZONTAL);
         addField("endDate", false, true, DataType.DATE_FIELD,Alignment.HORIZONTAL);
-//        addDropDown("vendor", selectVendor);
-//        addField("purchaseOrderNo", false, true, DataType.STRING_FIELD,Alignment.HORIZONTAL);
-//        addField("subContractorWorkOrderNo", false, true, DataType.STRING_FIELD,Alignment.HORIZONTAL);
-//        addDropDown("middleVendor", selectMiddleVendor);
+        addDropDown("vendor", selectVendor);
+        addField("purchaseOrderNo", false, true, DataType.STRING_FIELD,Alignment.HORIZONTAL);
+        addField("subContractorWorkOrderNo", false, true, DataType.STRING_FIELD,Alignment.HORIZONTAL);
+        addDropDown("middleVendor", selectMiddleVendor);
         if (showClient) {
             addDropDown("client", new SelectClientWidget(false, true,Alignment.HORIZONTAL));
         }
@@ -130,8 +129,8 @@ public class CreateProjectPanel extends CreateComposite {
         } else {
             clntId = TreeClientPanel.instance().getEntityId();
         }
-//        vendorID = JSONUtils.toString(selectVendor.getSelectedObject(), "id");
-//        midVendorID = JSONUtils.toString(selectMiddleVendor.getSelectedObject(), "id");
-        return OfficeWelcome.constants.root_url() + "client/project/" + clntId;
+        vendorID = JSONUtils.toString(selectVendor.getSelectedObject(), "id");
+        midVendorID = JSONUtils.toString(selectMiddleVendor.getSelectedObject(), "id");
+        return OfficeWelcome.constants.root_url() + "client/project/" + clntId + "/" +  vendorID  + "/" +  midVendorID;
     }
 }

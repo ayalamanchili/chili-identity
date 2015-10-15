@@ -19,15 +19,19 @@ import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Yogi
  */
 public class UpdateProjectPanel extends UpdateComposite {
+    
+    private static Logger logger = Logger.getLogger(UpdateProjectPanel.class.getName());
 
     SelectClientWidget selectClientWidget = new SelectClientWidget(true, false);
-    SelectVendorWidget selectVendor = new SelectVendorWidget(false, true,Alignment.HORIZONTAL);
+    SelectVendorWidget selectVendor = new SelectVendorWidget(false, true, Alignment.HORIZONTAL);
+    SelectVendorWidget selectMiddleVendor = new SelectVendorWidget(false, true, Alignment.HORIZONTAL);
 
     public UpdateProjectPanel(JSONObject entity) {
         initUpdateComposite(entity, "Project", OfficeWelcome.constants);
@@ -39,9 +43,10 @@ public class UpdateProjectPanel extends UpdateComposite {
         assignEntityValueFromField("description", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
-//        assignEntityValueFromField("vendor", entity);
-//        assignEntityValueFromField("purchaseOrderNo", entity);
-//        assignEntityValueFromField("subContractorWorkOrderNo", entity);
+        assignEntityValueFromField("vendor", entity);
+        assignEntityValueFromField("purchaseOrderNo", entity);
+        assignEntityValueFromField("subContractorWorkOrderNo", entity);
+        assignEntityValueFromField("middleVendor", entity);
         assignEntityValueFromField("client", entity);
         return entity;
     }
@@ -68,9 +73,10 @@ public class UpdateProjectPanel extends UpdateComposite {
         assignFieldValueFromEntity("description", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
-//        assignFieldValueFromEntity("vendor", entity, null);
-//        assignFieldValueFromEntity("purchaseOrderNo", entity, DataType.STRING_FIELD);
-//        assignFieldValueFromEntity("subContractorWorkOrderNo", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("vendor", entity, null);
+        assignFieldValueFromEntity("purchaseOrderNo", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("subContractorWorkOrderNo", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("middleVendor", entity, null);
         assignFieldValueFromEntity("client", entity, null);
         selectClientWidget.setReadOnly(true);
     }
@@ -99,9 +105,10 @@ public class UpdateProjectPanel extends UpdateComposite {
         addField("description", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-//        addDropDown("vendor", selectVendor);
-//        addField("purchaseOrderNo", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-//        addField("subContractorWorkOrderNo", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addDropDown("vendor", selectVendor);
+        addField("purchaseOrderNo", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("subContractorWorkOrderNo", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addDropDown("middleVendor", selectMiddleVendor);
         addDropDown("client", new SelectClientWidget(false, true, Alignment.HORIZONTAL));
         alignFields();
     }

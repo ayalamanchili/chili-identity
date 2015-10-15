@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -23,8 +26,9 @@ import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
 public class ReadProjectPanel extends ReadComposite {
 
     private static ReadProjectPanel instance;
-    SelectClientWidget selectClientWidget = new SelectClientWidget(true, false,Alignment.HORIZONTAL);
-    SelectVendorWidget selectVendor = new SelectVendorWidget(false, true,Alignment.HORIZONTAL);
+    SelectClientWidget selectClientWidget = new SelectClientWidget(true, false, Alignment.HORIZONTAL);
+    SelectVendorWidget selectVendor = new SelectVendorWidget(false, true, Alignment.HORIZONTAL);
+    SelectVendorWidget selectMiddleVendor = new SelectVendorWidget(false, true, Alignment.HORIZONTAL);
 
     public static ReadProjectPanel instance() {
         return instance;
@@ -57,10 +61,12 @@ public class ReadProjectPanel extends ReadComposite {
         assignFieldValueFromEntity("description", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
-//        assignFieldValueFromEntity("vendor", entity, null);
-//        selectVendor.setReadOnly(true);
-//        assignFieldValueFromEntity("purchaseOrderNo", entity, DataType.STRING_FIELD);
-//        assignFieldValueFromEntity("subContractorWorkOrderNo", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("vendor", entity, null);
+        selectVendor.setReadOnly(true);
+        assignFieldValueFromEntity("purchaseOrderNo", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("subContractorWorkOrderNo", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("middleVendor", entity, null);
+        selectVendor.setReadOnly(true);
         assignFieldValueFromEntity("client", entity, null);
         selectClientWidget.setReadOnly(true);
     }
@@ -75,13 +81,14 @@ public class ReadProjectPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addField("name", false, true, DataType.STRING_FIELD,Alignment.HORIZONTAL);
-        addField("description", false, false, DataType.TEXT_AREA_FIELD,Alignment.HORIZONTAL);
-        addField("startDate", false, true, DataType.DATE_FIELD,Alignment.HORIZONTAL);
-        addField("endDate", false, true, DataType.DATE_FIELD,Alignment.HORIZONTAL);
-//        addDropDown("vendor", selectVendor);
-//        addField("purchaseOrderNo", false, true, DataType.STRING_FIELD,Alignment.HORIZONTAL);
-//        addField("subContractorWorkOrderNo", false, true, DataType.STRING_FIELD,Alignment.HORIZONTAL);
+        addField("name", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("description", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("startDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("endDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addDropDown("vendor", selectVendor);
+        addField("purchaseOrderNo", true, true, DataType.STRING_FIELD,Alignment.HORIZONTAL);
+        addField("subContractorWorkOrderNo", true, true, DataType.STRING_FIELD,Alignment.HORIZONTAL);
+        addDropDown("middleVendor", selectMiddleVendor);
         addDropDown("client", selectClientWidget);
         alignFields();
     }

@@ -61,17 +61,17 @@ public class Project extends AbstractEntity {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     protected List<StatementOfWork> SOWS;
 
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    @ForeignKey(name = "FK_Vendor_Projects")
-//    protected Vendor vendor;
-//
-//    protected String purchaseOrderNo;
-//
-//    protected String subContractorWorkOrderNo;
-//
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    @ForeignKey(name = "FK_MiddleVendor_Projects")
-//    protected Vendor middleVendor;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @ForeignKey(name = "FK_Vendor_Projects")
+    protected Vendor vendor;
+
+    protected String purchaseOrderNo;
+
+    protected String subContractorWorkOrderNo;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @ForeignKey(name = "FK_MiddleVendor_Projects")
+    protected Vendor middleVendor;
 
     public String getName() {
         return name;
@@ -133,37 +133,37 @@ public class Project extends AbstractEntity {
         entity.setProject(this);
     }
 
-//    public Vendor getVendor() {
-//        return vendor;
-//    }
-//
-//    public void setVendor(Vendor vendor) {
-//        this.vendor = vendor;
-//    }
-//
-//    public String getPurchaseOrderNo() {
-//        return purchaseOrderNo;
-//    }
-//
-//    public void setPurchaseOrderNo(String purchaseOrderNo) {
-//        this.purchaseOrderNo = purchaseOrderNo;
-//    }
-//
-//    public String getSubContractorWorkOrderNo() {
-//        return subContractorWorkOrderNo;
-//    }
-//
-//    public void setSubContractorWorkOrderNo(String subContractorWorkOrderNo) {
-//        this.subContractorWorkOrderNo = subContractorWorkOrderNo;
-//    }
-//
-//    public Vendor getMiddleVendor() {
-//        return middleVendor;
-//    }
-//
-//    public void setMiddleVendor(Vendor middleVendor) {
-//        this.middleVendor = middleVendor;
-//    }
+    public Vendor getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
+    }
+
+    public String getPurchaseOrderNo() {
+        return purchaseOrderNo;
+    }
+
+    public void setPurchaseOrderNo(String purchaseOrderNo) {
+        this.purchaseOrderNo = purchaseOrderNo;
+    }
+
+    public String getSubContractorWorkOrderNo() {
+        return subContractorWorkOrderNo;
+    }
+
+    public void setSubContractorWorkOrderNo(String subContractorWorkOrderNo) {
+        this.subContractorWorkOrderNo = subContractorWorkOrderNo;
+    }
+
+    public Vendor getMiddleVendor() {
+        return middleVendor;
+    }
+
+    public void setMiddleVendor(Vendor middleVendor) {
+        this.middleVendor = middleVendor;
+    }
 
     @Override
     public String toString() {
