@@ -74,7 +74,7 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("firstName", entity);
         assignEntityValueFromField("lastName", entity);
-        assignEntityValueFromField("startDate", entity);
+        //assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("email", entity);
         assignEntityValueFromField("phoneNumber", entity);
         assignEntityValueFromField("referredBy", entity);
@@ -103,7 +103,7 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
+        //assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("email", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("phoneNumber", entity, DataType.LONG_FIELD);
         assignFieldValueFromEntity("referredBy", entity, DataType.STRING_FIELD);
@@ -132,13 +132,13 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
     protected void addWidgets() {
         addField("firstName", false, true, DataType.STRING_FIELD);
         addField("lastName", false, true, DataType.STRING_FIELD);
-        addField("startDate", false, true, DataType.DATE_FIELD);
+        //addField("startDate", false, false, DataType.DATE_FIELD);
         addField("email", false, true, DataType.STRING_FIELD);
         addField("phoneNumber", false, true, DataType.LONG_FIELD);
         addField("referredBy", false, true, DataType.STRING_FIELD);
-        addField("screenedBy", false, true, DataType.STRING_FIELD);
-         addField("processDocSentDate", false, true, DataType.DATE_FIELD);
-        addEnumField("status", false, true, ProspectStatus.names());
+        addField("screenedBy", false, false, DataType.STRING_FIELD);
+         addField("processDocSentDate", false, false, DataType.DATE_FIELD);
+        addEnumField("status", false, false, ProspectStatus.names());
     }
 
     @Override

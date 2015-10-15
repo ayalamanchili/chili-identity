@@ -116,10 +116,10 @@ public class CreateProspectPanel extends CreateComposite {
         addField("firstName", false, true, DataType.STRING_FIELD);
         addField("lastName", false, true, DataType.STRING_FIELD);
         addField("referredBy", false, true, DataType.STRING_FIELD);
-        addField("email", false, false, DataType.STRING_FIELD);
-        addField("phoneNumber", false, false, DataType.STRING_FIELD);
-        addField("screenedBy", false, true, DataType.STRING_FIELD);
-        addField("processDocSentDate", false, true, DataType.DATE_FIELD);
+        addField("email", false, true, DataType.STRING_FIELD);
+        addField("phoneNumber", false, true, DataType.STRING_FIELD);
+        addField("screenedBy", false, false, DataType.STRING_FIELD);
+        addField("processDocSentDate", false, false, DataType.DATE_FIELD);
         entityFieldsPanel.add(resumeUploadPanel);
 
     }
