@@ -11,6 +11,9 @@ package info.yalamanchili.office.client.time.consultant;
 import com.google.common.base.Strings;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
@@ -32,7 +35,6 @@ import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.FileUtils;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
-import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.Auth;
@@ -97,6 +99,20 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
         viewReportsB.addClickHandler(this);
         reportsB.addClickHandler(this);
         summaryReportL.addClickHandler(this);
+        employeeSB.addDomHandler(new Handler(), KeyPressEvent.getType());
+    }
+
+    final class Handler implements KeyPressHandler {
+
+        @Override
+        public void onKeyPress(KeyPressEvent event) {
+            if (event.getCharCode()==KeyCodes.KEY_ENTER) {
+                TabPanel.instance().getTimePanel().entityPanel.clear();
+                TabPanel.instance().getTimePanel().entityPanel.add(new ConsultantTimeSummaryPanel(employeeSB.getKey()));
+                TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllConsultantTimeSheetsPanel(employeeSB.getKey()));
+            }
+        }
+
     }
 
     @Override
@@ -154,9 +170,9 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
             TabPanel.instance().getTimePanel().entityPanel.add(new ConsultantEmpLeaveRequestPanel(CreateComposite.CreateCompositeType.CREATE));
         }
         /*if (event.getSource().equals(createtimeSheetlink)) {
-            TabPanel.instance().timePanel.entityPanel.clear();
-            TabPanel.instance().timePanel.entityPanel.add(new CreateConsultantTimeSheetPanel(CreateComposite.CreateCompositeType.CREATE));
-        }*/
+         TabPanel.instance().timePanel.entityPanel.clear();
+         TabPanel.instance().timePanel.entityPanel.add(new CreateConsultantTimeSheetPanel(CreateComposite.CreateCompositeType.CREATE));
+         }*/
         if (!Strings.isNullOrEmpty(employeeSB.getKey()) && event.getSource().equals(showTimeSheetsForEmpB)) {
             TabPanel.instance().getTimePanel().entityPanel.clear();
             TabPanel.instance().getTimePanel().entityPanel.add(new ConsultantTimeSummaryPanel(employeeSB.getKey()));
