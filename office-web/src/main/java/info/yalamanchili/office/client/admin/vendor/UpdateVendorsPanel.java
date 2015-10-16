@@ -35,7 +35,7 @@ public class UpdateVendorsPanel extends UpdateComposite {
         assignEntityValueFromField("vendorType", entity);
         assignEntityValueFromField("website", entity);
         assignEntityValueFromField("paymentTerms", entity);
-        assignEntityValueFromField("vendorinvFrequency", entity);
+//        assignEntityValueFromField("vendorinvFrequency", entity);
         return entity;
     }
 
@@ -62,7 +62,7 @@ public class UpdateVendorsPanel extends UpdateComposite {
         assignFieldValueFromEntity("vendorType", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("website", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("paymentTerms", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("vendorinvFrequency", entity, DataType.ENUM_FIELD);
+//        assignFieldValueFromEntity("vendorinvFrequency", entity, DataType.ENUM_FIELD);
     }
 
     @Override
@@ -89,7 +89,7 @@ public class UpdateVendorsPanel extends UpdateComposite {
         addEnumField("vendorType", false, false, VendorType.names(), Alignment.HORIZONTAL);
         addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addEnumField("vendorinvFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+//        addEnumField("vendorinvFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         alignFields();
     }
 

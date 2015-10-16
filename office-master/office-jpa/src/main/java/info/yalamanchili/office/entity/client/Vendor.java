@@ -86,8 +86,8 @@ public class Vendor extends AbstractEntity {
 
     protected String website;
     protected String paymentTerms;
-    @Enumerated(EnumType.STRING)
-    private InvoiceFrequency vendorinvFrequency;
+//    @Enumerated(EnumType.STRING)
+//    protected InvoiceFrequency vendorinvFrequency;
 
     public String getName() {
         return name;
@@ -198,13 +198,13 @@ public class Vendor extends AbstractEntity {
         this.paymentTerms = paymentTerms;
     }
 
-    public InvoiceFrequency getVendorinvFrequency() {
-        return vendorinvFrequency;
-    }
-
-    public void setVendorinvFrequency(InvoiceFrequency vendorinvFrequency) {
-        this.vendorinvFrequency = vendorinvFrequency;
-    }
+//    public InvoiceFrequency getVendorinvFrequency() {
+//        return vendorinvFrequency;
+//    }
+//
+//    public void setVendorinvFrequency(InvoiceFrequency vendorinvFrequency) {
+//        this.vendorinvFrequency = vendorinvFrequency;
+//    }
 
     @Override
     public String toString() {

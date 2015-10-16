@@ -57,7 +57,7 @@ public class ReadVendorsPanel extends ReadComposite {
         assignFieldValueFromEntity("vendorType", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("website", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("paymentTerms", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("vendorinvFrequency", entity, DataType.ENUM_FIELD);
+//        assignFieldValueFromEntity("vendorinvFrequency", entity, DataType.ENUM_FIELD);
     }
 
     @Override
@@ -75,7 +75,7 @@ public class ReadVendorsPanel extends ReadComposite {
         addEnumField("vendorType", false, false, VendorType.names(), Alignment.HORIZONTAL);
         addField("website", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("paymentTerms", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addEnumField("vendorinvFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+//        addEnumField("vendorinvFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         alignFields();
     }
 
