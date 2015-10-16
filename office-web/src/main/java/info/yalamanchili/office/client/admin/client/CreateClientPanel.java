@@ -40,8 +40,8 @@ public class CreateClientPanel extends CreateComposite {
 
         assignEntityValueFromField("name", clnt);
         assignEntityValueFromField("description", clnt);
-        assignEntityValueFromField("website", clnt);
-        assignEntityValueFromField("paymentTerms", clnt);
+//        assignEntityValueFromField("website", clnt);
+//        assignEntityValueFromField("paymentTerms", clnt);
 //        assignEntityValueFromField("clientinvFrequency", clnt);
         logger.info(clnt.toString());
         return clnt;
@@ -91,8 +91,8 @@ public class CreateClientPanel extends CreateComposite {
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+//        addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+//        addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
 //        addEnumField("clientinvFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         alignFields();
     }

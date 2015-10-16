@@ -84,8 +84,8 @@ public class Vendor extends AbstractEntity {
     @JoinTable(name = "Vendor_AcctPayContacts")
     protected List<Contact> acctPayContacts;
 
-    protected String website;
-    protected String paymentTerms;
+//    protected String website;
+//    protected String paymentTerms;
 //    @Enumerated(EnumType.STRING)
 //    protected InvoiceFrequency vendorinvFrequency;
 
@@ -182,21 +182,21 @@ public class Vendor extends AbstractEntity {
         getContacts().add(contact);
     }
 
-    public String getWebsite() {
-        return website;
-    }
-
-    public void setWebsite(String website) {
-        this.website = website;
-    }
-
-    public String getPaymentTerms() {
-        return paymentTerms;
-    }
-
-    public void setPaymentTerms(String paymentTerms) {
-        this.paymentTerms = paymentTerms;
-    }
+//    public String getWebsite() {
+//        return website;
+//    }
+//
+//    public void setWebsite(String website) {
+//        this.website = website;
+//    }
+//
+//    public String getPaymentTerms() {
+//        return paymentTerms;
+//    }
+//
+//    public void setPaymentTerms(String paymentTerms) {
+//        this.paymentTerms = paymentTerms;
+//    }
 
 //    public InvoiceFrequency getVendorinvFrequency() {
 //        return vendorinvFrequency;

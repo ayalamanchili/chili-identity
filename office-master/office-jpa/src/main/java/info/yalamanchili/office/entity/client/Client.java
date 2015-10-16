@@ -55,8 +55,8 @@ public class Client extends AbstractEntity {
     protected List<Contact> contacts;
     @ManyToMany(cascade = CascadeType.MERGE)
     protected List<Vendor> vendors;
-    protected String website;
-    protected String paymentTerms;
+//    protected String website;
+//    protected String paymentTerms;
 //    @Enumerated(EnumType.STRING)
 //    protected InvoiceFrequency clientinvFrequency;
 
@@ -163,21 +163,21 @@ public class Client extends AbstractEntity {
 //      contact.setClient(this);
     }
 
-    public String getWebsite() {
-        return website;
-    }
-
-    public void setWebsite(String website) {
-        this.website = website;
-    }
-
-    public String getPaymentTerms() {
-        return paymentTerms;
-    }
-
-    public void setPaymentTerms(String paymentTerms) {
-        this.paymentTerms = paymentTerms;
-    }
+//    public String getWebsite() {
+//        return website;
+//    }
+//
+//    public void setWebsite(String website) {
+//        this.website = website;
+//    }
+//
+//    public String getPaymentTerms() {
+//        return paymentTerms;
+//    }
+//
+//    public void setPaymentTerms(String paymentTerms) {
+//        this.paymentTerms = paymentTerms;
+//    }
 
 //    public InvoiceFrequency getClientinvFrequency() {
 //        return clientinvFrequency;

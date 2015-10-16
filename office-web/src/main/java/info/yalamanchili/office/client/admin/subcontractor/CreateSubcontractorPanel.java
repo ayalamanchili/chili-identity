@@ -37,7 +37,7 @@ public class CreateSubcontractorPanel extends CreateComposite {
         JSONObject entity = new JSONObject();
         assignEntityValueFromField("name", entity);
         assignEntityValueFromField("description", entity);
-        assignEntityValueFromField("website", entity);
+//        assignEntityValueFromField("website", entity);
         logger.info(entity.toString());
         return entity;
     }
@@ -85,7 +85,7 @@ public class CreateSubcontractorPanel extends CreateComposite {
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD);
         addField("description", false, false, DataType.STRING_FIELD);
-        addField("website", false, false, DataType.STRING_FIELD);
+//        addField("website", false, false, DataType.STRING_FIELD);
     }
 
     @Override

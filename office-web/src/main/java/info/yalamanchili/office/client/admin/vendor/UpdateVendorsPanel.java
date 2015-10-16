@@ -33,8 +33,8 @@ public class UpdateVendorsPanel extends UpdateComposite {
         assignEntityValueFromField("name", entity);
         assignEntityValueFromField("description", entity);
         assignEntityValueFromField("vendorType", entity);
-        assignEntityValueFromField("website", entity);
-        assignEntityValueFromField("paymentTerms", entity);
+//        assignEntityValueFromField("website", entity);
+//        assignEntityValueFromField("paymentTerms", entity);
 //        assignEntityValueFromField("vendorinvFrequency", entity);
         return entity;
     }
@@ -60,8 +60,8 @@ public class UpdateVendorsPanel extends UpdateComposite {
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("vendorType", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("website", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("paymentTerms", entity, DataType.STRING_FIELD);
+//        assignFieldValueFromEntity("website", entity, DataType.STRING_FIELD);
+//        assignFieldValueFromEntity("paymentTerms", entity, DataType.STRING_FIELD);
 //        assignFieldValueFromEntity("vendorinvFrequency", entity, DataType.ENUM_FIELD);
     }
 
@@ -87,8 +87,8 @@ public class UpdateVendorsPanel extends UpdateComposite {
         addField("name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("vendorType", false, false, VendorType.names(), Alignment.HORIZONTAL);
-        addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+//        addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+//        addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
 //        addEnumField("vendorinvFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         alignFields();
     }
