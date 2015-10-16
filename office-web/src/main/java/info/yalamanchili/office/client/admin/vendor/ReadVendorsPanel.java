@@ -55,9 +55,9 @@ public class ReadVendorsPanel extends ReadComposite {
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("vendorType", entity, DataType.ENUM_FIELD);
-//        assignFieldValueFromEntity("website", entity, DataType.STRING_FIELD);
-//        assignFieldValueFromEntity("paymentTerms", entity, DataType.STRING_FIELD);
-//        assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("website", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("paymentTerms", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
     }
 
     @Override
@@ -73,9 +73,9 @@ public class ReadVendorsPanel extends ReadComposite {
         addField("name", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("description", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("vendorType", false, false, VendorType.names(), Alignment.HORIZONTAL);
-//        addField("website", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-//        addField("paymentTerms", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-//        addEnumField("invoiceFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+        addField("website", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("paymentTerms", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("invoiceFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         alignFields();
     }
 

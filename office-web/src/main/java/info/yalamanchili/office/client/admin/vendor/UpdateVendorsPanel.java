@@ -33,9 +33,9 @@ public class UpdateVendorsPanel extends UpdateComposite {
         assignEntityValueFromField("name", entity);
         assignEntityValueFromField("description", entity);
         assignEntityValueFromField("vendorType", entity);
-//        assignEntityValueFromField("website", entity);
-//        assignEntityValueFromField("paymentTerms", entity);
-//        assignEntityValueFromField("invoiceFrequency", entity);
+        assignEntityValueFromField("website", entity);
+        assignEntityValueFromField("paymentTerms", entity);
+        assignEntityValueFromField("invoiceFrequency", entity);
         return entity;
     }
 
@@ -60,9 +60,9 @@ public class UpdateVendorsPanel extends UpdateComposite {
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("vendorType", entity, DataType.ENUM_FIELD);
-//        assignFieldValueFromEntity("website", entity, DataType.STRING_FIELD);
-//        assignFieldValueFromEntity("paymentTerms", entity, DataType.STRING_FIELD);
-//        assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("website", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("paymentTerms", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
     }
 
     @Override
@@ -87,9 +87,9 @@ public class UpdateVendorsPanel extends UpdateComposite {
         addField("name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("vendorType", false, false, VendorType.names(), Alignment.HORIZONTAL);
-//        addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-//        addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-//        addEnumField("invoiceFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+        addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("invoiceFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         alignFields();
     }
 

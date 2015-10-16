@@ -65,6 +65,7 @@ public class ReadAllSubcontractorsPanel extends CRUDReadAllComposite {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Name"));
         table.setText(0, 2, getKeyValue("Description"));
+        table.setText(0, 3, getKeyValue("WebSite"));
     }
 
     @Override
@@ -74,6 +75,7 @@ public class ReadAllSubcontractorsPanel extends CRUDReadAllComposite {
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
             table.setText(i, 2, JSONUtils.toString(entity, "description"));
+            table.setText(i, 3, JSONUtils.toString(entity, "website"));
         }
     }
 
