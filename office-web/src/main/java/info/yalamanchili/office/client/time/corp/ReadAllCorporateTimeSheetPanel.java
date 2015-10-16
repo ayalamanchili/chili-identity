@@ -16,6 +16,7 @@ import com.google.gwt.user.client.Window;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.CRUDReadAllComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.fields.FileField;
@@ -223,7 +224,8 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
                 cancelLeaveRequest(link.getTitle());
             }
             if (link.getText().contains("Update")) {
-                new GenericPopup(new CorpEmpLeaveRequestUpdatePanel(getEntity(link.getTitle()))).show();
+                TabPanel.instance().getTimePanel().entityPanel.clear();
+                TabPanel.instance().getTimePanel().entityPanel.add(new CorpEmpLeaveRequestUpdatePanel(getEntity(link.getTitle())));
             }
         } else {
             super.onClick(event);

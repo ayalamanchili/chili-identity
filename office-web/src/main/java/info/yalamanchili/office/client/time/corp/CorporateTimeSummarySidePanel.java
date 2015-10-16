@@ -15,6 +15,7 @@ import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.GenericPopup;
+import info.yalamanchili.office.client.TabPanel;
 import java.util.logging.Logger;
 
 /**
@@ -48,7 +49,8 @@ public class CorporateTimeSummarySidePanel extends ALComposite implements ClickH
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(submitLeaveRequest)) {
-            new GenericPopup(new CorpEmpLeaveRequestPanel(CreateComposite.CreateCompositeType.CREATE)).show();
+            TabPanel.instance().getTimePanel().entityPanel.clear();
+            TabPanel.instance().getTimePanel().entityPanel.add(new CorpEmpLeaveRequestPanel(CreateComposite.CreateCompositeType.CREATE));
         }
     }
 }

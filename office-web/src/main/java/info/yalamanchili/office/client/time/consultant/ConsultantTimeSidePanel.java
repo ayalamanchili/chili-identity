@@ -150,7 +150,8 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(submitLeaveRequest)) {
-            new GenericPopup(new ConsultantEmpLeaveRequestPanel(CreateComposite.CreateCompositeType.CREATE, true)).show();
+            TabPanel.instance().getTimePanel().entityPanel.clear();
+            TabPanel.instance().getTimePanel().entityPanel.add(new ConsultantEmpLeaveRequestPanel(CreateComposite.CreateCompositeType.CREATE));
         }
         /*if (event.getSource().equals(createtimeSheetlink)) {
             TabPanel.instance().timePanel.entityPanel.clear();
