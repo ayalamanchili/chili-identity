@@ -73,11 +73,11 @@ public class CorpEmpLeaveRequestUpdatePanel extends UpdateCorporateTimeSheetPane
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Request Submited, please wait for email notification within 48 hours");
-        GenericPopup.instance().hide();
         TabPanel.instance().timePanel.entityPanel.clear();
         TabPanel.instance().getTimePanel().entityPanel.clear();
         TabPanel.instance().getTimePanel().entityPanel.add(new CorporateTimeSummaryPanel(employeeF.getSelectedObjectId()));
         TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel(employeeF.getSelectedObjectId()));
+        TabPanel.instance().getTimePanel().entityPanel.add(new ReadCurrentCorpLeavesPanel());
     }
 
     @Override
