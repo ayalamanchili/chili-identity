@@ -34,7 +34,7 @@
                    tableName="vendor_aud">
             <column name="paymentTerms" type="varchar(255)"/>
         </addColumn>
-        <addColumn catalogName="office"
+<!--        <addColumn catalogName="office"
                    schemaName="public"
                    tableName="vendor">
             <column name="vendorinvFrequency" type="varchar(255)"/>
@@ -43,6 +43,6 @@
                    schemaName="public"
                    tableName="vendor_aud">
             <column name="vendorinvFrequency" type="varchar(255)"/>
-        </addColumn>
+        </addColumn>-->
     </changeSet>
 </databaseChangeLog>

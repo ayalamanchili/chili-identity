@@ -2,7 +2,7 @@
 <!--
 
     System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
-
+    system
 -->
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
@@ -19,11 +19,11 @@
                    tableName="subcontractor">
             <column name="website" type="varchar(255)"/>
         </addColumn>
-        <addColumn catalogName="office"
+<!--        <addColumn catalogName="office"
                    schemaName="public"
                    tableName="subcontractor_aud">
             <column name="website" type="varchar(255)"/>
-        </addColumn>
+        </addColumn>-->
     </changeSet>
 </databaseChangeLog>
 
