@@ -15,7 +15,7 @@
         <!--Project Offboarding task created-->
         <userTask id="projectOffBoardingTask" 
                   name="Project Offboarding Task"
-                  activiti:candidateGroups="ROLE_ADMIN">
+                  activiti:candidateGroups="ROLE_CONSULTANT_TIME_ADMIN">
             <documentation> 
                 Associate Project Offboarding Task Details:
                 Please update project end date to this employee and complete this task

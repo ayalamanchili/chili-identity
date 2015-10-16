@@ -93,7 +93,6 @@ public class CorpEmpLeaveRequestPanel extends CreateComposite {
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Request Submited, please wait for email notification within 48 hours");
-        GenericPopup.instance().hide();
         TabPanel.instance().getTimePanel().entityPanel.clear();
         TabPanel.instance().getTimePanel().sidePanelTop.clear();
         TabPanel.instance().getTimePanel().sidePanelTop.add(new CorporateTimeSummarySidePanel());
