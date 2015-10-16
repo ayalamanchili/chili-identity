@@ -69,7 +69,6 @@ public class ReadEmployeePanel extends ReadComposite {
         assignFieldValueFromEntity("employeeId", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("jobTitle", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("branch", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("address", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("hoursPerWeek", entity, DataType.INTEGER_FIELD);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_GC_IMMIGRATION)) {
             assignFieldValueFromEntity("workStatus", entity, DataType.ENUM_FIELD);
@@ -108,7 +107,6 @@ public class ReadEmployeePanel extends ReadComposite {
         addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("jobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("branch", true, false, Branch.names(), Alignment.HORIZONTAL);
-        addField("address", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("hoursPerWeek", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_GC_IMMIGRATION)) {
             addEnumField("workStatus", true, false, WorkStatus.names(), Alignment.HORIZONTAL);
