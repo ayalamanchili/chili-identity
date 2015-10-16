@@ -58,7 +58,7 @@ public class Client extends AbstractEntity {
     protected String website;
     protected String paymentTerms;
     @Enumerated(EnumType.STRING)
-    private InvoiceFrequency invoiceFrequency;
+    private InvoiceFrequency clientinvFrequency;
 
     public void setVendors(List<Vendor> vendors) {
         this.vendors = vendors;
@@ -179,14 +179,13 @@ public class Client extends AbstractEntity {
         this.paymentTerms = paymentTerms;
     }
 
-    public InvoiceFrequency getInvoiceFrequency() {
-        return invoiceFrequency;
+    public InvoiceFrequency getClientinvFrequency() {
+        return clientinvFrequency;
     }
 
-    public void setInvoiceFrequency(InvoiceFrequency invoiceFrequency) {
-        this.invoiceFrequency = invoiceFrequency;
+    public void setClientinvFrequency(InvoiceFrequency clientinvFrequency) {
+        this.clientinvFrequency = clientinvFrequency;
     }
-
 
     @Override
     public String toString() {

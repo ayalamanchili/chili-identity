@@ -19,7 +19,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
@@ -88,7 +87,7 @@ public class Vendor extends AbstractEntity {
     protected String website;
     protected String paymentTerms;
     @Enumerated(EnumType.STRING)
-    private InvoiceFrequency invoiceFrequency;
+    private InvoiceFrequency vendorinvFrequency;
 
     public String getName() {
         return name;
@@ -199,12 +198,12 @@ public class Vendor extends AbstractEntity {
         this.paymentTerms = paymentTerms;
     }
 
-    public InvoiceFrequency getInvoiceFrequency() {
-        return invoiceFrequency;
+    public InvoiceFrequency getVendorinvFrequency() {
+        return vendorinvFrequency;
     }
 
-    public void setInvoiceFrequency(InvoiceFrequency invoiceFrequency) {
-        this.invoiceFrequency = invoiceFrequency;
+    public void setVendorinvFrequency(InvoiceFrequency vendorinvFrequency) {
+        this.vendorinvFrequency = vendorinvFrequency;
     }
 
     @Override
