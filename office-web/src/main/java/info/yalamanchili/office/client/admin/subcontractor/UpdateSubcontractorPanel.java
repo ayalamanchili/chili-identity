@@ -30,7 +30,7 @@ public class UpdateSubcontractorPanel extends UpdateComposite {
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("name", entity);
         assignEntityValueFromField("description", entity);
-//        assignEntityValueFromField("website", entity);
+        assignEntityValueFromField("website", entity);
         return entity;
     }
 
@@ -54,7 +54,7 @@ public class UpdateSubcontractorPanel extends UpdateComposite {
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
-//        assignFieldValueFromEntity("website", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("website", entity, DataType.STRING_FIELD);
     }
 
     @Override
@@ -78,7 +78,7 @@ public class UpdateSubcontractorPanel extends UpdateComposite {
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD);
         addField("description", false, false, DataType.STRING_FIELD);
-//        addField("website", false, false, DataType.STRING_FIELD);
+        addField("website", false, false, DataType.STRING_FIELD);
     }
 
     @Override
