@@ -40,9 +40,9 @@ public class CreateClientPanel extends CreateComposite {
 
         assignEntityValueFromField("name", clnt);
         assignEntityValueFromField("description", clnt);
-//        assignEntityValueFromField("website", clnt);
-//        assignEntityValueFromField("paymentTerms", clnt);
-//        assignEntityValueFromField("clientinvFrequency", clnt);
+        assignEntityValueFromField("website", clnt);
+        assignEntityValueFromField("paymentTerms", clnt);
+        assignEntityValueFromField("clientinvFrequency", clnt);
         logger.info(clnt.toString());
         return clnt;
     }
@@ -71,7 +71,7 @@ public class CreateClientPanel extends CreateComposite {
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully created Client");
-        GenericPopup.instance().hide();
+//        GenericPopup.instance().hide();
         String id = JSONUtils.toString(JSONParser.parseLenient(result), "id");
         TabPanel.instance().adminPanel.sidePanelTop.clear();
         TabPanel.instance().adminPanel.sidePanelTop.add(new TreeClientPanel(id));
@@ -91,9 +91,9 @@ public class CreateClientPanel extends CreateComposite {
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-//        addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-//        addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-//        addEnumField("clientinvFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+        addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("clientinvFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         alignFields();
     }
 

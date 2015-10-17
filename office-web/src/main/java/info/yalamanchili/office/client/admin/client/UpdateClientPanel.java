@@ -31,9 +31,9 @@ public class UpdateClientPanel extends UpdateComposite {
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("name", entity);
         assignEntityValueFromField("description", entity);
-//        assignEntityValueFromField("website", entity);
-//        assignEntityValueFromField("paymentTerms", entity);
-//        assignEntityValueFromField("clientinvFrequency", entity);
+        assignEntityValueFromField("website", entity);
+        assignEntityValueFromField("paymentTerms", entity);
+        assignEntityValueFromField("clientinvFrequency", entity);
         return entity;
     }
 
@@ -57,9 +57,9 @@ public class UpdateClientPanel extends UpdateComposite {
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
-//        assignFieldValueFromEntity("website", entity, DataType.STRING_FIELD);
-//        assignFieldValueFromEntity("paymentTerms", entity, DataType.STRING_FIELD);
-//        assignFieldValueFromEntity("clientinvFrequency", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("website", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("paymentTerms", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("clientinvFrequency", entity, DataType.ENUM_FIELD);
     }
 
     @Override
@@ -83,9 +83,9 @@ public class UpdateClientPanel extends UpdateComposite {
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-//        addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-//        addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-//        addEnumField("clientinvFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+        addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("clientinvFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         alignFields();
     }
 
