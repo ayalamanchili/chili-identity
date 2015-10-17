@@ -11,6 +11,7 @@ import info.chili.commons.BeanMapper;
 import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.dao.client.ClientDao;
+import info.yalamanchili.office.dao.client.ProjectDao;
 import info.yalamanchili.office.dao.client.SubcontractorDao;
 import info.yalamanchili.office.dao.client.VendorDao;
 import info.yalamanchili.office.dao.ext.ExternalRefDao;
@@ -21,6 +22,7 @@ import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.client.Client;
+import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.client.Subcontractor;
 import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.profile.Address;
@@ -87,6 +89,19 @@ public class ClientInformationService {
             Address address = AddressDao.instance().findById(ci.getVendorLocation().getId());
             ci.setVendorLocation(address);
         }
+        if (ci.getVendorRecruiter() != null) {
+            Contact contact = ContactDao.instance().findById(ci.getVendorRecruiter().getId());
+            ci.setVendorRecruiter(contact);
+        }
+        if (ci.getMiddleVendor() != null) {
+            Vendor vendor = VendorDao.instance().findById(ci.getMiddleVendor().getId());
+            ci.setMiddleVendor(vendor);
+        }
+        if (ci.getClientProject() != null) {
+            Project project = ProjectDao.instance().findById(ci.getClientProject().getId());
+            ci.setClientProject(project);
+        }
+
         if (ci.getRecruiter() != null) {
             Employee recruiter = EmployeeDao.instance().findById(ci.getRecruiter().getId());
             ci.setRecruiter(recruiter);

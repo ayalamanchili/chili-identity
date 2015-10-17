@@ -31,11 +31,14 @@ import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.admin.client.CreateClientPanel;
+import info.yalamanchili.office.client.admin.project.SelectProjectWidget;
 import info.yalamanchili.office.client.admin.subcntrcontact.SelectSubcontractorContactWidget;
 import info.yalamanchili.office.client.admin.subcntrlocation.SelectSubcontractorLocationWidget;
 import info.yalamanchili.office.client.admin.subcontractor.SelectSubcontractorWidget;
 import info.yalamanchili.office.client.admin.vendor.CreateVendorPanel;
+import info.yalamanchili.office.client.admin.vendor.SelectMiddleVendorWidget;
 import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorAcctPayContact;
+import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorRecruiterContactWidget;
 import info.yalamanchili.office.client.home.tasks.GenericBPMStartFormPanel;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
 
@@ -64,6 +67,9 @@ public class CreateClientInfoPanel extends CreateComposite {
         assignEntityValueFromField("vendorContact", clientInfo);
         assignEntityValueFromField("vendorAPContact", clientInfo);
         assignEntityValueFromField("vendorLocation", clientInfo);
+        assignEntityValueFromField("vendorRecruiter", clientInfo);
+        assignEntityValueFromField("middleVendor", clientInfo);
+        assignEntityValueFromField("clientProject", clientInfo);
         assignEntityValueFromField("startDate", clientInfo);
         assignEntityValueFromField("endDate", clientInfo);
         if (ReadAllClientInfoPanel.instance().numberOfRecords > 0) {
@@ -101,7 +107,9 @@ public class CreateClientInfoPanel extends CreateComposite {
             assignEntityValueFromField("terminationNotice", clientInfo);
             assignEntityValueFromField("notes", clientInfo);
         }
-
+        assignEntityValueFromField("isCPDFilled", clientInfo);
+        assignEntityValueFromField("timeSheetRequirement", clientInfo);
+        assignEntityValueFromField("vacationDetails", clientInfo);
         return clientInfo;
     }
 
@@ -171,7 +179,10 @@ public class CreateClientInfoPanel extends CreateComposite {
         addDropDown("vendorContact", new SelectVendorContactWidget(false, false, Alignment.HORIZONTAL));
         addDropDown("vendorAPContact", new SelectVendorAcctPayContact(false, false, Alignment.HORIZONTAL));
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, false, Alignment.HORIZONTAL));
+        addDropDown("vendorRecruiter", new SelectVendorRecruiterContactWidget(false, false, Alignment.HORIZONTAL));
+        addDropDown("middleVendor", new SelectMiddleVendorWidget(false, false, Alignment.HORIZONTAL));
         //Contract basic
+        addDropDown("clientProject", new SelectProjectWidget(false, false));
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         if (ReadAllClientInfoPanel.instance().numberOfRecords > 0) {
@@ -221,6 +232,9 @@ public class CreateClientInfoPanel extends CreateComposite {
             StringField jobTitleF = (StringField) fields.get("consultantJobTitle");
             jobTitleF.setValue(TreeEmployeePanel.instance().getEntity().get("jobTitle").isString().stringValue());
         }
+        addField("isCPDFilled", false, true, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        addField("timeSheetRequirement", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("vacationDetails", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
