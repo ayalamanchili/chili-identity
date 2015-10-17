@@ -41,9 +41,9 @@ public class CreateVendorPanel extends CreateComposite {
         assignEntityValueFromField("name", vendor);
         assignEntityValueFromField("description", vendor);
         assignEntityValueFromField("vendorType", vendor);
-//        assignEntityValueFromField("website", vendor);
-//        assignEntityValueFromField("paymentTerms", vendor);
-//        assignEntityValueFromField("vendorinvFrequency", vendor);
+        assignEntityValueFromField("website", vendor);
+        assignEntityValueFromField("paymentTerms", vendor);
+        assignEntityValueFromField("vendorinvFrequency", vendor);
         logger.info(vendor.toString());
         return vendor;
     }
@@ -93,9 +93,9 @@ public class CreateVendorPanel extends CreateComposite {
         addField("name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("vendorType", false, false, VendorType.names(), Alignment.HORIZONTAL);
-//        addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-//        addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-//        addEnumField("vendorinvFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+        addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("vendorinvFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         alignFields();
     }
 
