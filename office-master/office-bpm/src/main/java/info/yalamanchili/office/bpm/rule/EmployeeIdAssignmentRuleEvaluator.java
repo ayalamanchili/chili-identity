@@ -10,7 +10,8 @@ package info.yalamanchili.office.bpm.rule;
 
 import info.chili.bpm.domain.BPMTaskDelegateRule;
 import info.chili.bpm.task.AbstractTaskDelegate;
-import info.chili.bpm.types.Task;
+import java.util.ArrayList;
+import java.util.Arrays;
 import org.activiti.engine.delegate.DelegateTask;
 import org.springframework.stereotype.Component;
 
@@ -22,10 +23,14 @@ import org.springframework.stereotype.Component;
 public class EmployeeIdAssignmentRuleEvaluator extends AbstractTaskDelegate {
 
     @Override
-    public Task getDelegationInfo(DelegateTask task, BPMTaskDelegateRule rule) {
-        Task res = new Task();
-        res.setAssignee(rule.getAttributeData().trim());
-        return res;
+    public void delegate(DelegateTask task, BPMTaskDelegateRule rule) {
+        String[] ids = rule.getAttributeData().split(",");
+        if (ids.length == 1) {
+            task.setAssignee(ids[0]);
+        } else if (ids.length > 1) {
+            for(String employeeId:new ArrayList<>(Arrays.asList(ids))){
+                task.addCandidateUser(employeeId);
+            }
+        }
     }
-
 }

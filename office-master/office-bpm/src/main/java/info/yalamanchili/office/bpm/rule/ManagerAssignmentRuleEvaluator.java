@@ -10,7 +10,6 @@ package info.yalamanchili.office.bpm.rule;
 
 import info.chili.bpm.domain.BPMTaskDelegateRule;
 import info.chili.bpm.task.AbstractTaskDelegate;
-import info.chili.bpm.types.Task;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.entity.profile.Employee;
 import org.activiti.engine.delegate.DelegateTask;
@@ -24,17 +23,15 @@ import org.springframework.stereotype.Component;
 public class ManagerAssignmentRuleEvaluator extends AbstractTaskDelegate {
 
     @Override
-    public Task getDelegationInfo(DelegateTask task, BPMTaskDelegateRule rule) {
-        Task res = new Task();
+    public void delegate(DelegateTask task, BPMTaskDelegateRule rule) {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         Employee reportsToEmp = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Reports_To");
         if (reportsToEmp != null) {
-            res.setAssignee(reportsToEmp.getEmployeeId());
+            task.setAssignee(reportsToEmp.getEmployeeId());
         } else {
             //TODO avoid hard coding
-            res.setAssignee("aadmin");
+            task.setAssignee("aadmin");
         }
-        return res;
     }
 
 }

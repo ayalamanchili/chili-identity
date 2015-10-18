@@ -12,7 +12,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import info.chili.bpm.domain.BPMTaskDelegateRule;
 import info.chili.bpm.task.AbstractTaskDelegate;
-import info.chili.bpm.types.Task;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.ArrayList;
@@ -28,10 +27,8 @@ import org.springframework.stereotype.Component;
 public class AlphabetRangeRuleEvaluator extends AbstractTaskDelegate {
 
     @Override
-    public Task getDelegationInfo(DelegateTask task, BPMTaskDelegateRule rule) {
-        Task res = new Task();
-        res.setAssignee(getAssignee(task, rule));
-        return res;
+    public void delegate(DelegateTask task, BPMTaskDelegateRule rule) {
+        task.setAssignee(getAssignee(task, rule));
     }
 
     protected String getAssignee(DelegateTask task, BPMTaskDelegateRule rule) {
