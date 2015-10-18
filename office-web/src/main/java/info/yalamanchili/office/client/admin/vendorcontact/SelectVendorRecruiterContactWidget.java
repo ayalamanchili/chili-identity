@@ -2,7 +2,7 @@
  * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
  */
 /*
- * To change this template, choose Tools | Templates
+ * To change this templaSelectVendorRecruiterContactWidgette, choose Tools | Templates
  * and open the template in the editor.
  */
 package info.yalamanchili.office.client.admin.vendorcontact;
@@ -13,6 +13,7 @@ import info.chili.gwt.listeners.GenericListener;
 import info.chili.gwt.composite.SelectComposite;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.yalamanchili.office.client.admin.vendor.SelectMiddleVendorWidget;
 import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
 import java.util.logging.Logger;
 
@@ -20,22 +21,23 @@ import java.util.logging.Logger;
  *
  * @author Prashanthi
  */
-public class SelectVendorContactWidget extends SelectComposite implements GenericListener {
+public class SelectVendorRecruiterContactWidget extends SelectComposite implements GenericListener {
 
-    private static Logger logger = Logger.getLogger(SelectVendorContactWidget.class.getName());
+    private static Logger logger = Logger.getLogger(SelectVendorRecruiterContactWidget.class.getName());
 
-    public SelectVendorContactWidget(Boolean readOnly, Boolean isRequired, Alignment alignment) {
+    public SelectVendorRecruiterContactWidget(Boolean readOnly, Boolean isRequired, Alignment alignment) {
         super(OfficeWelcome.constants, "VendorContact", readOnly, isRequired, alignment);
         SelectVendorWidget.instance().addListner(this);
     }
 
-    public SelectVendorContactWidget(Boolean readOnly, Boolean isRequired) {
+    public SelectVendorRecruiterContactWidget(Boolean readOnly, Boolean isRequired) {
         super(OfficeWelcome.constants, "VendorContact", readOnly, isRequired);
         SelectVendorWidget.instance().addListner(this);
     }
 
     @Override
     protected void fetchDropDownData() {
+        logger.info("in fetchDropDownData vendor contact");
     }
 
     @Override
@@ -51,7 +53,9 @@ public class SelectVendorContactWidget extends SelectComposite implements Generi
 
     @Override
     public void fireEvent() {
+        logger.info("in vendor contact");
         if (SelectVendorWidget.instance().getSelectedObjectId() == null || SelectVendorWidget.instance().getSelectedObjectId().isEmpty()) {
+            logger.info("in vendor null contact");
             processData(null);
             return;
         }
@@ -64,3 +68,4 @@ public class SelectVendorContactWidget extends SelectComposite implements Generi
                 });
     }
 }
+

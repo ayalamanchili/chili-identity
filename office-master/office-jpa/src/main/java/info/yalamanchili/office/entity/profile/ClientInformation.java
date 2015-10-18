@@ -8,8 +8,10 @@ import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.ClientInfoComment;
 import info.yalamanchili.office.entity.client.InvoiceDeliveryMethod;
 import info.yalamanchili.office.entity.client.InvoiceFrequency;
+import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.client.Subcontractor;
 import info.yalamanchili.office.entity.client.Vendor;
+import info.yalamanchili.office.entity.message.NotificationGroup;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -285,6 +287,28 @@ public class ClientInformation extends AbstractEntity {
      */
     protected Boolean hrOrientation;
 
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_ClientProject_ClientInformations")
+    protected Project clientProject;
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_VendorRecruiter_ClientInformations")
+    protected Contact vendorRecruiter;
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_MiddleVendor_ClientInformations")
+    protected Vendor middleVendor;
+    
+    protected Boolean isCPDFilled;
+    
+    protected String timeSheetRequirement;
+    
+    protected String vacationDetails;
+    
+//    @ManyToOne(cascade = CascadeType.MERGE)
+//    @ForeignKey(name = "FK_UserGroup_ClientInformations")
+//    protected NotificationGroup notificationGroup;
+    
     public ClientInformation() {
         super();
     }
@@ -720,6 +744,62 @@ public class ClientInformation extends AbstractEntity {
     public void setHrOrientation(Boolean hrOrientation) {
         this.hrOrientation = hrOrientation;
     }
+
+    public Project getClientProject() {
+        return clientProject;
+    }
+
+    public void setClientProject(Project clientProject) {
+        this.clientProject = clientProject;
+    }
+
+    public Contact getVendorRecruiter() {
+        return vendorRecruiter;
+    }
+
+    public void setVendorRecruiter(Contact vendorRecruiter) {
+        this.vendorRecruiter = vendorRecruiter;
+    }
+
+    public Vendor getMiddleVendor() {
+        return middleVendor;
+    }
+
+    public void setMiddleVendor(Vendor middleVendor) {
+        this.middleVendor = middleVendor;
+    }
+
+    public Boolean getIsCPDFilled() {
+        return isCPDFilled;
+    }
+
+    public void setIsCPDFilled(Boolean isCPDFilled) {
+        this.isCPDFilled = isCPDFilled;
+    }
+
+    public String getTimeSheetRequirement() {
+        return timeSheetRequirement;
+    }
+
+    public void setTimeSheetRequirement(String timeSheetRequirement) {
+        this.timeSheetRequirement = timeSheetRequirement;
+    }
+
+    public String getVacationDetails() {
+        return vacationDetails;
+    }
+
+    public void setVacationDetails(String vacationDetails) {
+        this.vacationDetails = vacationDetails;
+    }
+
+//    public NotificationGroup getNotificationGroup() {
+//        return notificationGroup;
+//    }
+//
+//    public void setNotificationGroup(NotificationGroup notificationGroup) {
+//        this.notificationGroup = notificationGroup;
+//    }
 
     @Override
     public String toString() {

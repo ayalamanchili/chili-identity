@@ -15,11 +15,13 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.utils.Utils;
 import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.GenericPopup;
+import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -84,7 +86,8 @@ public class AdvanceRequisitionSidePanel extends ALComposite implements ClickHan
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createAdvanceRequisitionLink)) {
-            new GenericPopup(new AdvanceRequisitionRequestPanel()).show();
+            TabPanel.instance().expensePanel.entityPanel.clear();
+            TabPanel.instance().expensePanel.entityPanel.add(new AdvanceRequisitionRequestPanel());
         }
         if (event.getSource().equals(viewB)) {
             TabPanel.instance().expensePanel.entityPanel.clear();

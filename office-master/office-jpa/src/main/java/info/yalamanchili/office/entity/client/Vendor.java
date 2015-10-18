@@ -19,7 +19,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
@@ -85,10 +84,10 @@ public class Vendor extends AbstractEntity {
     @JoinTable(name = "Vendor_AcctPayContacts")
     protected List<Contact> acctPayContacts;
 
-//    protected String website;
-//    protected String paymentTerms;
-//    @Enumerated(EnumType.STRING)
-//    private InvoiceFrequency invoiceFrequency;
+    protected String website;
+    protected String paymentTerms;
+    @Enumerated(EnumType.STRING)
+    protected InvoiceFrequency vendorinvFrequency;
 
     public String getName() {
         return name;
@@ -183,29 +182,29 @@ public class Vendor extends AbstractEntity {
         getContacts().add(contact);
     }
 
-//    public String getWebsite() {
-//        return website;
-//    }
-//
-//    public void setWebsite(String website) {
-//        this.website = website;
-//    }
-//
-//    public String getPaymentTerms() {
-//        return paymentTerms;
-//    }
-//
-//    public void setPaymentTerms(String paymentTerms) {
-//        this.paymentTerms = paymentTerms;
-//    }
-//
-//    public InvoiceFrequency getInvoiceFrequency() {
-//        return invoiceFrequency;
-//    }
-//
-//    public void setInvoiceFrequency(InvoiceFrequency invoiceFrequency) {
-//        this.invoiceFrequency = invoiceFrequency;
-//    }
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getPaymentTerms() {
+        return paymentTerms;
+    }
+
+    public void setPaymentTerms(String paymentTerms) {
+        this.paymentTerms = paymentTerms;
+    }
+
+    public InvoiceFrequency getVendorinvFrequency() {
+        return vendorinvFrequency;
+    }
+
+    public void setVendorinvFrequency(InvoiceFrequency vendorinvFrequency) {
+        this.vendorinvFrequency = vendorinvFrequency;
+    }
 
     @Override
     public String toString() {

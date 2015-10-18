@@ -96,7 +96,7 @@ public class AdvanceRequisitionRequestPanel extends CreateComposite implements C
         new ResponseStatusWidget().show("Request Submited, please wait for email notification within 48 hours for Email confirmation");
         TabPanel.instance().expensePanel.entityPanel.clear();
         TabPanel.instance().expensePanel.entityPanel.add(new ReadAllAdvanceRequisitionPanel());
-        GenericPopup.instance().hide();
+        
     }
 
     @Override

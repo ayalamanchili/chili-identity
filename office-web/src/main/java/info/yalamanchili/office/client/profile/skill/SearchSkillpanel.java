@@ -107,8 +107,8 @@ public class SearchSkillpanel extends SearchComposite {
 
     @Override
     protected void postSearchSuccess(JSONArray result) {
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllSkillsPanel(result));
+        TabPanel.instance().recruitingPanel.entityPanel.clear();
+        TabPanel.instance().recruitingPanel.entityPanel.add(new ReadAllSkillsPanel(result));
     }
 
     @Override

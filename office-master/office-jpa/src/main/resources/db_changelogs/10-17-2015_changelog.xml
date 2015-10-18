@@ -11,38 +11,39 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
     
-    <changeSet author="mbadiginchala" id="vendor-add">
+    <changeSet author="mbadiginchala" id="client-add">
         <preConditions onFail="WARN"> 
         </preConditions>
         <addColumn catalogName="office"
                    schemaName="public"
-                   tableName="vendor">
+                   tableName="client">
             <column name="website" type="varchar(255)"/>
         </addColumn>
         <addColumn catalogName="office"
                    schemaName="public"
-                   tableName="vendor_aud">
+                   tableName="client_aud">
             <column name="website" type="varchar(255)"/>
         </addColumn>
         <addColumn catalogName="office"
                    schemaName="public"
-                   tableName="vendor">
+                   tableName="client">
             <column name="paymentTerms" type="varchar(255)"/>
         </addColumn>
         <addColumn catalogName="office"
                    schemaName="public"
-                   tableName="vendor_aud">
+                   tableName="client_aud">
             <column name="paymentTerms" type="varchar(255)"/>
         </addColumn>
         <addColumn catalogName="office"
-                   schemaName="public"
-                   tableName="vendor">
-            <column name="invoiceFrequency" type="varchar(255)"/>
+                           schemaName="public"
+                           tableName="client">
+            <column name="clientinvFrequency" type="varchar(255)"/>
         </addColumn>
         <addColumn catalogName="office"
                    schemaName="public"
-                   tableName="vendor_aud">
-            <column name="invoiceFrequency" type="varchar(255)"/>
+                   tableName="client_aud">
+            <column name="clientinvFrequency" type="varchar(255)"/>
         </addColumn>
     </changeSet>
 </databaseChangeLog>
+

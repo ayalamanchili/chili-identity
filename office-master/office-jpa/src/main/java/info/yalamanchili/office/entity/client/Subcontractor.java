@@ -60,6 +60,8 @@ public class Subcontractor extends AbstractEntity {
      */
     @ManyToMany(cascade = CascadeType.ALL)
     protected List<Address> locations;
+    
+    protected String website;
 
     public String getName() {
         return name;
@@ -114,4 +116,13 @@ public class Subcontractor extends AbstractEntity {
         }
         getLocations().add(entity);
     }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+    
 }

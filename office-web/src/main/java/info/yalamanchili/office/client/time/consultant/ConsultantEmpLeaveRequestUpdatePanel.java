@@ -61,10 +61,11 @@ public class ConsultantEmpLeaveRequestUpdatePanel extends UpdateConsultantTimeSh
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Request Submited, please wait for email notification within 48 hours");
-        GenericPopup.instance().hide();
         TabPanel.instance().timePanel.entityPanel.clear();
         TabPanel.instance().getTimePanel().entityPanel.clear();
+        TabPanel.instance().getTimePanel().entityPanel.add(new ConsultantTimeSummaryPanel());
         TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllConsultantTimeSheetsPanel());
+        TabPanel.instance().getTimePanel().entityPanel.add(new ReadCurrentConsultantLeavesPanel());
     }
 
     @Override

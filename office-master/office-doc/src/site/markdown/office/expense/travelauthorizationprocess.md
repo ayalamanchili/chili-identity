@@ -35,21 +35,24 @@ Travel Authorization Process for CEO Process Task
 ![alt text](../../images/expense/ceo-approval-task.png "Travel Authorization")
 Approved Travel Authorization
 ----
-Travel Authorization Process for Booking Manager Process
+![alt text](../../images/expense/approved-ceo.png "Travel Authorization")
+
+Travel Authorization Process for Booking Manager
 ----
 - Navigate to Expense --> Travel Authorization--> Search --> view
 - Same as above process for Travel Booking Manager also.
 
 ![alt text](../../images/expense/travel-booking-process.png "Travel Authorization")
-----
+
 Email For Travel Booking Manager
 ----
 ![alt text](../../images/expense/Email_TravelBookingManagerApproval.png "Travel Authorization")
-----
+
 Travel Authorization Process for Booking Manager Process Task
 ----
  - Navigate to Home --> MY Tasks --> view
 ![alt text](../../images/expense/booking-manager-approval-task.png "Travel Authorization")
+
 Approved Travel Authorization
 ----
 ![alt text](../../images/expense/approved-travel-authorization.png "Travel Authorization")
