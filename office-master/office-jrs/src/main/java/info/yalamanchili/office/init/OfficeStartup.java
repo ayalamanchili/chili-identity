@@ -402,6 +402,14 @@ public class OfficeStartup {
         rule3.setRuleName("employeeIdAssignmentRuleEvaluator");
         rule3.setAttributeData("adminadmin");
         em.merge(rule3);
+//rule to assign project off boarding task to list of employees
+        BPMTaskDelegateRule rule4 = new BPMTaskDelegateRule();
+        rule4.setBpmProcessId("associate_project_offboarding_process");
+        rule4.setBpmTaskId("projectOffBoardingTask");
+        rule4.setRuleName("employeeIdAssignmentRuleEvaluator");
+        rule4.setAttributeData("adminadmin,useruser");
+        em.merge(rule4);
+        //todo add rule for off boarding validation task
     }
 
     /**

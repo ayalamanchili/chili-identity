@@ -14,8 +14,7 @@
         <sequenceFlow sourceRef="projectOffBoardingTaskCreated" targetRef="projectOffBoardingTask" />
         <!--Project Offboarding task created-->
         <userTask id="projectOffBoardingTask" 
-                  name="Project Offboarding Task"
-                  activiti:candidateGroups="ROLE_CONSULTANT_TIME_ADMIN">
+                  name="Project Offboarding Task">
             <documentation> 
                 Associate Project Offboarding Task Details:
                 Please update project end date to this employee and complete this task
@@ -26,7 +25,7 @@
                 Notes                   : ${entity.notes}                   
             </documentation>
             <extensionElements>
-                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
                 <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
                 <activiti:formProperty id="notes" 
                                        name="Notes"
@@ -66,7 +65,7 @@
                 Notes                   : ${entity.notes}                
             </documentation>
             <extensionElements>
-                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
                 <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
                 <activiti:formProperty id="notes" 
                                        name="Notes"
@@ -101,7 +100,7 @@
                 Notes                   : ${entity.notes}               
             </documentation>
             <extensionElements>
-                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
                 <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
                 <activiti:formProperty id="notes" 
                                        name="Notes"
@@ -136,7 +135,7 @@
                 Notes                   : ${entity.notes}        
             </documentation>
             <extensionElements>
-                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
                 <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
                 <activiti:formProperty id="notes" 
                                        name="Notes"
@@ -161,7 +160,8 @@
         </serviceTask>
         <parallelGateway id="join" />
         <sequenceFlow sourceRef="join" targetRef="projectOffBoardingValidationTask" />
-        <userTask id="projectOffBoardingValidationTask" name="Project OffBoarding Validation Task" activiti:candidateGroups="ROLE_ADMIN">
+        <userTask id="projectOffBoardingValidationTask"
+                  name="Project OffBoarding Validation Task">
             <documentation> 
                 Associate Project Offboarding Validation Task Details:
                 Please validate offboarding details for this employee and complete this task:
@@ -172,7 +172,7 @@
                 Notes                   : ${entity.notes}                
             </documentation>
             <extensionElements>
-                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
                 <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
                 <activiti:formProperty id="notes" 
                                        name="Notes"

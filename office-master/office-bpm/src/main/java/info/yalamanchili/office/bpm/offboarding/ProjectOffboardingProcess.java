@@ -32,26 +32,26 @@ public class ProjectOffboardingProcess extends RuleBasedTaskDelegateListner {
             new GenericTaskCreateNotification().notify(task);
         }
         if ("complete".equals(task.getEventName())) {
-            projectOffboardingTaskCompleted(task);
+            if (task.getTaskDefinitionKey().equals("projectOffBoardingTask")) {
+                notifyEmployeeAndTeams(task);
+            } else {
+                new GenericTaskCompleteNotification().notify(task);
+            }
+
         }
     }
 
-    private void projectOffboardingTaskCompleted(DelegateTask dt) {
+    public void notifyEmployeeAndTeams(DelegateTask dt) {
         ProjectOffBoardingDto dto = (ProjectOffBoardingDto) dt.getExecution().getVariable("entity");
         if (dto == null) {
             return;
         }
-        notifyEmployee(dto);
-        new GenericTaskCompleteNotification().notify(dt);
-    }
-
-    public void notifyEmployee(ProjectOffBoardingDto dto) {
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
         Employee associateEmployee = EmployeeDao.instance().findById(dto.getEmployeeId());
         Email email1 = new Email();
-        email1.addTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_HR.name(), OfficeRoles.OfficeRole.ROLE_GC_IMMIGRATION.name(), OfficeRoles.OfficeRole.ROLE_H1B_IMMIGRATION.name(), OfficeRoles.OfficeRole.ROLE_RECRUITER.name() ));
-        email1.setSubject("Project Offboarding details for Employee" + associateEmployee.getFirstName() + " " + associateEmployee.getLastName());
-        email1.setBody("Project Offboarding details has been updated for Employee" + associateEmployee.getFirstName() + " " + associateEmployee.getLastName()+"\n Client : "+dto.getClientName()+"\n Vendor : "+dto.getVendorName()+"\n End Date of the project: "+dto.getEndDate()+"\n This employee project has been offboarded:" + associateEmployee.getFirstName() + " " + associateEmployee.getLastName()+ " Please Proceed your actions!!!!!");
+        email1.addTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_HR.name(), OfficeRoles.OfficeRole.ROLE_GC_IMMIGRATION.name(), OfficeRoles.OfficeRole.ROLE_H1B_IMMIGRATION.name(), OfficeRoles.OfficeRole.ROLE_RECRUITER.name()));
+        email1.setSubject("Project Offboarding Submitted for Employee" + associateEmployee.getFirstName() + " " + associateEmployee.getLastName());
+        email1.setBody("Project Offboarding request has been submitted for Employee" + associateEmployee.getFirstName() + " " + associateEmployee.getLastName() + "\n Client : " + dto.getClientName() + "\n Vendor : " + dto.getVendorName() + "\n End Date of the project: " + dto.getEndDate() + "\n This employee project has been offboarded:" + associateEmployee.getFirstName() + " " + associateEmployee.getLastName() + " Please Proceed your actions!!!!!");
         messagingService.sendEmail(email1);
     }
 }
