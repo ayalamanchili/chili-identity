@@ -906,7 +906,8 @@ public class OfficeStartup {
         techSysProj1.setName("ecomm project");
         techSysProj1.setStartDate(DateUtils.getNextMonth(new Date(), -6));
         techSysProj1.setEndDate(DateUtils.getNextMonth(new Date(), 6));
-        techSysClient.addProject(techSysProj1);
+//        techSysClient.addProject(techSysProj1);
+        techSysProj1.setClient(techSysClient);
 
         StatementOfWork techSysSow1 = new StatementOfWork();
         techSysSow1.setName("Tech Systems-ecomm proj--sow1");

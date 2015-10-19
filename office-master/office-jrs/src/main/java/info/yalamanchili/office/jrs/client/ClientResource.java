@@ -125,7 +125,11 @@ public class ClientResource extends CRUDResource<Client> {
         Vendor middleVendor = vendorDao.findById(midVenID);
         project.setVendor(vendor);
         project.setMiddleVendor(middleVendor);
-        clnt.addProject(project);
+        project.setClient(clnt);
+        vendor.getClients().add(clnt);
+        middleVendor.getClients().add(clnt);
+        clnt.getVendors().add(vendor);
+        em.merge(project);
         return project;
     }
 
@@ -136,8 +140,9 @@ public class ClientResource extends CRUDResource<Client> {
             @PathParam("limit") int limit) {
         ProjectTable tableObj = new ProjectTable();
         Client elient = (Client) getDao().findById(id);
-        tableObj.setEntities(elient.getProjects());
-        tableObj.setSize((long) elient.getProjects().size());
+// To do - get project information from Project object using Client id
+//        tableObj.setEntities(elient.getProjects());
+//        tableObj.setSize((long) elient.getProjects().size());
         return tableObj;
     }
 
