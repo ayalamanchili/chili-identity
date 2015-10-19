@@ -21,5 +21,6 @@
             <dropForeignKeyConstraint
                 baseTableName="client"
                 constraintName="FK_Client_Projects"/>  
-        </changeSet>    
+        </changeSet>  
+    </changeSet>  
 </databaseChangeLog>
