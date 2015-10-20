@@ -9,6 +9,9 @@ package info.yalamanchili.office.client.tae.Attendence;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
@@ -70,6 +73,16 @@ public class AttendenceSidePanel extends ALComposite implements ClickHandler {
     protected void addListeners() {
         showTimeSheetsForEmpB.addClickHandler(this);
         reportsB.addClickHandler(this);
+        employeeSB.addDomHandler(new Handler(), KeyPressEvent.getType());
+    }
+    final class Handler implements KeyPressHandler{
+        @Override
+        public void onKeyPress(KeyPressEvent event) {
+            if (event.getCharCode()==KeyCodes.KEY_ENTER) {
+                TabPanel.instance().getTimePanel().entityPanel.clear();
+                TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllTimeRecordsPanel(employeeSB.getKey()));
+            }
+        }
     }
 
     @Override

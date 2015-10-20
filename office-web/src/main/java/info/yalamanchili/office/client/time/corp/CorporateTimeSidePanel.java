@@ -9,6 +9,9 @@ package info.yalamanchili.office.client.time.corp;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
@@ -103,6 +106,19 @@ public class CorporateTimeSidePanel extends ALComposite implements ClickHandler 
         clearReportsL.addClickHandler(this);
         reportsB.addClickHandler(this);
         summaryReportL.addClickHandler(this);
+        employeeSB.addDomHandler(new Handler(), KeyPressEvent.getType());
+    }
+    final class Handler implements KeyPressHandler {
+
+        @Override
+        public void onKeyPress(KeyPressEvent event) {
+            if (event.getCharCode()==KeyCodes.KEY_ENTER) {
+                TabPanel.instance().getTimePanel().entityPanel.clear();
+                TabPanel.instance().getTimePanel().entityPanel.add(new CorporateTimeSummaryPanel(employeeSB.getKey()));
+                TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel(employeeSB.getKey()));
+            }
+        }
+
     }
 
     @Override

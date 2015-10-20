@@ -9,6 +9,9 @@ package info.yalamanchili.office.client.advancerequisition;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Button;
@@ -49,6 +52,19 @@ public class AdvanceRequisitionSidePanel extends ALComposite implements ClickHan
     protected void addListeners() {
         createAdvanceRequisitionLink.addClickHandler(this);
         viewB.addClickHandler(this);
+        employeeSB.addDomHandler(new Handler(), KeyPressEvent.getType());
+
+    }
+
+    final class Handler implements KeyPressHandler {
+
+        @Override
+        public void onKeyPress(KeyPressEvent event) {
+            if (event.getCharCode() == KeyCodes.KEY_ENTER) {
+                TabPanel.instance().expensePanel.entityPanel.clear();
+                TabPanel.instance().expensePanel.entityPanel.add(new ReadAllAdvanceRequisitionPanel(getadvanceURL(0, "10")));
+            }
+        }
     }
 
     @Override
