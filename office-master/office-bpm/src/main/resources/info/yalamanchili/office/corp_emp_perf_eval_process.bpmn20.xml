@@ -25,7 +25,11 @@
                 
                 Employee Name              : #{currentEmployee.firstName} #{currentEmployee.lastName}
                 Evaluation Fiscal Year     : #{entity.evaluationFYYear}
-                
+                Key Accomplishments        : #{entity.getKeyAccomplishments()}
+                Manager Comments           : #{entity.getManagerComments()}        
+                Employee Comments          : #{entity.getEmployeeComments()}
+                HR Comments                : #{entity.getHrComments()}
+
                 Detailed instructions below:
                 https://apps.sstech.us/site/office/perf-eval/corp-approval-process.html
             </documentation>

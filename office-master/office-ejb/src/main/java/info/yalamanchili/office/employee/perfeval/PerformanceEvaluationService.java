@@ -136,6 +136,9 @@ public class PerformanceEvaluationService {
     }
 
     protected String startCorporatePerformanceEvaluationProcess(PerformanceEvaluation entity, Employee emp) {
+        if (entity.getBpmProcessId() != null) {
+            OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getBpmProcessId(), true); 
+        }
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("entityId", entity.getId());
         vars.put("entity", entity);
