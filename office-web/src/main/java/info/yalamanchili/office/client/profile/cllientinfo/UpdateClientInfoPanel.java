@@ -23,12 +23,15 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.admin.client.SelectClientWidget;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
 import info.yalamanchili.office.client.admin.clientlocation.SelectClientLocationWidget;
+import info.yalamanchili.office.client.admin.project.SelectProjectWidget;
 import info.yalamanchili.office.client.admin.subcntrcontact.SelectSubcontractorContactWidget;
 import info.yalamanchili.office.client.admin.subcntrlocation.SelectSubcontractorLocationWidget;
 import info.yalamanchili.office.client.admin.subcontractor.SelectSubcontractorWidget;
+import info.yalamanchili.office.client.admin.vendor.SelectMiddleVendorWidget;
 import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
 import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorAcctPayContact;
 import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorContactWidget;
+import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorRecruiterContactWidget;
 import info.yalamanchili.office.client.admin.vendorlocation.SelectVendorLocationsWidget;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
 import info.yalamanchili.office.client.profile.updateBillingRate.CreateUpdateBillingRatePanel;
@@ -54,6 +57,9 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         assignEntityValueFromField("vendorContact", entity);
         assignEntityValueFromField("vendorAPContact", entity);
         assignEntityValueFromField("vendorLocation", entity);
+        assignEntityValueFromField("vendorRecruiter", entity);
+        assignEntityValueFromField("middleVendor", entity);
+        assignEntityValueFromField("clientProject", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_TIME, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_RELATIONSHIP)) {
@@ -95,6 +101,9 @@ public class UpdateClientInfoPanel extends UpdateComposite {
             assignEntityValueFromField("terminationNotice", entity);
             assignEntityValueFromField("notes", entity);
         }
+        assignEntityValueFromField("isCPDFilled", entity);
+        assignEntityValueFromField("timeSheetRequirement", entity);
+        assignEntityValueFromField("vacationDetails", entity);
         return entity;
     }
 
@@ -133,6 +142,9 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         assignFieldValueFromEntity("vendorContact", entity, null);
         assignFieldValueFromEntity("vendorAPContact", entity, null);
         assignFieldValueFromEntity("vendorLocation", entity, null);
+        assignFieldValueFromEntity("vendorRecruiter", entity, null);
+        assignFieldValueFromEntity("middleVendor", entity, null);
+        assignFieldValueFromEntity("clientProject", entity, null);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_TIME, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_RELATIONSHIP)) {
@@ -175,6 +187,9 @@ public class UpdateClientInfoPanel extends UpdateComposite {
             assignFieldValueFromEntity("terminationNotice", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
         }
+        assignFieldValueFromEntity("isCPDFilled", entity, DataType.BOOLEAN_FIELD);
+        assignFieldValueFromEntity("timeSheetRequirement", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("vacationDetails", entity, DataType.STRING_FIELD);
     }
 
     @Override
@@ -198,6 +213,9 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         addDropDown("vendorContact", new SelectVendorContactWidget(false, false, Alignment.HORIZONTAL));
         addDropDown("vendorAPContact", new SelectVendorAcctPayContact(false, false, Alignment.HORIZONTAL));
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, false, Alignment.HORIZONTAL));
+        addDropDown("vendorRecruiter", new SelectVendorRecruiterContactWidget(false, false, Alignment.HORIZONTAL));
+        addDropDown("middleVendor", new SelectMiddleVendorWidget(false, false, Alignment.HORIZONTAL));
+        addDropDown("clientProject", new SelectProjectWidget(false, false));
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_TIME, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_RELATIONSHIP)) {
@@ -249,6 +267,9 @@ public class UpdateClientInfoPanel extends UpdateComposite {
             addField("terminationNotice", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("notes", false, false, DataType.RICH_TEXT_AREA);
         }
+        addField("isCPDFilled", false, true, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        addField("timeSheetRequirement", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("vacationDetails", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
