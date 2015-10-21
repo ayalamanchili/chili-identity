@@ -20,6 +20,7 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.admin.client.SelectClientWidget;
 import info.yalamanchili.office.client.admin.client.TreeClientPanel;
+import info.yalamanchili.office.client.admin.vendor.SelectMiddleVendorWidget;
 import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
 import java.util.logging.Logger;
 
@@ -31,9 +32,9 @@ public class CreateProjectPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateProjectPanel.class.getName());
     protected boolean showClient;
-    SelectClientWidget clientT = new SelectClientWidget(showClient, false,Alignment.HORIZONTAL);
-    SelectVendorWidget selectVendor = new SelectVendorWidget(false, true,Alignment.HORIZONTAL);
-    SelectVendorWidget selectMiddleVendor = new SelectVendorWidget(false, true,Alignment.HORIZONTAL);
+    SelectClientWidget clientT = new SelectClientWidget(showClient, false, Alignment.HORIZONTAL);
+    SelectVendorWidget selectVendor = new SelectVendorWidget(false, true, Alignment.HORIZONTAL);
+    SelectMiddleVendorWidget selectMiddleVendor = new SelectMiddleVendorWidget(false, true, Alignment.HORIZONTAL);
     String clntId = null;
     String vendorID = null;
     String midVendorID = null;
@@ -103,16 +104,16 @@ public class CreateProjectPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("name", false, true, DataType.STRING_FIELD,Alignment.HORIZONTAL);
-        addField("description", false, false, DataType.TEXT_AREA_FIELD,Alignment.HORIZONTAL);
-        addField("startDate", false, true, DataType.DATE_FIELD,Alignment.HORIZONTAL);
-        addField("endDate", false, true, DataType.DATE_FIELD,Alignment.HORIZONTAL);
+        addField("name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("description", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("endDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addDropDown("vendor", selectVendor);
-        addField("purchaseOrderNo", false, true, DataType.STRING_FIELD,Alignment.HORIZONTAL);
-        addField("subContractorWorkOrderNo", false, true, DataType.STRING_FIELD,Alignment.HORIZONTAL);
+        addField("purchaseOrderNo", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("subContractorWorkOrderNo", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addDropDown("middleVendor", selectMiddleVendor);
         if (showClient) {
-            addDropDown("client", new SelectClientWidget(false, true,Alignment.HORIZONTAL));
+            addDropDown("client", new SelectClientWidget(false, true, Alignment.HORIZONTAL));
         }
         alignFields();
     }
@@ -131,6 +132,6 @@ public class CreateProjectPanel extends CreateComposite {
         }
         vendorID = JSONUtils.toString(selectVendor.getSelectedObject(), "id");
         midVendorID = JSONUtils.toString(selectMiddleVendor.getSelectedObject(), "id");
-        return OfficeWelcome.constants.root_url() + "client/project/" + clntId + "/" +  vendorID  + "/" +  midVendorID;
+        return OfficeWelcome.constants.root_url() + "client/project/" + clntId + "/" + vendorID + "/" + midVendorID;
     }
 }

@@ -198,9 +198,9 @@ public class ReadClientInfoPanel extends ReadComposite {
             addField("terminationNotice", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("notes", true, false, DataType.RICH_TEXT_AREA);
         }
-        addField("isCPDFilled", false, true, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-        addField("timeSheetRequirement", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("vacationDetails", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("isCPDFilled", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        addField("timeSheetRequirement", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("vacationDetails", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 

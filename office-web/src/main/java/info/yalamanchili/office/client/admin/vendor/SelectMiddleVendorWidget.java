@@ -26,12 +26,12 @@ public class SelectMiddleVendorWidget extends SelectComposite {
     }
 
     public SelectMiddleVendorWidget(Boolean readOnly, Boolean isRequired, Alignment alignment) {
-        super(OfficeWelcome.constants, "Vendor", readOnly, isRequired, alignment);
+        super(OfficeWelcome.constants, "MiddleVendor", readOnly, isRequired, alignment);
         instance = this;
     }
 
     public SelectMiddleVendorWidget(Boolean readOnly, Boolean isRequired) {
-        super(OfficeWelcome.constants, "Vendor", readOnly, isRequired);
+        super(OfficeWelcome.constants, "MiddleVendor", readOnly, isRequired);
         instance = this;
     }
 
