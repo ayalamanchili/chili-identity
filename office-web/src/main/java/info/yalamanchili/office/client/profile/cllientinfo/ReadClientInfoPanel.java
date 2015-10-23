@@ -19,12 +19,15 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.admin.client.SelectClientWidget;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
 import info.yalamanchili.office.client.admin.clientlocation.SelectClientLocationWidget;
+import info.yalamanchili.office.client.admin.project.SelectProjectWidget;
 import info.yalamanchili.office.client.admin.subcntrcontact.SelectSubcontractorContactWidget;
 import info.yalamanchili.office.client.admin.subcntrlocation.SelectSubcontractorLocationWidget;
 import info.yalamanchili.office.client.admin.subcontractor.SelectSubcontractorWidget;
+import info.yalamanchili.office.client.admin.vendor.SelectMiddleVendorWidget;
 import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
 import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorAcctPayContact;
 import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorContactWidget;
+import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorRecruiterContactWidget;
 import info.yalamanchili.office.client.admin.vendorlocation.SelectVendorLocationsWidget;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
@@ -61,6 +64,9 @@ public class ReadClientInfoPanel extends ReadComposite {
         assignFieldValueFromEntity("vendorContact", entity, null);
         assignFieldValueFromEntity("vendorAPContact", entity, null);
         assignFieldValueFromEntity("vendorLocation", entity, null);
+        assignFieldValueFromEntity("vendorRecruiter", entity, null);
+        assignFieldValueFromEntity("middleVendor", entity, null);
+        assignFieldValueFromEntity("clientProject", entity, null);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         if (checkPermission()) {
@@ -103,6 +109,9 @@ public class ReadClientInfoPanel extends ReadComposite {
             assignFieldValueFromEntity("terminationNotice", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
         }
+        assignFieldValueFromEntity("isCPDFilled", entity, DataType.BOOLEAN_FIELD);
+        assignFieldValueFromEntity("timeSheetRequirement", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("vacationDetails", entity, DataType.STRING_FIELD);
     }
 
     protected void renderBillingRatesPanel() {
@@ -136,6 +145,9 @@ public class ReadClientInfoPanel extends ReadComposite {
         addDropDown("vendorContact", new SelectVendorContactWidget(true, false, Alignment.HORIZONTAL));
         addDropDown("vendorAPContact", new SelectVendorAcctPayContact(false, false, Alignment.HORIZONTAL));
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(true, false, Alignment.HORIZONTAL));
+        addDropDown("vendorRecruiter", new SelectVendorRecruiterContactWidget(false, false, Alignment.HORIZONTAL));
+        addDropDown("middleVendor", new SelectMiddleVendorWidget(false, false, Alignment.HORIZONTAL));
+        addDropDown("clientProject", new SelectProjectWidget(false, false));
         addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         if (checkPermission()) {
@@ -186,6 +198,9 @@ public class ReadClientInfoPanel extends ReadComposite {
             addField("terminationNotice", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("notes", true, false, DataType.RICH_TEXT_AREA);
         }
+        addField("isCPDFilled", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        addField("timeSheetRequirement", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("vacationDetails", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 

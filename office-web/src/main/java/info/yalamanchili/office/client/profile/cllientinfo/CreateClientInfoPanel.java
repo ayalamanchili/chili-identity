@@ -232,9 +232,9 @@ public class CreateClientInfoPanel extends CreateComposite {
             StringField jobTitleF = (StringField) fields.get("consultantJobTitle");
             jobTitleF.setValue(TreeEmployeePanel.instance().getEntity().get("jobTitle").isString().stringValue());
         }
-        addField("isCPDFilled", false, true, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-        addField("timeSheetRequirement", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("vacationDetails", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("isCPDFilled", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        addField("timeSheetRequirement", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("vacationDetails", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 

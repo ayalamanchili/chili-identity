@@ -16,7 +16,33 @@ public enum Relationship {
 
     Spouse,
     Child1,
-    Child2;
+    Child2,
+    Mother,
+    Father,
+    Son,
+    Daughter,
+    Son_in_Law,
+    Daughter_in_Law,
+    GrandSon,
+    GrandDaughter,
+    Great_GrandSon,
+    Great_GrandDaughter,
+    Father_in_Law,
+    Mother_in_Law,
+    Brother_in_Law,
+    Sister_in_Law,
+    Nephew,
+    Niece,
+    Cousin,
+    Uncle,
+    Aunt,
+    GrandUncle,
+    GrandAunt,
+    Husband,
+    PaternalCousin,
+    Friend,
+    Relative,
+    Sister;
 
     public static String[] names() {
         Relationship[] values = values();

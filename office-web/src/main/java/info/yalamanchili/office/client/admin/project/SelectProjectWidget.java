@@ -13,7 +13,6 @@ import info.chili.gwt.composite.SelectComposite;
 import info.chili.gwt.listeners.GenericListener;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
-import info.yalamanchili.office.client.admin.client.SelectClientWidget;
 import info.yalamanchili.office.client.profile.cllientinfo.SelectClientInfoWidget;
 import java.util.logging.Logger;
 
@@ -60,11 +59,9 @@ public class SelectProjectWidget extends SelectComposite implements GenericListe
 
     @Override
     public void fireEvent() {
-        if ((SelectClientInfoWidget.instance().getSelectedObjectId() == null || SelectClientInfoWidget.instance().getSelectedObjectId().isEmpty())
-                && (SelectClientWidget.instance().getSelectedObjectId() == null || SelectClientWidget.instance().getSelectedObjectId().isEmpty())) {
+        if (SelectClientInfoWidget.instance().getSelectedObjectId() == null || SelectClientInfoWidget.instance().getSelectedObjectId().isEmpty()) {
             processData(null);
             return;
-
         }
         processData();
     }

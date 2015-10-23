@@ -32,7 +32,7 @@ public class TreeClientPanel extends TreePanelComposite {
         return instance;
     }
     private static Logger logger = Logger.getLogger(TreeClientPanel.class.getName());
-    protected static final String PROJECT_NODE = "project";
+//    protected static final String PROJECT_NODE = "project";
     protected static final String CLIENTLOCATION_NODE = "clientlocation";
     protected static final String CONTACTS_NODE = "contacts";
 
@@ -64,18 +64,18 @@ public class TreeClientPanel extends TreePanelComposite {
 
     @Override
     protected void addWidgets() {
-        addFirstChildLink("Project", PROJECT_NODE);
+//        addFirstChildLink("Project", PROJECT_NODE);
         addFirstChildLink("Locations", CLIENTLOCATION_NODE);
         addFirstChildLink("Contacts", CONTACTS_NODE);
     }
 
     @Override
     public void treeNodeSelected(String entityNodeKey) {
-        if (PROJECT_NODE.equals(entityNodeKey)) {
-            TabPanel.instance().adminPanel.entityPanel.clear();
-            TabPanel.instance().adminPanel.entityPanel.add(new ReadAllProjectsPanel(entityId));
-            TabPanel.instance().adminPanel.entityPanel.add(new ProjectOptionsPanel());
-        }
+//        if (PROJECT_NODE.equals(entityNodeKey)) {
+//            TabPanel.instance().adminPanel.entityPanel.clear();
+//            TabPanel.instance().adminPanel.entityPanel.add(new ReadAllProjectsPanel(entityId));
+//            TabPanel.instance().adminPanel.entityPanel.add(new ProjectOptionsPanel());
+//        }
         if (CLIENTLOCATION_NODE.equals(entityNodeKey)) {
             TabPanel.instance().adminPanel.entityPanel.clear();
             TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientLocationsPanel(entityId));

@@ -144,6 +144,10 @@
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.advance.AdvanceRequestProcess" />
                 <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.advance.AdvanceRequestProcess" />
+                <activiti:formProperty id="approvedAmount" 
+                                       name="Approved Amount"
+                                       required="true" 
+                                       type="string" />
                 <activiti:formProperty id="status" 
                                        name="Approved?"
                                        required="true"

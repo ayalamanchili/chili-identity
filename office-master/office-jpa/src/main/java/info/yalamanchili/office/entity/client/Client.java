@@ -47,8 +47,9 @@ public class Client extends AbstractEntity {
     @org.hibernate.annotations.Index(name = "CLNT_NM")
     protected String name;
     protected String description;
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
-    protected List<Project> projects;
+// #client should not have projects associate to it.
+//    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+//    protected List<Project> projects;
     @ManyToMany(cascade = CascadeType.ALL)
     protected List<Address> locations;
     @ManyToMany(cascade = CascadeType.ALL)
@@ -100,28 +101,28 @@ public class Client extends AbstractEntity {
      *
      * @generated
      */
-    @XmlTransient
-    public List<Project> getProjects() {
-        if (this.projects == null) {
-            this.projects = new ArrayList<Project>();
-        }
-        return this.projects;
-    }
+//    @XmlTransient
+//    public List<Project> getProjects() {
+//        if (this.projects == null) {
+//            this.projects = new ArrayList<Project>();
+//        }
+//        return this.projects;
+//    }
+//
+//    /**
+//     * @generated
+//     */
+//    public void setProjects(List<Project> projects) {
+//        this.projects = projects;
+//    }
 
-    /**
-     * @generated
-     */
-    public void setProjects(List<Project> projects) {
-        this.projects = projects;
-    }
-
-    public void addProject(Project entity) {
-        if (entity == null) {
-            return;
-        }
-        getProjects().add(entity);
-        entity.setClient(this);
-    }
+//    public void addProject(Project entity) {
+//        if (entity == null) {
+//            return;
+//        }
+//        getProjects().add(entity);
+//        entity.setClient(this);
+//    }
 
     @XmlTransient
     public List<Address> getLocations() {

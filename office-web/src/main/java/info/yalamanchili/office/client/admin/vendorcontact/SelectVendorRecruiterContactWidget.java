@@ -13,7 +13,6 @@ import info.chili.gwt.listeners.GenericListener;
 import info.chili.gwt.composite.SelectComposite;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
-import info.yalamanchili.office.client.admin.vendor.SelectMiddleVendorWidget;
 import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
 import java.util.logging.Logger;
 
@@ -26,12 +25,12 @@ public class SelectVendorRecruiterContactWidget extends SelectComposite implemen
     private static Logger logger = Logger.getLogger(SelectVendorRecruiterContactWidget.class.getName());
 
     public SelectVendorRecruiterContactWidget(Boolean readOnly, Boolean isRequired, Alignment alignment) {
-        super(OfficeWelcome.constants, "VendorContact", readOnly, isRequired, alignment);
+        super(OfficeWelcome.constants, "VendorRecruiter", readOnly, isRequired, alignment);
         SelectVendorWidget.instance().addListner(this);
     }
 
     public SelectVendorRecruiterContactWidget(Boolean readOnly, Boolean isRequired) {
-        super(OfficeWelcome.constants, "VendorContact", readOnly, isRequired);
+        super(OfficeWelcome.constants, "VendorRecruiter", readOnly, isRequired);
         SelectVendorWidget.instance().addListner(this);
     }
 
