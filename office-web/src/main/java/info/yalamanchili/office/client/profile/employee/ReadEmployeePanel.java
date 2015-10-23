@@ -137,7 +137,7 @@ public class ReadEmployeePanel extends ReadComposite {
 
     @Override
     protected boolean enableAudit() {
-        return Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP);
+        return Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_CORPORATE_TIME_REPORTS);
     }
 
     @Override
