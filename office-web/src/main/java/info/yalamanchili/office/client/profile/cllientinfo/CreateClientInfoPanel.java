@@ -69,7 +69,7 @@ public class CreateClientInfoPanel extends CreateComposite {
         assignEntityValueFromField("vendorLocation", clientInfo);
         assignEntityValueFromField("vendorRecruiter", clientInfo);
         assignEntityValueFromField("middleVendor", clientInfo);
-        assignEntityValueFromField("clientProject", clientInfo);
+//        assignEntityValueFromField("clientProject", clientInfo);
         assignEntityValueFromField("startDate", clientInfo);
         assignEntityValueFromField("endDate", clientInfo);
         if (ReadAllClientInfoPanel.instance().numberOfRecords > 0) {
@@ -182,7 +182,7 @@ public class CreateClientInfoPanel extends CreateComposite {
         addDropDown("vendorRecruiter", new SelectVendorRecruiterContactWidget(false, false, Alignment.HORIZONTAL));
         addDropDown("middleVendor", new SelectMiddleVendorWidget(false, false, Alignment.HORIZONTAL));
         //Contract basic
-        addDropDown("clientProject", new SelectProjectWidget(false, false));
+//        addDropDown("clientProject", new SelectProjectWidget(false, false));
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         if (ReadAllClientInfoPanel.instance().numberOfRecords > 0) {
