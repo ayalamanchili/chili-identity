@@ -40,6 +40,10 @@
                                        name="Signed Copy Of WorkOrder"
                                        required="false"
                                        type="boolean"/>
+                <activiti:formProperty id="specialInvoiceInstructions" 
+                                       name="Special Invoice Instructions"
+                                       required="false"
+                                       type="string"/>
                 <activiti:formProperty id="accountNotes" 
                                        name="Notes"
                                        required="false"
@@ -85,7 +89,7 @@
                                        name="Account verification Docs"
                                        required="false"
                                        type="boolean"/>
-                 
+         
                 <activiti:formProperty id="i9Filled" 
                                        name="I9 Filled"
                                        required="false"

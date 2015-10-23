@@ -9,6 +9,7 @@ package info.yalamanchili.office.client;
 
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.entity.profile.ClientInformation;
+import info.yalamanchili.office.entity.profile.ClientInformationStatus;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
 import org.springframework.stereotype.Component;
@@ -26,6 +27,7 @@ public class NewClientInfoAccountSubmit implements JavaDelegate {
     public void execute(DelegateExecution execution) throws Exception {
         Object itemNumber = execution.getVariable("itemNumber");
         Object acctNotes = execution.getVariable("accountNotes");
+        Object specialInvoiceInstructions = execution.getVariable("specialInvoiceInstructions");
         ClientInformation ci = (ClientInformation) execution.getVariable("clientInfo");
         ClientInformationDao dao = ClientInformationDao.instance();
         ci = dao.findById(ci.getId());
@@ -44,6 +46,10 @@ public class NewClientInfoAccountSubmit implements JavaDelegate {
             if (signedWO != null) {
                 ci.setSignedCopyOfWorkOrder(Boolean.parseBoolean(signedWO.toString()));
             }
+            if (specialInvoiceInstructions != null) {
+                ci.setSpecialInvoiceInstructions(specialInvoiceInstructions.toString());
+            }
+            ci.setStatus(ClientInformationStatus.PENDING_HR_VERIFICATION);
             dao.instance().save(ci);
         }
     }

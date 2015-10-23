@@ -298,17 +298,18 @@ public class ClientInformation extends AbstractEntity {
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_MiddleVendor_ClientInformations")
     protected Vendor middleVendor;
-    
+
     protected Boolean isCPDFilled;
-    
+
     protected String timeSheetRequirement;
-    
+
     protected String vacationDetails;
-    
-//    @ManyToOne(cascade = CascadeType.MERGE)
-//    @ForeignKey(name = "FK_UserGroup_ClientInformations")
-//    protected NotificationGroup notificationGroup;
-    
+
+    protected String specialInvoiceInstructions;
+
+    @Enumerated(EnumType.STRING)
+    private ClientInformationStatus status;
+
     public ClientInformation() {
         super();
     }
@@ -793,13 +794,21 @@ public class ClientInformation extends AbstractEntity {
         this.vacationDetails = vacationDetails;
     }
 
-//    public NotificationGroup getNotificationGroup() {
-//        return notificationGroup;
-//    }
-//
-//    public void setNotificationGroup(NotificationGroup notificationGroup) {
-//        this.notificationGroup = notificationGroup;
-//    }
+    public String getSpecialInvoiceInstructions() {
+        return specialInvoiceInstructions;
+    }
+
+    public void setSpecialInvoiceInstructions(String specialInvoiceInstructions) {
+        this.specialInvoiceInstructions = specialInvoiceInstructions;
+    }
+
+    public ClientInformationStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ClientInformationStatus status) {
+        this.status = status;
+    }
 
     @Override
     public String toString() {

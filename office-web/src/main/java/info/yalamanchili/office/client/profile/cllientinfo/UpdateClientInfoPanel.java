@@ -81,6 +81,8 @@ public class UpdateClientInfoPanel extends UpdateComposite {
             assignEntityValueFromField("w4Filled", entity);
             assignEntityValueFromField("logisticsPreparation", entity);
             assignEntityValueFromField("hrOrientation", entity);
+            assignEntityValueFromField("timeSheetRequirement", entity);
+            assignEntityValueFromField("specialInvoiceInstructions", entity);
             if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
                 assignEntityValueFromField("subcontractor", entity);
                 assignEntityValueFromField("subcontractorContact", entity);
@@ -102,7 +104,6 @@ public class UpdateClientInfoPanel extends UpdateComposite {
             assignEntityValueFromField("notes", entity);
         }
         assignEntityValueFromField("isCPDFilled", entity);
-        assignEntityValueFromField("timeSheetRequirement", entity);
         assignEntityValueFromField("vacationDetails", entity);
         return entity;
     }
@@ -186,9 +187,10 @@ public class UpdateClientInfoPanel extends UpdateComposite {
             }
             assignFieldValueFromEntity("terminationNotice", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
+            assignFieldValueFromEntity("timeSheetRequirement", entity, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("specialInvoiceInstructions", entity, DataType.STRING_FIELD);
         }
         assignFieldValueFromEntity("isCPDFilled", entity, DataType.BOOLEAN_FIELD);
-        assignFieldValueFromEntity("timeSheetRequirement", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("vacationDetails", entity, DataType.STRING_FIELD);
     }
 
@@ -244,6 +246,8 @@ public class UpdateClientInfoPanel extends UpdateComposite {
             addField("w4Filled", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("logisticsPreparation", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("hrOrientation", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+            addField("timeSheetRequirement", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField("specialInvoiceInstructions", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
                 entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
                 addDropDown("subcontractor", new SelectSubcontractorWidget(false, false, Alignment.HORIZONTAL));
@@ -268,7 +272,6 @@ public class UpdateClientInfoPanel extends UpdateComposite {
             addField("notes", false, false, DataType.RICH_TEXT_AREA);
         }
         addField("isCPDFilled", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-        addField("timeSheetRequirement", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("vacationDetails", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }

@@ -108,9 +108,11 @@ public class ReadClientInfoPanel extends ReadComposite {
             }
             assignFieldValueFromEntity("terminationNotice", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
+            assignFieldValueFromEntity("timeSheetRequirement", entity, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("specialInvoiceInstructions", entity, DataType.STRING_FIELD);
         }
         assignFieldValueFromEntity("isCPDFilled", entity, DataType.BOOLEAN_FIELD);
-        assignFieldValueFromEntity("timeSheetRequirement", entity, DataType.STRING_FIELD);
+        
         assignFieldValueFromEntity("vacationDetails", entity, DataType.STRING_FIELD);
     }
 
@@ -196,11 +198,12 @@ public class ReadClientInfoPanel extends ReadComposite {
             addField("logisticsPreparation", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("hrOrientation", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("terminationNotice", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField("timeSheetRequirement", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField("specialInvoiceInstructions", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("notes", true, false, DataType.RICH_TEXT_AREA);
         }
-        addField("isCPDFilled", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-        addField("timeSheetRequirement", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("vacationDetails", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("isCPDFilled", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        addField("vacationDetails", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
