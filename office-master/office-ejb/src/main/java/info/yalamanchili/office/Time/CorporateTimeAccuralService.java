@@ -129,12 +129,12 @@ public class CorporateTimeAccuralService {
             if (ptoAccruedTS.getId() != null) {
                 CorporateTimeSheet previousVersion = (CorporateTimeSheet) AuditService.instance().mostRecentVersion(CorporateTimeSheet.class, ptoAccruedTS.getId());
                 if (previousVersion != null) {
-                    ptoAccruedTS.setHours(ptoAccruedTS.getHours().subtract(TimeAccuralConstants.indiaTeamMonthlyAccrual));
-                    dao.getEntityManager().merge(ptoAccruedTS);
-                    dao.addTimeSheetUpdateComment("System Reverting recent Change: ", previousVersion.getHours(), ptoAccruedTS);
+                    ptoAccruedTS.setHours(previousVersion.getHours());
+                        dao.getEntityManager().merge(ptoAccruedTS);
+                        dao.addTimeSheetUpdateComment("System Reverting recent Change: ", previousVersion.getHours(), ptoAccruedTS);
+                    }
                 }
             }
-        }
 
     }
 
