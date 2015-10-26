@@ -161,7 +161,8 @@
         <parallelGateway id="join" />
         <sequenceFlow sourceRef="join" targetRef="projectOffBoardingValidationTask" />
         <userTask id="projectOffBoardingValidationTask"
-                  name="Project OffBoarding Validation Task">
+                  name="Project OffBoarding Validation Task"
+                  activiti:candidateGroups="ROLE_ADMIN,ROLE_CONSULTANT_TIME_ADMIN">
             <documentation> 
                 Associate Project Offboarding Validation Task Details:
                 Please validate offboarding details for this employee and complete this task:
