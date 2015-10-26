@@ -5,10 +5,12 @@ package info.yalamanchili.office.dao.profile;
 
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Scope;
 
 import org.springframework.stereotype.Repository;
@@ -23,7 +25,8 @@ public class ClientInformationDao extends CRUDDao<ClientInformation> {
     public ClientInformationDao() {
         super(ClientInformation.class);
     }
-
+    
+    @CacheEvict(value = OfficeCacheKeys.CLIENTINFORMATION, allEntries = true)
     public ClientInformation save(ClientInformation entity) {
         return super.save(entity);
     }

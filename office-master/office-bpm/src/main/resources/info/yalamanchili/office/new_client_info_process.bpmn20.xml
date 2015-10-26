@@ -19,15 +19,15 @@
                   activiti:candidateGroups="ROLE_EXPENSE">
             <documentation>
                 New Client Information has been created with following details. Please fill the fields below to complete the task.
-                Employee     : #{clientInfo.employee.firstName} #{clientInfo.employee.lastName} 
-                Consultant Job Title :#{clientInfo.consultantJobTitle}
-                Client       : #{clientInfo.client.name}
-                Vendor       : #{clientInfo.vendor.name}
-                Billing Rate : #{clientInfo.billingRate}
-                PayRate      : #{clientInfo.payRate}
-                Billing Rate Duration :#{clientInfo.billingRateDuration}
-                Invoice Frequency : #{clientInfo.invoiceFrequency}
-                Notes        : #{clientInfo.notes}    
+                Employee             : #{clientInfo.employee.firstName} #{clientInfo.employee.lastName} 
+                Consultant Job Title : #{clientInfo.consultantJobTitle}
+                Client               : #{clientInfo.client.name}
+                Vendor               : #{clientInfo.vendor.name}
+                Billing Rate         : #{clientInfo.billingRate}
+                PayRate              : #{clientInfo.payRate}
+                Billing Rate Duration: #{clientInfo.billingRateDuration}
+                Invoice Frequency    : #{clientInfo.invoiceFrequency}
+                Notes                : #{clientInfo.notes}    
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
@@ -64,15 +64,15 @@
                   activiti:candidateGroups="ROLE_HR">
             <documentation>
                 New Client Information has been created with following details. Please fill the fields below to complete the task.
-                Employee     : #{clientInfo.employee.firstName} #{clientInfo.employee.lastName} 
-                Consultant Job Title :#{clientInfo.consultantJobTitle}
-                Client       : #{clientInfo.client.name}
-                Vendor       : #{clientInfo.vendor.name}
-                Billing Rate : #{clientInfo.billingRate}
-                PayRate      : #{clientInfo.payRate}
-                Billing Rate Duration :#{clientInfo.billingRateDuration}
-                Invoice Frequency : #{clientInfo.invoiceFrequency}
-                Notes        : #{clientInfo.notes}    
+                Employee             : #{clientInfo.employee.firstName} #{clientInfo.employee.lastName} 
+                Consultant Job Title : #{clientInfo.consultantJobTitle}
+                Client               : #{clientInfo.client.name}
+                Vendor               : #{clientInfo.vendor.name}
+                Billing Rate         : #{clientInfo.billingRate}
+                PayRate              : #{clientInfo.payRate}
+                Billing Rate Duration: #{clientInfo.billingRateDuration}
+                Invoice Frequency    : #{clientInfo.invoiceFrequency}
+                Notes                : #{clientInfo.notes}    
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />

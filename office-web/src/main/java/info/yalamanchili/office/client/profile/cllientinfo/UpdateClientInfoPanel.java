@@ -208,10 +208,10 @@ public class UpdateClientInfoPanel extends UpdateComposite {
     protected void addWidgets() {
         addField("consultantJobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Client & Vendor Information"));
-        addDropDown("client", new SelectClientWidget(false, true, Alignment.HORIZONTAL));
+        addDropDown("client", new SelectClientWidget(true, false, Alignment.HORIZONTAL));
         addDropDown("clientContact", new SelectClientContactWidget(false, false, Alignment.HORIZONTAL));
         addDropDown("clientLocation", new SelectClientLocationWidget(false, false, Alignment.HORIZONTAL));
-        addDropDown("vendor", new SelectVendorWidget(false, false, Alignment.HORIZONTAL));
+        addDropDown("vendor", new SelectVendorWidget(true, false, Alignment.HORIZONTAL));
         addDropDown("vendorContact", new SelectVendorContactWidget(false, false, Alignment.HORIZONTAL));
         addDropDown("vendorAPContact", new SelectVendorAcctPayContact(false, false, Alignment.HORIZONTAL));
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, false, Alignment.HORIZONTAL));
@@ -255,8 +255,8 @@ public class UpdateClientInfoPanel extends UpdateComposite {
                 addDropDown("subcontractorAddress", new SelectSubcontractorLocationWidget(false, false, Alignment.HORIZONTAL));
                 addField("subcontractorPayRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
                 addField("subcontractorOvertimePayRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-                String[] invoiceFrequencie = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
-                addEnumField("subcontractorinvoiceFrequency", false, false, invoiceFrequencie, Alignment.HORIZONTAL);
+ //               String[] invoiceFrequencie = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
+                addEnumField("subcontractorinvoiceFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
                 addField("subcontractorpaymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
                 addField("subcontractorw4Filled", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
                 addField("subcontractCOI", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);

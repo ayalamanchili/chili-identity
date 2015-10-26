@@ -287,7 +287,7 @@ public class ClientInformation extends AbstractEntity {
      */
     protected Boolean hrOrientation;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.ALL)
     @ForeignKey(name = "FK_ClientProject_ClientInformations")
     protected Project clientProject;
 

@@ -17,6 +17,7 @@ import info.yalamanchili.office.integration.bis.BISClientInformationServiceBean;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.profile.ClientInformationService;
 import info.yalamanchili.office.bpm.offboarding.ProjectOffBoardingDto;
+import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.project.offboarding.ProjectOffBoardingService;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -31,6 +32,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
@@ -56,12 +58,14 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
     @PUT
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RECRUITER','ROLE_TIME','ROLE_RELATIONSHIP')")
     @Validate
+    @CacheEvict(value = OfficeCacheKeys.CLIENTINFORMATION, allEntries = true)
     @Override
     public ClientInformation save(ClientInformation entity) {
         return clientInformationService.update(entity);
     }
 
     @GET
+    @CacheEvict(value = OfficeCacheKeys.CLIENTINFORMATION, allEntries = true)
     @Override
     @Path("/{id}")
     public ClientInformation read(@PathParam("id") Long id) {

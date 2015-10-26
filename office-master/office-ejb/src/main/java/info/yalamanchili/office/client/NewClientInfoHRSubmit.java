@@ -26,6 +26,8 @@ public class NewClientInfoHRSubmit implements JavaDelegate {
     @Override
     public void execute(DelegateExecution execution) throws Exception {
         ClientInformation ci = (ClientInformation) execution.getVariable("clientInfo");
+        ClientInformationDao dao = ClientInformationDao.instance();
+        ci = dao.findById(ci.getId());
         Object joiningReport = execution.getVariable("joiningReport");
         if (ci != null) {
             if (joiningReport != null) {
@@ -33,7 +35,7 @@ public class NewClientInfoHRSubmit implements JavaDelegate {
             }
             Object hrOrientation = execution.getVariable("hrOrientation");
             if (hrOrientation != null) {
-            ci.setHrOrientation(Boolean.parseBoolean(hrOrientation.toString()));
+                ci.setHrOrientation(Boolean.parseBoolean(hrOrientation.toString()));
             }
             Object accDocs = execution.getVariable("accountVerificationDocs");
             if (accDocs != null) {
@@ -42,7 +44,7 @@ public class NewClientInfoHRSubmit implements JavaDelegate {
 
             Object i9Fill = execution.getVariable("i9Filled");
             if (i9Fill != null) {
-               ci.setI9Filled(Boolean.parseBoolean(i9Fill.toString()));
+                ci.setI9Filled(Boolean.parseBoolean(i9Fill.toString()));
             }
             Object w4Fill = execution.getVariable("w4Filled");
             if (w4Fill != null) {
@@ -54,7 +56,7 @@ public class NewClientInfoHRSubmit implements JavaDelegate {
             }
             ci.setStatus(ClientInformationStatus.COMPLETED);
             ci.setIsCPDFilled(Boolean.TRUE);
-            ClientInformationDao.instance().save(ci);
+            dao.instance().save(ci);
         }
     }
 }

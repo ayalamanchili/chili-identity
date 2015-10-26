@@ -61,7 +61,7 @@ public class Project extends AbstractEntity {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     protected List<StatementOfWork> SOWS;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Vendor_Projects")
     protected Vendor vendor;
 
@@ -69,7 +69,7 @@ public class Project extends AbstractEntity {
 
     protected String subContractorWorkOrderNo;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_MiddleVendor_Projects")
     protected Vendor middleVendor;
 

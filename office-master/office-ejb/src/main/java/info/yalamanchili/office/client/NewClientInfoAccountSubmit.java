@@ -47,10 +47,14 @@ public class NewClientInfoAccountSubmit implements JavaDelegate {
                 ci.setSignedCopyOfWorkOrder(Boolean.parseBoolean(signedWO.toString()));
             }
             if (specialInvoiceInstructions != null) {
-                ci.setSpecialInvoiceInstructions(specialInvoiceInstructions.toString());
+                if (ci.getSpecialInvoiceInstructions() != null && !ci.getSpecialInvoiceInstructions().isEmpty()) {
+                    ci.setSpecialInvoiceInstructions(ci.getSpecialInvoiceInstructions() + specialInvoiceInstructions.toString());
+                } else {
+                    ci.setSpecialInvoiceInstructions(specialInvoiceInstructions.toString());
+                }
             }
             ci.setStatus(ClientInformationStatus.PENDING_HR_VERIFICATION);
-            dao.instance().save(ci);
+            ci = dao.instance().save(ci);
         }
     }
 }

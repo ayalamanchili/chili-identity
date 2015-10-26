@@ -39,6 +39,7 @@ public interface OfficeCacheKeys {
     String EXPENSE = "expense";
     String TIME = "time";
     String PROSPECT = "prospect";
+    String CLIENTINFORMATION = "clientinformation";
     /**
      * holds key values for email messaging with address
      */

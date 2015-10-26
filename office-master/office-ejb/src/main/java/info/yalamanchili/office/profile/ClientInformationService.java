@@ -137,7 +137,7 @@ public class ClientInformationService {
         }
         if (middleVendor != null) {
             project.setMiddleVendor(middleVendor);
-            middleVendor.getClients().add(client);
+//            middleVendor.getClients().add(client);
         }
         if (ci.getEndDate() != null) {
             project.setEndDate(ci.getEndDate());
