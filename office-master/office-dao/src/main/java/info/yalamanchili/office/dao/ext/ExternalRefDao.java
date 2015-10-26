@@ -9,7 +9,6 @@
 package info.yalamanchili.office.dao.ext;
 
 import info.chili.dao.AbstractHandleEntityDao;
-import info.chili.jpa.AbstractEntity;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.ext.ExternalRef;
 import javax.persistence.EntityManager;
@@ -30,11 +29,11 @@ public class ExternalRefDao extends AbstractHandleEntityDao<ExternalRef> {
     @PersistenceContext
     protected EntityManager em;
 
-    public AbstractEntity getExternalRefId(String externalSource, String externalId) {
+    public ExternalRef getExternalRefId(String externalSource, String externalId) {
         Query query = em.createQuery("from " + ExternalRef.class.getCanonicalName() + " where source=:sourceParam and externalId=:externalIdParam");
         query.setParameter("sourceParam", externalSource);
         query.setParameter("externalIdParam", externalId);
-        return (AbstractEntity) query.getSingleResult();
+        return (ExternalRef) query.getSingleResult();
     }
 
     public String getExternalRefId(String externalSource, Class targetClassName, Long targetEntityId) {
@@ -42,6 +41,17 @@ public class ExternalRefDao extends AbstractHandleEntityDao<ExternalRef> {
         query.setParameter("sourceParam", externalSource);
         query.setParameter("targetEntityNameParam", targetClassName.getCanonicalName());
         query.setParameter("targetEntityIdParam", targetEntityId);
+        if (query.getResultList().size() > 0) {
+            return query.getResultList().get(0);
+        } else {
+            return null;
+        }
+    }
+
+    public String getTargetEntityIdForExternalId(String externalSource, String externalId) {
+        TypedQuery<String> query = em.createQuery("select targetEntityId from " + ExternalRef.class.getCanonicalName() + " source=:sourceParam and externalId=:externalIdParam", String.class);
+        query.setParameter("sourceParam", externalSource);
+        query.setParameter("externalIdParam", externalId);
         if (query.getResultList().size() > 0) {
             return query.getResultList().get(0);
         } else {

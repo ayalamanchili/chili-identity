@@ -73,7 +73,7 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDoc
                     employeeIdsNotFound.add(empExtRefId);
                     continue;
                 }
-                Employee emp = (Employee) ExternalRefDao.instance().getExternalRefId("Avantel", empExtRefId);
+                String empId = ExternalRefDao.instance().getTargetEntityIdForExternalId("Avantel", empExtRefId);
                 Map<String, BigDecimal> hoursPerType = new HashMap();
                 // RECEPTION actual time
                 StringBuilder notes = new StringBuilder();
@@ -97,7 +97,7 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDoc
                 } else {
                     status = TimeRecordStatus.Error;
                 }
-                TimeRecord ts = createTimeRecord(emp.getId().toString(), entryDate, entryDate, hoursPerType, status, notes.toString());
+                TimeRecord ts = createTimeRecord(empId, entryDate, entryDate, hoursPerType, status, notes.toString());
                 if (ts != null) {
                     addBulkImportEntity(bulkImport, ts);
                 }
