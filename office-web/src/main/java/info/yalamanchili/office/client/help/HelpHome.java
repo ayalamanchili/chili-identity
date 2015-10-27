@@ -64,7 +64,6 @@ public class HelpHome extends ALComposite implements ClickHandler {
     @Override
     protected void addListeners() {
         portalDocumentationSite.addClickHandler(this);
-        portalDocumentationSite.addClickHandler(this);
         rolesVideoL.addClickHandler(this);
         myofficeVideoL.addClickHandler(this);
         adminVideoL.addClickHandler(this);
