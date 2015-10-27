@@ -14,7 +14,7 @@
         <sequenceFlow sourceRef="projectOffBoardingTaskCreated" targetRef="projectOffBoardingTask" />
         <!--Project Offboarding task created-->
         <userTask id="projectOffBoardingTask" 
-                  name="Project Offboarding Task">
+                  name="Project Offboarding Task for ${currentEmployee.firstName} ${currentEmployee.lastName}">
             <documentation> 
                 Associate Project Offboarding Task Details:
                 Please update project end date to this employee and complete this task
@@ -54,7 +54,7 @@
         <sequenceFlow sourceRef="fork" targetRef="projectOffBoardingBillingTask" />
         <sequenceFlow sourceRef="fork" targetRef="projectOffBoardingContractsTask" />
         
-        <userTask id="projectOffBoardingPayrollTask" name="Project OffBoarding Payroll Task" activiti:candidateGroups="ROLE_PAYROLL_AND_BENIFITS">
+        <userTask id="projectOffBoardingPayrollTask" name="Project OffBoarding Payroll Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" activiti:candidateGroups="ROLE_PAYROLL_AND_BENIFITS">
             <documentation> 
                 Associate Project Offboarding Payroll Task Details:
                 Please update payroll systems and complete this task:
@@ -89,7 +89,7 @@
             activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
         </serviceTask>
 
-        <userTask id="projectOffBoardingBillingTask" name="Project OffBoarding Billing Task" activiti:candidateGroups="ROLE_BILLING">
+        <userTask id="projectOffBoardingBillingTask" name="Project OffBoarding Billing Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" activiti:candidateGroups="ROLE_BILLING">
             <documentation> 
                 Associate Project Offboarding Billing Task Details:
                 Please update billing records for this employee and complete this task:
@@ -124,7 +124,7 @@
             activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
         </serviceTask>
 
-        <userTask id="projectOffBoardingContractsTask" name="Project OffBoarding Contracts Task" activiti:candidateGroups="ROLE_CONTRACTS_ADMIN">
+        <userTask id="projectOffBoardingContractsTask" name="Project OffBoarding Contracts Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" activiti:candidateGroups="ROLE_CONTRACTS_ADMIN">
             <documentation> 
                 Associate Project Offboarding Contracts Task Details:
                 Please update contracts records for this employee and complete this task:
@@ -161,8 +161,8 @@
         <parallelGateway id="join" />
         <sequenceFlow sourceRef="join" targetRef="projectOffBoardingValidationTask" />
         <userTask id="projectOffBoardingValidationTask"
-                  name="Project OffBoarding Validation Task"
-                  activiti:candidateGroups="ROLE_ADMIN,ROLE_CONSULTANT_TIME_ADMIN">
+                  name="Project OffBoarding Validation Task for ${currentEmployee.firstName} ${currentEmployee.lastName}"
+                  activiti:candidateGroups="ROLE_CONSULTANT_TIME_ADMIN">
             <documentation> 
                 Associate Project Offboarding Validation Task Details:
                 Please validate offboarding details for this employee and complete this task:
