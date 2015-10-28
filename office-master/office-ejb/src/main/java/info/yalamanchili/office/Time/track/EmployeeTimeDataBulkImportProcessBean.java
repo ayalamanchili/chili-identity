@@ -51,6 +51,7 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDoc
     public static final String SECOND_FLOOR = "2nd Floor";
     public static final String RECEPTION = "Reception";
     public static final String TIME_IN = "Time_In";
+    public static final String TIME_OUT = "Time_Out";
 
     @PersistenceContext
     protected EntityManager em;
@@ -90,6 +91,14 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDoc
                     Integer hours = calendar.get(Calendar.HOUR_OF_DAY);
                     Integer minutes = calendar.get(Calendar.MINUTE);
                     hoursPerType.put(TIME_IN, new BigDecimal(hours.toString() + "." + minutes.toString()));
+                }
+                // TIME OUT
+                if (secondFloorTimeEntries.size() > 0) {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(secondFloorTimeEntries.get(secondFloorTimeEntries.size() - 1).getEntryTimeStamp());
+                    Integer hours = calendar.get(Calendar.HOUR_OF_DAY);
+                    Integer minutes = calendar.get(Calendar.MINUTE);
+                    hoursPerType.put(TIME_OUT, new BigDecimal(hours.toString() + "." + minutes.toString()));
                 }
                 TimeRecordStatus status;
                 if (secondFloorTimeEntries.size() % 2 == 0) {
