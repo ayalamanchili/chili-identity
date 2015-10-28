@@ -15,8 +15,8 @@
         <sequenceFlow id="newClientInfoProcessStartToAccountTask" sourceRef="newClientInfoProcessStart" targetRef="newClientInfoAccountTask" />
         <!--submit User task-->
         <userTask id="newClientInfoAccountTask" 
-                  name="New Client Info Accounting Department Task" 
-                  activiti:candidateGroups="ROLE_EXPENSE">
+                  name="New Client Info Accounting Department Task for ${clientInfo.employee.firstName} ${clientInfo.employee.lastName}" 
+                  activiti:candidateGroups="ROLE_ACCOUNTS_RECEIVABLE,ROLE_ACCOUNTS_PAYABLE,ROLE_EXPENSE">
             <documentation>
                 New Client Information has been created with following details. Please fill the fields below to complete the task.
                 Employee             : #{clientInfo.employee.firstName} #{clientInfo.employee.lastName} 
@@ -54,13 +54,13 @@
         <!--BulkImport Submit Service Task-->
         <serviceTask
             id="newClientInfoAccountSubmit"
-            name="New Client Information Account Department Submit"
+            name="New Client Information Account Department Submit" 
             activiti:class="info.yalamanchili.office.client.NewClientInfoAccountSubmit">
         </serviceTask>
         <sequenceFlow id="newClientInfoAccountSubmitToHRTask" sourceRef="newClientInfoAccountSubmit" targetRef="newClientInfoHRTask" />
         <!--submit User task-->
         <userTask id="newClientInfoHRTask" 
-                  name="New Client Info HR Department Task" 
+                  name="New Client Info HR Department Task for ${clientInfo.employee.firstName} ${clientInfo.employee.lastName}" 
                   activiti:candidateGroups="ROLE_HR">
             <documentation>
                 New Client Information has been created with following details. Please fill the fields below to complete the task.
@@ -88,8 +88,7 @@
                 <activiti:formProperty id="accountVerificationDocs" 
                                        name="Account verification Docs"
                                        required="false"
-                                       type="boolean"/>
-         
+                                       type="boolean"/> 
                 <activiti:formProperty id="i9Filled" 
                                        name="I9 Filled"
                                        required="false"
