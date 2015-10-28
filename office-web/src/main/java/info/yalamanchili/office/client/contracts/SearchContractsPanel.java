@@ -46,6 +46,11 @@ public class SearchContractsPanel extends SearchComposite {
         addField("employeeFirstName", DataType.STRING_FIELD);
         addField("employeeLastName", DataType.STRING_FIELD);
         addField("itemNumber", DataType.STRING_FIELD);
+        addField("client", DataType.STRING_FIELD);
+        addField("vendor", DataType.STRING_FIELD);
+        addField("subContractorName", DataType.STRING_FIELD);
+        addField("startDate", DataType.DATE_FIELD);
+        addField("endDate", DataType.DATE_FIELD);
     }
 
     @Override
@@ -53,7 +58,12 @@ public class SearchContractsPanel extends SearchComposite {
         entity = new JSONObject();
         assignEntityValueFromField("employeeFirstName", entity);
         assignEntityValueFromField("employeeLastName", entity);
-        assignEntityValueFromField("itemNumber", entity);
+        assignEntityValueFromField("itemNumber", entity);   
+        assignEntityValueFromField("client", entity);        
+        assignEntityValueFromField("vendor", entity);        
+        assignEntityValueFromField("subContractorName", entity);
+        assignEntityValueFromField("startDate", entity);
+        assignEntityValueFromField("endDate", entity);
         logger.info(entity.toString());
         return entity;
     }
