@@ -12,13 +12,14 @@ import info.chili.jpa.validation.Unique;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
@@ -40,9 +41,10 @@ import org.hibernate.validator.constraints.NotEmpty;
         = @UniqueConstraint(columnNames = {"name"}))
 @Unique(entity = Client.class, fields = {"name"}, message = "{client.name.not.unique.msg}")
 public class Client extends AbstractEntity {
+
     @Transient
     private static final long serialVersionUID = 1L;
-    
+
     @NotEmpty(message = "{client.not.empty.msg}")
     @org.hibernate.annotations.Index(name = "CLNT_NM")
     protected String name;
@@ -55,22 +57,33 @@ public class Client extends AbstractEntity {
     @ManyToMany(cascade = CascadeType.ALL)
     protected List<Contact> contacts;
     @ManyToMany(cascade = CascadeType.MERGE)
-    protected List<Vendor> vendors;
+    protected Set<Vendor> vendors;
     protected String website;
     protected String paymentTerms;
     @Enumerated(EnumType.STRING)
     protected InvoiceFrequency clientinvFrequency;
 
-    public void setVendors(List<Vendor> vendors) {
+//    public void setVendors(List<Vendor> vendors) {
+//        this.vendors = vendors;
+//    }
+//
+//    @XmlTransient
+//    public List<Vendor> getVendors() {
+//        if (this.vendors == null) {
+//            this.vendors = new ArrayList<Vendor>();
+//        }
+//        return this.vendors;
+//    }
+    public void setVendors(Set<Vendor> vendors) {
         this.vendors = vendors;
     }
 
     @XmlTransient
-    public List<Vendor> getVendors() {
-        if (this.vendors == null) {
-            this.vendors = new ArrayList<Vendor>();
+    public Set<Vendor> getVendors() {
+        if (vendors == null) {
+            vendors = new HashSet<Vendor>();
         }
-        return this.vendors;
+        return vendors;
     }
 
     public void addVendor(Vendor entity) {
@@ -115,7 +128,6 @@ public class Client extends AbstractEntity {
 //    public void setProjects(List<Project> projects) {
 //        this.projects = projects;
 //    }
-
 //    public void addProject(Project entity) {
 //        if (entity == null) {
 //            return;
@@ -123,7 +135,6 @@ public class Client extends AbstractEntity {
 //        getProjects().add(entity);
 //        entity.setClient(this);
 //    }
-
     @XmlTransient
     public List<Address> getLocations() {
         if (this.locations == null) {
