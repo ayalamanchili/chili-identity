@@ -51,7 +51,7 @@ public class Project extends AbstractEntity {
     protected Date startDate;
 
     @Temporal(javax.persistence.TemporalType.DATE)
-    @NotNull(message = "{endDate.not.empty.msg}")
+//    @NotNull(message = "{endDate.not.empty.msg}")
     protected Date endDate;
 
     @ManyToOne(cascade = CascadeType.MERGE)
