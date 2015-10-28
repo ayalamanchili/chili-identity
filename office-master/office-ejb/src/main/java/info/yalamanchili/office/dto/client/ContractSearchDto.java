@@ -21,6 +21,7 @@ public class ContractSearchDto extends ContractDto {
 
     protected String employeeFirstName;
     protected String employeeLastName;
+    
 
     public String getEmployeeFirstName() {
         return employeeFirstName;
@@ -37,6 +38,5 @@ public class ContractSearchDto extends ContractDto {
     public void setEmployeeLastName(String employeeLastName) {
         this.employeeLastName = employeeLastName;
     }
-    
-    
+
 }
