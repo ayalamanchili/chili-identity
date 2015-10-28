@@ -151,6 +151,17 @@ public class ContractService {
         if (ci.getVendorContact() != null) {
             dto.setVendorContact(ci.getVendorContact().details());
         }
+        if (ci.getMiddleVendor() != null) {
+            dto.setMiddleVendor(ci.getMiddleVendor().getName());
+        }
+        if (ci.getClientProject() != null) {
+            dto.setClientProject(ci.getClientProject().getName());
+            dto.setPurchaseOrderNo(ci.getClientProject().getPurchaseOrderNo());
+            dto.setSubContractorWorkOrderNo(ci.getClientProject().getSubContractorWorkOrderNo());
+        }
+        if (ci.getVendorRecruiter() != null) {
+            dto.setVendorRecruiter(ci.getVendorRecruiter().getFirstName() + " " + ci.getVendorRecruiter().getLastName());
+        }
         if (ci.getVendorAPContact() != null) {
             StringBuilder acctpayCnt = new StringBuilder();
             acctpayCnt.append("Name: " + ci.getVendorAPContact().getFirstName());

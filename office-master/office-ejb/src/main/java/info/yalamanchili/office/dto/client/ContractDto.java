@@ -71,14 +71,14 @@ public class ContractDto implements Serializable {
      */
     protected String vendorLocation;
     protected String vendorAPContact;
+    protected String vendorRecruiter;
+    protected String middleVendor;
+    protected String clientProject;
+    protected String purchaseOrderNo;
+    protected String timeSheetRequirement;
+    protected String specialInvoiceInstructions;
+    protected String subContractorWorkOrderNo;
 
-    public void setVendorAPContact(String vendorAPContact) {
-        this.vendorAPContact = vendorAPContact;
-    }
-
-    public String getVendorAPContact() {
-        return vendorAPContact;
-    }
     /**
      * Employee
      */
@@ -128,6 +128,200 @@ public class ContractDto implements Serializable {
     protected BillingDuration overTimeRateDuration;
     protected String visaStatus;
 
+    /**
+     * -----------Tracking info---------------------------
+     */
+    /**
+     * Account verification docs
+     */
+    protected String joiningReport;
+
+    protected Boolean accountVerificationDocs;
+    /**
+     * Signed Copy of Work Order
+     */
+    protected Boolean signedCopyOfWorkOrder;
+    /**
+     * i9Filled
+     */
+    protected Boolean i9Filled;
+    /**
+     * w4 filled
+     */
+    protected Boolean w4Filled;
+    /**
+     * Logistics Preparation
+     */
+    protected Boolean logisticsPreparation;
+    protected Boolean hrOrientation;
+    /**
+     * 1099 Details
+     */
+    protected BigDecimal payRate1099;
+    protected BigDecimal overTimePayrate1099;
+    @Enumerated(EnumType.STRING)
+    protected BillingDuration payTimeDuration1099;
+    protected String paymentTerms1099;
+
+    /**
+     * subcontractorPayRate
+     */
+    protected String subContractorName;
+    /*
+     * subContractorContactName
+     */
+    protected String subContractorContactName;
+    /**
+     * subcontractor Address
+     */
+    protected String subcontractorAddress;
+    protected BigDecimal subcontractorPayRate;
+    /**
+     * subcontractorOvertimePayRate
+     */
+    protected BigDecimal subcontractorOvertimePayRate;
+    /**
+     * subcontractor Invoice Frequency
+     */
+    @Enumerated(EnumType.STRING)
+    @org.hibernate.annotations.Index(name = "CI_INVC_FQ")
+    protected InvoiceFrequency subcontractorinvoiceFrequency;
+    /**
+     * subcontractor PaymentTerms
+     */
+    protected String subcontractorpaymentTerms;
+    /**
+     * subcontractor W4Filled
+     */
+    protected Boolean subcontractorw4Filled;
+    /**
+     * subcontractor certificate of insurance
+     */
+    protected Boolean subcontractCOI;
+
+    public void setPaymentTerms1099(String paymentTerms1099) {
+        this.paymentTerms1099 = paymentTerms1099;
+    }
+
+    public String getPaymentTerms1099() {
+        return paymentTerms1099;
+    }
+
+    public BigDecimal getPayRate1099() {
+        return payRate1099;
+    }
+
+    public void setPayRate1099(BigDecimal payRate1099) {
+        this.payRate1099 = payRate1099;
+    }
+
+    public BigDecimal getOverTimePayrate1099() {
+        return overTimePayrate1099;
+    }
+
+    public void setOverTimePayrate1099(BigDecimal overTimePayrate1099) {
+        this.overTimePayrate1099 = overTimePayrate1099;
+    }
+
+    public BillingDuration getPayTimeDuration1099() {
+        return payTimeDuration1099;
+    }
+
+    public void setPayTimeDuration1099(BillingDuration payTimeDuration1099) {
+        this.payTimeDuration1099 = payTimeDuration1099;
+    }
+    /* 
+     * Sub Contactor 
+     */
+
+    public String getSubcontractorAddress() {
+        return subcontractorAddress;
+    }
+
+    public void setSubcontractorAddress(String subcontractorAddress) {
+        this.subcontractorAddress = subcontractorAddress;
+    }
+
+    public InvoiceFrequency getSubcontractorinvoiceFrequency() {
+        return subcontractorinvoiceFrequency;
+    }
+
+    public void setSubcontractorinvoiceFrequency(InvoiceFrequency subcontractorinvoiceFrequency) {
+        this.subcontractorinvoiceFrequency = subcontractorinvoiceFrequency;
+    }
+
+    public String getSubcontractorpaymentTerms() {
+        return subcontractorpaymentTerms;
+    }
+
+    public void setSubcontractorpaymentTerms(String subcontractorpaymentTerms) {
+        this.subcontractorpaymentTerms = subcontractorpaymentTerms;
+    }
+
+    public Boolean getSubcontractorw4Filled() {
+        return subcontractorw4Filled;
+    }
+
+    public void setSubcontractorw4Filled(Boolean subcontractorw4Filled) {
+        this.subcontractorw4Filled = subcontractorw4Filled;
+    }
+
+    public Boolean getSubcontractCOI() {
+        return subcontractCOI;
+    }
+
+    public void setSubcontractCOI(Boolean subcontractCOI) {
+        this.subcontractCOI = subcontractCOI;
+    }
+
+    public void setSubContractorName(String subContractorName) {
+        this.subContractorName = subContractorName;
+    }
+
+    public void setSubContractorContactName(String subContractorContactName) {
+        this.subContractorContactName = subContractorContactName;
+    }
+
+    public String getSubContractorName() {
+        return subContractorName;
+    }
+
+    public String getSubContractorContactName() {
+        return subContractorContactName;
+    }
+
+    public BigDecimal getSubcontractorPayRate() {
+        return subcontractorPayRate;
+    }
+
+    public void setSubcontractorPayRate(BigDecimal subcontractorPayRate) {
+        this.subcontractorPayRate = subcontractorPayRate;
+    }
+
+    public BigDecimal getSubcontractorOvertimePayRate() {
+        return subcontractorOvertimePayRate;
+    }
+
+    public void setSubcontractorOvertimePayRate(BigDecimal subcontractorOvertimePayRate) {
+        this.subcontractorOvertimePayRate = subcontractorOvertimePayRate;
+    }
+
+    public String getTerminationNotice() {
+        return terminationNotice;
+    }
+
+    public void setTerminationNotice(String terminationNotice) {
+        this.terminationNotice = terminationNotice;
+    }
+
+    public void setVendorAPContact(String vendorAPContact) {
+        this.vendorAPContact = vendorAPContact;
+    }
+
+    public String getVendorAPContact() {
+        return vendorAPContact;
+    }
+
     public Long getId() {
         return id;
     }
@@ -159,13 +353,6 @@ public class ContractDto implements Serializable {
     public String getVisaStatus() {
         return visaStatus;
     }
-    /**
-     * -----------Tracking info---------------------------
-     */
-    /**
-     * Account verification docs
-     */
-    protected String joiningReport;
 
     public void setJoiningReport(String joiningReport) {
         this.joiningReport = joiningReport;
@@ -174,24 +361,6 @@ public class ContractDto implements Serializable {
     public String getJoiningReport() {
         return joiningReport;
     }
-    protected Boolean accountVerificationDocs;
-    /**
-     * Signed Copy of Work Order
-     */
-    protected Boolean signedCopyOfWorkOrder;
-    /**
-     * i9Filled
-     */
-    protected Boolean i9Filled;
-    /**
-     * w4 filled
-     */
-    protected Boolean w4Filled;
-    /**
-     * Logistics Preparation
-     */
-    protected Boolean logisticsPreparation;
-    protected Boolean hrOrientation;
 
     public void setHrOrientation(Boolean hrOrientation) {
         this.hrOrientation = hrOrientation;
@@ -400,168 +569,67 @@ public class ContractDto implements Serializable {
     public void setLogisticsPreparation(Boolean logisticsPreparation) {
         this.logisticsPreparation = logisticsPreparation;
     }
-    /**
-     * 1099 Details
-     */
-    protected BigDecimal payRate1099;
-    protected BigDecimal overTimePayrate1099;
-    @Enumerated(EnumType.STRING)
-    protected BillingDuration payTimeDuration1099;
-    protected String paymentTerms1099;
 
-    public void setPaymentTerms1099(String paymentTerms1099) {
-        this.paymentTerms1099 = paymentTerms1099;
+    public String getVendorRecruiter() {
+        return vendorRecruiter;
     }
 
-    public String getPaymentTerms1099() {
-        return paymentTerms1099;
+    public void setVendorRecruiter(String vendorRecruiter) {
+        this.vendorRecruiter = vendorRecruiter;
     }
 
-    public BigDecimal getPayRate1099() {
-        return payRate1099;
+    public String getMiddleVendor() {
+        return middleVendor;
     }
 
-    public void setPayRate1099(BigDecimal payRate1099) {
-        this.payRate1099 = payRate1099;
+    public void setMiddleVendor(String middleVendor) {
+        this.middleVendor = middleVendor;
     }
 
-    public BigDecimal getOverTimePayrate1099() {
-        return overTimePayrate1099;
+    public String getClientProject() {
+        return clientProject;
     }
 
-    public void setOverTimePayrate1099(BigDecimal overTimePayrate1099) {
-        this.overTimePayrate1099 = overTimePayrate1099;
+    public void setClientProject(String clientProject) {
+        this.clientProject = clientProject;
     }
 
-    public BillingDuration getPayTimeDuration1099() {
-        return payTimeDuration1099;
+    public String getPurchaseOrderNo() {
+        return purchaseOrderNo;
     }
 
-    public void setPayTimeDuration1099(BillingDuration payTimeDuration1099) {
-        this.payTimeDuration1099 = payTimeDuration1099;
-    }
-    /* 
-     * Sub Contactor 
-     */
-    protected String subContractorName;
-    /*
-     * subContractorContactName
-     */
-    protected String subContractorContactName;
-    /**
-     * subcontractor Address
-     */
-    protected String subcontractorAddress;
-
-    public String getSubcontractorAddress() {
-        return subcontractorAddress;
+    public void setPurchaseOrderNo(String purchaseOrderNo) {
+        this.purchaseOrderNo = purchaseOrderNo;
     }
 
-    public void setSubcontractorAddress(String subcontractorAddress) {
-        this.subcontractorAddress = subcontractorAddress;
-    }
-    /**
-     * subcontractorPayRate
-     */
-    protected BigDecimal subcontractorPayRate;
-    /**
-     * subcontractorOvertimePayRate
-     */
-    protected BigDecimal subcontractorOvertimePayRate;
-    /**
-     * subcontractor Invoice Frequency
-     */
-    @Enumerated(EnumType.STRING)
-    @org.hibernate.annotations.Index(name = "CI_INVC_FQ")
-    protected InvoiceFrequency subcontractorinvoiceFrequency;
-    /**
-     * subcontractor PaymentTerms
-     */
-    protected String subcontractorpaymentTerms;
-    /**
-     * subcontractor W4Filled
-     */
-    protected Boolean subcontractorw4Filled;
-    /**
-     * subcontractor certificate of insurance
-     */
-    protected Boolean subcontractCOI;
-
-    public InvoiceFrequency getSubcontractorinvoiceFrequency() {
-        return subcontractorinvoiceFrequency;
+    public String getTimeSheetRequirement() {
+        return timeSheetRequirement;
     }
 
-    public void setSubcontractorinvoiceFrequency(InvoiceFrequency subcontractorinvoiceFrequency) {
-        this.subcontractorinvoiceFrequency = subcontractorinvoiceFrequency;
+    public void setTimeSheetRequirement(String timeSheetRequirement) {
+        this.timeSheetRequirement = timeSheetRequirement;
     }
 
-    public String getSubcontractorpaymentTerms() {
-        return subcontractorpaymentTerms;
+    public String getSpecialInvoiceInstructions() {
+        return specialInvoiceInstructions;
     }
 
-    public void setSubcontractorpaymentTerms(String subcontractorpaymentTerms) {
-        this.subcontractorpaymentTerms = subcontractorpaymentTerms;
+    public void setSpecialInvoiceInstructions(String specialInvoiceInstructions) {
+        this.specialInvoiceInstructions = specialInvoiceInstructions;
     }
 
-    public Boolean getSubcontractorw4Filled() {
-        return subcontractorw4Filled;
+    public String getSubContractorWorkOrderNo() {
+        return subContractorWorkOrderNo;
     }
 
-    public void setSubcontractorw4Filled(Boolean subcontractorw4Filled) {
-        this.subcontractorw4Filled = subcontractorw4Filled;
+    public void setSubContractorWorkOrderNo(String subContractorWorkOrderNo) {
+        this.subContractorWorkOrderNo = subContractorWorkOrderNo;
     }
 
-    public Boolean getSubcontractCOI() {
-        return subcontractCOI;
-    }
-
-    public void setSubcontractCOI(Boolean subcontractCOI) {
-        this.subcontractCOI = subcontractCOI;
-    }
-
-    public void setSubContractorName(String subContractorName) {
-        this.subContractorName = subContractorName;
-    }
-
-    public void setSubContractorContactName(String subContractorContactName) {
-        this.subContractorContactName = subContractorContactName;
-    }
-
-    public String getSubContractorName() {
-        return subContractorName;
-    }
-
-    public String getSubContractorContactName() {
-        return subContractorContactName;
-    }
-
-    public BigDecimal getSubcontractorPayRate() {
-        return subcontractorPayRate;
-    }
-
-    public void setSubcontractorPayRate(BigDecimal subcontractorPayRate) {
-        this.subcontractorPayRate = subcontractorPayRate;
-    }
-
-    public BigDecimal getSubcontractorOvertimePayRate() {
-        return subcontractorOvertimePayRate;
-    }
-
-    public void setSubcontractorOvertimePayRate(BigDecimal subcontractorOvertimePayRate) {
-        this.subcontractorOvertimePayRate = subcontractorOvertimePayRate;
-    }
-
-    public String getTerminationNotice() {
-        return terminationNotice;
-    }
-
-    public void setTerminationNotice(String terminationNotice) {
-        this.terminationNotice = terminationNotice;
-    }
-
+    
     @XmlRootElement
     @XmlType
-    public static class ContractTable implements java.io.Serializable{
+    public static class ContractTable implements java.io.Serializable {
 
         protected Long size;
         protected List<ContractDto> entities;
@@ -585,5 +653,6 @@ public class ContractDto implements Serializable {
         public void setEntities(List<ContractDto> entities) {
             this.entities = entities;
         }
+
     }
 }

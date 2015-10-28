@@ -120,7 +120,6 @@ public class ReadClientInfoPanel extends ReadComposite {
             assignFieldValueFromEntity("specialInvoiceInstructions", entity, DataType.STRING_FIELD);
         }
         assignFieldValueFromEntity("isCPDFilled", entity, DataType.BOOLEAN_FIELD);
-
         assignFieldValueFromEntity("vacationDetails", entity, DataType.STRING_FIELD);
     }
 
@@ -200,6 +199,7 @@ public class ReadClientInfoPanel extends ReadComposite {
             entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
             addField("visaStatus", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("joiningReport", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField("terminationNotice", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             entityFieldsPanel.add(getLineSeperatorTag("HR and Account Department Docs"));
             addField("accountVerificationDocs", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("signedCopyOfWorkOrder", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
@@ -207,13 +207,12 @@ public class ReadClientInfoPanel extends ReadComposite {
             addField("w4Filled", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("logisticsPreparation", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("hrOrientation", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-            addField("terminationNotice", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("timeSheetRequirement", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("specialInvoiceInstructions", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-            addField("notes", true, false, DataType.RICH_TEXT_AREA);
         }
         addField("isCPDFilled", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("vacationDetails", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("notes", true, false, DataType.RICH_TEXT_AREA);
         alignFields();
     }
 
