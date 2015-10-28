@@ -115,6 +115,12 @@ public class ContractService {
         if (StringUtils.isNotBlank(searchDto.getItemNumber())) {
             queryStr.append("ci.itemNumber LIKE '%").append(searchDto.getItemNumber().trim()).append("%' ").append(" and ");
         }
+        if (StringUtils.isNotBlank(searchDto.getClient())) {
+            queryStr.append("ci.client LIKE '%").append(searchDto.getClient().trim()).append("%' ").append(" and ");
+        }
+        if (StringUtils.isNotBlank(searchDto.getVendor())) {
+            queryStr.append("ci.vendor LIKE '%").append(searchDto.getVendor().trim()).append("%' ").append(" and ");
+        }
         if (StringUtils.isNotBlank(searchDto.getEmployeeFirstName())) {
             queryStr.append("ci.employee.firstName LIKE '%").append(searchDto.getEmployeeFirstName().trim()).append("%' ").append(" and ");
         }
@@ -189,7 +195,7 @@ public class ContractService {
 
     public Response generateContractorPlacementInfoReport(String format) {
         ContractTable data = getContractorPlacementInfo(0, 10000);
-        return ReportGenerator.generateReport(data.getEntities(),"contracts", format, OfficeServiceConfiguration.instance().getContentManagementLocationRoot());
+        return ReportGenerator.generateReport(data.getEntities(), "contracts", format, OfficeServiceConfiguration.instance().getContentManagementLocationRoot());
     }
 
     public static ContractService instance() {
