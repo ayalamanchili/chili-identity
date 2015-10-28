@@ -7,6 +7,8 @@
  */
 package info.yalamanchili.office.client.admin.vendorlocation;
 
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.data.CountryFactory;
@@ -16,6 +18,8 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.UpdateComposite;
+import info.chili.gwt.data.IndiaStatesFactory;
+import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.admin.vendor.TreeVendorsPanel;
 
@@ -23,11 +27,13 @@ import info.yalamanchili.office.client.admin.vendor.TreeVendorsPanel;
  *
  * @author Prashanthi
  */
-public class UpdateVendorLocationsPanel extends UpdateComposite {
+public class UpdateVendorLocationsPanel extends UpdateComposite implements ChangeHandler {
 
     public UpdateVendorLocationsPanel(JSONObject entity) {
         initUpdateComposite(entity, "VendorLocation", OfficeWelcome.constants);
     }
+    EnumField statesF;
+    EnumField countriesF;
 
     @Override
     protected JSONObject populateEntityFromFields() {
@@ -77,6 +83,9 @@ public class UpdateVendorLocationsPanel extends UpdateComposite {
 
     @Override
     protected void addListeners() {
+        if (countriesF != null) {
+            countriesF.listBox.addChangeHandler(this);
+        }
     }
 
     @Override
@@ -89,9 +98,11 @@ public class UpdateVendorLocationsPanel extends UpdateComposite {
         addField("street2", false, false, DataType.STRING_FIELD);
         addField("city", false, true, DataType.STRING_FIELD);
         addField("state", false, true, DataType.ENUM_FIELD);
-        addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]));
         addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]));
+        addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]));
         addField("zip", false, false, DataType.LONG_FIELD);
+        countriesF = (EnumField) fields.get("country");
+        statesF = (EnumField) fields.get("state");
     }
 
     @Override
@@ -101,5 +112,17 @@ public class UpdateVendorLocationsPanel extends UpdateComposite {
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "address";
+    }
+
+    @Override
+    public void onChange(ChangeEvent event) {
+        switch (countriesF.getValue()) {
+            case "USA":
+                statesF.setValues(USAStatesFactory.getStates().toArray(new String[0]));
+                break;
+            case "INDIA":
+                statesF.setValues(IndiaStatesFactory.getStates().toArray(new String[0]));
+                break;
+        }
     }
 }
