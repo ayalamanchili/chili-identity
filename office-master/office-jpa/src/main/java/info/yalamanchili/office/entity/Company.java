@@ -67,6 +67,8 @@ public class Company extends AbstractEntity {
     protected List<Employee> employees;
     @OneToMany(mappedBy = "company", cascade = CascadeType.MERGE)
     protected List<Post> posts;
+    
+    protected String abbreviation;
 
     /**
      * @generated
@@ -164,6 +166,14 @@ public class Company extends AbstractEntity {
         }
         getPosts().add(post);
         post.setCompany(this);
+    }
+
+    public String getAbbreviation() {
+        return abbreviation;
+    }
+
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation = abbreviation;
     }
 
     /**

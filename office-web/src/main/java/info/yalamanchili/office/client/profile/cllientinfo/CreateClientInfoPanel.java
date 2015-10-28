@@ -69,7 +69,6 @@ public class CreateClientInfoPanel extends CreateComposite {
         assignEntityValueFromField("vendorLocation", clientInfo);
         assignEntityValueFromField("vendorRecruiter", clientInfo);
         assignEntityValueFromField("middleVendor", clientInfo);
-//        assignEntityValueFromField("clientProject", clientInfo);
         assignEntityValueFromField("startDate", clientInfo);
         assignEntityValueFromField("endDate", clientInfo);
         if (ReadAllClientInfoPanel.instance().numberOfRecords > 0) {
@@ -107,9 +106,7 @@ public class CreateClientInfoPanel extends CreateComposite {
             assignEntityValueFromField("terminationNotice", clientInfo);
             assignEntityValueFromField("notes", clientInfo);
         }
-//        assignEntityValueFromField("isCPDFilled", clientInfo);
-//        assignEntityValueFromField("timeSheetRequirement", clientInfo);
-//        assignEntityValueFromField("vacationDetails", clientInfo);
+
         return clientInfo;
     }
 
@@ -182,7 +179,6 @@ public class CreateClientInfoPanel extends CreateComposite {
         addDropDown("vendorRecruiter", new SelectVendorRecruiterContactWidget(false, false, Alignment.HORIZONTAL));
         addDropDown("middleVendor", new SelectMiddleVendorWidget(false, false, Alignment.HORIZONTAL));
         //Contract basic
-//        addDropDown("clientProject", new SelectProjectWidget(false, false));
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         if (ReadAllClientInfoPanel.instance().numberOfRecords > 0) {
@@ -232,9 +228,7 @@ public class CreateClientInfoPanel extends CreateComposite {
             StringField jobTitleF = (StringField) fields.get("consultantJobTitle");
             jobTitleF.setValue(TreeEmployeePanel.instance().getEntity().get("jobTitle").isString().stringValue());
         }
-//        addField("isCPDFilled", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-//        addField("timeSheetRequirement", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-//        addField("vacationDetails", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+
         alignFields();
     }
 

@@ -67,6 +67,10 @@ public class ReadClientInfoPanel extends ReadComposite {
         assignFieldValueFromEntity("vendorRecruiter", entity, null);
         assignFieldValueFromEntity("middleVendor", entity, null);
         assignFieldValueFromEntity("clientProject", entity, null);
+        if (entity.get("clientProject") != null) {
+            JSONObject project = entity.get("clientProject").isObject();
+            assignFieldValueFromEntity("purchaseOrderNo", project, DataType.STRING_FIELD);
+        }
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         if (checkPermission()) {
@@ -98,6 +102,10 @@ public class ReadClientInfoPanel extends ReadComposite {
                 assignFieldValueFromEntity("subcontractorpaymentTerms", entity, DataType.STRING_FIELD);
                 assignFieldValueFromEntity("subcontractorw4Filled", entity, DataType.BOOLEAN_FIELD);
                 assignFieldValueFromEntity("subcontractCOI", entity, DataType.BOOLEAN_FIELD);
+                if (entity.get("clientProject") != null) {
+                    JSONObject project = entity.get("clientProject").isObject();
+                    assignFieldValueFromEntity("subContractorWorkOrderNo", project, DataType.STRING_FIELD);
+                }
             }
             if (Auth.is1099(getEmployee())) {
                 entityFieldsPanel.add(getLineSeperatorTag("1099 Contractor Information"));
@@ -112,7 +120,7 @@ public class ReadClientInfoPanel extends ReadComposite {
             assignFieldValueFromEntity("specialInvoiceInstructions", entity, DataType.STRING_FIELD);
         }
         assignFieldValueFromEntity("isCPDFilled", entity, DataType.BOOLEAN_FIELD);
-        
+
         assignFieldValueFromEntity("vacationDetails", entity, DataType.STRING_FIELD);
     }
 
@@ -145,13 +153,14 @@ public class ReadClientInfoPanel extends ReadComposite {
         addDropDown("clientLocation", new SelectClientLocationWidget(true, false, Alignment.HORIZONTAL));
         addDropDown("vendor", new SelectVendorWidget(true, false, Alignment.HORIZONTAL));
         addDropDown("vendorContact", new SelectVendorContactWidget(true, false, Alignment.HORIZONTAL));
-        addDropDown("vendorAPContact", new SelectVendorAcctPayContact(false, false, Alignment.HORIZONTAL));
+        addDropDown("vendorAPContact", new SelectVendorAcctPayContact(true, false, Alignment.HORIZONTAL));
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(true, false, Alignment.HORIZONTAL));
-        addDropDown("vendorRecruiter", new SelectVendorRecruiterContactWidget(false, false, Alignment.HORIZONTAL));
-        addDropDown("middleVendor", new SelectMiddleVendorWidget(false, false, Alignment.HORIZONTAL));
-        addDropDown("clientProject", new SelectProjectWidget(false, false));
+        addDropDown("vendorRecruiter", new SelectVendorRecruiterContactWidget(true, false, Alignment.HORIZONTAL));
+        addDropDown("middleVendor", new SelectMiddleVendorWidget(true, false, Alignment.HORIZONTAL));
+        addDropDown("clientProject", new SelectProjectWidget(true, false));
         addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("purchaseOrderNo", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         if (checkPermission()) {
             entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
             addField("itemNumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -179,6 +188,7 @@ public class ReadClientInfoPanel extends ReadComposite {
                 addField("subcontractorpaymentTerms", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
                 addField("subcontractorw4Filled", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
                 addField("subcontractCOI", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+                addField("subContractorWorkOrderNo", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             }
             if (Auth.is1099(getEmployee())) {
                 entityFieldsPanel.add(getLineSeperatorTag("1099 Contractor"));

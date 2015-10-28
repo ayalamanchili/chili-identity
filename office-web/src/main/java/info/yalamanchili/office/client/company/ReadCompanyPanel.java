@@ -54,6 +54,7 @@ public class ReadCompanyPanel extends ReadComposite {
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("establishedDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("abbreviation", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("logoURL", entity, DataType.IMAGE_FIELD);
     }
 
@@ -69,6 +70,7 @@ public class ReadCompanyPanel extends ReadComposite {
     protected void addWidgets() {
         addField("name", true, false, DataType.STRING_FIELD);
         addField("establishedDate", true, false, DataType.DATE_FIELD);
+        addField("abbreviation", true, true, DataType.STRING_FIELD);
         addField("logoURL", true, false, DataType.IMAGE_FIELD);
 
     }

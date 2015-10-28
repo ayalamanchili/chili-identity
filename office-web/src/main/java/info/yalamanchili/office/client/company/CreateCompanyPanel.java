@@ -43,6 +43,7 @@ public class CreateCompanyPanel extends CreateComposite {
         JSONObject entity = new JSONObject();
         assignEntityValueFromField("name", entity);
         assignEntityValueFromField("establishedDate", entity);
+        assignEntityValueFromField("abbreviation", entity);
         entity.put("logoURL", logoURLUploadPanel.getFileName());
         logger.info(entity.toString());
         return entity;
@@ -94,6 +95,7 @@ public class CreateCompanyPanel extends CreateComposite {
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD);
         addField("establishedDate", false, true, DataType.DATE_FIELD);
+        addField("abbreviation", false, true, DataType.STRING_FIELD);
         entityFieldsPanel.add((logoURLUploadPanel));
     }
 

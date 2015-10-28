@@ -42,6 +42,7 @@ public class UpdateCompanyPanel extends UpdateComposite {
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("name", entity);
         assignEntityValueFromField("establishedDate", entity);
+        assignEntityValueFromField("abbreviation", entity);
         entity.put("logoURL", logoURLUploadPanel.getFileName());
         return entity;
 
@@ -72,6 +73,7 @@ public class UpdateCompanyPanel extends UpdateComposite {
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("establishedDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("abbreviation", entity, DataType.STRING_FIELD);
     }
 
     @Override
@@ -94,6 +96,7 @@ public class UpdateCompanyPanel extends UpdateComposite {
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD);
         addField("establishedDate", false, true, DataType.DATE_FIELD);
+        addField("abbreviation", false, true, DataType.STRING_FIELD);
         entityFieldsPanel.add(logoURLUploadPanel);
     }
 
