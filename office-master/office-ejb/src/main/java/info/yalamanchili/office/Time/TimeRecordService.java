@@ -71,24 +71,24 @@ public class TimeRecordService {
                      BigInteger hours = BigInteger.ZERO;
                      BigInteger minutes = BigInteger.ZERO;
                      value = (timeRecord.getTags().get(EmployeeTimeDataBulkImportProcessBean.CUBICAL)).setScale(2, RoundingMode.HALF_EVEN);
-                     hours = value.abs().toBigInteger();
-                     minutes = ((value.subtract(new BigDecimal(hours))).multiply(new BigDecimal(10).pow(2))).toBigInteger();
+                     hours = hours.add(value.abs().toBigInteger());
+                     minutes = minutes.add(((value.subtract(new BigDecimal(hours))).multiply(new BigDecimal(10).pow(2))).toBigInteger());
                      cubicleHours = cubicleHours.add(new BigDecimal((hours.multiply(new BigInteger("60"))).add(minutes)));
                      // adding receptionHours  
                      value = BigDecimal.ZERO;
                      hours = BigInteger.ZERO;
                      minutes = BigInteger.ZERO;
                      value = (timeRecord.getTags().get(EmployeeTimeDataBulkImportProcessBean.RECEPTION)).setScale(2, RoundingMode.HALF_EVEN);
-                     hours = value.abs().toBigInteger();
-                     minutes = ((value.subtract(new BigDecimal(hours))).multiply(new BigDecimal(10).pow(2))).toBigInteger();
+                     hours = hours.add(value.abs().toBigInteger());
+                     minutes = minutes.add(((value.subtract(new BigDecimal(hours))).multiply(new BigDecimal(10).pow(2))).toBigInteger());
                      receptionHours = receptionHours.add(new BigDecimal((hours.multiply(new BigInteger("60"))).add(minutes)));
                      // adding secondFloorHours  
                      value = BigDecimal.ZERO;
                      hours = BigInteger.ZERO;
                      minutes = BigInteger.ZERO;
                      value = (timeRecord.getTags().get(EmployeeTimeDataBulkImportProcessBean.SECOND_FLOOR)).setScale(2, RoundingMode.HALF_EVEN);
-                     hours = value.abs().toBigInteger();
-                     minutes = ((value.subtract(new BigDecimal(hours))).multiply(new BigDecimal(10).pow(2))).toBigInteger();
+                     hours = hours.add(value.abs().toBigInteger());
+                     minutes = minutes.add(((value.subtract(new BigDecimal(hours))).multiply(new BigDecimal(10).pow(2))).toBigInteger());
                      secondFloorHours = secondFloorHours.add(new BigDecimal((hours.multiply(new BigInteger("60"))).add(minutes)));
                 }
                 // calculating cubicleHours  
