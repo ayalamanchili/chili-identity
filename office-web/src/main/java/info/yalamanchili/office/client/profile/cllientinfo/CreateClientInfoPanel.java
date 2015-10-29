@@ -33,7 +33,6 @@ import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.admin.client.CreateClientPanel;
-import info.yalamanchili.office.client.admin.project.SelectProjectWidget;
 import info.yalamanchili.office.client.admin.subcntrcontact.SelectSubcontractorContactWidget;
 import info.yalamanchili.office.client.admin.subcntrlocation.SelectSubcontractorLocationWidget;
 import info.yalamanchili.office.client.admin.subcontractor.SelectSubcontractorWidget;
@@ -44,15 +43,15 @@ import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorRecruiter
 import info.yalamanchili.office.client.home.tasks.GenericBPMStartFormPanel;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
 import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.event.dom.client.DropHandler;
-import com.google.gwt.user.client.ui.ListBox;
+import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
 
-public class CreateClientInfoPanel extends CreateComposite implements ChangeHandler{
+public class CreateClientInfoPanel extends CreateComposite implements ChangeHandler {
 
     private static Logger logger = Logger.getLogger(CreateClientInfoPanel.class.getName());
     protected Anchor addClientL = new Anchor("Client not present? submit request");
     protected Anchor addVendorL = new Anchor("Vendor not present? submit request");
+    SelectPracticeWidget selectPractiseWidgetF = new SelectPracticeWidget(false, true, Alignment.HORIZONTAL);
 
     public CreateClientInfoPanel(CreateCompositeType type) {
         super(type);
@@ -63,11 +62,15 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     DateField previousProjectEndDate;
     EnumField servicesF;
     EnumField sectorsF;
+    boolean companyUpdated = false;
 
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject clientInfo = new JSONObject();
         assignEntityValueFromField("consultantJobTitle", clientInfo);
+        if (!companyUpdated) {
+            assignEntityValueFromField("company", clientInfo);
+        }
         assignEntityValueFromField("client", clientInfo);
         assignEntityValueFromField("clientContact", clientInfo);
         assignEntityValueFromField("clientLocation", clientInfo);
@@ -114,8 +117,8 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             assignEntityValueFromField("terminationNotice", clientInfo);
             assignEntityValueFromField("notes", clientInfo);
         }
-            assignEntityValueFromField("servicesAndPractices",clientInfo);
-            assignEntityValueFromField("sectorsAndBUs",clientInfo);
+        assignEntityValueFromField("practice", clientInfo);
+        assignEntityValueFromField("sectorsAndBUs", clientInfo);
         return clientInfo;
     }
 
@@ -157,9 +160,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         if (endPreviousProjectFlagField != null) {
             endPreviousProjectFlagField.getBox().addClickHandler(this);
         }
-        if(servicesF != null){
-            servicesF.listBox.addChangeHandler(this);
-        }
+        selectPractiseWidgetF.getListBox().addChangeHandler(this);
     }
 
     @Override
@@ -176,6 +177,17 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     protected void addWidgets() {
         //Basic
         addField("consultantJobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("employeeType", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        if (TreeEmployeePanel.instance().getEntity().get("company") != null) {
+            companyUpdated = true;
+        }
+        if (!companyUpdated) {
+            addDropDown("company", new SelectCompanyWidget(false, true, Alignment.HORIZONTAL));
+        } else {
+            addField("company", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            StringField jobTitleF = (StringField) fields.get("company");
+            jobTitleF.setValue(TreeEmployeePanel.instance().getEntity().get("company").isObject().get("name").isString().stringValue());
+        }
         //client
         entityFieldsPanel.add(getLineSeperatorTag("Client & Vendor Information"));
         addDropDown("client", new SelectClientWidget(false, true, Alignment.HORIZONTAL));
@@ -208,7 +220,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             addField("overTimePayRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addEnumField("overTimeRateDuration", false, false, billingDuration, Alignment.HORIZONTAL);
-  //          String[] invoiceFrequencies = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
+            //          String[] invoiceFrequencies = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
             addEnumField("invoiceFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
             String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
             addEnumField("invoiceDeliveryMethod", false, false, invoiceDeliveryMethods, Alignment.HORIZONTAL);
@@ -240,9 +252,12 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             StringField jobTitleF = (StringField) fields.get("consultantJobTitle");
             jobTitleF.setValue(TreeEmployeePanel.instance().getEntity().get("jobTitle").isString().stringValue());
         }
-        addDropDown("Practice", new SelectPracticeWidget(false, true));
-        addEnumField("sectorsAndBUs", false, false, ConsultingServices.getSectorsAndBusinessUnits().toArray(new String[0]));
-        servicesF = (EnumField) fields.get("servicesAndPractices");
+        if (TreeEmployeePanel.instance().getEntity().get("employeeType") != null) {
+            StringField jobTitleF = (StringField) fields.get("employeeType");
+            jobTitleF.setValue(TreeEmployeePanel.instance().getEntity().get("employeeType").isObject().get("name").isString().stringValue());
+        }
+        addDropDown("practice", selectPractiseWidgetF);
+        addEnumField("sectorsAndBUs", false, false, ConsultingServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
         sectorsF = (EnumField) fields.get("sectorsAndBUs");
         alignFields();
     }
@@ -275,30 +290,34 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
 
         super.onClick(event);
     }
+
     @Override
     public void onChange(ChangeEvent event) {
-        switch (servicesF.getValue()) {
-            case "4100-CONSULTING SERVICES":
-                sectorsF.setValues(ConsultingServices.getSectorsAndBusinessUnits().toArray(new String[0]));
-                break;
-            case "4200-PROJECT MANAGEMENT SERVICES":
-                sectorsF.setValues(ProjectManagementServices.getSectorsAndBusinessUnits().toArray(new String[0]));
-                break;
-            case "4300-SOFTWARE DEVELOPMENT SERVICES":
-                sectorsF.setValues(SoftwareDevelopmentServices.getSectorsAndBusinessUnits().toArray(new String[0]));
-                break;
-            case "4400-INFRASTRUCTURE SERVICES":
-                sectorsF.setValues(InfrastructureServices.getSectorsAndBusinessUnits().toArray(new String[0]));
-                break;
-            case "4500-MOBILITY SERVICES":
-                sectorsF.setValues(MobilityServices.getSectorsAndBusinessUnits().toArray(new String[0]));
-                break;
-            case "4600-TECHNOLOGY,DEVELOPMENT,INTEGRATION SERVICES":
-                sectorsF.setValues(TechnologyIntegrationServices.getSectorsAndBusinessUnits().toArray(new String[0]));
-                break;
-            case "4700-QUALIY ASURANCE SERVICES":
-                sectorsF.setValues(QualityAsuranceServices.getSectorsAndBusinessUnits().toArray(new String[0]));
-                break;  
+        if (event.getSource().equals(selectPractiseWidgetF.getListBox())) {
+            String service = selectPractiseWidgetF.getSelectedObject().get("value").isString().stringValue().trim();
+            switch (service) {
+                case "4100-CONSULTING SERVICES":
+                    sectorsF.setValues(ConsultingServices.getSectorsAndBusinessUnits().toArray(new String[0]));
+                    break;
+                case "4200-PROJECT MANAGEMENT SERVICES":
+                    sectorsF.setValues(ProjectManagementServices.getSectorsAndBusinessUnits().toArray(new String[0]));
+                    break;
+                case "4300-SOFTWARE DEVELOPMENT SERVICES":
+                    sectorsF.setValues(SoftwareDevelopmentServices.getSectorsAndBusinessUnits().toArray(new String[0]));
+                    break;
+                case "4400-INFRASTRUCTURE SERVICES":
+                    sectorsF.setValues(InfrastructureServices.getSectorsAndBusinessUnits().toArray(new String[0]));
+                    break;
+                case "4500-MOBILITY SERVICES":
+                    sectorsF.setValues(MobilityServices.getSectorsAndBusinessUnits().toArray(new String[0]));
+                    break;
+                case "4600-TECHNOLOGY,DEVELOPMENT,INTEGRATION SERVICES":
+                    sectorsF.setValues(TechnologyIntegrationServices.getSectorsAndBusinessUnits().toArray(new String[0]));
+                    break;
+                case "4700-QUALIY ASURANCE SERVICES":
+                    sectorsF.setValues(QualityAsuranceServices.getSectorsAndBusinessUnits().toArray(new String[0]));
+                    break;
+            }
         }
     }
 

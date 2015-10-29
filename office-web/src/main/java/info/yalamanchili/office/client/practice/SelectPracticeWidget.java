@@ -11,6 +11,7 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.composite.SelectComposite;
+import info.chili.gwt.utils.Alignment;
 
 /**
  *
@@ -20,6 +21,10 @@ public class SelectPracticeWidget extends SelectComposite {
 
     public SelectPracticeWidget(Boolean readOnly, Boolean isRequired) {
         super(OfficeWelcome.constants, "Practice", readOnly, isRequired);
+    }
+
+    public SelectPracticeWidget(Boolean readOnly, Boolean isRequired, Alignment alignment) {
+        super(OfficeWelcome.constants, "Practice", readOnly, isRequired, alignment);
     }
 
     @Override

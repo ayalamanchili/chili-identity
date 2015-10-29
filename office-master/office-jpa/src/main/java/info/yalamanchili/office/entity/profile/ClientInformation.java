@@ -11,7 +11,7 @@ import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.client.Subcontractor;
 import info.yalamanchili.office.entity.client.Vendor;
-import info.yalamanchili.office.entity.message.NotificationGroup;
+import info.yalamanchili.office.entity.practice.Practice;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -309,6 +309,15 @@ public class ClientInformation extends AbstractEntity {
 
     @Enumerated(EnumType.STRING)
     private ClientInformationStatus status;
+    
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_Practice_ClientInformation")
+    @NotNull(message = "{practice.not.empty.msg}")
+    private Practice practice;
+    
+    @Field
+    @NotEmpty(message = "{sectorsAndBUs.not.empty.msg}")
+    protected String sectorsAndBUs;
 
     public ClientInformation() {
         super();
@@ -808,6 +817,22 @@ public class ClientInformation extends AbstractEntity {
 
     public void setStatus(ClientInformationStatus status) {
         this.status = status;
+    }
+
+    public Practice getPractice() {
+        return practice;
+    }
+
+    public void setPractice(Practice practice) {
+        this.practice = practice;
+    }
+
+    public String getSectorsAndBUs() {
+        return sectorsAndBUs;
+    }
+
+    public void setSectorsAndBUs(String sectorsAndBUs) {
+        this.sectorsAndBUs = sectorsAndBUs;
     }
 
     @Override
