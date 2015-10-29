@@ -21,7 +21,33 @@ public class ContractSearchDto extends ContractDto {
 
     protected String employeeFirstName;
     protected String employeeLastName;
-    
+    protected String city;
+    protected String state;
+    protected String company;
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
 
     public String getEmployeeFirstName() {
         return employeeFirstName;
