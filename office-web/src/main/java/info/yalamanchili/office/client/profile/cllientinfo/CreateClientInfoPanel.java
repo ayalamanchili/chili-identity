@@ -31,7 +31,6 @@ import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.admin.client.CreateClientPanel;
-import info.yalamanchili.office.client.admin.project.SelectProjectWidget;
 import info.yalamanchili.office.client.admin.subcntrcontact.SelectSubcontractorContactWidget;
 import info.yalamanchili.office.client.admin.subcntrlocation.SelectSubcontractorLocationWidget;
 import info.yalamanchili.office.client.admin.subcontractor.SelectSubcontractorWidget;
@@ -39,8 +38,10 @@ import info.yalamanchili.office.client.admin.vendor.CreateVendorPanel;
 import info.yalamanchili.office.client.admin.vendor.SelectMiddleVendorWidget;
 import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorAcctPayContact;
 import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorRecruiterContactWidget;
+import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.home.tasks.GenericBPMStartFormPanel;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
+import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWidget;
 
 public class CreateClientInfoPanel extends CreateComposite {
 
@@ -55,11 +56,15 @@ public class CreateClientInfoPanel extends CreateComposite {
 
     BooleanField endPreviousProjectFlagField;
     DateField previousProjectEndDate;
+    boolean companyUpdated = false;
 
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject clientInfo = new JSONObject();
         assignEntityValueFromField("consultantJobTitle", clientInfo);
+        if (!companyUpdated) {
+            assignEntityValueFromField("company", clientInfo);
+        }
         assignEntityValueFromField("client", clientInfo);
         assignEntityValueFromField("clientContact", clientInfo);
         assignEntityValueFromField("clientLocation", clientInfo);
@@ -164,6 +169,17 @@ public class CreateClientInfoPanel extends CreateComposite {
     protected void addWidgets() {
         //Basic
         addField("consultantJobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("employeeType", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        if (TreeEmployeePanel.instance().getEntity().get("company") != null) {
+            companyUpdated = true;
+        }
+        if (!companyUpdated) {
+            addDropDown("company", new SelectCompanyWidget(false, true, Alignment.HORIZONTAL));
+        } else {
+            addField("company", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            StringField jobTitleF = (StringField) fields.get("company");
+            jobTitleF.setValue(TreeEmployeePanel.instance().getEntity().get("company").isObject().get("name").isString().stringValue());
+        }
         //client
         entityFieldsPanel.add(getLineSeperatorTag("Client & Vendor Information"));
         addDropDown("client", new SelectClientWidget(false, true, Alignment.HORIZONTAL));
@@ -196,7 +212,7 @@ public class CreateClientInfoPanel extends CreateComposite {
             addField("overTimePayRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addEnumField("overTimeRateDuration", false, false, billingDuration, Alignment.HORIZONTAL);
-  //          String[] invoiceFrequencies = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
+            //          String[] invoiceFrequencies = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
             addEnumField("invoiceFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
             String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
             addEnumField("invoiceDeliveryMethod", false, false, invoiceDeliveryMethods, Alignment.HORIZONTAL);
@@ -228,7 +244,10 @@ public class CreateClientInfoPanel extends CreateComposite {
             StringField jobTitleF = (StringField) fields.get("consultantJobTitle");
             jobTitleF.setValue(TreeEmployeePanel.instance().getEntity().get("jobTitle").isString().stringValue());
         }
-
+        if (TreeEmployeePanel.instance().getEntity().get("employeeType") != null) {
+            StringField jobTitleF = (StringField) fields.get("employeeType");
+            jobTitleF.setValue(TreeEmployeePanel.instance().getEntity().get("employeeType").isObject().get("name").isString().stringValue());
+        }
         alignFields();
     }
 

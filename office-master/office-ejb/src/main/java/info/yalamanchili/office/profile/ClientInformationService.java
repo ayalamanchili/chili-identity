@@ -17,9 +17,11 @@ import info.yalamanchili.office.dao.client.VendorDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.BillingRateDao;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
+import info.yalamanchili.office.dao.profile.CompanyDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.dto.profile.ClientInformationDto;
 import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Project;
@@ -62,21 +64,33 @@ public class ClientInformationService {
     protected ProfileNotificationService ProfileNotificationService;
     @Autowired
     protected ClientInformationDao clientInformationDao;
+    @Autowired
+    protected CompanyDao companyDao;
 
-    public void addClientInformation(Long empId, ClientInformation ci) {
-        Employee emp = (Employee) em.find(Employee.class, empId);
-        Company company = emp.getCompany();
-        String abbreviation = "";
-        if (company != null) {
-            abbreviation = company.getAbbreviation();
-        } else {
-            abbreviation = "SST";
-        }
-
+    public void addClientInformation(Long empId, ClientInformationDto ciDto) {
+        ClientInformation ci = mapper.map(ciDto, ClientInformation.class);
+        
         Client client = null;
         Vendor vendor = null;
         Vendor middleVendor = null;
+        Company company = null;
         Project project = new Project();
+        String abbreviation = "";
+        Employee emp = (Employee) em.find(Employee.class, empId);
+
+        if (ciDto.getCompany() != null) {
+            company = companyDao.findById(ciDto.getCompany().getId());
+            emp.setCompany(company);
+            emp = EmployeeDao.instance().save(emp);
+            abbreviation = company.getAbbreviation();
+        } else {
+            company = emp.getCompany();
+            if (company != null) {
+                abbreviation = company.getAbbreviation();
+            } else {
+                abbreviation = "SSTL";
+            }
+        }
 
         if (ci.getClient() != null) {
             client = ClientDao.instance().findById(ci.getClient().getId());
@@ -235,7 +249,7 @@ public class ClientInformationService {
         if (company != null) {
             abbreviation = company.getAbbreviation();
         } else {
-            abbreviation = "SST";
+            abbreviation = "SSTL";
         }
         BeanMapper.merge(ci, ciEntity);
         Project project = ProjectDao.instance().findById(ci.getClientProject().getId());

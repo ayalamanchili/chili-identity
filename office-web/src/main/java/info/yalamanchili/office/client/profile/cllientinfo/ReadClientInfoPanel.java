@@ -13,6 +13,7 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.ReadComposite;
+import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.Auth;
@@ -29,6 +30,7 @@ import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorAcctPayCo
 import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorContactWidget;
 import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorRecruiterContactWidget;
 import info.yalamanchili.office.client.admin.vendorlocation.SelectVendorLocationsWidget;
+import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import info.yalamanchili.office.client.profile.updateBillingRate.ReadAllUpdateBillingRatePanel;
@@ -146,6 +148,8 @@ public class ReadClientInfoPanel extends ReadComposite {
     @Override
     protected void addWidgets() {
         addField("consultantJobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("employeeType", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("company", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Client & Vendor Information"));
         addDropDown("client", new SelectClientWidget(true, false, Alignment.HORIZONTAL));
         addDropDown("clientContact", new SelectClientContactWidget(true, false, Alignment.HORIZONTAL));
@@ -213,6 +217,14 @@ public class ReadClientInfoPanel extends ReadComposite {
         addField("isCPDFilled", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("vacationDetails", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("notes", true, false, DataType.RICH_TEXT_AREA);
+        if (TreeEmployeePanel.instance().getEntity().get("employeeType") != null) {
+            StringField jobTitleF = (StringField) fields.get("employeeType");
+            jobTitleF.setValue(TreeEmployeePanel.instance().getEntity().get("employeeType").isObject().get("description").isString().stringValue());
+        }
+        if (TreeEmployeePanel.instance().getEntity().get("company") != null) {
+            StringField jobTitleF = (StringField) fields.get("company");
+            jobTitleF.setValue(TreeEmployeePanel.instance().getEntity().get("company").isObject().get("name").isString().stringValue());
+        }
         alignFields();
     }
 

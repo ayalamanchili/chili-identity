@@ -15,6 +15,7 @@ import info.chili.gwt.rpc.HttpService;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.composite.BaseField;
+import info.chili.gwt.fields.StringField;
 import info.chili.gwt.resources.ChiliImages;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ClickableImage;
@@ -33,6 +34,7 @@ import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorAcctPayCo
 import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorContactWidget;
 import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorRecruiterContactWidget;
 import info.yalamanchili.office.client.admin.vendorlocation.SelectVendorLocationsWidget;
+import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
 import info.yalamanchili.office.client.profile.updateBillingRate.CreateUpdateBillingRatePanel;
 import info.yalamanchili.office.client.profile.updateBillingRate.ReadAllUpdateBillingRatePanel;
@@ -207,6 +209,8 @@ public class UpdateClientInfoPanel extends UpdateComposite {
     @Override
     protected void addWidgets() {
         addField("consultantJobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("employeeType", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("company", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Client & Vendor Information"));
         addDropDown("client", new SelectClientWidget(false, true, Alignment.HORIZONTAL));
         addDropDown("clientContact", new SelectClientContactWidget(false, false, Alignment.HORIZONTAL));
@@ -255,7 +259,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
                 addDropDown("subcontractorAddress", new SelectSubcontractorLocationWidget(false, false, Alignment.HORIZONTAL));
                 addField("subcontractorPayRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
                 addField("subcontractorOvertimePayRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
- //               String[] invoiceFrequencie = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
+                //               String[] invoiceFrequencie = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
                 addEnumField("subcontractorinvoiceFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
                 addField("subcontractorpaymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
                 addField("subcontractorw4Filled", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
@@ -273,6 +277,14 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         }
         addField("isCPDFilled", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("vacationDetails", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        if (TreeEmployeePanel.instance().getEntity().get("employeeType") != null) {
+            StringField jobTitleF = (StringField) fields.get("employeeType");
+            jobTitleF.setValue(TreeEmployeePanel.instance().getEntity().get("employeeType").isObject().get("description").isString().stringValue());
+        }
+        if (TreeEmployeePanel.instance().getEntity().get("company") != null) {
+            StringField jobTitleF = (StringField) fields.get("company");
+            jobTitleF.setValue(TreeEmployeePanel.instance().getEntity().get("company").isObject().get("name").isString().stringValue());
+        }
         alignFields();
     }
 

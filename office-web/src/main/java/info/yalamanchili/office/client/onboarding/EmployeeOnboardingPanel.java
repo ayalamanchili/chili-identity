@@ -359,25 +359,20 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         if (event.getSource().equals(addDependentsL)) {
             CreateDependentsPanel panel = null;
             int i = createDependentsPanel.size();
-            logger.info("im in employeeonboarding post adddepbef " + i);
             panel = new CreateDependentsPanel(this, i);
             createDependentsPanel.add(panel);
             entityFieldsPanel.add(panel);
-            logger.info("im in employeeonboarding post adddep " + i);
         } else if (event.getSource().equals(addEmerContact)) {
             CreateEmergencyContactWidget panel = null;
             int x = createEmergencyContactPanel.size();
-            logger.info("im in employeeonboarding post addEmerContactbef " + x);
             panel = new CreateEmergencyContactWidget(CreateComposite.CreateCompositeType.ADD, this, x);
             createEmergencyContactPanel.add(panel);
             entityFieldsPanel.add(panel);
-            logger.info("im in employeeonboarding post addEmerContact " + x);
         }
         super.onClick(event);
     }
 
     public void removePanel(int i) {
-        logger.info("im in employeeonboarding post removePanel " + i);
         if (createDependentsPanel.size() > 0) {
             createDependentsPanel.get(i).removeFromParent();
             createDependentsPanel.remove(i);
@@ -385,7 +380,6 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
     }
 
     public void removeEmergencyContactPanel(int x) {
-        logger.info("im in employeeonboarding post removeEmergencyContactPanel " + x);
         if (createEmergencyContactPanel.size() > 0) {
             createEmergencyContactPanel.get(x).removeFromParent();
             createEmergencyContactPanel.remove(x);

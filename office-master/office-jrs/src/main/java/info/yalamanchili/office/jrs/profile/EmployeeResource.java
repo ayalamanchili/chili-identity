@@ -28,6 +28,7 @@ import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.practice.PracticeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.dto.profile.ClientInformationDto;
 import info.yalamanchili.office.entity.privacy.PrivacyData;
 import info.yalamanchili.office.privacy.PrivacyAware;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
@@ -343,7 +344,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @Validate
     @Path("/clientinformation/{empId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RECRUITER','ROLE_TIME','ROLE_RELATIONSHIP')")
-    public void addClientInformation(@PathParam("empId") Long empId, ClientInformation clientInformation) {
+    public void addClientInformation(@PathParam("empId") Long empId, ClientInformationDto clientInformation) {
         ClientInformationService clientInformationService = (ClientInformationService) SpringContext.getBean("clientInformationService");
         clientInformationService.addClientInformation(empId, clientInformation);
     }
