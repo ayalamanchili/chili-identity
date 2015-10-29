@@ -11,13 +11,17 @@ package info.yalamanchili.office.client.contracts;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.gwt.SearchComposite;
+import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -26,6 +30,8 @@ import java.util.logging.Logger;
  * @author anuyalamanchili
  */
 public class SearchContractsPanel extends SearchComposite {
+
+    protected SelectCompanyWidget selectCompnayWidget = new SelectCompanyWidget(false, false);
 
     private static Logger logger = Logger.getLogger(SearchContractsPanel.class.getName());
 
@@ -51,6 +57,12 @@ public class SearchContractsPanel extends SearchComposite {
         addField("subContractorName", DataType.STRING_FIELD);
         addField("startDate", DataType.DATE_FIELD);
         addField("endDate", DataType.DATE_FIELD);
+        addField("city", DataType.STRING_FIELD);
+        addEnumField("state", false, false, USAStatesFactory.getStates().toArray(new String[0]));
+        addEnumField("invoiceFrequency", false, false, InvoiceFrequency.names());
+        String[] employeeTypeStrs = {"Corporate Employee", "Employee", "Subcontractor", "1099 Contractor"};
+        addEnumField("employeeType", false, false, employeeTypeStrs);
+        addDropDown("company", selectCompnayWidget);
     }
 
     @Override
@@ -58,12 +70,17 @@ public class SearchContractsPanel extends SearchComposite {
         entity = new JSONObject();
         assignEntityValueFromField("employeeFirstName", entity);
         assignEntityValueFromField("employeeLastName", entity);
-        assignEntityValueFromField("itemNumber", entity);   
-        assignEntityValueFromField("client", entity);        
-        assignEntityValueFromField("vendor", entity);        
+        assignEntityValueFromField("itemNumber", entity);
+        assignEntityValueFromField("client", entity);
+        assignEntityValueFromField("vendor", entity);
         assignEntityValueFromField("subContractorName", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
+        assignEntityValueFromField("city", entity);
+        assignEntityValueFromField("state", entity);
+        assignEntityValueFromField("invoiceFrequency", entity);
+        assignEntityValueFromField("employeeType", entity);
+        assignEntityValueFromField("company", entity);
         logger.info(entity.toString());
         return entity;
     }
