@@ -116,16 +116,37 @@ public class ContractService {
             queryStr.append("ci.itemNumber LIKE '%").append(searchDto.getItemNumber().trim()).append("%' ").append(" and ");
         }
         if (StringUtils.isNotBlank(searchDto.getClient())) {
-            queryStr.append("ci.client LIKE '%").append(searchDto.getClient().trim()).append("%' ").append(" and ");
+            queryStr.append("ci.client.name LIKE '%").append(searchDto.getClient().trim()).append("%' ").append(" and ");
         }
         if (StringUtils.isNotBlank(searchDto.getVendor())) {
-            queryStr.append("ci.vendor LIKE '%").append(searchDto.getVendor().trim()).append("%' ").append(" and ");
+            queryStr.append("ci.vendor.name LIKE '%").append(searchDto.getVendor().trim()).append("%' ").append(" and ");
+        }
+        if (StringUtils.isNotBlank(searchDto.getSubContractorName())) {
+            queryStr.append("ci..subcontractor.name LIKE '%").append(searchDto.getSubContractorName().trim()).append("%' ").append(" and ");
         }
         if (StringUtils.isNotBlank(searchDto.getEmployeeFirstName())) {
             queryStr.append("ci.employee.firstName LIKE '%").append(searchDto.getEmployeeFirstName().trim()).append("%' ").append(" and ");
         }
         if (StringUtils.isNotBlank(searchDto.getEmployeeLastName())) {
             queryStr.append("ci.employee.lastName LIKE '%").append(searchDto.getEmployeeLastName().trim()).append("%' ").append(" and ");
+        }
+        if (StringUtils.isNotBlank(searchDto.getState())) {
+            queryStr.append("ci.address.state LIKE '%").append(searchDto.getState().trim()).append("%' ").append(" and ");
+        }
+        if (StringUtils.isNotBlank(searchDto.getCity())) {
+            queryStr.append("ci.address.city LIKE '%").append(searchDto.getCity().trim()).append("%' ").append(" and ");
+        }
+        if (StringUtils.isNotBlank(searchDto.getCompany())) {
+            queryStr.append("ci.address.company LIKE '%").append(searchDto.getCompany().trim()).append("%' ").append(" and ");
+        }
+        if (StringUtils.isNotBlank(searchDto.getCompany())) {
+            queryStr.append("ci.company.name LIKE '%").append(searchDto.getCompany().trim()).append("%' ").append(" and ");
+        }
+        if (StringUtils.isNotBlank(searchDto.getEmployeeType())) {
+            queryStr.append("ci.employeeType.name LIKE '%").append(searchDto.getEmployeeType().trim()).append("%' ").append(" and ");
+        }
+        if (StringUtils.isNotBlank(searchDto.getInvoiceFrequency().name())) {
+            queryStr.append("ci.invoiceFrequency LIKE '%").append(searchDto.getInvoiceFrequency().name().trim()).append("%' ").append(" and ");
         }
         return queryStr.toString().substring(0, queryStr.toString().lastIndexOf("and"));
     }
