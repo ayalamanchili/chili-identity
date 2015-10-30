@@ -279,7 +279,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         addField("vacationDetails", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         if (TreeEmployeePanel.instance().getEntity().get("employeeType") != null) {
             StringField jobTitleF = (StringField) fields.get("employeeType");
-            jobTitleF.setValue(TreeEmployeePanel.instance().getEntity().get("employeeType").isObject().get("description").isString().stringValue());
+            jobTitleF.setValue(TreeEmployeePanel.instance().getEntity().get("employeeType").isObject().get("name").isString().stringValue());
         }
         if (TreeEmployeePanel.instance().getEntity().get("company") != null) {
             StringField jobTitleF = (StringField) fields.get("company");
