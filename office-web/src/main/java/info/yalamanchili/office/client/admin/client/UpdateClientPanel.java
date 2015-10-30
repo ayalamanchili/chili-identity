@@ -85,7 +85,7 @@ public class UpdateClientPanel extends UpdateComposite {
         addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addEnumField("clientinvFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+        addEnumField("clientinvFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         alignFields();
     }
 

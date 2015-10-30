@@ -38,8 +38,6 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
         return instance;
     }
 
-    protected ClickableLink getBISInformation = new ClickableLink("View BIS Information");
-
     public ReadAllClientInfoPanel(String parentId) {
         instance = this;
         this.parentId = parentId;
@@ -61,15 +59,11 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
     @Override
     protected void addListeners() {
         super.addListeners();
-        getBISInformation.addClickHandler(this);
     }
 
     @Override
     protected void configure() {
         super.configure();
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_BIS_VIEW)) {
-            tablePanel.add(getBISInformation);
-        }
     }
 
     @Override
@@ -173,7 +167,7 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
                 table.setText(i, 3, JSONUtils.toString(entity, "itemNumber"));
                 table.setText(i, 4, FormatUtils.formarCurrency(JSONUtils.toString(entity, "billingRate")));
                 table.setText(i, 5, FormatUtils.formarCurrency(JSONUtils.toString(entity, "overTimeBillingRate")));
-                table.setText(i, 6, JSONUtils.toString(entity, "invoiceFrequency"));
+                setEnumColumn(i, 6, entity, InvoiceFrequency.class.getSimpleName(), "invoiceFrequency");
             }
             table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
             table.setText(i, 8, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
@@ -182,21 +176,6 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
 
     @Override
     public void onClick(ClickEvent event) {
-        if (event.getSource().equals(getBISInformation)) {
-            HttpServiceAsync.instance().doGet(getBISInfoUrl(), OfficeWelcome.instance().getHeaders(), true,
-                    new ALAsyncCallback<String>() {
-                        @Override
-                        public void onResponse(String arg0) {
-                            TabPanel.instance().myOfficePanel.entityPanel.clear();
-                            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllBISClientInformationPanel(JSONUtils.toJSONArray(JSONParser.parseLenient(arg0).isObject().get("result"))));
-                        }
-                    });
-        }
         super.onClick(event);
     }
-
-    protected String getBISInfoUrl() {
-        return OfficeWelcome.constants.root_url() + "clientinformation/bis-info/" + TreeEmployeePanel.instance().getEntityId();
-    }
-
 }
