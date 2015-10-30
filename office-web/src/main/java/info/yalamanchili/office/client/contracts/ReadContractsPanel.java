@@ -14,7 +14,6 @@ import info.chili.gwt.fields.RichTextField;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.admin.subcntrlocation.SelectSubcontractorLocationWidget;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
 import info.yalamanchili.office.client.profile.updateBillingRate.ReadAllUpdateBillingRatePanel;
 import java.util.logging.Logger;

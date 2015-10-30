@@ -222,6 +222,12 @@ public class ContractService {
         if (ci.getSubcontractorAddress() != null) {
             dto.setSubcontractorAddress(ci.getSubcontractorAddress().getStreet1() + " " + ci.getSubcontractorAddress().getCity());
         }
+        if (ci.getStatus() != null) {
+            dto.setStatus(ci.getStatus().toString());
+        }
+        if (ci.getPractice() != null) {
+            dto.setPractice(ci.getPractice().getName());
+        }
         return dto;
     }
 

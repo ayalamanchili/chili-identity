@@ -9,21 +9,19 @@ package info.yalamanchili.office.dto.client;
 
 import info.yalamanchili.office.entity.client.InvoiceDeliveryMethod;
 import info.yalamanchili.office.entity.client.InvoiceFrequency;
-import info.yalamanchili.office.entity.profile.Address;
+import info.yalamanchili.office.entity.practice.Practice;
 import info.yalamanchili.office.entity.profile.BillingDuration;
+import info.yalamanchili.office.entity.profile.ClientInformationStatus;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.hibernate.annotations.ForeignKey;
 
 /**
  *
@@ -198,6 +196,13 @@ public class ContractDto implements Serializable {
      * subcontractor certificate of insurance
      */
     protected Boolean subcontractCOI;
+    
+ 
+    private String status;
+    
+    private String practice;
+    
+    protected String sectorsAndBUs;
 
     public void setPaymentTerms1099(String paymentTerms1099) {
         this.paymentTerms1099 = paymentTerms1099;
@@ -626,6 +631,34 @@ public class ContractDto implements Serializable {
         this.subContractorWorkOrderNo = subContractorWorkOrderNo;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+
+
+
+    public String getSectorsAndBUs() {
+        return sectorsAndBUs;
+    }
+
+    public void setSectorsAndBUs(String sectorsAndBUs) {
+        this.sectorsAndBUs = sectorsAndBUs;
+    }
+
+    public String getPractice() {
+        return practice;
+    }
+
+    public void setPractice(String practice) {
+        this.practice = practice;
+    }
+    
+    
     
     @XmlRootElement
     @XmlType
