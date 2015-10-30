@@ -75,7 +75,7 @@ public class SearchProspectsPanel extends SearchComposite {
         addField("processDocSentDate", DataType.DATE_FIELD);
         addField("email", DataType.STRING_FIELD);
         addField("phoneNumber", DataType.LONG_FIELD);
-        addEnumField("status", false, true, ProspectStatus.names());
+        addEnumField("status", false, false, ProspectStatus.names());
     }
     
     @Override
