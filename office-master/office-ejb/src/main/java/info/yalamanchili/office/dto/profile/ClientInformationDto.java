@@ -92,7 +92,6 @@ public class ClientInformationDto implements Serializable {
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_ClientInfo_Employees")
-    @NotNull(message = "{client.not.empty.msg}")
     protected Company company;
     /**
      * Client

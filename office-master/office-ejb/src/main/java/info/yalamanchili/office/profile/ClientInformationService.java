@@ -14,6 +14,7 @@ import info.yalamanchili.office.dao.client.ClientDao;
 import info.yalamanchili.office.dao.client.ProjectDao;
 import info.yalamanchili.office.dao.client.SubcontractorDao;
 import info.yalamanchili.office.dao.client.VendorDao;
+import info.yalamanchili.office.dao.practice.PracticeDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.BillingRateDao;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
@@ -27,6 +28,7 @@ import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.client.Subcontractor;
 import info.yalamanchili.office.entity.client.Vendor;
+import info.yalamanchili.office.entity.practice.Practice;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.BillingRate;
 import info.yalamanchili.office.entity.profile.ClientInformation;
@@ -90,6 +92,10 @@ public class ClientInformationService {
             } else {
                 abbreviation = "SSTL";
             }
+        }
+        
+        if (abbreviation == null || abbreviation.isEmpty()) {
+            abbreviation = "SSTL";
         }
 
         if (ci.getClient() != null) {
@@ -167,6 +173,11 @@ public class ClientInformationService {
         }
         if (ci.getEndDate() != null) {
             project.setEndDate(ci.getEndDate());
+        }
+        
+        if (ci.getPractice() != null) {
+            Practice practice = PracticeDao.instance().findById(ci.getPractice().getId());
+            ci.setPractice(practice);
         }
 
         project.setStartDate(ci.getStartDate());
