@@ -95,7 +95,7 @@ public class CreateCompanyPanel extends CreateComposite {
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD);
         addField("establishedDate", false, true, DataType.DATE_FIELD);
-        addField("abbreviation", false, true, DataType.STRING_FIELD);
+        addField("abbreviation", false, false, DataType.STRING_FIELD);
         entityFieldsPanel.add((logoURLUploadPanel));
     }
 

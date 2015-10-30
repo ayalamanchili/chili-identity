@@ -105,8 +105,8 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                 assignEntityValueFromField("subcontractorOvertimePayRate", clientInfo);
                 assignEntityValueFromField("subcontractorinvoiceFrequency", clientInfo);
                 assignEntityValueFromField("subcontractorpaymentTerms", clientInfo);
-                assignEntityValueFromField("subcontractorw4Filled", clientInfo);
-                assignEntityValueFromField("subcontractCOI", clientInfo);
+//                assignEntityValueFromField("subcontractorw4Filled", clientInfo);
+//                assignEntityValueFromField("subcontractCOI", clientInfo);
             }
             if (Auth.is1099(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
                 assignEntityValueFromField("payRate1099", clientInfo);
@@ -233,8 +233,8 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                 addField("subcontractorOvertimePayRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
                 addEnumField("subcontractorinvoiceFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
                 addField("subcontractorpaymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-                addField("subcontractorw4Filled", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-                addField("subcontractCOI", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+//                addField("subcontractorw4Filled", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+//                addField("subcontractCOI", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             }
             if (Auth.is1099(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
                 entityFieldsPanel.add(getLineSeperatorTag("1099 Contractor Information"));
@@ -257,7 +257,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             jobTitleF.setValue(TreeEmployeePanel.instance().getEntity().get("employeeType").isObject().get("name").isString().stringValue());
         }
         addDropDown("practice", selectPractiseWidgetF);
-        addEnumField("sectorsAndBUs", false, false, ConsultingServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
+        addEnumField("sectorsAndBUs", false, true, ConsultingServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
         sectorsF = (EnumField) fields.get("sectorsAndBUs");
         alignFields();
     }

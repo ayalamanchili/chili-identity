@@ -70,7 +70,7 @@ public class ReadCompanyPanel extends ReadComposite {
     protected void addWidgets() {
         addField("name", true, false, DataType.STRING_FIELD);
         addField("establishedDate", true, false, DataType.DATE_FIELD);
-        addField("abbreviation", true, true, DataType.STRING_FIELD);
+        addField("abbreviation", true, false, DataType.STRING_FIELD);
         addField("logoURL", true, false, DataType.IMAGE_FIELD);
 
     }

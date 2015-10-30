@@ -20,6 +20,7 @@
             <documentation>
                 New Client Information has been created with following details. Please fill the fields below to complete the task.
                 Employee             : #{clientInfo.employee.firstName} #{clientInfo.employee.lastName} 
+                Employee Type        : #{clientInfo.employee.employeeType.name}
                 Consultant Job Title : #{clientInfo.consultantJobTitle}
                 Client               : #{clientInfo.client.name}
                 Vendor               : #{clientInfo.vendor.name}
@@ -44,6 +45,21 @@
                                        name="Special Invoice Instructions"
                                        required="false"
                                        type="string"/>
+                <activiti:formProperty id="timeSheetRequirement" 
+                                       name="TimeSheet Requirement"
+                                       required="false"
+                                       type="enum">
+                    <activiti:value id="approved" name="Approved"/>
+                    <activiti:value id="need client approval" name="Need Client Approval"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="subcontractorw4Filled" 
+                                       name="SubContractor W9Filled"
+                                       required="false"
+                                       type="boolean"/>
+                <activiti:formProperty id="subcontractCOI" 
+                                       name="SubContractor Certificate of Insurance"
+                                       required="false"
+                                       type="boolean"/>
                 <activiti:formProperty id="accountNotes" 
                                        name="Notes"
                                        required="false"
@@ -65,6 +81,7 @@
             <documentation>
                 New Client Information has been created with following details. Please fill the fields below to complete the task.
                 Employee             : #{clientInfo.employee.firstName} #{clientInfo.employee.lastName} 
+                Employee Type        : #{clientInfo.employee.employeeType.name}
                 Consultant Job Title : #{clientInfo.consultantJobTitle}
                 Client               : #{clientInfo.client.name}
                 Vendor               : #{clientInfo.vendor.name}

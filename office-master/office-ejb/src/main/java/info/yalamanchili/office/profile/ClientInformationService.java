@@ -71,7 +71,7 @@ public class ClientInformationService {
 
     public void addClientInformation(Long empId, ClientInformationDto ciDto) {
         ClientInformation ci = mapper.map(ciDto, ClientInformation.class);
-        
+
         Client client = null;
         Vendor vendor = null;
         Vendor middleVendor = null;
@@ -93,7 +93,7 @@ public class ClientInformationService {
                 abbreviation = "SSTL";
             }
         }
-        
+
         if (abbreviation == null || abbreviation.isEmpty()) {
             abbreviation = "SSTL";
         }
@@ -174,7 +174,7 @@ public class ClientInformationService {
         if (ci.getEndDate() != null) {
             project.setEndDate(ci.getEndDate());
         }
-        
+
         if (ci.getPractice() != null) {
             Practice practice = PracticeDao.instance().findById(ci.getPractice().getId());
             ci.setPractice(practice);
@@ -260,6 +260,9 @@ public class ClientInformationService {
         if (company != null) {
             abbreviation = company.getAbbreviation();
         } else {
+            abbreviation = "SSTL";
+        }
+        if (abbreviation == null || abbreviation.isEmpty()) {
             abbreviation = "SSTL";
         }
         BeanMapper.merge(ci, ciEntity);

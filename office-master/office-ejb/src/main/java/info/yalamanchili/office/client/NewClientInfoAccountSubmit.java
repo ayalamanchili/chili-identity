@@ -28,6 +28,9 @@ public class NewClientInfoAccountSubmit implements JavaDelegate {
         Object itemNumber = execution.getVariable("itemNumber");
         Object acctNotes = execution.getVariable("accountNotes");
         Object specialInvoiceInstructions = execution.getVariable("specialInvoiceInstructions");
+        Object timeSheetRequirement = execution.getVariable("timeSheetRequirement");
+        Object subcontractorw4Filled = execution.getVariable("subcontractorw4Filled");
+        Object subcontractCOI = execution.getVariable("subcontractCOI");
         ClientInformation ci = (ClientInformation) execution.getVariable("clientInfo");
         ClientInformationDao dao = ClientInformationDao.instance();
         ci = dao.findById(ci.getId());
@@ -45,6 +48,16 @@ public class NewClientInfoAccountSubmit implements JavaDelegate {
             Object signedWO = execution.getVariable("signedCopyOfWorkOrder");
             if (signedWO != null) {
                 ci.setSignedCopyOfWorkOrder(Boolean.parseBoolean(signedWO.toString()));
+            }
+            if (subcontractorw4Filled != null) {
+                ci.setSubcontractorw4Filled(Boolean.parseBoolean(subcontractorw4Filled.toString()));
+            }
+
+            if (subcontractCOI != null) {
+                ci.setSubcontractCOI(Boolean.parseBoolean(subcontractCOI.toString()));
+            }
+            if (timeSheetRequirement != null) {
+                ci.setTimeSheetRequirement(timeSheetRequirement.toString());
             }
             if (specialInvoiceInstructions != null) {
                 if (ci.getSpecialInvoiceInstructions() != null && !ci.getSpecialInvoiceInstructions().isEmpty()) {
