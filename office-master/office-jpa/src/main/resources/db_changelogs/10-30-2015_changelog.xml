@@ -41,16 +41,6 @@
                                  constraintName="FK_Practice_ClientInformation"
                                  referencedColumnNames="id"
                                  referencedTableName="practice"/>
-        <addNotNullConstraint catalogName="office"
-                                 columnDataType="bigint"
-                                 columnName="practice_id"
-                                 schemaName="public"
-                                 tableName="clientinformation"/> 
-        <addNotNullConstraint catalogName="office"
-                                 columnDataType="varchar(255)"
-                                 columnName="sectorsAndBUs"
-                                 schemaName="public"
-                                 tableName="clientinformation"/> 
 
     </changeSet>
 </databaseChangeLog>
