@@ -16,7 +16,7 @@ import java.util.List;
 public class SoftwareDevelopmentServices {
     public static List<String> getSectorsAndBusinessUnits() {
         List<String> sectors = new ArrayList<String>();
-       
+        sectors.add("SELECT");
         sectors.add("4310-COMMUNICATION SECTOR");
         sectors.add("4320-BANKING SECTOR");
         sectors.add("4330-FINANCIAL AND TRADE SECTOR");

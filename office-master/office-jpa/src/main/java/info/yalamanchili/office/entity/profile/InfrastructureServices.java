@@ -16,7 +16,7 @@ import java.util.List;
 public class InfrastructureServices {
     public static List<String> getSectorsAndBusinessUnits() {
         List<String> sectors = new ArrayList<String>();
-        
+        sectors.add("SELECT");
         sectors.add("NA");
         return sectors;
     }

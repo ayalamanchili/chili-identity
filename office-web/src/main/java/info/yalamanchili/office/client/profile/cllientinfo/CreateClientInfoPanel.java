@@ -317,6 +317,10 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                 case "4700-QUALIY ASURANCE SERVICES":
                     sectorsF.setValues(QualityAsuranceServices.getSectorsAndBusinessUnits().toArray(new String[0]));
                     break;
+                default:
+                    sectorsF.setValues(QualityAsuranceServices.getSectorsAndBusinessUnits().toArray(new String[0]));
+                    break;
+
             }
         }
     }
