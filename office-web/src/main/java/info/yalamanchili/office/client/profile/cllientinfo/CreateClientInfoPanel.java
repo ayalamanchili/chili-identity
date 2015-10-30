@@ -182,7 +182,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             companyUpdated = true;
         }
         if (!companyUpdated) {
-            addDropDown("company", new SelectCompanyWidget(false, true, Alignment.HORIZONTAL));
+            addDropDown("company", new SelectCompanyWidget(false, false, Alignment.HORIZONTAL));
         } else {
             addField("company", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             StringField jobTitleF = (StringField) fields.get("company");
