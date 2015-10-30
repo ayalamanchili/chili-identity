@@ -145,9 +145,9 @@ public class ContractService {
         if (StringUtils.isNotBlank(searchDto.getEmployeeType())) {
             queryStr.append("ci.employeeType.name LIKE '%").append(searchDto.getEmployeeType().trim()).append("%' ").append(" and ");
         }
-        if (StringUtils.isNotBlank(searchDto.getInvoiceFrequency().name())) {
-            queryStr.append("ci.invoiceFrequency LIKE '%").append(searchDto.getInvoiceFrequency().name().trim()).append("%' ").append(" and ");
-        }
+//        if (StringUtils.isNotBlank(searchDto.getInvoiceFrequency().name())) {
+//            queryStr.append("ci.invoiceFrequency LIKE '%").append(searchDto.getInvoiceFrequency().name().trim()).append("%' ").append(" and ");
+//        }
         return queryStr.toString().substring(0, queryStr.toString().lastIndexOf("and"));
     }
 
