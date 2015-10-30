@@ -324,11 +324,11 @@ public class ClientInformationDto implements Serializable {
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Practice_ClientInformation")
-    @NotNull(message = "{client.not.empty.msg}")
+    @NotNull(message = "{practice.not.empty.msg}")
     private Practice practice;
 
     @Field
-    @NotEmpty(message = "{address.state.not.empty.msg}")
+    @NotEmpty(message = "{sector.not.empty.msg}")
     protected String sectorsAndBUs;
 
     public String getConsultantJobTitle() {
