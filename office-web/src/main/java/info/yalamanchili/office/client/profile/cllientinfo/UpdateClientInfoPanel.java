@@ -38,11 +38,18 @@ import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWi
 import info.yalamanchili.office.client.profile.updateBillingRate.CreateUpdateBillingRatePanel;
 import info.yalamanchili.office.client.profile.updateBillingRate.ReadAllUpdateBillingRatePanel;
 import java.util.logging.Logger;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
+import info.chili.gwt.fields.EnumField;
+import info.yalamanchili.office.client.practice.SelectPracticeWidget;
 
-public class UpdateClientInfoPanel extends UpdateComposite {
+public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHandler{
 
     private static Logger logger = Logger.getLogger(UpdateClientInfoPanel.class.getName());
     SelectEmployeeWithRoleWidget selectRecruiterWidget = new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER, false, false, Alignment.HORIZONTAL);
+    SelectPracticeWidget selectPractiseWidgetF = new SelectPracticeWidget(false, true, Alignment.HORIZONTAL);
+    EnumField servicesF;
+    EnumField sectorsF;
 
     public UpdateClientInfoPanel(JSONObject entity) {
         initUpdateComposite(entity, "ClientInfo", OfficeWelcome.constants);
@@ -106,6 +113,8 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         }
         assignEntityValueFromField("isCPDFilled", entity);
         assignEntityValueFromField("vacationDetails", entity);
+        assignEntityValueFromField("practice", entity);
+        assignEntityValueFromField("sectorsAndBUs", entity);
         return entity;
     }
 
@@ -136,6 +145,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+        logger.info("entitiessssssssssssssss:   "+entity.toString());
         assignFieldValueFromEntity("consultantJobTitle", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("client", entity, null);
         assignFieldValueFromEntity("clientContact", entity, null);
@@ -193,11 +203,14 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         }
         assignFieldValueFromEntity("isCPDFilled", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("vacationDetails", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("practice", entity,null);
+        assignFieldValueFromEntity("sectorsAndBUs", entity , DataType.ENUM_FIELD);
     }
 
     @Override
     protected void addListeners() {
         updateBillingRateIcn.addClickHandler(this);
+        selectPractiseWidgetF.getListBox().addChangeHandler(this);
     }
 
     @Override
@@ -284,6 +297,10 @@ public class UpdateClientInfoPanel extends UpdateComposite {
             StringField jobTitleF = (StringField) fields.get("company");
             jobTitleF.setValue(TreeEmployeePanel.instance().getEntity().get("company").isObject().get("name").isString().stringValue());
         }
+        addField("sectorsAndBUs", false, true, DataType.ENUM_FIELD);
+        addDropDown("practice", selectPractiseWidgetF);
+        addEnumField("sectorsAndBUs", false, true, ConsultingServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
+        sectorsF = (EnumField) fields.get("sectorsAndBUs");
         alignFields();
     }
 
@@ -301,7 +318,39 @@ public class UpdateClientInfoPanel extends UpdateComposite {
             new GenericPopup(new CreateUpdateBillingRatePanel(getEntityId(), getEntity())).show();
         }
     }
-
+    @Override
+    public void onChange(ChangeEvent event) {
+        if (event.getSource().equals(selectPractiseWidgetF.getListBox())) {
+            String service = selectPractiseWidgetF.getSelectedObject().get("value").isString().stringValue().trim();
+            switch (service) {
+                case "4100-CONSULTING SERVICES":
+                    sectorsF.setValues(ConsultingServices.getSectorsAndBusinessUnits().toArray(new String[0]));
+                    break;
+                case "4200-PROJECT MANAGEMENT SERVICES":
+                    sectorsF.setValues(ProjectManagementServices.getSectorsAndBusinessUnits().toArray(new String[0]));
+                    break;
+                case "4300-SOFTWARE DEVELOPMENT SERVICES":
+                    sectorsF.setValues(SoftwareDevelopmentServices.getSectorsAndBusinessUnits().toArray(new String[0]));
+                    break;
+                case "4400-INFRASTRUCTURE SERVICES":
+                    sectorsF.setValues(InfrastructureServices.getSectorsAndBusinessUnits().toArray(new String[0]));
+                    break;
+                case "4500-MOBILITY SERVICES":
+                    sectorsF.setValues(MobilityServices.getSectorsAndBusinessUnits().toArray(new String[0]));
+                    break;
+                case "4600-TECHNOLOGY,DEVELOPMENT,INTEGRATION SERVICES":
+                    sectorsF.setValues(TechnologyIntegrationServices.getSectorsAndBusinessUnits().toArray(new String[0]));
+                    break;
+                case "4700-QUALIY ASURANCE SERVICES":
+                    sectorsF.setValues(QualityAsuranceServices.getSectorsAndBusinessUnits().toArray(new String[0]));
+                    break;
+                default :
+                    sectorsF.setValues(QualityAsuranceServices.getSectorsAndBusinessUnits().toArray(new String[0]));
+                    break;
+            }
+        }
+    }
+    
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }

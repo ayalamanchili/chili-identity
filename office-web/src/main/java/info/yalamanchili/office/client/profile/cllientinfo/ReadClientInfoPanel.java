@@ -35,6 +35,9 @@ import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWi
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import info.yalamanchili.office.client.profile.updateBillingRate.ReadAllUpdateBillingRatePanel;
 import java.util.logging.Logger;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
+import info.yalamanchili.office.client.practice.SelectPracticeWidget;
 
 /**
  *
@@ -45,6 +48,7 @@ public class ReadClientInfoPanel extends ReadComposite {
     private static ReadClientInfoPanel instance;
     private static Logger logger = Logger.getLogger(ReadClientInfoPanel.class.getName());
     SelectEmployeeWithRoleWidget selectRecruiterWidget = new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER, false, false, Alignment.HORIZONTAL);
+    SelectPracticeWidget selectPractiseWidgetF = new SelectPracticeWidget(true, false, Alignment.HORIZONTAL);
 
     public ReadClientInfoPanel(String id) {
         instance = this;
@@ -123,6 +127,8 @@ public class ReadClientInfoPanel extends ReadComposite {
         }
         assignFieldValueFromEntity("isCPDFilled", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("vacationDetails", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("practice", entity,null);
+        assignFieldValueFromEntity("sectorsAndBUs", entity , DataType.STRING_FIELD);
     }
 
     protected void renderBillingRatesPanel() {
@@ -225,6 +231,8 @@ public class ReadClientInfoPanel extends ReadComposite {
             StringField jobTitleF = (StringField) fields.get("company");
             jobTitleF.setValue(TreeEmployeePanel.instance().getEntity().get("company").isObject().get("name").isString().stringValue());
         }
+        addDropDown("practice", selectPractiseWidgetF);
+        addField("sectorsAndBUs", true, false, DataType.STRING_FIELD ,Alignment.HORIZONTAL);
         alignFields();
     }
 
