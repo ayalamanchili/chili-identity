@@ -313,6 +313,9 @@ public class OfficeBPMTaskService {
         if (!Strings.isNullOrEmpty(task.getId())) {
             query.taskId(task.getId().trim());
         }
+        if (!Strings.isNullOrEmpty(task.getOwner())) {
+            query.taskOwner(task.getOwner().trim());
+        }
         for (org.activiti.engine.task.Task bpmTask : query.listPage(0, 100)) {
             tasks.add(mapper.map(bpmTask, Task.class));
         }

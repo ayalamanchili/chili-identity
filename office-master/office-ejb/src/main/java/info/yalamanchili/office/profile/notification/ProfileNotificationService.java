@@ -18,6 +18,7 @@ import info.yalamanchili.office.entity.Feedback.Feedback;
 import info.yalamanchili.office.entity.message.Message;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
+import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.EntityManager;
@@ -127,7 +128,8 @@ public class ProfileNotificationService {
         Email email = new Email();
         email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject("Employee Deactivated ");
-        String messageText = "Employee  " + emp.getFirstName() + "," + emp.getLastName() + " Account Is Deactivated by:" + deactivateBy;
+        SimpleDateFormat sdf=new SimpleDateFormat("MM-dd-yyyy");
+        String messageText = "Employee  " + emp.getFirstName() + "," + emp.getLastName() + " Account Is Deactivated by:" + deactivateBy + "\n End Date: "+sdf.format(emp.getEndDate());
         email.setBody(messageText);
         messagingService.sendEmail(email);
     }
