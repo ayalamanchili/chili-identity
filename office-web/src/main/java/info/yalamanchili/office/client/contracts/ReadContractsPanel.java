@@ -8,6 +8,7 @@
 package info.yalamanchili.office.client.contracts;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.RichTextField;
@@ -26,6 +27,31 @@ public class ReadContractsPanel extends ReadComposite {
 
     private static ReadContractsPanel instance;
     private static Logger logger = Logger.getLogger(ReadContractsPanel.class.getName());
+
+    protected static HTML clientVendorText = new HTML("\n"
+            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 5px; background: rgb(238, 238, 238)\">"
+            + "<strong style=\"color:#555555\">Client & Vendor Information</strong></p>\n"
+            + "\n");
+    protected static HTML billingText = new HTML("\n"
+            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 5px; background: rgb(238, 238, 238)\">"
+            + "<strong style=\"color:#555555\">Billing Information</strong></p>\n"
+            + "\n");
+    protected static HTML otherText = new HTML("\n"
+            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 5px; background: rgb(238, 238, 238)\">"
+            + "<strong style=\"color:#555555\">Other Information</strong></p>\n"
+            + "\n");
+    protected static HTML hrText = new HTML("\n"
+            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 5px; background: rgb(238, 238, 238)\">"
+            + "<strong style=\"color:#555555\">HR and Account Department Docs</strong></p>\n"
+            + "\n");
+    protected static HTML subText = new HTML("\n"
+            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 5px; background: rgb(238, 238, 238)\">"
+            + "<strong style=\"color:#555555\">Subcontractor Information</strong></p>\n"
+            + "\n");
+    protected static HTML sub1099Text = new HTML("\n"
+            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 5px; background: rgb(238, 238, 238)\">"
+            + "<strong style=\"color:#555555\">1099 Contractor Information</strong></p>\n"
+            + "\n");
 
     public ReadContractsPanel(JSONObject entity) {
         instance = this;
@@ -129,8 +155,8 @@ public class ReadContractsPanel extends ReadComposite {
     @Override
     protected void addWidgets() {
         addField("employee", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        entityFieldsPanel.add(getLineSeperatorTag("Client & Vendor Information"));
         addField("consultantJobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(clientVendorText);
         addField("client", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("clientLocation", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("clientContact", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL);
@@ -144,7 +170,7 @@ public class ReadContractsPanel extends ReadComposite {
         addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("purchaseOrderNo", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
+        entityFieldsPanel.add(billingText);
         addField("itemNumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("payRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("billingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
@@ -158,11 +184,11 @@ public class ReadContractsPanel extends ReadComposite {
         String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
         addEnumField("invoiceDeliveryMethod", true, false, invoiceDeliveryMethods, Alignment.HORIZONTAL);
         addField("recruiter", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
+        entityFieldsPanel.add(otherText);
         addField("visaStatus", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("joiningReport", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("terminationNotice", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        entityFieldsPanel.add(getLineSeperatorTag("HR and Account Department Docs"));
+        entityFieldsPanel.add(hrText);
         addField("accountVerificationDocs", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("signedCopyOfWorkOrder", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("i9Filled", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
@@ -172,7 +198,7 @@ public class ReadContractsPanel extends ReadComposite {
         addField("timeSheetRequirement", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("specialInvoiceInstructions", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         if (isSubContractor(entity)) {
-            entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
+            entityFieldsPanel.add(subText);
             addField("subContractorName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("subContractorContactName", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL);
             addField("subcontractorAddress", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -186,7 +212,7 @@ public class ReadContractsPanel extends ReadComposite {
             addField("subContractorWorkOrderNo", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         }
         if (is1099(entity)) {
-            entityFieldsPanel.add(getLineSeperatorTag("1099 Contractor Information"));
+            entityFieldsPanel.add(sub1099Text);
             addField("payRate1099", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addField("overTimePayrate1099", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addField("paymentTerms1099", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
