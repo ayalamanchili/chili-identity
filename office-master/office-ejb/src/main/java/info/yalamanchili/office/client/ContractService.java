@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 import info.chili.reporting.ReportGenerator;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
+import info.yalamanchili.office.dao.profile.CompanyDao;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dto.client.ContractSearchDto;
 import info.yalamanchili.office.entity.profile.Email;
@@ -145,8 +146,9 @@ public class ContractService {
 //            queryStr.append("ci.address.company LIKE '%").append(searchDto.getCompany().trim()).append("%' ").append(" and ");
 //        }
         if (searchDto.getCompany() != null) {
-            if (StringUtils.isNotBlank(searchDto.getCompany().toString())) {
-                queryStr.append("ci.employee.company.name LIKE '%").append(searchDto.getCompany().toString().trim()).append("%' ").append(" and ");
+            searchDto.setCompany(CompanyDao.instance().findById(searchDto.getCompany().getId()));
+            if (StringUtils.isNotBlank(searchDto.getCompany().getName())) {
+                queryStr.append("ci.employee.company.name LIKE '%").append(searchDto.getCompany().getName().trim()).append("%' ").append(" and ");
             }
         }
 

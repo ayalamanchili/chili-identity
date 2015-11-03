@@ -14,7 +14,6 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
-import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -162,6 +161,12 @@ public class SearchContractsPanel extends SearchComposite {
 
     protected String getLastNameDropDownUrl() {
         return OfficeWelcome.constants.root_url() + "employee/dropdown/0/10000?column=id&column=lastName";
+    }
+
+    @Override
+    protected void onOpenAdvancedSearch() {
+        super.onOpenAdvancedSearch();
+        TabPanel.instance().reportingPanel.sidePanelTop.setHeight("100%");
     }
 
 }
