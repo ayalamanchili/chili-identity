@@ -352,6 +352,11 @@ public class ClientInformationService {
             ciEntity.setRecruiter(recruiter);
         }
 
+        if (ci.getPractice() != null) {
+            Practice practice = PracticeDao.instance().findById(ci.getPractice().getId());
+            ciEntity.setPractice(practice);
+        }
+
         if (vendor != null) {
             project.setVendor(vendor);
             client.getVendors().add(vendor);
