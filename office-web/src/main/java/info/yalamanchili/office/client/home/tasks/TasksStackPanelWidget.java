@@ -63,6 +63,8 @@ public class TasksStackPanelWidget extends ALComposite implements ClickHandler {
     StringField taskNameField = null;
 
     StringField taskIdField = null;
+    
+    StringField taskOwnerField = null;
 
     @Override
     protected void addWidgets() {
@@ -80,10 +82,14 @@ public class TasksStackPanelWidget extends ALComposite implements ClickHandler {
 
             taskIdField = new StringField(OfficeWelcome.constants,
                     "taskId", "Task", false, false);
+            
+            taskOwnerField = new StringField(OfficeWelcome.constants,
+                    "taskOwner", "Task", false, false);
 
             mainPanel.add(userField);
             mainPanel.add(taskNameField);
             mainPanel.add(taskIdField);
+            mainPanel.add(taskOwnerField);
             mainPanel.add(searchTasks);
         }
         panel.add(mainPanel);
@@ -115,6 +121,12 @@ public class TasksStackPanelWidget extends ALComposite implements ClickHandler {
             }
             if (taskNameField != null && !Strings.isNullOrEmpty(taskNameField.getValue())) {
                 entity.put("name", new JSONString(taskNameField.getValue()));
+            }
+            if (taskIdField != null && !Strings.isNullOrEmpty(taskIdField.getValue())) {
+                entity.put("id", new JSONString(taskIdField.getValue()));
+            }
+            if (taskOwnerField != null && !Strings.isNullOrEmpty(taskOwnerField.getValue())) {
+                entity.put("owner", new JSONString(taskOwnerField.getValue()));
             }
             HttpService.HttpServiceAsync.instance().doPut(url, entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {

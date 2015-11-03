@@ -12,7 +12,7 @@ import info.chili.gwt.utils.Alignment;
 public class SelectAddressTypeWidget extends SelectComposite {
 
     public SelectAddressTypeWidget(Boolean readOnly, Boolean isRequired) {
-        super(OfficeWelcome.constants, "AddressType", readOnly, isRequired, Alignment.HORIZONTAL);
+        super(OfficeWelcome.constants, "AddressType", readOnly, isRequired);
     }
 
     @Override
