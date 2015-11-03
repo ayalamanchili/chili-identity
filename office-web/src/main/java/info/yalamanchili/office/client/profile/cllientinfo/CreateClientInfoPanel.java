@@ -47,23 +47,24 @@ import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
 
 public class CreateClientInfoPanel extends CreateComposite implements ChangeHandler {
-
+    
     private static Logger logger = Logger.getLogger(CreateClientInfoPanel.class.getName());
     protected Anchor addClientL = new Anchor("Client not present? submit request");
     protected Anchor addVendorL = new Anchor("Vendor not present? submit request");
     SelectPracticeWidget selectPractiseWidgetF = new SelectPracticeWidget(false, true, Alignment.HORIZONTAL);
-
+    SelectCompanyWidget selectCompanyWidgetF = new SelectCompanyWidget(false, true, Alignment.HORIZONTAL);
+    
     public CreateClientInfoPanel(CreateCompositeType type) {
         super(type);
         initCreateComposite("ClientInfo", OfficeWelcome.constants);
     }
-
+    
     BooleanField endPreviousProjectFlagField;
     DateField previousProjectEndDate;
     EnumField servicesF;
     EnumField sectorsF;
     boolean companyUpdated = false;
-
+    
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject clientInfo = new JSONObject();
@@ -121,12 +122,12 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         assignEntityValueFromField("sectorsAndBUs", clientInfo);
         return clientInfo;
     }
-
+    
     @Override
     protected void createButtonClicked() {
         // TODO Auto-generated method stub
     }
-
+    
     @Override
     protected void addButtonClicked() {
         HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
@@ -136,15 +137,15 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                         logger.info(arg0.getMessage());
                         handleErrorResponse(arg0);
                     }
-
+                    
                     @Override
                     public void onSuccess(String arg0) {
                         postCreateSuccess(arg0);
                     }
                 });
-
+        
     }
-
+    
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Added Client Information");
@@ -152,7 +153,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(TreeEmployeePanel.instance().getEntityId()));
         TabPanel.instance().myOfficePanel.entityPanel.add(new ClientInfoOptionsPanel());
     }
-
+    
     @Override
     protected void addListeners() {
         addClientL.addClickHandler(this);
@@ -162,7 +163,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         }
         selectPractiseWidgetF.getListBox().addChangeHandler(this);
     }
-
+    
     @Override
     protected void configure() {
         endPreviousProjectFlagField = (BooleanField) fields.get("endPreviousProject");
@@ -172,7 +173,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         }
         add.setText("Save");
     }
-
+    
     @Override
     protected void addWidgets() {
         //Basic
@@ -182,7 +183,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             companyUpdated = true;
         }
         if (!companyUpdated) {
-            addDropDown("company", new SelectCompanyWidget(false, false, Alignment.HORIZONTAL));
+            addDropDown("company", selectCompanyWidgetF);
         } else {
             addField("company", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             StringField jobTitleF = (StringField) fields.get("company");
@@ -261,12 +262,12 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         sectorsF = (EnumField) fields.get("sectorsAndBUs");
         alignFields();
     }
-
+    
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
         // TODO Auto-generated method stub
     }
-
+    
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addClientL)) {
@@ -283,14 +284,14 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                 new GenericPopup(new GenericBPMStartFormPanel("AddNewVendorRequest", "add_new_vendor_request_1")).show();
             }
         }
-
+        
         if ((ReadAllClientInfoPanel.instance().numberOfRecords > 0) && (event.getSource().equals(endPreviousProjectFlagField.getBox()))) {
             previousProjectEndDate.setVisible(endPreviousProjectFlagField.getValue());
         }
-
+        
         super.onClick(event);
     }
-
+    
     @Override
     public void onChange(ChangeEvent event) {
         if (event.getSource().equals(selectPractiseWidgetF.getListBox())) {
@@ -320,11 +321,22 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                 default:
                     sectorsF.setValues(QualityAsuranceServices.getSectorsAndBusinessUnits().toArray(new String[0]));
                     break;
-
+                
             }
         }
     }
-
+    
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        if (!companyUpdated) {
+            if (entity.get("company") == null) {
+                selectCompanyWidgetF.setMessage("Company cannot be empty.");
+                return false;
+            }
+        }
+        return true;
+    }
+    
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "employee/clientinformation/" + TreeEmployeePanel.instance().getEntityId();
