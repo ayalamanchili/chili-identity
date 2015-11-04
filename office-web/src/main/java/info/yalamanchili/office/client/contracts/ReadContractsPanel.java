@@ -72,6 +72,7 @@ public class ReadContractsPanel extends ReadComposite {
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("employee", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("consultantJobTitle", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("employeeCompany", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("client", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("clientLocation", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("clientContact", entity, DataType.RICH_TEXT_AREA);
@@ -162,6 +163,7 @@ public class ReadContractsPanel extends ReadComposite {
     protected void addWidgets() {
         addField("employee", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("consultantJobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("employeeCompany", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(clientVendorText);
         addField("client", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("clientLocation", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
