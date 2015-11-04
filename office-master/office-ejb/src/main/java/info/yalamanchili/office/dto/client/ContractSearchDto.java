@@ -25,6 +25,42 @@ public class ContractSearchDto extends ContractDto {
     protected String city;
     protected String state;
     protected Company company;
+    protected String clientCity;
+    protected String clientState;
+    protected String vendorState;
+    protected String vendorCity;
+
+    public String getClientCity() {
+        return clientCity;
+    }
+
+    public void setClientCity(String clientCity) {
+        this.clientCity = clientCity;
+    }
+
+    public String getClientState() {
+        return clientState;
+    }
+
+    public void setClientState(String clientState) {
+        this.clientState = clientState;
+    }
+
+    public String getVendorState() {
+        return vendorState;
+    }
+
+    public void setVendorState(String vendorState) {
+        this.vendorState = vendorState;
+    }
+
+    public String getVendorCity() {
+        return vendorCity;
+    }
+
+    public void setVendorCity(String vendorCity) {
+        this.vendorCity = vendorCity;
+    }
 
     public Company getCompany() {
         return company;
