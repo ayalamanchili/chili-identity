@@ -52,12 +52,14 @@ public class SearchContractsPanel extends SearchComposite {
         addField("employeeLastName", DataType.STRING_FIELD);
         addField("itemNumber", DataType.STRING_FIELD);
         addField("client", DataType.STRING_FIELD);
+        addField("clientCity", DataType.STRING_FIELD);
+        addEnumField("clientState", false, false, USAStatesFactory.getStates().toArray(new String[0]));
         addField("vendor", DataType.STRING_FIELD);
+        addField("vendorCity", DataType.STRING_FIELD);
+        addEnumField("vendorState", false, false, USAStatesFactory.getStates().toArray(new String[0]));
         addField("subContractorName", DataType.STRING_FIELD);
         addField("startDate", DataType.DATE_FIELD);
         addField("endDate", DataType.DATE_FIELD);
-        addField("city", DataType.STRING_FIELD);
-        addEnumField("state", false, false, USAStatesFactory.getStates().toArray(new String[0]));
         addEnumField("invoiceFrequency", false, false, InvoiceFrequency.names());
         String[] employeeTypeStrs = {"Corporate Employee", "Employee", "Subcontractor", "1099 Contractor"};
         addEnumField("employeeType", false, false, employeeTypeStrs);
@@ -75,8 +77,10 @@ public class SearchContractsPanel extends SearchComposite {
         assignEntityValueFromField("subContractorName", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
-        assignEntityValueFromField("city", entity);
-        assignEntityValueFromField("state", entity);
+        assignEntityValueFromField("clientCity", entity);
+        assignEntityValueFromField("clientState", entity);
+        assignEntityValueFromField("vendorCity", entity);
+        assignEntityValueFromField("vendorState", entity);
         assignEntityValueFromField("invoiceFrequency", entity);
         assignEntityValueFromField("employeeType", entity);
         assignEntityValueFromField("company", entity);
@@ -153,6 +157,43 @@ public class SearchContractsPanel extends SearchComposite {
                 sb.loadData(values.values());
             }
         });
+        HttpService.HttpServiceAsync.instance().doGet(getnameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
+                SuggestBox sb = (SuggestBox) fields.get("client");
+                sb.loadData(values.values());
+            }
+        });
+        HttpService.HttpServiceAsync.instance().doGet(getvendorNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
+                SuggestBox sb = (SuggestBox) fields.get("vendor");
+                sb.loadData(values.values());
+            }
+        });
+        HttpService.HttpServiceAsync.instance().doGet(getSubNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
+                SuggestBox sb = (SuggestBox) fields.get("subContractorName");
+                sb.loadData(values.values());
+            }
+        });
+    }
+
+    protected String getSubNameDropDownUrl() {
+        return OfficeWelcome.constants.root_url() + "subcontractor/dropdown/0/10000?column=id&column=name";
+    }
+
+    protected String getvendorNameDropDownUrl() {
+        return OfficeWelcome.constants.root_url() + "vendor/dropdown/0/10000?column=id&column=name";
+    }
+
+    protected String getnameDropDownUrl() {
+        //TODO think about the limit
+        return OfficeWelcome.constants.root_url() + "client/dropdown/0/10000?column=id&column=name";
     }
 
     protected String getFirstNameDropDownUrl() {
