@@ -174,6 +174,7 @@ public class ReadContractsPanel extends ReadComposite {
         addField("vendorLocation", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("vendorRecruiter", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL);
         addField("middleVendor", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("recruiter", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("clientProject", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
@@ -191,7 +192,6 @@ public class ReadContractsPanel extends ReadComposite {
         addEnumField("invoiceFrequency", true, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
         addEnumField("invoiceDeliveryMethod", true, false, invoiceDeliveryMethods, Alignment.HORIZONTAL);
-        addField("recruiter", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(otherText);
         addField("visaStatus", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("joiningReport", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
