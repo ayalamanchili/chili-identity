@@ -27,7 +27,6 @@ public class NewClientInfoAccountSubmit implements JavaDelegate {
     @Override
     public void execute(DelegateExecution execution) throws Exception {
         Object itemNumber = execution.getVariable("itemNumber");
-//        Object acctNotes = execution.getVariable("accountNotes");
         String acctNotes = (String) execution.getVariable("accountNotes");
         Object specialInvoiceInstructions = execution.getVariable("specialInvoiceInstructions");
         Object timeSheetRequirement = execution.getVariable("timeSheetRequirement");
@@ -41,13 +40,6 @@ public class NewClientInfoAccountSubmit implements JavaDelegate {
             if (itemNumber != null) {
                 ci.setItemNumber(itemNumber.toString());
             }
-//            if (acctNotes != null) {
-//                if (ci.getNotes() != null && !ci.getNotes().isEmpty()) {
-//                    ci.setNotes(ci.getNotes() + acctNotes.toString());
-//                } else {
-//                    ci.setNotes(acctNotes.toString());
-//                }
-//            }
             Object signedWO = execution.getVariable("signedCopyOfWorkOrder");
             if (signedWO != null) {
                 ci.setSignedCopyOfWorkOrder(Boolean.parseBoolean(signedWO.toString()));
