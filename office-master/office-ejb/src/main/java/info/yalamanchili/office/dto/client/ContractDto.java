@@ -9,9 +9,7 @@ package info.yalamanchili.office.dto.client;
 
 import info.yalamanchili.office.entity.client.InvoiceDeliveryMethod;
 import info.yalamanchili.office.entity.client.InvoiceFrequency;
-import info.yalamanchili.office.entity.practice.Practice;
 import info.yalamanchili.office.entity.profile.BillingDuration;
-import info.yalamanchili.office.entity.profile.ClientInformationStatus;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -198,11 +196,14 @@ public class ContractDto implements Serializable {
     protected Boolean subcontractCOI;
     
  
-    private String status;
+    protected String status;
     
-    private String practice;
+    protected String practice;
     
     protected String sectorsAndBUs;
+    
+    protected String employeeCompany;
+    
 
     public void setPaymentTerms1099(String paymentTerms1099) {
         this.paymentTerms1099 = paymentTerms1099;
@@ -656,6 +657,14 @@ public class ContractDto implements Serializable {
 
     public void setPractice(String practice) {
         this.practice = practice;
+    }
+
+    public String getEmployeeCompany() {
+        return employeeCompany;
+    }
+
+    public void setEmployeeCompany(String employeeCompany) {
+        this.employeeCompany = employeeCompany;
     }
     
     

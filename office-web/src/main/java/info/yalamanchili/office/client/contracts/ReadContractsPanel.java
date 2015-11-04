@@ -15,6 +15,7 @@ import info.chili.gwt.fields.RichTextField;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
 import info.yalamanchili.office.client.profile.updateBillingRate.ReadAllUpdateBillingRatePanel;
 import java.util.logging.Logger;
@@ -56,6 +57,11 @@ public class ReadContractsPanel extends ReadComposite {
     public ReadContractsPanel(JSONObject entity) {
         instance = this;
         initReadComposite(entity, "Contract", OfficeWelcome.constants);
+        populateComments();
+    }
+    
+    protected final void populateComments() {
+        entityActionsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.profile.ClientInformation"));
     }
 
     @Override

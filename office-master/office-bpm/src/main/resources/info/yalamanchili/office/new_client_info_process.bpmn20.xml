@@ -118,6 +118,10 @@
                                        name="Logistics Preparation"
                                        required="false"
                                        type="boolean"/>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false"
+                                       type="string"/>
             </extensionElements> 
         </userTask>
         <sequenceFlow id="newClientInfoHRTaskToSubmit" sourceRef="newClientInfoHRTask" targetRef="newClientInfoHRSubmit" />

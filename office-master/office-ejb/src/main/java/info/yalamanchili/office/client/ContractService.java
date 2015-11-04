@@ -164,6 +164,7 @@ public class ContractService {
         dto.setEmployee(ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
         //map employee type 
         dto.setEmployeeType(ci.getEmployee().getEmployeeType().getName());
+        dto.setEmployeeCompany(ci.getEmployee().getCompany().getName());
         //TODO set client
         if (ci.getClient() != null) {
             dto.setClient(ci.getClient().getName());

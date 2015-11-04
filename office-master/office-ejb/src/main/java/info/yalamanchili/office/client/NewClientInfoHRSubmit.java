@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.client;
 
+import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.ClientInformationStatus;
@@ -29,6 +30,8 @@ public class NewClientInfoHRSubmit implements JavaDelegate {
         ClientInformationDao dao = ClientInformationDao.instance();
         ci = dao.findById(ci.getId());
         Object joiningReport = execution.getVariable("joiningReport");
+        String notes = (String) execution.getVariable("notes");
+        CommentDao.instance().addComment(notes, ci);
         if (ci != null) {
             if (joiningReport != null) {
                 ci.setJoiningReport(joiningReport.toString());
