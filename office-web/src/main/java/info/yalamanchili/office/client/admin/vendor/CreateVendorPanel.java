@@ -71,8 +71,8 @@ public class CreateVendorPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully Vendor Created");
-//        GenericPopup.instance().hide();
+        GenericPopup.instance().hide();
+        new ResponseStatusWidget().show("Successfully Vendor Created");   
         String id = JSONUtils.toString(JSONParser.parseLenient(result), "id");
         TabPanel.instance().adminPanel.sidePanelTop.clear();
         TabPanel.instance().adminPanel.sidePanelTop.add(new TreeVendorsPanel(id));

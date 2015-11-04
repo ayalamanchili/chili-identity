@@ -70,8 +70,8 @@ public class CreateClientPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully created Client");
-//        GenericPopup.instance().hide();
+        GenericPopup.instance().hide();
+        new ResponseStatusWidget().show("Successfully created Client");      
         String id = JSONUtils.toString(JSONParser.parseLenient(result), "id");
         TabPanel.instance().adminPanel.sidePanelTop.clear();
         TabPanel.instance().adminPanel.sidePanelTop.add(new TreeClientPanel(id));
