@@ -119,10 +119,10 @@ public class EmployeeService {
         emp = em.merge(emp);
         //create cert
         OfficeSecurityService.instance().createUserCert(emp, null, null);
-        Employee currentEmp=OfficeSecurityService.instance().getCurrentUser();
+        Employee currentEmp = OfficeSecurityService.instance().getCurrentUser();
         //Email notification
         if (empType.equals("Corporate Employee") || empType.equals("Employee")) {
-            profileNotificationService.sendNewUserCreatedNotification(currentEmp,emp);
+            profileNotificationService.sendNewUserCreatedNotification(currentEmp, emp);
         }
         return emp.getId().toString();
     }
@@ -170,13 +170,21 @@ public class EmployeeService {
         }
         emp.setEndDate(dto.getEndDate());
         emp = em.merge(emp);
-        OfficeBPMIdentityService.instance().deleteUser(emp.getEmployeeId());
-        CUser user1 = emp.getUser();
-        user1.setEnabled(false);
-        Employee curUser = OfficeSecurityService.instance().getCurrentUser();
-        profileNotificationService.sendEmployeeDeactivationNotification(curUser.getFirstName(), getEmployee(empId));
-        em.merge(user1);
-
+        if (emp.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
+            Map<String, Object> vars = new HashMap<>();
+            vars.put("employee", emp);
+            Employee emp1 = OfficeSecurityService.instance().getCurrentUser();
+            vars.put("currentEmployee", emp1);
+            vars.put("entityId", emp.getId());
+            OfficeBPMService.instance().startProcess("employee_deactivation_process", vars);
+        } else {
+            OfficeBPMIdentityService.instance().deleteUser(emp.getEmployeeId());
+            CUser user1 = emp.getUser();
+            user1.setEnabled(false);
+            Employee curUser = OfficeSecurityService.instance().getCurrentUser();
+            profileNotificationService.sendEmployeeDeactivationNotification(curUser.getFirstName(), getEmployee(empId));
+            em.merge(user1);
+        }
     }
 
     public String generatepassword() {
