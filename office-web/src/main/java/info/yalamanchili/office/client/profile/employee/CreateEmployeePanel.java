@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.chili.gwt.fields.DateField;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
@@ -27,6 +28,7 @@ public class CreateEmployeePanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateEmployeePanel.class.getName());
     protected SelectCompanyWidget selectCompnayWidget = new SelectCompanyWidget(false, true, Alignment.HORIZONTAL);
+    SelectEmployeeTypeWidget selectEmployeeTypeWidgetF = new SelectEmployeeTypeWidget(false, true);
     FileuploadField empImageUploadPanel = new FileuploadField(OfficeWelcome.constants, "Employee", "imageUrl", "Employee/imageURL", false) {
         @Override
         public void onUploadComplete(String res) {
@@ -80,7 +82,7 @@ public class CreateEmployeePanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addDropDown("employeeType", new SelectEmployeeTypeWidget(false, true));
+        addDropDown("employeeType", selectEmployeeTypeWidgetF);
         addField("firstName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("middleInitial", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("lastName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -158,4 +160,19 @@ public class CreateEmployeePanel extends CreateComposite {
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "admin/createuser";
     }
+     @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        boolean valid = true;
+        DateField dateOfBirthF = (DateField) fields.get("dateOfBirth");
+        if (!selectEmployeeTypeWidgetF.getSelectedObject().get("value").isString().stringValue().trim().equals("Subcontractor")) {
+            logger.info(selectEmployeeTypeWidgetF.getSelectedObject().get("value").isString().stringValue().trim());
+            if (dateOfBirthF.getDate() == null) {
+                dateOfBirthF.setMessage("value is required");
+                valid = false;
+            }
+        }
+        return valid;
+    }
 }
+
+

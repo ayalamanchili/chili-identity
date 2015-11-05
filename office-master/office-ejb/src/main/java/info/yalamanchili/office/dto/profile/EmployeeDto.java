@@ -45,8 +45,8 @@ public class EmployeeDto implements Serializable {
     protected String lastName;
     protected String middleInitial;
     protected String employeeId;
-    @Past(message = "{dateOfBirth.past.msg}")
-    @NotNull(message = "{dateOfBirth.not.empty.msg}")
+    //@Past(message = "{dateOfBirth.past.msg}")
+    //@NotNull(message = "{dateOfBirth.not.empty.msg}")
     protected Date dateOfBirth;
     @NotNull(message = "{sex.not.empty.msg}")
     protected Sex sex;
