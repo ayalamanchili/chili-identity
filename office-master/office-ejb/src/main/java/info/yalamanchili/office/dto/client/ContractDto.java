@@ -204,7 +204,8 @@ public class ContractDto implements Serializable {
     
     protected String employeeCompany;
     
-
+    protected long employeeID;
+    
     public void setPaymentTerms1099(String paymentTerms1099) {
         this.paymentTerms1099 = paymentTerms1099;
     }
@@ -666,7 +667,14 @@ public class ContractDto implements Serializable {
     public void setEmployeeCompany(String employeeCompany) {
         this.employeeCompany = employeeCompany;
     }
-    
+
+    public long getEmployeeID() {
+        return employeeID;
+    }
+
+    public void setEmployeeID(long employeeID) {
+        this.employeeID = employeeID;
+    }
     
     
     @XmlRootElement

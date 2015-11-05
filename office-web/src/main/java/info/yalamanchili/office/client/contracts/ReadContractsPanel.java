@@ -9,6 +9,7 @@ package info.yalamanchili.office.client.contracts;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.RichTextField;
@@ -18,6 +19,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
 import info.yalamanchili.office.client.profile.updateBillingRate.ReadAllUpdateBillingRatePanel;
+import info.yalamanchili.office.client.time.corp.ReadAllCorporateTimeSheetPanel;
 import java.util.logging.Logger;
 
 /**
@@ -59,7 +61,7 @@ public class ReadContractsPanel extends ReadComposite {
         initReadComposite(entity, "Contract", OfficeWelcome.constants);
         populateComments();
     }
-    
+
     protected final void populateComments() {
         entityActionsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.profile.ClientInformation"));
     }
@@ -151,6 +153,12 @@ public class ReadContractsPanel extends ReadComposite {
 
     @Override
     protected void configure() {
+        clientVendorText.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        billingText.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        otherText.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        hrText.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        subText.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        sub1099Text.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         for (String fieldKey : fields.keySet()) {
             if (fields.get(fieldKey) instanceof RichTextField) {
                 RichTextField rtf = (RichTextField) fields.get(fieldKey);
@@ -164,6 +172,7 @@ public class ReadContractsPanel extends ReadComposite {
         addField("employee", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("consultantJobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("employeeCompany", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        new ReadAllCorporateTimeSheetPanel().renderLeaveHistory(getEmployeeId(), entityFieldsPanel);
         entityFieldsPanel.add(clientVendorText);
         addField("client", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("clientLocation", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -237,5 +246,9 @@ public class ReadContractsPanel extends ReadComposite {
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "contract/" + entityId;
+    }
+
+    public String getEmployeeId() {
+        return JSONUtils.toString(entity, "employeeID");
     }
 }
