@@ -7,15 +7,19 @@
  */
 package info.yalamanchili.office.client.contracts;
 
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.RichTextField;
+import info.chili.gwt.fields.StringField;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
+import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.DEFAULT_FIELD_WIDTH;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
 import info.yalamanchili.office.client.profile.updateBillingRate.ReadAllUpdateBillingRatePanel;
@@ -99,7 +103,7 @@ public class ReadContractsPanel extends ReadComposite {
         assignFieldValueFromEntity("overTimeRateDuration", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("recruiter", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("visaStatus", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("joiningReport", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("joiningReport", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("accountVerificationDocs", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("signedCopyOfWorkOrder", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("i9Filled", entity, DataType.BOOLEAN_FIELD);
@@ -109,7 +113,7 @@ public class ReadContractsPanel extends ReadComposite {
         assignFieldValueFromEntity("terminationNotice", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("timeSheetRequirement", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("specialInvoiceInstructions", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("specialInvoiceInstructions", entity, DataType.RICH_TEXT_AREA);
         if (isSubContractor(entity)) {
             assignFieldValueFromEntity("subContractorName", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("subContractorContactName", entity, DataType.RICH_TEXT_AREA);
@@ -178,16 +182,16 @@ public class ReadContractsPanel extends ReadComposite {
         addField("clientLocation", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("clientContact", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL);
         addField("vendor", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("vendorLocation", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("vendorContact", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL);
         addField("vendorAPContact", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL);
-        addField("vendorLocation", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("vendorRecruiter", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL);
         addField("middleVendor", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("recruiter", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("clientProject", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("purchaseOrderNo", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("purchaseOrderNo", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(billingText);
         addField("itemNumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("payRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
@@ -203,7 +207,7 @@ public class ReadContractsPanel extends ReadComposite {
         addEnumField("invoiceDeliveryMethod", true, false, invoiceDeliveryMethods, Alignment.HORIZONTAL);
         entityFieldsPanel.add(otherText);
         addField("visaStatus", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("joiningReport", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("joiningReport", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL);
         addField("terminationNotice", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(hrText);
         addField("accountVerificationDocs", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
@@ -213,7 +217,7 @@ public class ReadContractsPanel extends ReadComposite {
         addField("logisticsPreparation", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("hrOrientation", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("timeSheetRequirement", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("specialInvoiceInstructions", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("specialInvoiceInstructions", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL);
         if (isSubContractor(entity)) {
             entityFieldsPanel.add(subText);
             addField("subContractorName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -235,7 +239,7 @@ public class ReadContractsPanel extends ReadComposite {
             addField("paymentTerms1099", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addEnumField("payTimeDuration1099", true, false, billingDuration, Alignment.HORIZONTAL);
         }
-        addField("notes", true, false, DataType.RICH_TEXT_AREA);
+        addField("notes", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL);
         alignFields();
     }
 

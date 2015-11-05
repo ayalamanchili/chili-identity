@@ -21,6 +21,7 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import static info.yalamanchili.office.client.expense.travelauthorization.TravelAuthConstants.EMPLOYEE;
 import java.util.logging.Logger;
 
 /**

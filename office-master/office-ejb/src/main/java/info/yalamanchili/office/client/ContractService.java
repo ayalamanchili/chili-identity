@@ -67,7 +67,15 @@ public class ContractService {
     public ContractTable search(ContractSearchDto searchDto, int start, int limit) {
         ContractTable table = new ContractTable();
         String searchQuery = getSearchQuery(searchDto);
+        Date date = searchDto.getStartDate();
+        Date endD = searchDto.getEndDate();
         TypedQuery<ClientInformation> query = em.createQuery(searchQuery, ClientInformation.class);
+        if (searchDto.getStartDate() != null) {
+            query.setParameter("dateParam", date, TemporalType.DATE);
+        }
+        if (searchDto.getEndDate() != null) {
+            query.setParameter("endDateParam", endD, TemporalType.DATE);
+        }
         query.setFirstResult(start);
         query.setMaxResults(limit);
         for (ClientInformation ci : query.getResultList()) {
@@ -76,6 +84,12 @@ public class ContractService {
         String sizeQueryStr = searchQuery.replace("SELECT ci", "SELECT count(*)");
         if (table.getEntities().size() > 0) {
             TypedQuery<Long> sizeQuery = em.createQuery(sizeQueryStr, Long.class);
+            if (searchDto.getStartDate() != null) {
+                sizeQuery.setParameter("dateParam", date, TemporalType.DATE);
+            }
+            if (searchDto.getEndDate() != null) {
+                sizeQuery.setParameter("endDateParam", endD, TemporalType.DATE);
+            }
             table.setSize(sizeQuery.getSingleResult());
         }
         return table;
@@ -142,9 +156,7 @@ public class ContractService {
         if (StringUtils.isNotBlank(searchDto.getCity())) {
             queryStr.append("ci.address.city LIKE '%").append(searchDto.getCity().trim()).append("%' ").append(" and ");
         }
-//        if (StringUtils.isNotBlank(searchDto.getCompany())) {
-//            queryStr.append("ci.address.company LIKE '%").append(searchDto.getCompany().trim()).append("%' ").append(" and ");
-//        }
+
         if (searchDto.getCompany() != null) {
             searchDto.setCompany(CompanyDao.instance().findById(searchDto.getCompany().getId()));
             if (StringUtils.isNotBlank(searchDto.getCompany().getName())) {
@@ -154,6 +166,14 @@ public class ContractService {
 
         if (StringUtils.isNotBlank(searchDto.getEmployeeType())) {
             queryStr.append("ci.employee.employeeType.name LIKE '%").append(searchDto.getEmployeeType().trim()).append("%' ").append(" and ");
+        }
+
+        if ((searchDto.getStartDate()) != null) {
+            queryStr.append("ci.startDate >= :dateParam").append(" and ");
+        }
+
+        if ((searchDto.getEndDate()) != null) {
+            queryStr.append("ci.endDate <= :endDateParam").append(" and ");
         }
 
         return queryStr.toString().substring(0, queryStr.toString().lastIndexOf("and"));
@@ -213,7 +233,6 @@ public class ContractService {
             }
 
             dto.setVendorAPContact(acctpayCnt.toString());
-            // dto.setVendorAPContact(ci.getVendorAPContact().getFirstName() + " " + ci.getVendorAPContact().getLastName());
         }
         if (ci.getClientLocation() != null) {
             dto.setClientLocation(ci.getClientLocation().getStreet1() + " " + ci.getClientLocation().getCity() + " " + ci.getClientLocation().getState());
