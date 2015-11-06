@@ -64,6 +64,7 @@ public class SearchContractsPanel extends SearchComposite {
         String[] employeeTypeStrs = {"Corporate Employee", "Employee", "Subcontractor", "1099 Contractor"};
         addEnumField("employeeType", false, false, employeeTypeStrs);
         addDropDown("company", selectCompnayWidget);
+        addField("recruiter", DataType.STRING_FIELD);
     }
 
     @Override
@@ -84,6 +85,7 @@ public class SearchContractsPanel extends SearchComposite {
         assignEntityValueFromField("invoiceFrequency", entity);
         assignEntityValueFromField("employeeType", entity);
         assignEntityValueFromField("company", entity);
+        assignEntityValueFromField("recruiter", entity);
         logger.info(entity.toString());
         return entity;
     }

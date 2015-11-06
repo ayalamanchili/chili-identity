@@ -161,6 +161,9 @@ public class ContractService {
         if (StringUtils.isNotBlank(searchDto.getVendorCity())) {
             queryStr.append("ci.vendorLocation.city LIKE '%").append(searchDto.getVendorCity().trim()).append("%' ").append(" and ");
         }
+        if (StringUtils.isNotBlank(searchDto.getRecruiter())) {
+            queryStr.append("ci.employee.firstName LIKE '%").append(searchDto.getRecruiter().trim()).append("%' ").append(" and ");
+        }
 
         if (searchDto.getCompany() != null) {
             searchDto.setCompany(CompanyDao.instance().findById(searchDto.getCompany().getId()));
