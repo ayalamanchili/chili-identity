@@ -46,9 +46,8 @@ public class ContractService {
     protected Mapper mapper;
 
     public ContractTable getContractorPlacementInfo(int start, int limit) {
-        String queryStr = "SELECT ci from " + ClientInformation.class.getCanonicalName() + " ci where ci.startDate <= :dateParam AND (ci.endDate >= :dateParam or ci.endDate is null)";
-
-        TypedQuery<ClientInformation> query = em.createQuery(queryStr, ClientInformation.class);
+        String queryStr = "SELECT ci from " + ClientInformation.class.getCanonicalName() + " ci where ci.endDate>=:dateParam or ci.endDate is null ";
+        TypedQuery<ClientInformation> query = em.createQuery(queryStr+" order by ci.employee.firstName ASC group by ci.employee", ClientInformation.class);
         query.setParameter("dateParam", new Date(), TemporalType.DATE);
         query.setFirstResult(start);
         query.setMaxResults(limit);
@@ -150,11 +149,17 @@ public class ContractService {
         if (StringUtils.isNotBlank(searchDto.getEmployeeLastName())) {
             queryStr.append("ci.employee.lastName LIKE '%").append(searchDto.getEmployeeLastName().trim()).append("%' ").append(" and ");
         }
-        if (StringUtils.isNotBlank(searchDto.getState())) {
-            queryStr.append("ci.address.state LIKE '%").append(searchDto.getState().trim()).append("%' ").append(" and ");
+        if (StringUtils.isNotBlank(searchDto.getClientState())) {
+            queryStr.append("ci.clientLocation.state LIKE '%").append(searchDto.getClientState().trim()).append("%' ").append(" and ");
         }
-        if (StringUtils.isNotBlank(searchDto.getCity())) {
-            queryStr.append("ci.address.city LIKE '%").append(searchDto.getCity().trim()).append("%' ").append(" and ");
+        if (StringUtils.isNotBlank(searchDto.getVendorState())) {
+            queryStr.append("ci.vendorLocation.state LIKE '%").append(searchDto.getVendorState().trim()).append("%' ").append(" and ");
+        }
+        if (StringUtils.isNotBlank(searchDto.getClientCity())) {
+            queryStr.append("ci.clientLocation.city LIKE '%").append(searchDto.getClientCity().trim()).append("%' ").append(" and ");
+        }
+        if (StringUtils.isNotBlank(searchDto.getVendorCity())) {
+            queryStr.append("ci.vendorLocation.city LIKE '%").append(searchDto.getVendorCity().trim()).append("%' ").append(" and ");
         }
 
         if (searchDto.getCompany() != null) {
