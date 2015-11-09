@@ -82,7 +82,7 @@ public class TravelAuthorizationResource extends CRUDResource<TravelAuthorizatio
 
     @GET
     @Path("/{employeeId}/{start}/{limit}")
-    @AccessCheck(companyContacts = {"Perf_Eval_Manager", "Reports_To"}, roles = {"ROLE_ADMIN"}, strictOrderCheck = false)
+    @AccessCheck(companyContacts = {"Perf_Eval_Manager", "Reports_To"}, roles = {"ROLE_ADMIN", "ROLE_CEO", "ROLE_TRAVEL_BOOKING_MANAGER"}, strictOrderCheck = false)
     public TravelAuthorizationResource.TravelAurhorizationTable getTravelAuthorizationsForEmployee(@PathParam("employeeId") Long employeeId, @PathParam("start") int start, @PathParam("limit") int limit) {
         TravelAuthorizationResource.TravelAurhorizationTable tableObj = new TravelAuthorizationResource.TravelAurhorizationTable();
         tableObj.setEntities(travelAuthorizationDao.queryForEmployee(employeeId, start, limit));
