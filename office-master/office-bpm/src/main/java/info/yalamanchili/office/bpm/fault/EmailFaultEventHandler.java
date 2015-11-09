@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author ayalamanchili
  */
-@Component("info.yalamanchili.office.email.Email.FaultEventHandler")
+@Component("info.chili.email.Email.FaultEventHandler")
 @Transactional
 public class EmailFaultEventHandler implements FaultEventHandler {
 
