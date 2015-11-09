@@ -22,7 +22,6 @@ import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.fields.EnumField;
-import info.chili.gwt.fields.IntegerField;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -40,7 +39,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
     protected FlowPanel panel = new FlowPanel();
     BooleanField showAllTransportationOptions = new BooleanField(OfficeWelcome.constants, "showAllTravalTransportationOptions", "TravelAuthorization", false, false, Alignment.HORIZONTAL);
     EnumField travelTransportationType;
-    IntegerField totalMiles;
+    CurrencyField totalMiles;
     CurrencyField costPerMile;
     CurrencyField totalTransportationCost;
     CurrencyField estimatedCostOfOtherTransportation;
@@ -100,7 +99,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
     protected void addWidgets() {
         travelTransportationType = new EnumField(OfficeWelcome.constants,
                 TRAVEL_TRANSPORTATION_TYPE, "TravelAuthorization", readyOnly, false, TravelTransportationType.names(), Alignment.HORIZONTAL);
-        totalMiles = new IntegerField(OfficeWelcome.constants,
+        totalMiles = new CurrencyField(OfficeWelcome.constants,
                 TOTAL_MILES, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
         costPerMile = new CurrencyField(OfficeWelcome.constants,
                 COST_PER_MILE, "TravelAuthorization", readyOnly, false, Alignment.HORIZONTAL);
@@ -139,7 +138,7 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
             travelTransportationType.selectValue(entity.get(TRAVEL_TRANSPORTATION_TYPE).isString().stringValue());
         }
         if (entity.get(TOTAL_MILES) != null) {
-            totalMiles.setInteger(Integer.valueOf(entity.get(TOTAL_MILES).isString().stringValue()));
+            totalMiles.setValue(new BigDecimal(entity.get(TOTAL_MILES).isString().stringValue()), false);
         }
         if (entity.get(COST_PER_MILE) != null) {
             costPerMile.setValue(new BigDecimal(entity.get(COST_PER_MILE).isString().stringValue()), false);
@@ -180,8 +179,8 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         if (travelTransportationType.getValue() != null) {
             entity.put(TRAVEL_TRANSPORTATION_TYPE, new JSONString(travelTransportationType.getValue()));
         }
-        if (totalMiles.getInteger() != null) {
-            entity.put(TOTAL_MILES, new JSONString(totalMiles.getInteger().toString()));
+        if (totalMiles.getCurrency() != null) {
+            entity.put(TOTAL_MILES, new JSONString(totalMiles.getCurrency().toString()));
         }
         if (costPerMile.getCurrency() != null) {
             entity.put(COST_PER_MILE, new JSONString(costPerMile.getCurrency().toString()));
@@ -189,12 +188,12 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
         if (totalTransportationCost.getCurrency() != null) {
             entity.put(TOTAL_TRANSPORTATION_COST, new JSONString(totalTransportationCost.getCurrency().toString()));
         }
-        if (  (showAllTransportationOptions.getValue())
-           || (estimatedCostOfOtherTransportation.getCurrency() != null)
-           || (rentalVehicleJustification.getValue() != null)
-           || (expenseRentalPaymentType.getValue() != null)
-           || (travelRentalVehicleType.getValue() != null)
-           || (otherVehicleTypeJustification.getValue() != null)) {
+        if ((showAllTransportationOptions.getValue())
+                || (estimatedCostOfOtherTransportation.getCurrency() != null)
+                || (rentalVehicleJustification.getValue() != null)
+                || (expenseRentalPaymentType.getValue() != null)
+                || (travelRentalVehicleType.getValue() != null)
+                || (otherVehicleTypeJustification.getValue() != null)) {
             entity.put(TRAVEL_RENTAL_VEHICLE_JUSTIFICATION, getRentalVehicalObj());
         }
 
@@ -312,8 +311,8 @@ public class TravelTransportationPanel extends ALComposite implements ChangeHand
 
     @Override
     public void onBlur(BlurEvent event) {
-        if (totalMiles.getInteger() != null && costPerMile.getCurrency() != null) {
-            totalTransportationCost.setValue(costPerMile.getCurrency().multiply(BigDecimal.valueOf(totalMiles.getInteger()).setScale(2)), readyOnly);
+        if (totalMiles.getCurrency() != null && costPerMile.getCurrency() != null) {
+            totalTransportationCost.setValue(costPerMile.getCurrency().multiply(totalMiles.getCurrency()).setScale(2), readyOnly);
         }
         onChange();
     }
