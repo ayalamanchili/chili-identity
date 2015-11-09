@@ -148,44 +148,48 @@ public class UpdateStatusReportPanel extends UpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        JSONObject reportDocument = entity.get("reportDocument").isObject();
-        assignFieldValueFromEntity("jobTitle", entity.get("employee").isObject(), DataType.STRING_FIELD);
-        assignFieldValueFromEntity("projectDescription", reportDocument, DataType.TEXT_AREA_FIELD);
-        assignFieldValueFromEntity("reportStartDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("reportEndDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
+        if (entity.get("reportDocument") != null) {
+            JSONObject reportDocument = entity.get("reportDocument").isObject();
+            if (entity.get("employee") != null) {
+                assignFieldValueFromEntity("jobTitle", entity.get("employee").isObject(), DataType.STRING_FIELD);
+            }
+            assignFieldValueFromEntity("projectDescription", reportDocument, DataType.TEXT_AREA_FIELD);
+            assignFieldValueFromEntity("reportStartDate", entity, DataType.DATE_FIELD);
+            assignFieldValueFromEntity("reportEndDate", entity, DataType.DATE_FIELD);
+            assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
 
-        assignFieldValueFromEntity("projectPhase1Name", reportDocument, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("projectPhase1Deliverable", reportDocument, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("projectPhase1EndDate", reportDocument, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("projectPhase1Status", reportDocument, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("projectPhase1Name", reportDocument, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("projectPhase1Deliverable", reportDocument, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("projectPhase1EndDate", reportDocument, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("projectPhase1Status", reportDocument, DataType.STRING_FIELD);
 
-        assignFieldValueFromEntity("projectPhase2Name", reportDocument, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("projectPhase2Deliverable", reportDocument, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("projectPhase2EndDate", reportDocument, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("projectPhase2Status", reportDocument, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("projectPhase2Name", reportDocument, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("projectPhase2Deliverable", reportDocument, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("projectPhase2EndDate", reportDocument, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("projectPhase2Status", reportDocument, DataType.STRING_FIELD);
 
-        assignFieldValueFromEntity("projectPhase3Name", reportDocument, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("projectPhase3Deliverable", reportDocument, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("projectPhase3EndDate", reportDocument, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("projectPhase3Status", reportDocument, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("projectPhase3Name", reportDocument, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("projectPhase3Deliverable", reportDocument, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("projectPhase3EndDate", reportDocument, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("projectPhase3Status", reportDocument, DataType.STRING_FIELD);
 
-        assignFieldValueFromEntity("projectPhase4Name", reportDocument, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("projectPhase4Deliverable", reportDocument, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("projectPhase4EndDate", reportDocument, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("projectPhase4Status", reportDocument, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("projectPhase4Name", reportDocument, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("projectPhase4Deliverable", reportDocument, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("projectPhase4EndDate", reportDocument, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("projectPhase4Status", reportDocument, DataType.STRING_FIELD);
 
-        assignFieldValueFromEntity("statusDescription", reportDocument, DataType.TEXT_AREA_FIELD);
-        assignFieldValueFromEntity("accomplishments", reportDocument, DataType.TEXT_AREA_FIELD);
-        assignFieldValueFromEntity("scheduledActivities", reportDocument, DataType.TEXT_AREA_FIELD);
+            assignFieldValueFromEntity("statusDescription", reportDocument, DataType.TEXT_AREA_FIELD);
+            assignFieldValueFromEntity("accomplishments", reportDocument, DataType.TEXT_AREA_FIELD);
+            assignFieldValueFromEntity("scheduledActivities", reportDocument, DataType.TEXT_AREA_FIELD);
 
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_RELATIONSHIP)) {
-            assignFieldValueFromEntity("preparedBy", entity, DataType.STRING_FIELD);
-            assignFieldValueFromEntity("approvedBy", entity, DataType.STRING_FIELD);
-            assignFieldValueFromEntity("submittedDate", entity, DataType.DATE_FIELD);
-            assignFieldValueFromEntity("approvedDate", entity, DataType.DATE_FIELD);
+            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_RELATIONSHIP)) {
+                assignFieldValueFromEntity("preparedBy", entity, DataType.STRING_FIELD);
+                assignFieldValueFromEntity("approvedBy", entity, DataType.STRING_FIELD);
+                assignFieldValueFromEntity("submittedDate", entity, DataType.DATE_FIELD);
+                assignFieldValueFromEntity("approvedDate", entity, DataType.DATE_FIELD);
+            }
+            populateComments();
         }
-        populateComments();
     }
 
     @Override
@@ -285,7 +289,7 @@ public class UpdateStatusReportPanel extends UpdateComposite {
         addField("accomplishments", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("scheduledActivities", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_RELATIONSHIP)) {
-            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN,Auth.ROLE.ROLE_CONSULTANT_TIME_ADMIN)) {
+            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONSULTANT_TIME_ADMIN)) {
                 addField("preparedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
                 addField("approvedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             } else {

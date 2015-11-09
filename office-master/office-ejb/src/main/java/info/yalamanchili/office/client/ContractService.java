@@ -47,7 +47,7 @@ public class ContractService {
 
     public ContractTable getContractorPlacementInfo(int start, int limit) {
         String queryStr = "SELECT ci from " + ClientInformation.class.getCanonicalName() + " ci where ci.endDate>=:dateParam or ci.endDate is null ";
-        TypedQuery<ClientInformation> query = em.createQuery(queryStr+" order by ci.employee.firstName ASC group by ci.employee", ClientInformation.class);
+        TypedQuery<ClientInformation> query = em.createQuery(queryStr + " order by ci.employee.firstName ASC group by ci.employee", ClientInformation.class);
         query.setParameter("dateParam", new Date(), TemporalType.DATE);
         query.setFirstResult(start);
         query.setMaxResults(limit);
@@ -120,6 +120,7 @@ public class ContractService {
         queryStr.append("ci.itemNumber LIKE '%").append(searchText).append("%'");
         return queryStr.toString();
     }
+//TODO this should be refactored to use generic serach
 
     protected String getSearchQuery(ContractSearchDto searchDto) {
         //TODO should we filter search query by date like reports?
