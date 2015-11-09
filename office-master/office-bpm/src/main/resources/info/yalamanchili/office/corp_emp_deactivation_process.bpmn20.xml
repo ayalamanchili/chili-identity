@@ -8,13 +8,13 @@
     targetNamespace="http://www.bpmnwithactiviti.org"
     xmlns:activiti="http://activiti.org/bpmn">
  
-    <process id="employee_deactivation_process">
+    <process id="corp_employee_deactivation_process">
  
         <startEvent id="EmployeeDeactivationStart" />
-        <sequenceFlow id="flow1" sourceRef="EmployeeDeactivationStart" targetRef="EmployeeDeactivationHRTask" />
+        <sequenceFlow id="flow1" sourceRef="EmployeeDeactivationStart" targetRef="CorporateEmployeeDeactivationHRTask" />
         <!--Create New Corporate Employee Created Task for HR Admin Role-->
-        <userTask id="EmployeeDeactivationHRTask" 
-                  name="Employee ${employee.firstName} ${employee.lastName} Deactivation Task" 
+        <userTask id="CorporateEmployeeDeactivationHRTask" 
+                  name="Corporate Employee ${employee.firstName} ${employee.lastName} Deactivation Task" 
                   activiti:candidateGroups="ROLE_HR_ADMINSTRATION">
             <documentation>
                 Employee ${employee.firstName} ${employee.lastName} deactivated.
@@ -34,7 +34,7 @@
         <!-- Task escalation email after 7 days-->
         <boundaryEvent id="emailEscalationTimer"
                        cancelActivity="false" 
-                       attachedToRef="EmployeeDeactivationHRTask">
+                       attachedToRef="CorporateEmployeeDeactivationHRTask">
             <timerEventDefinition> 
                 <timeDuration>PT168H</timeDuration> 
             </timerEventDefinition>
@@ -46,12 +46,7 @@
             name="Task Email Escalation"
             activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
         </serviceTask>
-        <sequenceFlow sourceRef="EmployeeDeactivationHRTask" 
-                      targetRef="sendDeactivationCompletedEmail" />
-        <serviceTask id="sendDeactivationCompletedEmail" 
-                     name="Employee deactivation Completed Email" 
-                     activiti:expression="#{employeeDeactivationProcessBean.sendDeactivationCompletedEmail(employee)}" />
-        <sequenceFlow sourceRef="sendDeactivationCompletedEmail" 
+        <sequenceFlow sourceRef="CorporateEmployeeDeactivationHRTask" 
                       targetRef="EmployeeDeactivationEnd" />
         <endEvent id="EmployeeDeactivationEnd" />
     </process>

@@ -8,7 +8,6 @@
 package info.yalamanchili.office.profile;
 
 import info.chili.commons.EntityQueryUtils;
-import info.chili.document.dao.SerializedEntityDao;
 import info.chili.security.dao.CRoleDao;
 import info.chili.security.domain.CRole;
 import info.chili.security.domain.CUser;
@@ -17,31 +16,15 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
 import info.yalamanchili.office.bpm.OfficeBPMService;
-import info.yalamanchili.office.dao.expense.BankAccountDao;
-import info.yalamanchili.office.dao.invite.InviteCodeDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.profile.ext.DependentDao;
-import info.yalamanchili.office.dao.profile.ext.EmployeeAdditionalDetailsDao;
-import info.yalamanchili.office.dao.profile.onboarding.EmployeeOnBoardingDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
-import info.yalamanchili.office.dto.onboarding.InitiateOnBoardingDto;
 import info.yalamanchili.office.dto.profile.EmployeeCreateDto;
-import info.yalamanchili.office.dto.onboarding.OnBoardingEmployeeDto;
 import info.yalamanchili.office.dto.security.User;
 import info.yalamanchili.office.entity.Company;
-import info.yalamanchili.office.entity.expense.BankAccount;
-import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.Preferences;
-import info.yalamanchili.office.entity.profile.ext.Dependent;
-import info.yalamanchili.office.entity.profile.ext.EmployeeAdditionalDetails;
-import info.yalamanchili.office.entity.profile.invite.InvitationType;
-import info.yalamanchili.office.entity.profile.invite.InviteCode;
-import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
-import info.yalamanchili.office.entity.profile.onboarding.OnBoardingStatus;
-import info.yalamanchili.office.profile.invite.InviteCodeGeneratorService;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import info.yalamanchili.office.security.SecurityUtils;
 import java.util.Date;
@@ -50,7 +33,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import org.apache.commons.lang.time.DateUtils;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -170,20 +152,16 @@ public class EmployeeService {
         }
         emp.setEndDate(dto.getEndDate());
         emp = em.merge(emp);
+        CUser user1 = emp.getUser();
+        user1.setEnabled(false);
+        Employee curUser = OfficeSecurityService.instance().getCurrentUser();
+        profileNotificationService.sendEmployeeDeactivationNotification(curUser.getFirstName(), getEmployee(empId));
+        em.merge(user1);
         if (emp.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
+            OfficeBPMIdentityService.instance().deleteUser(emp.getEmployeeId());
             Map<String, Object> vars = new HashMap<>();
             vars.put("employee", emp);
-            Employee emp1 = OfficeSecurityService.instance().getCurrentUser();
-            vars.put("currentEmployee", emp1);
-            vars.put("entityId", emp.getId());
-            OfficeBPMService.instance().startProcess("employee_deactivation_process", vars);
-        } else {
-            OfficeBPMIdentityService.instance().deleteUser(emp.getEmployeeId());
-            CUser user1 = emp.getUser();
-            user1.setEnabled(false);
-            Employee curUser = OfficeSecurityService.instance().getCurrentUser();
-            profileNotificationService.sendEmployeeDeactivationNotification(curUser.getFirstName(), getEmployee(empId));
-            em.merge(user1);
+            OfficeBPMService.instance().startProcess("corp_employee_deactivation_process", vars);
         }
     }
 
