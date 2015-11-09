@@ -7,23 +7,19 @@
  */
 package info.yalamanchili.office.client.contracts;
 
-import com.google.gwt.dom.client.Style;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
-import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.RichTextField;
-import info.chili.gwt.fields.StringField;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
-import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.DEFAULT_FIELD_WIDTH;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
 import info.yalamanchili.office.client.profile.updateBillingRate.ReadAllUpdateBillingRatePanel;
-import info.yalamanchili.office.client.time.corp.ReadAllCorporateTimeSheetPanel;
+import info.yalamanchili.office.client.time.consultant.ReadAllConsultantTimeSheetsPanel;
 import java.util.logging.Logger;
 
 /**
@@ -176,7 +172,7 @@ public class ReadContractsPanel extends ReadComposite {
         addField("employee", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("consultantJobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("employeeCompany", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        new ReadAllCorporateTimeSheetPanel().renderLeaveHistory(getEmployeeId(), entityFieldsPanel);
+        new ReadAllConsultantTimeSheetsPanel().renderLeaveHistory(getEmployeeId(), entityFieldsPanel);
         entityFieldsPanel.add(clientVendorText);
         addField("client", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("clientLocation", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
