@@ -39,4 +39,10 @@ public class TimePeriodResource {
         return TimePeriodDao.instance().getDropDown(start, limit, type);
     }
 
+    @GET
+    @Path("/user/{type}/{start}/{limit}")
+    public List<Entry> getStatusReportPeriodsForUser(@PathParam("type") TimePeriodType type, @PathParam("start") Integer start, @PathParam("limit") Integer limit) {
+        return TimePeriodDao.instance().getTimePeriodsForUser(start, limit, type);
+    }
+
 }

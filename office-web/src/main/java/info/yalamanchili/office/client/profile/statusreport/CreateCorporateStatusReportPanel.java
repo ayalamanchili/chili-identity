@@ -43,7 +43,7 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
     protected CaptionPanel basePanel = new CaptionPanel();
     protected FlowPanel panel = new FlowPanel();
     ClickableLink uploadFromFile = new ClickableLink("Import from Word or Excel");
-    SelectTimePeriodWidget statusReportPeriodF = new SelectTimePeriodWidget(false, true);
+    SelectUserTimePeriod statusReportPeriodF = new SelectUserTimePeriod(false, true);
     CKEditor reportF;
     BooleanField submitForApprovalF = new BooleanField(OfficeWelcome.constants, "Submit", "CorporateStatusReport", false, false, Alignment.HORIZONTAL);
     Button createB = new Button("Save");
@@ -75,13 +75,13 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
         this.entityId = id;
         HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                logger.info(arg0);
-                entity = JSONParser.parseLenient(arg0).isObject();
-                populateFieldsFromEntity(entity);
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        logger.info(arg0);
+                        entity = JSONParser.parseLenient(arg0).isObject();
+                        populateFieldsFromEntity(entity);
+                    }
+                });
     }
 
     protected final String getReadURI() {
@@ -174,19 +174,19 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
         entity.put("report", new JSONString(reportF.getData()));
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                new ResponseStatusWidget().show("Successfully submited status report");
-                if (TabPanel.instance().myOfficePanel.isVisible()) {
-                    TabPanel.instance().myOfficePanel.entityPanel.clear();
-                    TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllCorporateStatusReportsPanel());
-                }
-                if (TabPanel.instance().homePanel.isVisible()) {
-                    TabPanel.instance().homePanel.entityPanel.clear();
-                    TabPanel.instance().homePanel.entityPanel.add(new ReadAllCorporateStatusReportsPanel());
-                }
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        new ResponseStatusWidget().show("Successfully submited status report");
+                        if (TabPanel.instance().myOfficePanel.isVisible()) {
+                            TabPanel.instance().myOfficePanel.entityPanel.clear();
+                            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllCorporateStatusReportsPanel());
+                        }
+                        if (TabPanel.instance().homePanel.isVisible()) {
+                            TabPanel.instance().homePanel.entityPanel.clear();
+                            TabPanel.instance().homePanel.entityPanel.add(new ReadAllCorporateStatusReportsPanel());
+                        }
+                    }
+                });
     }
 
     protected String getURI() {

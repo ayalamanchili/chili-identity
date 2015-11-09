@@ -71,6 +71,19 @@ public class TimePeriodDao {
         query.with(new Sort(Sort.Direction.DESC, "startDate"));
         query.skip(start);
         query.limit(limit);
+        for (TimePeriod entity : mongoTemplate.find(query, TimePeriod.class)) {
+            res.add(new Entry(entity.getId(), entity.describe()));
+        }
+        return res;
+    }
+
+    public List<Entry> getTimePeriodsForUser(int start, int limit, TimePeriodType type) {
+        List<Entry> res = new ArrayList<>();
+        Query query = new Query();
+        query.addCriteria(Criteria.where("type").is(type.name()));
+        query.with(new Sort(Sort.Direction.DESC, "startDate"));
+        query.skip(start);
+        query.limit(limit);
         mongoTemplate.find(query, TimePeriod.class).stream().forEach((entity) -> {
             Employee emp = OfficeSecurityService.instance().getCurrentUser();
             CorporateStatusReport report = CorporateStatusReportDao.instance().find(emp, entity.getStartDate(), entity.getEndDate());
