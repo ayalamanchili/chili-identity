@@ -12,6 +12,10 @@ import info.chili.commons.DateUtils;
 import info.chili.service.jrs.types.Entry;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
+import info.yalamanchili.office.dao.employee.statusreport.CorporateStatusReportDao;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.entity.employee.statusreport.CorporateStatusReport;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.model.time.TimePeriod;
 import info.yalamanchili.office.model.time.TimePeriod.TimePeriodType;
 import java.util.ArrayList;
@@ -67,9 +71,13 @@ public class TimePeriodDao {
         query.with(new Sort(Sort.Direction.DESC, "startDate"));
         query.skip(start);
         query.limit(limit);
-        for (TimePeriod entity : mongoTemplate.find(query, TimePeriod.class)) {
-            res.add(new Entry(entity.getId(), entity.describe()));
-        }
+        mongoTemplate.find(query, TimePeriod.class).stream().forEach((entity) -> {
+            Employee emp = OfficeSecurityService.instance().getCurrentUser();
+            CorporateStatusReport report = CorporateStatusReportDao.instance().find(emp, entity.getStartDate(), entity.getEndDate());
+            if (report == null) {
+                res.add(new Entry(entity.getId(), entity.describe()));
+            }
+        });
         return res;
     }
 
