@@ -9,16 +9,19 @@
 package info.yalamanchili.office.client.time.consultant;
 
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.logical.shared.OpenEvent;
+import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.DisclosurePanel;
+import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
-import info.chili.gwt.fields.FileField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
@@ -227,5 +230,19 @@ public class ReadAllConsultantTimeSheetsPanel extends CRUDReadAllComposite {
         } else {
             return false;
         }
+    }
+
+    public void renderLeaveHistory(final String empId, FlowPanel entityFieldsPanel) {
+        final DisclosurePanel leaveDP = new DisclosurePanel("Consultant Leave History");
+        leaveDP.setWidth("100%");
+        entityFieldsPanel.add(leaveDP);
+        leaveDP.addOpenHandler(new OpenHandler<DisclosurePanel>() {
+            @Override
+            public void onOpen(OpenEvent<DisclosurePanel> event) {
+                leaveDP.setContent(
+                        new ReadAllConsultantTimeSheetsPanel(empId));
+
+            }
+        });
     }
 }
