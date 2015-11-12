@@ -208,9 +208,5 @@
             <name>yalamanchili.info</name>
             <url>http://tools.yalamanchili.info/nexus/content/repositories/snapshots</url>
         </snapshotRepository>
-    </distributionManagement>
-    <scm>
-        <connection>scm:svn:http://yalamanchili.info/projects/office/trunk/office-qa</connection>
-        <url>http://yalamanchili.info/projects/office/trunk/office-qa</url>
-    </scm>     
+    </distributionManagement>   
 </project>

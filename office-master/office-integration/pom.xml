@@ -25,11 +25,6 @@
     <build>
         <plugins>
         </plugins>
-    </build>
-    <!-- testing for commit issues -->
-    <scm>
-        <connection>scm:svn:http://tools.sstech.us/svn/office/trunk/office-master/office-dao</connection>
-        <url>http://tools.sstech.us/svn/office/trunk/office-master/office-dao</url>
-    </scm>         
+    </build>        
 </project>
 

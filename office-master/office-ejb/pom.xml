@@ -26,8 +26,4 @@
             <version>${project.version}</version>
         </dependency>        
     </dependencies>
-    <scm>
-        <connection>scm:svn:http://tools.sstech.us/svn/office/trunk/office-master/office-ejb</connection>
-        <url>http://tools.sstech.us/svn/office/trunk/office-master/office-ejb</url>
-    </scm> 
 </project>
