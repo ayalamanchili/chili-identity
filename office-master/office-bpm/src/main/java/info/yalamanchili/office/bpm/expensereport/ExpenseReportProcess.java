@@ -57,7 +57,7 @@ public class ExpenseReportProcess extends RuleBasedTaskDelegateListner {
         //
         Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
         if (currentUser.getEmployeeId().equals(entity.getEmployee().getEmployeeId())) {
-            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.self.approve.corp.expenseReport", "You cannot approve your expenseReport task");
+//            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.self.approve.corp.expenseReport", "You cannot approve your expenseReport task");
         }
         //Status
         String status = (String) dt.getExecution().getVariable("status");
