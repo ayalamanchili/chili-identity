@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.jrs.expense.expenserpt;
 
+import info.chili.commons.SearchUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.OfficeRoles;
@@ -19,7 +20,9 @@ import info.yalamanchili.office.expense.expenserpt.ExpenseReportSaveDto;
 import info.yalamanchili.office.expense.expenserpt.ExpenseReportService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.security.AccessCheck;
+import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Query;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -109,6 +112,20 @@ public class ExpenseReportResource extends CRUDResource<ExpenseReport> {
         return tableObj;
     }
 
+    @PUT
+    @Path("/search-expensereport/{start}/{limit}")
+    @Transactional(readOnly = true)
+    public List<ExpenseReport> search(ExpenseReport entity, @PathParam("start") int start, @PathParam("limit") int limit) {
+        List<ExpenseReport> res = new ArrayList();
+        Query searchQuery = SearchUtils.getSearchQuery(ExpenseReportsDao.instance().getEntityManager(), entity, new SearchUtils.SearchCriteria());
+        searchQuery.setFirstResult(start);
+        searchQuery.setMaxResults(limit);
+        for (Object p : searchQuery.getResultList()) {
+            res.add((ExpenseReport) p);
+        }
+        return res;
+    }
+    
     @PUT
     @Path("/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")

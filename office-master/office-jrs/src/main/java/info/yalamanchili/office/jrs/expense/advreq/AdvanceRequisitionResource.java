@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.jrs.expense.advreq;
 
+import info.chili.commons.SearchUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.OfficeRoles;
@@ -20,7 +21,9 @@ import info.yalamanchili.office.expense.advreq.AdvanceRequisitionService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.expense.advreq.TransactionResource.TransactionTable;
 import info.yalamanchili.office.security.AccessCheck;
+import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Query;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -102,14 +105,18 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
         return tableObj;
     }
 
-    @GET
-    @Path("/{employeeId}/{start}/{limit}")
-    @AccessCheck(companyContacts = {"Perf_Eval_Manager", "Reports_To"}, roles = {"ROLE_ADMIN", "ROLE_CEO", "ROLE_PAYROLL_AND_BENIFITS", "ROLE_ACCOUNTS_PAYABLE"}, strictOrderCheck = false)
-    public AdvanceRequisitionTable getAdvanceRequisitionsForEmployee(@PathParam("employeeId") Long employeeId, @PathParam("start") int start, @PathParam("limit") int limit) {
-        AdvanceRequisitionTable tableObj = new AdvanceRequisitionTable();
-        tableObj.setEntities(advanceRequisitionDao.queryForEmployee(employeeId, start, limit));
-        tableObj.setSize(advanceRequisitionDao.size(employeeId));
-        return tableObj;
+    @PUT
+    @Path("/search-advancerequisition/{start}/{limit}")
+    @Transactional(readOnly = true)
+    public List<AdvanceRequisition> search(AdvanceRequisition entity, @PathParam("start") int start, @PathParam("limit") int limit) {
+        List<AdvanceRequisition> res = new ArrayList();
+        Query searchQuery = SearchUtils.getSearchQuery(AdvanceRequisitionDao.instance().getEntityManager(), entity, new SearchUtils.SearchCriteria());
+        searchQuery.setFirstResult(start);
+        searchQuery.setMaxResults(limit);
+        for (Object p : searchQuery.getResultList()) {
+            res.add((AdvanceRequisition) p);
+        }
+        return res;
     }
 
     @PUT
@@ -119,6 +126,15 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
     @Override
     public void delete(@PathParam("id") Long id) {
         AdvanceRequisitionService.instance().delete(id);
+    }
+    @GET
+    @Path("/{employeeId}/{start}/{limit}")
+    @AccessCheck(companyContacts = {"Perf_Eval_Manager", "Reports_To"}, roles = {"ROLE_ADMIN", "ROLE_CEO", "ROLE_PAYROLL_AND_BENIFITS", "ROLE_ACCOUNTS_PAYABLE"}, strictOrderCheck = false)
+    public AdvanceRequisitionTable getAdvanceRequisitionsForEmployee(@PathParam("employeeId") Long employeeId, @PathParam("start") int start, @PathParam("limit") int limit) {
+        AdvanceRequisitionTable tableObj = new AdvanceRequisitionTable();
+        tableObj.setEntities(advanceRequisitionDao.queryForEmployee(employeeId, start, limit));
+        tableObj.setSize(advanceRequisitionDao.size(employeeId));
+        return tableObj;
     }
 
     @GET

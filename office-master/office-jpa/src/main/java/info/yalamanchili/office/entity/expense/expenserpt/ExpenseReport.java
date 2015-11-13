@@ -403,14 +403,6 @@ public class ExpenseReport extends AbstractEntity {
         this.approvalManagerId = approvalManagerId;
     }
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
-    public static void setSerialVersionUID(long serialVersionUID) {
-        ExpenseReport.serialVersionUID = serialVersionUID;
-    }
-
     public ExpenseReimbursePaymentMode getExpenseReimbursePaymentMode() {
         return expenseReimbursePaymentMode;
     }
