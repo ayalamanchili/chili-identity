@@ -14,5 +14,5 @@ package info.yalamanchili.office.entity.client;
  */
 public enum ProjectStatus {
 
-    OnSchedule, BehindSehedule, OnHold, AboveSchedule, Cancelled, Rejected, Approved, Pending
+    OnSchedule, BehindSchedule, OnHold, AboveSchedule, Cancelled, Rejected, Approved, Pending
 }
