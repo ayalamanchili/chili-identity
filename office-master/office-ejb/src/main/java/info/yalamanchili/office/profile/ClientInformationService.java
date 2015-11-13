@@ -383,7 +383,7 @@ public class ClientInformationService {
         String acronym = "";
         String newname = "";
         for (int i = 0; i < words.length; i++) {
-            words[i] = words[i].replaceAll("[^\\w!?,]", "");
+            words[i] = words[i].replaceAll("[^\\w!?&,]", "");
             acronym += words[i].substring(0, 1);
             newname += words[i];
         }
