@@ -43,7 +43,7 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
     protected CaptionPanel basePanel = new CaptionPanel();
     protected FlowPanel panel = new FlowPanel();
     ClickableLink uploadFromFile = new ClickableLink("Import from Word or Excel");
-    SelectUserTimePeriod statusReportPeriodF = new SelectUserTimePeriod(false, true);
+    SelectTimePeriodWidget statusReportPeriodF;
     CKEditor reportF;
     BooleanField submitForApprovalF = new BooleanField(OfficeWelcome.constants, "Submit", "CorporateStatusReport", false, false, Alignment.HORIZONTAL);
     Button createB = new Button("Save");
@@ -58,11 +58,13 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
 
     protected CreateCorporateStatusReportPanel() {
         instance = this;
+        statusReportPeriodF = new SelectUserTimePeriod(false, true);
         init(basePanel);
     }
 
     protected CreateCorporateStatusReportPanel(JSONObject entity) {
         instance = this;
+        statusReportPeriodF = new SelectUserTimePeriod(false, true);
         init(basePanel);
         this.entity = entity;
         populateFieldsFromEntity(entity);
@@ -70,6 +72,7 @@ public class CreateCorporateStatusReportPanel extends ALComposite implements Cli
 
     protected CreateCorporateStatusReportPanel(String id) {
         instance = this;
+        statusReportPeriodF = new SelectTimePeriodWidget(false, true);
         this.isUpdate = true;
         init(basePanel);
         this.entityId = id;
