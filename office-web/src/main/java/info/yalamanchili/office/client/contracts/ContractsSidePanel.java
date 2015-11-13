@@ -53,6 +53,7 @@ public class ContractsSidePanel extends ALComposite implements ClickHandler {
         formatLB.addItem("PDF", "pdf");
         formatLB.addItem("HTML", "html");
         formatLB.addItem("XML", "xml");
+        formatLB.addItem("EXCEL","xls");
         panel.add(formatLB);
         panel.add(generateRepB);
         panel.add(new SearchContractsPanel());

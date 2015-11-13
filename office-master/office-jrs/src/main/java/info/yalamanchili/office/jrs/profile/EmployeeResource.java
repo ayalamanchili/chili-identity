@@ -409,6 +409,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Response searchEmployeeReport(EmployeeSearchDto entity, @QueryParam("reportName") String reportName, @QueryParam("format") String format) {
         List<EmployeeDto> data = new ArrayList<EmployeeDto>();
+         String[] columnOrder = new String[]{"employeeId","firstName", "lastName", "sex","dateOfBirth","branch", "email", "phoneNumber", "jobTitle", "company"};
         Long size;
         if (entity.getCompanyContacts().size() > 0) {
             size = 1000l;
@@ -421,7 +422,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
             data.addAll(searchEmployee(entity, start, limit, false));
             start = start + limit;
         } while ((start + limit) < size);
-        return ReportGenerator.generateReport(data, reportName, format, OfficeServiceConfiguration.instance().getContentManagementLocationRoot());
+        return ReportGenerator.generateReport(data, reportName, format, OfficeServiceConfiguration.instance().getContentManagementLocationRoot(),columnOrder);
     }
 
     @Override

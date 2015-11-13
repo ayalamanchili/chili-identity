@@ -271,7 +271,8 @@ public class ContractService {
 
     public Response generateContractorPlacementInfoReport(String format) {
         ContractTable data = getContractorPlacementInfo(0, 10000);
-        return ReportGenerator.generateReport(data.getEntities(), "contracts", format, OfficeServiceConfiguration.instance().getContentManagementLocationRoot());
+        String[] columnOrder = new String[]{"employee", "client", "vendor", "itemNumber", "billingRate", "overTimeBillingRate", "invoiceFrequency","startDate", "endDate",};
+        return ReportGenerator.generateReport(data.getEntities(), "contracts", format, OfficeServiceConfiguration.instance().getContentManagementLocationRoot(),columnOrder);
     }
 
     public static ContractService instance() {
