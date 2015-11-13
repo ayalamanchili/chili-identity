@@ -13,7 +13,7 @@ package info.yalamanchili.office.client.profile.statusreport;
  */
 public enum ProjectStatus {
 
-    OnSchedule, BehindSehedule, OnHold, AboveSchedule, Cancelled;
+    OnSchedule, BehindSchedule, OnHold, AboveSchedule, Cancelled;
 
     public static String[] names() {
         ProjectStatus[] values = values();
