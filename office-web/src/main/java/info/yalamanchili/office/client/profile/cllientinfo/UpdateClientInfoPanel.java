@@ -41,13 +41,15 @@ import java.util.logging.Logger;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import info.chili.gwt.fields.EnumField;
+import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
 
-public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHandler{
+public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHandler {
 
     private static Logger logger = Logger.getLogger(UpdateClientInfoPanel.class.getName());
     SelectEmployeeWithRoleWidget selectRecruiterWidget = new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER, false, false, Alignment.HORIZONTAL);
     SelectPracticeWidget selectPractiseWidgetF = new SelectPracticeWidget(false, true, Alignment.HORIZONTAL);
+    SelectProjectWidget selectProjectWidgetF = new SelectProjectWidget(true, false);
     EnumField servicesF;
     EnumField sectorsF;
 
@@ -68,6 +70,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignEntityValueFromField("vendorRecruiter", entity);
         assignEntityValueFromField("middleVendor", entity);
         assignEntityValueFromField("clientProject", entity);
+        assignEntityValueFromField("vendorPaymentTerms", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_TIME, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_RELATIONSHIP)) {
@@ -112,7 +115,6 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             assignEntityValueFromField("notes", entity);
         }
         assignEntityValueFromField("isCPDFilled", entity);
-        assignEntityValueFromField("vacationDetails", entity);
         assignEntityValueFromField("practice", entity);
         assignEntityValueFromField("sectorsAndBUs", entity);
         return entity;
@@ -145,7 +147,6 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        logger.info("entitiessssssssssssssss:   "+entity.toString());
         assignFieldValueFromEntity("consultantJobTitle", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("client", entity, null);
         assignFieldValueFromEntity("clientContact", entity, null);
@@ -157,6 +158,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignFieldValueFromEntity("vendorRecruiter", entity, null);
         assignFieldValueFromEntity("middleVendor", entity, null);
         assignFieldValueFromEntity("clientProject", entity, null);
+        assignFieldValueFromEntity("vendorPaymentTerms", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_TIME, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_RELATIONSHIP)) {
@@ -202,15 +204,15 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             assignFieldValueFromEntity("specialInvoiceInstructions", entity, DataType.STRING_FIELD);
         }
         assignFieldValueFromEntity("isCPDFilled", entity, DataType.BOOLEAN_FIELD);
-        assignFieldValueFromEntity("vacationDetails", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("practice", entity,null);
-        assignFieldValueFromEntity("sectorsAndBUs", entity , DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("practice", entity, null);
+        assignFieldValueFromEntity("sectorsAndBUs", entity, DataType.ENUM_FIELD);
     }
 
     @Override
     protected void addListeners() {
         updateBillingRateIcn.addClickHandler(this);
         selectPractiseWidgetF.getListBox().addChangeHandler(this);
+        selectProjectWidgetF.setReadOnly(true);
     }
 
     @Override
@@ -233,7 +235,8 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, false, Alignment.HORIZONTAL));
         addDropDown("vendorRecruiter", new SelectVendorRecruiterContactWidget(false, false, Alignment.HORIZONTAL));
         addDropDown("middleVendor", new SelectMiddleVendorWidget(false, false, Alignment.HORIZONTAL));
-        addDropDown("clientProject", new SelectProjectWidget(true, false));
+        addDropDown("clientProject", selectProjectWidgetF);
+        addField("vendorPaymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_TIME, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_RELATIONSHIP)) {
@@ -288,7 +291,6 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             addField("notes", false, false, DataType.RICH_TEXT_AREA);
         }
         addField("isCPDFilled", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-        addField("vacationDetails", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         if (TreeEmployeePanel.instance().getEntity().get("employeeType") != null) {
             StringField jobTitleF = (StringField) fields.get("employeeType");
             jobTitleF.setValue(TreeEmployeePanel.instance().getEntity().get("employeeType").isObject().get("name").isString().stringValue());
@@ -298,9 +300,36 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             jobTitleF.setValue(TreeEmployeePanel.instance().getEntity().get("company").isObject().get("name").isString().stringValue());
         }
         addField("sectorsAndBUs", false, true, DataType.ENUM_FIELD);
-        addDropDown("practice", selectPractiseWidgetF);
-        addEnumField("sectorsAndBUs", false, true, ConsultingServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
+        JSONObject prj = (JSONObject) entity.get("practice");
+        String service = JSONUtils.toString(prj, "name");
+        switch (service) {
+                case "4100-CONSULTING SERVICES":
+                    addEnumField("sectorsAndBUs", false, true, ConsultingServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
+                    break;
+                case "4200-PROJECT MANAGEMENT SERVICES":
+                    addEnumField("sectorsAndBUs", false, true, ProjectManagementServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);          
+                    break;
+                case "4300-SOFTWARE DEVELOPMENT SERVICES":
+                    addEnumField("sectorsAndBUs", false, true, SoftwareDevelopmentServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
+                    break;
+                case "4400-INFRASTRUCTURE SERVICES":
+                    addEnumField("sectorsAndBUs", false, true, InfrastructureServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
+                    break;
+                case "4500-MOBILITY SERVICES":
+                    addEnumField("sectorsAndBUs", false, true, MobilityServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
+                    break;
+                case "4600-TECHNOLOGY,DEVELOPMENT,INTEGRATION SERVICES":
+                    addEnumField("sectorsAndBUs", false, true, TechnologyIntegrationServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
+                    break;
+                case "4700-QUALIY ASURANCE SERVICES":
+                    addEnumField("sectorsAndBUs", false, true, QualityAsuranceServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
+                    break;
+                default:
+                    addEnumField("sectorsAndBUs", false, true, QualityAsuranceServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
+                    break;
+            }
         sectorsF = (EnumField) fields.get("sectorsAndBUs");
+        addDropDown("practice", selectPractiseWidgetF);
         alignFields();
     }
 
@@ -318,6 +347,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             new GenericPopup(new CreateUpdateBillingRatePanel(getEntityId(), getEntity())).show();
         }
     }
+
     @Override
     public void onChange(ChangeEvent event) {
         if (event.getSource().equals(selectPractiseWidgetF.getListBox())) {
@@ -350,7 +380,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             }
         }
     }
-    
+
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }

@@ -303,7 +303,7 @@ public class ClientInformation extends AbstractEntity {
 
     protected String timeSheetRequirement;
 
-    protected String vacationDetails;
+    protected String vendorPaymentTerms;
 
     protected String specialInvoiceInstructions;
 
@@ -795,12 +795,12 @@ public class ClientInformation extends AbstractEntity {
         this.timeSheetRequirement = timeSheetRequirement;
     }
 
-    public String getVacationDetails() {
-        return vacationDetails;
+    public String getVendorPaymentTerms() {
+        return vendorPaymentTerms;
     }
 
-    public void setVacationDetails(String vacationDetails) {
-        this.vacationDetails = vacationDetails;
+    public void setVendorPaymentTerms(String vendorPaymentTerms) {
+        this.vendorPaymentTerms = vendorPaymentTerms;
     }
 
     public String getSpecialInvoiceInstructions() {

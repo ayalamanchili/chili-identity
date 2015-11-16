@@ -81,6 +81,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         assignEntityValueFromField("vendorLocation", clientInfo);
         assignEntityValueFromField("vendorRecruiter", clientInfo);
         assignEntityValueFromField("middleVendor", clientInfo);
+        assignEntityValueFromField("vendorPaymentTerms", clientInfo);
         assignEntityValueFromField("startDate", clientInfo);
         assignEntityValueFromField("endDate", clientInfo);
         if (ReadAllClientInfoPanel.instance().numberOfRecords > 0) {
@@ -203,6 +204,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, false, Alignment.HORIZONTAL));
         addDropDown("vendorRecruiter", new SelectVendorRecruiterContactWidget(false, false, Alignment.HORIZONTAL));
         addDropDown("middleVendor", new SelectMiddleVendorWidget(false, false, Alignment.HORIZONTAL));
+        addField("vendorPaymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         //Contract basic
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);

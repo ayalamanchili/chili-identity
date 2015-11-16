@@ -73,6 +73,7 @@ public class ReadClientInfoPanel extends ReadComposite {
         assignFieldValueFromEntity("vendorRecruiter", entity, null);
         assignFieldValueFromEntity("middleVendor", entity, null);
         assignFieldValueFromEntity("clientProject", entity, null);
+        assignFieldValueFromEntity("vendorPaymentTerms", entity, DataType.STRING_FIELD);
         if (entity.get("clientProject") != null) {
             JSONObject project = entity.get("clientProject").isObject();
             assignFieldValueFromEntity("purchaseOrderNo", project, DataType.STRING_FIELD);
@@ -126,9 +127,8 @@ public class ReadClientInfoPanel extends ReadComposite {
             assignFieldValueFromEntity("specialInvoiceInstructions", entity, DataType.STRING_FIELD);
         }
         assignFieldValueFromEntity("isCPDFilled", entity, DataType.BOOLEAN_FIELD);
-        assignFieldValueFromEntity("vacationDetails", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("practice", entity,null);
-        assignFieldValueFromEntity("sectorsAndBUs", entity , DataType.STRING_FIELD);
+        assignFieldValueFromEntity("practice", entity, null);
+        assignFieldValueFromEntity("sectorsAndBUs", entity, DataType.STRING_FIELD);
     }
 
     protected void renderBillingRatesPanel() {
@@ -166,6 +166,7 @@ public class ReadClientInfoPanel extends ReadComposite {
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(true, false, Alignment.HORIZONTAL));
         addDropDown("vendorRecruiter", new SelectVendorRecruiterContactWidget(true, false, Alignment.HORIZONTAL));
         addDropDown("middleVendor", new SelectMiddleVendorWidget(true, false, Alignment.HORIZONTAL));
+        addField("vendorPaymentTerms", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addDropDown("clientProject", new SelectProjectWidget(true, false));
         addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
@@ -221,7 +222,6 @@ public class ReadClientInfoPanel extends ReadComposite {
             addField("specialInvoiceInstructions", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         }
         addField("isCPDFilled", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-        addField("vacationDetails", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("notes", true, false, DataType.RICH_TEXT_AREA);
         if (TreeEmployeePanel.instance().getEntity().get("employeeType") != null) {
             StringField jobTitleF = (StringField) fields.get("employeeType");
@@ -232,7 +232,7 @@ public class ReadClientInfoPanel extends ReadComposite {
             jobTitleF.setValue(TreeEmployeePanel.instance().getEntity().get("company").isObject().get("name").isString().stringValue());
         }
         addDropDown("practice", selectPractiseWidgetF);
-        addField("sectorsAndBUs", true, false, DataType.STRING_FIELD ,Alignment.HORIZONTAL);
+        addField("sectorsAndBUs", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
