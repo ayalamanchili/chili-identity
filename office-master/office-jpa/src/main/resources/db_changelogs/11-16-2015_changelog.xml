@@ -11,7 +11,7 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <changeSet author="ayalamanchili" id="prospect">
+    <changeSet author="ayalamanchili" id="prospect_create">
         <sqlFile dbms="mysql"
              path="sql/create-prospect-scripts.sql"
              relativeToChangelogFile="true"
