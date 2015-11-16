@@ -195,6 +195,7 @@ public class ClientInformationService {
         project = ProjectDao.instance().save(project);
         ci.setStatus(ClientInformationStatus.PENDING_ACCOUNTS_VERIFICATION);
         ci.setClientProject(project);
+        ci = clientInformationDao.save(ci);
         emp.addClientInformation(ci);
         startNewClientInfoProcess(ci);
     }
