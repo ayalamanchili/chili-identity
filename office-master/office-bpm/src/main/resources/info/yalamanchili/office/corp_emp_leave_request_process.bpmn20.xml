@@ -113,8 +113,7 @@
             </conditionExpression>
         </sequenceFlow>
         <userTask id="unpaidLeaveFinalApprovalTask" 
-                  name="Unpaid Leave Final Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" 
-                  activiti:candidateGroups="ROLE_ADMIN,ROLE_CEO">
+                  name="Unpaid Leave Final Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}">
             <documentation>
                 Corporate Employee Unpaid Leave Final Approval Request
                 Employee Name       : #{currentEmployee.firstName} #{currentEmployee.lastName}

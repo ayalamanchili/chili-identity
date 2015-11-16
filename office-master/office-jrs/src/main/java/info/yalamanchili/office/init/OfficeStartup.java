@@ -409,6 +409,13 @@ public class OfficeStartup {
         rule4.setRuleName("employeeIdAssignmentRuleEvaluator");
         rule4.setAttributeData("adminadmin,useruser");
         em.merge(rule4);
+        //unpaid final approval rule
+        BPMTaskDelegateRule rule5 = new BPMTaskDelegateRule();
+        rule5.setBpmProcessId("corp_emp_leave_request_process");
+        rule5.setBpmTaskId("unpaidLeaveFinalApprovalTask");
+        rule5.setRuleName("employeeIdAssignmentRuleEvaluator");
+        rule5.setAttributeData("adminadmin,useruser");
+        em.merge(rule5);
         //todo add rule for off boarding validation task
     }
 
