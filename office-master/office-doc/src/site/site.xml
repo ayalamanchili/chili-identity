@@ -47,7 +47,7 @@
                 <item name="Manage Profle" href="office/profile/profile.html"/>
                 <item name="Manage Address" href="office/profile/manage-address.html"/>
                 <item name="Privacy" href="office/profile/privacy.html"/>
-                <item name="Client Information" href="office/profile/client-information.html" collapse="true">
+                <item name="Client Information" href="office/clientinformation/clientinfoprocess.html" collapse="true">
                     <item name="Client Inforamtion Correction Details" href="/office/clientcorrectiondetails.html"/>
                 </item>
                 <item name="SkillSet" href="office/profile/skillset.html" />

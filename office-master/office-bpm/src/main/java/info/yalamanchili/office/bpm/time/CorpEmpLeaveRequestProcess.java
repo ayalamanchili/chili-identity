@@ -19,6 +19,7 @@ import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.chili.email.Email;
+import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.CorporateTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
@@ -41,10 +42,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Scope("prototype")
 @Transactional
-public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
+public class CorpEmpLeaveRequestProcess extends RuleBasedTaskDelegateListner implements TaskListener, JavaDelegate {
     
     @Override
-    public void notify(DelegateTask task) {
+    public void processTask(DelegateTask task) {
         if ("create".equals(task.getEventName())) {
             leaveRequestTaskCreated(task);
         }
