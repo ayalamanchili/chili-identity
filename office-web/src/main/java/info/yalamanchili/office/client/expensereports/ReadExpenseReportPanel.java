@@ -52,7 +52,7 @@ public class ReadExpenseReportPanel extends ReadComposite {
             + "</ul>");
     protected static HTML expenseInfo = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
-            + "<strong style=\"color:#555555\">Expense Items Information</strong></p>\n"
+            + "<strong style=\"color:#555555\">Expense Details</strong></p>\n"
             + "\n"
             + "<ul>\n"
             + "</ul>");
@@ -155,14 +155,7 @@ public class ReadExpenseReportPanel extends ReadComposite {
     }
 
     protected void populateExpenseItems(JSONArray items) {
-        entityFieldsPanel.add(expenseReceiptInfo);
-        for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).isObject() != null) {
-                ReadExpenseItemPanel panel = new ReadExpenseItemPanel(items.get(i).isObject());
-                readItemsPanels.add(panel);
-                entityFieldsPanel.add(panel);
-            }
-        }
+        entityFieldsPanel.add(new ReadAllExpenseItemsPanel(items));
     }
 
     protected void populateExpenseReceipt(JSONArray items) {
