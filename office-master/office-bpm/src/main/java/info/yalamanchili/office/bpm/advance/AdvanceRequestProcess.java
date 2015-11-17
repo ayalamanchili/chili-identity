@@ -19,7 +19,6 @@ import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.chili.email.Email;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
-import info.yalamanchili.office.bpm.EmailEscalation;
 import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.expense.AdvanceRequisition;
@@ -28,16 +27,14 @@ import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import java.math.BigDecimal;
 import java.util.Date;
-import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
-import org.activiti.engine.delegate.JavaDelegate;
 import org.activiti.engine.delegate.TaskListener;
 
 /**
  *
  * @author ayalamanchili
  */
-public class AdvanceRequestProcess extends RuleBasedTaskDelegateListner implements TaskListener, JavaDelegate {
+public class AdvanceRequestProcess extends RuleBasedTaskDelegateListner implements TaskListener {
 
     @Override
     public void processTask(DelegateTask task) {
@@ -194,14 +191,5 @@ public class AdvanceRequestProcess extends RuleBasedTaskDelegateListner implemen
             return AdvanceRequisitionDao.instance().findById(entityId);
         }
         return null;
-    }
-
-    @Override
-    public void execute(DelegateExecution execution) throws Exception {
-        leaveRequestEscationTask(execution);
-    }
-
-    protected void leaveRequestEscationTask(DelegateExecution execution) throws Exception {
-        new EmailEscalation().execute(execution);
     }
 }
