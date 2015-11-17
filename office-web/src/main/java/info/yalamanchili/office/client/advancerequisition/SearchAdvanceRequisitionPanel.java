@@ -9,6 +9,7 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.SuggestBox;
@@ -24,12 +25,14 @@ import java.util.logging.Logger;
  *
  * @author radhika.mukkala
  */
-public class SearchAdvanceRequisitionPanel extends SearchComposite{
+public class SearchAdvanceRequisitionPanel extends SearchComposite {
 
     private static Logger logger = Logger.getLogger(SearchAdvanceRequisitionPanel.class.getName());
-    SelectEmployeeWidget employee= new SelectEmployeeWidget("Employee", false,false);
+    SelectEmployeeWidget employee = new SelectEmployeeWidget("Employee", false, false);
+
     public SearchAdvanceRequisitionPanel() {
-       init("Advance Requisition Search", "AdvanceRequisition", OfficeWelcome.constants);
+        init("Search", "AdvanceRequisition", OfficeWelcome.constants);
+        advancedSearchDP.setOpen(true);
     }
 
     @Override
@@ -49,6 +52,7 @@ public class SearchAdvanceRequisitionPanel extends SearchComposite{
         });
 
     }
+
     protected String getnameDropDownUrl() {
         //TODO think about the limit
         return OfficeWelcome.constants.root_url() + "employee/dropdown/0/10000?column=id&column=firstName&column=lastName";
@@ -65,21 +69,21 @@ public class SearchAdvanceRequisitionPanel extends SearchComposite{
             }
         });
     }
-    
+
     @Override
     protected void configure() {
     }
 
     @Override
     protected void addWidgets() {
-        addDropDown("employee", employee);
+        addField("employee", DataType.STRING_FIELD);
         addEnumField("status", false, false, AdvanceRequisitionStatus.names());
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
-        assignEntityValueFromField("employee", entity, null);
+        assignEntityValueFromField("employee", entity);
         assignEntityValueFromField("status", entity);
         return entity;
     }
@@ -126,4 +130,3 @@ public class SearchAdvanceRequisitionPanel extends SearchComposite{
     protected void addListeners() {
     }
 }
-

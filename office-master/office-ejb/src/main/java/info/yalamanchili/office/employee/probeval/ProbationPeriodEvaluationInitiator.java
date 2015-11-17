@@ -65,9 +65,9 @@ public class ProbationPeriodEvaluationInitiator {
     protected void notifyTeam(Employee emp) {
         Email email = new Email();
         email.setTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_HR_ADMINSTRATION.name(), OfficeRoles.OfficeRole.ROLE_PRB_EVALUATIONS_MANAGER.name()));
-        email.setSubject("System Initiated Probation Period Evalaution for " + emp.getFirstName() + " " + emp.getLastName());
+        email.setSubject("System Initiated Probation Period Evaluation for " + emp.getFirstName() + " " + emp.getLastName());
         email.setHtml(Boolean.TRUE);
-        email.setBody("System Initiated Probation Period Evalaution for " + emp.getFirstName() + " " + emp.getLastName());
+        email.setBody("System Initiated Probation Period Evaluation for " + emp.getFirstName() + " " + emp.getLastName());
         MessagingService.instance().sendEmail(email);
     }
 
