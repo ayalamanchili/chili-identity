@@ -31,8 +31,8 @@
                 Notes                : #{clientInfo.notes}    
             </documentation>
             <extensionElements>
-                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
-                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification" />
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.clientinformation.NewClientInformationProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.clientinformation.NewClientInformationProcess" />
                 <activiti:formProperty id="itemNumber" 
                                        name="Item Number"
                                        required="true"
@@ -92,8 +92,8 @@
                 Notes                : #{clientInfo.notes}    
             </documentation>
             <extensionElements>
-                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
-                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification" />
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.clientinformation.NewClientInformationProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.clientinformation.NewClientInformationProcess" />
                 <activiti:formProperty id="joiningReport" 
                                        name="Joining Report Details"
                                        required="false"
