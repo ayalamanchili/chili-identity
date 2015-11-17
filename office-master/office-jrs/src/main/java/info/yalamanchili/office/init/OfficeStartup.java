@@ -416,7 +416,20 @@ public class OfficeStartup {
         rule5.setRuleName("employeeIdAssignmentRuleEvaluator");
         rule5.setAttributeData("adminadmin,useruser");
         em.merge(rule5);
-        //todo add rule for off boarding validation task
+        //client information task rule 
+        BPMTaskDelegateRule rule6 = new BPMTaskDelegateRule();
+        rule6.setBpmProcessId("new_client_info_process");
+        rule6.setBpmTaskId("newClientInfoAccountTask");
+        rule6.setRuleName("employeeIdAssignmentRuleEvaluator");
+        rule6.setAttributeData("adminadmin,useruser");
+        em.merge(rule6);
+        //client information task rule 
+        BPMTaskDelegateRule rule7 = new BPMTaskDelegateRule();
+        rule7.setBpmProcessId("new_client_info_process");
+        rule7.setBpmTaskId("newClientInfoHRTask");
+        rule7.setRuleName("employeeIdAssignmentRuleEvaluator");
+        rule7.setAttributeData("adminadmin,useruser");
+        em.merge(rule7);
     }
 
     /**
