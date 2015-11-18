@@ -274,9 +274,9 @@ public class EmployeeFormsService {
             data.getData().put("checkingAccountType", "true");
         }
 
-        if (ba.isAchBlocked() == false) {
+        if (ba.getAchBlocked() == false) {
             data.getData().put("achReversalBlockNo", "true");
-        } else if (ba.isAchBlocked() == true) {
+        } else if (ba.getAchBlocked()== true) {
             data.getData().put("achReversalBlockYes", "true");
         }
         EmployeeOnBoarding onboarding = EmployeeOnBoardingDao.instance().findByEmployeeId(emp.getId());
