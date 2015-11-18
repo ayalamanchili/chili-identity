@@ -16,7 +16,7 @@
         <!--submit User task-->
         <userTask id="newClientInfoAccountTask" 
                   name="New Client Info Accounting Department Task for ${clientInfo.employee.firstName} ${clientInfo.employee.lastName}" 
-                  activiti:candidateGroups="ROLE_ACCOUNTS_RECEIVABLE,ROLE_ACCOUNTS_PAYABLE,ROLE_EXPENSE">
+                  >
             <documentation>
                 New Client Information has been created with following details. Please fill the fields below to complete the task.
                 Employee             : #{clientInfo.employee.firstName} #{clientInfo.employee.lastName} 
@@ -77,7 +77,7 @@
         <!--submit User task-->
         <userTask id="newClientInfoHRTask" 
                   name="New Client Info HR Department Task for ${clientInfo.employee.firstName} ${clientInfo.employee.lastName}" 
-                  activiti:candidateGroups="ROLE_HR">
+                  >
             <documentation>
                 New Client Information has been created with following details. Please fill the fields below to complete the task.
                 Employee             : #{clientInfo.employee.firstName} #{clientInfo.employee.lastName} 
