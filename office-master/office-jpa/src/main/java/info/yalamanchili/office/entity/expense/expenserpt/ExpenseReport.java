@@ -42,6 +42,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlRootElement
 @XmlType
 public class ExpenseReport extends AbstractEntity {
+//TODO this is invaid but removing this will cause invalid sversionuid issues with bpm process.
 
     private static long serialVersionUID = 1L;
     /**
@@ -158,6 +159,14 @@ public class ExpenseReport extends AbstractEntity {
      *
      */
     public ExpenseReport() {
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public static void setSerialVersionUID(long serialVersionUID) {
+        ExpenseReport.serialVersionUID = serialVersionUID;
     }
 
     /**
