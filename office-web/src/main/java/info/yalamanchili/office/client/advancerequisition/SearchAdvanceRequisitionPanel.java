@@ -17,7 +17,6 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.advancetranscation.AdvanceRequisitionStatus;
 import info.yalamanchili.office.client.gwt.SearchComposite;
-import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -28,7 +27,6 @@ import java.util.logging.Logger;
 public class SearchAdvanceRequisitionPanel extends SearchComposite {
 
     private static Logger logger = Logger.getLogger(SearchAdvanceRequisitionPanel.class.getName());
-    SelectEmployeeWidget employee = new SelectEmployeeWidget("Employee", false, false);
 
     public SearchAdvanceRequisitionPanel() {
         init("Search", "AdvanceRequisition", OfficeWelcome.constants);
@@ -50,12 +48,11 @@ public class SearchAdvanceRequisitionPanel extends SearchComposite {
                 loadSearchSuggestions(values.values());
             }
         });
-
     }
 
     protected String getnameDropDownUrl() {
         //TODO think about the limit
-        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/10000?column=id&column=firstName&column=lastName";
+        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/10000?column=id&column=firstName";
     }
 
     @Override
@@ -83,8 +80,11 @@ public class SearchAdvanceRequisitionPanel extends SearchComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
-        assignEntityValueFromField("employee", entity);
+        JSONObject employee = new JSONObject();
+        assignEntityValueFromField("employee", employee, "firstName");
         assignEntityValueFromField("status", entity);
+        entity.put("employee", employee);
+        logger.info(entity.toString());
         return entity;
     }
 
