@@ -51,7 +51,7 @@ public class BankAccount extends AbstractHandleEntity {
     /**
      *
      */
-    protected boolean achBlocked;
+    protected Boolean achBlocked;
     /**
      *
      */
@@ -128,20 +128,20 @@ public class BankAccount extends AbstractHandleEntity {
         this.bankAccountNumber = bankAccountNumber;
     }
 
-    public void setAchBlocked(boolean achBlocked) {
-        this.achBlocked = achBlocked;
-    }
-
-    public boolean isAchBlocked() {
-        return achBlocked;
-    }
-
     public AccountType getAccountType() {
         return accountType;
     }
 
     public void setAccountType(AccountType accountType) {
         this.accountType = accountType;
+    }
+
+    public Boolean getAchBlocked() {
+        return achBlocked;
+    }
+
+    public void setAchBlocked(Boolean achBlocked) {
+        this.achBlocked = achBlocked;
     }
 
 }
