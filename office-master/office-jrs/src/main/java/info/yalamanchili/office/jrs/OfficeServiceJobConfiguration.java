@@ -19,6 +19,7 @@ import info.yalamanchili.office.email.ReceiveEmailsService;
 import info.yalamanchili.office.employee.perfeval.PerformanceEvaluationQuestionsFactory;
 import info.yalamanchili.office.employee.probeval.ProbationPeriodEvaluationQuestionsFactory;
 import info.yalamanchili.office.reports.profile.ProfileReportsService;
+import info.yalamanchili.office.toolbox.ClientDataTool;
 import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.stereotype.Component;
 
@@ -107,5 +108,10 @@ public class OfficeServiceJobConfiguration {
     @ManagedOperation
     public void receiveEmails() {
         ReceiveEmailsService.instance().processNewMessages();
+    }
+
+    @ManagedOperation
+    public void bisClientTableMigration() {
+        ClientDataTool.instance().readClientData();
     }
 }
