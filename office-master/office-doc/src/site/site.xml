@@ -42,6 +42,7 @@
                 <item name="Client information" href="/office/bpm/new-client-info-process.html" collapse="true">
                     <item name="Update Billrate" href="/office/updatebillingrate.html"/>
                     <item name="Client information Reports" href="/office/contracts-reports.html"/>
+                    <item name="Submit Project End Details" href="/office/project-offboarding.html"/>
                 </item>
             </item>
             <item name="Profile" href="office/profile/profile.html" collapse="true">
