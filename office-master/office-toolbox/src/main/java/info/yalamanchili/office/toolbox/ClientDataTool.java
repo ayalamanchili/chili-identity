@@ -11,6 +11,7 @@ package info.yalamanchili.office.toolbox;
 import static info.chili.docs.ExcelUtils.getCellNumericValue;
 import static info.chili.docs.ExcelUtils.getCellStringValue;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.client.ClientDao;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.InvoiceFrequency;
@@ -44,8 +45,6 @@ public class ClientDataTool {
     }
 
     public void readClientData() {
-        Client client = new Client();
-        Address address = new Address();
         InputStream inp;
         XSSFWorkbook workbook;
         try {
@@ -58,6 +57,8 @@ public class ClientDataTool {
         Iterator<Row> rowIterator = sheet.iterator();
         while (rowIterator.hasNext()) {
             Row record = rowIterator.next();
+            Client client = new Client();
+            Address address = new Address();
             if (record.getRowNum() == 0) {
                 continue;
             }
@@ -65,10 +66,12 @@ public class ClientDataTool {
             cr.setSimilarity(new Double(getCellNumericValue(record, 5)));
             if (cr.getSimilarity() == 1.0000 || cr.getSimilarity() == 2.0000) {
                 cr.setId(new Long(convertDcimalToWhole(getCellNumericValue(record, 1))));
+                System.out.println("normal id: " + cr.getId());
                 client = ClientDao.instance().findById(cr.getId());
             } else if (cr.getSimilarity() < 1.0000) {
                 cr.setClientName(getCellStringValue(record, 2));
-                if (cr.getClientName() != null) {
+                if (cr.getClientName() != null && !cr.getClientName().isEmpty()) {
+                    cr.setClientName(cr.getClientName().replaceAll("[^\\w!?&,]", ""));
                     client.setName(cr.getClientName());
                 } else if (cr.getClientName() == null || cr.getClientName().isEmpty()) {
                     continue;
@@ -76,38 +79,42 @@ public class ClientDataTool {
             } else if (cr.getSimilarity() > 2.0000) {
                 continue;
             }
-                cr.setInvoiceFrequency((InvoiceFrequency) convertEnum(InvoiceFrequency.class, getCellStringValue(record, 14)));
-                if (cr.getInvoiceFrequency() != null) {
-                    client.setClientinvFrequency(cr.getInvoiceFrequency());
+            System.out.println("normal para: " + client.getName());
+            cr.setInvoiceFrequency((InvoiceFrequency) convertEnum(InvoiceFrequency.class, getCellStringValue(record, 14)));
+            if (cr.getInvoiceFrequency() != null) {
+                client.setClientinvFrequency(cr.getInvoiceFrequency());
+            }
+            cr.setWebSite(getCellStringValue(record, 13));
+            if (cr.getWebSite() != null && !cr.getWebSite().isEmpty()) {
+                client.setWebsite(cr.getWebSite().trim());
+            }
+            cr.setStreet(getCellStringValue(record, 6));
+            cr.setState(getCellStringValue(record, 9));
+            cr.setCity(getCellStringValue(record, 7));
+            cr.setZipCode(getCellStringValue(record, 10));
+            
+            if ((cr.getState() != null && !cr.getState().isEmpty())
+             && (cr.getCity() != null && !cr.getCity().isEmpty())) {
+                if (cr.getStreet() != null && !cr.getStreet().isEmpty()) {
+                    address.setStreet1(cr.getStreet());
+                } else {
+                    address.setStreet1(cr.getCity().trim());
                 }
-                cr.setWebSite(getCellStringValue(record, 13));
-                if (cr.getWebSite() != null) {
-                    client.setWebsite(cr.getWebSite().trim());
-                }
-                cr.setStreet(getCellStringValue(record, 6));
-                if (cr.getStreet() != null) {
-                    address.setStreet1(cr.getStreet().trim());
-                }
-                cr.setState(getCellStringValue(record, 9));
-                if (cr.getState() != null) {
-                    address.setState(cr.getState().trim());
-                    address.setCountry("USA");
-                }
-                cr.setCity(getCellStringValue(record, 7));
-                if (cr.getCity() != null) {
-                    address.setCity(cr.getCity().trim());
-                }
-                cr.setZipCode(getCellStringValue(record, 10));
-                if (cr.getZipCode() != null) {
+                address.setState(cr.getState().trim());
+                address.setCountry("USA");
+                address.setCity(cr.getCity().trim());
+                if (cr.getZipCode() != null && !cr.getZipCode().isEmpty()) {
                     address.setZip(cr.getZipCode().trim());
                 }
                 client.getLocations().add(address);
-                ClientDao.instance().getEntityManager().merge(client);
             }
+            ClientDao.instance().getEntityManager().merge(client);
+        }
     }
 
     protected String getDataFileUrl() {
-        return "/Users/madhu.badiginchala/Desktop/BIS_ClientData.xlsx";
+        //return "/Users/madhu.badiginchala/Desktop/BIS_ClientData.xlsx";
+        return OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "BIS_ClientData.xlsx";
     }
 
     protected String convertDcimalToWhole(String id) {
