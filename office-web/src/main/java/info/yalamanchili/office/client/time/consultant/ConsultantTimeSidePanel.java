@@ -106,7 +106,7 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
 
         @Override
         public void onKeyPress(KeyPressEvent event) {
-            if (event.getCharCode()==KeyCodes.KEY_ENTER) {
+            if (event.getCharCode() == KeyCodes.KEY_ENTER) {
                 TabPanel.instance().getTimePanel().entityPanel.clear();
                 TabPanel.instance().getTimePanel().entityPanel.add(new ConsultantTimeSummaryPanel(employeeSB.getKey()));
                 TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllConsultantTimeSheetsPanel(employeeSB.getKey()));
@@ -228,7 +228,7 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
                                 String key = (String) resObj.keySet().toArray()[0];
                                 JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
                                 TabPanel.instance().getTimePanel().entityPanel.clear();
-                                TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllConsultantTimeSheetsPanel("Time Sheet Report Results", results));
+                                TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllConsultantTimeSheetsPanel("Time Sheet Report Results", results, true));
                             }
 
                         }

@@ -33,12 +33,12 @@ public class ReadCurrentConsultantLeavesPanel extends Composite {
                     @Override
                     public void onResponse(String result) {
                         if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                            panel.add(new ReadAllConsultantTimeSheetsPanel("Employees on Leave", new JSONArray()));
+                            panel.add(new ReadAllConsultantTimeSheetsPanel("Employees on Leave", new JSONArray(), true));
                         } else {
                             JSONObject resObj = JSONParser.parseLenient(result).isObject();
                             String key = (String) resObj.keySet().toArray()[0];
                             JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-                            panel.add(new ReadAllConsultantTimeSheetsPanel("Employees on Leave", results));
+                            panel.add(new ReadAllConsultantTimeSheetsPanel("Employees on Leave", results, true));
                         }
                     }
                 });
