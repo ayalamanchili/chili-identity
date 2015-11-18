@@ -60,6 +60,7 @@ public class OfficeRoles {
         ROLE_TRAVEL_BOOKING_MANAGER,
         ROLE_SELFSERVICE_TRIAGE,
         ROLE_BIS_VIEW,
+        ROLE_PROSPECTS_MANAGER
     }
     public final static Map<String, String> rolesMessages = new HashMap<String, String>();
 
@@ -104,5 +105,6 @@ public class OfficeRoles {
         rolesMessages.put(OfficeRole.ROLE_TRAVEL_BOOKING_MANAGER.name(), "Travel Booking Manager");
         rolesMessages.put(OfficeRole.ROLE_SELFSERVICE_TRIAGE.name(), "SelfService Triage");
         rolesMessages.put(OfficeRole.ROLE_BIS_VIEW.name(), "BIS View");
+        rolesMessages.put(OfficeRole.ROLE_PROSPECTS_MANAGER.name(), "Prospects Manager");
     }
 }

@@ -61,7 +61,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
 
     @GET
     @Path("/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR', 'ROLE_CEO', 'ROLE_RECRUITER', 'ROLE_ON_BOARDING_MGR')")
+    @PreAuthorize("hasAnyRole('ROLE_PROSPECTS_MANAGER')")
     @Cacheable(OfficeCacheKeys.PROSPECT)
     public ProspectResource.ProspectTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         List<ProspectDto> res = new ArrayList<>();
@@ -78,7 +78,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     @Path("/save")
     @Validate
     @Override
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR', 'ROLE_CEO', 'ROLE_RECRUITER', 'ROLE_ON_BOARDING_MGR')")
+    @PreAuthorize("hasAnyRole('ROLE_PROSPECTS_MANAGER')")
     @CacheEvict(value = OfficeCacheKeys.PROSPECT, allEntries = true)
     public ProspectDto save(ProspectDto prospect) {
         return prospectService.save(prospect);
@@ -87,7 +87,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     @PUT
     @Path("/update")
     @Validate
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR', 'ROLE_CEO', 'ROLE_RECRUITER', 'ROLE_ON_BOARDING_MGR')")
+    @PreAuthorize("hasAnyRole('ROLE_PROSPECTS_MANAGER')")
     @CacheEvict(value = OfficeCacheKeys.PROSPECT, allEntries = true)
     public Prospect update(ProspectDto prospect) {
         return prospectService.update(prospect);
@@ -103,7 +103,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     @PUT
     @Path("/delete/{id}")
     @Override
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR', 'ROLE_CEO', 'ROLE_RECRUITER', 'ROLE_ON_BOARDING_MGR')")
+    @PreAuthorize("hasAnyRole('ROLE_PROSPECTS_MANAGER')")
     @CacheEvict(value = OfficeCacheKeys.PROSPECT, allEntries = true)
     public void delete(@PathParam("id") Long id) {
         super.delete(id);

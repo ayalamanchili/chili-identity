@@ -41,13 +41,15 @@
                 <item name="Company Contacts" href="/office/manage-employees/manage-company-contacts.html"/>
                 <item name="Client information" href="/office/bpm/new-client-info-process.html" collapse="true">
                     <item name="Update Billrate" href="/office/updatebillingrate.html"/>
+                    <item name="Client information Reports" href="/office/contracts-reports.html"/>
+                    <item name="Submit Project End Details" href="/office/project-offboarding.html"/>
                 </item>
             </item>
             <item name="Profile" href="office/profile/profile.html" collapse="true">
                 <item name="Manage Profle" href="office/profile/profile.html"/>
                 <item name="Manage Address" href="office/profile/manage-address.html"/>
                 <item name="Privacy" href="office/profile/privacy.html"/>
-                <item name="Client Information" href="office/clientinformation/clientinfoprocess.html" collapse="true">
+                <item name="Client Information" href="office/profile/client-information.html" collapse="true">
                     <item name="Client Inforamtion Correction Details" href="/office/clientcorrectiondetails.html"/>
                 </item>
                 <item name="SkillSet" href="office/profile/skillset.html" />

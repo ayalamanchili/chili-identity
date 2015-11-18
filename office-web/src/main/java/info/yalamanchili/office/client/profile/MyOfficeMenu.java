@@ -36,7 +36,7 @@ public class MyOfficeMenu extends CMenuBar {
         if (Auth.isAdmin()) {
             addMenuItem("OnBoarding", "OnBoarding", onBoardingInfo);
         }
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_CEO, ROLE.ROLE_HR, ROLE.ROLE_RECRUITER, ROLE.ROLE_ON_BOARDING_MGR, ROLE.ROLE_ADMIN)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_PROSPECTS_MANAGER)) {
             addMenuItem("Prospects", "Prospects", prospectsMaintainenceCmd);
         }
         if (Auth.isAdmin()) {

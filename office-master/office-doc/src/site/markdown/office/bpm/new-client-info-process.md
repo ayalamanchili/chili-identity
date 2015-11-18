@@ -1,38 +1,67 @@
-Creating New Client Information Process
-=========
+How To Add Client Information
+----
+- [Login to Portal](../../office/forgot-password.html "Login")
+- Navigate to **MyOffice** -> **Employees** -> **Employee Tree Panel** -> **Client Information**
+- Add client information for an employee
+- Initially, the status of the client information is **PENDING_ACCOUNTS_VERIFICATION**
+- **Accounts Payable**, **Accounts Receivable**, **Expense** Departments, Either of these will review and approve the request
+- Then status of the client information will changed to **PENDING_HR_VERIFICATION**
+- Then **HR department** will review and approve the request
+- Then status will changed to **COMPLETED**
 
+Client Information Process
+=========
 ![alt text](../../images/bpm/new_client_information.png "New Client Info")
 
-### Step 1 - Create New Client Information
- Any person from the HR, Relationship, Contracts(TIME_ROLE), and/or Recruiting Depts may create new client information when a new employee joins a project or when an existing employee changes project.
- - Goto --> My Office tab --> search for employee
- ![alt text](../../images/bpm/create-client-info-link.png "New Client Info")
- - Populate all the applicable fields
- - There is option to enter previous project end date.
- - Subcontractor
- - 1099 Contractor
- - ![alt text](../../images/bpm/create-client-info-fields.png "New Client Info")
+Create New Client Information
+----
+ **Any person from the HR, Relationship, Contracts(TIME_ROLE), and/or Recruiting Depts may create new client information when a new employee joins a project or when an existing employee changes project.
+ - Goto --> **My Office** tab --> search for employee**
+ ![alt text](../../images/clientinfo/adding-client-info.png "Client Information")
 
+Fill the required fields:
+----
+![alt text](../../images/clientinfo/fill-client-info.png "Client Information")
 
-### Step 2 Accounts Department
- After the Client information is created, a task is created and assigned to Accounts(TIME) dept
- - ![alt text](../../images/bpm/new-client-info-acct-task.png "New Client Info")
- - populate the below details and complete the task
- - ![alt text](../../images/bpm/new-client-info-acct-task-details.png "New Client Info")
- 
-### Step 3 Human Resource Department 
-After the Accounts department completes the assigned task, the a task is created and assigned to the HR department to populate all remaining details,verify, and complete the process.
- - ![alt text](../../images/bpm/new-client-info-hr-task.png "New Client Info")
+Once You click on "Save", ReadAllClientInformationPanel Will looks like this:
+----
+![alt text](../../images/clientinfo/readall-client-info.png "Client Information")
+Client Information Accounts Department Task Created Notification Mail:
+---
+![alt text](../../images/clientinfo/apd-task-created.png "Client Information")
 
-### view contracts report
-Once the process is completed you can view the entered information in the reports
- - ![alt text](../../images/bpm/new-client-info-reports.png "New Client Info")
- - ![alt text](../../images/bpm/new-client-info-contract-details.png "New Client Info")
+Before Accounts Department Approval, status of client information:
+----
+![alt text](../../images/clientinfo/pending-accounts-verification.png "Client Information")
 
+Client Information Accounts Department Task:
+----
+![alt text](../../images/clientinfo/accounts-department-client-info-task.png "Client Information")
+![alt text](../../images/clientinfo/accounts-department-client-info-task-view.png "Client Information")
+![alt text](../../images/clientinfo/client-info-ad-approval.png "Client Information")
 
- 
+Accounts Department will receive Task completed notification mail after approval:
+----
+![alt text](../../images/clientinfo/apd-task-complete.png "Client Information")
 
+After Accounts Departments Approval, status of client information
+----
+![alt text](../../images/clientinfo/pending-hr-verification.png "Client Information")
 
+Notification mail to HR Team Regarding Client information:
+----
+![alt text](../../images/clientinfo/hr-task-created.png "Client Information")
 
+Client information HR Task:
+----
+![alt text](../../images/clientinfo/client-info-hr-task.png "Client Information")
+![alt text](../../images/clientinfo/client-info-hr-task-view.png "Client Information")
 
+Task Complete notification mail to HR team:
+----
+![alt text](../../images/clientinfo/hr-task-complete.png "Client Information")
+
+Once After HR approval, the status of the client information:
+----
+![alt text](../../images/clientinfo/status-completed.png "Client Information")
 

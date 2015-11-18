@@ -9,7 +9,6 @@ import info.chili.gwt.utils.JSONUtils;
 public class Auth {
 
     public enum ROLE {
-
         ROLE_USER, ROLE_CORPORATE_EMPLOYEE, ROLE_HR, ROLE_EXPENSE, ROLE_ADMIN, ROLE_RECRUITER, ROLE_TIME, ROLE_DRIVE, ROLE_RELATIONSHIP, ROLE_ACCOUNT_VIEW,
         ROLE_HR_ADMINSTRATION,
         ROLE_H1B_IMMIGRATION,
@@ -41,7 +40,7 @@ public class Auth {
         ROLE_TRAVEL_BOOKING_MANAGER,
         ROLE_SELFSERVICE_TRIAGE,
         ROLE_BIS_VIEW,
-
+        ROLE_PROSPECTS_MANAGER
     }
 
     public static boolean isAdmin() {

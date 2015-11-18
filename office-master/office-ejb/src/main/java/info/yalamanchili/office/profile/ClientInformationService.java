@@ -197,7 +197,7 @@ public class ClientInformationService {
         ci.setClientProject(project);
         ci = clientInformationDao.save(ci);
         emp.addClientInformation(ci);
-       // startNewClientInfoProcess(ci);
+        startNewClientInfoProcess(ci);
     }
 
     protected void updatePreviousProjectEndDate(Employee emp, ClientInformation ci) {

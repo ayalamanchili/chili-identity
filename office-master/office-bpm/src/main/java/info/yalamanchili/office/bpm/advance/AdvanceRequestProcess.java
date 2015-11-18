@@ -38,26 +38,13 @@ public class AdvanceRequestProcess extends RuleBasedTaskDelegateListner implemen
 
     @Override
     public void processTask(DelegateTask task) {
-        super.processTask(task);
-        if ("create".equals(task.getEventName())) {
-           saveAdvanceRequisition(task);
-            assignAdvanceRequisitionTask(task);
-            new GenericTaskCreateNotification().notifyWithMoreRoles(task, OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name(), OfficeRole.ROLE_ACCOUNTS_PAYABLE.name()); 
-        }
-        
-        if ("complete".equals(task.getEventName())) {
-            advanceRequestTaskCompleted(task);
-        }
-    }
-   /* @Override
-    public void notify(DelegateTask task) {
         if ("create".equals(task.getEventName())) {
             advanceRequestTaskCreated(task);
         }
         if ("complete".equals(task.getEventName())) {
             advanceRequestTaskCompleted(task);
         }
-    }*/
+    }
 
     protected void advanceRequestTaskCreated(DelegateTask task) {
         if (task.getTaskDefinitionKey().equals("advanceRequisitionApprovalTask")) {

@@ -43,6 +43,7 @@ public class ReadAllConsultantTimeSheetsPanel extends CRUDReadAllComposite {
 
     private static Logger logger = Logger.getLogger(ReadAllConsultantTimeSheetsPanel.class.getName());
     public static ReadAllConsultantTimeSheetsPanel instance;
+    protected boolean isEmployeesOnLeavePanel = false;
 
     public ReadAllConsultantTimeSheetsPanel(String parentId) {
         instance = this;
@@ -55,8 +56,9 @@ public class ReadAllConsultantTimeSheetsPanel extends CRUDReadAllComposite {
         initTable("My Time Sheets", OfficeWelcome.constants);
     }
 
-    public ReadAllConsultantTimeSheetsPanel(String title, JSONArray array) {
+    public ReadAllConsultantTimeSheetsPanel(String title, JSONArray array, boolean isEmployeesOnLeavePanel) {
         instance = this;
+        this.isEmployeesOnLeavePanel = isEmployeesOnLeavePanel;
         initTable(title, array, OfficeWelcome.constants);
     }
 
@@ -120,7 +122,9 @@ public class ReadAllConsultantTimeSheetsPanel extends CRUDReadAllComposite {
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Employee"));
-        table.setText(0, 2, getKeyValue("Category"));
+        if (!isEmployeesOnLeavePanel) {
+            table.setText(0, 2, getKeyValue("Category"));
+        }
         table.setText(0, 3, getKeyValue("StartDate"));
         table.setText(0, 4, getKeyValue("EndDate"));
         table.setText(0, 5, getKeyValue("Hours"));
@@ -137,7 +141,9 @@ public class ReadAllConsultantTimeSheetsPanel extends CRUDReadAllComposite {
             addOptionsWidget(i, entity);
             JSONObject emp = (JSONObject) entity.get("employee");
             table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
-            setEnumColumn(i, 2, entity, "category", "category");
+            if (!isEmployeesOnLeavePanel) {
+                setEnumColumn(i, 2, entity, "category", "category");
+            }
             table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 5, JSONUtils.toString(entity, "hours"));
