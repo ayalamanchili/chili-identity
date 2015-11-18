@@ -15,6 +15,7 @@ import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.SuggestBox;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 
@@ -103,6 +104,15 @@ public class ReadProspectsPanel extends ReadComposite {
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "prospect/" + entityId;
+    }
+    @Override
+    protected boolean enableAudit() {
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER);
+    }
+
+    @Override
+    protected String getAuditUrl() {
+        return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.hr.Prospect" + "/" + getEntityId();
     }
 
 }
