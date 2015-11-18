@@ -60,8 +60,10 @@ public class SearchEmployeePanel extends SearchComposite {
         addField("middleInitial", DataType.STRING_FIELD);
         addField("lastName", DataType.STRING_FIELD);
         addField("employeeId", DataType.STRING_FIELD);
-        addField("startDate", DataType.DATE_FIELD);
-        addField("endDate", DataType.DATE_FIELD);
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_HR_ADMINSTRATION, Auth.ROLE.ROLE_CONSULTANT_TIME_ADMIN)) {
+            addField("startDate", DataType.DATE_FIELD);
+            addField("endDate", DataType.DATE_FIELD);
+        }
         addField("city", DataType.STRING_FIELD);
         addField("clientName", DataType.STRING_FIELD);
         addField("vendorName", DataType.STRING_FIELD);
