@@ -41,10 +41,10 @@ public class ClientDataTool {
 
     public static void main(String... args) {
         ClientDataTool tool = new ClientDataTool();
-        tool.readClientData();
+        tool.migrateClientData();
     }
 
-    public void readClientData() {
+    public void migrateClientData() {
         InputStream inp;
         XSSFWorkbook workbook;
         try {

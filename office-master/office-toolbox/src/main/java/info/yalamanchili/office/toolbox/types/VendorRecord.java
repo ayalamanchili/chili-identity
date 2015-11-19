@@ -1,6 +1,3 @@
-/**
- * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
- */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -14,9 +11,9 @@ import info.yalamanchili.office.entity.client.InvoiceFrequency;
  *
  * @author Madhu.Badiginchala
  */
-public class ClientRecord {
+public class VendorRecord {
 
-    protected String clientName;
+    protected String vendorName;
     protected String street;
     protected String city;
     protected String state;
@@ -28,21 +25,24 @@ public class ClientRecord {
     protected String webSite;
     protected Double similarity;
     protected Long id;
+    protected String paymentTerms;
 
-    public Long getId() {
-        return id;
+    public String getVendorName() {
+        return vendorName;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setVendorName(String vendorName) {
+        this.vendorName = vendorName;
     }
 
-    public String getClientName() {
-        return clientName;
+    
+
+    public String getStreet() {
+        return street;
     }
 
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
+    public void setStreet(String street) {
+        this.street = street;
     }
 
     public String getCity() {
@@ -69,14 +69,6 @@ public class ClientRecord {
         this.invoiceFrequency = invoiceFrequency;
     }
 
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
     public String getZipCode() {
         return zipCode;
     }
@@ -101,6 +93,14 @@ public class ClientRecord {
         this.email = email;
     }
 
+    public String getFax() {
+        return fax;
+    }
+
+    public void setFax(String fax) {
+        this.fax = fax;
+    }
+
     public String getWebSite() {
         return webSite;
     }
@@ -109,12 +109,20 @@ public class ClientRecord {
         this.webSite = webSite;
     }
 
-    public String getFax() {
-        return fax;
+    public Long getId() {
+        return id;
     }
 
-    public void setFax(String fax) {
-        this.fax = fax;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getPaymentTerms() {
+        return paymentTerms;
+    }
+
+    public void setPaymentTerms(String paymentTerms) {
+        this.paymentTerms = paymentTerms;
     }
 
     public Double getSimilarity() {
@@ -124,5 +132,8 @@ public class ClientRecord {
     public void setSimilarity(Double similarity) {
         this.similarity = similarity;
     }
+
     
+    
+
 }
