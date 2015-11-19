@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.client.advancerequisition;
+package info.yalamanchili.office.client.expense.chkreq;
 
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
@@ -15,7 +15,6 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.advancetranscation.AdvanceRequisitionStatus;
 import info.yalamanchili.office.client.gwt.SearchComposite;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -24,12 +23,12 @@ import java.util.logging.Logger;
  *
  * @author radhika.mukkala
  */
-public class SearchAdvanceRequisitionPanel extends SearchComposite {
+public class SearchCheckRequisitionpanel extends SearchComposite {
 
-    private static Logger logger = Logger.getLogger(SearchAdvanceRequisitionPanel.class.getName());
+    private static Logger logger = Logger.getLogger(SearchCheckRequisitionpanel.class.getName());
 
-    public SearchAdvanceRequisitionPanel() {
-        init("Search", "AdvanceRequisition", OfficeWelcome.constants);
+    public SearchCheckRequisitionpanel() {
+        init("Search", "ImmigrationCheckRequisition", OfficeWelcome.constants);
         advancedSearchDP.setOpen(true);
     }
 
@@ -67,7 +66,7 @@ public class SearchAdvanceRequisitionPanel extends SearchComposite {
     @Override
     protected void addWidgets() {
         addField("employee", DataType.STRING_FIELD);
-        addEnumField("status", false, false, AdvanceRequisitionStatus.names());
+        addEnumField("status", false, false, ImmigrationCheckRequisitionStatus.names());
     }
 
     @Override
@@ -99,18 +98,18 @@ public class SearchAdvanceRequisitionPanel extends SearchComposite {
     @Override
     protected void postSearchSuccess(JSONArray result) {
         TabPanel.instance().expensePanel.entityPanel.clear();
-        TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllAdvanceRequisitionPanel(result));
+        TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllImmigrationCheckRequisitionPanel(result));
     }
 
     @Override
     protected String getSearchURI(String searchText, Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "advancerequisition/search/" + searchText + "/" + start.toString() + "/"
+        return URL.encode(OfficeWelcome.constants.root_url() + "checkrequisition/search/" + searchText + "/" + start.toString() + "/"
                 + limit.toString());
     }
 
     @Override
     protected String getSearchURI(Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "advancerequisition/search-advancerequisition/" + start.toString() + "/"
+        return URL.encode(OfficeWelcome.constants.root_url() + "checkrequisition/search-checkreq/" + start.toString() + "/"
                 + limit.toString());
     }
 

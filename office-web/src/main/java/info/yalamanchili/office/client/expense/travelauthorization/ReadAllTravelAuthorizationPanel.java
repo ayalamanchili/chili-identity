@@ -48,6 +48,11 @@ public class ReadAllTravelAuthorizationPanel extends CRUDReadAllComposite {
         this.url = url;
         initTable("TravelAuthorization", OfficeWelcome.constants);
     }
+    
+    ReadAllTravelAuthorizationPanel(JSONArray result) {
+        instance = this;
+        initTable("TravelAuthorization", result, OfficeWelcome.constants);
+    }
 
     @Override
     public void viewClicked(String entityId) {

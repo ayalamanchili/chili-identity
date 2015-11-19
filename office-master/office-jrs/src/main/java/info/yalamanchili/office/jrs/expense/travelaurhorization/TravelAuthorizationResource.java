@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.jrs.expense.travelaurhorization;
 
+import info.chili.commons.SearchUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.OfficeRoles;
@@ -18,7 +19,9 @@ import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.expense.travelauthorization.TravelAuthorizationService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.security.AccessCheck;
+import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Query;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -109,6 +112,20 @@ public class TravelAuthorizationResource extends CRUDResource<TravelAuthorizatio
     @Override
     public CRUDDao getDao() {
         return travelAuthorizationDao.instance();
+    }
+
+    @PUT
+    @Path("/search-travelauth/{start}/{limit}")
+    @Transactional(readOnly = true)
+    public List<TravelAuthorization> search(TravelAuthorization entity, @PathParam("start") int start, @PathParam("limit") int limit) {
+        List<TravelAuthorization> res = new ArrayList();
+        Query searchQuery = SearchUtils.getSearchQuery(TravelAuthorizationDao.instance().getEntityManager(), entity, new SearchUtils.SearchCriteria());
+        searchQuery.setFirstResult(start);
+        searchQuery.setMaxResults(limit);
+        for (Object p : searchQuery.getResultList()) {
+            res.add((TravelAuthorization) p);
+        }
+        return res;
     }
 
     @XmlRootElement

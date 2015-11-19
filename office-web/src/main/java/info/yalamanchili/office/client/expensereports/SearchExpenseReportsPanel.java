@@ -9,11 +9,14 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.SearchComposite;
-import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -23,10 +26,10 @@ import java.util.logging.Logger;
 class SearchExpenseReportsPanel extends SearchComposite {
 
     private static Logger logger = Logger.getLogger(SearchExpenseReportsPanel.class.getName());
-    SelectEmployeeWidget employee= new SelectEmployeeWidget("Employee", false,false);
 
     public SearchExpenseReportsPanel() {
-        init("Expense Reports Search", "ExpenseReports", OfficeWelcome.constants);
+        init("Search", "ExpenseReports", OfficeWelcome.constants);
+        advancedSearchDP.setOpen(true);
     }
 
     @Override
@@ -37,11 +40,23 @@ class SearchExpenseReportsPanel extends SearchComposite {
 
     @Override
     protected void populateSearchSuggestBox() {
+    }
 
+    protected String getnameDropDownUrl() {
+        //TODO think about the limit
+        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/10000?column=id&column=firstName";
     }
 
     @Override
     protected void populateAdvancedSuggestBoxes() {
+        HttpService.HttpServiceAsync.instance().doGet(getnameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
+                SuggestBox sb = (SuggestBox) fields.get("employee");
+                sb.loadData(values.values());
+            }
+        });
     }
 
     @Override
@@ -54,15 +69,17 @@ class SearchExpenseReportsPanel extends SearchComposite {
 
     @Override
     protected void addWidgets() {
-        addDropDown("employee", employee);
+        addField("employee", DataType.STRING_FIELD);
         addEnumField("status", false, false, ExpenseReportStatus.names());
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
-        assignEntityValueFromField("employee", entity, null);
+        JSONObject employee = new JSONObject();
+        assignEntityValueFromField("employee", employee, "firstName");
         assignEntityValueFromField("status", entity);
+        entity.put("employee", employee);
         logger.info(entity.toString());
         return entity;
     }

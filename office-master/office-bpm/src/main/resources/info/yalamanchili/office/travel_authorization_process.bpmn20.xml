@@ -82,7 +82,7 @@
         </sequenceFlow>
         <userTask id="travelAuthorizationCEOApprovalTask" 
                   name="Travel Authorization CEO Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" 
-                  activiti:candidateGroups="ROLE_CEO">
+                  >
             <documentation>
                 Travel Authorization Final Approval Task
                 Employee Name               : #{currentEmployee.firstName} #{currentEmployee.lastName}

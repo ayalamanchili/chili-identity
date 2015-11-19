@@ -8,17 +8,25 @@
  */
 package info.yalamanchili.office.jrs.expense.chkreq;
 
+import info.chili.commons.SearchUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.Time.CorporateTimeService;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
+import info.yalamanchili.office.dao.expense.advreq.AdvanceRequisitionDao;
 import info.yalamanchili.office.dao.expense.chkreq.ImmigrationCheckRequisitionDao;
+import info.yalamanchili.office.dao.expense.expenserpt.ExpenseReportsDao;
+import info.yalamanchili.office.entity.expense.AdvanceRequisition;
 import info.yalamanchili.office.entity.expense.ImmigrationCheckRequisition;
+import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport;
 import info.yalamanchili.office.expense.chkreq.ImmigrationCheckRequisitionSaveDto;
 import info.yalamanchili.office.expense.chkreq.ImmigrationCheckRequisitionService;
+import info.yalamanchili.office.expense.expenserpt.ExpenseReportSaveDto;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.security.AccessCheck;
+import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Query;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -131,6 +139,20 @@ public class ImmigrationCheckRequisitionResource extends CRUDResource<Immigratio
         ImmigrationCheckRequisitionService.instance().checkVoidRequest(id);
     }
 
+    @PUT
+    @Path("/search-checkreq/{start}/{limit}")
+    @Transactional(readOnly = true)
+    public List<ImmigrationCheckRequisition> search(ImmigrationCheckRequisition entity, @PathParam("start") int start, @PathParam("limit") int limit) {
+        List<ImmigrationCheckRequisition> res = new ArrayList();
+        Query searchQuery = SearchUtils.getSearchQuery(ImmigrationCheckRequisitionDao.instance().getEntityManager(), entity, new SearchUtils.SearchCriteria());
+        searchQuery.setFirstResult(start);
+        searchQuery.setMaxResults(limit);
+        for (Object p : searchQuery.getResultList()) {
+            res.add((ImmigrationCheckRequisition) p);
+        }
+        return res;
+    }
+    
     @XmlRootElement
     @XmlType
     public static class ImmigrationCheckRequisitionTable implements java.io.Serializable {

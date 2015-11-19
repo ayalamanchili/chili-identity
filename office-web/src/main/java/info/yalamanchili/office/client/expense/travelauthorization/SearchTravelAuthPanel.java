@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.client.advancerequisition;
+package info.yalamanchili.office.client.expense.travelauthorization;
 
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.ui.IsWidget;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
@@ -15,7 +16,8 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.advancetranscation.AdvanceRequisitionStatus;
+import info.yalamanchili.office.client.expense.chkreq.ImmigrationCheckRequisitionStatus;
+import info.yalamanchili.office.client.expense.chkreq.ReadAllImmigrationCheckRequisitionPanel;
 import info.yalamanchili.office.client.gwt.SearchComposite;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -24,12 +26,12 @@ import java.util.logging.Logger;
  *
  * @author radhika.mukkala
  */
-public class SearchAdvanceRequisitionPanel extends SearchComposite {
+class SearchTravelAuthPanel extends SearchComposite {
 
-    private static Logger logger = Logger.getLogger(SearchAdvanceRequisitionPanel.class.getName());
+    private static Logger logger = Logger.getLogger(SearchTravelAuthPanel.class.getName());
 
-    public SearchAdvanceRequisitionPanel() {
-        init("Search", "AdvanceRequisition", OfficeWelcome.constants);
+    public SearchTravelAuthPanel() {
+        init("Search", "TravelAuthorization", OfficeWelcome.constants);
         advancedSearchDP.setOpen(true);
     }
 
@@ -67,7 +69,7 @@ public class SearchAdvanceRequisitionPanel extends SearchComposite {
     @Override
     protected void addWidgets() {
         addField("employee", DataType.STRING_FIELD);
-        addEnumField("status", false, false, AdvanceRequisitionStatus.names());
+        addEnumField("status", false, false, TravelAuthorizationStatus.names());
     }
 
     @Override
@@ -99,18 +101,18 @@ public class SearchAdvanceRequisitionPanel extends SearchComposite {
     @Override
     protected void postSearchSuccess(JSONArray result) {
         TabPanel.instance().expensePanel.entityPanel.clear();
-        TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllAdvanceRequisitionPanel(result));
+        TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllTravelAuthorizationPanel(result));
     }
 
     @Override
     protected String getSearchURI(String searchText, Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "advancerequisition/search/" + searchText + "/" + start.toString() + "/"
+        return URL.encode(OfficeWelcome.constants.root_url() + "travel-authorization/search/" + searchText + "/" + start.toString() + "/"
                 + limit.toString());
     }
 
     @Override
     protected String getSearchURI(Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "advancerequisition/search-advancerequisition/" + start.toString() + "/"
+        return URL.encode(OfficeWelcome.constants.root_url() + "travel-authorization/search-travelauth/" + start.toString() + "/"
                 + limit.toString());
     }
 

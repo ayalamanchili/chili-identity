@@ -17,7 +17,6 @@ import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
-import info.chili.gwt.crud.TableRowOptionsWidget.OptionsType;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.FormatUtils;
@@ -48,6 +47,10 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
         instance = this;
         this.url = url;
         initTable("ImmigrationCheckRequisition", OfficeWelcome.constants);
+    }
+    ReadAllImmigrationCheckRequisitionPanel(JSONArray result) {
+        instance = this;
+        initTable("ImmigrationCheckRequisition", result, OfficeWelcome.constants);
     }
 
     @Override
