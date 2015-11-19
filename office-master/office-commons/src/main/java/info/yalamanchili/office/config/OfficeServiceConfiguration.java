@@ -100,7 +100,7 @@ public class OfficeServiceConfiguration {
     /**
      *
      */
-    protected String allowedFileExtensions = "doc,docx,rtf,txt,ppt,pptx,xls,xlsx,pdf,png,jpg,jpeg,bmp,gif,htm,html,csv";
+    protected String allowedFileExtensions = "doc,docx,rtf,txt,ppt,pptx,xls,xlsx,pdf,png,jpg,jpeg,bmp,gif,htm,html,csv,zip";
     /**
      *
      */
