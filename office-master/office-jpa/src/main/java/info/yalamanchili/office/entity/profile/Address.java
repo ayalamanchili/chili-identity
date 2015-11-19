@@ -67,7 +67,7 @@ public class Address extends AbstractEntity {
     /**
      * @generated
      */
-    @Size(min = 5, max = 7, message = "{address.zip.length.invalid.msg}")
+    @Size(min = 5, max = 10, message = "{address.zip.length.invalid.msg}")
     @Field
     protected String zip;
     /**

@@ -41,10 +41,10 @@ public class ClientDataTool {
 
     public static void main(String... args) {
         ClientDataTool tool = new ClientDataTool();
-        tool.readClientData();
+        tool.migrateClientData();
     }
 
-    public void readClientData() {
+    public void migrateClientData() {
         InputStream inp;
         XSSFWorkbook workbook;
         try {
@@ -71,7 +71,7 @@ public class ClientDataTool {
             } else if (cr.getSimilarity() < 1.0000) {
                 cr.setClientName(getCellStringValue(record, 2));
                 if (cr.getClientName() != null && !cr.getClientName().isEmpty()) {
-                    cr.setClientName(cr.getClientName().replaceAll("[^\\w!?&,]", ""));
+                    cr.setClientName(cr.getClientName().replaceAll("[^a-zA-Z0-9\\s]", ""));
                     client.setName(cr.getClientName());
                 } else if (cr.getClientName() == null || cr.getClientName().isEmpty()) {
                     continue;
@@ -89,9 +89,9 @@ public class ClientDataTool {
                 client.setWebsite(cr.getWebSite().trim());
             }
             cr.setStreet(getCellStringValue(record, 6));
-            cr.setState(getCellStringValue(record, 9));
+            cr.setState(getCellStringValue(record, 8));
             cr.setCity(getCellStringValue(record, 7));
-            cr.setZipCode(getCellStringValue(record, 10));
+            cr.setZipCode(getCellStringValue(record, 9));
             
             if ((cr.getState() != null && !cr.getState().isEmpty())
              && (cr.getCity() != null && !cr.getCity().isEmpty())) {

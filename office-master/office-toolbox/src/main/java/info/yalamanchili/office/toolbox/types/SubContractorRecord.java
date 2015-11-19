@@ -8,19 +8,16 @@
  */
 package info.yalamanchili.office.toolbox.types;
 
-import info.yalamanchili.office.entity.client.InvoiceFrequency;
-
 /**
  *
  * @author Madhu.Badiginchala
  */
-public class ClientRecord {
+public class SubContractorRecord {
 
-    protected String clientName;
+    protected String subContractorName;
     protected String street;
     protected String city;
     protected String state;
-    protected InvoiceFrequency invoiceFrequency;
     protected String zipCode;
     protected String phone;
     protected String email;
@@ -29,20 +26,20 @@ public class ClientRecord {
     protected Double similarity;
     protected Long id;
 
-    public Long getId() {
-        return id;
+    public String getSubContractorName() {
+        return subContractorName;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setSubContractorName(String subContractorName) {
+        this.subContractorName = subContractorName;
     }
 
-    public String getClientName() {
-        return clientName;
+    public String getStreet() {
+        return street;
     }
 
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
+    public void setStreet(String street) {
+        this.street = street;
     }
 
     public String getCity() {
@@ -59,22 +56,6 @@ public class ClientRecord {
 
     public void setState(String state) {
         this.state = state;
-    }
-
-    public InvoiceFrequency getInvoiceFrequency() {
-        return invoiceFrequency;
-    }
-
-    public void setInvoiceFrequency(InvoiceFrequency invoiceFrequency) {
-        this.invoiceFrequency = invoiceFrequency;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
     }
 
     public String getZipCode() {
@@ -101,20 +82,20 @@ public class ClientRecord {
         this.email = email;
     }
 
-    public String getWebSite() {
-        return webSite;
-    }
-
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
-    }
-
     public String getFax() {
         return fax;
     }
 
     public void setFax(String fax) {
         this.fax = fax;
+    }
+
+    public String getWebSite() {
+        return webSite;
+    }
+
+    public void setWebSite(String webSite) {
+        this.webSite = webSite;
     }
 
     public Double getSimilarity() {
@@ -124,5 +105,14 @@ public class ClientRecord {
     public void setSimilarity(Double similarity) {
         this.similarity = similarity;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
     
 }
