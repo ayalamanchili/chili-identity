@@ -80,7 +80,7 @@
         </sequenceFlow>
         <!-- CEO approval task-->
         <userTask id="expenseReportFinalApprovalTask" 
-                  name="Expense Report CEO Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}">
+                  name="Expense Report Final Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}">
             <documentation>
                 Employee Expense Report Final Approval Task
                 Employee Name       : #{currentEmployee.firstName} #{currentEmployee.lastName}

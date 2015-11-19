@@ -8,7 +8,6 @@
  */
 package info.yalamanchili.office.bpm.expensereport;
 
-import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
 import info.yalamanchili.office.dao.expense.expenserpt.ExpenseReportsDao;
@@ -25,7 +24,7 @@ import org.activiti.engine.delegate.DelegateTask;
  * @author ayalamanchili
  */
 public class ExpenseReportProcess extends RuleBasedTaskDelegateListner {
-    
+
     @Override
     public void processTask(DelegateTask task) {
         super.processTask(task);
@@ -33,19 +32,21 @@ public class ExpenseReportProcess extends RuleBasedTaskDelegateListner {
             expenseReportTaskCompleted(task);
         }
     }
-    
+
     @Override
     protected void processTaskDelegation(DelegateTask task) {
         if (task.getTaskDefinitionKey().equals("expenseReportMgrApprovalTask")) {
             ExpenseReport entity = getRequestFromTask(task);
             if (entity.getEmployee().getEmployeeType().getName().equals("Employee")) {
                 task.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name());
-            }else{
+            } else {
                 super.processTaskDelegation(task);
             }
+        } else {
+            super.processTaskDelegation(task);
         }
     }
-    
+
     private void expenseReportTaskCompleted(DelegateTask dt) {
         ExpenseReport entity = getRequestFromTask(dt);
         if (entity == null) {
@@ -79,7 +80,7 @@ public class ExpenseReportProcess extends RuleBasedTaskDelegateListner {
                 entity.setStatus(ExpenseReportStatus.REJECTED);
             }
         }
-        
+
         if (dt.getTaskDefinitionKey().equals("expenseReportAccountsPayableTask") && ExpenseReportStatus.PENDING_ACCOUNTS_PAYABLE_DISPATCH.equals(entity.getStatus())) {
             if (status.equalsIgnoreCase("approved")) {
                 entity.setStatus(ExpenseReportStatus.APPROVED);
@@ -91,7 +92,7 @@ public class ExpenseReportProcess extends RuleBasedTaskDelegateListner {
         }
         ExpenseReportsDao.instance().save(entity);
     }
-    
+
     protected ExpenseReport getRequestFromTask(DelegateTask task) {
         Long entityId = (Long) task.getExecution().getVariable("entityId");
         if (entityId != null) {
