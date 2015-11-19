@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -65,10 +68,11 @@ public class VendorDataTool {
                 vr.setId(new Long(convertDcimalToWhole(getCellNumericValue(record, 1))));
                 System.out.println("normal id: " + vr.getId());
                 vendor = VendorDao.instance().findById(vr.getId());
+
             } else if (vr.getSimilarity() < 1.0000) {
                 vr.setVendorName(getCellStringValue(record, 2));
                 if (vr.getVendorName() != null && !vr.getVendorName().isEmpty()) {
-                    vr.setVendorName(vr.getVendorName().replaceAll("[^\\w!?&,]", ""));
+                    vr.setVendorName(vr.getVendorName().replaceAll("[^a-zA-Z0-9\\s]", ""));
                     vendor.setName(vr.getVendorName());
                 } else if (vr.getVendorName() == null || vr.getVendorName().isEmpty()) {
                     continue;
@@ -77,7 +81,7 @@ public class VendorDataTool {
                 continue;
             }
             System.out.println("normal para: " + vendor.getName());
-            vr.setInvoiceFrequency((InvoiceFrequency) convertEnum(InvoiceFrequency.class, getCellStringValue(record, 14)));
+            vr.setInvoiceFrequency((InvoiceFrequency) convertEnum(InvoiceFrequency.class, getCellStringValue(record, 15)));
             if (vr.getInvoiceFrequency() != null) {
                 vendor.setVendorinvFrequency(vr.getInvoiceFrequency());
             }
@@ -85,29 +89,48 @@ public class VendorDataTool {
             if (vr.getWebSite() != null && !vr.getWebSite().isEmpty()) {
                 vendor.setWebsite(vr.getWebSite().trim());
             }
-            vr.setPaymentTerms(getCellStringValue(record, 15));
+            vr.setPaymentTerms(getCellStringValue(record, 16));
             if (vr.getPaymentTerms() != null && !vr.getPaymentTerms().isEmpty()) {
                 vendor.setPaymentTerms(vr.getPaymentTerms().trim());
             }
             vr.setStreet(getCellStringValue(record, 6));
-            vr.setState(getCellStringValue(record, 9));
+            vr.setState(getCellStringValue(record, 8));
             vr.setCity(getCellStringValue(record, 7));
-            vr.setZipCode(getCellStringValue(record, 10));
+            vr.setZipCode(getCellStringValue(record, 9));
 
-            if ((vr.getState() != null && !vr.getState().isEmpty())
-                    && (vr.getCity() != null && !vr.getCity().isEmpty())) {
-                if (vr.getStreet() != null && !vr.getStreet().isEmpty()) {
-                    address.setStreet1(vr.getStreet());
-                } else {
-                    address.setStreet1(vr.getCity().trim());
+            if (vr.getSimilarity() == 1.0000 || vr.getSimilarity() == 2.0000) {
+                for (Address add : vendor.getLocations()) {
+                    if ((vr.getState() != null && !vr.getState().isEmpty())
+                            && (vr.getCity() != null && !vr.getCity().isEmpty())) {
+                        if (vr.getStreet() != null && !vr.getStreet().isEmpty()) {
+                            add.setStreet1(vr.getStreet());
+                        }
+                        add.setState(vr.getState().trim());
+                        add.setCountry("USA");
+                        add.setCity(vr.getCity().trim());
+                        if (vr.getZipCode() != null && !vr.getZipCode().isEmpty()) {
+                            add.setZip(vr.getZipCode().trim());
+                        }
+                    }
                 }
-                address.setState(vr.getState().trim());
-                address.setCountry("USA");
-                address.setCity(vr.getCity().trim());
-                if (vr.getZipCode() != null && !vr.getZipCode().isEmpty()) {
-                    address.setZip(vr.getZipCode().trim());
+            }
+
+            if (vr.getSimilarity() != 1.0000 && vr.getSimilarity() != 2.0000) {
+                if ((vr.getState() != null && !vr.getState().isEmpty())
+                        && (vr.getCity() != null && !vr.getCity().isEmpty())) {
+                    if (vr.getStreet() != null && !vr.getStreet().isEmpty()) {
+                        address.setStreet1(vr.getStreet());
+                    } else {
+                        address.setStreet1(vr.getCity().trim());
+                    }
+                    address.setState(vr.getState().trim());
+                    address.setCountry("USA");
+                    address.setCity(vr.getCity().trim());
+                    if (vr.getZipCode() != null && !vr.getZipCode().isEmpty()) {
+                        address.setZip(vr.getZipCode().trim());
+                    }
+                    vendor.getLocations().add(address);
                 }
-                vendor.getLocations().add(address);
             }
             VendorDao.instance().getEntityManager().merge(vendor);
         }
