@@ -8,6 +8,7 @@ package info.yalamanchili.office.client.advancerequisition;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.Timer;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
@@ -62,6 +63,13 @@ public class SearchAdvanceRequisitionPanel extends SearchComposite {
 
     @Override
     protected void configure() {
+        Timer timer = new Timer() {
+            @Override
+            public void run() {
+                populateAdvancedSuggestBoxes();
+            }
+        };
+        timer.schedule(2000);
     }
 
     @Override
