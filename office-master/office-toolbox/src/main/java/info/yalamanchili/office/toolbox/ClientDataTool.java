@@ -9,6 +9,7 @@
 package info.yalamanchili.office.toolbox;
 
 import static info.chili.docs.ExcelUtils.getCellNumericValue;
+import static info.chili.docs.ExcelUtils.getCellStringOrNumericValue;
 import static info.chili.docs.ExcelUtils.getCellStringValue;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
@@ -71,7 +72,7 @@ public class ClientDataTool {
             } else if (cr.getSimilarity() < 1.0000) {
                 cr.setClientName(getCellStringValue(record, 2));
                 if (cr.getClientName() != null && !cr.getClientName().isEmpty()) {
-                    cr.setClientName(cr.getClientName().replaceAll("[^a-zA-Z0-9\\s]", ""));
+                    cr.setClientName(cr.getClientName().replaceAll("[^a-zA-Z0-9\\s\\/]", ""));
                     client.setName(cr.getClientName());
                 } else if (cr.getClientName() == null || cr.getClientName().isEmpty()) {
                     continue;
@@ -91,10 +92,23 @@ public class ClientDataTool {
             cr.setStreet(getCellStringValue(record, 6));
             cr.setState(getCellStringValue(record, 8));
             cr.setCity(getCellStringValue(record, 7));
-            cr.setZipCode(getCellStringValue(record, 9));
-            
+            cr.setZipCode(convertDcimalToWhole(getCellStringOrNumericValue(record, 9)));
+
+            if (cr.getZipCode() != null && !cr.getZipCode().isEmpty()) {
+                int len = cr.getZipCode().length();
+                if (len == 4) {
+                    cr.setZipCode("0" + cr.getZipCode());
+                } else if (len == 3) {
+                    cr.setZipCode("00" + cr.getZipCode());
+                } else if (len == 2) {
+                    cr.setZipCode("000" + cr.getZipCode());
+                } else if (len == 1) {
+                    cr.setZipCode("0000" + cr.getZipCode());
+                }
+            }
+
             if ((cr.getState() != null && !cr.getState().isEmpty())
-             && (cr.getCity() != null && !cr.getCity().isEmpty())) {
+                    && (cr.getCity() != null && !cr.getCity().isEmpty())) {
                 if (cr.getStreet() != null && !cr.getStreet().isEmpty()) {
                     address.setStreet1(cr.getStreet());
                 } else {

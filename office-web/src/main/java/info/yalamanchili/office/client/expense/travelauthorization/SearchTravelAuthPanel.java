@@ -8,7 +8,7 @@ package info.yalamanchili.office.client.expense.travelauthorization;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.Timer;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
@@ -16,8 +16,6 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.expense.chkreq.ImmigrationCheckRequisitionStatus;
-import info.yalamanchili.office.client.expense.chkreq.ReadAllImmigrationCheckRequisitionPanel;
 import info.yalamanchili.office.client.gwt.SearchComposite;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -64,6 +62,13 @@ class SearchTravelAuthPanel extends SearchComposite {
 
     @Override
     protected void configure() {
+        Timer timer = new Timer() {
+            @Override
+            public void run() {
+                populateAdvancedSuggestBoxes();
+            }
+        };
+        timer.schedule(2000);
     }
 
     @Override

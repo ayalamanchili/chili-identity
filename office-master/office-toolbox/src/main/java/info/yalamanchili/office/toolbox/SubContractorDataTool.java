@@ -9,6 +9,7 @@
 package info.yalamanchili.office.toolbox;
 
 import static info.chili.docs.ExcelUtils.getCellNumericValue;
+import static info.chili.docs.ExcelUtils.getCellStringOrNumericValue;
 import static info.chili.docs.ExcelUtils.getCellStringValue;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
@@ -35,8 +36,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Component("subContractorDataTool")
 @Transactional
 public class SubContractorDataTool {
-    
+
     private static final Log log = LogFactory.getLog(SubContractorDataTool.class);
+    public boolean isAddressexists;
 
     public static void main(String... args) {
         SubContractorDataTool tool = new SubContractorDataTool();
@@ -55,6 +57,7 @@ public class SubContractorDataTool {
         XSSFSheet sheet = workbook.getSheetAt(0);
         Iterator<Row> rowIterator = sheet.iterator();
         while (rowIterator.hasNext()) {
+            isAddressexists = false;
             Row record = rowIterator.next();
             Subcontractor subContractor = new Subcontractor();
             Address address = new Address();
@@ -70,7 +73,7 @@ public class SubContractorDataTool {
             } else if (sr.getSimilarity() < 1.0000) {
                 sr.setSubContractorName(getCellStringValue(record, 2));
                 if (sr.getSubContractorName() != null && !sr.getSubContractorName().isEmpty()) {
-                    sr.setSubContractorName(sr.getSubContractorName().replaceAll("[^\\w!?&,]", ""));
+                    sr.setSubContractorName(sr.getSubContractorName().replaceAll("[^a-zA-Z0-9\\s\\/]", ""));
                     subContractor.setName(sr.getSubContractorName());
                 } else if (sr.getSubContractorName() == null || sr.getSubContractorName().isEmpty()) {
                     continue;
@@ -85,24 +88,59 @@ public class SubContractorDataTool {
             }
 
             sr.setStreet(getCellStringValue(record, 6));
-            sr.setState(getCellStringValue(record, 9));
+            sr.setState(getCellStringValue(record, 8));
             sr.setCity(getCellStringValue(record, 7));
-            sr.setZipCode(getCellStringValue(record, 10));
+            sr.setZipCode(convertDcimalToWhole(getCellStringOrNumericValue(record, 9)));
 
-            if ((sr.getState() != null && !sr.getState().isEmpty())
-                    && (sr.getCity() != null && !sr.getCity().isEmpty())) {
-                if (sr.getStreet() != null && !sr.getStreet().isEmpty()) {
-                    address.setStreet1(sr.getStreet());
-                } else {
-                    address.setStreet1(sr.getCity().trim());
+            if (sr.getZipCode() != null && !sr.getZipCode().isEmpty()) {
+                int len = sr.getZipCode().length();
+                if (len == 4) {
+                    sr.setZipCode("0" + sr.getZipCode());
+                } else if (len == 3) {
+                    sr.setZipCode("00" + sr.getZipCode());
+                } else if (len == 2) {
+                    sr.setZipCode("000" + sr.getZipCode());
+                } else if (len == 1) {
+                    sr.setZipCode("0000" + sr.getZipCode());
                 }
-                address.setState(sr.getState().trim());
-                address.setCountry("USA");
-                address.setCity(sr.getCity().trim());
-                if (sr.getZipCode() != null && !sr.getZipCode().isEmpty()) {
-                    address.setZip(sr.getZipCode().trim());
+            }
+
+            if (sr.getSimilarity() == 1.0000 || sr.getSimilarity() == 2.0000) {
+                for (Address add : subContractor.getLocations()) {
+                    if ((isAddressexists == false) && (add != null)) {
+                        if ((sr.getState() != null && !sr.getState().isEmpty())
+                                && (sr.getCity() != null && !sr.getCity().isEmpty())) {
+                            if (sr.getStreet() != null && !sr.getStreet().isEmpty()) {
+                                add.setStreet1(sr.getStreet());
+                            }
+                            add.setState(sr.getState().trim());
+                            add.setCountry("USA");
+                            add.setCity(sr.getCity().trim());
+                            if (sr.getZipCode() != null && !sr.getZipCode().isEmpty()) {
+                                add.setZip(sr.getZipCode().trim());
+                            }
+                            isAddressexists = true;
+                        }
+                    }
                 }
-                subContractor.getLocations().add(address);
+            }
+
+            if (isAddressexists == false) {
+                if ((sr.getState() != null && !sr.getState().isEmpty())
+                        && (sr.getCity() != null && !sr.getCity().isEmpty())) {
+                    if (sr.getStreet() != null && !sr.getStreet().isEmpty()) {
+                        address.setStreet1(sr.getStreet());
+                    } else {
+                        address.setStreet1(sr.getCity().trim());
+                    }
+                    address.setState(sr.getState().trim());
+                    address.setCountry("USA");
+                    address.setCity(sr.getCity().trim());
+                    if (sr.getZipCode() != null && !sr.getZipCode().isEmpty()) {
+                        address.setZip(sr.getZipCode().trim());
+                    }
+                    subContractor.getLocations().add(address);
+                }
             }
             SubcontractorDao.instance().getEntityManager().merge(subContractor);
         }
@@ -136,5 +174,5 @@ public class SubContractorDataTool {
     public static SubContractorDataTool instance() {
         return SpringContext.getBean(SubContractorDataTool.class);
     }
-    
+
 }

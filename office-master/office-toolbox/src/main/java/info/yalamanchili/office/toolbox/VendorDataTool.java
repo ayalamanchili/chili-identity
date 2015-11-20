@@ -9,10 +9,12 @@
 package info.yalamanchili.office.toolbox;
 
 import static info.chili.docs.ExcelUtils.getCellNumericValue;
+import static info.chili.docs.ExcelUtils.getCellStringOrNumericValue;
 import static info.chili.docs.ExcelUtils.getCellStringValue;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.client.VendorDao;
+import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.profile.Address;
@@ -38,6 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class VendorDataTool {
 
     private static final Log log = LogFactory.getLog(VendorDataTool.class);
+    public boolean isAddressexists;
 
     public static void main(String... args) {
         VendorDataTool tool = new VendorDataTool();
@@ -56,6 +59,7 @@ public class VendorDataTool {
         XSSFSheet sheet = workbook.getSheetAt(0);
         Iterator<Row> rowIterator = sheet.iterator();
         while (rowIterator.hasNext()) {
+            isAddressexists = false;
             Row record = rowIterator.next();
             Vendor vendor = new Vendor();
             Address address = new Address();
@@ -72,7 +76,7 @@ public class VendorDataTool {
             } else if (vr.getSimilarity() < 1.0000) {
                 vr.setVendorName(getCellStringValue(record, 2));
                 if (vr.getVendorName() != null && !vr.getVendorName().isEmpty()) {
-                    vr.setVendorName(vr.getVendorName().replaceAll("[^a-zA-Z0-9\\s]", ""));
+                    vr.setVendorName(vr.getVendorName().replaceAll("[^a-zA-Z0-9\\s\\/]", ""));
                     vendor.setName(vr.getVendorName());
                 } else if (vr.getVendorName() == null || vr.getVendorName().isEmpty()) {
                     continue;
@@ -96,26 +100,43 @@ public class VendorDataTool {
             vr.setStreet(getCellStringValue(record, 6));
             vr.setState(getCellStringValue(record, 8));
             vr.setCity(getCellStringValue(record, 7));
-            vr.setZipCode(getCellStringValue(record, 9));
+            vr.setZipCode(convertDcimalToWhole(getCellStringOrNumericValue(record, 9)));
+
+            if (vr.getZipCode() != null && !vr.getZipCode().isEmpty()) {
+                int len = vr.getZipCode().length();
+                if (len == 4) {
+                    vr.setZipCode("0" + vr.getZipCode());
+                } else if (len == 3) {
+                    vr.setZipCode("00" + vr.getZipCode());
+                } else if (len == 2) {
+                    vr.setZipCode("000" + vr.getZipCode());
+                } else if (len == 1) {
+                    vr.setZipCode("0000" + vr.getZipCode());
+                }
+            }
 
             if (vr.getSimilarity() == 1.0000 || vr.getSimilarity() == 2.0000) {
                 for (Address add : vendor.getLocations()) {
-                    if ((vr.getState() != null && !vr.getState().isEmpty())
-                            && (vr.getCity() != null && !vr.getCity().isEmpty())) {
-                        if (vr.getStreet() != null && !vr.getStreet().isEmpty()) {
-                            add.setStreet1(vr.getStreet());
-                        }
-                        add.setState(vr.getState().trim());
-                        add.setCountry("USA");
-                        add.setCity(vr.getCity().trim());
-                        if (vr.getZipCode() != null && !vr.getZipCode().isEmpty()) {
-                            add.setZip(vr.getZipCode().trim());
+                    if ((isAddressexists == false) && (add != null)) {
+                        if ((vr.getState() != null && !vr.getState().isEmpty())
+                                && (vr.getCity() != null && !vr.getCity().isEmpty())) {
+                            if (vr.getStreet() != null && !vr.getStreet().isEmpty()) {
+                                add.setStreet1(vr.getStreet());
+                            }
+                            add.setState(vr.getState().trim());
+                            add.setCountry("USA");
+                            add.setCity(vr.getCity().trim());
+                            if (vr.getZipCode() != null && !vr.getZipCode().isEmpty()) {
+                                add.setZip(vr.getZipCode().trim());
+                            }
+                            //add = AddressDao.instance().save(add);
+                            isAddressexists = true;
                         }
                     }
                 }
             }
 
-            if (vr.getSimilarity() != 1.0000 && vr.getSimilarity() != 2.0000) {
+            if (isAddressexists == false) {
                 if ((vr.getState() != null && !vr.getState().isEmpty())
                         && (vr.getCity() != null && !vr.getCity().isEmpty())) {
                     if (vr.getStreet() != null && !vr.getStreet().isEmpty()) {
@@ -129,6 +150,7 @@ public class VendorDataTool {
                     if (vr.getZipCode() != null && !vr.getZipCode().isEmpty()) {
                         address.setZip(vr.getZipCode().trim());
                     }
+                    //address = AddressDao.instance().save(address);
                     vendor.getLocations().add(address);
                 }
             }
