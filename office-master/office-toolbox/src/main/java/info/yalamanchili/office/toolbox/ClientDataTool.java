@@ -71,7 +71,7 @@ public class ClientDataTool {
             } else if (cr.getSimilarity() < 1.0000) {
                 cr.setClientName(getCellStringValue(record, 2));
                 if (cr.getClientName() != null && !cr.getClientName().isEmpty()) {
-                    cr.setClientName(cr.getClientName().replaceAll("[^a-zA-Z0-9\\s]", ""));
+                    cr.setClientName(cr.getClientName().replaceAll("[^a-zA-Z0-9\\s\\/]", ""));
                     client.setName(cr.getClientName());
                 } else if (cr.getClientName() == null || cr.getClientName().isEmpty()) {
                     continue;
