@@ -70,7 +70,7 @@ public class SubContractorDataTool {
             } else if (sr.getSimilarity() < 1.0000) {
                 sr.setSubContractorName(getCellStringValue(record, 2));
                 if (sr.getSubContractorName() != null && !sr.getSubContractorName().isEmpty()) {
-                    sr.setSubContractorName(sr.getSubContractorName().replaceAll("[^\\w!?&,]", ""));
+                    sr.setSubContractorName(sr.getSubContractorName().replaceAll("[^a-zA-Z0-9\\s]", ""));
                     subContractor.setName(sr.getSubContractorName());
                 } else if (sr.getSubContractorName() == null || sr.getSubContractorName().isEmpty()) {
                     continue;
@@ -85,9 +85,9 @@ public class SubContractorDataTool {
             }
 
             sr.setStreet(getCellStringValue(record, 6));
-            sr.setState(getCellStringValue(record, 9));
+            sr.setState(getCellStringValue(record, 8));
             sr.setCity(getCellStringValue(record, 7));
-            sr.setZipCode(getCellStringValue(record, 10));
+            sr.setZipCode(getCellStringValue(record, 9));
 
             if ((sr.getState() != null && !sr.getState().isEmpty())
                     && (sr.getCity() != null && !sr.getCity().isEmpty())) {
