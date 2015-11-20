@@ -9,6 +9,7 @@
 package info.yalamanchili.office.toolbox;
 
 import static info.chili.docs.ExcelUtils.getCellNumericValue;
+import static info.chili.docs.ExcelUtils.getCellStringOrNumericValue;
 import static info.chili.docs.ExcelUtils.getCellStringValue;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
@@ -99,11 +100,24 @@ public class VendorDataTool {
             vr.setStreet(getCellStringValue(record, 6));
             vr.setState(getCellStringValue(record, 8));
             vr.setCity(getCellStringValue(record, 7));
-            vr.setZipCode(getCellStringValue(record, 9));
+            vr.setZipCode(convertDcimalToWhole(getCellStringOrNumericValue(record, 9)));
+
+            if (vr.getZipCode() != null && !vr.getZipCode().isEmpty()) {
+                int len = vr.getZipCode().length();
+                if (len == 4) {
+                    vr.setZipCode("0" + vr.getZipCode());
+                } else if (len == 3) {
+                    vr.setZipCode("00" + vr.getZipCode());
+                } else if (len == 2) {
+                    vr.setZipCode("000" + vr.getZipCode());
+                } else if (len == 1) {
+                    vr.setZipCode("0000" + vr.getZipCode());
+                }
+            }
 
             if (vr.getSimilarity() == 1.0000 || vr.getSimilarity() == 2.0000) {
                 for (Address add : vendor.getLocations()) {
-                    if ((isAddressexists == false) && (add != null)) {  
+                    if ((isAddressexists == false) && (add != null)) {
                         if ((vr.getState() != null && !vr.getState().isEmpty())
                                 && (vr.getCity() != null && !vr.getCity().isEmpty())) {
                             if (vr.getStreet() != null && !vr.getStreet().isEmpty()) {
@@ -115,7 +129,7 @@ public class VendorDataTool {
                             if (vr.getZipCode() != null && !vr.getZipCode().isEmpty()) {
                                 add.setZip(vr.getZipCode().trim());
                             }
-                            add = AddressDao.instance().save(add);
+                            //add = AddressDao.instance().save(add);
                             isAddressexists = true;
                         }
                     }
@@ -136,7 +150,7 @@ public class VendorDataTool {
                     if (vr.getZipCode() != null && !vr.getZipCode().isEmpty()) {
                         address.setZip(vr.getZipCode().trim());
                     }
-                    address = AddressDao.instance().save(address);
+                    //address = AddressDao.instance().save(address);
                     vendor.getLocations().add(address);
                 }
             }
