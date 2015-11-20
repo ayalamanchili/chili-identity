@@ -139,7 +139,7 @@
                 ${status == 'approved'}
             </conditionExpression>
         </sequenceFlow>
-        <sequenceFlow sourceRef="approvalGateway" 
+        <sequenceFlow sourceRef="finalApprovalTaskGateway" 
                       targetRef="travelAuthorizationEnd">
             <conditionExpression xsi:type="tFormalExpression">
                 ${status == 'rejected'}
