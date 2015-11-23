@@ -92,6 +92,13 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     public Prospect update(ProspectDto prospect) {
         return prospectService.update(prospect);
     }
+    
+    @GET
+    @Path("/clone/{id}")
+    @Override
+    public ProspectDto clone(@PathParam("id") Long id) {
+        return prospectService.clone(id);
+    }
 
     @GET
     @Override

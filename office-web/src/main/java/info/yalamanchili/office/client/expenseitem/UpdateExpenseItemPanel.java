@@ -63,7 +63,9 @@ public class UpdateExpenseItemPanel extends UpdateComposite implements BlurHandl
         assignEntityValueFromField(EXPENSE_PAYMENT_MODE, entity);
         assignEntityValueFromField(EXPENSE_DATE, entity);
         assignEntityValueFromField(PURPOSE, entity);
+        if (isGeneralExpenseItem){
         assignEntityValueFromField(DESCRIPTION, entity);
+        }
 //        assignEntityValueFromField(REMARK, entity);
         assignEntityValueFromField(EXPENSE_MILES, entity);
         assignEntityValueFromField(AMOUNT, entity);
@@ -90,7 +92,9 @@ public class UpdateExpenseItemPanel extends UpdateComposite implements BlurHandl
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity(CATEGORY, entity, null);
         assignFieldValueFromEntity(EXPENSE_PAYMENT_MODE, entity, DataType.ENUM_FIELD);
+        if (isGeneralExpenseItem){
         assignFieldValueFromEntity(DESCRIPTION, entity, DataType.STRING_FIELD);
+        }
         assignFieldValueFromEntity(EXPENSE_DATE, entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity(EXPENSE_MILES, entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity(AMOUNT, entity, DataType.CURRENCY_FIELD);
@@ -117,7 +121,9 @@ public class UpdateExpenseItemPanel extends UpdateComposite implements BlurHandl
         expensePaymentMode.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
         expenseDate.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
         purpose.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
+        if (isGeneralExpenseItem){
         description.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
+        }
 //        remark.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
         expenseMiles.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
         amount.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
@@ -137,8 +143,10 @@ public class UpdateExpenseItemPanel extends UpdateComposite implements BlurHandl
         amount = (CurrencyField) fields.get(AMOUNT);
         addEnumField(EXPENSE_PAYMENT_MODE, false, true, ExpensePaymentMode.names(), Alignment.HORIZONTAL);
         expensePaymentMode = (EnumField) fields.get(EXPENSE_PAYMENT_MODE);
+        if (isGeneralExpenseItem){
         addField(DESCRIPTION, false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         description = (StringField) fields.get(DESCRIPTION);
+        }
 //        addField(REMARK, false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
 //        remark = (TextAreaField) fields.get(REMARK);
         alignFields();

@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -23,8 +26,14 @@ public class ReadAllExpenseItemsPanel extends CRUDReadAllComposite {
 
     private static Logger logger = Logger.getLogger(ReadAllExpenseItemsPanel.class.getName());
     public static ReadAllExpenseItemsPanel instance;
+    boolean isGeneralExpenseItem = false;
 
     public ReadAllExpenseItemsPanel(JSONArray array) {
+        initTable("ExpenseItems", array, OfficeWelcome.constants);
+    }
+
+    public ReadAllExpenseItemsPanel(JSONArray array, boolean isGeneralExpenseItem) {
+        this.isGeneralExpenseItem = isGeneralExpenseItem;
         initTable("ExpenseItems", array, OfficeWelcome.constants);
     }
 
@@ -40,7 +49,9 @@ public class ReadAllExpenseItemsPanel extends CRUDReadAllComposite {
         table.setText(0, 2, getKeyValue("Category"));
         table.setText(0, 3, getKeyValue("Amount"));
         table.setText(0, 4, getKeyValue("PaymentMode"));
-        table.setText(0, 5, getKeyValue("Description"));
+        if (isGeneralExpenseItem) {
+            table.setText(0, 5, getKeyValue("Description"));
+        }
     }
 
     @Override
@@ -55,7 +66,9 @@ public class ReadAllExpenseItemsPanel extends CRUDReadAllComposite {
             table.setText(i, 2, JSONUtils.toString(cat, "name"));
             table.setText(i, 3, FormatUtils.formarCurrency(JSONUtils.toString(entity, "amount")));
             setEnumColumn(i, 4, entity, ExpensePaymentMode.class.getSimpleName(), "expensePaymentMode");
-            table.setText(i, 5, JSONUtils.toString(entity, "description"));
+            if (isGeneralExpenseItem) {
+                table.setText(i, 5, JSONUtils.toString(entity, "description"));
+            }
         }
     }
 
@@ -79,7 +92,7 @@ public class ReadAllExpenseItemsPanel extends CRUDReadAllComposite {
 
     @Override
     public void updateClicked(String entityId) {
-  
+
     }
 
 }

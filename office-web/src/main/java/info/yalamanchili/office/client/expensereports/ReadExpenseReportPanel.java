@@ -155,7 +155,11 @@ public class ReadExpenseReportPanel extends ReadComposite {
     }
 
     protected void populateExpenseItems(JSONArray items) {
-        entityFieldsPanel.add(new ReadAllExpenseItemsPanel(items));
+        if (expenseFormType.getValue().equals("GENERAL_EXPENSE")) {
+            entityFieldsPanel.add(new ReadAllExpenseItemsPanel(items, true));
+        } else {
+            entityFieldsPanel.add(new ReadAllExpenseItemsPanel(items, false));
+        }
     }
 
     protected void populateExpenseReceipt(JSONArray items) {

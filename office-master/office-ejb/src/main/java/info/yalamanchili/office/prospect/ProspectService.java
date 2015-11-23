@@ -72,6 +72,12 @@ public class ProspectService {
         Prospect ec = prospectDao.findById(id);
         return ProspectDto.map(mapper, ec);
     }
+    public ProspectDto clone(Long id) {
+        Prospect entity = prospectDao.clone(id,"referredBy", "screenedBy");
+        entity.setStatus(ProspectStatus.IN_PROGRESS);
+        ProspectDto res = mapper.map(entity, ProspectDto.class);
+        return res;
+    }
 
     public static ProspectService instance() {
         return SpringContext.getBean(ProspectService.class);

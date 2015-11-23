@@ -11,6 +11,7 @@ package info.yalamanchili.office.client.admin.hr;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.CreateComposite;
@@ -122,6 +123,19 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateProspectsPanel(entityId));
     }
+    @Override
+    public void copyClicked(final String entityId) {
+        HttpService.HttpServiceAsync.instance().doGet(OfficeWelcome.constants.root_url() + "prospect/clone/" + entityId, OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String arg0) {
+                        logger.info(arg0);
+                        new ResponseStatusWidget().show("Copy created. Please update and save.");
+                        TabPanel.instance().myOfficePanel.entityPanel.clear();
+                        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateProspectsPanel(JSONParser.parseLenient(arg0).isObject()));
+                    }
+                });
+    }
 
     @Override
     protected void configureCreateButton() {
@@ -137,7 +151,7 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE);
+        createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE,TableRowOptionsWidget.OptionsType.COPY);
     }
 
     @Override
