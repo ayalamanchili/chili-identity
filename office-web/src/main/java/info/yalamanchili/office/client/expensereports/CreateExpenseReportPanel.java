@@ -26,6 +26,7 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDComposite;
 import info.chili.gwt.crud.CreateComposite;
+import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
@@ -103,6 +104,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     StringField projectName;
     StringField projectNumber;
     boolean isGeneralExpenseItem = false;
+    BooleanField submitForApprovalF;
 
     protected static CreateExpenseReportPanel instance;
 
@@ -146,6 +148,8 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         panel = new CreateExpenseItemPanel(this, isGeneralExpenseItem);
         expenseItemPanels.add(panel);
         entityFieldsPanel.add(panel);
+        entityFieldsPanel.add(getLineSeperatorTag("Select this option if you are ready to submit this for Approval"));
+        addField("submitForApproval", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
@@ -163,9 +167,10 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         notes.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         approver.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         approvalManager.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH + 5, Style.Unit.PX);
-        setButtonText("Submit");
+        setButtonText("Save");
         approvalManager.setVisible(false);
         approver.setVisible(false);
+        submitForApprovalF = (BooleanField) fields.get("submitForApproval");
         HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
@@ -184,6 +189,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     @Override
     protected void addListeners() {
         expenseFormType.listBox.addChangeHandler(this);
+        submitForApprovalF.getBox().addClickHandler(this);
         projectName.getTextbox().addBlurHandler(this);
         projectNumber.getTextbox().addBlurHandler(this);
         addItemL.addClickHandler(this);
@@ -267,6 +273,11 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
             expenseItemPanels.add(panel);
             entityFieldsPanel.add(panel);
         }
+        if (submitForApprovalF.getValue()) {
+            setButtonText("Submit");
+        } else {
+            setButtonText("Save");
+        }
         super.onClick(event);
     }
 
@@ -300,7 +311,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "expensereport/submit";
+        return OfficeWelcome.constants.root_url() + "expensereport/submit?submitForApproval=" + submitForApprovalF.getValue();
 
     }
 

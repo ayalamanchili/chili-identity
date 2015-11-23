@@ -136,7 +136,7 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
             createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.PRINT,TableRowOptionsWidget.OptionsType.COPY);
         } else if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ACCOUNTS_PAYABLE)) {
             createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.PRINT,TableRowOptionsWidget.OptionsType.COPY);
-        } else if ((ExpenseReportStatus.PENDING_MANAGER_APPROVAL.name().equals(status))) {
+        } else if ((ExpenseReportStatus.PENDING_MANAGER_APPROVAL.name().equals(status)) || (ExpenseReportStatus.SAVED.name().equals(status))) {
             createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.PRINT,TableRowOptionsWidget.OptionsType.COPY);
         } else {
             createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.PRINT,TableRowOptionsWidget.OptionsType.COPY);

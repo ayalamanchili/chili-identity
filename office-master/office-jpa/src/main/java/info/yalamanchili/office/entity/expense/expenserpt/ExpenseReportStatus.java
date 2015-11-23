@@ -17,5 +17,6 @@ public enum ExpenseReportStatus {
     PENDING_ACCOUNTS_PAYABLE_DISPATCH,
     PENDING_CEO_APPROVAL,
     REJECTED,
-    APPROVED;
+    APPROVED,
+    SAVED;
 }

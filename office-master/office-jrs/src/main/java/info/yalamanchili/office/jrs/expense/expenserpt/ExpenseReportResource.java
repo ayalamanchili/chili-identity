@@ -57,16 +57,16 @@ public class ExpenseReportResource extends CRUDResource<ExpenseReport> {
     @Validate
     @Path("/submit")
     @CacheEvict(value = OfficeCacheKeys.EXPENSE, allEntries = true)
-    public ExpenseReportSaveDto submit(ExpenseReportSaveDto dto) {
-        return ExpenseReportService.instance().submit(dto);
+    public ExpenseReportSaveDto create(ExpenseReportSaveDto dto, @QueryParam("submitForApproval") boolean submitForApproval) {
+        return ExpenseReportService.instance().create(dto, submitForApproval);
     }
 
     @PUT
     @Validate
     @Path("/save")
     @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_CEO", "ROLE_ACCOUNTS_PAYABLE", "ROLE_GENERAL_EXPENSE_MANAGER"}, employeePropertyName = "employee")
-    public ExpenseReportSaveDto save(ExpenseReportSaveDto dto) {
-        return ExpenseReportService.instance().save(dto);
+    public ExpenseReportSaveDto update(ExpenseReportSaveDto dto, @QueryParam("submitForApproval") boolean submitForApproval) {
+        return ExpenseReportService.instance().update(dto, submitForApproval);
     }
 
     @GET
@@ -91,7 +91,6 @@ public class ExpenseReportResource extends CRUDResource<ExpenseReport> {
         ExpenseReportResource.ExpenseReportsTable tableObj = new ExpenseReportResource.ExpenseReportsTable();
         if ((OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_ADMIN.name()))
                 || (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_ACCOUNTS_PAYABLE.name()))
-                || (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name()))
                 || (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_CEO.name()))) {
             tableObj.setEntities(expenseReportsDao.queryAll(start, limit));
             tableObj.setSize(expenseReportsDao.size());
@@ -126,7 +125,7 @@ public class ExpenseReportResource extends CRUDResource<ExpenseReport> {
         }
         return res;
     }
-
+    
     @PUT
     @Path("/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
