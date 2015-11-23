@@ -64,7 +64,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
             + "\n"
             + "<ul>\n"
             + "</ul>");
-    protected static HTML expenseInfo = new HTML("\n"
+    protected static HTML expenseItemsInfo = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
             + "<strong style=\"color:#555555\">Expense Items Information</strong></p>\n"
             + "\n"
@@ -93,8 +93,8 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
     DateField endDate;
     StringField projectName;
     StringField projectNumber;
-    BooleanField submitForApprovalF;
     JSONArray expenseReceipts = new JSONArray();
+    BooleanField submitForApprovalF = new BooleanField(OfficeWelcome.constants, "Submit", "ExpenseReport", false, false, Alignment.HORIZONTAL);
 
     protected static UpdateExpenseReportPanel instance;
 
@@ -226,14 +226,13 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
             if (items.get(i).isObject() != null) {
                 UpdateExpenseItemPanel panel = new UpdateExpenseItemPanel(getEntityId(), items.get(i).isObject(), isGeneralExpenseItem());
                 updateItemPanels.add(panel);
-                entityFieldsPanel.add(panel);
+                entityFieldsPanel.insert(panel, entityFieldsPanel.getWidgetIndex(expenseItemsInfo) + 1);
             }
         }
     }
 
     protected void populateExpenseReceipt(JSONArray items) {
-        entityFieldsPanel.add(expenseReceiptInfo);
-        entityFieldsPanel.add(new ReadAllExpenseReceiptsPanel(items));
+        entityFieldsPanel.insert(new ReadAllExpenseReceiptsPanel(items), entityFieldsPanel.getWidgetIndex(receiptsInfo) + 1);
     }
 
     @Override
@@ -251,7 +250,6 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
 
     @Override
     protected void configure() {
-        submitForApprovalF = (BooleanField) fields.get("submitForApproval");
         expenseFormType.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         location.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
         startDate.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
@@ -259,7 +257,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
         projectName.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         projectNumber.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
         generalInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-        expenseInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        expenseItemsInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         expenseReceiptInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         notes.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
     }
@@ -281,9 +279,10 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
         projectNumber = (StringField) fields.get(PROJECT_NUMBER);
         entityFieldsPanel.add(receiptsInfo);
         entityFieldsPanel.add(fileUploadPanel);
-        entityFieldsPanel.add(expenseInfo);
+        entityFieldsPanel.add(expenseItemsInfo);
         entityActionsPanel.add(addItemL);
-        addField("submitForApproval", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        entityActionsPanel.add(getLineSeperatorTag("Select this option if you are ready to submit this for Approval"));
+        entityActionsPanel.add(submitForApprovalF);
         alignFields();
     }
 

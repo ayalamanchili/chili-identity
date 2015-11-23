@@ -70,7 +70,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
             + "\n"
             + "<ul>\n"
             + "</ul>");
-    protected static HTML expenseInfo = new HTML("\n"
+    protected static HTML expenseItemsInfo = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
             + "<strong style=\"color:#555555\">Expense Items Information</strong></p>\n"
             + "\n"
@@ -104,7 +104,6 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     StringField projectName;
     StringField projectNumber;
     boolean isGeneralExpenseItem = false;
-    BooleanField submitForApprovalF;
 
     protected static CreateExpenseReportPanel instance;
 
@@ -121,6 +120,8 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
+
+    BooleanField submitForApprovalF = new BooleanField(OfficeWelcome.constants, "Submit", "ExpenseReport", false, false, Alignment.HORIZONTAL);
 
     @Override
     protected void addWidgets() {
@@ -141,15 +142,15 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         projectNumber = (StringField) fields.get(PROJECT_NUMBER);
         entityFieldsPanel.add(receiptsInfo);
         entityFieldsPanel.add(fileUploadPanel);
-        entityFieldsPanel.add(expenseInfo);
+        entityFieldsPanel.add(expenseItemsInfo);
         CreateExpenseItemPanel panel = null;
         entityActionsPanel.add(addItemL);
         entityFieldsPanel.add(notes);
         panel = new CreateExpenseItemPanel(this, isGeneralExpenseItem);
         expenseItemPanels.add(panel);
         entityFieldsPanel.add(panel);
-        entityFieldsPanel.add(getLineSeperatorTag("Select this option if you are ready to submit this for Approval"));
-        addField("submitForApproval", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        entityActionsPanel.add(getLineSeperatorTag("Select this option if you are ready to submit this for Approval"));
+        entityActionsPanel.add(submitForApprovalF);
         alignFields();
     }
 
@@ -162,7 +163,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         projectName.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         projectNumber.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
         generalInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-        expenseInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        expenseItemsInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         receiptsInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         notes.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         approver.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
@@ -170,7 +171,6 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         setButtonText("Save");
         approvalManager.setVisible(false);
         approver.setVisible(false);
-        submitForApprovalF = (BooleanField) fields.get("submitForApproval");
         HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
