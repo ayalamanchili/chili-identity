@@ -8,6 +8,8 @@
  */
 package info.yalamanchili.office.client.employee.prefeval;
 
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
@@ -29,7 +31,7 @@ import java.util.logging.Logger;
  *
  * @author ayalamanchili
  */
-public class PeformanceSelfEvaluationPanel extends ALComposite implements ClickHandler {
+public class PeformanceSelfEvaluationPanel extends ALComposite implements ClickHandler, ChangeHandler {
 
     private static Logger logger = Logger.getLogger(PeformanceSelfEvaluationPanel.class.getName());
     protected CaptionPanel cp = new CaptionPanel();
@@ -41,12 +43,12 @@ public class PeformanceSelfEvaluationPanel extends ALComposite implements ClickH
 
     public PeformanceSelfEvaluationPanel() {
         init(cp);
-        selfEvalCommentsPanel.loadQuestions();
     }
 
     @Override
     protected void addListeners() {
         create.addClickHandler(this);
+        selectYearWidget.getListBox().addChangeHandler(this);
     }
 
     @Override
@@ -111,5 +113,14 @@ public class PeformanceSelfEvaluationPanel extends ALComposite implements ClickH
 
     protected String getUrl() {
         return OfficeWelcome.constants.root_url() + "performance-evaluation/save?submitForApproval=true";
+    }
+
+    @Override
+    public void onChange(ChangeEvent event) {
+        if (selectYearWidget.getSelectedObject() != null) {
+            selfEvalCommentsPanel.commentWidgets.clear();
+            selfEvalCommentsPanel.setFyYear(selectYearWidget.getSelectedObject().get("id").isString().stringValue());
+            selfEvalCommentsPanel.loadQuestions();
+        }
     }
 }

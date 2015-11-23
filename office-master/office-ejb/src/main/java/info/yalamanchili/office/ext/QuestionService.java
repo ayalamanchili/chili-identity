@@ -23,7 +23,9 @@ import info.yalamanchili.office.entity.ext.QuestionCategory;
 import info.yalamanchili.office.entity.ext.QuestionContext;
 import info.yalamanchili.office.messages.MessagesUtils;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -41,14 +43,14 @@ public class QuestionService {
     @Autowired
     protected QuestionDao questionDao;
 
-    public List<QuestionDto> getQuestions(QuestionCategory category, QuestionContext context, int start, int limit) {
+    public List<QuestionDto> getQuestions(QuestionCategory category, QuestionContext context, int start, int limit, Map<String, String> swaps) {
         List<QuestionDto> questions = new ArrayList<>();
         questionDao.getQuestions(category, context, start, limit).stream().map((q) -> {
             QuestionDto dto = new QuestionDto();
             dto.setId(q.getId());
             dto.setSortOrder(q.getSortOrder());
-            dto.setQuestion(getMessageUtils().get(q.getQuestionKey()));
-            dto.setQuestionInfo(getMessageUtils().get(q.getQuestionKey() + "_info"));
+            dto.setQuestion(getMessageUtils().get(q.getQuestionKey(), swaps));
+            dto.setQuestionInfo(getMessageUtils().get(q.getQuestionKey() + "_info", swaps));
             dto.setQuestionCommentRequired(q.getQuestionCommentRequired());
             dto.setQuestionRatingRequired(q.getQuestionRatingRequired());
             return dto;
@@ -58,15 +60,19 @@ public class QuestionService {
         return questions;
     }
 
-    public List<QuestionComment> getQuestionComments(Long perfEvalId, QuestionCategory category, QuestionContext context) {
+    public List<QuestionDto> getQuestions(QuestionCategory category, QuestionContext context, int start, int limit) {
+        return getQuestions(category, context, start, limit, Collections.emptyMap());
+    }
+
+    public List<QuestionComment> getQuestionComments(Long perfEvalId, QuestionCategory category, QuestionContext context, Map<String, String> swaps) {
         List<QuestionComment> res = new ArrayList<>();
         PerformanceEvaluation perfEval = PerformanceEvaluationDao.instance().findById(perfEvalId);
         CommentDao commentDao = CommentDao.instance();
         PerformanceEvaluationDao.instance().getQuestions(perfEvalId, category, context).stream().map((q) -> {
             Comment cmmt = commentDao.find(perfEval, q);
             QuestionComment qc = new QuestionComment();
-            qc.setQuestion(getMessageUtils().get(q.getQuestionKey()));
-            qc.setQuestionInfo(getMessageUtils().get(q.getQuestionKey() + "_info"));
+            qc.setQuestion(getMessageUtils().get(q.getQuestionKey(), swaps));
+            qc.setQuestionInfo(getMessageUtils().get(q.getQuestionKey() + "_info", swaps));
             qc.setSortOrder(q.getSortOrder());
             qc.setQuestionRatingRequired(q.getQuestionRatingRequired());
             qc.setQuestionCommentRequired(q.getQuestionCommentRequired());
@@ -81,6 +87,10 @@ public class QuestionService {
             res.add(qc);
         });
         return res;
+    }
+
+    public List<QuestionComment> getQuestionComments(Long perfEvalId, QuestionCategory category, QuestionContext context) {
+        return getQuestionComments(perfEvalId, category, context, Collections.emptyMap());
     }
 
     public List<QuestionComment> getQuestionCommentsForProbationPeriodEvaluations(Long provationPrdEvaluation, QuestionCategory category, QuestionContext context) {

@@ -12,6 +12,7 @@ import info.chili.i18n.CDatabaseMessages;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeFeatureFlipper;
 import java.util.Locale;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
@@ -42,6 +43,29 @@ public class MessagesUtils {
             } catch (NoSuchMessageException e) {
                 message = key;
             }
+        }
+        return message;
+    }
+
+    /**
+     *
+     * @param key
+     * @param swaps replaces the expression with provides values
+     * @return eg: key.1--> "provide your FY #{fyYear} goals" swaps-->
+     * fyYear=2014 will return "provide your FY 2014 goals"
+     */
+    public String get(String key, Map<String, String> swaps) {
+        String message = null;
+        message = getDatabaseMessageSource().getMessage(key, null, Locale.getDefault());
+        if (message == null) {
+            try {
+                message = getStaticMessageSource().getMessage(key, null, null);
+            } catch (NoSuchMessageException e) {
+                message = key;
+            }
+        }
+        for (Map.Entry<String, String> expression : swaps.entrySet()) {
+            message = message.replaceAll("#\\{" + expression.getKey() + "}", expression.getValue());
         }
         return message;
     }

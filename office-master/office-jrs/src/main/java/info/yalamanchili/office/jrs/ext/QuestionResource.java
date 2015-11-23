@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.jrs.ext;
 
+import com.google.common.base.Strings;
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
@@ -18,7 +19,9 @@ import info.yalamanchili.office.entity.ext.QuestionCategory;
 import info.yalamanchili.office.entity.ext.QuestionContext;
 import info.yalamanchili.office.ext.QuestionService;
 import info.yalamanchili.office.jrs.CRUDResource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -59,7 +62,15 @@ public class QuestionResource extends CRUDResource<Question> {
     @GET
     @Path("/query/{start}/{limit}")
     @Cacheable(OfficeCacheKeys.QUESTIONS)
-    public List<QuestionDto> getQuestions(@QueryParam("category") QuestionCategory category, @QueryParam("context") QuestionContext context, @PathParam("start") int start, @PathParam("limit") int limit) {
+    //TODO this should belong to perf evalu res
+    public List<QuestionDto> getQuestions(@QueryParam("category") QuestionCategory category, @QueryParam("context") QuestionContext context, @QueryParam("fyYear") Integer fyYear, @PathParam("start") int start, @PathParam("limit") int limit) {
+        if (fyYear != null) {
+            Map<String, String> swaps = new HashMap();
+            swaps.put("fyYear", fyYear.toString());
+            fyYear++;
+            swaps.put("nextFyYear", fyYear.toString());
+            return questionService.getQuestions(category, context, start, limit, swaps);
+        }
         return questionService.getQuestions(category, context, start, limit);
 
     }

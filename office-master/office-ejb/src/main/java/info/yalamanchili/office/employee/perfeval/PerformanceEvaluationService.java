@@ -137,7 +137,7 @@ public class PerformanceEvaluationService {
 
     protected String startCorporatePerformanceEvaluationProcess(PerformanceEvaluation entity, Employee emp) {
         if (entity.getBpmProcessId() != null) {
-            OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getBpmProcessId(), true); 
+            OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
         }
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("entityId", entity.getId());
@@ -224,7 +224,7 @@ public class PerformanceEvaluationService {
     }
 
     public List<Entry> getFYYears(Employee emp) {
-        List<Entry> res = new ArrayList<Entry>();
+        List<Entry> res = new ArrayList<>();
         Set<String> years = getFYYears();
         for (PerformanceEvaluation pe : performanceEvaluationDao.getPerformanceEvaluationsForEmp(emp)) {
             years.remove(pe.getEvaluationFYYear());
@@ -243,6 +243,7 @@ public class PerformanceEvaluationService {
         fyYears.add("2012");
         fyYears.add("2013");
         fyYears.add("2014");
+        fyYears.add("2015");
         //TODO add years as needed
         return fyYears;
     }

@@ -32,12 +32,13 @@ public class CreateQuestionCommentsWidget extends Composite {
 
     public CaptionPanel captionPanel = new CaptionPanel();
     protected FlowPanel panel = new FlowPanel();
-    List<CreateQuestionCommentWidget> commentWidgets = new ArrayList<CreateQuestionCommentWidget>();
+    List<CreateQuestionCommentWidget> commentWidgets = new ArrayList<>();
     protected QuestionCategory category;
     protected QuestionContext context;
     protected Boolean displayRating;
     protected Boolean displayComment;
     protected Boolean useRichTextEditor;
+    protected String fyYear;
 
     public CreateQuestionCommentsWidget(QuestionCategory category, QuestionContext context) {
         this.category = category;
@@ -58,8 +59,20 @@ public class CreateQuestionCommentsWidget extends Composite {
         captionPanel.setContentWidget(panel);
     }
 
+    public CreateQuestionCommentsWidget(QuestionCategory category, QuestionContext context, String year, boolean displayRating, boolean displayComment, boolean useRichTextEditor) {
+        this.category = category;
+        this.context = context;
+        this.displayRating = displayRating;
+        this.displayComment = displayComment;
+        this.useRichTextEditor = useRichTextEditor;
+        this.fyYear = year;
+        initWidget(captionPanel);
+        captionPanel.setCaptionHTML(category.name());
+        captionPanel.setContentWidget(panel);
+    }
+
     public void loadQuestions() {
-        if (commentWidgets.size() == 0) {
+        if (commentWidgets.isEmpty()) {
             HttpService.HttpServiceAsync.instance().doGet(getQuestionsUrl(), OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
 
@@ -80,6 +93,7 @@ public class CreateQuestionCommentsWidget extends Composite {
     }
 
     public void populateQuestion(JSONArray questions) {
+        panel.clear();
         for (int i = 0; i < questions.size(); i++) {
             JSONObject obj = (JSONObject) questions.get(i);
             CreateQuestionCommentWidget commentwidget;
@@ -124,7 +138,18 @@ public class CreateQuestionCommentsWidget extends Composite {
         }
     }
 
+    public String getFyYear() {
+        return fyYear;
+    }
+
+    public void setFyYear(String fyYear) {
+        this.fyYear = fyYear;
+    }
+
     protected String getQuestionsUrl() {
+        if (fyYear != null) {
+            return OfficeWelcome.instance().constants.root_url() + "question/query/0/100?category=" + category.name() + "&context=" + context.name() + "&fyYear=" + fyYear;
+        }
         return OfficeWelcome.instance().constants.root_url() + "question/query/0/100?category=" + category.name() + "&context=" + context.name();
     }
 
