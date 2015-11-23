@@ -11,6 +11,7 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
@@ -76,6 +77,7 @@ public class ReadImmigrationCheckRequisitionPanel extends ReadComposite {
         assignFieldValueFromEntity("neededByDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("purpose", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("caseType", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("amount", entity, DataType.CURRENCY_FIELD);
     }
     
     @Override
@@ -96,6 +98,7 @@ public class ReadImmigrationCheckRequisitionPanel extends ReadComposite {
         addField("neededByDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("purpose", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addEnumField("caseType", true, true, ImmigrationCaseType.names(), Alignment.HORIZONTAL);
+        addField("amount", true, true, DataType.CURRENCY_FIELD,Alignment.HORIZONTAL);
         alignFields();
     }
     
