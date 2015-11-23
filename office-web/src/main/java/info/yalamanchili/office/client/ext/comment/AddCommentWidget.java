@@ -113,7 +113,7 @@ public class AddCommentWidget extends CreateComposite {
 
     @Override
     protected void configure() {
-        // TODO Auto-generated method stub
+        setButtonText("Add Comment");
     }
 
     @Override

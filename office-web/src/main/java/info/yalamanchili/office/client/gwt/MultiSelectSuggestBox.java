@@ -8,7 +8,6 @@
  */
 package info.yalamanchili.office.client.gwt;
 
-import com.google.common.base.Splitter;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -17,12 +16,14 @@ import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Label;
 import info.chili.gwt.composite.ALComposite;
-import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.OfficeWelcome;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -30,59 +31,65 @@ import java.util.logging.Logger;
  * @author ayalamanchili
  */
 public abstract class MultiSelectSuggestBox extends ALComposite implements KeyPressHandler, ClickHandler {
-
+    
     private static Logger logger = Logger.getLogger(MultiSelectSuggestBox.class.getName());
     protected FlowPanel panel = new FlowPanel();
     protected SuggestBox suggestionsBox = new SuggestBox(OfficeWelcome.constants, "search", "Employee", false, false);
-    protected Button selectB = new Button("Add");
-    protected TextAreaField valuesTA = new TextAreaField(OfficeWelcome.constants, "selected", "Employee", false, false);
-
+    List<SuggestBoxSelectedItem> selectedItemWidgets = new ArrayList();
+    protected FlowPanel selectedValuesPanel = new FlowPanel();
+    Label noneSelected = new Label("None selected");
+    HTML info = new HTML("<fieldset class=\"lineSeperator\">" + "<legend align=\"left\">Employees</legend></fieldset>");
+    
     public MultiSelectSuggestBox() {
         init(panel);
         initTosSuggesBox();
     }
-
+    
     public abstract void initTosSuggesBox();
-
+    
     @Override
     protected void addListeners() {
         suggestionsBox.getSuggestBox().addKeyPressHandler(this);
-        selectB.addClickHandler(this);
     }
-
+    
     @Override
     protected void configure() {
+        selectedValuesPanel.addStyleName("multiSelectSuggestBoxSelectedValuesPanel");
     }
-
+    
     @Override
     protected void addWidgets() {
         panel.add(suggestionsBox);
-        panel.add(selectB);
-        panel.add(valuesTA);
+        panel.add(info);
+        panel.add(selectedValuesPanel);
+        selectedValuesPanel.add(noneSelected);
     }
-
+    
     public JSONArray getValues() {
         JSONArray array = new JSONArray();
         int i = 0;
-        for (String toStr : Splitter.on(" ").split(valuesTA.getValue())) {
-            if (!toStr.trim().isEmpty()) {
+        for (int j = 0; j < selectedValuesPanel.getWidgetCount(); j++) {
+            if (selectedValuesPanel.getWidget(i) instanceof SuggestBoxSelectedItem) {
+                SuggestBoxSelectedItem si = (SuggestBoxSelectedItem) selectedValuesPanel.getWidget(i);
                 JSONObject to = new JSONObject();
-                to.put("id", new JSONString(toStr.trim()));
-                to.put("value", new JSONString(toStr.trim()));
+                to.put("id", new JSONString(si.getKey()));
+                to.put("value", new JSONString(si.getValue()));
                 array.set(i, to);
                 i++;
             }
         }
         return array;
     }
-
+    
     protected void addTo() {
         if (suggestionsBox.getValue() != null && !suggestionsBox.getValue().trim().isEmpty()) {
-            valuesTA.setValue(valuesTA.getValue() + " " + suggestionsBox.getKey());
+            SuggestBoxSelectedItem selectedItem = new SuggestBoxSelectedItem(suggestionsBox.getKey().trim(), suggestionsBox.getValue().trim());
+            selectedItemWidgets.add(selectedItem);
+            selectedValuesPanel.add(selectedItem);
             suggestionsBox.setValue("");
         }
     }
-
+    
     @Override
     public void onKeyPress(KeyPressEvent event) {
         int keyCode = event.getUnicodeCharCode();
@@ -93,12 +100,13 @@ public abstract class MultiSelectSuggestBox extends ALComposite implements KeyPr
         if (keyCode == KeyCodes.KEY_ENTER) {
             addTo();
         }
+        if (selectedItemWidgets.size() > 0) {
+            noneSelected.setVisible(false);
+        }
     }
-
+    
     @Override
     public void onClick(ClickEvent event) {
-        if (event.getSource().equals(selectB)) {
-            addTo();
-        }
+        
     }
 }

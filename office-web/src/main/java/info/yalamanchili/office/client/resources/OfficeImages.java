@@ -77,6 +77,9 @@ public interface OfficeImages extends ClientBundle {
 
     @Source("images/close_icon_16_16.png")
     ImageResource closeIcon_16_16();
+    
+     @Source("images/close_grey_16_16.png")
+    ImageResource closeIcon_grey_16_16();
 
     @Source("images/like_icon_16_16.png")
     ImageResource likeIcon_16_16();
