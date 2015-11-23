@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDComposite;
 import info.chili.gwt.crud.UpdateComposite;
+import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
@@ -92,6 +93,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
     DateField endDate;
     StringField projectName;
     StringField projectNumber;
+    BooleanField submitForApprovalF;
     JSONArray expenseReceipts = new JSONArray();
 
     protected static UpdateExpenseReportPanel instance;
@@ -244,10 +246,12 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
     @Override
     protected void addListeners() {
         addItemL.addClickHandler(this);
+        submitForApprovalF.getBox().addClickHandler(this);
     }
 
     @Override
     protected void configure() {
+        submitForApprovalF = (BooleanField) fields.get("submitForApproval");
         expenseFormType.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         location.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
         startDate.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
@@ -279,6 +283,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
         entityFieldsPanel.add(fileUploadPanel);
         entityFieldsPanel.add(expenseInfo);
         entityActionsPanel.add(addItemL);
+        addField("submitForApproval", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
@@ -289,7 +294,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
     @Override
     protected String getURI() {
         if (!getEntityId().isEmpty()) {
-            return OfficeWelcome.constants.root_url() + "expensereport/save";
+            return OfficeWelcome.constants.root_url() + "expensereport/save?submitForApproval=" + submitForApprovalF.getValue();
         } else {
             return OfficeWelcome.constants.root_url() + "expensereport/submit";
         }
@@ -301,6 +306,11 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
             CreateExpenseItemPanel panel = new CreateExpenseItemPanel(this, isGeneralExpenseItem());
             updateItemPanels.add(panel);
             entityFieldsPanel.add(panel);
+        }
+        if (submitForApprovalF.getValue()) {
+            setButtonText("Submit");
+        } else {
+            setButtonText("Update");
         }
         super.onClick(event);
     }

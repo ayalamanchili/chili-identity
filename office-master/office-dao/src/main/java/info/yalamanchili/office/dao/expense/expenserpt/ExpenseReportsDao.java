@@ -10,7 +10,10 @@ package info.yalamanchili.office.dao.expense.expenserpt;
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport;
+import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReportStatus;
+import info.yalamanchili.office.entity.profile.Employee;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -34,6 +37,10 @@ public class ExpenseReportsDao extends CRUDDao<ExpenseReport> {
     @Override
     @CacheEvict(value = OfficeCacheKeys.EXPENSE, allEntries = true)
     public ExpenseReport save(ExpenseReport entity) {
+        if (entity.getId() == null) {
+            entity.setStatus(ExpenseReportStatus.SAVED);
+            entity.setEmployee(OfficeSecurityService.instance().getCurrentUser());
+        }
         return super.save(entity);
     }
 

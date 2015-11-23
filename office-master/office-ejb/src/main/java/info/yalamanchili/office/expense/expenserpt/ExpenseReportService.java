@@ -62,7 +62,7 @@ public class ExpenseReportService {
     @Autowired
     protected ExpenseItemDao expenseItemDao;
     
-    public ExpenseReportSaveDto submit(ExpenseReportSaveDto dto) {
+    public ExpenseReportSaveDto create(ExpenseReportSaveDto dto, boolean submitForApproval) {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         ExpenseReport entity = mapper.map(dto, ExpenseReport.class);
         entity.setStatus(ExpenseReportStatus.PENDING_MANAGER_APPROVAL);
@@ -87,11 +87,13 @@ public class ExpenseReportService {
         entity.setEmployee(OfficeSecurityService.instance().getCurrentUser());
         Long approvalManagerId = entity.getApprovalManagerId();
         entity = expenseReportsDao.save(entity);
-        entity.setBpmProcessId(startExpenseReportProcess(approvalManagerId, entity));
+        if (submitForApproval) {
+            entity.setStatus(ExpenseReportStatus.PENDING_MANAGER_APPROVAL);
+            entity.setBpmProcessId(startExpenseReportProcess(approvalManagerId, entity));
+        }
         entity = expenseReportsDao.save(entity);
         return mapper.map(entity, ExpenseReportSaveDto.class);
     }
-    
     protected String startExpenseReportProcess(Long approvalManagerId, ExpenseReport entity) {
         if (entity.getBpmProcessId() != null) {
             OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
@@ -106,7 +108,7 @@ public class ExpenseReportService {
         return OfficeBPMService.instance().startProcess("expense_report_process", vars);
     }
     
-    public ExpenseReportSaveDto save(ExpenseReportSaveDto dto) {
+    public ExpenseReportSaveDto update(ExpenseReportSaveDto dto, boolean submitForApproval) {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         ExpenseReport entity = expenseReportsDao.save(dto);
         ExpenseCategoryDao expenseCategoryDao = ExpenseCategoryDao.instance();
@@ -132,7 +134,8 @@ public class ExpenseReportService {
                 expenseReportsDao.getEntityManager().merge(entity);
             }
         }
-        if (dto.getEmployee().getEmployeeId().equals(OfficeSecurityService.instance().getCurrentUserName()) && entity.getStatus().equals(ExpenseReportStatus.PENDING_MANAGER_APPROVAL)) {
+        if (submitForApproval) {
+            entity.setStatus(ExpenseReportStatus.PENDING_MANAGER_APPROVAL);
             entity.setBpmProcessId(startExpenseReportProcess(null, entity));
         }
         entity = expenseReportsDao.save(entity);
