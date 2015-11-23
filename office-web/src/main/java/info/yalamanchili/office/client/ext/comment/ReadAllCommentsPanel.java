@@ -16,6 +16,7 @@ import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.GenericPopup;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import java.util.logging.Logger;
@@ -90,12 +91,19 @@ public class ReadAllCommentsPanel extends CRUDReadAllComposite {
 
     @Override
     public void deleteClicked(String entityId) {
-
+        HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
     }
 
     @Override
     public void postDeleteSuccess() {
-
+        new ResponseStatusWidget().show("Successfully Deleted Comments");
+        refresh();
     }
 
     @Override

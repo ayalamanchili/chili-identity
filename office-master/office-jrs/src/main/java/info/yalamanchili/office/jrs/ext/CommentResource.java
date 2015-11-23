@@ -72,6 +72,15 @@ public class CommentResource {
     }
 
     @PUT
+    @Path("/delete/{id}")
+    public void delete(@PathParam("id") Long id) {
+        Comment comment = commentDao.find(id);
+        if (comment.getId() != null) {
+            commentDao.delete(id);
+        }
+    }
+
+    @PUT
     @Path("{targetClassName}/{id}")
     public void save(@PathParam("targetClassName") String targetClassName, @PathParam("id") Long id, Comment comment
     ) {
