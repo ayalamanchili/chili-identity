@@ -212,7 +212,9 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
             if (PerformanceEvaluationWizard.instance().type.equals(PerformanceEvaluationWizardType.SELF_MANAGER)) {
                 addField("submitForApproval", false, false, DataType.BOOLEAN_FIELD);
             }
-            entityFieldsPanel.add(managerReviewEndInstructions);
+            if (PerformanceEvaluationWizard.instance().type.equals(PerformanceEvaluationWizardType.MANAGER)) {
+                entityFieldsPanel.add(managerReviewEndInstructions);
+            }
         }
     }
 
