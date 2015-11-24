@@ -149,8 +149,9 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         panel = new CreateExpenseItemPanel(this, isGeneralExpenseItem);
         expenseItemPanels.add(panel);
         entityFieldsPanel.add(panel);
-        entityActionsPanel.add(getLineSeperatorTag("Select this option if you are ready to submit this for Approval"));
+        entityActionsPanel.add(getLineSeperatorTag("De-Select this option if you are ready to save ottherwise click submit"));
         entityActionsPanel.add(submitForApprovalF);
+        submitForApprovalF.setValue(true);
         alignFields();
     }
 
@@ -168,7 +169,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         notes.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         approver.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         approvalManager.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH + 5, Style.Unit.PX);
-        setButtonText("Save");
+        setButtonText("Submit");
         approvalManager.setVisible(false);
         approver.setVisible(false);
         HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {

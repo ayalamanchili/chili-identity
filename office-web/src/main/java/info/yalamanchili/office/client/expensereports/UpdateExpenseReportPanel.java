@@ -281,8 +281,10 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
         entityFieldsPanel.add(fileUploadPanel);
         entityFieldsPanel.add(expenseItemsInfo);
         entityActionsPanel.add(addItemL);
-        entityActionsPanel.add(getLineSeperatorTag("Select this option if you are ready to submit this for Approval"));
+        entityActionsPanel.add(getLineSeperatorTag("De-Select this option if you are ready to update ottherwise click submit"));
         entityActionsPanel.add(submitForApprovalF);
+        submitForApprovalF.setValue(true);
+        setButtonText("Submit");
         alignFields();
     }
 
