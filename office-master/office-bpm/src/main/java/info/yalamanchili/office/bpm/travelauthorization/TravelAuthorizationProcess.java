@@ -8,7 +8,6 @@
 package info.yalamanchili.office.bpm.travelauthorization;
 
 import info.chili.service.jrs.exception.ServiceException;
-import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
 import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
 import info.yalamanchili.office.dao.expense.travelauthorization.TravelAuthorizationDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
@@ -65,10 +64,8 @@ public class TravelAuthorizationProcess extends RuleBasedTaskDelegateListner {
             entity.setStatus(TravelAuthorizationStatus.PENDING_CEO_APPROVAL);
             entity.setManagerApprovalBy(OfficeSecurityService.instance().getCurrentUser().getEmployeeId());
             entity.setManaerApprovalDate(new Date());
-            new GenericTaskCompleteNotification().notify(task);
         } else {
             entity.setStatus(TravelAuthorizationStatus.REJECTED);
-            new GenericTaskCompleteNotification().notify(task);
         }
         TravelAuthorizationDao.instance().save(entity);
         task.getExecution().setVariable("entity", entity);
@@ -84,10 +81,8 @@ public class TravelAuthorizationProcess extends RuleBasedTaskDelegateListner {
             entity.setStatus(TravelAuthorizationStatus.PENDING_TRAVEL_BOOKING);
             entity.setCeoApprovalBy(OfficeSecurityService.instance().getCurrentUser().getEmployeeId());
             entity.setCeoApprovalDate(new Date());
-            new GenericTaskCompleteNotification().notify(task);
         } else {
             entity.setStatus(TravelAuthorizationStatus.REJECTED);
-            new GenericTaskCompleteNotification().notify(task);
         }
         TravelAuthorizationDao.instance().save(entity);
         task.getExecution().setVariable("entity", entity);
@@ -98,7 +93,6 @@ public class TravelAuthorizationProcess extends RuleBasedTaskDelegateListner {
         String notes = (String) task.getExecution().getVariable("notes");
         CommentDao.instance().addComment(notes, entity);
         entity.setStatus(TravelAuthorizationStatus.APPROVED);
-        new GenericTaskCompleteNotification().notify(task);
         TravelAuthorizationDao.instance().save(entity);
     }
 

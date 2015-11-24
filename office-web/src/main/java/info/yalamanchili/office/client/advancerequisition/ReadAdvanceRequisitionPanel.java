@@ -111,7 +111,7 @@ public class ReadAdvanceRequisitionPanel extends ReadComposite {
 
     @Override
     protected boolean enableAudit() {
-        return Auth.hasAnyOfRoles(ROLE.ROLE_EXPENSE);
+        return Auth.hasAnyOfRoles(ROLE.ROLE_EXPENSE, Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_ACCOUNTS_PAYABLE, Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS);
     }
 
     @Override

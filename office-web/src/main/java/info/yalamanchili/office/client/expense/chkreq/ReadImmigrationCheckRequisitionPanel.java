@@ -11,7 +11,6 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
-import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
@@ -114,7 +113,7 @@ public class ReadImmigrationCheckRequisitionPanel extends ReadComposite {
     
     @Override
     protected boolean enableAudit() {
-        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_EXPENSE);
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_EXPENSE, Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_ACCOUNTS_PAYABLE, Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS);
     }
     
     @Override
