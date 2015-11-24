@@ -55,13 +55,13 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class ExpenseReportService {
-    
+
     @Autowired
     protected ExpenseReportsDao expenseReportsDao;
-    
+
     @Autowired
     protected ExpenseItemDao expenseItemDao;
-    
+
     public ExpenseReportSaveDto create(ExpenseReportSaveDto dto, boolean submitForApproval) {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         ExpenseReport entity = mapper.map(dto, ExpenseReport.class);
@@ -94,6 +94,7 @@ public class ExpenseReportService {
         entity = expenseReportsDao.save(entity);
         return mapper.map(entity, ExpenseReportSaveDto.class);
     }
+
     protected String startExpenseReportProcess(Long approvalManagerId, ExpenseReport entity) {
         if (entity.getBpmProcessId() != null) {
             OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
@@ -103,11 +104,15 @@ public class ExpenseReportService {
         if (approvalManagerId != null) {
             vars.put("approvalManager", EmployeeDao.instance().findById(approvalManagerId).getEmployeeId());
         }
-        vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
+        if (entity.getEmployee() != null) {
+            vars.put("currentEmployee", entity.getEmployee());
+        } else {
+            vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
+        }
         vars.put("entityId", entity.getId());
         return OfficeBPMService.instance().startProcess("expense_report_process", vars);
     }
-    
+
     public ExpenseReportSaveDto update(ExpenseReportSaveDto dto, boolean submitForApproval) {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         ExpenseReport entity = expenseReportsDao.save(dto);
@@ -141,14 +146,14 @@ public class ExpenseReportService {
         entity = expenseReportsDao.save(entity);
         return mapper.map(entity, ExpenseReportSaveDto.class);
     }
-    
+
     public ExpenseReportSaveDto read(Long id) {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         return mapper.map(expenseReportsDao.findById(id), ExpenseReportSaveDto.class);
     }
-    
+
     private static final Log log = LogFactory.getLog(ExpenseReportService.class);
-    
+
     public ExpenseReportSaveDto clone(Long id) {
         ExpenseReport entity = expenseReportsDao.clone(id, "submittedDate", "approvedByManager", "approvedByManagerDate", "approvedByAccountsDept", "approvedByAccountsDeptDate", "approvedByCEO", "approvedByCEODate", "bpmProcessId", "status", "totalExpenses", "expenseReceipts");
         if (!entity.getEmployee().getEmployeeId().equals(OfficeSecurityService.instance().getCurrentUserName())) {
@@ -157,14 +162,14 @@ public class ExpenseReportService {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         return mapper.map(entity, ExpenseReportSaveDto.class);
     }
-    
+
     public void delete(Long id) {
         ExpenseReport entity = expenseReportsDao.findById(id);
         //TODO use processid
         OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
         expenseReportsDao.delete(id);
     }
-    
+
     public Response getReport(Long id) {
         ExpenseReport entity = expenseReportsDao.findById(id);
         EmployeeDao employeeDao = EmployeeDao.instance();
@@ -185,15 +190,15 @@ public class ExpenseReportService {
             } else {
                 data.setTemplateUrl("/templates/pdf/travel-expenses-form.pdf");
             }
-            
+
         }
-        
+
         data.setKeyStoreName(securityConfiguration.getKeyStoreName());
         Employee preparedBy = entity.getEmployee();
         Signature preparedBysignature = new Signature(preparedBy.getEmployeeId(), preparedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(entity.getSubmittedDate()), employeeDao.getPrimaryEmail(preparedBy), null);
         data.getData().put("submittedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getSubmittedDate()));
         data.getSignatures().add(preparedBysignature);
-        
+
         String prepareByStr = preparedBy.getLastName() + ", " + preparedBy.getFirstName();
         data.getData().put("name", prepareByStr);
         if (preparedBy.getCompany() == null || preparedBy.getCompany().getName().equals("System Soft Technologies LLC")) {
@@ -295,7 +300,7 @@ public class ExpenseReportService {
                 }
             }
         }
-        
+
         data.getData().put("p-itemTotal", itemPersonal.setScale(2, BigDecimal.ROUND_UP).toString());
         data.getData().put("a-itemTotal", itemAmex.setScale(2, BigDecimal.ROUND_UP).toString());
         data.getData().put("itemTotal", itemTotal.setScale(2, BigDecimal.ROUND_UP).toString());
@@ -307,7 +312,7 @@ public class ExpenseReportService {
         for (Comment comment : cmnts) {
             allComment = allComment + ". " + comment.getComment();
         }
-        
+
         if (entity.getApprovedByCEO() != null) {
             Employee ceo = employeeDao.findEmployeWithEmpId(entity.getApprovedByCEO());
             if (ceo != null) {
@@ -316,7 +321,7 @@ public class ExpenseReportService {
                 data.getData().put("approvedByCEODate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getApprovedByCEODate()));
             }
         }
-        
+
         if ((entity.getExpenseFormType()) != null && entity.getExpenseFormType().name().equals("TRAVEL_EXPENSE")) {
             if (entity.getApprovedByManager() != null) {
                 Employee manager = employeeDao.findEmployeWithEmpId(entity.getApprovedByManager());
@@ -336,7 +341,7 @@ public class ExpenseReportService {
                     data.getData().put("PayrollDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getApprovedByAccountsDeptDate()));
                 }
             }
-            
+
         }
         data.getData().put("comment", allComment);
         byte[] pdf = PDFUtils.generatePdf(data);
@@ -345,7 +350,7 @@ public class ExpenseReportService {
                 .header("Content-Length", pdf)
                 .build();
     }
-    
+
     public static ExpenseReportService instance() {
         return SpringContext.getBean(ExpenseReportService.class);
     }
