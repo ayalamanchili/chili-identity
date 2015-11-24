@@ -18,7 +18,6 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Label;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -31,44 +30,47 @@ import java.util.logging.Logger;
  * @author ayalamanchili
  */
 public abstract class MultiSelectSuggestBox extends ALComposite implements KeyPressHandler, ClickHandler {
-    
+
     private static Logger logger = Logger.getLogger(MultiSelectSuggestBox.class.getName());
     protected FlowPanel panel = new FlowPanel();
     protected SuggestBox suggestionsBox = new SuggestBox(OfficeWelcome.constants, "search", "Employee", false, false);
     List<SuggestBoxSelectedItem> selectedItemWidgets = new ArrayList();
     protected FlowPanel selectedValuesPanel = new FlowPanel();
-    Label noneSelected = new Label("None selected");
-    HTML info = new HTML("<fieldset class=\"lineSeperator\">" + "<legend align=\"left\">Employees</legend></fieldset>");
-    
+    HTML noneSelected = new HTML("<b>None selected.</b>");
+    HTML info = new HTML("<fieldset class=\"lineSeperator\">" + "<legend align=\"left\">Search and press enter to add.</legend></fieldset>");
+    HTML infoEnd = new HTML("<fieldset class=\"lineSeperator\"></fieldset>");
+
     public MultiSelectSuggestBox() {
         init(panel);
         initTosSuggesBox();
     }
-    
+
     public abstract void initTosSuggesBox();
-    
+
     @Override
     protected void addListeners() {
         suggestionsBox.getSuggestBox().addKeyPressHandler(this);
     }
-    
+
     @Override
     protected void configure() {
+        noneSelected.addStyleName("multiSelectSuggestBoxSelectedValue");
         selectedValuesPanel.addStyleName("multiSelectSuggestBoxSelectedValuesPanel");
     }
-    
+
     @Override
     protected void addWidgets() {
         panel.add(suggestionsBox);
         panel.add(info);
         panel.add(selectedValuesPanel);
+        panel.add(infoEnd);
         selectedValuesPanel.add(noneSelected);
     }
-    
+
     public JSONArray getValues() {
         JSONArray array = new JSONArray();
         int i = 0;
-        for (int j = 0; j < selectedValuesPanel.getWidgetCount(); j++) {
+        for (int j = 0; j < selectedValuesPanel.getWidgetCount();j++) {
             if (selectedValuesPanel.getWidget(i) instanceof SuggestBoxSelectedItem) {
                 SuggestBoxSelectedItem si = (SuggestBoxSelectedItem) selectedValuesPanel.getWidget(i);
                 JSONObject to = new JSONObject();
@@ -78,9 +80,10 @@ public abstract class MultiSelectSuggestBox extends ALComposite implements KeyPr
                 i++;
             }
         }
+        logger.info(array.toString());
         return array;
     }
-    
+
     protected void addTo() {
         if (suggestionsBox.getValue() != null && !suggestionsBox.getValue().trim().isEmpty()) {
             SuggestBoxSelectedItem selectedItem = new SuggestBoxSelectedItem(suggestionsBox.getKey().trim(), suggestionsBox.getValue().trim());
@@ -89,7 +92,7 @@ public abstract class MultiSelectSuggestBox extends ALComposite implements KeyPr
             suggestionsBox.setValue("");
         }
     }
-    
+
     @Override
     public void onKeyPress(KeyPressEvent event) {
         int keyCode = event.getUnicodeCharCode();
@@ -101,12 +104,12 @@ public abstract class MultiSelectSuggestBox extends ALComposite implements KeyPr
             addTo();
         }
         if (selectedItemWidgets.size() > 0) {
-            noneSelected.setVisible(false);
+            noneSelected.removeFromParent();
         }
     }
-    
+
     @Override
     public void onClick(ClickEvent event) {
-        
+
     }
 }
