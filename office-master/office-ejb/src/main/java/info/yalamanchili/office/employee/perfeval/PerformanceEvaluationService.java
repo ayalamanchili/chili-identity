@@ -379,7 +379,7 @@ public class PerformanceEvaluationService {
             data.setTemplateUrl("/templates/pdf/self-review-template.pdf");
         }
         data.getData().put("fyYear", evaluation.getEvaluationFYYear());
-        data.getData().put("nextFYYear", new Integer(Integer.valueOf(evaluation.getEvaluationFYYear()) + 1).toString());
+        data.getData().put("nextFYYear", Integer.toString(Integer.valueOf(evaluation.getEvaluationFYYear()) + 1));
         data.getData().put("submittedDate", new SimpleDateFormat("MM-dd-yyyy").format(evaluation.getEvaluationDate()));
         OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
 

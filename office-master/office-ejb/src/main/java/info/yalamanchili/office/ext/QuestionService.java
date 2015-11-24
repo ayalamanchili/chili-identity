@@ -24,6 +24,7 @@ import info.yalamanchili.office.entity.ext.QuestionContext;
 import info.yalamanchili.office.messages.MessagesUtils;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,11 +91,17 @@ public class QuestionService {
     }
 
     public List<QuestionComment> getQuestionComments(Long perfEvalId, QuestionCategory category, QuestionContext context) {
-        return getQuestionComments(perfEvalId, category, context, Collections.emptyMap());
+        PerformanceEvaluation perfEval = PerformanceEvaluationDao.instance().findById(perfEvalId);
+        Map<String, String> swaps = new HashMap();
+        Integer fyYear = Integer.valueOf(perfEval.getEvaluationFYYear());
+        swaps.put("fyYear", fyYear.toString());
+        fyYear++;
+        swaps.put("nextFyYear", fyYear.toString());
+        return getQuestionComments(perfEvalId, category, context, swaps);
     }
 
     public List<QuestionComment> getQuestionCommentsForProbationPeriodEvaluations(Long provationPrdEvaluation, QuestionCategory category, QuestionContext context) {
-        List<QuestionComment> res = new ArrayList<QuestionComment>();
+        List<QuestionComment> res = new ArrayList<>();
         ProbationPeriodEvaluation perfEval = ProbationPeriodEvaluationDao.instance().findById(provationPrdEvaluation);
         CommentDao commentDao = CommentDao.instance();
         for (Question q : ProbationPeriodEvaluationDao.instance().getQuestions(provationPrdEvaluation, category, context)) {
