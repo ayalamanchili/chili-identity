@@ -136,7 +136,7 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite impl
             }
             table.setText(i, 2, JSONUtils.toString(entity, "evaluationFYYear"));
             table.setText(i, 3, JSONUtils.toString(entity, "rating"));
-            table.setText(i, 4, JSONUtils.toString(entity, "stage"));
+            setEnumColumn(i, 4, entity, PerformanceEvaluationStage.class.getSimpleName(), "stage");
             FileField selfReviewP = new FileField("Self Review", ChiliClientConfig.instance().getFileDownloadUrl() + "performance-evaluation/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id") + "&type=self");
             table.setWidget(i, 5, selfReviewP);
             FileField managerReviewP = new FileField("Manager Review", ChiliClientConfig.instance().getFileDownloadUrl() + "performance-evaluation/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id") + "&type=manager");
