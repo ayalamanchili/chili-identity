@@ -148,12 +148,12 @@ public class OfficeStartup {
         Email userPrimaryEmail = new Email();
         userPrimaryEmail.setEmailType(getWorkEmailType());
         userPrimaryEmail.setPrimaryEmail(true);
-        userPrimaryEmail.setEmail("prasanthissv@gmail.com");
+        userPrimaryEmail.setEmail("prasanthissv@yopmail.com");
 
         Email userSecondaryEmail = new Email();
         userSecondaryEmail.setPrimaryEmail(false);
         userSecondaryEmail.setEmailType(getPersonalEmailType());
-        userSecondaryEmail.setEmail("user_secondary@gmail.com");
+        userSecondaryEmail.setEmail("user_secondary@yopmail.com");
 
         Phone userCellPhone = new Phone();
         userCellPhone.setPhoneNumber("7031112222");
@@ -194,7 +194,7 @@ public class OfficeStartup {
         adminPrimaryEmail.setEmailType(getWorkEmailType());
         adminPrimaryEmail.setPrimaryEmail(true);
 
-        adminPrimaryEmail.setEmail("yphanikumar@gmail.com");
+        adminPrimaryEmail.setEmail("yphanikumar@yopmail.com");
 
         Email adminSecondaryEmail = new Email();
         adminSecondaryEmail.setEmailType(getPersonalEmailType());
@@ -268,12 +268,12 @@ public class OfficeStartup {
         Email userPrimaryEmails = new Email();
         userPrimaryEmails.setEmailType(getWorkEmailType());
         userPrimaryEmails.setPrimaryEmail(true);
-        userPrimaryEmails.setEmail("yphanikumar@gmail.com");
+        userPrimaryEmails.setEmail("yphanikumar@yopmail.com");
 
         Email userSecondaryEmails = new Email();
         userSecondaryEmails.setPrimaryEmail(false);
         userSecondaryEmails.setEmailType(getPersonalEmailType());
-        userSecondaryEmails.setEmail("user_secondary@gmail.com");
+        userSecondaryEmails.setEmail("user_secondary@yopmail.com");
 
         Phone userCellPhones = new Phone();
         userCellPhones.setPhoneNumber("4564564562");
@@ -316,7 +316,7 @@ public class OfficeStartup {
         Email userSecondaryEmailes = new Email();
         userSecondaryEmailes.setPrimaryEmail(false);
         userSecondaryEmailes.setEmailType(getPersonalEmailType());
-        userSecondaryEmailes.setEmail("user_secondary@gmail.com");
+        userSecondaryEmailes.setEmail("user_secondary@yopmail.com");
 
         Phone userCellPhoness = new Phone();
         userCellPhoness.setPhoneNumber("8122290672");
@@ -359,7 +359,7 @@ public class OfficeStartup {
         Email userSecondaryemails = new Email();
         userSecondaryemails.setPrimaryEmail(false);
         userSecondaryemails.setEmailType(getPersonalEmailType());
-        userSecondaryemails.setEmail("user_secondary@gmail.com");
+        userSecondaryemails.setEmail("user_secondary@yopmail.com");
 
         Phone userCellphones = new Phone();
         userCellphones.setPhoneNumber("4195811199");
@@ -902,7 +902,7 @@ public class OfficeStartup {
         userECPhone = em.merge(userECPhone);
 
         Email userECEmail = new Email();
-        userECEmail.setEmail("userec@gmail.com");
+        userECEmail.setEmail("userec@yopmail.com");
         userECEmail.setPrimaryEmail(true);
         userECEmail = em.merge(userECEmail);
 
