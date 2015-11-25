@@ -132,14 +132,16 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         String status = JSONUtils.toString(entity, "status");
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CEO, Auth.ROLE.ROLE_ACCOUNTS_PAYABLE, Auth.ROLE.ROLE_GENERAL_EXPENSE_MANAGER)) {
-            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.PRINT,TableRowOptionsWidget.OptionsType.COPY);
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN)) {
+            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE, TableRowOptionsWidget.OptionsType.PRINT, TableRowOptionsWidget.OptionsType.COPY);
+        } else if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CEO, Auth.ROLE.ROLE_ACCOUNTS_PAYABLE, Auth.ROLE.ROLE_GENERAL_EXPENSE_MANAGER)) {
+            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.PRINT, TableRowOptionsWidget.OptionsType.COPY);
         } else if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ACCOUNTS_PAYABLE)) {
-            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.PRINT,TableRowOptionsWidget.OptionsType.COPY);
+            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.PRINT, TableRowOptionsWidget.OptionsType.COPY);
         } else if ((ExpenseReportStatus.PENDING_MANAGER_APPROVAL.name().equals(status)) || (ExpenseReportStatus.SAVED.name().equals(status))) {
-            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.PRINT,TableRowOptionsWidget.OptionsType.COPY);
+            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.PRINT, TableRowOptionsWidget.OptionsType.COPY);
         } else {
-            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.PRINT,TableRowOptionsWidget.OptionsType.COPY);
+            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.PRINT, TableRowOptionsWidget.OptionsType.COPY);
         }
     }
 
@@ -182,7 +184,8 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
     protected boolean autoShowDocumentation() {
         return true;
     }
-     @Override
+
+    @Override
     protected boolean enableQuickView() {
         return true;
     }
@@ -191,8 +194,9 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
     protected void onQuickView(int row, String id) {
         new GenericPopup(new ReadExpenseReportPanel(JSONUtils.toString(getEntity(id), "id")), Window.getClientWidth() / 3, 0).show();
     }
+
     @Override
-    protected boolean enablePersistedQuickView(){
+    protected boolean enablePersistedQuickView() {
         return true;
     }
 }

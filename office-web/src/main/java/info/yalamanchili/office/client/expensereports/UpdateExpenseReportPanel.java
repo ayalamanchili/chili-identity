@@ -297,7 +297,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
         if (!getEntityId().isEmpty()) {
             return OfficeWelcome.constants.root_url() + "expensereport/save?submitForApproval=" + submitForApprovalF.getValue();
         } else {
-            return OfficeWelcome.constants.root_url() + "expensereport/submit";
+            return OfficeWelcome.constants.root_url() + "expensereport/submit?submitForApproval=" + submitForApprovalF.getValue();
         }
     }
 
