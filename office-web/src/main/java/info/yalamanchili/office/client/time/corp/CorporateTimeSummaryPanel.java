@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.time.corp;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
@@ -27,6 +28,18 @@ public class CorporateTimeSummaryPanel extends ReadComposite {
     protected String employeeId;
     private static CorporateTimeSummaryPanel instance;
     private static Logger logger = Logger.getLogger(CorporateTimeSummaryPanel.class.getName());
+    
+    protected static HTML leaveRequestPolicy = new HTML("<!doctype html>\n"
+            + "<html>\n"
+            + "<head>\n"
+            + "	<title></title>\n"
+            + "</head>\n"
+            + "<body>\n"
+            + "	<li><a href=\"\\\\\\https://apps.sstech.us/site/office/timesheets/corp-approval-process.html\\\\\\\">Paid Time Off Leaves(PTO)</a>\n"
+            + "	<hr /></li>\n"
+            + "</ul>\n"
+            + "</body>\n"
+            + "</html>");
 
     public static CorporateTimeSummaryPanel instance() {
         return instance;
@@ -62,7 +75,6 @@ public class CorporateTimeSummaryPanel extends ReadComposite {
         assignFieldValueFromEntity("availablePTOHours", entity, DataType.FLOAT_FIELD);
 //        assignFieldValueFromEntity("availableVacationHours", entity, DataType.FLOAT_FIELD);
 //        assignFieldValueFromEntity("usedUnpaidHours", entity, DataType.FLOAT_FIELD);
-
     }
 
     @Override
@@ -78,6 +90,7 @@ public class CorporateTimeSummaryPanel extends ReadComposite {
         addField("employee", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("availablePTOHours", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(leaveRequestPolicy);
 //        addField("availableVacationHours", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
 //        addField("usedUnpaidHours", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         alignFields();
