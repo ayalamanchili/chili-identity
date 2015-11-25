@@ -148,7 +148,7 @@ public class OfficeStartup {
         Email userPrimaryEmail = new Email();
         userPrimaryEmail.setEmailType(getWorkEmailType());
         userPrimaryEmail.setPrimaryEmail(true);
-        userPrimaryEmail.setEmail("prasanthissv@yopmail.com");
+        userPrimaryEmail.setEmail("useruser@yopmail.com");
 
         Email userSecondaryEmail = new Email();
         userSecondaryEmail.setPrimaryEmail(false);
@@ -194,12 +194,12 @@ public class OfficeStartup {
         adminPrimaryEmail.setEmailType(getWorkEmailType());
         adminPrimaryEmail.setPrimaryEmail(true);
 
-        adminPrimaryEmail.setEmail("yphanikumar@yopmail.com");
+        adminPrimaryEmail.setEmail("adminadmin@yopmail.com");
 
         Email adminSecondaryEmail = new Email();
         adminSecondaryEmail.setEmailType(getPersonalEmailType());
         adminSecondaryEmail.setPrimaryEmail(false);
-        adminSecondaryEmail.setEmail("anu@yalamanchili.info");
+        adminSecondaryEmail.setEmail("adminadmin1@yopmail.com");
 
         Phone adminCellPhone = new Phone();
         adminCellPhone.setPhoneNumber("7038889999");
@@ -268,7 +268,7 @@ public class OfficeStartup {
         Email userPrimaryEmails = new Email();
         userPrimaryEmails.setEmailType(getWorkEmailType());
         userPrimaryEmails.setPrimaryEmail(true);
-        userPrimaryEmails.setEmail("yphanikumar@yopmail.com");
+        userPrimaryEmails.setEmail("racharya@yopmail.com");
 
         Email userSecondaryEmails = new Email();
         userSecondaryEmails.setPrimaryEmail(false);
@@ -311,7 +311,7 @@ public class OfficeStartup {
         Email userPraimaryEmails = new Email();
         userPraimaryEmails.setEmailType(getWorkEmailType());
         userPraimaryEmails.setPrimaryEmail(true);
-        userPraimaryEmails.setEmail("userpe@yopmail.com");
+        userPraimaryEmails.setEmail("padapala@yopmail.com");
 
         Email userSecondaryEmailes = new Email();
         userSecondaryEmailes.setPrimaryEmail(false);
@@ -354,7 +354,7 @@ public class OfficeStartup {
         Email userPrimaryemails = new Email();
         userPrimaryemails.setEmailType(getWorkEmailType());
         userPrimaryemails.setPrimaryEmail(true);
-        userPrimaryemails.setEmail("userpemail@yopmail.com");
+        userPrimaryemails.setEmail("sadhikari@yopmail.com");
 
         Email userSecondaryemails = new Email();
         userSecondaryemails.setPrimaryEmail(false);
