@@ -37,6 +37,7 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
     private static Logger logger = Logger.getLogger(ReadAllProspectsPanel.class.getName());
     public static ReadAllProspectsPanel instance;
     protected String url;
+    
 
     public ReadAllProspectsPanel() {
         instance = this;
@@ -78,6 +79,7 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
         table.setText(0, 5, getKeyValue("Referred By"));
         table.setText(0, 6, getKeyValue("Status"));
         table.setText(0, 7, getKeyValue("Email Notification"));
+        table.setText(0, 8, getKeyValue("OnBoarding Invitation"));
     }
 
     @Override
@@ -85,6 +87,7 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);;
+            String status = JSONUtils.toString(entity, "status");
             table.setText(i, 1, JSONUtils.toString(entity, "firstName"));
             table.setText(i, 2, JSONUtils.toString(entity, "lastName"));
             table.setText(i, 3, JSONUtils.toString(entity, "screenedBy"));
@@ -102,6 +105,20 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
                 });
                 table.setWidget(i, 7, emailLink);
             }
+            if (TabPanel.instance().myOfficePanel.isVisible()) {
+                if (ProspectStatus.CLOSED_WON.name().equals(status)){
+                ClickableLink invitationLink = new ClickableLink("OnBoarding invitecode");
+                invitationLink.setTitle(JSONUtils.toString(entity, "id"));
+                invitationLink.addClickHandler(new ClickHandler() {
+                    @Override
+                    public void onClick(ClickEvent event) {
+                        getOnBoardInviteCode(((ClickableLink) event.getSource()).getTitle());
+                    }
+                });
+                table.setWidget(i, 8, invitationLink);
+            }
+            }
+            
         }
     }
     
@@ -118,8 +135,25 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
         }
     }
      
+     protected void getOnBoardInviteCode(String entityId) {
+        if (!entityId.isEmpty()) {
+            HttpService.HttpServiceAsync.instance().doGet(getOnBoardUrl(entityId), OfficeWelcome.instance().getHeaders(), true,
+                    new ALAsyncCallback<String>() {
+                        @Override
+                        public void onResponse(String arg0) {
+                            logger.info(arg0);
+                            new ResponseStatusWidget().show("Prospect Notification sent to mail successfully.");
+                        }
+                    });
+        }
+    }
+     
      private String getemailurl(String entityId) {
         return OfficeWelcome.instance().constants.root_url() + "prospect/email-info/" + entityId;
+    }
+     
+     private String getOnBoardUrl(String entityId) {
+        return OfficeWelcome.instance().constants.root_url() + "prospect/invite-code/" + entityId;
     }
 
     @Override

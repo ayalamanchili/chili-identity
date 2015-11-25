@@ -13,11 +13,16 @@ import info.chili.dao.CRUDDao;
 import info.chili.email.Email;
 import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
+import info.yalamanchili.office.dao.drive.FileDao;
 import info.yalamanchili.office.dao.hr.ProspectDao;
+import info.yalamanchili.office.dao.invite.InviteCodeDao;
 import info.yalamanchili.office.dto.prospect.ProspectDto;
 import info.yalamanchili.office.entity.hr.Prospect;
+import info.yalamanchili.office.entity.profile.invite.InvitationType;
+import info.yalamanchili.office.entity.profile.invite.InviteCode;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.jrs.CRUDResource;
+import info.yalamanchili.office.profile.invite.InviteCodeGeneratorService;
 import info.yalamanchili.office.prospect.ProspectService;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,6 +37,7 @@ import javax.ws.rs.PathParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.apache.commons.lang.time.DateUtils;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -56,6 +62,11 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
 
     @Autowired
     public ProspectService prospectService;
+
+    @Autowired
+    protected InviteCodeDao inviteCodeDao;
+    @Autowired
+    FileDao fileDao;
 
     @Override
     public CRUDDao getDao() {
@@ -154,6 +165,34 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
             res.add(ProspectDto.map(mapper, (Prospect) p));
         }
         return res;
+    }
+
+    protected final String[] ON_BOARDING_FORMS_LIST = {"W2_On_Boarding", "I9_On_Boarding"};
+
+    @GET
+    @Path("/invite-code/{id}")
+    public void sendInviteCodeEmail(@PathParam("id") Long id) {
+        Prospect prospect = prospectDao.findById(id);
+        InviteCode code = InviteCodeGeneratorService.instance().generate(InvitationType.CLIENT_ONBOARDING, prospect.getContact().getPrimaryEmail().getEmail(), new Date(), DateUtils.addDays(new Date(), 7), false);
+        if (id != null) {
+            Email email = new Email();
+            email.addTo(prospect.getContact().getPrimaryEmail().getEmail());
+            StringBuilder subject = new StringBuilder();
+            subject.append("System Soft Invitation");
+            email.setSubject(subject.toString());
+            Map<String, Object> emailCtx = new HashMap<>();
+            emailCtx.put("invitationCode", "http://localhost:9090/office-web/?inviteCode=" + code.getInvitationCode());
+            email.setTemplateName("send_onboarding_invitation_eamil_template.html");
+            String messageText = "http://localhost:9090/office-web/?inviteCode=" + code.getInvitationCode();
+            email.setContext(emailCtx);
+            email.setBody(messageText);
+            for (String fileName : ON_BOARDING_FORMS_LIST) {
+                if (fileDao.getFilePath(fileName) != null) {
+                    email.getAttachments().add(fileDao.getFilePath(fileName));
+                }
+            }
+            MessagingService.instance().sendEmail(email);
+        }
     }
 
     @XmlRootElement
