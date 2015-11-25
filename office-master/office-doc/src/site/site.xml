@@ -79,6 +79,7 @@
                 <item name="Leaves for Employees" href="/office/timesheets/employee-leave-request.html"/>
                 <item name="Time Data Import" href="/office/timesheets/import-external-time-data.html"/>
                 <item name="Attendance Process" href="/office/timesheets/attendence.html"/>
+                <item name="Leaves Policy" href="/office/timesheets/paid-time-off-leaves.html"/>
             </item>
             <item name="Portal Processes" href="/office/bpm/address-updated-process.html" collapse="true">
                 <item name="Address Change Approval Process" href="/office/bpm/address-updated-process.html"/>
