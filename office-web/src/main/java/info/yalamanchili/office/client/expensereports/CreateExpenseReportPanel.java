@@ -149,7 +149,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         panel = new CreateExpenseItemPanel(this, isGeneralExpenseItem);
         expenseItemPanels.add(panel);
         entityFieldsPanel.add(panel);
-        entityActionsPanel.add(getLineSeperatorTag("De-Select this option if you are ready to save ottherwise click submit"));
+        entityActionsPanel.add(getLineSeperatorTag("De-Select this if you are not ready to submit for approval, you can always come back to update and submit."));
         entityActionsPanel.add(submitForApprovalF);
         submitForApprovalF.setValue(true);
         alignFields();
