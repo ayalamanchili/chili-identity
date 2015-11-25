@@ -64,7 +64,7 @@ public class ProfileNotificationService {
         Email email = new Email();
         email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject("New System Soft Office User Created");
-        String messageText = "New User " + employee.getFirstName() + " , " + employee.getLastName() + " , " + employee.getEmployeeId() + " Is Created By "+currentEmployee.getFirstName()+" "+currentEmployee.getLastName();
+        String messageText = "New User " + employee.getFirstName() + " , " + employee.getLastName() + " , " + employee.getEmployeeId() + " Is Created By " + currentEmployee.getFirstName() + " " + currentEmployee.getLastName();
         email.setBody(messageText);
         messagingService.sendEmail(email);
 
@@ -73,7 +73,7 @@ public class ProfileNotificationService {
         newUserEmailObj.setHtml(Boolean.TRUE);
         newUserEmailObj.addTo(EmployeeDao.instance().getPrimaryEmail(employee));
         newUserEmailObj.setSubject("Welcome to System Soft Portal");
-        String messageTextforuser = "Your Username and Employee Id is:" + employee.getEmployeeId() +" : \n Please follow the instructions to login https://apps.sstech.us/site/office/forgot-password.html";
+        String messageTextforuser = "Your Username and Employee Id is:" + employee.getEmployeeId() + " : \n Please follow the instructions to login https://apps.sstech.us/site/office/forgot-password.html";
         newUserEmailObj.setBody(messageTextforuser);
         messagingService.sendEmail(newUserEmailObj);
     }
@@ -124,12 +124,12 @@ public class ProfileNotificationService {
     @Async
     @Transactional
     public void sendEmployeeDeactivationNotification(String deactivateBy, Employee emp) {
-        String[] roles = {OfficeRole.ROLE_ADMIN.name(), OfficeRole.ROLE_HR_ADMINSTRATION.name(), OfficeRole.ROLE_CONSULTANT_TIME_ADMIN.name()};
+        String[] roles = {OfficeRole.ROLE_ADMIN.name(), OfficeRole.ROLE_HR_ADMINSTRATION.name(), OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name(), OfficeRole.ROLE_CONSULTANT_TIME_ADMIN.name()};
         Email email = new Email();
         email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject("Employee Deactivated ");
-        SimpleDateFormat sdf=new SimpleDateFormat("MM-dd-yyyy");
-        String messageText = "Employee  " + emp.getFirstName() + "," + emp.getLastName() + " Account Is Deactivated by:" + deactivateBy + "\n End Date: "+sdf.format(emp.getEndDate());
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+        String messageText = "Employee  " + emp.getFirstName() + "," + emp.getLastName() + " Account Is Deactivated by:" + deactivateBy + "\n End Date: " + sdf.format(emp.getEndDate());
         email.setBody(messageText);
         messagingService.sendEmail(email);
     }
