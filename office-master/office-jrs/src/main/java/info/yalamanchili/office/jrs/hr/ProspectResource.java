@@ -10,15 +10,20 @@ package info.yalamanchili.office.jrs.hr;
 
 import info.chili.commons.SearchUtils;
 import info.chili.dao.CRUDDao;
+import info.chili.email.Email;
 import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.hr.ProspectDao;
 import info.yalamanchili.office.dto.prospect.ProspectDto;
 import info.yalamanchili.office.entity.hr.Prospect;
+import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.prospect.ProspectService;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.Query;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -92,7 +97,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     public Prospect update(ProspectDto prospect) {
         return prospectService.update(prospect);
     }
-    
+
     @GET
     @Path("/clone/{id}")
     @Override
@@ -114,6 +119,27 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     @CacheEvict(value = OfficeCacheKeys.PROSPECT, allEntries = true)
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
+    }
+
+    @GET
+    @Path("/email-info/{id}")
+    public void basicProspectRequest(@PathParam("id") Long id) {
+        Prospect entity = prospectDao.findById(id);
+        if (id != null) {
+            Email email = new Email();
+            email.addTo(entity.getContact().getPrimaryEmail().getEmail());
+            StringBuilder subject = new StringBuilder();
+            subject.append("Prospect Request Received");
+            email.setSubject(subject.toString());
+            Map emailCtx = new HashMap<>();
+            emailCtx.put("employeeName", entity.getContact().getFirstName() + " " + entity.getContact().getLastName());
+            email.setTemplateName("prospect_doc_sent_Date.html");
+            email.setContext(emailCtx);
+            email.setHtml(Boolean.TRUE);
+            MessagingService.instance().sendEmail(email);
+            entity.setProcessDocSentDate(new Date());
+            prospectDao.save(entity);
+        }
     }
 
     @PUT
