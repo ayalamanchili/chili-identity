@@ -29,7 +29,7 @@ public class CorporateTimeSummaryPanel extends ReadComposite {
     private static CorporateTimeSummaryPanel instance;
     private static Logger logger = Logger.getLogger(CorporateTimeSummaryPanel.class.getName());
     
-    protected static HTML managerReviewStartInstructions = new HTML("<!doctype html>\n"
+    protected static HTML leaveRequestPolicy = new HTML("<!doctype html>\n"
             + "<html>\n"
             + "<head>\n"
             + "	<title></title>\n"
@@ -90,7 +90,7 @@ public class CorporateTimeSummaryPanel extends ReadComposite {
         addField("employee", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("availablePTOHours", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
-        entityFieldsPanel.add(managerReviewStartInstructions);
+        entityFieldsPanel.add(leaveRequestPolicy);
 //        addField("availableVacationHours", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
 //        addField("usedUnpaidHours", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         alignFields();
