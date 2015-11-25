@@ -240,7 +240,6 @@ public class PerformanceEvaluationService {
 
     public Set<String> getFYYears() {
         Set<String> fyYears = new HashSet<String>();
-        fyYears.add("2012");
         fyYears.add("2013");
         fyYears.add("2014");
         fyYears.add("2015");
