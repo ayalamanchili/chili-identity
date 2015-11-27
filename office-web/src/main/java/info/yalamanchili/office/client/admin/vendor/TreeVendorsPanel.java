@@ -65,7 +65,7 @@ public class TreeVendorsPanel extends TreePanelComposite {
     @Override
     protected void addWidgets() {
         addFirstChildLink("Locations", VENDOR_LOCATION_NODE);
-        addFirstChildLink("Contacts", VENDOR_CONTACTS_NODE);
+        addFirstChildLink("Recruiter Contacts", VENDOR_CONTACTS_NODE);
         addFirstChildLink("Acct Pay Contacts", VENDOR_ACCT_PAY_CONTACTS_NODE);
     }
 

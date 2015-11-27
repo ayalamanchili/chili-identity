@@ -9,6 +9,7 @@ package info.yalamanchili.office.entity.client;
 
 import info.chili.jpa.AbstractEntity;
 import info.chili.jpa.validation.Unique;
+import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
 import java.util.ArrayList;
@@ -19,13 +20,16 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -62,6 +66,10 @@ public class Client extends AbstractEntity {
     protected String paymentTerms;
     @Enumerated(EnumType.STRING)
     protected InvoiceFrequency clientinvFrequency;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "Client_AcctPayContacts")
+    protected List<Contact> clientAcctPayContacts;
+
 
 //    public void setVendors(List<Vendor> vendors) {
 //        this.vendors = vendors;
@@ -175,6 +183,25 @@ public class Client extends AbstractEntity {
 //      contact.setClient(this);
     }
 
+    public void addClientAcctPayContact(Contact clientAcctPayContact) {
+        if (clientAcctPayContact == null) {
+            return;
+        }
+        getClientAcctPayContacts().add(clientAcctPayContact);
+    }
+
+    @XmlTransient
+    public List<Contact> getClientAcctPayContacts() {
+        if (this.clientAcctPayContacts == null) {
+            this.clientAcctPayContacts = new ArrayList<Contact>();
+        }
+        return this.clientAcctPayContacts;
+    }
+
+    public void setClientAcctPayContacts(List<Contact> clientAcctPayContacts) {
+        this.clientAcctPayContacts = clientAcctPayContacts;
+    }
+
     public String getWebsite() {
         return website;
     }
@@ -198,7 +225,7 @@ public class Client extends AbstractEntity {
     public void setClientinvFrequency(InvoiceFrequency clientinvFrequency) {
         this.clientinvFrequency = clientinvFrequency;
     }
-
+    
     @Override
     public String toString() {
         return "Client{" + "name=" + name + ", description=" + description + '}';
