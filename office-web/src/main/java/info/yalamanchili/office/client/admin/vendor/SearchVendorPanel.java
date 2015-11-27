@@ -11,6 +11,7 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -72,6 +73,8 @@ public class SearchVendorPanel extends SearchComposite {
     protected void addWidgets() {
         addField("name", DataType.STRING_FIELD);
         addEnumField("vendorType", false, false, VendorType.names());
+        addField("city", DataType.STRING_FIELD);
+        addEnumField("state", false, false, USAStatesFactory.getStates().toArray(new String[0]));
     }
 
     @Override
@@ -79,6 +82,8 @@ public class SearchVendorPanel extends SearchComposite {
         JSONObject entity = new JSONObject();
         assignEntityValueFromField("name", entity);
         assignEntityValueFromField("vendorType", entity);
+        assignEntityValueFromField("city", entity);
+        assignEntityValueFromField("state", entity);
         return entity;
     }
 
@@ -90,7 +95,7 @@ public class SearchVendorPanel extends SearchComposite {
                         @Override
                         public void onResponse(String result) {
                             processSearchResult(result);
-//                searchTB.setText("");
+//               searchTB.setText("");
                         }
                     });
         }
@@ -122,7 +127,7 @@ public class SearchVendorPanel extends SearchComposite {
 
     @Override
     protected String getSearchURI(Integer start, Integer limit) {
-        return OfficeWelcome.constants.root_url() + "vendor/search/" + start.toString() + "/"
+        return OfficeWelcome.constants.root_url() + "vendor/searchEmployee/" + start.toString() + "/"
                 + limit.toString();
     }
 }
