@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.jrs.client;
 
+import info.chili.commons.SearchUtils;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.types.Entry;
 import info.chili.dao.CRUDDao;
@@ -14,12 +15,19 @@ import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.client.VendorDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
+import info.yalamanchili.office.dao.profile.CompanyDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.dto.client.ContractSearchDto;
 import info.yalamanchili.office.dto.profile.ContactDto;
 import info.yalamanchili.office.dto.profile.ContactDto.ContactDtoTable;
+import info.yalamanchili.office.dto.profile.EmployeeSearchDto;
 import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.profile.Address;
+import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Contact;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
 import info.yalamanchili.office.mapper.profile.ContactMapper;
@@ -36,6 +44,7 @@ import javax.ws.rs.QueryParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.apache.commons.lang.StringUtils;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -55,6 +64,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("request")
 public class VendorResource extends CRUDResource<Vendor> {
 
+    @Autowired
+    public EmployeeDao employeeDao;
     @Autowired
     public VendorDao vendorDao;
     @Autowired
@@ -295,9 +306,25 @@ public class VendorResource extends CRUDResource<Vendor> {
         return result;
     }
 
+    @PUT
+    @Path("/searchEmployee/{start}/{limit}")
+    public String searchEmployee(Address address, @PathParam("start") int start, @PathParam("limit") int limit) {
+        StringBuilder queryStr = new StringBuilder();
+        queryStr.append("SELECT vendor from ").append(Vendor.class.getCanonicalName());
+        queryStr.append("  where ");
+
+        if (StringUtils.isNotBlank(address.getCity())) {
+            queryStr.append("address.city LIKE '%").append(address.getCity().trim()).append("%' ").append(" and ");
+        }
+        if (StringUtils.isNotBlank(address.getState())) {
+            queryStr.append("address.state LIKE '%").append(address.getState().trim()).append("%' ").append(" and ");
+        }
+        return queryStr.toString().substring(0, queryStr.toString().lastIndexOf("and"));
+    }
+
     @XmlRootElement
     @XmlType
-    public static class VendorTable implements java.io.Serializable{
+    public static class VendorTable implements java.io.Serializable {
 
         protected Long size;
         protected List<Vendor> entities;
