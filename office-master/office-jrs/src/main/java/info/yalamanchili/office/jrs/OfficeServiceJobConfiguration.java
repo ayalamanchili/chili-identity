@@ -19,8 +19,11 @@ import info.yalamanchili.office.email.ReceiveEmailsService;
 import info.yalamanchili.office.employee.perfeval.PerformanceEvaluationQuestionsFactory;
 import info.yalamanchili.office.employee.probeval.ProbationPeriodEvaluationQuestionsFactory;
 import info.yalamanchili.office.reports.profile.ProfileReportsService;
+import info.yalamanchili.office.toolbox.ClientContactDataTool;
 import info.yalamanchili.office.toolbox.ClientDataTool;
+import info.yalamanchili.office.toolbox.SubContractorContactDataTool;
 import info.yalamanchili.office.toolbox.SubContractorDataTool;
+import info.yalamanchili.office.toolbox.VendorContactDataTool;
 import info.yalamanchili.office.toolbox.VendorDataTool;
 import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.stereotype.Component;
@@ -125,5 +128,20 @@ public class OfficeServiceJobConfiguration {
     @ManagedOperation
     public void bisSubContractorTableMigration() {
         SubContractorDataTool.instance().migrateSubContractorData();
+    }
+
+    @ManagedOperation
+    public void bisClientContactMigration() {
+        ClientContactDataTool.instance().migrateClientContactData();
+    }
+
+    @ManagedOperation
+    public void bisVendorContactMigration() {
+        VendorContactDataTool.instance().migrateVendorContactData();
+    }
+
+    @ManagedOperation
+    public void bisSubContractorContactMigration() {
+        SubContractorContactDataTool.instance().migrateSubContractorContactData();
     }
 }

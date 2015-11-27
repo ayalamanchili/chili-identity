@@ -101,6 +101,7 @@ public class VendorContactDataTool {
                 for (Contact contct : vendor.getContacts()) {
                     if (cr.getEmail() != null && !cr.getEmail().isEmpty() && !emailExists(cr.getEmail(), contct)) {
                         email.setEmail(cr.getEmail());
+                        email.setPrimaryEmail(true);
                         contact.addEmail(email);
                     }
                     if (cr.getPhoneNumber() != null && !cr.getPhoneNumber().isEmpty() && !phoneExists(cr.getPhoneNumber(), contct)) {
@@ -115,6 +116,7 @@ public class VendorContactDataTool {
 
             if (cr.getEmail() != null && !cr.getEmail().isEmpty() && !isContactexists) {
                 email.setEmail(cr.getEmail());
+                email.setPrimaryEmail(true);
                 contact.addEmail(email);
             }
 
@@ -128,9 +130,9 @@ public class VendorContactDataTool {
             
             cr.setRole(getCellStringValue(record, 2));
             if (cr.getRole() != null && !cr.getRole().isEmpty()) {
-                if (cr.getRole() == "Recruiter") {
+                if (cr.getRole().equals("Recruiter")) {
                     vendor.addContact(contact);
-                } else if (cr.getRole() == "APContactperson") {
+                } else if (cr.getRole().equals("APContactperson")) {
                     vendor.addAcctPayContact(contact);
                 }
             }

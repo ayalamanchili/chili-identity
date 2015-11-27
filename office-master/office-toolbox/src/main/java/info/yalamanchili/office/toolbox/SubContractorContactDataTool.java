@@ -95,6 +95,7 @@ public class SubContractorContactDataTool {
             
             if (cr.getEmail() != null && !cr.getEmail().isEmpty()) {
                 email.setEmail(cr.getEmail());
+                email.setPrimaryEmail(true);
                 contact.addEmail(email);
             }
             

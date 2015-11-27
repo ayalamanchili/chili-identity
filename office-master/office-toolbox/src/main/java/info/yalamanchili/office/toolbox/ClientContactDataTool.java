@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.toolbox;
 
+import static info.chili.docs.ExcelUtils.getCellNumericValue;
 import static info.chili.docs.ExcelUtils.getCellStringOrNumericValue;
 import static info.chili.docs.ExcelUtils.getCellStringValue;
 import info.chili.spring.SpringContext;
@@ -66,9 +67,10 @@ public class ClientContactDataTool {
                 continue;
             }
             ContactRecord cr = new ContactRecord();
+            cr.setId(new Long(convertDcimalToWhole(getCellNumericValue(record, 2))));
             client = ClientDao.instance().findById(cr.getId());
-            cr.setFirstName(getCellStringValue(record, 2));
-            cr.setLastName(getCellStringValue(record, 2));
+            cr.setFirstName(getCellStringValue(record, 4));
+            cr.setLastName(getCellStringValue(record, 5));
             if (cr.getFirstName() != null && !cr.getFirstName().isEmpty()) {
                 cr.setFirstName(cr.getFirstName().replaceAll("[^a-zA-Z0-9\\s\\/]", ""));
                 contact.setFirstName(cr.getFirstName());
@@ -81,9 +83,9 @@ public class ClientContactDataTool {
             } else {
                 contact.setLastName(cr.getFirstName());
             }
-
-            cr.setPhoneNumber(convertDcimalToWhole(getCellStringOrNumericValue(record, 9)));
-            cr.setExtension(convertDcimalToWhole(getCellStringOrNumericValue(record, 9)));
+            
+            cr.setPhoneNumber(convertDcimalToWhole(getCellStringOrNumericValue(record, 7)));
+            cr.setExtension(convertDcimalToWhole(getCellStringOrNumericValue(record, 8)));
             
             if (cr.getPhoneNumber() != null && !cr.getPhoneNumber().isEmpty()) {
                 phone.setPhoneNumber(cr.getPhoneNumber());
@@ -93,18 +95,19 @@ public class ClientContactDataTool {
                 contact.addPhone(phone);
             }
             
-            cr.setEmail(getCellStringValue(record, 2));
+            cr.setEmail(getCellStringValue(record, 6));
             
             if (cr.getEmail() != null && !cr.getEmail().isEmpty()) {
                 email.setEmail(cr.getEmail());
+                email.setPrimaryEmail(true);
                 contact.addEmail(email);
             }
             
-            cr.setRole(getCellStringValue(record, 2));
+            cr.setRole(getCellStringValue(record, 9));
             if (cr.getRole() != null && !cr.getRole().isEmpty()) {
-                if (cr.getRole() == "Recruiter") {
+                if (cr.getRole().equals("Recruiter")) {
                     client.addContact(contact);
-                } else if (cr.getRole() == "APContactperson") {
+                } else if (cr.getRole().equals("APContactperson")) {
                     client.addClientAcctPayContact(contact);
                 }
             }
@@ -114,7 +117,6 @@ public class ClientContactDataTool {
     }
 
     protected String getDataFileUrl() {
-        //return "/Users/madhu.badiginchala/Desktop/BIS_ClientData.xlsx";
         return OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "BIS_ClientContactData.xlsx";
     }
 
