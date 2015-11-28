@@ -77,20 +77,20 @@ public class ReadAllExpenseReceiptsPanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
 
         if (Window.confirm("Are you sure? All Files details will be deleted")) {
+            deleteRow(entityId);
             HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
-                        @Override
-                        public void onResponse(String arg0) {
-                            postDeleteSuccess();
-                        }
-                    });
+                @Override
+                public void onResponse(String arg0) {
+                    postDeleteSuccess();
+                }
+            });
         }
     }
 
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Receipt Information");
-        refresh();
     }
 
     @Override
