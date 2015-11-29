@@ -254,6 +254,11 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         return getHoursInYear(employee, timeSheetCategory, Lists.newArrayList(timeSheetStatus), yearDate);
     }
 
+    public BigDecimal getPTOAccruedInYear(Employee employee) {
+        //TODO add all system added hours after completion of each month for that year.
+        return BigDecimal.ZERO;
+    }
+
     public BigDecimal getHoursInYear(Employee employee, List<TimeSheetCategory> category, List<TimeSheetStatus> status, Date yearDate) {
         TypedQuery<BigDecimal> query = getEntityManager().createQuery("select sum(hours) from " + CorporateTimeSheet.class.getCanonicalName() + " where employee=:employeeParam and category in (:categoryParam) and status in (:statusParam) and startDate >=:startDateParam and endDate <=:endDateParam", BigDecimal.class);
         query.setParameter("employeeParam", employee);
