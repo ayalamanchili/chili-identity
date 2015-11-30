@@ -172,9 +172,10 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite impl
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
+        String stage = JSONUtils.toString(entity, "stage");
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN)) {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
-        } else if (enableUpdate(entity)) {
+        } else if (enableUpdate(entity) || PerformanceEvaluationStage.Self_Review.name().equals(stage)) {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE, row, JSONUtils.toString(entity, "id"));
         } else {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));

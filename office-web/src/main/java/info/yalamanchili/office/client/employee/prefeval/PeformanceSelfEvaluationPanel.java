@@ -19,7 +19,9 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -39,8 +41,8 @@ public class PeformanceSelfEvaluationPanel extends ALComposite implements ClickH
     protected HTML purposeHtml = new HTML("<b>Instructions: </b></br> Your manager will utilize the information you provide to the following questions for </br>your FY performance review.");
     protected SelectYearWidget selectYearWidget = new SelectYearWidget(null, false, true);
     protected CreateQuestionCommentsWidget selfEvalCommentsPanel = new CreateQuestionCommentsWidget(QuestionCategory.SELF_EVALUATION, QuestionContext.PERFORMANCE_EVALUATION_SELF, false, true, false);
-    protected Button create = new Button("Create Self Evaluation");
-
+    protected Button create = new Button("Submit");
+    BooleanField submitForApprovalF = new BooleanField(OfficeWelcome.constants, "Submit", "PerformanceEvaluation", false, false, Alignment.HORIZONTAL);
     public PeformanceSelfEvaluationPanel() {
         init(cp);
     }
@@ -49,6 +51,8 @@ public class PeformanceSelfEvaluationPanel extends ALComposite implements ClickH
     protected void addListeners() {
         create.addClickHandler(this);
         selectYearWidget.getListBox().addChangeHandler(this);
+        submitForApprovalF.getBox().addClickHandler(this);
+        submitForApprovalF.setValue(Boolean.TRUE);
     }
 
     @Override
@@ -62,12 +66,18 @@ public class PeformanceSelfEvaluationPanel extends ALComposite implements ClickH
         panel.add(purposeHtml);
         panel.add(selectYearWidget);
         panel.add(selfEvalCommentsPanel);
+        panel.add(submitForApprovalF);
         panel.add(create);
         cp.setContentWidget(panel);
     }
 
     @Override
     public void onClick(ClickEvent event) {
+        if (submitForApprovalF.getValue()) {
+           create.setText("Submit");
+        } else {
+            create.setText("Save");
+        }
         if (event.getSource().equals(create)) {
             create.setEnabled(false);
             createSelfEvaluation();
@@ -78,7 +88,6 @@ public class PeformanceSelfEvaluationPanel extends ALComposite implements ClickH
         if (validate()) {
             HttpService.HttpServiceAsync.instance().doPut(getUrl(), getEntity().toString(), OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
-
                         @Override
                         public void onResponse(String result) {
                             new ResponseStatusWidget().show("Successfully Created Self Evaluation");
@@ -112,7 +121,7 @@ public class PeformanceSelfEvaluationPanel extends ALComposite implements ClickH
     }
 
     protected String getUrl() {
-        return OfficeWelcome.constants.root_url() + "performance-evaluation/save?submitForApproval=true";
+        return OfficeWelcome.constants.root_url() + "performance-evaluation/save?submitForApproval="+submitForApprovalF.getValue();
     }
 
     @Override

@@ -197,7 +197,7 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
                 addEnumField("type", true, false, EvaluationFrequencyType.names());
             } else {
                 //Create new review
-                addDropDown("evaluationFYYear", new SelectYearWidget(null, false, false));
+                addDropDown("evaluationFYYear", new SelectYearWidget(null, false, true));
             }
         }
         if (CreatePerformanceEvaluationPanelType.End.equals(type)) {
