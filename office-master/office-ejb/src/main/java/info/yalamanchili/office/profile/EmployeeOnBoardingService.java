@@ -66,7 +66,7 @@ import org.springframework.stereotype.Component;
 public class EmployeeOnBoardingService {
 
     private final static Logger logger = Logger.getLogger(EmployeeOnBoardingService.class.getName());
-    //TODO remove extended
+
     @PersistenceContext
     protected EntityManager em;
     @Autowired
@@ -93,6 +93,7 @@ public class EmployeeOnBoardingService {
         OnBoardingEmployeeDto res = new OnBoardingEmployeeDto();
         res.setFirstName(cnt.getFirstName());
         res.setLastName(cnt.getLastName());
+        //TODO set dob,address account first and last name
         return res;
     }
 
@@ -108,6 +109,7 @@ public class EmployeeOnBoardingService {
         emp.setStartDate(initiateDto.getStartDate());
         emp.setWorkStatus(employee.getWorkStatus());
         emp.setSsn(employee.getSsn());
+        //TODO use employeeservice
         emp.setBranch(initiateDto.getBranch());
         String employeeId = employeeService.generateEmployeeId(employee.getFirstName(), employee.getLastName(), employee.getDateOfBirth());
         String generatepass = employeeService.generatepassword();
@@ -133,7 +135,7 @@ public class EmployeeOnBoardingService {
         emp.setPreferences(prefs);
 
         //Update Address for Employee
-        Address address = new Address();
+        Address address;
         address = employee.getAddress();
         emp.getAddresss().add(address);
         address.setContact(emp);
@@ -155,10 +157,10 @@ public class EmployeeOnBoardingService {
             //Email
 
             if ((ec.getEmail() != null) && (!ec.getEmail().isEmpty())) {
-                Email em = new Email();
-                em.setEmail(ec.getEmail());
-                em.setPrimaryEmail(Boolean.TRUE);
-                contact.addEmail(em);
+                Email emil = new Email();
+                emil.setEmail(ec.getEmail());
+                emil.setPrimaryEmail(Boolean.TRUE);
+                contact.addEmail(emil);
             }
             //phone
             if (ec.getPhoneNumber() != null) {
@@ -193,7 +195,7 @@ public class EmployeeOnBoardingService {
         }
 
         //Update BankAccount Information for Employee
-        BankAccount bankAccount = new BankAccount();
+        BankAccount bankAccount;
         bankAccount = employee.getBankAccount();
         BankAccountDao.instance().save(bankAccount, emp.getId(), emp.getClass().getCanonicalName());
 
@@ -203,11 +205,12 @@ public class EmployeeOnBoardingService {
         }
 
         //Update Additional Information for Employee
-        EmployeeAdditionalDetails employeeAdditionalDetails = new EmployeeAdditionalDetails();
+        EmployeeAdditionalDetails employeeAdditionalDetails;
         employeeAdditionalDetails = employee.getEmployeeAdditionalDetails();
         EmployeeAdditionalDetailsDao.instance().save(employeeAdditionalDetails, emp.getId(), emp.getClass().getCanonicalName());
 
         //create cert
+        //TODO fix this
         OfficeSecurityService.instance().createUserCert(emp, null, null);
         return emp.getId().toString();
     }

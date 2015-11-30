@@ -62,7 +62,8 @@ public class InviteCodeGeneratorService {
         return entity;
     }
     protected final String[] ON_BOARDING_FORMS_LIST = {"W2_On_Boarding", "I9_On_Boarding"};
-
+    
+//TODO remove specific code for employee on boarding
     public void sendInviteCodeEmail(InviteCode entity) {
         Email email = new Email();
         email.addTo(entity.getEmail());

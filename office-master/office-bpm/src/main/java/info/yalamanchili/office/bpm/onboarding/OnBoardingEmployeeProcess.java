@@ -108,10 +108,10 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
    
     private void employeeOnBoardingTaskCompleted(DelegateTask dt) {
         Employee entity = getRequestFromTask(dt);
-        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
         if (entity == null) {
             return;
         }
+        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
         //Notes
         String notes = (String) dt.getExecution().getVariable("notes");
         CommentDao.instance().addComment(notes, entity);
