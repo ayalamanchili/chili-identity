@@ -69,22 +69,23 @@ public class VendorContactDataTool {
                 continue;
             }
             ContactRecord cr = new ContactRecord();
+            cr.setId(new Long(convertDcimalToWhole(getCellNumericValue(record, 2))));
             vendor = VendorDao.instance().findById(cr.getId());
 
-            cr.setSimilarity(new Double(getCellNumericValue(record, 5)));
+            cr.setSimilarity(new Double(getCellNumericValue(record, 10)));
             if (cr.getSimilarity() < 1.0000) {
                 isContactexists = false;
             } else {
                 isContactexists = true;
             }
 
-            cr.setEmail(getCellStringValue(record, 2));
-            cr.setPhoneNumber(convertDcimalToWhole(getCellStringOrNumericValue(record, 9)));
-            cr.setExtension(convertDcimalToWhole(getCellStringOrNumericValue(record, 9)));
+            cr.setEmail(getCellStringValue(record, 6));
+            cr.setPhoneNumber(convertDcimalToWhole(getCellStringOrNumericValue(record, 7)));
+            cr.setExtension(convertDcimalToWhole(getCellStringOrNumericValue(record, 8)));
 
             if (!isContactexists) {
-                cr.setFirstName(getCellStringValue(record, 2));
-                cr.setLastName(getCellStringValue(record, 2));
+                cr.setFirstName(getCellStringValue(record, 4));
+                cr.setLastName(getCellStringValue(record, 5));
                 if (cr.getFirstName() != null && !cr.getFirstName().isEmpty()) {
                     cr.setFirstName(cr.getFirstName().replaceAll("[^a-zA-Z0-9\\s\\/]", ""));
                     contact.setFirstName(cr.getFirstName());
@@ -102,14 +103,14 @@ public class VendorContactDataTool {
                     if (cr.getEmail() != null && !cr.getEmail().isEmpty() && !emailExists(cr.getEmail(), contct)) {
                         email.setEmail(cr.getEmail());
                         email.setPrimaryEmail(true);
-                        contact.addEmail(email);
+                        contct.addEmail(email);
                     }
                     if (cr.getPhoneNumber() != null && !cr.getPhoneNumber().isEmpty() && !phoneExists(cr.getPhoneNumber(), contct)) {
                         phone.setPhoneNumber(cr.getPhoneNumber());
                         if (cr.getExtension() != null && !cr.getExtension().isEmpty()) {
                             phone.setExtension(cr.getExtension());
                         }
-                        contact.addPhone(phone);
+                        contct.addPhone(phone);
                     }
                 }
             }
@@ -127,9 +128,9 @@ public class VendorContactDataTool {
                 }
                 contact.addPhone(phone);
             }
-            
-            cr.setRole(getCellStringValue(record, 2));
-            if (cr.getRole() != null && !cr.getRole().isEmpty()) {
+
+            cr.setRole(getCellStringValue(record, 9));
+            if (cr.getRole() != null && !cr.getRole().isEmpty() && !isContactexists) {
                 if (cr.getRole().equals("Recruiter")) {
                     vendor.addContact(contact);
                 } else if (cr.getRole().equals("APContactperson")) {
