@@ -19,6 +19,7 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.employee.prefeval.PerformanceEvaluationStage;
 import info.yalamanchili.office.client.gwt.RatingWidget;
 import java.util.logging.Logger;
 
@@ -43,10 +44,12 @@ public class UpdateQuestionCommentPanel extends UpdateComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("comment", entity);
-        if (ratingWidget.getRating() > 0) {
-            entity.put("rating", new JSONString(ratingWidget.getRating().toString()));
-        } else {
-            entity.put("rating", new JSONString("null"));
+        if (!PerformanceEvaluationStage.Self_Review.name().equals("Self_Review")) {
+            if (ratingWidget.getRating() > 0) {
+                entity.put("rating", new JSONString(ratingWidget.getRating().toString()));
+            } else {
+                entity.put("rating", new JSONString("null"));
+            }
         }
         entity.put("targetEntityName", new JSONString("dummy"));
         entity.put("targetEntityId", new JSONString("0"));
@@ -75,10 +78,12 @@ public class UpdateQuestionCommentPanel extends UpdateComposite {
     public void populateFieldsFromEntity(JSONObject entity) {
         questionInfoL.setHTML(entity.get("questionInfo").isString().stringValue());
         assignFieldValueFromEntity("comment", entity, DataType.TEXT_AREA_FIELD);
-        if (JSONUtils.toString(entity, "rating").isEmpty()) {
-            ratingWidget.setRating(0);
-        } else {
-            ratingWidget.setRating(Double.valueOf(JSONUtils.toString(entity, "rating")).intValue());
+        if (!PerformanceEvaluationStage.Self_Review.name().equals("Self_Review")) {
+            if (JSONUtils.toString(entity, "rating").isEmpty()) {
+                ratingWidget.setRating(0);
+            } else {
+                ratingWidget.setRating(Double.valueOf(JSONUtils.toString(entity, "rating")).intValue());
+            }
         }
     }
 
@@ -97,10 +102,12 @@ public class UpdateQuestionCommentPanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
-        ratingWidget = new RatingWidget(5, isRatingRequired, false);
         entityFieldsPanel.add(questionInfoL);
         addField("comment", false, false, DataType.TEXT_AREA_FIELD);
-        entityFieldsPanel.add(ratingWidget);
+        if (!PerformanceEvaluationStage.Self_Review.name().equals("Self_Review")) {
+            ratingWidget = new RatingWidget(5, isRatingRequired, false);
+            entityFieldsPanel.add(ratingWidget);
+        }
     }
 
     @Override

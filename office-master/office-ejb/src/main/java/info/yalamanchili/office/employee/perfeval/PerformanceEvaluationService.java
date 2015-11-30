@@ -131,7 +131,10 @@ public class PerformanceEvaluationService {
         }
         createQuestionComments(entity, dto.getComments());
         if (startProcess) {
+            entity.setStage(PerformanceEvaluationStage.Manager_Review);
             entity.setBpmProcessId(startCorporatePerformanceEvaluationProcess(entity, employee));
+        } else {
+            entity.setStage(PerformanceEvaluationStage.Self_Review);
         }
     }
 
@@ -240,6 +243,7 @@ public class PerformanceEvaluationService {
 
     public Set<String> getFYYears() {
         Set<String> fyYears = new HashSet<String>();
+        fyYears.add("2012");
         fyYears.add("2013");
         fyYears.add("2014");
         fyYears.add("2015");

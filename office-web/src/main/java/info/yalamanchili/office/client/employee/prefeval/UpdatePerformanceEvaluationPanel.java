@@ -56,13 +56,17 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         assignEntityValueFromField("evaluationDate", entity);
         assignEntityValueFromField("evaluationActualStartDate", entity);
         assignEntityValueFromField("evaluationPeriodEndDate", entity);
-        assignEntityValueFromField("keyAccomplishments", entity);
-        assignEntityValueFromField("areasNeedImprovement", entity);
+        if (!PerformanceEvaluationStage.Self_Review.name().equals("Self_Review") || PerformanceEvaluationWizardType.MANAGER.equals(type)) {
+            assignEntityValueFromField("keyAccomplishments", entity);
+            assignEntityValueFromField("areasNeedImprovement", entity);
+        }
 //        assignEntityValueFromField("nextYearObjectives", entity);
-        if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type) || (TabPanel.instance().myOfficePanel.isVisible() && Auth.hasAnyOfRoles(ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_GC_IMMIGRATION))) {
-            assignEntityValueFromField("managerComments", entity);
-            assignEntityValueFromField("employeeComments", entity);
-            assignEntityValueFromField("hrComments", entity);
+        if (!PerformanceEvaluationStage.Self_Review.name().equals("Self_Review")) {
+            if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type) || (TabPanel.instance().myOfficePanel.isVisible() && Auth.hasAnyOfRoles(ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_GC_IMMIGRATION))) {
+                assignEntityValueFromField("managerComments", entity);
+                assignEntityValueFromField("employeeComments", entity);
+                assignEntityValueFromField("hrComments", entity);
+            }
         }
         if (TabPanel.instance().myOfficePanel.isVisible() && Auth.hasAnyOfRoles(ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_RELATIONSHIP)) {
             assignEntityValueFromField("approvedBy", entity);
@@ -86,21 +90,21 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
                 x++;
             }
         }
-        if (updateSkillAptitudeCommentsPanel != null) {
+        if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type) && updateSkillAptitudeCommentsPanel != null) {
             skillQuestions = updateSkillAptitudeCommentsPanel.getQuestions();
             for (int i = 0; i < skillQuestions.size(); i++) {
                 questionComments.set(x, skillQuestions.get(i));
                 x++;
             }
         }
-        if (updateAptitudeCommentsPanel != null) {
+        if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type) && updateAptitudeCommentsPanel != null) {
             attitudeQuestions = updateAptitudeCommentsPanel.getQuestions();
             for (int i = 0; i < attitudeQuestions.size(); i++) {
                 questionComments.set(x, attitudeQuestions.get(i));
                 x++;
             }
         }
-        if (updateManagementCommentsPanel != null) {
+        if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type) && updateManagementCommentsPanel != null) {
             managementQuestions = updateManagementCommentsPanel.getQuestions();
             for (int i = 0; i < managementQuestions.size(); i++) {
                 questionComments.set(x, managementQuestions.get(i));
@@ -133,13 +137,17 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         assignFieldValueFromEntity("evaluationDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("evaluationActualStartDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("evaluationPeriodEndDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("keyAccomplishments", entity, DataType.TEXT_AREA_FIELD);
-        assignFieldValueFromEntity("areasNeedImprovement", entity, DataType.TEXT_AREA_FIELD);
+        if (!PerformanceEvaluationStage.Self_Review.name().equals("Self_Review") || PerformanceEvaluationWizardType.MANAGER.equals(type)) {
+            assignFieldValueFromEntity("keyAccomplishments", entity, DataType.TEXT_AREA_FIELD);
+            assignFieldValueFromEntity("areasNeedImprovement", entity, DataType.TEXT_AREA_FIELD);
+        }
 //        assignFieldValueFromEntity("nextYearObjectives", entity, DataType.TEXT_AREA_FIELD);
-        if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type) || (TabPanel.instance().myOfficePanel.isVisible() && Auth.hasAnyOfRoles(ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_GC_IMMIGRATION))) {
-            assignFieldValueFromEntity("managerComments", entity, DataType.TEXT_AREA_FIELD);
-            assignFieldValueFromEntity("employeeComments", entity, DataType.TEXT_AREA_FIELD);
-            assignFieldValueFromEntity("hrComments", entity, DataType.TEXT_AREA_FIELD);
+        if (!PerformanceEvaluationStage.Self_Review.name().equals("Self_Review")) {
+            if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type) || (TabPanel.instance().myOfficePanel.isVisible() && Auth.hasAnyOfRoles(ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_GC_IMMIGRATION))) {
+                assignFieldValueFromEntity("managerComments", entity, DataType.TEXT_AREA_FIELD);
+                assignFieldValueFromEntity("employeeComments", entity, DataType.TEXT_AREA_FIELD);
+                assignFieldValueFromEntity("hrComments", entity, DataType.TEXT_AREA_FIELD);
+            }
         }
         if (TabPanel.instance().myOfficePanel.isVisible() && Auth.hasAnyOfRoles(ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_RELATIONSHIP)) {
             assignFieldValueFromEntity("approvedBy", entity, DataType.STRING_FIELD);
@@ -169,7 +177,6 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
     @Override
     protected void configure() {
         formatTextAreaFields();
-
     }
 
     protected void formatTextAreaFields() {
@@ -202,19 +209,27 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
             addField("hrApprovalDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
             addField("acceptDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         }
-        addField("keyAccomplishments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        addField("areasNeedImprovement", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        if (!PerformanceEvaluationStage.Self_Review.name().equals("Self_Review") || PerformanceEvaluationWizardType.MANAGER.equals(type)) {
+            addField("keyAccomplishments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+            addField("areasNeedImprovement", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        }
 //        addField("nextYearObjectives", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        if (!PerformanceEvaluationStage.Self_Review.name().equals("Self_Review")) {
+            if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type) || (TabPanel.instance().myOfficePanel.isVisible() && Auth.hasAnyOfRoles(ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_GC_IMMIGRATION))) {
+                addField("managerComments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+                addField("employeeComments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+                addField("hrComments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+            }
+        }
         if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type) || (TabPanel.instance().myOfficePanel.isVisible() && Auth.hasAnyOfRoles(ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_GC_IMMIGRATION))) {
-            addField("managerComments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-            addField("employeeComments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-            addField("hrComments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
             updateSelfReviewCommentsPanel = new UpdateAllQuestionCommentsPanel(QuestionCategory.SELF_EVALUATION.name(), getQuestionCommentsUrl(QuestionCategory.SELF_EVALUATION.name(), QuestionContext.PERFORMANCE_EVALUATION_SELF.name()));
             entityFieldsPanel.add(updateSelfReviewCommentsPanel);
         }
-        entityFieldsPanel.add(updateSkillAptitudeCommentsPanel);
-        entityFieldsPanel.add(updateAptitudeCommentsPanel);
-        entityFieldsPanel.add(updateManagementCommentsPanel);
+        if (!PerformanceEvaluationStage.Self_Review.name().equals("Self_Review") || PerformanceEvaluationWizardType.MANAGER.equals(type)) {
+            entityFieldsPanel.add(updateSkillAptitudeCommentsPanel);
+            entityFieldsPanel.add(updateAptitudeCommentsPanel);
+            entityFieldsPanel.add(updateManagementCommentsPanel);
+        }
         if (renderSubmitForApproval()) {
             addField("submitForApproval", false, false, DataType.BOOLEAN_FIELD);
         }

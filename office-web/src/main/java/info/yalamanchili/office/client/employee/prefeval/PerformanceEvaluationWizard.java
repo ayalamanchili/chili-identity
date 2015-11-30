@@ -243,7 +243,7 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
         public CreateQuestionCommentsWidget getWidget() {
             if (widget == null) {
                 if (stepId.equals(QuestionCategory.SELF_EVALUATION.name())) {
-                    widget = new CreateQuestionCommentsWidget(QuestionCategory.SELF_EVALUATION, QuestionContext.PERFORMANCE_EVALUATION_SELF, false, true, false);
+                    widget = new CreateQuestionCommentsWidget(QuestionCategory.SELF_EVALUATION, QuestionContext.PERFORMANCE_EVALUATION_SELF, perfEvalStartStep.getWidget().getYearField().getSelectedObjectId(), false, true, false);
                 }
                 if (stepId.equals(QuestionCategory.SKILL_AND_APTITUDE.name())) {
                     widget = new CreateQuestionCommentsWidget(QuestionCategory.SKILL_AND_APTITUDE, QuestionContext.PERFORMANCE_EVALUATION_MANGER);

@@ -43,6 +43,7 @@ public class CreateQuestionCommentWidget extends ALComposite implements Presente
     protected Boolean useRichTextEditor;
     protected Boolean isRatingRequired;
     protected Boolean isCommentRequired;
+    protected String fyYear;
 
     public CreateQuestionCommentWidget(JSONObject question, Boolean displayRating, Boolean displayComment, Boolean useRichTextEditor) {
         this.question = question;
@@ -51,6 +52,17 @@ public class CreateQuestionCommentWidget extends ALComposite implements Presente
         this.useRichTextEditor = useRichTextEditor;
         isRatingRequired = JSONUtils.toBoolean(question, "questionRatingRequired");
         isCommentRequired = JSONUtils.toBoolean(question, "questionCommentRequired");
+        init(captionPanel);
+    }
+
+    public CreateQuestionCommentWidget(JSONObject question, Boolean displayRating, Boolean displayComment, Boolean useRichTextEditor, String year) {
+        this.question = question;
+        this.displayRating = displayRating;
+        this.displayComment = displayComment;
+        this.useRichTextEditor = useRichTextEditor;
+        isRatingRequired = JSONUtils.toBoolean(question, "questionRatingRequired");
+        isCommentRequired = JSONUtils.toBoolean(question, "questionCommentRequired");
+        this.fyYear=year;
         init(captionPanel);
     }
 
