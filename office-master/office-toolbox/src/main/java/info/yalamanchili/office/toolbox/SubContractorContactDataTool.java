@@ -8,13 +8,12 @@
  */
 package info.yalamanchili.office.toolbox;
 
+import static info.chili.docs.ExcelUtils.getCellNumericValue;
 import static info.chili.docs.ExcelUtils.getCellStringOrNumericValue;
 import static info.chili.docs.ExcelUtils.getCellStringValue;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
-import info.yalamanchili.office.dao.client.ClientDao;
 import info.yalamanchili.office.dao.client.SubcontractorDao;
-import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Subcontractor;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
@@ -29,11 +28,15 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author Madhu.Badiginchala
  */
+@Component("subContractorContactDataTool")
+@Transactional
 public class SubContractorContactDataTool {
 
     private static final Log log = LogFactory.getLog(SubContractorContactDataTool.class);
@@ -64,9 +67,10 @@ public class SubContractorContactDataTool {
                 continue;
             }
             ContactRecord cr = new ContactRecord();
+            cr.setId(new Long(convertDcimalToWhole(getCellNumericValue(record, 2))));
             subContractor = SubcontractorDao.instance().findById(cr.getId());
-            cr.setFirstName(getCellStringValue(record, 2));
-            cr.setLastName(getCellStringValue(record, 2));
+            cr.setFirstName(getCellStringValue(record, 4));
+            cr.setLastName(getCellStringValue(record, 5));
             if (cr.getFirstName() != null && !cr.getFirstName().isEmpty()) {
                 cr.setFirstName(cr.getFirstName().replaceAll("[^a-zA-Z0-9\\s\\/]", ""));
                 contact.setFirstName(cr.getFirstName());
@@ -80,8 +84,8 @@ public class SubContractorContactDataTool {
                 contact.setLastName(cr.getFirstName());
             }
 
-            cr.setPhoneNumber(convertDcimalToWhole(getCellStringOrNumericValue(record, 9)));
-            cr.setExtension(convertDcimalToWhole(getCellStringOrNumericValue(record, 9)));
+            cr.setPhoneNumber(convertDcimalToWhole(getCellStringOrNumericValue(record, 7)));
+            cr.setExtension(convertDcimalToWhole(getCellStringOrNumericValue(record, 8)));
             
             if (cr.getPhoneNumber() != null && !cr.getPhoneNumber().isEmpty()) {
                 phone.setPhoneNumber(cr.getPhoneNumber());
@@ -91,7 +95,7 @@ public class SubContractorContactDataTool {
                 contact.addPhone(phone);
             }
             
-            cr.setEmail(getCellStringValue(record, 2));
+            cr.setEmail(getCellStringValue(record, 6));
             
             if (cr.getEmail() != null && !cr.getEmail().isEmpty()) {
                 email.setEmail(cr.getEmail());
@@ -99,10 +103,8 @@ public class SubContractorContactDataTool {
                 contact.addEmail(email);
             }
             
-            cr.setRole(getCellStringValue(record, 2));
-            if (cr.getRole() != null && !cr.getRole().isEmpty()) {
-                    subContractor.addContact(contact);
-            }
+            cr.setRole(getCellStringValue(record, 9));
+            subContractor.addContact(contact);
             
             SubcontractorDao.instance().getEntityManager().merge(subContractor);
         }
