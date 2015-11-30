@@ -13,7 +13,6 @@ import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReportStatus;
-import info.yalamanchili.office.entity.profile.Employee;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

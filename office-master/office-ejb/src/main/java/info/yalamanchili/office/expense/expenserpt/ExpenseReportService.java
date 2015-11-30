@@ -68,7 +68,6 @@ public class ExpenseReportService {
         entity.setStatus(ExpenseReportStatus.PENDING_MANAGER_APPROVAL);
         entity.setExpenseReimbursePaymentMode(ExpenseReimbursePaymentMode.MAIL_CHECK);
         entity.setSubmittedDate(new Date());
-        BigDecimal amount = BigDecimal.ZERO;
         ExpenseCategoryDao expenseCategoryDao = ExpenseCategoryDao.instance();
         for (ExpenseItem item : entity.getExpenseItems()) {
             if (dto.getExpenseFormType().equals(ExpenseFormType.GENERAL_EXPENSE)) {
@@ -76,7 +75,6 @@ public class ExpenseReportService {
             } else {
                 item.setCategory(expenseCategoryDao.findById(item.getCategory().getId()));
             }
-            amount = amount.add(item.getAmount());
             item.setId(null);
             item.setVersion(null);
             item.setExpenseReport(entity);
@@ -86,12 +84,11 @@ public class ExpenseReportService {
                 receipt.setExpenseReport(entity);
             }
         }
-        entity.setTotalExpenses(amount);
         entity.setEmployee(OfficeSecurityService.instance().getCurrentUser());
         Long approvalManagerId = entity.getApprovalManagerId();
         entity = expenseReportsDao.save(entity);
+        expenseReportsDao.getEntityManager().flush();
         if (submitForApproval) {
-            entity.setTotalExpenses(amount);
             entity.setStatus(ExpenseReportStatus.PENDING_MANAGER_APPROVAL);
             entity.setBpmProcessId(startExpenseReportProcess(approvalManagerId, entity));
         }
@@ -122,11 +119,8 @@ public class ExpenseReportService {
         ExpenseReport entity = expenseReportsDao.save(dto);
         ExpenseCategoryDao expenseCategoryDao = ExpenseCategoryDao.instance();
         //add/update items
-        BigDecimal amount = BigDecimal.ZERO;
         for (ExpenseItem item : dto.getExpenseItems()) {
             if (item.getId() != null) {
-                amount = amount.add(item.getAmount());
-                entity.setTotalExpenses(amount);
                 expenseItemDao.save(item);
             } else {
                 if (dto.getExpenseFormType().equals(ExpenseFormType.GENERAL_EXPENSE)) {
@@ -137,7 +131,6 @@ public class ExpenseReportService {
                 item.setExpenseReport(entity);
                 item = expenseReportsDao.getEntityManager().merge(item);
                 entity.getExpenseItems().add(item);
-                expenseReportsDao.getEntityManager().merge(entity);
             }
         }
         for (ExpenseReceipt receipt : dto.getExpenseReceipts()) {
@@ -148,7 +141,6 @@ public class ExpenseReportService {
             }
         }
         if (submitForApproval) {
-            entity.setTotalExpenses(amount);
             entity.setStatus(ExpenseReportStatus.PENDING_MANAGER_APPROVAL);
             entity.setBpmProcessId(startExpenseReportProcess(null, entity));
         }
