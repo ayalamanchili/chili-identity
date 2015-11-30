@@ -25,18 +25,12 @@ public class CorporateTimeSummary implements Serializable {
     /**
      * PTO
      */
-    protected BigDecimal totalPTOHours;
+    protected BigDecimal totalAccumulatedPTOHours;
     protected BigDecimal usedPTOHours;
     protected BigDecimal availablePTOHours;
-    /**
-     * total hours
-     */
-    protected BigDecimal totalAccumulatedHours;
-    protected BigDecimal totalUsedHours;
-    protected BigDecimal totalAvailableHours;
-    /**
-     *
-     */
+   /**
+    * unpaid
+    */
     protected BigDecimal usedUnpaidHours;
     protected String employee;
     protected Date startDate;
@@ -83,15 +77,15 @@ public class CorporateTimeSummary implements Serializable {
     /**
      * @return the totalPTOHours
      */
-    public BigDecimal getTotalPTOHours() {
-        return totalPTOHours;
+    public BigDecimal getTotalAccumulatedPTOHours() {
+        return totalAccumulatedPTOHours;
     }
 
     /**
-     * @param totalPTOHours the totalPTOHours to set
+     * @param totalAccumulatedPTOHours the totalPTOHours to set
      */
-    public void setTotalPTOHours(BigDecimal totalPTOHours) {
-        this.totalPTOHours = totalPTOHours;
+    public void setTotalAccumulatedPTOHours(BigDecimal totalAccumulatedPTOHours) {
+        this.totalAccumulatedPTOHours = totalAccumulatedPTOHours;
     }
 
     /**
@@ -106,47 +100,5 @@ public class CorporateTimeSummary implements Serializable {
      */
     public void setUsedPTOHours(BigDecimal usedPTOHours) {
         this.usedPTOHours = usedPTOHours;
-    }
-
-    /**
-     * @return the totalAccumulatedHours
-     */
-    public BigDecimal getTotalAccumulatedHours() {
-        return totalAccumulatedHours;
-    }
-
-    /**
-     * @param totalAccumulatedHours the totalAccumulatedHours to set
-     */
-    public void setTotalAccumulatedHours(BigDecimal totalAccumulatedHours) {
-        this.totalAccumulatedHours = totalAccumulatedHours;
-    }
-
-    /**
-     * @return the totalUsedHours
-     */
-    public BigDecimal getTotalUsedHours() {
-        return totalUsedHours;
-    }
-
-    /**
-     * @param totalUsedHours the totalUsedHours to set
-     */
-    public void setTotalUsedHours(BigDecimal totalUsedHours) {
-        this.totalUsedHours = totalUsedHours;
-    }
-
-    /**
-     * @return the totalAvailableHours
-     */
-    public BigDecimal getTotalAvailableHours() {
-        return totalAvailableHours;
-    }
-
-    /**
-     * @param totalAvailableHours the totalAvailableHours to set
-     */
-    public void setTotalAvailableHours(BigDecimal totalAvailableHours) {
-        this.totalAvailableHours = totalAvailableHours;
     }
 }

@@ -29,7 +29,6 @@ import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.security.AccessCheck;
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -120,29 +119,12 @@ public class CorporateTimeService {
         //PTO
         summary.setUsedPTOHours(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.PTO_USED, TimeSheetStatus.Approved, new Date()));
         summary.setAvailablePTOHours(corporateTimeSheetDao.getPTOAccruedTimeSheet(employee).getHours());
-        summary.setTotalPTOHours(summary.getAvailablePTOHours());
-        //Total
-        summary.setTotalAccumulatedHours(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.getEarnedCategories(), TimeSheetStatus.Approved, new Date()));
-        summary.setTotalUsedHours(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.getLeaveSpentCheckedCategories(), TimeSheetStatus.Approved, new Date()));
-        summary.setTotalAvailableHours(summary.getTotalAccumulatedHours().subtract(summary.getTotalUsedHours()));
+        summary.setTotalAccumulatedPTOHours(corporateTimeSheetDao.getPTOAccruedInYear(employee));
 
         summary.setUsedUnpaidHours(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Unpaid, TimeSheetStatus.Approved, new Date()));
         summary.setEmployee(employee.getFirstName() + " " + employee.getLastName());
         summary.setStartDate(employee.getStartDate());
         return summary;
-    }
-
-    public BigDecimal getYearlyPeronalBalance(Employee employee) {
-        BigDecimal earned = corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.PTO_Earned, TimeSheetStatus.Approved, new Date());
-        BigDecimal spent = corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.PTO_Spent, TimeSheetStatus.Approved, new Date());
-        return earned.subtract(spent);
-    }
-
-    public BigDecimal getYearlyVacationBalance(Employee employee, Date yearDate) {
-        BigDecimal vacationEarned = corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Vacation_Earned, TimeSheetStatus.Approved, yearDate);
-        BigDecimal vacationCarryForward = corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Vacation_CarryForward, TimeSheetStatus.Approved, yearDate);
-        BigDecimal spent = corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Vacation_Spent, TimeSheetStatus.Approved, yearDate);
-        return vacationEarned.add(vacationCarryForward).subtract(spent);
     }
 
     @AccessCheck(employeePropertyName = "employee", companyContacts = {"Reports_To"}, roles = {"ROLE_HR_ADMINSTRATION", "ROLE_CORPORATE_TIME_REPORTS"})
@@ -174,23 +156,14 @@ public class CorporateTimeService {
             data.getData().put("category", entity.getCategory().toString());
         }
         data.getData().put("notes", entity.getNotes());
-        if (summary.getTotalPTOHours() != null) {
-            data.getData().put("totalPTOHours", summary.getTotalPTOHours().toString());
+        if (summary.getTotalAccumulatedPTOHours() != null) {
+            data.getData().put("totalPTOHours", summary.getTotalAccumulatedPTOHours().toString());
         }
         if (summary.getAvailablePTOHours() != null) {
             data.getData().put("availablePTOHours", summary.getAvailablePTOHours().toString());
         }
         if (summary.getUsedPTOHours() != null) {
             data.getData().put("usedPTOHours", summary.getUsedPTOHours().toString());
-        }
-        if (summary.getTotalAccumulatedHours() != null) {
-            data.getData().put("totalAccumulatedHours", summary.getTotalAccumulatedHours().toString());
-        }
-        if (summary.getTotalAvailableHours() != null) {
-            data.getData().put("totalAvailableHours", summary.getTotalAvailableHours().toString());
-        }
-        if (summary.getTotalUsedHours() != null) {
-            data.getData().put("totalUsedHours", summary.getTotalUsedHours().toString());
         }
         if (entity.getApprovedBy() != null) {
             Employee approver = employeeDao.findEmployeWithEmpId(entity.getApprovedBy());
@@ -208,7 +181,7 @@ public class CorporateTimeService {
     @Async
     @Transactional(readOnly = true)
     public void getAllEmployeesSummaryReport(String email) {
-        List<CorporateTimeSummary> summary = new ArrayList<CorporateTimeSummary>();
+        List<CorporateTimeSummary> summary = new ArrayList<>();
         for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
             summary.add(getYearlySummary(emp));
         }
