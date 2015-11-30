@@ -15,7 +15,6 @@ import info.chili.commons.pdf.PDFUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
@@ -255,8 +254,19 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
     }
 
     public BigDecimal getPTOAccruedInYear(Employee employee) {
+        BigDecimal ptoHoursAccrued = BigDecimal.ZERO;
+//        CorporateTimeSheet ts = getPTOAccruedTimeSheet(employee);
+//        AuditReader auditReader = AuditService.instance().getAuditReader();
+//        for (Number revNumber : auditReader.getRevisions(entityCls, ts.getId())) {
+//            AuditRevisionEntity revEntity = getAuditReader().findRevision(AuditRevisionEntity.class, revNumber);
+//            if (Strings.isNullOrEmpty(revEntity.getUpdatedUserId())    {
+//                CorporateTimeSheet previousTimeSheet = auditReader.find(entityCls, id, revNumber);
+//                ptoHoursAccrued = ptoHoursAccrued.add(previousTimeSheet.getHours());
+//            }
+//
+//        }
         //TODO add all system added hours after completion of each month for that year.
-        return BigDecimal.ZERO;
+        return ptoHoursAccrued;
     }
 
     public BigDecimal getHoursInYear(Employee employee, List<TimeSheetCategory> category, List<TimeSheetStatus> status, Date yearDate) {
