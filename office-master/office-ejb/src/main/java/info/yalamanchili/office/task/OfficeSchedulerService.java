@@ -38,7 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 public class OfficeSchedulerService {
-    
+
     @PersistenceContext
     public EntityManager em;
 
@@ -53,7 +53,7 @@ public class OfficeSchedulerService {
     /**
      * runs at 1'0 clock every month to accumulate monthly earned PTO,
      */
-//    @Scheduled(cron = "0 1 1 * * ?")
+    @Scheduled(cron = "0 1 1 * * ?")
     public void accuredMonthlyTime() {
         CorporateTimeAccuralService.instance().accureMonthlyTime();
         AssociateTimeAccuralService.instance().accureMonthlyConsTime();
@@ -116,7 +116,7 @@ public class OfficeSchedulerService {
         ProbationPeriodEvaluationInitiator.instance().initiateNewHireProbationPeriodEvaluations();
     }
     public static final String BIRTHDAY_ANNUAL_NOTIFICATION_GROUP = "Birthday_Annual_Notification_Group";
-    
+
     @Scheduled(cron = "0 30 1 * * ?")
     public void anniversaryNotification() {
         int monthb = Calendar.getInstance().get(Calendar.MONTH);
@@ -132,7 +132,7 @@ public class OfficeSchedulerService {
             Calendar date1 = Calendar.getInstance();
             date1.setTime(empres.getStartDate());
             Calendar date2 = Calendar.getInstance();
-            
+
             int years = yearsBetween(date1, date2);
             //TODO enhance it to collect all emails and send once
 
@@ -155,7 +155,7 @@ public class OfficeSchedulerService {
             }
         }
     }
-    
+
     public static int yearsBetween(Calendar date1, Calendar date2) {
         int years = 0;
         //difference in of years
