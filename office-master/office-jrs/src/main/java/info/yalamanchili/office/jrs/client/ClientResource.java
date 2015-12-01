@@ -161,6 +161,16 @@ public class ClientResource extends CRUDResource<Client> {
         Contact contact = contactService.save(contactDto);
         clnt.addContact(contact);
     }
+    
+    @PUT
+    @Validate
+    @Path("/acct-pay-contact/{clientId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
+    public void addclientAcctPayContact(@PathParam("clientId") Long clientId, ContactDto dto) {
+        Client client = (Client) getDao().findById(clientId);
+        Contact contact = contactService.save(dto);
+        client.addClientAcctPayContact(contact);
+    }
 
     @PUT
     @Path("/contact/remove/{clientId}/{contactId}")
@@ -175,6 +185,16 @@ public class ClientResource extends CRUDResource<Client> {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "DELETE", "contactIdInvalid", "contact not found");
         }
         client.getContacts().remove(contact);
+        ContactDao.instance().delete(contact.getId());
+    }
+    
+    @PUT
+    @Path("/acct-pay-contact/remove/{clientId}/{contactId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
+    public void removeAcctPayContact(@PathParam("clientId") Long clientId, @PathParam("contactId") Long contactId) {
+        Client client = (Client) getDao().findById(clientId);
+        Contact contact = ContactDao.instance().findById(contactId);
+        client.getClientAcctPayContacts().remove(contact);
         ContactDao.instance().delete(contact.getId());
     }
 
@@ -201,6 +221,33 @@ public class ClientResource extends CRUDResource<Client> {
         tableObj.setSize((long) client.getContacts().size());
         return tableObj;
     }
+    
+    /**
+     * Get Client Account Payable Contact
+     *
+     * @param id
+     * @param start
+     * @param limit
+     * @return
+     *
+     */
+     @GET
+    @Path("/acct-pay-contacts/{id}/{start}/{limit}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_TIME','ROLE_EXPENSE','ROLE_RELATIONSHIP')")
+    public ContactDtoTable getClientAcctPayContacts(@PathParam("id") long id, @PathParam("start") int start,
+            @PathParam("limit") int limit) {
+        Client contact = (Client) getDao().findById(id);
+        return getContacts(contact.getClientAcctPayContacts());
+    }
+    
+    protected ContactDtoTable getContacts(List<Contact> contacts) {
+        ContactDtoTable tableObj = new ContactDtoTable();
+        for (Contact entity : contacts) {
+            tableObj.getEntities().add(ContactMapper.map(entity));
+        }
+        tableObj.setSize((long) contacts.size());
+        return tableObj;
+    }
 
     /**
      * Get Client Contacts DropDown
@@ -225,6 +272,26 @@ public class ClientResource extends CRUDResource<Client> {
         }
         return result;
     }
+    
+     @GET
+    @Path("/acct-pay-contacts/dropdown/{id}/{start}/{limit}")
+    public List<Entry> getClientAcctPayContactsDropDown(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit,
+            @QueryParam("column") List<String> columns) {
+        Client client = ClientDao.instance().findById(id);
+        return getContactDropDown(client.getClientAcctPayContacts());
+    }
+
+    protected List<Entry> getContactDropDown(List<Contact> contacts) {
+        List<Entry> result = new ArrayList<Entry>();
+        for (Contact contact : contacts) {
+            Entry entry = new Entry();
+            entry.setId(contact.getId().toString());
+            entry.setValue(contact.getFirstName() + " " + contact.getLastName());
+            result.add(entry);
+        }
+        return result;
+    }
+
 
     /**
      * Add Client Location
