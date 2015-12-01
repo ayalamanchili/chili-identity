@@ -11,8 +11,10 @@ import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.admin.clientcontact.ClientAcctPayCntOptionsPanel;
 import info.yalamanchili.office.client.gwt.TreePanelComposite;
 import info.yalamanchili.office.client.admin.clientcontact.ClientContactOptionsPanel;
+import info.yalamanchili.office.client.admin.clientcontact.ReadAllClientAcctPayContacts;
 import info.yalamanchili.office.client.admin.clientcontact.ReadAllClientContactPanel;
 import info.yalamanchili.office.client.admin.clientlocation.ClientLocationOptionsPanel;
 import info.yalamanchili.office.client.admin.clientlocation.ReadAllClientLocationsPanel;
@@ -35,6 +37,7 @@ public class TreeClientPanel extends TreePanelComposite {
 //    protected static final String PROJECT_NODE = "project";
     protected static final String CLIENTLOCATION_NODE = "clientlocation";
     protected static final String CONTACTS_NODE = "contacts";
+    protected static final String CLIENT_ACCT_PAY_CONTACTS_NODE = "clientacctpaycontacts";
 
     public TreeClientPanel(String entityId) {
         super(entityId);
@@ -67,6 +70,7 @@ public class TreeClientPanel extends TreePanelComposite {
 //        addFirstChildLink("Project", PROJECT_NODE);
         addFirstChildLink("Locations", CLIENTLOCATION_NODE);
         addFirstChildLink("Contacts", CONTACTS_NODE);
+        addFirstChildLink("Acct Pay Contacts", CLIENT_ACCT_PAY_CONTACTS_NODE);
     }
 
     @Override
@@ -85,6 +89,11 @@ public class TreeClientPanel extends TreePanelComposite {
             TabPanel.instance().adminPanel.entityPanel.clear();
             TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientContactPanel(entityId));
             TabPanel.instance().adminPanel.entityPanel.add(new ClientContactOptionsPanel());
+        }
+        if (CLIENT_ACCT_PAY_CONTACTS_NODE.equals(entityNodeKey)){
+            TabPanel.instance().adminPanel.entityPanel.clear();
+            TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientAcctPayContacts(entityId));
+            TabPanel.instance().adminPanel.entityPanel.add(new ClientAcctPayCntOptionsPanel());
         }
     }
 
