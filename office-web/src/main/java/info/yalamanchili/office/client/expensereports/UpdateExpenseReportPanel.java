@@ -154,6 +154,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
         }
         entity.put(EXPENSE_ITEMS, items);
         int j = expenseReceipts.size();
+        logger.info(expenseReceipts.toString());
         for (FileUpload upload : fileUploadPanel.getFileUploads()) {
             if (upload.getFilename() != null && !upload.getFilename().trim().isEmpty()) {
                 JSONObject expenseReceipt = new JSONObject();
@@ -163,6 +164,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
                 j++;
             }
         }
+        logger.info(expenseReceipts.toString());
         if (expenseReceipts.size() > 0) {
             entity.put(EXPENSE_RECEIPT, expenseReceipts);
         }
@@ -313,7 +315,9 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
         } else {
             setButtonText("Update");
         }
-        super.onClick(event);
+        if (event.getSource().equals(update)) {
+            super.onClick(event);
+        }
     }
 
     protected boolean isGeneralExpenseItem() {

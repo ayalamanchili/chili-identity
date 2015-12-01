@@ -75,7 +75,6 @@ public class ReadAllExpenseReceiptsPanel extends CRUDReadAllComposite {
 
     @Override
     public void deleteClicked(String entityId) {
-
         if (Window.confirm("Are you sure? All Files details will be deleted")) {
             deleteRow(entityId);
             HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
