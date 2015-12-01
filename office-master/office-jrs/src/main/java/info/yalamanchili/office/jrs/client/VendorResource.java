@@ -300,7 +300,7 @@ public class VendorResource extends CRUDResource<Vendor> {
         for (Address address : vendor.getLocations()) {
             Entry entry = new Entry();
             entry.setId(address.getId().toString());
-            entry.setValue(address.getStreet1() + " " + address.getCity());
+            entry.setValue(address.getStreet1() + "-" + address.getCity() + "-" + address.getState());
             result.add(entry);
         }
         return result;
