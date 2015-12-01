@@ -20,21 +20,21 @@ import java.util.logging.Logger;
  *
  * @author prasanthi.p
  */
-public class ReadEventServicePanel extends ReadComposite {
+public class ReadEmailEventPanel extends ReadComposite {
 
-    private static ReadEventServicePanel instance;
-    private static Logger logger = Logger.getLogger(ReadEventServicePanel.class.getName());
+    private static ReadEmailEventPanel instance;
+    private static Logger logger = Logger.getLogger(ReadEmailEventPanel.class.getName());
 
-    public static ReadEventServicePanel instance() {
+    public static ReadEmailEventPanel instance() {
         return instance;
     }
 
-    public ReadEventServicePanel(JSONObject entity) {
+    public ReadEmailEventPanel(JSONObject entity) {
         instance = this;
         initReadComposite(entity, "EventService", OfficeWelcome.constants);
     }
 
-    public ReadEventServicePanel(String id) {
+    public ReadEmailEventPanel(String id) {
         instance = this;
         initReadComposite(id, "EventService", OfficeWelcome.constants);
     }

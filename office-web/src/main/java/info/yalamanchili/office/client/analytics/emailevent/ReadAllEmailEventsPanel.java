@@ -41,7 +41,7 @@ public class ReadAllEmailEventsPanel extends CRUDReadAllComposite {
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().chiliAdminPanel.entityPanel.clear();
-        TabPanel.instance().chiliAdminPanel.entityPanel.add(new ReadEventServicePanel(getEntity(entityId)));
+        TabPanel.instance().chiliAdminPanel.entityPanel.add(new ReadEmailEventPanel(getEntity(entityId)));
     }
 
     @Override
