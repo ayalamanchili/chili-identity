@@ -362,7 +362,7 @@ public class ClientResource extends CRUDResource<Client> {
         for (Address address : client.getLocations()) {
             Entry entry = new Entry();
             entry.setId(address.getId().toString());
-            entry.setValue(address.getStreet1() + " " + address.getCity());
+            entry.setValue(address.getStreet1() + "-" + address.getCity() + "-" + address.getState());
             result.add(entry);
         }
         return result;
