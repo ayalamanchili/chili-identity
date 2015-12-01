@@ -190,11 +190,14 @@ public class ContractService {
 
     protected ContractDto mapClientInformation(ClientInformation ci) {
         ContractDto dto = mapper.map(ci, ContractDto.class);
-        dto.setEmployee(ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
-        //map employee type 
-        dto.setEmployeeType(ci.getEmployee().getEmployeeType().getName());
-        dto.setEmployeeCompany(ci.getEmployee().getCompany().getName());
-        dto.setEmployeeID(ci.getEmployee().getId());
+        if (ci.getEmployee() != null) {
+            dto.setEmployee(ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
+            dto.setEmployeeType(ci.getEmployee().getEmployeeType().getName());
+            dto.setEmployeeID(ci.getEmployee().getId());
+            if (ci.getEmployee().getCompany() != null) {
+                dto.setEmployeeCompany(ci.getEmployee().getCompany().getName());
+            }
+        }
         //TODO set client
         if (ci.getClient() != null) {
             dto.setClient(ci.getClient().getName());
