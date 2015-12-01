@@ -69,7 +69,7 @@ public class TreeClientPanel extends TreePanelComposite {
     protected void addWidgets() {
 //        addFirstChildLink("Project", PROJECT_NODE);
         addFirstChildLink("Locations", CLIENTLOCATION_NODE);
-        addFirstChildLink("Contacts", CONTACTS_NODE);
+        addFirstChildLink("Recruiter Contacts", CONTACTS_NODE);
         addFirstChildLink("Acct Pay Contacts", CLIENT_ACCT_PAY_CONTACTS_NODE);
     }
 
