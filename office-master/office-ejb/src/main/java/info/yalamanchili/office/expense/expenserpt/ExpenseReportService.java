@@ -137,7 +137,7 @@ public class ExpenseReportService {
             if (receipt.getId() == null) {
                 receipt.setExpenseReport(entity);
                 entity.getExpenseReceipts().add(receipt);
-                expenseReportsDao.getEntityManager().merge(entity);
+                entity = expenseReportsDao.getEntityManager().merge(entity);
             }
         }
         if (submitForApproval) {
