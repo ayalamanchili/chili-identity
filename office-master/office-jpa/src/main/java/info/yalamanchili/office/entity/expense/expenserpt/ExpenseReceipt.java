@@ -9,6 +9,7 @@
 package info.yalamanchili.office.entity.expense.expenserpt;
 
 import info.chili.jpa.AbstractEntity;
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
@@ -66,6 +67,27 @@ public class ExpenseReceipt extends AbstractEntity {
 
     public void setExpenseReport(ExpenseReport expenseReport) {
         this.expenseReport = expenseReport;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ExpenseReceipt other = (ExpenseReceipt) obj;
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        return Objects.equals(this.fileURL, other.fileURL);
     }
 
 }

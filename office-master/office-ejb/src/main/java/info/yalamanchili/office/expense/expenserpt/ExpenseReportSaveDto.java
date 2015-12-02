@@ -12,7 +12,9 @@ import info.yalamanchili.office.entity.expense.expenserpt.ExpenseItem;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReceipt;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
@@ -29,7 +31,7 @@ public class ExpenseReportSaveDto extends ExpenseReport {
 
     protected List<ExpenseItem> expenseItems;
 
-    protected List<ExpenseReceipt> expenseReceipts;
+    protected Set<ExpenseReceipt> expenseReceipts;
 
     @Override
     @XmlElement
@@ -49,15 +51,15 @@ public class ExpenseReportSaveDto extends ExpenseReport {
 
     @XmlElement
     @Override
-    public List<ExpenseReceipt> getExpenseReceipts() {
+    public Set<ExpenseReceipt> getExpenseReceipts() {
         if (this.expenseReceipts == null) {
-            this.expenseReceipts = new ArrayList();
+            this.expenseReceipts = new HashSet();
         }
         return expenseReceipts;
     }
 
     @Override
-    public void setExpenseReceipts(List<ExpenseReceipt> expenseReceipts) {
+    public void setExpenseReceipts(Set<ExpenseReceipt> expenseReceipts) {
         this.expenseReceipts = expenseReceipts;
     }
 

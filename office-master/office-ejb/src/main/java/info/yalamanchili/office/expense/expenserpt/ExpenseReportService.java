@@ -136,15 +136,15 @@ public class ExpenseReportService {
         for (ExpenseReceipt receipt : dto.getExpenseReceipts()) {
             if (receipt.getId() == null) {
                 receipt.setExpenseReport(entity);
-                entity.getExpenseReceipts().add(receipt);
                 entity = expenseReportsDao.getEntityManager().merge(entity);
+                entity.getExpenseReceipts().add(receipt);
             }
         }
         if (submitForApproval) {
             entity.setStatus(ExpenseReportStatus.PENDING_MANAGER_APPROVAL);
             entity.setBpmProcessId(startExpenseReportProcess(null, entity));
         }
-        entity = expenseReportsDao.save(entity);
+        entity = expenseReportsDao.getEntityManager().merge(entity);
         return mapper.map(entity, ExpenseReportSaveDto.class);
     }
 

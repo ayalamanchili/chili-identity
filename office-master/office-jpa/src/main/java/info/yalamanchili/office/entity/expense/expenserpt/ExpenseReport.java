@@ -12,7 +12,9 @@ import info.yalamanchili.office.entity.profile.Employee;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -148,7 +150,7 @@ public class ExpenseReport extends AbstractEntity {
      *
      */
     @OneToMany(mappedBy = "expenseReport", cascade = CascadeType.ALL)
-    protected List<ExpenseReceipt> expenseReceipts;
+    protected Set<ExpenseReceipt> expenseReceipts;
     /**
      *
      */
@@ -373,14 +375,14 @@ public class ExpenseReport extends AbstractEntity {
     }
 
     @XmlTransient
-    public List<ExpenseReceipt> getExpenseReceipts() {
+    public Set<ExpenseReceipt> getExpenseReceipts() {
         if (this.expenseReceipts == null) {
-            this.expenseReceipts = new ArrayList();
+            this.expenseReceipts = new HashSet();
         }
         return expenseReceipts;
     }
 
-    public void setExpenseReceipts(List<ExpenseReceipt> expenseReceipts) {
+    public void setExpenseReceipts(Set<ExpenseReceipt> expenseReceipts) {
         this.expenseReceipts = expenseReceipts;
     }
 
