@@ -21,6 +21,7 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.drive.ReadAllFiles;
 import info.yalamanchili.office.client.drive.UpdateFilePanel;
 import java.util.logging.Logger;
@@ -76,7 +77,6 @@ public class ReadAllExpenseReceiptsPanel extends CRUDReadAllComposite {
     @Override
     public void deleteClicked(String entityId) {
         if (Window.confirm("Are you sure? All Files details will be deleted")) {
-            deleteRow(entityId);
             HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
                 @Override
@@ -90,6 +90,8 @@ public class ReadAllExpenseReceiptsPanel extends CRUDReadAllComposite {
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Receipt Information");
+        TabPanel.instance().expensePanel.entityPanel.clear();
+        TabPanel.instance().expensePanel.entityPanel.add(new UpdateExpenseReportPanel(UpdateExpenseReportPanel.instance().getEntityId()));
     }
 
     @Override
