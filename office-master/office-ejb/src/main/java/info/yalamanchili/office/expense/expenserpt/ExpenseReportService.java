@@ -21,6 +21,7 @@ import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.dao.expense.expenserpt.ExpenseCategoryDao;
 import info.yalamanchili.office.dao.expense.expenserpt.ExpenseItemDao;
+import info.yalamanchili.office.dao.expense.expenserpt.ExpenseReceiptDao;
 import info.yalamanchili.office.dao.expense.expenserpt.ExpenseReportsDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
@@ -138,13 +139,17 @@ public class ExpenseReportService {
                 receipt.setExpenseReport(entity);
                 entity = expenseReportsDao.getEntityManager().merge(entity);
                 entity.getExpenseReceipts().add(receipt);
+            } else {
+                ExpenseReceiptDao.instance().save(receipt);
             }
         }
+        expenseReportsDao.getEntityManager().flush();
+        entity = expenseReportsDao.findById(entity.getId());
+        entity.updateTotalAmount();
         if (submitForApproval) {
             entity.setStatus(ExpenseReportStatus.PENDING_MANAGER_APPROVAL);
             entity.setBpmProcessId(startExpenseReportProcess(null, entity));
         }
-        entity = expenseReportsDao.getEntityManager().merge(entity);
         return mapper.map(entity, ExpenseReportSaveDto.class);
     }
 
