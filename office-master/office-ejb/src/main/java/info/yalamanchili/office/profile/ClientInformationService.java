@@ -380,7 +380,8 @@ public class ClientInformationService {
     }
 
     private String projectName(String name) {
-        String[] words = name.split("\\s+");
+        String S = name.replaceAll("[^a-zA-Z0-9\\s]", "");
+        String[] words = S.split("\\s+");
         String acronym = "";
         String newname = "";
         for (int i = 0; i < words.length; i++) {
@@ -389,7 +390,7 @@ public class ClientInformationService {
             newname += words[i];
         }
 
-        if (acronym.length() > 4) {
+        if (acronym.length() >= 4) {
             acronym = acronym.substring(0, 4);
         } else if (name.length() <= 3) {
             acronym = name.substring(0, name.length());
