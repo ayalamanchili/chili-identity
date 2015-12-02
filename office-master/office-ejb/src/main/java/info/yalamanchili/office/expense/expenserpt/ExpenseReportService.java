@@ -117,7 +117,6 @@ public class ExpenseReportService {
     public ExpenseReportSaveDto update(ExpenseReportSaveDto dto, boolean submitForApproval) {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         ExpenseReport entity = expenseReportsDao.save(dto);
-        entity.setTotalExpenses(BigDecimal.ZERO.setScale(2));
         ExpenseCategoryDao expenseCategoryDao = ExpenseCategoryDao.instance();
         //add/update items
         for (ExpenseItem item : dto.getExpenseItems()) {
