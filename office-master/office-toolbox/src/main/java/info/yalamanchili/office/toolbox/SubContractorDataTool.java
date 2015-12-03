@@ -142,7 +142,7 @@ public class SubContractorDataTool {
                     subContractor.getLocations().add(address);
                 }
             }
-            SubcontractorDao.instance().getEntityManager().merge(subContractor);
+           // SubcontractorDao.instance().getEntityManager().merge(subContractor);
         }
     }
 
