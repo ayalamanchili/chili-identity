@@ -117,6 +117,7 @@ public class TravelAuthorizationResource extends CRUDResource<TravelAuthorizatio
     @PUT
     @Path("/search-travelauth/{start}/{limit}")
     @Transactional(readOnly = true)
+    @PreAuthorize("hasRole('ROLE_ADMIN','ROLE_CEO','ROLE_PAYROLL_AND_BENIFITS','ROLE_ACCOUNTS_PAYABLE')")
     public List<TravelAuthorization> search(TravelAuthorization entity, @PathParam("start") int start, @PathParam("limit") int limit) {
         List<TravelAuthorization> res = new ArrayList();
         Query searchQuery = SearchUtils.getSearchQuery(TravelAuthorizationDao.instance().getEntityManager(), entity, new SearchUtils.SearchCriteria());

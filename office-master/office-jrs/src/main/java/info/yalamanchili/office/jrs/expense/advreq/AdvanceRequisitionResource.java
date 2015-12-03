@@ -107,6 +107,7 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
 
     @PUT
     @Path("/search-advancerequisition/{start}/{limit}")
+    @PreAuthorize("hasRole('ROLE_ADMIN','ROLE_CEO','ROLE_PAYROLL_AND_BENIFITS','ROLE_ACCOUNTS_PAYABLE')")
     @Transactional(readOnly = true)
     public List<AdvanceRequisition> search(AdvanceRequisition entity, @PathParam("start") int start, @PathParam("limit") int limit) {
         List<AdvanceRequisition> res = new ArrayList();
@@ -127,6 +128,7 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
     public void delete(@PathParam("id") Long id) {
         AdvanceRequisitionService.instance().delete(id);
     }
+
     @GET
     @Path("/{employeeId}/{start}/{limit}")
     @AccessCheck(companyContacts = {"Perf_Eval_Manager", "Reports_To"}, roles = {"ROLE_ADMIN", "ROLE_CEO", "ROLE_PAYROLL_AND_BENIFITS", "ROLE_ACCOUNTS_PAYABLE"}, strictOrderCheck = false)
