@@ -471,6 +471,7 @@ public class OfficeStartup {
         getEmployeeType();
         getSubContractorEmployeeType();
         get1099EmployeeType();
+        getW2EmployeeType();
     }
 
     protected void initTestData() {
@@ -752,6 +753,20 @@ public class OfficeStartup {
             EmployeeType employeetype = new EmployeeType();
             employeetype.setName("1099 Contractor");
             employeetype.setDescription("SSTECH 1099");
+            return em.merge(employeetype);
+        }
+    }
+
+    protected EmployeeType getW2EmployeeType() {
+        Query getEmployeeTypeQuery = em.createQuery("from " + EmployeeType.class.getCanonicalName()
+                + " where name=:nameParam");
+        getEmployeeTypeQuery.setParameter("nameParam", "W2 Contractor");
+        if (getEmployeeTypeQuery.getResultList().size() > 0) {
+            return (EmployeeType) getEmployeeTypeQuery.getResultList().get(0);
+        } else {
+            EmployeeType employeetype = new EmployeeType();
+            employeetype.setName("W2 Contractor");
+            employeetype.setDescription("SSTECH W2");
             return em.merge(employeetype);
         }
     }
