@@ -69,7 +69,7 @@ public class VendorContactDataTool {
                 continue;
             }
             ContactRecord cr = new ContactRecord();
-            cr.setId(new Long(convertDcimalToWhole(getCellNumericValue(record, 2))));
+            cr.setId(new Long(convertDcimalToWhole(getCellNumericValue(record, 11))));
             vendor = VendorDao.instance().findById(cr.getId());
 
             cr.setSimilarity(new Double(getCellNumericValue(record, 10)));

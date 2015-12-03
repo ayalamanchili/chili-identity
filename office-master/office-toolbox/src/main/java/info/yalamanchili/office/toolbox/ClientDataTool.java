@@ -122,7 +122,7 @@ public class ClientDataTool {
                 }
                 client.getLocations().add(address);
             }
-            ClientDao.instance().getEntityManager().merge(client);
+           // ClientDao.instance().getEntityManager().merge(client);
         }
     }
 

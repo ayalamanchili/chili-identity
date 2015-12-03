@@ -48,6 +48,7 @@ public class ClientContactDataTool {
 
     public void migrateClientContactData() {
         InputStream inp;
+        int i = 0;
         XSSFWorkbook workbook;
         try {
             inp = new FileInputStream(getDataFileUrl());
@@ -67,43 +68,43 @@ public class ClientContactDataTool {
                 continue;
             }
             ContactRecord cr = new ContactRecord();
-            cr.setId(new Long(convertDcimalToWhole(getCellNumericValue(record, 2))));
+            cr.setId(new Long(convertDcimalToWhole(getCellNumericValue(record, 11))));
             client = ClientDao.instance().findById(cr.getId());
-            cr.setFirstName(getCellStringValue(record, 4));
-            cr.setLastName(getCellStringValue(record, 5));
+            cr.setFirstName(getCellStringValue(record, 3));
+            cr.setLastName(getCellStringValue(record, 4));
             if (cr.getFirstName() != null && !cr.getFirstName().isEmpty()) {
-                cr.setFirstName(cr.getFirstName().replaceAll("[^a-zA-Z0-9\\s\\/]", ""));
+                cr.setFirstName(cr.getFirstName().replaceAll("[^a-zA-Z0-9\\s\\/\\.\\']", ""));
                 contact.setFirstName(cr.getFirstName());
             } else {
                 continue;
             }
             if (cr.getLastName() != null && !cr.getLastName().isEmpty()) {
-                cr.setLastName(cr.getLastName().replaceAll("[^a-zA-Z0-9\\s\\/]", ""));
+                cr.setLastName(cr.getLastName().replaceAll("[^a-zA-Z0-9\\s\\/\\.\\']", ""));
                 contact.setLastName(cr.getLastName());
             } else {
                 contact.setLastName(cr.getFirstName());
             }
-            
-            cr.setPhoneNumber(convertDcimalToWhole(getCellStringOrNumericValue(record, 7)));
-            cr.setExtension(convertDcimalToWhole(getCellStringOrNumericValue(record, 8)));
-            
+
+            cr.setPhoneNumber(convertDcimalToWhole(getCellStringOrNumericValue(record, 6)));
+            cr.setExtension(convertDcimalToWhole(getCellStringOrNumericValue(record, 7)));
+
             if (cr.getPhoneNumber() != null && !cr.getPhoneNumber().isEmpty()) {
                 phone.setPhoneNumber(cr.getPhoneNumber());
                 if (cr.getExtension() != null && !cr.getExtension().isEmpty()) {
-                   phone.setExtension(cr.getExtension()); 
+                    phone.setExtension(cr.getExtension());
                 }
                 contact.addPhone(phone);
             }
-            
-            cr.setEmail(getCellStringValue(record, 6));
-            
+
+            cr.setEmail(getCellStringValue(record, 5));
+
             if (cr.getEmail() != null && !cr.getEmail().isEmpty()) {
-                email.setEmail(cr.getEmail());
+                email.setEmail(cr.getEmail().replaceAll("\\s+",""));
                 email.setPrimaryEmail(true);
                 contact.addEmail(email);
             }
-            
-            cr.setRole(getCellStringValue(record, 9));
+
+            cr.setRole(getCellStringValue(record, 8));
             if (cr.getRole() != null && !cr.getRole().isEmpty()) {
                 if (cr.getRole().equals("Recruiter")) {
                     client.addContact(contact);
@@ -111,9 +112,10 @@ public class ClientContactDataTool {
                     client.addClientAcctPayContact(contact);
                 }
             }
-            
+            i = i + 1;
             ClientDao.instance().getEntityManager().merge(client);
         }
+        System.out.println("Total Client Contact Records Written : " + i);
     }
 
     protected String getDataFileUrl() {

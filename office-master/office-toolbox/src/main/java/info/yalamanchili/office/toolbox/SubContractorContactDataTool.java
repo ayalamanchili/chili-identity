@@ -67,26 +67,26 @@ public class SubContractorContactDataTool {
                 continue;
             }
             ContactRecord cr = new ContactRecord();
-            cr.setId(new Long(convertDcimalToWhole(getCellNumericValue(record, 2))));
+            cr.setId(new Long(convertDcimalToWhole(getCellNumericValue(record, 11))));
             subContractor = SubcontractorDao.instance().findById(cr.getId());
-            cr.setFirstName(getCellStringValue(record, 4));
-            cr.setLastName(getCellStringValue(record, 5));
+            cr.setFirstName(getCellStringValue(record, 3));
+            cr.setLastName(getCellStringValue(record, 4));
             if (cr.getFirstName() != null && !cr.getFirstName().isEmpty()) {
-                cr.setFirstName(cr.getFirstName().replaceAll("[^a-zA-Z0-9\\s\\/]", ""));
+                cr.setFirstName(cr.getFirstName().replaceAll("[^a-zA-Z0-9\\s\\/\\.\\']", ""));
                 contact.setFirstName(cr.getFirstName());
             } else {
                 continue;
             }
             if (cr.getLastName() != null && !cr.getLastName().isEmpty()) {
-                cr.setLastName(cr.getLastName().replaceAll("[^a-zA-Z0-9\\s\\/]", ""));
+                cr.setLastName(cr.getLastName().replaceAll("[^a-zA-Z0-9\\s\\/\\.\\']", ""));
                 contact.setLastName(cr.getLastName());
             } else {
                 contact.setLastName(cr.getFirstName());
             }
 
-            cr.setPhoneNumber(convertDcimalToWhole(getCellStringOrNumericValue(record, 7)));
-            cr.setExtension(convertDcimalToWhole(getCellStringOrNumericValue(record, 8)));
-            
+            cr.setPhoneNumber(convertDcimalToWhole(getCellStringOrNumericValue(record, 6)));
+            cr.setExtension(convertDcimalToWhole(getCellStringOrNumericValue(record, 7)));
+            System.out.println("Phone>>>>>>>>>>>>>>>><<<<<<<<<<<<<<: " + cr.getPhoneNumber());
             if (cr.getPhoneNumber() != null && !cr.getPhoneNumber().isEmpty()) {
                 phone.setPhoneNumber(cr.getPhoneNumber());
                 if (cr.getExtension() != null && !cr.getExtension().isEmpty()) {
@@ -95,15 +95,15 @@ public class SubContractorContactDataTool {
                 contact.addPhone(phone);
             }
             
-            cr.setEmail(getCellStringValue(record, 6));
-            
+            cr.setEmail(getCellStringValue(record, 5));
+            System.out.println("email>>>>>>>>>>>>>>>><<<<<<<<<<<<<<: " + cr.getEmail());
             if (cr.getEmail() != null && !cr.getEmail().isEmpty()) {
-                email.setEmail(cr.getEmail());
+                email.setEmail(cr.getEmail().replaceAll("\\s+",""));
                 email.setPrimaryEmail(true);
                 contact.addEmail(email);
             }
             
-            cr.setRole(getCellStringValue(record, 9));
+            cr.setRole(getCellStringValue(record, 8));
             subContractor.addContact(contact);
             
             SubcontractorDao.instance().getEntityManager().merge(subContractor);

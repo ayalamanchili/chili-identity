@@ -154,7 +154,7 @@ public class VendorDataTool {
                     vendor.getLocations().add(address);
                 }
             }
-            VendorDao.instance().getEntityManager().merge(vendor);
+           // VendorDao.instance().getEntityManager().merge(vendor);
         }
     }
 
