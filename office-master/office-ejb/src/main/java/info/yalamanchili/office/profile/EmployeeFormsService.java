@@ -14,6 +14,7 @@ import info.chili.commons.pdf.PdfDocumentData;
 import info.chili.security.Signature;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeSecurityConfiguration;
+import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.expense.BankAccountDao;
 import info.yalamanchili.office.dao.profile.ext.DependentDao;
 import info.yalamanchili.office.dao.profile.ext.EmployeeAdditionalDetailsDao;
@@ -89,38 +90,33 @@ public class EmployeeFormsService {
 
         data.getData().put("maritalStatus", ead.getMaritalStatus().name());
 
-        for (Email email : emp.getEmails()) {
-            if (email.getEmailType() != null) {
-                if ("Personal".equals(email.getEmailType())) {
-                    data.getData().put("email", email.getEmail() + "  ");
-                }
-            }
-        }
+        emp.getEmails().stream().filter((email) -> (email.getEmailType() != null)).filter((email) -> ("Personal".equals(email.getEmailType().getEmailType()))).forEach((email) -> {
+            data.getData().put("email", email.getEmail() + "  ");
+        });
 
-        for (Phone phone : emp.getPhones()) {
-            if (phone.getPhoneType() != null) {
-                if ("Cell".equals(phone.getPhoneType())) {
-                    data.getData().put("cellPhone", phone.getPhoneNumber());
-                } else if ("Home".equals(phone.getPhoneType())) {
-                    data.getData().put("homePhone", phone.getPhoneNumber());
-                }
+        emp.getPhones().stream().filter((phone) -> (phone.getPhoneType() != null)).forEach((phone) -> {
+            if ("Cell".equals(phone.getPhoneType().getPhoneType())) {
+                data.getData().put("cellPhone", phone.getPhoneNumber());
+            } else if ("Home".equals(phone.getPhoneType().getPhoneType())) {
+                data.getData().put("homePhone", phone.getPhoneNumber());
             }
-        }
-        for (Address address : emp.getAddresss()) {
+        });
+        emp.getAddresss().stream().map((address) -> {
             String street2 = address.getStreet2();
             if (street2 == null || "".equals(street2)) {
                 data.getData().put("residentialAddress1", address.getStreet1());
             } else {
                 data.getData().put("residentialAddress1", address.getStreet1() + " , " + street2);
             }
+            return address;
+        }).forEach((address) -> {
             String zip = address.getZip();
             if (zip == null) {
                 data.getData().put("residentialAddress2", address.getCity() + " , " + address.getState());
             } else {
                 data.getData().put("residentialAddress2", address.getCity() + " , " + address.getState() + " , " + zip);
             }
-        }
-
+        });
         if (ead.getEthnicity().equals(Ethnicity.Asian)) {
             data.getData().put("asian", "true");
         } else if (ead.getEthnicity().equals(Ethnicity.Latino_Hispanic)) {
@@ -171,43 +167,36 @@ public class EmployeeFormsService {
         data.getData().put("numberOfChildren", String.valueOf(counter));
 
         //section 3 : Project Details
-        for (ClientInformation clientInfo : emp.getClientInformations()) {
+        emp.getClientInformations().stream().map((clientInfo) -> {
             data.getData().put("clientName", clientInfo.getClient().getName());
-        }
-
-        for (Phone phone : emp.getPhones()) {
-            if (phone.getPhoneType() != null) {
-                if ("Cell".equals(phone.getPhoneType().toString())) {
-                    data.getData().put("workPhone", phone.getPhoneNumber() + " ");
-                }
+            return clientInfo;
+        }).map((clientInfo) -> {
+            //client address location
+            data.getData().put("wlStreet1", clientInfo.getClient().getLocations().get(0).getStreet1());
+            return clientInfo;
+        }).map((clientInfo) -> {
+            String street2 = clientInfo.getClient().getLocations().get(0).getStreet2();
+            if (street2 != null || !"".equals(street2)) {
+                data.getData().put("wlStreet1", clientInfo.getClient().getLocations().get(0).getStreet1() + " , " + street2);
             }
-        }
-
-        for (Email email : emp.getEmails()) {
-            if (email.getEmailType() != null) {
-                if ("Work".equals(email.getEmailType().toString())) {
-                    data.getData().put("workEmail", email.getEmail());
-                }
+            return clientInfo;
+        }).map((clientInfo) -> {
+            data.getData().put("wlStreet2", clientInfo.getClient().getLocations().get(0).getCity() + " , " + clientInfo.getClient().getLocations().get(0).getState());
+            return clientInfo;
+        }).forEach((clientInfo) -> {
+            String zip = clientInfo.getClient().getLocations().get(0).getZip();
+            if (zip != null) {
+                data.getData().put("wlStreet2", clientInfo.getClient().getLocations().get(0).getCity() + " , " + clientInfo.getClient().getLocations().get(0).getState() + " , " + zip);
             }
-        }
+        });
 
-        //company address [work location]
-        for (Address address : emp.getAddresss()) {
-            if (address.getAddressType() != null) {
-                if ("Office".equals(address.getAddressType().toString())) {
-                    data.getData().put("wlStreet1", address.getStreet1());
-                    String street2 = address.getStreet2();
-                    if (street2 != null || !"".equals(street2)) {
-                        data.getData().put("wlStreet1", " , " + street2);
-                    }
-                    data.getData().put("wlStreet2", address.getCity() + " , " + address.getState());
-                    String zip = address.getZip();
-                    if (zip != null) {
-                        data.getData().put("wlStreet2", " , " + zip);
-                    }
-                }
-            }
-        }
+        emp.getPhones().stream().filter((phone) -> (phone.getPhoneType() != null)).filter((phone) -> ("Cell".equals(phone.getPhoneType().getPhoneType()))).forEach((phone) -> {
+            data.getData().put("workPhone", phone.getPhoneNumber() + " ");
+        });
+
+        emp.getEmails().stream().filter((email) -> (email.getEmailType() != null)).filter((email) -> ("Work".equals(email.getEmailType().getEmailType()))).forEach((email) -> {
+            data.getData().put("workEmail", email.getEmail());
+        });
 
         //section 5 :Emergency Contact Information - Other
         for (EmergencyContact emergencyContact : emp.getEmergencyContacts()) {
@@ -222,6 +211,25 @@ public class EmployeeFormsService {
                     data.getData().put("ecAddress2", address1.getStreet1() + "," + address1.getCity() + "," + address1.getState() + "," + address1.getCountry());
                 }
             }
+        }
+        data.getData().put("employeeId", emp.getEmployeeId());
+        if (emp.getJobTitle() != null) {
+            data.getData().put("designation", emp.getJobTitle());
+        }
+        if (emp.getWorkStatus()!=null) {
+            data.getData().put("status", emp.getWorkStatus().name());
+        }
+        data.getData().put("DOJ", sdf.format(emp.getStartDate()));
+        Employee reportsToEmp = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Reports_To");
+        if (reportsToEmp.getId() != null) {
+            data.getData().put("reportingTo", reportsToEmp.getFirstName() + " , " + reportsToEmp.getLastName());
+        }
+        Employee manager = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Perf_Eval_Manager");
+        if (manager.getId() != null) {
+            data.getData().put("perfEvol", manager.getFirstName() + " , " + reportsToEmp.getLastName());
+        }
+        if (emp.getCompany().getAbbreviation() != null) {
+            data.getData().put("companyCode", emp.getCompany().getAbbreviation());
         }
 
         byte[] pdf = PDFUtils.generatePdf(data);
@@ -276,8 +284,13 @@ public class EmployeeFormsService {
 
         if (ba.getAchBlocked() == false) {
             data.getData().put("achReversalBlockNo", "true");
-        } else if (ba.getAchBlocked()== true) {
+        } else if (ba.getAchBlocked() == true) {
             data.getData().put("achReversalBlockYes", "true");
+        }
+        for (Phone phone : emp.getPhones()) {
+            if (phone.getPhoneNumber() != null) {
+                data.getData().put("phoneNumber", emp.getPhones().get(0).getPhoneNumber());
+            }
         }
         EmployeeOnBoarding onboarding = EmployeeOnBoardingDao.instance().findByEmployeeId(emp.getId());
         Date onboardingDate = onboarding.getStartedDate();

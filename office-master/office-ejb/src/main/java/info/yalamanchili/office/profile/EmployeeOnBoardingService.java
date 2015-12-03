@@ -17,6 +17,7 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
 import info.yalamanchili.office.bpm.OfficeBPMService;
+import info.yalamanchili.office.dao.drive.FileDao;
 import info.yalamanchili.office.dao.expense.BankAccountDao;
 import info.yalamanchili.office.dao.invite.InviteCodeDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
@@ -91,8 +92,11 @@ public class EmployeeOnBoardingService {
         InviteCode code = InviteCodeDao.instance().find(invCde);
         Contact cnt = ContactDao.instance().findByEmail(code.getEmail());
         OnBoardingEmployeeDto res = new OnBoardingEmployeeDto();
-        res.setFirstName(cnt.getFirstName());
-        res.setLastName(cnt.getLastName());
+        BankAccount account = new BankAccount();
+        if (cnt != null) {
+            res.setFirstName(cnt.getFirstName());
+            res.setLastName(cnt.getLastName());
+        }
         //TODO set dob,address account first and last name
         return res;
     }
@@ -208,7 +212,6 @@ public class EmployeeOnBoardingService {
         EmployeeAdditionalDetails employeeAdditionalDetails;
         employeeAdditionalDetails = employee.getEmployeeAdditionalDetails();
         EmployeeAdditionalDetailsDao.instance().save(employeeAdditionalDetails, emp.getId(), emp.getClass().getCanonicalName());
-
         //create cert
         //TODO fix this
         OfficeSecurityService.instance().createUserCert(emp, null, null);
