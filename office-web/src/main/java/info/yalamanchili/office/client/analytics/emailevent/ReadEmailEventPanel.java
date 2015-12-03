@@ -38,9 +38,10 @@ public class ReadEmailEventPanel extends ReadComposite {
         instance = this;
         initReadComposite(id, "EventService", OfficeWelcome.constants);
     }
-
+    
     @Override
     public void loadEntity(String entityId) {
+        logger.info("load entity");
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
             @Override
@@ -53,9 +54,9 @@ public class ReadEmailEventPanel extends ReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("subject", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("body", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("tos", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("subject", entity, DataType. TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("body", entity, DataType. TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("to", entity, DataType. TEXT_AREA_FIELD);
     }
 
     @Override
@@ -68,9 +69,9 @@ public class ReadEmailEventPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addField("subject", true, false, DataType.STRING_FIELD);
-        addField("body", true, false, DataType.STRING_FIELD);
-        addField("tos", true, false, DataType.STRING_FIELD);
+        addField("subject", true, false, DataType. TEXT_AREA_FIELD);
+        addField("body", true, false, DataType. TEXT_AREA_FIELD);
+        addField("to", true, false, DataType. TEXT_AREA_FIELD);
     }
 
     @Override
