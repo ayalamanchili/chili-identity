@@ -12,12 +12,17 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
+import info.chili.gwt.data.CountryFactory;
+import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
+import info.yalamanchili.office.client.profile.address.ReadAddressPanel;
+import java.util.logging.Logger;
 
 /**
  *
@@ -25,9 +30,10 @@ import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
  */
 public class ReadProspectsPanel extends ReadComposite {
 
-    private static ReadProspectsPanel instance;
-        SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "screenedBy", "Employee", true, false);
+    private Logger logger = Logger.getLogger(ReadProspectsPanel.class.getName());
 
+    private static ReadProspectsPanel instance;
+    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "screenedBy", "Employee", true, false);
 
     public static ReadProspectsPanel instance() {
         return instance;
@@ -58,16 +64,26 @@ public class ReadProspectsPanel extends ReadComposite {
     protected void populateComments() {
         entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.hr.Prospect"));
     }
-   
+
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         JSONObject emp = (JSONObject) entity.get("employee");
+        if(entity.get("address")!=null){
+        JSONObject address = entity.get("address").isObject();
+        assignFieldValueFromEntity("street1", address, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("street2", address, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("city", address, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("country", address, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("state", address, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("zip", address, DataType.LONG_FIELD);
+        }
         assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("screenedBy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("email", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("phoneNumber", entity, DataType.LONG_FIELD);
+        assignFieldValueFromEntity("dateOfBirth", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("referredBy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("processDocSentDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
@@ -85,15 +101,23 @@ public class ReadProspectsPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addField("firstName", true, false, DataType.STRING_FIELD);
-        addField("lastName", true, false, DataType.STRING_FIELD);
-        addField("startDate", true, false, DataType.DATE_FIELD);
-        addField("referredBy", true, false, DataType.STRING_FIELD);
-        addField("email", true, false, DataType.STRING_FIELD);
-        addField("phoneNumber", true, false, DataType.LONG_FIELD);
-        addField("screenedBy", true, false, DataType.STRING_FIELD);
-        addField("processDocSentDate", true, false, DataType.DATE_FIELD);
-        addEnumField("status", true, false, ProspectStatus.names());
+        addField("firstName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("lastName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("referredBy", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("email", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("phoneNumber", true, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
+        addField("dateOfBirth", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("street1", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("street2", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("city", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("country", true, false, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
+        addEnumField("state", true, false, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+        addField("zip", true, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
+        addField("screenedBy", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("processDocSentDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addEnumField("status", true, false, ProspectStatus.names(), Alignment.HORIZONTAL);
+        alignFields();
     }
 
     @Override
@@ -105,6 +129,7 @@ public class ReadProspectsPanel extends ReadComposite {
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "prospect/" + entityId;
     }
+
     @Override
     protected boolean enableAudit() {
         return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER);
