@@ -19,6 +19,7 @@ import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.dao.expense.chkreq.CheckRequisitionItemDao;
 import info.yalamanchili.office.dao.expense.chkreq.ImmigrationCheckRequisitionDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
+import info.yalamanchili.office.dao.profile.CompanyDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.expense.CheckRequisitionItem;
@@ -71,7 +72,11 @@ public class ImmigrationCheckRequisitionService {
         entity.setSubmittedBy(OfficeSecurityService.instance().getCurrentUserName());
         entity.setRequestedDate(new Date());
         if (entity.getEmployee() != null) {
-            entity.setEmployee(EmployeeDao.instance().findById(entity.getEmployee().getId()));
+            Employee emp = EmployeeDao.instance().findById(entity.getEmployee().getId());
+            entity.setEmployee(emp);
+            if (dto.getCompany() != null) {
+                emp.setCompany(CompanyDao.instance().findById(dto.getCompany().getId()));
+            }
         }
         entity.setStatus(ImmigrationCheckRequisitionStatus.PENDING_APPROVAL);
         for (CheckRequisitionItem item : entity.getItems()) {

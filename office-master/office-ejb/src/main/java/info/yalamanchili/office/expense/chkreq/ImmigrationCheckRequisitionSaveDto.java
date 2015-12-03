@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.expense.chkreq;
 
+import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.expense.CheckRequisitionItem;
 import info.yalamanchili.office.entity.expense.ImmigrationCheckRequisition;
 import java.util.ArrayList;
@@ -28,6 +29,8 @@ public class ImmigrationCheckRequisitionSaveDto extends ImmigrationCheckRequisit
 
     protected List<CheckRequisitionItem> items;
 
+    protected Company company;
+
     @XmlElement
     @Override
     @Size(min = 1, message = "{checkitem.min.size.msg}")
@@ -42,6 +45,14 @@ public class ImmigrationCheckRequisitionSaveDto extends ImmigrationCheckRequisit
     @Override
     public void setItems(List<CheckRequisitionItem> items) {
         this.items = items;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
 }

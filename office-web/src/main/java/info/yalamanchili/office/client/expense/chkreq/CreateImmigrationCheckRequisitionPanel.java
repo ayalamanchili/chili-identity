@@ -7,12 +7,16 @@
  */
 package info.yalamanchili.office.client.expense.chkreq;
 
+import com.google.common.base.Strings;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
@@ -41,10 +45,10 @@ import java.util.logging.Logger;
  *
  * @author benerji.v
  */
-public class CreateImmigrationCheckRequisitionPanel extends CreateComposite implements ClickHandler {
+public class CreateImmigrationCheckRequisitionPanel extends CreateComposite implements ClickHandler, BlurHandler {
 
     private static Logger logger = Logger.getLogger(CreateImmigrationCheckRequisitionPanel.class.getName());
-    protected SelectCompanyWidget selectCompanyWidget = new SelectCompanyWidget(true, true, Alignment.HORIZONTAL);
+    protected SelectCompanyWidget companyWidget = new SelectCompanyWidget(false, false, Alignment.HORIZONTAL);
     protected ClickableLink addItemL = new ClickableLink("Add Check Item");
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, true, Alignment.HORIZONTAL);
     public List<CreateImmigrationCheckItemPanel> checkItemPanels = new ArrayList<>();
@@ -77,6 +81,38 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
     }
 
     @Override
+    public void onBlur(BlurEvent event) {
+        if (event.getSource().equals(employeeSB.getSuggestBox().getValueBox())) {
+            companyWidget.getListBox().setSelectedIndex(0);
+            if (employeeSB.getSelectedObject() != null) {
+                populateCompany();
+            }
+        }
+    }
+
+    protected void populateCompany() {
+        HttpService.HttpServiceAsync.instance().doGet(getEmployeeReadUrl(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String arg0) {
+                        logger.info(arg0);
+                        if (!Strings.isNullOrEmpty(arg0)) {
+                            JSONObject emp = JSONParser.parseLenient(arg0).isObject();
+                            if (emp != null && emp.get("company") != null) {
+                                companyWidget.setSelectedValue(emp.get("company").isObject());
+                            }
+                        }
+                    }
+
+                }
+        );
+    }
+
+    private String getEmployeeReadUrl() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/" + JSONUtils.toString(employeeSB.getSelectedObject(), "id"));
+    }
+
+    @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
         BigDecimal amount = BigDecimal.ZERO;
@@ -90,6 +126,7 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
             entity.put("employeeName", new JSONString(employeeSB.getValue()));
         }
         assignEntityValueFromField("caseType", entity);
+        assignEntityValueFromField("company", entity);
         if (checkItemPanels.size() > 0) {
             JSONArray items = new JSONArray();
             int i = 0;
@@ -151,12 +188,14 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
     @Override
     protected void addListeners() {
         addItemL.addClickHandler(this);
+        employeeSB.getSuggestBox().getValueBox().addBlurHandler(this);
     }
 
     @Override
     protected void configure() {
         checkItem.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         employeeSB.getLabel().getElement().getStyle().setWidth(145, Style.Unit.PX);
+        companyWidget.getLabel().getElement().getStyle().setWidth(145, Style.Unit.PX);
         setButtonText("Submit");
         HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
@@ -187,6 +226,7 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
         addField("neededByDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("purpose", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addEnumField("caseType", false, true, ImmigrationCaseType.names(), Alignment.HORIZONTAL);
+        addDropDown("company", companyWidget);
         entityFieldsPanel.add(checkItem);
         entityActionsPanel.add(addItemL);
         alignFields();
