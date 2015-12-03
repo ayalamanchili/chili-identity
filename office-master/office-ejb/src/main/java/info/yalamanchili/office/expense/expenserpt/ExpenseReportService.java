@@ -48,13 +48,14 @@ import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author prasanthi.p
  */
 @Component
-@Scope("request")
+@Scope("prototype")
 public class ExpenseReportService {
 
     @Autowired
@@ -62,6 +63,27 @@ public class ExpenseReportService {
 
     @Autowired
     protected ExpenseItemDao expenseItemDao;
+
+    @Transactional
+    public void refreshExpenseReportBPMProcessEntities() {
+        OfficeBPMService officeBPMService = OfficeBPMService.instance();
+        ExpenseReport search = new ExpenseReport();
+        search.setStatus(ExpenseReportStatus.PENDING_MANAGER_APPROVAL);
+        for (ExpenseReport er : expenseReportsDao.search(search, 0, 100, null)) {
+            officeBPMService.setVariable(er.getBpmProcessId(), "entityId", er.getId());
+            officeBPMService.setVariable(er.getBpmProcessId(), "entity", er);
+        }
+        search.setStatus(ExpenseReportStatus.PENDING_CEO_APPROVAL);
+        for (ExpenseReport er : expenseReportsDao.search(search, 0, 100, null)) {
+            officeBPMService.setVariable(er.getBpmProcessId(), "entityId", er.getId());
+            officeBPMService.setVariable(er.getBpmProcessId(), "entity", er);
+        }
+        search.setStatus(ExpenseReportStatus.PENDING_ACCOUNTS_PAYABLE_DISPATCH);
+        for (ExpenseReport er : expenseReportsDao.search(search, 0, 100, null)) {
+            officeBPMService.setVariable(er.getBpmProcessId(), "entityId", er.getId());
+            officeBPMService.setVariable(er.getBpmProcessId(), "entity", er);
+        }
+    }
 
     public ExpenseReportSaveDto create(ExpenseReportSaveDto dto, boolean submitForApproval) {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");

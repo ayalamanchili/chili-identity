@@ -90,6 +90,7 @@ public class ExpenseReportProcess extends RuleBasedTaskDelegateListner {
                 entity.setStatus(ExpenseReportStatus.REJECTED);
             }
         }
+        dt.getExecution().setVariable("entity", entity);
         ExpenseReportsDao.instance().save(entity);
     }
 

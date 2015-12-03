@@ -18,6 +18,7 @@ import info.yalamanchili.office.dao.time.TimePeriodDao;
 import info.yalamanchili.office.email.ReceiveEmailsService;
 import info.yalamanchili.office.employee.perfeval.PerformanceEvaluationQuestionsFactory;
 import info.yalamanchili.office.employee.probeval.ProbationPeriodEvaluationQuestionsFactory;
+import info.yalamanchili.office.expense.expenserpt.ExpenseReportService;
 import info.yalamanchili.office.reports.profile.ProfileReportsService;
 import info.yalamanchili.office.toolbox.ClientContactDataTool;
 import info.yalamanchili.office.toolbox.ClientDataTool;
@@ -143,5 +144,10 @@ public class OfficeServiceJobConfiguration {
     @ManagedOperation
     public void bisSubContractorContactMigration() {
         SubContractorContactDataTool.instance().migrateSubContractorContactData();
+    }
+
+    @ManagedOperation
+    public void refreshExpenseReportBPMProcessEntities() {
+        ExpenseReportService.instance().refreshExpenseReportBPMProcessEntities();
     }
 }
