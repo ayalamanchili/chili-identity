@@ -9,6 +9,7 @@ import info.chili.gwt.utils.JSONUtils;
 public class Auth {
 
     public enum ROLE {
+
         ROLE_USER, ROLE_CORPORATE_EMPLOYEE, ROLE_HR, ROLE_EXPENSE, ROLE_ADMIN, ROLE_RECRUITER, ROLE_TIME, ROLE_DRIVE, ROLE_RELATIONSHIP, ROLE_ACCOUNT_VIEW,
         ROLE_HR_ADMINSTRATION,
         ROLE_H1B_IMMIGRATION,
@@ -112,6 +113,11 @@ public class Auth {
     public static boolean is1099(JSONObject emp) {
         String empType = JSONUtils.toString(emp.get("employeeType"), "name");
         return empType != null && empType.equals("1099 Contractor");
+    }
+
+    public static boolean isW2Contractor(JSONObject emp) {
+        String empType = JSONUtils.toString(emp.get("employeeType"), "name");
+        return empType != null && empType.equals("W2 Contractor");
     }
 
     public static boolean isItDeveloper() {

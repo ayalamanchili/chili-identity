@@ -45,7 +45,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class EmployeeService {
-
+    
     private final static Logger logger = Logger.getLogger(EmployeeService.class.getName());
     //TODO remove extended
     @PersistenceContext
@@ -54,7 +54,7 @@ public class EmployeeService {
     protected ProfileNotificationService profileNotificationService;
     @Autowired
     protected Mapper mapper;
-
+    
     public String createUser(EmployeeCreateDto employee) {
         Employee emp = mapper.map(employee, Employee.class);
         emp.setEmployeeType(em.find(EmployeeType.class, emp.getEmployeeType().getId()));
@@ -64,7 +64,7 @@ public class EmployeeService {
         String employeeId = generateEmployeeId(employee.getFirstName(), employee.getLastName(), employee.getDateOfBirth());
         String generatepassword = generatepassword();
         String empType = emp.getEmployeeType().getName();
-        if (empType.equals("Corporate Employee") || empType.equals("Employee")) {
+        if (empType.equals("Corporate Employee") || empType.equals("Employee") || empType.equals("W2 Contractor")) {
             //Create CUser
             CUser user = mapper.map(employee, CUser.class);
             user.setPasswordHash(generatepassword);
@@ -90,9 +90,9 @@ public class EmployeeService {
             Map<String, Object> obj = new HashMap<>();
             obj.put("employee", emp);
             OfficeBPMService.instance().startProcess("new_corp_employee_process", obj);
-
+            
         }
-
+        
         Email email = new Email();
         email.setEmail(employee.getEmail());
         email.setPrimaryEmail(true);
@@ -103,12 +103,12 @@ public class EmployeeService {
         OfficeSecurityService.instance().createUserCert(emp, null, null);
         Employee currentEmp = OfficeSecurityService.instance().getCurrentUser();
         //Email notification
-        if (empType.equals("Corporate Employee") || empType.equals("Employee")) {
+        if (empType.equals("Corporate Employee") || empType.equals("Employee") || empType.equals("W2 Contractor")) {
             profileNotificationService.sendNewUserCreatedNotification(currentEmp, emp);
         }
         return emp.getId().toString();
     }
-
+    
     public String generateEmployeeId(String firstName, String lastName, Date dateofBirth) {
         String empId = firstName.toLowerCase().charAt(0) + lastName.toLowerCase();
         javax.persistence.Query findUserQuery = em.createQuery("from Employee where employeeId=:empIdParam");
@@ -121,7 +121,7 @@ public class EmployeeService {
         }
         return empId;
     }
-
+    
     public CUser changePassword(Long empId, User user) {
         CUser user1 = getEmployee(empId).getUser();
         String oldpswd = SecurityUtils.encodePassword(user.getOldPassword(), null);
@@ -131,17 +131,17 @@ public class EmployeeService {
         } else {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.password", "Old Password Doesn't Match");
         }
-
+        
     }
-
+    
     public CUser resetPassword(Long empId, User user) {
         CUser user1 = getEmployee(empId).getUser();
         user1.setPasswordHash(SecurityUtils.encodePassword(user.getNewPassword(), null));
         profileNotificationService.sendResetPasswordNotification(getEmployee(empId), user.getNewPassword());
         return em.merge(user1);
-
+        
     }
-
+    
     public void deactivateUser(Long empId, EmployeeCreateDto dto) {
         Employee emp = getEmployee(empId);
         if (!emp.isActive()) {
@@ -164,7 +164,7 @@ public class EmployeeService {
             OfficeBPMService.instance().startProcess("corp_employee_deactivation_process", vars);
         }
     }
-
+    
     public String generatepassword() {
         final int PASSWORD_LENGTH = 6;
         StringBuilder sb = new StringBuilder();
@@ -173,7 +173,7 @@ public class EmployeeService {
         }
         return sb.toString();
     }
-
+    
     private Employee getEmployee(Long empId) {
         Employee employee = em.find(Employee.class, empId);
         if (employee == null) {
@@ -183,7 +183,7 @@ public class EmployeeService {
             return employee;
         }
     }
-
+    
     public static EmployeeService instance() {
         return SpringContext.getBean(EmployeeService.class);
     }

@@ -8,14 +8,19 @@
  */
 package info.yalamanchili.office.dto.prospect;
 
+import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.entity.hr.ProspectStatus;
+import info.yalamanchili.office.entity.profile.Address;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
+import javax.validation.Valid;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -30,6 +35,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlRootElement(name = "Prospect")
 @XmlType
 public class ProspectDto implements Serializable {
+
     protected Long id;
 
     @NotEmpty(message = "{firstName.not.empty.msg}")
@@ -50,16 +56,20 @@ public class ProspectDto implements Serializable {
     protected Date startDate;
 
     protected String screenedBy;
-    @NotEmpty(message="{referredBy.not.empty.msg}")
+    @NotEmpty(message = "{referredBy.not.empty.msg}")
     protected String referredBy;
 
     @NotEmpty(message = "{resumeUrl.not.empty.msg}")
     protected String resumeURL;
 
-    
+    protected Date dateOfBirth;
+
+    @Valid
+    private Address address;
+
     @Enumerated(EnumType.STRING)
     protected ProspectStatus status;
-    
+
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date processDocSentDate;
 
@@ -154,9 +164,25 @@ public class ProspectDto implements Serializable {
         this.status = status;
     }
 
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
     @Override
     public String toString() {
-        return "ProspectDto{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", phoneNumber=" + phoneNumber + ", startDate=" + startDate + ", screenedBy=" + screenedBy + ", referredBy=" + referredBy + ", resumeURL=" + resumeURL + ", status=" + status + '}';
+        return "ProspectDto{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", phoneNumber=" + phoneNumber + ", startDate=" + startDate + ", screenedBy=" + screenedBy + ", referredBy=" + referredBy + ", resumeURL=" + resumeURL + ", dateOfBirth=" + dateOfBirth + ", address=" + address + ", status=" + status + ", processDocSentDate=" + processDocSentDate + '}';
     }
 
     public static ProspectDto map(Mapper mapper, info.yalamanchili.office.entity.hr.Prospect entity) {
@@ -165,9 +191,13 @@ public class ProspectDto implements Serializable {
         if (entity.getContact().getPhones().size() > 0) {
             prospectContact.setPhoneNumber(entity.getContact().getPhones().get(0).getPhoneNumber());
         }
+        if (entity.getContact().getAddresss().size() > 0) {
+            prospectContact.setAddress(entity.getContact().getAddresss().get(0));
+        }
         if (entity.getContact().getEmails().size() > 0) {
             prospectContact.setEmail(entity.getContact().getEmails().get(0).getEmail());
-        }prospectContact.setId(entity.getId());
+        }
+        prospectContact.setId(entity.getId());
         return prospectContact;
     }
 }

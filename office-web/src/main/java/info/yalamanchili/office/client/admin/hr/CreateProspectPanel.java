@@ -9,14 +9,21 @@
 package info.yalamanchili.office.client.admin.hr;
 
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
+import info.chili.gwt.data.CountryFactory;
+import info.chili.gwt.data.IndiaStatesFactory;
+import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.FileuploadField;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.widgets.SuggestBox;
@@ -29,11 +36,10 @@ import java.util.logging.Logger;
  *
  * @author radhika.mukkala
  */
-public class CreateProspectPanel extends CreateComposite {
+public class CreateProspectPanel extends CreateComposite implements ChangeHandler {
 
     private static Logger logger = Logger.getLogger(CreateProspectPanel.class.getName());
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "screenedBy", "Employee", false, true);
-
     FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "Prospect", "resumeURL", "Prospect/resumeURL", true) {
         @Override
         public void onUploadComplete(String res) {
@@ -49,11 +55,22 @@ public class CreateProspectPanel extends CreateComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
+        JSONObject address = new JSONObject();
         assignEntityValueFromField("firstName", entity);
         assignEntityValueFromField("lastName", entity);
         assignEntityValueFromField("referredBy", entity);
         assignEntityValueFromField("email", entity);
         assignEntityValueFromField("phoneNumber", entity);
+        assignEntityValueFromField("dateOfBirth", entity);
+        assignEntityValueFromField("street1", address);
+        assignEntityValueFromField("street2", address);
+        assignEntityValueFromField("city", address);
+        assignEntityValueFromField("country", address);
+        assignEntityValueFromField("state", address);
+        assignEntityValueFromField("zip", address);
+        if(address.size() > 0){
+        entity.put("address", address);
+        }
         assignEntityValueFromField("screenedBy", entity);
         assignEntityValueFromField("processDocSentDate", entity);
         entity.put("resumeURL", resumeUploadPanel.getFileName());
@@ -87,9 +104,15 @@ public class CreateProspectPanel extends CreateComposite {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProspectsPanel());
     }
+    
+    EnumField statesF;
+    EnumField countriesF;
 
     @Override
     protected void addListeners() {
+        if (countriesF != null) {
+            countriesF.listBox.addChangeHandler(this);
+        }
     }
 
     @Override
@@ -113,14 +136,25 @@ public class CreateProspectPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("firstName", false, true, DataType.STRING_FIELD);
-        addField("lastName", false, true, DataType.STRING_FIELD);
-        addField("referredBy", false, true, DataType.STRING_FIELD);
-        addField("email", false, true, DataType.STRING_FIELD);
-        addField("phoneNumber", false, true, DataType.STRING_FIELD);
-        addField("screenedBy", false, false, DataType.STRING_FIELD);
-        addField("processDocSentDate", false, false, DataType.DATE_FIELD);
+        addField("firstName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("lastName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("referredBy", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("email", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("phoneNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("dateOfBirth", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("street1", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("street2", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("city", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("state", false, false, DataType.ENUM_FIELD, Alignment.HORIZONTAL);
+        addEnumField("country", false, false, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
+        addEnumField("state", false, false, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+        addField("zip", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
+        addField("screenedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("processDocSentDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(resumeUploadPanel);
+        statesF = (EnumField) fields.get("state");
+        countriesF = (EnumField) fields.get("country");
+        alignFields();
 
     }
 
@@ -130,6 +164,19 @@ public class CreateProspectPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
+        logger.info(OfficeWelcome.constants.root_url() + "prospect/save");
         return OfficeWelcome.constants.root_url() + "prospect/save";
+    }
+    
+    @Override
+    public void onChange(ChangeEvent event) {
+        switch (countriesF.getValue()) {
+            case "USA":
+                statesF.setValues(USAStatesFactory.getStates().toArray(new String[0]));
+                break;
+            case "INDIA":
+                statesF.setValues(IndiaStatesFactory.getStates().toArray(new String[0]));
+                break;
+        }
     }
  }

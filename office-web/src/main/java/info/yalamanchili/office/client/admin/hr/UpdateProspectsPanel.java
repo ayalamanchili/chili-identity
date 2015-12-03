@@ -8,6 +8,8 @@
  */
 package info.yalamanchili.office.client.admin.hr;
 
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -15,7 +17,11 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDComposite;
 import info.chili.gwt.crud.UpdateComposite;
+import info.chili.gwt.data.CountryFactory;
+import info.chili.gwt.data.IndiaStatesFactory;
+import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -30,7 +36,7 @@ import java.util.logging.Logger;
  *
  * @author radhika.mukkala
  */
-public class UpdateProspectsPanel extends UpdateComposite implements ClickHandler {
+public class UpdateProspectsPanel extends UpdateComposite implements ClickHandler, ChangeHandler {
 
     private Logger logger = Logger.getLogger(UpdateProspectsPanel.class.getName());
     protected SelectCompanyWidget selectCompanyWidget = new SelectCompanyWidget(true, true, Alignment.HORIZONTAL);
@@ -72,13 +78,27 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
 
     @Override
     protected JSONObject populateEntityFromFields() {
+        // if (entity.containsKey("address")) {
+        JSONObject address = new JSONObject();
+        assignEntityValueFromField("street1", address);
+        assignEntityValueFromField("street2", address);
+        assignEntityValueFromField("city", address);
+        assignEntityValueFromField("state", address);
+        assignEntityValueFromField("country", address);
+        assignEntityValueFromField("zip", address);
+        // }
+        if (address.size() > 0) {
+            entity.put("address", address);
+        }
         assignEntityValueFromField("firstName", entity);
         assignEntityValueFromField("lastName", entity);
         //assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("email", entity);
         assignEntityValueFromField("phoneNumber", entity);
+        assignEntityValueFromField("dateOfBirth", entity);
         assignEntityValueFromField("referredBy", entity);
         assignEntityValueFromField("screenedBy", entity);
+        assignEntityValueFromField("processDocSentDate", entity);
         assignEntityValueFromField("status", entity);
         return entity;
     }
@@ -101,11 +121,21 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+        if (entity.get("address") != null) {
+            JSONObject address = entity.get("address").isObject();
+            assignFieldValueFromEntity("street1", address, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("street2", address, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("city", address, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("country", address, DataType.ENUM_FIELD);
+            assignFieldValueFromEntity("state", address, DataType.ENUM_FIELD);
+            assignFieldValueFromEntity("zip", address, DataType.LONG_FIELD);
+        }
         assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
         //assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("email", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("phoneNumber", entity, DataType.LONG_FIELD);
+        assignFieldValueFromEntity("dateOfBirth", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("referredBy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("screenedBy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("processDocSentDate", entity, DataType.DATE_FIELD);
@@ -114,10 +144,14 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
 
     @Override
     protected void postUpdateSuccess(String result) {
+        logger.info(result + "update panel resultttttttttttttttttttttt");
         new ResponseStatusWidget().show("Successfully Updated Prospect Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProspectsPanel());
     }
+
+    EnumField statesF;
+    EnumField countriesF;
 
     @Override
     protected void addListeners() {
@@ -125,20 +159,30 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
 
     @Override
     protected void configure() {
-
+        countriesF.listBox.addChangeHandler(this);
     }
 
     @Override
     protected void addWidgets() {
-        addField("firstName", false, true, DataType.STRING_FIELD);
-        addField("lastName", false, true, DataType.STRING_FIELD);
-        //addField("startDate", false, false, DataType.DATE_FIELD);
-        addField("email", false, true, DataType.STRING_FIELD);
-        addField("phoneNumber", false, true, DataType.LONG_FIELD);
-        addField("referredBy", false, true, DataType.STRING_FIELD);
-        addField("screenedBy", false, false, DataType.STRING_FIELD);
-         addField("processDocSentDate", false, false, DataType.DATE_FIELD);
-        addEnumField("status", false, false, ProspectStatus.names());
+        addField("firstName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("lastName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        //addField("startDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("email", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("phoneNumber", false, true, DataType.LONG_FIELD, Alignment.HORIZONTAL);
+        addField("dateOfBirth", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("street1", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("street2", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("city", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("country", false, false, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
+        addEnumField("state", false, false, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+        addField("zip", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
+        addField("referredBy", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("screenedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("processDocSentDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addEnumField("status", false, false, ProspectStatus.names(), Alignment.HORIZONTAL);
+        statesF = (EnumField) fields.get("state");
+        countriesF = (EnumField) fields.get("country");
+        alignFields();
     }
 
     @Override
@@ -147,12 +191,19 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
 
     @Override
     protected String getURI() {
+        logger.info("urlllllllllllllllllll :" + OfficeWelcome.constants.root_url() + "prospect/update");
+        return OfficeWelcome.constants.root_url() + "prospect/update";
+    }
 
-        if (!getEntityId().isEmpty()) {
-            return OfficeWelcome.constants.root_url() + "prospect/update";
-        } else {
-            return OfficeWelcome.constants.root_url() + "prospect/save";
+    @Override
+    public void onChange(ChangeEvent event) {
+        switch (countriesF.getValue()) {
+            case "USA":
+                statesF.setValues(USAStatesFactory.getStates().toArray(new String[0]));
+                break;
+            case "INDIA":
+                statesF.setValues(IndiaStatesFactory.getStates().toArray(new String[0]));
+                break;
         }
-
     }
 }

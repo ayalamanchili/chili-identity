@@ -9,11 +9,13 @@ package info.yalamanchili.office.client.analytics.emailevent;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.Window;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -69,7 +71,7 @@ public class ReadAllEmailEventsPanel extends CRUDReadAllComposite {
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().chiliAdminPanel.entityPanel.clear();
-//        TabPanel.instance().chiliAdminPanel.entityPanel.add(new UpdateEventServicePanel(getEntity(entityId)));   
+        //TabPanel.instance().chiliAdminPanel.entityPanel.add(new UpdateEventServicePanel(getEntity(entityId)));
     }
 
     @Override
@@ -93,9 +95,8 @@ public class ReadAllEmailEventsPanel extends CRUDReadAllComposite {
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("To"));
-        table.setText(0, 2, getKeyValue("Sent"));
+        table.setText(0, 2, getKeyValue("Sent Date"));
         table.setText(0, 3, getKeyValue("Subject"));
-        table.setText(0, 4, getKeyValue("Body"));
     }
 
     @Override
@@ -106,13 +107,12 @@ public class ReadAllEmailEventsPanel extends CRUDReadAllComposite {
             table.setText(i, 1, JSONUtils.toString(entity, "to"));
             table.setText(i, 2, JSONUtils.toString(entity, "sentTimeStamp"));
             table.setText(i, 3, JSONUtils.toString(entity, "subject"));
-            table.setText(i, 4, JSONUtils.toString(entity, "body"));
         }
     }
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, getEnitityIDAttribute()));
+        createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE);
     }
 
     @Override
@@ -120,4 +120,19 @@ public class ReadAllEmailEventsPanel extends CRUDReadAllComposite {
         return "_id";
     }
 
+    @Override
+    protected boolean enableQuickView() {
+        return true;
+    }
+
+    @Override
+    protected void onQuickView(int row, String id) {
+        logger.info("on quick view");
+        new GenericPopup(new ReadEmailEventPanel(JSONUtils.toString(getEntity(id), "id")), Window.getClientWidth() / 3, 0).show();
+    }
+
+    @Override
+    protected boolean enablePersistedQuickView() {
+        return true;
+    }
 }
