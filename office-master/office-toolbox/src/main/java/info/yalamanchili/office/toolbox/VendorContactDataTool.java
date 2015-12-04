@@ -40,7 +40,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class VendorContactDataTool {
 
     private static final Log log = LogFactory.getLog(VendorContactDataTool.class);
-    public boolean isContactexists;
 
     public static void main(String... args) {
         VendorContactDataTool tool = new VendorContactDataTool();
@@ -48,6 +47,7 @@ public class VendorContactDataTool {
     }
 
     public void migrateVendorContactData() {
+        int i = 0;
         InputStream inp;
         XSSFWorkbook workbook;
         try {
@@ -59,7 +59,6 @@ public class VendorContactDataTool {
         XSSFSheet sheet = workbook.getSheetAt(0);
         Iterator<Row> rowIterator = sheet.iterator();
         while (rowIterator.hasNext()) {
-            isContactexists = false;
             Row record = rowIterator.next();
             Vendor vendor = new Vendor();
             Contact contact = new Contact();
@@ -72,56 +71,44 @@ public class VendorContactDataTool {
             cr.setId(new Long(convertDcimalToWhole(getCellNumericValue(record, 11))));
             vendor = VendorDao.instance().findById(cr.getId());
 
-            cr.setSimilarity(new Double(getCellNumericValue(record, 10)));
-            if (cr.getSimilarity() < 1.0000) {
-                isContactexists = false;
+            cr.setRole(getCellStringValue(record, 8));
+            cr.setSimilarity(new Double(getCellNumericValue(record, 12)));
+            if (cr.getSimilarity() == 2.0000) {
+                if (cr.getRole() != null && !cr.getRole().isEmpty()) {
+                    if (cr.getRole().equals("Recruiter")) {
+                        continue;
+                    }
+                }
+            }
+
+            cr.setFirstName(getCellStringValue(record, 3));
+            cr.setLastName(getCellStringValue(record, 4));
+            if (cr.getFirstName() != null && !cr.getFirstName().isEmpty()) {
+                cr.setFirstName(cr.getFirstName().replaceAll("[^a-zA-Z0-9\\s\\/\\.\\']", ""));
+                contact.setFirstName(cr.getFirstName());
             } else {
-                isContactexists = true;
+                continue;
             }
-
-            cr.setEmail(getCellStringValue(record, 6));
-            cr.setPhoneNumber(convertDcimalToWhole(getCellStringOrNumericValue(record, 7)));
-            cr.setExtension(convertDcimalToWhole(getCellStringOrNumericValue(record, 8)));
-
-            if (!isContactexists) {
-                cr.setFirstName(getCellStringValue(record, 4));
-                cr.setLastName(getCellStringValue(record, 5));
-                if (cr.getFirstName() != null && !cr.getFirstName().isEmpty()) {
-                    cr.setFirstName(cr.getFirstName().replaceAll("[^a-zA-Z0-9\\s\\/]", ""));
-                    contact.setFirstName(cr.getFirstName());
-                } else {
-                    continue;
-                }
-                if (cr.getLastName() != null && !cr.getLastName().isEmpty()) {
-                    cr.setLastName(cr.getLastName().replaceAll("[^a-zA-Z0-9\\s\\/]", ""));
-                    contact.setLastName(cr.getLastName());
-                } else {
-                    contact.setLastName(cr.getFirstName());
-                }
-            } else if (isContactexists) {
-                for (Contact contct : vendor.getContacts()) {
-                    if (cr.getEmail() != null && !cr.getEmail().isEmpty() && !emailExists(cr.getEmail(), contct)) {
-                        email.setEmail(cr.getEmail());
-                        email.setPrimaryEmail(true);
-                        contct.addEmail(email);
-                    }
-                    if (cr.getPhoneNumber() != null && !cr.getPhoneNumber().isEmpty() && !phoneExists(cr.getPhoneNumber(), contct)) {
-                        phone.setPhoneNumber(cr.getPhoneNumber());
-                        if (cr.getExtension() != null && !cr.getExtension().isEmpty()) {
-                            phone.setExtension(cr.getExtension());
-                        }
-                        contct.addPhone(phone);
-                    }
-                }
+            if (cr.getLastName() != null && !cr.getLastName().isEmpty()) {
+                cr.setLastName(cr.getLastName().replaceAll("[^a-zA-Z0-9\\s\\/\\.\\']", ""));
+                contact.setLastName(cr.getLastName());
+            } else {
+                contact.setLastName(cr.getFirstName());
             }
-
-            if (cr.getEmail() != null && !cr.getEmail().isEmpty() && !isContactexists) {
-                email.setEmail(cr.getEmail());
+            
+            System.out.println("Vendor Name >>>>>>>>>>>>>>>><<<<<<<<<<<<<<: " + cr.getFirstName() + " " + cr.getLastName());
+            
+            cr.setEmail(getCellStringValue(record, 5));
+            if (cr.getEmail() != null && !cr.getEmail().isEmpty()) {
+                email.setEmail(cr.getEmail().replaceAll("\\s+",""));
                 email.setPrimaryEmail(true);
                 contact.addEmail(email);
             }
 
-            if (cr.getPhoneNumber() != null && !cr.getPhoneNumber().isEmpty() && !isContactexists) {
+            
+            cr.setPhoneNumber(convertDcimalToWhole(getCellStringOrNumericValue(record, 6)));
+            cr.setExtension(convertDcimalToWhole(getCellStringOrNumericValue(record, 7)));
+            if (cr.getPhoneNumber() != null && !cr.getPhoneNumber().isEmpty()) {
                 phone.setPhoneNumber(cr.getPhoneNumber());
                 if (cr.getExtension() != null && !cr.getExtension().isEmpty()) {
                     phone.setExtension(cr.getExtension());
@@ -129,17 +116,17 @@ public class VendorContactDataTool {
                 contact.addPhone(phone);
             }
 
-            cr.setRole(getCellStringValue(record, 9));
-            if (cr.getRole() != null && !cr.getRole().isEmpty() && !isContactexists) {
+            if (cr.getRole() != null && !cr.getRole().isEmpty()) {
                 if (cr.getRole().equals("Recruiter")) {
                     vendor.addContact(contact);
                 } else if (cr.getRole().equals("APContactperson")) {
                     vendor.addAcctPayContact(contact);
                 }
             }
-
+            i += 1;
             VendorDao.instance().getEntityManager().merge(vendor);
         }
+         System.out.println("Total Vendor Contact Records Written :::<<<>>>>::: " + i);
     }
 
     protected boolean emailExists(String emailAddress, Contact con) {

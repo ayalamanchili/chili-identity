@@ -47,6 +47,7 @@ public class SubContractorContactDataTool {
     }
 
     public void migrateSubContractorContactData() {
+        int i = 0;
         InputStream inp;
         XSSFWorkbook workbook;
         try {
@@ -83,10 +84,10 @@ public class SubContractorContactDataTool {
             } else {
                 contact.setLastName(cr.getFirstName());
             }
-
+            System.out.println("SubContractor Name >>>>>>>>>>>>>>>><<<<<<<<<<<<<<: " + cr.getFirstName() + " " + cr.getLastName());
+            
             cr.setPhoneNumber(convertDcimalToWhole(getCellStringOrNumericValue(record, 6)));
             cr.setExtension(convertDcimalToWhole(getCellStringOrNumericValue(record, 7)));
-            System.out.println("Phone>>>>>>>>>>>>>>>><<<<<<<<<<<<<<: " + cr.getPhoneNumber());
             if (cr.getPhoneNumber() != null && !cr.getPhoneNumber().isEmpty()) {
                 phone.setPhoneNumber(cr.getPhoneNumber());
                 if (cr.getExtension() != null && !cr.getExtension().isEmpty()) {
@@ -96,7 +97,6 @@ public class SubContractorContactDataTool {
             }
             
             cr.setEmail(getCellStringValue(record, 5));
-            System.out.println("email>>>>>>>>>>>>>>>><<<<<<<<<<<<<<: " + cr.getEmail());
             if (cr.getEmail() != null && !cr.getEmail().isEmpty()) {
                 email.setEmail(cr.getEmail().replaceAll("\\s+",""));
                 email.setPrimaryEmail(true);
@@ -105,9 +105,10 @@ public class SubContractorContactDataTool {
             
             cr.setRole(getCellStringValue(record, 8));
             subContractor.addContact(contact);
-            
+            i += 1;
             SubcontractorDao.instance().getEntityManager().merge(subContractor);
         }
+        System.out.println("Total SubContractor Contact Records Written :::<<<>>>>::: " + i);
     }
 
     protected String getDataFileUrl() {
