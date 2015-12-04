@@ -78,7 +78,6 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        // if (entity.containsKey("address")) {
         JSONObject address = new JSONObject();
         assignEntityValueFromField("street1", address);
         assignEntityValueFromField("street2", address);
@@ -86,7 +85,6 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
         assignEntityValueFromField("state", address);
         assignEntityValueFromField("country", address);
         assignEntityValueFromField("zip", address);
-        // }
         if (address.size() > 0) {
             entity.put("address", address);
         }
@@ -144,7 +142,6 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
 
     @Override
     protected void postUpdateSuccess(String result) {
-        logger.info(result + "update panel resultttttttttttttttttttttt");
         new ResponseStatusWidget().show("Successfully Updated Prospect Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProspectsPanel());
@@ -191,8 +188,11 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
 
     @Override
     protected String getURI() {
-        logger.info("urlllllllllllllllllll :" + OfficeWelcome.constants.root_url() + "prospect/update");
-        return OfficeWelcome.constants.root_url() + "prospect/update";
+        if (!getEntityId().isEmpty()) {
+            return OfficeWelcome.constants.root_url() + "prospect/update";
+        } else {
+            return OfficeWelcome.constants.root_url() + "prospect/save";
+        }
     }
 
     @Override

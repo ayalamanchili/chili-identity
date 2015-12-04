@@ -68,8 +68,8 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         assignEntityValueFromField("country", address);
         assignEntityValueFromField("state", address);
         assignEntityValueFromField("zip", address);
-        if(address.size() > 0){
-        entity.put("address", address);
+        if (address.size() > 0) {
+            entity.put("address", address);
         }
         assignEntityValueFromField("screenedBy", entity);
         assignEntityValueFromField("processDocSentDate", entity);
@@ -104,7 +104,7 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProspectsPanel());
     }
-    
+
     EnumField statesF;
     EnumField countriesF;
 
@@ -164,10 +164,9 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
 
     @Override
     protected String getURI() {
-        logger.info(OfficeWelcome.constants.root_url() + "prospect/save");
         return OfficeWelcome.constants.root_url() + "prospect/save";
     }
-    
+
     @Override
     public void onChange(ChangeEvent event) {
         switch (countriesF.getValue()) {
@@ -179,4 +178,4 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
                 break;
         }
     }
- }
+}
