@@ -35,15 +35,15 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class ProspectService {
-
+    
     @PersistenceContext
     protected EntityManager em;
     @Autowired
     protected Mapper mapper;
-
+    
     @Autowired
     protected ProspectDao prospectDao;
-
+    
     public ProspectDto save(ProspectDto dto) {
         Prospect entity = mapper.map(dto, Prospect.class);
         entity.setStatus(ProspectStatus.IN_PROGRESS);
@@ -52,7 +52,7 @@ public class ProspectService {
         contact.setFirstName(dto.getFirstName());
         contact.setLastName(dto.getLastName());
         contact.setDateOfBirth(dto.getDateOfBirth());
-
+        
         if (!Strings.isNullOrEmpty(dto.getEmail())) {
             Email email = new Email();
             email.setEmail(dto.getEmail());
@@ -70,9 +70,7 @@ public class ProspectService {
         address = dto.getAddress();
         if (dto.getAddress() != null) {
             AddressDao.instance().save(address);
-            System.out.println("addresssss 123 " + address);
             contact.addAddress(address);
-            System.out.println("address in contact :" + contact.details());
             address.setStreet1(dto.getAddress().getStreet1());
             address.setStreet2(dto.getAddress().getStreet2());
             address.setCity(dto.getAddress().getCity());
@@ -87,39 +85,41 @@ public class ProspectService {
         em.merge(entity);
         return dto;
     }
-
+    
     public ProspectDto read(Long id) {
         Prospect ec = prospectDao.findById(id);
         return ProspectDto.map(mapper, ec);
     }
-
+    
     public ProspectDto clone(Long id) {
-        Prospect entity = prospectDao.clone(id,"referredBy", "screenedBy");
+        Prospect entity = prospectDao.clone(id, "referredBy", "screenedBy");
+        Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         entity.setStatus(ProspectStatus.IN_PROGRESS);
-        ProspectDto res = mapper.map(entity, ProspectDto.class);
+        ProspectDto res = ProspectDto.map(mapper, entity);
         return res;
     }
-
+    
     public static ProspectService instance() {
         return SpringContext.getBean(ProspectService.class);
     }
-
+    
     public Prospect update(ProspectDto dto) {
         Prospect entity = prospectDao.findById(dto.getId());
         if (entity.getStatus() == null) {
             entity.setStatus(ProspectStatus.IN_PROGRESS);
-        }
-        else if(dto.getStatus()!= null){
+        } else if (dto.getStatus() != null) {
             entity.setStatus(dto.getStatus());
         }
         //entity = prospectDao.save(entity);
         Contact contact = entity.getContact();
         contact.setFirstName(dto.getFirstName());
         contact.setLastName(dto.getLastName());
-        if (!Strings.isNullOrEmpty(dto.getScreenedBy())){
+        contact.setDateOfBirth(dto.getDateOfBirth());
+        entity.setReferredBy(dto.getReferredBy());
+        if (!Strings.isNullOrEmpty(dto.getScreenedBy())) {
             entity.setScreenedBy(dto.getScreenedBy());
         }
-        if (dto.getProcessDocSentDate() != null){
+        if (dto.getProcessDocSentDate() != null) {
             entity.setProcessDocSentDate(dto.getProcessDocSentDate());
         }
         if (contact.getEmails().size() <= 0) {
@@ -168,6 +168,6 @@ public class ProspectService {
         prospectDao.getEntityManager().merge(entity);
         //em.merge(entity);
         return entity;
-
+        
     }
 }
