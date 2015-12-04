@@ -25,9 +25,11 @@ import info.chili.gwt.data.IndiaStatesFactory;
 import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.EnumField;
+import info.chili.gwt.fields.LongField;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.GenericPopup;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.profile.ProfileHome;
 
 public class CreateAddressPanel extends CreateComposite implements ChangeHandler {
@@ -144,11 +146,12 @@ public class CreateAddressPanel extends CreateComposite implements ChangeHandler
     protected void configure() {
         if (CreateAddressPanelType.CHANGE_WITH_TYPE_NOTIFY.equals(type)) {
             notifyChangeF = (BooleanField) fields.get("notifyChange");
+            notifyChangeF.setValue(true);
             notifyHealthInsuranceF = (BooleanField) fields.get("notifyHealthInsurance");
             changeNotesF = (TextAreaField) fields.get("changeNotes");
-            notifyHealthInsuranceF.setVisible(false);
-            changeNotesF.setVisible(false);
-            notifyChangeInstructions2.setVisible(false);
+            notifyHealthInsuranceF.setVisible(true);
+            changeNotesF.setVisible(true);
+            notifyChangeInstructions2.setVisible(true);
         }
     }
     EnumField statesF;
@@ -162,7 +165,7 @@ public class CreateAddressPanel extends CreateComposite implements ChangeHandler
         addField("state", false, true, DataType.ENUM_FIELD, Alignment.HORIZONTAL);
         addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
         addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
-        addField("zip", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
+        addField("zip", false, true, DataType.LONG_FIELD, Alignment.HORIZONTAL);
         if (CreateAddressPanelType.ALL.equals(type)) {
             addDropDown("addressType", new SelectAddressTypeWidget(false, false));
         }
@@ -202,6 +205,20 @@ public class CreateAddressPanel extends CreateComposite implements ChangeHandler
                 statesF.setValues(IndiaStatesFactory.getStates().toArray(new String[0]));
                 break;
         }
+    }
+    
+     @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+
+        boolean valid = true;
+        if (Auth.isConsultantEmployee(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
+            LongField zipF = (LongField) fields.get("zip");
+            if (zipF.getValue() == null || zipF.getValue().isEmpty()) {
+                zipF.setMessage("Zip Code can not be empty");
+                valid = false;
+            }
+        }
+        return valid;
     }
 
 }
