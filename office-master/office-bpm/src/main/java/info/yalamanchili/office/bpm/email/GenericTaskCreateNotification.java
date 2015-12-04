@@ -46,7 +46,7 @@ public class GenericTaskCreateNotification implements TaskListener {
         Email email = new Email();
         email.setTos(getEmails(delegateTask, notifyEmployee, notifyRoles));
         email.setSubject("Task Created:" + delegateTask.getName());
-        String messageText = "Task is Created. Please complete.\n Details: \n Name: " + delegateTask.getName() + " \n Description:" + delegateTask.getDescription();
+        String messageText = "Task is Created. Please complete.\n Details: \n Name: " + delegateTask.getName() + " \n Description:" + delegateTask.getDescription() +"\n\n\t Please clik on the below link for login and complete the task: \n\t https://apps.sstech.us/office-web/";
         email.setHtml(Boolean.TRUE);
         email.setBody(messageText);
         email.getHeaders().put("task-id", delegateTask.getId());
@@ -75,10 +75,11 @@ public class GenericTaskCreateNotification implements TaskListener {
         Email email = new Email();
         email.setTos(getEmails(delegateTask, notifyEmployee, notifyRoles));
         email.setSubject("Task Created:" + delegateTask.getName());
-        String messageText = "Task is Created. Please complete.\n Details: \n Name: " + delegateTask.getName() + " \n Description:" + delegateTask.getDescription();
+        String messageText = "Task is Created. Please complete.\n Details: \n Name: " + delegateTask.getName() + " \n Description:" + delegateTask.getDescription() + "\n\n\t Please clik on the below link for login and complete the task: \n\t https://apps.sstech.us/office-web/";
         email.setHtml(Boolean.TRUE);
         email.setRichText(true);
         email.setBody(buildForm(delegateTask.getId()));
+        email.setBody(messageText);
         email.getHeaders().put("task-id", delegateTask.getId());
         messagingService.sendEmail(email);
     }
