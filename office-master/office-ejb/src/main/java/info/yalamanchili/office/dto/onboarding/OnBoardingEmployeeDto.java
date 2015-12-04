@@ -12,6 +12,7 @@ import info.yalamanchili.office.dto.profile.EmergencyContactDto;
 import info.yalamanchili.office.entity.expense.BankAccount;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.EmergencyContact;
+import info.yalamanchili.office.entity.profile.EmployeeDocument;
 import info.yalamanchili.office.entity.profile.Sex;
 import info.yalamanchili.office.entity.profile.WorkStatus;
 import info.yalamanchili.office.entity.profile.ext.Dependent;
@@ -92,6 +93,16 @@ public class OnBoardingEmployeeDto implements Serializable {
     
     @Valid
     private List<EmergencyContactDto> emergencyContact;
+    
+    private List<EmployeeDocument> document;
+
+    public List<EmployeeDocument> getDocument() {
+        return document;
+    }
+
+    public void setDocument(List<EmployeeDocument> document) {
+        this.document = document;
+    }
 
     public String getFirstName() {
         return firstName;

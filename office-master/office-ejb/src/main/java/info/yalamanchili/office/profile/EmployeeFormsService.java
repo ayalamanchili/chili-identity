@@ -20,11 +20,10 @@ import info.yalamanchili.office.dao.profile.ext.DependentDao;
 import info.yalamanchili.office.dao.profile.ext.EmployeeAdditionalDetailsDao;
 import info.yalamanchili.office.dao.profile.onboarding.EmployeeOnBoardingDao;
 import info.yalamanchili.office.dto.onboarding.JoiningFormsDto;
+import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.expense.AccountType;
 import info.yalamanchili.office.entity.expense.BankAccount;
 import info.yalamanchili.office.entity.profile.Address;
-import info.yalamanchili.office.entity.profile.ClientInformation;
-import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.EmergencyContact;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.Phone;
@@ -117,22 +116,32 @@ public class EmployeeFormsService {
                 data.getData().put("residentialAddress2", address.getCity() + " , " + address.getState() + " , " + zip);
             }
         });
-        if (ead.getEthnicity().equals(Ethnicity.Asian)) {
-            data.getData().put("asian", "true");
-        } else if (ead.getEthnicity().equals(Ethnicity.Latino_Hispanic)) {
-            data.getData().put("hispanicLatino", "true");
-        } else if (ead.getEthnicity().equals(Ethnicity.AmericanIndian_AlaskaNative)) {
-            data.getData().put("americanIndian", "true");
-        } else if (ead.getEthnicity().equals(Ethnicity.Black_AfricanAmerican)) {
-            data.getData().put("black", "true");
-        } else if (ead.getEthnicity().equals(Ethnicity.NativeHawaiian_OtherPacificIslander)) {
-            data.getData().put("hawalian", "true");
-        } else if (ead.getEthnicity().equals(Ethnicity.White)) {
-            data.getData().put("white", "true");
+        if (ead.getEthnicity() != null) {
+            Ethnicity ethnicity = ead.getEthnicity();
+            switch (ethnicity) {
+                case Asian:
+                    data.getData().put("asian", "true");
+                    break;
+                case Latino_Hispanic:
+                    data.getData().put("hispanicLatino", "true");
+                    break;
+                case AmericanIndian_AlaskaNative:
+                    data.getData().put("americanIndian", "true");
+                    break;
+                case Black_AfricanAmerican:
+                    data.getData().put("black", "true");
+                    break;
+                case NativeHawaiian_OtherPacificIslander:
+                    data.getData().put("hawalian", "true");
+                    break;
+                case White:
+                    data.getData().put("white", "true");
+                    break;
+            }
         }
-
-        data.getData().put("referredBy", ead.getReferredBy());
-
+        if (ead.getReferredBy() != null) {
+            data.getData().put("referredBy", ead.getReferredBy());
+        }
         //section 2: Dependents
         int counter = 0;
         for (Dependent dep : dto.getDependent()) {
@@ -175,9 +184,11 @@ public class EmployeeFormsService {
             data.getData().put("wlStreet1", clientInfo.getClient().getLocations().get(0).getStreet1());
             return clientInfo;
         }).map((clientInfo) -> {
-            String street2 = clientInfo.getClient().getLocations().get(0).getStreet2();
-            if (street2 != null || !"".equals(street2)) {
-                data.getData().put("wlStreet1", clientInfo.getClient().getLocations().get(0).getStreet1() + " , " + street2);
+            if (clientInfo.getClient().getLocations().get(0).getStreet2() != null) {
+                String street2 = clientInfo.getClient().getLocations().get(0).getStreet2();
+                if (street2 != null || !"".equals(street2)) {
+                    data.getData().put("wlStreet1", clientInfo.getClient().getLocations().get(0).getStreet1() + " , " + street2);
+                }
             }
             return clientInfo;
         }).map((clientInfo) -> {
@@ -216,20 +227,35 @@ public class EmployeeFormsService {
         if (emp.getJobTitle() != null) {
             data.getData().put("designation", emp.getJobTitle());
         }
-        if (emp.getWorkStatus()!=null) {
+        if (emp.getWorkStatus() != null) {
             data.getData().put("status", emp.getWorkStatus().name());
         }
         data.getData().put("DOJ", sdf.format(emp.getStartDate()));
-        Employee reportsToEmp = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Reports_To");
-        if (reportsToEmp.getId() != null) {
+        if (CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Reports_To") != null) {
+            Employee reportsToEmp = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Reports_To");
             data.getData().put("reportingTo", reportsToEmp.getFirstName() + " , " + reportsToEmp.getLastName());
         }
-        Employee manager = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Perf_Eval_Manager");
-        if (manager.getId() != null) {
-            data.getData().put("perfEvol", manager.getFirstName() + " , " + reportsToEmp.getLastName());
+        if (CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Perf_Eval_Manager") != null) {
+            Employee manager = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Perf_Eval_Manager");
+            if (manager.getId() != null) {
+                data.getData().put("perfEvol", manager.getFirstName() + " , " + manager.getLastName());
+            }
         }
         if (emp.getCompany().getAbbreviation() != null) {
             data.getData().put("companyCode", emp.getCompany().getAbbreviation());
+        }
+        if (emp.getCompany().getId() != null) {
+            Company company = emp.getCompany();
+            String nameOfCompany = company.getName();
+            if (nameOfCompany.contains("LLC")) {
+                data.getData().put("companyLLC", "true");
+            } else if (nameOfCompany.contains("INC")) {
+                data.getData().put("companyINC", "true");
+            } else if (nameOfCompany.contains("Tech Pillars")) {
+                data.getData().put("companyTP", "true");
+            } else if (nameOfCompany.contains("CGS")) {
+                data.getData().put("companyCGS", "true");
+            }
         }
 
         byte[] pdf = PDFUtils.generatePdf(data);

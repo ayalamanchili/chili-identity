@@ -8,6 +8,7 @@
 package info.yalamanchili.office.bpm.onboarding;
 
 import info.chili.email.Email;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
@@ -48,16 +49,11 @@ public class OnBoardingEmployeeProcessBean {
 
     public void sendEmployeeOnBoardingCompletedEmail(Employee emp) {
         Email email = new Email();
-        email.addTo(emp.getPrimaryEmail().getEmail());
-        StringBuilder subject = new StringBuilder();
-        subject.append("System Soft employee on boarding completed!");
-        email.setSubject(subject.toString());
-        Map<String, Object> emailCtx = new HashMap<>();
-        emailCtx.put("employeeName", emp.getLastName()+" , "+emp.getFirstName());
-        // TODO new template for completed email
-        email.setTemplateName("on_board_employee_template.html");
-        email.setContext(emailCtx);
         email.setHtml(Boolean.TRUE);
+        email.addTo(emp.getPrimaryEmail().getEmail());
+        email.setSubject("Welcome to System Soft Portal");
+        String messageTextforuser = "Your Username and Employee Id is:" + emp.getEmployeeId() + " : \n Please follow the instructions to login into the portal https://apps.sstech.us/site/office/forgot-password.html";
+        email.setBody(messageTextforuser);
         MessagingService.instance().sendEmail(email);
     }
 

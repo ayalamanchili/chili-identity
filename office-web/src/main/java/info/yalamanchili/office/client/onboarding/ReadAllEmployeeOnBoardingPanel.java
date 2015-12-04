@@ -65,7 +65,12 @@ public class ReadAllEmployeeOnBoardingPanel extends CRUDReadAllComposite {
     public void fillData(JSONArray entities) {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
-            JSONObject emp = (JSONObject) entity.get("employee");
+            JSONObject emp;
+            if (entity.containsKey("employee")) {
+                emp = (JSONObject) entity.get("employee");
+            } else {
+                emp = new JSONObject();
+            }
             JSONObject empType = (JSONObject) emp.get("employeeType");
             table.setText(i, 0, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
             table.setText(i, 1, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startedDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));

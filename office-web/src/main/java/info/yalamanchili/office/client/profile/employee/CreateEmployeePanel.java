@@ -3,6 +3,7 @@
  */
 package info.yalamanchili.office.client.profile.employee;
 
+import com.google.gwt.json.client.JSONArray;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -44,6 +45,9 @@ public class CreateEmployeePanel extends CreateComposite {
     @Override
     public JSONObject populateEntityFromFields() {
         JSONObject employee = new JSONObject();
+        if(employee.get("forms")!=null){
+            JSONArray forms = (JSONArray) employee.get("forms");
+        }
         assignEntityValueFromField("firstName", employee);
         assignEntityValueFromField("middleInitial", employee);
         assignEntityValueFromField("lastName", employee);

@@ -18,7 +18,6 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
-import info.yalamanchili.office.client.practice.CreatePracticePanel;
 import info.yalamanchili.office.client.profile.contact.Branch;
 import info.yalamanchili.office.client.profile.contact.WorkStatus;
 import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWidget;
@@ -30,7 +29,7 @@ import java.util.logging.Logger;
  */
 public class InitiateOnBoardingPanel extends CreateComposite {
 
-    private static Logger logger = Logger.getLogger(CreatePracticePanel.class.getName());
+    private static Logger logger = Logger.getLogger(InitiateOnBoardingPanel.class.getName());
 
     public InitiateOnBoardingPanel() {
         super(CreateCompositeType.CREATE);

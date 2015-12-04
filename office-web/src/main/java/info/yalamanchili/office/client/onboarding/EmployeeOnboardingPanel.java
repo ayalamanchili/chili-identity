@@ -123,9 +123,13 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
                     @Override
                     public void onResponse(String response) {
                         logger.info("loadentity response" + response);
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity);
-
+                        if (response != null) {
+                            logger.info("entityyyyyyyyyyy :" + entity);
+                            if (entity != null) {
+                                entity = (JSONObject) JSONParser.parseLenient(response);
+                                populateFieldsFromEntity(entity);
+                            }
+                        }
                     }
                 });
     }
@@ -308,6 +312,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
     protected void uploadReceipts(String postString) {
         if (!fileUploadPanel.isEmpty()) {
             JSONObject post = (JSONObject) JSONParser.parseLenient(postString);
+            logger.info("upload receiptsssss" + post.toString());
             JSONArray employeeforms = JSONUtils.toJSONArray(post.get("forms"));
             fileUploadPanel.upload(employeeforms, "fileURL");
         } else {
@@ -349,9 +354,19 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+        JSONObject account = (JSONObject) entity.get("bankAccount");
+        JSONObject address = (JSONObject) entity.get("address");
         assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
-
+        assignFieldValueFromEntity("accountFirstName", account, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("accountLastName", account, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("dateOfBirth", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("street1", address, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("street2", address, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("city", address, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("country", address, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("state", address, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("zip", address, DataType.LONG_FIELD);
     }
 
     @Override
