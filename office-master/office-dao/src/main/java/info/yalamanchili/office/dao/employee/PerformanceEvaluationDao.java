@@ -47,7 +47,7 @@ public class PerformanceEvaluationDao extends CRUDDao<PerformanceEvaluation> {
     }
 
     public List<PerformanceEvaluation> getPerformanceEvaluationsForEmp(Employee emp) {
-        List<PerformanceEvaluation> performanceEvaluations = new ArrayList<PerformanceEvaluation>();
+        List<PerformanceEvaluation> performanceEvaluations = new ArrayList<>();
         TypedQuery<PerformanceEvaluation> query = em.createQuery("from " + PerformanceEvaluation.class.getCanonicalName() + "  where employee=:employeeParam", PerformanceEvaluation.class);
         query.setParameter("employeeParam", emp);
         boolean isCorporateEmployee = false;
@@ -84,11 +84,11 @@ public class PerformanceEvaluationDao extends CRUDDao<PerformanceEvaluation> {
         }
         Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
         Employee perfEvalMgr = CompanyContactDao.instance().getCompanyContactForEmployee(employee, "Perf_Eval_Manager");
-        if (perfEvalMgr != null && currentUser.getId().equals(perfEvalMgr.getId())) {
+        if (perfEvalMgr != null && currentUser.getId().equals(perfEvalMgr.getId()) && peval.getQuestions().size() > 4) {
             flag = true;
         }
         Employee reportsToMgr = CompanyContactDao.instance().getCompanyContactForEmployee(employee, "Reports_To");
-        if (reportsToMgr != null && currentUser.getId().equals(reportsToMgr.getId())) {
+        if (reportsToMgr != null && currentUser.getId().equals(reportsToMgr.getId()) && peval.getQuestions().size() > 4) {
             flag = true;
         }
         return flag && PerformanceEvaluationStage.Manager_Review.equals(peval.getStage());
