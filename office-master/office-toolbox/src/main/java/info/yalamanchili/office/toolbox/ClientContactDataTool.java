@@ -84,7 +84,8 @@ public class ClientContactDataTool {
             } else {
                 contact.setLastName(cr.getFirstName());
             }
-
+            System.out.println("Client Name>>>>>>>>>>>>>>>><<<<<<<<<<<<<<: " + cr.getFirstName() + " " + cr.getLastName());
+            
             cr.setPhoneNumber(convertDcimalToWhole(getCellStringOrNumericValue(record, 6)));
             cr.setExtension(convertDcimalToWhole(getCellStringOrNumericValue(record, 7)));
 
@@ -112,10 +113,10 @@ public class ClientContactDataTool {
                     client.addClientAcctPayContact(contact);
                 }
             }
-            i = i + 1;
+            i += 1;
             ClientDao.instance().getEntityManager().merge(client);
         }
-        System.out.println("Total Client Contact Records Written : " + i);
+        System.out.println("Total Client Contact Records Written :::<<<>>>>::: " + i);
     }
 
     protected String getDataFileUrl() {
