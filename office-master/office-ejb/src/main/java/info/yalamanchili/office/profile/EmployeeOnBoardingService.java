@@ -17,11 +17,11 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
 import info.yalamanchili.office.bpm.OfficeBPMService;
-import info.yalamanchili.office.dao.drive.FileDao;
 import info.yalamanchili.office.dao.expense.BankAccountDao;
 import info.yalamanchili.office.dao.invite.InviteCodeDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.profile.EmployeeDocumentDao;
 import info.yalamanchili.office.dao.profile.ext.DependentDao;
 import info.yalamanchili.office.dao.profile.ext.EmployeeAdditionalDetailsDao;
 import info.yalamanchili.office.dao.profile.onboarding.EmployeeOnBoardingDao;
@@ -36,6 +36,7 @@ import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.EmergencyContact;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.EmployeeDocument;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.entity.profile.Preferences;
@@ -90,12 +91,22 @@ public class EmployeeOnBoardingService {
     public OnBoardingEmployeeDto getOnboardingInfo(String invitationCode) {
         String invCde = invitationCode.trim();
         InviteCode code = InviteCodeDao.instance().find(invCde);
-        Contact cnt = ContactDao.instance().findByEmail(code.getEmail());
+        Contact cnt;
         OnBoardingEmployeeDto res = new OnBoardingEmployeeDto();
         BankAccount account = new BankAccount();
-        if (cnt != null) {
+        Address address;
+        if (ContactDao.instance().findByEmail(code.getEmail()) != null) {
+            cnt = ContactDao.instance().findByEmail(code.getEmail());
+            if (cnt.getAddresss().get(0) != null) {
+                address = cnt.getAddresss().get(0);
+                res.setAddress(address);
+            }
             res.setFirstName(cnt.getFirstName());
             res.setLastName(cnt.getLastName());
+            res.setDateOfBirth(cnt.getDateOfBirth());
+            account.setAccountFirstName(cnt.getFirstName());
+            account.setAccountLastName(cnt.getLastName());
+            res.setBankAccount(account);
         }
         //TODO set dob,address account first and last name
         return res;
