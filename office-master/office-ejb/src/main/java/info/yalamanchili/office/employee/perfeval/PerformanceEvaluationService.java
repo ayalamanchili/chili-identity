@@ -89,7 +89,7 @@ public class PerformanceEvaluationService {
     protected String startAssociatePerformanceEvaluationProcess(PerformanceEvaluation entity, Employee emp) {
         OfficeBPMTaskService.instance().deleteTasksWithVariable("entityId", entity.getId(), "eemReviewTask", true);
         OfficeBPMTaskService.instance().deleteTasksWithVariable("entityId", entity.getId(), "hrFinalApprovalTask", true);
-        Map<String, Object> vars = new HashMap<String, Object>();
+        Map<String, Object> vars = new HashMap<>();
         vars.put("entityId", entity.getId());
         vars.put("entity", entity);
         vars.put("currentEmployee", emp);
@@ -133,7 +133,7 @@ public class PerformanceEvaluationService {
         if (startProcess) {
             entity.setStage(PerformanceEvaluationStage.Manager_Review);
             entity.setBpmProcessId(startCorporatePerformanceEvaluationProcess(entity, employee));
-        } else {
+        } else if (entity.getBpmProcessId() == null) {
             entity.setStage(PerformanceEvaluationStage.Self_Review);
         }
     }
@@ -142,7 +142,7 @@ public class PerformanceEvaluationService {
         if (entity.getBpmProcessId() != null) {
             OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
         }
-        Map<String, Object> vars = new HashMap<String, Object>();
+        Map<String, Object> vars = new HashMap<>();
         vars.put("entityId", entity.getId());
         vars.put("entity", entity);
         vars.put("currentEmployee", emp);
@@ -242,7 +242,7 @@ public class PerformanceEvaluationService {
     }
 
     public Set<String> getFYYears() {
-        Set<String> fyYears = new HashSet<String>();
+        Set<String> fyYears = new HashSet<>();
         fyYears.add("2013");
         fyYears.add("2014");
         fyYears.add("2015");
@@ -276,7 +276,7 @@ public class PerformanceEvaluationService {
         }
 
         data.getData().put("fyYear", evaluation.getEvaluationFYYear());
-        data.getData().put("nextFYYear", new Integer(Integer.valueOf(evaluation.getEvaluationFYYear()) + 1).toString());
+        data.getData().put("nextFYYear", Integer.toString(Integer.valueOf(evaluation.getEvaluationFYYear()) + 1));
         data.getData().put("evaluationDate", new SimpleDateFormat("MM-dd-yyyy").format(evaluation.getEvaluationDate()));
         data.getData().put("employeeName", employee.getFirstName() + " " + employee.getLastName());
         data.getData().put("startDate", new SimpleDateFormat("MM-dd-yyyy").format(evaluation.getEvaluationActualStartDate()));
@@ -424,7 +424,7 @@ public class PerformanceEvaluationService {
     @Async
     @Transactional(readOnly = true)
     public void getPerformanceEvaluationReport(String email, String year) {
-        List<PerformanceEvaluationReportDto> report = new ArrayList<PerformanceEvaluationReportDto>();
+        List<PerformanceEvaluationReportDto> report = new ArrayList<>();
         for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
             PerformanceEvaluationReportDto dto = new PerformanceEvaluationReportDto();
             dto.setEmployee(emp.getFirstName() + " " + emp.getLastName());
