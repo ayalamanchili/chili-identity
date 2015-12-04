@@ -142,7 +142,7 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
                         @Override
                         public void onResponse(String arg0) {
                             logger.info(arg0);
-                            new ResponseStatusWidget().show("Prospect Notification sent to mail successfully.");
+                            new ResponseStatusWidget().show("Onboarding Invitation sent to mail successfully.");
                         }
                     });
         }
