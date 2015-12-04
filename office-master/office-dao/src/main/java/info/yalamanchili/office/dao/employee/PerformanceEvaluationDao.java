@@ -84,11 +84,11 @@ public class PerformanceEvaluationDao extends CRUDDao<PerformanceEvaluation> {
         }
         Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
         Employee perfEvalMgr = CompanyContactDao.instance().getCompanyContactForEmployee(employee, "Perf_Eval_Manager");
-        if (perfEvalMgr != null && currentUser.getId().equals(perfEvalMgr.getId()) && peval.getQuestions().size() > 4) {
+        if (perfEvalMgr != null && currentUser.getId().equals(perfEvalMgr.getId())) {
             flag = true;
         }
         Employee reportsToMgr = CompanyContactDao.instance().getCompanyContactForEmployee(employee, "Reports_To");
-        if (reportsToMgr != null && currentUser.getId().equals(reportsToMgr.getId()) && peval.getQuestions().size() > 4) {
+        if (reportsToMgr != null && currentUser.getId().equals(reportsToMgr.getId())) {
             flag = true;
         }
         return flag && PerformanceEvaluationStage.Manager_Review.equals(peval.getStage());
