@@ -136,7 +136,7 @@ public class FileResource {
         if (contentType == null) {
             response.header("Content-Disposition", "attachment;");
         } else {
-            response.header("Content-Disposition", "attachment; filename=\"" + file.getName()+"\"");
+            response.header("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"");
         }
         response.header("Content-Type", contentType);
         //Content disposition with attachement forces the browser to download as attachment(avod inconsistent file type handles by browser)
@@ -177,8 +177,9 @@ public class FileResource {
             if (res != null) {
                 return res;
             }
+            String fileName = item.getName();
             File file = new File(officeServiceConfiguration.getContentManagementLocationRoot() + item.getFieldName()
-                    + item.getName());
+                    + fileName);
             try {
                 log.info("----------writing image to-----------:" + file.getAbsolutePath());
                 item.write(file);
