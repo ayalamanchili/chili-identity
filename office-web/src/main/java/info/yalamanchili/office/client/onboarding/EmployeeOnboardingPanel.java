@@ -122,13 +122,10 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String response) {
-                        logger.info("loadentity response" + response);
+                        logger.info(response);
                         if (response != null) {
-                            logger.info("entityyyyyyyyyyy :" + entity);
-                            if (entity != null) {
-                                entity = (JSONObject) JSONParser.parseLenient(response);
-                                populateFieldsFromEntity(entity);
-                            }
+                            entity = (JSONObject) JSONParser.parseLenient(response);
+                            populateFieldsFromEntity(entity);
                         }
                     }
                 });
@@ -207,7 +204,6 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         employee.put("inviteCode", new JSONString(invitationCode));
 
         JSONArray Onboardingforms = new JSONArray();
-
         if (!fileUploadPanel.isEmpty()) {
             int i = 0;
             for (FileUpload upload : fileUploadPanel.getFileUploads()) {
@@ -220,7 +216,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
                 }
             }
         }
-        employee.put("forms", Onboardingforms);
+        employee.put("documents", Onboardingforms);
         logger.info("employee" + employee.toString());
         return employee;
     }

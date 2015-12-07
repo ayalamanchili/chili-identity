@@ -444,9 +444,9 @@ public class OfficeStartup {
      */
     protected void initRefData() {
         // Company
-        if (QueryUtils.findEntity(em, Company.class, "name", "System Soft Technologies") == null) {
+        if (QueryUtils.findEntity(em, Company.class, "name", Company.SSTECH_LLC) == null) {
             sstechCmp = new Company();
-            sstechCmp.setName("System Soft Technologies");
+            sstechCmp.setName(Company.SSTECH_LLC);
             sstechCmp = em.merge(sstechCmp);
         }
         //DriveFolder

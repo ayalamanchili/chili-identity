@@ -16,13 +16,16 @@ import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.drive.FileDao;
 import info.yalamanchili.office.dao.hr.ProspectDao;
 import info.yalamanchili.office.dao.invite.InviteCodeDao;
+import info.yalamanchili.office.dao.profile.CompanyDao;
+import info.yalamanchili.office.dao.profile.EmployeeTypeDao;
+import info.yalamanchili.office.dto.onboarding.InitiateOnBoardingDto;
 import info.yalamanchili.office.dto.prospect.ProspectDto;
+import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.hr.Prospect;
-import info.yalamanchili.office.entity.profile.invite.InvitationType;
-import info.yalamanchili.office.entity.profile.invite.InviteCode;
+import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.jrs.CRUDResource;
-import info.yalamanchili.office.profile.invite.InviteCodeGeneratorService;
+import info.yalamanchili.office.profile.EmployeeOnBoardingService;
 import info.yalamanchili.office.prospect.ProspectService;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,7 +40,6 @@ import javax.ws.rs.PathParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.apache.commons.lang.time.DateUtils;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -56,25 +58,25 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("request")
 @Transactional
 public class ProspectResource extends CRUDResource<ProspectDto> {
-
+    
     @Autowired
     public ProspectDao prospectDao;
-
+    
     @Autowired
     public ProspectService prospectService;
-
+    
     @Autowired
     protected InviteCodeDao inviteCodeDao;
     @Autowired
     FileDao fileDao;
-
+    
     @Override
     public CRUDDao getDao() {
         return prospectDao;
     }
     @Autowired
     protected Mapper mapper;
-
+    
     @GET
     @Path("/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_PROSPECTS_MANAGER')")
@@ -89,7 +91,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
         tableObj.setSize(getDao().size());
         return tableObj;
     }
-
+    
     @PUT
     @Path("/save")
     @Validate
@@ -99,7 +101,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     public ProspectDto save(ProspectDto prospect) {
         return prospectService.save(prospect);
     }
-
+    
     @PUT
     @Path("/update")
     @Validate
@@ -108,21 +110,21 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     public Prospect update(ProspectDto prospect) {
         return prospectService.update(prospect);
     }
-
+    
     @GET
     @Path("/clone/{id}")
     @Override
     public ProspectDto clone(@PathParam("id") Long id) {
         return prospectService.clone(id);
     }
-
+    
     @GET
     @Override
     @Path("/{id}")
     public ProspectDto read(@PathParam("id") Long id) {
         return prospectService.read(id);
     }
-
+    
     @PUT
     @Path("/delete/{id}")
     @Override
@@ -131,7 +133,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
     }
-
+    
     @GET
     @Path("/email-info/{id}")
     public void basicProspectRequest(@PathParam("id") Long id) {
@@ -152,7 +154,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
             prospectDao.save(entity);
         }
     }
-
+    
     @PUT
     @Path("/search-prospect/{start}/{limit}")
     @Transactional(readOnly = true)
@@ -166,55 +168,44 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
         }
         return res;
     }
-
+    
     protected final String[] ON_BOARDING_FORMS_LIST = {"W2_On_Boarding", "I9_On_Boarding"};
-
+    
     @GET
     @Path("/invite-code/{id}")
     public void sendInviteCodeEmail(@PathParam("id") Long id) {
         Prospect prospect = prospectDao.findById(id);
-        InviteCode code = InviteCodeGeneratorService.instance().generate(InvitationType.CLIENT_ONBOARDING, prospect.getContact().getPrimaryEmail().getEmail(), new Date(), DateUtils.addDays(new Date(), 7), false);
-        if (id != null) {
-            Email email = new Email();
-            email.addTo(prospect.getContact().getPrimaryEmail().getEmail());
-            StringBuilder subject = new StringBuilder();
-            subject.append("System Soft Invitation");
-            email.setSubject(subject.toString());
-            Map<String, Object> emailCtx = new HashMap<>();
-            emailCtx.put("invitationCode", "http://localhost:9090/office-web/?inviteCode=" + code.getInvitationCode());
-            email.setTemplateName("send_onboarding_invitation_eamil_template.html");
-            String messageText = "http://localhost:9090/office-web/?inviteCode=" + code.getInvitationCode();
-            email.setContext(emailCtx);
-            email.setBody(messageText);
-            for (String fileName : ON_BOARDING_FORMS_LIST) {
-                if (fileDao.getFilePath(fileName) != null) {
-                    email.getAttachments().add(fileDao.getFilePath(fileName));
-                }
-            }
-            MessagingService.instance().sendEmail(email);
-        }
+        InitiateOnBoardingDto dto = new InitiateOnBoardingDto();
+        dto.setEmail(prospect.getContact().getPrimaryEmail().getEmail());
+        //TODO this should be user defined
+        EmployeeType type = new EmployeeType();
+        type.setName(EmployeeType.EMPLOYEE);
+        dto.setEmployeeType(EmployeeTypeDao.instance().findByName(EmployeeType.EMPLOYEE));
+        //TODO this should be user defined
+        dto.setCompany(CompanyDao.instance().findByCompanyName(Company.SSTECH_LLC));
+        EmployeeOnBoardingService.instance().initiateOnBoarding(dto);
     }
-
+    
     @XmlRootElement
     @XmlType
     public static class ProspectTable implements java.io.Serializable {
-
+        
         protected Long size;
         protected List<ProspectDto> entities;
-
+        
         public Long getSize() {
             return size;
         }
-
+        
         public void setSize(Long size) {
             this.size = size;
         }
-
+        
         @XmlElement
         public List<ProspectDto> getEntities() {
             return entities;
         }
-
+        
         public void setEntities(List<ProspectDto> entities) {
             this.entities = entities;
         }

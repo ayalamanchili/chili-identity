@@ -8,9 +8,11 @@
 package info.yalamanchili.office.dao.profile;
 
 import info.chili.dao.CRUDDao;
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
@@ -26,6 +28,15 @@ public class EmployeeTypeDao extends CRUDDao<EmployeeType> {
         super(EmployeeType.class);
     }
 
+    public EmployeeType findByName(String name) {
+        Query q = em.createQuery("FROM EmployeeType WHERE lower(name) = :nameParam");
+        q.setParameter("nameParam", name.toLowerCase());
+        if (q.getResultList().size() > 0) {
+            return (EmployeeType) q.getResultList().get(0);
+        } else {
+            return null;
+        }
+    }
     @PersistenceContext
     protected EntityManager em;
 
@@ -34,4 +45,7 @@ public class EmployeeTypeDao extends CRUDDao<EmployeeType> {
         return em;
     }
 
+    public static EmployeeTypeDao instance() {
+        return SpringContext.getBean(EmployeeTypeDao.class);
+    }
 }

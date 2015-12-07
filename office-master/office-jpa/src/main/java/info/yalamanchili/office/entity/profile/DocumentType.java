@@ -21,4 +21,8 @@ public enum DocumentType {
      * @EVerification
      */
     EVERIFICATION,
+    /**
+     *
+     */
+    ON_BOARDING;
 }
