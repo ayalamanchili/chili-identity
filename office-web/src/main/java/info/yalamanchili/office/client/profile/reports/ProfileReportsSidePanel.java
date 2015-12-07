@@ -16,6 +16,8 @@ import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 
 /**
@@ -28,6 +30,7 @@ public class ProfileReportsSidePanel extends ALComposite implements ClickHandler
     ClickableLink profileBasicReportL = new ClickableLink("Basic Profile Report");
     ClickableLink profileAdvanceReportL = new ClickableLink("Complete Profile Report");
     ClickableLink clientInfoReportL = new ClickableLink("Client Information Report");
+    ClickableLink companyContactsReportL = new ClickableLink("Company Contact Report");
 
     public ProfileReportsSidePanel() {
         init(panel);
@@ -38,7 +41,7 @@ public class ProfileReportsSidePanel extends ALComposite implements ClickHandler
         profileBasicReportL.addClickHandler(this);
         profileAdvanceReportL.addClickHandler(this);
         clientInfoReportL.addClickHandler(this);
-
+        companyContactsReportL.addClickHandler(this);
     }
 
     @Override
@@ -46,7 +49,7 @@ public class ProfileReportsSidePanel extends ALComposite implements ClickHandler
         profileAdvanceReportL.setTitle("report with name,email,phone, start date, address, emergency contact");
         profileBasicReportL.setTitle("report with name, email, phone, start date of all employees");
         clientInfoReportL.setTitle("report with employeeName, clientName, clientName, billingRate,startDate,endDate of all employees");
-
+        companyContactsReportL.setTitle("report with first name, last name, company contact type, contact of all employees");
     }
 
     @Override
@@ -54,6 +57,7 @@ public class ProfileReportsSidePanel extends ALComposite implements ClickHandler
         panel.add(profileBasicReportL);
         panel.add(profileAdvanceReportL);
         panel.add(clientInfoReportL);
+        panel.add(companyContactsReportL);
     }
 
     @Override
@@ -66,6 +70,9 @@ public class ProfileReportsSidePanel extends ALComposite implements ClickHandler
         }
         if (event.getSource().equals(clientInfoReportL)) {
             generateClientInfoReport();
+        }
+        if (event.getSource().equals(companyContactsReportL)) {
+            generateCompanyContactReport();
         }
     }
 
@@ -99,8 +106,22 @@ public class ProfileReportsSidePanel extends ALComposite implements ClickHandler
                 });
     }
 
+    protected void generateCompanyContactReport() {
+        HttpService.HttpServiceAsync.instance().doGet(getCompanyContactReportUrl(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String result) {
+                        new ResponseStatusWidget().show("Report will be emailed to your primary email");
+                    }
+                });
+    }
+
     protected String getBasicInfoReportUrl() {
         return OfficeWelcome.constants.root_url() + "profile-reports/employee-basic-info-report";
+    }
+
+    protected String getCompanyContactReportUrl() {
+        return OfficeWelcome.constants.root_url() + "profile-reports/employee-company-contacts-report";
     }
 
     protected String getAdvanceInfoReportUrl() {

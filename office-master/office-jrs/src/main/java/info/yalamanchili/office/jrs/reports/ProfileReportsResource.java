@@ -47,6 +47,13 @@ public class ProfileReportsResource {
     public void generateProfileInformationReport() {
         profileReportsService.generateProfileReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
+    
+    @GET
+    @Path("/employee-company-contacts-report")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void generateCompanyContactsReport() {
+        profileReportsService.generateEmployeCompanyContactsReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
+    }
 
     @GET
     @Path("/employee-client-info-report")
