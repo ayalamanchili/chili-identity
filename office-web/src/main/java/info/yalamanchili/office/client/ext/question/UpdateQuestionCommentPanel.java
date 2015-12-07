@@ -20,6 +20,7 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.employee.prefeval.PerformanceEvaluationStage;
+import info.yalamanchili.office.client.employee.prefeval.UpdatePerformanceEvaluationPanel;
 import info.yalamanchili.office.client.gwt.RatingWidget;
 import java.util.logging.Logger;
 
@@ -44,7 +45,7 @@ public class UpdateQuestionCommentPanel extends UpdateComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("comment", entity);
-        if (!PerformanceEvaluationStage.Self_Review.name().equals("Self_Review")) {
+        if (!PerformanceEvaluationStage.Self_Review.name().equals(JSONUtils.toString(UpdatePerformanceEvaluationPanel.instance().getEntity(), "stage"))) {
             if (ratingWidget.getRating() > 0) {
                 entity.put("rating", new JSONString(ratingWidget.getRating().toString()));
             } else {
@@ -62,11 +63,11 @@ public class UpdateQuestionCommentPanel extends UpdateComposite {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
 
-                    @Override
-                    public void onResponse(String arg0) {
-                        new ResponseStatusWidget().show("Successfuly update comment");
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                new ResponseStatusWidget().show("Successfuly update comment");
+            }
+        });
     }
 
     @Override
@@ -78,7 +79,7 @@ public class UpdateQuestionCommentPanel extends UpdateComposite {
     public void populateFieldsFromEntity(JSONObject entity) {
         questionInfoL.setHTML(entity.get("questionInfo").isString().stringValue());
         assignFieldValueFromEntity("comment", entity, DataType.TEXT_AREA_FIELD);
-        if (!PerformanceEvaluationStage.Self_Review.name().equals("Self_Review")) {
+        if (!PerformanceEvaluationStage.Self_Review.name().equals(JSONUtils.toString(UpdatePerformanceEvaluationPanel.instance().getEntity(), "stage"))) {
             if (JSONUtils.toString(entity, "rating").isEmpty()) {
                 ratingWidget.setRating(0);
             } else {
@@ -104,7 +105,7 @@ public class UpdateQuestionCommentPanel extends UpdateComposite {
     protected void addWidgets() {
         entityFieldsPanel.add(questionInfoL);
         addField("comment", false, false, DataType.TEXT_AREA_FIELD);
-        if (!PerformanceEvaluationStage.Self_Review.name().equals("Self_Review")) {
+        if (!PerformanceEvaluationStage.Self_Review.name().equals(JSONUtils.toString(UpdatePerformanceEvaluationPanel.instance().getEntity(), "stage"))) {
             ratingWidget = new RatingWidget(5, isRatingRequired, false);
             entityFieldsPanel.add(ratingWidget);
         }

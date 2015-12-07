@@ -44,9 +44,15 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
     UpdateAllQuestionCommentsPanel updateManagementCommentsPanel;
 
     protected PerformanceEvaluationWizardType type;
+    protected static UpdatePerformanceEvaluationPanel instance;
+
+    public static UpdatePerformanceEvaluationPanel instance() {
+        return instance;
+    }
 
     public UpdatePerformanceEvaluationPanel(PerformanceEvaluationWizardType type, JSONObject entity) {
         this.type = type;
+        instance = this;
         initUpdateComposite(entity, "PerformanceEvaluation", OfficeWelcome.constants);
     }
     JSONObject perfEval = new JSONObject();
@@ -56,12 +62,12 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         assignEntityValueFromField("evaluationDate", entity);
         assignEntityValueFromField("evaluationActualStartDate", entity);
         assignEntityValueFromField("evaluationPeriodEndDate", entity);
-        if (!PerformanceEvaluationStage.Self_Review.name().equals("Self_Review") || PerformanceEvaluationWizardType.MANAGER.equals(type)) {
+        if (!PerformanceEvaluationStage.Self_Review.name().equals(JSONUtils.toString(getEntity(), "stage")) || PerformanceEvaluationWizardType.MANAGER.equals(type)) {
             assignEntityValueFromField("keyAccomplishments", entity);
             assignEntityValueFromField("areasNeedImprovement", entity);
         }
 //        assignEntityValueFromField("nextYearObjectives", entity);
-        if (!PerformanceEvaluationStage.Self_Review.name().equals("Self_Review")) {
+        if (!PerformanceEvaluationStage.Self_Review.name().equals(JSONUtils.toString(getEntity(), "stage"))) {
             if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type) || (TabPanel.instance().myOfficePanel.isVisible() && Auth.hasAnyOfRoles(ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_GC_IMMIGRATION))) {
                 assignEntityValueFromField("managerComments", entity);
                 assignEntityValueFromField("employeeComments", entity);
@@ -90,21 +96,21 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
                 x++;
             }
         }
-        if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type) && updateSkillAptitudeCommentsPanel != null) {
+        if (updateSkillAptitudeCommentsPanel != null) {
             skillQuestions = updateSkillAptitudeCommentsPanel.getQuestions();
             for (int i = 0; i < skillQuestions.size(); i++) {
                 questionComments.set(x, skillQuestions.get(i));
                 x++;
             }
         }
-        if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type) && updateAptitudeCommentsPanel != null) {
+        if (updateAptitudeCommentsPanel != null) {
             attitudeQuestions = updateAptitudeCommentsPanel.getQuestions();
             for (int i = 0; i < attitudeQuestions.size(); i++) {
                 questionComments.set(x, attitudeQuestions.get(i));
                 x++;
             }
         }
-        if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type) && updateManagementCommentsPanel != null) {
+        if (updateManagementCommentsPanel != null) {
             managementQuestions = updateManagementCommentsPanel.getQuestions();
             for (int i = 0; i < managementQuestions.size(); i++) {
                 questionComments.set(x, managementQuestions.get(i));
@@ -120,16 +126,16 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), perfEval.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postUpdateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postUpdateSuccess(arg0);
+            }
+        });
     }
 
     @Override
@@ -137,12 +143,12 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         assignFieldValueFromEntity("evaluationDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("evaluationActualStartDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("evaluationPeriodEndDate", entity, DataType.DATE_FIELD);
-        if (!PerformanceEvaluationStage.Self_Review.name().equals("Self_Review") || PerformanceEvaluationWizardType.MANAGER.equals(type)) {
+        if (!PerformanceEvaluationStage.Self_Review.name().equals(JSONUtils.toString(getEntity(), "stage")) || PerformanceEvaluationWizardType.MANAGER.equals(type)) {
             assignFieldValueFromEntity("keyAccomplishments", entity, DataType.TEXT_AREA_FIELD);
             assignFieldValueFromEntity("areasNeedImprovement", entity, DataType.TEXT_AREA_FIELD);
         }
 //        assignFieldValueFromEntity("nextYearObjectives", entity, DataType.TEXT_AREA_FIELD);
-        if (!PerformanceEvaluationStage.Self_Review.name().equals("Self_Review")) {
+        if (!PerformanceEvaluationStage.Self_Review.name().equals(JSONUtils.toString(getEntity(), "stage"))) {
             if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type) || (TabPanel.instance().myOfficePanel.isVisible() && Auth.hasAnyOfRoles(ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_GC_IMMIGRATION))) {
                 assignFieldValueFromEntity("managerComments", entity, DataType.TEXT_AREA_FIELD);
                 assignFieldValueFromEntity("employeeComments", entity, DataType.TEXT_AREA_FIELD);
@@ -209,12 +215,12 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
             addField("hrApprovalDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
             addField("acceptDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         }
-        if (!PerformanceEvaluationStage.Self_Review.name().equals("Self_Review") || PerformanceEvaluationWizardType.MANAGER.equals(type)) {
+        if (!PerformanceEvaluationStage.Self_Review.name().equals(JSONUtils.toString(getEntity(), "stage")) || PerformanceEvaluationWizardType.MANAGER.equals(type)) {
             addField("keyAccomplishments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
             addField("areasNeedImprovement", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         }
 //        addField("nextYearObjectives", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        if (!PerformanceEvaluationStage.Self_Review.name().equals("Self_Review")) {
+        if (!PerformanceEvaluationStage.Self_Review.name().equals(JSONUtils.toString(getEntity(), "stage"))) {
             if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type) || (TabPanel.instance().myOfficePanel.isVisible() && Auth.hasAnyOfRoles(ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_GC_IMMIGRATION))) {
                 addField("managerComments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
                 addField("employeeComments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
@@ -225,7 +231,7 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
             updateSelfReviewCommentsPanel = new UpdateAllQuestionCommentsPanel(QuestionCategory.SELF_EVALUATION.name(), getQuestionCommentsUrl(QuestionCategory.SELF_EVALUATION.name(), QuestionContext.PERFORMANCE_EVALUATION_SELF.name()));
             entityFieldsPanel.add(updateSelfReviewCommentsPanel);
         }
-        if (!PerformanceEvaluationStage.Self_Review.name().equals("Self_Review") || PerformanceEvaluationWizardType.MANAGER.equals(type)) {
+        if (!PerformanceEvaluationStage.Self_Review.name().equals(JSONUtils.toString(getEntity(), "stage")) || PerformanceEvaluationWizardType.MANAGER.equals(type)) {
             entityFieldsPanel.add(updateSkillAptitudeCommentsPanel);
             entityFieldsPanel.add(updateAptitudeCommentsPanel);
             entityFieldsPanel.add(updateManagementCommentsPanel);
