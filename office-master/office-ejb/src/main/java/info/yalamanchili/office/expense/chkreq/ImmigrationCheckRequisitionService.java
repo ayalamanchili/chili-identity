@@ -110,6 +110,9 @@ public class ImmigrationCheckRequisitionService {
     public void saveImmigrationCheckRequisition(ImmigrationCheckRequisitionSaveDto dto) {
         ImmigrationCheckRequisition entity = immigrationCheckRequisitionDao.save(dto);
         //add/update items
+        if (entity.getEmployee() != null && dto.getCompany() != null) {
+            entity.getEmployee().setCompany(CompanyDao.instance().findById(dto.getCompany().getId()));
+        }
         for (CheckRequisitionItem item : dto.getItems()) {
             if (item.getId() != null) {
                 checkRequisitionItemDao.save(item);

@@ -104,6 +104,9 @@ public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite impl
         assignEntityValueFromField("neededByDate", entity);
         assignEntityValueFromField("purpose", entity);
         assignEntityValueFromField("caseType", entity);
+        if (selectCompanyWidget.getSelectedObject() != null) {
+            entity.put("company", selectCompanyWidget.getSelectedObject());
+        }
         JSONArray items = new JSONArray();
         int i = 0;
         for (CRUDComposite panel : updateItemPanels) {
@@ -151,12 +154,12 @@ public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite impl
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        if(entity.get("employee")!=null){
+        if (entity.get("employee") != null) {
             JSONObject employee = (JSONObject) entity.get("employee");
-            JSONObject company = (JSONObject) employee.get("company");
-            JSONValue name = company.get("name");
-            entity.put("company", name);
-            assignFieldValueFromEntity("company", entity, DataType.STRING_FIELD);
+            if (employee.get("company") != null) {
+                JSONObject company = (JSONObject) employee.get("company");
+                selectCompanyWidget.setSelectedValue(company);
+            }
         }
         assignFieldValueFromEntity("attorneyName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("mailingAddress", entity, DataType.STRING_FIELD);
@@ -260,11 +263,7 @@ public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite impl
         addField("neededByDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("purpose", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addEnumField("caseType", false, true, ImmigrationCaseType.names(), Alignment.HORIZONTAL);
-        if (entityId == null) {
-            addDropDown("company", selectCompanyWidget);
-        } else {
-            addField("company", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        }
+        addDropDown("company", selectCompanyWidget);
         entityFieldsPanel.add(checkItem);
         entityActionsPanel.add(addItemL);
         alignFields();
