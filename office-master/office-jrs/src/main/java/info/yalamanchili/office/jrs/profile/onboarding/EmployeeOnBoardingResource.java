@@ -55,7 +55,7 @@ public class EmployeeOnBoardingResource {
         tableObj.setSize(employeeOnBoardingDao.size());
         return tableObj;
     }
-    
+
     @GET
     @Path("/getdetails/{invitationCode}")
     public OnBoardingEmployeeDto getdetails(@PathParam("invitationCode") String invitationCode) {
@@ -74,10 +74,9 @@ public class EmployeeOnBoardingResource {
 
     @Path("/on-board-employee")
     @PUT
-    @Produces("application/text")
     @CacheEvict(value = "employees", allEntries = true)
     @Validate
-    public String onBoardEmployee(OnBoardingEmployeeDto employee) {
+    public OnBoardingEmployeeDto onBoardEmployee(OnBoardingEmployeeDto employee) {
         EmployeeOnBoardingService employeeOnBoardingService = (EmployeeOnBoardingService) SpringContext.getBean("employeeOnBoardingService");
         return employeeOnBoardingService.onBoardEmployee(employee);
     }

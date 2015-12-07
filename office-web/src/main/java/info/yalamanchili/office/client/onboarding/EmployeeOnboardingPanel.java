@@ -91,7 +91,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
             + "<ul>\n"
             + "</ul>");
 
-    FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "Forms", "", "Forms/fileURL", false, true) {
+    FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "EmployeeDocument", "", "EmployeeDocument/fileURL", false, true) {
         @Override
         public void onUploadComplete(String res) {
             postUpdateSuccess(null);
@@ -203,20 +203,20 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         // 
         employee.put("inviteCode", new JSONString(invitationCode));
 
-        JSONArray Onboardingforms = new JSONArray();
+        JSONArray onBoardingDocs = new JSONArray();
         if (!fileUploadPanel.isEmpty()) {
             int i = 0;
             for (FileUpload upload : fileUploadPanel.getFileUploads()) {
                 if (upload.getFilename() != null && !upload.getFilename().trim().isEmpty()) {
-                    JSONObject forms = new JSONObject();
-                    forms.put("fileURL", fileUploadPanel.getFileName(upload));
-                    forms.put("name", new JSONString("File Name"));
-                    Onboardingforms.set(i, forms);
+                    JSONObject docs = new JSONObject();
+                    docs.put("fileUrl", fileUploadPanel.getFileName(upload));
+                    docs.put("name", new JSONString("File Name"));
+                    onBoardingDocs.set(i, docs);
                     i++;
                 }
             }
         }
-        employee.put("documents", Onboardingforms);
+        employee.put("documents", onBoardingDocs);
         logger.info("employee" + employee.toString());
         return employee;
     }
@@ -306,11 +306,11 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
     }
 
     protected void uploadReceipts(String postString) {
+        logger.info("upload receiptsssss" + postString);
         if (!fileUploadPanel.isEmpty()) {
             JSONObject post = (JSONObject) JSONParser.parseLenient(postString);
-            logger.info("upload receiptsssss" + post.toString());
-            JSONArray employeeforms = JSONUtils.toJSONArray(post.get("forms"));
-            fileUploadPanel.upload(employeeforms, "fileURL");
+            JSONArray employeeforms = JSONUtils.toJSONArray(post.get("documents"));
+            fileUploadPanel.upload(employeeforms, "fileUrl");
         } else {
             postUpdateSuccess(null);
         }

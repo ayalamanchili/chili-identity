@@ -20,6 +20,7 @@ import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Indexed;
@@ -35,9 +36,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 @Entity
 @Audited
 public class EmployeeDocument extends AbstractEntity {
+
     @Transient
     private static final long serialVersionUID = 1L;
-    
+
     /*DocumentType */
     @NotNull(message = "{documentType.not.empty.msg}")
     @Enumerated(EnumType.STRING)
@@ -86,6 +88,7 @@ public class EmployeeDocument extends AbstractEntity {
         this.updatedBy = updatedBy;
     }
 
+    @XmlTransient
     public Employee getEmployee() {
         return employee;
     }

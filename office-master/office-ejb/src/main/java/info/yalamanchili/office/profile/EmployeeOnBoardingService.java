@@ -108,7 +108,7 @@ public class EmployeeOnBoardingService {
     @Autowired
     protected EmployeeDocumentDao employeeDocumentDao;
 
-    public String onBoardEmployee(OnBoardingEmployeeDto employee) {
+    public OnBoardingEmployeeDto onBoardEmployee(OnBoardingEmployeeDto employee) {
         Employee emp = mapper.map(employee, Employee.class);
         InviteCode code = InviteCodeDao.instance().find(employee.getInviteCode().trim());
         EmployeeOnBoarding onboarding = EmployeeOnBoardingDao.instance().findByEmail(code.getEmail());
@@ -187,7 +187,7 @@ public class EmployeeOnBoardingService {
         for (EmployeeDocument empDoc : employee.getDocuments()) {
             empDoc.setDocumentType(DocumentType.ON_BOARDING);
             empDoc.setEmployee(emp);
-            employeeDocumentDao.save(empDoc);
+            empDoc.setId(employeeDocumentDao.save(empDoc).getId());
         }
         //Update Additional Information for Employee
         EmployeeAdditionalDetails employeeAdditionalDetails;
@@ -197,7 +197,7 @@ public class EmployeeOnBoardingService {
         OfficeSecurityService.instance().createUserCert(emp, null, null);
         //Email notification
         employeeService.sendNewEmployeeNotifiaction(emp);
-        return emp.getId().toString();
+        return employee;
     }
 
     public static EmployeeOnBoardingService instance() {
