@@ -106,6 +106,11 @@ public class OfficeServiceConfiguration {
      */
     @Value("#{officeProperties['bisEndpoint']}")
     protected String bisEndpoint;
+    /**
+     * portal web url
+     */
+    @Value("#{officeProperties['portal.web.url']}")
+    protected String portalWebUrl;
 
     public void setAdminEmail(String adminEmail) {
         this.adminEmail = adminEmail;
@@ -251,6 +256,15 @@ public class OfficeServiceConfiguration {
     public List<String> getAllowedFileExtensionsAsList() {
         String[] exts = getAllowedFileExtensions().split(",");
         return new ArrayList<String>(Arrays.asList(exts));
+    }
+
+    @ManagedAttribute
+    public String getPortalWebUrl() {
+        return portalWebUrl;
+    }
+
+    public void setPortalWebUrl(String portalWebUrl) {
+        this.portalWebUrl = portalWebUrl;
     }
 
     @ManagedOperation
