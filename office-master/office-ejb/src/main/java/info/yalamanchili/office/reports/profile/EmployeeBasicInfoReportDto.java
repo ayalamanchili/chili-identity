@@ -8,8 +8,10 @@
  */
 package info.yalamanchili.office.reports.profile;
 
+import info.yalamanchili.office.entity.company.CompanyContact;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -30,6 +32,25 @@ public class EmployeeBasicInfoReportDto implements Serializable {
     protected Date startDate;
     protected String type;
     protected String branch;
+    protected String manager;
+    
+    protected List<CompanyContact> contacts;
+
+    public List<CompanyContact> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(List<CompanyContact> contacts) {
+        this.contacts = contacts;
+    }
+
+    public String getManager() {
+        return manager;
+    }
+
+    public void setManager(String manager) {
+        this.manager = manager;
+    }
 
     public Date getDateOfBirth() {
         return dateOfBirth;

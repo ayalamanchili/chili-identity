@@ -15,6 +15,8 @@ import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dto.profile.EmployeProfileDto;
 import info.chili.email.Email;
+import info.yalamanchili.office.dao.company.CompanyContactDao;
+import info.yalamanchili.office.entity.company.CompanyContact;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
@@ -185,6 +187,25 @@ public class ProfileReportsService {
             }
         });
         MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(report, "Profile-Information-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), OfficeServiceConfiguration.instance().getAdminEmail());
+    }
+
+    @Async
+    @Transactional
+    public void generateEmployeCompanyContactsReport(String email) {
+        List<EmployeeBasicInfoReportDto> report = new ArrayList<>();
+
+        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
+            for (CompanyContact contact : CompanyContactDao.instance().getEmployeeCompanyContacts(emp.getId())) {
+                EmployeeBasicInfoReportDto dto = new EmployeeBasicInfoReportDto();
+                dto.setFirstName(emp.getFirstName());
+                dto.setLastName(emp.getLastName());
+                dto.setManager(contact.getContact().getFirstName() + " " + contact.getContact().getLastName());
+                dto.setType(contact.getType().getName());
+                report.add(dto);
+            }
+        }
+        String[] columnOrder = new String[]{"firstName", "lastName", "type", "manager"};
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(report, "Employee-Compnay-Contact-Info-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
 
     public static ProfileReportsService instance() {
