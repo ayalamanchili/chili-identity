@@ -8,19 +8,16 @@
  */
 package info.yalamanchili.office.dto.prospect;
 
-import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.entity.hr.ProspectStatus;
 import info.yalamanchili.office.entity.profile.Address;
+import info.yalamanchili.office.entity.profile.Sex;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -51,6 +48,8 @@ public class ProspectDto implements Serializable {
     @NotEmpty(message = "{prospect.phoneNumber.not.empty.msg}")
     @Size(min = 10, max = 10, message = "{prospect.phoneNumber.lenght.invalid.msg}")
     protected String phoneNumber;
+    
+    protected Sex sex;
 
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date startDate;
@@ -108,6 +107,14 @@ public class ProspectDto implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
+    public Sex getSex() {
+        return sex;
+    }
+
+    public void setSex(Sex sex) {
+        this.sex = sex;
+    }
+    
     public String getFirstName() {
         return firstName;
     }
@@ -182,7 +189,7 @@ public class ProspectDto implements Serializable {
 
     @Override
     public String toString() {
-        return "ProspectDto{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", phoneNumber=" + phoneNumber + ", startDate=" + startDate + ", screenedBy=" + screenedBy + ", referredBy=" + referredBy + ", resumeURL=" + resumeURL + ", dateOfBirth=" + dateOfBirth + ", address=" + address + ", status=" + status + ", processDocSentDate=" + processDocSentDate + '}';
+        return "ProspectDto{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", phoneNumber=" + phoneNumber + ", sex=" + sex + ", startDate=" + startDate + ", screenedBy=" + screenedBy + ", referredBy=" + referredBy + ", resumeURL=" + resumeURL + ", dateOfBirth=" + dateOfBirth + ", address=" + address + ", status=" + status + ", processDocSentDate=" + processDocSentDate + '}';
     }
 
     public static ProspectDto map(Mapper mapper, info.yalamanchili.office.entity.hr.Prospect entity) {
