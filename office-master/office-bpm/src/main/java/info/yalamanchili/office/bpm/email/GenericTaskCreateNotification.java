@@ -12,6 +12,7 @@ import info.yalamanchili.office.bpm.BPMUtils;
 import info.chili.email.Email;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.bpm.OfficeBPMFormService;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -46,7 +47,7 @@ public class GenericTaskCreateNotification implements TaskListener {
         Email email = new Email();
         email.setTos(getEmails(delegateTask, notifyEmployee, notifyRoles));
         email.setSubject("Task Created:" + delegateTask.getName());
-        String messageText = "Task is Created. Please complete.\n Details: \n Name: " + delegateTask.getName() + " \n Description:" + delegateTask.getDescription() +"\n\n\t Please click on the below link to login and complete the task: \n\t https://apps.sstech.us/portal";
+        String messageText = "Task is Created. Please complete.\n Details: \n Name: " + delegateTask.getName() + " \n Description:" + delegateTask.getDescription() + "\n\n\t Please click on the below link to login and complete the task: \n\t " + OfficeServiceConfiguration.instance().getPortalWebUrl();
         email.setHtml(Boolean.TRUE);
         email.setBody(messageText);
         email.getHeaders().put("task-id", delegateTask.getId());
@@ -69,7 +70,6 @@ public class GenericTaskCreateNotification implements TaskListener {
     }
 
     //******
-
     public void sendTaskEmail(DelegateTask delegateTask, Boolean notifyEmployee, String... notifyRoles) {
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
         Email email = new Email();

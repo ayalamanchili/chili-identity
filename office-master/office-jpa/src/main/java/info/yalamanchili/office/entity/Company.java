@@ -37,6 +37,14 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Unique(entity = Company.class, fields = {"name"}, message = "{company.name.not.unique.msg}")
 public class Company extends AbstractEntity {
 
+    public static final String SSTECH_LLC = "System Soft Technologies LLC";
+    public static final String SSTECH_INC = "System Soft Technologies INC";
+    public static final String TECHPILLARS = "TechPillars";
+    public static final String CGS_INC = "CGS INC";
+    public static final String SST_PVT = "SST PVT";
+    public static final String SST_CANADA = "SST Canada";
+    public static final String CAPMARK_SOLUTIONS = "CapMark solutions";
+    public static final String ACO360 = "ACO360";
     /**
      * @generated
      */
@@ -67,7 +75,7 @@ public class Company extends AbstractEntity {
     protected List<Employee> employees;
     @OneToMany(mappedBy = "company", cascade = CascadeType.MERGE)
     protected List<Post> posts;
-    
+
     protected String abbreviation;
 
     /**

@@ -8,7 +8,10 @@
  */
 package info.yalamanchili.office.client.expense.chkreq;
 
+import com.google.common.base.Strings;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.URL;
@@ -16,6 +19,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -43,10 +47,10 @@ import java.util.logging.Logger;
  *
  * @author Madhu.Badiginchala
  */
-public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite implements ClickHandler {
+public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite implements ClickHandler, BlurHandler {
 
     private Logger logger = Logger.getLogger(UpdateImmigrationCheckRequisitionPanel.class.getName());
-    protected SelectCompanyWidget selectCompanyWidget = new SelectCompanyWidget(true, true, Alignment.HORIZONTAL);
+    protected SelectCompanyWidget selectCompanyWidget = new SelectCompanyWidget(false, true, Alignment.HORIZONTAL);
     protected ClickableLink addItemL = new ClickableLink("Add Check Item");
     public List<CRUDComposite> updateItemPanels = new ArrayList<>();
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, true, Alignment.HORIZONTAL);
@@ -100,6 +104,9 @@ public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite impl
         assignEntityValueFromField("neededByDate", entity);
         assignEntityValueFromField("purpose", entity);
         assignEntityValueFromField("caseType", entity);
+        if (selectCompanyWidget.getSelectedObject() != null) {
+            entity.put("company", selectCompanyWidget.getSelectedObject());
+        }
         JSONArray items = new JSONArray();
         int i = 0;
         for (CRUDComposite panel : updateItemPanels) {
@@ -147,6 +154,13 @@ public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite impl
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+        if (entity.get("employee") != null) {
+            JSONObject employee = (JSONObject) entity.get("employee");
+            if (employee.get("company") != null) {
+                JSONObject company = (JSONObject) employee.get("company");
+                selectCompanyWidget.setSelectedValue(company);
+            }
+        }
         assignFieldValueFromEntity("attorneyName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("mailingAddress", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("neededByDate", entity, DataType.DATE_FIELD);
@@ -176,6 +190,39 @@ public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite impl
     @Override
     protected void addListeners() {
         addItemL.addClickHandler(this);
+        employeeSB.getSuggestBox().getValueBox().addBlurHandler(this);
+    }
+
+    @Override
+    public void onBlur(BlurEvent event) {
+        if (event.getSource().equals(employeeSB.getSuggestBox().getValueBox())) {
+            selectCompanyWidget.getListBox().setSelectedIndex(0);
+            if (employeeSB.getSelectedObject() != null) {
+                populateCompany();
+            }
+        }
+    }
+
+    protected void populateCompany() {
+        HttpService.HttpServiceAsync.instance().doGet(getEmployeeReadUrl(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String arg0) {
+                        logger.info(arg0);
+                        if (!Strings.isNullOrEmpty(arg0)) {
+                            JSONObject emp = JSONParser.parseLenient(arg0).isObject();
+                            if (emp != null && emp.get("company") != null) {
+                                selectCompanyWidget.setSelectedValue(emp.get("company").isObject());
+                            }
+                        }
+                    }
+
+                }
+        );
+    }
+
+    private String getEmployeeReadUrl() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/" + JSONUtils.toString(employeeSB.getSelectedObject(), "id"));
     }
 
     @Override
@@ -216,6 +263,7 @@ public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite impl
         addField("neededByDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("purpose", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addEnumField("caseType", false, true, ImmigrationCaseType.names(), Alignment.HORIZONTAL);
+        addDropDown("company", selectCompanyWidget);
         entityFieldsPanel.add(checkItem);
         entityActionsPanel.add(addItemL);
         alignFields();
@@ -250,6 +298,14 @@ public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite impl
             updateItemPanels.get(i - 1).removeFromParent();
             updateItemPanels.remove(i - 1);
         }
+    }
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        if (entity.get("employee") == null && entity.get("employeeName") != null && entity.get("employeeName").isString().stringValue().trim().isEmpty()) {
+            employeeSB.setMessage("Please choose a employee");
+            return false;
+        }
+        return true;
     }
 
 }

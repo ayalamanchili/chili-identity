@@ -52,6 +52,7 @@ public class ProspectService {
         contact.setFirstName(dto.getFirstName());
         contact.setLastName(dto.getLastName());
         contact.setDateOfBirth(dto.getDateOfBirth());
+        contact.setSex(dto.getSex());
         
         if (!Strings.isNullOrEmpty(dto.getEmail())) {
             Email email = new Email();
@@ -92,7 +93,7 @@ public class ProspectService {
     }
     
     public ProspectDto clone(Long id) {
-        Prospect entity = prospectDao.clone(id, "referredBy", "screenedBy");
+        Prospect entity = prospectDao.clone(id);
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         entity.setStatus(ProspectStatus.IN_PROGRESS);
         ProspectDto res = ProspectDto.map(mapper, entity);
@@ -115,6 +116,7 @@ public class ProspectService {
         contact.setFirstName(dto.getFirstName());
         contact.setLastName(dto.getLastName());
         contact.setDateOfBirth(dto.getDateOfBirth());
+        contact.setSex(dto.getSex());
         entity.setReferredBy(dto.getReferredBy());
         if (!Strings.isNullOrEmpty(dto.getScreenedBy())) {
             entity.setScreenedBy(dto.getScreenedBy());

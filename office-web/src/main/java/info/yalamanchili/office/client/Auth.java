@@ -119,7 +119,11 @@ public class Auth {
         String empType = JSONUtils.toString(emp.get("employeeType"), "name");
         return empType != null && empType.equals("W2 Contractor");
     }
-
+    
+    public static boolean isW2Contractor() {
+        return JSONUtils.toString(OfficeWelcome.instance().employee.get("employeeType"), "name").equals("W2 Contractor");
+    }
+    
     public static boolean isItDeveloper() {
         return OfficeWelcome.instance().roles.contains(ROLE.ROLE_IT_DEVELOPER.name());
     }

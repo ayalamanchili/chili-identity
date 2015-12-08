@@ -35,9 +35,10 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlRootElement
 @XmlType
 public class StatementOfWork extends AbstractEntity {
+
     @Transient
     private static final long serialVersionUID = 1L;
-    
+
     @NotEmpty(message = "{statementofwork.not.empty.msg}")
     protected String name;
     protected String description;
@@ -123,6 +124,7 @@ public class StatementOfWork extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "StatementOfWork{" + "name=" + name + ", description=" + description + ", sowUrl=" + sowUrl + ", startDate=" + startDate + ", endDate=" + endDate + ", billRate=" + billRate + ", project=" + project + ", timeSheets=" + timeSheets + '}';
+        return "StatementOfWork{" + "name=" + name + ", description=" + description + ", sowUrl=" + sowUrl + ", startDate=" + startDate + ", endDate=" + endDate + ", billRate=" + billRate + '}';
     }
+
 }

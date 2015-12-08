@@ -11,7 +11,6 @@ package info.yalamanchili.office.dto.onboarding;
 import info.yalamanchili.office.dto.profile.EmergencyContactDto;
 import info.yalamanchili.office.entity.expense.BankAccount;
 import info.yalamanchili.office.entity.profile.Address;
-import info.yalamanchili.office.entity.profile.EmergencyContact;
 import info.yalamanchili.office.entity.profile.EmployeeDocument;
 import info.yalamanchili.office.entity.profile.Sex;
 import info.yalamanchili.office.entity.profile.WorkStatus;
@@ -94,14 +93,14 @@ public class OnBoardingEmployeeDto implements Serializable {
     @Valid
     private List<EmergencyContactDto> emergencyContact;
     
-    private List<EmployeeDocument> document;
+    private List<EmployeeDocument> documents;
 
-    public List<EmployeeDocument> getDocument() {
-        return document;
+    public List<EmployeeDocument> getDocuments() {
+        return documents;
     }
 
-    public void setDocument(List<EmployeeDocument> document) {
-        this.document = document;
+    public void setDocuments(List<EmployeeDocument> documents) {
+        this.documents = documents;
     }
 
     public String getFirstName() {

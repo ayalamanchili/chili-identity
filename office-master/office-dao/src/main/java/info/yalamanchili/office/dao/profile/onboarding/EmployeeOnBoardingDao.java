@@ -13,7 +13,7 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
@@ -38,27 +38,15 @@ public class EmployeeOnBoardingDao extends CRUDDao<EmployeeOnBoarding> {
     }
 
     public EmployeeOnBoarding findByEmail(String email) {
-        String L = entityCls.getCanonicalName();
-        Query findQuery = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " where email=:employeeEmailParam ");
+        TypedQuery<EmployeeOnBoarding> findQuery = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " where email=:employeeEmailParam ", EmployeeOnBoarding.class);
         findQuery.setParameter("employeeEmailParam", email);
-        if (findQuery.getResultList().size() > 1) {
-            return null;
-        } else {
-            EmployeeOnBoarding entity = (EmployeeOnBoarding) findQuery.getResultList().get(0);
-            return entity;
-        }
+        return findQuery.getSingleResult();
     }
-    
+
     public EmployeeOnBoarding findByEmployeeId(Long id) {
-        String L = entityCls.getCanonicalName();
-        Query findQuery = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " where employee_id=:employeeIdParam ");
+        TypedQuery<EmployeeOnBoarding> findQuery = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " where employee_id=:employeeIdParam ", EmployeeOnBoarding.class);
         findQuery.setParameter("employeeIdParam", id);
-        if (findQuery.getResultList().size() > 1) {
-            return null;
-        } else {
-            EmployeeOnBoarding entity = (EmployeeOnBoarding) findQuery.getResultList().get(0);
-            return entity;
-        }
+        return findQuery.getSingleResult();
     }
 
     public static EmployeeOnBoardingDao instance() {

@@ -28,6 +28,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
+import info.yalamanchili.office.client.profile.contact.Sex;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -92,6 +93,7 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
         assignEntityValueFromField("lastName", entity);
         //assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("email", entity);
+        assignEntityValueFromField("sex", entity);
         assignEntityValueFromField("phoneNumber", entity);
         assignEntityValueFromField("dateOfBirth", entity);
         assignEntityValueFromField("referredBy", entity);
@@ -133,6 +135,7 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
         //assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("email", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("phoneNumber", entity, DataType.LONG_FIELD);
+        assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("dateOfBirth", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("referredBy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("screenedBy", entity, DataType.STRING_FIELD);
@@ -167,6 +170,7 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
         addField("email", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("phoneNumber", false, true, DataType.LONG_FIELD, Alignment.HORIZONTAL);
         addField("dateOfBirth", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addEnumField("sex", false, false, Sex.names(), Alignment.HORIZONTAL);
         addField("street1", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("street2", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("city", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);

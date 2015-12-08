@@ -29,6 +29,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.profile.contact.Sex;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -61,6 +62,7 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         assignEntityValueFromField("referredBy", entity);
         assignEntityValueFromField("email", entity);
         assignEntityValueFromField("phoneNumber", entity);
+        assignEntityValueFromField("sex", entity);
         assignEntityValueFromField("dateOfBirth", entity);
         assignEntityValueFromField("street1", address);
         assignEntityValueFromField("street2", address);
@@ -142,6 +144,7 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         addField("email", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("phoneNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("dateOfBirth", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addEnumField("sex", false, false, Sex.names(), Alignment.HORIZONTAL);
         addField("street1", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("street2", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("city", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
