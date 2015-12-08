@@ -8,18 +8,23 @@
  */
 package info.yalamanchili.office.dao.time;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
+import info.chili.audit.AuditService;
 import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
 import info.chili.dao.CRUDDao;
+import info.chili.hibernate.envers.AuditRevisionEntity;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.time.AdjustmentHours;
 import info.yalamanchili.office.entity.time.CorporateTimeSheet;
+import info.yalamanchili.office.entity.time.TimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import info.yalamanchili.office.template.TemplateService;
@@ -37,6 +42,7 @@ import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.hibernate.envers.AuditReader;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
@@ -252,19 +258,18 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
     public BigDecimal getHoursInYear(Employee employee, List<TimeSheetCategory> timeSheetCategory, TimeSheetStatus timeSheetStatus, Date yearDate) {
         return getHoursInYear(employee, timeSheetCategory, Lists.newArrayList(timeSheetStatus), yearDate);
     }
-
+    
     public BigDecimal getPTOAccruedInYear(Employee employee) {
         BigDecimal ptoHoursAccrued = BigDecimal.ZERO;
-//        CorporateTimeSheet ts = getPTOAccruedTimeSheet(employee);
-//        AuditReader auditReader = AuditService.instance().getAuditReader();
-//        for (Number revNumber : auditReader.getRevisions(entityCls, ts.getId())) {
-//            AuditRevisionEntity revEntity = getAuditReader().findRevision(AuditRevisionEntity.class, revNumber);
-//            if (Strings.isNullOrEmpty(revEntity.getUpdatedUserId())    {
-//                CorporateTimeSheet previousTimeSheet = auditReader.find(entityCls, id, revNumber);
-//                ptoHoursAccrued = ptoHoursAccrued.add(previousTimeSheet.getHours());
-//            }
-//
-//        }
+        CorporateTimeSheet ts = getPTOAccruedTimeSheet(employee);
+        AuditReader auditReader = AuditService.instance().getAuditReader();
+        for (Number revNumber : auditReader.getRevisions(entityCls, ts.getId())) {
+            AuditRevisionEntity revEntity = auditReader.findRevision(AuditRevisionEntity.class, revNumber);
+            if (Strings.isNullOrEmpty(revEntity.getUpdatedUserId())) {
+                CorporateTimeSheet previousTimeSheet = (CorporateTimeSheet) auditReader.find(entityCls, ts.getId(), revNumber);
+                ptoHoursAccrued = ptoHoursAccrued.add(previousTimeSheet.getHours().subtract(ptoHoursAccrued));
+            }
+        }
         //TODO add all system added hours after completion of each month for that year.
         return ptoHoursAccrued;
     }
