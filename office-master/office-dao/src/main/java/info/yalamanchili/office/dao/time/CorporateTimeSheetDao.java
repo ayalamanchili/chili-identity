@@ -258,19 +258,20 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
     public BigDecimal getHoursInYear(Employee employee, List<TimeSheetCategory> timeSheetCategory, TimeSheetStatus timeSheetStatus, Date yearDate) {
         return getHoursInYear(employee, timeSheetCategory, Lists.newArrayList(timeSheetStatus), yearDate);
     }
-    
+
     public BigDecimal getPTOAccruedInYear(Employee employee) {
         BigDecimal ptoHoursAccrued = BigDecimal.ZERO;
+        BigDecimal previousVersionHours = BigDecimal.ZERO;
         CorporateTimeSheet ts = getPTOAccruedTimeSheet(employee);
         AuditReader auditReader = AuditService.instance().getAuditReader();
         for (Number revNumber : auditReader.getRevisions(entityCls, ts.getId())) {
             AuditRevisionEntity revEntity = auditReader.findRevision(AuditRevisionEntity.class, revNumber);
-            if (Strings.isNullOrEmpty(revEntity.getUpdatedUserId())) {
-                CorporateTimeSheet previousTimeSheet = (CorporateTimeSheet) auditReader.find(entityCls, ts.getId(), revNumber);
-                ptoHoursAccrued = ptoHoursAccrued.add(previousTimeSheet.getHours().subtract(ptoHoursAccrued));
+            CorporateTimeSheet currentVersion = (CorporateTimeSheet) auditReader.find(entityCls, ts.getId(), revNumber);
+            if (currentVersion.getHours().compareTo(previousVersionHours) >= 0 && Strings.isNullOrEmpty(revEntity.getUpdatedUserId())) {
+                ptoHoursAccrued = ptoHoursAccrued.add(currentVersion.getHours());
             }
+            previousVersionHours = currentVersion.getHours();
         }
-        //TODO add all system added hours after completion of each month for that year.
         return ptoHoursAccrued;
     }
 
