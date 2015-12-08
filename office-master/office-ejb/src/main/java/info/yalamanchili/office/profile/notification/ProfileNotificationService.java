@@ -73,7 +73,7 @@ public class ProfileNotificationService {
         newUserEmailObj.setHtml(Boolean.TRUE);
         newUserEmailObj.addTo(EmployeeDao.instance().getPrimaryEmail(employee));
         newUserEmailObj.setSubject("Welcome to System Soft Portal");
-        String messageTextforuser = "Your Username and Employee Id is:" + employee.getEmployeeId() + " : \n Please follow the instructions to login https://apps.sstech.us/site/office/forgot-password.html";
+        String messageTextforuser =  "Your Username and Employee Id is:" + employee.getEmployeeId() + "\n Your Employee Type is:" + employee.getEmployeeType().getName() +"  \n Please follow the instructions to login https://apps.sstech.us/site/office/forgot-password.html";
         newUserEmailObj.setBody(messageTextforuser);
         messagingService.sendEmail(newUserEmailObj);
     }
