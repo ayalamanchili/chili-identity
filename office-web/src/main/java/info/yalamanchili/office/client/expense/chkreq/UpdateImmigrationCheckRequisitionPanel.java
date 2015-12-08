@@ -299,5 +299,13 @@ public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite impl
             updateItemPanels.remove(i - 1);
         }
     }
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        if (entity.get("employee") == null && entity.get("employeeName") != null && entity.get("employeeName").isString().stringValue().trim().isEmpty()) {
+            employeeSB.setMessage("Please choose a employee");
+            return false;
+        }
+        return true;
+    }
 
 }
