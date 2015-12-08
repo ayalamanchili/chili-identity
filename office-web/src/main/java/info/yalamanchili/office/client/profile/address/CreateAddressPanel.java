@@ -206,19 +206,4 @@ public class CreateAddressPanel extends CreateComposite implements ChangeHandler
                 break;
         }
     }
-    
-     @Override
-    protected boolean processClientSideValidations(JSONObject entity) {
-
-        boolean valid = true;
-        if (Auth.isConsultantEmployee(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
-            LongField zipF = (LongField) fields.get("zip");
-            if (zipF.getValue() == null || zipF.getValue().isEmpty()) {
-                zipF.setMessage("Zip Code can not be empty");
-                valid = false;
-            }
-        }
-        return valid;
-    }
-
 }
