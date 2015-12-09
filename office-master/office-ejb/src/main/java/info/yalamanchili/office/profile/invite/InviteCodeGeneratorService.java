@@ -74,7 +74,7 @@ public class InviteCodeGeneratorService {
         Map<String, Object> emailCtx = new HashMap<>();
         emailCtx.put("invitationCode", OfficeServiceConfiguration.instance().getPortalWebUrl() + "?inviteCode=" + "?" + entity.getInvitationCode());
         email.setTemplateName("send_onboarding_invitation_eamil_template.html");
-        String messageText = "OfficeServiceConfiguration.instance().getPortalWebUrl() + \"?inviteCode=\" + \"?\" + entity.getInvitationCode()";
+        String messageText = OfficeServiceConfiguration.instance().getPortalWebUrl() + "?inviteCode=" + "?" + entity.getInvitationCode();
         email.setContext(emailCtx);
         email.setBody(messageText);
         for (String fileName : ON_BOARDING_FORMS_LIST) {
