@@ -177,9 +177,10 @@ public class FileResource {
             if (res != null) {
                 return res;
             }
-            String fileName = item.getName();
+            String fileName = "A20/B22b#öA\\BC#Ä$%ld_ma.la.xps";
+            String sane = fileName.replaceAll("[^a-zA-Z0-9\\._]+", "_");
             File file = new File(officeServiceConfiguration.getContentManagementLocationRoot() + item.getFieldName()
-                    + fileName);
+                    + sane);
             try {
                 log.info("----------writing image to-----------:" + file.getAbsolutePath());
                 item.write(file);
