@@ -24,7 +24,6 @@ import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.AdjustmentHours;
 import info.yalamanchili.office.entity.time.CorporateTimeSheet;
-import info.yalamanchili.office.entity.time.TimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import info.yalamanchili.office.template.TemplateService;
@@ -259,18 +258,20 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         return getHoursInYear(employee, timeSheetCategory, Lists.newArrayList(timeSheetStatus), yearDate);
     }
 
+    public BigDecimal getAdjustmentHours(Employee emp) {
+        String sumBonusHoursQueryString = "SELECT SUM(paidHours) FROM " + AdjustmentHours.class.getCanonicalName() + " WHERE employee=:employeeparam ";
+        Query bonusHoursQuery = em.createQuery(sumBonusHoursQueryString);
+        bonusHoursQuery.setParameter("employeeparam", emp);
+        BigDecimal sumAdjustmentHours = (BigDecimal) bonusHoursQuery.getSingleResult();
+        return sumAdjustmentHours;
+    }
+
     public BigDecimal getPTOAccruedInYear(Employee employee) {
         BigDecimal ptoHoursAccrued = BigDecimal.ZERO;
-        BigDecimal previousVersionHours = BigDecimal.ZERO;
-        CorporateTimeSheet ts = getPTOAccruedTimeSheet(employee);
-        AuditReader auditReader = AuditService.instance().getAuditReader();
-        for (Number revNumber : auditReader.getRevisions(entityCls, ts.getId())) {
-            AuditRevisionEntity revEntity = auditReader.findRevision(AuditRevisionEntity.class, revNumber);
-            CorporateTimeSheet currentVersion = (CorporateTimeSheet) auditReader.find(entityCls, ts.getId(), revNumber);
-            if (currentVersion.getHours().compareTo(previousVersionHours) >= 0 && Strings.isNullOrEmpty(revEntity.getUpdatedUserId())) {
-                ptoHoursAccrued = ptoHoursAccrued.add(currentVersion.getHours());
-            }
-            previousVersionHours = currentVersion.getHours();
+        if(getHoursInYear(employee, TimeSheetCategory.PTO_USED, TimeSheetStatus.Approved, new Date())!=null){
+           ptoHoursAccrued = ptoHoursAccrued.add(getPTOAccruedTimeSheet(employee).getHours().add(getHoursInYear(employee, TimeSheetCategory.PTO_USED, TimeSheetStatus.Approved, new Date())));
+        }if (getAdjustmentHours(employee) != null) {
+            ptoHoursAccrued = ptoHoursAccrued.subtract(getAdjustmentHours(employee));
         }
         return ptoHoursAccrued;
     }
