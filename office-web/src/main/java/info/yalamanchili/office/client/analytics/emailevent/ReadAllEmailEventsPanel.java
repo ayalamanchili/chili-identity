@@ -116,19 +116,13 @@ public class ReadAllEmailEventsPanel extends CRUDReadAllComposite {
     }
 
     @Override
-    protected String getEnitityIDAttribute() {
-        return "_id";
-    }
-
-    @Override
     protected boolean enableQuickView() {
         return true;
     }
 
     @Override
     protected void onQuickView(int row, String id) {
-        logger.info("on quick view");
-        new GenericPopup(new ReadEmailEventPanel(JSONUtils.toString(getEntity(id), "id")), Window.getClientWidth() / 3, 0).show();
+        new GenericPopup(new ReadEmailEventPanel(getEntity(id)), Window.getClientWidth() / 3, 0).show();
     }
 
     @Override
