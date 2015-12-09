@@ -12,6 +12,7 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.invite.InviteCodeDao;
 import info.yalamanchili.office.email.MailUtils;
 import info.chili.email.Email;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.drive.FileDao;
 import info.yalamanchili.office.dao.invite.InviteTypeDao;
 import info.yalamanchili.office.entity.profile.invite.InvitationType;
@@ -71,9 +72,9 @@ public class InviteCodeGeneratorService {
         subject.append("System Soft Invitation");
         email.setSubject(subject.toString());
         Map<String, Object> emailCtx = new HashMap<>();
-        emailCtx.put("invitationCode", "http://localhost:9090/office-web/?inviteCode=" + entity.getInvitationCode());
+        emailCtx.put("invitationCode", OfficeServiceConfiguration.instance().getPortalWebUrl() + "?inviteCode=" + "?" + entity.getInvitationCode());
         email.setTemplateName("send_onboarding_invitation_eamil_template.html");
-        String messageText = "http://localhost:9090/office-web/?inviteCode=" + entity.getInvitationCode();
+        String messageText = "OfficeServiceConfiguration.instance().getPortalWebUrl() + \"?inviteCode=\" + \"?\" + entity.getInvitationCode()";
         email.setContext(emailCtx);
         email.setBody(messageText);
         for (String fileName : ON_BOARDING_FORMS_LIST) {
