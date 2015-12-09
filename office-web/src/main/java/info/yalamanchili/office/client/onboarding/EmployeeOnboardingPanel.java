@@ -350,8 +350,10 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+        logger.info("entityyyyyyyyy :"+entity);
         JSONObject account = (JSONObject) entity.get("bankAccount");
         JSONObject address = (JSONObject) entity.get("address");
+        JSONObject contact = (JSONObject) address.get("contact");
         assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("accountFirstName", account, DataType.STRING_FIELD);
@@ -363,6 +365,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         assignFieldValueFromEntity("country", address, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("state", address, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("zip", address, DataType.LONG_FIELD);
+        assignFieldValueFromEntity("sex", contact, DataType.ENUM_FIELD);
     }
 
     @Override
