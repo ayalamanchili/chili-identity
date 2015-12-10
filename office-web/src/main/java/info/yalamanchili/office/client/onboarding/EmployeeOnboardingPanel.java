@@ -350,22 +350,28 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        logger.info("entityyyyyyyyy :"+entity);
-        JSONObject account = (JSONObject) entity.get("bankAccount");
-        JSONObject address = (JSONObject) entity.get("address");
-        JSONObject contact = (JSONObject) address.get("contact");
+
         assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("accountFirstName", account, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("accountLastName", account, DataType.STRING_FIELD);
         assignFieldValueFromEntity("dateOfBirth", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("street1", address, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("street2", address, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("city", address, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("country", address, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("state", address, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("zip", address, DataType.LONG_FIELD);
-        assignFieldValueFromEntity("sex", contact, DataType.ENUM_FIELD);
+        JSONObject account = (JSONObject) entity.get("bankAccount");
+        if (account != null) {
+            assignFieldValueFromEntity("accountFirstName", account, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("accountLastName", account, DataType.STRING_FIELD);
+        }
+        JSONObject address = (JSONObject) entity.get("address");
+        if (address != null) {
+            JSONObject contact = (JSONObject) address.get("contact");
+            if (contact != null) {
+                assignFieldValueFromEntity("sex", contact, DataType.ENUM_FIELD);
+            }
+            assignFieldValueFromEntity("street1", address, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("street2", address, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("city", address, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("country", address, DataType.ENUM_FIELD);
+            assignFieldValueFromEntity("state", address, DataType.ENUM_FIELD);
+            assignFieldValueFromEntity("zip", address, DataType.LONG_FIELD);
+        }
     }
 
     @Override

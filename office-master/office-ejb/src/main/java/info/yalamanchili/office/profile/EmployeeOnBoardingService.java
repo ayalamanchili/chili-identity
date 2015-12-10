@@ -9,7 +9,6 @@
 package info.yalamanchili.office.profile;
 
 import info.chili.document.dao.SerializedEntityDao;
-import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.expense.BankAccountDao;
 import info.yalamanchili.office.dao.invite.InviteCodeDao;
@@ -41,7 +40,6 @@ import info.yalamanchili.office.entity.profile.invite.InviteCode;
 import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
 import info.yalamanchili.office.entity.profile.onboarding.OnBoardingStatus;
 import info.yalamanchili.office.profile.invite.InviteCodeGeneratorService;
-import info.yalamanchili.office.profile.invite.InviteCodeValidationService;
 import java.util.Date;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -70,17 +68,17 @@ public class EmployeeOnBoardingService {
     protected Mapper mapper;
 
     public void initiateOnBoarding(InitiateOnBoardingDto dto) {
-            InviteCode code = InviteCodeGeneratorService.instance().generate(InvitationType.CLIENT_ONBOARDING, dto.getEmail(), new Date(), DateUtils.addDays(new Date(), 7), false);
-            SerializedEntityDao.instance().save(dto, code.getClass().getCanonicalName(), code.getId());
-            EmployeeOnBoarding onboarding = new EmployeeOnBoarding();
-            onboarding.setEmail(dto.getEmail());
-            onboarding.setStartedBy(OfficeSecurityService.instance().getCurrentUserName());
-            onboarding.setStartedDate(new Date());
-            onboarding.setStatus(OnBoardingStatus.Pending_Initial_Document_Submission);
-            //to save onboarding only once
-            onboarding = em.merge(onboarding);
-            InviteCodeGeneratorService.instance().sendInviteCodeEmail(code);
-            EmployeeOnBoardingDao.instance().save(onboarding);
+        InviteCode code = InviteCodeGeneratorService.instance().generate(InvitationType.CLIENT_ONBOARDING, dto.getEmail(), new Date(), DateUtils.addDays(new Date(), 7), false);
+        SerializedEntityDao.instance().save(dto, code.getClass().getCanonicalName(), code.getId());
+        EmployeeOnBoarding onboarding = new EmployeeOnBoarding();
+        onboarding.setEmail(dto.getEmail());
+        onboarding.setStartedBy(OfficeSecurityService.instance().getCurrentUserName());
+        onboarding.setStartedDate(new Date());
+        onboarding.setStatus(OnBoardingStatus.Pending_Initial_Document_Submission);
+        //to save onboarding only once
+        onboarding = em.merge(onboarding);
+        InviteCodeGeneratorService.instance().sendInviteCodeEmail(code);
+        EmployeeOnBoardingDao.instance().save(onboarding);
     }
 
     public OnBoardingEmployeeDto getOnboardingInfo(String invitationCode) {
@@ -92,7 +90,7 @@ public class EmployeeOnBoardingService {
         Address address;
         if (ContactDao.instance().findByEmail(code.getEmail()) != null) {
             cnt = ContactDao.instance().findByEmail(code.getEmail());
-            if (cnt.getAddresss().get(0) != null) {
+            if (cnt.getAddresss().size() > 0 && cnt.getAddresss().get(0) != null) {
                 address = cnt.getAddresss().get(0);
                 res.setAddress(address);
             }
@@ -106,7 +104,6 @@ public class EmployeeOnBoardingService {
             account.setAccountLastName(cnt.getLastName());
             res.setBankAccount(account);
         }
-        //TODO set dob,address account first and last name
         return res;
     }
 
