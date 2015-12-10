@@ -11,8 +11,6 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
-import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
-import info.yalamanchili.office.config.OfficeFeatureFlipper;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
@@ -23,11 +21,9 @@ import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import java.util.HashMap;
-import java.util.HashSet;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 
