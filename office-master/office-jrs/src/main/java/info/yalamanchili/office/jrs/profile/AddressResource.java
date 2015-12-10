@@ -91,18 +91,22 @@ public class AddressResource extends CRUDResource<Address> {
         }
         entity = save(entity);
         if (entity.getAddressType() != null && entity.getAddressType().getAddressType().equals("W2 Mailing")) {
-            String[] roles = {OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name()};
-            Email email = new Email();
-            email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
-            email.setSubject(" Employee Adress is " + entity.getStreet1() + " " + entity.getStreet2() + " " + entity.getCity() + " " + entity.getCountry() + " " + entity.getState());
-            String messageText = " Address is Updated For " + entity.getContact().getFirstName() + " " + entity.getContact().getLastName();
-            email.setBody(messageText);
-            MessagingService.instance().sendEmail(email);
+            sendAddressChangeRequestSubmittedEmail(entity);
         }
         if (notifyChange) {
             processAddressUpdateNotification(entity, null, notifyHealthInsurance);
         }
         return entity;
+    }
+
+    public void sendAddressChangeRequestSubmittedEmail(Address address) {
+        String[] roles = {OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name()};
+        Email email = new Email();
+        email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
+        email.setSubject(" Employee W2 address update " + address.getStreet1() + " " + address.getStreet2() + " " + address.getCity() + " " + address.getCountry() + " " + address.getState());
+        String messageText = " W2 Address for employee is " + address.getContact().getFirstName() + " " + address.getContact().getLastName();
+        email.setBody(messageText);
+        MessagingService.instance().sendEmail(email);
     }
 
     public void processAddressUpdateNotification(Address entity, Employee emp, boolean notifyHealthInsurance) {
