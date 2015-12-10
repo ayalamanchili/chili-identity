@@ -258,21 +258,18 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         return getHoursInYear(employee, timeSheetCategory, Lists.newArrayList(timeSheetStatus), yearDate);
     }
 
-    public BigDecimal getAdjustmentHours(Employee emp) {
-        String sumBonusHoursQueryString = "SELECT SUM(paidHours) FROM " + AdjustmentHours.class.getCanonicalName() + " WHERE employee=:employeeparam ";
-        Query bonusHoursQuery = em.createQuery(sumBonusHoursQueryString);
-        bonusHoursQuery.setParameter("employeeparam", emp);
-        BigDecimal sumAdjustmentHours = (BigDecimal) bonusHoursQuery.getSingleResult();
-        return sumAdjustmentHours;
-    }
-
     public BigDecimal getPTOAccruedInYear(Employee employee) {
         BigDecimal ptoHoursAccrued = BigDecimal.ZERO;
-        if(getHoursInYear(employee, TimeSheetCategory.PTO_USED, TimeSheetStatus.Approved, new Date())!=null){
-           ptoHoursAccrued = ptoHoursAccrued.add(getPTOAccruedTimeSheet(employee).getHours().add(getHoursInYear(employee, TimeSheetCategory.PTO_USED, TimeSheetStatus.Approved, new Date())));
-        }if (getAdjustmentHours(employee) != null) {
-            ptoHoursAccrued = ptoHoursAccrued.subtract(getAdjustmentHours(employee));
+        CorporateTimeSheet ts = getPTOAccruedTimeSheet(employee);
+        AuditReader auditReader = AuditService.instance().getAuditReader();
+        for (Number revNumber : auditReader.getRevisions(entityCls, ts.getId())) {
+            AuditRevisionEntity revEntity = auditReader.findRevision(AuditRevisionEntity.class, revNumber);
+            if (Strings.isNullOrEmpty(revEntity.getUpdatedUserId())) {
+                CorporateTimeSheet previousTimeSheet = (CorporateTimeSheet) auditReader.find(entityCls, ts.getId(), revNumber);
+                ptoHoursAccrued = ptoHoursAccrued.add(previousTimeSheet.getHours().subtract(ptoHoursAccrued));
         }
+        }
+        //TODO add all system added hours after completion of each month for that year.
         return ptoHoursAccrued;
     }
 
