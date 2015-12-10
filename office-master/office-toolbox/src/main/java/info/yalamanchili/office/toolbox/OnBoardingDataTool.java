@@ -15,11 +15,13 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.profile.Address;
+import info.yalamanchili.office.entity.profile.AddressType;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.entity.profile.PhoneType;
+import info.yalamanchili.office.entity.profile.Preferences;
 import info.yalamanchili.office.entity.profile.Sex;
 import info.yalamanchili.office.toolbox.types.OnboardingRecord;
 import java.io.FileInputStream;
@@ -44,7 +46,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Madhu.Badiginchala
  */
-@Component("OnBoardingTool")
+@Component("onBoardingDataTool")
 @Transactional
 public class OnBoardingDataTool {
 
@@ -60,6 +62,11 @@ public class OnBoardingDataTool {
 
     public void migrateConsultantsData() {
         InputStream inp;
+        int i = 0;
+        Long id_1 = 1L;
+        Long id_2 = 2L;
+        Long id_3 = 3L;
+        Long id_4 = 4L;
         XSSFWorkbook workbook;
         try {
             inp = new FileInputStream(getDataFileUrl());
@@ -77,30 +84,31 @@ public class OnBoardingDataTool {
             Address address = new Address();
             Address permAddress = new Address();
             Phone permPhone = new Phone();
+            String employeeId = "";
             if (record.getRowNum() == 0) {
                 continue;
             }
             OnboardingRecord or = new OnboardingRecord();
-            or.setSimilarity(new Double(getCellNumericValue(record, 32)));
+            or.setSimilarity(new Double(getCellNumericValue(record, 43)));
             if (or.getSimilarity() == 1.0000 || or.getSimilarity() == 2.0000 || or.getSimilarity() == 5.0000) {
                 continue;
             }
 
-            or.setEmployeeType(getCellStringValue(record, 3));     
+            or.setEmployeeType(convertDcimalToWhole(getCellStringOrNumericValue(record, 3)));
             if (or.getEmployeeType() != null && !or.getEmployeeType().isEmpty()) {
                 if (or.getEmployeeType().equals("SubContractor")) {
-                    emp.setEmployeeType(em.find(EmployeeType.class, 3));
+                    emp.setEmployeeType(em.find(EmployeeType.class, id_3));
                 } else if (or.getEmployeeType().equals("1099")) {
-                    emp.setEmployeeType(em.find(EmployeeType.class, 4));
+                    emp.setEmployeeType(em.find(EmployeeType.class, id_4));
                 } else if (or.getEmployeeType().equals("Techpillars")) {
-                    emp.setEmployeeType(em.find(EmployeeType.class, 2));
+                    emp.setEmployeeType(em.find(EmployeeType.class, id_2));
                 } else if (or.getEmployeeType().equals("SSTECH")) {
-                    emp.setEmployeeType(em.find(EmployeeType.class, 2));
+                    emp.setEmployeeType(em.find(EmployeeType.class, id_2));
                 }
             }
 
-            or.setFirstName(getCellStringValue(record, 1)); 
-            or.setLastName(getCellStringValue(record, 2));  
+            or.setFirstName(getCellStringValue(record, 1));
+            or.setLastName(getCellStringValue(record, 2));
             if (or.getFirstName() != null && !or.getFirstName().isEmpty()) {
                 or.setFirstName(or.getFirstName().replaceAll("[^a-zA-Z0-9\\s\\/\\.\\']", ""));
                 emp.setFirstName(or.getFirstName());
@@ -113,11 +121,19 @@ public class OnBoardingDataTool {
             } else {
                 emp.setLastName(or.getFirstName());
             }
-
+            System.out.println("Consultant Name >>>>>>>>>>>>>>>><<<<<<<<<<<<<<: " + or.getFirstName() + " " + or.getLastName());
             or.setDateOfBirth(convertToDate(getCellNumericValue(record, 4)));
             or.setDateOfJoining(convertToDate(getCellNumericValue(record, 13)));
             or.setDateOfRelieving(convertToDate(getCellNumericValue(record, 14)));
-
+            if (or.getDateOfJoining() != null) {
+                emp.setStartDate(or.getDateOfJoining());
+            }
+            if (or.getDateOfRelieving() != null) {
+                emp.setEndDate(or.getDateOfRelieving());
+            }
+            if (or.getDateOfBirth() != null) {
+                emp.setDateOfBirth(or.getDateOfBirth());
+            }
             or.setEmail(getCellStringValue(record, 27));
             if (or.getEmail() != null && !or.getEmail().isEmpty()) {
                 email.setEmail(or.getEmail().replaceAll("\\s+", ""));
@@ -128,14 +144,14 @@ public class OnBoardingDataTool {
             or.setPhoneNumber(convertDcimalToWhole(getCellStringOrNumericValue(record, 25)));
             if (or.getPhoneNumber() != null && !or.getPhoneNumber().isEmpty()) {
                 phone.setPhoneNumber(or.getPhoneNumber());
-                phone.setPhoneType(em.find(PhoneType.class, 1));
+                phone.setPhoneType(em.find(PhoneType.class, id_1));
                 emp.addPhone(phone);
             }
 
             or.setPermphoneNumber(convertDcimalToWhole(getCellStringOrNumericValue(record, 23)));
             if (or.getPhoneNumber() != null && !or.getPhoneNumber().isEmpty()) {
                 permPhone.setPhoneNumber(or.getPhoneNumber());
-                permPhone.setPhoneType(em.find(PhoneType.class, 2));
+                permPhone.setPhoneType(em.find(PhoneType.class, id_2));
                 emp.addPhone(permPhone);
             }
             or.setSex((Sex) convertEnum(Sex.class, getCellStringValue(record, 6)));
@@ -171,6 +187,7 @@ public class OnBoardingDataTool {
                 if (or.getZipCode() != null && !or.getZipCode().isEmpty()) {
                     address.setZip(or.getZipCode().trim());
                 }
+                address.setAddressType(em.find(AddressType.class, id_1));
                 emp.addAddress(address);
             }
 
@@ -206,11 +223,20 @@ public class OnBoardingDataTool {
                 if (or.getPermZipCode() != null && !or.getPermZipCode().isEmpty()) {
                     permAddress.setZip(or.getPermZipCode().trim());
                 }
+                permAddress.setAddressType(em.find(AddressType.class, id_1));
                 emp.addAddress(permAddress);
             }
-            
+
+            employeeId = generateEmployeeId(emp.getFirstName(), emp.getLastName(), emp.getDateOfBirth(),emp.getStartDate());
+
+            emp.setEmployeeId(employeeId);
+            Preferences prefs = new Preferences();
+            prefs.setEnableEmailNotifications(Boolean.TRUE);
+            emp.setPreferences(prefs);
+            i += 1;
             EmployeeDao.instance().save(emp);
         }
+        System.out.println("Total Consultants Records Written :::<<<>>>>::: " + i);
     }
 
     protected String getDataFileUrl() {
@@ -248,6 +274,27 @@ public class OnBoardingDataTool {
             }
         }
         return null;
+    }
+
+    public String generateEmployeeId(String firstName, String lastName, Date dateofBirth, Date startDate) {
+        Date todayDate = new Date();
+        String empId = firstName.toLowerCase().charAt(0) + lastName.toLowerCase();
+        javax.persistence.Query findUserQuery = em.createQuery("from Employee where employeeId=:empIdParam");
+        findUserQuery.setParameter("empIdParam", empId);
+        if (findUserQuery.getResultList().size() > 0) {
+            System.out.println("FIRSTNAME:LASTNAME ::" + firstName + " " + lastName);
+            if (dateofBirth != null) {
+                empId = empId + Integer.toString(dateofBirth.getDate());
+            } else if (startDate != null) {
+                empId = empId + Integer.toString(startDate.getDate());
+            } else {
+                empId = empId + Integer.toString(todayDate.getDate());
+            }
+        }
+        if (empId.contains(" ")) {
+            empId = empId.replace(" ", "_");
+        }
+        return empId;
     }
 
     public static OnBoardingDataTool instance() {

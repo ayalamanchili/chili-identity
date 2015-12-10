@@ -84,7 +84,6 @@ public class EmployeeService {
         emp = EmployeeDao.instance().save(emp);
         emp = em.merge(emp);
         //Preferences
-        emp.setEmployeeId(emp.getUser().getUsername());
         Preferences prefs = new Preferences();
         prefs.setEnableEmailNotifications(Boolean.TRUE);
         emp.setPreferences(prefs);
@@ -107,12 +106,13 @@ public class EmployeeService {
 
     public Employee createCUser(Employee employee) {
         String empType = employee.getEmployeeType().getName();
+        String username = generateEmployeeId(employee.getFirstName(), employee.getLastName(), employee.getDateOfBirth());
         if (empType.equals("Corporate Employee") || empType.equals("Employee") || empType.equals("W2 Contractor")) {
             //Create CUser
             CUser user = mapper.map(employee, CUser.class);
             user.setPasswordHash(generatepassword());
             //TODO fix dup user name ussue
-            user.setUsername(generateEmployeeId(employee.getFirstName(), employee.getLastName(), employee.getDateOfBirth()));
+            user.setUsername(username);
             user.setEnabled(true);
             if (empType.equals("Corporate Employee")) {
                 user.addRole(CRoleDao.instance().findRoleByName(OfficeRole.ROLE_CORPORATE_EMPLOYEE.name()));
@@ -120,8 +120,8 @@ public class EmployeeService {
             user.addRole((CRole) EntityQueryUtils.findEntity(em, CRole.class, "rolename", OfficeRole.ROLE_USER.name()));
             user = OfficeSecurityService.instance().createCuser(user);
             employee.setUser(user);
-            employee.setEmployeeId(user.getUsername());
         }
+        employee.setEmployeeId(username);
         return employee;
     }
 

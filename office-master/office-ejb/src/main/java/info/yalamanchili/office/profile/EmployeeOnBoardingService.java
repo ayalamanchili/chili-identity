@@ -75,8 +75,10 @@ public class EmployeeOnBoardingService {
         onboarding.setStartedBy(OfficeSecurityService.instance().getCurrentUserName());
         onboarding.setStartedDate(new Date());
         onboarding.setStatus(OnBoardingStatus.Pending_Initial_Document_Submission);
-        em.merge(onboarding);
+        //to save onboarding only once
+        onboarding = em.merge(onboarding);
         InviteCodeGeneratorService.instance().sendInviteCodeEmail(code);
+        EmployeeOnBoardingDao.instance().save(onboarding);
     }
 
     public OnBoardingEmployeeDto getOnboardingInfo(String invitationCode) {
@@ -88,18 +90,20 @@ public class EmployeeOnBoardingService {
         Address address;
         if (ContactDao.instance().findByEmail(code.getEmail()) != null) {
             cnt = ContactDao.instance().findByEmail(code.getEmail());
-            if (cnt.getAddresss().get(0) != null) {
+            if (cnt.getAddresss().size() > 0 && cnt.getAddresss().get(0) != null) {
                 address = cnt.getAddresss().get(0);
                 res.setAddress(address);
             }
             res.setFirstName(cnt.getFirstName());
             res.setLastName(cnt.getLastName());
             res.setDateOfBirth(cnt.getDateOfBirth());
+            if (cnt.getSex() != null) {
+                res.setSex(cnt.getSex());
+            }
             account.setAccountFirstName(cnt.getFirstName());
             account.setAccountLastName(cnt.getLastName());
             res.setBankAccount(account);
         }
-        //TODO set dob,address account first and last name
         return res;
     }
 

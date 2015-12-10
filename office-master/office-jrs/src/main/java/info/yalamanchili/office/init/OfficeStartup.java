@@ -144,6 +144,8 @@ public class OfficeStartup {
         userAddress.setCity("Herndon");
         userAddress.setState("VA");
         userAddress.setCountry("USA");
+        userAddress.setZip("123456");
+        
 
         Email userPrimaryEmail = new Email();
         userPrimaryEmail.setEmailType(getWorkEmailType());
@@ -189,6 +191,7 @@ public class OfficeStartup {
         adminAddress.setCity("Herndon");
         adminAddress.setState("VA");
         adminAddress.setCountry("USA");
+        adminAddress.setZip("123456");
 
         Email adminPrimaryEmail = new Email();
         adminPrimaryEmail.setEmailType(getWorkEmailType());
@@ -264,6 +267,7 @@ public class OfficeStartup {
         userAddres.setCity("Herndon");
         userAddres.setState("VA");
         userAddres.setCountry("USA");
+       userAddres.setZip("123456");
 
         Email userPrimaryEmails = new Email();
         userPrimaryEmails.setEmailType(getWorkEmailType());
@@ -307,6 +311,7 @@ public class OfficeStartup {
         userAddreess.setCity("Herndon");
         userAddreess.setState("VA");
         userAddreess.setCountry("USA");
+         userAddreess.setZip("123456");
 
         Email userPraimaryEmails = new Email();
         userPraimaryEmails.setEmailType(getWorkEmailType());
@@ -350,6 +355,7 @@ public class OfficeStartup {
         useraddress.setCity("Herndon");
         useraddress.setState("VA");
         useraddress.setCountry("USA");
+        useraddress.setZip("123456");
 
         Email userPrimaryemails = new Email();
         userPrimaryemails.setEmailType(getWorkEmailType());
@@ -945,6 +951,8 @@ public class OfficeStartup {
         clientLocation.setState("AL");
         clientLocation.setCity("Herndon");
         clientLocation.setCountry("USA");
+         clientLocation.setZip("123456");
+
         techSysClient.addLocations(clientLocation);
 
         Contact clientContact = new Contact();
@@ -978,6 +986,8 @@ public class OfficeStartup {
         vendorLocation.setState("AL");
         vendorLocation.setCity("Herndon");
         vendorLocation.setCountry("USA");
+        vendorLocation.setZip("123456");
+
         techSysVendor.addLocations(vendorLocation);
 
         Contact vendorContact = new Contact();

@@ -44,6 +44,7 @@ import info.yalamanchili.office.jms.MessagingService;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -438,6 +439,18 @@ public class PerformanceEvaluationService {
                     dto.setStage(prefEval.getStage().name());
                 }
             }
+            if (dto.getRating() != null && dto.getRating() > 0) {
+                dto.setManagerReviewStarted("Yes");
+            } else {
+                dto.setManagerReviewStarted("No");
+            }
+            String prevyear = Integer.toString(Integer.valueOf(dto.getEvaluationFYYear()) - 1);
+            prefEval = getEvaluationForYear(prevyear, emp, null);
+            if (prefEval != null) {
+                if (prefEval.getRating() != null && prefEval.getRating() > 0) {
+                    dto.setPrevYearRating(prefEval.getRating());
+                }
+            }
             Employee perfEvalMgr = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Perf_Eval_Manager");
             if (perfEvalMgr != null) {
                 dto.setManager(perfEvalMgr.getFirstName() + " " + perfEvalMgr.getLastName());
@@ -449,7 +462,8 @@ public class PerformanceEvaluationService {
             }
             report.add(dto);
         }
-        MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(report, " Performance-Evaluation-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
+        String[] columnOrder = new String[]{"employee", "evaluationFYYear", "manager", "managerReviewStarted", "rating", "prevYearRating", "stage"};
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(report, " Performance-Evaluation-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
 
     public static PerformanceEvaluationService instance() {

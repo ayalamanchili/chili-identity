@@ -23,6 +23,10 @@ public class PerformanceEvaluationReportDto implements Serializable {
     /**
      *
      */
+    protected Double prevYearRating;
+    /**
+     *
+     */
     protected String evaluationFYYear;
     /**
      *
@@ -35,7 +39,7 @@ public class PerformanceEvaluationReportDto implements Serializable {
     /**
      *
      */
-    protected Boolean managerReviewStarted;
+    protected String managerReviewStarted;
 
     /**
      * @return the employee
@@ -101,11 +105,20 @@ public class PerformanceEvaluationReportDto implements Serializable {
         this.manager = manager;
     }
 
-    public Boolean getManagerReviewStarted() {
+    public Double getPrevYearRating() {
+        return prevYearRating;
+    }
+
+    public void setPrevYearRating(Double prevYearRating) {
+        this.prevYearRating = prevYearRating;
+    }
+
+   
+    public String getManagerReviewStarted() {
         return managerReviewStarted;
     }
 
-    public void setManagerReviewStarted(Boolean managerReviewStarted) {
+    public void setManagerReviewStarted(String managerReviewStarted) {
         this.managerReviewStarted = managerReviewStarted;
     }
 }

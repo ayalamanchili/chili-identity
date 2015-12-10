@@ -45,7 +45,7 @@ public class CreateEmployeePanel extends CreateComposite {
     @Override
     public JSONObject populateEntityFromFields() {
         JSONObject employee = new JSONObject();
-        if(employee.get("forms")!=null){
+        if (employee.get("forms") != null) {
             JSONArray forms = (JSONArray) employee.get("forms");
         }
         assignEntityValueFromField("firstName", employee);
@@ -70,7 +70,7 @@ public class CreateEmployeePanel extends CreateComposite {
             assignEntityValueFromField("ssn", employee);
         }
         employee.put("imageURL", empImageUploadPanel.getFileName());
-        logger.info("employee"+employee.toString());
+        logger.info("employee" + employee.toString());
         return employee;
     }
 
@@ -95,7 +95,7 @@ public class CreateEmployeePanel extends CreateComposite {
         addEnumField("sex", false, true, Sex.names(), Alignment.HORIZONTAL);
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("jobTitle", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addEnumField("branch", false, true, Branch.names(), Alignment.HORIZONTAL);
+        addEnumField("branch", false, false, Branch.names(), Alignment.HORIZONTAL);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_GC_IMMIGRATION)) {
             addEnumField("workStatus", false, true, WorkStatus.names(), Alignment.HORIZONTAL);
         }
@@ -164,11 +164,12 @@ public class CreateEmployeePanel extends CreateComposite {
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "admin/createuser";
     }
-     @Override
+
+    @Override
     protected boolean processClientSideValidations(JSONObject entity) {
         boolean valid = true;
         DateField dateOfBirthF = (DateField) fields.get("dateOfBirth");
-        if (!selectEmployeeTypeWidgetF.getSelectedObject().get("value").isString().stringValue().trim().equals("Subcontractor")) {
+        if (selectEmployeeTypeWidgetF.getSelectedObject() != null && !selectEmployeeTypeWidgetF.getSelectedObject().get("value").isString().stringValue().trim().equals("Subcontractor")) {
             logger.info(selectEmployeeTypeWidgetF.getSelectedObject().get("value").isString().stringValue().trim());
             if (dateOfBirthF.getDate() == null) {
                 dateOfBirthF.setMessage("value is required");
@@ -178,5 +179,3 @@ public class CreateEmployeePanel extends CreateComposite {
         return valid;
     }
 }
-
-

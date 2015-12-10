@@ -38,25 +38,25 @@ public class ReadEmailEventPanel extends ReadComposite {
         instance = this;
         initReadComposite(id, "EventService", OfficeWelcome.constants);
     }
-    
+
     @Override
     public void loadEntity(String entityId) {
         logger.info("load entity");
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                    }
+                });
     }
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("subject", entity, DataType. TEXT_AREA_FIELD);
-        assignFieldValueFromEntity("body", entity, DataType. TEXT_AREA_FIELD);
-        assignFieldValueFromEntity("to", entity, DataType. TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("subject", entity, DataType.RICH_TEXT_AREA);
+        assignFieldValueFromEntity("body", entity, DataType.RICH_TEXT_AREA);
+        assignFieldValueFromEntity("to", entity, DataType.RICH_TEXT_AREA);
     }
 
     @Override
@@ -69,9 +69,9 @@ public class ReadEmailEventPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addField("subject", true, false, DataType. TEXT_AREA_FIELD);
-        addField("body", true, false, DataType. TEXT_AREA_FIELD);
-        addField("to", true, false, DataType. TEXT_AREA_FIELD);
+        addField("subject", true, false, DataType.RICH_TEXT_AREA);
+        addField("body", true, false, DataType.RICH_TEXT_AREA);
+        addField("to", true, false, DataType.RICH_TEXT_AREA);
     }
 
     @Override
