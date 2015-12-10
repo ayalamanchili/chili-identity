@@ -77,7 +77,8 @@ public class EmployeeOnBoardingService {
             onboarding.setStartedBy(OfficeSecurityService.instance().getCurrentUserName());
             onboarding.setStartedDate(new Date());
             onboarding.setStatus(OnBoardingStatus.Pending_Initial_Document_Submission);
-            em.merge(onboarding);
+            //to save onboarding only once
+            onboarding = em.merge(onboarding);
             InviteCodeGeneratorService.instance().sendInviteCodeEmail(code);
             EmployeeOnBoardingDao.instance().save(onboarding);
     }
