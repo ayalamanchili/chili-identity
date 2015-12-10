@@ -80,7 +80,7 @@ public class AddressResource extends CRUDResource<Address> {
 
     @PUT
     @Validate
-    @Path("/employee/{id}")
+    @Path("/employee/")
     public Address saveEmployeeAddress(Address entity) {
         boolean notifyHealthInsurance = entity.isNotifyHealthInsurance();
         boolean notifyChange = entity.isNotifyChange();
