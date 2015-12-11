@@ -13,6 +13,7 @@ import info.yalamanchili.office.entity.profile.Branch;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.validator.constraints.Email;
@@ -27,23 +28,24 @@ public class InitiateOnBoardingDto implements Serializable {
     /**
      *
      */
-    @NotNull
+    @NotNull(message = "{employeetype.name.not.empty.msg}")
     protected EmployeeType employeeType;
     /**
      *
      */
-    @NotNull
+    @NotNull(message = "{company.name.not.empty.msg}")
     protected Company company;
     /**
      *
      */
-    @NotNull
+    @Temporal(javax.persistence.TemporalType.DATE)
+    @NotNull(message = "{startDate.not.empty.msg}")
     protected Date startDate;
     /**
      *
      */
-    @Email
-    @NotNull
+    @Email(message = "Enter a valid email address")
+    @NotNull(message = "{email.not.empty.msg}")
     protected String email;
     /**
      *
