@@ -51,7 +51,6 @@ public class ProspectDto implements Serializable {
     
     protected Sex sex;
 
-    @Temporal(javax.persistence.TemporalType.DATE)
     protected Date startDate;
 
     protected String screenedBy;
