@@ -64,7 +64,8 @@ public class ProfileNotificationService {
         Email email = new Email();
         email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject("New System Soft Office User Created");
-        String messageText = "New User " + employee.getFirstName() + " , " + employee.getLastName() + " , " + employee.getEmployeeId() + " Is Created By " + currentEmployee.getFirstName() + currentEmployee.getLastName() + "\n Your Employee Type is:" + employee.getEmployeeType().getName(); 
+        String messageText = "New " + employee.getEmployeeType().getName() + " Has Created.. \n Employee Name: " + employee.getFirstName() + " , " + employee.getLastName() + " \n Employee Id: " + employee.getEmployeeId() + " \n Created By " + currentEmployee.getFirstName() + " " + currentEmployee.getLastName();
+        email.setBody(messageText);
         messagingService.sendEmail(email);
 
         // Email Intimation for User
@@ -72,7 +73,7 @@ public class ProfileNotificationService {
         newUserEmailObj.setHtml(Boolean.TRUE);
         newUserEmailObj.addTo(EmployeeDao.instance().getPrimaryEmail(employee));
         newUserEmailObj.setSubject("Welcome to System Soft Portal");
-        String messageTextforuser =  "Your Username and Employee Id is:" + employee.getEmployeeId() +"  \n Please follow the instructions to login https://apps.sstech.us/site/office/forgot-password.html";
+        String messageTextforuser = "Your Username and Employee Id is:" + employee.getEmployeeId() + "  \n Please follow the instructions to login https://apps.sstech.us/site/office/forgot-password.html";
         newUserEmailObj.setBody(messageTextforuser);
         messagingService.sendEmail(newUserEmailObj);
     }
