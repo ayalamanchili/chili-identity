@@ -75,25 +75,11 @@ public class ClientInformationService {
         Client client = null;
         Vendor vendor = null;
         Vendor middleVendor = null;
-        Company company = null;
         Project project = new Project();
         String abbreviation = "";
         Employee emp = (Employee) em.find(Employee.class, empId);
-
-        if (ciDto.getCompany() != null) {
-            company = companyDao.findById(ciDto.getCompany().getId());
-            emp.setCompany(company);
-            emp = EmployeeDao.instance().save(emp);
-            abbreviation = company.getAbbreviation();
-        } else {
-            company = emp.getCompany();
-            if (company != null) {
-                abbreviation = company.getAbbreviation();
-            } else {
-                abbreviation = "SSTL";
-            }
-        }
-
+        //TODO fix this by getting abbervation
+        abbreviation = ciDto.getCompany().name();
         if (abbreviation == null || abbreviation.isEmpty()) {
             abbreviation = "SSTL";
         }

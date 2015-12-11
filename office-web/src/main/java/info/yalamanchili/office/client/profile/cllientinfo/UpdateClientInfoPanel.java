@@ -60,6 +60,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     @Override
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("consultantJobTitle", entity);
+        assignEntityValueFromField("company", entity);
         assignEntityValueFromField("client", entity);
         assignEntityValueFromField("clientContact", entity);
         assignEntityValueFromField("clientLocation", entity);
@@ -148,6 +149,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("consultantJobTitle", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("company", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("client", entity, null);
         assignFieldValueFromEntity("clientContact", entity, null);
         assignFieldValueFromEntity("clientLocation", entity, null);
@@ -224,7 +226,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     protected void addWidgets() {
         addField("consultantJobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("employeeType", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("company", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("company", false, true, ClientInformationCompany.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Client & Vendor Information"));
         addDropDown("client", new SelectClientWidget(false, true, Alignment.HORIZONTAL));
         addDropDown("clientContact", new SelectClientContactWidget(false, false, Alignment.HORIZONTAL));
@@ -303,31 +305,31 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         JSONObject prj = (JSONObject) entity.get("practice");
         String service = JSONUtils.toString(prj, "name");
         switch (service) {
-                case "4100-CONSULTING SERVICES":
-                    addEnumField("sectorsAndBUs", false, true, ConsultingServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
-                    break;
-                case "4200-PROJECT MANAGEMENT SERVICES":
-                    addEnumField("sectorsAndBUs", false, true, ProjectManagementServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);          
-                    break;
-                case "4300-SOFTWARE DEVELOPMENT SERVICES":
-                    addEnumField("sectorsAndBUs", false, true, SoftwareDevelopmentServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
-                    break;
-                case "4400-INFRASTRUCTURE SERVICES":
-                    addEnumField("sectorsAndBUs", false, true, InfrastructureServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
-                    break;
-                case "4500-MOBILITY SERVICES":
-                    addEnumField("sectorsAndBUs", false, true, MobilityServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
-                    break;
-                case "4600-TECHNOLOGY,DEVELOPMENT,INTEGRATION SERVICES":
-                    addEnumField("sectorsAndBUs", false, true, TechnologyIntegrationServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
-                    break;
-                case "4700-QUALIY ASURANCE SERVICES":
-                    addEnumField("sectorsAndBUs", false, true, QualityAsuranceServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
-                    break;
-                default:
-                    addEnumField("sectorsAndBUs", false, true, QualityAsuranceServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
-                    break;
-            }
+            case "4100-CONSULTING SERVICES":
+                addEnumField("sectorsAndBUs", false, true, ConsultingServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
+                break;
+            case "4200-PROJECT MANAGEMENT SERVICES":
+                addEnumField("sectorsAndBUs", false, true, ProjectManagementServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
+                break;
+            case "4300-SOFTWARE DEVELOPMENT SERVICES":
+                addEnumField("sectorsAndBUs", false, true, SoftwareDevelopmentServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
+                break;
+            case "4400-INFRASTRUCTURE SERVICES":
+                addEnumField("sectorsAndBUs", false, true, InfrastructureServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
+                break;
+            case "4500-MOBILITY SERVICES":
+                addEnumField("sectorsAndBUs", false, true, MobilityServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
+                break;
+            case "4600-TECHNOLOGY,DEVELOPMENT,INTEGRATION SERVICES":
+                addEnumField("sectorsAndBUs", false, true, TechnologyIntegrationServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
+                break;
+            case "4700-QUALIY ASURANCE SERVICES":
+                addEnumField("sectorsAndBUs", false, true, QualityAsuranceServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
+                break;
+            default:
+                addEnumField("sectorsAndBUs", false, true, QualityAsuranceServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
+                break;
+        }
         sectorsF = (EnumField) fields.get("sectorsAndBUs");
         addDropDown("practice", selectPractiseWidgetF);
         alignFields();

@@ -82,6 +82,12 @@ public class ClientInformation extends AbstractEntity {
     @Transient
     protected Date previousProjectEndDate;
     /**
+     * a cpd can have a different company than that payroll company
+     */
+    @org.hibernate.annotations.Index(name = "CI_CMPNY_IDX")
+    @NotNull
+    protected ClientInformationCompany company;
+    /**
      * Client
      */
     @ManyToOne(cascade = CascadeType.MERGE)
@@ -309,12 +315,12 @@ public class ClientInformation extends AbstractEntity {
 
     @Enumerated(EnumType.STRING)
     private ClientInformationStatus status;
-    
+
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Practice_ClientInformation")
     @NotNull(message = "{practice.not.empty.msg}")
     private Practice practice;
-    
+
     @Field
     @NotEmpty(message = "{sectorsAndBUs.not.empty.msg}")
     protected String sectorsAndBUs;
@@ -369,6 +375,14 @@ public class ClientInformation extends AbstractEntity {
 
     public void setPreviousProjectEndDate(Date previousProjectEndDate) {
         this.previousProjectEndDate = previousProjectEndDate;
+    }
+
+    public ClientInformationCompany getCompany() {
+        return company;
+    }
+
+    public void setCompany(ClientInformationCompany company) {
+        this.company = company;
     }
 
     public Client getClient() {
