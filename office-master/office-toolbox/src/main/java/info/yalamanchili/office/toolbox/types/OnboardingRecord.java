@@ -48,6 +48,7 @@ public class OnboardingRecord {
     protected String relievingComments;
     protected Long id;
     protected Double similarity;
+    protected String addressUpdate;
 
     public String getFirstName() {
         return firstName;
@@ -296,6 +297,13 @@ public class OnboardingRecord {
     public void setPermCountry(String permCountry) {
         this.permCountry = permCountry;
     }
-    
+
+    public String getAddressUpdate() {
+        return addressUpdate;
+    }
+
+    public void setAddressUpdate(String addressUpdate) {
+        this.addressUpdate = addressUpdate;
+    }
     
 }

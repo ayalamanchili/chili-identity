@@ -14,6 +14,7 @@ import static info.chili.docs.ExcelUtils.getCellStringValue;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.AddressType;
 import info.yalamanchili.office.entity.profile.Email;
@@ -67,6 +68,8 @@ public class OnBoardingDataTool {
         Long id_2 = 2L;
         Long id_3 = 3L;
         Long id_4 = 4L;
+        Long id_5 = 5L;
+        Long id_9 = 9L;
         XSSFWorkbook workbook;
         try {
             inp = new FileInputStream(getDataFileUrl());
@@ -90,7 +93,7 @@ public class OnBoardingDataTool {
             }
             OnboardingRecord or = new OnboardingRecord();
             or.setSimilarity(new Double(getCellNumericValue(record, 43)));
-            if (or.getSimilarity() == 1.0000 || or.getSimilarity() == 2.0000 || or.getSimilarity() == 5.0000) {
+            if (or.getSimilarity() == 1.0000 || or.getSimilarity() == 2.0000 || or.getSimilarity() == 5.0000 || or.getSimilarity() == 7.0000 || or.getSimilarity() == 8.0000) {
                 continue;
             }
 
@@ -102,8 +105,10 @@ public class OnBoardingDataTool {
                     emp.setEmployeeType(em.find(EmployeeType.class, id_4));
                 } else if (or.getEmployeeType().equals("Techpillars")) {
                     emp.setEmployeeType(em.find(EmployeeType.class, id_2));
+                    emp.setCompany(em.find(Company.class, id_2));
                 } else if (or.getEmployeeType().equals("SSTECH")) {
                     emp.setEmployeeType(em.find(EmployeeType.class, id_2));
+                    emp.setCompany(em.find(Company.class, id_9));
                 }
             }
 
@@ -149,13 +154,13 @@ public class OnBoardingDataTool {
             }
 
             or.setPermphoneNumber(convertDcimalToWhole(getCellStringOrNumericValue(record, 23)));
-            if (or.getPhoneNumber() != null && !or.getPhoneNumber().isEmpty()) {
-                permPhone.setPhoneNumber(or.getPhoneNumber());
+            if (or.getPermphoneNumber() != null && !or.getPermphoneNumber().isEmpty()) {
+                permPhone.setPhoneNumber(or.getPermphoneNumber());
                 permPhone.setPhoneType(em.find(PhoneType.class, id_2));
                 emp.addPhone(permPhone);
             }
-            or.setSex((Sex) convertEnum(Sex.class, getCellStringValue(record, 6)));
-
+            or.setSex((Sex) convertEnum(Sex.class, getCellStringValue(record, 5)));
+            emp.setSex(or.getSex());  
             or.setStreet(getCellStringValue(record, 7));
             or.setState(getCellStringValue(record, 11));
             or.setCity(getCellStringValue(record, 9));
@@ -223,7 +228,7 @@ public class OnBoardingDataTool {
                 if (or.getPermZipCode() != null && !or.getPermZipCode().isEmpty()) {
                     permAddress.setZip(or.getPermZipCode().trim());
                 }
-                permAddress.setAddressType(em.find(AddressType.class, id_1));
+                permAddress.setAddressType(em.find(AddressType.class, id_5));
                 emp.addAddress(permAddress);
             }
 

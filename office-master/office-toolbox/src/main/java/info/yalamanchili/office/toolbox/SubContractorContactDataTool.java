@@ -106,7 +106,7 @@ public class SubContractorContactDataTool {
             cr.setRole(getCellStringValue(record, 8));
             subContractor.addContact(contact);
             i += 1;
-            SubcontractorDao.instance().getEntityManager().merge(subContractor);
+           // SubcontractorDao.instance().getEntityManager().merge(subContractor);
         }
         System.out.println("Total SubContractor Contact Records Written :::<<<>>>>::: " + i);
     }

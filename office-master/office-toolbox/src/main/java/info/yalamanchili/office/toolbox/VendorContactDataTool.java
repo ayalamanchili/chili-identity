@@ -124,7 +124,7 @@ public class VendorContactDataTool {
                 }
             }
             i += 1;
-            VendorDao.instance().getEntityManager().merge(vendor);
+           // VendorDao.instance().getEntityManager().merge(vendor);
         }
          System.out.println("Total Vendor Contact Records Written :::<<<>>>>::: " + i);
     }
