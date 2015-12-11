@@ -16,12 +16,10 @@ import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.Window;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.utils.FormatUtils;
-import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth.ROLE;
