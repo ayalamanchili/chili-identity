@@ -103,8 +103,8 @@ public class AddressResource extends CRUDResource<Address> {
         String[] roles = {OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name()};
         Email email = new Email();
         email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
-        email.setSubject(" Employee W2 address update " + address.getStreet1() + " " + address.getStreet2() + " " + address.getCity() + " " + address.getCountry() + " " + address.getState());
-        String messageText = " W2 Address for employee is " + address.getContact().getFirstName() + " " + address.getContact().getLastName();
+        email.setSubject(" W2 Mailing Address Has Updated For :" + address.getContact().getFirstName() + " " + address.getContact().getLastName());
+        String messageText = " W2 Address for employee is : \n " + address.getStreet1() + " , " + address.getStreet2() + " \n " + address.getCity() + " , " + address.getCountry() + " , " + address.getState() + " , " + address.getZip();
         email.setBody(messageText);
         MessagingService.instance().sendEmail(email);
     }
