@@ -43,18 +43,30 @@ class SearchExpenseReportsPanel extends SearchComposite {
     protected void populateSearchSuggestBox() {
     }
 
-    protected String getnameDropDownUrl() {
+    protected String getFirstNameDropDownUrl() {
         //TODO think about the limit
         return OfficeWelcome.constants.root_url() + "employee/dropdown/0/10000?column=id&column=firstName";
+    }
+   protected String getLastNameDropDownUrl() {
+        //TODO think about the limit
+        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/10000?column=id&column=lastName";
     }
 
     @Override
     protected void populateAdvancedSuggestBoxes() {
-        HttpService.HttpServiceAsync.instance().doGet(getnameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+        HttpService.HttpServiceAsync.instance().doGet(getFirstNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
                 Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
-                SuggestBox sb = (SuggestBox) fields.get("employee");
+                SuggestBox sb = (SuggestBox) fields.get("employeeFirstName");
+                sb.loadData(values.values());
+            }
+        });
+      HttpService.HttpServiceAsync.instance().doGet(getLastNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
+                SuggestBox sb = (SuggestBox) fields.get("employeeLastName");
                 sb.loadData(values.values());
             }
         });
@@ -77,7 +89,8 @@ class SearchExpenseReportsPanel extends SearchComposite {
 
     @Override
     protected void addWidgets() {
-        addField("employee", DataType.STRING_FIELD);
+        addField("employeeFirstName", DataType.STRING_FIELD);
+        addField("employeeLastName", DataType.STRING_FIELD);
         addEnumField("status", false, false, ExpenseReportStatus.names());
     }
 
@@ -85,7 +98,8 @@ class SearchExpenseReportsPanel extends SearchComposite {
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
         JSONObject employee = new JSONObject();
-        assignEntityValueFromField("employee", employee, "firstName");
+        assignEntityValueFromField("employeeFirstName", employee, "firstName");
+        assignEntityValueFromField("employeeLastName", employee, "lastName");
         assignEntityValueFromField("status", entity);
         entity.put("employee", employee);
         logger.info(entity.toString());
