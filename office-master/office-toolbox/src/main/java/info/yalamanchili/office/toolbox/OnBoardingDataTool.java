@@ -8,12 +8,17 @@
  */
 package info.yalamanchili.office.toolbox;
 
+import info.chili.commons.EntityQueryUtils;
 import static info.chili.docs.ExcelUtils.getCellNumericValue;
 import static info.chili.docs.ExcelUtils.getCellStringOrNumericValue;
 import static info.chili.docs.ExcelUtils.getCellStringValue;
+import info.chili.security.domain.CRole;
+import info.chili.security.domain.CUser;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.AddressType;
@@ -160,7 +165,7 @@ public class OnBoardingDataTool {
                 emp.addPhone(permPhone);
             }
             or.setSex((Sex) convertEnum(Sex.class, getCellStringValue(record, 5)));
-            emp.setSex(or.getSex());  
+            emp.setSex(or.getSex());
             or.setStreet(getCellStringValue(record, 7));
             or.setState(getCellStringValue(record, 11));
             or.setCity(getCellStringValue(record, 9));
@@ -232,14 +237,26 @@ public class OnBoardingDataTool {
                 emp.addAddress(permAddress);
             }
 
-            employeeId = generateEmployeeId(emp.getFirstName(), emp.getLastName(), emp.getDateOfBirth(),emp.getStartDate());
+            employeeId = generateEmployeeId(emp.getFirstName(), emp.getLastName(), emp.getDateOfBirth(), emp.getStartDate());
+            if (or.getEmployeeType() != null && !or.getEmployeeType().isEmpty()) {
+                if (or.getEmployeeType().equals("SSTECH") || or.getEmployeeType().equals("Techpillars")) {
+                    CUser user = new CUser();
+                    user.setUsername(employeeId);
+                    user.setPasswordHash(generatepassword());
+                    user.setEnabled(true);
+                    user.addRole((CRole) EntityQueryUtils.findEntity(em, CRole.class, "rolename", OfficeRoles.OfficeRole.ROLE_USER.name()));
+                    user = OfficeSecurityService.instance().createCuser(user);
+                    emp.setUser(user);
+                }
+            }
 
             emp.setEmployeeId(employeeId);
             Preferences prefs = new Preferences();
             prefs.setEnableEmailNotifications(Boolean.TRUE);
             emp.setPreferences(prefs);
             i += 1;
-            EmployeeDao.instance().save(emp);
+            emp = EmployeeDao.instance().save(emp);
+            OfficeSecurityService.instance().createUserCert(emp, null, null);
         }
         System.out.println("Total Consultants Records Written :::<<<>>>>::: " + i);
     }
@@ -266,6 +283,15 @@ public class OnBoardingDataTool {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public String generatepassword() {
+        final int PASSWORD_LENGTH = 6;
+        StringBuilder sb = new StringBuilder();
+        for (int x = 0; x < PASSWORD_LENGTH; x++) {
+            sb.append((char) ((int) (Math.random() * 26) + 97));
+        }
+        return sb.toString();
     }
 
     protected Date convertToDate(String dte) {
