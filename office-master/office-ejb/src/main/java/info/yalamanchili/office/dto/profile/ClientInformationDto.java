@@ -28,19 +28,18 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import org.hibernate.annotations.ForeignKey;
 
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
@@ -178,9 +177,7 @@ public class ClientInformationDto implements Serializable {
     /**
      * recruiter
      */
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_Recruiter_ClientInformations")
-    protected Employee recruiter;
+    protected Set<Employee> recruiters;
     /**
      * Status
      */
@@ -513,12 +510,12 @@ public class ClientInformationDto implements Serializable {
         this.invoiceDeliveryMethod = invoiceDeliveryMethod;
     }
 
-    public Employee getRecruiter() {
-        return recruiter;
+    public Set<Employee> getRecruiters() {
+        return recruiters;
     }
 
-    public void setRecruiter(Employee recruiter) {
-        this.recruiter = recruiter;
+    public void setRecruiters(Set<Employee> recruiters) {
+        this.recruiters = recruiters;
     }
 
     public String getVisaStatus() {

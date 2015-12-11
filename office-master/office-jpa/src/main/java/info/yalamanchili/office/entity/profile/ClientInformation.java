@@ -15,13 +15,17 @@ import info.yalamanchili.office.entity.practice.Practice;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
@@ -188,9 +192,9 @@ public class ClientInformation extends AbstractEntity {
     /**
      * recruiter
      */
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_Recruiter_ClientInformations")
-    protected Employee recruiter;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @ForeignKey(name = "FK_Recruiters_ClientInformations")
+    protected Set<Employee> recruiters;
     /**
      * Status
      */
@@ -544,12 +548,20 @@ public class ClientInformation extends AbstractEntity {
         this.invoiceDeliveryMethod = invoiceDeliveryMethod;
     }
 
-    public Employee getRecruiter() {
-        return recruiter;
+    public Set<Employee> getRecruiters() {
+        if (this.recruiters == null) {
+            this.recruiters = new HashSet();
+        }
+        return recruiters;
     }
 
-    public void setRecruiter(Employee recruiter) {
-        this.recruiter = recruiter;
+    public void setRecruiters(Set<Employee> recruiters) {
+        this.recruiters = recruiters;
+    }
+
+    public void addRecruiter(Employee recruiter) {
+        getRecruiters().add(recruiter);
+        recruiter.addClientInformation(this);
     }
 
     public String getVisaStatus() {

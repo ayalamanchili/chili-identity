@@ -205,9 +205,9 @@ public class ContractService {
         if (ci.getVendor() != null) {
             dto.setVendor(ci.getVendor().getName());
         }
-        if (ci.getRecruiter() != null) {
-            dto.setRecruiter(ci.getRecruiter().getFirstName() + " " + ci.getRecruiter().getLastName());
-        }
+//        if (ci.getRecruiter() != null) {
+//            dto.setRecruiter(ci.getRecruiter().getFirstName() + " " + ci.getRecruiter().getLastName());
+//        }
         if (ci.getClientContact() != null) {
             dto.setClientContact(ci.getClientContact().details());
         }

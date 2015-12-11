@@ -23,7 +23,6 @@ import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.profile.ClientInformationDto;
-import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.client.Subcontractor;
@@ -32,6 +31,7 @@ import info.yalamanchili.office.entity.practice.Practice;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.BillingRate;
 import info.yalamanchili.office.entity.profile.ClientInformation;
+import info.yalamanchili.office.entity.profile.ClientInformationCompany;
 import info.yalamanchili.office.entity.profile.ClientInformationStatus;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
@@ -76,10 +76,8 @@ public class ClientInformationService {
         Vendor vendor = null;
         Vendor middleVendor = null;
         Project project = new Project();
-        String abbreviation = "";
         Employee emp = (Employee) em.find(Employee.class, empId);
-        //TODO fix this by getting abbervation
-        abbreviation = ciDto.getCompany().name();
+        String abbreviation = getCompanyAbbreviation(ciDto.getCompany());
         if (abbreviation == null || abbreviation.isEmpty()) {
             abbreviation = "SSTL";
         }
@@ -124,10 +122,9 @@ public class ClientInformationService {
             project = ProjectDao.instance().findById(ci.getClientProject().getId());
             ci.setClientProject(project);
         }
-
-        if (ci.getRecruiter() != null) {
-            Employee recruiter = EmployeeDao.instance().findById(ci.getRecruiter().getId());
-            ci.setRecruiter(recruiter);
+        ci.setRecruiters(null);
+        for (Employee recruiter : ciDto.getRecruiters()) {
+            ci.getRecruiters().add(EmployeeDao.instance().findById(recruiter.getId()));
         }
         if (ci.getSubcontractor() != null) {
             Subcontractor subcontractor = SubcontractorDao.instance().findById(ci.getSubcontractor().getId());
@@ -185,6 +182,28 @@ public class ClientInformationService {
         emp.addClientInformation(ci);
         startNewClientInfoProcess(ci);
     }
+//TODO set these values
+
+    protected String getCompanyAbbreviation(ClientInformationCompany company) {
+        switch (company) {
+            case ACO360:
+                return "";
+            case CapMark_Solutions:
+                return "";
+            case SSTECH_INC:
+                return "";
+            case SSTECH_LLC:
+                return "";
+            case SST_Canada:
+                return "";
+            case SST_PVT:
+                return "";
+            case Techpillars:
+                return "";
+            default:
+                return "SSTL";
+        }
+    }
 
     protected void updatePreviousProjectEndDate(Employee emp, ClientInformation ci) {
         ClientInformation previousClientInformation = null;
@@ -231,7 +250,7 @@ public class ClientInformationService {
 
     @Async
     protected void startNewClientInfoProcess(ClientInformation ci) {
-        Map<String, Object> vars = new HashMap<String, Object>();
+        Map<String, Object> vars = new HashMap<>();
         vars.put("clientInfo", ci);
         vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
         OfficeBPMService.instance().startProcess("new_client_info_process", vars);
@@ -241,17 +260,7 @@ public class ClientInformationService {
     public ClientInformation update(ClientInformation ci) {
         //TODO implement mapping for contact,phone and email
         ClientInformation ciEntity = em.find(ClientInformation.class, ci.getId());
-        Employee emp = ciEntity.getEmployee();
-        Company company = emp.getCompany();
-        String abbreviation = "";
-        if (company != null) {
-            abbreviation = company.getAbbreviation();
-        } else {
-            abbreviation = "SSTL";
-        }
-        if (abbreviation == null || abbreviation.isEmpty()) {
-            abbreviation = "SSTL";
-        }
+        String abbreviation = getCompanyAbbreviation(ci.getCompany());
         BeanMapper.merge(ci, ciEntity);
         Project project = ProjectDao.instance().findById(ci.getClientProject().getId());
         Client client = null;
@@ -332,12 +341,12 @@ public class ClientInformationService {
                 ciEntity.setSubcontractorAddress(address);
             }
         }
-        if (ci.getRecruiter() == null) {
-            ciEntity.setRecruiter(null);
-        } else {
-            Employee recruiter = EmployeeDao.instance().findById(ci.getRecruiter().getId());
-            ciEntity.setRecruiter(recruiter);
-        }
+//        if (ci.getRecruiter() == null) {
+//            ciEntity.setRecruiter(null);
+//        } else {
+//            Employee recruiter = EmployeeDao.instance().findById(ci.getRecruiter().getId());
+//            ciEntity.setRecruiter(recruiter);
+//        }
 
         if (ci.getPractice() != null) {
             Practice practice = PracticeDao.instance().findById(ci.getPractice().getId());

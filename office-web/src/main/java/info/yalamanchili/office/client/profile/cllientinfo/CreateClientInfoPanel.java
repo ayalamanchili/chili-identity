@@ -46,22 +46,22 @@ import com.google.gwt.event.dom.client.ChangeHandler;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
 
 public class CreateClientInfoPanel extends CreateComposite implements ChangeHandler {
-
+    
     private static Logger logger = Logger.getLogger(CreateClientInfoPanel.class.getName());
     protected Anchor addClientL = new Anchor("Client not present? submit request");
     protected Anchor addVendorL = new Anchor("Vendor not present? submit request");
     SelectPracticeWidget selectPractiseWidgetF = new SelectPracticeWidget(false, true, Alignment.HORIZONTAL);
-
+    
     public CreateClientInfoPanel(CreateCompositeType type) {
         super(type);
         initCreateComposite("ClientInfo", OfficeWelcome.constants);
     }
-
+    
     BooleanField endPreviousProjectFlagField;
     DateField previousProjectEndDate;
     EnumField servicesF;
     EnumField sectorsF;
-
+    
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject clientInfo = new JSONObject();
@@ -92,7 +92,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             assignEntityValueFromField("overTimeRateDuration", clientInfo);
             assignEntityValueFromField("invoiceFrequency", clientInfo);
             assignEntityValueFromField("invoiceDeliveryMethod", clientInfo);
-            assignEntityValueFromField("recruiter", clientInfo);
+            clientInfo.put("recruiters", selectRecruiterW.getSelectedObjects());
             assignEntityValueFromField("visaStatus", clientInfo);
             if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
                 assignEntityValueFromField("subcontractor", clientInfo);
@@ -116,14 +116,15 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         }
         assignEntityValueFromField("practice", clientInfo);
         assignEntityValueFromField("sectorsAndBUs", clientInfo);
+        logger.info(clientInfo.toString());
         return clientInfo;
     }
-
+    
     @Override
     protected void createButtonClicked() {
         // TODO Auto-generated method stub
     }
-
+    
     @Override
     protected void addButtonClicked() {
         HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
@@ -133,15 +134,15 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                         logger.info(arg0.getMessage());
                         handleErrorResponse(arg0);
                     }
-
+                    
                     @Override
                     public void onSuccess(String arg0) {
                         postCreateSuccess(arg0);
                     }
                 });
-
+        
     }
-
+    
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Added Client Information");
@@ -149,7 +150,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(TreeEmployeePanel.instance().getEntityId()));
         TabPanel.instance().myOfficePanel.entityPanel.add(new ClientInfoOptionsPanel());
     }
-
+    
     @Override
     protected void addListeners() {
         addClientL.addClickHandler(this);
@@ -159,7 +160,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         }
         selectPractiseWidgetF.getListBox().addChangeHandler(this);
     }
-
+    
     @Override
     protected void configure() {
         endPreviousProjectFlagField = (BooleanField) fields.get("endPreviousProject");
@@ -168,8 +169,16 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             previousProjectEndDate.setVisible(false);
         }
         add.setText("Save");
+        
     }
-
+    
+    SelectEmployeeWithRoleWidget selectRecruiterW = new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER, false, false, Alignment.HORIZONTAL) {
+        @Override
+        public boolean enableMultiSelect() {
+            return true;
+        }
+    };
+    
     @Override
     protected void addWidgets() {
         //Basic
@@ -199,7 +208,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             addField("previousProjectEndDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_TIME, ROLE.ROLE_RECRUITER, ROLE.ROLE_RELATIONSHIP)) {
-            addDropDown("recruiter", new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER, false, false, Alignment.HORIZONTAL));
+            addDropDown("recruiter", selectRecruiterW);
             //Billing Information
             entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
             addField("payRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
@@ -250,12 +259,12 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         sectorsF = (EnumField) fields.get("sectorsAndBUs");
         alignFields();
     }
-
+    
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
         // TODO Auto-generated method stub
     }
-
+    
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addClientL)) {
@@ -272,14 +281,14 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                 new GenericPopup(new GenericBPMStartFormPanel("AddNewVendorRequest", "add_new_vendor_request_1")).show();
             }
         }
-
+        
         if ((ReadAllClientInfoPanel.instance().numberOfRecords > 0) && (event.getSource().equals(endPreviousProjectFlagField.getBox()))) {
             previousProjectEndDate.setVisible(endPreviousProjectFlagField.getValue());
         }
-
+        
         super.onClick(event);
     }
-
+    
     @Override
     public void onChange(ChangeEvent event) {
         if (event.getSource().equals(selectPractiseWidgetF.getListBox())) {
@@ -309,11 +318,11 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                 default:
                     sectorsF.setValues(QualityAsuranceServices.getSectorsAndBusinessUnits().toArray(new String[0]));
                     break;
-
+                
             }
         }
     }
-
+    
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "employee/clientinformation/" + TreeEmployeePanel.instance().getEntityId();
