@@ -10,6 +10,7 @@ package info.yalamanchili.office.jrs.expense.expenserpt;
 import info.chili.commons.SearchUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
+import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.expense.expenserpt.ExpenseReportsDao;
@@ -35,9 +36,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -101,6 +104,16 @@ public class ExpenseReportResource extends CRUDResource<ExpenseReport> {
             tableObj.setSize(expenseReportsDao.size(currentEmp.getId()));
         }
         return tableObj;
+    }
+    
+    @GET
+    @Path("/dropdown/{start}/{limit}")
+    @Transactional(propagation = Propagation.NEVER)
+    @Cacheable(OfficeCacheKeys.EXPENSE)
+    @Override
+    public List<Entry> getDropDown(@PathParam("start") int start, @PathParam("limit") int limit,
+            @QueryParam("column") List<String> columns) {
+        return super.getDropDown(start, limit, columns);
     }
 
     @GET
