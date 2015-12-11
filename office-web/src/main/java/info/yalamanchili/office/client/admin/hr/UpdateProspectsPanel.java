@@ -91,7 +91,6 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
         }
         assignEntityValueFromField("firstName", entity);
         assignEntityValueFromField("lastName", entity);
-        //assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("email", entity);
         assignEntityValueFromField("sex", entity);
         assignEntityValueFromField("phoneNumber", entity);
@@ -132,7 +131,6 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
         }
         assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
-        //assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("email", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("phoneNumber", entity, DataType.LONG_FIELD);
         assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
@@ -166,7 +164,6 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
     protected void addWidgets() {
         addField("firstName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("lastName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        //addField("startDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("email", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("phoneNumber", false, true, DataType.LONG_FIELD, Alignment.HORIZONTAL);
         addField("dateOfBirth", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);

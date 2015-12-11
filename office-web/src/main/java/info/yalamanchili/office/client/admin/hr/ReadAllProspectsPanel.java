@@ -75,11 +75,10 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
         table.setText(0, 1, getKeyValue("First Name"));
         table.setText(0, 2, getKeyValue("Last Name"));
         table.setText(0, 3, getKeyValue("Screened By"));
-        table.setText(0, 4, getKeyValue("Start Date"));
-        table.setText(0, 5, getKeyValue("Referred By"));
-        table.setText(0, 6, getKeyValue("Status"));
-        table.setText(0, 7, getKeyValue("Email Notification"));
-        table.setText(0, 8, getKeyValue("OnBoarding Invitation"));
+        table.setText(0, 4, getKeyValue("Referred By"));
+        table.setText(0, 5, getKeyValue("Status"));
+        table.setText(0, 6, getKeyValue("Email Notification"));
+        table.setText(0, 7, getKeyValue("OnBoarding Invitation"));
     }
 
     @Override
@@ -91,9 +90,8 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
             table.setText(i, 1, JSONUtils.toString(entity, "firstName"));
             table.setText(i, 2, JSONUtils.toString(entity, "lastName"));
             table.setText(i, 3, JSONUtils.toString(entity, "screenedBy"));
-            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 5, JSONUtils.toString(entity, "referredBy"));
-            setEnumColumn(i, 6, entity, ProspectStatus.class.getSimpleName(), "status");
+            table.setText(i, 4, JSONUtils.toString(entity, "referredBy"));
+            setEnumColumn(i, 5, entity, ProspectStatus.class.getSimpleName(), "status");
             if (TabPanel.instance().myOfficePanel.isVisible()) {
                 ClickableLink emailLink = new ClickableLink("Prospect Notification");
                 emailLink.setTitle(JSONUtils.toString(entity, "id"));
@@ -103,7 +101,7 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
                         getEmail(((ClickableLink) event.getSource()).getTitle());
                     }
                 });
-                table.setWidget(i, 7, emailLink);
+                table.setWidget(i, 6, emailLink);
             }
             if (TabPanel.instance().myOfficePanel.isVisible()) {
                 if (ProspectStatus.CLOSED_WON.name().equals(status)){
@@ -115,7 +113,7 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
                         getOnBoardInviteCode(((ClickableLink) event.getSource()).getTitle());
                     }
                 });
-                table.setWidget(i, 8, invitationLink);
+                table.setWidget(i, 7, invitationLink);
             }
             }
             
