@@ -256,10 +256,16 @@ public class OnBoardingDataTool {
             emp.setPreferences(prefs);
             i += 1;
             emp = EmployeeDao.instance().save(emp);
-            OfficeSecurityService.instance().createUserCert(emp, null, null);
+            if (or.getEmployeeType() != null && !or.getEmployeeType().isEmpty()) {
+                if (or.getEmployeeType().equals("SSTECH") || or.getEmployeeType().equals("Techpillars")) {
+                    OfficeSecurityService.instance().createUserCert(emp, null, null);
+                }
+            }
         }
         System.out.println("Total Consultants Records Written :::<<<>>>>::: " + i);
     }
+
+    
 
     protected String getDataFileUrl() {
         return OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "BIS_ConsultantsData.xlsx";
