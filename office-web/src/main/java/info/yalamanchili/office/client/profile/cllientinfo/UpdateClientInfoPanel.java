@@ -45,18 +45,17 @@ import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
 
 public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHandler {
-
+    
     private static Logger logger = Logger.getLogger(UpdateClientInfoPanel.class.getName());
-    SelectEmployeeWithRoleWidget selectRecruiterWidget = new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER, false, false, Alignment.HORIZONTAL);
     SelectPracticeWidget selectPractiseWidgetF = new SelectPracticeWidget(false, true, Alignment.HORIZONTAL);
     SelectProjectWidget selectProjectWidgetF = new SelectProjectWidget(true, false);
     EnumField servicesF;
     EnumField sectorsF;
-
+    
     public UpdateClientInfoPanel(JSONObject entity) {
         initUpdateComposite(entity, "ClientInfo", OfficeWelcome.constants);
     }
-
+    
     @Override
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("consultantJobTitle", entity);
@@ -82,7 +81,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             assignEntityValueFromField("overTimeBillingRate", entity);
             assignEntityValueFromField("invoiceFrequency", entity);
             assignEntityValueFromField("invoiceDeliveryMethod", entity);
-            assignEntityValueFromField("recruiter", entity);
+            assignEntityValueFromField("recruiters", entity);
             assignEntityValueFromField("billingRateDuration", entity);
             assignEntityValueFromField("overTimeRateDuration", entity);
             assignEntityValueFromField("visaStatus", entity);
@@ -118,9 +117,10 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignEntityValueFromField("isCPDFilled", entity);
         assignEntityValueFromField("practice", entity);
         assignEntityValueFromField("sectorsAndBUs", entity);
+        logger.info(entity.toString());
         return entity;
     }
-
+    
     @Override
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
@@ -129,15 +129,15 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
                     public void onFailure(Throwable arg0) {
                         handleErrorResponse(arg0);
                     }
-
+                    
                     @Override
                     public void onSuccess(String arg0) {
                         postUpdateSuccess(arg0);
                     }
                 });
-
+        
     }
-
+    
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated Client Information");
@@ -145,7 +145,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(TreeEmployeePanel.instance().getEntityId()));
         TabPanel.instance().myOfficePanel.entityPanel.add(new ClientInfoOptionsPanel());
     }
-
+    
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("consultantJobTitle", entity, DataType.STRING_FIELD);
@@ -171,7 +171,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("invoiceDeliveryMethod", entity, DataType.ENUM_FIELD);
-            assignFieldValueFromEntity("recruiter", entity, null);
+            assignFieldValueFromEntity("recruiters", entity, null);
             assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
             assignFieldValueFromEntity("billingRateDuration", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("overTimeRateDuration", entity, DataType.ENUM_FIELD);
@@ -209,19 +209,26 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignFieldValueFromEntity("practice", entity, null);
         assignFieldValueFromEntity("sectorsAndBUs", entity, DataType.ENUM_FIELD);
     }
-
+    
     @Override
     protected void addListeners() {
         updateBillingRateIcn.addClickHandler(this);
         selectPractiseWidgetF.getListBox().addChangeHandler(this);
         selectProjectWidgetF.setReadOnly(true);
     }
-
+    
     @Override
     protected void configure() {
         // TODO Auto-generated method stub
     }
-
+    
+    SelectEmployeeWithRoleWidget selectRecruiterW = new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER, false, false, Alignment.HORIZONTAL) {
+        @Override
+        public boolean enableMultiSelect() {
+            return true;
+        }
+    };
+    
     @Override
     protected void addWidgets() {
         addField("consultantJobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -256,7 +263,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             addEnumField("invoiceFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
             String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
             addEnumField("invoiceDeliveryMethod", false, false, invoiceDeliveryMethods, Alignment.HORIZONTAL);
-            addDropDown("recruiter", selectRecruiterWidget);
+            addDropDown("recruiters", selectRecruiterW);
             entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
             addField("visaStatus", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("joiningReport", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -334,14 +341,14 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         addDropDown("practice", selectPractiseWidgetF);
         alignFields();
     }
-
+    
     ClickableImage updateBillingRateIcn = new ClickableImage("update", ChiliImages.INSTANCE.updateIcon_16_16());
-
+    
     protected void renderUpdateBillingRateFieldLink() {
         BaseField billRateField = fields.get("billingRate");
         billRateField.addWidgetToFieldPanel(updateBillingRateIcn);
     }
-
+    
     @Override
     public void onClick(ClickEvent event) {
         super.onClick(event);
@@ -349,7 +356,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             new GenericPopup(new CreateUpdateBillingRatePanel(getEntityId(), getEntity())).show();
         }
     }
-
+    
     @Override
     public void onChange(ChangeEvent event) {
         if (event.getSource().equals(selectPractiseWidgetF.getListBox())) {
@@ -382,11 +389,11 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             }
         }
     }
-
+    
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
-
+    
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "clientinformation";

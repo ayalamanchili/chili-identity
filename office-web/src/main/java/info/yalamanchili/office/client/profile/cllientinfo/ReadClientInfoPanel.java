@@ -44,7 +44,6 @@ public class ReadClientInfoPanel extends ReadComposite {
 
     private static ReadClientInfoPanel instance;
     private static Logger logger = Logger.getLogger(ReadClientInfoPanel.class.getName());
-    SelectEmployeeWithRoleWidget selectRecruiterWidget = new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER, false, false, Alignment.HORIZONTAL);
     SelectPracticeWidget selectPractiseWidgetF = new SelectPracticeWidget(true, false, Alignment.HORIZONTAL);
 
     public ReadClientInfoPanel(String id) {
@@ -89,7 +88,7 @@ public class ReadClientInfoPanel extends ReadComposite {
             assignFieldValueFromEntity("overTimeRateDuration", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("invoiceDeliveryMethod", entity, DataType.ENUM_FIELD);
-            assignFieldValueFromEntity("recruiter", entity, null);
+            assignFieldValueFromEntity("recruiters", entity, null);
             assignFieldValueFromEntity("visaStatus", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("joiningReport", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("accountVerificationDocs", entity, DataType.BOOLEAN_FIELD);
@@ -150,6 +149,13 @@ public class ReadClientInfoPanel extends ReadComposite {
     protected void configure() {
     }
 
+    SelectEmployeeWithRoleWidget selectRecruiterW = new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER, true, false, Alignment.HORIZONTAL) {
+        @Override
+        public boolean enableMultiSelect() {
+            return true;
+        }
+    };
+
     @Override
     protected void addWidgets() {
         addField("consultantJobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -184,7 +190,7 @@ public class ReadClientInfoPanel extends ReadComposite {
             addEnumField("invoiceFrequency", true, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
             String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
             addEnumField("invoiceDeliveryMethod", true, false, invoiceDeliveryMethods, Alignment.HORIZONTAL);
-            addDropDown("recruiter", selectRecruiterWidget);
+            addDropDown("recruiters", selectRecruiterW);
             if (Auth.isSubContractor(getEmployee())) {
                 entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
                 addDropDown("subcontractor", new SelectSubcontractorWidget(true, false, Alignment.HORIZONTAL));

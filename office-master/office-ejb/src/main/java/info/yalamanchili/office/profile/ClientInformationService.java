@@ -40,7 +40,9 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import javax.persistence.Query;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -81,11 +83,8 @@ public class ClientInformationService {
         if (abbreviation == null || abbreviation.isEmpty()) {
             abbreviation = "SSTL";
         }
-
-        if (ci.getClient() != null) {
-            client = ClientDao.instance().findById(ci.getClient().getId());
-            ci.setClient(client);
-        }
+        client = ClientDao.instance().findById(ci.getClient().getId());
+        ci.setClient(client);
         if (ci.getClientContact() != null) {
             Contact contact = ContactDao.instance().findById(ci.getClientContact().getId());
             ci.setClientContact(contact);
@@ -124,7 +123,9 @@ public class ClientInformationService {
         }
         ci.setRecruiters(null);
         for (Employee recruiter : ciDto.getRecruiters()) {
-            ci.getRecruiters().add(EmployeeDao.instance().findById(recruiter.getId()));
+            if (recruiter.getId() != null) {
+                ci.getRecruiters().add(EmployeeDao.instance().findById(recruiter.getId()));
+            }
         }
         if (ci.getSubcontractor() != null) {
             Subcontractor subcontractor = SubcontractorDao.instance().findById(ci.getSubcontractor().getId());
@@ -266,30 +267,25 @@ public class ClientInformationService {
         Client client = null;
         Vendor vendor = null;
         Vendor middleVendor = null;
-
-        if (ci.getClient() == null) {
-            ciEntity.setClient(null);
+        ciEntity.setClient(null);
+        client = ClientDao.instance().findById(ci.getClient().getId());
+        ciEntity.setClient(client);
+        project.setName(abbreviation + "PR" + projectName(client.getName()));
+        project.setName(project.getName() + project.getId().toString());
+        //Client Contact
+        if (ci.getClientContact() == null) {
+            ciEntity.setClientContact(null);
         } else {
-            client = ClientDao.instance().findById(ci.getClient().getId());
-            ciEntity.setClient(client);
-            project.setName(abbreviation + "PR" + projectName(client.getName()));
-            project.setName(project.getName() + project.getId().toString());
-            //Client Contact
-            if (ci.getClientContact() == null) {
-                ciEntity.setClientContact(null);
-            } else {
-                Contact contact = ContactDao.instance().findById(ci.getClientContact().getId());
-                ciEntity.setClientContact(contact);
-            }
-            //Client Location
-            if (ci.getClientLocation() == null) {
-                ciEntity.setClientLocation(null);
-            } else {
-                Address address = AddressDao.instance().findById(ci.getClientLocation().getId());
-                ciEntity.setClientLocation(address);
-            }
+            Contact contact = ContactDao.instance().findById(ci.getClientContact().getId());
+            ciEntity.setClientContact(contact);
         }
-
+        //Client Location
+        if (ci.getClientLocation() == null) {
+            ciEntity.setClientLocation(null);
+        } else {
+            Address address = AddressDao.instance().findById(ci.getClientLocation().getId());
+            ciEntity.setClientLocation(address);
+        }
         if (ci.getVendor() == null) {
             ciEntity.setVendor(null);
         } else {
@@ -341,18 +337,20 @@ public class ClientInformationService {
                 ciEntity.setSubcontractorAddress(address);
             }
         }
-//        if (ci.getRecruiter() == null) {
-//            ciEntity.setRecruiter(null);
-//        } else {
-//            Employee recruiter = EmployeeDao.instance().findById(ci.getRecruiter().getId());
-//            ciEntity.setRecruiter(recruiter);
+//        //recruiters
+//        Set<Employee> existingRecs = ciEntity.getRecruiters();
+//        for (Employee rec : existingRecs) {
+//            ciEntity.getRecruiters().remove(rec);
 //        }
-
+        Set<Employee> newRecs = new HashSet();
+        for (Employee rec : ci.getRecruiters()) {
+            newRecs.add(EmployeeDao.instance().findById(rec.getId()));
+        }
+        ciEntity.setRecruiters(newRecs);
         if (ci.getPractice() != null) {
             Practice practice = PracticeDao.instance().findById(ci.getPractice().getId());
             ciEntity.setPractice(practice);
         }
-
         if (vendor != null) {
             project.setVendor(vendor);
             client.getVendors().add(vendor);

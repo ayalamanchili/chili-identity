@@ -559,11 +559,6 @@ public class ClientInformation extends AbstractEntity {
         this.recruiters = recruiters;
     }
 
-    public void addRecruiter(Employee recruiter) {
-        getRecruiters().add(recruiter);
-        recruiter.addClientInformation(this);
-    }
-
     public String getVisaStatus() {
         return visaStatus;
     }
