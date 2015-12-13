@@ -301,12 +301,8 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         }
         addField("isCPDFilled", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         if (TreeEmployeePanel.instance().getEntity().get("employeeType") != null) {
-            StringField jobTitleF = (StringField) fields.get("employeeType");
-            jobTitleF.setValue(TreeEmployeePanel.instance().getEntity().get("employeeType").isObject().get("name").isString().stringValue());
-        }
-        if (TreeEmployeePanel.instance().getEntity().get("company") != null) {
-            StringField jobTitleF = (StringField) fields.get("company");
-            jobTitleF.setValue(TreeEmployeePanel.instance().getEntity().get("company").isObject().get("name").isString().stringValue());
+            StringField employeeTypeF = (StringField) fields.get("employeeType");
+            employeeTypeF.setValue(TreeEmployeePanel.instance().getEntity().get("employeeType").isObject().get("name").isString().stringValue());
         }
         addField("sectorsAndBUs", false, true, DataType.ENUM_FIELD);
         JSONObject prj = (JSONObject) entity.get("practice");
