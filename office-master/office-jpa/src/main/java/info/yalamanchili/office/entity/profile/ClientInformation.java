@@ -90,6 +90,7 @@ public class ClientInformation extends AbstractEntity {
      */
     @org.hibernate.annotations.Index(name = "CI_CMPNY_IDX")
     @NotNull
+    @Enumerated(EnumType.STRING)
     protected ClientInformationCompany company;
     /**
      * Client
