@@ -337,14 +337,11 @@ public class ClientInformationService {
                 ciEntity.setSubcontractorAddress(address);
             }
         }
-//        //recruiters
-//        Set<Employee> existingRecs = ciEntity.getRecruiters();
-//        for (Employee rec : existingRecs) {
-//            ciEntity.getRecruiters().remove(rec);
-//        }
         Set<Employee> newRecs = new HashSet();
         for (Employee rec : ci.getRecruiters()) {
-            newRecs.add(EmployeeDao.instance().findById(rec.getId()));
+            if (rec.getId() != null) {
+                newRecs.add(EmployeeDao.instance().findById(rec.getId()));
+            }
         }
         ciEntity.setRecruiters(newRecs);
         if (ci.getPractice() != null) {
