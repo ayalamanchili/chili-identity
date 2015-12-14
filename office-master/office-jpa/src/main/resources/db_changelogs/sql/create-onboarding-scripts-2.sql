@@ -1,6 +1,9 @@
 --
 -- System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
 --
+DROP TABLE IF EXISTS `employeeonboarding`;
+DROP TABLE IF EXISTS `employeeonboarding_aud`;
+
 CREATE TABLE `employeeonboarding` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `version` int(11) DEFAULT NULL,
@@ -13,7 +16,7 @@ CREATE TABLE `employeeonboarding` (
   PRIMARY KEY (`id`),
   KEY `FK_EMP_ON_BRD` (`employee_id`),
   CONSTRAINT `FK_EMP_ON_BRD` FOREIGN KEY (`employee_id`) REFERENCES `contact` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE `employeeonboarding_aud` (
