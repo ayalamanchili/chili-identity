@@ -1,3 +1,7 @@
+--
+-- System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+--
+
 CREATE TABLE `ClientInformation_Contact` (
   `ClientInformation_id` bigint(20) NOT NULL,
   `recruiters_id` bigint(20) NOT NULL,

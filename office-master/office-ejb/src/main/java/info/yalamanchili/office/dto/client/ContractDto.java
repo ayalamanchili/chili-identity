@@ -10,6 +10,7 @@ package info.yalamanchili.office.dto.client;
 import info.yalamanchili.office.entity.client.InvoiceDeliveryMethod;
 import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import info.yalamanchili.office.entity.profile.BillingDuration;
+import info.yalamanchili.office.entity.profile.ClientInformationCompany;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -45,6 +46,10 @@ public class ContractDto implements Serializable {
      */
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date endDate;
+    /**
+     *
+     */
+    protected ClientInformationCompany company;
     /**
      * Client
      */
@@ -182,8 +187,6 @@ public class ContractDto implements Serializable {
     /**
      * subcontractor Invoice Frequency
      */
-    @Enumerated(EnumType.STRING)
-    @org.hibernate.annotations.Index(name = "CI_INVC_FQ")
     protected InvoiceFrequency subcontractorinvoiceFrequency;
     /**
      * subcontractor PaymentTerms
@@ -197,18 +200,17 @@ public class ContractDto implements Serializable {
      * subcontractor certificate of insurance
      */
     protected Boolean subcontractCOI;
-    
- 
+
     protected String status;
-    
+
     protected String practice;
-    
+
     protected String sectorsAndBUs;
-    
+
     protected String employeeCompany;
-    
+
     protected long employeeID;
-    
+
     public void setPaymentTerms1099(String paymentTerms1099) {
         this.paymentTerms1099 = paymentTerms1099;
     }
@@ -644,9 +646,6 @@ public class ContractDto implements Serializable {
         this.status = status;
     }
 
-
-
-
     public String getSectorsAndBUs() {
         return sectorsAndBUs;
     }
@@ -678,8 +677,15 @@ public class ContractDto implements Serializable {
     public void setEmployeeID(long employeeID) {
         this.employeeID = employeeID;
     }
-    
-    
+
+    public ClientInformationCompany getCompany() {
+        return company;
+    }
+
+    public void setCompany(ClientInformationCompany company) {
+        this.company = company;
+    }
+
     @XmlRootElement
     @XmlType
     public static class ContractTable implements java.io.Serializable {
@@ -698,7 +704,7 @@ public class ContractDto implements Serializable {
         @XmlElement
         public List<ContractDto> getEntities() {
             if (this.entities == null) {
-                this.entities = new ArrayList<ContractDto>();
+                this.entities = new ArrayList<>();
             }
             return entities;
         }
