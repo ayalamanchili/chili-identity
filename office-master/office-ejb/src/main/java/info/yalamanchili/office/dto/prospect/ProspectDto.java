@@ -61,6 +61,8 @@ public class ProspectDto implements Serializable {
     protected String resumeURL;
 
     protected Date dateOfBirth;
+    
+    protected String comment;
 
     @Valid
     private Address address;
@@ -186,6 +188,14 @@ public class ProspectDto implements Serializable {
         this.address = address;
     }
 
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+    
     @Override
     public String toString() {
         return "ProspectDto{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", phoneNumber=" + phoneNumber + ", sex=" + sex + ", startDate=" + startDate + ", screenedBy=" + screenedBy + ", referredBy=" + referredBy + ", resumeURL=" + resumeURL + ", dateOfBirth=" + dateOfBirth + ", address=" + address + ", status=" + status + ", processDocSentDate=" + processDocSentDate + '}';

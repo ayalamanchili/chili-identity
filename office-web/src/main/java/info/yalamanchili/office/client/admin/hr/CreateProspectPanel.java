@@ -73,9 +73,11 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         if (address.size() > 0) {
             entity.put("address", address);
         }
+        assignEntityValueFromField("comment", entity);
         assignEntityValueFromField("screenedBy", entity);
         assignEntityValueFromField("processDocSentDate", entity);
         entity.put("resumeURL", resumeUploadPanel.getFileName());
+        logger.info("prospect entity :"+entity);
         return entity;
     }
 
@@ -154,6 +156,7 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         addField("zip", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
         addField("screenedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("processDocSentDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("comment", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(resumeUploadPanel);
         statesF = (EnumField) fields.get("state");
         countriesF = (EnumField) fields.get("country");

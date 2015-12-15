@@ -9,10 +9,14 @@
 package info.yalamanchili.office.prospect;
 
 import com.google.common.base.Strings;
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.hr.ProspectDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
+import info.yalamanchili.office.dao.profile.EmailDao;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dto.prospect.ProspectDto;
 import info.yalamanchili.office.entity.hr.Prospect;
 import info.yalamanchili.office.entity.hr.ProspectStatus;
@@ -35,63 +39,69 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class ProspectService {
-    
+
     @PersistenceContext
     protected EntityManager em;
     @Autowired
     protected Mapper mapper;
-    
+
     @Autowired
     protected ProspectDao prospectDao;
-    
-    public ProspectDto save(ProspectDto dto) {
-        Prospect entity = mapper.map(dto, Prospect.class);
-        entity.setStatus(ProspectStatus.IN_PROGRESS);
-        entity.setStartDate(new Date());
-        Contact contact = new Contact();
-        contact.setFirstName(dto.getFirstName());
-        contact.setLastName(dto.getLastName());
-        contact.setDateOfBirth(dto.getDateOfBirth());
-        contact.setSex(dto.getSex());
-        
-        if (!Strings.isNullOrEmpty(dto.getEmail())) {
-            Email email = new Email();
-            email.setEmail(dto.getEmail());
-            email.setPrimaryEmail(Boolean.TRUE);
-            contact.addEmail(email);
-        }
-        //phone
-        if (!Strings.isNullOrEmpty(dto.getPhoneNumber())) {
-            Phone phone = new Phone();
-            contact.addPhone(phone);
-            phone.setPhoneNumber(dto.getPhoneNumber());
-        }
-        //address
-        Address address;
-        address = dto.getAddress();
-        if (dto.getAddress() != null) {
-            AddressDao.instance().save(address);
-            contact.addAddress(address);
-            address.setStreet1(dto.getAddress().getStreet1());
-            address.setStreet2(dto.getAddress().getStreet2());
-            address.setCity(dto.getAddress().getCity());
-            address.setCountry(dto.getAddress().getCountry());
-            address.setZip(dto.getAddress().getZip());
-            address.setState(dto.getAddress().getState());
-        }
 
-        //contact
-        contact = em.merge(contact);
-        entity.setContact(contact);
-        em.merge(entity);
-        return dto;
+    public ProspectDto save(ProspectDto dto) {
+        if (ContactDao.instance().findByEmail(dto.getEmail()) == null) {
+            Prospect entity = mapper.map(dto, Prospect.class);
+            entity.setStatus(ProspectStatus.IN_PROGRESS);
+            entity.setStartDate(new Date());
+            Contact contact = new Contact();
+            contact.setFirstName(dto.getFirstName());
+            contact.setLastName(dto.getLastName());
+            contact.setDateOfBirth(dto.getDateOfBirth());
+            contact.setSex(dto.getSex());
+
+            if (!Strings.isNullOrEmpty(dto.getEmail())) {
+                Email email = new Email();
+                email.setEmail(dto.getEmail());
+                email.setPrimaryEmail(Boolean.TRUE);
+                contact.addEmail(email);
+            }
+            //phone
+            if (!Strings.isNullOrEmpty(dto.getPhoneNumber())) {
+                Phone phone = new Phone();
+                contact.addPhone(phone);
+                phone.setPhoneNumber(dto.getPhoneNumber());
+            }
+            //address
+            Address address;
+            address = dto.getAddress();
+            if (dto.getAddress() != null) {
+                AddressDao.instance().save(address);
+                contact.addAddress(address);
+                address.setStreet1(dto.getAddress().getStreet1());
+                address.setStreet2(dto.getAddress().getStreet2());
+                address.setCity(dto.getAddress().getCity());
+                address.setCountry(dto.getAddress().getCountry());
+                address.setZip(dto.getAddress().getZip());
+                address.setState(dto.getAddress().getState());
+            }
+
+            //contact
+            contact = em.merge(contact);
+            entity.setContact(contact);
+            entity = em.merge(entity);
+            CommentDao.instance().addComment(dto.getComment(), entity);
+            //entity = em.merge(entity);
+            return dto;
+        } else {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "email.alreday.exist", "Prospect Alreday Exist With This Email");
+        }
     }
-    
+
     public ProspectDto read(Long id) {
         Prospect ec = prospectDao.findById(id);
         return ProspectDto.map(mapper, ec);
     }
-    
+
     public ProspectDto clone(Long id) {
         Prospect entity = prospectDao.clone(id);
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
@@ -99,11 +109,11 @@ public class ProspectService {
         ProspectDto res = ProspectDto.map(mapper, entity);
         return res;
     }
-    
+
     public static ProspectService instance() {
         return SpringContext.getBean(ProspectService.class);
     }
-    
+
     public Prospect update(ProspectDto dto) {
         Prospect entity = prospectDao.findById(dto.getId());
         if (entity.getStatus() == null) {
@@ -170,6 +180,6 @@ public class ProspectService {
         prospectDao.getEntityManager().merge(entity);
         //em.merge(entity);
         return entity;
-        
+
     }
 }
