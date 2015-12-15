@@ -8,6 +8,8 @@
  */
 package info.yalamanchili.office.client.gwt;
 
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -16,6 +18,7 @@ import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.composite.ALComposite;
@@ -29,13 +32,14 @@ import java.util.logging.Logger;
  *
  * @author ayalamanchili
  */
-public abstract class MultiSelectSuggestBox extends ALComposite implements KeyPressHandler, ClickHandler {
+public abstract class MultiSelectSuggestBox extends ALComposite implements KeyPressHandler, ClickHandler, BlurHandler {
 
     private static Logger logger = Logger.getLogger(MultiSelectSuggestBox.class.getName());
     protected FlowPanel panel = new FlowPanel();
     protected SuggestBox suggestionsBox = new SuggestBox(OfficeWelcome.constants, "search", "Employee", false, false);
     List<SuggestBoxSelectedItem> selectedItemWidgets = new ArrayList();
     protected FlowPanel selectedValuesPanel = new FlowPanel();
+    Anchor addE = new Anchor("Add");
     HTML noneSelected = new HTML("<b>None selected.</b>");
     HTML info = new HTML("<fieldset class=\"lineSeperator\">" + "<legend align=\"left\">Search and press enter to add.</legend></fieldset>");
     HTML infoEnd = new HTML("<fieldset class=\"lineSeperator\"></fieldset>");
@@ -50,6 +54,8 @@ public abstract class MultiSelectSuggestBox extends ALComposite implements KeyPr
     @Override
     protected void addListeners() {
         suggestionsBox.getSuggestBox().addKeyPressHandler(this);
+        suggestionsBox.getSuggestBox().getValueBox().addBlurHandler(this);
+        addE.addClickHandler(this);
     }
 
     @Override
@@ -61,6 +67,7 @@ public abstract class MultiSelectSuggestBox extends ALComposite implements KeyPr
     @Override
     protected void addWidgets() {
         panel.add(suggestionsBox);
+        panel.add(addE);
         panel.add(info);
         panel.add(selectedValuesPanel);
         panel.add(infoEnd);
@@ -70,7 +77,7 @@ public abstract class MultiSelectSuggestBox extends ALComposite implements KeyPr
     public JSONArray getValues() {
         JSONArray array = new JSONArray();
         int i = 0;
-        for (int j = 0; j < selectedValuesPanel.getWidgetCount();j++) {
+        for (int j = 0; j < selectedValuesPanel.getWidgetCount(); j++) {
             if (selectedValuesPanel.getWidget(i) instanceof SuggestBoxSelectedItem) {
                 SuggestBoxSelectedItem si = (SuggestBoxSelectedItem) selectedValuesPanel.getWidget(i);
                 JSONObject to = new JSONObject();
@@ -110,6 +117,18 @@ public abstract class MultiSelectSuggestBox extends ALComposite implements KeyPr
 
     @Override
     public void onClick(ClickEvent event) {
+        if(event.getSource().equals(addE)){
+            addTo();
+        }
+    }
 
+    @Override
+    public void onBlur(BlurEvent event) {
+        if (suggestionsBox.getSelectedObject() != null) {
+            addTo();
+        }
+        if (selectedItemWidgets.size() > 0) {
+            noneSelected.removeFromParent();
+        }
     }
 }
