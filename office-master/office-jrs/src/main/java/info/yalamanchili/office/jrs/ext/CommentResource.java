@@ -16,6 +16,7 @@ import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.chili.email.Email;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.entity.ext.Comment;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
@@ -82,24 +83,24 @@ public class CommentResource {
 
     @PUT
     @Path("{targetClassName}/{id}")
-    public void save(@PathParam("targetClassName") String targetClassName, @PathParam("id") Long id, Comment comment
-    ) {
-        sendCommentNotification(comment);
+    public void save(@PathParam("targetClassName") String targetClassName, @PathParam("id") Long id, Comment comment) {
+        List<Entry> notifyEmployees = comment.getNotifyEmployees();
         if (Strings.isNullOrEmpty(comment.getUpdatedBy())) {
             comment.setUpdatedBy(SecurityUtils.getCurrentUser());
         }
         if (comment.getUpdatedTS() == null) {
             comment.setUpdatedTS(new Date());
         }
-        commentDao.save(comment, id, targetClassName);
+        comment = commentDao.save(comment, id, targetClassName);
+        sendCommentNotification(notifyEmployees, comment);
     }
 
-    protected void sendCommentNotification(Comment comment) {
-        if (comment.getNotifyEmployees() == null) {
+    protected void sendCommentNotification(List<Entry> notifyEmployees, Comment comment) {
+        if (notifyEmployees == null) {
             return;
         }
         Email email = new Email();
-        for (Entry e : comment.getNotifyEmployees()) {
+        for (Entry e : notifyEmployees) {
             Employee emp = EmployeeDao.instance().findEmployeWithEmpId(e.getId());
             if (emp != null) {
                 email.addTo(EmployeeDao.instance().getPrimaryEmail(emp));
@@ -107,10 +108,16 @@ public class CommentResource {
         }
         Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
         email.setSubject("Comment added by:" + currentUser.getFirstName() + "" + currentUser.getLastName());
-        String body = "Commment Added: \n" + comment.getComment() + " \n ref:"
-                + comment.getTargetEntityName();
+        StringBuilder body = new StringBuilder();
+        body.append("Commment Added: \n").append(comment.getComment()).append(" \n Reference :");
+        if (!Strings.isNullOrEmpty(comment.getTargetEntityName())) {
+            if (comment.getTargetEntityName().lastIndexOf(".") > 0) {
+                body.append(comment.getTargetEntityName().substring(comment.getTargetEntityName().lastIndexOf(".")));
+            }
+        }
+        body.append("\n\n\t Please click on the below link to access: \n\t ").append(OfficeServiceConfiguration.instance().getPortalWebUrl());
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
-        email.setBody(body);
+        email.setBody(body.toString());
         email.setHtml(Boolean.TRUE);
         messagingService.sendEmail(email);
     }
