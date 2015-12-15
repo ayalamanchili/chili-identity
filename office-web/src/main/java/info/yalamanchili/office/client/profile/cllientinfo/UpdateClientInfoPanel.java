@@ -211,10 +211,10 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
                 assignFieldValueFromEntity("invoiceFrequency1099", entity, DataType.ENUM_FIELD);
             }
             assignFieldValueFromEntity("terminationNotice", entity, DataType.STRING_FIELD);
-            assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
             assignFieldValueFromEntity("timeSheetRequirement", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("specialInvoiceInstructions", entity, DataType.STRING_FIELD);
         }
+        assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("isCPDFilled", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("practice", entity, null);
         assignFieldValueFromEntity("sectorsAndBUs", entity, DataType.ENUM_FIELD);
@@ -336,14 +336,13 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
                 addEnumField("invoiceFrequency1099", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
             }
             addField("terminationNotice", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-            addField("notes", false, false, DataType.RICH_TEXT_AREA);
         }
+        addField("notes", false, false, DataType.RICH_TEXT_AREA);
         addField("isCPDFilled", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         if (TreeEmployeePanel.instance().getEntity().get("employeeType") != null) {
             StringField employeeTypeF = (StringField) fields.get("employeeType");
             employeeTypeF.setValue(TreeEmployeePanel.instance().getEntity().get("employeeType").isObject().get("name").isString().stringValue());
         }
-        addField("sectorsAndBUs", false, true, DataType.ENUM_FIELD);
         JSONObject prj = (JSONObject) entity.get("practice");
         String service = JSONUtils.toString(prj, "name");
         switch (service) {
@@ -374,6 +373,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         }
         sectorsF = (EnumField) fields.get("sectorsAndBUs");
         addDropDown("practice", selectPractiseWidgetF);
+        addField("sectorsAndBUs", false, true, DataType.ENUM_FIELD);
         entityFieldsPanel.add(submitForApprovalF);
         alignFields();
     }
