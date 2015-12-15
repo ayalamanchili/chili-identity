@@ -8,16 +8,11 @@
  */
 package info.yalamanchili.office.jrs.emailmenu;
 
-import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.emailmenu.EmailMenuReportsService;
-import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.jrs.CRUDResource;
-import info.yalamanchili.office.reports.profile.ProfileReportsService;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import org.springframework.beans.factory.annotation.Autowired;

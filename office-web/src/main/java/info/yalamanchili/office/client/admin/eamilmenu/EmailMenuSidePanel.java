@@ -7,6 +7,7 @@ package info.yalamanchili.office.client.admin.eamilmenu;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -16,7 +17,6 @@ import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
-import static info.yalamanchili.office.client.OfficeWelcome.logger;
 
 /**
  *
@@ -72,6 +72,6 @@ public class EmailMenuSidePanel extends ALComposite implements ClickHandler {
     }
 
     private String getEmailMenuReportUrl() {
-        return OfficeWelcome.constants.root_url() + "email-menu/email-menu-report?employee=" + employee.getValue(employee.getSelectedIndex());
+        return URL.encode(OfficeWelcome.constants.root_url() + "email-menu/email-menu-report?employee=" + employee.getSelectedItemText());
     }
 }

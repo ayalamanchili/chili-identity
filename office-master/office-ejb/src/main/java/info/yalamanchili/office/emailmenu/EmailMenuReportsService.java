@@ -38,7 +38,7 @@ public class EmailMenuReportsService {
     @Transactional(readOnly = true)
     public void getemailMenuReportsReport(String email, String employee) {
         List<EmployeeBasicInfoReportDto> res = new ArrayList<>();
-        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee", "Employee", "Subcontractor", "1099 Contractor", "W2 Contractor")) {
+        for (Employee emp : EmployeeDao.instance().getAllEmployeesByType(employee)) {
             EmployeeBasicInfoReportDto dto = mapper.map(emp, EmployeeBasicInfoReportDto.class);
             dto.setFirstName(emp.getFirstName());
             dto.setLastName(emp.getLastName());
@@ -46,7 +46,7 @@ public class EmailMenuReportsService {
             dto.setType(emp.getEmployeeType().getName());
             res.add(dto);
         }
-        String[] columnOrder = new String[]{"firstName", "lastName", "email"};
+        String[] columnOrder = new String[]{"firstName", "lastName", "type", "email"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Email-Menu-Info-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
 }
