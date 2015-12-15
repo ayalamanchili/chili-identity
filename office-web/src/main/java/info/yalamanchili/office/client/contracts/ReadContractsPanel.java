@@ -157,7 +157,6 @@ public class ReadContractsPanel extends TReadComposite {
 
     @Override
     protected void configure() {
-        entityFieldsPanel.getCellFormatter().setWidth(1, 1, "100%");
         clientVendorText.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         billingText.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         otherText.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);

@@ -24,6 +24,7 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dto.client.ContractSearchDto;
+import info.yalamanchili.office.entity.profile.BillingRate;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Employee;
 import javax.ws.rs.core.Response;
@@ -264,7 +265,30 @@ public class ContractService {
         if (ci.getPractice() != null) {
             dto.setPractice(ci.getPractice().getName());
         }
+        mapEffectiveBillingRate(ci, dto);
         return dto;
+    }
+
+    protected void mapEffectiveBillingRate(ClientInformation ci, ContractDto dto) {
+        if (!ci.getBillingRates().isEmpty()) {
+            BillingRate effectiveBR = getEffectiveBillingRate(ci);
+            ci.setBillingRate(effectiveBR.getBillingRate());
+            ci.setOverTimeBillingRate(effectiveBR.getOverTimeBillingRate());
+            ci.setInvoiceFrequency(effectiveBR.getBillingInvoiceFrequency());
+            ci.setSubcontractorPayRate(effectiveBR.getSubContractorPayRate());
+            ci.setSubcontractorOvertimePayRate(effectiveBR.getSubContractorOverTimePayRate());
+            ci.setSubcontractorinvoiceFrequency(effectiveBR.getSubContractorInvoiceFrequency());
+        }
+    }
+
+    protected BillingRate getEffectiveBillingRate(ClientInformation ci) {
+        BillingRate effectiveRate = ci.getBillingRates().get(0);
+        for (BillingRate br : ci.getBillingRates()) {
+            if (new Date().compareTo(br.getEffectiveDate()) >= 0 && br.getEffectiveDate().compareTo(effectiveRate.getEffectiveDate()) >= 0) {
+                effectiveRate = br;
+            }
+        }
+        return effectiveRate;
     }
 
     public Response generateContractorPlacementInfoReport(String format) {
