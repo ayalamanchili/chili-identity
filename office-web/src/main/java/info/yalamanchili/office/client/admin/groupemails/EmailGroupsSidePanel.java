@@ -3,33 +3,33 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.client.admin.eamilmenu;
+package info.yalamanchili.office.client.admin.groupemails;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWidget;
 
 /**
  *
  * @author prasanthi.p
  */
-public class EmailMenuSidePanel extends ALComposite implements ClickHandler {
+public class EmailGroupsSidePanel extends ALComposite implements ClickHandler {
 
     protected FlowPanel panel = new FlowPanel();
     protected Button generateRepB = new Button("Generate");
-    protected Label employeeL = new Label("Employee");
-    protected ListBox employee = new ListBox();
+    SelectEmployeeTypeWidget selectEmployeeTypeWidgetF = new SelectEmployeeTypeWidget(false, true, Alignment.VERTICAL);
 
-    public EmailMenuSidePanel() {
+    public EmailGroupsSidePanel() {
         init(panel);
     }
 
@@ -40,17 +40,12 @@ public class EmailMenuSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void configure() {
-        employee.addItem("Corporate Employee", "Corporate Employee");
-        employee.addItem("Employee", "Employee");
-        employee.addItem("Subcontractor", "Subcontractor");
-        employee.addItem("1099 Contractor", "1099 Contractor");
-        employee.addItem("W2 Contractor", "W2 Contractor");
+
     }
 
     @Override
     protected void addWidgets() {
-        panel.add(employeeL);
-        panel.add(employee);
+        panel.add(selectEmployeeTypeWidgetF);
         panel.add(generateRepB);
     }
 
@@ -72,6 +67,6 @@ public class EmailMenuSidePanel extends ALComposite implements ClickHandler {
     }
 
     private String getEmailMenuReportUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "email-menu/email-menu-report?employee=" + employee.getSelectedItemText());
+        return URL.encode(OfficeWelcome.constants.root_url() + "email-groups/type?employee-type=" + JSONUtils.toString(selectEmployeeTypeWidgetF.getSelectedObject(), "value"));
     }
 }

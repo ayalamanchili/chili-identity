@@ -9,7 +9,7 @@
 package info.yalamanchili.office.jrs.emailmenu;
 
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
-import info.yalamanchili.office.emailmenu.EmailMenuReportsService;
+import info.yalamanchili.office.emailmenu.EmailGroupsService;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -24,21 +24,21 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author prasanthi.p
  */
-@Path("secured/email-menu")
+@Path("secured/email-groups")
 @Produces("application/json")
 @Consumes("application/json")
 @Component
 @Scope("request")
 @Transactional
-public class EmailMenuResource {
+public class EmailGroupsResource {
 
     @Autowired
-    protected EmailMenuReportsService emailMenuReportsService;
+    protected EmailGroupsService emailGroupsService;
 
     @GET
-    @Path("/email-menu-report")
-    public void basicEmployeeInfoReport(@QueryParam("employee") String employee) {
-        emailMenuReportsService.getemailMenuReportsReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail(), employee);
+    @Path("/type")
+    public void basicEmployeeInfoReport(@QueryParam("employee-type") String employeeType) {
+        emailGroupsService.getemailMenuReportsReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail(), employeeType);
     }
 
 }

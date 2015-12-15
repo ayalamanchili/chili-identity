@@ -18,7 +18,7 @@ import info.yalamanchili.office.client.admin.notificationgroup.NotificationGroup
 import info.yalamanchili.office.client.admin.notificationgroup.ReadAllNotificationGroupsPanel;
 import info.yalamanchili.office.client.admin.client.ClientSidePanel;
 import info.yalamanchili.office.client.admin.client.ReadAllClientsPanel;
-import info.yalamanchili.office.client.admin.eamilmenu.EmailMenuSidePanel;
+import info.yalamanchili.office.client.admin.groupemails.EmailGroupsSidePanel;
 import info.yalamanchili.office.client.admin.project.ProjectSidePanel;
 import info.yalamanchili.office.client.admin.project.ReadAllProjectsPanel;
 import info.yalamanchili.office.client.admin.sow.ReadAllSOWPanel;
@@ -50,7 +50,9 @@ public class AdminMenu extends CMenuBar {
         addMenuItem("Subcontractors", "Subcontractors", subcontractorsMaintainenceCmd);
         addMenuItem("SOW's", "SOW's", sowMaintainenceCmd);
         addMenuItem("Notification Groups", "Notification Groups", notificationGroupMaintainenceCmd);
-        addMenuItem("Email Menu", "Email Menu", emailMenuMaintainenceCmd);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
+            addMenuItem("Email Groups", "Email Groups", emailMenuMaintainenceCmd);
+        }
         addMenuItem("Question", "Question", questionMaintainenceCmd);
 
         if (Auth.hasAnyOfRoles(ROLE.ROLE_BULK_IMPORT, ROLE.ROLE_ADMIN)) {
@@ -161,7 +163,7 @@ public class AdminMenu extends CMenuBar {
         public void execute() {
             TabPanel.instance().getAdminPanel().entityPanel.clear();
             TabPanel.instance().getAdminPanel().sidePanelTop.clear();
-            TabPanel.instance().getAdminPanel().sidePanelTop.add(new EmailMenuSidePanel());
+            TabPanel.instance().getAdminPanel().sidePanelTop.add(new EmailGroupsSidePanel());
         }
     };
 }

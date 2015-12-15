@@ -29,16 +29,16 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Component
 @Scope("prototype")
-public class EmailMenuReportsService {
+public class EmailGroupsService {
 
     @Autowired
     protected Mapper mapper;
 
     @Async
     @Transactional(readOnly = true)
-    public void getemailMenuReportsReport(String email, String employee) {
+    public void getemailMenuReportsReport(String email, String employeeType) {
         List<EmployeeBasicInfoReportDto> res = new ArrayList<>();
-        for (Employee emp : EmployeeDao.instance().getAllEmployeesByType(employee)) {
+        for (Employee emp : EmployeeDao.instance().getAllEmployeesByType(employeeType.trim())) {
             EmployeeBasicInfoReportDto dto = mapper.map(emp, EmployeeBasicInfoReportDto.class);
             dto.setFirstName(emp.getFirstName());
             dto.setLastName(emp.getLastName());
@@ -47,6 +47,6 @@ public class EmailMenuReportsService {
             res.add(dto);
         }
         String[] columnOrder = new String[]{"firstName", "lastName", "type", "email"};
-        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Email-Menu-Info-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Email-Group-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
 }
