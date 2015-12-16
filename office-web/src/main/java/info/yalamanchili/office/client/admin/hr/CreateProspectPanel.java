@@ -76,6 +76,7 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         assignEntityValueFromField("comment", entity);
         assignEntityValueFromField("screenedBy", entity);
         assignEntityValueFromField("processDocSentDate", entity);
+        assignEntityValueFromField("comment", entity);
         entity.put("resumeURL", resumeUploadPanel.getFileName());
         logger.info("prospect entity :"+entity);
         return entity;

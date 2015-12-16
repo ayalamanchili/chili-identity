@@ -8,7 +8,9 @@
 package info.yalamanchili.office.profile;
 
 import info.chili.commons.BeanMapper;
+import info.chili.email.Email;
 import info.chili.service.jrs.exception.ServiceException;
+import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.dao.client.ClientDao;
 import info.yalamanchili.office.dao.client.ProjectDao;
@@ -23,6 +25,7 @@ import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.profile.ClientInformationDto;
+import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.client.Subcontractor;
@@ -36,6 +39,7 @@ import info.yalamanchili.office.entity.profile.ClientInformationStatus;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.jms.MessagingService;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -70,10 +74,12 @@ public class ClientInformationService {
     protected ClientInformationDao clientInformationDao;
     @Autowired
     protected CompanyDao companyDao;
+    @Autowired
+    protected MailUtils mailUtils;
 
     public void addClientInformation(Long empId, ClientInformationDto ciDto) {
         ClientInformation ci = mapper.map(ciDto, ClientInformation.class);
-
+        
         Client client = null;
         Vendor vendor = null;
         Vendor middleVendor = null;
@@ -227,7 +233,6 @@ public class ClientInformationService {
             previousClientInformation = (ClientInformation) query.getResultList().get(0);
             previousClientInformation.setEndDate(ci.getPreviousProjectEndDate());
             em.merge(previousClientInformation);
-
         }
     }
 
@@ -241,6 +246,11 @@ public class ClientInformationService {
     public void updateBillingRate(Long clientInfoId, BillingRate billingRate) {
         ClientInformation ci = ClientInformationDao.instance().findById(clientInfoId);
         //Track the first change
+        String[] roles = {OfficeRoles.OfficeRole.ROLE_BILLING_AND_INVOICING.name()};
+        Email email = new Email();
+        email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
+        email.setSubject(" Client Information Has Updated For :" + ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
+        String messageText = " Updated Client Information : ";
         if (ci.getBillingRates().isEmpty() && ci.getBillingRate() != null) {
             BillingRate firstBillingRate = new BillingRate();
             firstBillingRate.setBillingRate(ci.getBillingRate());
@@ -260,6 +270,12 @@ public class ClientInformationService {
         }
         billingRate.setClientInformation(ci);
         BillingRateDao.instance().save(billingRate).getId().toString();
+        messageText = messageText.concat("Billing Rate :" + ci.getBillingRate());
+        messageText = messageText.concat("Pay Rate :" + ci.getPayRate());
+        messageText = messageText.concat("Overtime Billing Rate :" + ci.getOverTimeBillingRate());
+        messageText = messageText.concat("Overtime Pay Rate :" + ci.getOverTimePayRate());
+        email.setBody(messageText);
+        MessagingService.instance().sendEmail(email);
     }
 
     @Async
@@ -384,9 +400,23 @@ public class ClientInformationService {
         project = ProjectDao.instance().save(project);
         ci.setClientProject(project);
         ciEntity = clientInformationDao.save(ciEntity);
+        sendClientinfoUpdatedEmail(ciEntity);
         return ci;
     }
 
+     public void sendClientinfoUpdatedEmail(ClientInformation ci) {
+     String[] roles = {OfficeRoles.OfficeRole.ROLE_BILLING_AND_INVOICING.name()};
+     Email email = new Email();
+     email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
+     email.setSubject(" Client Information Has Updated For :" + ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
+     String messageText = " Updated Client Information :   Client :" + ci.getClient().getName()+" Project : "+ci.getClientProject().getName();
+     if(ci.getClientProject().getEndDate()!=null){
+         messageText = messageText.concat("Project End Date : "+ci.getClientProject().getEndDate());
+     }
+     email.setBody(messageText);
+     MessagingService.instance().sendEmail(email);
+     } 
+     
     private String projectName(String name) {
         String S = name.replaceAll("[^a-zA-Z0-9\\s]", "");
         String[] words = S.split("\\s+");

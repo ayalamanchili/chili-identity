@@ -20,6 +20,7 @@ import info.yalamanchili.office.bpm.offboarding.ProjectOffBoardingDto;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.project.offboarding.ProjectOffBoardingService;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import javax.persistence.Query;
@@ -106,11 +107,11 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
         List<Entry> result = new ArrayList<Entry>();
 //        To do, need to check - if we need to write a query to get project info from project object using clinet id
 //        for (Project project : ci.getClient().getProjects()) {
-            Project project = ci.getClientProject();
-            Entry entry = new Entry();
-            entry.setId(project.getId().toString());
-            entry.setValue(project.getName());
-            result.add(entry);
+        Project project = ci.getClientProject();
+        Entry entry = new Entry();
+        entry.setId(project.getId().toString());
+        entry.setValue(project.getName());
+        result.add(entry);
 
         return result;
     }
@@ -131,7 +132,13 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
         res.setSize(Long.valueOf(ci.getBillingRates().size()));
         return res;
     }
-    
+
+    @GET
+    @Path("/enddate/{endPrevProj}")
+    public String getPrevProjEndDate(@PathParam("endPrevProj") Boolean endprevProj) {
+        return clientInformationDao.queryForPrevProjEndDate();
+    }
+
     @PUT
     @Validate
     @Path("/project-off-boarding")
