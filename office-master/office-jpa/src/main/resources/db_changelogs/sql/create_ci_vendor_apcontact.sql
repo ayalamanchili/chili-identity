@@ -9,7 +9,7 @@ CREATE TABLE `clientinformation_vendor_apcontacts` (
   KEY `FK_VendorAPContact_ClientInformations` (`ClientInformation_id`),
   KEY `FKD06FD09BA788BB28` (`vendorAPContacts_id`),
   CONSTRAINT `FKD06FD09BA788BB28` FOREIGN KEY (`vendorAPContacts_id`) REFERENCES `contact` (`id`),
-  CONSTRAINT `FK_VendorAPContact_ClientInformations` FOREIGN KEY (`ClientInformation_id`) REFERENCES `clientinformation` (`id`)
+  CONSTRAINT `FK_VendorAPContacts_ClientInformations` FOREIGN KEY (`ClientInformation_id`) REFERENCES `clientinformation` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `clientinformation_vendor_apcontacts_aud` (

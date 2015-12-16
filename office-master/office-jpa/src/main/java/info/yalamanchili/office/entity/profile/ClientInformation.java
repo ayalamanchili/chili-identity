@@ -130,7 +130,7 @@ public class ClientInformation extends AbstractEntity {
      */
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "clientinformation_vendor_apcontacts")
-    @ForeignKey(name = "FK_VendorAPContact_ClientInformations")
+    @ForeignKey(name = "FK_VendorAPContacts_ClientInformations")
     protected Set<Contact> vendorAPContacts;
     /**
      * Vendor Location
@@ -306,7 +306,7 @@ public class ClientInformation extends AbstractEntity {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "clientinformation_vendor_recruiters")
-    @ForeignKey(name = "FK_VendorRecruiter_ClientInformations")
+    @ForeignKey(name = "FK_VendorRecruiters_ClientInformations")
     protected Set<Contact> vendorRecruiters;
 
     @ManyToOne(cascade = CascadeType.MERGE)

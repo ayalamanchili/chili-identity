@@ -9,7 +9,7 @@ CREATE TABLE `clientinformation_vendor_recruiters` (
   KEY `FK_VendorRecruiter_ClientInformations` (`ClientInformation_id`),
   KEY `FK5471D4818E0C6582` (`vendorRecruiters_id`),
   CONSTRAINT `FK5471D4818E0C6582` FOREIGN KEY (`vendorRecruiters_id`) REFERENCES `contact` (`id`),
-  CONSTRAINT `FK_VendorRecruiter_ClientInformations` FOREIGN KEY (`ClientInformation_id`) REFERENCES `clientinformation` (`id`)
+  CONSTRAINT `FK_VendorRecruiters_ClientInformations` FOREIGN KEY (`ClientInformation_id`) REFERENCES `clientinformation` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `clientinformation_vendor_recruiters_aud` (
