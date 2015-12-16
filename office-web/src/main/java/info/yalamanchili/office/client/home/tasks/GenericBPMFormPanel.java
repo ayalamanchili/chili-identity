@@ -236,13 +236,6 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
                         valid = false;
                     }
                 }
-                if (field instanceof BooleanField) {
-                    BooleanField booleanField = (BooleanField) field;
-                    if (booleanField.getValue() == false) {
-                        booleanField.setMessage("please click on this");
-                        valid = false;
-                    }
-                }
             }
         }
         return valid;

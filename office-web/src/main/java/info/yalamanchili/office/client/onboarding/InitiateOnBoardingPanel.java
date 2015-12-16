@@ -12,8 +12,11 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -30,6 +33,14 @@ import java.util.logging.Logger;
 public class InitiateOnBoardingPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(InitiateOnBoardingPanel.class.getName());
+
+    protected JSONObject prospect;
+
+    public InitiateOnBoardingPanel(JSONObject prospect) {
+        super(CreateCompositeType.CREATE);
+        this.prospect = prospect;
+        initCreateComposite("InitiateOnBoarding", OfficeWelcome.constants);
+    }
 
     public InitiateOnBoardingPanel() {
         super(CreateCompositeType.CREATE);
@@ -72,6 +83,9 @@ public class InitiateOnBoardingPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
+        if (GenericPopup.instance() != null) {
+            GenericPopup.instance().hide();
+        }
         new ResponseStatusWidget().show("On boarding invite sent");
         TabPanel.instance().getMyOfficePanel().entityPanel.clear();
         TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmployeeOnBoardingPanel());
@@ -94,6 +108,10 @@ public class InitiateOnBoardingPanel extends CreateComposite {
         addEnumField("branch", false, false, Branch.names(), Alignment.HORIZONTAL);
         addEnumField("workStatus", false, false, WorkStatus.names(), Alignment.HORIZONTAL);
         alignFields();
+        if (prospect != null) {
+            StringField emailF = (StringField) fields.get("email");
+            emailF.setValue(JSONUtils.toString(prospect, "email"));
+        }
     }
 
     @Override

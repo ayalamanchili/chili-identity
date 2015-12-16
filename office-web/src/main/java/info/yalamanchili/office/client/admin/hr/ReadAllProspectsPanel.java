@@ -10,7 +10,6 @@ package info.yalamanchili.office.client.admin.hr;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -18,7 +17,6 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
-import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
@@ -26,6 +24,7 @@ import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.onboarding.InitiateOnBoardingPanel;
 import java.util.logging.Logger;
 
 /**
@@ -37,7 +36,6 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
     private static Logger logger = Logger.getLogger(ReadAllProspectsPanel.class.getName());
     public static ReadAllProspectsPanel instance;
     protected String url;
-    
 
     public ReadAllProspectsPanel() {
         instance = this;
@@ -104,23 +102,23 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
                 table.setWidget(i, 6, emailLink);
             }
             if (TabPanel.instance().myOfficePanel.isVisible()) {
-                if (ProspectStatus.CLOSED_WON.name().equals(status)){
-                ClickableLink invitationLink = new ClickableLink("OnBoarding invitecode");
-                invitationLink.setTitle(JSONUtils.toString(entity, "id"));
-                invitationLink.addClickHandler(new ClickHandler() {
-                    @Override
-                    public void onClick(ClickEvent event) {
-                        getOnBoardInviteCode(((ClickableLink) event.getSource()).getTitle());
-                    }
-                });
-                table.setWidget(i, 7, invitationLink);
+                if (ProspectStatus.CLOSED_WON.name().equals(status)) {
+                    ClickableLink invitationLink = new ClickableLink("OnBoarding invitecode");
+                    invitationLink.setTitle(JSONUtils.toString(entity, "id"));
+                    invitationLink.addClickHandler(new ClickHandler() {
+                        @Override
+                        public void onClick(ClickEvent event) {
+                            getOnBoardInviteCode(((ClickableLink) event.getSource()).getTitle());
+                        }
+                    });
+                    table.setWidget(i, 7, invitationLink);
+                }
             }
-            }
-            
+
         }
     }
-    
-     protected void getEmail(String entityId) {
+
+    protected void getEmail(String entityId) {
         if (!entityId.isEmpty()) {
             HttpService.HttpServiceAsync.instance().doGet(getemailurl(entityId), OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
@@ -132,26 +130,15 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
                     });
         }
     }
-     
-     protected void getOnBoardInviteCode(String entityId) {
+
+    protected void getOnBoardInviteCode(String entityId) {
         if (!entityId.isEmpty()) {
-            HttpService.HttpServiceAsync.instance().doGet(getOnBoardUrl(entityId), OfficeWelcome.instance().getHeaders(), true,
-                    new ALAsyncCallback<String>() {
-                        @Override
-                        public void onResponse(String arg0) {
-                            logger.info(arg0);
-                            new ResponseStatusWidget().show("Onboarding Invitation sent to mail successfully.");
-                        }
-                    });
+            new GenericPopup(new InitiateOnBoardingPanel(getEntity(entityId))).show();
         }
     }
-     
-     private String getemailurl(String entityId) {
+
+    private String getemailurl(String entityId) {
         return OfficeWelcome.instance().constants.root_url() + "prospect/email-info/" + entityId;
-    }
-     
-     private String getOnBoardUrl(String entityId) {
-        return OfficeWelcome.instance().constants.root_url() + "prospect/invite-code/" + entityId;
     }
 
     @Override
@@ -187,6 +174,7 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateProspectsPanel(entityId));
     }
+
     @Override
     public void copyClicked(final String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(OfficeWelcome.constants.root_url() + "prospect/clone/" + entityId, OfficeWelcome.instance().getHeaders(), true,
@@ -215,7 +203,7 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE,TableRowOptionsWidget.OptionsType.COPY);
+        createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE, TableRowOptionsWidget.OptionsType.COPY);
     }
 
     @Override
@@ -229,8 +217,9 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
             new GenericPopup(new ReadProspectsPanel(id)).show();
         }
     }
+
     @Override
-    protected boolean enablePersistedQuickView(){
+    protected boolean enablePersistedQuickView() {
         return true;
     }
 
