@@ -129,9 +129,9 @@ public class ClientInformation extends AbstractEntity {
      * Vendor AP Contact
      */
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "clientinformation_vendor_apcontact")
+    @JoinTable(name = "clientinformation_vendor_apcontacts")
     @ForeignKey(name = "FK_VendorAPContact_ClientInformations")
-    protected Set<Contact> vendorAPContact;
+    protected Set<Contact> vendorAPContacts;
     /**
      * Vendor Location
      */
@@ -305,9 +305,9 @@ public class ClientInformation extends AbstractEntity {
     protected Project clientProject;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "clientinformation_vendor_recruiter")
+    @JoinTable(name = "clientinformation_vendor_recruiters")
     @ForeignKey(name = "FK_VendorRecruiter_ClientInformations")
-    protected Set<Contact> vendorRecruiter;
+    protected Set<Contact> vendorRecruiters;
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_MiddleVendor_ClientInformations")
@@ -844,26 +844,26 @@ public class ClientInformation extends AbstractEntity {
         this.sectorsAndBUs = sectorsAndBUs;
     }
 
-    public Set<Contact> getVendorAPContact() {
-        if (this.vendorAPContact == null) {
-            this.vendorAPContact = new HashSet();
+    public Set<Contact> getVendorAPContacts() {
+        if (this.vendorAPContacts == null) {
+            this.vendorAPContacts = new HashSet();
         }
-        return vendorAPContact;
+        return vendorAPContacts;
     }
 
-    public void setVendorAPContact(Set<Contact> vendorAPContact) {
-        this.vendorAPContact = vendorAPContact;
+    public void setVendorAPContacts(Set<Contact> vendorAPContacts) {
+        this.vendorAPContacts = vendorAPContacts;
     }
 
-    public Set<Contact> getVendorRecruiter() {
-        if (this.vendorRecruiter == null) {
-            this.vendorRecruiter = new HashSet();
+    public Set<Contact> getVendorRecruiters() {
+        if (this.vendorRecruiters == null) {
+            this.vendorRecruiters = new HashSet();
         }
-        return vendorRecruiter;
+        return vendorRecruiters;
     }
 
-    public void setVendorRecruiter(Set<Contact> vendorRecruiter) {
-        this.vendorRecruiter = vendorRecruiter;
+    public void setVendorRecruiters(Set<Contact> vendorRecruiters) {
+        this.vendorRecruiters = vendorRecruiters;
     }
 
     @Override
