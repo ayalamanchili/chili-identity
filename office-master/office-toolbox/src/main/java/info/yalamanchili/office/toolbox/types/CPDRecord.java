@@ -8,91 +8,81 @@
  */
 package info.yalamanchili.office.toolbox.types;
 
-import info.yalamanchili.office.entity.client.ClientInfoComment;
 import info.yalamanchili.office.entity.client.InvoiceDeliveryMethod;
 import info.yalamanchili.office.entity.client.InvoiceFrequency;
-import info.yalamanchili.office.entity.client.Project;
-import info.yalamanchili.office.entity.client.Vendor;
-import info.yalamanchili.office.entity.practice.Practice;
 import info.yalamanchili.office.entity.profile.BillingDuration;
-import info.yalamanchili.office.entity.profile.BillingRate;
-import info.yalamanchili.office.entity.profile.ClientInformationStatus;
-import info.yalamanchili.office.entity.profile.Contact;
+import info.yalamanchili.office.entity.profile.ClientInformationCompany;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 /**
  *
  * @author Madhu.Badiginchala
  */
 public class CPDRecord {
-    protected String consultantJobTitle;
+    
+    protected Long employeeId;
     protected Date startDate;
     protected Date endDate;
-    protected boolean endPreviousProject;
-    protected Date previousProjectEndDate;
-    protected Long clientID;
-    protected Long clientContactID;
-    protected Long clientLocationID;
-    protected Long vendorID;
-    protected Long vendorContactID;
-    protected Long vendorLocationID;
-    protected Long vendorAPContactID;
-    protected Long employeeID;
-    protected String itemNumber;
+    protected String itemNum;
     protected BigDecimal payRate;
-    protected BigDecimal billingRate;
-    protected BigDecimal overTimePayRate;
-    protected BigDecimal overTimeBillingRate;
+    protected BigDecimal overTimePayrate;
     protected BillingDuration billingDuration;
-    protected List<BillingRate> billingRates;
-    protected BillingDuration billingRateDuration;
-    protected BillingDuration overtimeBillingDuration;
+    protected BillingDuration OverTimeDuration;
+    protected String jobTitle;
     protected InvoiceFrequency invoiceFrequency;
-    protected InvoiceDeliveryMethod invoiceDeliveryMethod;  
-    protected Long employeeRecruiterID;
-    protected String visaStatus;
-    protected String notes;
-    protected String terminationNotice;
-    protected Long subcontractorID;
-    protected Long subcontractorContactID;
-    protected Long subcontractorLocationID;
-    protected BigDecimal subcontractorpayRate;
-    protected BigDecimal subcontractoroverTimePayRate;
+    protected InvoiceDeliveryMethod invoiceDeliveryMethod;
+    protected Long recID1;
+    protected Long recID2;
+    protected Long recID3;
+    protected Long recID4;
+    protected Long subContractorID;
+    protected Long subContractorContactID;
+    protected BigDecimal subContractorPayRate;
+    protected BigDecimal subContractorOverTimePayRate;
     protected InvoiceFrequency subcontractorinvoiceFrequency;
-    protected String subcontractorpaymentTerms;
-    protected Boolean subcontractorw4Filled;
-    protected Boolean subcontractCOI;
-    protected BigDecimal payRate1099;
-    protected BigDecimal overTimePayrate1099;
-    protected BillingDuration payTimeDuration1099;
-    protected String paymentTerms1099;
-    protected List<ClientInfoComment> comments;
-    protected Boolean accountVerificationDocs;
-    protected Boolean signedCopyOfWorkOrder;
-    protected Boolean i9Filled;
-    protected Boolean w4Filled;
-    protected String joiningReport;
-    protected Boolean logisticsPreparation;
-    protected Boolean hrOrientation;
-    protected Project clientProject;
-    protected Contact vendorRecruiter;
-    protected Vendor middleVendor;
-    protected Boolean isCPDFilled;
+    protected Long venAPID1;
+    protected Long venAPID2;
+    protected Long venAPID3;
+    protected String vacationDetails;
+    protected ClientInformationCompany company;
+    protected String isCPDFilled;
     protected String timeSheetRequirement;
-    protected String vendorPaymentTerms;
     protected String specialInvoiceInstructions;
-    protected ClientInformationStatus status;
-    protected Practice practice;
+    protected String projectEndingForSure;
+    protected String visaStatus;
+    protected String terminationNotice;
+    protected Long venRECID1;
+    protected Long venRECID2;
+    protected String subContractorComments;
+    protected Boolean signedCopyOfWorkOrder;
+    protected Boolean subcontractCOI;
+    protected Boolean subcontractorW9Form;
+    protected String subContractorPaymentTerms;
+    protected String vendorPaymentTerms;
+    protected String accountingComments;
+    protected String hrOrientation;
+    protected String logisticPreparation;
+    protected String i9Filled;
+    protected String w4Filled;
+    protected String joiningReport;
+    protected String hrComments;
+    protected String contractComments;
+    protected Long practiceID;
     protected String sectorsAndBUs;
+    protected String projectName;
+    protected String purchaseOrderNo;
+    protected String subContractorWorkOrderNo;
+    protected Long vendorID;
+    protected Long clientID;
+    protected Long middleVendorID;
 
-    public String getConsultantJobTitle() {
-        return consultantJobTitle;
+    public Long getEmployeeId() {
+        return employeeId;
     }
 
-    public void setConsultantJobTitle(String consultantJobTitle) {
-        this.consultantJobTitle = consultantJobTitle;
+    public void setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
     }
 
     public Date getStartDate() {
@@ -111,125 +101,15 @@ public class CPDRecord {
         this.endDate = endDate;
     }
 
-    public boolean isEndPreviousProject() {
-        return endPreviousProject;
+    public String getItemNum() {
+        return itemNum;
     }
 
-    public void setEndPreviousProject(boolean endPreviousProject) {
-        this.endPreviousProject = endPreviousProject;
+    public void setItemNum(String itemNum) {
+        this.itemNum = itemNum;
     }
 
-    public Date getPreviousProjectEndDate() {
-        return previousProjectEndDate;
-    }
 
-    public void setPreviousProjectEndDate(Date previousProjectEndDate) {
-        this.previousProjectEndDate = previousProjectEndDate;
-    }
-
-    public Long getClientID() {
-        return clientID;
-    }
-
-    public void setClientID(Long clientID) {
-        this.clientID = clientID;
-    }
-
-    public Long getClientContactID() {
-        return clientContactID;
-    }
-
-    public void setClientContactID(Long clientContactID) {
-        this.clientContactID = clientContactID;
-    }
-
-    public Long getClientLocationID() {
-        return clientLocationID;
-    }
-
-    public void setClientLocationID(Long clientLocationID) {
-        this.clientLocationID = clientLocationID;
-    }
-
-    public Long getVendorID() {
-        return vendorID;
-    }
-
-    public void setVendorID(Long vendorID) {
-        this.vendorID = vendorID;
-    }
-
-    public Long getVendorContactID() {
-        return vendorContactID;
-    }
-
-    public void setVendorContactID(Long vendorContactID) {
-        this.vendorContactID = vendorContactID;
-    }
-
-    public Long getVendorLocationID() {
-        return vendorLocationID;
-    }
-
-    public void setVendorLocationID(Long vendorLocationID) {
-        this.vendorLocationID = vendorLocationID;
-    }
-
-    public Long getVendorAPContactID() {
-        return vendorAPContactID;
-    }
-
-    public void setVendorAPContactID(Long vendorAPContactID) {
-        this.vendorAPContactID = vendorAPContactID;
-    }
-
-    public Long getEmployeeID() {
-        return employeeID;
-    }
-
-    public void setEmployeeID(Long employeeID) {
-        this.employeeID = employeeID;
-    }
-
-    public String getItemNumber() {
-        return itemNumber;
-    }
-
-    public void setItemNumber(String itemNumber) {
-        this.itemNumber = itemNumber;
-    }
-
-    public BigDecimal getPayRate() {
-        return payRate;
-    }
-
-    public void setPayRate(BigDecimal payRate) {
-        this.payRate = payRate;
-    }
-
-    public BigDecimal getBillingRate() {
-        return billingRate;
-    }
-
-    public void setBillingRate(BigDecimal billingRate) {
-        this.billingRate = billingRate;
-    }
-
-    public BigDecimal getOverTimePayRate() {
-        return overTimePayRate;
-    }
-
-    public void setOverTimePayRate(BigDecimal overTimePayRate) {
-        this.overTimePayRate = overTimePayRate;
-    }
-
-    public BigDecimal getOverTimeBillingRate() {
-        return overTimeBillingRate;
-    }
-
-    public void setOverTimeBillingRate(BigDecimal overTimeBillingRate) {
-        this.overTimeBillingRate = overTimeBillingRate;
-    }
 
     public BillingDuration getBillingDuration() {
         return billingDuration;
@@ -239,28 +119,20 @@ public class CPDRecord {
         this.billingDuration = billingDuration;
     }
 
-    public List<BillingRate> getBillingRates() {
-        return billingRates;
+    public BillingDuration getOverTimeDuration() {
+        return OverTimeDuration;
     }
 
-    public void setBillingRates(List<BillingRate> billingRates) {
-        this.billingRates = billingRates;
+    public void setOverTimeDuration(BillingDuration OverTimeDuration) {
+        this.OverTimeDuration = OverTimeDuration;
     }
 
-    public BillingDuration getBillingRateDuration() {
-        return billingRateDuration;
+    public String getJobTitle() {
+        return jobTitle;
     }
 
-    public void setBillingRateDuration(BillingDuration billingRateDuration) {
-        this.billingRateDuration = billingRateDuration;
-    }
-
-    public BillingDuration getOvertimeBillingDuration() {
-        return overtimeBillingDuration;
-    }
-
-    public void setOvertimeBillingDuration(BillingDuration overtimeBillingDuration) {
-        this.overtimeBillingDuration = overtimeBillingDuration;
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
     }
 
     public InvoiceFrequency getInvoiceFrequency() {
@@ -279,76 +151,52 @@ public class CPDRecord {
         this.invoiceDeliveryMethod = invoiceDeliveryMethod;
     }
 
-    public Long getEmployeeRecruiterID() {
-        return employeeRecruiterID;
+    public Long getRecID1() {
+        return recID1;
     }
 
-    public void setEmployeeRecruiterID(Long employeeRecruiterID) {
-        this.employeeRecruiterID = employeeRecruiterID;
+    public void setRecID1(Long recID1) {
+        this.recID1 = recID1;
     }
 
-    public String getVisaStatus() {
-        return visaStatus;
+    public Long getRecID2() {
+        return recID2;
     }
 
-    public void setVisaStatus(String visaStatus) {
-        this.visaStatus = visaStatus;
+    public void setRecID2(Long recID2) {
+        this.recID2 = recID2;
     }
 
-    public String getNotes() {
-        return notes;
+    public Long getRecID3() {
+        return recID3;
     }
 
-    public void setNotes(String notes) {
-        this.notes = notes;
+    public void setRecID3(Long recID3) {
+        this.recID3 = recID3;
     }
 
-    public String getTerminationNotice() {
-        return terminationNotice;
+    public Long getRecID4() {
+        return recID4;
     }
 
-    public void setTerminationNotice(String terminationNotice) {
-        this.terminationNotice = terminationNotice;
+    public void setRecID4(Long recID4) {
+        this.recID4 = recID4;
     }
 
-    public Long getSubcontractorID() {
-        return subcontractorID;
+    public Long getSubContractorID() {
+        return subContractorID;
     }
 
-    public void setSubcontractorID(Long subcontractorID) {
-        this.subcontractorID = subcontractorID;
+    public void setSubContractorID(Long subContractorID) {
+        this.subContractorID = subContractorID;
     }
 
-    public Long getSubcontractorContactID() {
-        return subcontractorContactID;
+    public Long getSubContractorContactID() {
+        return subContractorContactID;
     }
 
-    public void setSubcontractorContactID(Long subcontractorContactID) {
-        this.subcontractorContactID = subcontractorContactID;
-    }
-
-    public Long getSubcontractorLocationID() {
-        return subcontractorLocationID;
-    }
-
-    public void setSubcontractorLocationID(Long subcontractorLocationID) {
-        this.subcontractorLocationID = subcontractorLocationID;
-    }
-
-    public BigDecimal getSubcontractorpayRate() {
-        return subcontractorpayRate;
-    }
-
-    public void setSubcontractorpayRate(BigDecimal subcontractorpayRate) {
-        this.subcontractorpayRate = subcontractorpayRate;
-    }
-
-    public BigDecimal getSubcontractoroverTimePayRate() {
-        return subcontractoroverTimePayRate;
-    }
-
-    public void setSubcontractoroverTimePayRate(BigDecimal subcontractoroverTimePayRate) {
-        this.subcontractoroverTimePayRate = subcontractoroverTimePayRate;
+    public void setSubContractorContactID(Long subContractorContactID) {
+        this.subContractorContactID = subContractorContactID;
     }
 
     public InvoiceFrequency getSubcontractorinvoiceFrequency() {
@@ -359,155 +207,51 @@ public class CPDRecord {
         this.subcontractorinvoiceFrequency = subcontractorinvoiceFrequency;
     }
 
-    public String getSubcontractorpaymentTerms() {
-        return subcontractorpaymentTerms;
+    public Long getVenAPID1() {
+        return venAPID1;
     }
 
-    public void setSubcontractorpaymentTerms(String subcontractorpaymentTerms) {
-        this.subcontractorpaymentTerms = subcontractorpaymentTerms;
+    public void setVenAPID1(Long venAPID1) {
+        this.venAPID1 = venAPID1;
     }
 
-    public Boolean getSubcontractorw4Filled() {
-        return subcontractorw4Filled;
+    public Long getVenAPID2() {
+        return venAPID2;
     }
 
-    public void setSubcontractorw4Filled(Boolean subcontractorw4Filled) {
-        this.subcontractorw4Filled = subcontractorw4Filled;
+    public void setVenAPID2(Long venAPID2) {
+        this.venAPID2 = venAPID2;
     }
 
-    public Boolean getSubcontractCOI() {
-        return subcontractCOI;
+    public Long getVenAPID3() {
+        return venAPID3;
     }
 
-    public void setSubcontractCOI(Boolean subcontractCOI) {
-        this.subcontractCOI = subcontractCOI;
+    public void setVenAPID3(Long venAPID3) {
+        this.venAPID3 = venAPID3;
     }
 
-    public BigDecimal getPayRate1099() {
-        return payRate1099;
+    public String getVacationDetails() {
+        return vacationDetails;
     }
 
-    public void setPayRate1099(BigDecimal payRate1099) {
-        this.payRate1099 = payRate1099;
+    public void setVacationDetails(String vacationDetails) {
+        this.vacationDetails = vacationDetails;
     }
 
-    public BigDecimal getOverTimePayrate1099() {
-        return overTimePayrate1099;
+    public ClientInformationCompany getCompany() {
+        return company;
     }
 
-    public void setOverTimePayrate1099(BigDecimal overTimePayrate1099) {
-        this.overTimePayrate1099 = overTimePayrate1099;
+    public void setCompany(ClientInformationCompany company) {
+        this.company = company;
     }
 
-    public BillingDuration getPayTimeDuration1099() {
-        return payTimeDuration1099;
-    }
-
-    public void setPayTimeDuration1099(BillingDuration payTimeDuration1099) {
-        this.payTimeDuration1099 = payTimeDuration1099;
-    }
-
-    public String getPaymentTerms1099() {
-        return paymentTerms1099;
-    }
-
-    public void setPaymentTerms1099(String paymentTerms1099) {
-        this.paymentTerms1099 = paymentTerms1099;
-    }
-
-    public List<ClientInfoComment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<ClientInfoComment> comments) {
-        this.comments = comments;
-    }
-
-    public Boolean getAccountVerificationDocs() {
-        return accountVerificationDocs;
-    }
-
-    public void setAccountVerificationDocs(Boolean accountVerificationDocs) {
-        this.accountVerificationDocs = accountVerificationDocs;
-    }
-
-    public Boolean getSignedCopyOfWorkOrder() {
-        return signedCopyOfWorkOrder;
-    }
-
-    public void setSignedCopyOfWorkOrder(Boolean signedCopyOfWorkOrder) {
-        this.signedCopyOfWorkOrder = signedCopyOfWorkOrder;
-    }
-
-    public Boolean getI9Filled() {
-        return i9Filled;
-    }
-
-    public void setI9Filled(Boolean i9Filled) {
-        this.i9Filled = i9Filled;
-    }
-
-    public Boolean getW4Filled() {
-        return w4Filled;
-    }
-
-    public void setW4Filled(Boolean w4Filled) {
-        this.w4Filled = w4Filled;
-    }
-
-    public String getJoiningReport() {
-        return joiningReport;
-    }
-
-    public void setJoiningReport(String joiningReport) {
-        this.joiningReport = joiningReport;
-    }
-
-    public Boolean getLogisticsPreparation() {
-        return logisticsPreparation;
-    }
-
-    public void setLogisticsPreparation(Boolean logisticsPreparation) {
-        this.logisticsPreparation = logisticsPreparation;
-    }
-
-    public Boolean getHrOrientation() {
-        return hrOrientation;
-    }
-
-    public void setHrOrientation(Boolean hrOrientation) {
-        this.hrOrientation = hrOrientation;
-    }
-
-    public Project getClientProject() {
-        return clientProject;
-    }
-
-    public void setClientProject(Project clientProject) {
-        this.clientProject = clientProject;
-    }
-
-    public Contact getVendorRecruiter() {
-        return vendorRecruiter;
-    }
-
-    public void setVendorRecruiter(Contact vendorRecruiter) {
-        this.vendorRecruiter = vendorRecruiter;
-    }
-
-    public Vendor getMiddleVendor() {
-        return middleVendor;
-    }
-
-    public void setMiddleVendor(Vendor middleVendor) {
-        this.middleVendor = middleVendor;
-    }
-
-    public Boolean getIsCPDFilled() {
+    public String getIsCPDFilled() {
         return isCPDFilled;
     }
 
-    public void setIsCPDFilled(Boolean isCPDFilled) {
+    public void setIsCPDFilled(String isCPDFilled) {
         this.isCPDFilled = isCPDFilled;
     }
 
@@ -519,14 +263,6 @@ public class CPDRecord {
         this.timeSheetRequirement = timeSheetRequirement;
     }
 
-    public String getVendorPaymentTerms() {
-        return vendorPaymentTerms;
-    }
-
-    public void setVendorPaymentTerms(String vendorPaymentTerms) {
-        this.vendorPaymentTerms = vendorPaymentTerms;
-    }
-
     public String getSpecialInvoiceInstructions() {
         return specialInvoiceInstructions;
     }
@@ -535,20 +271,164 @@ public class CPDRecord {
         this.specialInvoiceInstructions = specialInvoiceInstructions;
     }
 
-    public ClientInformationStatus getStatus() {
-        return status;
+    public String getProjectEndingForSure() {
+        return projectEndingForSure;
     }
 
-    public void setStatus(ClientInformationStatus status) {
-        this.status = status;
+    public void setProjectEndingForSure(String projectEndingForSure) {
+        this.projectEndingForSure = projectEndingForSure;
     }
 
-    public Practice getPractice() {
-        return practice;
+    public String getVisaStatus() {
+        return visaStatus;
     }
 
-    public void setPractice(Practice practice) {
-        this.practice = practice;
+    public void setVisaStatus(String visaStatus) {
+        this.visaStatus = visaStatus;
+    }
+
+    public String getTerminationNotice() {
+        return terminationNotice;
+    }
+
+    public void setTerminationNotice(String terminationNotice) {
+        this.terminationNotice = terminationNotice;
+    }
+
+    public Long getVenRECID1() {
+        return venRECID1;
+    }
+
+    public void setVenRECID1(Long venRECID1) {
+        this.venRECID1 = venRECID1;
+    }
+
+    public Long getVenRECID2() {
+        return venRECID2;
+    }
+
+    public void setVenRECID2(Long venRECID2) {
+        this.venRECID2 = venRECID2;
+    }
+
+    public String getSubContractorComments() {
+        return subContractorComments;
+    }
+
+    public void setSubContractorComments(String subContractorComments) {
+        this.subContractorComments = subContractorComments;
+    }
+
+    public Boolean getSignedCopyOfWorkOrder() {
+        return signedCopyOfWorkOrder;
+    }
+
+    public void setSignedCopyOfWorkOrder(Boolean signedCopyOfWorkOrder) {
+        this.signedCopyOfWorkOrder = signedCopyOfWorkOrder;
+    }
+
+    public Boolean getSubcontractCOI() {
+        return subcontractCOI;
+    }
+
+    public void setSubcontractCOI(Boolean subcontractCOI) {
+        this.subcontractCOI = subcontractCOI;
+    }
+
+    public Boolean getSubcontractorW9Form() {
+        return subcontractorW9Form;
+    }
+
+    public void setSubcontractorW9Form(Boolean subcontractorW9Form) {
+        this.subcontractorW9Form = subcontractorW9Form;
+    }
+
+    public String getSubContractorPaymentTerms() {
+        return subContractorPaymentTerms;
+    }
+
+    public void setSubContractorPaymentTerms(String subContractorPaymentTerms) {
+        this.subContractorPaymentTerms = subContractorPaymentTerms;
+    }
+
+    public String getVendorPaymentTerms() {
+        return vendorPaymentTerms;
+    }
+
+    public void setVendorPaymentTerms(String vendorPaymentTerms) {
+        this.vendorPaymentTerms = vendorPaymentTerms;
+    }
+
+    public String getAccountingComments() {
+        return accountingComments;
+    }
+
+    public void setAccountingComments(String accountingComments) {
+        this.accountingComments = accountingComments;
+    }
+
+    public String getHrOrientation() {
+        return hrOrientation;
+    }
+
+    public void setHrOrientation(String hrOrientation) {
+        this.hrOrientation = hrOrientation;
+    }
+
+    public String getLogisticPreparation() {
+        return logisticPreparation;
+    }
+
+    public void setLogisticPreparation(String logisticPreparation) {
+        this.logisticPreparation = logisticPreparation;
+    }
+
+    public String getI9Filled() {
+        return i9Filled;
+    }
+
+    public void setI9Filled(String i9Filled) {
+        this.i9Filled = i9Filled;
+    }
+
+    public String getW4Filled() {
+        return w4Filled;
+    }
+
+    public void setW4Filled(String w4Filled) {
+        this.w4Filled = w4Filled;
+    }
+
+    public String getJoiningReport() {
+        return joiningReport;
+    }
+
+    public void setJoiningReport(String joiningReport) {
+        this.joiningReport = joiningReport;
+    }
+
+    public String getHrComments() {
+        return hrComments;
+    }
+
+    public void setHrComments(String hrComments) {
+        this.hrComments = hrComments;
+    }
+
+    public String getContractComments() {
+        return contractComments;
+    }
+
+    public void setContractComments(String contractComments) {
+        this.contractComments = contractComments;
+    }
+
+    public Long getPracticeID() {
+        return practiceID;
+    }
+
+    public void setPracticeID(Long practiceID) {
+        this.practiceID = practiceID;
     }
 
     public String getSectorsAndBUs() {
@@ -558,6 +438,87 @@ public class CPDRecord {
     public void setSectorsAndBUs(String sectorsAndBUs) {
         this.sectorsAndBUs = sectorsAndBUs;
     }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getPurchaseOrderNo() {
+        return purchaseOrderNo;
+    }
+
+    public void setPurchaseOrderNo(String purchaseOrderNo) {
+        this.purchaseOrderNo = purchaseOrderNo;
+    }
+
+    public String getSubContractorWorkOrderNo() {
+        return subContractorWorkOrderNo;
+    }
+
+    public void setSubContractorWorkOrderNo(String subContractorWorkOrderNo) {
+        this.subContractorWorkOrderNo = subContractorWorkOrderNo;
+    }
+
+    public Long getVendorID() {
+        return vendorID;
+    }
+
+    public void setVendorID(Long vendorID) {
+        this.vendorID = vendorID;
+    }
+
+    public Long getClientID() {
+        return clientID;
+    }
+
+    public void setClientID(Long clientID) {
+        this.clientID = clientID;
+    }
+
+    public Long getMiddleVendorID() {
+        return middleVendorID;
+    }
+
+    public void setMiddleVendorID(Long middleVendorID) {
+        this.middleVendorID = middleVendorID;
+    }
+
+    public BigDecimal getPayRate() {
+        return payRate;
+    }
+
+    public void setPayRate(BigDecimal payRate) {
+        this.payRate = payRate;
+    }
+
+    public BigDecimal getOverTimePayrate() {
+        return overTimePayrate;
+    }
+
+    public void setOverTimePayrate(BigDecimal overTimePayrate) {
+        this.overTimePayrate = overTimePayrate;
+    }
+
+    public BigDecimal getSubContractorPayRate() {
+        return subContractorPayRate;
+    }
+
+    public void setSubContractorPayRate(BigDecimal subContractorPayRate) {
+        this.subContractorPayRate = subContractorPayRate;
+    }
+
+    public BigDecimal getSubContractorOverTimePayRate() {
+        return subContractorOverTimePayRate;
+    }
+
+    public void setSubContractorOverTimePayRate(BigDecimal subContractorOverTimePayRate) {
+        this.subContractorOverTimePayRate = subContractorOverTimePayRate;
+    }
+
     
     
     
