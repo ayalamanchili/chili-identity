@@ -6,10 +6,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.jrs.emailmenu;
+package info.yalamanchili.office.jrs.reports;
 
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
-import info.yalamanchili.office.emailmenu.EmailGroupsService;
+import info.yalamanchili.office.reporting.EmailGroupsService;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
