@@ -249,7 +249,7 @@ public class SelfService {
             case HumanResource:
                 return OfficeRole.ROLE_HR;
             case Invoicing:
-                return OfficeRole.ROLE_INVOICING;
+                return OfficeRole.ROLE_BILLING_AND_INVOICING;
             case Recruiting:
                 return OfficeRole.ROLE_RECRUITER;
             case Payroll:
