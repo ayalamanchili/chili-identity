@@ -107,11 +107,11 @@ public class ClientInformationService {
             Contact contact = ContactDao.instance().findById(ci.getVendorContact().getId());
             ci.setVendorContact(contact);
         }
-        ci.setVendorAPContact(null);
+        ci.setVendorAPContacts(null);
         if (ciDto.getVendorAPContact() != null) {
             for (Contact vendorAPContact : ciDto.getVendorAPContact()) {
                 if (vendorAPContact.getId() != null) {
-                    ci.getVendorAPContact().add(ContactDao.instance().findById(vendorAPContact.getId()));
+                    ci.getVendorAPContacts().add(ContactDao.instance().findById(vendorAPContact.getId()));
                 }
             }
         }
@@ -121,11 +121,11 @@ public class ClientInformationService {
             ci.setVendorLocation(address);
         }
         
-        ci.setVendorRecruiter(null);
+        ci.setVendorRecruiters(null);
         if (ciDto.getVendorRecruiter() != null) {
             for (Contact vendorRecruiter : ciDto.getVendorRecruiter()) {
                 if (vendorRecruiter.getId() != null) {
-                    ci.getVendorRecruiter().add(ContactDao.instance().findById(vendorRecruiter.getId()));
+                    ci.getVendorRecruiters().add(ContactDao.instance().findById(vendorRecruiter.getId()));
                 }
             }
         }
@@ -331,16 +331,16 @@ public class ClientInformationService {
             }
             //Vendor Acct Pay Contact
             Set<Contact> newAPs = new HashSet();
-            for (Contact con : ci.getVendorAPContact()) {
+            for (Contact con : ci.getVendorAPContacts()) {
                 newAPs.add(ContactDao.instance().findById(con.getId()));
             }
-            ciEntity.setVendorAPContact(newAPs);
+            ciEntity.setVendorAPContacts(newAPs);
             //Vendor Recruiter
             Set<Contact> venRecs = new HashSet();
-            for (Contact cons : ci.getVendorRecruiter()) {
+            for (Contact cons : ci.getVendorRecruiters()) {
                 venRecs.add(ContactDao.instance().findById(cons.getId()));
             }
-            ciEntity.setVendorRecruiter(venRecs);
+            ciEntity.setVendorRecruiters(venRecs);
             //Vendor Location
             if (ci.getVendorLocation() == null) {
                 ciEntity.setVendorLocation(null);

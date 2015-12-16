@@ -64,8 +64,9 @@ public class ProfileNotificationService {
         Email email = new Email();
         email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject("New System Soft Office User Created");
-        String messageText = "New " + employee.getEmployeeType().getName() + " Has Created.. \n Employee Name: " + employee.getFirstName() + " , " + employee.getLastName() + " \n Employee Id: " + employee.getEmployeeId() + " \n Created By " + currentEmployee.getFirstName() + " " + currentEmployee.getLastName();
-        email.setBody(messageText);
+        String messageText = "New " + employee.getEmployeeType().getName() + " has been Created.. \n Employee Name is: " + employee.getFirstName() + "  " + employee.getLastName() + " \n Employee Id is: " + employee.getEmployeeId() + " \n Created By " + currentEmployee.getFirstName() + " " + currentEmployee.getLastName();
+        String messageTxt = messageText.replaceAll("[^a-zA-Z0-9\\.;:_ ,]+", " ");
+        email.setBody(messageTxt);
         messagingService.sendEmail(email);
 
         // Email Intimation for User
