@@ -24,6 +24,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -127,9 +128,10 @@ public class ClientInformation extends AbstractEntity {
     /**
      * Vendor AP Contact
      */
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "clientinformation_vendor_apcontact")
     @ForeignKey(name = "FK_VendorAPContact_ClientInformations")
-    protected Contact vendorAPContact;
+    protected Set<Contact> vendorAPContact;
     /**
      * Vendor Location
      */
@@ -302,9 +304,10 @@ public class ClientInformation extends AbstractEntity {
     @ForeignKey(name = "FK_ClientProject_ClientInformations")
     protected Project clientProject;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "clientinformation_vendor_recruiter")
     @ForeignKey(name = "FK_VendorRecruiter_ClientInformations")
-    protected Contact vendorRecruiter;
+    protected Set<Contact> vendorRecruiter;
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_MiddleVendor_ClientInformations")
@@ -428,14 +431,6 @@ public class ClientInformation extends AbstractEntity {
 
     public void setVendorContact(Contact vendorContact) {
         this.vendorContact = vendorContact;
-    }
-
-    public Contact getVendorAPContact() {
-        return vendorAPContact;
-    }
-
-    public void setVendorAPContact(Contact vendorAPContact) {
-        this.vendorAPContact = vendorAPContact;
     }
 
     public Address getVendorLocation() {
@@ -785,14 +780,6 @@ public class ClientInformation extends AbstractEntity {
         this.clientProject = clientProject;
     }
 
-    public Contact getVendorRecruiter() {
-        return vendorRecruiter;
-    }
-
-    public void setVendorRecruiter(Contact vendorRecruiter) {
-        this.vendorRecruiter = vendorRecruiter;
-    }
-
     public Vendor getMiddleVendor() {
         return middleVendor;
     }
@@ -855,6 +842,28 @@ public class ClientInformation extends AbstractEntity {
 
     public void setSectorsAndBUs(String sectorsAndBUs) {
         this.sectorsAndBUs = sectorsAndBUs;
+    }
+
+    public Set<Contact> getVendorAPContact() {
+        if (this.vendorAPContact == null) {
+            this.vendorAPContact = new HashSet();
+        }
+        return vendorAPContact;
+    }
+
+    public void setVendorAPContact(Set<Contact> vendorAPContact) {
+        this.vendorAPContact = vendorAPContact;
+    }
+
+    public Set<Contact> getVendorRecruiter() {
+        if (this.vendorRecruiter == null) {
+            this.vendorRecruiter = new HashSet();
+        }
+        return vendorRecruiter;
+    }
+
+    public void setVendorRecruiter(Set<Contact> vendorRecruiter) {
+        this.vendorRecruiter = vendorRecruiter;
     }
 
     @Override

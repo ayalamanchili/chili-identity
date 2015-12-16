@@ -17,7 +17,8 @@ public enum ClientInformationCompany {
     SST_PVT,
     SST_Canada,
     CapMark_Solutions,
-    ACO360;
+    ACO360,
+    CGS_INC;
 
     public static String[] names() {
         ClientInformationCompany[] values = values();

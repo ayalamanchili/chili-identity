@@ -228,30 +228,30 @@ public class ContractService {
             dto.setPurchaseOrderNo(ci.getClientProject().getPurchaseOrderNo());
             dto.setSubContractorWorkOrderNo(ci.getClientProject().getSubContractorWorkOrderNo());
         }
-        if (ci.getVendorRecruiter() != null) {
-            dto.setVendorRecruiter(ci.getVendorRecruiter().getFirstName() + " " + ci.getVendorRecruiter().getLastName());
-        }
-        if (ci.getVendorAPContact() != null) {
-            StringBuilder acctpayCnt = new StringBuilder();
-            acctpayCnt.append("Name: ").append(ci.getVendorAPContact().getFirstName());
-            acctpayCnt.append(" ");
-            acctpayCnt.append(ci.getVendorAPContact().getLastName());
-            acctpayCnt.append("<br/>");
-            for (Email email : ci.getVendorAPContact().getEmails()) {
-                acctpayCnt.append("Email: ").append(email.getEmail()).append("<br/>");
-            }
-            
-            for (Phone phone : ci.getVendorAPContact().getPhones()) {
-                if (phone.getExtension() != null) {
-                    acctpayCnt.append("Phone: ").append(phone.getPhoneNumber()).append(" ext: ").append(phone.getExtension());
-                } else {
-                    acctpayCnt.append("Phone: " + phone.getPhoneNumber());
-                }
-                acctpayCnt.append("<br/>");
-            }
-            
-            dto.setVendorAPContact(acctpayCnt.toString());
-        }
+//        if (ci.getVendorRecruiter() != null) {
+//            dto.setVendorRecruiter(ci.getVendorRecruiter().getFirstName() + " " + ci.getVendorRecruiter().getLastName());
+//        }
+//        if (ci.getVendorAPContact() != null) {
+//            StringBuilder acctpayCnt = new StringBuilder();
+//            acctpayCnt.append("Name: ").append(ci.getVendorAPContact().getFirstName());
+//            acctpayCnt.append(" ");
+//            acctpayCnt.append(ci.getVendorAPContact().getLastName());
+//            acctpayCnt.append("<br/>");
+//            for (Email email : ci.getVendorAPContact().getEmails()) {
+//                acctpayCnt.append("Email: ").append(email.getEmail()).append("<br/>");
+//            }
+//            
+//            for (Phone phone : ci.getVendorAPContact().getPhones()) {
+//                if (phone.getExtension() != null) {
+//                    acctpayCnt.append("Phone: ").append(phone.getPhoneNumber()).append(" ext: ").append(phone.getExtension());
+//                } else {
+//                    acctpayCnt.append("Phone: " + phone.getPhoneNumber());
+//                }
+//                acctpayCnt.append("<br/>");
+//            }
+//            
+//            dto.setVendorAPContact(acctpayCnt.toString());
+//        }
         if (ci.getClientLocation() != null) {
             dto.setClientLocation(ci.getClientLocation().getStreet1() + " " + ci.getClientLocation().getCity() + " " + ci.getClientLocation().getState());
         }

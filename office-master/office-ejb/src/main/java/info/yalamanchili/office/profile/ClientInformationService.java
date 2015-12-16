@@ -101,18 +101,29 @@ public class ClientInformationService {
             Contact contact = ContactDao.instance().findById(ci.getVendorContact().getId());
             ci.setVendorContact(contact);
         }
-        if (ci.getVendorAPContact() != null) {
-            Contact contact = ContactDao.instance().findById(ci.getVendorAPContact().getId());
-            ci.setVendorAPContact(contact);
+        ci.setVendorAPContact(null);
+        if (ciDto.getVendorAPContact() != null) {
+            for (Contact vendorAPContact : ciDto.getVendorAPContact()) {
+                if (vendorAPContact.getId() != null) {
+                    ci.getVendorAPContact().add(ContactDao.instance().findById(vendorAPContact.getId()));
+                }
+            }
         }
+
         if (ci.getVendorLocation() != null) {
             Address address = AddressDao.instance().findById(ci.getVendorLocation().getId());
             ci.setVendorLocation(address);
         }
-        if (ci.getVendorRecruiter() != null) {
-            Contact contact = ContactDao.instance().findById(ci.getVendorRecruiter().getId());
-            ci.setVendorRecruiter(contact);
+        
+        ci.setVendorRecruiter(null);
+        if (ciDto.getVendorRecruiter() != null) {
+            for (Contact vendorRecruiter : ciDto.getVendorRecruiter()) {
+                if (vendorRecruiter.getId() != null) {
+                    ci.getVendorRecruiter().add(ContactDao.instance().findById(vendorRecruiter.getId()));
+                }
+            }
         }
+
         if (ci.getMiddleVendor() != null) {
             middleVendor = VendorDao.instance().findById(ci.getMiddleVendor().getId());
             ci.setMiddleVendor(middleVendor);
@@ -188,19 +199,21 @@ public class ClientInformationService {
     protected String getCompanyAbbreviation(ClientInformationCompany company) {
         switch (company) {
             case ACO360:
-                return "";
+                return "ACO360";
             case CapMark_Solutions:
-                return "";
+                return "CAPM";
             case SSTECH_INC:
-                return "";
+                return "SSTI";
             case SSTECH_LLC:
-                return "";
+                return "SSTL";
             case SST_Canada:
-                return "";
+                return "SSTC";
             case SST_PVT:
-                return "";
+                return "SSTP";
             case Techpillars:
-                return "";
+                return "TPLR";
+            case CGS_INC:
+                return "CGSI";
             default:
                 return "SSTL";
         }
@@ -301,12 +314,17 @@ public class ClientInformationService {
                 ciEntity.setVendorContact(contact);
             }
             //Vendor Acct Pay Contact
-            if (ci.getVendorAPContact() == null) {
-                ciEntity.setVendorAPContact(null);
-            } else {
-                Contact contact = ContactDao.instance().findById(ci.getVendorAPContact().getId());
-                ciEntity.setVendorAPContact(contact);
+            Set<Contact> newAPs = new HashSet();
+            for (Contact con : ci.getVendorAPContact()) {
+                newAPs.add(ContactDao.instance().findById(con.getId()));
             }
+            ciEntity.setVendorAPContact(newAPs);
+            //Vendor Recruiter
+            Set<Contact> venRecs = new HashSet();
+            for (Contact cons : ci.getVendorRecruiter()) {
+                venRecs.add(ContactDao.instance().findById(cons.getId()));
+            }
+            ciEntity.setVendorRecruiter(venRecs);
             //Vendor Location
             if (ci.getVendorLocation() == null) {
                 ciEntity.setVendorLocation(null);
