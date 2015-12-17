@@ -22,6 +22,7 @@ import info.yalamanchili.office.expense.expenserpt.ExpenseReportService;
 import info.yalamanchili.office.reports.profile.ProfileReportsService;
 import info.yalamanchili.office.toolbox.ClientContactDataTool;
 import info.yalamanchili.office.toolbox.ClientDataTool;
+import info.yalamanchili.office.toolbox.ClientInformationDataTool;
 import info.yalamanchili.office.toolbox.OnBoardingDataTool;
 import info.yalamanchili.office.toolbox.SubContractorContactDataTool;
 import info.yalamanchili.office.toolbox.SubContractorDataTool;
@@ -150,6 +151,11 @@ public class OfficeServiceJobConfiguration {
     @ManagedOperation
     public void bisConsultantsDataMigration() {
         OnBoardingDataTool.instance().migrateConsultantsData();
+    }
+
+    @ManagedOperation
+    public void bisCPDMigration() {
+        ClientInformationDataTool.instance().bisCPDMigration();
     }
 
     @ManagedOperation
