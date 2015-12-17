@@ -133,7 +133,6 @@
             <artifactId>poi-ooxml-schemas</artifactId>
             <version>3.10.1</version>
         </dependency> 
-        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-io</artifactId>
             <version>1.4</version>
@@ -504,14 +503,14 @@
         <repository>
             <id>sstech.us</id>
             <name>sstech.us</name>
-            <url>http://tools.sstech.mobi/nexus/content/repositories/releases</url>
+            <url>http://192.168.0.190/nexus/content/repositories/releases</url>
         </repository>
 
         <!-- Publish the versioned releases here -->
         <snapshotRepository>
             <id>sstech.us</id>
             <name>sstech.us</name>
-            <url>http://tools.sstech.mobi/nexus/content/repositories/snapshots</url>
+            <url>http://192.168.0.190/nexus/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
     <properties>
@@ -523,5 +522,6 @@
         <guava.version>17.0</guava.version>
         <poi.version>3.11</poi.version>
         <xdocreport.version>1.0.5</xdocreport.version>
+        <gwt.charts.version>0.9.10</gwt.charts.version>
     </properties>
 </project>
