@@ -130,12 +130,33 @@ public class CorporateTimeAccuralService {
                 CorporateTimeSheet previousVersion = (CorporateTimeSheet) AuditService.instance().mostRecentVersion(CorporateTimeSheet.class, ptoAccruedTS.getId());
                 if (previousVersion != null) {
                     ptoAccruedTS.setHours(previousVersion.getHours());
-                        dao.getEntityManager().merge(ptoAccruedTS);
-                        dao.addTimeSheetUpdateComment("System Reverting recent Change: ", previousVersion.getHours(), ptoAccruedTS);
+                    dao.getEntityManager().merge(ptoAccruedTS);
+                    dao.addTimeSheetUpdateComment("System Reverting recent Change: ", previousVersion.getHours(), ptoAccruedTS);
+                }
+            }
+        }
+
+    }
+
+    public void addCarryForwardLeaves() {
+        CorporateTimeSheetDao dao = CorporateTimeSheetDao.instance();
+        for (Employee emp : OfficeSecurityService.instance().getUsersWithRoles(0, 5000, OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+            if (emp.getStartDate() == null) {
+                continue;
+            }
+            if (hasMoreThanOneYearService(emp) == true && Branch.Hyderabad.equals(emp.getBranch())) {
+                CorporateTimeSheet ptoAccruedTS = dao.getPTOAccruedTimeSheet(emp);
+                if (ptoAccruedTS != null) {
+
+                    BigDecimal carryForward = new BigDecimal("40");
+                    if (ptoAccruedTS.getHours().doubleValue() >= 40) {
+                        ptoAccruedTS.setHours(carryForward);
+                    } else {
+                        ptoAccruedTS.setHours(ptoAccruedTS.getHours());
                     }
                 }
             }
-
+        }
     }
 
     public static CorporateTimeAccuralService instance() {
