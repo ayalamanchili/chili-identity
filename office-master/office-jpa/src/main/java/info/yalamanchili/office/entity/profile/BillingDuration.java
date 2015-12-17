@@ -15,5 +15,6 @@ public enum BillingDuration {
 
     HOUR,
     DAY,
-    MONTH
+    MONTH,
+    WEEK
 }

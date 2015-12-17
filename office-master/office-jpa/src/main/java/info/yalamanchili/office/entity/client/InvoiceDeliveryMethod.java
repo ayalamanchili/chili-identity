@@ -15,5 +15,7 @@ public enum InvoiceDeliveryMethod {
 
     MANUAL,
     EMAIL,
-    FAX
+    FAX,
+    UPLOAD,
+    DO_NOT_SEND_INVOICES;
 }
