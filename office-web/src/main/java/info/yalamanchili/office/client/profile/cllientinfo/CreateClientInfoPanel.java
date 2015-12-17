@@ -294,36 +294,9 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
 
         if ((ReadAllClientInfoPanel.instance().numberOfRecords > 0) && (event.getSource().equals(endPreviousProjectFlagField.getBox()))) {
             previousProjectEndDate.setVisible(endPreviousProjectFlagField.getValue());
-            populateEndDate();
         }
 
         super.onClick(event);
-    }
-
-    public void populateEndDate() {
-        logger.info("urllllllllll : " + getProjectEndDate());
-        HttpService.HttpServiceAsync.instance().doGet(getProjectEndDate(), OfficeWelcome.instance().getHeaders(), true,
-                new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        //here i got exact prev proj end date
-                        logger.info("argsssssssssss :" + arg0);
-                        getDate(arg0);
-                    }
-                }
-        );
-    }
-
-    private void getDate(String arg) {
-        Date result = null;
-        DateTimeFormat dateTimeFormat = DateTimeFormat.getFormat(arg);
-        result = dateTimeFormat.parse(arg);
-        //here project end date is pre populating to current date
-        //previousProjectEndDate.setDate(result);
-    }
-
-    private String getProjectEndDate() {
-        return OfficeWelcome.constants.root_url() + "clientinformation/enddate/" + endPreviousProjectFlagField.getValue();
     }
 
     @Override
