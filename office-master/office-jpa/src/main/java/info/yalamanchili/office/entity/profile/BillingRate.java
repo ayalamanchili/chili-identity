@@ -8,10 +8,13 @@
 package info.yalamanchili.office.entity.profile;
 
 import info.chili.jpa.AbstractEntity;
+import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
@@ -30,9 +33,10 @@ import org.hibernate.search.annotations.Indexed;
 @Entity
 @Audited
 public class BillingRate extends AbstractEntity {
+
     @Transient
     private static final long serialVersionUID = 1L;
-    
+
     /**
      * PayRate
      */
@@ -40,7 +44,7 @@ public class BillingRate extends AbstractEntity {
     /**
      * BillingRate
      */
-    @NotNull(message = "{billingRate.not.empty.msg}")
+    //@NotNull(message = "{billingRate.not.empty.msg}")
     protected BigDecimal billingRate;
     /**
      * OverTime PayRate
@@ -56,6 +60,16 @@ public class BillingRate extends AbstractEntity {
     @Temporal(javax.persistence.TemporalType.DATE)
     @NotNull(message = "{effectiveDate.not.empty.msg}")
     protected Date effectiveDate;
+
+    @Enumerated(EnumType.STRING)
+    protected InvoiceFrequency billingInvoiceFrequency;
+
+    protected BigDecimal subContractorPayRate;
+
+    protected BigDecimal subContractorOverTimePayRate;
+
+    @Enumerated(EnumType.STRING)
+    protected InvoiceFrequency subContractorInvoiceFrequency;
 
     public BigDecimal getPayRate() {
         return payRate;
@@ -104,4 +118,38 @@ public class BillingRate extends AbstractEntity {
     public void setEffectiveDate(Date effectiveDate) {
         this.effectiveDate = effectiveDate;
     }
+
+    public InvoiceFrequency getBillingInvoiceFrequency() {
+        return billingInvoiceFrequency;
+    }
+
+    public void setBillingInvoiceFrequency(InvoiceFrequency billingInvoiceFrequency) {
+        this.billingInvoiceFrequency = billingInvoiceFrequency;
+    }
+
+    public BigDecimal getSubContractorPayRate() {
+        return subContractorPayRate;
+    }
+
+    public void setSubContractorPayRate(BigDecimal subContractorPayRate) {
+        this.subContractorPayRate = subContractorPayRate;
+    }
+
+    public BigDecimal getSubContractorOverTimePayRate() {
+        return subContractorOverTimePayRate;
+    }
+
+    public void setSubContractorOverTimePayRate(BigDecimal subContractorOverTimePayRate) {
+        this.subContractorOverTimePayRate = subContractorOverTimePayRate;
+    }
+
+    public InvoiceFrequency getSubContractorInvoiceFrequency() {
+        return subContractorInvoiceFrequency;
+    }
+
+    public void setSubContractorInvoiceFrequency(InvoiceFrequency subContractorInvoiceFrequency) {
+        this.subContractorInvoiceFrequency = subContractorInvoiceFrequency;
+    }
+    
+    
 }
