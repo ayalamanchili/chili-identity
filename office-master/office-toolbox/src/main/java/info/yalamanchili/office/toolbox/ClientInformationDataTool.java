@@ -286,7 +286,7 @@ public class ClientInformationDataTool {
             if (MiddleVendorID != null) {
                 cpd.setMiddleVendorID(new Long(convertDcimalToWhole(getCellNumericValue(record, 83))));
                 middleVendor = VendorDao.instance().findById(cpd.getMiddleVendorID());
-                clientInfo.setVendor(middleVendor);
+                clientInfo.setMiddleVendor(middleVendor);
             }
 
             cpd.setIsCPDFilled(getCellStringValue(record, 42));
@@ -396,7 +396,7 @@ public class ClientInformationDataTool {
             if (cpd.getSubContractorWorkOrderNo() != null) {
                 project.setSubContractorWorkOrderNo(cpd.getSubContractorWorkOrderNo());
             }
-            if (cpd.getVendorID() != null) {
+            if (VendorID != null) {
                 project.setVendor(vendor);
                 client.getVendors().add(vendor);
                 vendor.getClients().add(client);
@@ -408,6 +408,12 @@ public class ClientInformationDataTool {
             if (cpd.getEndDate() != null) {
                 project.setEndDate(cpd.getEndDate());
             }
+
+            if (MiddleVendorID != null) {
+                project.setMiddleVendor(middleVendor);
+                VendorDao.instance().save(middleVendor);
+            }
+
             project.setClient(client);
             ClientDao.instance().save(client);
 
