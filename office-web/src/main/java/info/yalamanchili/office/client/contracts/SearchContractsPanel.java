@@ -18,8 +18,8 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.gwt.SearchComposite;
+import info.yalamanchili.office.client.profile.cllientinfo.ClientInformationCompany;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -29,8 +29,6 @@ import java.util.logging.Logger;
  * @author anuyalamanchili
  */
 public class SearchContractsPanel extends SearchComposite {
-
-    protected SelectCompanyWidget selectCompnayWidget = new SelectCompanyWidget(false, false);
 
     private static Logger logger = Logger.getLogger(SearchContractsPanel.class.getName());
 
@@ -63,7 +61,7 @@ public class SearchContractsPanel extends SearchComposite {
         addEnumField("invoiceFrequency", false, false, InvoiceFrequency.names());
         String[] employeeTypeStrs = {"Corporate Employee", "Employee", "Subcontractor", "1099 Contractor", "W2 Contractor"};
         addEnumField("employeeType", false, false, employeeTypeStrs);
-        addDropDown("company", selectCompnayWidget);
+        addEnumField("company", false, false, ClientInformationCompany.names());
         addField("recruiter", DataType.STRING_FIELD);
     }
 

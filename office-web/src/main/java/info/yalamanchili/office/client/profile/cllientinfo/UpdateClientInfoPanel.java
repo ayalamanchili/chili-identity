@@ -24,7 +24,6 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.admin.client.SelectClientWidget;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
 import info.yalamanchili.office.client.admin.clientlocation.SelectClientLocationWidget;
-import info.yalamanchili.office.client.admin.project.SelectProjectWidget;
 import info.yalamanchili.office.client.admin.subcntrcontact.SelectSubcontractorContactWidget;
 import info.yalamanchili.office.client.admin.subcntrlocation.SelectSubcontractorLocationWidget;
 import info.yalamanchili.office.client.admin.subcontractor.SelectSubcontractorWidget;
@@ -48,7 +47,6 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
 
     private static Logger logger = Logger.getLogger(UpdateClientInfoPanel.class.getName());
     SelectPracticeWidget selectPractiseWidgetF = new SelectPracticeWidget(false, true, Alignment.HORIZONTAL);
-    SelectProjectWidget selectProjectWidgetF = new SelectProjectWidget(true, false);
     EnumField servicesF;
     EnumField sectorsF;
 
@@ -69,7 +67,11 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignEntityValueFromField("vendorLocation", entity);
         assignEntityValueFromField("vendorRecruiters", entity);
         assignEntityValueFromField("middleVendor", entity);
-        assignEntityValueFromField("clientProject", entity);
+        if (entity.get("clientProject") != null) {
+            JSONObject project = entity.get("clientProject").isObject();
+            assignFieldValueFromEntity("name", project, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("purchaseOrderNo", project, DataType.STRING_FIELD);
+        }
         assignEntityValueFromField("vendorPaymentTerms", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
@@ -159,7 +161,6 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignFieldValueFromEntity("vendorLocation", entity, null);
         assignFieldValueFromEntity("vendorRecruiters", entity, null);
         assignFieldValueFromEntity("middleVendor", entity, null);
-        assignFieldValueFromEntity("clientProject", entity, null);
         assignFieldValueFromEntity("vendorPaymentTerms", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
@@ -214,7 +215,6 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     protected void addListeners() {
         updateBillingRateIcn.addClickHandler(this);
         selectPractiseWidgetF.getListBox().addChangeHandler(this);
-        selectProjectWidgetF.setReadOnly(true);
     }
 
     @Override
@@ -259,10 +259,11 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         };
         addDropDown("vendorRecruiters", selectVendorRecruiterContactsWidget);
         addDropDown("middleVendor", new SelectMiddleVendorWidget(false, false, Alignment.HORIZONTAL));
-        addDropDown("clientProject", selectProjectWidgetF);
         addField("vendorPaymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("name", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("purchaseOrderNo", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_TIME, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_RELATIONSHIP)) {
             entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
             addField("itemNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);

@@ -20,7 +20,6 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.admin.client.SelectClientWidget;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
 import info.yalamanchili.office.client.admin.clientlocation.SelectClientLocationWidget;
-import info.yalamanchili.office.client.admin.project.SelectProjectWidget;
 import info.yalamanchili.office.client.admin.subcntrcontact.SelectSubcontractorContactWidget;
 import info.yalamanchili.office.client.admin.subcntrlocation.SelectSubcontractorLocationWidget;
 import info.yalamanchili.office.client.admin.subcontractor.SelectSubcontractorWidget;
@@ -70,10 +69,10 @@ public class ReadClientInfoPanel extends ReadComposite {
         assignFieldValueFromEntity("vendorLocation", entity, null);
         assignFieldValueFromEntity("vendorRecruiters", entity, null);
         assignFieldValueFromEntity("middleVendor", entity, null);
-        assignFieldValueFromEntity("clientProject", entity, null);
         assignFieldValueFromEntity("vendorPaymentTerms", entity, DataType.STRING_FIELD);
         if (entity.get("clientProject") != null) {
             JSONObject project = entity.get("clientProject").isObject();
+            assignFieldValueFromEntity("name", project, DataType.STRING_FIELD);
             assignFieldValueFromEntity("purchaseOrderNo", project, DataType.STRING_FIELD);
         }
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
@@ -187,9 +186,9 @@ public class ReadClientInfoPanel extends ReadComposite {
         addDropDown("vendorRecruiters", selectVendorRecruiterContactsWidget);
         addDropDown("middleVendor", new SelectMiddleVendorWidget(true, false, Alignment.HORIZONTAL));
         addField("vendorPaymentTerms", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addDropDown("clientProject", new SelectProjectWidget(true, false));
         addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("name", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("purchaseOrderNo", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         if (checkPermission()) {
             entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
