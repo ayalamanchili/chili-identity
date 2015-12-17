@@ -101,12 +101,13 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table Action"));
-        table.setText(0, 1, getKeyValue("Name"));
-        table.setText(0, 2, getKeyValue("Type"));
-        table.setText(0, 3, getKeyValue("Start Date"));
-        table.setText(0, 4, getKeyValue("End Date"));
-        table.setText(0, 5, getKeyValue("Total Amount"));
-        table.setText(0, 6, getKeyValue("Status"));
+        table.setText(0, 1, getKeyValue("Number"));
+        table.setText(0, 2, getKeyValue("Name"));
+        table.setText(0, 3, getKeyValue("Type"));
+        table.setText(0, 4, getKeyValue("Start Date"));
+        table.setText(0, 5, getKeyValue("End Date"));
+        table.setText(0, 6, getKeyValue("Total Amount"));
+        table.setText(0, 7, getKeyValue("Status"));
     }
 
     @Override
@@ -114,13 +115,14 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
+            table.setText(i, 1, JSONUtils.toString(entity, EXPENSE_REPORT_NUMBER));
             JSONObject emp = (JSONObject) entity.get(EMPLOYEE);
-            table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
-            setEnumColumn(i, 2, entity, ExpenseReportStatus.class.getSimpleName(), EXPENSE_FORM_TYPE);
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, START_DATE), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, END_DATE), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 5, FormatUtils.formarCurrency(JSONUtils.toString(entity, TOTAL_EXPENSES)));
-            setEnumColumn(i, 6, entity, ExpenseReportStatus.class.getSimpleName(), "status");
+            table.setText(i, 2, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
+            setEnumColumn(i, 3, entity, ExpenseReportStatus.class.getSimpleName(), EXPENSE_FORM_TYPE);
+            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, START_DATE), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, END_DATE), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 6, FormatUtils.formarCurrency(JSONUtils.toString(entity, TOTAL_EXPENSES)));
+            setEnumColumn(i, 7, entity, ExpenseReportStatus.class.getSimpleName(), "status");
         }
     }
 
