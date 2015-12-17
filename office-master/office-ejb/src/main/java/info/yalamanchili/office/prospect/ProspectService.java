@@ -97,14 +97,6 @@ public class ProspectService {
     public ProspectDto read(Long id) {
         Prospect ec = prospectDao.findById(id);
         ProspectDto dto = ProspectDto.map(mapper, ec);
-        //populate comment in update panel 
-        //null check for comment as it is not required during create prospect
-        if (CommentDao.instance().find(ec) == null) {
-            CommentDao.instance().addComment(dto.getComment(), ec);
-        } else {
-            Comment comment = CommentDao.instance().find(ec);
-            dto.setComment(comment.getComment());
-        }
         return dto;
     }
 
@@ -179,19 +171,12 @@ public class ProspectService {
             contact.getAddresss().get(0).setCountry(dto.getAddress().getCountry());
             contact.getAddresss().get(0).setZip(dto.getAddress().getZip());
         }
-
         //contact
         contact = em.merge(contact);
         entity.setContact(contact);
-        Comment comment = null;
         if (dto.getComment() != null) {
-            comment = CommentDao.instance().addComment(dto.getComment(), entity);
-            CommentDao.instance().save(comment);
-        } else {
-            comment = CommentDao.instance().addComment(dto.getComment(), entity);
-            dto.setComment(comment.getComment());
-        }
-        CommentDao.instance().save(comment);
+            CommentDao.instance().addComment(dto.getComment(), entity);
+        } 
         prospectDao.getEntityManager().merge(entity);
         return entity;
     }
