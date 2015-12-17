@@ -66,9 +66,9 @@ public class ReadClientInfoPanel extends ReadComposite {
         assignFieldValueFromEntity("clientLocation", entity, null);
         assignFieldValueFromEntity("vendor", entity, null);
         assignFieldValueFromEntity("vendorContact", entity, null);
-        assignFieldValueFromEntity("vendorAPContact", entity, null);
+        assignFieldValueFromEntity("vendorAPContacts", entity, null);
         assignFieldValueFromEntity("vendorLocation", entity, null);
-        assignFieldValueFromEntity("vendorRecruiter", entity, null);
+        assignFieldValueFromEntity("vendorRecruiters", entity, null);
         assignFieldValueFromEntity("middleVendor", entity, null);
         assignFieldValueFromEntity("clientProject", entity, null);
         assignFieldValueFromEntity("vendorPaymentTerms", entity, DataType.STRING_FIELD);
@@ -156,6 +156,9 @@ public class ReadClientInfoPanel extends ReadComposite {
         }
     };
 
+    SelectVendorAcctPayContact selectVendorAPContactsW = null;
+    SelectVendorRecruiterContactWidget selectVendorRecruiterContactsWidget = null;
+
     @Override
     protected void addWidgets() {
         addField("consultantJobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -167,9 +170,21 @@ public class ReadClientInfoPanel extends ReadComposite {
         addDropDown("clientLocation", new SelectClientLocationWidget(true, false, Alignment.HORIZONTAL));
         addDropDown("vendor", new SelectVendorWidget(true, false, Alignment.HORIZONTAL));
         addDropDown("vendorContact", new SelectVendorContactWidget(true, false, Alignment.HORIZONTAL));
-        addDropDown("vendorAPContact", new SelectVendorAcctPayContact(true, false, Alignment.HORIZONTAL));
+        selectVendorAPContactsW = new SelectVendorAcctPayContact(false, false, Alignment.HORIZONTAL) {
+            @Override
+            public boolean enableMultiSelect() {
+                return true;
+            }
+        };
+        addDropDown("vendorAPContacts", selectVendorAPContactsW);
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(true, false, Alignment.HORIZONTAL));
-        addDropDown("vendorRecruiter", new SelectVendorRecruiterContactWidget(true, false, Alignment.HORIZONTAL));
+        selectVendorRecruiterContactsWidget = new SelectVendorRecruiterContactWidget(false, false, Alignment.HORIZONTAL) {
+            @Override
+            public boolean enableMultiSelect() {
+                return true;
+            }
+        };
+        addDropDown("vendorRecruiters", selectVendorRecruiterContactsWidget);
         addDropDown("middleVendor", new SelectMiddleVendorWidget(true, false, Alignment.HORIZONTAL));
         addField("vendorPaymentTerms", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addDropDown("clientProject", new SelectProjectWidget(true, false));
@@ -198,7 +213,6 @@ public class ReadClientInfoPanel extends ReadComposite {
                 addDropDown("subcontractorAddress", new SelectSubcontractorLocationWidget(true, false, Alignment.HORIZONTAL));
                 addField("subcontractorPayRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
                 addField("subcontractorOvertimePayRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-                String[] invoiceFrequencie = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
                 addEnumField("subcontractorinvoiceFrequency", true, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
                 addField("subcontractorpaymentTerms", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
                 addField("subcontractorw4Filled", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);

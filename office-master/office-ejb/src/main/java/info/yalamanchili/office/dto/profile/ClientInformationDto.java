@@ -117,7 +117,7 @@ public class ClientInformationDto implements Serializable {
     /**
      * Vendor AP Contact
      */
-    protected Set<Contact> vendorAPContact;
+    protected Set<Contact> vendorAPContacts;
     /**
      * Vendor Location
      */
@@ -278,7 +278,7 @@ public class ClientInformationDto implements Serializable {
     /**
      *
      */
-    protected Set<Contact> vendorRecruiter;
+    protected Set<Contact> vendorRecruiters;
     /**
      *
      */
@@ -807,21 +807,20 @@ public class ClientInformationDto implements Serializable {
         this.sectorsAndBUs = sectorsAndBUs;
     }
 
-    public Set<Contact> getVendorAPContact() {
-        return vendorAPContact;
+    public Set<Contact> getVendorAPContacts() {
+        return vendorAPContacts;
     }
 
-    public void setVendorAPContact(Set<Contact> vendorAPContact) {
-        this.vendorAPContact = vendorAPContact;
+    public void setVendorAPContacts(Set<Contact> vendorAPContacts) {
+        this.vendorAPContacts = vendorAPContacts;
     }
 
-    public Set<Contact> getVendorRecruiter() {
-        return vendorRecruiter;
+    public Set<Contact> getVendorRecruiters() {
+        return vendorRecruiters;
     }
 
-    public void setVendorRecruiter(Set<Contact> vendorRecruiter) {
-        this.vendorRecruiter = vendorRecruiter;
+    public void setVendorRecruiters(Set<Contact> vendorRecruiters) {
+        this.vendorRecruiters = vendorRecruiters;
     }
 
-    
 }
