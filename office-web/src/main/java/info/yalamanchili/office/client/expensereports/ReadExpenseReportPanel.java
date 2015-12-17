@@ -100,6 +100,7 @@ public class ReadExpenseReportPanel extends ReadComposite {
         startDate = (DateField) fields.get(START_DATE);
         addField(END_DATE, true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         endDate = (DateField) fields.get(END_DATE);
+        addField(EXPENSE_REPORT_NUMBER, true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField(PROJECT_NAME, true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         projectName = (StringField) fields.get(PROJECT_NAME);
         addField(PROJECT_NUMBER, true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -146,6 +147,7 @@ public class ReadExpenseReportPanel extends ReadComposite {
         assignFieldValueFromEntity(END_DATE, entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity(PROJECT_NAME, entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity(PROJECT_NUMBER, entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity(EXPENSE_REPORT_NUMBER, entity, DataType.STRING_FIELD);
         JSONArray expenseItems = JSONUtils.toJSONArray(entity.get(EXPENSE_ITEMS));
         populateExpenseItems(expenseItems);
         JSONArray expenseReceipts = JSONUtils.toJSONArray(entity.get(EXPENSE_RECEIPT));
