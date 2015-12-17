@@ -133,12 +133,6 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
         return res;
     }
 
-    @GET
-    @Path("/enddate/{endPrevProj}")
-    public String getPrevProjEndDate(@PathParam("endPrevProj") Boolean endprevProj) {
-        return clientInformationDao.queryForPrevProjEndDate();
-    }
-
     @PUT
     @Validate
     @Path("/project-off-boarding")
