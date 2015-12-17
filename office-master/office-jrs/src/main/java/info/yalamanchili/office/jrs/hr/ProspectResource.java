@@ -171,20 +171,6 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     
     protected final String[] ON_BOARDING_FORMS_LIST = {"W2_On_Boarding", "I9_On_Boarding"};
     
-    @GET
-    @Path("/invite-code/{id}")
-    public void sendInviteCodeEmail(@PathParam("id") Long id) {
-        Prospect prospect = prospectDao.findById(id);
-        InitiateOnBoardingDto dto = new InitiateOnBoardingDto();
-        dto.setEmail(prospect.getContact().getPrimaryEmail().getEmail());
-        //TODO this should be user defined
-        EmployeeType type = new EmployeeType();
-        type.setName(EmployeeType.EMPLOYEE);
-        dto.setEmployeeType(EmployeeTypeDao.instance().findByName(EmployeeType.EMPLOYEE));
-        //TODO this should be user defined
-        dto.setCompany(CompanyDao.instance().findByCompanyName(Company.SSTECH_LLC));
-        EmployeeOnBoardingService.instance().initiateOnBoarding(dto);
-    }
     
     @XmlRootElement
     @XmlType

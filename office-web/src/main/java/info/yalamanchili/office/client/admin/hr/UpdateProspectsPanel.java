@@ -99,6 +99,7 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
         assignEntityValueFromField("screenedBy", entity);
         assignEntityValueFromField("processDocSentDate", entity);
         assignEntityValueFromField("status", entity);
+        assignEntityValueFromField("comment", entity);
         return entity;
     }
 
@@ -139,6 +140,7 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
         assignFieldValueFromEntity("screenedBy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("processDocSentDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("comment", entity, DataType.TEXT_AREA_FIELD);
     }
 
     @Override
@@ -178,6 +180,7 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
         addField("screenedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("processDocSentDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("status", false, false, ProspectStatus.names(), Alignment.HORIZONTAL);
+        addField("comment", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         statesF = (EnumField) fields.get("state");
         countriesF = (EnumField) fields.get("country");
         alignFields();

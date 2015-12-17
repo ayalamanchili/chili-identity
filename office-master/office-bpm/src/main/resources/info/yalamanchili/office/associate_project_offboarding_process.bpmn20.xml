@@ -12,6 +12,7 @@
     <process id="associate_project_offboarding_process">
         <startEvent id="projectOffBoardingTaskCreated" />
         <sequenceFlow sourceRef="projectOffBoardingTaskCreated" targetRef="projectOffBoardingTask" />
+        <!-- this should got to contacts admin-->
         <!--Project Offboarding task created-->
         <userTask id="projectOffBoardingTask" 
                   name="Project Offboarding Task for ${currentEmployee.firstName} ${currentEmployee.lastName}">
@@ -88,8 +89,8 @@
             name="Task Email Escalation1"
             activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
         </serviceTask>
-
-        <userTask id="projectOffBoardingBillingTask" name="Project OffBoarding Billing Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" activiti:candidateGroups="ROLE_BILLING">
+        <!--this task should ideally should go to billing and invoicinf admin-->
+        <userTask id="projectOffBoardingBillingTask" name="Project OffBoarding Billing Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" activiti:candidateGroups="ROLE_BILLING_AND_INVOICING">
             <documentation> 
                 Associate Project Offboarding Billing Task Details:
                 Please update billing records for this employee and complete this task:

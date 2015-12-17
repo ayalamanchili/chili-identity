@@ -18,6 +18,7 @@ import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.employee.prefeval.PerformanceEvaluationWizard.PerformanceEvaluationWizardType;
@@ -37,6 +38,7 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
         Start, End
     }
     protected CreatePerformanceEvaluationPanelType type;
+    protected BooleanField submitForApprovalF = new BooleanField(OfficeWelcome.constants, "Submit For Approval", "PerformanceEvaluation", false, false, Alignment.HORIZONTAL);
 
     public CreatePerformanceEvaluationPanel(CreatePerformanceEvaluationPanelType type) {
         super(CreateCompositeType.CREATE);
@@ -137,7 +139,7 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
     }
 
     public String getSubmitForApproval() {
-        return ((BooleanField) fields.get("submitForApproval")).getValue().toString();
+        return submitForApprovalF.getValue().toString();
     }
 
     protected static HTML managerReviewStartInstructions = new HTML("<!doctype html>\n"
@@ -210,7 +212,8 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
                 addField("employeeComments", false, false, DataType.TEXT_AREA_FIELD);
             }
             if (PerformanceEvaluationWizard.instance().type.equals(PerformanceEvaluationWizardType.SELF_MANAGER)) {
-                addField("submitForApproval", false, false, DataType.BOOLEAN_FIELD);
+                entityActionsPanel.add(submitForApprovalF);
+                submitForApprovalF.setValue(true);
             }
             if (PerformanceEvaluationWizard.instance().type.equals(PerformanceEvaluationWizardType.MANAGER)) {
                 entityFieldsPanel.add(managerReviewEndInstructions);

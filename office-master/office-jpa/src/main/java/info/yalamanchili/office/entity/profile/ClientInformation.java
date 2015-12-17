@@ -96,6 +96,7 @@ public class ClientInformation extends AbstractEntity {
     /**
      * Client
      */
+
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Client_ClientInformations")
     @NotNull(message = "{client.not.empty.msg}")
@@ -332,6 +333,16 @@ public class ClientInformation extends AbstractEntity {
     @Field
     @NotEmpty(message = "{sectorsAndBUs.not.empty.msg}")
     protected String sectorsAndBUs;
+    
+    protected boolean isEndDateConfirmed;
+
+    public boolean isIsEndDateConfirmed() {
+        return isEndDateConfirmed;
+    }
+
+    public void setIsEndDateConfirmed(boolean isEndDateConfirmed) {
+        this.isEndDateConfirmed = isEndDateConfirmed;
+    }
 
     public ClientInformation() {
         super();

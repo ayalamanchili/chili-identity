@@ -17,8 +17,6 @@ public class Auth {
         ROLE_PAYROLL_AND_BENIFITS,
         ROLE_ACCOUNTS_RECEIVABLE,
         ROLE_ACCOUNTS_PAYABLE,
-        ROLE_BILLING,
-        ROLE_INVOICING,
         ROLE_SALES_AND_MARKETING,
         ROLE_CONTRACTS_ADMIN,
         ROLE_INFORMATION_TECHNOLOGY,
@@ -43,7 +41,8 @@ public class Auth {
         ROLE_BIS_VIEW,
         ROLE_PROSPECTS_MANAGER,
         ROLE_CONTRACTS_FULL_VIEW,
-        ROLE_BILLING_AND_INVOICING
+        ROLE_BILLING_AND_INVOICING,
+        ROLE_CONTRACTS
     }
 
     public static boolean isAdmin() {
