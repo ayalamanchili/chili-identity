@@ -437,4 +437,14 @@ public class ExpenseReport extends AbstractEntity {
         return "ExpenseReport{" + "location=" + location + ", department=" + department + ", startDate=" + startDate + ", endDate=" + endDate + ", projectName=" + projectName + ", projectNumber=" + projectNumber + ", expenseReimbursePaymentMode=" + expenseReimbursePaymentMode + ", submittedDate=" + submittedDate + ", approvedByManager=" + approvedByManager + ", approvedByManagerDate=" + approvedByManagerDate + ", approvedByAccountsDept=" + approvedByAccountsDept + ", approvedByAccountsDeptDate=" + approvedByAccountsDeptDate + ", approvedByCEO=" + approvedByCEO + ", approvedByCEODate=" + approvedByCEODate + ", bpmProcessId=" + bpmProcessId + ", status=" + status + ", expenseFormType=" + expenseFormType + ", totalExpenses=" + totalExpenses + ", approvalManagerId=" + approvalManagerId + '}';
     }
 
+    @Transient
+    protected String expenseReportNumber;
+
+    public String getExpenseReportNumber() {
+        return "ERN-" + String.format("%04d", getId());
+    }
+
+    public void setExpenseReportNumber(String expenseReportNumber) {
+        this.expenseReportNumber = expenseReportNumber;
+    }
 }
