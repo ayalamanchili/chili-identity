@@ -15,13 +15,18 @@ import info.yalamanchili.office.entity.practice.Practice;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
@@ -82,6 +87,13 @@ public class ClientInformation extends AbstractEntity {
     @Transient
     protected Date previousProjectEndDate;
     /**
+     * a cpd can have a different company than that payroll company
+     */
+    @org.hibernate.annotations.Index(name = "CI_CMPNY_IDX")
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    protected ClientInformationCompany company;
+    /**
      * Client
      */
 
@@ -117,9 +129,10 @@ public class ClientInformation extends AbstractEntity {
     /**
      * Vendor AP Contact
      */
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_VendorAPContact_ClientInformations")
-    protected Contact vendorAPContact;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "clientinformation_vendor_apcontacts")
+    @ForeignKey(name = "FK_VendorAPContacts_ClientInformations")
+    protected Set<Contact> vendorAPContacts;
     /**
      * Vendor Location
      */
@@ -183,9 +196,9 @@ public class ClientInformation extends AbstractEntity {
     /**
      * recruiter
      */
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_Recruiter_ClientInformations")
-    protected Employee recruiter;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @ForeignKey(name = "FK_Recruiters_ClientInformations")
+    protected Set<Employee> recruiters;
     /**
      * Status
      */
@@ -292,9 +305,10 @@ public class ClientInformation extends AbstractEntity {
     @ForeignKey(name = "FK_ClientProject_ClientInformations")
     protected Project clientProject;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_VendorRecruiter_ClientInformations")
-    protected Contact vendorRecruiter;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "clientinformation_vendor_recruiters")
+    @ForeignKey(name = "FK_VendorRecruiters_ClientInformations")
+    protected Set<Contact> vendorRecruiters;
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_MiddleVendor_ClientInformations")
@@ -382,6 +396,14 @@ public class ClientInformation extends AbstractEntity {
         this.previousProjectEndDate = previousProjectEndDate;
     }
 
+    public ClientInformationCompany getCompany() {
+        return company;
+    }
+
+    public void setCompany(ClientInformationCompany company) {
+        this.company = company;
+    }
+
     public Client getClient() {
         return client;
     }
@@ -420,14 +442,6 @@ public class ClientInformation extends AbstractEntity {
 
     public void setVendorContact(Contact vendorContact) {
         this.vendorContact = vendorContact;
-    }
-
-    public Contact getVendorAPContact() {
-        return vendorAPContact;
-    }
-
-    public void setVendorAPContact(Contact vendorAPContact) {
-        this.vendorAPContact = vendorAPContact;
     }
 
     public Address getVendorLocation() {
@@ -541,12 +555,15 @@ public class ClientInformation extends AbstractEntity {
         this.invoiceDeliveryMethod = invoiceDeliveryMethod;
     }
 
-    public Employee getRecruiter() {
-        return recruiter;
+    public Set<Employee> getRecruiters() {
+        if (this.recruiters == null) {
+            this.recruiters = new HashSet();
+        }
+        return recruiters;
     }
 
-    public void setRecruiter(Employee recruiter) {
-        this.recruiter = recruiter;
+    public void setRecruiters(Set<Employee> recruiters) {
+        this.recruiters = recruiters;
     }
 
     public String getVisaStatus() {
@@ -774,14 +791,6 @@ public class ClientInformation extends AbstractEntity {
         this.clientProject = clientProject;
     }
 
-    public Contact getVendorRecruiter() {
-        return vendorRecruiter;
-    }
-
-    public void setVendorRecruiter(Contact vendorRecruiter) {
-        this.vendorRecruiter = vendorRecruiter;
-    }
-
     public Vendor getMiddleVendor() {
         return middleVendor;
     }
@@ -844,6 +853,28 @@ public class ClientInformation extends AbstractEntity {
 
     public void setSectorsAndBUs(String sectorsAndBUs) {
         this.sectorsAndBUs = sectorsAndBUs;
+    }
+
+    public Set<Contact> getVendorAPContacts() {
+        if (this.vendorAPContacts == null) {
+            this.vendorAPContacts = new HashSet();
+        }
+        return vendorAPContacts;
+    }
+
+    public void setVendorAPContacts(Set<Contact> vendorAPContacts) {
+        this.vendorAPContacts = vendorAPContacts;
+    }
+
+    public Set<Contact> getVendorRecruiters() {
+        if (this.vendorRecruiters == null) {
+            this.vendorRecruiters = new HashSet();
+        }
+        return vendorRecruiters;
+    }
+
+    public void setVendorRecruiters(Set<Contact> vendorRecruiters) {
+        this.vendorRecruiters = vendorRecruiters;
     }
 
     @Override

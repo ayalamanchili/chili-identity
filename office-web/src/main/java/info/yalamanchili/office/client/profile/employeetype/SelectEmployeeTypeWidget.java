@@ -23,14 +23,18 @@ public class SelectEmployeeTypeWidget extends SelectComposite {
         super(OfficeWelcome.constants, "EmployeeType", readOnly, isRequired, Alignment.HORIZONTAL);
     }
 
+    public SelectEmployeeTypeWidget(Boolean readOnly, Boolean isRequired, Alignment alignment) {
+        super(OfficeWelcome.constants, "EmployeeType", readOnly, isRequired, alignment);
+    }
+
     protected void fetchDropDownData() {
         HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, "id", "name"),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String entityString) {
-                processData(entityString);
-            }
-        });
+                    @Override
+                    public void onResponse(String entityString) {
+                        processData(entityString);
+                    }
+                });
     }
 
     @Override

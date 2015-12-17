@@ -114,7 +114,7 @@ public class ClientContactDataTool {
                 }
             }
             i += 1;
-            ClientDao.instance().getEntityManager().merge(client);
+           // ClientDao.instance().getEntityManager().merge(client);
         }
         System.out.println("Total Client Contact Records Written :::<<<>>>>::: " + i);
     }

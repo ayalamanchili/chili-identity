@@ -12,6 +12,7 @@ import info.chili.gwt.widgets.CMenuBar;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.admin.groupemails.EmailGroupsSidePanel;
 import info.yalamanchili.office.client.contracts.ContractsSidePanel;
 import info.yalamanchili.office.client.contracts.ReadAllContractsPanel;
 import info.yalamanchili.office.client.employee.prbprdeval.ProbatioPeriodPerfEvaluationReportsSidePanel;
@@ -32,7 +33,7 @@ public class ReportsMenu extends CMenuBar {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP)) {
             addMenuItem("Profile Reports", "Profile Reports", profileReportsMaintainenceCmd);
         }
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_EXPENSE, ROLE.ROLE_TIME, ROLE.ROLE_ACCOUNT_VIEW)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONTRACTS_FULL_VIEW)) {
             addMenuItem("Contracts", "Contracts", contractingMaintainenceCmd);
         }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
@@ -46,6 +47,9 @@ public class ReportsMenu extends CMenuBar {
         }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
             addMenuItem("Retirement Plan", "Retirement Plan", retirementPlanReportsMaintainenceCmd);
+        }
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
+            addMenuItem("Email Groups", "Email Groups", emailMenuMaintainenceCmd);
         }
     }
     static Command contractingMaintainenceCmd = new Command() {
@@ -95,6 +99,13 @@ public class ReportsMenu extends CMenuBar {
             TabPanel.instance().getReportingPanel().entityPanel.clear();
             TabPanel.instance().getReportingPanel().sidePanelTop.clear();
             TabPanel.instance().getReportingPanel().sidePanelTop.add(new CorporateStatusReportSidePanel());
+        }
+    };
+    static Command emailMenuMaintainenceCmd = new Command() {
+        public void execute() {
+            TabPanel.instance().getAdminPanel().entityPanel.clear();
+            TabPanel.instance().getAdminPanel().sidePanelTop.clear();
+            TabPanel.instance().getAdminPanel().sidePanelTop.add(new EmailGroupsSidePanel());
         }
     };
 }

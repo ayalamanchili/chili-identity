@@ -24,7 +24,7 @@ import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
-import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Email;
 
 /**
  *
@@ -43,7 +43,7 @@ public class EmployeeOnBoarding extends AbstractEntity {
      * start date
      */
     @Temporal(javax.persistence.TemporalType.DATE)
-    @NotNull
+    @NotNull(message = "{startDate.not.empty.msg}")
     protected Date startedDate;
 
     /**
@@ -62,7 +62,8 @@ public class EmployeeOnBoarding extends AbstractEntity {
     /**
      *
      */
-    @NotEmpty
+    @Email(message = "Enter a valid email address")
+    @NotNull(message = "{email.not.empty.msg}")
     protected String email;
     /**
      *

@@ -8,7 +8,7 @@
  */
 package info.yalamanchili.office.dto.client;
 
-import info.yalamanchili.office.entity.Company;
+import info.yalamanchili.office.entity.profile.ClientInformationCompany;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -24,7 +24,6 @@ public class ContractSearchDto extends ContractDto {
     protected String employeeLastName;
     protected String city;
     protected String state;
-    protected Company company;
     protected String clientCity;
     protected String clientState;
     protected String vendorState;
@@ -62,11 +61,11 @@ public class ContractSearchDto extends ContractDto {
         this.vendorCity = vendorCity;
     }
 
-    public Company getCompany() {
+    public ClientInformationCompany getCompany() {
         return company;
     }
 
-    public void setCompany(Company company) {
+    public void setCompany(ClientInformationCompany company) {
         this.company = company;
     }
 

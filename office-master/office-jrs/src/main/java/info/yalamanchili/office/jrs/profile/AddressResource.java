@@ -4,17 +4,20 @@
 package info.yalamanchili.office.jrs.profile;
 
 import info.chili.dao.CRUDDao;
+import info.chili.email.Email;
 import info.chili.jpa.validation.Validate;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
-import info.yalamanchili.office.config.OfficeFeatureFlipper;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import java.util.HashMap;
@@ -42,6 +45,8 @@ import org.springframework.stereotype.Component;
 @Scope("request")
 public class AddressResource extends CRUDResource<Address> {
 
+    @Autowired
+    protected MailUtils mailUtils;
     @Autowired
     public AddressDao addressDao;
     @Autowired
@@ -75,7 +80,7 @@ public class AddressResource extends CRUDResource<Address> {
 
     @PUT
     @Validate
-    @Path("/employee")
+    @Path("/employee/")
     public Address saveEmployeeAddress(Address entity) {
         boolean notifyHealthInsurance = entity.isNotifyHealthInsurance();
         boolean notifyChange = entity.isNotifyChange();
@@ -85,10 +90,23 @@ public class AddressResource extends CRUDResource<Address> {
             entity.setId(existingAddress.getId());
         }
         entity = save(entity);
+        if (entity.getAddressType() != null && entity.getAddressType().getAddressType().equals("W2 Mailing")) {
+            sendAddressChangeRequestSubmittedEmail(entity);
+        }
         if (notifyChange) {
             processAddressUpdateNotification(entity, null, notifyHealthInsurance);
         }
         return entity;
+    }
+
+    public void sendAddressChangeRequestSubmittedEmail(Address address) {
+        String[] roles = {OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name()};
+        Email email = new Email();
+        email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
+        email.setSubject(" W2 Mailing Address Has Updated For :" + address.getContact().getFirstName() + " " + address.getContact().getLastName());
+        String messageText = " W2 Address for employee is : \n " + address.getStreet1() + " , " + address.getStreet2() + " \n " + address.getCity() + " , " + address.getCountry() + " , " + address.getState() + " , " + address.getZip();
+        email.setBody(messageText);
+        MessagingService.instance().sendEmail(email);
     }
 
     public void processAddressUpdateNotification(Address entity, Employee emp, boolean notifyHealthInsurance) {

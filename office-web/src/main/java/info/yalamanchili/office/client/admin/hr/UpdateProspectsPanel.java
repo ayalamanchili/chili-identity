@@ -91,7 +91,6 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
         }
         assignEntityValueFromField("firstName", entity);
         assignEntityValueFromField("lastName", entity);
-        //assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("email", entity);
         assignEntityValueFromField("sex", entity);
         assignEntityValueFromField("phoneNumber", entity);
@@ -100,6 +99,7 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
         assignEntityValueFromField("screenedBy", entity);
         assignEntityValueFromField("processDocSentDate", entity);
         assignEntityValueFromField("status", entity);
+        assignEntityValueFromField("comment", entity);
         return entity;
     }
 
@@ -132,7 +132,6 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
         }
         assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
-        //assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("email", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("phoneNumber", entity, DataType.LONG_FIELD);
         assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
@@ -141,6 +140,7 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
         assignFieldValueFromEntity("screenedBy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("processDocSentDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("comment", entity, DataType.TEXT_AREA_FIELD);
     }
 
     @Override
@@ -166,7 +166,6 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
     protected void addWidgets() {
         addField("firstName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("lastName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        //addField("startDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("email", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("phoneNumber", false, true, DataType.LONG_FIELD, Alignment.HORIZONTAL);
         addField("dateOfBirth", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
@@ -181,6 +180,7 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
         addField("screenedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("processDocSentDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("status", false, false, ProspectStatus.names(), Alignment.HORIZONTAL);
+        addField("comment", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         statesF = (EnumField) fields.get("state");
         countriesF = (EnumField) fields.get("country");
         alignFields();

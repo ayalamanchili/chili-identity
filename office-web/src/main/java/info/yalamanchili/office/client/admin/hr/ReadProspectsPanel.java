@@ -80,7 +80,6 @@ public class ReadProspectsPanel extends ReadComposite {
         }
         assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("screenedBy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("email", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("phoneNumber", entity, DataType.LONG_FIELD);
@@ -105,7 +104,6 @@ public class ReadProspectsPanel extends ReadComposite {
     protected void addWidgets() {
         addField("firstName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("lastName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("referredBy", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("email", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("phoneNumber", true, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);

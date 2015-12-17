@@ -36,8 +36,6 @@ public class OfficeRoles {
         ROLE_PAYROLL_AND_BENIFITS,
         ROLE_ACCOUNTS_RECEIVABLE,
         ROLE_ACCOUNTS_PAYABLE,
-        ROLE_BILLING,
-        ROLE_INVOICING,
         ROLE_SALES_AND_MARKETING,
         ROLE_CONTRACTS_ADMIN,
         ROLE_INFORMATION_TECHNOLOGY,
@@ -60,7 +58,10 @@ public class OfficeRoles {
         ROLE_TRAVEL_BOOKING_MANAGER,
         ROLE_SELFSERVICE_TRIAGE,
         ROLE_BIS_VIEW,
-        ROLE_PROSPECTS_MANAGER
+        ROLE_PROSPECTS_MANAGER,
+        ROLE_CONTRACTS_FULL_VIEW,
+        ROLE_BILLING_AND_INVOICING,
+        ROLE_CONTRACTS
     }
     public final static Map<String, String> rolesMessages = new HashMap<String, String>();
 
@@ -81,8 +82,6 @@ public class OfficeRoles {
         rolesMessages.put(OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name(), "Payroll and Benefits");
         rolesMessages.put(OfficeRole.ROLE_ACCOUNTS_RECEIVABLE.name(), "Accounts Receivable");
         rolesMessages.put(OfficeRole.ROLE_ACCOUNTS_PAYABLE.name(), "Accounts Payable");
-        rolesMessages.put(OfficeRole.ROLE_BILLING.name(), "Billing");
-        rolesMessages.put(OfficeRole.ROLE_INVOICING.name(), "Invoicing");
         rolesMessages.put(OfficeRole.ROLE_SALES_AND_MARKETING.name(), "Sales and Marketing");
         rolesMessages.put(OfficeRole.ROLE_CONTRACTS_ADMIN.name(), "Contracts Administration");
         rolesMessages.put(OfficeRole.ROLE_INFORMATION_TECHNOLOGY.name(), "Information Technology");
@@ -106,5 +105,8 @@ public class OfficeRoles {
         rolesMessages.put(OfficeRole.ROLE_SELFSERVICE_TRIAGE.name(), "SelfService Triage");
         rolesMessages.put(OfficeRole.ROLE_BIS_VIEW.name(), "BIS View");
         rolesMessages.put(OfficeRole.ROLE_PROSPECTS_MANAGER.name(), "Prospects Manager");
+        rolesMessages.put(OfficeRole.ROLE_CONTRACTS_FULL_VIEW.name(), "Contracts Full View");
+        rolesMessages.put(OfficeRole.ROLE_BILLING_AND_INVOICING.name(), "Billing and Invoicing");
+        rolesMessages.put(OfficeRole.ROLE_CONTRACTS.name(), "Contracts");
     }
 }

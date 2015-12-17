@@ -25,7 +25,6 @@ public class ClientInfoOptionsPanel extends ALComposite implements ClickHandler 
 
     protected VerticalPanel panel = new VerticalPanel();
     protected ClickableLink addClientInfoLink = new ClickableLink("Add Client Information");
-    protected ClickableLink viewBISInfoLink = new ClickableLink("View BIS Information");
     protected ClickableLink submitProjectEndDetails = new ClickableLink("Submit Project End Details");
 
     public ClientInfoOptionsPanel() {
@@ -36,7 +35,6 @@ public class ClientInfoOptionsPanel extends ALComposite implements ClickHandler 
     protected void addListeners() {
         addClientInfoLink.addClickHandler(this);
         submitProjectEndDetails.addClickHandler(this);
-        viewBISInfoLink.addClickHandler(this);
     }
 
     @Override
@@ -47,11 +45,8 @@ public class ClientInfoOptionsPanel extends ALComposite implements ClickHandler 
 
     @Override
     protected void addWidgets() {
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_TIME, ROLE.ROLE_RECRUITER, ROLE.ROLE_HR)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONTRACTS_ADMIN, ROLE.ROLE_RECRUITER)) {
             panel.add(addClientInfoLink);
-        }
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_BIS_VIEW)) {
-            panel.add(viewBISInfoLink);
         }
         panel.add(submitProjectEndDetails);
     }
@@ -66,18 +61,8 @@ public class ClientInfoOptionsPanel extends ALComposite implements ClickHandler 
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new CreateProjectOffBoardingPanel(CreateCompositeType.ADD));
         }
-         if (arg0.getSource().equals(viewBISInfoLink)) {
-            HttpService.HttpServiceAsync.instance().doGet(getBISInfoUrl(), OfficeWelcome.instance().getHeaders(), true,
-                    new ALAsyncCallback<String>() {
-                        @Override
-                        public void onResponse(String arg0) {
-                            TabPanel.instance().myOfficePanel.entityPanel.clear();
-                            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllBISClientInformationPanel(JSONUtils.toJSONArray(JSONParser.parseLenient(arg0).isObject().get("result"))));
-                        }
-                    });
-        }
-         
     }
+
     protected String getBISInfoUrl() {
         return OfficeWelcome.constants.root_url() + "clientinformation/bis-info/" + TreeEmployeePanel.instance().getEntityId();
     }

@@ -69,7 +69,7 @@ public class Address extends AbstractEntity {
      */
     @Size(min = 5, max = 10, message = "{address.zip.length.invalid.msg}")
     @Field
-    @NotEmpty(message = "{address.zip.not.empty.msg}")
+//    @NotEmpty(message = "{address.zip.not.empty.msg}")
     protected String zip;
     /**
      * @generated

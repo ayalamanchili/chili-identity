@@ -17,8 +17,6 @@ public class Auth {
         ROLE_PAYROLL_AND_BENIFITS,
         ROLE_ACCOUNTS_RECEIVABLE,
         ROLE_ACCOUNTS_PAYABLE,
-        ROLE_BILLING,
-        ROLE_INVOICING,
         ROLE_SALES_AND_MARKETING,
         ROLE_CONTRACTS_ADMIN,
         ROLE_INFORMATION_TECHNOLOGY,
@@ -41,7 +39,10 @@ public class Auth {
         ROLE_TRAVEL_BOOKING_MANAGER,
         ROLE_SELFSERVICE_TRIAGE,
         ROLE_BIS_VIEW,
-        ROLE_PROSPECTS_MANAGER
+        ROLE_PROSPECTS_MANAGER,
+        ROLE_CONTRACTS_FULL_VIEW,
+        ROLE_BILLING_AND_INVOICING,
+        ROLE_CONTRACTS
     }
 
     public static boolean isAdmin() {
@@ -119,11 +120,11 @@ public class Auth {
         String empType = JSONUtils.toString(emp.get("employeeType"), "name");
         return empType != null && empType.equals("W2 Contractor");
     }
-    
+
     public static boolean isW2Contractor() {
         return JSONUtils.toString(OfficeWelcome.instance().employee.get("employeeType"), "name").equals("W2 Contractor");
     }
-    
+
     public static boolean isItDeveloper() {
         return OfficeWelcome.instance().roles.contains(ROLE.ROLE_IT_DEVELOPER.name());
     }

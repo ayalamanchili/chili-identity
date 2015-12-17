@@ -42,7 +42,6 @@ public class Prospect extends AbstractEntity {
     @Valid
     protected Contact contact;
        
-    @Temporal(javax.persistence.TemporalType.DATE)
     protected Date startDate;
 
     protected String screenedBy;

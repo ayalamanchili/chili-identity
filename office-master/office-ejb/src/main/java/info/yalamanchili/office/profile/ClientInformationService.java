@@ -8,7 +8,9 @@
 package info.yalamanchili.office.profile;
 
 import info.chili.commons.BeanMapper;
+import info.chili.email.Email;
 import info.chili.service.jrs.exception.ServiceException;
+import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.dao.client.ClientDao;
 import info.yalamanchili.office.dao.client.ProjectDao;
@@ -23,7 +25,7 @@ import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.profile.ClientInformationDto;
-import info.yalamanchili.office.entity.Company;
+import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.client.Subcontractor;
@@ -32,15 +34,19 @@ import info.yalamanchili.office.entity.practice.Practice;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.BillingRate;
 import info.yalamanchili.office.entity.profile.ClientInformation;
+import info.yalamanchili.office.entity.profile.ClientInformationCompany;
 import info.yalamanchili.office.entity.profile.ClientInformationStatus;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.jms.MessagingService;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import javax.persistence.Query;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -68,40 +74,23 @@ public class ClientInformationService {
     protected ClientInformationDao clientInformationDao;
     @Autowired
     protected CompanyDao companyDao;
+    @Autowired
+    protected MailUtils mailUtils;
 
     public void addClientInformation(Long empId, ClientInformationDto ciDto) {
         ClientInformation ci = mapper.map(ciDto, ClientInformation.class);
-
+        
         Client client = null;
         Vendor vendor = null;
         Vendor middleVendor = null;
-        Company company = null;
         Project project = new Project();
-        String abbreviation = "";
         Employee emp = (Employee) em.find(Employee.class, empId);
-
-        if (ciDto.getCompany() != null) {
-            company = companyDao.findById(ciDto.getCompany().getId());
-            emp.setCompany(company);
-            emp = EmployeeDao.instance().save(emp);
-            abbreviation = company.getAbbreviation();
-        } else {
-            company = emp.getCompany();
-            if (company != null) {
-                abbreviation = company.getAbbreviation();
-            } else {
-                abbreviation = "SSTL";
-            }
-        }
-
+        String abbreviation = getCompanyAbbreviation(ciDto.getCompany());
         if (abbreviation == null || abbreviation.isEmpty()) {
             abbreviation = "SSTL";
         }
-
-        if (ci.getClient() != null) {
-            client = ClientDao.instance().findById(ci.getClient().getId());
-            ci.setClient(client);
-        }
+        client = ClientDao.instance().findById(ci.getClient().getId());
+        ci.setClient(client);
         if (ci.getClientContact() != null) {
             Contact contact = ContactDao.instance().findById(ci.getClientContact().getId());
             ci.setClientContact(contact);
@@ -118,18 +107,29 @@ public class ClientInformationService {
             Contact contact = ContactDao.instance().findById(ci.getVendorContact().getId());
             ci.setVendorContact(contact);
         }
-        if (ci.getVendorAPContact() != null) {
-            Contact contact = ContactDao.instance().findById(ci.getVendorAPContact().getId());
-            ci.setVendorAPContact(contact);
+        ci.setVendorAPContacts(null);
+        if (ciDto.getVendorAPContact() != null) {
+            for (Contact vendorAPContact : ciDto.getVendorAPContact()) {
+                if (vendorAPContact.getId() != null) {
+                    ci.getVendorAPContacts().add(ContactDao.instance().findById(vendorAPContact.getId()));
+                }
+            }
         }
+
         if (ci.getVendorLocation() != null) {
             Address address = AddressDao.instance().findById(ci.getVendorLocation().getId());
             ci.setVendorLocation(address);
         }
-        if (ci.getVendorRecruiter() != null) {
-            Contact contact = ContactDao.instance().findById(ci.getVendorRecruiter().getId());
-            ci.setVendorRecruiter(contact);
+        
+        ci.setVendorRecruiters(null);
+        if (ciDto.getVendorRecruiter() != null) {
+            for (Contact vendorRecruiter : ciDto.getVendorRecruiter()) {
+                if (vendorRecruiter.getId() != null) {
+                    ci.getVendorRecruiters().add(ContactDao.instance().findById(vendorRecruiter.getId()));
+                }
+            }
         }
+
         if (ci.getMiddleVendor() != null) {
             middleVendor = VendorDao.instance().findById(ci.getMiddleVendor().getId());
             ci.setMiddleVendor(middleVendor);
@@ -138,10 +138,11 @@ public class ClientInformationService {
             project = ProjectDao.instance().findById(ci.getClientProject().getId());
             ci.setClientProject(project);
         }
-
-        if (ci.getRecruiter() != null) {
-            Employee recruiter = EmployeeDao.instance().findById(ci.getRecruiter().getId());
-            ci.setRecruiter(recruiter);
+        ci.setRecruiters(null);
+        for (Employee recruiter : ciDto.getRecruiters()) {
+            if (recruiter.getId() != null) {
+                ci.getRecruiters().add(EmployeeDao.instance().findById(recruiter.getId()));
+            }
         }
         if (ci.getSubcontractor() != null) {
             Subcontractor subcontractor = SubcontractorDao.instance().findById(ci.getSubcontractor().getId());
@@ -199,6 +200,30 @@ public class ClientInformationService {
         emp.addClientInformation(ci);
         startNewClientInfoProcess(ci);
     }
+//TODO set these values
+
+    protected String getCompanyAbbreviation(ClientInformationCompany company) {
+        switch (company) {
+            case ACO360:
+                return "ACO360";
+            case CapMark_Solutions:
+                return "CAPM";
+            case SSTECH_INC:
+                return "SSTI";
+            case SSTECH_LLC:
+                return "SSTL";
+            case SST_Canada:
+                return "SSTC";
+            case SST_PVT:
+                return "SSTP";
+            case Techpillars:
+                return "TPLR";
+            case CGS_INC:
+                return "CGSI";
+            default:
+                return "SSTL";
+        }
+    }
 
     protected void updatePreviousProjectEndDate(Employee emp, ClientInformation ci) {
         ClientInformation previousClientInformation = null;
@@ -208,7 +233,6 @@ public class ClientInformationService {
             previousClientInformation = (ClientInformation) query.getResultList().get(0);
             previousClientInformation.setEndDate(ci.getPreviousProjectEndDate());
             em.merge(previousClientInformation);
-
         }
     }
 
@@ -222,6 +246,11 @@ public class ClientInformationService {
     public void updateBillingRate(Long clientInfoId, BillingRate billingRate) {
         ClientInformation ci = ClientInformationDao.instance().findById(clientInfoId);
         //Track the first change
+        String[] roles = {OfficeRoles.OfficeRole.ROLE_BILLING_AND_INVOICING.name()};
+        Email email = new Email();
+        email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
+        email.setSubject(" Client Information Has Updated For :" + ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
+        String messageText = " Updated Client Information : ";
         if (ci.getBillingRates().isEmpty() && ci.getBillingRate() != null) {
             BillingRate firstBillingRate = new BillingRate();
             firstBillingRate.setBillingRate(ci.getBillingRate());
@@ -241,11 +270,17 @@ public class ClientInformationService {
         }
         billingRate.setClientInformation(ci);
         BillingRateDao.instance().save(billingRate).getId().toString();
+        messageText = messageText.concat("Billing Rate :" + ci.getBillingRate());
+        messageText = messageText.concat("Pay Rate :" + ci.getPayRate());
+        messageText = messageText.concat("Overtime Billing Rate :" + ci.getOverTimeBillingRate());
+        messageText = messageText.concat("Overtime Pay Rate :" + ci.getOverTimePayRate());
+        email.setBody(messageText);
+        MessagingService.instance().sendEmail(email);
     }
 
     @Async
     protected void startNewClientInfoProcess(ClientInformation ci) {
-        Map<String, Object> vars = new HashMap<String, Object>();
+        Map<String, Object> vars = new HashMap<>();
         vars.put("clientInfo", ci);
         vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
         OfficeBPMService.instance().startProcess("new_client_info_process", vars);
@@ -255,46 +290,31 @@ public class ClientInformationService {
     public ClientInformation update(ClientInformation ci) {
         //TODO implement mapping for contact,phone and email
         ClientInformation ciEntity = em.find(ClientInformation.class, ci.getId());
-        Employee emp = ciEntity.getEmployee();
-        Company company = emp.getCompany();
-        String abbreviation = "";
-        if (company != null) {
-            abbreviation = company.getAbbreviation();
-        } else {
-            abbreviation = "SSTL";
-        }
-        if (abbreviation == null || abbreviation.isEmpty()) {
-            abbreviation = "SSTL";
-        }
+        String abbreviation = getCompanyAbbreviation(ci.getCompany());
         BeanMapper.merge(ci, ciEntity);
         Project project = ProjectDao.instance().findById(ci.getClientProject().getId());
         Client client = null;
         Vendor vendor = null;
         Vendor middleVendor = null;
-
-        if (ci.getClient() == null) {
-            ciEntity.setClient(null);
+        ciEntity.setClient(null);
+        client = ClientDao.instance().findById(ci.getClient().getId());
+        ciEntity.setClient(client);
+        project.setName(abbreviation + "PR" + projectName(client.getName()));
+        project.setName(project.getName() + project.getId().toString());
+        //Client Contact
+        if (ci.getClientContact() == null) {
+            ciEntity.setClientContact(null);
         } else {
-            client = ClientDao.instance().findById(ci.getClient().getId());
-            ciEntity.setClient(client);
-            project.setName(abbreviation + "PR" + projectName(client.getName()));
-            project.setName(project.getName() + project.getId().toString());
-            //Client Contact
-            if (ci.getClientContact() == null) {
-                ciEntity.setClientContact(null);
-            } else {
-                Contact contact = ContactDao.instance().findById(ci.getClientContact().getId());
-                ciEntity.setClientContact(contact);
-            }
-            //Client Location
-            if (ci.getClientLocation() == null) {
-                ciEntity.setClientLocation(null);
-            } else {
-                Address address = AddressDao.instance().findById(ci.getClientLocation().getId());
-                ciEntity.setClientLocation(address);
-            }
+            Contact contact = ContactDao.instance().findById(ci.getClientContact().getId());
+            ciEntity.setClientContact(contact);
         }
-
+        //Client Location
+        if (ci.getClientLocation() == null) {
+            ciEntity.setClientLocation(null);
+        } else {
+            Address address = AddressDao.instance().findById(ci.getClientLocation().getId());
+            ciEntity.setClientLocation(address);
+        }
         if (ci.getVendor() == null) {
             ciEntity.setVendor(null);
         } else {
@@ -310,12 +330,17 @@ public class ClientInformationService {
                 ciEntity.setVendorContact(contact);
             }
             //Vendor Acct Pay Contact
-            if (ci.getVendorAPContact() == null) {
-                ciEntity.setVendorAPContact(null);
-            } else {
-                Contact contact = ContactDao.instance().findById(ci.getVendorAPContact().getId());
-                ciEntity.setVendorAPContact(contact);
+            Set<Contact> newAPs = new HashSet();
+            for (Contact con : ci.getVendorAPContacts()) {
+                newAPs.add(ContactDao.instance().findById(con.getId()));
             }
+            ciEntity.setVendorAPContacts(newAPs);
+            //Vendor Recruiter
+            Set<Contact> venRecs = new HashSet();
+            for (Contact cons : ci.getVendorRecruiters()) {
+                venRecs.add(ContactDao.instance().findById(cons.getId()));
+            }
+            ciEntity.setVendorRecruiters(venRecs);
             //Vendor Location
             if (ci.getVendorLocation() == null) {
                 ciEntity.setVendorLocation(null);
@@ -346,18 +371,17 @@ public class ClientInformationService {
                 ciEntity.setSubcontractorAddress(address);
             }
         }
-        if (ci.getRecruiter() == null) {
-            ciEntity.setRecruiter(null);
-        } else {
-            Employee recruiter = EmployeeDao.instance().findById(ci.getRecruiter().getId());
-            ciEntity.setRecruiter(recruiter);
+        Set<Employee> newRecs = new HashSet();
+        for (Employee rec : ci.getRecruiters()) {
+            if (rec.getId() != null) {
+                newRecs.add(EmployeeDao.instance().findById(rec.getId()));
+            }
         }
-
+        ciEntity.setRecruiters(newRecs);
         if (ci.getPractice() != null) {
             Practice practice = PracticeDao.instance().findById(ci.getPractice().getId());
             ciEntity.setPractice(practice);
         }
-
         if (vendor != null) {
             project.setVendor(vendor);
             client.getVendors().add(vendor);
@@ -376,9 +400,23 @@ public class ClientInformationService {
         project = ProjectDao.instance().save(project);
         ci.setClientProject(project);
         ciEntity = clientInformationDao.save(ciEntity);
+        sendClientinfoUpdatedEmail(ciEntity);
         return ci;
     }
 
+     public void sendClientinfoUpdatedEmail(ClientInformation ci) {
+     String[] roles = {OfficeRoles.OfficeRole.ROLE_BILLING_AND_INVOICING.name()};
+     Email email = new Email();
+     email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
+     email.setSubject(" Client Information Has Updated For :" + ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
+     String messageText = " Updated Client Information :   Client :" + ci.getClient().getName()+" Project : "+ci.getClientProject().getName();
+     if(ci.getClientProject().getEndDate()!=null){
+         messageText = messageText.concat("Project End Date : "+ci.getClientProject().getEndDate());
+     }
+     email.setBody(messageText);
+     MessagingService.instance().sendEmail(email);
+     } 
+     
     private String projectName(String name) {
         String S = name.replaceAll("[^a-zA-Z0-9\\s]", "");
         String[] words = S.split("\\s+");

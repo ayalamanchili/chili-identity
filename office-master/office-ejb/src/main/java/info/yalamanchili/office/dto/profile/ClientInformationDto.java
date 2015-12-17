@@ -8,7 +8,6 @@
  */
 package info.yalamanchili.office.dto.profile;
 
-import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.ClientInfoComment;
 import info.yalamanchili.office.entity.client.InvoiceDeliveryMethod;
@@ -20,6 +19,7 @@ import info.yalamanchili.office.entity.practice.Practice;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.BillingDuration;
 import info.yalamanchili.office.entity.profile.BillingRate;
+import info.yalamanchili.office.entity.profile.ClientInformationCompany;
 import info.yalamanchili.office.entity.profile.ClientInformationStatus;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -28,19 +28,18 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import org.hibernate.annotations.ForeignKey;
 
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
@@ -89,59 +88,43 @@ public class ClientInformationDto implements Serializable {
      */
     @Transient
     protected Date previousProjectEndDate;
-
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_ClientInfo_Employees")
-    protected Company company;
+    /**
+     *
+     */
+    @NotNull
+    protected ClientInformationCompany company;
     /**
      * Client
      */
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_Client_ClientInformations")
     @NotNull(message = "{client.not.empty.msg}")
     protected Client client;
     /**
      * Client Contact
      */
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_ClientContact_ClientInformations")
     protected Contact clientContact;
     /**
      * Client Location
      */
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_ClientLocation_ClientInformations")
     protected Address clientLocation;
     /**
      * Vendor
      */
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_Vendor_ClientInformations")
     protected Vendor vendor;
     /**
      * Vendor Contact
      */
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_VendorContact_ClientInformations")
     protected Contact vendorContact;
-
     /**
      * Vendor AP Contact
      */
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_VendorAPContact_ClientInformations")
-    protected Contact vendorAPContact;
+    protected Set<Contact> vendorAPContact;
     /**
      * Vendor Location
      */
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_VendorLocation_ClientInformations")
     protected Address vendorLocation;
     /**
      * Employee
      */
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_Employee_ClientInformations")
     protected Employee employee;
     /**
      * Item Number (quick books generated number
@@ -194,9 +177,7 @@ public class ClientInformationDto implements Serializable {
     /**
      * recruiter
      */
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_Recruiter_ClientInformations")
-    protected Employee recruiter;
+    protected Set<Employee> recruiters;
     /**
      * Status
      */
@@ -213,20 +194,14 @@ public class ClientInformationDto implements Serializable {
     /**
      * subcontractor
      */
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_SubCntr_ClientInformations")
     protected Subcontractor subcontractor;
     /**
      * subcontractorContact;
      */
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_SubCntrContact_ClientInformations")
     protected Contact subcontractorContact;
     /**
      * subcontractor Address
      */
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_SubCntrLocation_ClientInformations")
     protected Address subcontractorAddress;
     /**
      * subcontractorPayRate
@@ -240,7 +215,6 @@ public class ClientInformationDto implements Serializable {
      * subcontractor Invoice Frequency
      */
     @Enumerated(EnumType.STRING)
-    @org.hibernate.annotations.Index(name = "CI_INVC_FQ")
     protected InvoiceFrequency subcontractorinvoiceFrequency;
     /**
      * subcontractor PaymentTerms
@@ -265,7 +239,6 @@ public class ClientInformationDto implements Serializable {
     /* 
      * comments
      */
-    @OneToMany(mappedBy = "clientInformation", cascade = CascadeType.ALL)
     protected List<ClientInfoComment> comments;
     /**
      * -----------Tracking info---------------------------
@@ -298,17 +271,17 @@ public class ClientInformationDto implements Serializable {
      * HR orientation
      */
     protected Boolean hrOrientation;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @ForeignKey(name = "FK_ClientProject_ClientInformations")
+    /**
+     *
+     */
     protected Project clientProject;
-
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_VendorRecruiter_ClientInformations")
-    protected Contact vendorRecruiter;
-
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_MiddleVendor_ClientInformations")
+    /**
+     *
+     */
+    protected Set<Contact> vendorRecruiter;
+    /**
+     *
+     */
     protected Vendor middleVendor;
 
     protected Boolean isCPDFilled;
@@ -321,9 +294,9 @@ public class ClientInformationDto implements Serializable {
 
     @Enumerated(EnumType.STRING)
     private ClientInformationStatus status;
-
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_Practice_ClientInformation")
+    /**
+     *
+     */
     @NotNull(message = "{practice.not.empty.msg}")
     private Practice practice;
 
@@ -417,14 +390,6 @@ public class ClientInformationDto implements Serializable {
 
     public void setVendorContact(Contact vendorContact) {
         this.vendorContact = vendorContact;
-    }
-
-    public Contact getVendorAPContact() {
-        return vendorAPContact;
-    }
-
-    public void setVendorAPContact(Contact vendorAPContact) {
-        this.vendorAPContact = vendorAPContact;
     }
 
     public Address getVendorLocation() {
@@ -537,12 +502,12 @@ public class ClientInformationDto implements Serializable {
         this.invoiceDeliveryMethod = invoiceDeliveryMethod;
     }
 
-    public Employee getRecruiter() {
-        return recruiter;
+    public Set<Employee> getRecruiters() {
+        return recruiters;
     }
 
-    public void setRecruiter(Employee recruiter) {
-        this.recruiter = recruiter;
+    public void setRecruiters(Set<Employee> recruiters) {
+        this.recruiters = recruiters;
     }
 
     public String getVisaStatus() {
@@ -770,14 +735,6 @@ public class ClientInformationDto implements Serializable {
         this.clientProject = clientProject;
     }
 
-    public Contact getVendorRecruiter() {
-        return vendorRecruiter;
-    }
-
-    public void setVendorRecruiter(Contact vendorRecruiter) {
-        this.vendorRecruiter = vendorRecruiter;
-    }
-
     public Vendor getMiddleVendor() {
         return middleVendor;
     }
@@ -826,11 +783,11 @@ public class ClientInformationDto implements Serializable {
         this.status = status;
     }
 
-    public Company getCompany() {
+    public ClientInformationCompany getCompany() {
         return company;
     }
 
-    public void setCompany(Company company) {
+    public void setCompany(ClientInformationCompany company) {
         this.company = company;
     }
 
@@ -850,9 +807,21 @@ public class ClientInformationDto implements Serializable {
         this.sectorsAndBUs = sectorsAndBUs;
     }
 
-    @Override
-    public String toString() {
-        return "ClientInformationDto{" + "consultantJobTitle=" + consultantJobTitle + ", ciPrimary=" + ciPrimary + ", startDate=" + startDate + ", endDate=" + endDate + ", itemNumber=" + itemNumber + ", payRate=" + payRate + ", billingRate=" + billingRate + ", subcontractorinvoiceFrequency=" + subcontractorinvoiceFrequency + '}';
+    public Set<Contact> getVendorAPContact() {
+        return vendorAPContact;
     }
 
+    public void setVendorAPContact(Set<Contact> vendorAPContact) {
+        this.vendorAPContact = vendorAPContact;
+    }
+
+    public Set<Contact> getVendorRecruiter() {
+        return vendorRecruiter;
+    }
+
+    public void setVendorRecruiter(Set<Contact> vendorRecruiter) {
+        this.vendorRecruiter = vendorRecruiter;
+    }
+
+    
 }
