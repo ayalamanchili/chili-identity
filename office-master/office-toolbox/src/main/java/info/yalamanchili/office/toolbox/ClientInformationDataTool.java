@@ -17,11 +17,13 @@ import info.yalamanchili.office.dao.client.ClientDao;
 import info.yalamanchili.office.dao.client.ProjectDao;
 import info.yalamanchili.office.dao.client.SubcontractorDao;
 import info.yalamanchili.office.dao.client.VendorDao;
+import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.practice.PracticeDao;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.client.Client;
+import info.yalamanchili.office.entity.client.ClientInfoComment;
 import info.yalamanchili.office.entity.client.InvoiceDeliveryMethod;
 import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import info.yalamanchili.office.entity.client.Project;
@@ -31,6 +33,7 @@ import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.BillingDuration;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.ClientInformationCompany;
+import info.yalamanchili.office.entity.profile.ClientInformationStatus;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.toolbox.types.CPDRecord;
@@ -67,6 +70,8 @@ public class ClientInformationDataTool {
         tool.bisCPDMigration();
     }
 
+    public boolean is1099;
+
     @Autowired
     protected ClientInformationDao clientInformationDao;
 
@@ -83,39 +88,61 @@ public class ClientInformationDataTool {
         Iterator<Row> rowIterator = sheet.iterator();
         while (rowIterator.hasNext()) {
             Row record = rowIterator.next();
+            if (record.getRowNum() == 0) {
+                continue;
+            }
+            is1099 = false;
             Employee emp = new Employee();
             ClientInformation clientInfo = new ClientInformation();
+            String JobTitle = "   ";
             Vendor vendor = new Vendor();
             Vendor middleVendor = new Vendor();
             Project project = new Project();
             Client client = new Client();
             Address address = new Address();
-            if (record.getRowNum() == 0) {
+
+            CPDRecord cpd = new CPDRecord();
+            String EmployeeId = getCellNumericValue(record, 2);
+            if (EmployeeId != null) {
+                cpd.setEmployeeId(new Long(convertDcimalToWhole(getCellNumericValue(record, 2))));
+                emp = EmployeeDao.instance().findById(cpd.getEmployeeId());
+            } else {
                 continue;
             }
-            CPDRecord cpd = new CPDRecord();
-            cpd.setEmployeeId(new Long(convertDcimalToWhole(getCellNumericValue(record, 2))));
-            emp = EmployeeDao.instance().findById(cpd.getEmployeeId());
+            String ClientID = getCellNumericValue(record, 77);
+            if (ClientID == null) {
+                continue;
+            }
+            String ProjectID = getCellNumericValue(record, 3);
+            System.out.println("Consultant Name >>>>>>>>>>>>>>>><<<<<<<<<<<<<<: " + emp.getFirstName() + " " + emp.getLastName());
+            System.out.println("Project ID       >>>>>>>>>>>>>>>><<<<<<<<<<<<<<: " + ProjectID);
             cpd.setStartDate(convertToDate(getCellNumericValue(record, 4)));
             cpd.setEndDate(convertToDate(getCellNumericValue(record, 5)));
             if (cpd.getStartDate() != null) {
                 clientInfo.setStartDate(cpd.getStartDate());
             }
             if (cpd.getEndDate() != null) {
-                clientInfo.setStartDate(cpd.getEndDate());
+                clientInfo.setEndDate(cpd.getEndDate());
             }
             cpd.setItemNum(convertDcimalToWhole(getCellStringOrNumericValue(record, 6)));
             if (cpd.getItemNum() != null) {
                 clientInfo.setItemNumber(cpd.getItemNum());
             }
-            cpd.setPayRate(new BigDecimal(getCellNumericValue(record, 8)));
-            if (cpd.getPayRate() != null) {
+            cpd.setConsultantType(getCellStringOrNumericValue(record, 7));
+            if (cpd.getConsultantType().equals("1099")) {
+                is1099 = true;
+            }
+            String PayRate = getCellNumericValue(record, 8);
+            if (PayRate != null) {
+                cpd.setPayRate(new BigDecimal(getCellNumericValue(record, 8)));
                 clientInfo.setPayRate(cpd.getPayRate());
             }
-            cpd.setOverTimePayrate(new BigDecimal(getCellNumericValue(record, 10)));
-            if (cpd.getOverTimePayrate() != null) {
+            String OverTimePayrate = getCellNumericValue(record, 10);
+            if (OverTimePayrate != null) {
+                cpd.setOverTimePayrate(new BigDecimal(getCellNumericValue(record, 10)));
                 clientInfo.setOverTimePayRate(cpd.getOverTimePayrate());
             }
+
             cpd.setBillingDuration((BillingDuration) convertEnum(BillingDuration.class, getCellStringValue(record, 11)));
             if (cpd.getBillingDuration() != null) {
                 clientInfo.setBillingRateDuration(cpd.getBillingDuration());
@@ -126,103 +153,250 @@ public class ClientInformationDataTool {
             }
             cpd.setJobTitle(getCellStringValue(record, 14));
             if (cpd.getJobTitle() != null) {
-                clientInfo.getEmployee().setJobTitle(cpd.getJobTitle());
+                clientInfo.setConsultantJobTitle(cpd.getJobTitle());
+            } else {
+                clientInfo.setConsultantJobTitle(JobTitle);
             }
             cpd.setInvoiceFrequency((InvoiceFrequency) convertEnum(InvoiceFrequency.class, getCellStringValue(record, 16)));
             if (cpd.getInvoiceFrequency() != null) {
                 clientInfo.setInvoiceFrequency(cpd.getInvoiceFrequency());
             }
-            cpd.setInvoiceDeliveryMethod((InvoiceDeliveryMethod) convertEnum(InvoiceDeliveryMethod.class, getCellStringValue(record, 16)));
+            cpd.setInvoiceDeliveryMethod((InvoiceDeliveryMethod) convertEnum(InvoiceDeliveryMethod.class, getCellStringValue(record, 17)));
             if (cpd.getInvoiceDeliveryMethod() != null) {
                 clientInfo.setInvoiceDeliveryMethod(cpd.getInvoiceDeliveryMethod());
             }
-            cpd.setRecID1(new Long(convertDcimalToWhole(getCellNumericValue(record, 18))));
-            if (cpd.getRecID1() != null) {
+            String RecID1 = getCellNumericValue(record, 19);
+            if (RecID1 != null) {
+                cpd.setRecID1(new Long(convertDcimalToWhole(getCellNumericValue(record, 19))));
                 clientInfo.getRecruiters().add(EmployeeDao.instance().findById(cpd.getRecID1()));
             }
-            cpd.setRecID2(new Long(convertDcimalToWhole(getCellNumericValue(record, 19))));
-            if (cpd.getRecID2() != null) {
+            String RecID2 = getCellNumericValue(record, 20);
+            if (RecID2 != null) {
+                cpd.setRecID2(new Long(convertDcimalToWhole(getCellNumericValue(record, 20))));
                 clientInfo.getRecruiters().add(EmployeeDao.instance().findById(cpd.getRecID2()));
             }
-            cpd.setRecID3(new Long(convertDcimalToWhole(getCellNumericValue(record, 20))));
-            if (cpd.getRecID3() != null) {
+            String RecID3 = getCellNumericValue(record, 21);
+            if (RecID3 != null) {
+                cpd.setRecID3(new Long(convertDcimalToWhole(getCellNumericValue(record, 21))));
                 clientInfo.getRecruiters().add(EmployeeDao.instance().findById(cpd.getRecID3()));
             }
-            cpd.setRecID4(new Long(convertDcimalToWhole(getCellNumericValue(record, 21))));
-            if (cpd.getRecID4() != null) {
+            String RecID4 = getCellNumericValue(record, 22);
+            if (RecID4 != null) {
+                cpd.setRecID4(new Long(convertDcimalToWhole(getCellNumericValue(record, 22))));
                 clientInfo.getRecruiters().add(EmployeeDao.instance().findById(cpd.getRecID4()));
             }
-            cpd.setSubContractorID(new Long(convertDcimalToWhole(getCellNumericValue(record, 23))));
-            if (cpd.getSubContractorID() != null) {
+            String SubContractorID = getCellNumericValue(record, 24);
+            if (SubContractorID != null) {
+                cpd.setSubContractorID(new Long(convertDcimalToWhole(getCellNumericValue(record, 24))));
                 Subcontractor subcontractor = SubcontractorDao.instance().findById(cpd.getSubContractorID());
                 clientInfo.setSubcontractor(subcontractor);
             }
-            cpd.setSubContractorContactID(new Long(convertDcimalToWhole(getCellNumericValue(record, 25))));
-            if (cpd.getSubContractorContactID() != null) {
+            String SubContractorContactID = getCellNumericValue(record, 26);
+            if (SubContractorContactID != null) {
+                cpd.setSubContractorContactID(new Long(convertDcimalToWhole(getCellNumericValue(record, 26))));
                 Contact contact = ContactDao.instance().findById(cpd.getSubContractorContactID());
                 clientInfo.setSubcontractorContact(contact);
             }
-            cpd.setSubContractorPayRate(new BigDecimal(getCellNumericValue(record, 26)));
-            if (cpd.getSubContractorPayRate() != null) {
-                clientInfo.setSubcontractorPayRate(cpd.getSubContractorPayRate());
+            String SubContractorPayRate = getCellNumericValue(record, 27);
+            if (SubContractorPayRate != null) {
+                cpd.setSubContractorPayRate(new BigDecimal(getCellNumericValue(record, 27)));
+                if (!is1099) {
+                    clientInfo.setSubcontractorPayRate(cpd.getSubContractorPayRate());
+                } else if (is1099) {
+                    clientInfo.setPayRate1099(cpd.getSubContractorPayRate());
+                }
             }
-            cpd.setSubcontractorinvoiceFrequency((InvoiceFrequency) convertEnum(InvoiceFrequency.class, getCellStringValue(record, 28)));
+
+            cpd.setSubcontractorinvoiceFrequency((InvoiceFrequency) convertEnum(InvoiceFrequency.class, getCellStringValue(record, 29)));
             if (cpd.getSubcontractorinvoiceFrequency() != null) {
                 clientInfo.setSubcontractorinvoiceFrequency(cpd.getSubcontractorinvoiceFrequency());
             }
-            cpd.setSubContractorOverTimePayRate(new BigDecimal(getCellNumericValue(record, 29)));
-            if (cpd.getSubContractorOverTimePayRate() != null) {
-                clientInfo.setSubcontractorOvertimePayRate(cpd.getSubContractorOverTimePayRate());
+            String SubContractorOverTimePayRate = getCellNumericValue(record, 30);
+            if (SubContractorOverTimePayRate != null) {
+                cpd.setSubContractorOverTimePayRate(new BigDecimal(getCellNumericValue(record, 30)));
+                if (!is1099) {
+                    clientInfo.setSubcontractorOvertimePayRate(cpd.getSubContractorOverTimePayRate());
+                } else if (is1099) {
+                    clientInfo.setOverTimePayrate1099(cpd.getSubContractorOverTimePayRate());
+                }
             }
-            cpd.setVenAPID1(new Long(convertDcimalToWhole(getCellNumericValue(record, 33))));
-            if (cpd.getVenAPID1() != null) {
+
+            cpd.setSubContractorPaymentTerms(getCellStringValue(record, 59));
+            if (cpd.getSubContractorPaymentTerms() != null) {
+                if (!is1099) {
+                    clientInfo.setSubcontractorpaymentTerms(cpd.getSubContractorPaymentTerms());
+                } else if (is1099) {
+                    clientInfo.setPaymentTerms1099(cpd.getSubContractorPaymentTerms());
+                }
+            }
+
+            String VenAPID1 = getCellNumericValue(record, 34);
+            if (VenAPID1 != null) {
+                cpd.setVenAPID1(new Long(convertDcimalToWhole(getCellNumericValue(record, 34))));
                 clientInfo.getVendorAPContacts().add(ContactDao.instance().findById(cpd.getVenAPID1()));
             }
-            cpd.setVenAPID2(new Long(convertDcimalToWhole(getCellNumericValue(record, 34))));
-            if (cpd.getVenAPID2() != null) {
+            String VenAPID2 = getCellNumericValue(record, 35);
+            if (VenAPID2 != null) {
+                cpd.setVenAPID2(new Long(convertDcimalToWhole(getCellNumericValue(record, 35))));
                 clientInfo.getVendorAPContacts().add(ContactDao.instance().findById(cpd.getVenAPID2()));
             }
-            cpd.setVenAPID3(new Long(convertDcimalToWhole(getCellNumericValue(record, 35))));
-            if (cpd.getVenAPID3() != null) {
+            String VenAPID3 = getCellNumericValue(record, 36);
+            if (VenAPID3 != null) {
+                cpd.setVenAPID3(new Long(convertDcimalToWhole(getCellNumericValue(record, 36))));
                 clientInfo.getVendorAPContacts().add(ContactDao.instance().findById(cpd.getVenAPID3()));
             }
-            cpd.setCompany((ClientInformationCompany) convertEnum(ClientInformationCompany.class, getCellStringValue(record, 40)));
+
+            cpd.setCompany((ClientInformationCompany) Enum.valueOf(ClientInformationCompany.class, getCellStringValue(record, 41)));
             if (cpd.getCompany() != null) {
                 clientInfo.setCompany(cpd.getCompany());
             }
-            cpd.setVenRECID1(new Long(convertDcimalToWhole(getCellNumericValue(record, 48))));
-            if (cpd.getVenRECID1() != null) {
+            String VenRECID1 = getCellNumericValue(record, 49);
+            if (VenRECID1 != null) {
+                cpd.setVenRECID1(new Long(convertDcimalToWhole(getCellNumericValue(record, 49))));
                 clientInfo.getVendorRecruiters().add(ContactDao.instance().findById(cpd.getVenRECID1()));
             }
-            cpd.setVenRECID2(new Long(convertDcimalToWhole(getCellNumericValue(record, 49))));
-            if (cpd.getVenRECID2() != null) {
+            String VenRECID2 = getCellNumericValue(record, 50);
+            if (VenRECID2 != null) {
+                cpd.setVenRECID2(new Long(convertDcimalToWhole(getCellNumericValue(record, 50))));
                 clientInfo.getVendorRecruiters().add(ContactDao.instance().findById(cpd.getVenRECID2()));
             }
-            cpd.setPracticeID(new Long(convertDcimalToWhole(getCellNumericValue(record, 70))));
-            if (cpd.getPracticeID() != null) {
+            String PracticeID = getCellNumericValue(record, 71);
+            if (PracticeID != null) {
+                cpd.setPracticeID(new Long(convertDcimalToWhole(getCellNumericValue(record, 71))));
                 clientInfo.setPractice(PracticeDao.instance().findById(cpd.getPracticeID()));
             }
-            cpd.setSectorsAndBUs(getCellStringValue(record, 71));
+
+            cpd.setSectorsAndBUs(getCellStringValue(record, 72));
             if (cpd.getSectorsAndBUs() != null) {
                 clientInfo.setSectorsAndBUs(cpd.getSectorsAndBUs());
             }
-            cpd.setClientID(new Long(convertDcimalToWhole(getCellNumericValue(record, 76))));
-            if (cpd.getClientID() != null) {
-                clientInfo.setClient(ClientDao.instance().findById(cpd.getClientID()));
+
+            if (ClientID != null) {
+                cpd.setClientID(new Long(convertDcimalToWhole(getCellNumericValue(record, 77))));
+                client = ClientDao.instance().findById(cpd.getClientID());
+                clientInfo.setClient(client);
             }
-            cpd.setVendorID(new Long(convertDcimalToWhole(getCellNumericValue(record, 74))));
-            if (cpd.getVendorID() != null) {
-                clientInfo.setVendor(VendorDao.instance().findById(cpd.getVendorID()));
+            String VendorID = getCellNumericValue(record, 75);
+            if (VendorID != null) {
+                cpd.setVendorID(new Long(convertDcimalToWhole(getCellNumericValue(record, 75))));
+                vendor = VendorDao.instance().findById(cpd.getVendorID());
+                clientInfo.setVendor(vendor);
             }
-            cpd.setProjectName(getCellStringValue(record, 72));
+            String MiddleVendorID = getCellNumericValue(record, 83);
+            if (MiddleVendorID != null) {
+                cpd.setMiddleVendorID(new Long(convertDcimalToWhole(getCellNumericValue(record, 83))));
+                middleVendor = VendorDao.instance().findById(cpd.getMiddleVendorID());
+                clientInfo.setVendor(middleVendor);
+            }
+
+            cpd.setIsCPDFilled(getCellStringValue(record, 42));
+            if (cpd.getIsCPDFilled() != null) {
+                if (cpd.getIsCPDFilled().equals("TRUE")) {
+                    clientInfo.setIsCPDFilled(Boolean.TRUE);
+                    clientInfo.setStatus(ClientInformationStatus.COMPLETED);
+                } else {
+                    clientInfo.setIsCPDFilled(Boolean.FALSE);
+                }
+            }
+
+            cpd.setTimeSheetRequirement(getCellStringValue(record, 43));
+            if (cpd.getTimeSheetRequirement() != null) {
+                clientInfo.setTimeSheetRequirement(cpd.getTimeSheetRequirement());
+            }
+            cpd.setSpecialInvoiceInstructions(getCellStringValue(record, 44));
+            if (cpd.getSpecialInvoiceInstructions() != null) {
+                clientInfo.setSpecialInvoiceInstructions(cpd.getSpecialInvoiceInstructions());
+            }
+            cpd.setVisaStatus(getCellStringValue(record, 46));
+            if (cpd.getVisaStatus() != null) {
+                clientInfo.setVisaStatus(cpd.getVisaStatus());
+            }
+            cpd.setTerminationNotic(getCellStringValue(record, 47));
+            if (cpd.getTerminationNotic() != null) {
+                clientInfo.setTerminationNotice(cpd.getTerminationNotic());
+            }
+            cpd.setSignedCopyOfWorkOrder(getCellStringValue(record, 56));
+            if (cpd.getSignedCopyOfWorkOrder() != null) {
+                if (cpd.getSignedCopyOfWorkOrder().equals("TRUE")) {
+                    clientInfo.setSignedCopyOfWorkOrder(Boolean.TRUE);
+                }
+            }
+
+            cpd.setSubcontractCOI(getCellStringValue(record, 57));
+            if (cpd.getSubcontractCOI() != null) {
+                if (cpd.getSubcontractCOI().equals("TRUE")) {
+                    clientInfo.setSubcontractCOI(Boolean.TRUE);
+                }
+            }
+
+            cpd.setSubcontractorW9Form(getCellStringValue(record, 58));
+            if (cpd.getSubcontractorW9Form() != null) {
+                if (cpd.getSubcontractorW9Form().equals("TRUE")) {
+                    clientInfo.setSubcontractorw4Filled(Boolean.TRUE);
+                }
+            }
+
+            cpd.setVendorPaymentTerms(getCellStringValue(record, 60));
+            if (cpd.getVendorPaymentTerms() != null) {
+                clientInfo.setVendorPaymentTerms(cpd.getVendorPaymentTerms());
+            }
+            cpd.setHrOrientation(getCellStringValue(record, 62));
+            if (cpd.getHrOrientation() != null) {
+                if (cpd.getHrOrientation().equals("TRUE")) {
+                    clientInfo.setHrOrientation(Boolean.TRUE);
+                }
+            }
+
+            cpd.setLogisticPreparation(getCellStringValue(record, 63));
+            if (cpd.getLogisticPreparation() != null) {
+                if (cpd.getLogisticPreparation().equals("TRUE")) {
+                    clientInfo.setLogisticsPreparation(Boolean.TRUE);
+                }
+            }
+
+            cpd.setI9Filled(getCellStringValue(record, 64));
+            if (cpd.getI9Filled() != null) {
+                if (cpd.getI9Filled().equals("TRUE")) {
+                    clientInfo.setI9Filled(Boolean.TRUE);
+                }
+            }
+
+            cpd.setW4Filled(getCellStringValue(record, 65));
+            if (cpd.getW4Filled() != null) {
+                if (cpd.getW4Filled().equals("TRUE")) {
+                    clientInfo.setW4Filled(Boolean.TRUE);
+                }
+            }
+
+            cpd.setProjectEndingForSure(getCellStringValue(record, 45));
+            if (cpd.getProjectEndingForSure() != null) {
+                if (cpd.getProjectEndingForSure().equals("TRUE")) {
+                    clientInfo.setIsEndDateConfirmed(Boolean.TRUE);
+                }
+            }
+
+            cpd.setJoiningReport(getCellStringValue(record, 66));
+            if (cpd.getJoiningReport() != null) {
+                clientInfo.setJoiningReport(cpd.getJoiningReport());
+            }
+            cpd.setContractComments(getCellStringValue(record, 61));
+            if (cpd.getContractComments() != null) {
+                clientInfo.setNotes(cpd.getContractComments());
+            }
+
+            cpd.setProjectName(getCellStringValue(record, 73));
             if (cpd.getProjectName() != null) {
                 project.setName(cpd.getProjectName());
             }
-            cpd.setPurchaseOrderNo(getCellStringValue(record, 78));
+            cpd.setPurchaseOrderNo(getCellStringValue(record, 79));
             if (cpd.getPurchaseOrderNo() != null) {
                 project.setPurchaseOrderNo(cpd.getPurchaseOrderNo());
             }
-            if ((cpd.getVendorID() != null) && (cpd.getClientID() != null)) {
+            cpd.setSubContractorWorkOrderNo(getCellStringValue(record, 80));
+            if (cpd.getSubContractorWorkOrderNo() != null) {
+                project.setSubContractorWorkOrderNo(cpd.getSubContractorWorkOrderNo());
+            }
+            if (cpd.getVendorID() != null) {
                 project.setVendor(vendor);
                 client.getVendors().add(vendor);
                 vendor.getClients().add(client);
@@ -231,15 +405,31 @@ public class ClientInformationDataTool {
             if (cpd.getStartDate() != null) {
                 project.setStartDate(cpd.getStartDate());
             }
-            if (cpd.getClientID() != null) {
-                project.setClient(client);
-                ClientDao.instance().save(client);
+            if (cpd.getEndDate() != null) {
+                project.setEndDate(cpd.getEndDate());
             }
-            if (project != null) {
-                project = ProjectDao.instance().save(project);
-                clientInfo.setClientProject(project);
-            }
+            project.setClient(client);
+            ClientDao.instance().save(client);
+
+            project = ProjectDao.instance().save(project);
+            clientInfo.setClientProject(project);
             clientInfo = clientInformationDao.save(clientInfo);
+            cpd.setHrComments(getCellStringValue(record, 67));
+            if (cpd.getHrComments() != null) {
+                CommentDao.instance().addComment(cpd.getHrComments(), clientInfo);
+            }
+            cpd.setSubContractorComments(getCellStringValue(record, 55));
+            if (cpd.getSubContractorComments() != null) {
+                CommentDao.instance().addComment(cpd.getSubContractorComments(), clientInfo);
+            }
+            cpd.setAccountingComments(getCellStringValue(record, 61));
+            if (cpd.getAccountingComments() != null) {
+                CommentDao.instance().addComment(cpd.getAccountingComments(), clientInfo);
+            }
+            cpd.setVacationDetails(getCellStringValue(record, 37));
+            if (cpd.getVacationDetails() != null) {
+                CommentDao.instance().addComment(cpd.getVacationDetails(), clientInfo);
+            }
             emp.addClientInformation(clientInfo);
             EmployeeDao.instance().getEntityManager().merge(emp);
 
@@ -247,7 +437,7 @@ public class ClientInformationDataTool {
     }
 
     protected String getDataFileUrl() {
-        return OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "BIS_ClientInformationData.xlsx";
+        return OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "BIS_CPDMapping.xlsx";
     }
 
     protected String convertDcimalToWhole(String id) {

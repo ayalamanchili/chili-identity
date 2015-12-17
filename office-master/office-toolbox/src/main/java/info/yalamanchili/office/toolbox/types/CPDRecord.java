@@ -25,6 +25,7 @@ public class CPDRecord {
     protected Date startDate;
     protected Date endDate;
     protected String itemNum;
+    protected String consultantType;
     protected BigDecimal payRate;
     protected BigDecimal overTimePayrate;
     protected BillingDuration billingDuration;
@@ -51,13 +52,13 @@ public class CPDRecord {
     protected String specialInvoiceInstructions;
     protected String projectEndingForSure;
     protected String visaStatus;
-    protected String terminationNotice;
+    protected String terminationNotic;
     protected Long venRECID1;
     protected Long venRECID2;
     protected String subContractorComments;
-    protected Boolean signedCopyOfWorkOrder;
-    protected Boolean subcontractCOI;
-    protected Boolean subcontractorW9Form;
+    protected String signedCopyOfWorkOrder;
+    protected String subcontractCOI;
+    protected String subcontractorW9Form;
     protected String subContractorPaymentTerms;
     protected String vendorPaymentTerms;
     protected String accountingComments;
@@ -107,6 +108,14 @@ public class CPDRecord {
 
     public void setItemNum(String itemNum) {
         this.itemNum = itemNum;
+    }
+
+    public String getTerminationNotic() {
+        return terminationNotic;
+    }
+
+    public void setTerminationNotic(String terminationNotic) {
+        this.terminationNotic = terminationNotic;
     }
 
 
@@ -287,13 +296,6 @@ public class CPDRecord {
         this.visaStatus = visaStatus;
     }
 
-    public String getTerminationNotice() {
-        return terminationNotice;
-    }
-
-    public void setTerminationNotice(String terminationNotice) {
-        this.terminationNotice = terminationNotice;
-    }
 
     public Long getVenRECID1() {
         return venRECID1;
@@ -317,30 +319,6 @@ public class CPDRecord {
 
     public void setSubContractorComments(String subContractorComments) {
         this.subContractorComments = subContractorComments;
-    }
-
-    public Boolean getSignedCopyOfWorkOrder() {
-        return signedCopyOfWorkOrder;
-    }
-
-    public void setSignedCopyOfWorkOrder(Boolean signedCopyOfWorkOrder) {
-        this.signedCopyOfWorkOrder = signedCopyOfWorkOrder;
-    }
-
-    public Boolean getSubcontractCOI() {
-        return subcontractCOI;
-    }
-
-    public void setSubcontractCOI(Boolean subcontractCOI) {
-        this.subcontractCOI = subcontractCOI;
-    }
-
-    public Boolean getSubcontractorW9Form() {
-        return subcontractorW9Form;
-    }
-
-    public void setSubcontractorW9Form(Boolean subcontractorW9Form) {
-        this.subcontractorW9Form = subcontractorW9Form;
     }
 
     public String getSubContractorPaymentTerms() {
@@ -517,6 +495,38 @@ public class CPDRecord {
 
     public void setSubContractorOverTimePayRate(BigDecimal subContractorOverTimePayRate) {
         this.subContractorOverTimePayRate = subContractorOverTimePayRate;
+    }
+
+    public String getSignedCopyOfWorkOrder() {
+        return signedCopyOfWorkOrder;
+    }
+
+    public void setSignedCopyOfWorkOrder(String signedCopyOfWorkOrder) {
+        this.signedCopyOfWorkOrder = signedCopyOfWorkOrder;
+    }
+
+    public String getSubcontractCOI() {
+        return subcontractCOI;
+    }
+
+    public void setSubcontractCOI(String subcontractCOI) {
+        this.subcontractCOI = subcontractCOI;
+    }
+
+    public String getSubcontractorW9Form() {
+        return subcontractorW9Form;
+    }
+
+    public void setSubcontractorW9Form(String subcontractorW9Form) {
+        this.subcontractorW9Form = subcontractorW9Form;
+    }
+
+    public String getConsultantType() {
+        return consultantType;
+    }
+
+    public void setConsultantType(String consultantType) {
+        this.consultantType = consultantType;
     }
 
     
