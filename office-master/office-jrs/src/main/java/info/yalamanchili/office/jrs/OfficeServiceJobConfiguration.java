@@ -20,6 +20,7 @@ import info.yalamanchili.office.employee.perfeval.PerformanceEvaluationQuestions
 import info.yalamanchili.office.employee.probeval.ProbationPeriodEvaluationQuestionsFactory;
 import info.yalamanchili.office.expense.expenserpt.ExpenseReportService;
 import info.yalamanchili.office.reports.profile.ProfileReportsService;
+import info.yalamanchili.office.toolbox.BillingHistoryDataTool;
 import info.yalamanchili.office.toolbox.ClientContactDataTool;
 import info.yalamanchili.office.toolbox.ClientDataTool;
 import info.yalamanchili.office.toolbox.ClientInformationDataTool;
@@ -156,6 +157,11 @@ public class OfficeServiceJobConfiguration {
     @ManagedOperation
     public void bisCPDMigration() {
         ClientInformationDataTool.instance().bisCPDMigration();
+    }
+
+    @ManagedOperation
+    public void bisBillingHistoryMigration() {
+        BillingHistoryDataTool.instance().migrateBillingHistoryData();
     }
 
     @ManagedOperation
