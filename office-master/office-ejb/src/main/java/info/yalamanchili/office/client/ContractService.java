@@ -231,43 +231,11 @@ public class ContractService {
         }
         //Vendor AP Contacts
         for (Contact vendorAPcontact : ci.getVendorAPContacts()) {
-            StringBuilder acctpayCnt = new StringBuilder();
-            acctpayCnt.append("Name: ").append(vendorAPcontact.getFirstName());
-            acctpayCnt.append(" ");
-            acctpayCnt.append(vendorAPcontact.getLastName());
-            acctpayCnt.append("<br/>");
-            for (info.yalamanchili.office.entity.profile.Email email : vendorAPcontact.getEmails()) {
-                acctpayCnt.append("Email: ").append(email.getEmail()).append("<br/>");
-            }
-
-            for (Phone phone : vendorAPcontact.getPhones()) {
-                if (!Strings.isNullOrEmpty(phone.getExtension())) {
-                    acctpayCnt.append("Phone: ").append(phone.getPhoneNumber()).append(" ext: ").append(phone.getExtension());
-                } else {
-                    acctpayCnt.append("Phone: " + phone.getPhoneNumber());
-                }
-                acctpayCnt.append("<br/>");
-            }
+            dto.setVendorAPContact(vendorAPcontact.details());
         }
         //vendor recruiters
         for (Contact vendorRecruiter : ci.getVendorRecruiters()) {
-            StringBuilder vendorAPContact = new StringBuilder();
-            vendorAPContact.append("Name: ").append(vendorRecruiter.getFirstName());
-            vendorAPContact.append(" ");
-            vendorAPContact.append(vendorRecruiter.getLastName());
-            vendorAPContact.append("<br/>");
-            for (info.yalamanchili.office.entity.profile.Email email : vendorRecruiter.getEmails()) {
-                vendorAPContact.append("Email: ").append(email.getEmail()).append("<br/>");
-            }
-
-            for (Phone phone : vendorRecruiter.getPhones()) {
-                if (!Strings.isNullOrEmpty(phone.getExtension())) {
-                    vendorAPContact.append("Phone: ").append(phone.getPhoneNumber()).append(" ext: ").append(phone.getExtension());
-                } else {
-                    vendorAPContact.append("Phone: " + phone.getPhoneNumber());
-                }
-                vendorAPContact.append("<br/>");
-            }
+            dto.setVendorAPContact(vendorRecruiter.details());
         }
         if (ci.getClientLocation() != null) {
             dto.setClientLocation(ci.getClientLocation().getStreet1() + " " + ci.getClientLocation().getCity() + " " + ci.getClientLocation().getState());
