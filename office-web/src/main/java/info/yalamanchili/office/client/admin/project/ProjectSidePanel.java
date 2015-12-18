@@ -45,6 +45,7 @@ public class ProjectSidePanel extends ALComposite implements ClickHandler {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_EXPENSE, Auth.ROLE.ROLE_TIME)) {
             projectsidepanel.add(createprojectlink);
         }
+        projectsidepanel.add(new SearchProjectsPanel());
     }
 
     @Override
