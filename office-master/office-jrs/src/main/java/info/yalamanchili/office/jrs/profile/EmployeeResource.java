@@ -325,7 +325,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
             @PathParam("limit") int limit) {
         ClientInformationTable tableObj = new ClientInformationTable();
         Employee emp = (Employee) getDao().findById(id);
-        List<ClientInformation> clientInfoDtos = new ArrayList<ClientInformation>();
+        List<ClientInformation> clientInfoDtos = new ArrayList<>();
         for (ClientInformation entity : emp.getClientInformations()) {
             clientInfoDtos.add(entity);
         }
@@ -339,14 +339,15 @@ public class EmployeeResource extends CRUDResource<Employee> {
      *
      * @param empId
      * @param clientInformation
+     * @param submitForApproval
      */
     @PUT
     @Validate
     @Path("/clientinformation/{empId}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RECRUITER','ROLE_TIME','ROLE_RELATIONSHIP')")
-    public void addClientInformation(@PathParam("empId") Long empId, ClientInformationDto clientInformation) {
+    @PreAuthorize("hasAnyRole('ROLE_RECRUITER','ROLE_CONTRACTS_ADMIN')")
+    public void addClientInformation(@PathParam("empId") Long empId, ClientInformationDto clientInformation, @QueryParam("submitForApproval") Boolean submitForApproval) {
         ClientInformationService clientInformationService = (ClientInformationService) SpringContext.getBean("clientInformationService");
-        clientInformationService.addClientInformation(empId, clientInformation);
+        clientInformationService.addClientInformation(empId, clientInformation, submitForApproval);
     }
 
     /* Emergency Contact */
@@ -409,7 +410,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Response searchEmployeeReport(EmployeeSearchDto entity, @QueryParam("reportName") String reportName, @QueryParam("format") String format) {
         List<EmployeeDto> data = new ArrayList<EmployeeDto>();
-         String[] columnOrder = new String[]{"employeeId","firstName", "lastName", "sex","dateOfBirth","branch", "email", "phoneNumber", "jobTitle", "company"};
+        String[] columnOrder = new String[]{"employeeId", "firstName", "lastName", "sex", "dateOfBirth", "branch", "email", "phoneNumber", "jobTitle", "company"};
         Long size;
         if (entity.getCompanyContacts().size() > 0) {
             size = 1000l;
@@ -422,7 +423,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
             data.addAll(searchEmployee(entity, start, limit, false));
             start = start + limit;
         } while ((start + limit) < size);
-        return ReportGenerator.generateReport(data, reportName, format, OfficeServiceConfiguration.instance().getContentManagementLocationRoot(),columnOrder);
+        return ReportGenerator.generateReport(data, reportName, format, OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
     }
 
     @Override

@@ -25,7 +25,7 @@ public class CreateClientInfoPopupPanel extends CreateClientInfoPanel {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "employee/clientinformation/" + OfficeWelcome.instance().employeeId;
+        return OfficeWelcome.constants.root_url() + "employee/clientinformation/" + OfficeWelcome.instance().employeeId + "?submitForApproval=" + submitForApprovalF.getValue();
     }
 
     @Override

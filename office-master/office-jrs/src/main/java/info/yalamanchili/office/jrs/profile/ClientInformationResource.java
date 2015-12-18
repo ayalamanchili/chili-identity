@@ -56,12 +56,17 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
     }
 
     @PUT
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RECRUITER','ROLE_TIME','ROLE_RELATIONSHIP')")
+    @Path("/save")
+    @PreAuthorize("hasAnyRole('ROLE_RECRUITER','ROLE_CONTRACTS_ADMIN')")
     @Validate
     @CacheEvict(value = OfficeCacheKeys.CLIENTINFORMATION, allEntries = true)
+    public ClientInformation save(ClientInformation entity, @QueryParam("submitForApproval") Boolean submitForApproval) {
+        return clientInformationService.update(entity, true);
+    }
+
     @Override
     public ClientInformation save(ClientInformation entity) {
-        return clientInformationService.update(entity);
+        throw new UnsupportedOperationException();
     }
 
     @GET
@@ -90,7 +95,7 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
             emp = OfficeSecurityService.instance().getCurrentUser();
         }
         query.setParameter("employeeParam", emp);
-        List<Entry> result = new ArrayList<Entry>();
+        List<Entry> result = new ArrayList<>();
         List<Object> results = query.getResultList();
         for (Iterator<Object> it = results.iterator(); it.hasNext();) {
             Object[] values = (Object[]) it.next();

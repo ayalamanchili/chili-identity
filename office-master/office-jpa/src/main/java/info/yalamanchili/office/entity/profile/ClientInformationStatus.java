@@ -14,7 +14,10 @@ package info.yalamanchili.office.entity.profile;
  */
 public enum ClientInformationStatus {
 
-    PENDING_ACCOUNTS_VERIFICATION,
+    PENDING_CONTRACTS_SUBMIT,
+    PENDING_INVOICING_BILLING_APPROVAL,
     PENDING_HR_VERIFICATION,
-    COMPLETED;
+    COMPLETED,
+    CANCELED,
+
 }
