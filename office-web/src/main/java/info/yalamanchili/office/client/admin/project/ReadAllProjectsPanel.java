@@ -42,6 +42,11 @@ public class ReadAllProjectsPanel extends CRUDReadAllComposite {
         instance = this;
         initTable("Project", OfficeWelcome.constants);
     }
+    
+     public ReadAllProjectsPanel(JSONArray array) {
+        instance = this;
+        initTable("Project", array, OfficeWelcome.constants);
+    }
 
     @Override
     public void preFetchTable(int start) {
