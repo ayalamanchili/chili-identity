@@ -20,7 +20,6 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.admin.client.SelectClientWidget;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
 import info.yalamanchili.office.client.admin.clientlocation.SelectClientLocationWidget;
-import info.yalamanchili.office.client.admin.project.SelectProjectWidget;
 import info.yalamanchili.office.client.admin.subcntrcontact.SelectSubcontractorContactWidget;
 import info.yalamanchili.office.client.admin.subcntrlocation.SelectSubcontractorLocationWidget;
 import info.yalamanchili.office.client.admin.subcontractor.SelectSubcontractorWidget;
@@ -66,14 +65,14 @@ public class ReadClientInfoPanel extends ReadComposite {
         assignFieldValueFromEntity("clientLocation", entity, null);
         assignFieldValueFromEntity("vendor", entity, null);
         assignFieldValueFromEntity("vendorContact", entity, null);
-        assignFieldValueFromEntity("vendorAPContact", entity, null);
+        assignFieldValueFromEntity("vendorAPContacts", entity, null);
         assignFieldValueFromEntity("vendorLocation", entity, null);
-        assignFieldValueFromEntity("vendorRecruiter", entity, null);
+        assignFieldValueFromEntity("vendorRecruiters", entity, null);
         assignFieldValueFromEntity("middleVendor", entity, null);
-        assignFieldValueFromEntity("clientProject", entity, null);
         assignFieldValueFromEntity("vendorPaymentTerms", entity, DataType.STRING_FIELD);
         if (entity.get("clientProject") != null) {
             JSONObject project = entity.get("clientProject").isObject();
+            assignFieldValueFromEntity("name", project, DataType.STRING_FIELD);
             assignFieldValueFromEntity("purchaseOrderNo", project, DataType.STRING_FIELD);
         }
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
@@ -156,6 +155,9 @@ public class ReadClientInfoPanel extends ReadComposite {
         }
     };
 
+    SelectVendorAcctPayContact selectVendorAPContactsW = null;
+    SelectVendorRecruiterContactWidget selectVendorRecruiterContactsWidget = null;
+
     @Override
     protected void addWidgets() {
         addField("consultantJobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -167,14 +169,26 @@ public class ReadClientInfoPanel extends ReadComposite {
         addDropDown("clientLocation", new SelectClientLocationWidget(true, false, Alignment.HORIZONTAL));
         addDropDown("vendor", new SelectVendorWidget(true, false, Alignment.HORIZONTAL));
         addDropDown("vendorContact", new SelectVendorContactWidget(true, false, Alignment.HORIZONTAL));
-        addDropDown("vendorAPContact", new SelectVendorAcctPayContact(true, false, Alignment.HORIZONTAL));
+        selectVendorAPContactsW = new SelectVendorAcctPayContact(false, false, Alignment.HORIZONTAL) {
+            @Override
+            public boolean enableMultiSelect() {
+                return true;
+            }
+        };
+        addDropDown("vendorAPContacts", selectVendorAPContactsW);
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(true, false, Alignment.HORIZONTAL));
-        addDropDown("vendorRecruiter", new SelectVendorRecruiterContactWidget(true, false, Alignment.HORIZONTAL));
+        selectVendorRecruiterContactsWidget = new SelectVendorRecruiterContactWidget(false, false, Alignment.HORIZONTAL) {
+            @Override
+            public boolean enableMultiSelect() {
+                return true;
+            }
+        };
+        addDropDown("vendorRecruiters", selectVendorRecruiterContactsWidget);
         addDropDown("middleVendor", new SelectMiddleVendorWidget(true, false, Alignment.HORIZONTAL));
         addField("vendorPaymentTerms", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addDropDown("clientProject", new SelectProjectWidget(true, false));
         addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("name", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("purchaseOrderNo", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         if (checkPermission()) {
             entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
@@ -198,7 +212,6 @@ public class ReadClientInfoPanel extends ReadComposite {
                 addDropDown("subcontractorAddress", new SelectSubcontractorLocationWidget(true, false, Alignment.HORIZONTAL));
                 addField("subcontractorPayRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
                 addField("subcontractorOvertimePayRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-                String[] invoiceFrequencie = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
                 addEnumField("subcontractorinvoiceFrequency", true, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
                 addField("subcontractorpaymentTerms", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
                 addField("subcontractorw4Filled", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);

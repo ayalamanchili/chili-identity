@@ -334,13 +334,13 @@ public class ClientInformation extends AbstractEntity {
     @NotEmpty(message = "{sectorsAndBUs.not.empty.msg}")
     protected String sectorsAndBUs;
     
-    protected boolean isEndDateConfirmed;
+    protected Boolean isEndDateConfirmed;
 
-    public boolean isIsEndDateConfirmed() {
+    public Boolean isIsEndDateConfirmed() {
         return isEndDateConfirmed;
     }
 
-    public void setIsEndDateConfirmed(boolean isEndDateConfirmed) {
+    public void setIsEndDateConfirmed(Boolean isEndDateConfirmed) {
         this.isEndDateConfirmed = isEndDateConfirmed;
     }
 

@@ -108,8 +108,8 @@ public class ClientInformationService {
             ci.setVendorContact(contact);
         }
         ci.setVendorAPContacts(null);
-        if (ciDto.getVendorAPContact() != null) {
-            for (Contact vendorAPContact : ciDto.getVendorAPContact()) {
+        if (ciDto.getVendorAPContacts() != null) {
+            for (Contact vendorAPContact : ciDto.getVendorAPContacts()) {
                 if (vendorAPContact.getId() != null) {
                     ci.getVendorAPContacts().add(ContactDao.instance().findById(vendorAPContact.getId()));
                 }
@@ -122,8 +122,8 @@ public class ClientInformationService {
         }
         
         ci.setVendorRecruiters(null);
-        if (ciDto.getVendorRecruiter() != null) {
-            for (Contact vendorRecruiter : ciDto.getVendorRecruiter()) {
+        if (ciDto.getVendorRecruiters() != null) {
+            for (Contact vendorRecruiter : ciDto.getVendorRecruiters()) {
                 if (vendorRecruiter.getId() != null) {
                     ci.getVendorRecruiters().add(ContactDao.instance().findById(vendorRecruiter.getId()));
                 }

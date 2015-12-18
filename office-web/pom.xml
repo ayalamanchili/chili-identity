@@ -523,5 +523,6 @@
         <guava.version>17.0</guava.version>
         <poi.version>3.11</poi.version>
         <xdocreport.version>1.0.5</xdocreport.version>
+        <gwt.charts.version>0.9.10</gwt.charts.version>
     </properties>
 </project>
