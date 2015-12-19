@@ -14,8 +14,10 @@ package info.yalamanchili.office.client.contracts;
  */
 public enum ClientInformationStatus {
 
-    PENDING_ACCOUNTS_VERIFICATION,
+    PENDING_CONTRACTS_SUBMIT,
+    PENDING_INVOICING_BILLING_APPROVAL,
     PENDING_HR_VERIFICATION,
+    COMPLETE,
     COMPLETED;
 
     public static String[] names() {

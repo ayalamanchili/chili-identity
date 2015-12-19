@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Component
 @Transactional
-public class NewClientInfoAccountSubmit implements JavaDelegate {
+public class NewClientInfoInvoicingAndBillingSubmit implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
@@ -61,8 +61,7 @@ public class NewClientInfoAccountSubmit implements JavaDelegate {
                     ci.setSpecialInvoiceInstructions(specialInvoiceInstructions.toString());
                 }
             }
-            ci.setStatus(ClientInformationStatus.PENDING_HR_VERIFICATION);
-            ci = dao.instance().save(ci);
+            dao.save(ci);
         }
     }
 }

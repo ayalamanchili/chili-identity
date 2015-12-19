@@ -12,10 +12,10 @@
  
     <process id="new_client_info_process">
         <startEvent id="newClientInfoProcessStart"/>
-        <sequenceFlow id="newClientInfoProcessStartToAccountTask" sourceRef="newClientInfoProcessStart" targetRef="newClientInfoAccountTask" />
+        <sequenceFlow id="newClientInfoProcessStartToAccountTask" sourceRef="newClientInfoProcessStart" targetRef="newClientInfoInvoicingAndBillingTask" />
         <!--submit User task-->
-        <userTask id="newClientInfoAccountTask" 
-                  name="New Client Info Accounting Department Task for ${clientInfo.employee.firstName} ${clientInfo.employee.lastName}" 
+        <userTask id="newClientInfoInvoicingAndBillingTask" 
+                  name="New Client Info Billing/Invoicing Department Task for ${clientInfo.employee.firstName} ${clientInfo.employee.lastName}" 
         >
             <documentation>
                 New Client Information has been created with following details. Please fill the fields below to complete the task.
@@ -33,6 +33,13 @@
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.clientinformation.NewClientInformationProcess" />
                 <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.clientinformation.NewClientInformationProcess" />
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
                 <activiti:formProperty id="itemNumber" 
                                        name="Item Number"
                                        required="true"
@@ -66,14 +73,14 @@
                                        type="string"/>
             </extensionElements> 
         </userTask>
-        <sequenceFlow id="newClientInfoAccountTaskToSubmit" sourceRef="newClientInfoAccountTask" targetRef="newClientInfoAccountSubmit" />
+        <sequenceFlow id="newClientInfoAccountTaskToSubmit" sourceRef="newClientInfoInvoicingAndBillingTask" targetRef="newClientInfoInvoicingAndBillingSubmit" />
         <!--BulkImport Submit Service Task-->
         <serviceTask
-            id="newClientInfoAccountSubmit"
+            id="newClientInfoInvoicingAndBillingSubmit"
             name="New Client Information Account Department Submit" 
-            activiti:class="info.yalamanchili.office.client.NewClientInfoAccountSubmit">
+            activiti:class="info.yalamanchili.office.client.NewClientInfoInvoicingAndBillingSubmit">
         </serviceTask>
-        <sequenceFlow id="newClientInfoAccountSubmitToHRTask" sourceRef="newClientInfoAccountSubmit" targetRef="newClientInfoHRTask" />
+        <sequenceFlow id="newClientInfoAccountSubmitToHRTask" sourceRef="newClientInfoInvoicingAndBillingSubmit" targetRef="newClientInfoHRTask" />
         <!--submit User task-->
         <userTask id="newClientInfoHRTask" 
                   name="New Client Info HR Department Task for ${clientInfo.employee.firstName} ${clientInfo.employee.lastName}" 
@@ -94,6 +101,13 @@
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.clientinformation.NewClientInformationProcess" />
                 <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.clientinformation.NewClientInformationProcess" />
+                <activiti:formProperty id="status" 
+                                                       name="Approved?"
+                                                       required="true"
+                                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
                 <activiti:formProperty id="joiningReport" 
                                        name="Joining Report Details"
                                        required="false"

@@ -51,6 +51,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     protected Anchor addClientL = new Anchor("Client not present? submit request");
     protected Anchor addVendorL = new Anchor("Vendor not present? submit request");
     SelectPracticeWidget selectPractiseWidgetF = new SelectPracticeWidget(false, true, Alignment.HORIZONTAL);
+    protected BooleanField submitForApprovalF = new BooleanField(OfficeWelcome.constants, "Submit For Approval", "ClientInfo", false, false, Alignment.HORIZONTAL);
 
     public CreateClientInfoPanel(CreateCompositeType type) {
         super(type);
@@ -167,7 +168,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             previousProjectEndDate.setVisible(false);
         }
         add.setText("Save");
-
+        submitForApprovalF.setValue(true);
     }
 
     SelectEmployeeWithRoleWidget selectRecruiterW = new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER, false, false, Alignment.HORIZONTAL) {
@@ -272,7 +273,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         addDropDown("practice", selectPractiseWidgetF);
         addEnumField("sectorsAndBUs", false, true, ConsultingServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
         sectorsF = (EnumField) fields.get("sectorsAndBUs");
-
+        entityFieldsPanel.add(submitForApprovalF);
         alignFields();
     }
 
@@ -341,6 +342,6 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "employee/clientinformation/" + TreeEmployeePanel.instance().getEntityId();
+        return OfficeWelcome.constants.root_url() + "employee/clientinformation/" + TreeEmployeePanel.instance().getEntityId() + "?submitForApproval=" + submitForApprovalF.getValue();
     }
 }

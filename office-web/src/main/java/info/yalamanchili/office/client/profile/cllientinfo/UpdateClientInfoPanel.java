@@ -39,6 +39,7 @@ import info.yalamanchili.office.client.profile.updateBillingRate.ReadAllUpdateBi
 import java.util.logging.Logger;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
@@ -49,6 +50,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     SelectPracticeWidget selectPractiseWidgetF = new SelectPracticeWidget(false, true, Alignment.HORIZONTAL);
     EnumField servicesF;
     EnumField sectorsF;
+    protected BooleanField submitForApprovalF = new BooleanField(OfficeWelcome.constants, "Submit For Approval", "ClientInfo", false, false, Alignment.HORIZONTAL);
 
     public UpdateClientInfoPanel(JSONObject entity) {
         initUpdateComposite(entity, "ClientInfo", OfficeWelcome.constants);
@@ -351,6 +353,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         }
         sectorsF = (EnumField) fields.get("sectorsAndBUs");
         addDropDown("practice", selectPractiseWidgetF);
+        entityFieldsPanel.add(submitForApprovalF);
         alignFields();
     }
 
@@ -408,6 +411,6 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "clientinformation";
+        return OfficeWelcome.constants.root_url() + "clientinformation/save" + "?submitForApproval=" + submitForApprovalF.getValue();
     }
 }

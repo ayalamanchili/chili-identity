@@ -11,16 +11,16 @@ package info.yalamanchili.office.bpm.clientinformation;
 import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
-import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.ClientInformationStatus;
-import info.yalamanchili.office.entity.profile.Employee;
 import org.activiti.engine.delegate.DelegateTask;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author prasanthi.p
  */
+@Transactional
 public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
 
     @Override
@@ -39,25 +39,21 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
         //Notes
         String notes = (String) task.getExecution().getVariable("notes");
         CommentDao.instance().addComment(notes, entity);
-        //
-        Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
-        if (currentUser.getEmployeeId().equals(entity.getEmployee().getEmployeeId())) {
-//            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.self.approve.corp.expenseReport", "You cannot approve your expenseReport task");
-        }
+
         //Status
         String status = (String) task.getExecution().getVariable("status");
-        if (task.getTaskDefinitionKey().equals("newClientInfoAccountTask")) {
+        if (task.getTaskDefinitionKey().equals("newClientInfoInvoicingAndBillingTask")) {
             if (status.equalsIgnoreCase("approved")) {
-                entity.setStatus(ClientInformationStatus.PENDING_ACCOUNTS_VERIFICATION);
+                entity.setStatus(ClientInformationStatus.PENDING_HR_VERIFICATION);
             } else {
-                entity.setStatus(ClientInformationStatus.COMPLETED);
+                entity.setStatus(ClientInformationStatus.CANCELED);
             }
         }
         if (task.getTaskDefinitionKey().equals("newClientInfoHRTask")) {
             if (status.equalsIgnoreCase("approved")) {
-                entity.setStatus(ClientInformationStatus.PENDING_HR_VERIFICATION);;
-            } else {
                 entity.setStatus(ClientInformationStatus.COMPLETED);
+            } else {
+                entity.setStatus(ClientInformationStatus.CANCELED);
             }
         }
         ClientInformationDao.instance().save(entity);

@@ -77,9 +77,8 @@ public class ClientInformationService {
     @Autowired
     protected MailUtils mailUtils;
 
-    public void addClientInformation(Long empId, ClientInformationDto ciDto) {
+    public void addClientInformation(Long empId, ClientInformationDto ciDto, Boolean submitForApproval) {
         ClientInformation ci = mapper.map(ciDto, ClientInformation.class);
-        
         Client client = null;
         Vendor vendor = null;
         Vendor middleVendor = null;
@@ -120,7 +119,7 @@ public class ClientInformationService {
             Address address = AddressDao.instance().findById(ci.getVendorLocation().getId());
             ci.setVendorLocation(address);
         }
-        
+
         ci.setVendorRecruiters(null);
         if (ciDto.getVendorRecruiters() != null) {
             for (Contact vendorRecruiter : ciDto.getVendorRecruiters()) {
@@ -180,7 +179,6 @@ public class ClientInformationService {
             Practice practice = PracticeDao.instance().findById(ci.getPractice().getId());
             ci.setPractice(practice);
         }
-
         project.setStartDate(ci.getStartDate());
         project.setClient(client);
         project.setName(abbreviation + "PR" + projectName(client.getName()));
@@ -194,11 +192,15 @@ public class ClientInformationService {
             project.setSubContractorWorkOrderNo(project.getSubContractorWorkOrderNo() + project.getId().toString());
         }
         project = ProjectDao.instance().save(project);
-        ci.setStatus(ClientInformationStatus.PENDING_ACCOUNTS_VERIFICATION);
         ci.setClientProject(project);
         ci = clientInformationDao.save(ci);
         emp.addClientInformation(ci);
-        startNewClientInfoProcess(ci);
+        if (submitForApproval) {
+            ci.setStatus(ClientInformationStatus.PENDING_INVOICING_BILLING_APPROVAL);
+            startNewClientInfoProcess(ci);
+        } else {
+            ci.setStatus(ClientInformationStatus.PENDING_CONTRACTS_SUBMIT);
+        }
     }
 //TODO set these values
 
@@ -282,18 +284,18 @@ public class ClientInformationService {
     protected void startNewClientInfoProcess(ClientInformation ci) {
         Map<String, Object> vars = new HashMap<>();
         vars.put("clientInfo", ci);
+        vars.put("entityId", ci.getId());
         vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
         OfficeBPMService.instance().startProcess("new_client_info_process", vars);
     }
 
 //merge save and addci methods
-    public ClientInformation update(ClientInformation ci) {
-        //TODO implement mapping for contact,phone and email
+    public ClientInformation update(ClientInformation ci, Boolean submitForApproval) {
         ClientInformation ciEntity = em.find(ClientInformation.class, ci.getId());
         String abbreviation = getCompanyAbbreviation(ci.getCompany());
         BeanMapper.merge(ci, ciEntity);
         Project project = ProjectDao.instance().findById(ci.getClientProject().getId());
-        Client client = null;
+        Client client;
         Vendor vendor = null;
         Vendor middleVendor = null;
         ciEntity.setClient(null);
@@ -332,13 +334,17 @@ public class ClientInformationService {
             //Vendor Acct Pay Contact
             Set<Contact> newAPs = new HashSet();
             for (Contact con : ci.getVendorAPContacts()) {
-                newAPs.add(ContactDao.instance().findById(con.getId()));
+                if (con.getId() != null) {
+                    newAPs.add(ContactDao.instance().findById(con.getId()));
+                }
             }
             ciEntity.setVendorAPContacts(newAPs);
             //Vendor Recruiter
             Set<Contact> venRecs = new HashSet();
-            for (Contact cons : ci.getVendorRecruiters()) {
-                venRecs.add(ContactDao.instance().findById(cons.getId()));
+            for (Contact con : ci.getVendorRecruiters()) {
+                if (con.getId() != null) {
+                    venRecs.add(ContactDao.instance().findById(con.getId()));
+                }
             }
             ciEntity.setVendorRecruiters(venRecs);
             //Vendor Location
@@ -392,31 +398,36 @@ public class ClientInformationService {
             project.setMiddleVendor(middleVendor);
             VendorDao.instance().save(middleVendor);
         }
-        if (client != null) {
-            project.setClient(client);
-            ClientDao.instance().save(client);
-        }
-
+        project.setClient(client);
+        ClientDao.instance().save(client);
         project = ProjectDao.instance().save(project);
         ci.setClientProject(project);
         ciEntity = clientInformationDao.save(ciEntity);
         sendClientinfoUpdatedEmail(ciEntity);
+        if (ClientInformationStatus.PENDING_CONTRACTS_SUBMIT.equals(ci.getStatus()) && submitForApproval) {
+            ciEntity.setStatus(ClientInformationStatus.PENDING_INVOICING_BILLING_APPROVAL);
+            startNewClientInfoProcess(ci);
+        }
         return ci;
     }
 
-     public void sendClientinfoUpdatedEmail(ClientInformation ci) {
-     String[] roles = {OfficeRoles.OfficeRole.ROLE_BILLING_AND_INVOICING.name()};
-     Email email = new Email();
-     email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
-     email.setSubject(" Client Information Has Updated For :" + ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
-     String messageText = " Updated Client Information :   Client :" + ci.getClient().getName()+" Project : "+ci.getClientProject().getName();
-     if(ci.getClientProject().getEndDate()!=null){
-         messageText = messageText.concat("Project End Date : "+ci.getClientProject().getEndDate());
-     }
-     email.setBody(messageText);
-     MessagingService.instance().sendEmail(email);
-     } 
-     
+    public void sendClientinfoUpdatedEmail(ClientInformation ci) {
+        if (ClientInformationStatus.PENDING_CONTRACTS_SUBMIT.equals(ci.getStatus())) {
+            return;
+        }
+        //TODO show specific changes
+        String[] roles = {OfficeRoles.OfficeRole.ROLE_BILLING_AND_INVOICING.name()};
+        Email email = new Email();
+        email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
+        email.setSubject(" Client Information Has Updated For :" + ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
+        String messageText = " Updated Client Information :   Client :" + ci.getClient().getName() + " Project : " + ci.getClientProject().getName();
+        if (ci.getClientProject().getEndDate() != null) {
+            messageText = messageText.concat("Project End Date : " + ci.getClientProject().getEndDate());
+        }
+        email.setBody(messageText);
+        MessagingService.instance().sendEmail(email);
+    }
+
     private String projectName(String name) {
         String S = name.replaceAll("[^a-zA-Z0-9\\s]", "");
         String[] words = S.split("\\s+");

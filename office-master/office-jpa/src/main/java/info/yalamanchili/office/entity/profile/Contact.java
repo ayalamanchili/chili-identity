@@ -3,6 +3,7 @@
  */
 package info.yalamanchili.office.entity.profile;
 
+import com.google.common.base.Strings;
 import info.chili.jpa.AbstractEntity;
 
 import java.util.ArrayList;
@@ -270,6 +271,7 @@ public class Contact extends AbstractEntity {
         entity.setContact(this);
     }
 //replace with public String getPrimaryEmail(Employee emp) {
+
     @Transient
     public Email getPrimaryEmail() {
         //TODO use Query for better performance?
@@ -284,14 +286,18 @@ public class Contact extends AbstractEntity {
     public String details() {
         StringBuilder sb = new StringBuilder();
         sb.append("Name: ").append(this.getFirstName()).append(" ").append(this.getLastName()).append("<br/>");
-        for (Phone p : this.getPhones()) {
-            sb.append("Phone: ").append(p.getPhoneNumber()).append(" ext: ").append(p.getExtension());
-            sb.append("<br/>");
-        }
-        for (Email email : this.getEmails()) {
+         for (Email email : this.getEmails()) {
             sb.append("Email: ").append(email.getEmail());
             sb.append("<br/>");
         }
+        for (Phone p : this.getPhones()) {
+            sb.append("Phone: ").append(p.getPhoneNumber());
+            if (!Strings.isNullOrEmpty(p.getExtension())) {
+                sb.append(" ext: ").append(p.getExtension());
+            }
+            sb.append("<br/>");
+        }
+       
         return sb.toString();
     }
     //TODO add helpers for getPrimary ReportsTo

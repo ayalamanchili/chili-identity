@@ -74,6 +74,14 @@ public class CommentDao extends AbstractHandleEntityDao<Comment> {
         return super.save(source, target);
     }
 
+    //Temp method for bis migration
+    public Comment save(Comment source, AbstractEntity target,String updatedBy) {
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
+        source.setUpdatedBy(updatedBy);
+        source.setUpdatedTS(new Date());
+        return super.save(source, target);
+    }
+
     public CommentDao() {
         super(Comment.class);
     }
