@@ -30,11 +30,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Lob;
-import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -59,24 +56,20 @@ public class ClientInformationDto implements Serializable {
     /**
      * Consultant Job Title at client
      */
-    @Field
     @NotEmpty(message = "{consultantJobTitle.not.empty.msg}")
     protected String consultantJobTitle;
     /**
      * flag to indicate if this is the primary client
      */
-    @Field(index = Index.UN_TOKENIZED)
     protected Boolean ciPrimary;
     /**
      * startDate
      */
-    @Temporal(javax.persistence.TemporalType.DATE)
     @NotNull(message = "{startDate.not.empty.msg}")
     protected Date startDate;
     /**
      * endDate
      */
-    @Temporal(javax.persistence.TemporalType.DATE)
     protected Date endDate;
     /**
      * flag to indicate to end of previous project.
@@ -115,6 +108,10 @@ public class ClientInformationDto implements Serializable {
      */
     protected Contact vendorContact;
     /**
+     *
+     */
+    protected String vendorPaymentTerms;
+    /**
      * Vendor AP Contact
      */
     protected Set<Contact> vendorAPContacts;
@@ -149,30 +146,23 @@ public class ClientInformationDto implements Serializable {
     /**
      * historical billing rates
      */
-    @OneToMany(mappedBy = "clientInformation", cascade = CascadeType.ALL)
     protected List<BillingRate> billingRates;
 
     /**
      * billingRateDuration
      */
-    @Enumerated(EnumType.STRING)
     protected BillingDuration billingRateDuration;
     /**
      * overTimeRateDuration
      */
-    @Enumerated(EnumType.STRING)
     protected BillingDuration overTimeRateDuration;
     /**
      * Invoice Frequency
      */
-    @Enumerated(EnumType.STRING)
-    @org.hibernate.annotations.Index(name = "CI_INVC_FQ")
     protected InvoiceFrequency invoiceFrequency;
     /**
      * Invoice Delivery Method
      */
-    @Enumerated(EnumType.STRING)
-    @org.hibernate.annotations.Index(name = "CI_INVC_DEL_MTHD")
     protected InvoiceDeliveryMethod invoiceDeliveryMethod;
     /**
      * recruiter
@@ -185,7 +175,6 @@ public class ClientInformationDto implements Serializable {
     /**
      * Notes
      */
-    @Lob
     protected String notes;
     /**
      * termination notice
@@ -214,7 +203,6 @@ public class ClientInformationDto implements Serializable {
     /**
      * subcontractor Invoice Frequency
      */
-    @Enumerated(EnumType.STRING)
     protected InvoiceFrequency subcontractorinvoiceFrequency;
     /**
      * subcontractor PaymentTerms
@@ -233,7 +221,6 @@ public class ClientInformationDto implements Serializable {
      */
     protected BigDecimal payRate1099;
     protected BigDecimal overTimePayrate1099;
-    @Enumerated(EnumType.STRING)
     protected BillingDuration payTimeDuration1099;
     protected String paymentTerms1099;
     /* 
@@ -292,15 +279,13 @@ public class ClientInformationDto implements Serializable {
 
     protected String specialInvoiceInstructions;
 
-    @Enumerated(EnumType.STRING)
+   
     private ClientInformationStatus status;
     /**
      *
      */
     @NotNull(message = "{practice.not.empty.msg}")
     private Practice practice;
-
-    @Field
     @NotEmpty(message = "{sector.not.empty.msg}")
     protected String sectorsAndBUs;
 
@@ -821,6 +806,14 @@ public class ClientInformationDto implements Serializable {
 
     public void setVendorRecruiters(Set<Contact> vendorRecruiters) {
         this.vendorRecruiters = vendorRecruiters;
+    }
+
+    public String getVendorPaymentTerms() {
+        return vendorPaymentTerms;
+    }
+
+    public void setVendorPaymentTerms(String vendorPaymentTerms) {
+        this.vendorPaymentTerms = vendorPaymentTerms;
     }
 
 }
