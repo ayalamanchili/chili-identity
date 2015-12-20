@@ -197,7 +197,7 @@ public class ClientInformationService {
         emp.addClientInformation(ci);
         if (submitForApproval) {
             ci.setStatus(ClientInformationStatus.PENDING_INVOICING_BILLING_APPROVAL);
-            startNewClientInfoProcess(ci);
+            ci.setBpmProcessId(startNewClientInfoProcess(ci));
         } else {
             ci.setStatus(ClientInformationStatus.PENDING_CONTRACTS_SUBMIT);
         }
@@ -280,13 +280,12 @@ public class ClientInformationService {
         MessagingService.instance().sendEmail(email);
     }
 
-    @Async
-    protected void startNewClientInfoProcess(ClientInformation ci) {
+    protected String startNewClientInfoProcess(ClientInformation ci) {
         Map<String, Object> vars = new HashMap<>();
         vars.put("clientInfo", ci);
         vars.put("entityId", ci.getId());
         vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
-        OfficeBPMService.instance().startProcess("new_client_info_process", vars);
+        return OfficeBPMService.instance().startProcess("new_client_info_process", vars);
     }
 
 //merge save and addci methods
@@ -401,12 +400,12 @@ public class ClientInformationService {
         project.setClient(client);
         ClientDao.instance().save(client);
         project = ProjectDao.instance().save(project);
-        ci.setClientProject(project);
+        ciEntity.setClientProject(project);
         ciEntity = clientInformationDao.save(ciEntity);
         sendClientinfoUpdatedEmail(ciEntity);
         if (ClientInformationStatus.PENDING_CONTRACTS_SUBMIT.equals(ci.getStatus()) && submitForApproval) {
             ciEntity.setStatus(ClientInformationStatus.PENDING_INVOICING_BILLING_APPROVAL);
-            startNewClientInfoProcess(ci);
+            ci.setBpmProcessId(startNewClientInfoProcess(ci));
         }
         return ci;
     }
