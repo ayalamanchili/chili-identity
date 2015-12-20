@@ -21,7 +21,6 @@ import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
-import info.yalamanchili.office.client.profile.address.ReadAddressPanel;
 import info.yalamanchili.office.client.profile.contact.Sex;
 import java.util.logging.Logger;
 
