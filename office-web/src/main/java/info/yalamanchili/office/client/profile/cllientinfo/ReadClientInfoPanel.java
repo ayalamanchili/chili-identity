@@ -10,6 +10,8 @@ package info.yalamanchili.office.client.profile.cllientinfo;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.composite.BaseField;
+import info.chili.gwt.composite.BaseFieldWithTextBox;
 import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.ReadComposite;
@@ -34,6 +36,7 @@ import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import info.yalamanchili.office.client.profile.updateBillingRate.ReadAllUpdateBillingRatePanel;
 import java.util.logging.Logger;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
+import java.util.Map.Entry;
 
 /**
  *
@@ -146,6 +149,11 @@ public class ReadClientInfoPanel extends ReadComposite {
 
     @Override
     protected void configure() {
+        for (Entry<String, BaseField> e : fields.entrySet()) {
+            if (e.getValue() instanceof BaseFieldWithTextBox) {
+                setVisibleLengthSize(e.getKey(), 30);
+            }
+        }
     }
 
     SelectEmployeeWithRoleWidget selectRecruiterW = new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER, true, false, Alignment.HORIZONTAL) {
@@ -263,12 +271,12 @@ public class ReadClientInfoPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity);
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                populateFieldsFromEntity(entity);
+            }
+        });
     }
 
     @Override

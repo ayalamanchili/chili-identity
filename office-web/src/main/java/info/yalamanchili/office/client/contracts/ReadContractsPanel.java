@@ -10,9 +10,10 @@ package info.yalamanchili.office.client.contracts;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import info.chili.gwt.composite.BaseField;
+import info.chili.gwt.composite.BaseFieldWithTextBox;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
-import info.chili.gwt.fields.RichTextField;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -20,6 +21,7 @@ import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
 import info.yalamanchili.office.client.profile.updateBillingRate.ReadAllUpdateBillingRatePanel;
 import info.yalamanchili.office.client.time.consultant.ReadAllConsultantTimeSheetsPanel;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -159,10 +161,9 @@ public class ReadContractsPanel extends ReadComposite {
         hrText.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         subText.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         sub1099Text.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-        for (String fieldKey : fields.keySet()) {
-            if (fields.get(fieldKey) instanceof RichTextField) {
-                RichTextField rtf = (RichTextField) fields.get(fieldKey);
-                rtf.setHeightAndWidth("35%", "100%");
+        for (Map.Entry<String, BaseField> e : fields.entrySet()) {
+            if (e.getValue() instanceof BaseFieldWithTextBox) {
+                setVisibleLengthSize(e.getKey(), 30);
             }
         }
     }
