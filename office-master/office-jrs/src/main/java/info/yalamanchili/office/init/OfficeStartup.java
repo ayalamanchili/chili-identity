@@ -425,7 +425,7 @@ public class OfficeStartup {
         //client information task rule 
         BPMTaskDelegateRule rule6 = new BPMTaskDelegateRule();
         rule6.setBpmProcessId("new_client_info_process");
-        rule6.setBpmTaskId("newClientInfoAccountTask");
+        rule6.setBpmTaskId("newClientInfoInvoicingAndBillingTask");
         rule6.setRuleName("employeeIdAssignmentRuleEvaluator");
         rule6.setAttributeData("adminadmin,useruser");
         em.merge(rule6);

@@ -39,10 +39,12 @@ import info.yalamanchili.office.client.profile.updateBillingRate.ReadAllUpdateBi
 import java.util.logging.Logger;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import info.chili.gwt.composite.BaseFieldWithTextBox;
 import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
+import java.util.Map;
 
 public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHandler {
 
@@ -129,16 +131,16 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postUpdateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postUpdateSuccess(arg0);
+            }
+        });
 
     }
 
@@ -221,7 +223,11 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
 
     @Override
     protected void configure() {
-        // TODO Auto-generated method stub
+        for (Map.Entry<String, BaseField> e : fields.entrySet()) {
+            if (e.getValue() instanceof BaseFieldWithTextBox) {
+                setVisibleLengthSize(e.getKey(), 30);
+            }
+        }
     }
 
     SelectEmployeeWithRoleWidget selectRecruiterW = new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER, false, false, Alignment.HORIZONTAL) {

@@ -75,6 +75,7 @@ public class ContractDto implements Serializable {
      */
     protected String vendorLocation;
     protected String vendorAPContact;
+    protected String vendorPaymentTerms;
     protected String vendorRecruiter;
     protected String middleVendor;
     protected String clientProject;
@@ -324,6 +325,14 @@ public class ContractDto implements Serializable {
 
     public void setTerminationNotice(String terminationNotice) {
         this.terminationNotice = terminationNotice;
+    }
+
+    public String getVendorPaymentTerms() {
+        return vendorPaymentTerms;
+    }
+
+    public void setVendorPaymentTerms(String vendorPaymentTerms) {
+        this.vendorPaymentTerms = vendorPaymentTerms;
     }
 
     public void setVendorAPContact(String vendorAPContact) {

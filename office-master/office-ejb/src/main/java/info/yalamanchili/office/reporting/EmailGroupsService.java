@@ -6,7 +6,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.emailmenu;
+package info.yalamanchili.office.reporting;
 
 import info.chili.reporting.ReportGenerator;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;

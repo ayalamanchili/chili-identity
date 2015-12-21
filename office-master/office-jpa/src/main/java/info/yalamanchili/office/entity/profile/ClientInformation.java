@@ -333,8 +333,12 @@ public class ClientInformation extends AbstractEntity {
     @Field
     @NotEmpty(message = "{sectorsAndBUs.not.empty.msg}")
     protected String sectorsAndBUs;
-    
+
     protected Boolean isEndDateConfirmed;
+    /**
+     *
+     */
+    protected String bpmProcessId;
 
     public Boolean isIsEndDateConfirmed() {
         return isEndDateConfirmed;
@@ -875,6 +879,14 @@ public class ClientInformation extends AbstractEntity {
 
     public void setVendorRecruiters(Set<Contact> vendorRecruiters) {
         this.vendorRecruiters = vendorRecruiters;
+    }
+
+    public String getBpmProcessId() {
+        return bpmProcessId;
+    }
+
+    public void setBpmProcessId(String bpmProcessId) {
+        this.bpmProcessId = bpmProcessId;
     }
 
     @Override

@@ -5,7 +5,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.jrs.reporting;
+package info.yalamanchili.office.jrs.reports;
 
 import info.yalamanchili.office.reporting.AdhocReportingService;
 import javax.ws.rs.Consumes;
