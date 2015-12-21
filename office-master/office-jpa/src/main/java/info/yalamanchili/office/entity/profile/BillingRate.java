@@ -71,6 +71,11 @@ public class BillingRate extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     protected InvoiceFrequency subContractorInvoiceFrequency;
 
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    protected Date updatedTs;
+
+    protected String updatedBy;
+
     public BigDecimal getPayRate() {
         return payRate;
     }
@@ -150,6 +155,21 @@ public class BillingRate extends AbstractEntity {
     public void setSubContractorInvoiceFrequency(InvoiceFrequency subContractorInvoiceFrequency) {
         this.subContractorInvoiceFrequency = subContractorInvoiceFrequency;
     }
-    
+
+    public Date getUpdatedTs() {
+        return updatedTs;
+    }
+
+    public void setUpdatedTs(Date updatedTs) {
+        this.updatedTs = updatedTs;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
     
 }
