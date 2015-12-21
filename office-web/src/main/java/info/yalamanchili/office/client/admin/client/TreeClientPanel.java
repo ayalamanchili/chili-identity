@@ -18,8 +18,6 @@ import info.yalamanchili.office.client.admin.clientcontact.ReadAllClientAcctPayC
 import info.yalamanchili.office.client.admin.clientcontact.ReadAllClientContactPanel;
 import info.yalamanchili.office.client.admin.clientlocation.ClientLocationOptionsPanel;
 import info.yalamanchili.office.client.admin.clientlocation.ReadAllClientLocationsPanel;
-import info.yalamanchili.office.client.admin.project.ProjectOptionsPanel;
-import info.yalamanchili.office.client.admin.project.ReadAllProjectsPanel;
 import java.util.logging.Logger;
 
 /**
@@ -67,7 +65,6 @@ public class TreeClientPanel extends TreePanelComposite {
 
     @Override
     protected void addWidgets() {
-//        addFirstChildLink("Project", PROJECT_NODE);
         addFirstChildLink("Locations", CLIENTLOCATION_NODE);
         addFirstChildLink("Recruiter Contacts", CONTACTS_NODE);
         addFirstChildLink("Acct Pay Contacts", CLIENT_ACCT_PAY_CONTACTS_NODE);
@@ -75,11 +72,6 @@ public class TreeClientPanel extends TreePanelComposite {
 
     @Override
     public void treeNodeSelected(String entityNodeKey) {
-//        if (PROJECT_NODE.equals(entityNodeKey)) {
-//            TabPanel.instance().adminPanel.entityPanel.clear();
-//            TabPanel.instance().adminPanel.entityPanel.add(new ReadAllProjectsPanel(entityId));
-//            TabPanel.instance().adminPanel.entityPanel.add(new ProjectOptionsPanel());
-//        }
         if (CLIENTLOCATION_NODE.equals(entityNodeKey)) {
             TabPanel.instance().adminPanel.entityPanel.clear();
             TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientLocationsPanel(entityId));

@@ -42,7 +42,7 @@ public class ClientAcctPayCntOptionsPanel extends ALComposite implements ClickHa
 
     @Override
     protected void addWidgets() {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_EXPENSE, Auth.ROLE.ROLE_TIME)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING)) {
             panel.add(addClientAcctPayContactLink);
         }
     }
@@ -55,4 +55,3 @@ public class ClientAcctPayCntOptionsPanel extends ALComposite implements ClickHa
         }
     }
 }
-

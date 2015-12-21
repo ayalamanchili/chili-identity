@@ -441,7 +441,11 @@ public class ExpenseReport extends AbstractEntity {
     protected String expenseReportNumber;
 
     public String getExpenseReportNumber() {
-        return "ERN-" + String.format("%04d", getId());
+        if (getId() != null) {
+            return "ERN-" + String.format("%04d", getId());
+        } else {
+            return null;
+        }
     }
 
     public void setExpenseReportNumber(String expenseReportNumber) {

@@ -289,8 +289,10 @@ public class ExpenseReportService {
                         }
                         if (item.getCategory().getName().equals("Personal Auto")) {
                             data.getData().put("Personal Auto", "true");
-                            data.getData().put("miles" + p, item.getExpenseMiles().setScale(2, BigDecimal.ROUND_UP).toString());
-                            data.getData().put("miles-amount" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                            if (item.getExpenseMiles() != null && item.getAmount() != null) {
+                                data.getData().put("miles" + p, item.getExpenseMiles().setScale(2, BigDecimal.ROUND_UP).toString());
+                                data.getData().put("miles-amount" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                            }
                         }
                     }
                     data.getData().put("p-purpose" + p, item.getPurpose());

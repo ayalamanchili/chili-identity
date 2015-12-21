@@ -39,12 +39,12 @@ import org.apache.commons.lang.time.DateUtils;
 @Component
 @Scope("request")
 public class ContractService {
-    
+
     @PersistenceContext
     protected EntityManager em;
     @Autowired
     protected Mapper mapper;
-    
+
     public ContractTable getContractorPlacementInfo(int start, int limit) {
         String queryStr = "SELECT ci from " + ClientInformation.class.getCanonicalName() + " ci where ci.endDate>=:dateParam or ci.endDate is null ";
         TypedQuery<ClientInformation> query = em.createQuery(queryStr + " order by ci.employee.firstName ASC group by ci.employee", ClientInformation.class);
@@ -54,7 +54,7 @@ public class ContractService {
         String sizeQueryStr = queryStr.replace("SELECT ci", "SELECT count(*)");
         TypedQuery<Long> sizeQuery = em.createQuery(sizeQueryStr, Long.class);
         sizeQuery.setParameter("dateParam", new Date(), TemporalType.DATE);
-        
+
         ContractTable table = new ContractTable();
         table.setSize(sizeQuery.getSingleResult());
         for (ClientInformation ci : query.getResultList()) {
@@ -62,7 +62,7 @@ public class ContractService {
         }
         return table;
     }
-    
+
     public ContractTable search(ContractSearchDto searchDto, int start, int limit) {
         ContractTable table = new ContractTable();
         String searchQuery = getSearchQuery(searchDto);
@@ -97,7 +97,7 @@ public class ContractService {
         }
         return table;
     }
-    
+
     public ContractTable search(String searchText, int start, int limit) {
         ContractTable table = new ContractTable();
         String searchQuery = getSearchQuery(searchText);
@@ -114,7 +114,7 @@ public class ContractService {
         }
         return table;
     }
-    
+
     protected String getSearchQuery(String searchText) {
         StringBuilder queryStr = new StringBuilder();
         queryStr.append("SELECT ci from ").append(ClientInformation.class.getCanonicalName());
@@ -169,26 +169,26 @@ public class ContractService {
         if (StringUtils.isNotBlank(searchDto.getRecruiter())) {
             queryStr.append("ci.employee.firstName LIKE '%").append(searchDto.getRecruiter().trim()).append("%' ").append(" and ");
         }
-        
+
         if (searchDto.getCompany() != null) {
             queryStr.append("ci.company LIKE '%").append(searchDto.getCompany().name().trim()).append("%' ").append(" and ");
         }
-        
+
         if (StringUtils.isNotBlank(searchDto.getEmployeeType())) {
             queryStr.append("ci.employee.employeeType.name LIKE '%").append(searchDto.getEmployeeType().trim()).append("%' ").append(" and ");
         }
-        
+
         if ((searchDto.getStartDate()) != null) {
             queryStr.append("ci.startDate between :startDateStartParam and :startDateEndParam").append(" and ");
         }
-        
+
         if ((searchDto.getEndDate()) != null) {
             queryStr.append("ci.endDate between :endDateStartParam and :endDateEndParam").append(" and ");
         }
-        
+
         return queryStr.toString().substring(0, queryStr.toString().lastIndexOf("and"));
     }
-    
+
     protected ContractDto mapClientInformation(ClientInformation ci) {
         ContractDto dto = mapper.map(ci, ContractDto.class);
         if (ci.getEmployee() != null) {
@@ -235,7 +235,7 @@ public class ContractService {
         }
         //vendor recruiters
         for (Contact vendorRecruiter : ci.getVendorRecruiters()) {
-            dto.setVendorAPContact(vendorRecruiter.details());
+            dto.setVendorRecruiter(vendorRecruiter.details());
         }
         if (ci.getClientLocation() != null) {
             dto.setClientLocation(ci.getClientLocation().getStreet1() + " " + ci.getClientLocation().getCity() + " " + ci.getClientLocation().getState());
@@ -243,11 +243,11 @@ public class ContractService {
         if (ci.getVendorLocation() != null) {
             dto.setVendorLocation(ci.getVendorLocation().getStreet1() + " " + ci.getVendorLocation().getCity() + " " + ci.getVendorLocation().getState());
         }
-        
+
         if (ci.getSubcontractor() != null) {
             dto.setSubContractorName(ci.getSubcontractor().getName());
         }
-        
+
         if (ci.getSubcontractorContact() != null) {
             dto.setSubContractorContactName(ci.getSubcontractorContact().details());
         }
@@ -262,13 +262,13 @@ public class ContractService {
         }
         return dto;
     }
-    
+
     public Response generateContractorPlacementInfoReport(String format) {
         ContractTable data = getContractorPlacementInfo(0, 10000);
         String[] columnOrder = new String[]{"employee", "client", "vendor", "itemNumber", "billingRate", "overTimeBillingRate", "invoiceFrequency", "startDate", "endDate",};
         return ReportGenerator.generateReport(data.getEntities(), "contracts", format, OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
     }
-    
+
     public static ContractService instance() {
         return SpringContext.getBean(ContractService.class);
     }

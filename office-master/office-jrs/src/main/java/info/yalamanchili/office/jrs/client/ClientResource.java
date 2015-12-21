@@ -75,7 +75,7 @@ public class ClientResource extends CRUDResource<Client> {
 
     @GET
     @Path("/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_TIME','ROLE_EXPENSE','ROLE_RELATIONSHIP')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS','ROLE_BILLING_AND_INVOICING','ROLE_CONTRACTS_FULL_VIEW')")
     @Cacheable(OfficeCacheKeys.CLIENT)
     public ClientTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         ClientTable tableObj = new ClientTable();
@@ -87,7 +87,7 @@ public class ClientResource extends CRUDResource<Client> {
     @PUT
     @Validate
     @Override
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
     @CacheEvict(value = OfficeCacheKeys.CLIENT, allEntries = true)
     public Client save(Client client) {
         return super.save(client);
@@ -96,7 +96,7 @@ public class ClientResource extends CRUDResource<Client> {
     @PUT
     @Path("/delete/{id}")
     @Override
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
     @CacheEvict(value = OfficeCacheKeys.CLIENT, allEntries = true)
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
@@ -118,7 +118,7 @@ public class ClientResource extends CRUDResource<Client> {
     @PUT
     @Validate
     @Path("/project/{clientId}/{vendorID}/{midVendorID}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
     public Project addProject(@PathParam("clientId") Long clientId, Project project, @PathParam("vendorID") Long venID, @PathParam("midVendorID") Long midVenID) {
         Client clnt = (Client) getDao().findById(clientId);
         Vendor vendor = vendorDao.findById(venID);
@@ -135,7 +135,7 @@ public class ClientResource extends CRUDResource<Client> {
 
     @GET
     @Path("/projects/{id}/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_TIME','ROLE_EXPENSE','ROLE_RELATIONSHIP')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS','ROLE_BILLING_AND_INVOICING','ROLE_CONTRACTS_FULL_VIEW')")
     public ProjectTable getProjects(@PathParam("id") long id, @PathParam("start") int start,
             @PathParam("limit") int limit) {
         ProjectTable tableObj = new ProjectTable();
@@ -155,17 +155,17 @@ public class ClientResource extends CRUDResource<Client> {
     @PUT
     @Validate
     @Path("/clientcontact/{clientId}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
     public void addclientContact(@PathParam("clientId") Long clientId, ContactDto contactDto) {
         Client clnt = (Client) getDao().findById(clientId);
         Contact contact = contactService.save(contactDto);
         clnt.addContact(contact);
     }
-    
+
     @PUT
     @Validate
     @Path("/acct-pay-contact/{clientId}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
     public void addclientAcctPayContact(@PathParam("clientId") Long clientId, ContactDto dto) {
         Client client = (Client) getDao().findById(clientId);
         Contact contact = contactService.save(dto);
@@ -174,7 +174,7 @@ public class ClientResource extends CRUDResource<Client> {
 
     @PUT
     @Path("/contact/remove/{clientId}/{contactId}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
     public void removeContact(@PathParam("clientId") Long clientId, @PathParam("contactId") Long contactId) {
         Client client = (Client) getDao().findById(clientId);
         if (client == null) {
@@ -187,10 +187,10 @@ public class ClientResource extends CRUDResource<Client> {
         client.getContacts().remove(contact);
         ContactDao.instance().delete(contact.getId());
     }
-    
+
     @PUT
     @Path("/acct-pay-contact/remove/{clientId}/{contactId}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
     public void removeAcctPayContact(@PathParam("clientId") Long clientId, @PathParam("contactId") Long contactId) {
         Client client = (Client) getDao().findById(clientId);
         Contact contact = ContactDao.instance().findById(contactId);
@@ -208,12 +208,12 @@ public class ClientResource extends CRUDResource<Client> {
      */
     @GET
     @Path("/clientcontact/{id}/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_TIME','ROLE_EXPENSE','ROLE_RELATIONSHIP')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS','ROLE_BILLING_AND_INVOICING','ROLE_CONTRACTS_FULL_VIEW')")
     public ContactDtoTable getClientContacts(@PathParam("id") long id, @PathParam("start") int start,
             @PathParam("limit") int limit) {
         ContactDtoTable tableObj = new ContactDtoTable();
         Client client = (Client) getDao().findById(id);
-        List<ContactDto> dtos = new ArrayList<ContactDto>();
+        List<ContactDto> dtos = new ArrayList<>();
         for (Contact entity : client.getContacts()) {
             dtos.add(ContactMapper.map(entity));
         }
@@ -221,7 +221,7 @@ public class ClientResource extends CRUDResource<Client> {
         tableObj.setSize((long) client.getContacts().size());
         return tableObj;
     }
-    
+
     /**
      * Get Client Account Payable Contact
      *
@@ -231,15 +231,15 @@ public class ClientResource extends CRUDResource<Client> {
      * @return
      *
      */
-     @GET
+    @GET
     @Path("/acct-pay-contacts/{id}/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_TIME','ROLE_EXPENSE','ROLE_RELATIONSHIP')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS','ROLE_BILLING_AND_INVOICING','ROLE_CONTRACTS_FULL_VIEW')")
     public ContactDtoTable getClientAcctPayContacts(@PathParam("id") long id, @PathParam("start") int start,
             @PathParam("limit") int limit) {
         Client contact = (Client) getDao().findById(id);
         return getContacts(contact.getClientAcctPayContacts());
     }
-    
+
     protected ContactDtoTable getContacts(List<Contact> contacts) {
         ContactDtoTable tableObj = new ContactDtoTable();
         for (Contact entity : contacts) {
@@ -263,7 +263,7 @@ public class ClientResource extends CRUDResource<Client> {
     public List<Entry> getClientContactsDropDown(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit,
             @QueryParam("column") List<String> columns) {
         Client client = ClientDao.instance().findById(id);
-        List<Entry> result = new ArrayList<Entry>();
+        List<Entry> result = new ArrayList<>();
         for (Contact contact : client.getContacts()) {
             Entry entry = new Entry();
             entry.setId(contact.getId().toString());
@@ -272,8 +272,8 @@ public class ClientResource extends CRUDResource<Client> {
         }
         return result;
     }
-    
-     @GET
+
+    @GET
     @Path("/acct-pay-contacts/dropdown/{id}/{start}/{limit}")
     public List<Entry> getClientAcctPayContactsDropDown(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit,
             @QueryParam("column") List<String> columns) {
@@ -282,7 +282,7 @@ public class ClientResource extends CRUDResource<Client> {
     }
 
     protected List<Entry> getContactDropDown(List<Contact> contacts) {
-        List<Entry> result = new ArrayList<Entry>();
+        List<Entry> result = new ArrayList<>();
         for (Contact contact : contacts) {
             Entry entry = new Entry();
             entry.setId(contact.getId().toString());
@@ -291,7 +291,6 @@ public class ClientResource extends CRUDResource<Client> {
         }
         return result;
     }
-
 
     /**
      * Add Client Location
@@ -302,7 +301,7 @@ public class ClientResource extends CRUDResource<Client> {
     @PUT
     @Validate
     @Path("/clientlocation/{clientId}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
     public void addclientlocation(@PathParam("clientId") Long clientId, Address address) {
         Client clnt = (Client) getDao().findById(clientId);
         clnt.addLocations(address);
@@ -310,7 +309,7 @@ public class ClientResource extends CRUDResource<Client> {
 
     @PUT
     @Path("/location/remove/{clientId}/{locationId}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
     public void removeLocation(@PathParam("clientId") Long clientId, @PathParam("locationId") Long locationId) {
         Client client = (Client) getDao().findById(clientId);
         if (client == null) {
@@ -334,7 +333,7 @@ public class ClientResource extends CRUDResource<Client> {
      */
     @GET
     @Path("/clientlocation/{id}/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_TIME','ROLE_EXPENSE','ROLE_RELATIONSHIP')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS','ROLE_BILLING_AND_INVOICING','ROLE_CONTRACTS_FULL_VIEW')")
     public AddressTable getClientLocations(@PathParam("id") long id, @PathParam("start") int start,
             @PathParam("limit") int limit) {
         AddressTable tableObj = new AddressTable();
@@ -358,7 +357,7 @@ public class ClientResource extends CRUDResource<Client> {
     public List<Entry> getClientLocationsDropDown(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit,
             @QueryParam("column") List<String> columns) {
         Client client = ClientDao.instance().findById(id);
-        List<Entry> result = new ArrayList<Entry>();
+        List<Entry> result = new ArrayList<>();
         for (Address address : client.getLocations()) {
             Entry entry = new Entry();
             entry.setId(address.getId().toString());
