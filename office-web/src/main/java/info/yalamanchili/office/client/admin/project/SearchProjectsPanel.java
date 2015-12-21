@@ -59,6 +59,19 @@ public class SearchProjectsPanel extends SearchComposite {
                 sb.loadData(values.values());
             }
         });
+        HttpService.HttpServiceAsync.instance().doGet(getpurchaseOrderNoDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
+                SuggestBox sb = (SuggestBox) fields.get("purchaseOrderNo");
+                sb.loadData(values.values());
+            }
+        });
+    }
+    
+    protected String getpurchaseOrderNoDropDownUrl() {
+        //TODO think about the limit
+        return OfficeWelcome.constants.root_url() + "project/dropdown/0/10000?column=id&column=purchaseOrderNo";
     }
 
     @Override
@@ -72,12 +85,14 @@ public class SearchProjectsPanel extends SearchComposite {
     @Override
     protected void addWidgets() {
         addField("name", DataType.STRING_FIELD);
+        addField("purchaseOrderNo", DataType.STRING_FIELD);
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
         assignEntityValueFromField("name", entity);
+        assignEntityValueFromField("purchaseOrderNo", entity);
         logger.info(entity.toString());
         return entity;
     }
@@ -120,7 +135,7 @@ public class SearchProjectsPanel extends SearchComposite {
 
     @Override
     protected String getSearchURI(Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "project/search/" + start.toString() + "/"
+        return URL.encode(OfficeWelcome.constants.root_url() + "project/search-project/" + start.toString() + "/"
                 + limit.toString());
     }
 }
