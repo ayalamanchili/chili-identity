@@ -107,6 +107,11 @@ public class ClientInformation extends AbstractEntity {
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_ClientContact_ClientInformations")
     protected Contact clientContact;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "clientinformation_client_apcontacts")
+    @ForeignKey(name = "FK_ClientAPContacts_ClientInformations")
+    protected Set<Contact> clientAPContacts;
     /**
      * Client Location
      */
@@ -881,6 +886,17 @@ public class ClientInformation extends AbstractEntity {
 
     public void setVendorRecruiters(Set<Contact> vendorRecruiters) {
         this.vendorRecruiters = vendorRecruiters;
+    }
+
+    public Set<Contact> getClientAPContacts() {
+        if (this.clientAPContacts == null) {
+            this.clientAPContacts = new HashSet();
+        }
+        return clientAPContacts;
+    }
+
+    public void setClientAPContacts(Set<Contact> clientAPContacts) {
+        this.clientAPContacts = clientAPContacts;
     }
 
     public String getBpmProcessId() {
