@@ -206,7 +206,7 @@ public class ReadClientInfoPanel extends ReadComposite {
             addField("itemNumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("payRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addField("billingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-            new ReadAllUpdateBillingRatePanel().renderBillingRateHistory(getEntityId(), entityFieldsPanel);
+            ReadAllUpdateBillingRatePanel.renderBillingRateHistory(getEntityId());
             String[] billingDuration = {"HOUR", "DAY", "MONTH"};
             addEnumField("billingRateDuration", true, false, billingDuration, Alignment.HORIZONTAL);
             addField("overTimePayRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
@@ -274,13 +274,13 @@ public class ReadClientInfoPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
-                populateComments();
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                        populateComments();
+                    }
+                });
     }
 
     protected void populateComments() {

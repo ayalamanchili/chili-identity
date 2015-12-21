@@ -16,7 +16,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DisclosurePanel;
-import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Widget;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.CRUDReadAllComposite;
@@ -238,10 +238,9 @@ public class ReadAllConsultantTimeSheetsPanel extends CRUDReadAllComposite {
         }
     }
 
-    public void renderLeaveHistory(final String empId, FlowPanel entityFieldsPanel) {
+    public static Widget renderLeaveHistory(final String empId) {
         final DisclosurePanel leaveDP = new DisclosurePanel("Consultant Leave History");
         leaveDP.setWidth("100%");
-        entityFieldsPanel.add(leaveDP);
         leaveDP.addOpenHandler(new OpenHandler<DisclosurePanel>() {
             @Override
             public void onOpen(OpenEvent<DisclosurePanel> event) {
@@ -250,5 +249,6 @@ public class ReadAllConsultantTimeSheetsPanel extends CRUDReadAllComposite {
 
             }
         });
+        return leaveDP;
     }
 }

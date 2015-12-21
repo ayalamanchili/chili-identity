@@ -12,7 +12,6 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import info.chili.gwt.composite.BaseField;
 import info.chili.gwt.composite.BaseFieldWithTextBox;
-import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.crud.TReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.Alignment;
@@ -176,7 +175,7 @@ public class ReadContractsPanel extends TReadComposite {
         addField("employee", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 1);
         addField("consultantJobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 2);
         addField("company", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 2, 1);
-//        new ReadAllConsultantTimeSheetsPanel().renderLeaveHistory(getEmployeeId(), entityFieldsPanel);
+        entityFieldsPanel.setWidget(2, 2, ReadAllConsultantTimeSheetsPanel.renderLeaveHistory(getEmployeeId()));
         entityFieldsPanel.setWidget(3, 1, clientVendorText);
         entityFieldsPanel.getFlexCellFormatter().setColSpan(3, 1, 2);
         addField("client", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 4, 1);
@@ -199,7 +198,7 @@ public class ReadContractsPanel extends TReadComposite {
         addField("itemNumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 13, 1);
         addField("payRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 13, 2);
         addField("billingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 14, 1);
-//        new ReadAllUpdateBillingRatePanel().renderBillingRateHistory(getEntityId(), entityFieldsPanel);
+        entityFieldsPanel.setWidget(14, 2, ReadAllUpdateBillingRatePanel.renderBillingRateHistory(getEntityId()));
         String[] billingDuration = {"HOUR", "DAY", "MONTH"};
         addEnumField("billingRateDuration", true, false, billingDuration, Alignment.HORIZONTAL, 16, 1);
         addField("overTimePayRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 16, 2);

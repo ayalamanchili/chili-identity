@@ -277,7 +277,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             addField("itemNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("payRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addField("billingRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-            new ReadAllUpdateBillingRatePanel().renderBillingRateHistory(getEntityId(), entityFieldsPanel);
+            ReadAllUpdateBillingRatePanel.renderBillingRateHistory(getEntityId());
             renderUpdateBillingRateFieldLink();
             String[] billingDuration = {"HOUR", "DAY", "MONTH"};
             addEnumField("billingRateDuration", false, false, billingDuration, Alignment.HORIZONTAL);

@@ -14,7 +14,8 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DisclosurePanel;
-import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.Widget;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
@@ -136,11 +137,14 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
 
     /**
      * common utility method
+     *
+     * @param clientInfoId
+     * @param entityFieldsPanel
+     * @return
      */
-    public void renderBillingRateHistory(final String clientInfoId, FlowPanel entityFieldsPanel) {
+    public static Widget renderBillingRateHistory(final String clientInfoId) {
         final DisclosurePanel billingRatesDP = new DisclosurePanel("Billing Rate History");
         billingRatesDP.setWidth("100%");
-        entityFieldsPanel.add(billingRatesDP);
         billingRatesDP.addOpenHandler(new OpenHandler<DisclosurePanel>() {
             @Override
             public void onOpen(OpenEvent<DisclosurePanel> event) {
@@ -149,5 +153,6 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
 
             }
         });
+        return billingRatesDP;
     }
 }
