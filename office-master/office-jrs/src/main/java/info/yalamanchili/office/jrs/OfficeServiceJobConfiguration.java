@@ -24,6 +24,7 @@ import info.yalamanchili.office.toolbox.BillingHistoryDataTool;
 import info.yalamanchili.office.toolbox.ClientContactDataTool;
 import info.yalamanchili.office.toolbox.ClientDataTool;
 import info.yalamanchili.office.toolbox.ClientInformationDataTool;
+import info.yalamanchili.office.toolbox.CommentsDataTool;
 import info.yalamanchili.office.toolbox.OnBoardingDataTool;
 import info.yalamanchili.office.toolbox.SubContractorContactDataTool;
 import info.yalamanchili.office.toolbox.SubContractorDataTool;
@@ -162,6 +163,11 @@ public class OfficeServiceJobConfiguration {
     @ManagedOperation
     public void bisBillingHistoryMigration() {
         BillingHistoryDataTool.instance().migrateBillingHistoryData();
+    }
+
+    @ManagedOperation
+    public void bisCommentsMigration() {
+        CommentsDataTool.instance().bisCommentsMigration();
     }
 
     @ManagedOperation
