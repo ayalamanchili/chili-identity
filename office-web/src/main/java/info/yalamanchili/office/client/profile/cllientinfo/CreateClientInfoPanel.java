@@ -84,7 +84,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             assignEntityValueFromField("endPreviousProject", clientInfo);
             assignEntityValueFromField("previousProjectEndDate", clientInfo);
         }
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_TIME, ROLE.ROLE_RECRUITER, ROLE.ROLE_RELATIONSHIP)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
             assignEntityValueFromField("payRate", clientInfo);
             assignEntityValueFromField("billingRate", clientInfo);
             assignEntityValueFromField("billingRateDuration", clientInfo);
@@ -221,7 +221,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             addField("endPreviousProject", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("previousProjectEndDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         }
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_TIME, ROLE.ROLE_RECRUITER, ROLE.ROLE_RELATIONSHIP)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
             addDropDown("recruiter", selectRecruiterW);
             //Billing Information
             entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
@@ -285,14 +285,14 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addClientL)) {
-            if (Auth.hasAnyOfRoles(ROLE.ROLE_CONSULTANT_TIME_ADMIN)) {
+            if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN)) {
                 new GenericPopup(new CreateClientPanel(CreateCompositeType.CREATE)).show();
             } else {
                 new GenericPopup(new GenericBPMStartFormPanel("AddNewClientRequest", "add_new_client_request_1")).show();
             }
         }
         if (event.getSource().equals(addVendorL)) {
-            if (Auth.hasAnyOfRoles(ROLE.ROLE_CONSULTANT_TIME_ADMIN)) {
+            if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN)) {
                 new GenericPopup(new CreateVendorPanel(CreateCompositeType.CREATE)).show();
             } else {
                 new GenericPopup(new GenericBPMStartFormPanel("AddNewVendorRequest", "add_new_vendor_request_1")).show();

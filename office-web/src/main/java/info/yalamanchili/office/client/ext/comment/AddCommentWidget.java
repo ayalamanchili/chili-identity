@@ -16,6 +16,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.GenericPopup;
@@ -114,6 +115,9 @@ public class AddCommentWidget extends CreateComposite {
     @Override
     protected void configure() {
         setButtonText("Add Comment");
+        TextAreaField textAreaField = (TextAreaField) fields.get("comment");
+        textAreaField.getTextbox().setCharacterWidth(75);
+        textAreaField.getTextbox().setVisibleLines(4);
     }
 
     @Override

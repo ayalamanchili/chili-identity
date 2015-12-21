@@ -17,8 +17,8 @@ public enum ClientInformationStatus {
     PENDING_CONTRACTS_SUBMIT,
     PENDING_INVOICING_BILLING_APPROVAL,
     PENDING_HR_VERIFICATION,
-    COMPLETE,
-    COMPLETED;
+    COMPLETED,
+    CANCELED;
 
     public static String[] names() {
         ClientInformationStatus[] values = values();

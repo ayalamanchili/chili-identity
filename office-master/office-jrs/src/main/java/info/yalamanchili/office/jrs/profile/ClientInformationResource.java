@@ -57,7 +57,7 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
 
     @PUT
     @Path("/save")
-    @PreAuthorize("hasAnyRole('ROLE_RECRUITER','ROLE_CONTRACTS_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_RECRUITER','ROLE_CONTRACTS_ADMIN')")
     @Validate
     @CacheEvict(value = OfficeCacheKeys.CLIENTINFORMATION, allEntries = true)
     public ClientInformation save(ClientInformation entity, @QueryParam("submitForApproval") Boolean submitForApproval) {

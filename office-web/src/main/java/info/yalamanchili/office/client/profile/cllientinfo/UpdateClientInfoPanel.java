@@ -79,7 +79,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignEntityValueFromField("vendorPaymentTerms", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_TIME, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_RELATIONSHIP)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
             assignEntityValueFromField("itemNumber", entity);
             assignEntityValueFromField("payRate", entity);
             assignEntityValueFromField("billingRate", entity);
@@ -131,16 +131,16 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postUpdateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postUpdateSuccess(arg0);
+                    }
+                });
 
     }
 
@@ -168,7 +168,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignFieldValueFromEntity("vendorPaymentTerms", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_TIME, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_RELATIONSHIP)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
             assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("payRate", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
@@ -272,7 +272,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         addField("endDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("name", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("purchaseOrderNo", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_TIME, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_RELATIONSHIP)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
             entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
             addField("itemNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("payRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);

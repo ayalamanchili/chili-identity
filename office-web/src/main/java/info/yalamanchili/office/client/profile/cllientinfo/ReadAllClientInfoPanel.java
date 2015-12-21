@@ -69,15 +69,15 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Client"));
         table.setText(0, 2, getKeyValue("Vendor"));
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_TIME, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_RELATIONSHIP)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS)) {
             table.setText(0, 3, getKeyValue("ItemNo"));
             table.setText(0, 4, getKeyValue("BillRate"));
-            table.setText(0, 5, getKeyValue("O.T.BillRate"));
-            table.setText(0, 6, getKeyValue("Frequency"));
+            table.setText(0, 5, getKeyValue("Frequency"));
 
         }
-        table.setText(0, 7, getKeyValue("StartDate"));
-        table.setText(0, 8, getKeyValue("EndDate"));
+        table.setText(0, 6, getKeyValue("StartDate"));
+        table.setText(0, 7, getKeyValue("EndDate"));
+        table.setText(0, 8, getKeyValue("Status"));
     }
 
     @Override
@@ -164,11 +164,11 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
             if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_TIME, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_RELATIONSHIP)) {
                 table.setText(i, 3, JSONUtils.toString(entity, "itemNumber"));
                 table.setText(i, 4, FormatUtils.formarCurrency(JSONUtils.toString(entity, "billingRate")));
-                table.setText(i, 5, FormatUtils.formarCurrency(JSONUtils.toString(entity, "overTimeBillingRate")));
-                setEnumColumn(i, 6, entity, InvoiceFrequency.class.getSimpleName(), "invoiceFrequency");
+                setEnumColumn(i, 5, entity, InvoiceFrequency.class.getSimpleName(), "invoiceFrequency");
             }
-            table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
-            table.setText(i, 8, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            table.setText(i, 6, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            table.setText(i, 8, JSONUtils.toString(entity, "status"));
         }
     }
 
