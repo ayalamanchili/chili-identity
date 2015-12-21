@@ -39,9 +39,11 @@ import info.yalamanchili.office.entity.profile.ClientInformationStatus;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.jms.MessagingService;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -53,7 +55,6 @@ import javax.persistence.PersistenceContext;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 /**
@@ -270,6 +271,9 @@ public class ClientInformationService {
         if (billingRate.getEffectiveDate().before(ci.getStartDate())) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid Effective Date", "Effective Date can't be before Project Start Date");
         }
+        String employee = OfficeSecurityService.instance().getCurrentUserName();
+        billingRate.setUpdatedBy(employee);
+        billingRate.setUpdatedTs(Calendar.getInstance().getTime());
         billingRate.setClientInformation(ci);
         BillingRateDao.instance().save(billingRate).getId().toString();
         messageText = messageText.concat("Billing Rate :" + ci.getBillingRate());
@@ -285,6 +289,32 @@ public class ClientInformationService {
         vars.put("clientInfo", ci);
         vars.put("entityId", ci.getId());
         vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
+        if (ci.getVendorAPContacts().size() == 0) {
+            vars.put("vendorAPName", " ");
+            vars.put("vendorAPEmail", " ");
+            vars.put("vendorAPPhone", " ");
+        } else {
+            for (Contact vendorAPContact : ci.getVendorAPContacts()) {
+                String name = vendorAPContact.getFirstName() + " " + vendorAPContact.getLastName();
+                vars.put("vendorAPName", name);
+                if (vendorAPContact.getEmails().size() > 0) {
+                    for (info.yalamanchili.office.entity.profile.Email emails : vendorAPContact.getEmails()) {
+                        String email = emails.getEmail();
+                        vars.put("vendorAPEmail", email);
+                    }
+                } else {
+                    vars.put("vendorAPEmail", " ");
+                }
+                if (vendorAPContact.getPhones().size() > 0) {
+                    for (Phone phones : vendorAPContact.getPhones()) {
+                        String phone = phones.getPhoneNumber();
+                        vars.put("vendorAPPhone", phone);
+                    }
+                } else {
+                    vars.put("vendorAPPhone", " ");
+                }
+            }
+        }
         return OfficeBPMService.instance().startProcess("new_client_info_process", vars);
     }
 
