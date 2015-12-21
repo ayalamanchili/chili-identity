@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.jrs.client;
 
+import info.chili.commons.SearchUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.chili.service.jrs.types.Entry;
@@ -15,7 +16,9 @@ import info.yalamanchili.office.dao.client.ProjectDao;
 import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.client.StatementOfWork;
 import info.yalamanchili.office.jrs.CRUDResource;
+import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Query;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -91,6 +94,20 @@ public class ProjectResource extends CRUDResource<Project> {
         super.delete(id);
     }
 
+    @PUT
+    @Path("/search-project/{start}/{limit}")
+    @Transactional(readOnly = true)
+    public List<Project> search(Project entity, @PathParam("start") int start, @PathParam("limit") int limit) {
+        List<Project> res = new ArrayList();
+        Query searchQuery = SearchUtils.getSearchQuery(ProjectDao.instance().getEntityManager(), entity, new SearchUtils.SearchCriteria());
+        searchQuery.setFirstResult(start);
+        searchQuery.setMaxResults(limit);
+        for (Object p : searchQuery.getResultList()) {
+            res.add((Project) p);
+        }
+        return res;
+    }
+    
     @XmlRootElement
     @XmlType
     public static class ProjectTable implements java.io.Serializable{
