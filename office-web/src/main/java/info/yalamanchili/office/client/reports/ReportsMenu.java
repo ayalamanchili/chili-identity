@@ -35,6 +35,7 @@ public class ReportsMenu extends CMenuBar {
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONTRACTS_FULL_VIEW)) {
             addMenuItem("Contracts", "Contracts", contractingMaintainenceCmd);
+            contractingMaintainenceCmd.execute();
         }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
             addMenuItem("Perf Evaluations", "Perf Evaluations", performanceEvaluationsReportsMaintainenceCmd);
