@@ -22,6 +22,7 @@ import info.chili.gwt.data.IndiaStatesFactory;
 import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.EnumField;
+import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -31,6 +32,7 @@ import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.profile.contact.Sex;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -160,6 +162,17 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
     @Override
     protected void configure() {
         countriesF.listBox.addChangeHandler(this);
+        formatTextAreaFields();
+    }
+    
+    protected void formatTextAreaFields() {
+        for (Map.Entry entry : fields.entrySet()) {
+            if (entry.getValue() instanceof TextAreaField) {
+                TextAreaField textAreaField = (TextAreaField) entry.getValue();
+                textAreaField.getTextbox().setCharacterWidth(75);
+                textAreaField.getTextbox().setVisibleLines(4);
+            }
+        }
     }
 
     @Override

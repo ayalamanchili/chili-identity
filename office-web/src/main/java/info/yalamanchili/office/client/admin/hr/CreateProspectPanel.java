@@ -22,6 +22,7 @@ import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.FileuploadField;
+import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
@@ -122,6 +123,7 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
 
     @Override
     protected void configure() {
+        formatTextAreaFields();
         employeeSB.getLabel().getElement().getStyle().setWidth(145, Style.Unit.PX);
         HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
@@ -133,6 +135,16 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
                 }
             }
         });
+    }
+    
+    protected void formatTextAreaFields() {
+        for (Map.Entry entry : fields.entrySet()) {
+            if (entry.getValue() instanceof TextAreaField) {
+                TextAreaField textAreaField = (TextAreaField) entry.getValue();
+                textAreaField.getTextbox().setCharacterWidth(75);
+                textAreaField.getTextbox().setVisibleLines(4);
+            }
+        }
     }
 
     private String getEmployeeIdsDropDownUrl() {
