@@ -21,6 +21,7 @@ import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.admin.client.SelectClientWidget;
+import info.yalamanchili.office.client.admin.clientcontact.SelectClientAcctPayContact;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
 import info.yalamanchili.office.client.admin.clientlocation.SelectClientLocationWidget;
 import info.yalamanchili.office.client.admin.subcntrcontact.SelectSubcontractorContactWidget;
@@ -68,6 +69,7 @@ public class ReadClientInfoPanel extends ReadComposite {
         assignFieldValueFromEntity("company", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("client", entity, null);
         assignFieldValueFromEntity("clientContact", entity, null);
+        assignFieldValueFromEntity("clientAPContacts", entity, null);
         assignFieldValueFromEntity("clientLocation", entity, null);
         assignFieldValueFromEntity("vendor", entity, null);
         assignFieldValueFromEntity("vendorContact", entity, null);
@@ -168,6 +170,7 @@ public class ReadClientInfoPanel extends ReadComposite {
 
     SelectVendorAcctPayContact selectVendorAPContactsW = null;
     SelectVendorRecruiterContactWidget selectVendorRecruiterContactsWidget = null;
+    SelectClientAcctPayContact selectClientAcctPayContact = null;
 
     @Override
     protected void addWidgets() {
@@ -177,6 +180,13 @@ public class ReadClientInfoPanel extends ReadComposite {
         entityFieldsPanel.add(getLineSeperatorTag("Client & Vendor Information"));
         addDropDown("client", new SelectClientWidget(true, false, Alignment.HORIZONTAL));
         addDropDown("clientContact", new SelectClientContactWidget(true, false, Alignment.HORIZONTAL));
+        selectClientAcctPayContact = new SelectClientAcctPayContact(false, false, Alignment.HORIZONTAL) {
+            @Override
+            public boolean enableMultiSelect() {
+                return true;
+            }
+        };
+        addDropDown("clientAPContacts", selectClientAcctPayContact);
         addDropDown("clientLocation", new SelectClientLocationWidget(true, false, Alignment.HORIZONTAL));
         addDropDown("vendor", new SelectVendorWidget(true, false, Alignment.HORIZONTAL));
         addDropDown("vendorContact", new SelectVendorContactWidget(true, false, Alignment.HORIZONTAL));

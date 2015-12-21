@@ -216,6 +216,10 @@ public class ContractService {
         if (ci.getClientContact() != null) {
             dto.setClientContact(ci.getClientContact().details());
         }
+        //Client AP Contacts
+        for (Contact clientAPcontact : ci.getClientAPContacts()) {
+            dto.setClientAPContact(clientAPcontact.details());
+        }
         if (ci.getVendorContact() != null) {
             dto.setVendorContact(ci.getVendorContact().details());
         }

@@ -43,6 +43,7 @@ import info.chili.gwt.composite.BaseFieldWithTextBox;
 import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.utils.JSONUtils;
+import info.yalamanchili.office.client.admin.clientcontact.SelectClientAcctPayContact;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
 import java.util.Map;
 
@@ -65,6 +66,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignEntityValueFromField("client", entity);
         assignEntityValueFromField("clientContact", entity);
         assignEntityValueFromField("clientLocation", entity);
+        assignEntityValueFromField("clientAPContacts", entity);
         assignEntityValueFromField("vendor", entity);
         assignEntityValueFromField("vendorContact", entity);
         assignEntityValueFromField("vendorAPContacts", entity);
@@ -158,6 +160,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignFieldValueFromEntity("company", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("client", entity, null);
         assignFieldValueFromEntity("clientContact", entity, null);
+        assignFieldValueFromEntity("clientAPContacts", entity, null);
         assignFieldValueFromEntity("clientLocation", entity, null);
         assignFieldValueFromEntity("vendor", entity, null);
         assignFieldValueFromEntity("vendorContact", entity, null);
@@ -239,6 +242,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
 
     SelectVendorAcctPayContact selectVendorAPContactsW = null;
     SelectVendorRecruiterContactWidget selectVendorRecruiterContactsWidget = null;
+    SelectClientAcctPayContact selectClientAcctPayContact = null;
 
     @Override
     protected void addWidgets() {
@@ -248,6 +252,13 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         entityFieldsPanel.add(getLineSeperatorTag("Client & Vendor Information"));
         addDropDown("client", new SelectClientWidget(false, true, Alignment.HORIZONTAL));
         addDropDown("clientContact", new SelectClientContactWidget(false, false, Alignment.HORIZONTAL));
+        selectClientAcctPayContact = new SelectClientAcctPayContact(false, false, Alignment.HORIZONTAL) {
+            @Override
+            public boolean enableMultiSelect() {
+                return true;
+            }
+        };
+        addDropDown("clientAPContacts", selectClientAcctPayContact);
         addDropDown("clientLocation", new SelectClientLocationWidget(false, false, Alignment.HORIZONTAL));
         addDropDown("vendor", new SelectVendorWidget(false, false, Alignment.HORIZONTAL));
         addDropDown("vendorContact", new SelectVendorContactWidget(false, false, Alignment.HORIZONTAL));

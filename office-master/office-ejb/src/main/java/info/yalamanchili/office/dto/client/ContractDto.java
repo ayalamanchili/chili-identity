@@ -18,7 +18,6 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -39,12 +38,10 @@ public class ContractDto implements Serializable {
     /**
      * startdate
      */
-    @Temporal(javax.persistence.TemporalType.DATE)
     protected Date startDate;
     /**
      * enddate
      */
-    @Temporal(javax.persistence.TemporalType.DATE)
     protected Date endDate;
     /**
      *
@@ -62,6 +59,10 @@ public class ContractDto implements Serializable {
      * Client Location
      */
     protected String clientLocation;
+    /**
+     *
+     */
+    protected String clientAPContact;
     /**
      * Vendor
      */
@@ -693,6 +694,14 @@ public class ContractDto implements Serializable {
 
     public void setCompany(ClientInformationCompany company) {
         this.company = company;
+    }
+
+    public String getClientAPContact() {
+        return clientAPContact;
+    }
+
+    public void setClientAPContact(String clientAPContact) {
+        this.clientAPContact = clientAPContact;
     }
 
     @XmlRootElement

@@ -99,6 +99,14 @@ public class ClientInformationService {
             Address address = AddressDao.instance().findById(ci.getClientLocation().getId());
             ci.setClientLocation(address);
         }
+        ci.setClientAPContacts(null);
+        if (ciDto.getClientAPContacts() != null) {
+            for (Contact clientAPCnt : ciDto.getClientAPContacts()) {
+                if (clientAPCnt.getId() != null) {
+                    ci.getClientAPContacts().add(ContactDao.instance().findById(clientAPCnt.getId()));
+                }
+            }
+        }
         if (ci.getVendor() != null) {
             vendor = VendorDao.instance().findById(ci.getVendor().getId());
             ci.setVendor(vendor);
@@ -339,6 +347,14 @@ public class ClientInformationService {
             Contact contact = ContactDao.instance().findById(ci.getClientContact().getId());
             ciEntity.setClientContact(contact);
         }
+        //Client Acct Pay Contact
+        Set<Contact> newClientAPs = new HashSet();
+        for (Contact con : ci.getClientAPContacts()) {
+            if (con.getId() != null) {
+                newClientAPs.add(ContactDao.instance().findById(con.getId()));
+            }
+        }
+        ciEntity.setClientAPContacts(newClientAPs);
         //Client Location
         if (ci.getClientLocation() == null) {
             ciEntity.setClientLocation(null);

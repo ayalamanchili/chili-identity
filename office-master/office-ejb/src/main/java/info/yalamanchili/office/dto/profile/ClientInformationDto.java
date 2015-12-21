@@ -95,6 +95,10 @@ public class ClientInformationDto implements Serializable {
      */
     protected Address clientLocation;
     /**
+     * Vendor AP Contact
+     */
+    protected Set<Contact> clientAPContacts;
+    /**
      * Vendor
      */
     protected Vendor vendor;
@@ -274,7 +278,6 @@ public class ClientInformationDto implements Serializable {
 
     protected String specialInvoiceInstructions;
 
-   
     private ClientInformationStatus status;
     /**
      *
@@ -354,6 +357,14 @@ public class ClientInformationDto implements Serializable {
 
     public void setClientLocation(Address clientLocation) {
         this.clientLocation = clientLocation;
+    }
+
+    public Set<Contact> getClientAPContacts() {
+        return clientAPContacts;
+    }
+
+    public void setClientAPContacts(Set<Contact> clientAPContacts) {
+        this.clientAPContacts = clientAPContacts;
     }
 
     public Vendor getVendor() {
