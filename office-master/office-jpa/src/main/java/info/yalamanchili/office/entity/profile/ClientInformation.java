@@ -264,6 +264,8 @@ public class ClientInformation extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     protected BillingDuration payTimeDuration1099;
     protected String paymentTerms1099;
+    @Enumerated(EnumType.STRING)
+    protected InvoiceFrequency invoiceFrequency1099;
     /* 
      * comments
      */
@@ -887,6 +889,14 @@ public class ClientInformation extends AbstractEntity {
 
     public void setBpmProcessId(String bpmProcessId) {
         this.bpmProcessId = bpmProcessId;
+    }
+
+    public InvoiceFrequency getInvoiceFrequency1099() {
+        return invoiceFrequency1099;
+    }
+
+    public void setInvoiceFrequency1099(InvoiceFrequency invoiceFrequency1099) {
+        this.invoiceFrequency1099 = invoiceFrequency1099;
     }
 
     @Override
