@@ -1,11 +1,11 @@
 /**
- * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
- */
+* System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+*/
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package info.yalamanchili.office.toolbox;
 
 import static info.chili.docs.ExcelUtils.getCellNumericValue;
@@ -17,13 +17,11 @@ import info.yalamanchili.office.dao.client.ClientDao;
 import info.yalamanchili.office.dao.client.ProjectDao;
 import info.yalamanchili.office.dao.client.SubcontractorDao;
 import info.yalamanchili.office.dao.client.VendorDao;
-import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.practice.PracticeDao;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.client.Client;
-import info.yalamanchili.office.entity.client.ClientInfoComment;
 import info.yalamanchili.office.entity.client.InvoiceDeliveryMethod;
 import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import info.yalamanchili.office.entity.client.Project;
@@ -56,9 +54,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- *
- * @author Madhu.Badiginchala
- */
+*
+* @author Madhu.Badiginchala
+*/
 @Component("clientInformationDataTool")
 @Transactional
 public class ClientInformationDataTool {
@@ -135,12 +133,12 @@ public class ClientInformationDataTool {
             String PayRate = getCellNumericValue(record, 8);
             if (PayRate != null) {
                 cpd.setPayRate(new BigDecimal(getCellNumericValue(record, 8)));
-                clientInfo.setPayRate(cpd.getPayRate());
+                clientInfo.setBillingRate(cpd.getPayRate());
             }
             String OverTimePayrate = getCellNumericValue(record, 10);
             if (OverTimePayrate != null) {
                 cpd.setOverTimePayrate(new BigDecimal(getCellNumericValue(record, 10)));
-                clientInfo.setOverTimePayRate(cpd.getOverTimePayrate());
+                clientInfo.setOverTimeBillingRate(cpd.getOverTimePayrate());
             }
 
             cpd.setBillingDuration((BillingDuration) convertEnum(BillingDuration.class, getCellStringValue(record, 11)));
@@ -209,7 +207,11 @@ public class ClientInformationDataTool {
 
             cpd.setSubcontractorinvoiceFrequency((InvoiceFrequency) convertEnum(InvoiceFrequency.class, getCellStringValue(record, 29)));
             if (cpd.getSubcontractorinvoiceFrequency() != null) {
-                clientInfo.setSubcontractorinvoiceFrequency(cpd.getSubcontractorinvoiceFrequency());
+                if (!is1099) {
+                     clientInfo.setSubcontractorinvoiceFrequency(cpd.getSubcontractorinvoiceFrequency());
+                 } else if (is1099) {
+                     clientInfo.setInvoiceFrequency1099(cpd.getSubcontractorinvoiceFrequency());
+                 }
             }
             String SubContractorOverTimePayRate = getCellNumericValue(record, 30);
             if (SubContractorOverTimePayRate != null) {
@@ -380,9 +382,9 @@ public class ClientInformationDataTool {
                 clientInfo.setJoiningReport(cpd.getJoiningReport());
             }
             cpd.setContractComments(getCellStringValue(record, 61));
-            if (cpd.getContractComments() != null) {
-                clientInfo.setNotes(cpd.getContractComments());
-            }
+//            if (cpd.getContractComments() != null) {
+//                clientInfo.setNotes(cpd.getContractComments());
+//            }
 
             cpd.setProjectName(getCellStringValue(record, 73));
             if (cpd.getProjectName() != null) {
@@ -421,21 +423,21 @@ public class ClientInformationDataTool {
             clientInfo.setClientProject(project);
             clientInfo = clientInformationDao.save(clientInfo);
             cpd.setHrComments(getCellStringValue(record, 67));
-            if (cpd.getHrComments() != null) {
-                CommentDao.instance().addComment(cpd.getHrComments(), clientInfo);
-            }
-            cpd.setSubContractorComments(getCellStringValue(record, 55));
-            if (cpd.getSubContractorComments() != null) {
-                CommentDao.instance().addComment(cpd.getSubContractorComments(), clientInfo);
-            }
-            cpd.setAccountingComments(getCellStringValue(record, 61));
-            if (cpd.getAccountingComments() != null) {
-                CommentDao.instance().addComment(cpd.getAccountingComments(), clientInfo);
-            }
-            cpd.setVacationDetails(getCellStringValue(record, 37));
-            if (cpd.getVacationDetails() != null) {
-                CommentDao.instance().addComment(cpd.getVacationDetails(), clientInfo);
-            }
+//            if (cpd.getHrComments() != null) {
+//                CommentDao.instance().addComment(cpd.getHrComments(), clientInfo);
+//            }
+//            cpd.setSubContractorComments(getCellStringValue(record, 55));
+//            if (cpd.getSubContractorComments() != null) {
+//                CommentDao.instance().addComment(cpd.getSubContractorComments(), clientInfo);
+//            }
+//            cpd.setAccountingComments(getCellStringValue(record, 61));
+//            if (cpd.getAccountingComments() != null) {
+//                CommentDao.instance().addComment(cpd.getAccountingComments(), clientInfo);
+//            }
+//            cpd.setVacationDetails(getCellStringValue(record, 37));
+//            if (cpd.getVacationDetails() != null) {
+//                CommentDao.instance().addComment(cpd.getVacationDetails(), clientInfo);
+//            }
             emp.addClientInformation(clientInfo);
             EmployeeDao.instance().getEntityManager().merge(emp);
 
@@ -447,7 +449,7 @@ public class ClientInformationDataTool {
     }
 
     protected String convertDcimalToWhole(String id) {
-        if (StringUtils.isNotEmpty(id) && id.contains(".")) {
+       if (StringUtils.isNotEmpty(id) && id.contains(".")) {
             return id.substring(0, id.indexOf("."));
         } else {
             return id;
