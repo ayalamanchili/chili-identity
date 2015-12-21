@@ -77,7 +77,7 @@ public class ReadContractsPanel extends TReadComposite {
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("employee", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("consultantJobTitle", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("employeeCompany", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("company", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("client", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("clientLocation", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("clientContact", entity, DataType.RICH_TEXT_AREA);
@@ -175,7 +175,7 @@ public class ReadContractsPanel extends TReadComposite {
     protected void addWidgets() {
         addField("employee", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 1);
         addField("consultantJobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 2);
-        addField("employeeCompany", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 2, 1);
+        addField("company", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 2, 1);
 //        new ReadAllConsultantTimeSheetsPanel().renderLeaveHistory(getEmployeeId(), entityFieldsPanel);
         entityFieldsPanel.setWidget(3, 1, clientVendorText);
         entityFieldsPanel.getFlexCellFormatter().setColSpan(3, 1, 2);
