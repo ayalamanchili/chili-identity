@@ -104,6 +104,8 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
         table.setText(0, 3, getKeyValue("OverTimePayRate"));
         table.setText(0, 4, getKeyValue("OverTimeBillingRate"));
         table.setText(0, 5, getKeyValue("EffectiveDate"));
+        table.setText(0, 6, getKeyValue("Updated By"));
+        table.setText(0, 7, getKeyValue("Updated At"));
     }
 
     @Override
@@ -116,6 +118,8 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
             table.setText(i, 3, JSONUtils.toString(entity, "overTimePayRate"));
             table.setText(i, 4, JSONUtils.toString(entity, "overTimeBillingRate"));
             table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, "effectiveDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
+            table.setText(i, 6, JSONUtils.toString(entity, "updatedBy"));
+            table.setText(i, 7, JSONUtils.toString(entity, "updatedTs"));
         }
     }
 
