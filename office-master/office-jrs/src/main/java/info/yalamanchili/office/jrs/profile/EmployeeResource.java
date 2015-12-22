@@ -12,8 +12,11 @@ import info.chili.spring.SpringContext;
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.chili.reporting.ReportGenerator;
+import info.chili.security.domain.CUser;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
+import info.yalamanchili.office.bpm.OfficeBPMService;
+import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.TechnologyGroupDao;
@@ -29,6 +32,7 @@ import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.practice.PracticeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.profile.ClientInformationDto;
+import info.yalamanchili.office.dto.profile.EmployeeCreateDto;
 import info.yalamanchili.office.entity.privacy.PrivacyData;
 import info.yalamanchili.office.privacy.PrivacyAware;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
@@ -93,6 +97,9 @@ public class EmployeeResource extends CRUDResource<Employee> {
         EmployeeReadDto response = mapper.map(emp, EmployeeReadDto.class);
         if (emp.getUser() != null) {
             response.setStatus(emp.getUser().isEnabled());
+            if (response.isActive() == false) {
+                emp.setEndDate(response.getEndDate());
+            }
         }
         return response;
     }
@@ -112,6 +119,12 @@ public class EmployeeResource extends CRUDResource<Employee> {
     })
     //TODO currently does not have any restrictions since user emp profile update also uses this method
     public Employee save(EmployeeSaveDto dto) {
+        if (dto.isActive() == true) {
+            Long employeeId = dto.getId();
+            Employee employee = EmployeeDao.instance().findById(employeeId);
+            CUser user = employee.getUser();
+            user.setEnabled(true);
+        }
         return (Employee) getDao().save(mapper.map(dto, Employee.class));
     }
 

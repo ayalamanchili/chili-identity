@@ -7,7 +7,9 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.UpdateComposite;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -43,7 +45,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
     public UpdateEmployeePanel(JSONObject entity) {
         initUpdateComposite(entity, "Employee", OfficeWelcome.constants);
     }
-
+    
     @Override
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("firstName", entity);
@@ -79,6 +81,10 @@ public class UpdateEmployeePanel extends UpdateComposite {
             company.put("name", company.get("value"));
             entity.put("company", company);
         }
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN)) {
+            assignEntityValueFromField("status", entity);
+        }
+        
         return entity;
     }
 
@@ -126,6 +132,9 @@ public class UpdateEmployeePanel extends UpdateComposite {
         if (Auth.isAdmin()) {
             assignFieldValueFromEntity("ssn", entity, DataType.STRING_FIELD);
         }
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN)) {
+            assignFieldValueFromEntity("status", entity, DataType.BOOLEAN_FIELD);
+        }
         //TODO add image panel for employee image
     }
 
@@ -166,6 +175,9 @@ public class UpdateEmployeePanel extends UpdateComposite {
             addField("ssn", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         }
         entityFieldsPanel.add(empImageUploadPanel);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN)) {
+            addField("status", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        }
         alignFields();
     }
 
@@ -178,7 +190,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "employee/save";
     }
-
+   
     protected void uploadImage(String entityId) {
         empImageUploadPanel.upload(entityId.trim());
     }
