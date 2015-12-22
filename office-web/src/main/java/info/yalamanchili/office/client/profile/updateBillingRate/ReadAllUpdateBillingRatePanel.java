@@ -100,13 +100,17 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
-        table.setText(0, 1, getKeyValue("PayRate"));
-        table.setText(0, 2, getKeyValue("BillingRate"));
-        table.setText(0, 3, getKeyValue("OverTimePayRate"));
-        table.setText(0, 4, getKeyValue("OverTimeBillingRate"));
-        table.setText(0, 5, getKeyValue("EffectiveDate"));
-        table.setText(0, 6, getKeyValue("Updated By"));
-        table.setText(0, 7, getKeyValue("Updated At"));
+  //      table.setText(0, 1, getKeyValue("PayRate"));
+        table.setText(0, 1, getKeyValue("BillRate"));
+  //      table.setText(0, 3, getKeyValue("OverTimePayRate"));
+        table.setText(0, 2, getKeyValue("OTBillRate"));
+        table.setText(0, 3, getKeyValue("InvoicePattern")); 
+        table.setText(0, 4, getKeyValue("SubConPay")); 
+        table.setText(0, 5, getKeyValue("SubConOTPay")); 
+        table.setText(0, 6, getKeyValue("SubConInvoicePattern")); 
+        table.setText(0, 7, getKeyValue("EffectiveDate"));
+        table.setText(0, 8, getKeyValue("Updated By"));
+        table.setText(0, 9, getKeyValue("Updated At"));
     }
 
     @Override
@@ -114,13 +118,17 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            table.setText(i, 1, JSONUtils.toString(entity, "payRate"));
-            table.setText(i, 2, JSONUtils.toString(entity, "billingRate"));
-            table.setText(i, 3, JSONUtils.toString(entity, "overTimePayRate"));
-            table.setText(i, 4, JSONUtils.toString(entity, "overTimeBillingRate"));
-            table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, "effectiveDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
-            table.setText(i, 6, JSONUtils.toString(entity, "updatedBy"));
-            table.setText(i, 7, JSONUtils.toString(entity, "updatedTs"));
+ //           table.setText(i, 1, JSONUtils.toString(entity, "payRate"));
+            table.setText(i, 1, JSONUtils.toString(entity, "billingRate"));
+ //           table.setText(i, 3, JSONUtils.toString(entity, "overTimePayRate"));
+            table.setText(i, 2, JSONUtils.toString(entity, "overTimeBillingRate"));
+            table.setText(i, 3, JSONUtils.toString(entity, "billingInvoiceFrequency"));
+            table.setText(i, 4, JSONUtils.toString(entity, "subContractorPayRate"));
+            table.setText(i, 5, JSONUtils.toString(entity, "subContractorOverTimePayRate"));
+            table.setText(i, 6, JSONUtils.toString(entity, "subContractorInvoiceFrequency"));
+            table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "effectiveDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
+            table.setText(i, 8, JSONUtils.toString(entity, "updatedBy"));
+            table.setText(i, 9, JSONUtils.toString(entity, "updatedTs"));
         }
     }
 

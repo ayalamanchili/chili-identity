@@ -168,6 +168,7 @@ public class ContractDto implements Serializable {
     @Enumerated(EnumType.STRING)
     protected BillingDuration payTimeDuration1099;
     protected String paymentTerms1099;
+    protected InvoiceFrequency invoiceFrequency1099;
 
     /**
      * subcontractorPayRate
@@ -703,6 +704,16 @@ public class ContractDto implements Serializable {
     public void setClientAPContact(String clientAPContact) {
         this.clientAPContact = clientAPContact;
     }
+
+    public InvoiceFrequency getInvoiceFrequency1099() {
+        return invoiceFrequency1099;
+    }
+
+    public void setInvoiceFrequency1099(InvoiceFrequency invoiceFrequency1099) {
+        this.invoiceFrequency1099 = invoiceFrequency1099;
+    }
+    
+    
 
     @XmlRootElement
     @XmlType

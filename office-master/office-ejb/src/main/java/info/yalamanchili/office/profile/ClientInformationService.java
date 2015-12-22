@@ -266,9 +266,7 @@ public class ClientInformationService {
         if (ci.getBillingRates().isEmpty() && ci.getBillingRate() != null) {
             BillingRate firstBillingRate = new BillingRate();
             firstBillingRate.setBillingRate(ci.getBillingRate());
-            firstBillingRate.setPayRate(ci.getPayRate());
             firstBillingRate.setOverTimeBillingRate(ci.getOverTimeBillingRate());
-            firstBillingRate.setOverTimePayRate(ci.getOverTimePayRate());
             firstBillingRate.setBillingInvoiceFrequency(ci.getInvoiceFrequency());
             if (emp.getEmployeeType().equals("Subcontractor")) {
                 firstBillingRate.setSubContractorPayRate(ci.getSubcontractorPayRate());
@@ -284,20 +282,37 @@ public class ClientInformationService {
             firstBillingRate.setClientInformation(ci);
             BillingRateDao.instance().save(firstBillingRate);
         }
-        ci.setBillingRate(billingRate.getBillingRate());
-        ci.setPayRate(billingRate.getPayRate());
-        ci.setOverTimeBillingRate(billingRate.getOverTimeBillingRate());
-        ci.setOverTimePayRate(billingRate.getOverTimePayRate());
-        ci.setInvoiceFrequency(billingRate.getBillingInvoiceFrequency());
+        if (billingRate.getBillingRate() != null) {
+            ci.setBillingRate(billingRate.getBillingRate());
+        }
+        if (billingRate.getOverTimeBillingRate() != null) {
+            ci.setOverTimeBillingRate(billingRate.getOverTimeBillingRate());
+        }
+        if (billingRate.getBillingInvoiceFrequency() != null) {
+            ci.setInvoiceFrequency(billingRate.getBillingInvoiceFrequency());
+        }
+
         if (emp.getEmployeeType().equals("Subcontractor")) {
-            ci.setSubcontractorPayRate(billingRate.getSubContractorPayRate());
-            ci.setSubcontractorOvertimePayRate(billingRate.getSubContractorOverTimePayRate());
-            ci.setSubcontractorinvoiceFrequency(billingRate.getSubContractorInvoiceFrequency());
+            if (billingRate.getSubContractorPayRate() != null) {
+                ci.setSubcontractorPayRate(billingRate.getSubContractorPayRate());
+            }
+            if (billingRate.getSubContractorOverTimePayRate() != null) {
+                ci.setSubcontractorOvertimePayRate(billingRate.getSubContractorOverTimePayRate());
+            }
+            if (billingRate.getSubContractorInvoiceFrequency() != null) {
+                ci.setSubcontractorinvoiceFrequency(billingRate.getSubContractorInvoiceFrequency());
+            }
         }
         if (emp.getEmployeeType().equals("1099 Contractor")) {
-            ci.setPayRate1099(billingRate.getSubContractorPayRate());
-            ci.setOverTimePayrate1099(billingRate.getSubContractorOverTimePayRate());
-            ci.setInvoiceFrequency1099(billingRate.getSubContractorInvoiceFrequency());
+            if (billingRate.getSubContractorPayRate() != null) {
+                ci.setPayRate1099(billingRate.getSubContractorPayRate());
+            }
+            if (billingRate.getSubContractorOverTimePayRate() != null) {
+                ci.setOverTimePayrate1099(billingRate.getSubContractorOverTimePayRate());
+            }
+            if (billingRate.getSubContractorInvoiceFrequency() != null) {
+                ci.setInvoiceFrequency1099(billingRate.getSubContractorInvoiceFrequency());
+            }
         }
 
         if (billingRate.getEffectiveDate().before(ci.getStartDate())) {

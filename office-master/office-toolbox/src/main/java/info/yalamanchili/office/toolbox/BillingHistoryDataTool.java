@@ -112,7 +112,9 @@ public class BillingHistoryDataTool {
                 billingRate.setBillingInvoiceFrequency(br.getBillingInvoiceFrequency());
             }
             br.setUpdatedTs(convertToDate(getCellNumericValue(record, 15)));
+            billingRate.setUpdatedTs(br.getUpdatedTs());
             br.setUpdatedBy(getCellStringValue(record, 14));
+            billingRate.setUpdatedBy(br.getUpdatedBy());
             billingRate.setClientInformation(clientInfo);
             BillingRateDao.instance().getEntityManager().merge(billingRate);
         }
