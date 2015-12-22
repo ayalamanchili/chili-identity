@@ -77,6 +77,7 @@ public class CommentsDataTool {
             } else {
                 continue;
             }
+            System.out.println("CommentsData : ClientID >>>>>>>>>>>>>>>><<<<<<<<<<<<<<: " + clientInfoId);
             cr.setUpdatedDate(convertToDate(getCellNumericValue(record, 6)));
             cr.setUpdatedBy(getCellStringValue(record, 5));
             cr.setComment(getCellStringValue(record, 4));

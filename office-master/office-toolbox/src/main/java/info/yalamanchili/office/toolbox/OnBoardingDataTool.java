@@ -255,7 +255,7 @@ public class OnBoardingDataTool {
             prefs.setEnableEmailNotifications(Boolean.TRUE);
             emp.setPreferences(prefs);
             i += 1;
-            emp = EmployeeDao.instance().save(emp);
+            //emp = EmployeeDao.instance().save(emp);
             if (or.getEmployeeType() != null && !or.getEmployeeType().isEmpty()) {
                 if (or.getEmployeeType().equals("SSTECH") || or.getEmployeeType().equals("Techpillars")) {
                     OfficeSecurityService.instance().createUserCert(emp, null, null);

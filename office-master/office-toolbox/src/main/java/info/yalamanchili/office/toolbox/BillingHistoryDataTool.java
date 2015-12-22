@@ -77,6 +77,7 @@ public class BillingHistoryDataTool {
             } else {
                 continue;
             }
+            System.out.println("BillingHistory : ClientID >>>>>>>>>>>>>>>><<<<<<<<<<<<<<: " + ClientInfoId);
             br.setEffectiveDate(convertToDate(getCellNumericValue(record, 13)));
             if (br.getEffectiveDate() != null) {
                 billingRate.setEffectiveDate(br.getEffectiveDate());

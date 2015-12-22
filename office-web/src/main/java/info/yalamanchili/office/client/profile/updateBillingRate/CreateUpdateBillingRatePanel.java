@@ -101,10 +101,10 @@ public class CreateUpdateBillingRatePanel extends UpdateComposite {
         addField("billingRate", false, true, DataType.CURRENCY_FIELD);
  //       addField("overTimePayRate", false, false, DataType.CURRENCY_FIELD);
         addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD);
-        addEnumField("billingInvoiceFrequency",false, false, InvoiceFrequency.names(),Alignment.HORIZONTAL);
+        addEnumField("billingInvoiceFrequency",false, false, InvoiceFrequency.names());
         addField("subContractorPayRate", false, true, DataType.CURRENCY_FIELD);
         addField("subContractorOverTimePayRate", false, true, DataType.CURRENCY_FIELD);
-        addEnumField("subContractorInvoiceFrequency",false, false, InvoiceFrequency.names(),Alignment.HORIZONTAL);
+        addEnumField("subContractorInvoiceFrequency",false, false, InvoiceFrequency.names());
     }
 
     @Override
