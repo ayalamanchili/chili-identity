@@ -18,6 +18,7 @@ import info.yalamanchili.office.dao.client.ProjectDao;
 import info.yalamanchili.office.dao.client.SubcontractorDao;
 import info.yalamanchili.office.dao.client.VendorDao;
 import info.yalamanchili.office.dao.practice.PracticeDao;
+import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
@@ -315,6 +316,11 @@ public class ClientInformationDataTool {
                 cpd.setMiddleVendorID(new Long(convertDcimalToWhole(getCellNumericValue(record, 83))));
                 middleVendor = VendorDao.instance().findById(cpd.getMiddleVendorID());
                 clientInfo.setMiddleVendor(middleVendor);
+            }
+            String ClientLocationID = getCellNumericValue(record, 84);
+            if (ClientLocationID != null) {
+                cpd.setClientLocationID(new Long(convertDcimalToWhole(getCellNumericValue(record, 84))));
+                clientInfo.setClientLocation(AddressDao.instance().findById(cpd.getClientLocationID()));
             }
 
             cpd.setIsCPDFilled(getCellStringValue(record, 42));

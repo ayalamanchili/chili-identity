@@ -77,6 +77,7 @@ public class CPDRecord {
     protected Long vendorID;
     protected Long clientID;
     protected Long middleVendorID;
+    protected Long clientLocationID;
 
     public Long getEmployeeId() {
         return employeeId;
@@ -529,7 +530,13 @@ public class CPDRecord {
         this.consultantType = consultantType;
     }
 
-    
-    
+    public Long getClientLocationID() {
+        return clientLocationID;
+    }
+
+    public void setClientLocationID(Long clientLocationID) {
+        this.clientLocationID = clientLocationID;
+    }
+
     
 }
