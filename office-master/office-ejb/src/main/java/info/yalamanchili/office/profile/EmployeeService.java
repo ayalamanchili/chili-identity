@@ -173,7 +173,7 @@ public class EmployeeService {
             for (Employee employee : EmployeeDao.instance().getEmployeesByType(types)) {
                 for (CompanyContact contact : CompanyContactDao.instance().getEmployeeCompanyContacts(employee.getId())) {
                     if (contact.getContact().getEmployeeId().equals(emp.getEmployeeId())) {
-                        throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.deactivate", "Please Verify Employee Company Contacts Before Deactivate");
+                        throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.deactivate", "This employee is listed as a company contact for other employees. Please verify and remove");
                     }
                 }
             }
