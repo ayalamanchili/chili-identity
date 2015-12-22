@@ -16,11 +16,13 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
 import info.yalamanchili.office.bpm.OfficeBPMService;
+import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.profile.EmployeeCreateDto;
 import info.yalamanchili.office.dto.security.User;
 import info.yalamanchili.office.entity.Company;
+import info.yalamanchili.office.entity.company.CompanyContact;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
@@ -166,6 +168,16 @@ public class EmployeeService {
         if (dto.getEndDate() == null) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.request", "End Date is required to deactivate the employee");
         }
+        if (emp.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
+            String[] types = {"Corporate Employee", "Employee"};
+            for (Employee employee : EmployeeDao.instance().getEmployeesByType(types)) {
+                for (CompanyContact contact : CompanyContactDao.instance().getEmployeeCompanyContacts(employee.getId())) {
+                    if (contact.getContact().getEmployeeId().equals(emp.getEmployeeId())) {
+                        throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.deactivate", "Please Verify Employee Company Contacts Before Deactivate");
+                    }
+                }
+            }
+        }
         emp.setEndDate(dto.getEndDate());
         emp = em.merge(emp);
         CUser user1 = emp.getUser();
@@ -188,19 +200,37 @@ public class EmployeeService {
             sb.append((char) ((int) (Math.random() * 26) + 97));
         }
         return sb.toString();
-    }
+    
+
+
+
+}
 
     private Employee getEmployee(Long empId) {
-        Employee employee = em.find(Employee.class, empId);
-        if (employee == null) {
+        Employee employee = em.find(Employee.class  
+
+    , empId);
+    if (employee
+
+    
+        == null) {
             logger.warning("employee not found" + employee.getEmployeeId());
-            return null;
-        } else {
-            return employee;
-        }
+        return null;
     }
 
-    public static EmployeeService instance() {
-        return SpringContext.getBean(EmployeeService.class);
+    
+        else {
+            return employee;
+    }
+}
+
+public static EmployeeService 
+
+
+
+instance() {
+        return SpringContext.getBean(EmployeeService.class  
+
+);
     }
 }
