@@ -185,12 +185,6 @@ public class EmployeeService {
         Employee curUser = OfficeSecurityService.instance().getCurrentUser();
         profileNotificationService.sendEmployeeDeactivationNotification(curUser.getFirstName(), getEmployee(empId));
         em.merge(user1);
-        if (emp.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
-            OfficeBPMIdentityService.instance().deleteUser(emp.getEmployeeId());
-            Map<String, Object> vars = new HashMap<>();
-            vars.put("employee", emp);
-            OfficeBPMService.instance().startProcess("corp_employee_deactivation_process", vars);
-        }
     }
 
     public String generatepassword() {
@@ -200,37 +194,22 @@ public class EmployeeService {
             sb.append((char) ((int) (Math.random() * 26) + 97));
         }
         return sb.toString();
-    
-
-
-
-}
+    }
 
     private Employee getEmployee(Long empId) {
-        Employee employee = em.find(Employee.class  
-
-    , empId);
-    if (employee
-
-    
-        == null) {
+        Employee employee = em.find(Employee.class, empId);
+        if (employee
+                == null) {
             logger.warning("employee not found" + employee.getEmployeeId());
-        return null;
-    }
-
-    
-        else {
+            return null;
+        } else {
             return employee;
+        }
     }
-}
 
-public static EmployeeService 
-
-
-
-instance() {
-        return SpringContext.getBean(EmployeeService.class  
-
-);
+    public static EmployeeService
+            instance() {
+        return SpringContext.getBean(EmployeeService.class
+        );
     }
 }
