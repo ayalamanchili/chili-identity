@@ -10,13 +10,18 @@ package info.yalamanchili.office.client.admin.hr;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.data.CountryFactory;
 import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.FileField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.utils.Utils;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -56,6 +61,10 @@ public class ReadProspectsPanel extends ReadComposite {
                     public void onResponse(String response) {
                         entity = (JSONObject) JSONParser.parseLenient(response);
                         populateFieldsFromEntity(entity);
+                        entityFieldsPanel.add(Utils.getLineSeperatorTag("Resume"));
+                        String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "resumeURL") + "&entityId=" + JSONUtils.toString(entity, "id");
+                        FileField fileField = new FileField(fileURL);
+                        entityFieldsPanel.add(fileField);
                         populateComments();
                     }
                 });
@@ -68,14 +77,14 @@ public class ReadProspectsPanel extends ReadComposite {
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         JSONObject emp = (JSONObject) entity.get("employee");
-        if(entity.get("address")!=null){
-        JSONObject address = entity.get("address").isObject();
-        assignFieldValueFromEntity("street1", address, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("street2", address, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("city", address, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("country", address, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("state", address, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("zip", address, DataType.LONG_FIELD);
+        if (entity.get("address") != null) {
+            JSONObject address = entity.get("address").isObject();
+            assignFieldValueFromEntity("street1", address, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("street2", address, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("city", address, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("country", address, DataType.ENUM_FIELD);
+            assignFieldValueFromEntity("state", address, DataType.ENUM_FIELD);
+            assignFieldValueFromEntity("zip", address, DataType.LONG_FIELD);
         }
         assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
@@ -117,6 +126,7 @@ public class ReadProspectsPanel extends ReadComposite {
         addField("screenedBy", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("processDocSentDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("status", true, false, ProspectStatus.names(), Alignment.HORIZONTAL);
+
         alignFields();
     }
 
