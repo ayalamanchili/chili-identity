@@ -81,7 +81,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
             company.put("name", company.get("value"));
             entity.put("company", company);
         }
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONSULTANT_TIME_ADMIN, ROLE.ROLE_RELATIONSHIP)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN)) {
             assignEntityValueFromField("status", entity);
         }
         
@@ -132,7 +132,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         if (Auth.isAdmin()) {
             assignFieldValueFromEntity("ssn", entity, DataType.STRING_FIELD);
         }
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONSULTANT_TIME_ADMIN, ROLE.ROLE_RELATIONSHIP)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN)) {
             assignFieldValueFromEntity("status", entity, DataType.BOOLEAN_FIELD);
         }
         //TODO add image panel for employee image
@@ -175,7 +175,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
             addField("ssn", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         }
         entityFieldsPanel.add(empImageUploadPanel);
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONSULTANT_TIME_ADMIN, ROLE.ROLE_RELATIONSHIP)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN)) {
             addField("status", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         }
         alignFields();
