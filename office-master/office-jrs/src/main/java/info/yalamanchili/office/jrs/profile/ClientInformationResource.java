@@ -61,7 +61,7 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
     @Validate
     @CacheEvict(value = OfficeCacheKeys.CLIENTINFORMATION, allEntries = true)
     public ClientInformation save(ClientInformation entity, @QueryParam("submitForApproval") Boolean submitForApproval) {
-        return clientInformationService.update(entity, true);
+        return clientInformationService.update(entity, submitForApproval);
     }
 
     @Override

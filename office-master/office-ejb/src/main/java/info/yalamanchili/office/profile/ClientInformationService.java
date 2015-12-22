@@ -25,7 +25,6 @@ import info.yalamanchili.office.dao.profile.CompanyDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
-import info.yalamanchili.office.dto.client.ContractDto;
 import info.yalamanchili.office.dto.profile.ClientInformationDto;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.client.Client;
@@ -41,7 +40,7 @@ import info.yalamanchili.office.entity.profile.ClientInformationStatus;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.entity.profile.Phone;
+import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.jms.MessagingService;
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -258,24 +257,18 @@ public class ClientInformationService {
      */
     public void updateBillingRate(Long clientInfoId, BillingRate billingRate) {
         ClientInformation ci = ClientInformationDao.instance().findById(clientInfoId);
-        //Track the first change
-        String[] roles = {OfficeRoles.OfficeRole.ROLE_BILLING_AND_INVOICING.name()};
         Employee emp = ci.getEmployee();
-        Email email = new Email();
-        email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
-        email.setSubject(" Client Information Has Updated For :" + ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
-        String messageText = " Updated Client Information : ";
         if (ci.getBillingRates().isEmpty() && ci.getBillingRate() != null) {
             BillingRate firstBillingRate = new BillingRate();
             firstBillingRate.setBillingRate(ci.getBillingRate());
             firstBillingRate.setOverTimeBillingRate(ci.getOverTimeBillingRate());
             firstBillingRate.setBillingInvoiceFrequency(ci.getInvoiceFrequency());
-            if (emp.getEmployeeType().equals("Subcontractor")) {
+            if (emp.getEmployeeType().getName().equals(EmployeeType.SUBCONTRACTOR)) {
                 firstBillingRate.setSubContractorPayRate(ci.getSubcontractorPayRate());
                 firstBillingRate.setSubContractorOverTimePayRate(ci.getSubcontractorOvertimePayRate());
                 firstBillingRate.setSubContractorInvoiceFrequency(ci.getSubcontractorinvoiceFrequency());
             }
-            if (emp.getEmployeeType().equals("1099 Contractor")) {
+            if (emp.getEmployeeType().getName().equals(EmployeeType._1099_CONTRACTOR)) {
                 firstBillingRate.setSubContractorPayRate(ci.getPayRate1099());
                 firstBillingRate.setSubContractorOverTimePayRate(ci.getOverTimePayrate1099());
                 firstBillingRate.setSubContractorInvoiceFrequency(ci.getInvoiceFrequency1099());
@@ -294,7 +287,7 @@ public class ClientInformationService {
             ci.setInvoiceFrequency(billingRate.getBillingInvoiceFrequency());
         }
 
-        if (emp.getEmployeeType().equals("Subcontractor")) {
+        if (emp.getEmployeeType().getName().equals(EmployeeType.SUBCONTRACTOR)) {
             if (billingRate.getSubContractorPayRate() != null) {
                 ci.setSubcontractorPayRate(billingRate.getSubContractorPayRate());
             }
@@ -305,7 +298,7 @@ public class ClientInformationService {
                 ci.setSubcontractorinvoiceFrequency(billingRate.getSubContractorInvoiceFrequency());
             }
         }
-        if (emp.getEmployeeType().equals("1099 Contractor")) {
+        if (emp.getEmployeeType().getName().equals(EmployeeType._1099_CONTRACTOR)) {
             if (billingRate.getSubContractorPayRate() != null) {
                 ci.setPayRate1099(billingRate.getSubContractorPayRate());
             }
@@ -320,11 +313,19 @@ public class ClientInformationService {
         if (billingRate.getEffectiveDate().before(ci.getStartDate())) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid Effective Date", "Effective Date can't be before Project Start Date");
         }
-        String employee = OfficeSecurityService.instance().getCurrentUserName();
-        billingRate.setUpdatedBy(employee);
+        billingRate.setUpdatedBy(OfficeSecurityService.instance().getCurrentUserName());
         billingRate.setUpdatedTs(Calendar.getInstance().getTime());
         billingRate.setClientInformation(ci);
         BillingRateDao.instance().save(billingRate).getId().toString();
+
+    }
+
+    protected void sendBillingRateUpdatedEmail(ClientInformation ci) {
+        String[] roles = {OfficeRoles.OfficeRole.ROLE_BILLING_AND_INVOICING.name()};
+        Email email = new Email();
+        email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
+        email.setSubject("Billing rate updated for :" + ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
+        String messageText = " Updated Billing rate : ";
         messageText = messageText.concat("Billing Rate :" + ci.getBillingRate());
         messageText = messageText.concat("Pay Rate :" + ci.getPayRate());
         messageText = messageText.concat("Overtime Billing Rate :" + ci.getOverTimeBillingRate());

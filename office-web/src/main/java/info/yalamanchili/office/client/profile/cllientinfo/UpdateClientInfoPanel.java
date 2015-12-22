@@ -83,9 +83,9 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignEntityValueFromField("endDate", entity);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
             assignEntityValueFromField("itemNumber", entity);
-     //       assignEntityValueFromField("payRate", entity);
+            //       assignEntityValueFromField("payRate", entity);
             assignEntityValueFromField("billingRate", entity);
-      //      assignEntityValueFromField("overTimePayRate", entity);
+            //      assignEntityValueFromField("overTimePayRate", entity);
             assignEntityValueFromField("overTimeBillingRate", entity);
             assignEntityValueFromField("invoiceFrequency", entity);
             assignEntityValueFromField("invoiceDeliveryMethod", entity);
@@ -174,9 +174,9 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
             assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);
-     //       assignFieldValueFromEntity("payRate", entity, DataType.CURRENCY_FIELD);
+            //       assignFieldValueFromEntity("payRate", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
-     //       assignFieldValueFromEntity("overTimePayRate", entity, DataType.CURRENCY_FIELD);
+            //       assignFieldValueFromEntity("overTimePayRate", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("invoiceDeliveryMethod", entity, DataType.ENUM_FIELD);
@@ -233,6 +233,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
                 setVisibleLengthSize(e.getKey(), 30);
             }
         }
+        submitForApprovalF.setValue(true);
     }
 
     SelectEmployeeWithRoleWidget selectRecruiterW = new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER, false, false, Alignment.HORIZONTAL) {
@@ -288,13 +289,13 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
             entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
             addField("itemNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-     //       addField("payRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+            //       addField("payRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addField("billingRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             ReadAllUpdateBillingRatePanel.renderBillingRateHistory(getEntityId());
             renderUpdateBillingRateFieldLink();
             String[] billingDuration = {"HOUR", "DAY", "MONTH", "WEEK"};
             addEnumField("billingRateDuration", false, false, billingDuration, Alignment.HORIZONTAL);
-      //      addField("overTimePayRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+            //      addField("overTimePayRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addEnumField("overTimeRateDuration", false, false, billingDuration, Alignment.HORIZONTAL);
             addEnumField("invoiceFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
