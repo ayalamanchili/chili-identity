@@ -42,7 +42,7 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
 
     private static Logger logger = Logger.getLogger(CreateProspectPanel.class.getName());
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "screenedBy", "Employee", false, true);
-    FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "Prospect", "resumeURL", "Prospect/resumeURL", true) {
+    FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "Prospect", "resumeURL", "Prospect/resumeURL", false) {
         @Override
         public void onUploadComplete(String res) {
             postCreateSuccess(null);
@@ -95,9 +95,14 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
 
                     @Override
                     public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
+                        //postCreateSuccess(arg0);
+                        uploadResume(arg0);
                     }
                 });
+    }
+    
+    protected void uploadResume(String entity){
+        resumeUploadPanel.upload(entity);
     }
 
     @Override
