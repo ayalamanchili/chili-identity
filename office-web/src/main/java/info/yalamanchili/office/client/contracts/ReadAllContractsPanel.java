@@ -88,15 +88,16 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Employee"));
-        table.setText(0, 2, getKeyValue("Client"));
+        table.setText(0, 2, getKeyValue("ItemNo"));
         table.setText(0, 3, getKeyValue("Vendor"));
-        table.setText(0, 4, getKeyValue("ItemNo"));
-        table.setText(0, 5, getKeyValue("BillRate"));
-        table.setText(0, 6, getKeyValue("O.T.BillRate"));
-        table.setText(0, 7, getKeyValue("Frequency"));
-        table.setText(0, 8, getKeyValue("StartDate"));
-        table.setText(0, 9, getKeyValue("EndDate"));
-        table.setText(0, 10, getKeyValue("Status"));
+        table.setText(0, 4, getKeyValue("MiddleVendor"));
+        table.setText(0, 5, getKeyValue("Client"));
+//        table.setText(0, 5, getKeyValue("BillRate"));
+//        table.setText(0, 6, getKeyValue("O.T.BillRate"));
+        table.setText(0, 6, getKeyValue("Frequency"));
+//        table.setText(0, 8, getKeyValue("StartDate"));
+//        table.setText(0, 9, getKeyValue("EndDate"));
+        table.setText(0, 7, getKeyValue("Status"));
     }
 
     @Override
@@ -106,15 +107,16 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
             addOptionsWidget(i, entity);
             OfficeWelcome.instance().logger.info(entity.toString());
             table.setText(i, 1, JSONUtils.toString(entity, "employee"));
-            table.setText(i, 2, JSONUtils.toString(entity, "client"));
+            table.setText(i, 2, JSONUtils.toString(entity, "itemNumber"));
             table.setText(i, 3, JSONUtils.toString(entity, "vendor"));
-            table.setText(i, 4, JSONUtils.toString(entity, "itemNumber"));
-            table.setText(i, 5, FormatUtils.formarCurrency(JSONUtils.toString(entity, "billingRate")));
-            table.setText(i, 6, FormatUtils.formarCurrency(JSONUtils.toString(entity, "overTimeBillingRate")));
-            table.setText(i, 7, JSONUtils.toString(entity, "invoiceFrequency"));
-            table.setText(i, 8, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
-            table.setText(i, 9, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
-            table.setText(i, 10, JSONUtils.toString(entity, "status"));
+            table.setText(i, 4, JSONUtils.toString(entity, "middleVendor"));
+            table.setText(i, 5, JSONUtils.toString(entity, "client"));
+            table.setText(i, 6, JSONUtils.toString(entity, "invoiceFrequency"));
+//            table.setText(i, 5, FormatUtils.formarCurrency(JSONUtils.toString(entity, "billingRate")));
+//            table.setText(i, 6, FormatUtils.formarCurrency(JSONUtils.toString(entity, "overTimeBillingRate")));
+//            table.setText(i, 8, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
+//            table.setText(i, 9, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
+            table.setText(i, 7, JSONUtils.toString(entity, "status"));
 
         }
     }
@@ -127,12 +129,14 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
     private String getReadAllContractsURL(Integer start, String limit) {
         return OfficeWelcome.constants.root_url() + "contract/" + start.toString() + "/" + limit.toString();
     }
+
     @Override
     protected boolean enableQuickView() {
         return true;
     }
+
     @Override
-    protected boolean enablePersistedQuickView(){
+    protected boolean enablePersistedQuickView() {
         return true;
     }
 
