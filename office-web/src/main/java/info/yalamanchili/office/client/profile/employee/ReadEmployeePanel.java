@@ -11,6 +11,8 @@ import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import info.chili.gwt.fields.BooleanField;
+import info.chili.gwt.fields.DateField;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
@@ -81,6 +83,9 @@ public class ReadEmployeePanel extends ReadComposite {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONSULTANT_TIME_ADMIN, ROLE.ROLE_RELATIONSHIP)) {
             assignFieldValueFromEntity("status", entity, DataType.BOOLEAN_FIELD);
         }
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONSULTANT_TIME_ADMIN, ROLE.ROLE_RELATIONSHIP)) {
+            assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
+        }
     }
 
     @Override
@@ -117,6 +122,9 @@ public class ReadEmployeePanel extends ReadComposite {
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONSULTANT_TIME_ADMIN, ROLE.ROLE_RELATIONSHIP)) {
             addField("status", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        }
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONSULTANT_TIME_ADMIN, ROLE.ROLE_RELATIONSHIP)) {
+            addField("endDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         }
         alignFields();
     }
