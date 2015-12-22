@@ -189,7 +189,7 @@ public class ContractService {
         return queryStr.toString().substring(0, queryStr.toString().lastIndexOf("and"));
     }
 
-    protected ContractDto mapClientInformation(ClientInformation ci) {
+    public ContractDto mapClientInformation(ClientInformation ci) {
         ContractDto dto = mapper.map(ci, ContractDto.class);
         if (ci.getEmployee() != null) {
             dto.setEmployee(ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
