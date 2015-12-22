@@ -258,6 +258,7 @@ public class ClientInformationService {
         ClientInformation ci = ClientInformationDao.instance().findById(clientInfoId);
         //Track the first change
         String[] roles = {OfficeRoles.OfficeRole.ROLE_BILLING_AND_INVOICING.name()};
+        Employee emp = ci.getEmployee();
         Email email = new Email();
         email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject(" Client Information Has Updated For :" + ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
@@ -268,6 +269,17 @@ public class ClientInformationService {
             firstBillingRate.setPayRate(ci.getPayRate());
             firstBillingRate.setOverTimeBillingRate(ci.getOverTimeBillingRate());
             firstBillingRate.setOverTimePayRate(ci.getOverTimePayRate());
+            firstBillingRate.setBillingInvoiceFrequency(ci.getInvoiceFrequency());
+            if (emp.getEmployeeType().equals("Subcontractor")) {
+                firstBillingRate.setSubContractorPayRate(ci.getSubcontractorPayRate());
+                firstBillingRate.setSubContractorOverTimePayRate(ci.getSubcontractorOvertimePayRate());
+                firstBillingRate.setSubContractorInvoiceFrequency(ci.getSubcontractorinvoiceFrequency());
+            }
+            if (emp.getEmployeeType().equals("1099 Contractor")) {
+                firstBillingRate.setSubContractorPayRate(ci.getPayRate1099());
+                firstBillingRate.setSubContractorOverTimePayRate(ci.getOverTimePayrate1099());
+                firstBillingRate.setSubContractorInvoiceFrequency(ci.getInvoiceFrequency1099());
+            }
             firstBillingRate.setEffectiveDate(ci.getStartDate());
             firstBillingRate.setClientInformation(ci);
             BillingRateDao.instance().save(firstBillingRate);
@@ -276,6 +288,18 @@ public class ClientInformationService {
         ci.setPayRate(billingRate.getPayRate());
         ci.setOverTimeBillingRate(billingRate.getOverTimeBillingRate());
         ci.setOverTimePayRate(billingRate.getOverTimePayRate());
+        ci.setInvoiceFrequency(billingRate.getBillingInvoiceFrequency());
+        if (emp.getEmployeeType().equals("Subcontractor")) {
+            ci.setSubcontractorPayRate(billingRate.getSubContractorPayRate());
+            ci.setSubcontractorOvertimePayRate(billingRate.getSubContractorOverTimePayRate());
+            ci.setSubcontractorinvoiceFrequency(billingRate.getSubContractorInvoiceFrequency());
+        }
+        if (emp.getEmployeeType().equals("1099 Contractor")) {
+            ci.setPayRate1099(billingRate.getSubContractorPayRate());
+            ci.setOverTimePayrate1099(billingRate.getSubContractorOverTimePayRate());
+            ci.setInvoiceFrequency1099(billingRate.getSubContractorInvoiceFrequency());
+        }
+
         if (billingRate.getEffectiveDate().before(ci.getStartDate())) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid Effective Date", "Effective Date can't be before Project Start Date");
         }

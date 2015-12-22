@@ -83,9 +83,9 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignEntityValueFromField("endDate", entity);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
             assignEntityValueFromField("itemNumber", entity);
-            assignEntityValueFromField("payRate", entity);
+     //       assignEntityValueFromField("payRate", entity);
             assignEntityValueFromField("billingRate", entity);
-            assignEntityValueFromField("overTimePayRate", entity);
+      //      assignEntityValueFromField("overTimePayRate", entity);
             assignEntityValueFromField("overTimeBillingRate", entity);
             assignEntityValueFromField("invoiceFrequency", entity);
             assignEntityValueFromField("invoiceDeliveryMethod", entity);
@@ -118,6 +118,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
                 assignEntityValueFromField("overTimePayrate1099", entity);
                 assignEntityValueFromField("payTimeDuration1099", entity);
                 assignEntityValueFromField("paymentTerms1099", entity);
+                assignEntityValueFromField("invoiceFrequency1099", entity);
             }
             assignEntityValueFromField("terminationNotice", entity);
             assignEntityValueFromField("notes", entity);
@@ -173,9 +174,9 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
             assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);
-            assignFieldValueFromEntity("payRate", entity, DataType.CURRENCY_FIELD);
+     //       assignFieldValueFromEntity("payRate", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
-            assignFieldValueFromEntity("overTimePayRate", entity, DataType.CURRENCY_FIELD);
+     //       assignFieldValueFromEntity("overTimePayRate", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("invoiceDeliveryMethod", entity, DataType.ENUM_FIELD);
@@ -207,6 +208,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
                 assignFieldValueFromEntity("overTimePayrate1099", entity, DataType.CURRENCY_FIELD);
                 assignFieldValueFromEntity("paymentTerms1099", entity, DataType.STRING_FIELD);
                 assignFieldValueFromEntity("payTimeDuration1099", entity, DataType.ENUM_FIELD);
+                assignFieldValueFromEntity("invoiceFrequency1099", entity, DataType.ENUM_FIELD);
             }
             assignFieldValueFromEntity("terminationNotice", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
@@ -286,17 +288,17 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
             entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
             addField("itemNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-            addField("payRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+     //       addField("payRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addField("billingRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             ReadAllUpdateBillingRatePanel.renderBillingRateHistory(getEntityId());
             renderUpdateBillingRateFieldLink();
-            String[] billingDuration = {"HOUR", "DAY", "MONTH"};
+            String[] billingDuration = {"HOUR", "DAY", "MONTH", "WEEK"};
             addEnumField("billingRateDuration", false, false, billingDuration, Alignment.HORIZONTAL);
-            addField("overTimePayRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+      //      addField("overTimePayRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addEnumField("overTimeRateDuration", false, false, billingDuration, Alignment.HORIZONTAL);
             addEnumField("invoiceFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
-            String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
+            String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX", "UPLOAD"};
             addEnumField("invoiceDeliveryMethod", false, false, invoiceDeliveryMethods, Alignment.HORIZONTAL);
             addDropDown("recruiters", selectRecruiterW);
             entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
@@ -330,6 +332,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
                 addField("overTimePayrate1099", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
                 addField("paymentTerms1099", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
                 addEnumField("payTimeDuration1099", false, false, billingDuration, Alignment.HORIZONTAL);
+                addEnumField("invoiceFrequency1099", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
             }
             addField("terminationNotice", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("notes", false, false, DataType.RICH_TEXT_AREA);
