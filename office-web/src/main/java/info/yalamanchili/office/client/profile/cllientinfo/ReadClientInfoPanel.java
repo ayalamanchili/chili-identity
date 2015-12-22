@@ -87,10 +87,10 @@ public class ReadClientInfoPanel extends ReadComposite {
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         if (checkPermission()) {
             assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);
-            assignFieldValueFromEntity("payRate", entity, DataType.CURRENCY_FIELD);
+      //      assignFieldValueFromEntity("payRate", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("billingRateDuration", entity, DataType.ENUM_FIELD);
-            assignFieldValueFromEntity("overTimePayRate", entity, DataType.CURRENCY_FIELD);
+      //      assignFieldValueFromEntity("overTimePayRate", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("overTimeRateDuration", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
@@ -125,6 +125,7 @@ public class ReadClientInfoPanel extends ReadComposite {
                 assignFieldValueFromEntity("overTimePayrate1099", entity, DataType.CURRENCY_FIELD);
                 assignFieldValueFromEntity("paymentTerms1099", entity, DataType.STRING_FIELD);
                 assignFieldValueFromEntity("payTimeDuration1099", entity, DataType.ENUM_FIELD);
+                assignFieldValueFromEntity("invoiceFrequency1099", entity, DataType.ENUM_FIELD);
             }
             assignFieldValueFromEntity("terminationNotice", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
@@ -214,16 +215,16 @@ public class ReadClientInfoPanel extends ReadComposite {
         if (checkPermission()) {
             entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
             addField("itemNumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-            addField("payRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+     //       addField("payRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addField("billingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             ReadAllUpdateBillingRatePanel.renderBillingRateHistory(getEntityId());
-            String[] billingDuration = {"HOUR", "DAY", "MONTH"};
+            String[] billingDuration = {"HOUR", "DAY", "MONTH","WEEK"};
             addEnumField("billingRateDuration", true, false, billingDuration, Alignment.HORIZONTAL);
-            addField("overTimePayRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+     //       addField("overTimePayRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addField("overTimeBillingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addEnumField("overTimeRateDuration", true, false, billingDuration, Alignment.HORIZONTAL);
             addEnumField("invoiceFrequency", true, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
-            String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
+            String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX", "UPLOAD"};
             addEnumField("invoiceDeliveryMethod", true, false, invoiceDeliveryMethods, Alignment.HORIZONTAL);
             addDropDown("recruiters", selectRecruiterW);
             if (Auth.isSubContractor(getEmployee())) {
@@ -245,6 +246,7 @@ public class ReadClientInfoPanel extends ReadComposite {
                 addField("overTimePayrate1099", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
                 addField("paymentTerms1099", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
                 addEnumField("payTimeDuration1099", true, false, billingDuration, Alignment.HORIZONTAL);
+                addEnumField("invoiceFrequency1099", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
             }
             entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
             addField("visaStatus", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);

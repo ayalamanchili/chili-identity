@@ -11,13 +11,14 @@ package info.yalamanchili.office.toolbox.types;
 import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import java.math.BigDecimal;
 import java.util.Date;
+import javax.persistence.Temporal;
 
 /**
  *
  * @author Madhu.Badiginchala
  */
 public class BillingRecord {
-    
+
     protected Long clientInfoId;
     protected Date effectiveDate;
     protected BigDecimal payRate;
@@ -26,6 +27,10 @@ public class BillingRecord {
     protected BigDecimal subContractorPayRate;
     protected BigDecimal subContractorOverTimePayRate;
     protected InvoiceFrequency subContractorInvoiceFrequency;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    protected Date updatedTs;
+
+    protected String updatedBy;
 
     public Long getClientInfoId() {
         return clientInfoId;
@@ -90,7 +95,21 @@ public class BillingRecord {
     public void setSubContractorInvoiceFrequency(InvoiceFrequency subContractorInvoiceFrequency) {
         this.subContractorInvoiceFrequency = subContractorInvoiceFrequency;
     }
-    
-    
-    
+
+    public Date getUpdatedTs() {
+        return updatedTs;
+    }
+
+    public void setUpdatedTs(Date updatedTs) {
+        this.updatedTs = updatedTs;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
 }

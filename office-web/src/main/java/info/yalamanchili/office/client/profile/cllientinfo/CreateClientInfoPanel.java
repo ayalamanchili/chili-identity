@@ -87,10 +87,10 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             assignEntityValueFromField("previousProjectEndDate", clientInfo);
         }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
-            assignEntityValueFromField("payRate", clientInfo);
+  //          assignEntityValueFromField("payRate", clientInfo);
             assignEntityValueFromField("billingRate", clientInfo);
             assignEntityValueFromField("billingRateDuration", clientInfo);
-            assignEntityValueFromField("overTimePayRate", clientInfo);
+  //          assignEntityValueFromField("overTimePayRate", clientInfo);
             assignEntityValueFromField("overTimeBillingRate", clientInfo);
             assignEntityValueFromField("overTimeRateDuration", clientInfo);
             assignEntityValueFromField("invoiceFrequency", clientInfo);
@@ -111,6 +111,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                 assignEntityValueFromField("overTimePayrate1099", clientInfo);
                 assignEntityValueFromField("payTimeDuration1099", clientInfo);
                 assignEntityValueFromField("paymentTerms1099", clientInfo);
+                assignEntityValueFromField("invoiceFrequency1099", clientInfo);
             }
             assignEntityValueFromField("terminationNotice", clientInfo);
             assignEntityValueFromField("notes", clientInfo);
@@ -235,15 +236,15 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             addDropDown("recruiter", selectRecruiterW);
             //Billing Information
             entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
-            addField("payRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+  //          addField("payRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addField("billingRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-            String[] billingDuration = {"HOUR", "DAY", "MONTH"};
+            String[] billingDuration = {"HOUR", "DAY", "MONTH", "WEEK"};
             addEnumField("billingRateDuration", false, false, billingDuration, Alignment.HORIZONTAL);
-            addField("overTimePayRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+  //          addField("overTimePayRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addEnumField("overTimeRateDuration", false, false, billingDuration, Alignment.HORIZONTAL);
             addEnumField("invoiceFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
-            String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
+            String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX", "UPLOAD"};
             addEnumField("invoiceDeliveryMethod", false, false, invoiceDeliveryMethods, Alignment.HORIZONTAL);
             if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
                 entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
@@ -261,6 +262,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                 addField("overTimePayrate1099", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
                 addField("paymentTerms1099", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
                 addEnumField("payTimeDuration1099", false, false, billingDuration, Alignment.HORIZONTAL);
+                addEnumField("invoiceFrequency1099", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
             }
             entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
             addField("visaStatus", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);

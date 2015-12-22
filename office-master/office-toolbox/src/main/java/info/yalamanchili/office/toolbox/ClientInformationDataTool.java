@@ -242,7 +242,7 @@ public class ClientInformationDataTool {
             String VendorID = getCellNumericValue(record, 75);
             if (VendorID != null) {
                 cpd.setVendorID(new Long(convertDcimalToWhole(getCellNumericValue(record, 75))));
-                if (cpd.getVendorID() == ven) {
+                if (cpd.getVendorID().compareTo(ven) == 0) {
                     isClientonly = true;
                 } else {
                     vendor = VendorDao.instance().findById(cpd.getVendorID());
@@ -258,28 +258,27 @@ public class ClientInformationDataTool {
                 } else {
                     clientInfo.getVendorAPContacts().add(ContactDao.instance().findById(cpd.getVenAPID1()));
                 }
-                
+
             }
             String VenAPID2 = getCellNumericValue(record, 35);
             if (VenAPID2 != null) {
-                 cpd.setVenAPID2(new Long(convertDcimalToWhole(getCellNumericValue(record, 35))));
+                cpd.setVenAPID2(new Long(convertDcimalToWhole(getCellNumericValue(record, 35))));
                 if (isClientonly) {
                     clientInfo.getClientAPContacts().add(ContactDao.instance().findById(cpd.getVenAPID2()));
                 } else {
                     clientInfo.getVendorAPContacts().add(ContactDao.instance().findById(cpd.getVenAPID2()));
                 }
-               
-                
+
             }
             String VenAPID3 = getCellNumericValue(record, 36);
             if (VenAPID3 != null) {
                 cpd.setVenAPID3(new Long(convertDcimalToWhole(getCellNumericValue(record, 36))));
-                 if (isClientonly) {
-                     clientInfo.getClientAPContacts().add(ContactDao.instance().findById(cpd.getVenAPID3()));
-                 } else {
-                     clientInfo.getVendorAPContacts().add(ContactDao.instance().findById(cpd.getVenAPID3()));
-                 }
-                
+                if (isClientonly) {
+                    clientInfo.getClientAPContacts().add(ContactDao.instance().findById(cpd.getVenAPID3()));
+                } else {
+                    clientInfo.getVendorAPContacts().add(ContactDao.instance().findById(cpd.getVenAPID3()));
+                }
+
             }
 
             cpd.setCompany((ClientInformationCompany) Enum.valueOf(ClientInformationCompany.class, getCellStringValue(record, 41)));
@@ -426,10 +425,12 @@ public class ClientInformationDataTool {
                 project.setSubContractorWorkOrderNo(cpd.getSubContractorWorkOrderNo());
             }
             if (VendorID != null) {
-                project.setVendor(vendor);
-                client.getVendors().add(vendor);
-                vendor.getClients().add(client);
-                VendorDao.instance().save(vendor);
+                if (!isClientonly) {
+                    project.setVendor(vendor);
+                    client.getVendors().add(vendor);
+                    vendor.getClients().add(client);
+                    VendorDao.instance().save(vendor);
+                }
             }
             if (cpd.getStartDate() != null) {
                 project.setStartDate(cpd.getStartDate());

@@ -86,12 +86,12 @@ public class BillingHistoryDataTool {
             String PayRate = getCellNumericValue(record, 4);
             if (PayRate != null) {
                 br.setPayRate(new BigDecimal(getCellNumericValue(record, 4)));
-                billingRate.setPayRate(br.getPayRate());
+                billingRate.setBillingRate(br.getPayRate());
             }
             String OverTimePayrate = getCellNumericValue(record, 6);
             if (OverTimePayrate != null) {
                 br.setOverTimePayrate(new BigDecimal(getCellNumericValue(record, 6)));
-                billingRate.setOverTimePayRate(br.getOverTimePayrate());
+                billingRate.setOverTimeBillingRate(br.getOverTimePayrate());
             }
             String SubContractorPayRate = getCellNumericValue(record, 9);
             if (SubContractorPayRate != null) {
@@ -111,6 +111,8 @@ public class BillingHistoryDataTool {
             if (br.getBillingInvoiceFrequency() != null) {
                 billingRate.setBillingInvoiceFrequency(br.getBillingInvoiceFrequency());
             }
+            br.setUpdatedTs(convertToDate(getCellNumericValue(record, 15)));
+            br.setUpdatedBy(getCellStringValue(record, 14));
             billingRate.setClientInformation(clientInfo);
             BillingRateDao.instance().getEntityManager().merge(billingRate);
         }
