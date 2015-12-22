@@ -23,16 +23,16 @@
                 Employee Type               : #{clientInfo.employee.employeeType.name}
                 Consultant Job Title        : #{clientInfo.consultantJobTitle}
                 Client                      : #{clientInfo.client.name}
+                Client AP Contact           : #{contractDto.clientAPContact}
                 Vendor                      : #{clientInfo.vendor.name}
+                Vendor Location             : #{contractDto.vendorLocation}
+                Vendor Contact              : #{contractDto.vendorContact}
+                Vendor AP Contact           : #{contractDto.vendorAPContact}
+                Vendor Payment Terms        : #{contractDto.vendorPaymentTerms}
                 Project Start Date          : #{clientInfo.startDate}
                 Project End Date            : #{clientInfo.endDate}
-                Vendor AP Contact           : #{vendorAPName}
-                Vendor AP Contact Email     : #{vendorAPEmail}
-                Vendor AP Contact Phone     : #{vendorAPPhone}
                 Billing Rate                : #{clientInfo.billingRate}
                 Overtime Billing Rate       : #{clientInfo.overTimeBillingRate}
-                PayRate                     : #{clientInfo.payRate}
-                Overtime PayRate            : #{clientInfo.overTimePayRate}
                 Billing Rate Duration       : #{clientInfo.billingRateDuration}
                 Overtime Rate Duration      : #{clientInfo.overTimeRateDuration}
                 Invoice Frequency           : #{clientInfo.invoiceFrequency}

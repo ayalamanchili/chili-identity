@@ -12,6 +12,7 @@ import info.chili.email.Email;
 import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.OfficeBPMService;
+import info.yalamanchili.office.client.ContractService;
 import info.yalamanchili.office.dao.client.ClientDao;
 import info.yalamanchili.office.dao.client.ProjectDao;
 import info.yalamanchili.office.dao.client.SubcontractorDao;
@@ -24,6 +25,7 @@ import info.yalamanchili.office.dao.profile.CompanyDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.dto.client.ContractDto;
 import info.yalamanchili.office.dto.profile.ClientInformationDto;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.client.Client;
@@ -335,33 +337,8 @@ public class ClientInformationService {
         Map<String, Object> vars = new HashMap<>();
         vars.put("clientInfo", ci);
         vars.put("entityId", ci.getId());
+        vars.put("contractDto", ContractService.instance().mapClientInformation(ci));
         vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
-        if (ci.getVendorAPContacts().size() == 0) {
-            vars.put("vendorAPName", " ");
-            vars.put("vendorAPEmail", " ");
-            vars.put("vendorAPPhone", " ");
-        } else {
-            for (Contact vendorAPContact : ci.getVendorAPContacts()) {
-                String name = vendorAPContact.getFirstName() + " " + vendorAPContact.getLastName();
-                vars.put("vendorAPName", name);
-                if (vendorAPContact.getEmails().size() > 0) {
-                    for (info.yalamanchili.office.entity.profile.Email emails : vendorAPContact.getEmails()) {
-                        String email = emails.getEmail();
-                        vars.put("vendorAPEmail", email);
-                    }
-                } else {
-                    vars.put("vendorAPEmail", " ");
-                }
-                if (vendorAPContact.getPhones().size() > 0) {
-                    for (Phone phones : vendorAPContact.getPhones()) {
-                        String phone = phones.getPhoneNumber();
-                        vars.put("vendorAPPhone", phone);
-                    }
-                } else {
-                    vars.put("vendorAPPhone", " ");
-                }
-            }
-        }
         return OfficeBPMService.instance().startProcess("new_client_info_process", vars);
     }
 
