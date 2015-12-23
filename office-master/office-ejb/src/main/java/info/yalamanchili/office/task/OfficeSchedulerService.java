@@ -156,14 +156,6 @@ public class OfficeSchedulerService {
         }
     }
 
-    /**
-     * runs at 1'0 clock every year first month first date to add carry forward
-     */
-//    @Scheduled(cron = "0 1 1 1 * * ?")
-    public void addCarryForwardHours() {
-        CorporateTimeAccuralService.instance().addCarryForwardLeaves();
-    }
-
     public static int yearsBetween(Calendar date1, Calendar date2) {
         int years = 0;
         //difference in of years

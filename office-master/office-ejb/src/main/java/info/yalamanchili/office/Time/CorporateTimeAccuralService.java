@@ -144,7 +144,7 @@ public class CorporateTimeAccuralService {
             if (emp.getStartDate() == null) {
                 continue;
             }
-            if (hasMoreThanOneYearService(emp) == true && Branch.Hyderabad.equals(emp.getBranch())) {
+            if (Branch.Hyderabad.equals(emp.getBranch())) {
                 CorporateTimeSheet ptoAccruedTS = dao.getPTOAccruedTimeSheet(emp);
                 if (ptoAccruedTS != null) {
 
