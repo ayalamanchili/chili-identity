@@ -276,7 +276,7 @@ public class ContractService {
         if (ci.getPractice() != null) {
             dto.setPractice(ci.getPractice().getName());
         }
-        mapEffectiveBillingRate(ci, dto);
+//        mapEffectiveBillingRate(ci, dto);
         return dto;
     }
 
