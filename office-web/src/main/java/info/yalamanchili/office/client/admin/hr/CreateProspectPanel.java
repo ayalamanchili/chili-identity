@@ -13,6 +13,7 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
@@ -79,7 +80,7 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         assignEntityValueFromField("processDocSentDate", entity);
         assignEntityValueFromField("comment", entity);
         entity.put("resumeURL", resumeUploadPanel.getFileName());
-        logger.info("prospect entity :"+entity);
+        logger.info("prospect entity :" + entity);
         return entity;
     }
 
@@ -100,9 +101,10 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
                     }
                 });
     }
-    
-    protected void uploadResume(String entity){
-        resumeUploadPanel.upload(entity);
+
+    protected void uploadResume(String entity) {
+        logger.info(entity);
+        resumeUploadPanel.upload(JSONUtils.toString(JSONParser.parseLenient(entity), "id"));
     }
 
     @Override
@@ -141,7 +143,7 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
             }
         });
     }
-    
+
     protected void formatTextAreaFields() {
         for (Map.Entry entry : fields.entrySet()) {
             if (entry.getValue() instanceof TextAreaField) {

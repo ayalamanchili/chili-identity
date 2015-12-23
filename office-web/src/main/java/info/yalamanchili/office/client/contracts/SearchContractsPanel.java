@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.client.contracts;
 
+import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -197,11 +198,11 @@ public class SearchContractsPanel extends SearchComposite {
     }
 
     protected String getFirstNameDropDownUrl() {
-        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/10000?column=id&column=firstName";
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Corporate Employee&employee-type=Employee&employee-type=Subcontractor&employee-type=1099 Contractor");
     }
 
     protected String getLastNameDropDownUrl() {
-        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/10000?column=id&column=lastName";
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=lastName&employee-type=Corporate Employee&employee-type=Employee&employee-type=Subcontractor&employee-type=1099 Contractor");
     }
 
     @Override
