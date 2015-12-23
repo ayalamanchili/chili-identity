@@ -222,7 +222,7 @@ public class ClientInformationDto implements Serializable {
     protected BigDecimal overTimePayrate1099;
     protected BillingDuration payTimeDuration1099;
     protected String paymentTerms1099;
-    protected InvoiceDeliveryMethod invoiceFrequency1099;
+    protected InvoiceFrequency invoiceFrequency1099;
     /* 
      * comments
      */
@@ -823,13 +823,15 @@ public class ClientInformationDto implements Serializable {
         this.vendorPaymentTerms = vendorPaymentTerms;
     }
 
-    public InvoiceDeliveryMethod getInvoiceFrequency1099() {
+    public InvoiceFrequency getInvoiceFrequency1099() {
         return invoiceFrequency1099;
     }
 
-    public void setInvoiceFrequency1099(InvoiceDeliveryMethod invoiceFrequency1099) {
+    public void setInvoiceFrequency1099(InvoiceFrequency invoiceFrequency1099) {
         this.invoiceFrequency1099 = invoiceFrequency1099;
     }
+
+    
     
     
     
