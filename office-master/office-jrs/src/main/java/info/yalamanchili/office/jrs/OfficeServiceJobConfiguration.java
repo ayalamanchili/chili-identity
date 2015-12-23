@@ -181,4 +181,8 @@ public class OfficeServiceJobConfiguration {
         ExpenseReportService.instance().refreshExpenseReportBPMProcessEntities();
     }
 
+    @ManagedOperation
+    public void addCarryForwardHoursForIndiaTeam() {
+        CorporateTimeAccuralService.instance().addCarryForwardLeaves();
+    }
 }
