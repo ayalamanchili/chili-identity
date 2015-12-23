@@ -344,6 +344,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             employeeTypeF.setValue(TreeEmployeePanel.instance().getEntity().get("employeeType").isObject().get("name").isString().stringValue());
         }
         JSONObject prj = (JSONObject) entity.get("practice");
+        addDropDown("practice", selectPractiseWidgetF);
         String service = JSONUtils.toString(prj, "name");
         switch (service) {
             case "4100-CONSULTING SERVICES":
@@ -371,9 +372,8 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
                 addEnumField("sectorsAndBUs", false, true, QualityAsuranceServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
                 break;
         }
-        sectorsF = (EnumField) fields.get("sectorsAndBUs");
-        addDropDown("practice", selectPractiseWidgetF);
         addField("sectorsAndBUs", false, true, DataType.ENUM_FIELD);
+        sectorsF = (EnumField) fields.get("sectorsAndBUs");
         entityFieldsPanel.add(submitForApprovalF);
         alignFields();
     }
