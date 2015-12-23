@@ -84,13 +84,17 @@ public class CommentsDataTool {
             if (cr.getComment() != null) {
                 commentD = cr.getComment();
             }
+            String FromDate = "";
+            FromDate = getCellNumericValue(record, 7);
             cr.setFromDate(convertToDate(getCellNumericValue(record, 7)));
-            if (cr.getFromDate() != null) {
-                commentD = commentD + " From:  " + cr.getFromDate();
+            if ((FromDate != null) && cr.getFromDate()!=null) {
+                commentD = commentD + " From: " + FromDate;
             }
+            String ToDate = "";
             cr.setToDate(convertToDate(getCellNumericValue(record, 8)));
-            if (cr.getToDate() != null) {
-                commentD = commentD + " To:  " + cr.getToDate();
+            ToDate = getCellNumericValue(record, 8);
+            if ((ToDate != null) && cr.getToDate()!= null) {
+                commentD = commentD + " To: " + ToDate;
             }
             if (commentD != null) {
                 CommentDao.instance().addBISComment(commentD, clientInfo, cr.getUpdatedBy(), cr.getUpdatedDate());

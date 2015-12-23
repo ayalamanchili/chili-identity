@@ -89,6 +89,7 @@ public class ContractDto implements Serializable {
      * Employee
      */
     protected String employee;
+    protected String employeeDetails;
     /**
      * employee tpe
      */
@@ -711,6 +712,14 @@ public class ContractDto implements Serializable {
 
     public void setInvoiceFrequency1099(InvoiceFrequency invoiceFrequency1099) {
         this.invoiceFrequency1099 = invoiceFrequency1099;
+    }
+
+    public String getEmployeeDetails() {
+        return employeeDetails;
+    }
+
+    public void setEmployeeDetails(String employeeDetails) {
+        this.employeeDetails = employeeDetails;
     }
     
     
