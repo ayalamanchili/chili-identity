@@ -73,11 +73,11 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignEntityValueFromField("vendorLocation", entity);
         assignEntityValueFromField("vendorRecruiters", entity);
         assignEntityValueFromField("middleVendor", entity);
-        if (entity.get("clientProject") != null) {
-            JSONObject project = entity.get("clientProject").isObject();
-            assignFieldValueFromEntity("name", project, DataType.STRING_FIELD);
-            assignFieldValueFromEntity("purchaseOrderNo", project, DataType.STRING_FIELD);
-        }
+//        if (entity.get("clientProject") != null) {
+//            JSONObject project = entity.get("clientProject").isObject();
+//            assignFieldValueFromEntity("name", project, DataType.STRING_FIELD);
+//            assignFieldValueFromEntity("purchaseOrderNo", project, DataType.STRING_FIELD);
+//        }
         assignEntityValueFromField("vendorPaymentTerms", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
@@ -170,6 +170,11 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignFieldValueFromEntity("vendorRecruiters", entity, null);
         assignFieldValueFromEntity("middleVendor", entity, null);
         assignFieldValueFromEntity("vendorPaymentTerms", entity, DataType.STRING_FIELD);
+        if (entity.get("clientProject") != null) {
+            JSONObject project = entity.get("clientProject").isObject();
+            assignFieldValueFromEntity("name", project, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("purchaseOrderNo", project, DataType.STRING_FIELD);
+        }
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
