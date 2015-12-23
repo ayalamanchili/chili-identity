@@ -196,9 +196,10 @@ public class ContractService {
             dto.setEmployee(ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
             dto.setEmployeeType(ci.getEmployee().getEmployeeType().getName());
             dto.setEmployeeID(ci.getEmployee().getId());
-            if (ci.getCompany() != null) {
-                dto.setCompany(ci.getCompany());
-            }
+//            if (ci.getCompany() != null) {
+//                dto.setCompany(ci.getCompany());
+//            }
+            dto.setEmployeeDetails(ci.getEmployee().details());
         }
         //TODO set client
         if (ci.getClient() != null) {
@@ -218,8 +219,13 @@ public class ContractService {
             dto.setClientContact(ci.getClientContact().details());
         }
         //Client AP Contacts
+        StringBuilder cliAP = new StringBuilder();
         for (Contact clientAPcontact : ci.getClientAPContacts()) {
-            dto.setClientAPContact(clientAPcontact.details());
+            cliAP.append(clientAPcontact.details());
+            cliAP.append(" ");
+        }
+        if (ci.getClientAPContacts() != null) {
+            dto.setClientAPContact(cliAP.toString());
         }
         if (ci.getVendorContact() != null) {
             dto.setVendorContact(ci.getVendorContact().details());
@@ -235,8 +241,13 @@ public class ContractService {
         //vendor payment tersm
         dto.setVendorPaymentTerms(ci.getVendorPaymentTerms());
         //Vendor AP Contacts
+        StringBuilder venAP = new StringBuilder();
         for (Contact vendorAPcontact : ci.getVendorAPContacts()) {
-            dto.setVendorAPContact(vendorAPcontact.details());
+            venAP.append(vendorAPcontact.details());
+            venAP.append(" ");
+        }
+        if (ci.getVendorAPContacts() != null) {
+            dto.setVendorAPContact(venAP.toString());
         }
         //vendor recruiters
         for (Contact vendorRecruiter : ci.getVendorRecruiters()) {
