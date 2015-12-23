@@ -21,8 +21,10 @@
     
     <!-- GWT HTML5 Video support-->
     <inherits name='fr.hd3d.html5.video.HTML5Video'/>
-     <!-- CKEditor(Rich Text) Editor-->
+    <!-- CKEditor(Rich Text) Editor-->
     <inherits name='com.axeiya.gwtckeditor.Gwtckeditor'/>
+    <!--gwt charts-->
+    <inherits name="com.googlecode.gwt.charts.Charts"/> 
     <!--guava-->
     <inherits name="com.google.common.base.Base"/>
     

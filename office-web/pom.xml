@@ -40,7 +40,13 @@
             <artifactId>gwt-ckeditor</artifactId>
             <version>1.1</version>
             <scope>provided</scope>
-        </dependency>    
+        </dependency>   
+        <!--charts-->
+        <dependency>
+            <groupId>com.googlecode.gwt-charts</groupId>
+            <artifactId>gwt-charts</artifactId>
+            <version>${gwt.charts.version}</version>
+        </dependency> 
         <!-- gauve -gwt-->
         <dependency>
             <groupId>com.google.guava</groupId>
