@@ -185,20 +185,20 @@ public class ReadContractsPanel extends TReadComposite {
         addField("itemNumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 5, 2);
         addField("specialInvoiceInstructions", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 6, 1);
         addField("timeSheetRequirement", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 6, 2);
-        entityFieldsPanel.setWidget(7, 1, ReadAllUpdateBillingRatePanel.renderBillingRateHistory(getEntityId()));
-        entityFieldsPanel.getFlexCellFormatter().setColSpan(7, 1, 2);
+        entityFieldsPanel.setWidget(9, 1, ReadAllUpdateBillingRatePanel.renderBillingRateHistory(getEntityId()));
+        entityFieldsPanel.getFlexCellFormatter().setColSpan(9, 1, 2);
         if (isSubContractor(entity)) {
             addField("subContractorName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 11, 2);
-            addField("subcontractorPayRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 8, 1);
-            addField("subcontractorOvertimePayRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 8, 2);
-            addEnumField("subcontractorinvoiceFrequency", true, false, InvoiceFrequency.names(), Alignment.HORIZONTAL, 9, 1);
+            addField("subcontractorPayRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 7, 1);
+            addField("subcontractorOvertimePayRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 7, 2);
+            addEnumField("subcontractorinvoiceFrequency", true, false, InvoiceFrequency.names(), Alignment.HORIZONTAL, 8, 1);
             addField("subContractorContactName", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 12, 2);
             addField("subcontractorpaymentTerms", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 10, 2);
         }
         if (is1099(entity)) {
-            addField("payRate1099", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 8, 1);
-            addField("overTimePayrate1099", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 8, 2);
-            //addEnumField("invoiceFrequency1099", true, false, InvoiceFrequency.names(), Alignment.HORIZONTAL, 9, 1);
+            addField("payRate1099", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 7, 1);
+            addField("overTimePayrate1099", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 7, 2);
+            //addEnumField("invoiceFrequency1099", true, false, InvoiceFrequency.names(), Alignment.HORIZONTAL, 8, 1);
             addField("paymentTerms1099", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 10, 2);
         }
         addField("vendorPaymentTerms", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 10, 1);
