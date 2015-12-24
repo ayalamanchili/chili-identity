@@ -246,7 +246,7 @@ public class ReadClientInfoPanel extends ReadComposite {
                 addField("overTimePayrate1099", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
                 addField("paymentTerms1099", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
                 addEnumField("payTimeDuration1099", true, false, billingDuration, Alignment.HORIZONTAL);
-                addEnumField("invoiceFrequency1099", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+                addEnumField("invoiceFrequency1099", true, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
             }
             entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
             addField("visaStatus", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);

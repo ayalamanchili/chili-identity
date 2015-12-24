@@ -23,6 +23,7 @@ import info.chili.gwt.utils.FormatUtils;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth.ROLE;
+import info.yalamanchili.office.client.contracts.ClientInformationStatus;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
@@ -69,7 +70,7 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Client"));
         table.setText(0, 2, getKeyValue("Vendor"));
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
             table.setText(0, 3, getKeyValue("ItemNo"));
             table.setText(0, 4, getKeyValue("BillRate"));
             table.setText(0, 5, getKeyValue("Frequency"));
@@ -161,14 +162,14 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
                 JSONObject vendor = entity.get("vendor").isObject();
                 table.setText(i, 2, JSONUtils.toString(vendor, "name"));
             }
-            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_TIME, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_RELATIONSHIP)) {
+            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
                 table.setText(i, 3, JSONUtils.toString(entity, "itemNumber"));
                 table.setText(i, 4, FormatUtils.formarCurrency(JSONUtils.toString(entity, "billingRate")));
                 setEnumColumn(i, 5, entity, InvoiceFrequency.class.getSimpleName(), "invoiceFrequency");
             }
             table.setText(i, 6, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
             table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
-            table.setText(i, 8, JSONUtils.toString(entity, "status"));
+            setEnumColumn(i, 8, entity, ClientInformationStatus.class.getSimpleName(), "status");
         }
     }
 

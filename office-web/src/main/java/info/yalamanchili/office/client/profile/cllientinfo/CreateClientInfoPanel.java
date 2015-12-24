@@ -161,6 +161,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             endPreviousProjectFlagField.getBox().addClickHandler(this);
         }
         selectPractiseWidgetF.getListBox().addChangeHandler(this);
+        submitForApprovalF.getBox().addClickHandler(this);
     }
 
     @Override
@@ -170,8 +171,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         if (previousProjectEndDate != null) {
             previousProjectEndDate.setVisible(false);
         }
-        add.setText("Save");
-        submitForApprovalF.setValue(true);
+        setButtonText("Submit");
     }
 
     SelectEmployeeWithRoleWidget selectRecruiterW = new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER, false, false, Alignment.HORIZONTAL) {
@@ -286,6 +286,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         addEnumField("sectorsAndBUs", false, true, ConsultingServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
         sectorsF = (EnumField) fields.get("sectorsAndBUs");
         entityFieldsPanel.add(submitForApprovalF);
+        submitForApprovalF.setValue(true);
         alignFields();
     }
 
@@ -313,6 +314,11 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
 
         if ((ReadAllClientInfoPanel.instance().numberOfRecords > 0) && (event.getSource().equals(endPreviousProjectFlagField.getBox()))) {
             previousProjectEndDate.setVisible(endPreviousProjectFlagField.getValue());
+        }
+        if (submitForApprovalF.getValue()) {
+            setButtonText("Submit");
+        } else {
+            setButtonText("Save");
         }
 
         super.onClick(event);
