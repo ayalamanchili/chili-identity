@@ -21,6 +21,7 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
 import java.util.logging.Logger;
 
 /**
@@ -111,12 +112,12 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
             table.setText(i, 3, JSONUtils.toString(entity, "vendor"));
             table.setText(i, 4, JSONUtils.toString(entity, "middleVendor"));
             table.setText(i, 5, JSONUtils.toString(entity, "client"));
-            table.setText(i, 6, JSONUtils.toString(entity, "invoiceFrequency"));
+            setEnumColumn(i, 6, entity, InvoiceFrequency.class.getSimpleName(), "invoiceFrequency");
 //            table.setText(i, 5, FormatUtils.formarCurrency(JSONUtils.toString(entity, "billingRate")));
 //            table.setText(i, 6, FormatUtils.formarCurrency(JSONUtils.toString(entity, "overTimeBillingRate")));
 //            table.setText(i, 8, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
 //            table.setText(i, 9, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
-            table.setText(i, 7, JSONUtils.toString(entity, "status"));
+            setEnumColumn(i, 7, entity, ClientInformationStatus.class.getSimpleName(), "status");
 
         }
     }
