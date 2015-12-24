@@ -35,6 +35,7 @@ import info.yalamanchili.office.client.profile.cllientinfo.ReadClientInfoPanel;
 public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
 
     private static ReadAllUpdateBillingRatePanel instance;
+    protected boolean isSubOr1099 = false;
 
     public static ReadAllUpdateBillingRatePanel instance() {
         return instance;
@@ -46,6 +47,13 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
     public ReadAllUpdateBillingRatePanel(String parentId) {
         instance = this;
         this.parentId = parentId;
+        initTable("BillingRate", OfficeWelcome.constants);
+    }
+
+    public ReadAllUpdateBillingRatePanel(String parentId, boolean isSubOr1099) {
+        instance = this;
+        this.parentId = parentId;
+        this.isSubOr1099 = isSubOr1099;
         initTable("BillingRate", OfficeWelcome.constants);
     }
 
@@ -100,17 +108,19 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
-  //      table.setText(0, 1, getKeyValue("PayRate"));
+        //      table.setText(0, 1, getKeyValue("PayRate"));
         table.setText(0, 1, getKeyValue("BillRate"));
-  //      table.setText(0, 3, getKeyValue("OverTimePayRate"));
+        //      table.setText(0, 3, getKeyValue("OverTimePayRate"));
         table.setText(0, 2, getKeyValue("OTBillRate"));
-        table.setText(0, 3, getKeyValue("InvoicePattern")); 
-        table.setText(0, 4, getKeyValue("SubConPay")); 
-        table.setText(0, 5, getKeyValue("SubConOTPay")); 
-        table.setText(0, 6, getKeyValue("SubConInvoicePattern")); 
+        table.setText(0, 3, getKeyValue("Pattern"));
+        if (isSubOr1099) {
+            table.setText(0, 4, getKeyValue("SubConPay"));
+            table.setText(0, 5, getKeyValue("SubConOTPay"));
+            table.setText(0, 6, getKeyValue("SubConPattern"));
+        }
         table.setText(0, 7, getKeyValue("EffectiveDate"));
-        table.setText(0, 8, getKeyValue("Updated By"));
-        table.setText(0, 9, getKeyValue("Updated At"));
+        table.setText(0, 8, getKeyValue("UpdatedBy"));
+        table.setText(0, 9, getKeyValue("UpdatedAt"));
     }
 
     @Override
@@ -118,14 +128,16 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
- //           table.setText(i, 1, JSONUtils.toString(entity, "payRate"));
+            //           table.setText(i, 1, JSONUtils.toString(entity, "payRate"));
             table.setText(i, 1, JSONUtils.toString(entity, "billingRate"));
- //           table.setText(i, 3, JSONUtils.toString(entity, "overTimePayRate"));
+            //           table.setText(i, 3, JSONUtils.toString(entity, "overTimePayRate"));
             table.setText(i, 2, JSONUtils.toString(entity, "overTimeBillingRate"));
             table.setText(i, 3, JSONUtils.toString(entity, "billingInvoiceFrequency"));
-            table.setText(i, 4, JSONUtils.toString(entity, "subContractorPayRate"));
-            table.setText(i, 5, JSONUtils.toString(entity, "subContractorOverTimePayRate"));
-            table.setText(i, 6, JSONUtils.toString(entity, "subContractorInvoiceFrequency"));
+            if (isSubOr1099) {
+                table.setText(i, 4, JSONUtils.toString(entity, "subContractorPayRate"));
+                table.setText(i, 5, JSONUtils.toString(entity, "subContractorOverTimePayRate"));
+                table.setText(i, 6, JSONUtils.toString(entity, "subContractorInvoiceFrequency"));
+            }
             table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "effectiveDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
             table.setText(i, 8, JSONUtils.toString(entity, "updatedBy"));
             table.setText(i, 9, JSONUtils.toString(entity, "updatedTs"));
@@ -150,6 +162,20 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
      * @param entityFieldsPanel
      * @return
      */
+    public static Widget renderBillingRateHistory(final String clientInfoId, final boolean isSubOr1099) {
+        final DisclosurePanel billingRatesDP = new DisclosurePanel("Billing Rate History");
+        billingRatesDP.setWidth("100%");
+        billingRatesDP.addOpenHandler(new OpenHandler<DisclosurePanel>() {
+            @Override
+            public void onOpen(OpenEvent<DisclosurePanel> event) {
+                billingRatesDP.setContent(
+                        new ReadAllUpdateBillingRatePanel(clientInfoId, isSubOr1099));
+
+            }
+        });
+        return billingRatesDP;
+    }
+
     public static Widget renderBillingRateHistory(final String clientInfoId) {
         final DisclosurePanel billingRatesDP = new DisclosurePanel("Billing Rate History");
         billingRatesDP.setWidth("100%");

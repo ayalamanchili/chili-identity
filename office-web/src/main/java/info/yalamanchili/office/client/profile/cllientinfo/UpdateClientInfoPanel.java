@@ -54,7 +54,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     EnumField servicesF;
     EnumField sectorsF;
     protected BooleanField submitForApprovalF = new BooleanField(OfficeWelcome.constants, "Submit For Approval", "ClientInfo", false, false, Alignment.HORIZONTAL);
-
+    protected boolean isSubOr1099 = false;
     public UpdateClientInfoPanel(JSONObject entity) {
         initUpdateComposite(entity, "ClientInfo", OfficeWelcome.constants);
     }
@@ -296,7 +296,11 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             addField("itemNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             //       addField("payRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addField("billingRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-            ReadAllUpdateBillingRatePanel.renderBillingRateHistory(getEntityId());
+            if ((Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) 
+              || (Auth.is1099(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity()))) {
+                isSubOr1099 = true; 
+            }
+            entityFieldsPanel.add(ReadAllUpdateBillingRatePanel.renderBillingRateHistory(getEntityId(), isSubOr1099));
             renderUpdateBillingRateFieldLink();
             String[] billingDuration = {"HOUR", "DAY", "MONTH", "WEEK"};
             addEnumField("billingRateDuration", false, false, billingDuration, Alignment.HORIZONTAL);

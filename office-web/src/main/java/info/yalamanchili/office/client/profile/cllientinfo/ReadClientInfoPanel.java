@@ -51,6 +51,7 @@ public class ReadClientInfoPanel extends ReadComposite {
     private static ReadClientInfoPanel instance;
     private static Logger logger = Logger.getLogger(ReadClientInfoPanel.class.getName());
     SelectPracticeWidget selectPractiseWidgetF = new SelectPracticeWidget(true, false, Alignment.HORIZONTAL);
+    protected boolean isSubOr1099 = false;
 
     public ReadClientInfoPanel(String id) {
         instance = this;
@@ -216,8 +217,11 @@ public class ReadClientInfoPanel extends ReadComposite {
             entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
             addField("itemNumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             //       addField("payRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+            if ((Auth.isSubContractor(getEmployee())) || (Auth.is1099(getEmployee()))) {
+                isSubOr1099 = true;
+            }
             addField("billingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-            ReadAllUpdateBillingRatePanel.renderBillingRateHistory(getEntityId());
+            entityFieldsPanel.add(ReadAllUpdateBillingRatePanel.renderBillingRateHistory(getEntityId(), isSubOr1099));
             String[] billingDuration = {"HOUR", "DAY", "MONTH", "WEEK"};
             addEnumField("billingRateDuration", true, false, billingDuration, Alignment.HORIZONTAL);
             //       addField("overTimePayRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);

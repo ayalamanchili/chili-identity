@@ -32,6 +32,7 @@ public class ReadContractsPanel extends TReadComposite {
 
     private static ReadContractsPanel instance;
     private static Logger logger = Logger.getLogger(ReadContractsPanel.class.getName());
+    protected boolean isSubOr1099 = false;
 
     protected static HTML clientVendorText = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 5px; background: rgb(238, 238, 238)\">"
@@ -188,7 +189,10 @@ public class ReadContractsPanel extends TReadComposite {
         addField("itemNumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 5, 2);
         addField("specialInvoiceInstructions", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 6, 1);
         addField("timeSheetRequirement", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 6, 2);
-        entityFieldsPanel.setWidget(9, 1, ReadAllUpdateBillingRatePanel.renderBillingRateHistory(getEntityId()));
+        if ((isSubContractor(entity)) || (is1099(entity))) {
+             isSubOr1099 = true;
+        }
+        entityFieldsPanel.setWidget(9, 1, ReadAllUpdateBillingRatePanel.renderBillingRateHistory(getEntityId(), isSubOr1099));
         entityFieldsPanel.getFlexCellFormatter().setColSpan(9, 1, 2);
         if (isSubContractor(entity)) {
             addField("subContractorName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 11, 2);
