@@ -93,22 +93,22 @@ public class SearchContractsPanel extends SearchComposite {
     protected void search(String searchText) {
         HttpService.HttpServiceAsync.instance().doGet(getSearchURI(searchText, 0, 50),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        processSearchResult(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                processSearchResult(result);
+            }
+        });
     }
 
     @Override
     protected void search(JSONObject entity) {
         HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 50), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        processSearchResult(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                processSearchResult(result);
+            }
+        });
     }
 
     @Override
@@ -119,8 +119,8 @@ public class SearchContractsPanel extends SearchComposite {
 
     @Override
     protected String getSearchURI(String searchText, Integer start, Integer limit) {
-        return OfficeWelcome.constants.root_url() + "contract/search/" + start.toString() + "/"
-                + limit.toString() + "?text=" + searchText;
+        return URL.encode(OfficeWelcome.constants.root_url() + "contract/search/" + start.toString() + "/"
+                + limit.toString() + "?text=" + searchText);
     }
 
     @Override
