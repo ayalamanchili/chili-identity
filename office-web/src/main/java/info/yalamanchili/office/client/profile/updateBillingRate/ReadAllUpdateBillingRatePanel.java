@@ -26,6 +26,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
 import info.yalamanchili.office.client.profile.cllientinfo.ReadClientInfoPanel;
 
 /**
@@ -132,11 +133,13 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
             table.setText(i, 1, JSONUtils.toString(entity, "billingRate"));
             //           table.setText(i, 3, JSONUtils.toString(entity, "overTimePayRate"));
             table.setText(i, 2, JSONUtils.toString(entity, "overTimeBillingRate"));
-            table.setText(i, 3, JSONUtils.toString(entity, "billingInvoiceFrequency"));
+            //table.setText(i, 3, JSONUtils.toString(entity, "billingInvoiceFrequency"));
+            setEnumColumn(i, 3, entity, InvoiceFrequency.class.getSimpleName(), "billingInvoiceFrequency");
             if (isSubOr1099) {
                 table.setText(i, 4, JSONUtils.toString(entity, "subContractorPayRate"));
                 table.setText(i, 5, JSONUtils.toString(entity, "subContractorOverTimePayRate"));
-                table.setText(i, 6, JSONUtils.toString(entity, "subContractorInvoiceFrequency"));
+                //table.setText(i, 6, JSONUtils.toString(entity, "subContractorInvoiceFrequency"));
+                setEnumColumn(i, 6, entity, InvoiceFrequency.class.getSimpleName(), "subContractorInvoiceFrequency");
             }
             table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "effectiveDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
             table.setText(i, 8, JSONUtils.toString(entity, "updatedBy"));
