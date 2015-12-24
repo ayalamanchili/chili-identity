@@ -32,6 +32,7 @@ import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.i18n.client.ConstantsWithLookup;
 import com.google.gwt.json.client.*;
 import com.google.gwt.user.client.ui.*;
+import info.chili.gwt.composite.BaseFieldWithTextBox;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.utils.FileUtils;
 import info.chili.gwt.utils.JSONUtils;
@@ -112,6 +113,11 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
         addListeners();
         configure();
         addWidgets();
+        for (String fieldKey : fields.keySet()) {
+            if (fields.get(fieldKey) instanceof SuggestBox) {
+                ((SuggestBox) fields.get(fieldKey)).getValueBox().addKeyPressHandler(this);
+            }
+        }
         populateSearchSuggestBox();
     }
 
@@ -346,10 +352,12 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
     }
 
     protected void processSearch() {
+        logger.info("ddddddddddddddddddddd");
         if (getSearchText() != null && getSearchText().trim().length() > 0) {
             search(getSearchText());
         } else {
             entity = populateEntityFromFields();
+            logger.info(entity.toString());
             if (entity.toString().length() > 3) {
                 search(entity);
             }
@@ -401,7 +409,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
     protected String getReportURL() {
         return null;
     }
-    
+
     protected String getReportFormat() {
         return reportsW.getReportFormat();
     }
