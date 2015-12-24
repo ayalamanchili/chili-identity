@@ -13,15 +13,13 @@ import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.profile.cllientinfo.ClientInfoOptionsPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
-import info.yalamanchili.office.client.profile.cllientinfo.ReadAllClientInfoPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.ReadClientInfoPanel;
-import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
 /**
@@ -32,9 +30,18 @@ public class CreateUpdateBillingRatePanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(CreateUpdateBillingRatePanel.class.getName());
     protected String clientInfoId;
+    protected boolean isSubOr1099 = false;
 
     public CreateUpdateBillingRatePanel(String clientInfoId, JSONObject entity) {
         this.clientInfoId = clientInfoId;
+        if (entity.get("employee") != null) {
+            JSONObject employee = entity.get("employee").isObject();
+            JSONObject employeeType = employee.get("employeeType").isObject();
+            String type = JSONUtils.toString(employeeType, "name");
+            if ((type.compareTo("1099 Contractor") == 0) || (type.compareTo("Subcontractor") == 0)) {
+                isSubOr1099 = true;
+            }
+        }
         initUpdateComposite(entity, "UpdateBillingRate", OfficeWelcome.constants);
     }
 
@@ -47,9 +54,11 @@ public class CreateUpdateBillingRatePanel extends UpdateComposite {
         assignEntityValueFromField("overTimeBillingRate", billingRate);
         assignEntityValueFromField("effectiveDate", billingRate);
         assignEntityValueFromField("billingInvoiceFrequency", billingRate);
-        assignEntityValueFromField("subContractorPayRate", billingRate);
-        assignEntityValueFromField("subContractorOverTimePayRate", billingRate);
-        assignEntityValueFromField("subContractorInvoiceFrequency", billingRate);
+        if (isSubOr1099) {
+            assignEntityValueFromField("subContractorPayRate", billingRate);
+            assignEntityValueFromField("subContractorOverTimePayRate", billingRate);
+            assignEntityValueFromField("subContractorInvoiceFrequency", billingRate);
+        }
         return billingRate;
     }
 
@@ -60,9 +69,11 @@ public class CreateUpdateBillingRatePanel extends UpdateComposite {
         //      assignFieldValueFromEntity("overTimePayRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("billingInvoiceFrequency", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("subContractorPayRate", entity, DataType.CURRENCY_FIELD);
-        assignFieldValueFromEntity("subContractorOverTimePayRate", entity, DataType.CURRENCY_FIELD);
-        assignFieldValueFromEntity("subContractorInvoiceFrequency", entity, DataType.ENUM_FIELD);
+        if (isSubOr1099) {
+            assignFieldValueFromEntity("subContractorPayRate", entity, DataType.CURRENCY_FIELD);
+            assignFieldValueFromEntity("subContractorOverTimePayRate", entity, DataType.CURRENCY_FIELD);
+            assignFieldValueFromEntity("subContractorInvoiceFrequency", entity, DataType.ENUM_FIELD);
+        }
     }
 
     @Override
@@ -105,9 +116,11 @@ public class CreateUpdateBillingRatePanel extends UpdateComposite {
         // addField("overTimePayRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addEnumField("billingInvoiceFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
-        addField("subContractorPayRate", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-        addField("subContractorOverTimePayRate", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-        addEnumField("subContractorInvoiceFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+        if (isSubOr1099) {
+            addField("subContractorPayRate", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+            addField("subContractorOverTimePayRate", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+            addEnumField("subContractorInvoiceFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+        }
         alignFields();
     }
 
