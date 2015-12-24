@@ -15,8 +15,6 @@ import info.chili.reporting.ReportGenerator;
 import info.chili.security.domain.CUser;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
-import info.yalamanchili.office.bpm.OfficeBPMService;
-import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.TechnologyGroupDao;
@@ -32,7 +30,6 @@ import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.practice.PracticeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.profile.ClientInformationDto;
-import info.yalamanchili.office.dto.profile.EmployeeCreateDto;
 import info.yalamanchili.office.entity.privacy.PrivacyData;
 import info.yalamanchili.office.privacy.PrivacyAware;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
@@ -172,7 +169,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @Cacheable(OfficeCacheKeys.EMPLOYEES)
     public List<Entry> getEmployeesByTypeDropDown(@PathParam("start") int start, @PathParam("limit") int limit,
             @QueryParam("column") List<String> columns, @QueryParam("employee-type") List<String> employeeType) {
-        List<Entry> result = new ArrayList<Entry>();
+        List<Entry> result = new ArrayList<>();
         Map<String, String> values = EmployeeDao.instance().getEmployeeStringMapByType(start, limit, employeeType, columns.toArray(new String[columns.size()]));
         for (String key : values.keySet()) {
             result.add(new Entry(key, values.get(key)));

@@ -26,6 +26,7 @@ import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dto.client.ContractSearchDto;
 import info.yalamanchili.office.entity.profile.BillingRate;
+import info.yalamanchili.office.entity.profile.ClientInformationStatus;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.List;
@@ -195,9 +196,6 @@ public class ContractService {
             dto.setEmployee(ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
             dto.setEmployeeType(ci.getEmployee().getEmployeeType().getName());
             dto.setEmployeeID(ci.getEmployee().getId());
-//            if (ci.getCompany() != null) {
-//                dto.setCompany(ci.getCompany());
-//            }
             dto.setEmployeeDetails(ci.getEmployee().details());
         }
         //TODO set client
@@ -274,6 +272,19 @@ public class ContractService {
         }
         if (ci.getPractice() != null) {
             dto.setPractice(ci.getPractice().getName());
+        }
+        // set color coding flags
+        if (ci.getStartDate().before(new Date()) && ci.getEndDate() != null && ci.getEndDate().after(new Date())) {
+            dto.setIsActive(Boolean.TRUE);
+        }
+        if (ci.getStartDate().after(new Date())) {
+            dto.setIsStarted(Boolean.FALSE);
+        }
+        if (ci.getEndDate() != null && ci.getEndDate().before(new Date())) {
+            dto.setIsEnded(Boolean.TRUE);
+        }
+        if (!ClientInformationStatus.COMPLETED.equals(ci.getStatus())) {
+            dto.setIsReady(Boolean.FALSE);
         }
         //mapEffectiveBillingRate(ci, dto);
         if (!ci.getBillingRates().isEmpty()) {

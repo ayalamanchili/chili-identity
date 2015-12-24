@@ -104,6 +104,18 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             OfficeWelcome.instance().logger.info(entity.toString());
+            if (JSONUtils.toString(entity, "isActive").equalsIgnoreCase("true")) {
+                table.getRowFormatter().setStyleName(i, "contractActive");
+            }
+            if (JSONUtils.toString(entity, "isEnded").equalsIgnoreCase("true")) {
+                table.getRowFormatter().setStyleName(i, "contractEnded");
+            }
+            if (JSONUtils.toString(entity, "isStarted").equalsIgnoreCase("false")) {
+                table.getRowFormatter().setStyleName(i, "contractNotStarted");
+            }
+            if (JSONUtils.toString(entity, "isReady").equalsIgnoreCase("false")) {
+                table.getRowFormatter().setStyleName(i, "contractNotReady");
+            }
             table.setText(i, 1, JSONUtils.toString(entity, "employee"));
             table.setText(i, 2, JSONUtils.toString(entity, "itemNumber"));
             table.setText(i, 3, JSONUtils.toString(entity, "vendor"));

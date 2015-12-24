@@ -765,4 +765,17 @@ body{
     float: none;
 }
 
+.contractActive{
+ background: #BFE0BC;
+}
+.contractEnded{
+ background: #E6BABA;
+}
+.contractNotStarted{
+ background: #E6E383;
+}
+.contractNotReady{
+ background: #A3AADE;
+}
+
 

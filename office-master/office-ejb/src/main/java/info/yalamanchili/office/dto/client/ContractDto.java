@@ -134,6 +134,10 @@ public class ContractDto implements Serializable {
     protected BillingDuration billingRateDuration;
     protected BillingDuration overTimeRateDuration;
     protected String visaStatus;
+    protected Boolean isActive;
+    protected Boolean isEnded;
+    protected Boolean isStarted;
+    protected Boolean isReady;
 
     /**
      * -----------Tracking info---------------------------
@@ -721,8 +725,38 @@ public class ContractDto implements Serializable {
     public void setEmployeeDetails(String employeeDetails) {
         this.employeeDetails = employeeDetails;
     }
-    
-    
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    public Boolean getIsEnded() {
+        return isEnded;
+    }
+
+    public void setIsEnded(Boolean isEnded) {
+        this.isEnded = isEnded;
+    }
+
+    public Boolean getIsStarted() {
+        return isStarted;
+    }
+
+    public void setIsStarted(Boolean isStarted) {
+        this.isStarted = isStarted;
+    }
+
+    public Boolean getIsReady() {
+        return isReady;
+    }
+
+    public void setIsReady(Boolean isReady) {
+        this.isReady = isReady;
+    }
 
     @XmlRootElement
     @XmlType
