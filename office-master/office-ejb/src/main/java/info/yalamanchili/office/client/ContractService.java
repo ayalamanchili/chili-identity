@@ -29,6 +29,10 @@ import info.yalamanchili.office.entity.profile.BillingRate;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.List;
+
+import info.yalamanchili.office.entity.profile.EmployeeType;
+import javax.persistence.Query;
+
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
@@ -273,36 +277,130 @@ public class ContractService {
         if (ci.getPractice() != null) {
             dto.setPractice(ci.getPractice().getName());
         }
-//        mapEffectiveBillingRate(ci, dto);
+        //mapEffectiveBillingRate(ci, dto);
+        if (!ci.getBillingRates().isEmpty()) {
+            if (ci.getEmployee().getEmployeeType().getName().equals(EmployeeType.SUBCONTRACTOR)
+                    || (ci.getEmployee().getEmployeeType().getName().equals(EmployeeType._1099_CONTRACTOR))) {
+                BillingRate brSubConPayRate = getEffectiveSubConPayRate(ci);
+                if (brSubConPayRate != null) {
+                    dto.setSubcontractorPayRate(brSubConPayRate.getSubContractorPayRate());
+                }
+                BillingRate brSubConOverTimePayRate = getEffectiveSubConOverTimePayRate(ci);
+                if (brSubConOverTimePayRate != null) {
+                    dto.setSubcontractorOvertimePayRate(brSubConOverTimePayRate.getSubContractorOverTimePayRate());
+                }
+                BillingRate brSubConInvoiceFrequency = getEffectiveSubConInvoiceFrequency(ci);
+                if (brSubConInvoiceFrequency != null) {
+                    dto.setSubcontractorinvoiceFrequency(brSubConInvoiceFrequency.getSubContractorInvoiceFrequency());
+                }
+            }
+            BillingRate brBillingRate = getEffectiveBillingRate(ci);
+            if (brBillingRate != null) {
+                dto.setBillingRate(brBillingRate.getBillingRate());
+            }
+            BillingRate brOvertimeBillingRate = getEffectiveOvertimeBillingRate(ci);
+            if (brOvertimeBillingRate != null) {
+                dto.setOverTimeBillingRate(brOvertimeBillingRate.getOverTimeBillingRate());
+            }
+            BillingRate brBillingInvoiceFrequency = getEffectiveBillingInvoiceFrequency(ci);
+            if (brBillingInvoiceFrequency != null) {
+                dto.setInvoiceFrequency(brBillingInvoiceFrequency.getBillingInvoiceFrequency());
+            }
+        }
         return dto;
     }
 
-    protected void mapEffectiveBillingRate(ClientInformation ci, ContractDto dto) {
-        if (!ci.getBillingRates().isEmpty()) {
-            BillingRate effectiveBR = getEffectiveBillingRate(ci);
-            ci.setBillingRate(effectiveBR.getBillingRate());
-            ci.setOverTimeBillingRate(effectiveBR.getOverTimeBillingRate());
-            ci.setInvoiceFrequency(effectiveBR.getBillingInvoiceFrequency());
-            ci.setSubcontractorPayRate(effectiveBR.getSubContractorPayRate());
-            ci.setSubcontractorOvertimePayRate(effectiveBR.getSubContractorOverTimePayRate());
-            ci.setSubcontractorinvoiceFrequency(effectiveBR.getSubContractorInvoiceFrequency());
-        }
-    }
-
-    protected BillingRate getEffectiveBillingRate(ClientInformation ci) {
-        BillingRate effectiveRate = ci.getBillingRates().get(0);
-        for (BillingRate br : ci.getBillingRates()) {
-            if (new Date().compareTo(br.getEffectiveDate()) >= 0 && br.getEffectiveDate().compareTo(effectiveRate.getEffectiveDate()) >= 0) {
-                effectiveRate = br;
-            }
-        }
-        return effectiveRate;
-    }
-
+//    protected void mapEffectiveBillingRate(ClientInformation ci, ContractDto dto) {
+//        if (!ci.getBillingRates().isEmpty()) {
+//            BillingRate effectiveBR = getEffectiveBillingRate(ci);
+//            ci.setBillingRate(effectiveBR.getBillingRate());
+//            ci.setOverTimeBillingRate(effectiveBR.getOverTimeBillingRate());
+//            ci.setInvoiceFrequency(effectiveBR.getBillingInvoiceFrequency());
+//            ci.setSubcontractorPayRate(effectiveBR.getSubContractorPayRate());
+//            ci.setSubcontractorOvertimePayRate(effectiveBR.getSubContractorOverTimePayRate());
+//            ci.setSubcontractorinvoiceFrequency(effectiveBR.getSubContractorInvoiceFrequency());
+//        }
+//    }
+//
+//    protected BillingRate getEffectiveBillRate(ClientInformation ci) {
+//        BillingRate effectiveRate = ci.getBillingRates().get(0);
+//        for (BillingRate br : ci.getBillingRates()) {
+//            if (new Date().compareTo(br.getEffectiveDate()) >= 0 && br.getEffectiveDate().compareTo(effectiveRate.getEffectiveDate()) >= 0) {
+//                effectiveRate = br;
+//            }
+//        }
+//        return effectiveRate;
+//    }
     public Response generateContractorPlacementInfoReport(String format) {
         ContractTable data = getContractorPlacementInfo(0, 10000);
         String[] columnOrder = new String[]{"employee", "client", "vendor", "itemNumber", "billingRate", "overTimeBillingRate", "invoiceFrequency", "startDate", "endDate",};
         return ReportGenerator.generateReport(data.getEntities(), "contracts", format, OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+    }
+
+    public BillingRate getEffectiveBillingRate(ClientInformation ci) {
+        Query query = em.createNativeQuery("Select * from BILLINGRATE br where br.clientInformation_id=" + ci.getId() + " and br.billingRate is not null and br.effectiveDate <= NOW() order by br.effectiveDate desc LIMIT 1", BillingRate.class);
+        if (query.getResultList().size() > 0) {
+            Object obj = query.getResultList().get(0);
+            BillingRate br = (BillingRate) obj;
+            return br;
+        } else {
+            return null;
+        }
+    }
+
+    public BillingRate getEffectiveBillingInvoiceFrequency(ClientInformation ci) {
+        Query query = em.createNativeQuery("Select * from BILLINGRATE br where br.clientInformation_id=" + ci.getId() + " and br.billingInvoiceFrequency is not null and br.effectiveDate <= NOW() order by br.effectiveDate desc LIMIT 1", BillingRate.class);
+        if (query.getResultList().size() > 0) {
+            Object obj = query.getResultList().get(0);
+            BillingRate br = (BillingRate) obj;
+            return br;
+        } else {
+            return null;
+        }
+    }
+
+    public BillingRate getEffectiveOvertimeBillingRate(ClientInformation ci) {
+        Query query = em.createNativeQuery("Select * from BILLINGRATE br where br.clientInformation_id=" + ci.getId() + " and br.overTimeBillingRate is not null and br.effectiveDate <= NOW() order by br.effectiveDate desc LIMIT 1", BillingRate.class);
+        if (query.getResultList().size() > 0) {
+            Object obj = query.getResultList().get(0);
+            BillingRate br = (BillingRate) obj;
+            return br;
+        } else {
+            return null;
+        }
+    }
+
+    public BillingRate getEffectiveSubConPayRate(ClientInformation ci) {
+        Query query = em.createNativeQuery("Select * from BILLINGRATE br where br.clientInformation_id=" + ci.getId() + " and br.subContractorPayRate is not null and br.effectiveDate <= NOW() order by br.effectiveDate desc LIMIT 1", BillingRate.class);
+        if (query.getResultList().size() > 0) {
+            Object obj = query.getResultList().get(0);
+            BillingRate br = (BillingRate) obj;
+            return br;
+        } else {
+            return null;
+        }
+    }
+
+    public BillingRate getEffectiveSubConOverTimePayRate(ClientInformation ci) {
+        Query query = em.createNativeQuery("Select * from BILLINGRATE br where br.clientInformation_id=" + ci.getId() + " and br.subContractorOverTimePayRate is not null and br.effectiveDate <= NOW() order by br.effectiveDate desc LIMIT 1", BillingRate.class);
+        if (query.getResultList().size() > 0) {
+            Object obj = query.getResultList().get(0);
+            BillingRate br = (BillingRate) obj;
+            return br;
+        } else {
+            return null;
+        }
+    }
+
+    public BillingRate getEffectiveSubConInvoiceFrequency(ClientInformation ci) {
+        Query query = em.createNativeQuery("Select * from BILLINGRATE br where br.clientInformation_id=" + ci.getId() + " and br.subContractorInvoiceFrequency is not null and br.effectiveDate <= NOW() order by br.effectiveDate desc LIMIT 1", BillingRate.class);
+        if (query.getResultList().size() > 0) {
+            Object obj = query.getResultList().get(0);
+            BillingRate br = (BillingRate) obj;
+            return br;
+        } else {
+            return null;
+        }
     }
 
     public static ContractService instance() {
