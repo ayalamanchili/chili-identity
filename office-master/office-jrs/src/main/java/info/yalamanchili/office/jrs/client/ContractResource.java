@@ -36,8 +36,8 @@ public class ContractResource {
 
     @GET
     @Path("/search/{start}/{limit}")
-    public ContractTable searchContracts(@QueryParam("text") String text, @PathParam("start") int start, @PathParam("limit") int limit) {
-        return ContractService.instance().search(text, start, limit);
+    public ContractTable searchContracts(@QueryParam("empId") Long empId, @PathParam("start") int start, @PathParam("limit") int limit) {
+        return ContractService.instance().search(empId, start, limit);
     }
 
     @PUT

@@ -22,11 +22,13 @@ import org.springframework.stereotype.Component;
 import info.chili.reporting.ReportGenerator;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dto.client.ContractSearchDto;
 import info.yalamanchili.office.entity.profile.BillingRate;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Employee;
+import java.util.List;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
@@ -99,19 +101,14 @@ public class ContractService {
         return table;
     }
 
-    public ContractTable search(String searchText, int start, int limit) {
+    public ContractTable search(Long empId, int start, int limit) {
         ContractTable table = new ContractTable();
-        String searchQuery = getSearchQuery(searchText);
-        TypedQuery<ClientInformation> query = em.createQuery(searchQuery, ClientInformation.class);
-        query.setFirstResult(start);
-        query.setMaxResults(limit);
-        for (ClientInformation ci : query.getResultList()) {
+        List<ClientInformation> cis = EmployeeDao.instance().findById(empId).getClientInformations();
+        for (ClientInformation ci : cis) {
             table.getEntities().add(mapClientInformation(ci));
         }
-        String sizeQueryStr = searchQuery.replace("SELECT ci", "SELECT count(*)");
-        if (table.getEntities().size() > 0) {
-            TypedQuery<Long> sizeQuery = em.createQuery(sizeQueryStr, Long.class);
-            table.setSize(sizeQuery.getSingleResult());
+        if (cis.size() > 0) {
+            table.setSize(Integer.valueOf(cis.size()).longValue());
         }
         return table;
     }

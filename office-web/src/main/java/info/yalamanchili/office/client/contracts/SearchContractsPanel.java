@@ -22,6 +22,7 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.SearchComposite;
 import info.yalamanchili.office.client.profile.cllientinfo.ClientInformationCompany;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -93,22 +94,22 @@ public class SearchContractsPanel extends SearchComposite {
     protected void search(String searchText) {
         HttpService.HttpServiceAsync.instance().doGet(getSearchURI(searchText, 0, 50),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                processSearchResult(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        processSearchResult(result);
+                    }
+                });
     }
 
     @Override
     protected void search(JSONObject entity) {
         HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 50), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                processSearchResult(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        processSearchResult(result);
+                    }
+                });
     }
 
     @Override
@@ -120,7 +121,7 @@ public class SearchContractsPanel extends SearchComposite {
     @Override
     protected String getSearchURI(String searchText, Integer start, Integer limit) {
         return URL.encode(OfficeWelcome.constants.root_url() + "contract/search/" + start.toString() + "/"
-                + limit.toString() + "?text=" + searchText);
+                + limit.toString() + "?empId=" + getKey());
     }
 
     @Override
@@ -131,11 +132,11 @@ public class SearchContractsPanel extends SearchComposite {
 
     @Override
     protected void populateSearchSuggestBox() {
-        HttpService.HttpServiceAsync.instance().doGet(getFirstNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+        HttpService.HttpServiceAsync.instance().doGet(getNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
-                Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
-                loadSearchSuggestions(values.values());
+                suggestionsMap = JSONUtils.convertKeyValueStringPairs(entityString);
+                loadSearchSuggestions(suggestionsMap.values());
             }
         });
     }
@@ -195,6 +196,10 @@ public class SearchContractsPanel extends SearchComposite {
     protected String getnameDropDownUrl() {
         //TODO think about the limit
         return OfficeWelcome.constants.root_url() + "client/dropdown/0/10000?column=id&column=name";
+    }
+
+    protected String getNameDropDownUrl() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Corporate Employee&employee-type=Employee&employee-type=Subcontractor&employee-type=1099 Contractor");
     }
 
     protected String getFirstNameDropDownUrl() {
