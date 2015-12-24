@@ -29,10 +29,8 @@ import info.yalamanchili.office.entity.profile.BillingRate;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.List;
-
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import javax.persistence.Query;
-
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
