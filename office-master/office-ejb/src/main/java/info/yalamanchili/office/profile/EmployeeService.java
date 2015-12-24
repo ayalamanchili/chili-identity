@@ -185,6 +185,7 @@ public class EmployeeService {
         Employee curUser = OfficeSecurityService.instance().getCurrentUser();
         profileNotificationService.sendEmployeeDeactivationNotification(curUser.getFirstName(), getEmployee(empId));
         em.merge(user1);
+        OfficeBPMIdentityService.instance().deleteUser(emp.getUser().getUsername());
     }
 
     public String generatepassword() {
