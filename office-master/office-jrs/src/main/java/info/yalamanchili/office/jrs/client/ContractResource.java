@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("request")
 @Produces("application/json")
 @Consumes("application/json")
-@Transactional
+@Transactional(readOnly = true)
 public class ContractResource {
 
     @GET

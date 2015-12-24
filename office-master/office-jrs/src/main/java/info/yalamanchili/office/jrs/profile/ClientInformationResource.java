@@ -70,7 +70,6 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
     }
 
     @GET
-    @CacheEvict(value = OfficeCacheKeys.CLIENTINFORMATION, allEntries = true)
     @Override
     @Path("/{id}")
     public ClientInformation read(@PathParam("id") Long id) {

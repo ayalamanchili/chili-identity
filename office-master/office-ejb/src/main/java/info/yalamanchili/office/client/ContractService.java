@@ -308,27 +308,6 @@ public class ContractService {
         return dto;
     }
 
-//    protected void mapEffectiveBillingRate(ClientInformation ci, ContractDto dto) {
-//        if (!ci.getBillingRates().isEmpty()) {
-//            BillingRate effectiveBR = getEffectiveBillingRate(ci);
-//            ci.setBillingRate(effectiveBR.getBillingRate());
-//            ci.setOverTimeBillingRate(effectiveBR.getOverTimeBillingRate());
-//            ci.setInvoiceFrequency(effectiveBR.getBillingInvoiceFrequency());
-//            ci.setSubcontractorPayRate(effectiveBR.getSubContractorPayRate());
-//            ci.setSubcontractorOvertimePayRate(effectiveBR.getSubContractorOverTimePayRate());
-//            ci.setSubcontractorinvoiceFrequency(effectiveBR.getSubContractorInvoiceFrequency());
-//        }
-//    }
-//
-//    protected BillingRate getEffectiveBillRate(ClientInformation ci) {
-//        BillingRate effectiveRate = ci.getBillingRates().get(0);
-//        for (BillingRate br : ci.getBillingRates()) {
-//            if (new Date().compareTo(br.getEffectiveDate()) >= 0 && br.getEffectiveDate().compareTo(effectiveRate.getEffectiveDate()) >= 0) {
-//                effectiveRate = br;
-//            }
-//        }
-//        return effectiveRate;
-//    }
     public Response generateContractorPlacementInfoReport(String format) {
         ContractTable data = getContractorPlacementInfo(0, 10000);
         String[] columnOrder = new String[]{"employee", "client", "vendor", "itemNumber", "billingRate", "overTimeBillingRate", "invoiceFrequency", "startDate", "endDate",};
