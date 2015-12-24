@@ -122,13 +122,10 @@ public class ContractService {
         StringBuilder queryStr = new StringBuilder();
         queryStr.append("SELECT ci from ").append(ClientInformation.class.getCanonicalName());
         queryStr.append(" ci where ");
-        String[] searchTextFrags = searchText.trim().split(" ");
-        for (String searchFrag : searchTextFrags) {
-            queryStr.append("ci.employee.firstName LIKE '%").append(searchFrag.trim()).append("%' OR ");
-            queryStr.append("ci.employee.lastName LIKE '%").append(searchFrag.trim()).append("%' OR ");
-            queryStr.append("ci.itemNumber LIKE '%").append(searchFrag.trim()).append("%' OR ");
-        }
-        return queryStr.toString().substring(0, queryStr.lastIndexOf("OR")).trim();
+        queryStr.append("ci.employee.firstName LIKE '%").append(searchText).append("%' OR ");
+        queryStr.append("ci.employee.lastName LIKE '%").append(searchText).append("%' OR ");
+        queryStr.append("ci.itemNumber LIKE '%").append(searchText).append("%'");
+        return queryStr.toString();
     }
 //TODO this should be refactored to use generic serach
 
