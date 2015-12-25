@@ -65,14 +65,14 @@ public class CorporateTimeSummaryPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        if (response != null && !response.isEmpty() && JSONParser.parseLenient(response).isObject() != null) {
-                            entity = (JSONObject) JSONParser.parseLenient(response);
-                            populateFieldsFromEntity(entity);
-                        }
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                if (response != null && !response.isEmpty() && JSONParser.parseLenient(response).isObject() != null) {
+                    entity = (JSONObject) JSONParser.parseLenient(response);
+                    populateFieldsFromEntity(entity);
+                }
+            }
+        });
     }
 
     @Override
@@ -128,8 +128,8 @@ public class CorporateTimeSummaryPanel extends ReadComposite {
         dataTable.addRows(2);
         dataTable.setValue(0, 0, "PTO Available");
         dataTable.setValue(1, 0, "PTO Used");
-        dataTable.setValue(0, 1, Integer.valueOf(JSONUtils.toString(getEntity(), "availablePTOHours")));
-        dataTable.setValue(1, 1, Integer.valueOf(JSONUtils.toString(getEntity(), "usedPTOHours")));
+        dataTable.setValue(0, 1, Double.valueOf(JSONUtils.toString(getEntity(), "availablePTOHours")));
+        dataTable.setValue(1, 1, Double.valueOf(JSONUtils.toString(getEntity(), "usedPTOHours")));
         // Draw the chart
         timeSummaryChart.draw(dataTable);
     }
