@@ -18,7 +18,10 @@
                   name="New Client Info Billing/Invoicing Department Task for ${clientInfo.employee.firstName} ${clientInfo.employee.lastName}" 
         >
             <documentation>
-                New Client Information has been created with following details. Please fill the fields below to complete the task.
+                New Client Information has been created with following details. 
+                Navigate to MyOffice--> Search--> View --> Client information to verify all data.
+                and fill the fields below to complete the task.
+                
                 Employee                    : #{clientInfo.employee.firstName} #{clientInfo.employee.lastName} 
                 Employee Type               : #{clientInfo.employee.employeeType.name}
                 Consultant Job Title        : #{clientInfo.consultantJobTitle}
