@@ -199,7 +199,7 @@ public class SearchContractsPanel extends SearchComposite {
     }
 
     protected String getNameDropDownUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Corporate Employee&employee-type=Employee&employee-type=Subcontractor&employee-type=1099 Contractor");
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/all-employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Corporate Employee&employee-type=Employee&employee-type=Subcontractor&employee-type=1099 Contractor");
     }
 
     protected String getFirstNameDropDownUrl() {

@@ -183,7 +183,7 @@ public class EmployeeDao extends CRUDDao<Employee> {
         return query.getResultList();
     }
 
-        //TODO use cache
+    //TODO use cache
     public Employee findByEmail(String emailAddress) {
         Query getEmailQ = em.createQuery("from " + info.yalamanchili.office.entity.profile.Email.class.getCanonicalName() + " where emailHash=:emailAddressParam");
         getEmailQ.setParameter("emailAddressParam", info.yalamanchili.office.security.SecurityUtils.hash(emailAddress));
@@ -216,6 +216,10 @@ public class EmployeeDao extends CRUDDao<Employee> {
 
     public Map<String, String> getEmployeeStringMapByType(int start, int limit, List<String> employeeType, String... params) {
         return QueryUtils.getEntityStringMapByParams(getEntityManager(), QueryUtils.getListBoxResultsQueryString(Employee.class.getCanonicalName(), params) + " where user.enabled=true and employeeType.name in ('" + Joiner.on("','").join(employeeType) + "')", start, limit, params);
+    }
+
+    public Map<String, String> getAllEmployeeStringMapByType(int start, int limit, List<String> employeeType, String... params) {
+        return QueryUtils.getEntityStringMapByParams(getEntityManager(), QueryUtils.getListBoxResultsQueryString(Employee.class.getCanonicalName(), params) + " where employeeType.name in ('" + Joiner.on("','").join(employeeType) + "')", start, limit, params);
     }
 
     public List<Employee> getEmployeesByType(String type) {

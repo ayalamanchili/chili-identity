@@ -178,6 +178,20 @@ public class EmployeeResource extends CRUDResource<Employee> {
     }
 
     @GET
+    @Path("/all-employees-by-type/dropdown/{start}/{limit}")
+    @Transactional(propagation = Propagation.NEVER)
+    @Cacheable(OfficeCacheKeys.EMPLOYEES)
+    public List<Entry> getAllEmployeesByTypeDropDown(@PathParam("start") int start, @PathParam("limit") int limit,
+            @QueryParam("column") List<String> columns, @QueryParam("employee-type") List<String> employeeType) {
+        List<Entry> result = new ArrayList<>();
+        Map<String, String> values = EmployeeDao.instance().getAllEmployeeStringMapByType(start, limit, employeeType, columns.toArray(new String[columns.size()]));
+        for (String key : values.keySet()) {
+            result.add(new Entry(key, values.get(key)));
+        }
+        return result;
+    }
+
+    @GET
     @Path("/employees-by-role/dropdown/{role}/{start}/{limit}")
     @Cacheable(OfficeCacheKeys.EMPLOYEES)
     public List<Entry> getEmployeesWithRoleDropDown(@PathParam("role") String role, @PathParam("start") int start, @PathParam("limit") int limit) {
