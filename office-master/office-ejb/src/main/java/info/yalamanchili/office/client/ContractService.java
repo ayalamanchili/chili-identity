@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.client;
 
+import static info.chili.docs.ExcelUtils.getCellStringValue;
 import info.yalamanchili.office.dto.client.ContractDto;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import java.util.Date;
@@ -25,12 +26,14 @@ import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dto.client.ContractSearchDto;
+import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import info.yalamanchili.office.entity.profile.BillingRate;
 import info.yalamanchili.office.entity.profile.ClientInformationStatus;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.List;
 import info.yalamanchili.office.entity.profile.EmployeeType;
+import java.math.BigDecimal;
 import javax.persistence.Query;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang.StringUtils;

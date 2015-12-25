@@ -68,12 +68,14 @@ public class ClientInformation extends AbstractEntity {
     /**
      * startDate
      */
+    @org.hibernate.annotations.Index(name = "CI_START_DATE_IDX")
     @Temporal(javax.persistence.TemporalType.DATE)
     @NotNull(message = "{startDate.not.empty.msg}")
     protected Date startDate;
     /**
      * endDate
      */
+    @org.hibernate.annotations.Index(name = "CI_END_DATE_IDX")
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date endDate;
     /**
@@ -153,6 +155,7 @@ public class ClientInformation extends AbstractEntity {
     /**
      * Item Number (quick books generated number
      */
+    @org.hibernate.annotations.Index(name = "CI_ITEM_IDX")
     protected String itemNumber;
     /**
      * PayRate
