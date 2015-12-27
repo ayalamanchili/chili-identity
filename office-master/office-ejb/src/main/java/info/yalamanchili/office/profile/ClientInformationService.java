@@ -81,10 +81,8 @@ public class ClientInformationService {
     protected MailUtils mailUtils;
 
     public void addClientInformation(Long empId, ClientInformationDto ciDto, Boolean submitForApproval) {
-        if (submitForApproval) {
-            ServiceInterceptor.instance().validateInput(ciDto, ClientInformation.SubmitChecks.class);
-        }
         ClientInformation ci = mapper.map(ciDto, ClientInformation.class);
+        validate(ci, submitForApproval);
         Client client = null;
         Vendor vendor = null;
         Vendor middleVendor = null;
@@ -314,8 +312,8 @@ public class ClientInformationService {
             }
         }
 
-        if ((billingRate.getEffectiveDate().before(ci.getStartDate())) ||
-           (billingRate.getEffectiveDate().before(new Date())))    {
+        if ((billingRate.getEffectiveDate().before(ci.getStartDate()))
+                || (billingRate.getEffectiveDate().before(new Date()))) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid Effective Date", "Effective Date can't be before Project Start Date or Back Date");
         }
         billingRate.setUpdatedBy(OfficeSecurityService.instance().getCurrentUserName());
@@ -350,10 +348,8 @@ public class ClientInformationService {
 
 //merge save and addci methods
     public ClientInformation update(ClientInformation ci, Boolean submitForApproval) {
-        if (submitForApproval) {
-            ServiceInterceptor.instance().validateInput(ci, ClientInformation.SubmitChecks.class);
-        }
         ClientInformation ciEntity = em.find(ClientInformation.class, ci.getId());
+        validate(ci, submitForApproval);
         String abbreviation = getCompanyAbbreviation(ci.getCompany());
         BeanMapper.merge(ci, ciEntity);
         Project project = ProjectDao.instance().findById(ci.getClientProject().getId());
@@ -496,6 +492,12 @@ public class ClientInformationService {
         }
         email.setBody(messageText);
         MessagingService.instance().sendEmail(email);
+    }
+
+    protected void validate(ClientInformation ci, Boolean submitForApproval) {
+        if (submitForApproval) {
+            ServiceInterceptor.instance().validateInput(ci, ClientInformation.SubmitChecks.class);
+        }
     }
 
     private String projectName(String name) {
