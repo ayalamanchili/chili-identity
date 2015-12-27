@@ -61,7 +61,9 @@ public class NewClientInfoInvoicingAndBillingSubmit implements JavaDelegate {
                     ci.setSpecialInvoiceInstructions(specialInvoiceInstructions.toString());
                 }
             }
-            dao.save(ci);
+            execution.setVariable("clientInfo", ci);
+            ci = dao.save(ci);
+            execution.setVariable("contractDto", ContractService.instance().mapClientInformation(ci));
         }
     }
 }

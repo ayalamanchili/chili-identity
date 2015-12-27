@@ -314,63 +314,63 @@ public class ContractService {
     }
 
     public void getEffectiveBillingRate(ClientInformation ci, ContractDto dto) {
-        Query query = em.createNativeQuery("Select billingRate from BILLINGRATE br where br.clientInformation_id=" + ci.getId() + " and br.billingRate is not null and br.effectiveDate <= NOW() order by br.effectiveDate desc LIMIT 1");
+        Query query = em.createNativeQuery("Select billingRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and billingRate is not null and effectiveDate <= NOW() order by effectiveDate desc LIMIT 1");
         for (Object obj : query.getResultList()) {
             dto.setBillingRate((BigDecimal) obj);
         }
     }
 
     public void getEffectiveOvertimeBillingRate(ClientInformation ci, ContractDto dto) {
-        Query query = em.createNativeQuery("Select overTimeBillingRate from BILLINGRATE br where br.clientInformation_id=" + ci.getId() + " and br.overTimeBillingRate is not null and br.effectiveDate <= NOW() order by br.effectiveDate desc LIMIT 1");
+        Query query = em.createNativeQuery("Select overTimeBillingRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and overTimeBillingRate is not null and effectiveDate <= NOW() order by effectiveDate desc LIMIT 1");
         for (Object obj : query.getResultList()) {
             dto.setOverTimeBillingRate((BigDecimal) obj);
         }
     }
 
     public void getEffectiveBillingInvoiceFrequency(ClientInformation ci, ContractDto dto) {
-        Query query = em.createNativeQuery("Select billingInvoiceFrequency from BILLINGRATE br where br.clientInformation_id=" + ci.getId() + " and br.billingInvoiceFrequency is not null and br.effectiveDate <= NOW() order by br.effectiveDate desc LIMIT 1");
+        Query query = em.createNativeQuery("Select billingInvoiceFrequency from BILLINGRATE where clientInformation_id=" + ci.getId() + " and billingInvoiceFrequency is not null and effectiveDate <= NOW() order by effectiveDate desc LIMIT 1");
         for (Object obj : query.getResultList()) {
             dto.setInvoiceFrequency(InvoiceFrequency.valueOf((String) obj));
         }
     }
 
     public void getEffectiveSubConPayRate(ClientInformation ci, ContractDto dto) {
-        Query query = em.createNativeQuery("Select subContractorPayRate from BILLINGRATE br where br.clientInformation_id=" + ci.getId() + " and br.subContractorPayRate is not null and br.effectiveDate <= NOW() order by br.effectiveDate desc LIMIT 1");
+        Query query = em.createNativeQuery("Select subContractorPayRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and subContractorPayRate is not null and effectiveDate <= NOW() order by effectiveDate desc LIMIT 1");
         for (Object obj : query.getResultList()) {
             dto.setSubcontractorPayRate((BigDecimal) obj);
         }
     }
 
     public void getEffectiveSubConOverTimePayRate(ClientInformation ci, ContractDto dto) {
-        Query query = em.createNativeQuery("Select subContractorOverTimePayRate from BILLINGRATE br where br.clientInformation_id=" + ci.getId() + " and br.subContractorOverTimePayRate is not null and br.effectiveDate <= NOW() order by br.effectiveDate desc LIMIT 1");
+        Query query = em.createNativeQuery("Select subContractorOverTimePayRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and subContractorOverTimePayRate is not null and effectiveDate <= NOW() order by effectiveDate desc LIMIT 1");
         for (Object obj : query.getResultList()) {
             dto.setSubcontractorOvertimePayRate((BigDecimal) obj);
         }
     }
 
     public void getEffectiveSubConInvoiceFrequency(ClientInformation ci, ContractDto dto) {
-        Query query = em.createNativeQuery("Select subContractorInvoiceFrequency from BILLINGRATE br where br.clientInformation_id=" + ci.getId() + " and br.subContractorInvoiceFrequency is not null and br.effectiveDate <= NOW() order by br.effectiveDate desc LIMIT 1");
+        Query query = em.createNativeQuery("Select subContractorInvoiceFrequency from BILLINGRATE where clientInformation_id=" + ci.getId() + " and subContractorInvoiceFrequency is not null and effectiveDate <= NOW() order by effectiveDate desc LIMIT 1");
         for (Object obj : query.getResultList()) {
             dto.setSubcontractorinvoiceFrequency(InvoiceFrequency.valueOf((String) obj));
         }
     }
     
         public void getEffectivePayRate1099(ClientInformation ci, ContractDto dto) {
-        Query query = em.createNativeQuery("Select subContractorPayRate from BILLINGRATE br where br.clientInformation_id=" + ci.getId() + " and br.subContractorPayRate is not null and br.effectiveDate <= NOW() order by br.effectiveDate desc LIMIT 1");
+        Query query = em.createNativeQuery("Select subContractorPayRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and subContractorPayRate is not null and effectiveDate <= NOW() order by effectiveDate desc LIMIT 1");
         for (Object obj : query.getResultList()) {
             dto.setPayRate1099((BigDecimal) obj);
         }
     }
 
     public void getEffectiveOverTimePayRate1099(ClientInformation ci, ContractDto dto) {
-        Query query = em.createNativeQuery("Select subContractorOverTimePayRate from BILLINGRATE br where br.clientInformation_id=" + ci.getId() + " and br.subContractorOverTimePayRate is not null and br.effectiveDate <= NOW() order by br.effectiveDate desc LIMIT 1");
+        Query query = em.createNativeQuery("Select subContractorOverTimePayRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and subContractorOverTimePayRate is not null and effectiveDate <= NOW() order by effectiveDate desc LIMIT 1");
         for (Object obj : query.getResultList()) {
             dto.setOverTimePayrate1099((BigDecimal) obj);
         }
     }
 
     public void getEffectiveInvoiceFrequency1099(ClientInformation ci, ContractDto dto) {
-        Query query = em.createNativeQuery("Select subContractorInvoiceFrequency from BILLINGRATE br where br.clientInformation_id=" + ci.getId() + " and br.subContractorInvoiceFrequency is not null and br.effectiveDate <= NOW() order by br.effectiveDate desc LIMIT 1");
+        Query query = em.createNativeQuery("Select subContractorInvoiceFrequency from BILLINGRATE where clientInformation_id=" + ci.getId() + " and subContractorInvoiceFrequency is not null and effectiveDate <= NOW() order by effectiveDate desc LIMIT 1");
         for (Object obj : query.getResultList()) {
             dto.setInvoiceFrequency1099(InvoiceFrequency.valueOf((String) obj));
         }

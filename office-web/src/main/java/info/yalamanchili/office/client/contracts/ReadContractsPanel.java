@@ -85,7 +85,7 @@ public class ReadContractsPanel extends TReadComposite {
         assignFieldValueFromEntity("vendor", entity, DataType.STRING_FIELD);
         //      assignFieldValueFromEntity("vendorContact", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("vendorAPContact", entity, DataType.RICH_TEXT_AREA);
-        assignFieldValueFromEntity("vendorPaymentTerms", entity, DataType.RICH_TEXT_AREA);
+        assignFieldValueFromEntity("vendorPaymentTerms", entity, DataType.TEXT_AREA_FIELD);
         //      assignFieldValueFromEntity("vendorLocation", entity, DataType.STRING_FIELD);
         //      assignFieldValueFromEntity("vendorRecruiter", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("middleVendor", entity, DataType.STRING_FIELD);
@@ -99,7 +99,7 @@ public class ReadContractsPanel extends TReadComposite {
         //      assignFieldValueFromEntity("overTimePayRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
-        //       assignFieldValueFromEntity("invoiceDeliveryMethod", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("invoiceDeliveryMethod", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("billingRateDuration", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("overTimeRateDuration", entity, DataType.ENUM_FIELD);
         //       assignFieldValueFromEntity("recruiter", entity, DataType.STRING_FIELD);
@@ -112,9 +112,9 @@ public class ReadContractsPanel extends TReadComposite {
         //      assignFieldValueFromEntity("logisticsPreparation", entity, DataType.BOOLEAN_FIELD);
         //      assignFieldValueFromEntity("hrOrientation", entity, DataType.BOOLEAN_FIELD);
         //      assignFieldValueFromEntity("terminationNotice", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
+        assignFieldValueFromEntity("notes", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("timeSheetRequirement", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("specialInvoiceInstructions", entity, DataType.RICH_TEXT_AREA);
+        assignFieldValueFromEntity("specialInvoiceInstructions", entity, DataType.TEXT_AREA_FIELD);
         if (isSubContractor(entity)) {
             assignFieldValueFromEntity("subContractorName", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("subContractorContactName", entity, DataType.RICH_TEXT_AREA);
@@ -177,20 +177,19 @@ public class ReadContractsPanel extends TReadComposite {
     @Override
     protected void addWidgets() {
         addField("employee", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 1);
-        addField("clientProject", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 2);
-        addField("consultantJobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 2, 1);
-        addField("company", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 2, 2);
-        addField("billingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 3, 1);
+        addField("itemNumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 2);
+        addField("billingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 2, 1);
         String[] billingDuration = {"HOUR", "DAY", "MONTH", "WEEK"};
-        addEnumField("billingRateDuration", true, false, billingDuration, Alignment.HORIZONTAL, 4, 1);
-        addField("overTimeBillingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 3, 2);
-        addEnumField("overTimeRateDuration", true, false, billingDuration, Alignment.HORIZONTAL, 4, 2);
-        addEnumField("invoiceFrequency", true, false, InvoiceFrequency.names(), Alignment.HORIZONTAL, 5, 1);
-        addField("itemNumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 5, 2);
-        addField("specialInvoiceInstructions", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 6, 1);
-        addField("timeSheetRequirement", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 6, 2);
+        addEnumField("billingRateDuration", true, false, billingDuration, Alignment.HORIZONTAL, 3, 1);
+        addField("overTimeBillingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 2, 2);
+        addEnumField("overTimeRateDuration", true, false, billingDuration, Alignment.HORIZONTAL, 3, 2);
+        addEnumField("invoiceFrequency", true, false, InvoiceFrequency.names(), Alignment.HORIZONTAL, 4, 1);
+        String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX", "UPLOAD"};
+        addEnumField("invoiceDeliveryMethod", true, false, invoiceDeliveryMethods, Alignment.HORIZONTAL, 4, 2);
+        addField("specialInvoiceInstructions", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL, 5, 1);
+        addField("timeSheetRequirement", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 5, 2);
         if ((isSubContractor(entity)) || (is1099(entity))) {
-             isSubOr1099 = true;
+            isSubOr1099 = true;
         }
         entityFieldsPanel.setWidget(9, 1, ReadAllUpdateBillingRatePanel.renderBillingRateHistory(getEntityId(), isSubOr1099));
         entityFieldsPanel.getFlexCellFormatter().setColSpan(9, 1, 2);
@@ -208,23 +207,25 @@ public class ReadContractsPanel extends TReadComposite {
             addEnumField("invoiceFrequency1099", true, false, InvoiceFrequency.names(), Alignment.HORIZONTAL, 8, 1);
             addField("paymentTerms1099", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 10, 2);
         }
-        addField("vendorPaymentTerms", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 10, 1);
+        addField("vendorPaymentTerms", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL, 10, 1);
         addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 15, 1);
         addField("endDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 15, 2);
-
+        addField("clientProject", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 16, 1);
+        addField("company", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 16, 2);
+        
         addField("client", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 13, 2);
         addField("vendor", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 11, 1);
         addField("middleVendor", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 13, 1);
         addField("clientAPContact", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 14, 2);
         addField("vendorAPContact", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 12, 1);
-        addField("notes", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 14, 1);
-        addField("practice", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 16, 1);
-        addField("sectorsAndBUs", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 16, 2);
-        addField("employeeDetails", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 17, 1);
-        entityFieldsPanel.setWidget(18, 1, ReadAllConsultantTimeSheetsPanel.renderLeaveHistory(getEmployeeId()));
-        entityFieldsPanel.getFlexCellFormatter().setColSpan(18, 1, 2);
+        addField("notes", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL, 14, 1);
+        addField("practice", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 17, 1);
+        addField("sectorsAndBUs", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 17, 2);
+        addField("employeeDetails", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 18, 1);
+        addField("consultantJobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 18, 2);
+        entityFieldsPanel.setWidget(19, 1, ReadAllConsultantTimeSheetsPanel.renderLeaveHistory(getEmployeeId()));
+        entityFieldsPanel.getFlexCellFormatter().setColSpan(19, 1, 2);
         alignFields();
-
     }
 
     @Override

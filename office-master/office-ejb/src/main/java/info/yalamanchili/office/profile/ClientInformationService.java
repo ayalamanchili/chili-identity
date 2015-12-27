@@ -310,8 +310,9 @@ public class ClientInformationService {
             }
         }
 
-        if (billingRate.getEffectiveDate().before(ci.getStartDate())) {
-            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid Effective Date", "Effective Date can't be before Project Start Date");
+        if ((billingRate.getEffectiveDate().before(ci.getStartDate())) ||
+           (billingRate.getEffectiveDate().before(new Date())))    {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid Effective Date", "Effective Date can't be before Project Start Date or Back Date");
         }
         billingRate.setUpdatedBy(OfficeSecurityService.instance().getCurrentUserName());
         billingRate.setUpdatedTs(Calendar.getInstance().getTime());
