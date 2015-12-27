@@ -19,6 +19,7 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.cache.OfficeCacheManager;
 import info.yalamanchili.office.config.OfficeFeatureFlipper;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
+import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.security.SecurityUtils;
 import info.yalamanchili.office.template.TemplateService;
@@ -58,6 +59,7 @@ import org.thymeleaf.context.Context;
  */
 @Component
 @Transactional
+//TODO make this abstract with common functionality and move to commons
 public class EmailService {
 
     private static Logger logger = Logger.getLogger(EmailService.class.getName());

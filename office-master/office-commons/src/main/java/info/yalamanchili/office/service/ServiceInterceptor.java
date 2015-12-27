@@ -9,6 +9,7 @@ import info.chili.jpa.validation.Validate;
 import info.chili.service.jrs.ServiceMessages;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.exception.ServiceException.StatusCode;
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.email.MailUtils;
 import java.util.HashMap;
 import java.util.Map;
@@ -118,9 +119,24 @@ public class ServiceInterceptor {
         }
     }
 
+    public void validateInput(Object entity, Class validationGroup) {
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        for (ConstraintViolation<Object> violation : validator.validate(entity, validationGroup)) {
+            log.error("validation error:" + violation.getPropertyPath() + ":" + violation.getMessage());
+            serviceMessages.addError(new info.chili.service.jrs.types.Error(violation.getPropertyPath()
+                    .toString(), "INVALID_INPUT", violation.getMessage()));
+        }
+        checkForErrors();
+    }
+
     protected void checkForErrors() {
         if (serviceMessages.isNotEmpty()) {
             throw new ServiceException(StatusCode.INVALID_REQUEST, serviceMessages.getErrors());
         }
+    }
+
+    public static ServiceInterceptor instance() {
+        return SpringContext.getBean(ServiceInterceptor.class);
     }
 }
