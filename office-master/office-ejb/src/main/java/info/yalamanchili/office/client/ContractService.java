@@ -291,33 +291,18 @@ public class ContractService {
         }
         //mapEffectiveBillingRate(ci, dto);
         if (!ci.getBillingRates().isEmpty()) {
-            if (ci.getEmployee().getEmployeeType().getName().equals(EmployeeType.SUBCONTRACTOR)
-                    || (ci.getEmployee().getEmployeeType().getName().equals(EmployeeType._1099_CONTRACTOR))) {
-                BillingRate brSubConPayRate = getEffectiveSubConPayRate(ci);
-                if (brSubConPayRate != null) {
-                    dto.setSubcontractorPayRate(brSubConPayRate.getSubContractorPayRate());
-                }
-                BillingRate brSubConOverTimePayRate = getEffectiveSubConOverTimePayRate(ci);
-                if (brSubConOverTimePayRate != null) {
-                    dto.setSubcontractorOvertimePayRate(brSubConOverTimePayRate.getSubContractorOverTimePayRate());
-                }
-                BillingRate brSubConInvoiceFrequency = getEffectiveSubConInvoiceFrequency(ci);
-                if (brSubConInvoiceFrequency != null) {
-                    dto.setSubcontractorinvoiceFrequency(brSubConInvoiceFrequency.getSubContractorInvoiceFrequency());
-                }
+            if (ci.getEmployee().getEmployeeType().getName().equals(EmployeeType.SUBCONTRACTOR)) {
+                getEffectiveSubConPayRate(ci, dto);
+                getEffectiveSubConOverTimePayRate(ci, dto);
+                getEffectiveSubConInvoiceFrequency(ci, dto);
+            } else if (ci.getEmployee().getEmployeeType().getName().equals(EmployeeType._1099_CONTRACTOR)) {
+                getEffectivePayRate1099(ci, dto);
+                getEffectiveOverTimePayRate1099(ci, dto);
+                getEffectiveInvoiceFrequency1099(ci, dto);
             }
-            BillingRate brBillingRate = getEffectiveBillingRate(ci);
-            if (brBillingRate != null) {
-                dto.setBillingRate(brBillingRate.getBillingRate());
-            }
-            BillingRate brOvertimeBillingRate = getEffectiveOvertimeBillingRate(ci);
-            if (brOvertimeBillingRate != null) {
-                dto.setOverTimeBillingRate(brOvertimeBillingRate.getOverTimeBillingRate());
-            }
-            BillingRate brBillingInvoiceFrequency = getEffectiveBillingInvoiceFrequency(ci);
-            if (brBillingInvoiceFrequency != null) {
-                dto.setInvoiceFrequency(brBillingInvoiceFrequency.getBillingInvoiceFrequency());
-            }
+            getEffectiveBillingRate(ci, dto);
+            getEffectiveOvertimeBillingRate(ci, dto);
+            getEffectiveBillingInvoiceFrequency(ci, dto);
         }
         return dto;
     }
@@ -328,69 +313,66 @@ public class ContractService {
         return ReportGenerator.generateReport(data.getEntities(), "contracts", format, OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
     }
 
-    public BillingRate getEffectiveBillingRate(ClientInformation ci) {
-        Query query = em.createNativeQuery("Select * from BILLINGRATE br where br.clientInformation_id=" + ci.getId() + " and br.billingRate is not null and br.effectiveDate <= NOW() order by br.effectiveDate desc LIMIT 1", BillingRate.class);
-        if (query.getResultList().size() > 0) {
-            Object obj = query.getResultList().get(0);
-            BillingRate br = (BillingRate) obj;
-            return br;
-        } else {
-            return null;
+    public void getEffectiveBillingRate(ClientInformation ci, ContractDto dto) {
+        Query query = em.createNativeQuery("Select billingRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and billingRate is not null and effectiveDate <= NOW() order by effectiveDate desc LIMIT 1");
+        for (Object obj : query.getResultList()) {
+            dto.setBillingRate((BigDecimal) obj);
         }
     }
 
-    public BillingRate getEffectiveBillingInvoiceFrequency(ClientInformation ci) {
-        Query query = em.createNativeQuery("Select * from BILLINGRATE br where br.clientInformation_id=" + ci.getId() + " and br.billingInvoiceFrequency is not null and br.effectiveDate <= NOW() order by br.effectiveDate desc LIMIT 1", BillingRate.class);
-        if (query.getResultList().size() > 0) {
-            Object obj = query.getResultList().get(0);
-            BillingRate br = (BillingRate) obj;
-            return br;
-        } else {
-            return null;
+    public void getEffectiveOvertimeBillingRate(ClientInformation ci, ContractDto dto) {
+        Query query = em.createNativeQuery("Select overTimeBillingRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and overTimeBillingRate is not null and effectiveDate <= NOW() order by effectiveDate desc LIMIT 1");
+        for (Object obj : query.getResultList()) {
+            dto.setOverTimeBillingRate((BigDecimal) obj);
         }
     }
 
-    public BillingRate getEffectiveOvertimeBillingRate(ClientInformation ci) {
-        Query query = em.createNativeQuery("Select * from BILLINGRATE br where br.clientInformation_id=" + ci.getId() + " and br.overTimeBillingRate is not null and br.effectiveDate <= NOW() order by br.effectiveDate desc LIMIT 1", BillingRate.class);
-        if (query.getResultList().size() > 0) {
-            Object obj = query.getResultList().get(0);
-            BillingRate br = (BillingRate) obj;
-            return br;
-        } else {
-            return null;
+    public void getEffectiveBillingInvoiceFrequency(ClientInformation ci, ContractDto dto) {
+        Query query = em.createNativeQuery("Select billingInvoiceFrequency from BILLINGRATE where clientInformation_id=" + ci.getId() + " and billingInvoiceFrequency is not null and effectiveDate <= NOW() order by effectiveDate desc LIMIT 1");
+        for (Object obj : query.getResultList()) {
+            dto.setInvoiceFrequency(InvoiceFrequency.valueOf((String) obj));
         }
     }
 
-    public BillingRate getEffectiveSubConPayRate(ClientInformation ci) {
-        Query query = em.createNativeQuery("Select * from BILLINGRATE br where br.clientInformation_id=" + ci.getId() + " and br.subContractorPayRate is not null and br.effectiveDate <= NOW() order by br.effectiveDate desc LIMIT 1", BillingRate.class);
-        if (query.getResultList().size() > 0) {
-            Object obj = query.getResultList().get(0);
-            BillingRate br = (BillingRate) obj;
-            return br;
-        } else {
-            return null;
+    public void getEffectiveSubConPayRate(ClientInformation ci, ContractDto dto) {
+        Query query = em.createNativeQuery("Select subContractorPayRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and subContractorPayRate is not null and effectiveDate <= NOW() order by effectiveDate desc LIMIT 1");
+        for (Object obj : query.getResultList()) {
+            dto.setSubcontractorPayRate((BigDecimal) obj);
         }
     }
 
-    public BillingRate getEffectiveSubConOverTimePayRate(ClientInformation ci) {
-        Query query = em.createNativeQuery("Select * from BILLINGRATE br where br.clientInformation_id=" + ci.getId() + " and br.subContractorOverTimePayRate is not null and br.effectiveDate <= NOW() order by br.effectiveDate desc LIMIT 1", BillingRate.class);
-        if (query.getResultList().size() > 0) {
-            Object obj = query.getResultList().get(0);
-            BillingRate br = (BillingRate) obj;
-            return br;
-        } else {
-            return null;
+    public void getEffectiveSubConOverTimePayRate(ClientInformation ci, ContractDto dto) {
+        Query query = em.createNativeQuery("Select subContractorOverTimePayRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and subContractorOverTimePayRate is not null and effectiveDate <= NOW() order by effectiveDate desc LIMIT 1");
+        for (Object obj : query.getResultList()) {
+            dto.setSubcontractorOvertimePayRate((BigDecimal) obj);
         }
     }
 
-    public BillingRate getEffectiveSubConInvoiceFrequency(ClientInformation ci) {
-        Query query = em.createNativeQuery("Select * from BILLINGRATE br where br.clientInformation_id=" + ci.getId() + " and br.subContractorInvoiceFrequency is not null and br.effectiveDate <= NOW() order by br.effectiveDate desc LIMIT 1", BillingRate.class);
-        if (query.getResultList().size() > 0) {
-            Object obj = query.getResultList().get(0);
-            BillingRate br = (BillingRate) obj;
-            return br;
-        } else {
-            return null;
+    public void getEffectiveSubConInvoiceFrequency(ClientInformation ci, ContractDto dto) {
+        Query query = em.createNativeQuery("Select subContractorInvoiceFrequency from BILLINGRATE where clientInformation_id=" + ci.getId() + " and subContractorInvoiceFrequency is not null and effectiveDate <= NOW() order by effectiveDate desc LIMIT 1");
+        for (Object obj : query.getResultList()) {
+            dto.setSubcontractorinvoiceFrequency(InvoiceFrequency.valueOf((String) obj));
+        }
+    }
+    
+        public void getEffectivePayRate1099(ClientInformation ci, ContractDto dto) {
+        Query query = em.createNativeQuery("Select subContractorPayRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and subContractorPayRate is not null and effectiveDate <= NOW() order by effectiveDate desc LIMIT 1");
+        for (Object obj : query.getResultList()) {
+            dto.setPayRate1099((BigDecimal) obj);
+        }
+    }
+
+    public void getEffectiveOverTimePayRate1099(ClientInformation ci, ContractDto dto) {
+        Query query = em.createNativeQuery("Select subContractorOverTimePayRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and subContractorOverTimePayRate is not null and effectiveDate <= NOW() order by effectiveDate desc LIMIT 1");
+        for (Object obj : query.getResultList()) {
+            dto.setOverTimePayrate1099((BigDecimal) obj);
+        }
+    }
+
+    public void getEffectiveInvoiceFrequency1099(ClientInformation ci, ContractDto dto) {
+        Query query = em.createNativeQuery("Select subContractorInvoiceFrequency from BILLINGRATE where clientInformation_id=" + ci.getId() + " and subContractorInvoiceFrequency is not null and effectiveDate <= NOW() order by effectiveDate desc LIMIT 1");
+        for (Object obj : query.getResultList()) {
+            dto.setInvoiceFrequency1099(InvoiceFrequency.valueOf((String) obj));
         }
     }
 
