@@ -42,6 +42,7 @@ import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.jms.MessagingService;
+import info.yalamanchili.office.service.ServiceInterceptor;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -80,6 +81,9 @@ public class ClientInformationService {
     protected MailUtils mailUtils;
 
     public void addClientInformation(Long empId, ClientInformationDto ciDto, Boolean submitForApproval) {
+        if (submitForApproval) {
+            ServiceInterceptor.instance().validateInput(ciDto, ClientInformation.SubmitChecks.class);
+        }
         ClientInformation ci = mapper.map(ciDto, ClientInformation.class);
         Client client = null;
         Vendor vendor = null;
@@ -345,6 +349,9 @@ public class ClientInformationService {
 
 //merge save and addci methods
     public ClientInformation update(ClientInformation ci, Boolean submitForApproval) {
+        if (submitForApproval) {
+            ServiceInterceptor.instance().validateInput(ci, ClientInformation.SubmitChecks.class);
+        }
         ClientInformation ciEntity = em.find(ClientInformation.class, ci.getId());
         String abbreviation = getCompanyAbbreviation(ci.getCompany());
         BeanMapper.merge(ci, ciEntity);

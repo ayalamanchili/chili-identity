@@ -77,6 +77,7 @@ public class ClientInformation extends AbstractEntity {
      */
     @org.hibernate.annotations.Index(name = "CI_END_DATE_IDX")
     @Temporal(javax.persistence.TemporalType.DATE)
+    @NotNull(groups = SubmitChecks.class)
     protected Date endDate;
     /**
      * flag to indicate to end of previous project.
@@ -923,4 +924,7 @@ public class ClientInformation extends AbstractEntity {
         return "ClientInformation{" + "consultantJobTitle=" + consultantJobTitle + ", ciPrimary=" + ciPrimary + ", startDate=" + startDate + ", endDate=" + endDate + ", itemNumber=" + itemNumber + ", payRate=" + payRate + ", billingRate=" + billingRate + ", subcontractorinvoiceFrequency=" + subcontractorinvoiceFrequency + '}';
     }
 
+    public interface SubmitChecks {
+
+    }
 }

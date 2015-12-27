@@ -19,6 +19,7 @@ import info.yalamanchili.office.entity.practice.Practice;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.BillingDuration;
 import info.yalamanchili.office.entity.profile.BillingRate;
+import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.ClientInformationCompany;
 import info.yalamanchili.office.entity.profile.ClientInformationStatus;
 import info.yalamanchili.office.entity.profile.Contact;
@@ -65,6 +66,7 @@ public class ClientInformationDto implements Serializable {
     /**
      * endDate
      */
+    @NotNull(groups = ClientInformation.SubmitChecks.class)
     protected Date endDate;
     /**
      * flag to indicate to end of previous project.
@@ -830,10 +832,5 @@ public class ClientInformationDto implements Serializable {
     public void setInvoiceFrequency1099(InvoiceFrequency invoiceFrequency1099) {
         this.invoiceFrequency1099 = invoiceFrequency1099;
     }
-
-    
-    
-    
-    
 
 }
