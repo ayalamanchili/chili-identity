@@ -7,7 +7,7 @@
  */
 package info.yalamanchili.office.jrs.client;
 
-import info.chili.commons.SearchUtils;
+import com.google.common.base.Strings;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.types.Entry;
 import info.chili.dao.CRUDDao;
@@ -15,19 +15,13 @@ import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.client.VendorDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
-import info.yalamanchili.office.dao.profile.CompanyDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.security.OfficeSecurityService;
-import info.yalamanchili.office.dto.client.ContractSearchDto;
 import info.yalamanchili.office.dto.profile.ContactDto;
 import info.yalamanchili.office.dto.profile.ContactDto.ContactDtoTable;
-import info.yalamanchili.office.dto.profile.EmployeeSearchDto;
 import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.profile.Address;
-import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Contact;
-import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
 import info.yalamanchili.office.mapper.profile.ContactMapper;
@@ -36,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -44,7 +39,6 @@ import javax.ws.rs.QueryParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.apache.commons.lang.StringUtils;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -307,17 +301,31 @@ public class VendorResource extends CRUDResource<Vendor> {
     }
 
     @PUT
-    @Path("/searchEmployee/{start}/{limit}")
-    public String searchEmployee(Address address, @PathParam("start") int start, @PathParam("limit") int limit) {
-        StringBuilder queryStr = new StringBuilder();
-        queryStr.append("SELECT vendor from ").append(Vendor.class.getCanonicalName());
-        queryStr.append("  where ");
+    @Path("/search-vendor/{start}/{limit}")
+    public List<Vendor> search(VendorSearchDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {
+        TypedQuery<Vendor> q = em.createQuery(getSearchQuery(dto), Vendor.class);
+        return q.getResultList();
+    }
 
-        if (StringUtils.isNotBlank(address.getCity())) {
-            queryStr.append("address.city LIKE '%").append(address.getCity().trim()).append("%' ").append(" and ");
+    protected String getSearchQuery(VendorSearchDto dto) {
+        StringBuilder queryStr = new StringBuilder();
+        queryStr.append("SELECT v from ").append(Vendor.class.getCanonicalName()).append(" as v");
+        if (!Strings.isNullOrEmpty(dto.getCity()) || !Strings.isNullOrEmpty(dto.getState())) {
+            queryStr.append(" join v.locations as vendorLocations");
         }
-        if (StringUtils.isNotBlank(address.getState())) {
-            queryStr.append("address.state LIKE '%").append(address.getState().trim()).append("%' ").append(" and ");
+        queryStr.append("  where ");
+        if (!Strings.isNullOrEmpty(dto.getVendorName())) {
+            queryStr.append("name LIKE '%").append(dto.getVendorName().trim()).append("%' ").append(" and ");
+        }
+        if (dto.getVendorType() != null) {
+            queryStr.append("vendorType LIKE '%").append(dto.getVendorType().name().trim()).append("%' ").append(" and ");
+        }
+        if (!Strings.isNullOrEmpty(dto.getCity())) {
+            queryStr.append("lower(vendorLocations.city) LIKE '%").append(dto.getCity().toLowerCase().trim()).append("%' ").append(" and ");
+        }
+
+        if (!Strings.isNullOrEmpty(dto.getState())) {
+            queryStr.append("vendorLocations.state LIKE '%").append(dto.getState().trim()).append("%' ").append(" and ");
         }
         return queryStr.toString().substring(0, queryStr.toString().lastIndexOf("and"));
     }

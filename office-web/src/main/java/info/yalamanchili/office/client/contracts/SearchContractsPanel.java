@@ -22,7 +22,6 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.SearchComposite;
 import info.yalamanchili.office.client.profile.cllientinfo.ClientInformationCompany;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 

@@ -55,7 +55,7 @@ public class SearchVendorPanel extends SearchComposite {
             @Override
             public void onResponse(String entityString) {
                 Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
-                SuggestBox sb = (SuggestBox) fields.get("name");
+                SuggestBox sb = (SuggestBox) fields.get("vendorName");
                 sb.loadData(values.values());
             }
         });
@@ -71,7 +71,7 @@ public class SearchVendorPanel extends SearchComposite {
 
     @Override
     protected void addWidgets() {
-        addField("name", DataType.STRING_FIELD);
+        addField("vendorName", DataType.STRING_FIELD);
         addEnumField("vendorType", false, false, VendorType.names());
         addField("city", DataType.STRING_FIELD);
         addEnumField("state", false, false, USAStatesFactory.getStates().toArray(new String[0]));
@@ -80,7 +80,7 @@ public class SearchVendorPanel extends SearchComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
-        assignEntityValueFromField("name", entity);
+        assignEntityValueFromField("vendorName", entity);
         assignEntityValueFromField("vendorType", entity);
         assignEntityValueFromField("city", entity);
         assignEntityValueFromField("state", entity);
@@ -95,7 +95,7 @@ public class SearchVendorPanel extends SearchComposite {
                         @Override
                         public void onResponse(String result) {
                             processSearchResult(result);
-//               searchTB.setText("");
+//                searchTB.setText("");
                         }
                     });
         }
@@ -127,7 +127,7 @@ public class SearchVendorPanel extends SearchComposite {
 
     @Override
     protected String getSearchURI(Integer start, Integer limit) {
-        return OfficeWelcome.constants.root_url() + "vendor/searchEmployee/" + start.toString() + "/"
+        return OfficeWelcome.constants.root_url() + "vendor/search-vendor/" + start.toString() + "/"
                 + limit.toString();
     }
 }
