@@ -45,14 +45,12 @@ import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWi
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientAcctPayContact;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
-import java.util.Calendar;
 import java.util.Date;
 
 public class CreateClientInfoPanel extends CreateComposite implements ChangeHandler, ValueChangeHandler {
@@ -96,7 +94,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         assignEntityValueFromField("endDate", clientInfo);
         if (isEndDateConfirmedF.isVisible() == true) {
             isEndDateConfirmedF.getValue();
-            clientInfo.put("isEndDateConfirmed", new JSONString(isEndDateConfirmedF.getBox().getFormValue()));
+            clientInfo.put("isEndDateConfirmed", new JSONString(isEndDateConfirmedF.getValue().toString()));
         }
         if (ReadAllClientInfoPanel.instance().numberOfRecords > 0) {
             assignEntityValueFromField("endPreviousProject", clientInfo);
