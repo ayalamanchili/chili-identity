@@ -283,7 +283,6 @@ public class ClientInformationDto implements Serializable {
 
     private ClientInformationStatus status;
     
-    @Transient
     protected Boolean isEndDateConfirmed;
     /**
      *
