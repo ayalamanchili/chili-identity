@@ -205,7 +205,7 @@ public class ClientInformationService {
         }
         project = ProjectDao.instance().save(project);
         ci.setClientProject(project);
-        if(ci.isIsEndDateConfirmed()!=null){
+        if(ci.isIsEndDateConfirmed()==true){
             ci.setIsEndDateConfirmed(true);
         }else{
             ci.setIsEndDateConfirmed(false);
@@ -366,10 +366,10 @@ public class ClientInformationService {
         ciEntity.setClient(client);
         project.setName(abbreviation + "PR" + projectName(client.getName()));
         project.setName(project.getName() + project.getId().toString());
-        if(ci.isIsEndDateConfirmed()!=null){
-            ci.setIsEndDateConfirmed(true);
+        if(ci.isIsEndDateConfirmed()==true){
+            ciEntity.setIsEndDateConfirmed(true);
         }else{
-            ci.setIsEndDateConfirmed(false);
+            ciEntity.setIsEndDateConfirmed(false);
         }
         //Client Contact
         if (ci.getClientContact() == null) {
