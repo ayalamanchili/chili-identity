@@ -120,6 +120,7 @@ public class ClientInformation extends AbstractEntity {
      */
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_ClientLocation_ClientInformations")
+    @NotNull(groups = SubmitChecks.class)
     protected Address clientLocation;
     /**
      * Vendor
@@ -165,6 +166,7 @@ public class ClientInformation extends AbstractEntity {
     /**
      * BillingRate
      */
+    @NotNull(groups = SubmitChecks.class)
     protected BigDecimal billingRate;
     /**
      * OverTime PayRate
@@ -195,6 +197,7 @@ public class ClientInformation extends AbstractEntity {
      */
     @Enumerated(EnumType.STRING)
     @org.hibernate.annotations.Index(name = "CI_INVC_FQ")
+    @NotNull(groups = SubmitChecks.class)
     protected InvoiceFrequency invoiceFrequency;
     /**
      * Invoice Delivery Method
