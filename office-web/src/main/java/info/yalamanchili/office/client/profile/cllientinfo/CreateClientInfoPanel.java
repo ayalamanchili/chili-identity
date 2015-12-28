@@ -45,10 +45,15 @@ import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWi
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientAcctPayContact;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
+import java.util.Calendar;
+import java.util.Date;
 
 public class CreateClientInfoPanel extends CreateComposite implements ChangeHandler, ValueChangeHandler {
 
@@ -91,7 +96,6 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         assignEntityValueFromField("endDate", clientInfo);
         if (isEndDateConfirmedF.isVisible() == true) {
             isEndDateConfirmedF.getValue();
-            logger.info("end date confirmed value .... "+isEndDateConfirmedF.getValue());
             clientInfo.put("isEndDateConfirmed", new JSONString(isEndDateConfirmedF.getBox().getFormValue()));
         }
         if (ReadAllClientInfoPanel.instance().numberOfRecords > 0) {
@@ -328,6 +332,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
 
         if ((ReadAllClientInfoPanel.instance().numberOfRecords > 0) && (event.getSource().equals(endPreviousProjectFlagField.getBox()))) {
             previousProjectEndDate.setVisible(endPreviousProjectFlagField.getValue());
+            populateEndDate();
         }
         if (submitForApprovalF.getValue()) {
             setButtonText("Submit");
@@ -336,6 +341,26 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         }
 
         super.onClick(event);
+    }
+
+    public void populateEndDate() {
+        logger.info("urllllllllll : " + getProjectEndDate());
+        HttpService.HttpServiceAsync.instance().doGet(getProjectEndDate(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String arg0) {
+                        if (arg0 != null) {
+                            logger.info("argsssssssssss :" + arg0);
+                            Date date2 = new Date(arg0);
+                            previousProjectEndDate.setDate(date2);
+                        }
+                    }
+                }
+        );
+    }
+
+    private String getProjectEndDate() {
+        return OfficeWelcome.constants.root_url() + "clientinformation/endDate/" + TreeEmployeePanel.instance().getEntityId() + "/" + endPreviousProjectFlagField.getValue();
     }
 
     @Override
