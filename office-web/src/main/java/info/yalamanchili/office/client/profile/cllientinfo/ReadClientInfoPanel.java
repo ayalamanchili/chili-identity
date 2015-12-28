@@ -9,17 +9,12 @@ package info.yalamanchili.office.client.profile.cllientinfo;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
-import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.BaseField;
 import info.chili.gwt.composite.BaseFieldWithTextBox;
 import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.ReadComposite;
-import info.chili.gwt.date.DateUtils;
-import info.chili.gwt.fields.BooleanField;
-import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
@@ -45,7 +40,6 @@ import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import info.yalamanchili.office.client.profile.updateBillingRate.ReadAllUpdateBillingRatePanel;
 import java.util.logging.Logger;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
-import java.util.Date;
 import java.util.Map.Entry;
 
 /**

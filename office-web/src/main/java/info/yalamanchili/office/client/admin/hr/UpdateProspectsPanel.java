@@ -22,13 +22,14 @@ import info.chili.gwt.data.IndiaStatesFactory;
 import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.EnumField;
+import info.chili.gwt.fields.FileuploadField;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.profile.contact.Sex;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,12 @@ import java.util.logging.Logger;
 public class UpdateProspectsPanel extends UpdateComposite implements ClickHandler, ChangeHandler {
 
     private Logger logger = Logger.getLogger(UpdateProspectsPanel.class.getName());
-    protected SelectCompanyWidget selectCompanyWidget = new SelectCompanyWidget(true, true, Alignment.HORIZONTAL);
+    FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "Prospect", "resumeURL", "Prospect/resumeURL", false) {
+        @Override
+        public void onUploadComplete(String res) {
+            postUpdateSuccess(null);
+        }
+    };
     public List<CRUDComposite> updateItemPanels = new ArrayList<>();
 
     protected static UpdateProspectsPanel instance;
@@ -102,6 +108,7 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
         assignEntityValueFromField("processDocSentDate", entity);
         assignEntityValueFromField("status", entity);
         assignEntityValueFromField("comment", entity);
+        entity.put("resumeURL", resumeUploadPanel.getFileName());
         return entity;
     }
 
@@ -116,9 +123,14 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
 
                     @Override
                     public void onSuccess(String arg0) {
-                        postUpdateSuccess(arg0);
+                        uploadResume(arg0);
                     }
                 });
+    }
+
+    protected void uploadResume(String entity) {
+        logger.info(entity);
+        resumeUploadPanel.upload(JSONUtils.toString(JSONParser.parseLenient(entity), "id"));
     }
 
     @Override
@@ -164,7 +176,7 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
         countriesF.listBox.addChangeHandler(this);
         formatTextAreaFields();
     }
-    
+
     protected void formatTextAreaFields() {
         for (Map.Entry entry : fields.entrySet()) {
             if (entry.getValue() instanceof TextAreaField) {
@@ -194,6 +206,7 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
         addField("processDocSentDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("status", false, false, ProspectStatus.names(), Alignment.HORIZONTAL);
         addField("comment", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(resumeUploadPanel);
         statesF = (EnumField) fields.get("state");
         countriesF = (EnumField) fields.get("country");
         alignFields();

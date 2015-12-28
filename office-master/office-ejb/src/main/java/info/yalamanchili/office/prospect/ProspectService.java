@@ -124,6 +124,7 @@ public class ProspectService {
         contact.setDateOfBirth(dto.getDateOfBirth());
         contact.setSex(dto.getSex());
         entity.setReferredBy(dto.getReferredBy());
+        entity.setResumeURL(dto.getResumeURL());
         if (!Strings.isNullOrEmpty(dto.getScreenedBy())) {
             entity.setScreenedBy(dto.getScreenedBy());
         }

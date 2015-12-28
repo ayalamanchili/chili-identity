@@ -45,14 +45,11 @@ import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWi
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientAcctPayContact;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
-import java.util.Calendar;
 import java.util.Date;
 
 public class CreateClientInfoPanel extends CreateComposite implements ChangeHandler, ValueChangeHandler {
@@ -72,9 +69,8 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     DateField previousProjectEndDate;
     EnumField servicesF;
     EnumField sectorsF;
-    DateField endDateF = new DateField(OfficeWelcome.constants, "endDate", "ClientInformation", false, false, Alignment.HORIZONTAL);
-    HorizontalPanel hPanel = new HorizontalPanel();
-    BooleanField isEndDateConfirmedF = new BooleanField(OfficeWelcome.constants, "isEndDateConfirmed", "ClientInformation", false, false, Alignment.HORIZONTAL);
+    DateField endDateF;
+    BooleanField isEndDateConfirmedF;
 
     @Override
     protected JSONObject populateEntityFromFields() {
@@ -96,17 +92,15 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         assignEntityValueFromField("endDate", clientInfo);
         if (isEndDateConfirmedF.isVisible() == true) {
             isEndDateConfirmedF.getValue();
-            clientInfo.put("isEndDateConfirmed", new JSONString(isEndDateConfirmedF.getBox().getFormValue()));
+            clientInfo.put("isEndDateConfirmed", new JSONString(isEndDateConfirmedF.getValue().toString()));
         }
         if (ReadAllClientInfoPanel.instance().numberOfRecords > 0) {
             assignEntityValueFromField("endPreviousProject", clientInfo);
             assignEntityValueFromField("previousProjectEndDate", clientInfo);
         }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
-            //          assignEntityValueFromField("payRate", clientInfo);
             assignEntityValueFromField("billingRate", clientInfo);
             assignEntityValueFromField("billingRateDuration", clientInfo);
-            //          assignEntityValueFromField("overTimePayRate", clientInfo);
             assignEntityValueFromField("overTimeBillingRate", clientInfo);
             assignEntityValueFromField("overTimeRateDuration", clientInfo);
             assignEntityValueFromField("invoiceFrequency", clientInfo);
@@ -247,7 +241,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         //Contract basic
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        entityFieldsPanel.add(hPanel);
+        addField("isEndDateConfirmed", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         if (ReadAllClientInfoPanel.instance().numberOfRecords > 0) {
             addField("endPreviousProject", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("previousProjectEndDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
@@ -256,11 +250,9 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             addDropDown("recruiter", selectRecruiterW);
             //Billing Information
             entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
-            //          addField("payRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addField("billingRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             String[] billingDuration = {"HOUR", "DAY", "MONTH", "WEEK"};
             addEnumField("billingRateDuration", false, false, billingDuration, Alignment.HORIZONTAL);
-            //          addField("overTimePayRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addEnumField("overTimeRateDuration", false, false, billingDuration, Alignment.HORIZONTAL);
             addEnumField("invoiceFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
@@ -303,6 +295,9 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         addDropDown("practice", selectPractiseWidgetF);
         addEnumField("sectorsAndBUs", false, true, ConsultingServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
         sectorsF = (EnumField) fields.get("sectorsAndBUs");
+        endDateF = (DateField) fields.get("endDate");
+        isEndDateConfirmedF = (BooleanField) fields.get("isEndDateConfirmed");
+        isEndDateConfirmedF.setVisible(false);
         entityFieldsPanel.add(submitForApprovalF);
         submitForApprovalF.setValue(true);
         alignFields();
@@ -344,7 +339,6 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     }
 
     public void populateEndDate() {
-        logger.info("urllllllllll : " + getProjectEndDate());
         HttpService.HttpServiceAsync.instance().doGet(getProjectEndDate(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
@@ -405,15 +399,9 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     @Override
     public void onValueChange(ValueChangeEvent event) {
         if (endDateF.getDate() != null) {
-            logger.info("on value change");
-            hPanel.clear();
-            hPanel.add(endDateF);
-            hPanel.add(isEndDateConfirmedF);
-
+            isEndDateConfirmedF.setVisible(true);
         } else {
-            logger.info("else part");
-            hPanel.add(endDateF);
-            hPanel.remove(isEndDateConfirmedF);
+            isEndDateConfirmedF.setVisible(false);
         }
     }
 }
