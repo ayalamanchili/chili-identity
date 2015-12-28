@@ -282,6 +282,9 @@ public class ClientInformationDto implements Serializable {
     protected String specialInvoiceInstructions;
 
     private ClientInformationStatus status;
+    
+    @Transient
+    protected Boolean isEndDateConfirmed;
     /**
      *
      */
@@ -833,4 +836,11 @@ public class ClientInformationDto implements Serializable {
         this.invoiceFrequency1099 = invoiceFrequency1099;
     }
 
+    public Boolean getIsEndDateConfirmed() {
+        return isEndDateConfirmed;
+    }
+
+    public void setIsEndDateConfirmed(Boolean isEndDateConfirmed) {
+        this.isEndDateConfirmed = isEndDateConfirmed;
+    }
 }
