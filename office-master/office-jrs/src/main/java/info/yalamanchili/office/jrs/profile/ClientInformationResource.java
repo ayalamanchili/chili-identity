@@ -142,6 +142,12 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
     public void projectOffBoarding(ProjectOffBoardingDto dto) {
         ProjectOffBoardingService.instance().startProjectOffBoardingTask(dto);
     }
+    
+    @GET
+    @Path("/endDate/{id}/{endPrevProj}")
+    public String getPrevProjEndDate(@PathParam("id")Long id, @PathParam("endPrevProj") Boolean endprevProj) {
+        return clientInformationDao.queryForPrevProjEndDate(id);
+    }
 
     @XmlRootElement
     @XmlType
