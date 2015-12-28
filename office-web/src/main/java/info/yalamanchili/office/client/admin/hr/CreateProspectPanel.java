@@ -80,7 +80,6 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         assignEntityValueFromField("processDocSentDate", entity);
         assignEntityValueFromField("comment", entity);
         entity.put("resumeURL", resumeUploadPanel.getFileName());
-        logger.info("prospect entity :" + entity);
         return entity;
     }
 
@@ -96,7 +95,6 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
 
                     @Override
                     public void onSuccess(String arg0) {
-                        //postCreateSuccess(arg0);
                         uploadResume(arg0);
                     }
                 });
