@@ -11,6 +11,7 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -18,6 +19,7 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.SearchComposite;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.SuggestBox;
+import info.yalamanchili.office.client.admin.vendor.VendorType;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -72,13 +74,18 @@ public class SearchClientpanel extends SearchComposite {
     @Override
     protected void addWidgets() {
         addField("name", DataType.STRING_FIELD);
+        addEnumField("clientinvFrequency", false, false, VendorType.names());
+        addField("city", DataType.STRING_FIELD);
+        addEnumField("state", false, false, USAStatesFactory.getStates().toArray(new String[0]));
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
         assignEntityValueFromField("name", entity);
-        logger.info(entity.toString());
+        assignEntityValueFromField("clientinvFrequency", entity);
+        assignEntityValueFromField("city", entity);
+        assignEntityValueFromField("state", entity);
         return entity;
     }
 
@@ -120,7 +127,7 @@ public class SearchClientpanel extends SearchComposite {
 
     @Override
     protected String getSearchURI(Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "client/search/" + start.toString() + "/"
+        return URL.encode(OfficeWelcome.constants.root_url() + "client/search-client/" + start.toString() + "/"
                 + limit.toString());
     }
 }

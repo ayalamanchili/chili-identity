@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.jrs.client;
 
+import com.google.common.base.Strings;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.types.Entry;
 import info.chili.dao.CRUDDao;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -139,10 +141,6 @@ public class ClientResource extends CRUDResource<Client> {
     public ProjectTable getProjects(@PathParam("id") long id, @PathParam("start") int start,
             @PathParam("limit") int limit) {
         ProjectTable tableObj = new ProjectTable();
-        Client elient = (Client) getDao().findById(id);
-// To do - get project information from Project object using Client id
-//        tableObj.setEntities(elient.getProjects());
-//        tableObj.setSize((long) elient.getProjects().size());
         return tableObj;
     }
 
@@ -365,6 +363,36 @@ public class ClientResource extends CRUDResource<Client> {
             result.add(entry);
         }
         return result;
+    }
+
+    @PUT
+    @Path("/search-client/{start}/{limit}")
+    public List<Client> search(ClientSearchDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {
+        TypedQuery<Client> q = em.createQuery(getSearchQuery(dto), Client.class);
+        return q.getResultList();
+    }
+
+    protected String getSearchQuery(ClientSearchDto dto) {
+        StringBuilder queryStr = new StringBuilder();
+        queryStr.append("SELECT c from ").append(Client.class.getCanonicalName()).append(" as c");
+        if (!Strings.isNullOrEmpty(dto.getCity()) || !Strings.isNullOrEmpty(dto.getState())) {
+            queryStr.append(" join c.locations as clientLocations");
+        }
+        queryStr.append("  where ");
+        if (!Strings.isNullOrEmpty(dto.getName())) {
+            queryStr.append("name LIKE '%").append(dto.getName().trim()).append("%' ").append(" and ");
+        }
+        if (dto.getClientinvFrequency() != null) {
+            queryStr.append("clientinvFrequency LIKE '%").append(dto.getClientinvFrequency().name().trim()).append("%' ").append(" and ");
+        }
+        if (!Strings.isNullOrEmpty(dto.getCity())) {
+            queryStr.append("lower(clientLocations.city) LIKE '%").append(dto.getCity().toLowerCase().trim()).append("%' ").append(" and ");
+        }
+
+        if (!Strings.isNullOrEmpty(dto.getState())) {
+            queryStr.append("clientLocations.state LIKE '%").append(dto.getState().trim()).append("%' ").append(" and ");
+        }
+        return queryStr.toString().substring(0, queryStr.toString().lastIndexOf("and"));
     }
 
     @XmlRootElement
