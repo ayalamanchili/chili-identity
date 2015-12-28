@@ -277,9 +277,10 @@ public class ContractService {
             dto.setPractice(ci.getPractice().getName());
         }
         // set color coding flags
-        if (ci.getStartDate().before(new Date()) && ci.getEndDate() != null && ci.getEndDate().after(new Date())) {
+        if  ((ci.getStartDate().before(new Date()) && ci.getEndDate() != null && ci.getEndDate().after(new Date())) ||
+            ((ci.getStartDate().before(new Date())) && ci.getEndDate() == null))    {
             dto.setIsActive(Boolean.TRUE);
-        }
+        } 
         if (ci.getStartDate().after(new Date())) {
             dto.setIsStarted(Boolean.FALSE);
         }
