@@ -33,13 +33,12 @@ public class ClientInformationDao extends CRUDDao<ClientInformation> {
         return super.save(entity);
     }
 
-    @CacheEvict(value = OfficeCacheKeys.CLIENTINFORMATION, allEntries = true)
     public String queryForPrevProjEndDate(Long id) {
         Query query1 = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " WHERE employee.id=:employeeIdParam AND endDate = (select max(endDate) from ClientInformation)", entityCls);
         query1.setParameter("employeeIdParam", id);
         ClientInformation ci = (ClientInformation) query1.getSingleResult();
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-        return sdf.format(ci.getClientProject().getEndDate());
+        return sdf.format(ci.getEndDate());
     }
 
     @Override
