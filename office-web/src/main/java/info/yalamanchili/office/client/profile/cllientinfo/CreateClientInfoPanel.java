@@ -78,13 +78,13 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         assignEntityValueFromField("consultantJobTitle", clientInfo);
         assignEntityValueFromField("company", clientInfo);
         assignEntityValueFromField("client", clientInfo);
-        assignEntityValueFromField("clientContact", clientInfo);
+        //assignEntityValueFromField("clientContact", clientInfo);
         assignEntityValueFromField("clientAPContacts", clientInfo);
         assignEntityValueFromField("clientLocation", clientInfo);
         assignEntityValueFromField("vendor", clientInfo);
-        assignEntityValueFromField("vendorContact", clientInfo);
+        //assignEntityValueFromField("vendorContact", clientInfo);
         assignEntityValueFromField("vendorAPContacts", clientInfo);
-        assignEntityValueFromField("vendorLocation", clientInfo);
+        //assignEntityValueFromField("vendorLocation", clientInfo);
         assignEntityValueFromField("vendorRecruiters", clientInfo);
         assignEntityValueFromField("middleVendor", clientInfo);
         assignEntityValueFromField("vendorPaymentTerms", clientInfo);
@@ -98,6 +98,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             assignEntityValueFromField("endPreviousProject", clientInfo);
             assignEntityValueFromField("previousProjectEndDate", clientInfo);
         }
+        clientInfo.put("recruiters", selectRecruiterW.getSelectedObjects());
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
             assignEntityValueFromField("billingRate", clientInfo);
             assignEntityValueFromField("billingRateDuration", clientInfo);
@@ -105,12 +106,10 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             assignEntityValueFromField("overTimeRateDuration", clientInfo);
             assignEntityValueFromField("invoiceFrequency", clientInfo);
             assignEntityValueFromField("invoiceDeliveryMethod", clientInfo);
-            clientInfo.put("recruiters", selectRecruiterW.getSelectedObjects());
-            assignEntityValueFromField("visaStatus", clientInfo);
             if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
                 assignEntityValueFromField("subcontractor", clientInfo);
                 assignEntityValueFromField("subcontractorContact", clientInfo);
-                assignEntityValueFromField("subcontractorAddress", clientInfo);
+                //assignEntityValueFromField("subcontractorAddress", clientInfo);
                 assignEntityValueFromField("subcontractorPayRate", clientInfo);
                 assignEntityValueFromField("subcontractorOvertimePayRate", clientInfo);
                 assignEntityValueFromField("subcontractorinvoiceFrequency", clientInfo);
@@ -119,13 +118,14 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             if (Auth.is1099(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
                 assignEntityValueFromField("payRate1099", clientInfo);
                 assignEntityValueFromField("overTimePayrate1099", clientInfo);
-                assignEntityValueFromField("payTimeDuration1099", clientInfo);
+                //assignEntityValueFromField("payTimeDuration1099", clientInfo);
                 assignEntityValueFromField("paymentTerms1099", clientInfo);
                 assignEntityValueFromField("invoiceFrequency1099", clientInfo);
             }
-            assignEntityValueFromField("terminationNotice", clientInfo);
-            assignEntityValueFromField("notes", clientInfo);
         }
+        assignEntityValueFromField("terminationNotice", clientInfo);
+        assignEntityValueFromField("notes", clientInfo);
+        assignEntityValueFromField("visaStatus", clientInfo);
         assignEntityValueFromField("practice", clientInfo);
         assignEntityValueFromField("sectorsAndBUs", clientInfo);
         logger.info(clientInfo.toString());
@@ -209,7 +209,8 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         entityFieldsPanel.add(getLineSeperatorTag("Client & Vendor Information"));
         addDropDown("client", new SelectClientWidget(false, true, Alignment.HORIZONTAL));
         entityFieldsPanel.add(addClientL);
-        addDropDown("clientContact", new SelectClientContactWidget(false, false, Alignment.HORIZONTAL));
+        addDropDown("clientLocation", new SelectClientLocationWidget(false, false, Alignment.HORIZONTAL));
+        //addDropDown("clientContact", new SelectClientContactWidget(false, false, Alignment.HORIZONTAL));
         selectClientAcctPayContact = new SelectClientAcctPayContact(false, false, Alignment.HORIZONTAL) {
             @Override
             public boolean enableMultiSelect() {
@@ -217,11 +218,10 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             }
         };
         addDropDown("clientAPContacts", selectClientAcctPayContact);
-        addDropDown("clientLocation", new SelectClientLocationWidget(false, false, Alignment.HORIZONTAL));
         //Vendor
         addDropDown("vendor", new SelectVendorWidget(false, false, Alignment.HORIZONTAL));
         entityFieldsPanel.add(addVendorL);
-        addDropDown("vendorContact", new SelectVendorContactWidget(false, false, Alignment.HORIZONTAL));
+        //addDropDown("vendorContact", new SelectVendorContactWidget(false, false, Alignment.HORIZONTAL));
         selectVendorAPContactsW = new SelectVendorAcctPayContact(false, false, Alignment.HORIZONTAL) {
             @Override
             public boolean enableMultiSelect() {
@@ -229,7 +229,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             }
         };
         addDropDown("vendorAPContacts", selectVendorAPContactsW);
-        addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, false, Alignment.HORIZONTAL));
+        //addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, false, Alignment.HORIZONTAL));
         selectVendorRecruiterContactsWidget = new SelectVendorRecruiterContactWidget(false, false, Alignment.HORIZONTAL) {
             @Override
             public boolean enableMultiSelect() {
@@ -237,8 +237,8 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             }
         };
         addDropDown("vendorRecruiters", selectVendorRecruiterContactsWidget);
+        addField("vendorPaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addDropDown("middleVendor", new SelectMiddleVendorWidget(false, false, Alignment.HORIZONTAL));
-        addField("vendorPaymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         //Contract basic
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
@@ -247,8 +247,8 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             addField("endPreviousProject", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("previousProjectEndDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         }
+        addDropDown("recruiter", selectRecruiterW);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
-            addDropDown("recruiter", selectRecruiterW);
             //Billing Information
             entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
             addField("billingRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
@@ -263,26 +263,25 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                 entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
                 addDropDown("subcontractor", new SelectSubcontractorWidget(false, false, Alignment.HORIZONTAL));
                 addDropDown("subcontractorContact", new SelectSubcontractorContactWidget(false, false, Alignment.HORIZONTAL));
-                addDropDown("subcontractorAddress", new SelectSubcontractorLocationWidget(false, false, Alignment.HORIZONTAL));
+                //addDropDown("subcontractorAddress", new SelectSubcontractorLocationWidget(false, false, Alignment.HORIZONTAL));
                 addField("subcontractorPayRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
                 addField("subcontractorOvertimePayRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
                 addEnumField("subcontractorinvoiceFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
-                addField("subcontractorpaymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+                addField("subcontractorpaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
             }
             if (Auth.is1099(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
                 entityFieldsPanel.add(getLineSeperatorTag("1099 Contractor Information"));
                 addField("payRate1099", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
                 addField("overTimePayrate1099", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-                addField("paymentTerms1099", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-                addEnumField("payTimeDuration1099", false, false, billingDuration, Alignment.HORIZONTAL);
+                addField("paymentTerms1099", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+                //addEnumField("payTimeDuration1099", false, false, billingDuration, Alignment.HORIZONTAL);
                 addEnumField("invoiceFrequency1099", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
             }
-            entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
-            addField("visaStatus", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-            addField("terminationNotice", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-            addField("notes", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         }
-
+        entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
+        addField("visaStatus", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("terminationNotice", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("notes", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         if (TreeEmployeePanel.instance().getEntity().get("jobTitle") != null) {
             StringField jobTitleF = (StringField) fields.get("consultantJobTitle");
             jobTitleF.setValue(TreeEmployeePanel.instance().getEntity().get("jobTitle").isString().stringValue());
@@ -345,7 +344,6 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                     @Override
                     public void onResponse(String arg0) {
                         if (arg0 != null) {
-                            logger.info("argsssssssssss :" + arg0);
                             Date date2 = new Date(arg0);
                             previousProjectEndDate.setDate(date2);
                         }

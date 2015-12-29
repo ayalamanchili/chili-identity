@@ -28,8 +28,6 @@
                 Client                      : #{clientInfo.client.name}
                 Client AP Contact           : #{contractDto.clientAPContact}
                 Vendor                      : #{clientInfo.vendor.name}
-                Vendor Location             : #{contractDto.vendorLocation}
-                Vendor Contact              : #{contractDto.vendorContact}
                 Vendor AP Contact           : #{contractDto.vendorAPContact}
                 Vendor Payment Terms        : #{contractDto.vendorPaymentTerms}
                 Project Start Date          : #{clientInfo.startDate}
@@ -105,8 +103,6 @@
                 Client                      : #{clientInfo.client.name}
                 Client AP Contact           : #{contractDto.clientAPContact}
                 Vendor                      : #{clientInfo.vendor.name}
-                Vendor Location             : #{contractDto.vendorLocation}
-                Vendor Contact              : #{contractDto.vendorContact}
                 Vendor AP Contact           : #{contractDto.vendorAPContact}
                 Vendor Payment Terms        : #{contractDto.vendorPaymentTerms}
                 Project Start Date          : #{clientInfo.startDate}

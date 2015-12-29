@@ -246,7 +246,7 @@ public class ClientInformationService {
 
     protected void updatePreviousProjectEndDate(Employee emp, ClientInformation ci) {
         ClientInformation previousClientInformation = null;
-        Query query = em.createQuery("from ClientInformation where employee =:emp order by startDate desc");
+        Query query = em.createQuery("from ClientInformation where employee =:emp order by endDate desc");
         query.setParameter("emp", emp);
         if (query.getResultList().size() > 0) {
             previousClientInformation = (ClientInformation) query.getResultList().get(0);
