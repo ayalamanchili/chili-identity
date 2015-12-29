@@ -64,6 +64,7 @@ public class SearchContractsPanel extends SearchComposite {
         addEnumField("employeeType", false, false, employeeTypeStrs);
         addEnumField("company", false, false, ClientInformationCompany.names());
         addField("recruiter", DataType.STRING_FIELD);
+        addEnumField("status", false, false, ClientInformationStatus.names());
     }
 
     @Override
@@ -85,7 +86,7 @@ public class SearchContractsPanel extends SearchComposite {
         assignEntityValueFromField("employeeType", entity);
         assignEntityValueFromField("company", entity);
         assignEntityValueFromField("recruiter", entity);
-        logger.info(entity.toString());
+        assignEntityValueFromField("status", entity);
         return entity;
     }
 

@@ -7,7 +7,7 @@
  */
 package info.yalamanchili.office.client;
 
-import static info.chili.docs.ExcelUtils.getCellStringValue;
+import com.google.common.base.Strings;
 import info.yalamanchili.office.dto.client.ContractDto;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import java.util.Date;
@@ -27,7 +27,6 @@ import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dto.client.ContractSearchDto;
 import info.yalamanchili.office.entity.client.InvoiceFrequency;
-import info.yalamanchili.office.entity.profile.BillingRate;
 import info.yalamanchili.office.entity.profile.ClientInformationStatus;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -189,7 +188,9 @@ public class ContractService {
         if ((searchDto.getEndDate()) != null) {
             queryStr.append("ci.endDate between :endDateStartParam and :endDateEndParam").append(" and ");
         }
-
+        if (!Strings.isNullOrEmpty(searchDto.getStatus())) {
+            queryStr.append("ci.status = '").append(searchDto.getStatus().trim()).append("' ").append(" and ");
+        }
         return queryStr.toString().substring(0, queryStr.toString().lastIndexOf("and"));
     }
 
@@ -277,10 +278,10 @@ public class ContractService {
             dto.setPractice(ci.getPractice().getName());
         }
         // set color coding flags
-        if  ((ci.getStartDate().before(new Date()) && ci.getEndDate() != null && ci.getEndDate().after(new Date())) ||
-            ((ci.getStartDate().before(new Date())) && ci.getEndDate() == null))    {
+        if ((ci.getStartDate().before(new Date()) && ci.getEndDate() != null && ci.getEndDate().after(new Date()))
+                || ((ci.getStartDate().before(new Date())) && ci.getEndDate() == null)) {
             dto.setIsActive(Boolean.TRUE);
-        } 
+        }
         if (ci.getStartDate().after(new Date())) {
             dto.setIsStarted(Boolean.FALSE);
         }
@@ -361,7 +362,7 @@ public class ContractService {
             dto.setSubcontractorinvoiceFrequency(InvoiceFrequency.valueOf((String) obj));
         }
     }
-    
+
     public void getEffectivePayRate1099(ClientInformation ci, ContractDto dto) {
         dto.setPayRate1099(null);
         Query query = em.createNativeQuery("Select subContractorPayRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and subContractorPayRate is not null and effectiveDate <= NOW() order by effectiveDate desc LIMIT 1");

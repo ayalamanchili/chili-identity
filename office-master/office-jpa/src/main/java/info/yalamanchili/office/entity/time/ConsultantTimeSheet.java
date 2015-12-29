@@ -45,7 +45,7 @@ public class ConsultantTimeSheet extends AbstractEntity {
      *
      */
     @NotNull(message = "{hours.not.empty.msg}")
-    @Digits(integer = 3, fraction = 4, message = "{tmesheet.hours.format.invalid.msg}")
+    @Digits(integer = 4, fraction = 4, message = "{tmesheet.hours.format.invalid.msg}")
     protected BigDecimal hours;
     /**
      * Employee

@@ -316,11 +316,6 @@ public class ClientInformationService {
                 ci.setInvoiceFrequency1099(billingRate.getSubContractorInvoiceFrequency());
             }
         }
-
-        if ((billingRate.getEffectiveDate().before(ci.getStartDate()))
-                || (billingRate.getEffectiveDate().before(new Date()))) {
-            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid Effective Date", "Effective Date can't be before Project Start Date or Back Date");
-        }
         billingRate.setUpdatedBy(OfficeSecurityService.instance().getCurrentUserName());
         billingRate.setUpdatedTs(Calendar.getInstance().getTime());
         billingRate.setClientInformation(ci);
@@ -431,7 +426,7 @@ public class ClientInformationService {
                 ciEntity.setVendorLocation(address);
             }
         }
-        if(ci.getEndDate()!=null){
+        if (ci.getEndDate() != null) {
             ciEntity.setEndDate(ci.getEndDate());
         }
         if (ci.getSubcontractor() == null) {

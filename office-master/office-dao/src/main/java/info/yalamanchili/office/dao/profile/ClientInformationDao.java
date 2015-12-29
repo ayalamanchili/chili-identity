@@ -10,7 +10,7 @@ import info.yalamanchili.office.entity.profile.ClientInformation;
 import java.text.SimpleDateFormat;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Scope;
 
@@ -34,11 +34,15 @@ public class ClientInformationDao extends CRUDDao<ClientInformation> {
     }
 
     public String queryForPrevProjEndDate(Long id) {
-        Query query1 = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " WHERE employee.id=:employeeIdParam AND endDate = (select max(endDate) from ClientInformation)", entityCls);
-        query1.setParameter("employeeIdParam", id);
-        ClientInformation ci = (ClientInformation) query1.getSingleResult();
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-        return sdf.format(ci.getEndDate());
+        TypedQuery<ClientInformation> q = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " WHERE employee.id=:employeeIdParam AND endDate = (select max(endDate) from ClientInformation)", entityCls);
+        q.setParameter("employeeIdParam", id);
+        if (q.getResultList().size() > 0) {
+            ClientInformation ci = q.getSingleResult();
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+            return sdf.format(ci.getEndDate());
+        } else {
+            return null;
+        }
     }
 
     @Override
