@@ -97,7 +97,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
             response.setStatus(emp.getUser().isEnabled());
             if (response.isActive() == false) {
                 emp.setEndDate(response.getEndDate());
-            }else{
+            } else {
                 emp.setEndDate(null);
             }
         }
@@ -204,15 +204,6 @@ public class EmployeeResource extends CRUDResource<Employee> {
             result.add(new Entry(key, values.get(key)));
         }
         return result;
-    }
-    
-    @GET
-    @Path("/search-emp-between-days/{start}/{limit}")
-    @Cacheable(OfficeCacheKeys.EMPLOYEES)
-    public List<Employee> table(@PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate) {
-        List<Employee> emps = new ArrayList();
-        emps = employeeDao.queryBetweenDays(start, limit, startDate, endDate);
-        return emps;
     }
 
     /* Address */
