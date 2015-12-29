@@ -431,6 +431,9 @@ public class ClientInformationService {
                 ciEntity.setVendorLocation(address);
             }
         }
+        if(ci.getEndDate()!=null){
+            ciEntity.setEndDate(ci.getEndDate());
+        }
         if (ci.getSubcontractor() == null) {
             ciEntity.setSubcontractor(null);
         } else {
