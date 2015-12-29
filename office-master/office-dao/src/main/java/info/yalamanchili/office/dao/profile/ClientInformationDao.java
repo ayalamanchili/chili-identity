@@ -8,12 +8,10 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import java.text.SimpleDateFormat;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 
 import org.springframework.stereotype.Repository;
@@ -34,8 +32,8 @@ public class ClientInformationDao extends CRUDDao<ClientInformation> {
     public ClientInformation save(ClientInformation entity) {
         return super.save(entity);
     }
-    
-    @Cacheable(value = OfficeCacheKeys.CLIENTINFORMATION, key = "{#root.methodName,#id}")
+
+    @CacheEvict(value = OfficeCacheKeys.CLIENTINFORMATION, allEntries = true)
     public String queryForPrevProjEndDate(Long id) {
         Query query1 = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " WHERE employee.id=:employeeIdParam AND endDate = (select max(endDate) from ClientInformation)", entityCls);
         query1.setParameter("employeeIdParam", id);
@@ -43,7 +41,6 @@ public class ClientInformationDao extends CRUDDao<ClientInformation> {
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         return sdf.format(ci.getClientProject().getEndDate());
     }
-
 
     @Override
     public EntityManager getEntityManager() {
