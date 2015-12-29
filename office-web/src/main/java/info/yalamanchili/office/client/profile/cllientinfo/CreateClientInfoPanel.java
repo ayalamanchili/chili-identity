@@ -24,17 +24,13 @@ import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
 import info.yalamanchili.office.client.admin.clientlocation.SelectClientLocationWidget;
 import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
-import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorContactWidget;
-import info.yalamanchili.office.client.admin.vendorlocation.SelectVendorLocationsWidget;
 import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.admin.client.CreateClientPanel;
 import info.yalamanchili.office.client.admin.subcntrcontact.SelectSubcontractorContactWidget;
-import info.yalamanchili.office.client.admin.subcntrlocation.SelectSubcontractorLocationWidget;
 import info.yalamanchili.office.client.admin.subcontractor.SelectSubcontractorWidget;
 import info.yalamanchili.office.client.admin.vendor.CreateVendorPanel;
 import info.yalamanchili.office.client.admin.vendor.SelectMiddleVendorWidget;
@@ -47,6 +43,7 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.json.client.JSONString;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientAcctPayContact;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
@@ -59,6 +56,8 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     protected Anchor addVendorL = new Anchor("Vendor not present? submit request");
     SelectPracticeWidget selectPractiseWidgetF = new SelectPracticeWidget(false, true, Alignment.HORIZONTAL);
     protected BooleanField submitForApprovalF = new BooleanField(OfficeWelcome.constants, "Submit For Approval", "ClientInfo", false, false, Alignment.HORIZONTAL);
+    protected boolean isSub = false;
+    protected boolean is1099 = false;
 
     public CreateClientInfoPanel(CreateCompositeType type) {
         super(type);
@@ -268,6 +267,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                 addField("subcontractorOvertimePayRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
                 addEnumField("subcontractorinvoiceFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
                 addField("subcontractorpaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+                isSub = true;
             }
             if (Auth.is1099(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
                 entityFieldsPanel.add(getLineSeperatorTag("1099 Contractor Information"));
@@ -276,6 +276,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                 addField("paymentTerms1099", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
                 //addEnumField("payTimeDuration1099", false, false, billingDuration, Alignment.HORIZONTAL);
                 addEnumField("invoiceFrequency1099", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+                is1099 = true;
             }
         }
         entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
@@ -403,4 +404,26 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             isEndDateConfirmedF.setVisible(false);
         }
     }
+
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        boolean valid = true;
+        if (submitForApprovalF.getValue()) {
+            if (isSub) {
+                CurrencyField subPay = (CurrencyField) fields.get("subcontractorPayRate");
+                if (subPay.getCurrency() == null) {
+                    subPay.setMessage("PayRate may not be null");
+                    valid = false;
+                }
+            } else if (is1099) {
+                CurrencyField pay1099 = (CurrencyField) fields.get("payRate1099");
+                if (pay1099.getCurrency() == null) {
+                    pay1099.setMessage("PayRate may not be null");
+                    valid = false;
+                }
+            }
+        }
+        return valid;
+    }
+
 }

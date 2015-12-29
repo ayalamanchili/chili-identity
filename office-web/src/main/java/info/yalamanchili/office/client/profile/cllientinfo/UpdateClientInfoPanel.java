@@ -37,6 +37,7 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import info.chili.gwt.composite.BaseFieldWithTextBox;
 import info.chili.gwt.fields.BooleanField;
+import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientAcctPayContact;
@@ -52,6 +53,8 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     protected BooleanField submitForApprovalF = new BooleanField(OfficeWelcome.constants, "Submit For Approval", "ClientInfo", false, false, Alignment.HORIZONTAL);
     protected boolean isSubOr1099 = false;
     protected String cistatus;
+        protected boolean isSub = false;
+    protected boolean is1099 = false;
 
     public UpdateClientInfoPanel(JSONObject entity) {
         initUpdateComposite(entity, "ClientInfo", OfficeWelcome.constants);
@@ -351,6 +354,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
                 addField("subcontractorpaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
                 addField("subcontractorw4Filled", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
                 addField("subcontractCOI", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+                isSub = true;
             }
             if (Auth.is1099(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
                 entityFieldsPanel.add(getLineSeperatorTag("1099 Contractor Information"));
@@ -364,6 +368,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
                     addEnumField("invoiceFrequency1099", true, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
                 }
                 addField("paymentTerms1099", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+                is1099 = true;
             }
         }
         entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
@@ -470,5 +475,26 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "clientinformation/save" + "?submitForApproval=" + submitForApprovalF.getValue();
+    }
+
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        boolean valid = true;
+        if (submitForApprovalF.getValue()) {
+            if (isSub) {
+                CurrencyField subPay = (CurrencyField) fields.get("subcontractorPayRate");
+                if (subPay.getCurrency() == null) {
+                    subPay.setMessage("PayRate may not be null");
+                    valid = false;
+                }
+            } else if (is1099) {
+                CurrencyField pay1099 = (CurrencyField) fields.get("payRate1099");
+                if (pay1099.getCurrency() == null) {
+                    pay1099.setMessage("PayRate may not be null");
+                    valid = false;
+                }
+            }
+        }
+        return valid;
     }
 }

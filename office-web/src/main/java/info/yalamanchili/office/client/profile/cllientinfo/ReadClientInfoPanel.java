@@ -265,7 +265,7 @@ public class ReadClientInfoPanel extends ReadComposite {
         entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
         addField("visaStatus", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("terminationNotice", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("notes", true, false, DataType.TEXT_AREA_FIELD);
+        addField("notes", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         if (TreeEmployeePanel.instance().getEntity().get("employeeType") != null) {
             StringField jobTitleF = (StringField) fields.get("employeeType");
             jobTitleF.setValue(TreeEmployeePanel.instance().getEntity().get("employeeType").isObject().get("name").isString().stringValue());
