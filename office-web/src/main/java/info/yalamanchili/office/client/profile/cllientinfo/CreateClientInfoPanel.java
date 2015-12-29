@@ -167,6 +167,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     protected void addListeners() {
         addClientL.addClickHandler(this);
         addVendorL.addClickHandler(this);
+        submitForApprovalF.getBox().addClickHandler(this);
         if (endPreviousProjectFlagField != null) {
             endPreviousProjectFlagField.getBox().addClickHandler(this);
         }
@@ -298,7 +299,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         endDateF = (DateField) fields.get("endDate");
         isEndDateConfirmedF = (BooleanField) fields.get("isEndDateConfirmed");
         isEndDateConfirmedF.setVisible(false);
-        entityFieldsPanel.add(submitForApprovalF);
+        entityActionsPanel.add(submitForApprovalF);
         submitForApprovalF.setValue(true);
         alignFields();
     }
