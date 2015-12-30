@@ -498,6 +498,10 @@ public class ClientInformationService {
             vendor.getClients().add(client);
             VendorDao.instance().save(vendor);
         }
+        if (ci.getMiddleVendor() != null) {
+            middleVendor = VendorDao.instance().findById(ci.getMiddleVendor().getId());
+            ciEntity.setMiddleVendor(middleVendor);
+        }
         if (middleVendor != null) {
             project.setMiddleVendor(middleVendor);
             VendorDao.instance().save(middleVendor);
