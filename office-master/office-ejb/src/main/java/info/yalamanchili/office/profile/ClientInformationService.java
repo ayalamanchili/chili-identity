@@ -316,6 +316,9 @@ public class ClientInformationService {
                 ci.setInvoiceFrequency1099(billingRate.getSubContractorInvoiceFrequency());
             }
         }
+        if (billingRate.getEffectiveDate().before(ci.getStartDate())) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid Effective Date", "Effective Date can't be before Project Start Date");
+        }
         billingRate.setUpdatedBy(OfficeSecurityService.instance().getCurrentUserName());
         billingRate.setUpdatedTs(Calendar.getInstance().getTime());
         billingRate.setClientInformation(ci);
@@ -351,6 +354,33 @@ public class ClientInformationService {
         ClientInformation ciEntity = em.find(ClientInformation.class, ci.getId());
         validate(ci, submitForApproval);
         String abbreviation = getCompanyAbbreviation(ci.getCompany());
+        if (!ClientInformationStatus.PENDING_CONTRACTS_SUBMIT.equals(ci.getStatus()) && !submitForApproval) {
+            if (ciEntity.getBillingRate() != null) {
+                ci.setBillingRate(ciEntity.getBillingRate());
+            }
+            if (ciEntity.getOverTimeBillingRate() != null) {
+                ci.setOverTimeBillingRate(ciEntity.getOverTimeBillingRate());
+            }
+            Employee emp = ciEntity.getEmployee();
+            if (emp.getEmployeeType().getName().equals(EmployeeType.SUBCONTRACTOR)) {
+                if (ciEntity.getSubcontractorPayRate() != null) {
+                    ci.setSubcontractorPayRate(ciEntity.getSubcontractorPayRate());
+                }
+                if (ciEntity.getSubcontractorOvertimePayRate() != null) {
+                    ci.setSubcontractorOvertimePayRate(ciEntity.getSubcontractorOvertimePayRate());
+                }
+
+            }
+            if (emp.getEmployeeType().getName().equals(EmployeeType._1099_CONTRACTOR)) {
+                if (ciEntity.getPayRate1099() != null) {
+                    ci.setPayRate1099(ciEntity.getPayRate1099());
+                }
+                if (ciEntity.getOverTimePayrate1099() != null) {
+                    ci.setOverTimePayrate1099(ciEntity.getOverTimePayrate1099());
+                }
+
+            }
+        }
         BeanMapper.merge(ci, ciEntity);
         Project project = ProjectDao.instance().findById(ci.getClientProject().getId());
         Client client;
