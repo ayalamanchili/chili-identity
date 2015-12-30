@@ -19,7 +19,7 @@ import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.TechnologyGroupDao;
 import info.yalamanchili.office.dto.profile.EmergencyContactDto;
-import info.yalamanchili.office.dto.profile.EmployeeDto;
+import info.yalamanchili.office.dao.profile.EmployeeDto;
 import info.yalamanchili.office.dto.profile.EmployeeReadDto;
 import info.yalamanchili.office.dto.profile.EmployeeSaveDto;
 import info.yalamanchili.office.dto.profile.EmployeeSearchDto;
@@ -132,10 +132,10 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @Path("/{start}/{limit}")
     @Cacheable(OfficeCacheKeys.EMPLOYEES)
     public EmployeeTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
-        List<info.yalamanchili.office.dto.profile.EmployeeDto> employees = new ArrayList<info.yalamanchili.office.dto.profile.EmployeeDto>();
+        List<info.yalamanchili.office.dao.profile.EmployeeDto> employees = new ArrayList<info.yalamanchili.office.dao.profile.EmployeeDto>();
         EmployeeTable tableObj = new EmployeeTable();
         for (Object empObj : employeeDao.query(start, limit)) {
-            employees.add(info.yalamanchili.office.dto.profile.EmployeeDto.map(mapper, (Employee) empObj));
+            employees.add(info.yalamanchili.office.dao.profile.EmployeeDto.map(mapper, (Employee) empObj));
         }
         tableObj.setEntities(employees);
         tableObj.setSize(employeeDao.size());
@@ -404,19 +404,17 @@ public class EmployeeResource extends CRUDResource<Employee> {
 
     @GET
     @Path("/searchEmployee/{start}/{limit}")
-    public List<info.yalamanchili.office.dto.profile.EmployeeDto> searchEmployee(@PathParam("start") int start,
+    @Transactional(readOnly = true)
+    public List<info.yalamanchili.office.dao.profile.EmployeeDto> searchEmployee(@PathParam("start") int start,
             @PathParam("limit") int limit, @QueryParam("text") String text, @QueryParam("column") List<String> columns, @QueryParam("includeDeactivated") boolean includeDeactivated) {
-        List<info.yalamanchili.office.dto.profile.EmployeeDto> employees = new ArrayList<>();
-        for (Object empObj : employeeDao.sqlSearch(text, start, limit, columns, includeDeactivated)) {
-            employees.add(info.yalamanchili.office.dto.profile.EmployeeDto.map(mapper, (Employee) empObj));
-        }
-        return employees;
+        return employeeDao.searchEmployee(text, start, limit, columns, includeDeactivated);
     }
 
     @PUT
     @Path("/searchEmployee/{start}/{limit}")
-    public List<info.yalamanchili.office.dto.profile.EmployeeDto> searchEmployee(EmployeeSearchDto entity, @PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("includeDeactivated") boolean includeDeactivated) {
-        List<info.yalamanchili.office.dto.profile.EmployeeDto> employees = new ArrayList<info.yalamanchili.office.dto.profile.EmployeeDto>();
+    @Transactional(readOnly = true)
+    public List<info.yalamanchili.office.dao.profile.EmployeeDto> searchEmployee(EmployeeSearchDto entity, @PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("includeDeactivated") boolean includeDeactivated) {
+        List<info.yalamanchili.office.dao.profile.EmployeeDto> employees = new ArrayList<info.yalamanchili.office.dao.profile.EmployeeDto>();
         List<Employee> result = null;
         if (entity.getCompanyContacts().size() > 0 && entity.getCompanyContacts().get(0).getContact() != null) {
             result = employeeDao.searchByCompanyContact(entity.getCompanyContacts().get(0).getContact(), start, limit);
@@ -426,7 +424,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
             result = getDao().search(mapper.map(entity, Employee.class), start, limit, new SearchUtils.SearchCriteria());
         }
         for (Object empObj : result) {
-            employees.add(info.yalamanchili.office.dto.profile.EmployeeDto.map(mapper, (Employee) empObj));
+            employees.add(info.yalamanchili.office.dao.profile.EmployeeDto.map(mapper, (Employee) empObj));
         }
         return employees;
     }
@@ -463,7 +461,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     public static class EmployeeTable implements java.io.Serializable {
 
         protected Long size;
-        protected List<info.yalamanchili.office.dto.profile.EmployeeDto> entities;
+        protected List<info.yalamanchili.office.dao.profile.EmployeeDto> entities;
 
         public Long getSize() {
             return size;
@@ -474,11 +472,11 @@ public class EmployeeResource extends CRUDResource<Employee> {
         }
 
         @XmlElement
-        public List<info.yalamanchili.office.dto.profile.EmployeeDto> getEntities() {
+        public List<info.yalamanchili.office.dao.profile.EmployeeDto> getEntities() {
             return entities;
         }
 
-        public void setEntities(List<info.yalamanchili.office.dto.profile.EmployeeDto> entities) {
+        public void setEntities(List<info.yalamanchili.office.dao.profile.EmployeeDto> entities) {
             this.entities = entities;
         }
     }

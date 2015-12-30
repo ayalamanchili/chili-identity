@@ -12,7 +12,7 @@ import info.chili.commons.pdf.PDFUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
-import info.yalamanchili.office.dto.profile.EmployeeDto;
+import info.yalamanchili.office.dao.profile.EmployeeDto;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.template.TemplateService;

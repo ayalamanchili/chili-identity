@@ -13,7 +13,7 @@ import info.chili.reporting.ReportGenerator;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dto.profile.EmployeeDto;
+import info.yalamanchili.office.dao.profile.EmployeeDto;
 import info.yalamanchili.office.entity.profile.Certification;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.Skill;
@@ -54,10 +54,10 @@ public class RecruitingReportsService {
     }
 
     public List<EmployeeDto> searchSkillSet(SkillSetSearchDto searchDto) {
-        List<info.yalamanchili.office.dto.profile.EmployeeDto> employees = new ArrayList<>();
+        List<info.yalamanchili.office.dao.profile.EmployeeDto> employees = new ArrayList<>();
         TypedQuery<Employee> query = em.createQuery(getSearchSkillSetQueryString(searchDto), Employee.class);
         for (Object empObj : query.getResultList()) {
-            employees.add(info.yalamanchili.office.dto.profile.EmployeeDto.map(mapper, (Employee) empObj));
+            employees.add(info.yalamanchili.office.dao.profile.EmployeeDto.map(mapper, (Employee) empObj));
         }
         return employees;
     }

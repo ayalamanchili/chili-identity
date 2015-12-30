@@ -8,6 +8,8 @@
  */
 package info.yalamanchili.office.dto.profile;
 
+import info.yalamanchili.office.dao.profile.EmployeeDto;
+
 /**
  *
  * @author ayalamanchili
