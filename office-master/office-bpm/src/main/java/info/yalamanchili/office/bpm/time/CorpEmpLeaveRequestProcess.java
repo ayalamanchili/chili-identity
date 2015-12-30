@@ -198,6 +198,7 @@ public class CorpEmpLeaveRequestProcess extends RuleBasedTaskDelegateListner imp
     protected void sendNotifyEmplyeeNotification(String status, DelegateTask task) {
         List<Entry> notifyEmployees = (List<Entry>) task.getExecution().getVariable("notifyEmployees");
         Email email = new Email();
+        
         if (notifyEmployees != null) {
             for (Entry e : notifyEmployees) {
                 email.addTo(EmployeeDao.instance().getPrimaryEmail(e.getId()));
@@ -205,6 +206,7 @@ public class CorpEmpLeaveRequestProcess extends RuleBasedTaskDelegateListner imp
         }
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         CorporateTimeSheet ts = getTimeSheetFromTask(task);
+        email.setSubject("Leave Request " + status + " For: " + emp.getFirstName() + " " + emp.getLastName());
         String summary = "Leave Request " + status + " For: " + emp.getFirstName() + " " + emp.getLastName() + " : Start Date " + ts.getStartDate() + " End Date " + ts.getEndDate();
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
         email.setBody(summary);
