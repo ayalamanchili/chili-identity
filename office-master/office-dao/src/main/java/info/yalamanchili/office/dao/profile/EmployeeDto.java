@@ -72,6 +72,27 @@ public class EmployeeDto implements Serializable {
     protected Company company;
     protected String ssn;
 
+    public EmployeeDto(Long id, String firstName, String lastName, String middleInitial, String employeeId, Date dateOfBirth, Sex sex, Branch branch, WorkStatus workStatus, String imageURL, Date startDate, String email, String phoneNumber, String phoneNumberExt, String jobTitle, EmployeeType employeeType, Company company, String ssn) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.middleInitial = middleInitial;
+        this.employeeId = employeeId;
+        this.dateOfBirth = dateOfBirth;
+        this.sex = sex;
+        this.branch = branch;
+        this.workStatus = workStatus;
+        this.imageURL = imageURL;
+        this.startDate = startDate;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.phoneNumberExt = phoneNumberExt;
+        this.jobTitle = jobTitle;
+        this.employeeType = employeeType;
+        this.company = company;
+        this.ssn = ssn;
+    }
+
     public EmployeeDto() {
     }
 

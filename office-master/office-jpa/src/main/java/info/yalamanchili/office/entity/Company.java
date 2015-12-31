@@ -78,6 +78,10 @@ public class Company extends AbstractEntity {
 
     protected String abbreviation;
 
+    public Company(String name) {
+        this.name = name;
+    }
+
     /**
      * @generated
      */

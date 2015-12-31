@@ -20,7 +20,7 @@ import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.TechnologyGroupDao;
 import info.yalamanchili.office.dto.profile.EmergencyContactDto;
 import info.yalamanchili.office.dao.profile.EmployeeDto;
-import info.yalamanchili.office.dto.profile.EmployeeReadDto;
+import info.yalamanchili.office.dao.profile.EmployeeReadDto;
 import info.yalamanchili.office.dto.profile.EmployeeSaveDto;
 import info.yalamanchili.office.dto.profile.EmployeeSearchDto;
 import info.yalamanchili.office.dto.profile.SkillSetDto;
@@ -90,18 +90,9 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @GET
     @Path("/{id}")
     @Override
+    @Transactional(readOnly = true)
     public EmployeeReadDto read(@PathParam("id") Long id) {
-        Employee emp = employeeDao.findById(id);
-        EmployeeReadDto response = mapper.map(emp, EmployeeReadDto.class);
-        if (emp.getUser() != null) {
-            response.setStatus(emp.getUser().isEnabled());
-            if (response.isActive() == false) {
-                emp.setEndDate(response.getEndDate());
-            } else {
-                emp.setEndDate(null);
-            }
-        }
-        return response;
+        return employeeDao.read(id);
     }
 
     @PUT

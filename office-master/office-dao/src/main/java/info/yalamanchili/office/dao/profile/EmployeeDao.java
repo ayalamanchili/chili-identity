@@ -63,6 +63,13 @@ public class EmployeeDao extends CRUDDao<Employee> {
         super(Employee.class);
     }
 
+    public EmployeeReadDto read(Long id) {
+        String queryStr = "SELECT NEW " + EmployeeReadDto.class.getCanonicalName() + "(emp.id, emp.firstName, emp.lastName, emp.middleInitial, emp.employeeId, emp.imageURL, emp.jobTitle, emp.ssn, emp.dateOfBirth, emp.startDate, emp.endDate, emp.sex)" + " FROM " + Employee.class.getCanonicalName() + " emp where id=:employeeIdParam";
+        TypedQuery<EmployeeReadDto> query = getEntityManager().createQuery(queryStr, EmployeeReadDto.class);
+        query.setParameter("employeeIdParam", id);
+        return query.getSingleResult();
+    }
+
     @Transactional(readOnly = true)
     @Override
     public List<Employee> query(int start, int limit) {
