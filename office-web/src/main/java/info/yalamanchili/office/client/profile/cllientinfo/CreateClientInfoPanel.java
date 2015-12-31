@@ -41,10 +41,13 @@ import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWi
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.CurrencyField;
+import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientAcctPayContact;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
 import java.util.Date;
@@ -55,6 +58,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     protected Anchor addClientL = new Anchor("Client not present? submit request");
     protected Anchor addVendorL = new Anchor("Vendor not present? submit request");
     SelectPracticeWidget selectPractiseWidgetF = new SelectPracticeWidget(false, true, Alignment.HORIZONTAL);
+    SelectVendorWidget selectVendorWidgetF = new SelectVendorWidget(false, true, Alignment.HORIZONTAL);
     protected BooleanField submitForApprovalF = new BooleanField(OfficeWelcome.constants, "Submit For Approval", "ClientInfo", false, false, Alignment.HORIZONTAL);
     protected boolean isSub = false;
     protected boolean is1099 = false;
@@ -167,6 +171,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         addClientL.addClickHandler(this);
         addVendorL.addClickHandler(this);
         submitForApprovalF.getBox().addClickHandler(this);
+        selectVendorWidgetF.getListBox().addChangeHandler(this);
         if (endPreviousProjectFlagField != null) {
             endPreviousProjectFlagField.getBox().addClickHandler(this);
         }
@@ -218,7 +223,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         };
         addDropDown("clientAPContacts", selectClientAcctPayContact);
         //Vendor
-        addDropDown("vendor", new SelectVendorWidget(false, false, Alignment.HORIZONTAL));
+        addDropDown("vendor", selectVendorWidgetF);
         entityFieldsPanel.add(addVendorL);
         //addDropDown("vendorContact", new SelectVendorContactWidget(false, false, Alignment.HORIZONTAL));
         selectVendorAPContactsW = new SelectVendorAcctPayContact(false, false, Alignment.HORIZONTAL) {
@@ -353,6 +358,22 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         );
     }
 
+    public void loadVendor(String vendorEntityId) {
+        HttpService.HttpServiceAsync.instance().doGet(getVendor(vendorEntityId), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject vendor = (JSONObject) JSONParser.parseLenient(response);
+                        TextAreaField payTermF = (TextAreaField) fields.get("vendorPaymentTerms");
+                        payTermF.setValue(JSONUtils.toString(vendor, "paymentTerms"));
+                    }
+                });
+    }
+
+    protected String getVendor(String vendorEntityId) {
+        return OfficeWelcome.constants.root_url() + "vendor/" + vendorEntityId;
+    }
+
     private String getProjectEndDate() {
         return OfficeWelcome.constants.root_url() + "clientinformation/endDate/" + TreeEmployeePanel.instance().getEntityId() + "/" + endPreviousProjectFlagField.getValue();
     }
@@ -389,6 +410,11 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
 
             }
         }
+        if (event.getSource().equals(selectVendorWidgetF.getListBox())) {
+            String id = selectVendorWidgetF.getSelectedObject().get("id").isString().stringValue().trim();
+            loadVendor(id);
+        }
+
     }
 
     @Override
