@@ -122,61 +122,6 @@ public class OfficeServiceJobConfiguration {
     }
 
     @ManagedOperation
-    public void bisClientTableMigration() {
-        ClientDataTool.instance().migrateClientData();
-    }
-
-    @ManagedOperation
-    public void bisVendorTableMigration() {
-        VendorDataTool.instance().migrateVendorData();
-    }
-
-    @ManagedOperation
-    public void bisSubContractorTableMigration() {
-        SubContractorDataTool.instance().migrateSubContractorData();
-    }
-
-    @ManagedOperation
-    public void bisClientContactMigration() {
-        ClientContactDataTool.instance().migrateClientContactData();
-    }
-
-    @ManagedOperation
-    public void bisVendorContactMigration() {
-        VendorContactDataTool.instance().migrateVendorContactData();
-    }
-
-    @ManagedOperation
-    public void bisSubContractorContactMigration() {
-        SubContractorContactDataTool.instance().migrateSubContractorContactData();
-    }
-
-    @ManagedOperation
-    public void bisConsultantsDataMigration() {
-        OnBoardingDataTool.instance().migrateConsultantsData();
-    }
-
-    @ManagedOperation
-    public void bisCPDMigration() {
-        ClientInformationDataTool.instance().bisCPDMigration();
-    }
-
-    @ManagedOperation
-    public void bisBillingHistoryMigration() {
-        BillingHistoryDataTool.instance().migrateBillingHistoryData();
-    }
-
-    @ManagedOperation
-    public void bisCommentsMigration() {
-        CommentsDataTool.instance().bisCommentsMigration();
-    }
-
-    @ManagedOperation
-    public void migrateClientLocationsData() {
-        ClientLocationDataTool.instance().migrateClientLocationsData();
-    }
-
-    @ManagedOperation
     public void refreshExpenseReportBPMProcessEntities() {
         ExpenseReportService.instance().refreshExpenseReportBPMProcessEntities();
     }
