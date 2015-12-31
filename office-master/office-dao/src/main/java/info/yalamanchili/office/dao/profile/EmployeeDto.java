@@ -5,8 +5,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.dto.profile;
+package info.yalamanchili.office.dao.profile;
 
+import info.chili.commons.BeanMapper;
 import info.chili.security.SecurityUtils;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.Company;
@@ -22,7 +23,6 @@ import javax.persistence.Enumerated;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.dozer.Mapper;
@@ -73,6 +73,15 @@ public class EmployeeDto implements Serializable {
     protected String ssn;
 
     public EmployeeDto() {
+    }
+
+    public EmployeeDto(Long id, String firstName, String lastName, String jobTitle, String type, String email) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.jobTitle = jobTitle;
+        this.employeeType = new EmployeeType(type);
+        this.email = email;
     }
 
     public Long getId() {
@@ -233,7 +242,10 @@ public class EmployeeDto implements Serializable {
     }
 
     public static EmployeeDto map(Mapper mapper, info.yalamanchili.office.entity.profile.Employee entity) {
-        EmployeeDto dto = mapper.map(entity, EmployeeDto.class);
+        EmployeeDto dto = new EmployeeDto();
+        dto.setFirstName(entity.getFirstName());
+        dto.setLastName(entity.getLastName());
+        dto.setJobTitle(entity.getJobTitle());
         dto.setEmail(EmployeeDao.instance().getPrimaryEmail(entity));
         if (entity.getPhones().size() > 0) {
             Phone phone = entity.getPhones().get(0);

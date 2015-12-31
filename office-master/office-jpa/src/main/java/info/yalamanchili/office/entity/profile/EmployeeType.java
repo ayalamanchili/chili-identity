@@ -44,6 +44,10 @@ public class EmployeeType extends AbstractEntity {
     public EmployeeType() {
     }
 
+    public EmployeeType(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }

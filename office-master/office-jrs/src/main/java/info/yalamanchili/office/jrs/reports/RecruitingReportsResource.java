@@ -8,7 +8,7 @@
  */
 package info.yalamanchili.office.jrs.reports;
 
-import info.yalamanchili.office.dto.profile.EmployeeDto;
+import info.yalamanchili.office.dao.profile.EmployeeDto;
 import info.yalamanchili.office.reports.recruiting.RecruitingReportsService;
 import info.yalamanchili.office.reports.recruiting.SkillSetSearchDto;
 import java.util.List;

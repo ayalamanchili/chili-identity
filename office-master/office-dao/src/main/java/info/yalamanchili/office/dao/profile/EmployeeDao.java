@@ -153,21 +153,15 @@ public class EmployeeDao extends CRUDDao<Employee> {
     }
 
     @Transactional(readOnly = true)
-    @Override
-    public List<Employee> sqlSearch(String searchText, int start, int limit, List<String> columns) {
-        return sqlSearch(searchText, start, limit, columns, false);
-    }
-
-    @Transactional(readOnly = true)
-    public List<Employee> sqlSearch(String searchText, int start, int limit, List<String> columns, boolean includeDeactivated) {
+    public List<EmployeeDto> searchEmployee(String searchText, int start, int limit, List<String> columns, boolean includeDeactivated) {
         String queryStr = null;
         if (includeDeactivated) {
-            queryStr = "FROM " + Employee.class.getCanonicalName() + " WHERE (upper(firstName) LIKE :firstNameParam OR upper(lastName) LIKE :lastNameParam)";
+            queryStr = "SELECT NEW " + EmployeeDto.class.getCanonicalName() + "(emp.id,emp.firstName,emp.lastName,emp.jobTitle,emp.employeeType.name,email.email)" + " FROM " + Employee.class.getCanonicalName() + " emp, Email email WHERE email.primaryEmail= TRUE AND email.contact.id=emp.id AND (upper(emp.firstName) LIKE :firstNameParam OR upper(emp.lastName) LIKE :lastNameParam)";
 
         } else {
-            queryStr = "FROM " + Employee.class.getCanonicalName() + " WHERE user.enabled= TRUE and (upper(firstName) LIKE :firstNameParam OR upper(lastName) LIKE :lastNameParam)";
+            queryStr = "SELECT NEW " + EmployeeDto.class.getCanonicalName() + "(emp.id,emp.firstName,emp.lastName,emp.jobTitle,emp.employeeType.name,email.email)" + " FROM " + Employee.class.getCanonicalName() + " emp, Email email WHERE email.primaryEmail= TRUE AND email.contact.id=emp.id AND emp.user.enabled = TRUE and (upper(emp.firstName) LIKE :firstNameParam OR upper(emp.lastName) LIKE :lastNameParam)";
         }
-        Query searchQ = getEntityManager().createQuery(queryStr);
+        TypedQuery<EmployeeDto> searchQ = getEntityManager().createQuery(queryStr, EmployeeDto.class);
         searchQ.setParameter("firstNameParam", '%' + searchText.toUpperCase() + '%');
         searchQ.setParameter("lastNameParam", '%' + searchText.toUpperCase() + '%');
         searchQ.setFirstResult(start);
