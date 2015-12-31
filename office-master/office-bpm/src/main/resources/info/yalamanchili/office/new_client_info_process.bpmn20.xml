@@ -90,13 +90,21 @@
             name="New Client Information Account Department Submit" 
             activiti:class="info.yalamanchili.office.client.NewClientInfoInvoicingAndBillingSubmit">
         </serviceTask>
-        <sequenceFlow id="newClientInfoAccountSubmitToHRTask" sourceRef="newClientInfoInvoicingAndBillingSubmit" targetRef="newClientInfoHRTask" />
+        <sequenceFlow id="newClientInfoAccountSubmitToHRTask" sourceRef="newClientInfoInvoicingAndBillingSubmit" targetRef="newClientInfoHRTask">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="newClientInfoAccountSubmitToEnd" sourceRef="newClientInfoInvoicingAndBillingSubmit" targetRef="newClientInfoProcessEnd">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'rejected'}
+            </conditionExpression>
+        </sequenceFlow>
         <!--submit User task-->
         <userTask id="newClientInfoHRTask" 
-                  name="New Client Info HR Department Task for ${clientInfo.employee.firstName} ${clientInfo.employee.lastName}" 
-        >
+                  name="New Client Info HR Department Task for ${clientInfo.employee.firstName} ${clientInfo.employee.lastName}">
             <documentation>
-               New Client Information has been created with following details. Please fill the fields below to complete the task.
+                New Client Information has been created with following details. Please fill the fields below to complete the task.
                 Employee                    : #{clientInfo.employee.firstName} #{clientInfo.employee.lastName} 
                 Employee Type               : #{clientInfo.employee.employeeType.name}
                 Consultant Job Title        : #{clientInfo.consultantJobTitle}
