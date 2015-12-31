@@ -78,7 +78,8 @@ public class Company extends AbstractEntity {
 
     protected String abbreviation;
 
-    public Company(String name) {
+    public Company(Long id,String name) {
+        setId(id);
         this.name = name;
     }
 

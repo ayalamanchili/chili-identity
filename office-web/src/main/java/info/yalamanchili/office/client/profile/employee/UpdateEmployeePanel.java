@@ -38,14 +38,15 @@ public class UpdateEmployeePanel extends UpdateComposite {
         }
     };
 
-    public static Object instance() {
-        return null;
-    }
-
     public UpdateEmployeePanel(JSONObject entity) {
         initUpdateComposite(entity, "Employee", OfficeWelcome.constants);
     }
-    
+
+    @Override
+    public void loadEntity(String entityId) {
+
+    }
+
     @Override
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("firstName", entity);
@@ -84,7 +85,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN)) {
             assignEntityValueFromField("status", entity);
         }
-        
+
         return entity;
     }
 
@@ -132,7 +133,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         if (Auth.isAdmin()) {
             assignFieldValueFromEntity("ssn", entity, DataType.STRING_FIELD);
         }
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN) && TabPanel.instance().myOfficePanel.isVisible()) {
             assignFieldValueFromEntity("status", entity, DataType.BOOLEAN_FIELD);
         }
         //TODO add image panel for employee image
@@ -190,7 +191,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "employee/save";
     }
-   
+
     protected void uploadImage(String entityId) {
         empImageUploadPanel.upload(entityId.trim());
     }

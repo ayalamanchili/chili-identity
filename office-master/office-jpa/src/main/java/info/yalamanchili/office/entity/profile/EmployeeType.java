@@ -27,43 +27,48 @@ import org.hibernate.validator.constraints.NotEmpty;
         = @UniqueConstraint(columnNames = {"name"}))
 @Unique(entity = EmployeeType.class, fields = {"name"}, message = "{employeetype.name.not.unique.msg}")
 public class EmployeeType extends AbstractEntity {
-
+    
     public final static String CORPORATE_EMPLOYEE = "Corporate Employee";
     public final static String EMPLOYEE = "Employee";
     public final static String W2_CONTRACTOR = "W2 Contractor";
     public final static String _1099_CONTRACTOR = "1099 Contractor";
     public final static String SUBCONTRACTOR = "Subcontractor";
-
+    
     @Transient
     private static final long serialVersionUID = 1L;
-
+    
     @NotEmpty(message = "{employeetype.name.not.empty.msg}")
     protected String name;
     protected String description;
-
+    
     public EmployeeType() {
     }
-
+    
     public EmployeeType(String name) {
         this.name = name;
     }
-
+    
+    public EmployeeType(Long id, String name) {
+        setId(id);
+        this.name = name;
+    }
+    
     public String getName() {
         return name;
     }
-
+    
     public void setName(String name) {
         this.name = name;
     }
-
+    
     public String getDescription() {
         return description;
     }
-
+    
     public void setDescription(String description) {
         this.description = description;
     }
-
+    
     @Override
     public String toString() {
         return "EmployeeType{" + "name=" + name + ", description=" + description + '}';

@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.Window;
 import info.chili.gwt.utils.FormatUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -123,10 +124,18 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
 
     @Override
     public void viewClicked(String entityId) {
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadEmployeePanel(entityId));
-        TabPanel.instance().myOfficePanel.sidePanelTop.clear();
-        TabPanel.instance().myOfficePanel.sidePanelTop.add(new TreeEmployeePanel(getEntity(entityId)));
+        HttpService.HttpServiceAsync.instance().doGet(getReadURI(entityId), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject entity = (JSONObject) JSONParser.parseLenient(response);
+                        TabPanel.instance().myOfficePanel.entityPanel.clear();
+                        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadEmployeePanel(entity));
+                        TabPanel.instance().myOfficePanel.sidePanelTop.clear();
+                        TabPanel.instance().myOfficePanel.sidePanelTop.add(new TreeEmployeePanel(entity));
+                    }
+                });
+
     }
 
     @Override
@@ -155,10 +164,22 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
 
     @Override
     public void updateClicked(String entityId) {
-        TabPanel.instance().myOfficePanel.sidePanelTop.clear();
-        TabPanel.instance().myOfficePanel.sidePanelTop.add(new TreeEmployeePanel(getEntity(entityId)));
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateEmployeePanel(getEntity(entityId)));
+        HttpService.HttpServiceAsync.instance().doGet(getReadURI(entityId), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject entity = (JSONObject) JSONParser.parseLenient(response);
+                        TabPanel.instance().myOfficePanel.sidePanelTop.clear();
+                        TabPanel.instance().myOfficePanel.sidePanelTop.add(new TreeEmployeePanel(entity));
+                        TabPanel.instance().myOfficePanel.entityPanel.clear();
+                        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateEmployeePanel(entity));
+                    }
+                });
+
     }
-    
+
+    protected String getReadURI(String entityId) {
+        return OfficeWelcome.constants.root_url() + "employee/" + entityId;
+    }
+
 }
