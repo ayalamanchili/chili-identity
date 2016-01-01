@@ -21,6 +21,7 @@ import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.expense.advreq.AdvanceRequisitionDao;
 import info.yalamanchili.office.dao.privacy.PrivacySettingDao;
+import info.yalamanchili.office.dao.security.EmployeeLoginDto;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.selfserv.ServiceTicketDao;
 import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
@@ -64,10 +65,21 @@ public class EmployeeDao extends CRUDDao<Employee> {
     }
 
     public EmployeeReadDto read(Long id) {
-        String queryStr = "SELECT NEW " + EmployeeReadDto.class.getCanonicalName() + "(emp.id, emp.firstName, emp.lastName, emp.middleInitial, emp.employeeId, emp.imageURL, emp.jobTitle, emp.ssn, emp.dateOfBirth, emp.startDate, emp.endDate, emp.sex, emp.workStatus, emp.branch, emp.hoursPerWeek, emp.employeeType.id, emp.employeeType.name, c.id, c.name, emp.user.enabled)" + " FROM " + Employee.class.getCanonicalName() + " emp LEFT OUTER JOIN emp.company as c where id=:employeeIdParam";
+        String queryStr = "SELECT NEW " + EmployeeReadDto.class.getCanonicalName() + getEmployeeFieldsString() + " FROM " + Employee.class.getCanonicalName() + " emp LEFT OUTER JOIN emp.company as c where id=:employeeIdParam";
         TypedQuery<EmployeeReadDto> query = getEntityManager().createQuery(queryStr, EmployeeReadDto.class);
         query.setParameter("employeeIdParam", id);
         return query.getSingleResult();
+    }
+
+    public EmployeeLoginDto login(String username) {
+        String queryStr = "SELECT NEW " + EmployeeLoginDto.class.getCanonicalName() + getEmployeeFieldsString().replace(", emp.user.enabled", "") + " FROM " + Employee.class.getCanonicalName() + " emp LEFT OUTER JOIN emp.company as c where employeeId=:usernameParam";
+        TypedQuery<EmployeeLoginDto> query = getEntityManager().createQuery(queryStr, EmployeeLoginDto.class);
+        query.setParameter("usernameParam", username);
+        return query.getSingleResult();
+    }
+
+    protected String getEmployeeFieldsString() {
+        return "(emp.id, emp.firstName, emp.lastName, emp.middleInitial, emp.employeeId, emp.imageURL, emp.jobTitle, emp.ssn, emp.dateOfBirth, emp.startDate, emp.endDate, emp.sex, emp.workStatus, emp.branch, emp.hoursPerWeek, emp.employeeType.id, emp.employeeType.name, c.id, c.name, emp.user.enabled)";
     }
 
     @Transactional(readOnly = true)
@@ -116,7 +128,7 @@ public class EmployeeDao extends CRUDDao<Employee> {
             Employee updatedEmployee = null;
             updatedEmployee = super.save(entity);
             updatedEmployee.setEmployeeType(em.find(EmployeeType.class, entity.getEmployeeType().getId()));
-            if (entity.getCompany() != null) {
+            if (entity.getCompany() != null && entity.getCompany().getId() != null) {
                 updatedEmployee.setCompany(em.find(Company.class, entity.getCompany().getId()));
             } else {
                 updatedEmployee.setCompany(null);
