@@ -279,8 +279,10 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
 
     public void selectReportingPanel() {
         clearEntityPanel(reportingPanel);
-        reportingPanel.entityTitlePanel.add(new ReportsMenu());
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP)) {
+        reportingPanel.entityTitlePanel.add( new ReportsMenu());
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_FULL_VIEW)) {
+            ReportsMenu.contractingMaintainenceCmd.execute();
+        } else if (Auth.hasAnyOfRoles(ROLE.ROLE_RELATIONSHIP)) {
             reportingPanel.sidePanelTop.add(new ProfileReportsSidePanel());
         }
     }

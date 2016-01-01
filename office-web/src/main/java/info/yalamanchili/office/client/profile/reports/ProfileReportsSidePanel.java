@@ -16,8 +16,6 @@ import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
-import info.yalamanchili.office.client.Auth;
-import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 
 /**
