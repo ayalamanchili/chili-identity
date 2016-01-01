@@ -253,7 +253,7 @@ public class ReadClientInfoPanel extends ReadComposite {
         addField("visaStatus", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("terminationNotice", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("notes", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        if (TreeEmployeePanel.instance().getEntity().get("employeeType") != null) {
+        if (TreeEmployeePanel.instance() != null && TreeEmployeePanel.instance().getEntity().get("employeeType") != null) {
             StringField jobTitleF = (StringField) fields.get("employeeType");
             jobTitleF.setValue(TreeEmployeePanel.instance().getEntity().get("employeeType").isObject().get("name").isString().stringValue());
         }
@@ -275,13 +275,13 @@ public class ReadClientInfoPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity);
-                        populateComments();
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                populateFieldsFromEntity(entity);
+                populateComments();
+            }
+        });
     }
 
     protected void populateComments() {
