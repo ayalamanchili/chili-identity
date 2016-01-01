@@ -141,9 +141,9 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
                 //table.setText(i, 6, JSONUtils.toString(entity, "subContractorInvoiceFrequency"));
                 setEnumColumn(i, 6, entity, InvoiceFrequency.class.getSimpleName(), "subContractorInvoiceFrequency");
             }
-            table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "effectiveDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
+            table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "effectiveDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 8, JSONUtils.toString(entity, "updatedBy"));
-            table.setText(i, 9, JSONUtils.toString(entity, "updatedTs"));
+            table.setText(i, 9, DateUtils.getFormatedDate(JSONUtils.toString(entity, "updatedTs"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
         }
     }
 
