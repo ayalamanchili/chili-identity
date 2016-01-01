@@ -65,14 +65,14 @@ public class EmployeeDao extends CRUDDao<Employee> {
     }
 
     public EmployeeReadDto read(Long id) {
-        String queryStr = "SELECT NEW " + EmployeeReadDto.class.getCanonicalName() + getEmployeeFieldsString() + " FROM " + Employee.class.getCanonicalName() + " emp LEFT OUTER JOIN emp.company as c where id=:employeeIdParam";
+        String queryStr = "SELECT NEW " + EmployeeReadDto.class.getCanonicalName() + getEmployeeFieldsString() + " FROM " + Employee.class.getCanonicalName() + " emp LEFT OUTER JOIN emp.company as c where emp.id=:employeeIdParam";
         TypedQuery<EmployeeReadDto> query = getEntityManager().createQuery(queryStr, EmployeeReadDto.class);
         query.setParameter("employeeIdParam", id);
         return query.getSingleResult();
     }
 
     public EmployeeLoginDto login(String username) {
-        String queryStr = "SELECT NEW " + EmployeeLoginDto.class.getCanonicalName() + getEmployeeFieldsString().replace(", emp.user.enabled", "") + " FROM " + Employee.class.getCanonicalName() + " emp LEFT OUTER JOIN emp.company as c where employeeId=:usernameParam";
+        String queryStr = "SELECT NEW " + EmployeeLoginDto.class.getCanonicalName() + getEmployeeFieldsString().replace(", emp.user.enabled", "") + " FROM " + Employee.class.getCanonicalName() + " emp LEFT OUTER JOIN emp.company as c where emp.employeeId=:usernameParam";
         TypedQuery<EmployeeLoginDto> query = getEntityManager().createQuery(queryStr, EmployeeLoginDto.class);
         query.setParameter("usernameParam", username);
         return query.getSingleResult();
