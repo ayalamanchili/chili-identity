@@ -76,9 +76,9 @@ public class AdminResource {
     public EmployeeLoginDto login(CUser user, @HeaderParam("remote-ip") String ipAddress) {
         CIPAddressDao.instance().recordUserIP(ipAddress);
         if (OfficeFeatureFlipper.instance().getEnableIPFiltering()) {
-            return mapper.map(securityService.login(user, ipAddress), EmployeeLoginDto.class);
+            return securityService.login(user, ipAddress);
         } else {
-            return mapper.map(securityService.login(user), EmployeeLoginDto.class);
+            return securityService.login(user);
         }
     }
 

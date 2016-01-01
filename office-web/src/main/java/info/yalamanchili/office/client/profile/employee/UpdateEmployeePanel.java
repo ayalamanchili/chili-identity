@@ -7,9 +7,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.UpdateComposite;
 
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -40,11 +38,6 @@ public class UpdateEmployeePanel extends UpdateComposite {
 
     public UpdateEmployeePanel(JSONObject entity) {
         initUpdateComposite(entity, "Employee", OfficeWelcome.constants);
-    }
-
-    @Override
-    public void loadEntity(String entityId) {
-
     }
 
     @Override
@@ -85,7 +78,6 @@ public class UpdateEmployeePanel extends UpdateComposite {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN)) {
             assignEntityValueFromField("status", entity);
         }
-
         return entity;
     }
 
@@ -93,16 +85,16 @@ public class UpdateEmployeePanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        uploadImage(JSONUtils.toString(entity, "id"));
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                uploadImage(JSONUtils.toString(entity, "id"));
+            }
+        });
 
     }
 

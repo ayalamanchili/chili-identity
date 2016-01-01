@@ -58,9 +58,6 @@ public class OfficeSecurityService {
     protected RuntimeService bpmRuntimeService;
 
     public EmployeeLoginDto login(CUser user, String ipAddress) {
-//        if (Strings.isNullOrEmpty(ipAddress)) {
-//            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "not.authorized.blankip", "not.authorized.blankip");
-//        }
         if (!Strings.isNullOrEmpty(ipAddress) && hasAnyRole(OfficeRole.ROLE_CORPORATE_EMPLOYEE.name()) && !CIPAddressDao.instance().isValidIP(ipAddress)) {
             RemoteAccessRequestDto dto = new RemoteAccessRequestDto();
             dto.setUserId(OfficeSecurityService.instance().getCurrentUserName());
@@ -71,20 +68,11 @@ public class OfficeSecurityService {
             bpmRuntimeService.startProcessInstanceByKey("external-access-exception-request", obj);
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "not.authorized.remoteip", "not.authorized.remoteip");
         }
-        TypedQuery<Employee> query = em.createQuery("from Employee emp where emp.user.username=:userNameParam", Employee.class);
-        query.setParameter("userNameParam", user.getUsername().toLowerCase());
-        try {
-            Mapper mapper = (Mapper) SpringContext.getBean("mapper");
-            Employee emp = query.getSingleResult();
-            EmployeeLoginDto res = mapper.map(emp, EmployeeLoginDto.class);
-            res.setUsername(emp.getUser().getUsername());
-            res.setRoles(getCurrentUserRoles());
-            return res;
-        } catch (NoResultException e) {
-            return null;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        EmployeeLoginDto res = EmployeeDao.instance().login(user.getUsername());
+        res.setUsername(user.getUsername());
+        res.setRoles(getCurrentUserRoles());
+        return res;
+
     }
 
     @Deprecated
