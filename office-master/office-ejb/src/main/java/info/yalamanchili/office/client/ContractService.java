@@ -214,7 +214,7 @@ public class ContractService {
             AuditService auditService = AuditService.instance();
 //            ContractDto old = mapClientInformation((ClientInformation) auditService.getVersion(ci.getClass(), ci.getId(), 1));
 //            ContractDto newE = mapClientInformation(ci);
-//            messageText = messageText + auditService.buildChangesTable(auditService.compare(auditService.getVersion(ci.getClass(), ci.getId(), 1), ci));
+            messageText = messageText + auditService.buildChangesTable(auditService.compare(auditService.mostRecentVersion(ci.getClass(), ci.getId()), ci));
             email.setBody(messageText);
             MessagingService.instance().sendEmail(email);
         }
