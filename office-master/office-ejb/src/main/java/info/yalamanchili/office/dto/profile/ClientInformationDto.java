@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import javax.persistence.Temporal;
 
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -62,11 +63,13 @@ public class ClientInformationDto implements Serializable {
      * startDate
      */
     @NotNull(message = "{startDate.not.empty.msg}")
+    @Temporal(javax.persistence.TemporalType.DATE)
     protected Date startDate;
     /**
      * endDate
      */
     @NotNull(groups = ClientInformation.SubmitChecks.class)
+    @Temporal(javax.persistence.TemporalType.DATE)
     protected Date endDate;
     /**
      * flag to indicate to end of previous project.
@@ -77,6 +80,7 @@ public class ClientInformationDto implements Serializable {
      *
      */
     @Transient
+    @Temporal(javax.persistence.TemporalType.DATE)
     protected Date previousProjectEndDate;
     /**
      *
@@ -282,7 +286,7 @@ public class ClientInformationDto implements Serializable {
     protected String specialInvoiceInstructions;
 
     private ClientInformationStatus status;
-    
+
     protected Boolean isEndDateConfirmed;
     /**
      *

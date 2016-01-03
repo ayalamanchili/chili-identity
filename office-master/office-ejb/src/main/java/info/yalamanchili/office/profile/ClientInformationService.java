@@ -77,8 +77,6 @@ public class ClientInformationService {
     protected ClientInformationDao clientInformationDao;
     @Autowired
     protected CompanyDao companyDao;
-    @Autowired
-    protected MailUtils mailUtils;
 
     public void addClientInformation(Long empId, ClientInformationDto ciDto, Boolean submitForApproval) {
         ClientInformation ci = mapper.map(ciDto, ClientInformation.class);
@@ -329,7 +327,7 @@ public class ClientInformationService {
     protected void sendBillingRateUpdatedEmail(ClientInformation ci) {
         String[] roles = {OfficeRoles.OfficeRole.ROLE_BILLING_AND_INVOICING.name()};
         Email email = new Email();
-        email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
+        email.setTos(MailUtils.instance().getEmailsAddressesForRoles(roles));
         email.setSubject("Billing rate updated for :" + ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
         String messageText = " Updated Billing rate : ";
         messageText = messageText.concat("Billing Rate :" + ci.getBillingRate());
@@ -511,29 +509,13 @@ public class ClientInformationService {
         project = ProjectDao.instance().save(project);
         ciEntity.setClientProject(project);
         ciEntity = clientInformationDao.save(ciEntity);
-        sendClientinfoUpdatedEmail(ciEntity);
         if (ClientInformationStatus.PENDING_CONTRACTS_SUBMIT.equals(ci.getStatus()) && submitForApproval) {
             ciEntity.setStatus(ClientInformationStatus.PENDING_INVOICING_BILLING_APPROVAL);
             ci.setBpmProcessId(startNewClientInfoProcess(ci));
         }
+        em.flush();
+        ContractService.instance().sendClientinfoUpdatedEmail(ciEntity);
         return ci;
-    }
-
-    public void sendClientinfoUpdatedEmail(ClientInformation ci) {
-        if (ClientInformationStatus.PENDING_CONTRACTS_SUBMIT.equals(ci.getStatus())) {
-            return;
-        }
-        //TODO show specific changes
-        String[] roles = {OfficeRoles.OfficeRole.ROLE_BILLING_AND_INVOICING.name()};
-        Email email = new Email();
-        email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
-        email.setSubject(" Client Information Has Updated For :" + ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
-        String messageText = " Updated Client Information :   Client :" + ci.getClient().getName() + " Project : " + ci.getClientProject().getName();
-        if (ci.getClientProject().getEndDate() != null) {
-            messageText = messageText.concat("Project End Date : " + ci.getClientProject().getEndDate());
-        }
-        email.setBody(messageText);
-        MessagingService.instance().sendEmail(email);
     }
 
     protected void validate(ClientInformation ci, Boolean submitForApproval) {

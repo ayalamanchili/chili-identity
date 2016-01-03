@@ -8,7 +8,7 @@
  */
 package info.yalamanchili.office.selfserv;
 
-import info.chili.audit.AuditChageDto;
+import info.chili.audit.AuditChangeDto;
 import info.chili.audit.AuditService;
 import info.chili.commons.HtmlUtils;
 import info.chili.security.dao.CRoleDao;
@@ -196,25 +196,25 @@ public class SelfService {
         MessagingService.instance().sendEmail(email);
     }
 
-    protected List<AuditChageDto> determineChanges(ServiceTicket ticket) {
-        List<AuditChageDto> changes = new ArrayList<>();
+    protected List<AuditChangeDto> determineChanges(ServiceTicket ticket) {
+        List<AuditChangeDto> changes = new ArrayList<>();
         ServiceTicket previousVersion = (ServiceTicket) AuditService.instance().mostRecentVersion(ServiceTicket.class, ticket.getId());
         if (!previousVersion.getStatus().equals(ticket.getStatus())) {
-            AuditChageDto change = new AuditChageDto();
+            AuditChangeDto change = new AuditChangeDto();
             change.setPropertyName("Status");
             change.setNewValue(ticket.getStatus().name());
             change.setOldValue(previousVersion.getStatus().name());
             changes.add(change);
         }
         if (!previousVersion.getDepartmentAssigned().getRolename().equals(ticket.getDepartmentAssigned().getRolename())) {
-            AuditChageDto change = new AuditChageDto();
+            AuditChangeDto change = new AuditChangeDto();
             change.setPropertyName("Department");
             change.setNewValue(OfficeRoles.rolesMessages.get(ticket.getDepartmentAssigned().getRolename()));
             change.setOldValue(OfficeRoles.rolesMessages.get(previousVersion.getDepartmentAssigned().getRolename()));
             changes.add(change);
         }
         if (previousVersion.getAssignedTo() != null && !previousVersion.getAssignedTo().getEmployeeId().equals(ticket.getAssignedTo().getEmployeeId())) {
-            AuditChageDto change = new AuditChageDto();
+            AuditChangeDto change = new AuditChangeDto();
             change.setPropertyName("Assigned To");
             change.setNewValue(ticket.getAssignedTo().getFirstName());
             change.setOldValue(previousVersion.getAssignedTo().getFirstName());

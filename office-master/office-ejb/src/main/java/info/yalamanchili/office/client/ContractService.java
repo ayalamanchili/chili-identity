@@ -8,6 +8,8 @@
 package info.yalamanchili.office.client;
 
 import com.google.common.base.Strings;
+import info.chili.audit.AuditService;
+import info.chili.email.Email;
 import info.yalamanchili.office.dto.client.ContractDto;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import java.util.Date;
@@ -22,21 +24,26 @@ import org.springframework.stereotype.Component;
 
 import info.chili.reporting.ReportGenerator;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dto.client.ContractSearchDto;
+import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import info.yalamanchili.office.entity.profile.ClientInformationStatus;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.List;
 import info.yalamanchili.office.entity.profile.EmployeeType;
+import info.yalamanchili.office.jms.MessagingService;
 import java.math.BigDecimal;
 import javax.persistence.Query;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Reporting service for Employee, client, vendor and contract related
@@ -192,6 +199,25 @@ public class ContractService {
             queryStr.append("ci.status = '").append(searchDto.getStatus().trim()).append("' ").append(" and ");
         }
         return queryStr.toString().substring(0, queryStr.toString().lastIndexOf("and"));
+    }
+
+    @Async
+    @Transactional
+    public void sendClientinfoUpdatedEmail(ClientInformation ci) {
+        if (ClientInformationStatus.COMPLETED.equals(ci.getStatus())) {
+            String[] roles = {OfficeRoles.OfficeRole.ROLE_BILLING_AND_INVOICING.name()};
+            Email email = new Email();
+            email.setTos(MailUtils.instance().getEmailsAddressesForRoles(roles));
+            email.setRichText(Boolean.TRUE);
+            email.setSubject(" Client Information Has Updated For :" + ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
+            String messageText = " Updated Client Information :   Client :" + ci.getClient().getName() + " Project : " + ci.getClientProject().getName();
+            AuditService auditService = AuditService.instance();
+//            ContractDto old = mapClientInformation((ClientInformation) auditService.getVersion(ci.getClass(), ci.getId(), 1));
+//            ContractDto newE = mapClientInformation(ci);
+//            messageText = messageText + auditService.buildChangesTable(auditService.compare(auditService.getVersion(ci.getClass(), ci.getId(), 1), ci));
+            email.setBody(messageText);
+            MessagingService.instance().sendEmail(email);
+        }
     }
 
     public ContractDto mapClientInformation(ClientInformation ci) {
