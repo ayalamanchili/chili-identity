@@ -25,7 +25,7 @@ import info.yalamanchili.office.client.profile.contact.WorkStatus;
 import java.util.logging.Logger;
 
 public class UpdateEmployeePanel extends UpdateComposite {
-
+    
     private static Logger logger = Logger.getLogger(UpdateEmployeePanel.class.getName());
     protected SelectEmployeeTypeWidget employeeSelectWidget = new SelectEmployeeTypeWidget(false, false);
     protected SelectCompanyWidget selectCompnayWidget = new SelectCompanyWidget(false, true, Alignment.HORIZONTAL);
@@ -35,11 +35,11 @@ public class UpdateEmployeePanel extends UpdateComposite {
             postUpdateSuccess(null);
         }
     };
-
+    
     public UpdateEmployeePanel(JSONObject entity) {
         initUpdateComposite(entity, "Employee", OfficeWelcome.constants);
     }
-
+    
     @Override
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("firstName", entity);
@@ -80,7 +80,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         }
         return entity;
     }
-
+    
     @Override
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
@@ -89,15 +89,15 @@ public class UpdateEmployeePanel extends UpdateComposite {
                     public void onFailure(Throwable arg0) {
                         handleErrorResponse(arg0);
                     }
-
+                    
                     @Override
                     public void onSuccess(String arg0) {
                         uploadImage(JSONUtils.toString(entity, "id"));
                     }
                 });
-
+        
     }
-
+    
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
@@ -130,21 +130,21 @@ public class UpdateEmployeePanel extends UpdateComposite {
         }
         //TODO add image panel for employee image
     }
-
+    
     @Override
     protected void addListeners() {
         // TODO Auto-generated method stub
     }
-
+    
     @Override
     protected void configure() {
         // TODO Auto-generated method stub
     }
-
+    
     @Override
     protected void addWidgets() {
         // same here update them
-        if (Auth.isAdmin()) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR_ADMINSTRATION)) {
             addDropDown("employeeType", employeeSelectWidget);
         }
         addField("firstName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -175,21 +175,21 @@ public class UpdateEmployeePanel extends UpdateComposite {
         }
         alignFields();
     }
-
+    
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
         // TODO Auto-generated method stub
     }
-
+    
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "employee/save";
     }
-
+    
     protected void uploadImage(String entityId) {
         empImageUploadPanel.upload(entityId.trim());
     }
-
+    
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated Employee Information");
