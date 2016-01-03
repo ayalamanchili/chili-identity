@@ -41,7 +41,6 @@ import info.yalamanchili.office.profile.ClientInformationService;
 import info.yalamanchili.office.profile.EmergencyContactService;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.EntityManager;
@@ -157,30 +156,21 @@ public class EmployeeResource extends CRUDResource<Employee> {
             @QueryParam("column") List<String> columns) {
         return super.getDropDown(start, limit, columns);
     }
-//TODO make this generic
+//TODO ignore inactive employees
 
     @GET
     @Path("/employees-by-type/dropdown/{start}/{limit}")
     @Transactional(propagation = Propagation.NEVER)
     @Cacheable(OfficeCacheKeys.EMPLOYEES)
     public List<Entry> getEmployeesByTypeDropDown(@PathParam("start") int start, @PathParam("limit") int limit,
-            @QueryParam("column") List<String> columns, @QueryParam("employee-type") List<String> employeeType) {
+            @QueryParam("column") List<String> columns, @QueryParam("employee-type") List<String> employeeType, @QueryParam("includeAll") boolean includeAll) {
         List<Entry> result = new ArrayList<>();
-        Map<String, String> values = EmployeeDao.instance().getEmployeeStringMapByType(start, limit, employeeType, columns.toArray(new String[columns.size()]));
-        for (String key : values.keySet()) {
-            result.add(new Entry(key, values.get(key)));
+        Map<String, String> values;
+        if (includeAll) {
+            values = EmployeeDao.instance().getAllEmployeeStringMapByType(start, limit, employeeType, columns.toArray(new String[columns.size()]));
+        } else {
+            values = EmployeeDao.instance().getEmployeeStringMapByType(start, limit, employeeType, columns.toArray(new String[columns.size()]));
         }
-        return result;
-    }
-
-    @GET
-    @Path("/all-employees-by-type/dropdown/{start}/{limit}")
-    @Transactional(propagation = Propagation.NEVER)
-    @Cacheable(OfficeCacheKeys.EMPLOYEES)
-    public List<Entry> getAllEmployeesByTypeDropDown(@PathParam("start") int start, @PathParam("limit") int limit,
-            @QueryParam("column") List<String> columns, @QueryParam("employee-type") List<String> employeeType) {
-        List<Entry> result = new ArrayList<>();
-        Map<String, String> values = EmployeeDao.instance().getAllEmployeeStringMapByType(start, limit, employeeType, columns.toArray(new String[columns.size()]));
         for (String key : values.keySet()) {
             result.add(new Entry(key, values.get(key)));
         }

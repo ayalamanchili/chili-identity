@@ -253,11 +253,11 @@ public class SearchEmployeePanel extends SearchComposite {
     }
 
     protected String getFirstNameDropDownUrl() {
-        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/10000?column=id&column=firstName";
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&employee-type=Corporate Employee&employee-type=Employee&employee-type=Subcontractor&employee-type=1099 Contractor&employee-type=W2 Contractor&includeAll=true");
     }
 
     protected String getLastNameDropDownUrl() {
-        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/10000?column=id&column=lastName";
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=lastName&employee-type=Corporate Employee&employee-type=Employee&employee-type=Subcontractor&employee-type=1099 Contractor&employee-type=W2 Contractor&includeAll=true");
     }
 
     protected String getEmployeeIdDropDownUrl() {
