@@ -91,7 +91,7 @@ public class Auth {
     }
 
     public static boolean isCorporateEmployee(JSONObject employee) {
-        return JSONUtils.toString(employee.get("employeeType"), "name").equals("Corporate Employee");
+        return JSONUtils.toString(employee.get("employeeType"), "name").trim().equals("Corporate Employee");
     }
 
     public static boolean isCorporateEmployee() {
@@ -99,7 +99,7 @@ public class Auth {
     }
 
     public static boolean isConsultantEmployee(JSONObject employee) {
-        return JSONUtils.toString(employee.get("employeeType"), "name").equals("Employee");
+        return JSONUtils.toString(employee.get("employeeType"), "name").trim().equals("Employee");
     }
 
     public static boolean isConsultantEmployee() {
@@ -108,17 +108,17 @@ public class Auth {
 
     public static boolean isSubContractor(JSONObject emp) {
         String empType = JSONUtils.toString(emp.get("employeeType"), "name");
-        return empType != null && empType.equals("Subcontractor");
+        return empType != null && empType.trim().equals("Subcontractor");
     }
 
     public static boolean is1099(JSONObject emp) {
         String empType = JSONUtils.toString(emp.get("employeeType"), "name");
-        return empType != null && empType.equals("1099 Contractor");
+        return empType != null && empType.trim().equals("1099 Contractor");
     }
 
     public static boolean isW2Contractor(JSONObject emp) {
         String empType = JSONUtils.toString(emp.get("employeeType"), "name");
-        return empType != null && empType.equals("W2 Contractor");
+        return empType != null && empType.trim().equals("W2 Contractor");
     }
 
     public static boolean isW2Contractor() {

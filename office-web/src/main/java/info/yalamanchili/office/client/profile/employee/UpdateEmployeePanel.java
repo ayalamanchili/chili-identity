@@ -47,7 +47,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         assignEntityValueFromField("lastName", entity);
         assignEntityValueFromField("dateOfBirth", entity);
         assignEntityValueFromField("sex", entity);
-        if ((Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION) && Auth.isCorporateEmployee(entity)) || (Auth.hasAnyOfRoles(ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_CONSULTANT_TIME_ADMIN) && Auth.isConsultantEmployee(entity))) {
+        if ((Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION) && Auth.isCorporateEmployee(entity)) || (Auth.hasAnyOfRoles(ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_CONSULTANT_TIME_ADMIN) && Auth.isConsultantEmployee(entity)) || (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN) && Auth.isSubContractor(entity)) || (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN) && Auth.is1099(entity))) {
             assignEntityValueFromField("startDate", entity);
         }
         assignEntityValueFromField("jobTitle", entity);
@@ -85,16 +85,16 @@ public class UpdateEmployeePanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                uploadImage(JSONUtils.toString(entity, "id"));
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        uploadImage(JSONUtils.toString(entity, "id"));
+                    }
+                });
 
     }
 
@@ -105,7 +105,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("dateOfBirth", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
-        if ((Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION) && Auth.isCorporateEmployee(entity)) || (Auth.hasAnyOfRoles(ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_CONSULTANT_TIME_ADMIN) && Auth.isConsultantEmployee(entity))) {
+        if ((Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION) && Auth.isCorporateEmployee(entity)) || (Auth.hasAnyOfRoles(ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_CONSULTANT_TIME_ADMIN) && Auth.isConsultantEmployee(entity)) || (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN) && Auth.isSubContractor(entity)) || (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN) && Auth.is1099(entity))) {
             assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         }
         if (fields.containsKey("employeeType")) {
@@ -150,7 +150,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         addField("lastName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("dateOfBirth", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("sex", false, true, Sex.names(), Alignment.HORIZONTAL);
-        if ((Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION) && Auth.isCorporateEmployee(entity)) || (Auth.hasAnyOfRoles(ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_CONSULTANT_TIME_ADMIN) && Auth.isConsultantEmployee(entity))) {
+        if ((Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION) && Auth.isCorporateEmployee(entity)) || (Auth.hasAnyOfRoles(ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_CONSULTANT_TIME_ADMIN) && Auth.isConsultantEmployee(entity)) || (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN) && Auth.isSubContractor(entity)) || (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN) && Auth.is1099(entity))) {
             addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         }
         addField("jobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
