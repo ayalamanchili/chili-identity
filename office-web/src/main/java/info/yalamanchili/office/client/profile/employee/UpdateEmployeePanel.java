@@ -144,7 +144,9 @@ public class UpdateEmployeePanel extends UpdateComposite {
     @Override
     protected void addWidgets() {
         // same here update them
-        addDropDown("employeeType", employeeSelectWidget);
+        if (Auth.isAdmin()) {
+            addDropDown("employeeType", employeeSelectWidget);
+        }
         addField("firstName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("middleInitial", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("lastName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
