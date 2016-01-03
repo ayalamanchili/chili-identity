@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class EmployeeReadDto extends Employee {
 
-    public EmployeeReadDto(Long id, String firstName, String lastName, String middleInitial, String employeeId, String imageURL, String jobTitle, String ssn, Date dateOfBirth, Date startDate, Date endDate, Sex sex, WorkStatus workStatus, Branch branch, Integer hoursPerWeek, Long employeeTypeId, String employeeType, Long companyId, String company, boolean status) {
+    public EmployeeReadDto(Long id, String firstName, String lastName, String middleInitial, String employeeId, String imageURL, String jobTitle, String ssn, Date dateOfBirth, Date startDate, Date endDate, Sex sex, WorkStatus workStatus, Branch branch, Integer hoursPerWeek, Long employeeTypeId, String employeeType, Long companyId, String company, Boolean status) {
         setId(id);
         this.firstName = firstName;
         this.lastName = lastName;
@@ -51,13 +51,13 @@ public class EmployeeReadDto extends Employee {
     public EmployeeReadDto() {
     }
 
-    protected boolean status;
+    protected Boolean status;
 
-    public boolean isStatus() {
+    public Boolean isStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 

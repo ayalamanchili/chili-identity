@@ -65,21 +65,21 @@ public class EmployeeDao extends CRUDDao<Employee> {
     }
 
     public EmployeeReadDto read(Long id) {
-        String queryStr = "SELECT NEW " + EmployeeReadDto.class.getCanonicalName() + getEmployeeFieldsString() + " FROM " + Employee.class.getCanonicalName() + " emp LEFT OUTER JOIN emp.company as c where emp.id=:employeeIdParam";
+        String queryStr = "SELECT NEW " + EmployeeReadDto.class.getCanonicalName() + getEmployeeFieldsString() + " FROM " + Employee.class.getCanonicalName() + " emp LEFT OUTER JOIN emp.company as c LEFT OUTER JOIN emp.user as user where emp.id=:employeeIdParam";
         TypedQuery<EmployeeReadDto> query = getEntityManager().createQuery(queryStr, EmployeeReadDto.class);
         query.setParameter("employeeIdParam", id);
         return query.getSingleResult();
     }
 
     public EmployeeLoginDto login(String username) {
-        String queryStr = "SELECT NEW " + EmployeeLoginDto.class.getCanonicalName() + getEmployeeFieldsString().replace(", emp.user.enabled", "") + " FROM " + Employee.class.getCanonicalName() + " emp LEFT OUTER JOIN emp.company as c where emp.employeeId=:usernameParam";
+        String queryStr = "SELECT NEW " + EmployeeLoginDto.class.getCanonicalName() + getEmployeeFieldsString().replace(", user.enabled", "") + " FROM " + Employee.class.getCanonicalName() + " emp LEFT OUTER JOIN emp.company as c LEFT OUTER JOIN emp.user as user where emp.employeeId=:usernameParam";
         TypedQuery<EmployeeLoginDto> query = getEntityManager().createQuery(queryStr, EmployeeLoginDto.class);
         query.setParameter("usernameParam", username);
         return query.getSingleResult();
     }
 
     protected String getEmployeeFieldsString() {
-        return "(emp.id, emp.firstName, emp.lastName, emp.middleInitial, emp.employeeId, emp.imageURL, emp.jobTitle, emp.ssn, emp.dateOfBirth, emp.startDate, emp.endDate, emp.sex, emp.workStatus, emp.branch, emp.hoursPerWeek, emp.employeeType.id, emp.employeeType.name, c.id, c.name, emp.user.enabled)";
+        return "(emp.id, emp.firstName, emp.lastName, emp.middleInitial, emp.employeeId, emp.imageURL, emp.jobTitle, emp.ssn, emp.dateOfBirth, emp.startDate, emp.endDate, emp.sex, emp.workStatus, emp.branch, emp.hoursPerWeek, emp.employeeType.id, emp.employeeType.name, c.id, c.name, user.enabled)";
     }
 
     @Transactional(readOnly = true)
@@ -145,14 +145,17 @@ public class EmployeeDao extends CRUDDao<Employee> {
             entity.setSsn(findById(entity.getId()).getSsn());
         }
     }
+//TODO enhance to figure out the old and new employee type and sync accordingly
 
     protected void syncEmployeeTypeChange(Employee emp) {
-        if ("Corporate Employee".equals(emp.getEmployeeType().getName())) {
+        if (EmployeeType.CORPORATE_EMPLOYEE.equals(emp.getEmployeeType().getName())) {
             OfficeBPMIdentityService.instance().createUser(emp.getEmployeeId());
             emp.getUser().addRole(CRoleDao.instance().findRoleByName(OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name()));
         } else {
             OfficeBPMIdentityService.instance().deleteUser(emp.getEmployeeId());
-            emp.getUser().removeRole(CRoleDao.instance().findRoleByName(OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name()));
+            if (emp.getUser() != null) {
+                emp.getUser().removeRole(CRoleDao.instance().findRoleByName(OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name()));
+            }
         }
     }
 

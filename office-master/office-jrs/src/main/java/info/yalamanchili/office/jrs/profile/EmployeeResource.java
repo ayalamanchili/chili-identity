@@ -114,7 +114,9 @@ public class EmployeeResource extends CRUDResource<Employee> {
             Long employeeId = dto.getId();
             Employee employee = EmployeeDao.instance().findById(employeeId);
             CUser user = employee.getUser();
-            user.setEnabled(true);
+            if (user != null) {
+                user.setEnabled(true);
+            }
         }
         return (Employee) getDao().save(mapper.map(dto, Employee.class));
     }
