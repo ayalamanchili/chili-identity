@@ -98,13 +98,14 @@ public class EmployeeDto implements Serializable {
     public EmployeeDto() {
     }
 
-    public EmployeeDto(Long id, String firstName, String lastName, String jobTitle, String type, String email) {
+    public EmployeeDto(Long id, String firstName, String lastName, String jobTitle, String type, String email, String imageURL) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.jobTitle = jobTitle;
         this.employeeType = new EmployeeType(type);
         this.email = email;
+        this.imageURL = imageURL;
     }
 
     public Long getId() {
@@ -279,6 +280,7 @@ public class EmployeeDto implements Serializable {
         dto.setJobTitle(entity.getJobTitle());
         dto.setStartDate(entity.getStartDate());
         dto.setEndDate(entity.getEndDate());
+        dto.setImageURL(entity.getImageURL());
         dto.setEmail(EmployeeDao.instance().getPrimaryEmail(entity));
         if (entity.getPhones().size() > 0) {
             Phone phone = entity.getPhones().get(0);
