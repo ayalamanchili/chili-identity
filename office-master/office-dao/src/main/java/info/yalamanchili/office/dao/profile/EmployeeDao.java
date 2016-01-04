@@ -32,6 +32,7 @@ import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -310,6 +311,25 @@ public class EmployeeDao extends CRUDDao<Employee> {
             throw new RuntimeException(cve.getConstraintName(), cve);
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+    
+    @Transactional(readOnly = true)
+    public List<Employee> queryBetweenDays(int start, int limit, Date startDate, Date endDate, String value) {
+        if (value.equalsIgnoreCase("joined")) {
+            Query findAllQuery = getEntityManager().createQuery("from " + Employee.class.getCanonicalName() + " emp where emp.startDate>=:startDateParam AND emp.startDate<=:endDateParam order by upper(emp.firstName) ASC", entityCls);
+            findAllQuery.setParameter("startDateParam", startDate);
+            findAllQuery.setParameter("endDateParam", endDate);
+            findAllQuery.setFirstResult(start);
+            findAllQuery.setMaxResults(limit);
+            return findAllQuery.getResultList();
+        } else {
+            Query findAllQuery = getEntityManager().createQuery("from " + Employee.class.getCanonicalName() + " emp where emp.endDate>=:startDateParam AND emp.endDate<=:endDateParam order by upper(emp.firstName) ASC", entityCls);
+            findAllQuery.setParameter("startDateParam", startDate);
+            findAllQuery.setParameter("endDateParam", endDate);
+            findAllQuery.setFirstResult(start);
+            findAllQuery.setMaxResults(limit);
+            return findAllQuery.getResultList();
         }
     }
 
