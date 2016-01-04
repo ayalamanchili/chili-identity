@@ -42,6 +42,7 @@ import javax.ws.rs.QueryParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -69,6 +70,8 @@ public class ClientResource extends CRUDResource<Client> {
     protected ContactService contactService;
     @PersistenceContext
     protected EntityManager em;
+    @Autowired
+    protected Mapper mapper;
 
     @Override
     public CRUDDao getDao() {
@@ -416,6 +419,44 @@ public class ClientResource extends CRUDResource<Client> {
         }
 
         public void setEntities(List<Client> entities) {
+            this.entities = entities;
+        }
+    }
+    
+    @PUT
+    @Path("/search-client1/{start}/{limit}")
+    public List<ClientDto> search1(ClientSearchDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {
+        List<ClientDto> dtos = new ArrayList();
+        ClientDto dto1 = null;
+        TypedQuery<Client> q = em.createQuery(getSearchQuery(dto), Client.class);
+        for(Client client : q.getResultList()){
+            dto1 =ClientDto.map(mapper, client);
+            dtos.add(dto1);
+        }
+        return dtos;
+    }
+    
+    @XmlRootElement
+    @XmlType
+    public static class ClientDtoTable implements java.io.Serializable {
+
+        protected Long size;
+        protected List<ClientDto> entities;
+
+        public Long getSize() {
+            return size;
+        }
+
+        public void setSize(Long size) {
+            this.size = size;
+        }
+
+        @XmlElement
+        public List<ClientDto> getEntities() {
+            return entities;
+        }
+
+        public void setEntities(List<ClientDto> entities) {
             this.entities = entities;
         }
     }
