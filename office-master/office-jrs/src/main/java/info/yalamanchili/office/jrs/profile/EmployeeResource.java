@@ -111,6 +111,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     //TODO currently does not have any restrictions since user emp profile update also uses this method
     public Employee save(EmployeeSaveDto dto) {
         if (dto.isActive() == true) {
+            dto.setEndDate(null);
             Long employeeId = dto.getId();
             Employee employee = EmployeeDao.instance().findById(employeeId);
             CUser user = employee.getUser();

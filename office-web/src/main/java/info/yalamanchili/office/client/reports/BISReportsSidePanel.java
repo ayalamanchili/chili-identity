@@ -103,8 +103,8 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
     String[] employeeTypeStrs = {"Corporate Employee", "Employee", "Subcontractor", "1099 Contractor", "W2 Contractor"};
     EnumField employeeTypeField = new EnumField(OfficeWelcome.constants, "employeeType", "Contract", false, false, employeeTypeStrs);
     EnumField projectStatusField = new EnumField(OfficeWelcome.constants, "status", "Contract", false, false, ClientInformationStatus.names());
-    DateField projectStartDate = new DateField(OfficeWelcome.constants, "startDate", "Employee", false, false);
-    DateField projectEndDate = new DateField(OfficeWelcome.constants, "endDate", "Employee", false, false);
+    DateField projectStartDate = new DateField(OfficeWelcome.constants, "startDate", "", false, false);
+    DateField projectEndDate = new DateField(OfficeWelcome.constants, "endDate", "", false, false);
     StringField cityField = new StringField(OfficeWelcome.constants, "city", "Contract", false, false);
     EnumField stateFeild = new EnumField(OfficeWelcome.constants, "state", "Contract", false, false, USAStatesFactory.getStates().toArray(new String[0]));
     EnumField companyField = new EnumField(OfficeWelcome.constants, "company", "Contract", false, false, ClientInformationCompany.names());
@@ -333,7 +333,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                     entity.put("recruiter", new JSONString(selectRecruiterW.getSelectedObject().get("value").isString().stringValue()));
                     url = url.concat("?recruiter=" + selectRecruiterW.getSelectedObject().get("value").isString().stringValue());
                 }
-                logger.info("recruiter url :"+url);
+                logger.info("recruiter url :" + url);
                 HttpService.HttpServiceAsync.instance().doPut(URL.encode(url), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
                             @Override
@@ -387,7 +387,6 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                 empUrl1 = empUrl1.concat("?startDate=" + sdf.format(projectStartDate.getDate()));
                 entity2.put("endDate", new JSONString(DateUtils.toDateString(projectEndDate.getDate())));
                 empUrl1 = empUrl1.concat("&endDate=" + sdf.format(projectEndDate.getDate()));
-                logger.info("project end date url :" + empUrl1);
                 HttpService.HttpServiceAsync.instance().doPut(URL.encode(empUrl1), entity2.toString(), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
                             @Override
@@ -395,7 +394,6 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                                 if (result == null || JSONParser.parseLenient(result).isObject() == null) {
                                     new ResponseStatusWidget().show("no results");
                                 } else {
-                                    logger.info("result .... " + result);
                                     JSONObject resObj = JSONParser.parseLenient(result).isObject();
                                     String key = (String) resObj.keySet().toArray()[0];
                                     JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
@@ -502,13 +500,50 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                                 new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
                             }
                         });
+                clearFields();
             }
-            clearFields();
+            JSONObject cLovation = new JSONObject();
+            if (cityField != null && !Strings.isNullOrEmpty(cityField.getValue())) {
+                cLovation.put("city", new JSONString(cityField.getValue()));
+            }
+            if (stateFeild != null && !Strings.isNullOrEmpty(stateFeild.getValue())) {
+                cLovation.put("state", new JSONString(stateFeild.getValue()));
+            }
+            if (reportTasks.getParent().equals(cLocationPanel)) {
+                TabPanel.instance().getReportingPanel().entityPanel.clear();
+                HttpService.HttpServiceAsync.instance().doPut(clientReportUrl(), cLovation.toString(), OfficeWelcome.instance().getHeaders(), true,
+                        new ALAsyncCallback<String>() {
+                            @Override
+                            public void onResponse(String result) {
+                                new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
+                            }
+                        });
+                clearFields();
+            }
+            if (reportTasks.getParent().equals(vLocationPanel)) {
+                TabPanel.instance().getReportingPanel().entityPanel.clear();
+                HttpService.HttpServiceAsync.instance().doPut(vendorReportUrl(), cLovation.toString(), OfficeWelcome.instance().getHeaders(), true,
+                        new ALAsyncCallback<String>() {
+                            @Override
+                            public void onResponse(String result) {
+                                new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
+                            }
+                        });
+                clearFields();
+            }
         }
     }
 
     protected String bisReportUrl() {
         return OfficeWelcome.instance().constants.root_url() + "contract/bisreport";
+    }
+
+    protected String clientReportUrl() {
+        return OfficeWelcome.instance().constants.root_url() + "client/report";
+    }
+
+    protected String vendorReportUrl() {
+        return OfficeWelcome.instance().constants.root_url() + "vendor/report";
     }
 
     @Override

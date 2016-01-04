@@ -12,11 +12,14 @@ import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.types.Entry;
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
+import info.chili.reporting.ReportGenerator;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.client.ClientDao;
 import info.yalamanchili.office.dao.client.VendorDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.profile.ContactDto;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Project;
@@ -24,6 +27,8 @@ import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.dto.profile.ContactDto.ContactDtoTable;
 import info.yalamanchili.office.entity.client.Vendor;
+import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.client.ProjectResource.ProjectTable;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
@@ -430,10 +435,29 @@ public class ClientResource extends CRUDResource<Client> {
         ClientDto dto1 = null;
         TypedQuery<Client> q = em.createQuery(getSearchQuery(dto), Client.class);
         for(Client client : q.getResultList()){
-            dto1 =ClientDto.map(mapper, client);
+            dto1 =ClientDto.map(mapper, client, dto);
             dtos.add(dto1);
         }
         return dtos;
+    }
+    
+    @PUT
+    @Path("/report")
+    public void report(ClientSearchDto dto) {
+        ClientDtoTable table = new ClientDtoTable();
+        List<ClientDto> dtos = new ArrayList();
+        ClientDto dto1 = null;
+        TypedQuery<Client> q = em.createQuery(getSearchQuery(dto), Client.class);
+        for(Client client : q.getResultList()){
+            dto1 =ClientDto.map(mapper, client, dto);
+            dtos.add(dto1);
+        }
+        table.setEntities(dtos);
+        table.setSize(Long.valueOf(dtos.size()));
+        String[] columnOrder = new String[]{"name", "street1", "street2", "city", "state"};
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
+        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "client", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
     }
     
     @XmlRootElement

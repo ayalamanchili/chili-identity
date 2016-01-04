@@ -97,29 +97,35 @@ public class ClientDto implements Serializable {
         this.zip = zip;
     }
 
-    public static ClientDto map(Mapper mapper, Client entity) {
+    public static ClientDto map(Mapper mapper, Client entity, ClientSearchDto csdto) {
         ClientDto dto = mapper.map(entity, ClientDto.class);
         dto.setName(entity.getName());
         if (entity.getLocations().size() > 0) {
-            Address address = entity.getLocations().get(0);
-            dto.setStreet1(address.getStreet1());
-            dto.setStreet2(address.getStreet2());
-            dto.setCity(address.getCity());
-            dto.setState(address.getState());
+            for (Address address : entity.getLocations()) {
+                if ((csdto.getCity() != null && csdto.getCity().equals(address.getCity())) || (csdto.getState() != null && csdto.getState().equals(address.getState()))) {
+                    dto.setStreet1(address.getStreet1());
+                    dto.setStreet2(address.getStreet2());
+                    dto.setCity(address.getCity());
+                    dto.setState(address.getState());
+                }
+            }
         }
         dto.setId(entity.getId());
         return dto;
     }
-    
-    public static ClientDto mapVendor(Mapper mapper, Vendor entity) {
+
+    public static ClientDto mapVendor(Mapper mapper, Vendor entity, VendorSearchDto csdto) {
         ClientDto dto = mapper.map(entity, ClientDto.class);
         dto.setName(entity.getName());
         if (entity.getLocations().size() > 0) {
-            Address address = entity.getLocations().get(0);
-            dto.setStreet1(address.getStreet1());
-            dto.setStreet2(address.getStreet2());
-            dto.setCity(address.getCity());
-            dto.setState(address.getState());
+            for (Address address : entity.getLocations()) {
+                if ((csdto.getCity() != null && csdto.getCity().equals(address.getCity())) || (csdto.getState() != null && csdto.getState().equals(address.getState()))) {
+                    dto.setStreet1(address.getStreet1());
+                    dto.setStreet2(address.getStreet2());
+                    dto.setCity(address.getCity());
+                    dto.setState(address.getState());
+                }
+            }
         }
         dto.setId(entity.getId());
         return dto;

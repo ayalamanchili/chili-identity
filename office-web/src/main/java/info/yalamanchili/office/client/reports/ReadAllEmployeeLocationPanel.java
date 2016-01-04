@@ -87,7 +87,6 @@ public class ReadAllEmployeeLocationPanel extends CRUDReadAllComposite {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Employee"));
         table.setText(0, 2, getKeyValue("Client"));
-        table.setText(0, 3, getKeyValue("City"));
         table.setText(0, 4, getKeyValue("ClientLocation"));
         table.setText(0, 5, getKeyValue("Vendor"));
         table.setText(0, 6, getKeyValue("StartDate"));
@@ -102,7 +101,6 @@ public class ReadAllEmployeeLocationPanel extends CRUDReadAllComposite {
             OfficeWelcome.instance().logger.info(entity.toString());
             table.setText(i, 1, JSONUtils.toString(entity, "employee"));
             table.setText(i, 2, JSONUtils.toString(entity, "client"));
-            table.setText(i, 3, JSONUtils.toString(entity, "city"));
             table.setText(i, 4, JSONUtils.toString(entity, "clientLocation"));
             table.setText(i, 5, JSONUtils.toString(entity, "vendor"));
             table.setText(i, 6, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
