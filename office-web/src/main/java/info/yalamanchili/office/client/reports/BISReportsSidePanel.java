@@ -359,7 +359,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                 String empUrl = OfficeWelcome.constants.root_url() + "employee/search-emp-between-days/0/1000";
                 entity.put("startDate", new JSONString(DateUtils.toDateString(projectStartDate.getDate())));
                 empUrl = empUrl.concat("?startDate=" + sdf.format(projectStartDate.getDate()));
-                entity.put("endDate", new JSONString(DateUtils.toDateString(projectStartDate.getDate())));
+                entity.put("endDate", new JSONString(DateUtils.toDateString(projectEndDate.getDate())));
                 empUrl = empUrl.concat("&endDate=" + sdf.format(projectEndDate.getDate()));
                 entity.put("value", new JSONString(li.getSelectedValue()));
                 empUrl = empUrl.concat("&value=" + li.getSelectedValue());
@@ -387,7 +387,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                 String empUrl1 = OfficeWelcome.constants.root_url() + "clientinformation/search-projects-between-days/0/1000";
                 entity2.put("startDate", new JSONString(DateUtils.toDateString(projectStartDate.getDate())));
                 empUrl1 = empUrl1.concat("?startDate=" + sdf.format(projectStartDate.getDate()));
-                entity2.put("endDate", new JSONString(DateUtils.toDateString(projectStartDate.getDate())));
+                entity2.put("endDate", new JSONString(DateUtils.toDateString(projectEndDate.getDate())));
                 empUrl1 = empUrl1.concat("&endDate=" + sdf.format(projectEndDate.getDate()));
                 logger.info("project end date url :" + empUrl1);
                 HttpService.HttpServiceAsync.instance().doPut(URL.encode(empUrl1), entity2.toString(), OfficeWelcome.instance().getHeaders(), true,
