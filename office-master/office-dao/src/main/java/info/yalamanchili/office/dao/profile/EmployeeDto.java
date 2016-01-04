@@ -61,6 +61,7 @@ public class EmployeeDto implements Serializable {
     protected String imageURL;
     @NotNull(message = "{startDate.not.empty.msg}")
     protected Date startDate;
+    protected Date endDate;
     @Email(message = "Enter a valid email address ")
     @NotEmpty(message = "{email.not.empty.msg}")
     protected String email;
@@ -72,7 +73,7 @@ public class EmployeeDto implements Serializable {
     protected Company company;
     protected String ssn;
 
-    public EmployeeDto(Long id, String firstName, String lastName, String middleInitial, String employeeId, Date dateOfBirth, Sex sex, Branch branch, WorkStatus workStatus, String imageURL, Date startDate, String email, String phoneNumber, String phoneNumberExt, String jobTitle, EmployeeType employeeType, Company company, String ssn) {
+    public EmployeeDto(Long id, String firstName, String lastName, String middleInitial, String employeeId, Date dateOfBirth, Sex sex, Branch branch, WorkStatus workStatus, String imageURL, Date startDate, Date endDate, String email, String phoneNumber, String phoneNumberExt, String jobTitle, EmployeeType employeeType, Company company, String ssn) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -91,6 +92,7 @@ public class EmployeeDto implements Serializable {
         this.employeeType = employeeType;
         this.company = company;
         this.ssn = ssn;
+        this.endDate = endDate;
     }
 
     public EmployeeDto() {
@@ -257,6 +259,14 @@ public class EmployeeDto implements Serializable {
         this.ssn = ssn;
     }
 
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
     @Override
     public String toString() {
         return "EmployeeDto{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", middleInitial=" + middleInitial + ", employeeId=" + employeeId + ", dateOfBirth=" + dateOfBirth + ", sex=" + sex + ", imageURL=" + imageURL + ", startDate=" + startDate + ", email=" + email + ", phoneNumber=" + phoneNumber + ", jobTitle=" + jobTitle + ", employeeType=" + employeeType + ", workStatus=" + workStatus + '}';
@@ -267,6 +277,8 @@ public class EmployeeDto implements Serializable {
         dto.setFirstName(entity.getFirstName());
         dto.setLastName(entity.getLastName());
         dto.setJobTitle(entity.getJobTitle());
+        dto.setStartDate(entity.getStartDate());
+        dto.setEndDate(entity.getEndDate());
         dto.setEmail(EmployeeDao.instance().getPrimaryEmail(entity));
         if (entity.getPhones().size() > 0) {
             Phone phone = entity.getPhones().get(0);
