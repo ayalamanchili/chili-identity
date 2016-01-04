@@ -28,7 +28,6 @@ public class OfficeRoles {
         ROLE_EXPENSE,// Accounts?
         ROLE_DRIVE,
         ROLE_RELATIONSHIP,
-        ROLE_ACCOUNT_VIEW,
         //NEW _ROLES
         ROLE_HR_ADMINSTRATION,
         ROLE_H1B_IMMIGRATION,
@@ -75,7 +74,6 @@ public class OfficeRoles {
         rolesMessages.put(OfficeRole.ROLE_EXPENSE.name(), "Expense");
         rolesMessages.put(OfficeRole.ROLE_DRIVE.name(), "Drive");
         rolesMessages.put(OfficeRole.ROLE_RELATIONSHIP.name(), "Engagement");
-        rolesMessages.put(OfficeRole.ROLE_ACCOUNT_VIEW.name(), "Account View");
         rolesMessages.put(OfficeRole.ROLE_HR_ADMINSTRATION.name(), "HR Administration");
         rolesMessages.put(OfficeRole.ROLE_H1B_IMMIGRATION.name(), "H1B Immigration");
         rolesMessages.put(OfficeRole.ROLE_GC_IMMIGRATION.name(), "GC Immigration");
