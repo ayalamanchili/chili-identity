@@ -12,16 +12,23 @@ import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.types.Entry;
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
+import info.chili.reporting.ReportGenerator;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.client.VendorDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.dto.client.ContractSearchDto;
 import info.yalamanchili.office.dto.profile.ContactDto;
 import info.yalamanchili.office.dto.profile.ContactDto.ContactDtoTable;
+import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
+import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
 import info.yalamanchili.office.mapper.profile.ContactMapper;
@@ -351,6 +358,44 @@ public class VendorResource extends CRUDResource<Vendor> {
         }
 
         public void setEntities(List<Vendor> entities) {
+            this.entities = entities;
+        }
+    }
+    
+    @PUT
+    @Path("/search-vendor1/{start}/{limit}")
+    public List<ClientDto> search1(VendorSearchDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {
+        List<ClientDto> dtos = new ArrayList();
+        ClientDto dto1 = null;
+        TypedQuery<Vendor> q = em.createQuery(getSearchQuery(dto), Vendor.class);
+        for(Vendor client : q.getResultList()){
+            dto1 =ClientDto.mapVendor(mapper, client);
+            dtos.add(dto1);
+        }
+        return dtos;
+    }
+    
+    @XmlRootElement
+    @XmlType
+    public static class ClientDtoTable implements java.io.Serializable {
+
+        protected Long size;
+        protected List<ClientDto> entities;
+
+        public Long getSize() {
+            return size;
+        }
+
+        public void setSize(Long size) {
+            this.size = size;
+        }
+
+        @XmlElement
+        public List<ClientDto> getEntities() {
+            return entities;
+        }
+
+        public void setEntities(List<ClientDto> entities) {
             this.entities = entities;
         }
     }
