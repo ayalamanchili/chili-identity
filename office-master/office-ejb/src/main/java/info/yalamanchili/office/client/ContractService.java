@@ -27,6 +27,7 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dto.client.ContractSearchDto;
 import info.yalamanchili.office.email.MailUtils;
@@ -140,7 +141,16 @@ public class ContractService {
         //TODO should we filter search query by date like reports?
         StringBuilder queryStr = new StringBuilder();
         queryStr.append("SELECT ci from ").append(ClientInformation.class.getCanonicalName());
-        queryStr.append(" ci where ");
+        queryStr.append(" ci ");
+        if (StringUtils.isNotBlank(searchDto.getRecruiter())) {
+            queryStr.append(" join ci.recruiters as recruiters");
+        }
+        queryStr.append(" where ");
+
+        if (StringUtils.isNotBlank(searchDto.getRecruiter())) {
+            String[] recruiters = searchDto.getRecruiter().split(" ");
+            queryStr.append("recruiters.firstName LIKE '%").append(recruiters[0].trim()).append("%' ").append(" and ");
+        }
         if (searchDto.getInvoiceFrequency() != null) {
             if (StringUtils.isNotBlank(searchDto.getInvoiceFrequency().toString())) {
                 queryStr.append("ci.invoiceFrequency LIKE '%").append(searchDto.getInvoiceFrequency().toString().trim()).append("%' ").append(" and ");
@@ -175,9 +185,6 @@ public class ContractService {
         }
         if (StringUtils.isNotBlank(searchDto.getVendorCity())) {
             queryStr.append("ci.vendorLocation.city LIKE '%").append(searchDto.getVendorCity().trim()).append("%' ").append(" and ");
-        }
-        if (StringUtils.isNotBlank(searchDto.getRecruiter())) {
-            queryStr.append("ci.employee.firstName LIKE '%").append(searchDto.getRecruiter().trim()).append("%' ").append(" and ");
         }
 
         if (searchDto.getCompany() != null) {
@@ -411,6 +418,14 @@ public class ContractService {
         for (Object obj : query.getResultList()) {
             dto.setInvoiceFrequency1099(InvoiceFrequency.valueOf((String) obj));
         }
+    }
+    
+    public void generateBisReport() {
+        ContractTable data = getContractorPlacementInfo(0, 10000);
+        String[] columnOrder = new String[]{"employee", "client", "vendor", "itemNumber", "billingRate", "overTimeBillingRate", "invoiceFrequency", "startDate", "endDate"};
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
+        String fileName = ReportGenerator.generateExcelOrderedReport(data.getEntities(), "contracts", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
     }
 
     public static ContractService instance() {
