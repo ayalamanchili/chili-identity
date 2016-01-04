@@ -435,7 +435,7 @@ public class ClientResource extends CRUDResource<Client> {
         ClientDto dto1 = null;
         TypedQuery<Client> q = em.createQuery(getSearchQuery(dto), Client.class);
         for(Client client : q.getResultList()){
-            dto1 =ClientDto.map(mapper, client);
+            dto1 =ClientDto.map(mapper, client, dto);
             dtos.add(dto1);
         }
         return dtos;
@@ -449,7 +449,7 @@ public class ClientResource extends CRUDResource<Client> {
         ClientDto dto1 = null;
         TypedQuery<Client> q = em.createQuery(getSearchQuery(dto), Client.class);
         for(Client client : q.getResultList()){
-            dto1 =ClientDto.map(mapper, client);
+            dto1 =ClientDto.map(mapper, client, dto);
             dtos.add(dto1);
         }
         table.setEntities(dtos);
