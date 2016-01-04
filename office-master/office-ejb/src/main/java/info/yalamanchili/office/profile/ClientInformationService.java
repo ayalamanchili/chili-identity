@@ -317,21 +317,19 @@ public class ClientInformationService {
         if (billingRate.getEffectiveDate().before(ci.getStartDate())) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid Effective Date", "Effective Date can't be before Project Start Date");
         }
-        Date dte = billingRate.getEffectiveDate();
         billingRate.setUpdatedBy(OfficeSecurityService.instance().getCurrentUserName());
         billingRate.setUpdatedTs(Calendar.getInstance().getTime());
         billingRate.setClientInformation(ci);
         BillingRateDao.instance().save(billingRate).getId().toString();
-        sendBillingRateUpdatedEmail(ci, dte);
+        ContractService.instance().sendClientinfoUpdatedEmail(ci);
     }
 
-    protected void sendBillingRateUpdatedEmail(ClientInformation ci, Date dte) {
+    protected void sendBillingRateUpdatedEmail(ClientInformation ci) {
         String[] roles = {OfficeRoles.OfficeRole.ROLE_BILLING_AND_INVOICING.name()};
         Email email = new Email();
         email.setTos(MailUtils.instance().getEmailsAddressesForRoles(roles));
         email.setSubject("Billing rate updated for :" + ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
         String messageText = " Updated Billing rate : ";
-        messageText = messageText.concat("Effective Date :" + dte);
         messageText = messageText.concat("Billing Rate :" + ci.getBillingRate());
         messageText = messageText.concat("Pay Rate :" + ci.getPayRate());
         messageText = messageText.concat("Overtime Billing Rate :" + ci.getOverTimeBillingRate());
