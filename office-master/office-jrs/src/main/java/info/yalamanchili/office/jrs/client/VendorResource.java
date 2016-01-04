@@ -336,6 +336,25 @@ public class VendorResource extends CRUDResource<Vendor> {
         }
         return queryStr.toString().substring(0, queryStr.toString().lastIndexOf("and"));
     }
+    
+    @PUT
+    @Path("/report")
+    public void report(VendorSearchDto dto) {
+        ClientResource.ClientDtoTable table = new ClientResource.ClientDtoTable();
+        List<ClientDto> dtos = new ArrayList();
+        ClientDto dto1 = null;
+        TypedQuery<Vendor> q = em.createQuery(getSearchQuery(dto), Vendor.class);
+        for(Vendor vendor : q.getResultList()){
+            dto1 =ClientDto.mapVendor(mapper, vendor);
+            dtos.add(dto1);
+        }
+        table.setEntities(dtos);
+        table.setSize(Long.valueOf(dtos.size()));
+        String[] columnOrder = new String[]{"name", "street1", "street2", "city", "state"};
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
+        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "vendor", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
+    }
 
     @XmlRootElement
     @XmlType
