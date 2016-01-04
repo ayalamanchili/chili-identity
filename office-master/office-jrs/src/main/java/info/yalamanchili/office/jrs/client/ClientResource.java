@@ -394,11 +394,10 @@ public class ClientResource extends CRUDResource<Client> {
             queryStr.append("clientinvFrequency LIKE '%").append(dto.getClientinvFrequency().name().trim()).append("%' ").append(" and ");
         }
         if (!Strings.isNullOrEmpty(dto.getCity())) {
-            queryStr.append("lower(clientLocations.city) LIKE '%").append(dto.getCity().toLowerCase().trim()).append("%' ").append(" and ");
+            queryStr.append("lower(clientLocations.city) = '").append(dto.getCity().toLowerCase().trim()).append("' ").append(" and ");
         }
-
         if (!Strings.isNullOrEmpty(dto.getState())) {
-            queryStr.append("clientLocations.state LIKE '%").append(dto.getState().trim()).append("%' ").append(" and ");
+            queryStr.append("clientLocations.state = '").append(dto.getState().trim()).append("' ").append(" and ");
         }
         return queryStr.toString().substring(0, queryStr.toString().lastIndexOf("and"));
     }
