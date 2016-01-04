@@ -328,11 +328,11 @@ public class VendorResource extends CRUDResource<Vendor> {
             queryStr.append("vendorType LIKE '%").append(dto.getVendorType().name().trim()).append("%' ").append(" and ");
         }
         if (!Strings.isNullOrEmpty(dto.getCity())) {
-            queryStr.append("lower(vendorLocations.city) LIKE '%").append(dto.getCity().toLowerCase().trim()).append("%' ").append(" and ");
+            queryStr.append("lower(vendorLocations.city) = '").append(dto.getCity().toLowerCase().trim()).append("' ").append(" and ");
         }
 
         if (!Strings.isNullOrEmpty(dto.getState())) {
-            queryStr.append("vendorLocations.state LIKE '%").append(dto.getState().trim()).append("%' ").append(" and ");
+            queryStr.append("vendorLocations.state = '").append(dto.getState().trim()).append("' ").append(" and ");
         }
         return queryStr.toString().substring(0, queryStr.toString().lastIndexOf("and"));
     }
