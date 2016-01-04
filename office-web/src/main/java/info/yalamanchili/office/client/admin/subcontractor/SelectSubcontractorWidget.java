@@ -29,6 +29,11 @@ public class SelectSubcontractorWidget extends SelectComposite {
         super(OfficeWelcome.constants, "Subcontractor", readOnly, isRequired, alignment);
         instance = this;
     }
+    
+    public SelectSubcontractorWidget(Boolean readOnly, Boolean isRequired) {
+        super(OfficeWelcome.constants, "Subcontractor", readOnly, isRequired);
+        instance = this;
+    }
 
     @Override
     protected void fetchDropDownData() {
