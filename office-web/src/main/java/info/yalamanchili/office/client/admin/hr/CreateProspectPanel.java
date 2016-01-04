@@ -63,7 +63,9 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         assignEntityValueFromField("lastName", entity);
         assignEntityValueFromField("referredBy", entity);
         assignEntityValueFromField("email", entity);
+        assignEntityValueFromField("countryCode", entity);
         assignEntityValueFromField("phoneNumber", entity);
+        assignEntityValueFromField("extension", entity);
         assignEntityValueFromField("sex", entity);
         assignEntityValueFromField("dateOfBirth", entity);
         assignEntityValueFromField("street1", address);
@@ -162,7 +164,9 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         addField("lastName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("referredBy", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("email", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("phoneNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("countryCode", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
+        addField("phoneNumber", false, true, DataType.LONG_FIELD, Alignment.HORIZONTAL);
+        addField("extension", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
         addField("dateOfBirth", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("sex", false, false, Sex.names(), Alignment.HORIZONTAL);
         addField("street1", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);

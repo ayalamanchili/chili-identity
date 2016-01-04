@@ -16,7 +16,6 @@ import java.util.Date;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Temporal;
-import javax.validation.Valid;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -44,10 +43,16 @@ public class ProspectDto implements Serializable {
     @NotEmpty(message = "{prospect.email.not.empty.msg}")
     protected String email;
 
+    @Size(max = 4)
+    protected String countryCode;
+
     @NotEmpty(message = "{prospect.phoneNumber.not.empty.msg}")
     @Size(min = 10, max = 10, message = "{prospect.phoneNumber.lenght.invalid.msg}")
     protected String phoneNumber;
-    
+
+    @Size(max = 5)
+    protected String extension;
+
     protected Sex sex;
 
     protected Date startDate;
@@ -60,10 +65,9 @@ public class ProspectDto implements Serializable {
     protected String resumeURL;
 
     protected Date dateOfBirth;
-    
+
     protected String comment;
 
-    @Valid
     private Address address;
 
     @Enumerated(EnumType.STRING)
@@ -99,12 +103,28 @@ public class ProspectDto implements Serializable {
         this.email = email;
     }
 
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
+    }
+
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getExtension() {
+        return extension;
+    }
+
+    public void setExtension(String extension) {
+        this.extension = extension;
     }
 
     public Sex getSex() {
@@ -114,7 +134,7 @@ public class ProspectDto implements Serializable {
     public void setSex(Sex sex) {
         this.sex = sex;
     }
-    
+
     public String getFirstName() {
         return firstName;
     }
@@ -194,7 +214,7 @@ public class ProspectDto implements Serializable {
     public void setComment(String comment) {
         this.comment = comment;
     }
-    
+
     @Override
     public String toString() {
         return "ProspectDto{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", phoneNumber=" + phoneNumber + ", sex=" + sex + ", startDate=" + startDate + ", screenedBy=" + screenedBy + ", referredBy=" + referredBy + ", resumeURL=" + resumeURL + ", dateOfBirth=" + dateOfBirth + ", address=" + address + ", status=" + status + ", processDocSentDate=" + processDocSentDate + '}';
@@ -205,6 +225,8 @@ public class ProspectDto implements Serializable {
         mapper.map(entity.getContact(), prospectContact);
         if (entity.getContact().getPhones().size() > 0) {
             prospectContact.setPhoneNumber(entity.getContact().getPhones().get(0).getPhoneNumber());
+            prospectContact.setExtension(entity.getContact().getPhones().get(0).getExtension());
+            prospectContact.setCountryCode(entity.getContact().getPhones().get(0).getCountryCode());
         }
         if (entity.getContact().getAddresss().size() > 0) {
             prospectContact.setAddress(entity.getContact().getAddresss().get(0));

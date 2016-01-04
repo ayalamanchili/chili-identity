@@ -36,15 +36,15 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class ProspectService {
-    
+
     @PersistenceContext
     protected EntityManager em;
     @Autowired
     protected Mapper mapper;
-    
+
     @Autowired
     protected ProspectDao prospectDao;
-    
+
     public ProspectDto save(ProspectDto dto) {
         if (ContactDao.instance().findByEmail(dto.getEmail()) != null) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "email.alreday.exist", "Contact Already Exist With The Same Email");
@@ -56,7 +56,7 @@ public class ProspectService {
         contact.setLastName(dto.getLastName());
         contact.setDateOfBirth(dto.getDateOfBirth());
         contact.setSex(dto.getSex());
-        
+
         if (!Strings.isNullOrEmpty(dto.getEmail())) {
             Email email = new Email();
             email.setEmail(dto.getEmail());
@@ -68,6 +68,8 @@ public class ProspectService {
             Phone phone = new Phone();
             contact.addPhone(phone);
             phone.setPhoneNumber(dto.getPhoneNumber());
+            phone.setCountryCode(dto.getCountryCode());
+            phone.setExtension(dto.getExtension());
         }
         //address
         Address address;
@@ -91,13 +93,13 @@ public class ProspectService {
         dto.setId(entity.getId());
         return dto;
     }
-    
+
     public ProspectDto read(Long id) {
         Prospect ec = prospectDao.findById(id);
         ProspectDto dto = ProspectDto.map(mapper, ec);
         return dto;
     }
-    
+
     public ProspectDto clone(Long id) {
         Prospect entity = prospectDao.clone(id);
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
@@ -105,11 +107,11 @@ public class ProspectService {
         ProspectDto res = ProspectDto.map(mapper, entity);
         return res;
     }
-    
+
     public static ProspectService instance() {
         return SpringContext.getBean(ProspectService.class);
     }
-    
+
     public Prospect update(ProspectDto dto) {
         Prospect entity = prospectDao.findById(dto.getId());
         if (entity.getStatus() == null) {
@@ -147,11 +149,15 @@ public class ProspectService {
             if (!Strings.isNullOrEmpty(dto.getPhoneNumber())) {
                 Phone phone = new Phone();
                 phone.setPhoneNumber(dto.getPhoneNumber());
+                phone.setCountryCode(dto.getCountryCode());
+                phone.setExtension(dto.getExtension());
                 contact.addPhone(phone);
             }
         } else {
             //TODO update existing phone
             contact.getPhones().get(0).setPhoneNumber(dto.getPhoneNumber());
+            contact.getPhones().get(0).setCountryCode(dto.getCountryCode());
+            contact.getPhones().get(0).setExtension(dto.getExtension());
         }
         //address
         if (contact.getAddresss().size() <= 0) {
@@ -175,7 +181,7 @@ public class ProspectService {
         entity.setContact(contact);
         if (dto.getComment() != null) {
             CommentDao.instance().addComment(dto.getComment(), entity);
-        }        
+        }
         prospectDao.getEntityManager().merge(entity);
         return entity;
     }

@@ -89,7 +89,9 @@ public class ReadProspectsPanel extends ReadComposite {
         assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("screenedBy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("email", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("countryCode", entity, DataType.LONG_FIELD);
         assignFieldValueFromEntity("phoneNumber", entity, DataType.LONG_FIELD);
+        assignFieldValueFromEntity("extension", entity, DataType.LONG_FIELD);
         assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("dateOfBirth", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("referredBy", entity, DataType.STRING_FIELD);
@@ -113,7 +115,9 @@ public class ReadProspectsPanel extends ReadComposite {
         addField("lastName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("referredBy", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("email", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("countryCode", true, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
         addField("phoneNumber", true, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
+        addField("extension", true, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
         addField("dateOfBirth", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("sex", true, false, Sex.names(), Alignment.HORIZONTAL);
         addField("street1", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
