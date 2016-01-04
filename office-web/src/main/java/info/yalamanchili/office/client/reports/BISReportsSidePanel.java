@@ -103,16 +103,14 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
     String[] employeeTypeStrs = {"Corporate Employee", "Employee", "Subcontractor", "1099 Contractor", "W2 Contractor"};
     EnumField employeeTypeField = new EnumField(OfficeWelcome.constants, "employeeType", "Contract", false, false, employeeTypeStrs);
     EnumField projectStatusField = new EnumField(OfficeWelcome.constants, "status", "Contract", false, false, ClientInformationStatus.names());
-    DateField projectStartDate = new DateField(OfficeWelcome.constants, "startDate", "", false, false);
-    DateField projectEndDate = new DateField(OfficeWelcome.constants, "endDate", "", false, false);
+    DateField projectStartDate = new DateField(OfficeWelcome.constants, "startDate", "Employee", false, false);
+    DateField projectEndDate = new DateField(OfficeWelcome.constants, "endDate", "Employee", false, false);
     StringField cityField = new StringField(OfficeWelcome.constants, "city", "Contract", false, false);
     EnumField stateFeild = new EnumField(OfficeWelcome.constants, "state", "Contract", false, false, USAStatesFactory.getStates().toArray(new String[0]));
     EnumField companyField = new EnumField(OfficeWelcome.constants, "company", "Contract", false, false, ClientInformationCompany.names());
     EnumField invoiceField = new EnumField(OfficeWelcome.constants, "invoiceFrequency", "Contract", false, false, InvoiceFrequency.names());
     StringField vendorField = new StringField(OfficeWelcome.constants, "vendor", "Contract", false, false);
     ListBox li = new ListBox();
-    DateField startDate = new DateField(OfficeWelcome.constants, "startDate", "Contract", false, false);
-    DateField endDate = new DateField(OfficeWelcome.constants, "endDate", "Contract", false, false);
 
     private static Logger logger = Logger.getLogger(BISReportsSidePanel.class.getName());
 
@@ -505,6 +503,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                             }
                         });
             }
+            clearFields();
         }
     }
 
