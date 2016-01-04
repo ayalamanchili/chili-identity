@@ -345,7 +345,7 @@ public class VendorResource extends CRUDResource<Vendor> {
         ClientDto dto1 = null;
         TypedQuery<Vendor> q = em.createQuery(getSearchQuery(dto), Vendor.class);
         for(Vendor vendor : q.getResultList()){
-            dto1 =ClientDto.mapVendor(mapper, vendor);
+            dto1 =ClientDto.mapVendor(mapper, vendor, dto);
             dtos.add(dto1);
         }
         table.setEntities(dtos);
@@ -388,7 +388,7 @@ public class VendorResource extends CRUDResource<Vendor> {
         ClientDto dto1 = null;
         TypedQuery<Vendor> q = em.createQuery(getSearchQuery(dto), Vendor.class);
         for(Vendor client : q.getResultList()){
-            dto1 =ClientDto.mapVendor(mapper, client);
+            dto1 =ClientDto.mapVendor(mapper, client, dto);
             dtos.add(dto1);
         }
         return dtos;
