@@ -103,16 +103,14 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
     String[] employeeTypeStrs = {"Corporate Employee", "Employee", "Subcontractor", "1099 Contractor", "W2 Contractor"};
     EnumField employeeTypeField = new EnumField(OfficeWelcome.constants, "employeeType", "Contract", false, false, employeeTypeStrs);
     EnumField projectStatusField = new EnumField(OfficeWelcome.constants, "status", "Contract", false, false, ClientInformationStatus.names());
-    DateField projectStartDate = new DateField(OfficeWelcome.constants, "startDate", "", false, false);
-    DateField projectEndDate = new DateField(OfficeWelcome.constants, "endDate", "", false, false);
+    DateField projectStartDate = new DateField(OfficeWelcome.constants, "startDate", "Employee", false, false);
+    DateField projectEndDate = new DateField(OfficeWelcome.constants, "endDate", "Employee", false, false);
     StringField cityField = new StringField(OfficeWelcome.constants, "city", "Contract", false, false);
     EnumField stateFeild = new EnumField(OfficeWelcome.constants, "state", "Contract", false, false, USAStatesFactory.getStates().toArray(new String[0]));
     EnumField companyField = new EnumField(OfficeWelcome.constants, "company", "Contract", false, false, ClientInformationCompany.names());
     EnumField invoiceField = new EnumField(OfficeWelcome.constants, "invoiceFrequency", "Contract", false, false, InvoiceFrequency.names());
     StringField vendorField = new StringField(OfficeWelcome.constants, "vendor", "Contract", false, false);
     ListBox li = new ListBox();
-    DateField startDate = new DateField(OfficeWelcome.constants, "startDate", "Contract", false, false);
-    DateField endDate = new DateField(OfficeWelcome.constants, "endDate", "Contract", false, false);
 
     private static Logger logger = Logger.getLogger(BISReportsSidePanel.class.getName());
 
@@ -359,7 +357,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                 String empUrl = OfficeWelcome.constants.root_url() + "employee/search-emp-between-days/0/1000";
                 entity.put("startDate", new JSONString(DateUtils.toDateString(projectStartDate.getDate())));
                 empUrl = empUrl.concat("?startDate=" + sdf.format(projectStartDate.getDate()));
-                entity.put("endDate", new JSONString(DateUtils.toDateString(projectStartDate.getDate())));
+                entity.put("endDate", new JSONString(DateUtils.toDateString(projectEndDate.getDate())));
                 empUrl = empUrl.concat("&endDate=" + sdf.format(projectEndDate.getDate()));
                 entity.put("value", new JSONString(li.getSelectedValue()));
                 empUrl = empUrl.concat("&value=" + li.getSelectedValue());
@@ -387,7 +385,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                 String empUrl1 = OfficeWelcome.constants.root_url() + "clientinformation/search-projects-between-days/0/1000";
                 entity2.put("startDate", new JSONString(DateUtils.toDateString(projectStartDate.getDate())));
                 empUrl1 = empUrl1.concat("?startDate=" + sdf.format(projectStartDate.getDate()));
-                entity2.put("endDate", new JSONString(DateUtils.toDateString(projectStartDate.getDate())));
+                entity2.put("endDate", new JSONString(DateUtils.toDateString(projectEndDate.getDate())));
                 empUrl1 = empUrl1.concat("&endDate=" + sdf.format(projectEndDate.getDate()));
                 logger.info("project end date url :" + empUrl1);
                 HttpService.HttpServiceAsync.instance().doPut(URL.encode(empUrl1), entity2.toString(), OfficeWelcome.instance().getHeaders(), true,
@@ -505,6 +503,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                             }
                         });
             }
+            clearFields();
         }
     }
 
