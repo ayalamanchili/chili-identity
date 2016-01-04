@@ -18,8 +18,10 @@ import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.profile.ClientInformationService;
 import info.yalamanchili.office.bpm.offboarding.ProjectOffBoardingDto;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
+import info.yalamanchili.office.dao.profile.EmployeeDto;
 import info.yalamanchili.office.project.offboarding.ProjectOffBoardingService;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import javax.persistence.Query;
@@ -33,6 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
@@ -137,15 +140,53 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
     }
 
     @PUT
+    @Path("/mp/employees")
+    public ClientInformationTable getMPForEmployees() {
+        ClientInformationTable list = new ClientInformationTable();
+        String[] types = {"Corporate Employee", "Employee", "Subcontractor", "W2 Contractor", "1099 Contractor"};
+        List<Employee> emps = EmployeeDao.instance().getEmployeesByType(types);
+        List<ClientInformation> clients = new ArrayList();
+        for (Employee emp : emps) {
+            if (emp.getClientInformations() != null && emp.getClientInformations().size() > 1) {
+                for (ClientInformation ci : emp.getClientInformations()) {
+                    clients.add(ci);
+                }
+            }
+        }
+        if (clients.size() > 1) {
+            list.setEntities(clients);
+            list.setSize(Long.valueOf(clients.size()));
+            return list;
+        } else {
+            return null;
+        }
+    }
+
+    @PUT
+    @Path("/search-projects-between-days/{start}/{limit}")
+    @Cacheable(OfficeCacheKeys.EMPLOYEES)
+    public ClientInformationTable table(@PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate) {
+        ClientInformationTable table = new ClientInformationTable();
+        List<ClientInformation> clients = clientInformationDao.queryForProjEndBetweenDays(start, limit, startDate, endDate);
+        if (clients != null && clients.size() > 0) {
+            table.setEntities(clients);
+            table.setSize(Long.valueOf(clients.size()));
+            return table;
+        } else {
+            return null;
+        }
+    }
+
+    @PUT
     @Validate
     @Path("/project-off-boarding")
     public void projectOffBoarding(ProjectOffBoardingDto dto) {
         ProjectOffBoardingService.instance().startProjectOffBoardingTask(dto);
     }
-    
+
     @GET
     @Path("/endDate/{id}/{endPrevProj}")
-    public String getPrevProjEndDate(@PathParam("id")Long id, @PathParam("endPrevProj") Boolean endprevProj) {
+    public String getPrevProjEndDate(@PathParam("id") Long id, @PathParam("endPrevProj") Boolean endprevProj) {
         return clientInformationDao.queryForPrevProjEndDate(id);
     }
 
