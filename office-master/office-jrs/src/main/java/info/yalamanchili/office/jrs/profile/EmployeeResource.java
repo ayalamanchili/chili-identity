@@ -41,6 +41,7 @@ import info.yalamanchili.office.profile.ClientInformationService;
 import info.yalamanchili.office.profile.EmergencyContactService;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.EntityManager;
@@ -433,6 +434,21 @@ public class EmployeeResource extends CRUDResource<Employee> {
         } while ((start + limit) < size);
         return ReportGenerator.generateReport(data, reportName, format, OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
     }
+    
+    @PUT
+    @Path("/search-emp-between-days/{start}/{limit}")
+    @Cacheable(OfficeCacheKeys.EMPLOYEES)
+    public EmployeeTable table(@PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate, @QueryParam("value") String value) {
+        EmployeeTable table = new EmployeeTable();
+        List<EmployeeDto> dtos = new ArrayList();
+        for (Object empObj : employeeDao.queryBetweenDays(start, limit, startDate, endDate, value)) {
+            dtos.add(info.yalamanchili.office.dao.profile.EmployeeDto.map(mapper, (Employee) empObj));
+        }
+        table.setEntities(dtos);
+        table.setSize(Long.valueOf(dtos.size()));
+        return table;
+    }
+
 
     @Override
     public CRUDDao getDao() {
