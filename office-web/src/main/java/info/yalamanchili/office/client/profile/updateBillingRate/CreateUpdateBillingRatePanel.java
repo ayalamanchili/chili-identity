@@ -48,9 +48,7 @@ public class CreateUpdateBillingRatePanel extends UpdateComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject billingRate = new JSONObject();
-        //      assignEntityValueFromField("payRate", billingRate);
         assignEntityValueFromField("billingRate", billingRate);
-        //      assignEntityValueFromField("overTimePayRate", billingRate);
         assignEntityValueFromField("overTimeBillingRate", billingRate);
         assignEntityValueFromField("effectiveDate", billingRate);
         assignEntityValueFromField("billingInvoiceFrequency", billingRate);
@@ -64,9 +62,7 @@ public class CreateUpdateBillingRatePanel extends UpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        //      assignFieldValueFromEntity("payRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
-        //      assignFieldValueFromEntity("overTimePayRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("billingInvoiceFrequency", entity, DataType.ENUM_FIELD);
         if (isSubOr1099) {
@@ -111,9 +107,7 @@ public class CreateUpdateBillingRatePanel extends UpdateComposite {
     @Override
     protected void addWidgets() {
         addField("effectiveDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        // addField("payRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("billingRate", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-        // addField("overTimePayRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addEnumField("billingInvoiceFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         if (isSubOr1099) {

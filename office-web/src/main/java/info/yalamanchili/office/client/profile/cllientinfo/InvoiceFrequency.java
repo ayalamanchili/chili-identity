@@ -18,6 +18,7 @@ public enum InvoiceFrequency {
     WEEKLY_ENDING_FRIDAY,
     WEEKLY_ENDING_SUNDAY,
     WEEKLY_MON_TO_SUN,
+    SCHEDULED,
     BI_WEEKLY,
     MONTHLY,
     MONTHLY_LAST_FRIDAY,
