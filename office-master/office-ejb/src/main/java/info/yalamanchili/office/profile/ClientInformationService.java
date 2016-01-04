@@ -321,7 +321,7 @@ public class ClientInformationService {
         billingRate.setUpdatedTs(Calendar.getInstance().getTime());
         billingRate.setClientInformation(ci);
         BillingRateDao.instance().save(billingRate).getId().toString();
-
+        ContractService.instance().sendClientinfoUpdatedEmail(ci);
     }
 
     protected void sendBillingRateUpdatedEmail(ClientInformation ci) {

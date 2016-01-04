@@ -38,10 +38,10 @@ public class ClientInformationDao extends CRUDDao<ClientInformation> {
     }
 
     public String queryForPrevProjEndDate(Long id) {
-        TypedQuery<ClientInformation> q = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " WHERE employee.id=:employeeIdParam AND endDate = (select max(endDate) from ClientInformation)", entityCls);
+        TypedQuery<ClientInformation> q = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " WHERE employee.id=:employeeIdParam order by endDate desc)", entityCls);
         q.setParameter("employeeIdParam", id);
         if (q.getResultList().size() > 0) {
-            ClientInformation ci = q.getSingleResult();
+            ClientInformation ci = q.getResultList().get(0);
             SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
             return sdf.format(ci.getEndDate());
         } else {
