@@ -16,6 +16,8 @@ import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
@@ -27,11 +29,11 @@ import java.util.logging.Logger;
  * @author prasanthi.p
  */
 public class CreateUpdateBillingRatePanel extends UpdateComposite {
-
+    
     private static Logger logger = Logger.getLogger(CreateUpdateBillingRatePanel.class.getName());
     protected String clientInfoId;
     protected boolean isSubOr1099 = false;
-
+    
     public CreateUpdateBillingRatePanel(String clientInfoId, JSONObject entity) {
         this.clientInfoId = clientInfoId;
         if (entity.get("employee") != null) {
@@ -44,7 +46,7 @@ public class CreateUpdateBillingRatePanel extends UpdateComposite {
         }
         initUpdateComposite(entity, "UpdateBillingRate", OfficeWelcome.constants);
     }
-
+    
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject billingRate = new JSONObject();
@@ -59,7 +61,7 @@ public class CreateUpdateBillingRatePanel extends UpdateComposite {
         }
         return billingRate;
     }
-
+    
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
@@ -71,7 +73,7 @@ public class CreateUpdateBillingRatePanel extends UpdateComposite {
             assignFieldValueFromEntity("subContractorInvoiceFrequency", entity, DataType.ENUM_FIELD);
         }
     }
-
+    
     @Override
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
@@ -80,14 +82,14 @@ public class CreateUpdateBillingRatePanel extends UpdateComposite {
                     public void onFailure(Throwable arg0) {
                         handleErrorResponse(arg0);
                     }
-
+                    
                     @Override
                     public void onSuccess(String arg0) {
                         postUpdateSuccess(arg0);
                     }
                 });
     }
-
+    
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated Billing Rate Info");
@@ -95,33 +97,55 @@ public class CreateUpdateBillingRatePanel extends UpdateComposite {
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadClientInfoPanel(clientInfoId));
         GenericPopup.instance().hide();
     }
-
+    
     @Override
     protected void addListeners() {
     }
-
+    
     @Override
     protected void configure() {
     }
-
+    
     @Override
     protected void addWidgets() {
-        addField("effectiveDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("billingRate", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-        addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-        addEnumField("billingInvoiceFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN, ROLE.ROLE_BILLING_AND_INVOICING)) {
+            addField("effectiveDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        }
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN)) {
+            addField("billingRate", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        } else if (Auth.hasAnyOfRoles(ROLE.ROLE_BILLING_AND_INVOICING)) {
+            addField("billingRate", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        }
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN)) {
+            addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        } else if (Auth.hasAnyOfRoles(ROLE.ROLE_BILLING_AND_INVOICING)) {
+            addField("overTimeBillingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        }
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN, ROLE.ROLE_BILLING_AND_INVOICING)) {
+            addEnumField("billingInvoiceFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+        }
         if (isSubOr1099) {
-            addField("subContractorPayRate", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-            addField("subContractorOverTimePayRate", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-            addEnumField("subContractorInvoiceFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+            if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN)) {
+                addField("subContractorPayRate", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+            } else if (Auth.hasAnyOfRoles(ROLE.ROLE_BILLING_AND_INVOICING)) {
+                addField("subContractorPayRate", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+            }
+            if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN)) {
+                addField("subContractorOverTimePayRate", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+            } else if (Auth.hasAnyOfRoles(ROLE.ROLE_BILLING_AND_INVOICING)) {
+                addField("subContractorOverTimePayRate", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+            }
+            if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN, ROLE.ROLE_BILLING_AND_INVOICING)) {
+                addEnumField("subContractorInvoiceFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+            }
         }
         alignFields();
     }
-
+    
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
-
+    
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "clientinformation/update-billing-rate/" + clientInfoId;

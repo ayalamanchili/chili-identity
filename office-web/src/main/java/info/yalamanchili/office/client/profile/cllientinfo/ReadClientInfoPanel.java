@@ -7,6 +7,8 @@
  */
 package info.yalamanchili.office.client.profile.cllientinfo;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -16,10 +18,14 @@ import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.StringField;
+import info.chili.gwt.resources.ChiliImages;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.ClickableImage;
+import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.admin.client.SelectClientWidget;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientAcctPayContact;
 import info.yalamanchili.office.client.admin.clientlocation.SelectClientLocationWidget;
@@ -36,13 +42,14 @@ import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import info.yalamanchili.office.client.profile.updateBillingRate.ReadAllUpdateBillingRatePanel;
 import java.util.logging.Logger;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
+import info.yalamanchili.office.client.profile.updateBillingRate.CreateUpdateBillingRatePanel;
 import java.util.Map.Entry;
 
 /**
  *
  * @author Prashanthi
  */
-public class ReadClientInfoPanel extends ReadComposite {
+public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
 
     private static ReadClientInfoPanel instance;
     private static Logger logger = Logger.getLogger(ReadClientInfoPanel.class.getName());
@@ -143,6 +150,7 @@ public class ReadClientInfoPanel extends ReadComposite {
 
     @Override
     protected void addListeners() {
+        updateBillingRateIcn.addClickHandler(this);
     }
 
     @Override
@@ -211,6 +219,9 @@ public class ReadClientInfoPanel extends ReadComposite {
             }
             addField("billingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             entityFieldsPanel.add(ReadAllUpdateBillingRatePanel.renderBillingRateHistory(getEntityId(), isSubOr1099));
+            if (Auth.hasAnyOfRoles(ROLE.ROLE_BILLING_AND_INVOICING, ROLE.ROLE_CONTRACTS_ADMIN)) {
+                renderUpdateBillingRateFieldLink();
+            }
             String[] billingDuration = {"HOUR", "DAY", "MONTH", "WEEK"};
             addEnumField("billingRateDuration", true, false, billingDuration, Alignment.HORIZONTAL);
             addField("overTimeBillingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
@@ -262,6 +273,13 @@ public class ReadClientInfoPanel extends ReadComposite {
         alignFields();
     }
 
+    ClickableImage updateBillingRateIcn = new ClickableImage("update", ChiliImages.INSTANCE.updateIcon_16_16());
+
+    protected void renderUpdateBillingRateFieldLink() {
+        BaseField billRateField = fields.get("billingRate");
+        billRateField.addWidgetToFieldPanel(updateBillingRateIcn);
+    }
+
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
@@ -275,13 +293,13 @@ public class ReadClientInfoPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
-                populateComments();
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                        populateComments();
+                    }
+                });
     }
 
     protected void populateComments() {
@@ -307,5 +325,13 @@ public class ReadClientInfoPanel extends ReadComposite {
     protected void displayTasks() {
         String tasksUrl = OfficeWelcome.constants.root_url() + "bpm/tasks/process/";
         tasksDP.setContent(new ReadAllTasks(tasksUrl + JSONUtils.toString(getEntity(), "bpmProcessId") + "/", true));
+    }
+
+    public void onClick(ClickEvent event) {
+
+        if (event.getSource().equals(updateBillingRateIcn)) {
+            new GenericPopup(new CreateUpdateBillingRatePanel(getEntityId(), getEntity())).show();
+        }
+
     }
 }
