@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.jrs.profile;
 
+import com.google.common.base.Strings;
 import info.chili.commons.SearchUtils;
 import info.chili.spring.SpringContext;
 import info.chili.dao.CRUDDao;
@@ -30,7 +31,10 @@ import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.practice.PracticeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.profile.ClientInformationDto;
+import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.privacy.PrivacyData;
+import info.yalamanchili.office.jrs.client.ClientDto;
+import info.yalamanchili.office.jrs.client.ClientSearchDto;
 import info.yalamanchili.office.privacy.PrivacyAware;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
 import info.yalamanchili.office.jrs.profile.EmailResource.EmailTable;
@@ -46,6 +50,7 @@ import java.util.List;
 import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -435,7 +440,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         } while ((start + limit) < size);
         return ReportGenerator.generateReport(data, reportName, format, OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
     }
-    
+
     @PUT
     @Path("/search-emp-between-days/{start}/{limit}")
     @Cacheable(OfficeCacheKeys.EMPLOYEES)
@@ -450,10 +455,64 @@ public class EmployeeResource extends CRUDResource<Employee> {
         return table;
     }
 
-
     @Override
     public CRUDDao getDao() {
         return employeeDao;
+    }
+
+    @PUT
+    @Path("/searchEmployee1/{start}/{limit}")
+    @Transactional(readOnly = true)
+    public List<EmployeeLocationDto> searchEmployee1(EmployeeLocationDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {
+        TypedQuery<Employee> q = em.createQuery(getSearchQuery(dto), Employee.class);
+        List<EmployeeLocationDto> dtos = new ArrayList();
+        EmployeeLocationDto dto1 = null;
+        for (Employee client : q.getResultList()) {
+            dto1 = EmployeeLocationDto.map(mapper, client);
+            dtos.add(dto1);
+        }
+        return dtos;
+    }
+
+    protected String getSearchQuery(EmployeeLocationDto dto) {
+        StringBuilder queryStr = new StringBuilder();
+        queryStr.append("SELECT emp from ").append(Employee.class.getCanonicalName()).append(" as emp");
+        if (!Strings.isNullOrEmpty(dto.getCity()) || !Strings.isNullOrEmpty(dto.getState())) {
+            queryStr.append(" join emp.addresss as address");
+        }
+        queryStr.append("  where ");
+        if (!Strings.isNullOrEmpty(dto.getCity())) {
+            queryStr.append("lower(address.city) = '").append(dto.getCity().toLowerCase().trim()).append("' ").append(" and ");
+        }
+        if (!Strings.isNullOrEmpty(dto.getState())) {
+            queryStr.append("address.state = '").append(dto.getState().trim()).append("' ").append(" and ");
+        }
+        return queryStr.toString().substring(0, queryStr.toString().lastIndexOf("and"));
+    }
+
+    @XmlRootElement
+    @XmlType
+    public static class ClientTable implements java.io.Serializable {
+
+        protected Long size;
+        protected List<Client> entities;
+
+        public Long getSize() {
+            return size;
+        }
+
+        public void setSize(Long size) {
+            this.size = size;
+        }
+
+        @XmlElement
+        public List<Client> getEntities() {
+            return entities;
+        }
+
+        public void setEntities(List<Client> entities) {
+            this.entities = entities;
+        }
     }
 
     @XmlRootElement
