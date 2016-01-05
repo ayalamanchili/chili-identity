@@ -308,7 +308,7 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
 
     @Override
     protected boolean enableAudit() {
-        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_TIME, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_RELATIONSHIP);
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS, Auth.ROLE.ROLE_RECRUITER);
     }
 
     @Override
@@ -318,7 +318,7 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
 
     @Override
     protected boolean enableViewTasks() {
-        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING);
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN);
     }
 
     @Override
