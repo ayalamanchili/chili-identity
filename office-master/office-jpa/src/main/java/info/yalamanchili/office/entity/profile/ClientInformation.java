@@ -921,6 +921,20 @@ public class ClientInformation extends AbstractEntity {
     public void setInvoiceFrequency1099(InvoiceFrequency invoiceFrequency1099) {
         this.invoiceFrequency1099 = invoiceFrequency1099;
     }
+    @OneToMany(mappedBy = "clientInformation", cascade = CascadeType.ALL)
+    protected Set<CIDocument> cidocument;
+
+    @XmlTransient
+    public Set<CIDocument> getcIDocument() {
+        if (this.cidocument == null) {
+            this.cidocument = new HashSet();
+        }
+        return cidocument;
+    }
+
+    public void setcIDocument(Set<CIDocument> cidocument) {
+        this.cidocument = cidocument;
+    }
 
     @Override
     public String toString() {
