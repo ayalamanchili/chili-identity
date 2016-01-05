@@ -27,7 +27,6 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dto.client.ContractSearchDto;
 import info.yalamanchili.office.email.MailUtils;
@@ -228,7 +227,7 @@ public class ContractService {
     @Transactional
     public void sendClientinfoUpdatedEmail(ClientInformation ci, String updatedBy) {
         if (ClientInformationStatus.COMPLETED.equals(ci.getStatus())) {
-            String[] roles = {OfficeRoles.OfficeRole.ROLE_BILLING_AND_INVOICING.name()};
+            String[] roles = {OfficeRoles.OfficeRole.ROLE_BILLING_AND_INVOICING.name(), OfficeRoles.OfficeRole.ROLE_CONTRACTS.name()};
             Email email = new Email();
             email.setTos(MailUtils.instance().getEmailsAddressesForRoles(roles));
             email.setRichText(Boolean.TRUE);
@@ -247,7 +246,7 @@ public class ContractService {
     @Transactional
     public void sendBillingRateUpdatedEmail(ClientInformation ci, Date effectiveDate, String updatedBy) {
         if (ClientInformationStatus.COMPLETED.equals(ci.getStatus())) {
-            String[] roles = {OfficeRoles.OfficeRole.ROLE_BILLING_AND_INVOICING.name()};
+            String[] roles = {OfficeRoles.OfficeRole.ROLE_BILLING_AND_INVOICING.name(), OfficeRoles.OfficeRole.ROLE_CONTRACTS.name()};
             Email email = new Email();
             email.setTos(MailUtils.instance().getEmailsAddressesForRoles(roles));
             email.setRichText(Boolean.TRUE);
