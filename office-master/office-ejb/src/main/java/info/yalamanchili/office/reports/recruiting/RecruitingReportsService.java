@@ -49,7 +49,7 @@ public class RecruitingReportsService {
 
     public List<EmployeeDto> search(String text) {
         //TODO need to pass only necessary columns that are used for searching
-        Query searchQ = em.createQuery(SearchUtils.getSearchQueryString(SkillSet.class, text, null));
+        Query searchQ = em.createQuery(SearchUtils.getSearchQueryString(SkillSet.class, text, null, true));
         return searchQ.getResultList();
     }
 
