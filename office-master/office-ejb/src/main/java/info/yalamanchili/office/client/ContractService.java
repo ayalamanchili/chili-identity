@@ -443,14 +443,6 @@ public class ContractService {
         }
     }
 
-    public void generateBisReport() {
-        ContractTable data = getContractorPlacementInfo(0, 10000);
-        String[] columnOrder = new String[]{"employee", "client", "vendor", "itemNumber", "billingRate", "overTimeBillingRate", "invoiceFrequency", "startDate", "endDate"};
-        Employee emp = OfficeSecurityService.instance().getCurrentUser();
-        String fileName = ReportGenerator.generateExcelOrderedReport(data.getEntities(), "contracts", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
-        MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
-    }
-
     public static ContractService instance() {
         return SpringContext.getBean(ContractService.class);
     }
