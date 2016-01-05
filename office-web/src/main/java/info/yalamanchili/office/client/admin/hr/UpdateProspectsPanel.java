@@ -30,6 +30,7 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.profile.contact.Sex;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,9 +77,12 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
                         logger.info(response);
                         entity = (JSONObject) JSONParser.parseLenient(response);
                         populateFieldsFromEntity(entity);
-
+                        populateComments();
                     }
                 });
+    }
+    protected void populateComments() {
+        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.hr.Prospect"));
     }
 
     protected String getReadURI() {
