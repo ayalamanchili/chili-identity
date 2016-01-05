@@ -120,8 +120,13 @@ public class SearchContractsPanel extends SearchComposite {
 
     @Override
     protected String getSearchURI(String searchText, Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "contract/search/" + start.toString() + "/"
-                + limit.toString() + "?empId=" + getKey());
+        if (getKey() != null) {
+            return URL.encode(OfficeWelcome.constants.root_url() + "contract/search/" + start.toString() + "/"
+                    + limit.toString() + "?empId=" + getKey());
+        } else {
+            return URL.encode(OfficeWelcome.constants.root_url() + "contract/search/" + start.toString() + "/"
+                    + limit.toString() + "?itemNum=" + searchText);
+        }
     }
 
     @Override

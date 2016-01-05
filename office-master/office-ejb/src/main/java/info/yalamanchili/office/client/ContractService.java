@@ -127,6 +127,21 @@ public class ContractService {
         return table;
     }
 
+    public ContractTable search(String itemNum, int start, int limit) {
+        ContractTable table = new ContractTable();
+        String searchQuery = getSearchQuery(itemNum);
+        TypedQuery<ClientInformation> query = em.createQuery(searchQuery, ClientInformation.class);
+        query.setFirstResult(start);
+        query.setMaxResults(limit);
+        for (ClientInformation ci : query.getResultList()) {
+            table.getEntities().add(mapClientInformation(ci));
+        }
+        if (query.getResultList().size() > 0) {
+            table.setSize(Integer.valueOf(query.getResultList().size()).longValue());
+        }
+        return table;
+    }
+
     protected String getSearchQuery(String searchText) {
         StringBuilder queryStr = new StringBuilder();
         queryStr.append("SELECT ci from ").append(ClientInformation.class.getCanonicalName());
@@ -218,7 +233,7 @@ public class ContractService {
             email.setTos(MailUtils.instance().getEmailsAddressesForRoles(roles));
             email.setRichText(Boolean.TRUE);
             email.setSubject(" Client Information Has Updated For :" + ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
-            String messageText = " Updated Client Information :: Client :" + ci.getClient().getName() + " ; " + " Project : " + ci.getClientProject().getName()+ " ; ";
+            String messageText = " Updated Client Information :: Client :" + ci.getClient().getName() + " ; " + " Project : " + ci.getClientProject().getName() + " ; ";
             messageText = messageText.concat(" Item_No :" + ci.getItemNumber()) + " ; ";
             messageText = messageText.concat(" Updated_By :" + updatedBy);
             AuditService auditService = AuditService.instance();
@@ -237,7 +252,7 @@ public class ContractService {
             email.setTos(MailUtils.instance().getEmailsAddressesForRoles(roles));
             email.setRichText(Boolean.TRUE);
             email.setSubject(" Billing Rate Has Updated For : " + ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
-            String messageText = " Updated Bill Rate:: " + " "; 
+            String messageText = " Updated Bill Rate:: " + " ";
             messageText = messageText.concat("Client :" + ci.getClient().getName()) + " ; ";
             messageText = messageText.concat("Item_No :" + ci.getItemNumber()) + " ; ";
             messageText = messageText.concat("Project :" + ci.getClientProject().getName()) + " ; ";

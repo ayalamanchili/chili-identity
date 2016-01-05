@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author anuyalamanchili
  */
-@Path("secured/contract")
+    @Path("secured/contract")
 @Component
 @Scope("request")
 @Produces("application/json")
@@ -36,8 +36,12 @@ public class ContractResource {
 
     @GET
     @Path("/search/{start}/{limit}")
-    public ContractTable searchContracts(@QueryParam("empId") Long empId, @PathParam("start") int start, @PathParam("limit") int limit) {
-        return ContractService.instance().search(empId, start, limit);
+    public ContractTable searchContracts(@QueryParam("empId") Long empId, @QueryParam("itemNum") String itemNum, @PathParam("start") int start, @PathParam("limit") int limit) {
+        if (empId != null) {
+            return ContractService.instance().search(empId, start, limit);
+        } else {
+            return ContractService.instance().search(itemNum, start, limit);
+        }  
     }
 
     @PUT
