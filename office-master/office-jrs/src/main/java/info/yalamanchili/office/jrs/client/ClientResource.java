@@ -373,6 +373,15 @@ public class ClientResource extends CRUDResource<Client> {
         return result;
     }
 
+    @GET
+    @Path("/search/{searchText}/{start}/{limit}")
+    @Transactional(propagation = Propagation.NEVER)
+    @Override
+    public List<Client> search(@PathParam("searchText") String searchText, @PathParam("start") int start,
+            @PathParam("limit") int limit, @QueryParam("column") List<String> columns) {
+        return getDao().sqlSearch(searchText, start, limit, columns, false);
+    }
+
     @PUT
     @Path("/search-client/{start}/{limit}")
     public List<Client> search(ClientSearchDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {
@@ -426,20 +435,20 @@ public class ClientResource extends CRUDResource<Client> {
             this.entities = entities;
         }
     }
-    
+
     @PUT
     @Path("/search-client1/{start}/{limit}")
     public List<ClientDto> search1(ClientSearchDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {
         List<ClientDto> dtos = new ArrayList();
         ClientDto dto1 = null;
         TypedQuery<Client> q = em.createQuery(getSearchQuery(dto), Client.class);
-        for(Client client : q.getResultList()){
-            dto1 =ClientDto.map(mapper, client, dto);
+        for (Client client : q.getResultList()) {
+            dto1 = ClientDto.map(mapper, client, dto);
             dtos.add(dto1);
         }
         return dtos;
     }
-    
+
     @PUT
     @Path("/report")
     public void report(ClientSearchDto dto) {
@@ -447,8 +456,8 @@ public class ClientResource extends CRUDResource<Client> {
         List<ClientDto> dtos = new ArrayList();
         ClientDto dto1 = null;
         TypedQuery<Client> q = em.createQuery(getSearchQuery(dto), Client.class);
-        for(Client client : q.getResultList()){
-            dto1 =ClientDto.map(mapper, client, dto);
+        for (Client client : q.getResultList()) {
+            dto1 = ClientDto.map(mapper, client, dto);
             dtos.add(dto1);
         }
         table.setEntities(dtos);
@@ -458,7 +467,7 @@ public class ClientResource extends CRUDResource<Client> {
         String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "client", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
     }
-    
+
     @XmlRootElement
     @XmlType
     public static class ClientDtoTable implements java.io.Serializable {

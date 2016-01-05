@@ -127,9 +127,9 @@ public class DriveResource {
     @Cacheable(OfficeCacheKeys.DRIVE)
     public List<info.yalamanchili.office.dto.drive.FileDto> searchFile(@PathParam("start") int start,
             @PathParam("limit") int limit, @QueryParam("text") String text) {
-        List<info.yalamanchili.office.dto.drive.FileDto> files = new ArrayList<info.yalamanchili.office.dto.drive.FileDto>();
+        List<info.yalamanchili.office.dto.drive.FileDto> files = new ArrayList<>();
         //TODO pass only necessary search columns as needed
-        for (Object fileObj : FileDao.instance().search(text, start, limit, null, true)) {
+        for (Object fileObj : FileDao.instance().search(text, start, limit, null, true, false)) {
             files.add(info.yalamanchili.office.dto.drive.FileDto.map(mapper, (File) fileObj));
         }
         return files;

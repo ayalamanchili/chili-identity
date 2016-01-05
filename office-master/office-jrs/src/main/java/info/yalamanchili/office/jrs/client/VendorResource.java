@@ -307,6 +307,15 @@ public class VendorResource extends CRUDResource<Vendor> {
         return result;
     }
 
+    @GET
+    @Path("/search/{searchText}/{start}/{limit}")
+    @Transactional(propagation = Propagation.NEVER)
+    @Override
+    public List<Vendor> search(@PathParam("searchText") String searchText, @PathParam("start") int start,
+            @PathParam("limit") int limit, @QueryParam("column") List<String> columns) {
+        return getDao().sqlSearch(searchText, start, limit, columns, false);
+    }
+
     @PUT
     @Path("/search-vendor/{start}/{limit}")
     public List<Vendor> search(VendorSearchDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {
@@ -336,7 +345,7 @@ public class VendorResource extends CRUDResource<Vendor> {
         }
         return queryStr.toString().substring(0, queryStr.toString().lastIndexOf("and"));
     }
-    
+
     @PUT
     @Path("/report")
     public void report(VendorSearchDto dto) {
@@ -344,8 +353,8 @@ public class VendorResource extends CRUDResource<Vendor> {
         List<ClientDto> dtos = new ArrayList();
         ClientDto dto1 = null;
         TypedQuery<Vendor> q = em.createQuery(getSearchQuery(dto), Vendor.class);
-        for(Vendor vendor : q.getResultList()){
-            dto1 =ClientDto.mapVendor(mapper, vendor, dto);
+        for (Vendor vendor : q.getResultList()) {
+            dto1 = ClientDto.mapVendor(mapper, vendor, dto);
             dtos.add(dto1);
         }
         table.setEntities(dtos);
@@ -380,20 +389,20 @@ public class VendorResource extends CRUDResource<Vendor> {
             this.entities = entities;
         }
     }
-    
+
     @PUT
     @Path("/search-vendor1/{start}/{limit}")
     public List<ClientDto> search1(VendorSearchDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {
         List<ClientDto> dtos = new ArrayList();
         ClientDto dto1 = null;
         TypedQuery<Vendor> q = em.createQuery(getSearchQuery(dto), Vendor.class);
-        for(Vendor client : q.getResultList()){
-            dto1 =ClientDto.mapVendor(mapper, client, dto);
+        for (Vendor client : q.getResultList()) {
+            dto1 = ClientDto.mapVendor(mapper, client, dto);
             dtos.add(dto1);
         }
         return dtos;
     }
-    
+
     @XmlRootElement
     @XmlType
     public static class ClientDtoTable implements java.io.Serializable {
