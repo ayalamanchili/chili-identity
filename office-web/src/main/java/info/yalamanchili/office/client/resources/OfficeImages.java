@@ -26,7 +26,7 @@ public interface OfficeImages extends ClientBundle {
     @NotStrict
     OfficeCss officeCss();
 
-    @Source("images/logo_beta.png")
+    @Source("images/nav-logo.png")
     ImageResource logo();
 
     @Source("images/loginFeaturesImage.png")
