@@ -79,7 +79,7 @@ public class ReadContractsPanel extends TReadComposite {
         assignFieldValueFromEntity("consultantJobTitle", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("company", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("client", entity, DataType.STRING_FIELD);
-        //      assignFieldValueFromEntity("clientLocation", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("clientLocation", entity, DataType.STRING_FIELD);
         //      assignFieldValueFromEntity("clientContact", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("clientAPContact", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("vendor", entity, DataType.STRING_FIELD);
@@ -224,6 +224,7 @@ public class ReadContractsPanel extends TReadComposite {
         addField("employeeDetails", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 18, 1);
         addField("consultantJobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 18, 2);
         addField("purchaseOrderNo", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 19, 1);
+        addField("clientLocation", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 19, 2);
         entityFieldsPanel.setWidget(20, 1, ReadAllConsultantTimeSheetsPanel.renderLeaveHistory(getEmployeeId()));
         entityFieldsPanel.getFlexCellFormatter().setColSpan(20, 1, 2);
         alignFields();
