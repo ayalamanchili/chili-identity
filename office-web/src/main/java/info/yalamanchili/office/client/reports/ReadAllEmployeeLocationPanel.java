@@ -87,26 +87,32 @@ public class ReadAllEmployeeLocationPanel extends CRUDReadAllComposite {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Employee"));
         table.setText(0, 2, getKeyValue("Client"));
-        table.setText(0, 4, getKeyValue("ClientLocation"));
-        table.setText(0, 5, getKeyValue("Vendor"));
-        table.setText(0, 6, getKeyValue("StartDate"));
-        table.setText(0, 7, getKeyValue("EndDate"));
+        table.setText(0, 3, getKeyValue("ClientLocation"));
+        table.setText(0, 4, getKeyValue("Vendor"));
+        table.setText(0, 5, getKeyValue("StartDate"));
+        table.setText(0, 6, getKeyValue("EndDate"));
     }
 
     @Override
     public void fillData(JSONArray entities) {
+        int counter = 0; 
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
-            addOptionsWidget(i, entity);
             OfficeWelcome.instance().logger.info(entity.toString());
-            table.setText(i, 1, JSONUtils.toString(entity, "employee"));
-            table.setText(i, 2, JSONUtils.toString(entity, "client"));
-            table.setText(i, 4, JSONUtils.toString(entity, "clientLocation"));
-            table.setText(i, 5, JSONUtils.toString(entity, "vendor"));
-            table.setText(i, 6, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
-            table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
-
+            addOptionsWidget(i, entity);
+            if (entity.containsKey("firstName")) {
+                counter++;
+                table.setText(i, 1, JSONUtils.toString(entity, "firstName") + " " + JSONUtils.toString(entity, "lastName"));
+                table.setText(i, 2, JSONUtils.toString(entity, "client"));
+                table.setText(i, 3, JSONUtils.toString(entity, "clientLocation"));
+                table.setText(i, 4, JSONUtils.toString(entity, "vendor"));
+                table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
+                table.setText(i, 6, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
+            } else {
+                table.removeRow(i);
+            }
         }
+        setTotalResults(counter);
     }
 
     @Override
