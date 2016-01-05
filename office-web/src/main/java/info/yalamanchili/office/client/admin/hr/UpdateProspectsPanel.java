@@ -23,6 +23,7 @@ import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.FileuploadField;
+import info.chili.gwt.fields.StringField;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
@@ -99,6 +100,26 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
         assignEntityValueFromField("country", address);
         assignEntityValueFromField("zip", address);
         if (address.size() > 0) {
+            StringField street1F = (StringField) fields.get("street1");
+            if (street1F.getValue() == null || street1F.getValue().isEmpty()) {
+                street1F.setValue("TBD");
+                assignEntityValueFromField("street1", address);
+            }
+            StringField cityF = (StringField) fields.get("city");
+            if (cityF.getValue() == null || cityF.getValue().isEmpty()) {
+                cityF.setValue("TBD");
+                assignEntityValueFromField("city", address);
+            }
+            EnumField countryF = (EnumField) fields.get("country");
+            if (countryF.getValue() == null || countryF.getValue().isEmpty()) {
+                countriesF.selectValue("USA");
+                assignEntityValueFromField("country", address);
+            }
+            EnumField stateF = (EnumField) fields.get("state");
+            if (stateF.getValue() == null || stateF.getValue().isEmpty()) {
+                statesF.selectValue("FL");
+                assignEntityValueFromField("state", address);
+            }
             entity.put("address", address);
         }
         assignEntityValueFromField("firstName", entity);
