@@ -16,7 +16,6 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -72,7 +71,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
     protected DisclosurePanel myClientL = new DisclosurePanel("Working Under Client");
     protected DisclosurePanel mySubContructorL = new DisclosurePanel("SubContructor Report");
     protected DisclosurePanel multipleProjectsL = new DisclosurePanel("Working On Multiple Projects");
-    protected DisclosurePanel myJoinedL = new DisclosurePanel("Joined in a Period");
+    protected DisclosurePanel myJoinedL = new DisclosurePanel("Joined/Left in a Period");
     protected DisclosurePanel recruiterL = new DisclosurePanel("Employee Recruited By");
     protected DisclosurePanel myVlocationL = new DisclosurePanel("Vendors in a Location");
     protected DisclosurePanel myClocationL = new DisclosurePanel("Clients in a Location");
@@ -214,10 +213,6 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
             entity.put("vendor", new JSONString(selectVendorWidget.getSelectedObject().get("value").isString().stringValue()));
             url = url.concat("?vendor=" + selectVendorWidget.getSelectedObject().get("value").isString().stringValue());
         }
-        if (selectClientWidget != null && !Strings.isNullOrEmpty(selectClientWidget.getSelectedObjectId())) {
-            entity.put("client", new JSONString(selectClientWidget.getSelectedObject().get("value").isString().stringValue()));
-            url = url.concat("?client=" + selectClientWidget.getSelectedObject().get("value").isString().stringValue());
-        }
         if (companyField != null && !Strings.isNullOrEmpty(companyField.getValue())) {
             entity.put("company", new JSONString(companyField.getValue()));
             url = url.concat("?company=" + companyField.getValue());
@@ -225,10 +220,6 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
         if (invoiceField != null && !Strings.isNullOrEmpty(invoiceField.getValue())) {
             entity.put("invoiceFrequency", new JSONString(invoiceField.getValue()));
             url = url.concat("?invoiceFrequency=" + invoiceField.getValue());
-        }
-        if (selectSubWidget != null && !Strings.isNullOrEmpty(selectSubWidget.getSelectedObjectId())) {
-            entity.put("subContractorName", new JSONString(selectSubWidget.getSelectedObject().get("value").isString().stringValue()));
-            url = url.concat("?subContractorName=" + selectSubWidget.getSelectedObject().get("value").isString().stringValue());
         }
         if (event.getSource().equals(searchTasks)) {
             TabPanel.instance().getReportingPanel().entityPanel.clear();
@@ -252,44 +243,54 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
             }
 
             if (searchTasks.getParent().equals(clientPanel)) {
-                HttpService.HttpServiceAsync.instance().doPut(URL.encode(url), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
-                        new ALAsyncCallback<String>() {
-                            @Override
-                            public void onResponse(String result) {
-                                if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                                    new ResponseStatusWidget().show("no results");
-                                } else {
-                                    //TODO use size and entities attributes
-                                    JSONObject resObj = JSONParser.parseLenient(result).isObject();
-                                    String key = (String) resObj.keySet().toArray()[0];
-                                    JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-                                    TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllClientReportPanel(results));
+                JSONObject obj = getClientObject();
+                if (obj != null) {
+                    url = url.concat("?client=" + selectClientWidget.getSelectedObject().get("value").isString().stringValue());
+                    HttpService.HttpServiceAsync.instance().doPut(URL.encode(url), obj.toString(), OfficeWelcome.instance().getHeaders(), true,
+                            new ALAsyncCallback<String>() {
+                                @Override
+                                public void onResponse(String result) {
+                                    if (result == null || JSONParser.parseLenient(result).isObject() == null) {
+                                        new ResponseStatusWidget().show("no results");
+                                    } else {
+                                        //TODO use size and entities attributes
+                                        JSONObject resObj = JSONParser.parseLenient(result).isObject();
+                                        String key = (String) resObj.keySet().toArray()[0];
+                                        JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
+                                        TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllClientReportPanel(results));
+                                    }
                                 }
-                            }
-                        });
-                clearFields();
+                            });
+                    clearFields();
+                }
             }
 
             if (searchTasks.getParent().equals(vendorPanel)) {
-                HttpService.HttpServiceAsync.instance().doPut(URL.encode(url), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
-                        new ALAsyncCallback<String>() {
-                            @Override
-                            public void onResponse(String result) {
-                                if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                                    new ResponseStatusWidget().show("no results");
-                                } else {
-                                    //TODO use size and entities attributes
-                                    JSONObject resObj = JSONParser.parseLenient(result).isObject();
-                                    String key = (String) resObj.keySet().toArray()[0];
-                                    JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-                                    TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllVendorReportPanel(results));
+                JSONObject obj = getVendorObject();
+                if (obj != null) {
+                    url = url.concat("?vendor=" + selectVendorWidget.getSelectedObject().get("value").isString().stringValue());
+                    HttpService.HttpServiceAsync.instance().doPut(URL.encode(url), obj.toString(), OfficeWelcome.instance().getHeaders(), true,
+                            new ALAsyncCallback<String>() {
+                                @Override
+                                public void onResponse(String result) {
+                                    if (result == null || JSONParser.parseLenient(result).isObject() == null) {
+                                        new ResponseStatusWidget().show("no results");
+                                    } else {
+                                        //TODO use size and entities attributes
+                                        JSONObject resObj = JSONParser.parseLenient(result).isObject();
+                                        String key = (String) resObj.keySet().toArray()[0];
+                                        JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
+                                        TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllVendorReportPanel(results));
+                                    }
                                 }
-                            }
-                        });
-                clearFields();
+                            });
+                    clearFields();
+                }
             }
             if (searchTasks.getParent().equals(subContractorPanel)) {
-                HttpService.HttpServiceAsync.instance().doPut(URL.encode(url), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+                JSONObject obj = getSubContractorObject();
+                url = url.concat("?subContractorName=" + selectSubWidget.getSelectedObject().get("value").isString().stringValue());
+                HttpService.HttpServiceAsync.instance().doPut(URL.encode(url), obj.toString(), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
                             @Override
                             public void onResponse(String result) {
@@ -329,12 +330,9 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
             }
             if (searchTasks.getParent().equals(recruiterPanel)) {
                 TabPanel.instance().getReportingPanel().entityPanel.clear();
-                if (selectRecruiterW != null && !Strings.isNullOrEmpty(selectRecruiterW.getSelectedObjectId())) {
-                    entity.put("recruiter", new JSONString(selectRecruiterW.getSelectedObject().get("value").isString().stringValue()));
-                    url = url.concat("?recruiter=" + selectRecruiterW.getSelectedObject().get("value").isString().stringValue());
-                }
-                logger.info("recruiter url :" + url);
-                HttpService.HttpServiceAsync.instance().doPut(URL.encode(url), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+                JSONObject obj = getRecruiterObject();
+                url = url.concat("?recruiter=" + selectRecruiterW.getSelectedObject().get("value").isString().stringValue());
+                HttpService.HttpServiceAsync.instance().doPut(URL.encode(url), obj.toString(), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
                             @Override
                             public void onResponse(String result) {
@@ -353,15 +351,14 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
             }
             if (searchTasks.getParent().equals(joinedPanel)) {
                 TabPanel.instance().getReportingPanel().entityPanel.clear();
+                JSONObject obj = getBWDatesObject();
                 DateTimeFormat sdf = DateTimeFormat.getFormat("MM/dd/yyyy");
                 String empUrl = OfficeWelcome.constants.root_url() + "employee/search-emp-between-days/0/1000";
-                entity.put("startDate", new JSONString(DateUtils.toDateString(projectStartDate.getDate())));
                 empUrl = empUrl.concat("?startDate=" + sdf.format(projectStartDate.getDate()));
-                entity.put("endDate", new JSONString(DateUtils.toDateString(projectEndDate.getDate())));
                 empUrl = empUrl.concat("&endDate=" + sdf.format(projectEndDate.getDate()));
-                entity.put("value", new JSONString(li.getSelectedValue()));
+                obj.put("value", new JSONString(li.getSelectedValue()));
                 empUrl = empUrl.concat("&value=" + li.getSelectedValue());
-                HttpService.HttpServiceAsync.instance().doPut(URL.encode(empUrl), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+                HttpService.HttpServiceAsync.instance().doPut(URL.encode(empUrl), obj.toString(), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
                             @Override
                             public void onResponse(String result) {
@@ -381,13 +378,11 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
             if (searchTasks.getParent().equals(projEndPanel)) {
                 TabPanel.instance().getReportingPanel().entityPanel.clear();
                 DateTimeFormat sdf = DateTimeFormat.getFormat("MM/dd/yyyy");
-                JSONObject entity2 = new JSONObject();
+                JSONObject obj = getBWDatesObject();
                 String empUrl1 = OfficeWelcome.constants.root_url() + "clientinformation/search-projects-between-days/0/1000";
-                entity2.put("startDate", new JSONString(DateUtils.toDateString(projectStartDate.getDate())));
                 empUrl1 = empUrl1.concat("?startDate=" + sdf.format(projectStartDate.getDate()));
-                entity2.put("endDate", new JSONString(DateUtils.toDateString(projectEndDate.getDate())));
                 empUrl1 = empUrl1.concat("&endDate=" + sdf.format(projectEndDate.getDate()));
-                HttpService.HttpServiceAsync.instance().doPut(URL.encode(empUrl1), entity2.toString(), OfficeWelcome.instance().getHeaders(), true,
+                HttpService.HttpServiceAsync.instance().doPut(URL.encode(empUrl1), obj.toString(), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
                             @Override
                             public void onResponse(String result) {
@@ -464,15 +459,16 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
 
             if (searchTasks.getParent().equals(empLocPanel)) {
                 TabPanel.instance().getReportingPanel().entityPanel.clear();
+                String empUrl = OfficeWelcome.constants.root_url() + "employee/searchEmployee1/0/100";
                 if (cityField != null && !Strings.isNullOrEmpty(cityField.getValue())) {
-                    entity.put("clientCity", new JSONString(cityField.getValue()));
-                    url = url.concat("?clientCity=" + cityField.getValue());
+                    entity.put("city", new JSONString(cityField.getValue()));
+                    empUrl = empUrl.concat("?city=" + cityField.getValue());
                 }
                 if (stateFeild != null && !Strings.isNullOrEmpty(stateFeild.getValue())) {
-                    entity.put("clientState", new JSONString(stateFeild.getValue()));
-                    url = url.concat("?clientState=" + stateFeild.getValue());
+                    entity.put("state", new JSONString(stateFeild.getValue()));
+                    empUrl = empUrl.concat("?state=" + stateFeild.getValue());
                 }
-                HttpService.HttpServiceAsync.instance().doPut(URL.encode(url), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+                HttpService.HttpServiceAsync.instance().doPut(URL.encode(empUrl), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
                             @Override
                             public void onResponse(String result) {
@@ -491,26 +487,9 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
             }
         }
         if (event.getSource().equals(reportTasks)) {
-            if (reportTasks.getParent().equals(masterDataPanel)) {
-                TabPanel.instance().getTimePanel().entityPanel.clear();
-                HttpService.HttpServiceAsync.instance().doGet(bisReportUrl(), OfficeWelcome.instance().getHeaders(), true,
-                        new ALAsyncCallback<String>() {
-                            @Override
-                            public void onResponse(String result) {
-                                new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
-                            }
-                        });
-                clearFields();
-            }
-            JSONObject cLovation = new JSONObject();
-            if (cityField != null && !Strings.isNullOrEmpty(cityField.getValue())) {
-                cLovation.put("city", new JSONString(cityField.getValue()));
-            }
-            if (stateFeild != null && !Strings.isNullOrEmpty(stateFeild.getValue())) {
-                cLovation.put("state", new JSONString(stateFeild.getValue()));
-            }
             if (reportTasks.getParent().equals(cLocationPanel)) {
                 TabPanel.instance().getReportingPanel().entityPanel.clear();
+                JSONObject cLovation = getClientObject();
                 HttpService.HttpServiceAsync.instance().doPut(clientReportUrl(), cLovation.toString(), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
                             @Override
@@ -522,6 +501,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
             }
             if (reportTasks.getParent().equals(vLocationPanel)) {
                 TabPanel.instance().getReportingPanel().entityPanel.clear();
+                JSONObject cLovation = getVendorObject();
                 HttpService.HttpServiceAsync.instance().doPut(vendorReportUrl(), cLovation.toString(), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
                             @Override
@@ -532,10 +512,6 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                 clearFields();
             }
         }
-    }
-
-    protected String bisReportUrl() {
-        return OfficeWelcome.instance().constants.root_url() + "contract/bisreport";
     }
 
     protected String clientReportUrl() {
@@ -656,5 +632,66 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
         selectSubWidget.getListBox().setSelectedIndex(0);
         selectRecruiterW.getListBox().setSelectedIndex(0);
         stateFeild.listBox.setSelectedIndex(0);
+    }
+
+    protected JSONObject getClientObject() {
+        JSONObject client = new JSONObject();
+        if (selectClientWidget.getSelectedObject() == null) {
+            selectClientWidget.setMessage("Required");
+        }
+        if (selectClientWidget.getSelectedObject() != null) {
+            client.put("client", new JSONString(selectClientWidget.getSelectedObject().get("value").isString().stringValue()));
+        }
+        return client;
+    }
+
+    protected JSONObject getVendorObject() {
+        JSONObject vendor = new JSONObject();
+        if (selectVendorWidget.getSelectedObject() == null) {
+            selectVendorWidget.setMessage("Required");
+        }
+        if (selectVendorWidget.getSelectedObject() != null) {
+            vendor.put("vendor", new JSONString(selectVendorWidget.getSelectedObject().get("value").isString().stringValue()));
+        }
+        return vendor;
+    }
+
+    protected JSONObject getSubContractorObject() {
+        JSONObject sub = new JSONObject();
+        if (selectSubWidget.getSelectedObject() == null) {
+            selectSubWidget.setMessage("Required");
+        }
+        if (selectSubWidget.getSelectedObject() != null) {
+            sub.put("subContractorName", new JSONString(selectSubWidget.getSelectedObject().get("value").isString().stringValue()));
+        }
+        return sub;
+    }
+
+    protected JSONObject getRecruiterObject() {
+        JSONObject recruiter = new JSONObject();
+        if (selectRecruiterW.getSelectedObject() == null) {
+            selectRecruiterW.setMessage("Required");
+        }
+        if (selectRecruiterW.getSelectedObject() != null) {
+            recruiter.put("recruiter", new JSONString(selectRecruiterW.getSelectedObject().get("value").isString().stringValue()));
+        }
+        return recruiter;
+    }
+
+    protected JSONObject getBWDatesObject() {
+        JSONObject date = new JSONObject();
+        if (projectStartDate.getDate() == null) {
+            projectStartDate.setMessage("Required");
+        }
+        if (projectEndDate.getDate() == null) {
+            projectEndDate.setMessage("Required");
+        }
+        if (projectStartDate.getDate() != null) {
+            date.put("startDate", new JSONString(DateUtils.toDateString(projectStartDate.getDate())));
+        }
+        if (projectEndDate.getDate() != null) {
+            date.put("endDate", new JSONString(DateUtils.toDateString(projectEndDate.getDate())));
+        }
+        return date;
     }
 }
