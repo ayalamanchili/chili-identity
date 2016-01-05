@@ -321,7 +321,7 @@ public class ClientInformationService {
         billingRate.setUpdatedTs(Calendar.getInstance().getTime());
         billingRate.setClientInformation(ci);
         BillingRateDao.instance().save(billingRate).getId().toString();
-        ContractService.instance().sendClientinfoUpdatedEmail(ci);
+        ContractService.instance().sendBillingRateUpdatedEmail(ci, billingRate.getEffectiveDate(), billingRate.getUpdatedBy());
     }
 
     protected void sendBillingRateUpdatedEmail(ClientInformation ci) {
@@ -514,7 +514,7 @@ public class ClientInformationService {
             ci.setBpmProcessId(startNewClientInfoProcess(ci));
         }
         em.flush();
-        ContractService.instance().sendClientinfoUpdatedEmail(ciEntity);
+        ContractService.instance().sendClientinfoUpdatedEmail(ciEntity, OfficeSecurityService.instance().getCurrentUserName());
         return ci;
     }
 

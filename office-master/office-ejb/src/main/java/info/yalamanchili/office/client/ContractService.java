@@ -39,6 +39,7 @@ import java.util.List;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.jms.MessagingService;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import javax.persistence.Query;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang.StringUtils;
@@ -210,17 +211,39 @@ public class ContractService {
 
     @Async
     @Transactional
-    public void sendClientinfoUpdatedEmail(ClientInformation ci) {
+    public void sendClientinfoUpdatedEmail(ClientInformation ci, String updatedBy) {
         if (ClientInformationStatus.COMPLETED.equals(ci.getStatus())) {
             String[] roles = {OfficeRoles.OfficeRole.ROLE_BILLING_AND_INVOICING.name()};
             Email email = new Email();
             email.setTos(MailUtils.instance().getEmailsAddressesForRoles(roles));
             email.setRichText(Boolean.TRUE);
             email.setSubject(" Client Information Has Updated For :" + ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
-            String messageText = " Updated Client Information :   Client :" + ci.getClient().getName() + " Project : " + ci.getClientProject().getName();
+            String messageText = " Updated Client Information :: Client :" + ci.getClient().getName() + " ; " + " Project : " + ci.getClientProject().getName()+ " ; ";
+            messageText = messageText.concat(" Item_No :" + ci.getItemNumber()) + " ; ";
+            messageText = messageText.concat(" Updated_By :" + updatedBy);
             AuditService auditService = AuditService.instance();
-//            ContractDto old = mapClientInformation((ClientInformation) auditService.getVersion(ci.getClass(), ci.getId(), 1));
-//            ContractDto newE = mapClientInformation(ci);
+            messageText = messageText + auditService.buildChangesTable(auditService.compare(auditService.mostRecentVersion(ci.getClass(), ci.getId()), ci));
+            email.setBody(messageText);
+            MessagingService.instance().sendEmail(email);
+        }
+    }
+
+    @Async
+    @Transactional
+    public void sendBillingRateUpdatedEmail(ClientInformation ci, Date effectiveDate, String updatedBy) {
+        if (ClientInformationStatus.COMPLETED.equals(ci.getStatus())) {
+            String[] roles = {OfficeRoles.OfficeRole.ROLE_BILLING_AND_INVOICING.name()};
+            Email email = new Email();
+            email.setTos(MailUtils.instance().getEmailsAddressesForRoles(roles));
+            email.setRichText(Boolean.TRUE);
+            email.setSubject(" Billing Rate Has Updated For : " + ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
+            String messageText = " Updated Bill Rate:: " + " "; 
+            messageText = messageText.concat("Client :" + ci.getClient().getName()) + " ; ";
+            messageText = messageText.concat("Item_No :" + ci.getItemNumber()) + " ; ";
+            messageText = messageText.concat("Project :" + ci.getClientProject().getName()) + " ; ";
+            messageText = messageText.concat("Updated_By :" + updatedBy) + " ; ";
+            messageText = messageText.concat("Effective_Date :" + new SimpleDateFormat("MM-dd-yyyy").format(effectiveDate));
+            AuditService auditService = AuditService.instance();
             messageText = messageText + auditService.buildChangesTable(auditService.compare(auditService.mostRecentVersion(ci.getClass(), ci.getId()), ci));
             email.setBody(messageText);
             MessagingService.instance().sendEmail(email);
@@ -419,7 +442,7 @@ public class ContractService {
             dto.setInvoiceFrequency1099(InvoiceFrequency.valueOf((String) obj));
         }
     }
-    
+
     public void generateBisReport() {
         ContractTable data = getContractorPlacementInfo(0, 10000);
         String[] columnOrder = new String[]{"employee", "client", "vendor", "itemNumber", "billingRate", "overTimeBillingRate", "invoiceFrequency", "startDate", "endDate"};
