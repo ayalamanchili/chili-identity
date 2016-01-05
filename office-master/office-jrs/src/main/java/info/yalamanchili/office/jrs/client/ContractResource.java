@@ -57,10 +57,4 @@ public class ContractResource {
     public Response generateContractsReport(@QueryParam("format") String format) {
         return ContractService.instance().generateContractorPlacementInfoReport(format);
     }
-    
-    @GET
-    @Path("/bisreport")
-    public void generateContractsReport() {
-        ContractService.instance().generateBisReport();
-    }
 }
