@@ -74,7 +74,7 @@ public class SearchClientpanel extends SearchComposite {
     @Override
     protected void addWidgets() {
         addField("name", DataType.STRING_FIELD);
-        addEnumField("clientinvFrequency", false, false, VendorType.names());
+        addEnumField("clientinvFrequency", false, false, InvoiceFrequency.names());
         addField("city", DataType.STRING_FIELD);
         addEnumField("state", false, false, USAStatesFactory.getStates().toArray(new String[0]));
     }
