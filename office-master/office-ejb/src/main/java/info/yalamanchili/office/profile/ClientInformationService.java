@@ -317,7 +317,7 @@ public class ClientInformationService {
         if (billingRate.getEffectiveDate().before(ci.getStartDate())) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid Effective Date", "Effective Date can't be before Project Start Date");
         }
-        billingRate.setUpdatedBy(OfficeSecurityService.instance().getCurrentUserName());
+        billingRate.setUpdatedBy(OfficeSecurityService.instance().getCurrentUser().getFirstName() + " " + OfficeSecurityService.instance().getCurrentUser().getLastName());
         billingRate.setUpdatedTs(Calendar.getInstance().getTime());
         billingRate.setClientInformation(ci);
         BillingRateDao.instance().save(billingRate).getId().toString();
@@ -514,7 +514,8 @@ public class ClientInformationService {
             ci.setBpmProcessId(startNewClientInfoProcess(ci));
         }
         em.flush();
-        ContractService.instance().sendClientinfoUpdatedEmail(ciEntity, OfficeSecurityService.instance().getCurrentUserName());
+        String updatedBy = OfficeSecurityService.instance().getCurrentUser().getFirstName() + " " + OfficeSecurityService.instance().getCurrentUser().getLastName();
+        ContractService.instance().sendClientinfoUpdatedEmail(ciEntity, updatedBy);
         return ci;
     }
 
