@@ -16,10 +16,12 @@ import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.chili.email.Email;
+import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.entity.ext.Comment;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.ws.rs.Consumes;
@@ -92,10 +94,14 @@ public class CommentResource {
             comment.setUpdatedTS(new Date());
         }
         comment = commentDao.save(comment, id, targetClassName);
-        sendCommentNotification(notifyEmployees, comment);
+        try {
+            sendCommentNotification(notifyEmployees, comment, (AbstractEntity) commentDao.getEntityManager().find(Class.forName(targetClassName), id));
+        } catch (ClassNotFoundException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
-    protected void sendCommentNotification(List<Entry> notifyEmployees, Comment comment) {
+    protected void sendCommentNotification(List<Entry> notifyEmployees, Comment comment, AbstractEntity entity) {
         if (notifyEmployees == null) {
             return;
         }
@@ -107,13 +113,19 @@ public class CommentResource {
             }
         }
         Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
-        email.setSubject("Comment added by:" + currentUser.getFirstName() + "" + currentUser.getLastName());
+        email.setSubject("Comment added by:" + currentUser.getFirstName() + "" + currentUser.getLastName() + " on " + entity.getClass().getSimpleName());
         StringBuilder body = new StringBuilder();
-        body.append("Commment Added: \n").append(comment.getComment()).append(" \n Reference :");
-        if (!Strings.isNullOrEmpty(comment.getTargetEntityName())) {
-            if (comment.getTargetEntityName().lastIndexOf(".") > 0) {
-                body.append(comment.getTargetEntityName().substring(comment.getTargetEntityName().lastIndexOf(".")));
-            }
+        body.append(currentUser.getFirstName()).append("").append(currentUser.getLastName()).append(" added the following comment: \n").append(comment.getComment());
+        body.append("\n\nPrevious Comments : \n");
+        //add previous comments
+        for (Comment cmt : commentDao.findAll(entity.getId(), entity.getClass().getCanonicalName())) {
+            body.append(cmt.getUpdatedBy()).append(" added the below comment @ ").append(cmt.getUpdatedTS()).append(" \n");
+            body.append(cmt.getComment()).append("\n").append(" \n");
+        }
+        //add entity info
+        body.append("\nReference : ").append(entity.getClass().getSimpleName());
+        if (entity instanceof AbstractEntity) {
+            body.append(((AbstractEntity) (entity)).describe());
         }
         body.append("\n\n\t Please click on the below link to access: \n\t ").append(OfficeServiceConfiguration.instance().getPortalWebUrl());
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");

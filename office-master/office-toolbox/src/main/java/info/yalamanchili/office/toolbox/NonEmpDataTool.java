@@ -173,7 +173,7 @@ public class NonEmpDataTool {
     protected Client getClient(String clientName) {
         List<String> columns = new ArrayList<String>();
         columns.add("name");
-        for (Client client : ClientDao.instance().search(clientName.replace("'", ""), 0, 10, columns, true)) {
+        for (Client client : ClientDao.instance().search(clientName.replace("'", ""), 0, 10, columns, true, true)) {
             if (client.getName().toUpperCase().equals(clientName.trim().toUpperCase())) {
                 return client;
             }
@@ -185,7 +185,7 @@ public class NonEmpDataTool {
     protected Vendor getVendor(String vendorName) {
         List<String> columns = new ArrayList<String>();
         columns.add("name");
-        for (Vendor vendor : VendorDao.instance().search(vendorName.replace("'", ""), 0, 10, columns, true)) {
+        for (Vendor vendor : VendorDao.instance().search(vendorName.replace("'", ""), 0, 10, columns, true, true)) {
             if (vendor.getName().toUpperCase().equals(vendorName.trim().toUpperCase())) {
                 return vendor;
             }

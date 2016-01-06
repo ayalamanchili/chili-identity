@@ -228,7 +228,7 @@ public class ContractService {
     @Transactional
     public void sendClientinfoUpdatedEmail(ClientInformation ci, String updatedBy) {
         if (ClientInformationStatus.COMPLETED.equals(ci.getStatus())) {
-            String[] roles = {OfficeRoles.OfficeRole.ROLE_BILLING_AND_INVOICING.name()};
+            String[] roles = {OfficeRoles.OfficeRole.ROLE_BILLING_AND_INVOICING.name(), OfficeRoles.OfficeRole.ROLE_CONTRACTS.name()};
             Email email = new Email();
             email.setTos(MailUtils.instance().getEmailsAddressesForRoles(roles));
             email.setRichText(Boolean.TRUE);
@@ -247,7 +247,7 @@ public class ContractService {
     @Transactional
     public void sendBillingRateUpdatedEmail(ClientInformation ci, Date effectiveDate, String updatedBy) {
         if (ClientInformationStatus.COMPLETED.equals(ci.getStatus())) {
-            String[] roles = {OfficeRoles.OfficeRole.ROLE_BILLING_AND_INVOICING.name()};
+            String[] roles = {OfficeRoles.OfficeRole.ROLE_BILLING_AND_INVOICING.name(), OfficeRoles.OfficeRole.ROLE_CONTRACTS.name()};
             Email email = new Email();
             email.setTos(MailUtils.instance().getEmailsAddressesForRoles(roles));
             email.setRichText(Boolean.TRUE);
@@ -384,6 +384,48 @@ public class ContractService {
         ContractTable data = getContractorPlacementInfo(0, 10000);
         String[] columnOrder = new String[]{"employee", "client", "vendor", "itemNumber", "billingRate", "overTimeBillingRate", "invoiceFrequency", "startDate", "endDate",};
         return ReportGenerator.generateReport(data.getEntities(), "contracts", format, OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+    }
+
+    public void generateSubCReport(ContractSearchDto dto) {
+        ContractTable table = getResultForReport(dto);
+        String[] columnOrder = new String[]{"employee", "client", "vendor", "clientProject", "billingRate", "overTimeBillingRate", "startDate", "endDate"};
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
+        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "subcontractor", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
+    }
+    
+    public void generateClientReport(ContractSearchDto dto) {
+        ContractTable table = getResultForReport(dto);
+        String[] columnOrder = new String[]{"employee", "consultantJobTitle", "vendor", "billingRate", "startDate", "endDate", "subContractorName", "subcontractorPayRate"};
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
+        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "workingunderclient", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
+    }
+    
+    public void generateVendorReport(ContractSearchDto dto) {
+        ContractTable table = getResultForReport(dto);
+        String[] columnOrder = new String[]{"employee", "consultantJobTitle", "client", "billingRate", "startDate", "endDate", "subContractorName", "subcontractorPayRate"};
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
+        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "workingundervendor", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
+    }
+    
+    public void generateRecruiterReport(ContractSearchDto dto) {
+        ContractTable table = getResultForReport(dto);
+        String[] columnOrder = new String[]{"employee", "vendor", "startDate", "endDate"};
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
+        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "recruiter", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
+    }
+    
+    public ContractTable getResultForReport(ContractSearchDto dto){
+        String query = getSearchQuery(dto);
+        ContractTable table = new ContractTable();
+        TypedQuery<ClientInformation> queryForSub = em.createQuery(query, ClientInformation.class);
+        for (ClientInformation ci : queryForSub.getResultList()) {
+            table.getEntities().add(mapClientInformation(ci));
+        }
+        return table;
     }
 
     public void getEffectiveBillingRate(ClientInformation ci, ContractDto dto) {

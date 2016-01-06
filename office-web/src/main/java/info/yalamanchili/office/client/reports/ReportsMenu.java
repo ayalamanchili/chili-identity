@@ -52,7 +52,7 @@ public class ReportsMenu extends CMenuBar {
             addMenuItem("Email Groups", "Email Groups", emailMenuMaintainenceCmd);
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONTRACTS_FULL_VIEW)) {
-            addMenuItem("Contract Reports", "Contract Reports", contractReportsMaintainenceCmd);
+            addMenuItem("Contracts Reports", "Contracts Reports", contractReportsMaintainenceCmd);
         }
     }
     public static Command contractingMaintainenceCmd = new Command() {
@@ -115,9 +115,9 @@ public class ReportsMenu extends CMenuBar {
     };
     static Command emailMenuMaintainenceCmd = new Command() {
         public void execute() {
-            TabPanel.instance().getAdminPanel().entityPanel.clear();
-            TabPanel.instance().getAdminPanel().sidePanelTop.clear();
-            TabPanel.instance().getAdminPanel().sidePanelTop.add(new EmailGroupsSidePanel());
+            TabPanel.instance().getReportingPanel().entityPanel.clear();
+            TabPanel.instance().getReportingPanel().sidePanelTop.clear();
+            TabPanel.instance().getReportingPanel().sidePanelTop.add(new EmailGroupsSidePanel());
         }
     };
 

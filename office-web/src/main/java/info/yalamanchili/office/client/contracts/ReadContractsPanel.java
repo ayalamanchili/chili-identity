@@ -79,7 +79,7 @@ public class ReadContractsPanel extends TReadComposite {
         assignFieldValueFromEntity("consultantJobTitle", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("company", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("client", entity, DataType.STRING_FIELD);
-        //      assignFieldValueFromEntity("clientLocation", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("clientLocation", entity, DataType.STRING_FIELD);
         //      assignFieldValueFromEntity("clientContact", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("clientAPContact", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("vendor", entity, DataType.STRING_FIELD);
@@ -92,7 +92,7 @@ public class ReadContractsPanel extends TReadComposite {
         assignFieldValueFromEntity("clientProject", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
-        //       assignFieldValueFromEntity("purchaseOrderNo", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("purchaseOrderNo", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);
         //      assignFieldValueFromEntity("payRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
@@ -212,7 +212,7 @@ public class ReadContractsPanel extends TReadComposite {
         addField("endDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 15, 2);
         addField("clientProject", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 16, 1);
         addField("company", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 16, 2);
-        
+
         addField("client", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 13, 2);
         addField("vendor", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 11, 1);
         addField("middleVendor", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 13, 1);
@@ -223,8 +223,10 @@ public class ReadContractsPanel extends TReadComposite {
         addField("sectorsAndBUs", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 17, 2);
         addField("employeeDetails", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 18, 1);
         addField("consultantJobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 18, 2);
-        entityFieldsPanel.setWidget(19, 1, ReadAllConsultantTimeSheetsPanel.renderLeaveHistory(getEmployeeId()));
-        entityFieldsPanel.getFlexCellFormatter().setColSpan(19, 1, 2);
+        addField("purchaseOrderNo", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 19, 1);
+        addField("clientLocation", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 19, 2);
+        entityFieldsPanel.setWidget(20, 1, ReadAllConsultantTimeSheetsPanel.renderLeaveHistory(getEmployeeId()));
+        entityFieldsPanel.getFlexCellFormatter().setColSpan(20, 1, 2);
         alignFields();
     }
 

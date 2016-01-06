@@ -98,6 +98,15 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
     }
 
     @GET
+    @Path("/search/{searchText}/{start}/{limit}")
+    @Transactional(propagation = Propagation.NEVER)
+    @Override
+    public List<Subcontractor> search(@PathParam("searchText") String searchText, @PathParam("start") int start,
+            @PathParam("limit") int limit, @QueryParam("column") List<String> columns) {
+        return getDao().sqlSearch(searchText, start, limit, columns, false);
+    }
+
+    @GET
     @Path("/dropdown/{start}/{limit}")
     @Transactional(propagation = Propagation.NEVER)
     @Cacheable(OfficeCacheKeys.SUB_CONTRACTOR)

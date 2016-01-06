@@ -28,13 +28,14 @@ import info.yalamanchili.office.dto.profile.SkillSetDto;
 import info.yalamanchili.office.entity.profile.*;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
+import info.yalamanchili.office.client.ContractService;
 import info.yalamanchili.office.dao.practice.PracticeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.dto.client.ContractDto;
 import info.yalamanchili.office.dto.profile.ClientInformationDto;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.privacy.PrivacyData;
-import info.yalamanchili.office.jrs.client.ClientDto;
-import info.yalamanchili.office.jrs.client.ClientSearchDto;
+import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.privacy.PrivacyAware;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
 import info.yalamanchili.office.jrs.profile.EmailResource.EmailTable;
@@ -463,15 +464,32 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @PUT
     @Path("/searchEmployee1/{start}/{limit}")
     @Transactional(readOnly = true)
-    public List<EmployeeLocationDto> searchEmployee1(EmployeeLocationDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {
+    public List<ClientInformation> searchEmployee1(EmployeeLocationDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {
         TypedQuery<Employee> q = em.createQuery(getSearchQuery(dto), Employee.class);
-        List<EmployeeLocationDto> dtos = new ArrayList();
-        EmployeeLocationDto dto1 = null;
-        for (Employee client : q.getResultList()) {
-            dto1 = EmployeeLocationDto.map(mapper, client);
-            dtos.add(dto1);
+        List<ClientInformation> dtos = new ArrayList();
+        for (Employee emp : q.getResultList()) {
+            for (ClientInformation ci : emp.getClientInformations()) {
+                dtos.add(ci);
+            }
         }
         return dtos;
+    }
+
+    @PUT
+    @Path("/location-report")
+    @Transactional(readOnly = true)
+    public void empLocationReport(EmployeeLocationDto dto) {
+        ContractDto.ContractTable table = new ContractDto.ContractTable();
+        List<ClientInformation> dtos = searchEmployee1(dto, 0, 1000);
+        List<ContractDto> contractdtos = new ArrayList();
+        for (ClientInformation ci : dtos) {
+            contractdtos.add(ContractService.instance().mapClientInformation(ci));
+        }
+        table.setEntities(contractdtos);
+        String[] columnOrder = new String[]{"employee", "client", "clientLocation", "vendor", "startDate", "endDate"};
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
+        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Emp_Working_In_Location", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
     }
 
     protected String getSearchQuery(EmployeeLocationDto dto) {

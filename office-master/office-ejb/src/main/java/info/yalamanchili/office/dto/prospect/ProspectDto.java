@@ -16,6 +16,7 @@ import java.util.Date;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Temporal;
+import javax.validation.Valid;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -67,7 +68,8 @@ public class ProspectDto implements Serializable {
     protected Date dateOfBirth;
 
     protected String comment;
-
+    
+    @Valid
     private Address address;
 
     @Enumerated(EnumType.STRING)

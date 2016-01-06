@@ -41,13 +41,13 @@ public class Prospect extends AbstractEntity {
     @ForeignKey(name = "FK_Contact_Prospect")
     @Valid
     protected Contact contact;
-       
+
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date startDate;
 
     protected String screenedBy;
-    
-    @NotEmpty(message="{referredBy.not.empty.msg}")
+
+    @NotEmpty(message = "{referredBy.not.empty.msg}")
     protected String referredBy;
 
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -117,8 +117,18 @@ public class Prospect extends AbstractEntity {
     }
 
     @Override
+    public String describe() {
+        StringBuilder description = new StringBuilder("\n");
+        description.append("First Name    : ").append(this.getContact().getFirstName()).append("\n");
+        description.append("Last Name     : ").append(this.getContact().getLastName()).append("\n");
+        description.append("Referred By   : ").append(this.getReferredBy()).append("\n");
+        description.append("Status        : ").append(this.getStatus()).append("\n");
+        return description.toString();
+    }
+
+    @Override
     public String toString() {
         return "Prospect{" + "contact=" + contact + ", startDate=" + startDate + ", screenedBy=" + screenedBy + ", referredBy=" + referredBy + ", processDocSentDate=" + processDocSentDate + ", resumeURL=" + resumeURL + ", status=" + status + '}';
     }
-    
+
 }

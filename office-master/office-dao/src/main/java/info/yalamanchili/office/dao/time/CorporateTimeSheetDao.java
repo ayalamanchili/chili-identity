@@ -224,7 +224,7 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         }
     }
 
-    protected CorporateTimeSheet queryPTOAccruedTimeSheet(Employee emp) {
+    public CorporateTimeSheet queryPTOAccruedTimeSheet(Employee emp) {
         TypedQuery<CorporateTimeSheet> query = getEntityManager().createQuery("from " + CorporateTimeSheet.class.getCanonicalName() + " where employee=:employeeParam and category =:categoryParam", CorporateTimeSheet.class);
         query.setParameter("categoryParam", TimeSheetCategory.PTO_ACCRUED);
         query.setParameter("employeeParam", emp);
