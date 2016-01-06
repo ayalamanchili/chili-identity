@@ -64,14 +64,14 @@ public class CreateUpdateBillingRatePanel extends UpdateComposite {
     
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
-        assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
-        assignFieldValueFromEntity("billingInvoiceFrequency", entity, DataType.ENUM_FIELD);
-        if (isSubOr1099) {
-            assignFieldValueFromEntity("subContractorPayRate", entity, DataType.CURRENCY_FIELD);
-            assignFieldValueFromEntity("subContractorOverTimePayRate", entity, DataType.CURRENCY_FIELD);
-            assignFieldValueFromEntity("subContractorInvoiceFrequency", entity, DataType.ENUM_FIELD);
-        }
+//        assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
+//        assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
+//        assignFieldValueFromEntity("billingInvoiceFrequency", entity, DataType.ENUM_FIELD);
+//        if (isSubOr1099) {
+//            assignFieldValueFromEntity("subContractorPayRate", entity, DataType.CURRENCY_FIELD);
+//            assignFieldValueFromEntity("subContractorOverTimePayRate", entity, DataType.CURRENCY_FIELD);
+//            assignFieldValueFromEntity("subContractorInvoiceFrequency", entity, DataType.ENUM_FIELD);
+//        }
     }
     
     @Override
