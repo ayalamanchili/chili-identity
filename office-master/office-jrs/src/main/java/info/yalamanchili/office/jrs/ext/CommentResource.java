@@ -119,7 +119,7 @@ public class CommentResource {
         body.append("\n\nPrevious Comments : \n");
         //add previous comments
         for (Comment cmt : commentDao.findAll(entity.getId(), entity.getClass().getCanonicalName())) {
-            body.append(cmt.getUpdatedBy()).append(" added the below comment @ ").append(new SimpleDateFormat("MM-dd-yyyy HH:MM").format(cmt.getUpdatedTS())).append(" \n");
+            body.append(cmt.getUpdatedBy()).append(" added the below comment @ ").append(cmt.getUpdatedTS()).append(" \n");
             body.append(cmt.getComment()).append("\n").append(" \n");
         }
         //add entity info
