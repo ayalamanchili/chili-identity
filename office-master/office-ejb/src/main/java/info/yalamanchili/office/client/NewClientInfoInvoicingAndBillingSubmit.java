@@ -10,7 +10,6 @@ package info.yalamanchili.office.client;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.entity.profile.ClientInformation;
-import info.yalamanchili.office.entity.profile.ClientInformationStatus;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
 import org.springframework.stereotype.Component;

@@ -8,6 +8,8 @@
  */
 package info.yalamanchili.office.bpm.clientinformation;
 
+import info.yalamanchili.office.OfficeRoles;
+import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
 import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
@@ -45,6 +47,7 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
         if (task.getTaskDefinitionKey().equals("newClientInfoInvoicingAndBillingTask")) {
             if (status.equalsIgnoreCase("approved")) {
                 entity.setStatus(ClientInformationStatus.PENDING_HR_VERIFICATION);
+                new GenericTaskCompleteNotification().notify(task, false, OfficeRoles.OfficeRole.ROLE_BILLING_AND_INVOICING.name());
             } else {
                 entity.setStatus(ClientInformationStatus.CANCELED);
             }
