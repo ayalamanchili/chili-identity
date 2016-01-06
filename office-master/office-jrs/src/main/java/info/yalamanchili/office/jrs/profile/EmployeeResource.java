@@ -463,13 +463,13 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @PUT
     @Path("/searchEmployee1/{start}/{limit}")
     @Transactional(readOnly = true)
-    public List<EmployeeLocationDto> searchEmployee1(EmployeeLocationDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {
+    public List<ClientInformation> searchEmployee1(EmployeeLocationDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {
         TypedQuery<Employee> q = em.createQuery(getSearchQuery(dto), Employee.class);
-        List<EmployeeLocationDto> dtos = new ArrayList();
-        EmployeeLocationDto dto1 = null;
-        for (Employee client : q.getResultList()) {
-            dto1 = EmployeeLocationDto.map(mapper, client);
-            dtos.add(dto1);
+        List<ClientInformation> dtos = new ArrayList();
+        for(Employee emp: q.getResultList()){
+            for(ClientInformation ci: emp.getClientInformations()){
+                dtos.add(ci);
+            }
         }
         return dtos;
     }
