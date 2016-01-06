@@ -937,6 +937,16 @@ public class ClientInformation extends AbstractEntity {
     }
 
     @Override
+    public String describe() {
+        StringBuilder description = new StringBuilder("\n");
+        description.append("Employee    : ").append(this.getEmployee().getFirstName()).append(" ").append(this.getEmployee().getLastName()).append("\n");
+        description.append("Client      : ").append(this.getClient().getName()).append("\n");
+        description.append("Vendor      : ").append(this.getVendor().getName()).append("\n");
+        description.append("Item Number : ").append(this.getItemNumber()).append("\n");
+        return description.toString();
+    }
+
+    @Override
     public String toString() {
         return "ClientInformation{" + "consultantJobTitle=" + consultantJobTitle + ", ciPrimary=" + ciPrimary + ", startDate=" + startDate + ", endDate=" + endDate + ", itemNumber=" + itemNumber + ", payRate=" + payRate + ", billingRate=" + billingRate + ", subcontractorinvoiceFrequency=" + subcontractorinvoiceFrequency + '}';
     }
