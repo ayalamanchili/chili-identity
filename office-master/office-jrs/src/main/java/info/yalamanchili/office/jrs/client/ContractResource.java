@@ -61,4 +61,22 @@ public class ContractResource {
     public Response generateContractsReport(@QueryParam("format") String format) {
         return ContractService.instance().generateContractorPlacementInfoReport(format);
     }
+    
+    @PUT
+    @Path("/sub-contractor-report")
+    public void generateSubContractorReport(ContractSearchDto dto) {
+        ContractService.instance().generateSubCReport(dto);
+    }
+    
+    @PUT
+    @Path("/client-report")
+    public void generateClientReport(ContractSearchDto dto) {
+        ContractService.instance().generateClientReport(dto);
+    }
+    
+    @PUT
+    @Path("/vendor-report")
+    public void generateVendorReport(ContractSearchDto dto) {
+        ContractService.instance().generateVendorReport(dto);
+    }
 }
