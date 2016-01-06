@@ -76,7 +76,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
     protected DisclosurePanel myVlocationL = new DisclosurePanel("Vendors in a Location");
     protected DisclosurePanel myClocationL = new DisclosurePanel("Clients in a Location");
     protected DisclosurePanel empLocationL = new DisclosurePanel("Emp Working in a Location");
-    protected DisclosurePanel projEndL = new DisclosurePanel("Emp projects Going To End");
+    protected DisclosurePanel projEndL = new DisclosurePanel("Emp Projects Going To End");
 
     ClickableLink clearReportsL = new ClickableLink("clear");
     protected Button searchTasks = new Button("Search");
@@ -102,8 +102,8 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
     String[] employeeTypeStrs = {"Corporate Employee", "Employee", "Subcontractor", "1099 Contractor", "W2 Contractor"};
     EnumField employeeTypeField = new EnumField(OfficeWelcome.constants, "employeeType", "Contract", false, false, employeeTypeStrs);
     EnumField projectStatusField = new EnumField(OfficeWelcome.constants, "status", "Contract", false, false, ClientInformationStatus.names());
-    DateField projectStartDate = new DateField(OfficeWelcome.constants, "startDate", "", false, false);
-    DateField projectEndDate = new DateField(OfficeWelcome.constants, "endDate", "", false, false);
+    DateField projectStartDate = new DateField(OfficeWelcome.constants, "FromDate", "", false, false);
+    DateField projectEndDate = new DateField(OfficeWelcome.constants, "ToDate", "", false, false);
     StringField cityField = new StringField(OfficeWelcome.constants, "city", "Contract", false, false);
     EnumField stateFeild = new EnumField(OfficeWelcome.constants, "state", "Contract", false, false, USAStatesFactory.getStates().toArray(new String[0]));
     EnumField companyField = new EnumField(OfficeWelcome.constants, "company", "Contract", false, false, ClientInformationCompany.names());
@@ -503,7 +503,8 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
         if (event.getSource().equals(reportTasks)) {
             if (reportTasks.getParent().equals(cLocationPanel)) {
                 TabPanel.instance().getReportingPanel().entityPanel.clear();
-                HttpService.HttpServiceAsync.instance().doPut(clientReportUrl(), cLovation.toString(), OfficeWelcome.instance().getHeaders(), true,
+                String clurl = OfficeWelcome.instance().constants.root_url() + "client/report";
+                HttpService.HttpServiceAsync.instance().doPut(clurl, cLovation.toString(), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
                             @Override
                             public void onResponse(String result) {
@@ -514,7 +515,8 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
             }
             if (reportTasks.getParent().equals(vLocationPanel)) {
                 TabPanel.instance().getReportingPanel().entityPanel.clear();
-                HttpService.HttpServiceAsync.instance().doPut(vendorReportUrl(), cLovation.toString(), OfficeWelcome.instance().getHeaders(), true,
+                String vlurl = OfficeWelcome.instance().constants.root_url() + "vendor/report";
+                HttpService.HttpServiceAsync.instance().doPut(vlurl, cLovation.toString(), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
                             @Override
                             public void onResponse(String result) {
@@ -526,7 +528,8 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
             if (reportTasks.getParent().equals(subContractorPanel)) {
                 TabPanel.instance().getReportingPanel().entityPanel.clear();
                 JSONObject obj = getSubContractorObject();
-                HttpService.HttpServiceAsync.instance().doPut(subContractorReportUrl(), obj.toString(), OfficeWelcome.instance().getHeaders(), true,
+                String surl = OfficeWelcome.instance().constants.root_url() + "contract/sub-contractor-report";
+                HttpService.HttpServiceAsync.instance().doPut(surl, obj.toString(), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
                             @Override
                             public void onResponse(String result) {
@@ -538,7 +541,8 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
             if (reportTasks.getParent().equals(clientPanel)) {
                 TabPanel.instance().getReportingPanel().entityPanel.clear();
                 JSONObject obj = getClientObject();
-                HttpService.HttpServiceAsync.instance().doPut(wuClientReportUrl(), obj.toString(), OfficeWelcome.instance().getHeaders(), true,
+                String wucUrl = OfficeWelcome.instance().constants.root_url() + "contract/client-report";
+                HttpService.HttpServiceAsync.instance().doPut(wucUrl, obj.toString(), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
                             @Override
                             public void onResponse(String result) {
@@ -550,7 +554,40 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
             if (reportTasks.getParent().equals(vendorPanel)) {
                 TabPanel.instance().getReportingPanel().entityPanel.clear();
                 JSONObject obj = getVendorObject();
-                HttpService.HttpServiceAsync.instance().doPut(wuVendorReportUrl(), obj.toString(), OfficeWelcome.instance().getHeaders(), true,
+                String wuvUrl = OfficeWelcome.instance().constants.root_url() + "contract/vendor-report";
+                HttpService.HttpServiceAsync.instance().doPut(wuvUrl, obj.toString(), OfficeWelcome.instance().getHeaders(), true,
+                        new ALAsyncCallback<String>() {
+                            @Override
+                            public void onResponse(String result) {
+                                new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
+                            }
+                        });
+                clearFields();
+            }
+            if (reportTasks.getParent().equals(recruiterPanel)) {
+                TabPanel.instance().getReportingPanel().entityPanel.clear();
+                JSONObject obj = getRecruiterObject();
+                String rurl = OfficeWelcome.instance().constants.root_url() + "contract/recruiter-report";
+                HttpService.HttpServiceAsync.instance().doPut(rurl, obj.toString(), OfficeWelcome.instance().getHeaders(), true,
+                        new ALAsyncCallback<String>() {
+                            @Override
+                            public void onResponse(String result) {
+                                new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
+                            }
+                        });
+                clearFields();
+            }
+            if (reportTasks.getParent().equals(empLocPanel)) {
+                TabPanel.instance().getReportingPanel().entityPanel.clear();
+                JSONObject obj = new JSONObject();
+                if (cityField != null && !Strings.isNullOrEmpty(cityField.getValue())) {
+                    obj.put("city", new JSONString(cityField.getValue()));
+                }
+                if (stateFeild != null && !Strings.isNullOrEmpty(stateFeild.getValue())) {
+                    obj.put("state", new JSONString(stateFeild.getValue()));
+                }
+                String rurl = OfficeWelcome.instance().constants.root_url() + "employee/location-report";
+                HttpService.HttpServiceAsync.instance().doPut(rurl, obj.toString(), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
                             @Override
                             public void onResponse(String result) {
@@ -560,26 +597,6 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                 clearFields();
             }
         }
-    }
-
-    protected String clientReportUrl() {
-        return OfficeWelcome.instance().constants.root_url() + "client/report";
-    }
-
-    protected String vendorReportUrl() {
-        return OfficeWelcome.instance().constants.root_url() + "vendor/report";
-    }
-
-    protected String subContractorReportUrl() {
-        return OfficeWelcome.instance().constants.root_url() + "contract/sub-contractor-report";
-    }
-
-    protected String wuClientReportUrl() {
-        return OfficeWelcome.instance().constants.root_url() + "contract/client-report";
-    }
-    
-    protected String wuVendorReportUrl() {
-        return OfficeWelcome.instance().constants.root_url() + "contract/vendor-report";
     }
 
     @Override

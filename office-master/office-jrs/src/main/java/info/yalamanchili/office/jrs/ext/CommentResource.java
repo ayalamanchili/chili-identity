@@ -21,6 +21,7 @@ import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.entity.ext.Comment;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.ws.rs.Consumes;
@@ -118,8 +119,8 @@ public class CommentResource {
         body.append("\n\nPrevious Comments : \n");
         //add previous comments
         for (Comment cmt : commentDao.findAll(entity.getId(), entity.getClass().getCanonicalName())) {
-            body.append(cmt.getUpdatedBy()).append(" added the below comment on").append(cmt.getUpdatedTS()).append(" \n");
-            body.append(cmt.getComment()).append("\n");
+            body.append(cmt.getUpdatedBy()).append(" added the below comment @ ").append(cmt.getUpdatedTS()).append(" \n");
+            body.append(cmt.getComment()).append("\n").append(" \n");
         }
         //add entity info
         body.append("\nReference : ").append(entity.getClass().getSimpleName());

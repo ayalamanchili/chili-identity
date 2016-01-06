@@ -38,15 +38,12 @@ import info.yalamanchili.office.entity.profile.Employee;
 import java.util.List;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.jms.MessagingService;
-import static java.lang.String.format;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import javax.persistence.Query;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
-import static org.bouncycastle.asn1.cms.CMSObjectIdentifiers.data;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -410,6 +407,14 @@ public class ContractService {
         String[] columnOrder = new String[]{"employee", "consultantJobTitle", "client", "billingRate", "startDate", "endDate", "subContractorName", "subcontractorPayRate"};
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
         String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "workingundervendor", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
+    }
+    
+    public void generateRecruiterReport(ContractSearchDto dto) {
+        ContractTable table = getResultForReport(dto);
+        String[] columnOrder = new String[]{"employee", "vendor", "startDate", "endDate"};
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
+        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "recruiter", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
     }
     

@@ -52,7 +52,7 @@ public class ReportsMenu extends CMenuBar {
             addMenuItem("Email Groups", "Email Groups", emailMenuMaintainenceCmd);
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONTRACTS_FULL_VIEW)) {
-            addMenuItem("Contract Reports", "Contract Reports", contractReportsMaintainenceCmd);
+            addMenuItem("Contracts Reports", "Contracts Reports", contractReportsMaintainenceCmd);
         }
     }
     public static Command contractingMaintainenceCmd = new Command() {

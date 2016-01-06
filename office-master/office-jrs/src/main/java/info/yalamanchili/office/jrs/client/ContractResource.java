@@ -79,4 +79,10 @@ public class ContractResource {
     public void generateVendorReport(ContractSearchDto dto) {
         ContractService.instance().generateVendorReport(dto);
     }
+    
+    @PUT
+    @Path("/recruiter-report")
+    public void generateRecruiterReport(ContractSearchDto dto) {
+        ContractService.instance().generateRecruiterReport(dto);
+    }
 }
