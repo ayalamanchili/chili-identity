@@ -115,9 +115,9 @@ public class ReportsMenu extends CMenuBar {
     };
     static Command emailMenuMaintainenceCmd = new Command() {
         public void execute() {
-            TabPanel.instance().getAdminPanel().entityPanel.clear();
-            TabPanel.instance().getAdminPanel().sidePanelTop.clear();
-            TabPanel.instance().getAdminPanel().sidePanelTop.add(new EmailGroupsSidePanel());
+            TabPanel.instance().getReportingPanel().entityPanel.clear();
+            TabPanel.instance().getReportingPanel().sidePanelTop.clear();
+            TabPanel.instance().getReportingPanel().sidePanelTop.add(new EmailGroupsSidePanel());
         }
     };
 
