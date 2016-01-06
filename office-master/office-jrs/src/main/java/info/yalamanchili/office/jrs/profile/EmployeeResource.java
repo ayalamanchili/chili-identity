@@ -112,7 +112,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @Path("/save")
     @Caching(evict = {
         @CacheEvict(value = OfficeCacheKeys.EMPLOYEES, allEntries = true),
-        @CacheEvict(value = OfficeCacheKeys.LOGIN, key = "#dto.employeeId")
+        @CacheEvict(value = OfficeCacheKeys.LOGIN, allEntries = true)
     })
     //TODO currently does not have any restrictions since user emp profile update also uses this method
     public Employee save(EmployeeSaveDto dto) {
