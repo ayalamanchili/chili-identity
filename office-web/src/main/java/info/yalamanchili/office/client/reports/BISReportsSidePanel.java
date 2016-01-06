@@ -577,6 +577,25 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                         });
                 clearFields();
             }
+            if (reportTasks.getParent().equals(empLocPanel)) {
+                TabPanel.instance().getReportingPanel().entityPanel.clear();
+                JSONObject obj = new JSONObject();
+                if (cityField != null && !Strings.isNullOrEmpty(cityField.getValue())) {
+                    obj.put("city", new JSONString(cityField.getValue()));
+                }
+                if (stateFeild != null && !Strings.isNullOrEmpty(stateFeild.getValue())) {
+                    obj.put("state", new JSONString(stateFeild.getValue()));
+                }
+                String rurl = OfficeWelcome.instance().constants.root_url() + "employee/location-report";
+                HttpService.HttpServiceAsync.instance().doPut(rurl, obj.toString(), OfficeWelcome.instance().getHeaders(), true,
+                        new ALAsyncCallback<String>() {
+                            @Override
+                            public void onResponse(String result) {
+                                new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
+                            }
+                        });
+                clearFields();
+            }
         }
     }
 
