@@ -70,7 +70,7 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
 
     @GET
     @Path("/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_TIME','ROLE_EXPENSE','ROLE_RELATIONSHIP')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS','ROLE_BILLING_AND_INVOICING','ROLE_CONTRACTS_FULL_VIEW')")
     @Cacheable(OfficeCacheKeys.SUB_CONTRACTOR)
     public SubcontractorTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         SubcontractorTable tableObj = new SubcontractorTable();
@@ -82,7 +82,7 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
     @PUT
     @Validate
     @Override
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
     @CacheEvict(value = OfficeCacheKeys.SUB_CONTRACTOR, allEntries = true)
     public Subcontractor save(Subcontractor entity) {
         return super.save(entity);
@@ -91,7 +91,7 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
     @PUT
     @Path("/delete/{id}")
     @Override
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
     @CacheEvict(value = OfficeCacheKeys.SUB_CONTRACTOR, allEntries = true)
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
@@ -117,7 +117,7 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
     @PUT
     @Validate
     @Path("/contact/add/{subcontractorId}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
     public void addContact(@PathParam("subcontractorId") Long subcontractorId, ContactDto dto) {
         Subcontractor entity = (Subcontractor) getDao().findById(subcontractorId);
         Contact contact = contactService.save(dto);
@@ -126,7 +126,7 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
 
     @PUT
     @Path("/contact/remove/{subcontractorId}/{contactId}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
     public void removeContact(@PathParam("subcontractorId") Long subcontractorId, @PathParam("contactId") Long contactId) {
         Subcontractor entity = (Subcontractor) getDao().findById(subcontractorId);
         if (entity == null) {
@@ -151,7 +151,7 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
      */
     @GET
     @Path("/contacts/{id}/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_TIME','ROLE_EXPENSE','ROLE_RELATIONSHIP')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS','ROLE_BILLING_AND_INVOICING','ROLE_CONTRACTS_FULL_VIEW')")
     public ContactDto.ContactDtoTable getContacts(@PathParam("id") long id, @PathParam("start") int start,
             @PathParam("limit") int limit) {
         ContactDto.ContactDtoTable tableObj = new ContactDto.ContactDtoTable();
@@ -190,7 +190,7 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
     @PUT
     @Validate
     @Path("/location/add/{subcontractorId}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
+   @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
     public void addlocation(@PathParam("subcontractorId") Long subcontractorId, Address address) {
         Subcontractor subcontractor = (Subcontractor) getDao().findById(subcontractorId);
         subcontractor.addLocations(address);
@@ -198,7 +198,7 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
 
     @PUT
     @Path("/location/remove/{subcontractorId}/{locationId}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
+   @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
     public void removeLocation(@PathParam("subcontractorId") Long subcontractorId, @PathParam("locationId") Long locationId) {
         Subcontractor subcontractor = (Subcontractor) getDao().findById(subcontractorId);
         if (subcontractor == null) {
@@ -223,7 +223,7 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
      */
     @GET
     @Path("/locations/{id}/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_TIME','ROLE_EXPENSE','ROLE_RELATIONSHIP')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS','ROLE_BILLING_AND_INVOICING','ROLE_CONTRACTS_FULL_VIEW')")
     public AddressResource.AddressTable getLocations(@PathParam("id") long id, @PathParam("start") int start,
             @PathParam("limit") int limit) {
         AddressResource.AddressTable tableObj = new AddressResource.AddressTable();
@@ -250,7 +250,7 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
 
     @XmlRootElement
     @XmlType
-    public static class SubcontractorTable implements java.io.Serializable{
+    public static class SubcontractorTable implements java.io.Serializable {
 
         protected Long size;
         protected List<Subcontractor> entities;
