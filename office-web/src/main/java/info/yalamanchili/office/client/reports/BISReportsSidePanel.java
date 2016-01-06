@@ -523,8 +523,43 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                         });
                 clearFields();
             }
+            if (reportTasks.getParent().equals(subContractorPanel)) {
+                TabPanel.instance().getReportingPanel().entityPanel.clear();
+                JSONObject obj = getSubContractorObject();
+                HttpService.HttpServiceAsync.instance().doPut(subContractorReportUrl(), obj.toString(), OfficeWelcome.instance().getHeaders(), true,
+                        new ALAsyncCallback<String>() {
+                            @Override
+                            public void onResponse(String result) {
+                                new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
+                            }
+                        });
+                clearFields();
+            }
+            if (reportTasks.getParent().equals(clientPanel)) {
+                TabPanel.instance().getReportingPanel().entityPanel.clear();
+                JSONObject obj = getClientObject();
+                HttpService.HttpServiceAsync.instance().doPut(wuClientReportUrl(), obj.toString(), OfficeWelcome.instance().getHeaders(), true,
+                        new ALAsyncCallback<String>() {
+                            @Override
+                            public void onResponse(String result) {
+                                new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
+                            }
+                        });
+                clearFields();
+            }
+            if (reportTasks.getParent().equals(vendorPanel)) {
+                TabPanel.instance().getReportingPanel().entityPanel.clear();
+                JSONObject obj = getVendorObject();
+                HttpService.HttpServiceAsync.instance().doPut(wuVendorReportUrl(), obj.toString(), OfficeWelcome.instance().getHeaders(), true,
+                        new ALAsyncCallback<String>() {
+                            @Override
+                            public void onResponse(String result) {
+                                new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
+                            }
+                        });
+                clearFields();
+            }
         }
-
     }
 
     protected String clientReportUrl() {
@@ -533,6 +568,18 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
 
     protected String vendorReportUrl() {
         return OfficeWelcome.instance().constants.root_url() + "vendor/report";
+    }
+
+    protected String subContractorReportUrl() {
+        return OfficeWelcome.instance().constants.root_url() + "contract/sub-contractor-report";
+    }
+
+    protected String wuClientReportUrl() {
+        return OfficeWelcome.instance().constants.root_url() + "contract/client-report";
+    }
+    
+    protected String wuVendorReportUrl() {
+        return OfficeWelcome.instance().constants.root_url() + "contract/vendor-report";
     }
 
     @Override
@@ -548,7 +595,6 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
             masterDataPanel.add(invoiceField);
             masterDataPanel.add(selectVendorWidget);
             masterDataPanel.add(searchTasks);
-            masterDataPanel.add(reportTasks);
             masterDataReportsL.setContent(masterDataPanel);
         }
         if (event.getSource().equals(myClientL)) {
