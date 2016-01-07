@@ -8,9 +8,7 @@
 package info.yalamanchili.office.profile;
 
 import info.chili.commons.BeanMapper;
-import info.chili.email.Email;
 import info.chili.service.jrs.exception.ServiceException;
-import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.client.ContractService;
 import info.yalamanchili.office.dao.client.ClientDao;
@@ -26,7 +24,6 @@ import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.profile.ClientInformationDto;
-import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.client.Subcontractor;
@@ -41,7 +38,6 @@ import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
-import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.service.ServiceInterceptor;
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -325,20 +321,6 @@ public class ClientInformationService {
         ContractService.instance().sendBillingRateUpdatedEmail(ci, billingRate.getEffectiveDate(), billingRate.getUpdatedBy());
     }
 
-    protected void sendBillingRateUpdatedEmail(ClientInformation ci) {
-        String[] roles = {OfficeRoles.OfficeRole.ROLE_BILLING_AND_INVOICING.name()};
-        Email email = new Email();
-        email.setTos(MailUtils.instance().getEmailsAddressesForRoles(roles));
-        email.setSubject("Billing rate updated for :" + ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
-        String messageText = " Updated Billing rate : ";
-        messageText = messageText.concat("Billing Rate :" + ci.getBillingRate());
-        messageText = messageText.concat("Pay Rate :" + ci.getPayRate());
-        messageText = messageText.concat("Overtime Billing Rate :" + ci.getOverTimeBillingRate());
-        messageText = messageText.concat("Overtime Pay Rate :" + ci.getOverTimePayRate());
-        email.setBody(messageText);
-        MessagingService.instance().sendEmail(email);
-    }
-
     protected String startNewClientInfoProcess(ClientInformation ci) {
         Map<String, Object> vars = new HashMap<>();
         vars.put("clientInfo", ci);
@@ -516,8 +498,6 @@ public class ClientInformationService {
         }
         em.flush();
         Employee updatedByEmp = OfficeSecurityService.instance().getCurrentUser();
-        String updatedBy = updatedByEmp.getFirstName() + " " + updatedByEmp.getLastName();
-        ContractService.instance().sendClientinfoUpdatedEmail(ciEntity, updatedBy);
         return ci;
     }
 

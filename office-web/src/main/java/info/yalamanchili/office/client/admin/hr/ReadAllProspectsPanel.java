@@ -75,8 +75,7 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
         table.setText(0, 3, getKeyValue("Screened By"));
         table.setText(0, 4, getKeyValue("Referred By"));
         table.setText(0, 5, getKeyValue("Status"));
-        table.setText(0, 6, getKeyValue("Email Notification"));
-        table.setText(0, 7, getKeyValue("OnBoarding Invitation"));
+        table.setText(0, 6, getKeyValue("OnBoarding Invitation"));
     }
 
     @Override
@@ -91,17 +90,6 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
             table.setText(i, 4, JSONUtils.toString(entity, "referredBy"));
             setEnumColumn(i, 5, entity, ProspectStatus.class.getSimpleName(), "status");
             if (TabPanel.instance().myOfficePanel.isVisible()) {
-                ClickableLink emailLink = new ClickableLink("Prospect Notification");
-                emailLink.setTitle(JSONUtils.toString(entity, "id"));
-                emailLink.addClickHandler(new ClickHandler() {
-                    @Override
-                    public void onClick(ClickEvent event) {
-                        getEmail(((ClickableLink) event.getSource()).getTitle());
-                    }
-                });
-                table.setWidget(i, 6, emailLink);
-            }
-            if (TabPanel.instance().myOfficePanel.isVisible()) {
                 if (ProspectStatus.CLOSED_WON.name().equals(status)) {
                     ClickableLink invitationLink = new ClickableLink("OnBoarding invitecode");
                     invitationLink.setTitle(JSONUtils.toString(entity, "id"));
@@ -111,7 +99,7 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
                             getOnBoardInviteCode(((ClickableLink) event.getSource()).getTitle());
                         }
                     });
-                    table.setWidget(i, 7, invitationLink);
+                    table.setWidget(i, 6, invitationLink);
                 }
             }
 
