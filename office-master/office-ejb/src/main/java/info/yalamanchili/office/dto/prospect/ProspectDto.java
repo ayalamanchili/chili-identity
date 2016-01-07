@@ -8,11 +8,14 @@
  */
 package info.yalamanchili.office.dto.prospect;
 
+import info.yalamanchili.office.dao.ext.CommentDao;
+import info.yalamanchili.office.entity.ext.Comment;
 import info.yalamanchili.office.entity.hr.ProspectStatus;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Sex;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Temporal;
@@ -68,7 +71,7 @@ public class ProspectDto implements Serializable {
     protected Date dateOfBirth;
 
     protected String comment;
-    
+
     @Valid
     private Address address;
 
@@ -78,6 +81,26 @@ public class ProspectDto implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date processDocSentDate;
 
+    protected String employee;
+    
+    protected String gender;
+
+    public String getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(String name) {
+        this.employee = name;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+    
     public Date getProcessDocSentDate() {
         return processDocSentDate;
     }
@@ -224,7 +247,10 @@ public class ProspectDto implements Serializable {
 
     public static ProspectDto map(Mapper mapper, info.yalamanchili.office.entity.hr.Prospect entity) {
         ProspectDto prospectContact = mapper.map(entity, ProspectDto.class);
+        prospectContact.setEmployee(entity.getContact().getFirstName() + " " + entity.getContact().getLastName());
         mapper.map(entity.getContact(), prospectContact);
+        String commentP = "\n";
+        List<Comment> comments = CommentDao.instance().findAll(entity);
         if (entity.getContact().getPhones().size() > 0) {
             prospectContact.setPhoneNumber(entity.getContact().getPhones().get(0).getPhoneNumber());
             prospectContact.setExtension(entity.getContact().getPhones().get(0).getExtension());
@@ -236,6 +262,18 @@ public class ProspectDto implements Serializable {
         if (entity.getContact().getEmails().size() > 0) {
             prospectContact.setEmail(entity.getContact().getEmails().get(0).getEmail());
         }
+        if (comments.size() > 0) {
+            for (Comment comment : comments) {
+                commentP = commentP.concat(comment.getComment() + " \t ");
+            }
+        }
+        if(entity.getContact().getDateOfBirth()!=null){
+            prospectContact.setDateOfBirth(entity.getContact().getDateOfBirth());
+        }
+        if(entity.getContact().getSex()!=null){
+            prospectContact.setGender(entity.getContact().getSex().name().toLowerCase());
+        }
+        prospectContact.setComment(commentP);
         prospectContact.setId(entity.getId());
         return prospectContact;
     }
