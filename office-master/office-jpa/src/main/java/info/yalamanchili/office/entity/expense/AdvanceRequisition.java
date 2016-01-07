@@ -272,6 +272,15 @@ public class AdvanceRequisition extends AbstractEntity {
     public void setRepaymentNotes(String repaymentNotes) {
         this.repaymentNotes = repaymentNotes;
     }
+    @Override
+    public String describe() {
+        StringBuilder description = new StringBuilder("\n");
+        description.append("Employee    :").append(this.getEmployee().getFirstName()).append(" ").append(this.getEmployee().getLastName()).append("\n");
+        description.append("purpose     :").append(this.getPurpose()).append("\n");
+        description.append("Amount      :").append(this.getAmount()).append("\n");
+        description.append("Needed By   :").append(this.getNeededBy()).append("\n");
+        return description.toString();
+    }
 
     @Override
     public String toString() {

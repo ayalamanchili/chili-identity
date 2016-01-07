@@ -431,7 +431,16 @@ public class ExpenseReport extends AbstractEntity {
         }
         this.setTotalExpenses(totalAmount);
     }
-
+    
+    @Override
+    public String describe() {
+        StringBuilder description = new StringBuilder("\n");
+        description.append("Employee                 :").append(this.getEmployee().getFirstName()).append(" ").append(this.getEmployee().getLastName()).append("\n");
+        description.append("Expense Form Type    :").append(this.getExpenseFormType()).append("\n");
+        description.append("Expense Start Date    :").append(this.getStartDate()).append("\n");
+        description.append("Expense End date      :").append(this.getEndDate()).append("\n");
+        return description.toString();
+    }
     @Override
     public String toString() {
         return "ExpenseReport{" + "location=" + location + ", department=" + department + ", startDate=" + startDate + ", endDate=" + endDate + ", projectName=" + projectName + ", projectNumber=" + projectNumber + ", expenseReimbursePaymentMode=" + expenseReimbursePaymentMode + ", submittedDate=" + submittedDate + ", approvedByManager=" + approvedByManager + ", approvedByManagerDate=" + approvedByManagerDate + ", approvedByAccountsDept=" + approvedByAccountsDept + ", approvedByAccountsDeptDate=" + approvedByAccountsDeptDate + ", approvedByCEO=" + approvedByCEO + ", approvedByCEODate=" + approvedByCEODate + ", bpmProcessId=" + bpmProcessId + ", status=" + status + ", expenseFormType=" + expenseFormType + ", totalExpenses=" + totalExpenses + ", approvalManagerId=" + approvalManagerId + '}';

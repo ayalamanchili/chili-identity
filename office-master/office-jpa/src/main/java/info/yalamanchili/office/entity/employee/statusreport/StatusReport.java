@@ -214,4 +214,14 @@ public class StatusReport extends AbstractEntity {
             this.preparedBy = auth.getName();
         }
     }
+    @Override
+    public String describe() {
+        StringBuilder description = new StringBuilder("\n");
+        description.append("Employee            :").append(this.getEmployee().getFirstName()).append(" ").append(this.getEmployee().getLastName()).append("\n");
+        description.append("Report Start Date  :").append(this.getReportStartDate()).append("\n");
+        description.append("Report End Date   :").append(this.getReportEndDate()).append("\n");
+        description.append("Approved By        :").append(this.getApprovedBy()).append("\n");
+        description.append("Approved Date      :").append(this.getApprovedDate()).append("\n");
+        return description.toString();
+    }
 }

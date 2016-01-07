@@ -365,7 +365,17 @@ public class TravelAuthorization extends AbstractEntity {
     public void setTravelOrigin(String travelOrigin) {
         this.travelOrigin = travelOrigin;
     }
-
+    
+    @Override
+    public String describe() {
+        StringBuilder description = new StringBuilder("\n");
+        description.append("Employee              :").append(this.getEmployee().getFirstName()).append(" ").append(this.getEmployee().getLastName()).append("\n");
+        description.append("Travel Type           :").append(this.getTravelType()).append("\n");
+        description.append("Travel Destination    :").append(this.getTravelDestination()).append("\n");
+        description.append("Departure Date        :").append(this.getDepartureDate()).append("\n");
+        description.append("Return Date           :").append(this.getReturnDate()).append("\n");
+        return description.toString();
+    }
     @Override
     public String toString() {
         return "TravelAuthorization{" + "travelType=" + travelType + ", employee=" + employee + ", department=" + department + ", phoneNumber=" + phoneNumber + ", travelDestination=" + travelDestination + ", departureDate=" + departureDate + ", returnDate=" + returnDate + ", reasonForTravel=" + reasonForTravel + ", travelTransportation=" + travelTransportation + ", travelAccommodation=" + travelAccommodation + ", travelFood=" + travelFood + ", status=" + status + ", bpmProcessId=" + bpmProcessId + ", managerApprovalBy=" + managerApprovalBy + ", manaerApprovalDate=" + manaerApprovalDate + ", ceoApprovalBy=" + ceoApprovalBy + ", ceoApprovalDate=" + ceoApprovalDate + ", dateRequested=" + dateRequested + ", totalEstimatedTripExpences=" + totalEstimatedTripExpences + '}';

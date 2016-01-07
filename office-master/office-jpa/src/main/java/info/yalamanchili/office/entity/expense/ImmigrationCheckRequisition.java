@@ -297,6 +297,16 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
         }
         this.setAmount(totalAmount);
     }
+    @Override
+    public String describe() {
+        StringBuilder description = new StringBuilder("\n");
+        description.append("Employee         :").append(this.getEmployee().getFirstName()).append(" ").append(this.getEmployee().getLastName()).append("\n");
+        description.append("Case Type        :").append(this.getCaseType()).append("\n");
+        description.append("Attorney Name    :").append(this.getAttorneyName()).append("\n");
+        description.append("Amount           :").append(this.getAmount()).append("\n");
+        description.append("Requested Date   :").append(this.getRequestedDate()).append("\n");
+        return description.toString();
+    }
 
     @Override
     public String toString() {

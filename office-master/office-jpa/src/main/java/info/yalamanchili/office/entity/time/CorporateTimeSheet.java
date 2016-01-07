@@ -208,6 +208,15 @@ public class CorporateTimeSheet extends AbstractEntity {
     public String toString() {
         return "CorporateTimeSheet{" + "employee=" + employee.getFirstName() + " " + employee.getLastName() + ",hours=" + hours + ", startDate=" + startDate + ", endDate=" + endDate + ", category=" + category + ", status=" + status + ", notes=" + notes + '}';
     }
+    public String describe1() {
+        StringBuilder description = new StringBuilder("\n");
+        description.append("Employee           :").append(this.getEmployee()).append("\n");
+        description.append("Category           :").append(this.getCategory()).append("\n");
+        description.append("Start Date         :").append(this.getStartDate()).append("\n");
+        description.append("End Date           :").append(this.getEndDate()).append("\n");
+        description.append("Hours              :").append(this.getHours()).append("\n");
+        return description.toString();
+    }
 
     public String describe() {
         return "Employee=" + employee.getFirstName() + " " + employee.getLastName() + ",hours=" + hours + ", startDate=" + startDate + ", endDate=" + endDate + ", category=" + category + ", status=" + status + ", notes=" + notes;
