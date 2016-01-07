@@ -9,6 +9,8 @@ package info.yalamanchili.office.client;
 
 import com.google.common.base.Strings;
 import info.chili.audit.AuditService;
+import info.chili.commons.pdf.PDFUtils;
+import info.chili.docs.MakeHTML;
 import info.chili.email.Email;
 import info.yalamanchili.office.dto.client.ContractDto;
 import info.yalamanchili.office.entity.profile.ClientInformation;
@@ -26,6 +28,7 @@ import info.chili.reporting.ReportGenerator;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
+import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
@@ -393,7 +396,7 @@ public class ContractService {
         String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "SubContractor Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
     }
-    
+
     public void generateClientReport(ContractSearchDto dto) {
         ContractTable table = getResultForReport(dto);
         String[] columnOrder = new String[]{"employee", "consultantJobTitle", "vendor", "billingRate", "startDate", "endDate", "subContractorName", "subcontractorPayRate"};
@@ -401,7 +404,7 @@ public class ContractService {
         String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Working Under Client Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
     }
-    
+
     public void generateVendorReport(ContractSearchDto dto) {
         ContractTable table = getResultForReport(dto);
         String[] columnOrder = new String[]{"employee", "consultantJobTitle", "client", "billingRate", "startDate", "endDate", "subContractorName", "subcontractorPayRate"};
@@ -409,7 +412,7 @@ public class ContractService {
         String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Working Under Vendor Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
     }
-    
+
     public void generateRecruiterReport(ContractSearchDto dto) {
         ContractTable table = getResultForReport(dto);
         String[] columnOrder = new String[]{"employee", "vendor", "startDate", "endDate"};
@@ -417,8 +420,8 @@ public class ContractService {
         String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Employee Recruited By Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
     }
-    
-    public ContractTable getResultForReport(ContractSearchDto dto){
+
+    public ContractTable getResultForReport(ContractSearchDto dto) {
         String query = getSearchQuery(dto);
         ContractTable table = new ContractTable();
         TypedQuery<ClientInformation> queryForSub = em.createQuery(query, ClientInformation.class);
@@ -497,6 +500,21 @@ public class ContractService {
         Query query = em.createNativeQuery("Select subContractorInvoiceFrequency from BILLINGRATE where clientInformation_id=" + ci.getId() + " and subContractorInvoiceFrequency is not null and effectiveDate <= NOW() order by effectiveDate desc LIMIT 1");
         for (Object obj : query.getResultList()) {
             dto.setInvoiceFrequency1099(InvoiceFrequency.valueOf((String) obj));
+        }
+    }
+
+    public Response getContractReport(Long id) {
+        ClientInformation ci = ClientInformationDao.instance().findById(id);
+        if (ci != null) {
+            ContractDto dto = mapClientInformation(ci);
+            String report = MakeHTML.makeHTML(dto).replaceAll("<null>", "");
+            byte[] pdf = PDFUtils.convertToPDF(report);
+            return Response.ok(pdf)
+                    .header("content-disposition", "filename = Contract_Report.pdf")
+                    .header("Content-Length", pdf)
+                    .build();
+        } else {
+            return null;
         }
     }
 
