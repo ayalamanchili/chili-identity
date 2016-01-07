@@ -248,7 +248,7 @@ public class Address extends AbstractEntity {
     @Override
     public String describe() {
         StringBuilder description = new StringBuilder("\n");
-        //description.append("Address Type   :").append(this.getAddressType()).append("\n");
+        description.append("Address Type   :").append(this.getAddressType().addressType).append("\n");
         description.append("Street1        :").append(this.getStreet1()).append("\n");
         description.append("Street2        :").append(this.getStreet2()).append("\n");
         description.append("City           :").append(this.getCity()).append("\n");
