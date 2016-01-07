@@ -149,7 +149,9 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
         for (Employee emp : emps) {
             if (emp.getClientInformations() != null && emp.getClientInformations().size() > 1) {
                 for (ClientInformation ci : emp.getClientInformations()) {
-                    clients.add(ci);
+                    if ((ci.getEndDate().after(new Date())) || (ci.getEndDate().equals(new Date())) || (ci.getEndDate() == null)) {
+                        clients.add(ci);
+                    }
                 }
             }
         }
