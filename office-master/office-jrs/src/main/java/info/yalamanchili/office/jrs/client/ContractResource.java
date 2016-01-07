@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author anuyalamanchili
  */
-    @Path("secured/contract")
+@Path("secured/contract")
 @Component
 @Scope("request")
 @Produces("application/json")
@@ -41,7 +41,7 @@ public class ContractResource {
             return ContractService.instance().search(empId, start, limit);
         } else {
             return ContractService.instance().search(itemNum, start, limit);
-        }  
+        }
     }
 
     @PUT
@@ -61,28 +61,35 @@ public class ContractResource {
     public Response generateContractsReport(@QueryParam("format") String format) {
         return ContractService.instance().generateContractorPlacementInfoReport(format);
     }
-    
+
     @PUT
     @Path("/sub-contractor-report")
     public void generateSubContractorReport(ContractSearchDto dto) {
         ContractService.instance().generateSubCReport(dto);
     }
-    
+
     @PUT
     @Path("/client-report")
     public void generateClientReport(ContractSearchDto dto) {
         ContractService.instance().generateClientReport(dto);
     }
-    
+
     @PUT
     @Path("/vendor-report")
     public void generateVendorReport(ContractSearchDto dto) {
         ContractService.instance().generateVendorReport(dto);
     }
-    
+
     @PUT
     @Path("/recruiter-report")
     public void generateRecruiterReport(ContractSearchDto dto) {
         ContractService.instance().generateRecruiterReport(dto);
+    }
+
+    @GET
+    @Path("/reports")
+    @Produces({"application/pdf"})
+    public Response getReport(@QueryParam("id") Long id) {
+        return ContractService.instance().getContractReport(id);
     }
 }
