@@ -390,7 +390,7 @@ public class ContractService {
         ContractTable table = getResultForReport(dto);
         String[] columnOrder = new String[]{"employee", "client", "vendor", "clientProject", "billingRate", "overTimeBillingRate", "startDate", "endDate"};
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
-        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "subcontractor", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "SubContractor Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
     }
     
@@ -398,7 +398,7 @@ public class ContractService {
         ContractTable table = getResultForReport(dto);
         String[] columnOrder = new String[]{"employee", "consultantJobTitle", "vendor", "billingRate", "startDate", "endDate", "subContractorName", "subcontractorPayRate"};
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
-        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "workingunderclient", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Working Under Client Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
     }
     
@@ -406,7 +406,7 @@ public class ContractService {
         ContractTable table = getResultForReport(dto);
         String[] columnOrder = new String[]{"employee", "consultantJobTitle", "client", "billingRate", "startDate", "endDate", "subContractorName", "subcontractorPayRate"};
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
-        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "workingundervendor", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Working Under Vendor Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
     }
     
@@ -414,7 +414,7 @@ public class ContractService {
         ContractTable table = getResultForReport(dto);
         String[] columnOrder = new String[]{"employee", "vendor", "startDate", "endDate"};
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
-        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "recruiter", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Employee Recruited By Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
     }
     
