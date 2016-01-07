@@ -469,7 +469,9 @@ public class EmployeeResource extends CRUDResource<Employee> {
         List<ClientInformation> dtos = new ArrayList();
         for (Employee emp : q.getResultList()) {
             for (ClientInformation ci : emp.getClientInformations()) {
-                dtos.add(ci);
+                if ((ci.getEndDate().after(new Date())) || (ci.getEndDate().equals(new Date())) || (ci.getEndDate() == null)) {
+                    dtos.add(ci);
+                }
             }
         }
         return dtos;
