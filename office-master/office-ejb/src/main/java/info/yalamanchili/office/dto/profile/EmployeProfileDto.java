@@ -15,112 +15,75 @@ import info.yalamanchili.office.dao.profile.EmployeeDto;
  * @author ayalamanchili
  */
 public class EmployeProfileDto extends EmployeeDto {
+
     /**
      * Home Address
      */
-    protected String homeAddress1;
-    protected String homeAddress2;
-    protected String homeAddressCity;
-    protected String homeAddressState;
-    protected String homeAddressCountry;
-    protected String homeAddressZip;
+    protected String homeAddress;
     /**
-     * emergency contact 
+     * emergency contact
      */
-    protected String emergencyContactName;
-    protected String emergencyContactPhone;
-    protected String emergencyContactEmail;
-    protected String employeeTypeStr;
-    protected String manager;
+    protected String emergencyContactInfo;
+    protected String employee_Type;
+    protected String reportsManager;
+    protected String gender;
+    protected String companY;
+    protected String work_Status;
 
-    public String getHomeAddress1() {
-        return homeAddress1;
+    public String getHomeAddress() {
+        return homeAddress;
     }
 
-    public void setHomeAddress1(String homeAddress1) {
-        this.homeAddress1 = homeAddress1;
+    public void setHomeAddress(String homeAddress) {
+        this.homeAddress = homeAddress;
     }
 
-    public String getHomeAddress2() {
-        return homeAddress2;
+    public String getEmergencyContactInfo() {
+        return emergencyContactInfo;
     }
 
-    public void setHomeAddress2(String homeAddress2) {
-        this.homeAddress2 = homeAddress2;
+    public void setEmergencyContactInfo(String emergencyContactInfo) {
+        this.emergencyContactInfo = emergencyContactInfo;
     }
 
-    public String getHomeAddressCity() {
-        return homeAddressCity;
+    public String getEmployee_Type() {
+        return employee_Type;
     }
 
-    public void setHomeAddressCity(String homeAddressCity) {
-        this.homeAddressCity = homeAddressCity;
+    public void setEmployee_Type(String employee_Type) {
+        this.employee_Type = employee_Type;
     }
 
-    public String getHomeAddressState() {
-        return homeAddressState;
+    public String getReportsManager() {
+        return reportsManager;
     }
 
-    public void setHomeAddressState(String homeAddressState) {
-        this.homeAddressState = homeAddressState;
+    public void setReportsManager(String reportsManager) {
+        this.reportsManager = reportsManager;
     }
 
-    public String getHomeAddressCountry() {
-        return homeAddressCountry;
+    public String getGender() {
+        return gender;
     }
 
-    public void setHomeAddressCountry(String homeAddressCountry) {
-        this.homeAddressCountry = homeAddressCountry;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
-    public String getHomeAddressZip() {
-        return homeAddressZip;
+    public String getCompanY() {
+        return companY;
     }
 
-    public void setHomeAddressZip(String homeAddressZip) {
-        this.homeAddressZip = homeAddressZip;
+    public void setCompanY(String companY) {
+        this.companY = companY;
     }
 
-    public String getEmergencyContactName() {
-        return emergencyContactName;
+    public String getWork_Status() {
+        return work_Status;
     }
 
-    public void setEmergencyContactName(String emergencyContactName) {
-        this.emergencyContactName = emergencyContactName;
+    public void setWork_Status(String work_Status) {
+        this.work_Status = work_Status;
     }
 
-    public String getEmergencyContactPhone() {
-        return emergencyContactPhone;
-    }
-
-    public void setEmergencyContactPhone(String emergencyContactPhone) {
-        this.emergencyContactPhone = emergencyContactPhone;
-    }
-
-    public String getEmergencyContactEmail() {
-        return emergencyContactEmail;
-    }
-
-    public void setEmergencyContactEmail(String emergencyContactEmail) {
-        this.emergencyContactEmail = emergencyContactEmail;
-    }
-
-    public String getEmployeeTypeStr() {
-        return employeeTypeStr;
-    }
-
-    public void setEmployeeTypeStr(String employeeTypeStr) {
-        this.employeeTypeStr = employeeTypeStr;
-    }
-
-    
-
-    public String getManager() {
-        return manager;
-    }
-
-    public void setManager(String manager) {
-        this.manager = manager;
-    }
-    
 }

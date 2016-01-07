@@ -70,30 +70,59 @@ public class ProfileReportsService {
             EmployeProfileDto dto = new EmployeProfileDto();
             dto.setFirstName(emp.getFirstName());
             dto.setLastName(emp.getLastName());
-            dto.setEmployeeType(emp.getEmployeeType());
+            if (emp.getMiddleInitial() != null) {
+                dto.setMiddleInitial(emp.getMiddleInitial());
+            }
+            dto.setEmployee_Type(emp.getEmployeeType().getName());
             dto.setDateOfBirth(emp.getDateOfBirth());
+            if(emp.getCompany() != null){
+                dto.setCompanY(emp.getCompany().getName());
+            }
             dto.setStartDate(emp.getStartDate());
-            dto.setJobTitle(emp.getJobTitle());
+            if (emp.getJobTitle() != null) {
+                dto.setJobTitle(emp.getJobTitle());
+            }
+            if(emp.getHoursPerWeek() != null){
+                dto.setHoursPerWeek(emp.getHoursPerWeek());
+            }
+            if(emp.getPhones().get(0).getExtension() != null){
+                dto.setPhoneNumberExt(emp.getPhones().get(0).getExtension());
+            }
+            for (CompanyContact contact : CompanyContactDao.instance().getEmployeeCompanyContacts(emp.getId())) {
+                if (contact.getType().getName().equalsIgnoreCase("Reports_To")) {
+                    dto.setReportsManager(contact.getContact().getFirstName() + " " + contact.getContact().getLastName());
+                }
+            }
+            dto.setEmployeeId(emp.getEmployeeId());
+            if(emp.getEndDate() != null){
+                dto.setEndDate(emp.getEndDate());
+            }
             dto.setEmail(emp.getPrimaryEmail().getEmail());
             if (emp.getPhones().size() > 0) {
                 dto.setPhoneNumber(emp.getPhones().get(0).getPhoneNumber());
             }
-            dto.setBranch(emp.getBranch());
-            dto.setWorkStatus(emp.getWorkStatus());
-            if (emp.getAddresss().size() > 0) {
-                dto.setHomeAddress1(emp.getAddresss().get(0).getStreet1());
-                dto.setHomeAddress2(emp.getAddresss().get(0).getStreet2());
-                dto.setHomeAddressCity(emp.getAddresss().get(0).getCity());
-                dto.setHomeAddressState(emp.getAddresss().get(0).getState());
-                dto.setHomeAddressCountry(emp.getAddresss().get(0).getCountry());
-                dto.setHomeAddressZip(emp.getAddresss().get(0).getZip());
+            if (emp.getBranch() != null){
+                dto.setBranch(emp.getBranch());
             }
+            if(emp.getWorkStatus() != null){
+                dto.setWork_Status(emp.getWorkStatus().name());
+            }
+            if (emp.getAddresss().size() > 0) {
+                dto.setHomeAddress(emp.getAddresss().get(0).getStreet1() + "-" + emp.getAddresss().get(0).getStreet2() + "-" + emp.getAddresss().get(0).getCity() + "-" + emp.getAddresss().get(0).getState() + "-" + emp.getAddresss().get(0).getCountry() + "-" + emp.getAddresss().get(0).getZip());
+            }
+            dto.setGender(emp.getSex().name().toLowerCase());
             if (emp.getEmergencyContacts().size() > 0) {
-                dto.setEmergencyContactName(emp.getEmergencyContacts().get(0).getContact().getFirstName() + " " + emp.getEmergencyContacts().get(0).getContact().getLastName());
+                String ecContactInfo = "\n";
+                ecContactInfo = ecContactInfo.concat(emp.getEmergencyContacts().get(0).getContact().getFirstName() + " " + emp.getEmergencyContacts().get(0).getContact().getLastName() + "\n" + emp.getEmergencyContacts().get(0).getContact().getPhones().get(0).getPhoneNumber() + "\n");
+                if (emp.getEmergencyContacts().get(0).getContact().getEmails().size() > 0) {
+                    ecContactInfo = ecContactInfo.concat(emp.getEmergencyContacts().get(0).getContact().getEmails().get(0).getEmail());
+                }
+                dto.setEmergencyContactInfo(ecContactInfo);
             }
             res.add(dto);
         }
-        MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(res, "Profile-Information-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
+        String[] columnOrder = new String[]{"employeeId", "firstName", "middleInitial", "lastName", "gender", "employee_Type", "companY", "startDate", "endDate", "dateOfBirth", "email", "branch", "jobTitle", "work_Status", "reportsManager", "hoursPerWeek", "phoneNumber", "phoneNumberExt", "emergencyContactInfo", "homeAddress"};
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Profile-Information-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
 
     @Async
