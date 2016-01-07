@@ -244,20 +244,23 @@ public class Address extends AbstractEntity {
     public void setChangeNotes(String changeNotes) {
         this.changeNotes = changeNotes;
     }
-    
+
     @Override
     public String describe() {
         StringBuilder description = new StringBuilder("\n");
-        description.append("Address Type   :").append(this.getAddressType().addressType).append("\n");
+        if (this.getAddressType() != null) {
+            description.append("Address Type   :").append(this.getAddressType().getAddressType()).append("\n");
+        }
         description.append("Street1        :").append(this.getStreet1()).append("\n");
         description.append("Street2        :").append(this.getStreet2()).append("\n");
         description.append("City           :").append(this.getCity()).append("\n");
         description.append("Country        :").append(this.getCountry()).append("\n");
-        if(this.getZip() !=null){
-        description.append("Zip            :").append(this.getZip()).append("\n");
+        if (this.getZip() != null) {
+            description.append("Zip            :").append(this.getZip()).append("\n");
         }
         return description.toString();
     }
+
     @Override
     public String toString() {
         return "Address{" + "street1=" + street1 + ", street2=" + street2 + ", city=" + city + ", state=" + state + ", country=" + country + ", zip=" + zip + ", contact=" + contact + ", addressType=" + addressType + '}';
