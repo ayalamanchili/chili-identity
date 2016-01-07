@@ -279,6 +279,10 @@ public class EmployeeDto implements Serializable {
         dto.setLastName(entity.getLastName());
         dto.setJobTitle(entity.getJobTitle());
         dto.setStartDate(entity.getStartDate());
+        dto.setEmployeeId(entity.getEmployeeId());
+        if(entity.getDateOfBirth() != null){
+        dto.setDateOfBirth(entity.getDateOfBirth());
+        }
         dto.setEndDate(entity.getEndDate());
         dto.setImageURL(entity.getImageURL());
         dto.setEmail(EmployeeDao.instance().getPrimaryEmail(entity));
