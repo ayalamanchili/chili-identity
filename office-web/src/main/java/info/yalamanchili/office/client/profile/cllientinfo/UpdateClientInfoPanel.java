@@ -76,8 +76,8 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignEntityValueFromField("endDate", entity);
         assignEntityValueFromField("isEndDateConfirmed", entity);
         assignEntityValueFromField("recruiters", entity);
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
-            assignEntityValueFromField("itemNumber", entity);
+        assignEntityValueFromField("itemNumber", entity);
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
             assignEntityValueFromField("billingRate", entity);
             assignEntityValueFromField("overTimeBillingRate", entity);
             assignEntityValueFromField("invoiceFrequency", entity);
@@ -110,7 +110,9 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
                 assignEntityValueFromField("invoiceFrequency1099", entity);
             }
         }
-        assignEntityValueFromField("isCPDFilled", entity);
+        if (fields.containsKey("isCPDFilled")) {
+            assignEntityValueFromField("isCPDFilled", entity);
+        }
         assignEntityValueFromField("terminationNotice", entity);
         assignEntityValueFromField("visaStatus", entity);
         assignEntityValueFromField("notes", entity);
@@ -165,8 +167,8 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("isEndDateConfirmed", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("recruiters", entity, null);
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
-            assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
             assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
@@ -200,7 +202,9 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             assignFieldValueFromEntity("specialInvoiceInstructions", entity, DataType.TEXT_AREA_FIELD);
         }
         assignFieldValueFromEntity("notes", entity, DataType.TEXT_AREA_FIELD);
-        assignFieldValueFromEntity("isCPDFilled", entity, DataType.BOOLEAN_FIELD);
+        if (fields.containsKey("isCPDFilled")) {
+            assignFieldValueFromEntity("isCPDFilled", entity, DataType.BOOLEAN_FIELD);
+        }
         assignFieldValueFromEntity("terminationNotice", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("visaStatus", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("practice", entity, null);
@@ -281,9 +285,10 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         addField("name", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("purchaseOrderNo", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         cistatus = JSONUtils.toString(entity, "status");
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
-            entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
-            addField("itemNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+
+        entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
+        addField("itemNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
             if (cistatus.equals("PENDING_CONTRACTS_SUBMIT")) {
                 addField("billingRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             } else {
