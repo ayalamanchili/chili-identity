@@ -12,12 +12,17 @@ import info.chili.commons.SearchUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.email.Email;
 import info.chili.jpa.validation.Validate;
+import info.chili.reporting.ReportGenerator;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.drive.FileDao;
 import info.yalamanchili.office.dao.hr.ProspectDao;
 import info.yalamanchili.office.dao.invite.InviteCodeDao;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.prospect.ProspectDto;
 import info.yalamanchili.office.entity.hr.Prospect;
+import info.yalamanchili.office.entity.hr.ProspectStatus;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.prospect.ProspectService;
@@ -52,25 +57,25 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("request")
 @Transactional
 public class ProspectResource extends CRUDResource<ProspectDto> {
-    
+
     @Autowired
     public ProspectDao prospectDao;
-    
+
     @Autowired
     public ProspectService prospectService;
-    
+
     @Autowired
     protected InviteCodeDao inviteCodeDao;
     @Autowired
     FileDao fileDao;
-    
+
     @Override
     public CRUDDao getDao() {
         return prospectDao;
     }
     @Autowired
     protected Mapper mapper;
-    
+
     @GET
     @Path("/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_PROSPECTS_MANAGER')")
@@ -85,7 +90,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
         tableObj.setSize(getDao().size());
         return tableObj;
     }
-    
+
     @PUT
     @Path("/save")
     @Validate
@@ -95,7 +100,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     public ProspectDto save(ProspectDto prospect) {
         return prospectService.save(prospect);
     }
-    
+
     @PUT
     @Path("/update")
     @Validate
@@ -104,21 +109,21 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     public Prospect update(ProspectDto prospect) {
         return prospectService.update(prospect);
     }
-    
+
     @GET
     @Path("/clone/{id}")
     @Override
     public ProspectDto clone(@PathParam("id") Long id) {
         return prospectService.clone(id);
     }
-    
+
     @GET
     @Override
     @Path("/{id}")
     public ProspectDto read(@PathParam("id") Long id) {
         return prospectService.read(id);
     }
-    
+
     @PUT
     @Path("/delete/{id}")
     @Override
@@ -127,7 +132,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
     }
-    
+
     @GET
     @Path("/email-info/{id}")
     public void basicProspectRequest(@PathParam("id") Long id) {
@@ -148,7 +153,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
             prospectDao.save(entity);
         }
     }
-    
+
     @PUT
     @Path("/search-prospect/{start}/{limit}")
     @Transactional(readOnly = true)
@@ -162,32 +167,51 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
         }
         return res;
     }
-    
+
     protected final String[] ON_BOARDING_FORMS_LIST = {"W2_On_Boarding", "I9_On_Boarding"};
-    
-    
+
     @XmlRootElement
     @XmlType
     public static class ProspectTable implements java.io.Serializable {
-        
+
         protected Long size;
         protected List<ProspectDto> entities;
-        
+
         public Long getSize() {
             return size;
         }
-        
+
         public void setSize(Long size) {
             this.size = size;
         }
-        
+
         @XmlElement
         public List<ProspectDto> getEntities() {
             return entities;
         }
-        
+
         public void setEntities(List<ProspectDto> entities) {
             this.entities = entities;
         }
+    }
+
+    @GET
+    @Path("/report")
+    public void generateReport() {
+        List<Prospect> prospects = prospectDao.query(0, 10000);
+        List<ProspectDto> dtos = new ArrayList();
+        ProspectTable table = new ProspectTable();
+        ProspectDto dto = null;
+        for (Prospect prospect : prospects) {
+            if (prospect.getStatus().equals(ProspectStatus.IN_PROGRESS)) {
+                dto = ProspectDto.map(mapper, prospect);
+                dtos.add(dto);
+            }
+        }
+        table.setEntities(dtos);
+        String[] columnOrder = new String[]{"employee", "dateOfBirth", "gender", "email", "phoneNumber", "referredBy", "screenedBy", "comment"};
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
+        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Prospects InProgress Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
     }
 }
