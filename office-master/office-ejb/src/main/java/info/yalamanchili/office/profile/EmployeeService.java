@@ -19,8 +19,6 @@ import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
-import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
-import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.dto.profile.EmployeeCreateDto;
 import info.yalamanchili.office.dto.security.User;
 import info.yalamanchili.office.entity.Company;
@@ -29,11 +27,8 @@ import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.Preferences;
-import info.yalamanchili.office.entity.time.ConsultantTimeSheet;
-import info.yalamanchili.office.entity.time.CorporateTimeSheet;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import info.yalamanchili.office.security.SecurityUtils;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -184,20 +179,6 @@ public class EmployeeService {
         }
         emp.setEndDate(dto.getEndDate());
         emp = em.merge(emp);
-        if (emp.getEmployeeType().getName().equals(EmployeeType.EMPLOYEE)) {
-            ConsultantTimeSheet cts = ConsultantTimeSheetDao.instance().queryPTOAccruedTimeSheet(emp);
-            if (cts != null) {
-                cts.setHours(BigDecimal.ZERO);
-                em.merge(cts);
-            }
-
-        } else if (emp.getEmployeeType().getName().equals(EmployeeType.CORPORATE_EMPLOYEE)) {
-            CorporateTimeSheet cts = CorporateTimeSheetDao.instance().queryPTOAccruedTimeSheet(emp);
-            if (cts != null) {
-                cts.setHours(BigDecimal.ZERO);
-                em.merge(cts);
-            }
-        }
         CUser user1 = emp.getUser();
         user1.setEnabled(false);
         Employee curUser = OfficeSecurityService.instance().getCurrentUser();
