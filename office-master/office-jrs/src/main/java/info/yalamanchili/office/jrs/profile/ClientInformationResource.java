@@ -5,6 +5,7 @@ package info.yalamanchili.office.jrs.profile;
 
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
+import info.chili.reporting.ReportGenerator;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
@@ -18,7 +19,11 @@ import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.profile.ClientInformationService;
 import info.yalamanchili.office.bpm.offboarding.ProjectOffBoardingDto;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
+import info.yalamanchili.office.client.ContractService;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDto;
+import info.yalamanchili.office.dto.client.ContractDto;
+import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.project.offboarding.ProjectOffBoardingService;
 import java.util.ArrayList;
 import java.util.Date;
@@ -177,6 +182,42 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
         } else {
             return null;
         }
+    }
+
+    @GET
+    @Path("/ended-projects-report")
+    @Cacheable(OfficeCacheKeys.EMPLOYEES)
+    public void report(@QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate) {
+        ContractDto.ContractTable ctable = new ContractDto.ContractTable();
+        List<ClientInformation> clients = clientInformationDao.queryForProjEndBetweenDays(0, 10000, startDate, endDate);
+        if (clients != null && clients.size() > 0) {
+            for (ClientInformation ci : clients) {
+                ctable.getEntities().add(ContractService.instance().mapClientInformation(ci));
+            }
+        }
+        String[] columnOrder = new String[]{"employee", "recruiter", "vendor", "billingRate", "startDate", "endDate"};
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
+        String fileName = ReportGenerator.generateExcelOrderedReport(ctable.getEntities(), "Ended Projects Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
+    }
+
+    @GET
+    @Path("/multiple-projects-report")
+    @Cacheable(OfficeCacheKeys.EMPLOYEES)
+    public void multipleProjreport() {
+        ClientInformationTable table = getMPForEmployees();
+        List<ClientInformation> cis = new ArrayList();
+        ContractDto.ContractTable ctable = new ContractDto.ContractTable();
+        if (table.getSize() > 0) {
+            cis.addAll(table.getEntities());
+        }
+        for(ClientInformation ci : cis){
+            ctable.getEntities().add(ContractService.instance().mapClientInformation(ci));
+        }
+        String[] columnOrder = new String[]{"employee", "client", "vendor", "billingRate", "startDate", "endDate"};
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
+        String fileName = ReportGenerator.generateExcelOrderedReport(ctable.getEntities(), "Working On Multiple Projects Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
     }
 
     @PUT
