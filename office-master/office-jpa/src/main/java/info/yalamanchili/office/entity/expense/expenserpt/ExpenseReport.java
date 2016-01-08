@@ -435,6 +435,7 @@ public class ExpenseReport extends AbstractEntity {
     @Override
     public String describe() {
         StringBuilder description = new StringBuilder("\n");
+        description.append("Expense Report Number  :").append(this.getExpenseReportNumber()).append("\n");
         description.append("Employee                 :").append(this.getEmployee().getFirstName()).append(" ").append(this.getEmployee().getLastName()).append("\n");
         description.append("Expense Form Type    :").append(this.getExpenseFormType()).append("\n");
         description.append("Expense Start Date    :").append(this.getStartDate()).append("\n");
