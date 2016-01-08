@@ -16,6 +16,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -588,6 +589,52 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                 }
                 String rurl = OfficeWelcome.instance().constants.root_url() + "employee/location-report";
                 HttpService.HttpServiceAsync.instance().doPut(rurl, obj.toString(), OfficeWelcome.instance().getHeaders(), true,
+                        new ALAsyncCallback<String>() {
+                            @Override
+                            public void onResponse(String result) {
+                                new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
+                            }
+                        });
+                clearFields();
+            }
+            if (reportTasks.getParent().equals(projEndPanel)) {
+                TabPanel.instance().getReportingPanel().entityPanel.clear();
+                DateTimeFormat sdf = DateTimeFormat.getFormat("MM/dd/yyyy");
+                String empUrl1 = OfficeWelcome.constants.root_url() + "clientinformation/ended-projects-report";
+                empUrl1 = empUrl1.concat("?startDate=" + sdf.format(projectStartDate.getDate()));
+                empUrl1 = empUrl1.concat("&endDate=" + sdf.format(projectEndDate.getDate()));
+                HttpService.HttpServiceAsync.instance().doGet(empUrl1, OfficeWelcome.instance().getHeaders(), true,
+                        new ALAsyncCallback<String>() {
+                            @Override
+                            public void onResponse(String result) {
+                                new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
+                            }
+                        });
+                clearFields();
+            }
+            if (reportTasks.getParent().equals(mProjectsPanel)) {
+                TabPanel.instance().getReportingPanel().entityPanel.clear();
+                String mpurl = OfficeWelcome.constants.root_url() + "clientinformation/multiple-projects-report";
+                HttpService.HttpServiceAsync.instance().doGet(mpurl, OfficeWelcome.instance().getHeaders(), true,
+                        new ALAsyncCallback<String>() {
+                            @Override
+                            public void onResponse(String result) {
+                                new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
+                            }
+                        });
+                clearFields();
+            }
+            if (reportTasks.getParent().equals(joinedPanel)) {
+                TabPanel.instance().getReportingPanel().entityPanel.clear();
+                DateTimeFormat sdf = DateTimeFormat.getFormat("MM/dd/yyyy");
+                /*JSONObject obj = getBWDatesObject();
+                obj.put("value", new JSONString(li.getSelectedValue()));*/
+                String empUrl = OfficeWelcome.constants.root_url() + "employee/search-emp-between-days-report";
+                empUrl = empUrl.concat("?startDate=" + sdf.format(projectStartDate.getDate()));
+                empUrl = empUrl.concat("&endDate=" + sdf.format(projectEndDate.getDate()));
+                empUrl = empUrl.concat("&value=" + li.getSelectedValue());
+                logger.info("employee url :"+empUrl);
+                HttpService.HttpServiceAsync.instance().doGet(URL.encode(empUrl), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
                             @Override
                             public void onResponse(String result) {
