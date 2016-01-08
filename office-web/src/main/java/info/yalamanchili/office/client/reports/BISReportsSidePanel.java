@@ -157,17 +157,22 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
 
     @Override
     protected void addWidgets() {
-        panel.add(masterDataReportsL);
-        panel.add(myClientL);
-        panel.add(myVendorL);
-        panel.add(mySubContructorL);
-        panel.add(recruiterL);
-        panel.add(multipleProjectsL);
-        panel.add(myJoinedL);
-        panel.add(projEndL);
-        panel.add(myVlocationL);
-        panel.add(myClocationL);
-        panel.add(empLocationL);
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_FULL_VIEW)) {
+            panel.add(masterDataReportsL);
+            panel.add(myClientL);
+            panel.add(myVendorL);
+            panel.add(mySubContructorL);
+            panel.add(recruiterL);
+            panel.add(multipleProjectsL);
+            panel.add(myJoinedL);
+            panel.add(projEndL);
+            panel.add(myVlocationL);
+            panel.add(myClocationL);
+            panel.add(empLocationL);
+        }else if(Auth.hasAnyOfRoles(Auth.ROLE.ROLE_RECRUITER)){
+            panel.add(myClientL);
+            panel.add(myVendorL);
+        }
     }
 
     protected String getFirstNameDropDownUrl() {
@@ -370,7 +375,6 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                                     if (result == null || JSONParser.parseLenient(result).isObject() == null) {
                                         new ResponseStatusWidget().show("no results");
                                     } else {
-                                        logger.info("result .... " + result);
                                         JSONObject resObj = JSONParser.parseLenient(result).isObject();
                                         String key = (String) resObj.keySet().toArray()[0];
                                         JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
@@ -628,12 +632,11 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                 TabPanel.instance().getReportingPanel().entityPanel.clear();
                 DateTimeFormat sdf = DateTimeFormat.getFormat("MM/dd/yyyy");
                 /*JSONObject obj = getBWDatesObject();
-                obj.put("value", new JSONString(li.getSelectedValue()));*/
+                 obj.put("value", new JSONString(li.getSelectedValue()));*/
                 String empUrl = OfficeWelcome.constants.root_url() + "employee/search-emp-between-days-report";
                 empUrl = empUrl.concat("?startDate=" + sdf.format(projectStartDate.getDate()));
                 empUrl = empUrl.concat("&endDate=" + sdf.format(projectEndDate.getDate()));
                 empUrl = empUrl.concat("&value=" + li.getSelectedValue());
-                logger.info("employee url :"+empUrl);
                 HttpService.HttpServiceAsync.instance().doGet(URL.encode(empUrl), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
                             @Override
