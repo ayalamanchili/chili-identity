@@ -59,6 +59,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -459,6 +460,18 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @Override
     public CRUDDao getDao() {
         return employeeDao;
+    }
+
+    @GET
+    @Path("/search-emp-between-days-report")
+    public void employeeJoinedOrLeftReport(@QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate, @QueryParam("value") String value) {
+        EmployeeTable table = table(0, 10000, startDate, endDate, value);
+        if (table.getSize() > 0) {
+            String[] columnOrder = new String[]{"firstName", "lastName", "startDate", "endDate", "phoneNumber"};
+            Employee emp = OfficeSecurityService.instance().getCurrentUser();
+            String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Emp Joined Or Left In a Period Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+            MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
+        }
     }
 
     @PUT
