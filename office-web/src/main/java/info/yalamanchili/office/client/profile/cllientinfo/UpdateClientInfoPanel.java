@@ -35,12 +35,16 @@ import info.yalamanchili.office.client.profile.updateBillingRate.ReadAllUpdateBi
 import java.util.logging.Logger;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.json.client.JSONParser;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.BaseFieldWithTextBox;
 import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.fields.EnumField;
+import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientAcctPayContact;
+import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
 import java.util.Map;
 
@@ -48,6 +52,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
 
     private static Logger logger = Logger.getLogger(UpdateClientInfoPanel.class.getName());
     SelectPracticeWidget selectPractiseWidgetF = new SelectPracticeWidget(false, true, Alignment.HORIZONTAL);
+    SelectVendorWidget selectVendorWidgetF = new SelectVendorWidget(false, true, Alignment.HORIZONTAL);
     EnumField servicesF;
     EnumField sectorsF;
     protected BooleanField submitForApprovalF = new BooleanField(OfficeWelcome.constants, "Submit For Approval", "ClientInfo", false, false, Alignment.HORIZONTAL);
@@ -66,7 +71,9 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignEntityValueFromField("company", entity);
         assignEntityValueFromField("client", entity);
         assignEntityValueFromField("clientLocation", entity);
+        assignEntityValueFromField("clientContact", entity);
         assignEntityValueFromField("clientAPContacts", entity);
+        assignEntityValueFromField("clientPaymentTerms", entity);
         assignEntityValueFromField("vendor", entity);
         assignEntityValueFromField("vendorAPContacts", entity);
         assignEntityValueFromField("vendorRecruiters", entity);
@@ -77,7 +84,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignEntityValueFromField("isEndDateConfirmed", entity);
         assignEntityValueFromField("recruiters", entity);
         assignEntityValueFromField("itemNumber", entity);
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN)) {
             assignEntityValueFromField("billingRate", entity);
             assignEntityValueFromField("overTimeBillingRate", entity);
             assignEntityValueFromField("invoiceFrequency", entity);
@@ -153,6 +160,8 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignFieldValueFromEntity("client", entity, null);
         assignFieldValueFromEntity("clientAPContacts", entity, null);
         assignFieldValueFromEntity("clientLocation", entity, null);
+        assignFieldValueFromEntity("clientContact", entity, null);
+        assignFieldValueFromEntity("clientPaymentTerms", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("vendor", entity, null);
         assignFieldValueFromEntity("vendorAPContacts", entity, null);
         assignFieldValueFromEntity("vendorRecruiters", entity, null);
@@ -168,7 +177,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignFieldValueFromEntity("isEndDateConfirmed", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("recruiters", entity, null);
         assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN)) {
             assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
@@ -215,6 +224,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     protected void addListeners() {
         updateBillingRateIcn.addClickHandler(this);
         selectPractiseWidgetF.getListBox().addChangeHandler(this);
+        selectVendorWidgetF.getListBox().addChangeHandler(this);
         submitForApprovalF.getBox().addClickHandler(this);
     }
 
@@ -253,6 +263,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         addEnumField("company", false, true, ClientInformationCompany.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Client & Vendor Information"));
         addDropDown("client", new SelectClientWidget(false, true, Alignment.HORIZONTAL));
+        addDropDown("clientLocation", new SelectClientLocationWidget(false, false, Alignment.HORIZONTAL));
         selectClientAcctPayContact = new SelectClientAcctPayContact(false, false, Alignment.HORIZONTAL) {
             @Override
             public boolean enableMultiSelect() {
@@ -260,8 +271,9 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             }
         };
         addDropDown("clientAPContacts", selectClientAcctPayContact);
-        addDropDown("clientLocation", new SelectClientLocationWidget(false, false, Alignment.HORIZONTAL));
-        addDropDown("vendor", new SelectVendorWidget(false, false, Alignment.HORIZONTAL));
+        addDropDown("clientContact", new SelectClientContactWidget(false, false, Alignment.HORIZONTAL));
+        addField("clientPaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addDropDown("vendor", selectVendorWidgetF);
         selectVendorAPContactsW = new SelectVendorAcctPayContact(false, false, Alignment.HORIZONTAL) {
             @Override
             public boolean enableMultiSelect() {
@@ -276,8 +288,8 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             }
         };
         addDropDown("vendorRecruiters", selectVendorRecruiterContactsWidget);
-        addDropDown("middleVendor", new SelectMiddleVendorWidget(false, false, Alignment.HORIZONTAL));
         addField("vendorPaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addDropDown("middleVendor", new SelectMiddleVendorWidget(false, false, Alignment.HORIZONTAL));
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("isEndDateConfirmed", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
@@ -285,10 +297,9 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         addField("name", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("purchaseOrderNo", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         cistatus = JSONUtils.toString(entity, "status");
-
         entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
         addField("itemNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN)) {
             if (cistatus.equals("PENDING_CONTRACTS_SUBMIT")) {
                 addField("billingRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             } else {
@@ -455,6 +466,26 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
                     break;
             }
         }
+        if (event.getSource().equals(selectVendorWidgetF.getListBox())) {
+            String id = selectVendorWidgetF.getSelectedObject().get("id").isString().stringValue().trim();
+            loadVendor(id);
+        }
+    }
+
+    public void loadVendor(String vendorEntityId) {
+        HttpService.HttpServiceAsync.instance().doGet(getVendor(vendorEntityId), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject vendor = (JSONObject) JSONParser.parseLenient(response);
+                        TextAreaField payTermF = (TextAreaField) fields.get("vendorPaymentTerms");
+                        payTermF.setValue(JSONUtils.toString(vendor, "paymentTerms"));
+                    }
+                });
+    }
+
+    protected String getVendor(String vendorEntityId) {
+        return OfficeWelcome.constants.root_url() + "vendor/" + vendorEntityId;
     }
 
     @Override

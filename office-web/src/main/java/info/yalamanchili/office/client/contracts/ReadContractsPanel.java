@@ -179,9 +179,9 @@ public class ReadContractsPanel extends TReadComposite {
         addField("employee", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 1);
         addField("itemNumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 2);
         addField("billingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 2, 1);
+        addField("overTimeBillingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 2, 2);
         String[] billingDuration = {"HOUR", "DAY", "MONTH", "WEEK"};
         addEnumField("billingRateDuration", true, false, billingDuration, Alignment.HORIZONTAL, 3, 1);
-        addField("overTimeBillingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 2, 2);
         addEnumField("overTimeRateDuration", true, false, billingDuration, Alignment.HORIZONTAL, 3, 2);
         addEnumField("invoiceFrequency", true, false, InvoiceFrequency.names(), Alignment.HORIZONTAL, 4, 1);
         String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX", "UPLOAD"};
@@ -208,25 +208,27 @@ public class ReadContractsPanel extends TReadComposite {
             addField("paymentTerms1099", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 10, 2);
         }
         addField("vendorPaymentTerms", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL, 10, 1);
-        addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 15, 1);
-        addField("endDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 15, 2);
-        addField("clientProject", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 16, 1);
-        addField("company", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 16, 2);
-
-        addField("client", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 13, 2);
         addField("vendor", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 11, 1);
-        addField("middleVendor", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 13, 1);
-        addField("clientAPContact", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 14, 2);
         addField("vendorAPContact", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 12, 1);
-        addField("notes", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL, 14, 1);
-        addField("practice", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 17, 1);
-        addField("sectorsAndBUs", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 17, 2);
-        addField("employeeDetails", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 18, 1);
-        addField("consultantJobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 18, 2);
-        addField("purchaseOrderNo", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 19, 1);
-        addField("clientLocation", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 19, 2);
-        entityFieldsPanel.setWidget(20, 1, ReadAllConsultantTimeSheetsPanel.renderLeaveHistory(getEmployeeId()));
-        entityFieldsPanel.getFlexCellFormatter().setColSpan(20, 1, 2);
+        addField("client", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 13, 1);
+        addField("clientLocation", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 13, 2);
+        addField("clientAPContact", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 14, 1);
+        addField("clientContact", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 14, 2);
+        addField("clientPaymentTerms", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL, 15, 1);
+        addField("notes", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL, 15, 2);
+        addField("middleVendor", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 16, 1);
+        addField("company", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 16, 2);
+        addField("clientProject", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 17, 1);
+        addField("purchaseOrderNo", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 17, 2);
+        addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 18, 1);
+        addField("endDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 18, 2);
+        addField("practice", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 19, 1);
+        addField("sectorsAndBUs", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 19, 2);
+        addField("employeeDetails", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 20, 1);
+        addField("consultantJobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 20, 2);
+
+        entityFieldsPanel.setWidget(21, 1, ReadAllConsultantTimeSheetsPanel.renderLeaveHistory(getEmployeeId()));
+        entityFieldsPanel.getFlexCellFormatter().setColSpan(21, 1, 2);
         alignFields();
     }
 

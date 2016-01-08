@@ -333,6 +333,8 @@ public class ClientInformation extends AbstractEntity {
     protected String timeSheetRequirement;
 
     protected String vendorPaymentTerms;
+    
+    protected String clientPaymentTerms;
 
     protected String specialInvoiceInstructions;
 
@@ -839,6 +841,14 @@ public class ClientInformation extends AbstractEntity {
 
     public void setVendorPaymentTerms(String vendorPaymentTerms) {
         this.vendorPaymentTerms = vendorPaymentTerms;
+    }
+
+    public String getClientPaymentTerms() {
+        return clientPaymentTerms;
+    }
+
+    public void setClientPaymentTerms(String clientPaymentTerms) {
+        this.clientPaymentTerms = clientPaymentTerms;
     }
 
     public String getSpecialInvoiceInstructions() {

@@ -116,6 +116,8 @@ public class ClientInformationDto implements Serializable {
      *
      */
     protected String vendorPaymentTerms;
+    
+    protected String clientPaymentTerms;
     /**
      * Vendor AP Contact
      */
@@ -829,6 +831,14 @@ public class ClientInformationDto implements Serializable {
 
     public void setVendorPaymentTerms(String vendorPaymentTerms) {
         this.vendorPaymentTerms = vendorPaymentTerms;
+    }
+
+    public String getClientPaymentTerms() {
+        return clientPaymentTerms;
+    }
+
+    public void setClientPaymentTerms(String clientPaymentTerms) {
+        this.clientPaymentTerms = clientPaymentTerms;
     }
 
     public InvoiceFrequency getInvoiceFrequency1099() {

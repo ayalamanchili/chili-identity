@@ -77,6 +77,7 @@ public class ContractDto implements Serializable {
     protected String vendorLocation;
     protected String vendorAPContact;
     protected String vendorPaymentTerms;
+    protected String clientPaymentTerms;
     protected String vendorRecruiter;
     protected String middleVendor;
     protected String clientProject;
@@ -757,6 +758,15 @@ public class ContractDto implements Serializable {
     public void setIsReady(Boolean isReady) {
         this.isReady = isReady;
     }
+
+    public String getClientPaymentTerms() {
+        return clientPaymentTerms;
+    }
+
+    public void setClientPaymentTerms(String clientPaymentTerms) {
+        this.clientPaymentTerms = clientPaymentTerms;
+    }
+
 
     @XmlRootElement
     @XmlType

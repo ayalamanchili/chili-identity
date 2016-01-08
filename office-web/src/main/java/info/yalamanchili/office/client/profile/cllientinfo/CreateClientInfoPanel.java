@@ -49,6 +49,7 @@ import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientAcctPayContact;
+import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
 import java.util.Date;
 
@@ -59,6 +60,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     protected Anchor addVendorL = new Anchor("Vendor not present? submit request");
     SelectPracticeWidget selectPractiseWidgetF = new SelectPracticeWidget(false, true, Alignment.HORIZONTAL);
     SelectVendorWidget selectVendorWidgetF = new SelectVendorWidget(false, true, Alignment.HORIZONTAL);
+    SelectClientWidget selectClientWidgetF = new SelectClientWidget(false, true, Alignment.HORIZONTAL);
     protected BooleanField submitForApprovalF = new BooleanField(OfficeWelcome.constants, "Submit For Approval", "ClientInfo", false, false, Alignment.HORIZONTAL);
     protected boolean isSub = false;
     protected boolean is1099 = false;
@@ -81,9 +83,10 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         assignEntityValueFromField("consultantJobTitle", clientInfo);
         assignEntityValueFromField("company", clientInfo);
         assignEntityValueFromField("client", clientInfo);
-        //assignEntityValueFromField("clientContact", clientInfo);
+        assignEntityValueFromField("clientContact", clientInfo);
         assignEntityValueFromField("clientAPContacts", clientInfo);
         assignEntityValueFromField("clientLocation", clientInfo);
+        assignEntityValueFromField("clientPaymentTerms", clientInfo);
         assignEntityValueFromField("vendor", clientInfo);
         //assignEntityValueFromField("vendorContact", clientInfo);
         assignEntityValueFromField("vendorAPContacts", clientInfo);
@@ -172,6 +175,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         addVendorL.addClickHandler(this);
         submitForApprovalF.getBox().addClickHandler(this);
         selectVendorWidgetF.getListBox().addChangeHandler(this);
+        selectClientWidgetF.getListBox().addChangeHandler(this);
         if (endPreviousProjectFlagField != null) {
             endPreviousProjectFlagField.getBox().addClickHandler(this);
         }
@@ -211,10 +215,9 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         addEnumField("company", false, true, ClientInformationCompany.names(), Alignment.HORIZONTAL);
         //client
         entityFieldsPanel.add(getLineSeperatorTag("Client & Vendor Information"));
-        addDropDown("client", new SelectClientWidget(false, true, Alignment.HORIZONTAL));
+        addDropDown("client", selectClientWidgetF);
         entityFieldsPanel.add(addClientL);
         addDropDown("clientLocation", new SelectClientLocationWidget(false, false, Alignment.HORIZONTAL));
-        //addDropDown("clientContact", new SelectClientContactWidget(false, false, Alignment.HORIZONTAL));
         selectClientAcctPayContact = new SelectClientAcctPayContact(false, false, Alignment.HORIZONTAL) {
             @Override
             public boolean enableMultiSelect() {
@@ -222,6 +225,8 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             }
         };
         addDropDown("clientAPContacts", selectClientAcctPayContact);
+        addDropDown("clientContact", new SelectClientContactWidget(false, false, Alignment.HORIZONTAL));
+        addField("clientPaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         //Vendor
         addDropDown("vendor", selectVendorWidgetF);
         entityFieldsPanel.add(addVendorL);
@@ -374,6 +379,22 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         return OfficeWelcome.constants.root_url() + "vendor/" + vendorEntityId;
     }
 
+    public void loadClient(String clientEntityId) {
+        HttpService.HttpServiceAsync.instance().doGet(getClient(clientEntityId), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject client = (JSONObject) JSONParser.parseLenient(response);
+                        TextAreaField payTermF = (TextAreaField) fields.get("clientPaymentTerms");
+                        payTermF.setValue(JSONUtils.toString(client, "paymentTerms"));
+                    }
+                });
+    }
+
+    protected String getClient(String clientEntityId) {
+        return OfficeWelcome.constants.root_url() + "client/" + clientEntityId;
+    }
+
     private String getProjectEndDate() {
         return OfficeWelcome.constants.root_url() + "clientinformation/endDate/" + TreeEmployeePanel.instance().getEntityId() + "/" + endPreviousProjectFlagField.getValue();
     }
@@ -413,6 +434,11 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         if (event.getSource().equals(selectVendorWidgetF.getListBox())) {
             String id = selectVendorWidgetF.getSelectedObject().get("id").isString().stringValue().trim();
             loadVendor(id);
+        }
+
+        if (event.getSource().equals(selectClientWidgetF.getListBox())) {
+            String id = selectClientWidgetF.getSelectedObject().get("id").isString().stringValue().trim();
+            loadClient(id);
         }
 
     }

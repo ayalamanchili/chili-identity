@@ -60,7 +60,8 @@ public class OfficeRoles {
         ROLE_PROSPECTS_MANAGER,
         ROLE_CONTRACTS_FULL_VIEW,
         ROLE_BILLING_AND_INVOICING,
-        ROLE_CONTRACTS
+        ROLE_CONTRACTS,
+        ROLE_BILLING_ADMIN
     }
     public final static Map<String, String> rolesMessages = new HashMap<String, String>();
 
@@ -106,5 +107,6 @@ public class OfficeRoles {
         rolesMessages.put(OfficeRole.ROLE_CONTRACTS_FULL_VIEW.name(), "Contracts Full View");
         rolesMessages.put(OfficeRole.ROLE_BILLING_AND_INVOICING.name(), "Billing and Invoicing");
         rolesMessages.put(OfficeRole.ROLE_CONTRACTS.name(), "Contracts");
+        rolesMessages.put(OfficeRole.ROLE_BILLING_ADMIN.name(), "Billing Admin");
     }
 }
