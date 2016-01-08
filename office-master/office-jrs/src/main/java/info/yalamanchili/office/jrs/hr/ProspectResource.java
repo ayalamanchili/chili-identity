@@ -196,22 +196,22 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     }
 
     @GET
-    @Path("/report")
-    public void generateReport() {
+    @Path("/report/{status}")
+    public void generateReport(@PathParam("status") String status) {
         List<Prospect> prospects = prospectDao.query(0, 10000);
         List<ProspectDto> dtos = new ArrayList();
         ProspectTable table = new ProspectTable();
         ProspectDto dto = null;
         for (Prospect prospect : prospects) {
-            if (prospect.getStatus().equals(ProspectStatus.IN_PROGRESS)) {
+            if (prospect.getStatus().name().equals(status)) {
                 dto = ProspectDto.map(mapper, prospect);
                 dtos.add(dto);
             }
         }
         table.setEntities(dtos);
-        String[] columnOrder = new String[]{"employee", "dateOfBirth", "gender", "email", "phoneNumber", "referredBy", "screenedBy", "comment"};
+        String[] columnOrder = new String[]{"employee", "dateOfBirth", "gender", "email", "phoneNumber", "referredBy", "screenedBy"};
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
-        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Prospects InProgress Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Prospects "+status.toLowerCase()+" Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
     }
 }
