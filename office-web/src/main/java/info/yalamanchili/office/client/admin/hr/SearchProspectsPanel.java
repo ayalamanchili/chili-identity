@@ -19,15 +19,19 @@ package info.yalamanchili.office.client.admin.hr;
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.ui.Button;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.EnumField;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.SearchComposite;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import java.util.logging.Logger;
 
 /**
@@ -35,37 +39,39 @@ import java.util.logging.Logger;
  * @author raghu
  */
 public class SearchProspectsPanel extends SearchComposite {
-    
+
     private static Logger logger = Logger.getLogger(SearchProspectsPanel.class.getName());
-    
+    Button prospectsReport = new Button("Report");
+
     public SearchProspectsPanel() {
         init("Prospect Search", "Prospect", OfficeWelcome.constants);
     }
-    
+
     @Override
     protected void onOpenAdvancedSearch() {
         super.onOpenAdvancedSearch();
         TabPanel.instance().myOfficePanel.sidePanelTop.setHeight("100%");
     }
-    
+
     @Override
     protected void populateSearchSuggestBox() {
-        
+
     }
-    
+
     @Override
     protected void populateAdvancedSuggestBoxes() {
-        
+
     }
-    
+
     @Override
     protected void addListeners() {
+        prospectsReport.addClickHandler(this);
     }
-    
+
     @Override
     protected void configure() {
     }
-    
+
     @Override
     protected void addWidgets() {
         addField("firstName", DataType.STRING_FIELD);
@@ -75,8 +81,9 @@ public class SearchProspectsPanel extends SearchComposite {
         addField("email", DataType.STRING_FIELD);
         addField("phoneNumber", DataType.LONG_FIELD);
         addEnumField("status", false, false, ProspectStatus.names());
+        mainPanel.add(prospectsReport);
     }
-    
+
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
@@ -92,12 +99,12 @@ public class SearchProspectsPanel extends SearchComposite {
         logger.info(entity.toString());
         return entity;
     }
-    
+
     @Override
     protected void search(String searchText) {
-        
+
     }
-    
+
     @Override
     protected void search(JSONObject entity) {
         HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 10), entity.toString(),
@@ -108,27 +115,43 @@ public class SearchProspectsPanel extends SearchComposite {
                     }
                 });
     }
-    
+
     @Override
     protected void postSearchSuccess(JSONArray result) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllProspectsPanel(result));
     }
-    
+
     @Override
     protected String getSearchURI(String searchText, Integer start, Integer limit) {
         return URL.encode(OfficeWelcome.constants.root_url() + "prospect/search/" + searchText + "/" + start.toString() + "/"
                 + limit.toString());
     }
-    
+
     @Override
     protected String getSearchURI(Integer start, Integer limit) {
         return URL.encode(OfficeWelcome.constants.root_url() + "prospect/search-prospect/" + start.toString() + "/"
                 + limit.toString());
     }
-    
+
     @Override
     protected boolean disableRegularSearch() {
         return true;
+    }
+    
+    @Override
+    public void onClick(ClickEvent event) {
+        if (event.getSource().equals(prospectsReport)) {
+            JSONObject obj = populateEntityFromFields();
+            String reportUrl = OfficeWelcome.instance().constants.root_url() + "prospect/report/" + obj.get("status").isString().stringValue();
+            HttpService.HttpServiceAsync.instance().doGet(reportUrl, OfficeWelcome.instance().getHeaders(), true,
+                    new ALAsyncCallback<String>() {
+                        @Override
+                        public void onResponse(String result) {
+                            new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
+                        }
+                    });
+        }
+        super.onClick(event);
     }
 }
