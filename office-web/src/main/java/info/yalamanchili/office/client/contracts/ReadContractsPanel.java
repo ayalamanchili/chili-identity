@@ -80,12 +80,13 @@ public class ReadContractsPanel extends TReadComposite {
         assignFieldValueFromEntity("company", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("client", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("clientLocation", entity, DataType.STRING_FIELD);
-        //      assignFieldValueFromEntity("clientContact", entity, DataType.RICH_TEXT_AREA);
+        assignFieldValueFromEntity("clientContact", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("clientAPContact", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("vendor", entity, DataType.STRING_FIELD);
         //      assignFieldValueFromEntity("vendorContact", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("vendorAPContact", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("vendorPaymentTerms", entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("clientPaymentTerms", entity, DataType.TEXT_AREA_FIELD);
         //      assignFieldValueFromEntity("vendorLocation", entity, DataType.STRING_FIELD);
         //      assignFieldValueFromEntity("vendorRecruiter", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("middleVendor", entity, DataType.STRING_FIELD);

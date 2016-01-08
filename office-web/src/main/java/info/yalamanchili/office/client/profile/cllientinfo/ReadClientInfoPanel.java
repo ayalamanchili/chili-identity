@@ -121,7 +121,6 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
                 }
             }
             if (Auth.is1099(getEmployee())) {
-                entityFieldsPanel.add(getLineSeperatorTag("1099 Contractor Information"));
                 assignFieldValueFromEntity("payRate1099", entity, DataType.CURRENCY_FIELD);
                 assignFieldValueFromEntity("overTimePayrate1099", entity, DataType.CURRENCY_FIELD);
                 assignFieldValueFromEntity("paymentTerms1099", entity, DataType.TEXT_AREA_FIELD);
