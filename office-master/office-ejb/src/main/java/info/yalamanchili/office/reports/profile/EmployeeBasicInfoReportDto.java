@@ -31,7 +31,7 @@ public class EmployeeBasicInfoReportDto implements Serializable {
     protected Date dateOfBirth;
     protected Date startDate;
     protected String type;
-    protected String branch;
+    protected String branchName;
     protected String manager;
     
     protected List<CompanyContact> contacts;
@@ -60,12 +60,12 @@ public class EmployeeBasicInfoReportDto implements Serializable {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public String getBranch() {
-        return branch;
+    public String getBranchName() {
+        return branchName;
     }
 
-    public void setBranch(String branch) {
-        this.branch = branch;
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
     }
 
     public String getFirstName() {

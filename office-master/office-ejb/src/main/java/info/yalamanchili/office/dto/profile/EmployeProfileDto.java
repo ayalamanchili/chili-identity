@@ -27,8 +27,9 @@ public class EmployeProfileDto extends EmployeeDto {
     protected String employee_Type;
     protected String reportsManager;
     protected String gender;
-    protected String companY;
+    protected String compny;
     protected String work_Status;
+    protected String branchName;
 
     public String getHomeAddress() {
         return homeAddress;
@@ -70,12 +71,12 @@ public class EmployeProfileDto extends EmployeeDto {
         this.gender = gender;
     }
 
-    public String getCompanY() {
-        return companY;
+    public String getCompny() {
+        return compny;
     }
 
-    public void setCompanY(String companY) {
-        this.companY = companY;
+    public void setCompny(String compny) {
+        this.compny = compny;
     }
 
     public String getWork_Status() {
@@ -86,4 +87,11 @@ public class EmployeProfileDto extends EmployeeDto {
         this.work_Status = work_Status;
     }
 
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
 }

@@ -49,7 +49,7 @@ public class ProfileReportsService {
             dto.setEmail(EmployeeDao.instance().getPrimaryEmail(emp));
             dto.setType(emp.getEmployeeType().getName());
             if (emp.getBranch() != null) {
-                dto.setBranch(emp.getBranch().name());
+                dto.setBranchName(emp.getBranch().name());
             }
             dto.setDateOfBirth(emp.getDateOfBirth());
             if (emp.getPhones().size() > 0) {
@@ -58,7 +58,7 @@ public class ProfileReportsService {
 
             res.add(dto);
         }
-        String[] columnOrder = new String[]{"firstName", "lastName", "startDate", "dateOfBirth", "type", "branch", "phoneNumber", "jobTitle", "email"};
+        String[] columnOrder = new String[]{"firstName", "lastName", "startDate", "dateOfBirth", "type", "branchName", "phoneNumber", "jobTitle", "email"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Employee-Basic-Info-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
 
@@ -74,18 +74,20 @@ public class ProfileReportsService {
                 dto.setMiddleInitial(emp.getMiddleInitial());
             }
             dto.setEmployee_Type(emp.getEmployeeType().getName());
-            dto.setDateOfBirth(emp.getDateOfBirth());
-            if(emp.getCompany() != null){
-                dto.setCompanY(emp.getCompany().getName());
+            if (emp.getDateOfBirth() != null) {
+                dto.setDateOfBirth(emp.getDateOfBirth());
+            }
+            if (emp.getCompany() != null) {
+                dto.setCompny(emp.getCompany().getName());
             }
             dto.setStartDate(emp.getStartDate());
             if (emp.getJobTitle() != null) {
                 dto.setJobTitle(emp.getJobTitle());
             }
-            if(emp.getHoursPerWeek() != null){
+            if (emp.getHoursPerWeek() != null) {
                 dto.setHoursPerWeek(emp.getHoursPerWeek());
             }
-            if(emp.getPhones().get(0).getExtension() != null){
+            if (emp.getPhones().get(0).getExtension() != null) {
                 dto.setPhoneNumberExt(emp.getPhones().get(0).getExtension());
             }
             for (CompanyContact contact : CompanyContactDao.instance().getEmployeeCompanyContacts(emp.getId())) {
@@ -94,17 +96,17 @@ public class ProfileReportsService {
                 }
             }
             dto.setEmployeeId(emp.getEmployeeId());
-            if(emp.getEndDate() != null){
+            if (emp.getEndDate() != null) {
                 dto.setEndDate(emp.getEndDate());
             }
             dto.setEmail(emp.getPrimaryEmail().getEmail());
             if (emp.getPhones().size() > 0) {
                 dto.setPhoneNumber(emp.getPhones().get(0).getPhoneNumber());
             }
-            if (emp.getBranch() != null){
-                dto.setBranch(emp.getBranch());
+            if (emp.getBranch() != null) {
+                dto.setBranchName(emp.getBranch().name());
             }
-            if(emp.getWorkStatus() != null){
+            if (emp.getWorkStatus() != null) {
                 dto.setWork_Status(emp.getWorkStatus().name());
             }
             if (emp.getAddresss().size() > 0) {
@@ -121,7 +123,7 @@ public class ProfileReportsService {
             }
             res.add(dto);
         }
-        String[] columnOrder = new String[]{"employeeId", "firstName", "middleInitial", "lastName", "gender", "employee_Type", "companY", "startDate", "endDate", "dateOfBirth", "email", "branch", "jobTitle", "work_Status", "reportsManager", "hoursPerWeek", "phoneNumber", "phoneNumberExt", "emergencyContactInfo", "homeAddress"};
+        String[] columnOrder = new String[]{"employeeId", "firstName", "middleInitial", "lastName", "gender", "employee_Type", "compny", "startDate", "endDate", "dateOfBirth", "email", "branchName", "jobTitle", "work_Status", "reportsManager", "hoursPerWeek", "phoneNumber", "phoneNumberExt", "emergencyContactInfo", "homeAddress"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Profile-Information-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
 
@@ -130,36 +132,48 @@ public class ProfileReportsService {
     public void generateEmployeClientInfoReport(String email) {
         List<EmployeeClientInfoReportDto> res = new ArrayList<>();
         //TODO using paging
-        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Employee")) {
+        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Employee", "1099 Contractor", "Subcontractor")) {
             for (ClientInformation ci : emp.getClientInformations()) {
                 EmployeeClientInfoReportDto dto = new EmployeeClientInfoReportDto();
                 dto.setEmployeeName(emp.getFirstName() + " " + emp.getLastName());
                 dto.setStartDate(emp.getStartDate());
                 dto.setJobTitle(emp.getJobTitle());
+                dto.setEmployee_Type(emp.getEmployeeType().getName());
                 dto.setEmail(EmployeeDao.instance().getPrimaryEmail(emp));
+                if (ci.getPayRate1099() != null) {
+                    dto.setPayRate1099(ci.getPayRate1099());
+                }
+                if (ci.getSubcontractorPayRate() != null) {
+                    dto.setSubPayRate(ci.getSubcontractorPayRate());
+                }
                 if (emp.getPhones().size() > 0) {
                     dto.setPhoneNumber(emp.getPhones().get(0).getPhoneNumber());
                 }
-                if (ci.getClient() != null) {
-                    dto.setClientName(ci.getClient().getName());
-                }
+                dto.setClientName(ci.getClient().getName());
                 if (ci.getVendor() != null) {
                     dto.setVendorName(ci.getVendor().getName());
                 }
                 if (ci.getClientLocation() != null) {
                     dto.setClientLocation(ci.getClientLocation().getCity() + " " + ci.getClientLocation().getState());
                 }
-                if (ci.getVendorLocation() != null) {
-                    dto.setVendorLocation(ci.getVendorLocation().getCity() + " " + ci.getVendorLocation().getState());
+                if (emp.getUser().isEnabled()) {
+                    dto.setActive("Yes");
+                } else {
+                    dto.setActive("No");
                 }
-                dto.setActive(emp.getUser().isEnabled());
-                dto.setBillingRate(ci.getBillingRate());
+
+                if (ci.getBillingRate() != null) {
+                    dto.setBillingRate(ci.getBillingRate());
+                }
                 dto.setProjectStartDate(ci.getStartDate());
-                dto.setProjectEndDate(ci.getEndDate());
+                if (ci.getEndDate() != null) {
+                    dto.setProjectEndDate(ci.getEndDate());
+                }
                 res.add(dto);
             }
         }
-        MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(res, "employee-client-info-report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
+        String[] columnOrder = new String[]{"employeeName", "employee_Type", "jobTitle", "startDate", "active", "email", "phoneNumber", "clientName", "clientLocation", "vendorName", "billingRate", "payRate1099", "subPayRate", "projectStartDate", "projectEndDate"};
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "employee-client-info-report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
 
     /**

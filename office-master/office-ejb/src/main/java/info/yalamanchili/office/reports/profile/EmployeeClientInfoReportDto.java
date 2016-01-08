@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType
 public class EmployeeClientInfoReportDto implements Serializable {
 
-    protected boolean active;
+    protected String active;
     protected String employeeName;
     protected String phoneNumber;
     protected String email;
@@ -33,17 +33,19 @@ public class EmployeeClientInfoReportDto implements Serializable {
     protected Date projectStartDate;
     protected Date projectEndDate;
     protected String clientLocation;
-    protected String vendorLocation;
     protected BigDecimal billingRate;
+    protected String employee_Type;
+    protected BigDecimal subPayRate;
+    protected BigDecimal payRate1099;
 
     public EmployeeClientInfoReportDto() {
     }
 
-    public boolean isActive() {
+    public String getActive() {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(String active) {
         this.active = active;
     }
 
@@ -127,20 +129,36 @@ public class EmployeeClientInfoReportDto implements Serializable {
         this.clientLocation = clientLocation;
     }
 
-    public String getVendorLocation() {
-        return vendorLocation;
-    }
-
-    public void setVendorLocation(String vendorLocation) {
-        this.vendorLocation = vendorLocation;
-    }
-
     public BigDecimal getBillingRate() {
         return billingRate;
     }
 
     public void setBillingRate(BigDecimal billingRate) {
         this.billingRate = billingRate;
+    }
+
+    public String getEmployee_Type() {
+        return employee_Type;
+    }
+
+    public void setEmployee_Type(String employee_Type) {
+        this.employee_Type = employee_Type;
+    }
+
+    public BigDecimal getSubPayRate() {
+        return subPayRate;
+    }
+
+    public void setSubPayRate(BigDecimal subPayRate) {
+        this.subPayRate = subPayRate;
+    }
+
+    public BigDecimal getPayRate1099() {
+        return payRate1099;
+    }
+
+    public void setPayRate1099(BigDecimal payRate1099) {
+        this.payRate1099 = payRate1099;
     }
 
 }
