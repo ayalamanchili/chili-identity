@@ -51,7 +51,7 @@ public class ReportsMenu extends CMenuBar {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
             addMenuItem("Email Groups", "Email Groups", emailMenuMaintainenceCmd);
         }
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONTRACTS_FULL_VIEW)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONTRACTS_FULL_VIEW, ROLE.ROLE_RECRUITER)) {
             addMenuItem("Contracts Reports", "Contracts Reports", contractReportsMaintainenceCmd);
         }
     }
