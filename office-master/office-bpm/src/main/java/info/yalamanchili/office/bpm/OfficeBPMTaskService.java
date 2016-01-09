@@ -273,7 +273,7 @@ public class OfficeBPMTaskService {
         Collections.sort(tasksList, (Task m1, Task m2) -> m1.getCreateTime().compareTo(m2.getCreateTime()));
         Collections.reverse(tasksList);
         result.setEntities(tasksList);
-        result.setSize(taskForAssignee.getSize() + taskForRoles.getSize());
+        result.setSize(getTasksForAsigneeSize(emp.getEmployeeId()) + getCandidateTasksForUserSize(emp.getEmployeeId()) + getCandidateTasksForRolesSize(roles));
         return result;
     }
 
@@ -299,6 +299,10 @@ public class OfficeBPMTaskService {
         }
         result.setSize(query.count());
         return result;
+    }
+
+    protected long getTasksForAsigneeSize(String assignee) {
+        return bpmTaskService.createTaskQuery().taskAssignee(assignee).count();
     }
 
     public List<Task> searchTasks(Task task) {
@@ -332,6 +336,10 @@ public class OfficeBPMTaskService {
         return result;
     }
 
+    protected long getCandidateTasksForUserSize(String user) {
+        return bpmTaskService.createTaskQuery().taskCandidateUser(user).count();
+    }
+
     public TaskTable getCandidateTasksForRoles(List<String> roles, int start, int limit) {
         TaskTable result = new TaskTable();
         TaskQuery query = bpmTaskService.createTaskQuery().taskCandidateGroupIn(roles).orderByTaskCreateTime().desc();
@@ -340,6 +348,10 @@ public class OfficeBPMTaskService {
         }
         result.setSize(query.count());
         return result;
+    }
+
+    protected long getCandidateTasksForRolesSize(List<String> roles) {
+        return bpmTaskService.createTaskQuery().taskCandidateGroupIn(roles).count();
     }
 
     public HistoricTaskTable getHistoricalTasks(int start, int limit) {
