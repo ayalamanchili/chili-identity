@@ -64,27 +64,6 @@ public class ExpenseReportService {
     @Autowired
     protected ExpenseItemDao expenseItemDao;
 
-    @Transactional
-    public void refreshExpenseReportBPMProcessEntities() {
-        OfficeBPMService officeBPMService = OfficeBPMService.instance();
-        ExpenseReport search = new ExpenseReport();
-        search.setStatus(ExpenseReportStatus.PENDING_MANAGER_APPROVAL);
-        for (ExpenseReport er : expenseReportsDao.search(search, 0, 100, null)) {
-            officeBPMService.setVariable(er.getBpmProcessId(), "entityId", er.getId());
-            officeBPMService.setVariable(er.getBpmProcessId(), "entity", er);
-        }
-        search.setStatus(ExpenseReportStatus.PENDING_CEO_APPROVAL);
-        for (ExpenseReport er : expenseReportsDao.search(search, 0, 100, null)) {
-            officeBPMService.setVariable(er.getBpmProcessId(), "entityId", er.getId());
-            officeBPMService.setVariable(er.getBpmProcessId(), "entity", er);
-        }
-        search.setStatus(ExpenseReportStatus.PENDING_ACCOUNTS_PAYABLE_DISPATCH);
-        for (ExpenseReport er : expenseReportsDao.search(search, 0, 100, null)) {
-            officeBPMService.setVariable(er.getBpmProcessId(), "entityId", er.getId());
-            officeBPMService.setVariable(er.getBpmProcessId(), "entity", er);
-        }
-    }
-
     public ExpenseReportSaveDto create(ExpenseReportSaveDto dto, boolean submitForApproval) {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         ExpenseReport entity = mapper.map(dto, ExpenseReport.class);

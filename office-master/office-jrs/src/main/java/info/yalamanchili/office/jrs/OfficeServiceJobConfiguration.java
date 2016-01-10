@@ -18,19 +18,7 @@ import info.yalamanchili.office.dao.time.TimePeriodDao;
 import info.yalamanchili.office.email.ReceiveEmailsService;
 import info.yalamanchili.office.employee.perfeval.PerformanceEvaluationQuestionsFactory;
 import info.yalamanchili.office.employee.probeval.ProbationPeriodEvaluationQuestionsFactory;
-import info.yalamanchili.office.expense.expenserpt.ExpenseReportService;
 import info.yalamanchili.office.reports.profile.ProfileReportsService;
-import info.yalamanchili.office.toolbox.BillingHistoryDataTool;
-import info.yalamanchili.office.toolbox.ClientContactDataTool;
-import info.yalamanchili.office.toolbox.ClientDataTool;
-import info.yalamanchili.office.toolbox.ClientInformationDataTool;
-import info.yalamanchili.office.toolbox.ClientLocationDataTool;
-import info.yalamanchili.office.toolbox.CommentsDataTool;
-import info.yalamanchili.office.toolbox.OnBoardingDataTool;
-import info.yalamanchili.office.toolbox.SubContractorContactDataTool;
-import info.yalamanchili.office.toolbox.SubContractorDataTool;
-import info.yalamanchili.office.toolbox.VendorContactDataTool;
-import info.yalamanchili.office.toolbox.VendorDataTool;
 import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.stereotype.Component;
 
@@ -121,10 +109,6 @@ public class OfficeServiceJobConfiguration {
         ReceiveEmailsService.instance().processNewMessages();
     }
 
-    @ManagedOperation
-    public void refreshExpenseReportBPMProcessEntities() {
-        ExpenseReportService.instance().refreshExpenseReportBPMProcessEntities();
-    }
 
     @ManagedOperation
     public void addCarryForwardHoursForIndiaTeam() {

@@ -24,6 +24,10 @@ public class ManagerAssignmentRuleEvaluator extends AbstractTaskDelegate {
 
     @Override
     public void delegate(DelegateTask task, BPMTaskDelegateRule rule) {
+        if (task.getExecution().getVariable("approvalManager") != null) {
+            task.setAssignee((String) task.getExecution().getVariable("approvalManager"));
+            return;
+        }
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         Employee reportsToEmp = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Reports_To");
         if (reportsToEmp != null) {
