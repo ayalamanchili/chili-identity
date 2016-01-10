@@ -51,7 +51,7 @@ public class ReadAllTasks extends CRUDReadAllComposite {
 
     @Override
     public void preFetchTable(int start) {
-        HttpService.HttpServiceAsync.instance().doGet(getReadAllTasksUrl(start, "20"), OfficeWelcome.instance().getHeaders(), true,
+        HttpService.HttpServiceAsync.instance().doGet(getReadAllTasksUrl(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String result) {
