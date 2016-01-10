@@ -203,7 +203,7 @@ public class EmployeeDao extends CRUDDao<Employee> {
     //TODO use cache
     public Employee findByEmail(String emailAddress) {
         Query getEmailQ = em.createQuery("from " + info.yalamanchili.office.entity.profile.Email.class.getCanonicalName() + " where emailHash=:emailAddressParam");
-        getEmailQ.setParameter("emailAddressParam", info.yalamanchili.office.security.SecurityUtils.hash(emailAddress));
+        getEmailQ.setParameter("emailAddressParam", SecurityUtils.hash(emailAddress));
         if (getEmailQ.getResultList().size() > 0) {
             info.yalamanchili.office.entity.profile.Email email = (info.yalamanchili.office.entity.profile.Email) getEmailQ.getResultList().get(0);
             return (Employee) email.getContact();

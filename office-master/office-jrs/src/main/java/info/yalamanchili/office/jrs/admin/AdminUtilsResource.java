@@ -7,7 +7,7 @@
  */
 package info.yalamanchili.office.jrs.admin;
 
-import info.yalamanchili.office.security.SecurityUtils;
+import info.chili.security.SecurityUtils;
 import info.yalamanchili.office.toolbox.DataTools;
 import info.yalamanchili.office.toolbox.ADPEmployeeDataTool;
 import info.yalamanchili.office.toolbox.ClientInfoDataTool;

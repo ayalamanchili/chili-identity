@@ -8,6 +8,7 @@
 package info.yalamanchili.office.profile;
 
 import info.chili.commons.EntityQueryUtils;
+import info.chili.security.SecurityUtils;
 import info.chili.security.dao.CRoleDao;
 import info.chili.security.domain.CRole;
 import info.chili.security.domain.CUser;
@@ -28,7 +29,6 @@ import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.Preferences;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
-import info.yalamanchili.office.security.SecurityUtils;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;

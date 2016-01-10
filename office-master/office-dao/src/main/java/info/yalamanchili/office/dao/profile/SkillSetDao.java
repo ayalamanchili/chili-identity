@@ -9,10 +9,10 @@ package info.yalamanchili.office.dao.profile;
 
 import info.chili.commons.FileSearchUtils;
 import info.chili.dao.CRUDDao;
+import info.chili.security.SecurityUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.entity.profile.SkillSet;
-import info.yalamanchili.office.security.SecurityUtils;
 import java.io.File;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
