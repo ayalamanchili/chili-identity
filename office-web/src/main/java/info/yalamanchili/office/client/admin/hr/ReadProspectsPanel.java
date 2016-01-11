@@ -56,17 +56,17 @@ public class ReadProspectsPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity);
-                        entityFieldsPanel.add(Utils.getLineSeperatorTag("Resume"));
-                        String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "resumeURL") + "&entityId=" + JSONUtils.toString(entity, "id");
-                        FileField fileField = new FileField(fileURL);
-                        entityFieldsPanel.add(fileField);
-                        populateComments();
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                populateFieldsFromEntity(entity);
+                entityFieldsPanel.add(Utils.getLineSeperatorTag("Resume"));
+                String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "resumeURL") + "&entityId=" + JSONUtils.toString(entity, "id");
+                FileField fileField = new FileField(fileURL);
+                entityFieldsPanel.add(fileField);
+                populateComments();
+            }
+        });
     }
 
     protected void populateComments() {
@@ -75,7 +75,6 @@ public class ReadProspectsPanel extends ReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        JSONObject emp = (JSONObject) entity.get("employee");
         if (entity.get("address") != null) {
             JSONObject address = entity.get("address").isObject();
             assignFieldValueFromEntity("street1", address, DataType.STRING_FIELD);
