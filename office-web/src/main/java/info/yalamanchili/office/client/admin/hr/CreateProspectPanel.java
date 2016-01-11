@@ -204,7 +204,6 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         statesF = (EnumField) fields.get("state");
         countriesF = (EnumField) fields.get("country");
         alignFields();
-
     }
 
     @Override
