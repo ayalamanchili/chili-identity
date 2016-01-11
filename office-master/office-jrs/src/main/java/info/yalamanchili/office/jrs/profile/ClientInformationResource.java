@@ -21,7 +21,6 @@ import info.yalamanchili.office.bpm.offboarding.ProjectOffBoardingDto;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.client.ContractService;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
-import info.yalamanchili.office.dao.profile.EmployeeDto;
 import info.yalamanchili.office.dto.client.ContractDto;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.project.offboarding.ProjectOffBoardingService;
@@ -198,7 +197,7 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
                 ctable.getEntities().add(ContractService.instance().mapClientInformation(ci));
             }
         }
-        String[] columnOrder = new String[]{"employee", "recruiter", "vendor", "billingRate", "startDate", "endDate"};
+        String[] columnOrder = new String[]{"employee", "recruiter", "vendor", "subContractorName", "billingRate", "startDate", "endDate"};
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
         String fileName = ReportGenerator.generateExcelOrderedReport(ctable.getEntities(), "Ended Projects Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
