@@ -9,6 +9,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.rpc.HttpService;
@@ -124,7 +125,12 @@ public class ReadAllBisContractsPanel extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
+        createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.PRINT);
+    }
+    
+    @Override
+    public void printClicked(String entityId) {
+        Window.open(ChiliClientConfig.instance().getFileDownloadUrl() + "contract/reports" + "&passthrough=true" + "&id=" + entityId, "_blank", "");
     }
 
     private String getReadAllContractsURL(Integer start, String limit) {
