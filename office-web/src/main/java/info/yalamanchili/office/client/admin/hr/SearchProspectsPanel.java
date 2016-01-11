@@ -23,9 +23,11 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.Button;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.EnumField;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.SearchComposite;
@@ -41,6 +43,7 @@ public class SearchProspectsPanel extends SearchComposite {
 
     private static Logger logger = Logger.getLogger(SearchProspectsPanel.class.getName());
     Button prospectsReport = new Button("Report");
+    EnumField statusF = new EnumField(OfficeWelcome.constants, "status", "Prospect", false, false, ProspectStatus.names());
 
     public SearchProspectsPanel() {
         init("Prospect Search", "Prospect", OfficeWelcome.constants);
@@ -80,7 +83,8 @@ public class SearchProspectsPanel extends SearchComposite {
         addField("processDocSentDate", DataType.DATE_FIELD);
         addField("email", DataType.STRING_FIELD);
         addField("phoneNumber", DataType.LONG_FIELD);
-        addEnumField("status", false, false, ProspectStatus.names());
+        mainPanel.add(statusF);
+        mainPanel.add(searchButton);
         mainPanel.add(prospectsReport);
     }
 
@@ -94,7 +98,7 @@ public class SearchProspectsPanel extends SearchComposite {
         assignEntityValueFromField("email", contact);
         assignEntityValueFromField("phoneNumber", contact);
         assignEntityValueFromField("processDocSentDate", entity);
-        assignEntityValueFromField("status", entity);
+        entity.put("status", new JSONString(statusF.getValue()));
         entity.put("contact", contact);
         logger.info(entity.toString());
         return entity;
@@ -109,11 +113,11 @@ public class SearchProspectsPanel extends SearchComposite {
     protected void search(JSONObject entity) {
         HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 10), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                processSearchResult(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        processSearchResult(result);
+                    }
+                });
     }
 
     @Override
@@ -142,15 +146,19 @@ public class SearchProspectsPanel extends SearchComposite {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(prospectsReport)) {
-            JSONObject obj = populateEntityFromFields();
-            String reportUrl = OfficeWelcome.instance().constants.root_url() + "prospect/report/" + obj.get("status").isString().stringValue();
-            HttpService.HttpServiceAsync.instance().doGet(reportUrl, OfficeWelcome.instance().getHeaders(), true,
-                    new ALAsyncCallback<String>() {
-                @Override
-                public void onResponse(String result) {
-                    new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
-                }
-            });
+            if (statusF.getValue() == null) {
+                statusF.setMessage("Required");
+            } else {
+                statusF.clearMessage();
+                String reportUrl = OfficeWelcome.instance().constants.root_url() + "prospect/report/" + statusF.getValue();
+                HttpService.HttpServiceAsync.instance().doGet(reportUrl, OfficeWelcome.instance().getHeaders(), true,
+                        new ALAsyncCallback<String>() {
+                            @Override
+                            public void onResponse(String result) {
+                                new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
+                            }
+                        });
+            }
         }
         super.onClick(event);
     }
