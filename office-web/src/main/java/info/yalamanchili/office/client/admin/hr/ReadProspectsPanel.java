@@ -56,17 +56,17 @@ public class ReadProspectsPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
-                entityFieldsPanel.add(Utils.getLineSeperatorTag("Resume"));
-                String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "resumeURL") + "&entityId=" + JSONUtils.toString(entity, "id");
-                FileField fileField = new FileField(fileURL);
-                entityFieldsPanel.add(fileField);
-                populateComments();
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                        entityFieldsPanel.add(Utils.getLineSeperatorTag("Resume"));
+                        String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "resumeURL") + "&entityId=" + JSONUtils.toString(entity, "id");
+                        FileField fileField = new FileField(fileURL);
+                        entityFieldsPanel.add(fileField);
+                        populateComments();
+                    }
+                });
     }
 
     protected void populateComments() {
@@ -96,6 +96,10 @@ public class ReadProspectsPanel extends ReadComposite {
         assignFieldValueFromEntity("referredBy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("processDocSentDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("petitionFiledFor", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("trfEmpType", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("placedBy", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("dateOfJoining", entity, DataType.DATE_FIELD);
     }
 
     @Override
@@ -128,7 +132,10 @@ public class ReadProspectsPanel extends ReadComposite {
         addField("screenedBy", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("processDocSentDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("status", true, false, ProspectStatus.names(), Alignment.HORIZONTAL);
-
+        addEnumField("petitionFiledFor", true, false, PetitionFor.names(), Alignment.HORIZONTAL);
+        addEnumField("trfEmpType", true, false, TransferEmployeeType.names(), Alignment.HORIZONTAL);
+        addEnumField("placedBy", true, false, PlacedBy.names(), Alignment.HORIZONTAL);
+        addField("dateOfJoining", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
