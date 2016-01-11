@@ -99,6 +99,34 @@ public class ProspectDto implements Serializable {
 
     protected String gender;
 
+    protected String placedby;
+    protected String petitionFor;
+    protected String trfEmptype;
+
+    public String getPlacedby() {
+        return placedby;
+    }
+
+    public void setPlacedby(String placedby) {
+        this.placedby = placedby;
+    }
+
+    public String getPetitionFor() {
+        return petitionFor;
+    }
+
+    public void setPetitionFor(String petitionFor) {
+        this.petitionFor = petitionFor;
+    }
+
+    public String getTrfEmptype() {
+        return trfEmptype;
+    }
+
+    public void setTrfEmptype(String trfEmptype) {
+        this.trfEmptype = trfEmptype;
+    }
+
     public String getEmployee() {
         return employee;
     }
@@ -278,8 +306,6 @@ public class ProspectDto implements Serializable {
         this.placedBy = placedBy;
     }
 
-   
-
     public Date getDateOfJoining() {
         return dateOfJoining;
     }
@@ -319,12 +345,15 @@ public class ProspectDto implements Serializable {
         }
         if (entity.getPlacedBy() != null) {
             prospectContact.setPlacedBy(entity.getPlacedBy());
+            prospectContact.setPlacedby(entity.getPlacedBy().name());
         }
         if (entity.getTrfEmpType() != null) {
             prospectContact.setTrfEmpType(entity.getTrfEmpType());
+            prospectContact.setTrfEmptype(entity.getTrfEmpType().name());
         }
         if (entity.getPetitionFieldFor() != null) {
             prospectContact.setPetitionFiledFor(entity.getPetitionFieldFor());
+            prospectContact.setPetitionFor(entity.getPetitionFieldFor().name());
         }
         prospectContact.setId(entity.getId());
         return prospectContact;
