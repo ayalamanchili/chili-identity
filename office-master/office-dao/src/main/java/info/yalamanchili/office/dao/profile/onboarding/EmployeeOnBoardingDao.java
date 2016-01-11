@@ -10,10 +10,13 @@ package info.yalamanchili.office.dao.profile.onboarding;
 
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
@@ -38,9 +41,13 @@ public class EmployeeOnBoardingDao extends CRUDDao<EmployeeOnBoarding> {
     }
 
     public EmployeeOnBoarding findByEmail(String email) {
-        TypedQuery<EmployeeOnBoarding> findQuery = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " where email=:employeeEmailParam ", EmployeeOnBoarding.class);
-        findQuery.setParameter("employeeEmailParam", email);
-        return findQuery.getSingleResult();
+        try {
+            TypedQuery<EmployeeOnBoarding> findQuery = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " where email=:employeeEmailParam ", EmployeeOnBoarding.class);
+            findQuery.setParameter("employeeEmailParam", email);
+            return findQuery.getSingleResult();
+        }catch(NoResultException nre){
+            return null;
+        }
     }
 
     public EmployeeOnBoarding findByEmployeeId(Long id) {
