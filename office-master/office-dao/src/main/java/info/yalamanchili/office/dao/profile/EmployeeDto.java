@@ -37,7 +37,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlRootElement(name = "Employee")
 @XmlType
 public class EmployeeDto implements Serializable {
-
+    
     protected Long id;
     @NotEmpty(message = "{firstName.not.empty.msg}")
     protected String firstName;
@@ -72,7 +72,10 @@ public class EmployeeDto implements Serializable {
     protected EmployeeType employeeType;
     protected Company company;
     protected String ssn;
-
+    protected String gender;
+    protected String branchName;
+    protected String compny;
+    
     public EmployeeDto(Long id, String firstName, String lastName, String middleInitial, String employeeId, Date dateOfBirth, Sex sex, Branch branch, WorkStatus workStatus, String imageURL, Date startDate, Date endDate, String email, String phoneNumber, String phoneNumberExt, String jobTitle, EmployeeType employeeType, Company company, String ssn) {
         this.id = id;
         this.firstName = firstName;
@@ -94,10 +97,10 @@ public class EmployeeDto implements Serializable {
         this.ssn = ssn;
         this.endDate = endDate;
     }
-
+    
     public EmployeeDto() {
     }
-
+    
     public EmployeeDto(Long id, String firstName, String lastName, String jobTitle, String type, String email, String imageURL) {
         this.id = id;
         this.firstName = firstName;
@@ -107,172 +110,196 @@ public class EmployeeDto implements Serializable {
         this.email = email;
         this.imageURL = imageURL;
     }
-
+    
     public Long getId() {
         return id;
     }
-
+    
     public void setId(Long id) {
         this.id = id;
     }
-
+    
     public String getFirstName() {
         return firstName;
     }
-
+    
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-
+    
     public String getLastName() {
         return lastName;
     }
-
+    
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-
+    
     public String getMiddleInitial() {
         return middleInitial;
     }
-
+    
     public void setMiddleInitial(String middleInitial) {
         this.middleInitial = middleInitial;
     }
-
+    
     public void setEmployeeId(String employeeId) {
         this.employeeId = employeeId;
     }
-
+    
     public String getEmployeeId() {
         return employeeId;
     }
-
+    
     public Date getDateOfBirth() {
         return dateOfBirth;
     }
-
+    
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
-
+    
     public Sex getSex() {
         return sex;
     }
-
+    
     public void setSex(Sex sex) {
         this.sex = sex;
     }
-
+    
     public Branch getBranch() {
         return branch;
     }
-
+    
     public void setBranch(Branch branch) {
         this.branch = branch;
     }
-
+    
     public Integer getHoursPerWeek() {
         return hoursPerWeek;
     }
-
+    
     public void setHoursPerWeek(Integer hoursPerWeek) {
         this.hoursPerWeek = hoursPerWeek;
     }
-
+    
     public WorkStatus getWorkStatus() {
         return workStatus;
     }
-
+    
     public void setWorkStatus(WorkStatus workStatus) {
         this.workStatus = workStatus;
     }
-
+    
     public String getImageURL() {
         return imageURL;
     }
-
+    
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
     }
-
+    
     public Date getStartDate() {
         return startDate;
     }
-
+    
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
-
+    
     public String getEmail() {
         return email;
     }
-
+    
     public void setEmail(String email) {
         this.email = email;
     }
-
+    
     public String getPhoneNumber() {
         return phoneNumber;
     }
-
+    
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-
+    
     public String getPhoneNumberExt() {
         return phoneNumberExt;
     }
-
+    
     public void setPhoneNumberExt(String phoneNumberExt) {
         this.phoneNumberExt = phoneNumberExt;
     }
-
+    
     public EmployeeType getEmployeeType() {
         return employeeType;
     }
-
+    
     public void setEmployeeType(EmployeeType employeeType) {
         this.employeeType = employeeType;
     }
-
+    
     public Company getCompany() {
         return company;
     }
-
+    
     public void setCompany(Company company) {
         this.company = company;
     }
-
+    
     public void setJobTitle(String jobTitle) {
         this.jobTitle = jobTitle;
     }
-
+    
     public String getJobTitle() {
         return jobTitle;
     }
-
+    
     public String getSsn() {
         return SecurityUtils.OBFUSCATED_STR;
     }
-
+    
     public void setSsn(String ssn) {
         this.ssn = ssn;
     }
-
+    
     public Date getEndDate() {
         return endDate;
     }
-
+    
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
-
+    
+    public String getGender() {
+        return gender;
+    }
+    
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+    
+    public String getBranchName() {
+        return branchName;
+    }
+    
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+    
+    public String getCompny() {
+        return compny;
+    }
+    
+    public void setCompny(String compny) {
+        this.compny = compny;
+    }
+    
     @Override
     public String toString() {
         return "EmployeeDto{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", middleInitial=" + middleInitial + ", employeeId=" + employeeId + ", dateOfBirth=" + dateOfBirth + ", sex=" + sex + ", imageURL=" + imageURL + ", startDate=" + startDate + ", email=" + email + ", phoneNumber=" + phoneNumber + ", jobTitle=" + jobTitle + ", employeeType=" + employeeType + ", workStatus=" + workStatus + '}';
     }
-
+    
     public static EmployeeDto map(Mapper mapper, info.yalamanchili.office.entity.profile.Employee entity) {
         EmployeeDto dto = new EmployeeDto();
         dto.setFirstName(entity.getFirstName());
@@ -280,11 +307,18 @@ public class EmployeeDto implements Serializable {
         dto.setJobTitle(entity.getJobTitle());
         dto.setStartDate(entity.getStartDate());
         dto.setEmployeeId(entity.getEmployeeId());
-        if(entity.getDateOfBirth() != null){
-        dto.setDateOfBirth(entity.getDateOfBirth());
+        if (entity.getDateOfBirth() != null) {
+            dto.setDateOfBirth(entity.getDateOfBirth());
         }
         dto.setEndDate(entity.getEndDate());
         dto.setImageURL(entity.getImageURL());
+        dto.setGender(entity.getSex().name().toLowerCase());
+        if (entity.getBranch() != null) {
+            dto.setBranchName(entity.getBranch().name());
+        }
+        if (entity.getCompany() != null) {
+            dto.setCompny(entity.getCompany().getName());
+        }
         dto.setEmail(EmployeeDao.instance().getPrimaryEmail(entity));
         if (entity.getPhones().size() > 0) {
             Phone phone = entity.getPhones().get(0);
