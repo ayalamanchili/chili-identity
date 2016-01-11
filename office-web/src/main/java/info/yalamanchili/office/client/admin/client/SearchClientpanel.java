@@ -92,7 +92,7 @@ public class SearchClientpanel extends SearchComposite {
     @Override
     protected void search(String searchText) {
         if (getSearchText() != null) {
-            HttpService.HttpServiceAsync.instance().doGet(getSearchURI(getSearchText(), 0, 10),
+            HttpService.HttpServiceAsync.instance().doGet(getSearchURI(getSearchText(), 0, 1000),
                     OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
                         @Override
                         public void onResponse(String result) {
@@ -104,7 +104,7 @@ public class SearchClientpanel extends SearchComposite {
 
     @Override
     protected void search(JSONObject entity) {
-        HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 10), entity.toString(),
+        HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 1000), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
