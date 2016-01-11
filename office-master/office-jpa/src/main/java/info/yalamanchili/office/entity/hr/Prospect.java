@@ -29,7 +29,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  *
  * @author radhika.mukkala
  */
-@Indexed
+    @Indexed
 @XmlRootElement
 @Entity
 @Audited
