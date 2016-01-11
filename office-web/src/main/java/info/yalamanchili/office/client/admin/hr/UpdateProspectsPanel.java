@@ -77,11 +77,13 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
                     public void onResponse(String response) {
                         logger.info(response);
                         entity = (JSONObject) JSONParser.parseLenient(response);
+                        addExtraWidgets();
                         populateFieldsFromEntity(entity);
                         populateComments();
                     }
                 });
     }
+
     protected void populateComments() {
         entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.hr.Prospect"));
     }
@@ -135,6 +137,10 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
         assignEntityValueFromField("processDocSentDate", entity);
         assignEntityValueFromField("status", entity);
         assignEntityValueFromField("comment", entity);
+        assignEntityValueFromField("petitionFiledFor", entity);
+        assignEntityValueFromField("trfEmpType", entity);
+        assignEntityValueFromField("placedBy", entity);
+        assignEntityValueFromField("dateOfJoining", entity);
         entity.put("resumeURL", resumeUploadPanel.getFileName());
         return entity;
     }
@@ -184,6 +190,12 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
         assignFieldValueFromEntity("processDocSentDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("comment", entity, DataType.TEXT_AREA_FIELD);
+        if (entity.get("id") != null) {
+            assignFieldValueFromEntity("petitionFiledFor", entity, DataType.ENUM_FIELD);
+            assignFieldValueFromEntity("trfEmpType", entity, DataType.ENUM_FIELD);
+            assignFieldValueFromEntity("placedBy", entity, DataType.ENUM_FIELD);
+            assignFieldValueFromEntity("dateOfJoining", entity, DataType.DATE_FIELD);
+        }
     }
 
     @Override
@@ -240,6 +252,16 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
         entityFieldsPanel.add(resumeUploadPanel);
         statesF = (EnumField) fields.get("state");
         countriesF = (EnumField) fields.get("country");
+        alignFields();
+    }
+
+    protected void addExtraWidgets() {
+        if (ProspectStatus.CLOSED_WON.name().equals(JSONUtils.toString(getEntity(), "status"))) {
+            addEnumField("petitionFiledFor", false, false, PetitionFor.names(), Alignment.HORIZONTAL);
+            addEnumField("trfEmpType", false, false, TransferEmployeeType.names(), Alignment.HORIZONTAL);
+            addEnumField("placedBy", false, false, PlacedBy.names(), Alignment.HORIZONTAL);
+            addField("dateOfJoining", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        }
         alignFields();
     }
 
