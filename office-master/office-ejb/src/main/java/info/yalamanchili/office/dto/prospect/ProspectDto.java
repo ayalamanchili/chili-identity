@@ -10,7 +10,10 @@ package info.yalamanchili.office.dto.prospect;
 
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.entity.ext.Comment;
+import info.yalamanchili.office.entity.hr.PetitionFor;
+import info.yalamanchili.office.entity.hr.PlacedBy;
 import info.yalamanchili.office.entity.hr.ProspectStatus;
+import info.yalamanchili.office.entity.hr.TransferEmployeeType;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Sex;
 import java.io.Serializable;
@@ -78,11 +81,22 @@ public class ProspectDto implements Serializable {
     @Enumerated(EnumType.STRING)
     protected ProspectStatus status;
 
+    @Enumerated(EnumType.STRING)
+    protected PetitionFor petitionFiledFor;
+
+    @Enumerated(EnumType.STRING)
+    protected TransferEmployeeType trfEmpType;
+
+    @Enumerated(EnumType.STRING)
+    protected PlacedBy placedBy;
+
+    protected Date dateOfJoining;
+
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date processDocSentDate;
 
     protected String employee;
-    
+
     protected String gender;
 
     public String getEmployee() {
@@ -100,7 +114,7 @@ public class ProspectDto implements Serializable {
     public void setGender(String gender) {
         this.gender = gender;
     }
-    
+
     public Date getProcessDocSentDate() {
         return processDocSentDate;
     }
@@ -240,6 +254,40 @@ public class ProspectDto implements Serializable {
         this.comment = comment;
     }
 
+    public PetitionFor getPetitionFiledFor() {
+        return petitionFiledFor;
+    }
+
+    public void setPetitionFiledFor(PetitionFor petitionFiledFor) {
+        this.petitionFiledFor = petitionFiledFor;
+    }
+
+    public TransferEmployeeType getTrfEmpType() {
+        return trfEmpType;
+    }
+
+    public void setTrfEmpType(TransferEmployeeType trfEmpType) {
+        this.trfEmpType = trfEmpType;
+    }
+
+    public PlacedBy getPlacedBy() {
+        return placedBy;
+    }
+
+    public void setPlacedBy(PlacedBy placedBy) {
+        this.placedBy = placedBy;
+    }
+
+   
+
+    public Date getDateOfJoining() {
+        return dateOfJoining;
+    }
+
+    public void setDateOfJoining(Date dateOfJoining) {
+        this.dateOfJoining = dateOfJoining;
+    }
+
     @Override
     public String toString() {
         return "ProspectDto{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", phoneNumber=" + phoneNumber + ", sex=" + sex + ", startDate=" + startDate + ", screenedBy=" + screenedBy + ", referredBy=" + referredBy + ", resumeURL=" + resumeURL + ", dateOfBirth=" + dateOfBirth + ", address=" + address + ", status=" + status + ", processDocSentDate=" + processDocSentDate + '}';
@@ -249,8 +297,6 @@ public class ProspectDto implements Serializable {
         ProspectDto prospectContact = mapper.map(entity, ProspectDto.class);
         prospectContact.setEmployee(entity.getContact().getFirstName() + " " + entity.getContact().getLastName());
         mapper.map(entity.getContact(), prospectContact);
-        String commentP = "\n";
-        List<Comment> comments = CommentDao.instance().findAll(entity);
         if (entity.getContact().getPhones().size() > 0) {
             prospectContact.setPhoneNumber(entity.getContact().getPhones().get(0).getPhoneNumber());
             prospectContact.setExtension(entity.getContact().getPhones().get(0).getExtension());
@@ -262,18 +308,24 @@ public class ProspectDto implements Serializable {
         if (entity.getContact().getEmails().size() > 0) {
             prospectContact.setEmail(entity.getContact().getEmails().get(0).getEmail());
         }
-        if (comments.size() > 0) {
-            for (Comment comment : comments) {
-                commentP = commentP.concat(comment.getComment() + " \t ");
-            }
-        }
-        if(entity.getContact().getDateOfBirth()!=null){
+        if (entity.getContact().getDateOfBirth() != null) {
             prospectContact.setDateOfBirth(entity.getContact().getDateOfBirth());
         }
-        if(entity.getContact().getSex()!=null){
+        if (entity.getContact().getSex() != null) {
             prospectContact.setGender(entity.getContact().getSex().name().toLowerCase());
         }
-        prospectContact.setComment(commentP);
+        if (entity.getDateOfJoining() != null) {
+            prospectContact.setDateOfJoining(entity.getDateOfJoining());
+        }
+        if (entity.getPlacedBy() != null) {
+            prospectContact.setPlacedBy(entity.getPlacedBy());
+        }
+        if (entity.getTrfEmpType() != null) {
+            prospectContact.setTrfEmpType(entity.getTrfEmpType());
+        }
+        if (entity.getPetitionFieldFor() != null) {
+            prospectContact.setPetitionFiledFor(entity.getPetitionFieldFor());
+        }
         prospectContact.setId(entity.getId());
         return prospectContact;
     }
