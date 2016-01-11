@@ -29,7 +29,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  *
  * @author radhika.mukkala
  */
-    @Indexed
+@Indexed
 @XmlRootElement
 @Entity
 @Audited
@@ -58,6 +58,17 @@ public class Prospect extends AbstractEntity {
 
     @Enumerated(EnumType.STRING)
     protected ProspectStatus status;
+
+    @Enumerated
+    protected PetitionFor petitionFiledFor;
+
+    @Enumerated
+    protected TransferEmployeeType trfEmpType;
+
+    @Enumerated
+    protected PlacedBy placedBy;
+
+    protected Date dateOfJoining;
 
     public void setContact(Contact contact) {
         this.contact = contact;
@@ -116,6 +127,38 @@ public class Prospect extends AbstractEntity {
         return status;
     }
 
+    public PetitionFor getPetitionFieldFor() {
+        return petitionFiledFor;
+    }
+
+    public void setPetitionFiledFor(PetitionFor petitionFiledFor) {
+        this.petitionFiledFor = petitionFiledFor;
+    }
+
+    public TransferEmployeeType getTrfEmpType() {
+        return trfEmpType;
+    }
+
+    public void setTrfEmpType(TransferEmployeeType trfEmpType) {
+        this.trfEmpType = trfEmpType;
+    }
+
+    public PlacedBy getPlacedBy() {
+        return placedBy;
+    }
+
+    public void setPlacedBy(PlacedBy placedBy) {
+        this.placedBy = placedBy;
+    }
+
+    public Date getDateOfJoining() {
+        return dateOfJoining;
+    }
+
+    public void setDateOfJoining(Date dateOfJoining) {
+        this.dateOfJoining = dateOfJoining;
+    }
+
     @Override
     public String describe() {
         StringBuilder description = new StringBuilder("\n");
@@ -128,7 +171,6 @@ public class Prospect extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "Prospect{" + "contact=" + contact + ", startDate=" + startDate + ", screenedBy=" + screenedBy + ", referredBy=" + referredBy + ", processDocSentDate=" + processDocSentDate + ", resumeURL=" + resumeURL + ", status=" + status + '}';
+        return "Prospect{" + "contact=" + contact + ", startDate=" + startDate + ", screenedBy=" + screenedBy + ", referredBy=" + referredBy + ", processDocSentDate=" + processDocSentDate + ", resumeURL=" + resumeURL + ", status=" + status + ", petitionFiledFor=" + petitionFiledFor + ", trfEmpType=" + trfEmpType + ", placedBy=" + placedBy + ", dateOfJoining=" + dateOfJoining + '}';
     }
-
 }
