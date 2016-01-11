@@ -83,4 +83,5 @@
     <include file="db_changelogs/12-25-2015_changelog.xml"/>
     <include file="db_changelogs/01-05-2016_changelog.xml"/>
     <include file="db_changelogs/01-08-2016_changelog.xml"/>
+    <include file="db_changelogs/01-11-2016_changelog.xml"/>
 </databaseChangeLog>
