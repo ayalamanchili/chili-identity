@@ -427,7 +427,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Response searchEmployeeReport(EmployeeSearchDto entity, @QueryParam("reportName") String reportName, @QueryParam("format") String format) {
         List<EmployeeDto> data = new ArrayList<EmployeeDto>();
-        String[] columnOrder = new String[]{"employeeId", "firstName", "lastName", "sex", "dateOfBirth", "branch", "email", "phoneNumber", "jobTitle", "company"};
+        String[] columnOrder = new String[]{"employeeId", "firstName", "lastName", "gender", "dateOfBirth", "branchName", "email", "phoneNumber", "jobTitle", "compny"};
         Long size;
         if (entity.getCompanyContacts().size() > 0) {
             size = 1000l;
@@ -482,11 +482,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         List<ClientInformation> dtos = new ArrayList();
         for (Employee emp : q.getResultList()) {
             for (ClientInformation ci : emp.getClientInformations()) {
-                if (ci.getEndDate() != null) {
-                    if ((ci.getEndDate().after(new Date())) || (ci.getEndDate().equals(new Date()))) {
-                        dtos.add(ci);
-                    }
-                } else {
+                if ((ci.getEndDate().after(new Date())) || (ci.getEndDate().equals(new Date())) || (ci.getEndDate() == null)) {
                     dtos.add(ci);
                 }
             }
