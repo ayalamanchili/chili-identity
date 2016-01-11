@@ -69,64 +69,66 @@ public class ReportsMenu extends CMenuBar {
         public void execute() {
             TabPanel.instance().getReportingPanel().entityPanel.clear();
             TabPanel.instance().getReportingPanel().sidePanelTop.clear();
-            TabPanel.instance().getReportingPanel().entityPanel.add(new ReadAllBisContractsPanel());
+            if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONTRACTS_FULL_VIEW)) {
+                TabPanel.instance().getReportingPanel().entityPanel.add(new ReadAllBisContractsPanel());
+            }
             TabPanel.instance().getReportingPanel().sidePanelTop.add(new BISReportsSidePanel());
         }
     };
     static Command profileReportsMaintainenceCmd = new Command() {
-        @Override
-        public void execute() {
-            TabPanel.instance().getReportingPanel().entityPanel.clear();
-            TabPanel.instance().getReportingPanel().sidePanelTop.clear();
-            TabPanel.instance().getReportingPanel().sidePanelTop.add(new ProfileReportsSidePanel());
-        }
-    };
-    static Command performanceEvaluationsReportsMaintainenceCmd = new Command() {
-        @Override
-        public void execute() {
-            TabPanel.instance().getReportingPanel().entityPanel.clear();
-            TabPanel.instance().getReportingPanel().sidePanelTop.clear();
-            TabPanel.instance().getReportingPanel().sidePanelTop.add(new PerfEvaluationReportsSidePanel());
-        }
-    };
-    static Command probperformanceEvaluationsReportsMaintainenceCmd = new Command() {
-        @Override
-        public void execute() {
-            TabPanel.instance().getReportingPanel().entityPanel.clear();
-            TabPanel.instance().getReportingPanel().sidePanelTop.clear();
-            TabPanel.instance().getReportingPanel().sidePanelTop.add(new ProbatioPeriodPerfEvaluationReportsSidePanel());
-        }
-    };
-    static Command retirementPlanReportsMaintainenceCmd = new Command() {
-        @Override
-        public void execute() {
-            TabPanel.instance().getReportingPanel().entityPanel.clear();
-            TabPanel.instance().getReportingPanel().sidePanelTop.clear();
-            TabPanel.instance().getReportingPanel().sidePanelTop.add(new RetirementPlanOptInSidePanal());
-        }
-    };
-    static Command corporatestatusReportsMaintainenceCmd = new Command() {
-        @Override
-        public void execute() {
-            TabPanel.instance().getReportingPanel().entityPanel.clear();
-            TabPanel.instance().getReportingPanel().sidePanelTop.clear();
-            TabPanel.instance().getReportingPanel().sidePanelTop.add(new CorporateStatusReportSidePanel());
-        }
-    };
-    static Command emailMenuMaintainenceCmd = new Command() {
-        public void execute() {
-            TabPanel.instance().getReportingPanel().entityPanel.clear();
-            TabPanel.instance().getReportingPanel().sidePanelTop.clear();
-            TabPanel.instance().getReportingPanel().sidePanelTop.add(new EmailGroupsSidePanel());
-        }
-    };
+            @Override
+            public void execute() {
+                TabPanel.instance().getReportingPanel().entityPanel.clear();
+                TabPanel.instance().getReportingPanel().sidePanelTop.clear();
+                TabPanel.instance().getReportingPanel().sidePanelTop.add(new ProfileReportsSidePanel());
+            }
+        };
+        static Command performanceEvaluationsReportsMaintainenceCmd = new Command() {
+            @Override
+            public void execute() {
+                TabPanel.instance().getReportingPanel().entityPanel.clear();
+                TabPanel.instance().getReportingPanel().sidePanelTop.clear();
+                TabPanel.instance().getReportingPanel().sidePanelTop.add(new PerfEvaluationReportsSidePanel());
+            }
+        };
+        static Command probperformanceEvaluationsReportsMaintainenceCmd = new Command() {
+            @Override
+            public void execute() {
+                TabPanel.instance().getReportingPanel().entityPanel.clear();
+                TabPanel.instance().getReportingPanel().sidePanelTop.clear();
+                TabPanel.instance().getReportingPanel().sidePanelTop.add(new ProbatioPeriodPerfEvaluationReportsSidePanel());
+            }
+        };
+        static Command retirementPlanReportsMaintainenceCmd = new Command() {
+            @Override
+            public void execute() {
+                TabPanel.instance().getReportingPanel().entityPanel.clear();
+                TabPanel.instance().getReportingPanel().sidePanelTop.clear();
+                TabPanel.instance().getReportingPanel().sidePanelTop.add(new RetirementPlanOptInSidePanal());
+            }
+        };
+        static Command corporatestatusReportsMaintainenceCmd = new Command() {
+            @Override
+            public void execute() {
+                TabPanel.instance().getReportingPanel().entityPanel.clear();
+                TabPanel.instance().getReportingPanel().sidePanelTop.clear();
+                TabPanel.instance().getReportingPanel().sidePanelTop.add(new CorporateStatusReportSidePanel());
+            }
+        };
+        static Command emailMenuMaintainenceCmd = new Command() {
+            public void execute() {
+                TabPanel.instance().getReportingPanel().entityPanel.clear();
+                TabPanel.instance().getReportingPanel().sidePanelTop.clear();
+                TabPanel.instance().getReportingPanel().sidePanelTop.add(new EmailGroupsSidePanel());
+            }
+        };
 
-    @Override
-    public void selectDefaultItem() {
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_FULL_VIEW)) {
-            contractingMaintainenceCmd.execute();
-        } else {
-            super.selectDefaultItem();
+        @Override
+        public void selectDefaultItem() {
+            if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_FULL_VIEW)) {
+                contractingMaintainenceCmd.execute();
+            } else {
+                super.selectDefaultItem();
+            }
         }
     }
-}
