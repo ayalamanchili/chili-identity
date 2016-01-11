@@ -85,7 +85,7 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
     }
 
     protected void populateComments() {
-        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.hr.Prospect"));
+        entityActionsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.hr.Prospect"));
     }
 
     protected String getReadURI() {
@@ -257,6 +257,7 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
 
     protected void addExtraWidgets() {
         if (ProspectStatus.CLOSED_WON.name().equals(JSONUtils.toString(getEntity(), "status"))) {
+            entityFieldsPanel.add(getLineSeperatorTag("Confirmed Prospect Information"));
             addEnumField("petitionFiledFor", false, false, PetitionFor.names(), Alignment.HORIZONTAL);
             addEnumField("trfEmpType", false, false, TransferEmployeeType.names(), Alignment.HORIZONTAL);
             addEnumField("placedBy", false, false, PlacedBy.names(), Alignment.HORIZONTAL);

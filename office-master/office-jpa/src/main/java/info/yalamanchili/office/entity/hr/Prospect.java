@@ -59,13 +59,13 @@ public class Prospect extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     protected ProspectStatus status;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     protected PetitionFor petitionFiledFor;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     protected TransferEmployeeType trfEmpType;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     protected PlacedBy placedBy;
 
     protected Date dateOfJoining;
