@@ -205,11 +205,17 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
         for (Prospect prospect : prospects) {
             if (prospect.getStatus().name().equals(status)) {
                 dto = ProspectDto.map(mapper, prospect);
+                if(!prospect.getStatus().equals(ProspectStatus.CLOSED_WON)){
+                    dto.setDateOfJoining(null);
+                    dto.setPlacedby(null);
+                    dto.setTrfEmptype(null);
+                    dto.setPetitionFor(null);
+                }
                 dtos.add(dto);
             }
         }
         table.setEntities(dtos);
-        String[] columnOrder = new String[]{"employee", "dateOfBirth", "gender", "email", "phoneNumber", "referredBy", "screenedBy"};
+        String[] columnOrder = new String[]{"employee", "dateOfBirth", "gender", "email", "phoneNumber", "referredBy", "screenedBy", "petitionFor", "placedby", "trfEmptype", "dateOfJoining"};
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
         String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Prospects "+status.toLowerCase()+" Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
