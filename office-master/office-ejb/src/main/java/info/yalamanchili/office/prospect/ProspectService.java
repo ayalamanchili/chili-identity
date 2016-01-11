@@ -16,8 +16,11 @@ import info.yalamanchili.office.dao.hr.ProspectDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dto.prospect.ProspectDto;
+import info.yalamanchili.office.entity.hr.PetitionFor;
+import info.yalamanchili.office.entity.hr.PlacedBy;
 import info.yalamanchili.office.entity.hr.Prospect;
 import info.yalamanchili.office.entity.hr.ProspectStatus;
+import info.yalamanchili.office.entity.hr.TransferEmployeeType;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
@@ -88,6 +91,18 @@ public class ProspectService {
         //contact
         contact = em.merge(contact);
         entity.setContact(contact);
+        if(dto.getDateOfJoining()!=null){
+            entity.setDateOfJoining(dto.getDateOfJoining());
+        }
+        if(dto.getPlacedBy()!=null){
+            entity.setPlacedBy(dto.getPlacedBy());
+        }
+        if(dto.getTrfEmpType()!=null){
+            entity.setTrfEmpType(dto.getTrfEmpType());
+        }
+        if(dto.getPetitionFiledFor()!=null){
+            entity.setPetitionFiledFor(dto.getPetitionFiledFor());
+        }
         entity = em.merge(entity);
         CommentDao.instance().addComment(dto.getComment(), entity);
         dto.setId(entity.getId());
@@ -97,6 +112,18 @@ public class ProspectService {
     public ProspectDto read(Long id) {
         Prospect ec = prospectDao.findById(id);
         ProspectDto dto = ProspectDto.map(mapper, ec);
+        if(ec.getDateOfJoining()!=null){
+            dto.setDateOfJoining(ec.getDateOfJoining());
+        }
+        if(ec.getPlacedBy()!=null){
+            dto.setPlacedBy(ec.getPlacedBy());
+        }
+        if(ec.getTrfEmpType()!=null){
+            dto.setTrfEmpType(ec.getTrfEmpType());
+        }
+        if(ec.getPetitionFieldFor()!=null){
+            dto.setPetitionFiledFor(ec.getPetitionFieldFor());
+        }
         return dto;
     }
 
@@ -127,6 +154,21 @@ public class ProspectService {
         contact.setSex(dto.getSex());
         entity.setReferredBy(dto.getReferredBy());
         entity.setResumeURL(dto.getResumeURL());
+        if(dto.getDateOfJoining()!=null){
+            entity.setDateOfJoining(dto.getDateOfJoining());
+        }
+        if(dto.getPlacedBy()!=null){
+            entity.setPlacedBy(dto.getPlacedBy());
+        }
+        if(dto.getTrfEmpType()!=null){
+            entity.setTrfEmpType(dto.getTrfEmpType());
+        }
+        if(dto.getPetitionFiledFor()!=null){
+            entity.setPetitionFiledFor(dto.getPetitionFiledFor());
+        }
+        if (dto.getComment() != null) {
+            CommentDao.instance().addComment(dto.getComment(), entity);
+        }
         if (!Strings.isNullOrEmpty(dto.getScreenedBy())) {
             entity.setScreenedBy(dto.getScreenedBy());
         }
@@ -179,9 +221,6 @@ public class ProspectService {
         //contact
         contact = em.merge(contact);
         entity.setContact(contact);
-        if (dto.getComment() != null) {
-            CommentDao.instance().addComment(dto.getComment(), entity);
-        }
         prospectDao.getEntityManager().merge(entity);
         return entity;
     }
