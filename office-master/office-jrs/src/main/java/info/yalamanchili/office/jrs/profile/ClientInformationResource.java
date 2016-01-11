@@ -154,7 +154,11 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
         for (Employee emp : emps) {
             if (emp.getClientInformations() != null && emp.getClientInformations().size() > 1) {
                 for (ClientInformation ci : emp.getClientInformations()) {
-                    if ((ci.getEndDate().after(new Date())) || (ci.getEndDate().equals(new Date())) || (ci.getEndDate() == null)) {
+                    if (ci.getEndDate() != null) {
+                        if ((ci.getEndDate().after(new Date())) || (ci.getEndDate().equals(new Date()))) {
+                            clients.add(ci);
+                        }
+                    } else {
                         clients.add(ci);
                     }
                 }
@@ -186,7 +190,6 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
 
     @GET
     @Path("/ended-projects-report")
-    @Cacheable(OfficeCacheKeys.EMPLOYEES)
     public void report(@QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate) {
         ContractDto.ContractTable ctable = new ContractDto.ContractTable();
         List<ClientInformation> clients = clientInformationDao.queryForProjEndBetweenDays(0, 10000, startDate, endDate);
@@ -203,7 +206,6 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
 
     @GET
     @Path("/multiple-projects-report")
-    @Cacheable(OfficeCacheKeys.EMPLOYEES)
     public void multipleProjreport() {
         ClientInformationTable table = getMPForEmployees();
         List<ClientInformation> cis = new ArrayList();
@@ -211,7 +213,7 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
         if (table.getSize() > 0) {
             cis.addAll(table.getEntities());
         }
-        for(ClientInformation ci : cis){
+        for (ClientInformation ci : cis) {
             ctable.getEntities().add(ContractService.instance().mapClientInformation(ci));
         }
         String[] columnOrder = new String[]{"employee", "client", "vendor", "billingRate", "startDate", "endDate"};
