@@ -58,9 +58,10 @@ public class ReadAllEndProjectPanel extends CRUDReadAllComposite {
         table.setText(0, 1, getKeyValue("Employee"));
         table.setText(0, 2, getKeyValue("Recruiter"));
         table.setText(0, 3, getKeyValue("Vendor"));
-        table.setText(0, 4, getKeyValue("BillRate"));
-        table.setText(0, 5, getKeyValue("StartDate"));
-        table.setText(0, 6, getKeyValue("EndDate"));
+        table.setText(0, 4, getKeyValue("SubContractor"));
+        table.setText(0, 5, getKeyValue("BillRate"));
+        table.setText(0, 6, getKeyValue("StartDate"));
+        table.setText(0, 7, getKeyValue("EndDate"));
     }
 
     @Override
@@ -70,6 +71,10 @@ public class ReadAllEndProjectPanel extends CRUDReadAllComposite {
             addOptionsWidget(i, entity);
             JSONObject emp = (JSONObject) entity.get("employee");
             JSONObject vendor = (JSONObject) entity.get("vendor");
+            if (entity.get("subcontractor") != null) {
+                JSONObject subcontractor = (JSONObject) entity.get("subcontractor");
+                table.setText(i, 4, JSONUtils.toString(subcontractor, "name"));
+            }
             table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
             JSONValue value = entity.get("recruiters");
             JSONObject object;
@@ -93,9 +98,9 @@ public class ReadAllEndProjectPanel extends CRUDReadAllComposite {
                 }
             }
             table.setText(i, 3, JSONUtils.toString(vendor, "name"));
-            table.setText(i, 4, FormatUtils.formarCurrency(JSONUtils.toString(entity, "billingRate")));
-            table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
-            table.setText(i, 6, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
+            table.setText(i, 5, FormatUtils.formarCurrency(JSONUtils.toString(entity, "billingRate")));
+            table.setText(i, 6, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
+            table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
         }
     }
 
