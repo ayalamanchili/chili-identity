@@ -247,8 +247,9 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         addField("referredBy", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("screenedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("processDocSentDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addEnumField("status", false, false, ProspectStatus.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(resumeUploadPanel);
+        entityFieldsPanel.add(getLineSeperatorTag("Status Information"));
+        addEnumField("status", false, false, ProspectStatus.names(), Alignment.HORIZONTAL);
         statesF = (EnumField) fields.get("state");
         countriesF = (EnumField) fields.get("country");
         statusField = (EnumField) fields.get("status");

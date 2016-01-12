@@ -134,9 +134,9 @@ public class ReadProspectsPanel extends ReadComposite {
         addField("zip", true, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
         addField("screenedBy", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("processDocSentDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(getLineSeperatorTag("Status Information"));
         addEnumField("status", true, false, ProspectStatus.names(), Alignment.HORIZONTAL);
         if (ProspectStatus.CLOSED_WON.name().equals(JSONUtils.toString(getEntity(), "status"))) {
-            entityFieldsPanel.add(getLineSeperatorTag("Confirmed Prospect Information"));
             addEnumField("petitionFiledFor", true, false, PetitionFor.names(), Alignment.HORIZONTAL);
             addEnumField("trfEmpType", true, false, TransferEmployeeType.names(), Alignment.HORIZONTAL);
             addEnumField("placedBy", true, false, PlacedBy.names(), Alignment.HORIZONTAL);
