@@ -9,25 +9,16 @@
 package info.yalamanchili.office.client;
 
 import com.google.common.base.Strings;
-import com.google.gwt.aria.client.AlertdialogRole;
-import com.google.gwt.i18n.client.HasDirection;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
-import info.chili.docs.MakeHTML;
-import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
-import info.chili.gwt.utils.Alignment;
-import info.chili.gwt.widgets.GenericPopup;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.onboarding.EmployeeOnboardingPanel;
 import java.util.List;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -52,7 +43,7 @@ public class InvitationCodeValidator {
                             //TODO throw validation messge
                             HTML error = new HTML("\n"
                                     + "<p style=\"border: 1px solid rgb(100, 100, 100); padding: 5px 10px; background: rgb(238, 238, 238);\">"
-                                    + "<strong style=\"color:#EF520F; align: center\">Invalid Invitation Code</strong></p>\n"
+                                    + "<strong style=\"color:#EF520F; align: center\">Invitation Code Is Invalid Or Expired</strong></p>\n"
                                     + "\n"
                                     + "<ul>\n"
                                     + "</ul>");
