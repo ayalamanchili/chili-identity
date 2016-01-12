@@ -143,7 +143,7 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
     }
 
     protected boolean checkPermission() {
-        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_BILLING_AND_INVOICING);
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_BILLING_ADMIN);
     }
 
     protected JSONObject getEmployee() {
