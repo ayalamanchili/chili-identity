@@ -361,8 +361,13 @@ public class VendorResource extends CRUDResource<Vendor> {
         table.setSize(Long.valueOf(dtos.size()));
         String[] columnOrder = new String[]{"name", "street1", "street2", "city", "state"};
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
-        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Vendors In A Location Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
-        MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
+        if (dto.getCity() != null) {
+            String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Vendors In City " + dto.getCity(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+            MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
+        } else if (dto.getState() != null) {
+            String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Vendors In State " + dto.getState(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+            MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
+        }
     }
 
     @XmlRootElement
