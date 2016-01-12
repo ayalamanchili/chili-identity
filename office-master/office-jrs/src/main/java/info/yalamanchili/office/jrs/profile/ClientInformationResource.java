@@ -37,6 +37,7 @@ import javax.ws.rs.QueryParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.apache.http.client.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -199,7 +200,9 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
         }
         String[] columnOrder = new String[]{"employee", "recruiter", "vendor", "subContractorName", "billingRate", "startDate", "endDate"};
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
-        String fileName = ReportGenerator.generateExcelOrderedReport(ctable.getEntities(), "Ended Projects Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        String start = DateUtils.formatDate(startDate, "MM-dd-yyyy");
+        String end = DateUtils.formatDate(endDate, "MM-dd-yyyy");
+        String fileName = ReportGenerator.generateExcelOrderedReport(ctable.getEntities(), "ProjectsEnded Or Going To End Between "+start+" and "+end, OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
     }
 
@@ -217,7 +220,7 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
         }
         String[] columnOrder = new String[]{"employee", "client", "vendor", "billingRate", "startDate", "endDate"};
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
-        String fileName = ReportGenerator.generateExcelOrderedReport(ctable.getEntities(), "Working On Multiple Projects Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        String fileName = ReportGenerator.generateExcelOrderedReport(ctable.getEntities(), "Employees On Multiple Projects Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
     }
 
