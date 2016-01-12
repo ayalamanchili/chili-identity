@@ -43,6 +43,7 @@ public class ReadAllCommentsPanel extends CRUDReadAllComposite {
         this.parentId = parentId;
         this.targetClassName = targetClassName;
         initTable("Comment", OfficeWelcome.constants);
+        createButton.setText("Add Comment");
     }
 
     @Override

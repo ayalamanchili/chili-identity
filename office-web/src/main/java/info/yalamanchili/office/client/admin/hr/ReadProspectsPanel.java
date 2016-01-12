@@ -96,10 +96,18 @@ public class ReadProspectsPanel extends ReadComposite {
         assignFieldValueFromEntity("referredBy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("processDocSentDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("petitionFiledFor", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("trfEmpType", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("placedBy", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("dateOfJoining", entity, DataType.DATE_FIELD);
+        if (fields.containsKey("petitionFiledFor")) {
+            assignEntityValueFromField("petitionFiledFor", entity);
+        }
+        if (fields.containsKey("trfEmpType")) {
+            assignEntityValueFromField("trfEmpType", entity);
+        }
+        if (fields.containsKey("placedBy")) {
+            assignEntityValueFromField("placedBy", entity);
+        }
+        if (fields.containsKey("dateOfJoining")) {
+            assignEntityValueFromField("dateOfJoining", entity);
+        }
     }
 
     @Override
@@ -132,10 +140,13 @@ public class ReadProspectsPanel extends ReadComposite {
         addField("screenedBy", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("processDocSentDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("status", true, false, ProspectStatus.names(), Alignment.HORIZONTAL);
-        addEnumField("petitionFiledFor", true, false, PetitionFor.names(), Alignment.HORIZONTAL);
-        addEnumField("trfEmpType", true, false, TransferEmployeeType.names(), Alignment.HORIZONTAL);
-        addEnumField("placedBy", true, false, PlacedBy.names(), Alignment.HORIZONTAL);
-        addField("dateOfJoining", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        if (ProspectStatus.CLOSED_WON.name().equals(JSONUtils.toString(getEntity(), "status"))) {
+            entityFieldsPanel.add(getLineSeperatorTag("Confirmed Prospect Information"));
+            addEnumField("petitionFiledFor", true, false, PetitionFor.names(), Alignment.HORIZONTAL);
+            addEnumField("trfEmpType", true, false, TransferEmployeeType.names(), Alignment.HORIZONTAL);
+            addEnumField("placedBy", true, false, PlacedBy.names(), Alignment.HORIZONTAL);
+            addField("dateOfJoining", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        }
         alignFields();
     }
 

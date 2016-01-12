@@ -15,7 +15,6 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.callback.ALAsyncCallback;
-import info.chili.gwt.crud.CRUDComposite;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.data.CountryFactory;
 import info.chili.gwt.data.IndiaStatesFactory;
@@ -33,8 +32,6 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.profile.contact.Sex;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -42,29 +39,28 @@ import java.util.logging.Logger;
  *
  * @author radhika.mukkala
  */
-public class UpdateProspectsPanel extends UpdateComposite implements ClickHandler, ChangeHandler {
+public class UpdateProspectPanel extends UpdateComposite implements ClickHandler, ChangeHandler {
 
-    private Logger logger = Logger.getLogger(UpdateProspectsPanel.class.getName());
+    private Logger logger = Logger.getLogger(UpdateProspectPanel.class.getName());
     FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "Prospect", "resumeURL", "Prospect/resumeURL", false) {
         @Override
         public void onUploadComplete(String res) {
             postUpdateSuccess(null);
         }
     };
-    public List<CRUDComposite> updateItemPanels = new ArrayList<>();
 
-    protected static UpdateProspectsPanel instance;
+    protected static UpdateProspectPanel instance;
 
-    public static UpdateProspectsPanel instance() {
+    public static UpdateProspectPanel instance() {
         return instance;
     }
 
-    public UpdateProspectsPanel(JSONObject entity) {
+    public UpdateProspectPanel(JSONObject entity) {
         instance = this;
         initUpdateComposite(entity, "Prospect", OfficeWelcome.constants);
     }
 
-    public UpdateProspectsPanel(String id) {
+    public UpdateProspectPanel(String id) {
         instance = this;
         initUpdateComposite(id, "Prospect", OfficeWelcome.constants);
     }
@@ -77,7 +73,9 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
                     public void onResponse(String response) {
                         logger.info(response);
                         entity = (JSONObject) JSONParser.parseLenient(response);
-                        addExtraWidgets();
+                        if (ProspectStatus.CLOSED_WON.name().equals(JSONUtils.toString(getEntity(), "status"))) {
+                            addProspectWonFields();
+                        }
                         populateFieldsFromEntity(entity);
                         populateComments();
                     }
@@ -136,11 +134,18 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
         assignEntityValueFromField("screenedBy", entity);
         assignEntityValueFromField("processDocSentDate", entity);
         assignEntityValueFromField("status", entity);
-        assignEntityValueFromField("comment", entity);
-        assignEntityValueFromField("petitionFiledFor", entity);
-        assignEntityValueFromField("trfEmpType", entity);
-        assignEntityValueFromField("placedBy", entity);
-        assignEntityValueFromField("dateOfJoining", entity);
+        if (fields.containsKey("petitionFiledFor")) {
+            assignEntityValueFromField("petitionFiledFor", entity);
+        }
+        if (fields.containsKey("trfEmpType")) {
+            assignEntityValueFromField("trfEmpType", entity);
+        }
+        if (fields.containsKey("placedBy")) {
+            assignEntityValueFromField("placedBy", entity);
+        }
+        if (fields.containsKey("dateOfJoining")) {
+            assignEntityValueFromField("dateOfJoining", entity);
+        }
         entity.put("resumeURL", resumeUploadPanel.getFileName());
         return entity;
     }
@@ -161,9 +166,9 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
                 });
     }
 
-    protected void uploadResume(String entity) {
-        logger.info(entity);
-        resumeUploadPanel.upload(JSONUtils.toString(JSONParser.parseLenient(entity), "id"));
+    protected void uploadResume(String entityStr) {
+        entity = JSONParser.parseLenient(entityStr).isObject();
+        resumeUploadPanel.upload(JSONUtils.toString(entity, "id"));
     }
 
     @Override
@@ -189,8 +194,7 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
         assignFieldValueFromEntity("screenedBy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("processDocSentDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("comment", entity, DataType.TEXT_AREA_FIELD);
-        if (entity.get("id") != null) {
+        if (ProspectStatus.CLOSED_WON.name().equals(JSONUtils.toString(getEntity(), "status"))) {
             assignFieldValueFromEntity("petitionFiledFor", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("trfEmpType", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("placedBy", entity, DataType.ENUM_FIELD);
@@ -202,7 +206,7 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated Prospect Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProspectsPanel());
+        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateProspectPanel(getEntityId()));
     }
 
     EnumField statesF;
@@ -210,6 +214,7 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
 
     @Override
     protected void addListeners() {
+        statesF.listBox.addChangeHandler(this);
     }
 
     @Override
@@ -223,10 +228,12 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
             if (entry.getValue() instanceof TextAreaField) {
                 TextAreaField textAreaField = (TextAreaField) entry.getValue();
                 textAreaField.getTextbox().setCharacterWidth(75);
-                textAreaField.getTextbox().setVisibleLines(4);
+                textAreaField.getTextbox().setVisibleLines(6);
             }
         }
     }
+
+    EnumField statusField;
 
     @Override
     protected void addWidgets() {
@@ -248,22 +255,41 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
         addField("screenedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("processDocSentDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("status", false, false, ProspectStatus.names(), Alignment.HORIZONTAL);
-        addField("comment", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(resumeUploadPanel);
         statesF = (EnumField) fields.get("state");
         countriesF = (EnumField) fields.get("country");
+        statusField = (EnumField) fields.get("status");
+        statusField.listBox.addChangeHandler(this);
         alignFields();
     }
 
-    protected void addExtraWidgets() {
-        if (ProspectStatus.CLOSED_WON.name().equals(JSONUtils.toString(getEntity(), "status"))) {
-            entityFieldsPanel.add(getLineSeperatorTag("Confirmed Prospect Information"));
+    protected void addProspectWonFields() {
+        if (!fields.containsKey("petitionFiledFor")) {
             addEnumField("petitionFiledFor", false, false, PetitionFor.names(), Alignment.HORIZONTAL);
             addEnumField("trfEmpType", false, false, TransferEmployeeType.names(), Alignment.HORIZONTAL);
             addEnumField("placedBy", false, false, PlacedBy.names(), Alignment.HORIZONTAL);
             addField("dateOfJoining", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+            alignFields();
         }
-        alignFields();
+    }
+
+    protected void removeProspectWonFields() {
+        if (fields.containsKey("petitionFiledFor")) {
+            fields.get("petitionFiledFor").removeFromParent();
+            fields.remove("petitionFiledFor");
+        }
+        if (fields.containsKey("trfEmpType")) {
+            fields.get("trfEmpType").removeFromParent();
+            fields.remove("trfEmpType");
+        }
+        if (fields.containsKey("placedBy")) {
+            fields.get("placedBy").removeFromParent();
+            fields.remove("placedBy");
+        }
+        if (fields.containsKey("dateOfJoining")) {
+            fields.get("dateOfJoining").removeFromParent();
+            fields.remove("dateOfJoining");
+        }
     }
 
     @Override
@@ -281,13 +307,21 @@ public class UpdateProspectsPanel extends UpdateComposite implements ClickHandle
 
     @Override
     public void onChange(ChangeEvent event) {
-        switch (countriesF.getValue()) {
-            case "USA":
-                statesF.setValues(USAStatesFactory.getStates().toArray(new String[0]));
-                break;
-            case "INDIA":
-                statesF.setValues(IndiaStatesFactory.getStates().toArray(new String[0]));
-                break;
+        if (event.getSource().equals(countriesF)) {
+            switch (countriesF.getValue()) {
+                case "USA":
+                    statesF.setValues(USAStatesFactory.getStates().toArray(new String[0]));
+                    break;
+                case "INDIA":
+                    statesF.setValues(IndiaStatesFactory.getStates().toArray(new String[0]));
+                    break;
+            }
+        } else if (event.getSource().equals(statusField.listBox)) {
+            if (statusField.getValue().equals(ProspectStatus.CLOSED_WON.name())) {
+                addProspectWonFields();
+            } else {
+                removeProspectWonFields();
+            }
         }
     }
 }

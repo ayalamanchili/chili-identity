@@ -114,7 +114,7 @@ public class AddCommentWidget extends CreateComposite {
 
     @Override
     protected void configure() {
-        setButtonText("Add Comment");
+        setButtonText("Save Comment and Send Notification");
         TextAreaField textAreaField = (TextAreaField) fields.get("comment");
         textAreaField.getTextbox().setCharacterWidth(75);
         textAreaField.getTextbox().setVisibleLines(4);

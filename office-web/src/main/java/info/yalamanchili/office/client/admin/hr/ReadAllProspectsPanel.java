@@ -160,7 +160,7 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateProspectsPanel(entityId));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateProspectPanel(entityId));
     }
 
     @Override
@@ -172,7 +172,7 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
                         logger.info(arg0);
                         new ResponseStatusWidget().show("Copy created. Please update and save.");
                         TabPanel.instance().myOfficePanel.entityPanel.clear();
-                        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateProspectsPanel(JSONParser.parseLenient(arg0).isObject()));
+                        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateProspectPanel(JSONParser.parseLenient(arg0).isObject()));
                     }
                 });
     }

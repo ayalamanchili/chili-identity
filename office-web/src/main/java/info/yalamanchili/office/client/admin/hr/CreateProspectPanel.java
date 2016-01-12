@@ -47,7 +47,7 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
     FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "Prospect", "resumeURL", "Prospect/resumeURL", false) {
         @Override
         public void onUploadComplete(String res) {
-            postCreateSuccess(null);
+            postCreateSuccess(res);
         }
     };
 
@@ -123,9 +123,9 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
                 });
     }
 
-    protected void uploadResume(String entity) {
-        logger.info(entity);
-        resumeUploadPanel.upload(JSONUtils.toString(JSONParser.parseLenient(entity), "id"));
+    protected void uploadResume(String entityStr) {
+        entity = JSONParser.parseLenient(entityStr).isObject();
+        resumeUploadPanel.upload(JSONUtils.toString(entity, "id"));
     }
 
     @Override
@@ -136,7 +136,7 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Prospect Created");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProspectsPanel());
+        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateProspectPanel(getEntityId()));
     }
 
     EnumField statesF;
