@@ -166,7 +166,7 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
                 JSONObject vendor = entity.get("vendor").isObject();
                 table.setText(i, 2, JSONUtils.toString(vendor, "name"));
             }
-            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS, Auth.ROLE.ROLE_RECRUITER)) {
+            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN, Auth.ROLE.ROLE_CONTRACTS, Auth.ROLE.ROLE_RECRUITER)) {
                 table.setText(i, 3, JSONUtils.toString(entity, "itemNumber"));
                 table.setText(i, 4, FormatUtils.formarCurrency(JSONUtils.toString(entity, "billingRate")));
                 setEnumColumn(i, 5, entity, InvoiceFrequency.class.getSimpleName(), "invoiceFrequency");
