@@ -43,7 +43,9 @@ import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.jms.MessagingService;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import javax.persistence.Query;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
@@ -413,8 +415,8 @@ public class ContractService {
         MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
     }
 
-    public void generateRecruiterReport(ContractSearchDto dto) {
-        ContractTable table = getResultForReport(dto);
+    public void generateRecruiterReport(ContractSearchDto dto, Date startDate, Date endDate) {
+        ContractTable table = searchContractsForRecruiter(dto, startDate, endDate);
         String[] columnOrder = new String[]{"employee", "vendor", "startDate", "endDate"};
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
         String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Employee Recruited By "+dto.getRecruiter(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
@@ -516,6 +518,42 @@ public class ContractService {
         } else {
             return null;
         }
+    }
+    
+    public ContractTable searchContractsForRecruiter(ContractSearchDto dto, Date startDate, Date endDate) {
+        ContractTable table = search(dto, 0, 10000);
+        List<ContractDto> tabledto = new ArrayList();
+        List<ContractDto> dtos = new ArrayList();
+        List<ContractDto> cdtos = new ArrayList();
+        tabledto.addAll(table.getEntities());
+        dtos.addAll(table.getEntities());
+        if (startDate != null || endDate != null) {
+            ContractTable ctable = new ContractTable();
+            for (ContractDto cdto : dtos) {
+                if (cdto.getStartDate().after(startDate) && cdto.getStartDate().before(endDate)) {
+                    cdtos.add(cdto);
+                }
+            }
+            ctable.setEntities(activeCPDs(cdtos));
+            return ctable;
+        }else{
+            table.setEntities(activeCPDs(tabledto));
+           return table; 
+        }
+    }
+    
+    public List<ContractDto> activeCPDs(List<ContractDto> dtos){
+        List<ContractDto> results = new ArrayList();
+        for(ContractDto dto : dtos){
+            if(dto.getEndDate()!=null){
+                if((dto.getEndDate().after(new Date())) || (dto.getEndDate().equals(new Date()))){
+                    results.add(dto);
+                }
+            }else{
+                results.add(dto);
+            }
+        }
+        return results;
     }
 
     public static ContractService instance() {
