@@ -83,9 +83,9 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
     protected void addOptionsWidget(int row, JSONObject entity) {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN)) {
             createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE);
-        } else if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_BILLING_ADMIN)) {
+        } else if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN)) {
             createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE);
-        } else if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_RECRUITER)) {
+        } else if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_BILLING_AND_INVOICING)) {
             createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ);
         }
     }
@@ -104,7 +104,7 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
 
     @Override
     protected boolean enableQuickView() {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_BILLING_ADMIN)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
             return true;
         } else {
             return false;

@@ -143,7 +143,7 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
     }
 
     protected boolean checkPermission() {
-        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_BILLING_ADMIN);
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_BILLING_ADMIN);
     }
 
     protected JSONObject getEmployee() {
@@ -223,7 +223,7 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
             }
             addField("billingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             entityFieldsPanel.add(ReadAllUpdateBillingRatePanel.renderBillingRateHistory(getEntityId(), isSubOr1099));
-            if (Auth.hasAnyOfRoles(ROLE.ROLE_BILLING_AND_INVOICING, ROLE.ROLE_CONTRACTS_ADMIN)) {
+            if (Auth.hasAnyOfRoles(ROLE.ROLE_BILLING_ADMIN, ROLE.ROLE_CONTRACTS_ADMIN)) {
                 renderUpdateBillingRateFieldLink();
             }
             String[] billingDuration = {"HOUR", "DAY", "MONTH", "WEEK"};
