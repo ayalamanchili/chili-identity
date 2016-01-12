@@ -10,6 +10,8 @@ package info.yalamanchili.office.dao.invite;
 
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.profile.invite.InviteCode;
+import java.util.Date;
+import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -36,6 +38,11 @@ public class InviteCodeDao {
         Query query = new Query();
         query.addCriteria(Criteria.where("invitationCode").is(invitationCode));
         return mongoTemplate.findOne(query, InviteCode.class);
+    }
+
+    public void invalidateCode(InviteCode invitationCode) {
+        invitationCode.setExpiryDate(DateUtils.addDays(new Date(), -1));
+        save(invitationCode);
     }
 
     public static InviteCodeDao instance() {
