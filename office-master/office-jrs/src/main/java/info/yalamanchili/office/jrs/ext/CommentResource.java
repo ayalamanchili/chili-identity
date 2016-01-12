@@ -113,7 +113,7 @@ public class CommentResource {
             }
         }
         Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
-        email.setSubject("Comment added by:" + currentUser.getFirstName() + "" + currentUser.getLastName() + " on " + entity.getClass().getSimpleName());
+        email.setSubject("Comment added by:" + currentUser.getFirstName() + " " + currentUser.getLastName() + " on " + entity.getClass().getSimpleName());
         StringBuilder body = new StringBuilder();
         body.append(currentUser.getFirstName()).append("").append(currentUser.getLastName()).append(" added the following comment: \n").append(comment.getComment());
         body.append("\n\nPrevious Comments : \n");

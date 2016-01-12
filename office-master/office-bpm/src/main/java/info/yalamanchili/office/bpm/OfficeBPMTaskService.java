@@ -273,7 +273,7 @@ public class OfficeBPMTaskService {
         Collections.sort(tasksList, (Task m1, Task m2) -> m1.getCreateTime().compareTo(m2.getCreateTime()));
         Collections.reverse(tasksList);
         result.setEntities(tasksList);
-        result.setSize(getTasksForAsigneeSize(emp.getEmployeeId()) + getCandidateTasksForUserSize(emp.getEmployeeId()) + getCandidateTasksForRolesSize(roles));
+        result.setSize(Long.valueOf(tasksList.size()));
         return result;
     }
 
