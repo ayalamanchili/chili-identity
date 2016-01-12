@@ -503,8 +503,13 @@ public class EmployeeResource extends CRUDResource<Employee> {
         table.setEntities(contractdtos);
         String[] columnOrder = new String[]{"employee", "client", "clientLocation", "vendor", "startDate", "endDate"};
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
-        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Emp Working In Location Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
-        MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
+        if (dto.getCity() != null) {
+            String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Emp Working In City " + dto.getCity(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+            MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
+        } else if (dto.getState() != null) {
+            String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Emp Working In State " + dto.getState(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+            MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
+        }
     }
 
     protected String getSearchQuery(EmployeeLocationDto dto) {
