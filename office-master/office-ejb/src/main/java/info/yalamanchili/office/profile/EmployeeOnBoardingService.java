@@ -207,8 +207,7 @@ public class EmployeeOnBoardingService {
         OfficeSecurityService.instance().createUserCert(emp, null, null);
         //Email notification
         employeeService.sendNewEmployeeNotifiaction(emp);
-        code.setExpiryDate(DateUtils.addDays(code.getExpiryDate(), -8));
-        InviteCodeDao.instance().save(code);
+        InviteCodeDao.instance().invalidateCode(code);
         return employee;
     }
 
