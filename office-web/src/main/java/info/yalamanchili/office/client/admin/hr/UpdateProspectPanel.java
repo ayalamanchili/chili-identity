@@ -31,7 +31,6 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
-import info.yalamanchili.office.client.profile.contact.Sex;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -125,10 +124,8 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         assignEntityValueFromField("firstName", entity);
         assignEntityValueFromField("lastName", entity);
         assignEntityValueFromField("email", entity);
-        assignEntityValueFromField("sex", entity);
         assignEntityValueFromField("countryCode", entity);
         assignEntityValueFromField("phoneNumber", entity);
-        assignEntityValueFromField("extension", entity);
         assignEntityValueFromField("dateOfBirth", entity);
         assignEntityValueFromField("referredBy", entity);
         assignEntityValueFromField("screenedBy", entity);
@@ -187,8 +184,6 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         assignFieldValueFromEntity("email", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("phoneNumber", entity, DataType.LONG_FIELD);
         assignFieldValueFromEntity("countryCode", entity, DataType.LONG_FIELD);
-        assignFieldValueFromEntity("extension", entity, DataType.LONG_FIELD);
-        assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("dateOfBirth", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("referredBy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("screenedBy", entity, DataType.STRING_FIELD);
@@ -242,9 +237,7 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         addField("email", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("countryCode", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
         addField("phoneNumber", false, true, DataType.LONG_FIELD, Alignment.HORIZONTAL);
-        addField("extension", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
         addField("dateOfBirth", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addEnumField("sex", false, false, Sex.names(), Alignment.HORIZONTAL);
         addField("street1", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("street2", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("city", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -307,7 +300,7 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
 
     @Override
     public void onChange(ChangeEvent event) {
-        if (event.getSource().equals(countriesF)) {
+        if (event.getSource().equals(countriesF.listBox)) {
             switch (countriesF.getValue()) {
                 case "USA":
                     statesF.setValues(USAStatesFactory.getStates().toArray(new String[0]));

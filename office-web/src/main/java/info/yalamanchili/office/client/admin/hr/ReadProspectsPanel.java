@@ -25,7 +25,6 @@ import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
-import info.yalamanchili.office.client.profile.contact.Sex;
 import java.util.logging.Logger;
 
 /**
@@ -90,8 +89,6 @@ public class ReadProspectsPanel extends ReadComposite {
         assignFieldValueFromEntity("email", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("countryCode", entity, DataType.LONG_FIELD);
         assignFieldValueFromEntity("phoneNumber", entity, DataType.LONG_FIELD);
-        assignFieldValueFromEntity("extension", entity, DataType.LONG_FIELD);
-        assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("dateOfBirth", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("referredBy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("processDocSentDate", entity, DataType.DATE_FIELD);
@@ -128,9 +125,7 @@ public class ReadProspectsPanel extends ReadComposite {
         addField("email", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("countryCode", true, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
         addField("phoneNumber", true, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
-        addField("extension", true, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
         addField("dateOfBirth", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addEnumField("sex", true, false, Sex.names(), Alignment.HORIZONTAL);
         addField("street1", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("street2", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("city", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);

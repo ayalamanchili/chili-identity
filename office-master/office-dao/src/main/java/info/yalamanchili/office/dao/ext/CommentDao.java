@@ -16,10 +16,13 @@ import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.ext.Comment;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -58,6 +61,15 @@ public class CommentDao extends AbstractHandleEntityDao<Comment> {
         cmnt.setRating(rating);
         cmnt.setComment(comment);
         return save(cmnt, source, target);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Comment> findAll(Long id, String targetClassName) {
+        TypedQuery<Comment> query = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " where targetEntityName=:targetEntityNameParam and targetEntityId=:targetEntityIdParam order by updatedTS desc", Comment.class);
+        query.setParameter("targetEntityNameParam", targetClassName);
+        query.setParameter("targetEntityIdParam", id);
+        return query.getResultList();
     }
 
     @Override
