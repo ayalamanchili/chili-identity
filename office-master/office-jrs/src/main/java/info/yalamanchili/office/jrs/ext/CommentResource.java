@@ -21,8 +21,8 @@ import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.entity.ext.Comment;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
-import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -113,23 +113,19 @@ public class CommentResource {
             }
         }
         Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
-        email.setSubject("Comment added by:" + currentUser.getFirstName() + " " + currentUser.getLastName() + " on " + entity.getClass().getSimpleName());
-        StringBuilder body = new StringBuilder();
-        body.append(currentUser.getFirstName()).append("").append(currentUser.getLastName()).append(" added the following comment: \n").append(comment.getComment());
-        body.append("\n\nPrevious Comments : \n");
-        //add previous comments
-        for (Comment cmt : commentDao.findAll(entity.getId(), entity.getClass().getCanonicalName())) {
-            body.append(cmt.getUpdatedBy()).append(" added the below comment @ ").append(cmt.getUpdatedTS()).append(" \n");
-            body.append(cmt.getComment()).append("\n").append(" \n");
-        }
-        //add entity info
-        body.append("\nReference : ").append(entity.getClass().getSimpleName());
-        if (entity instanceof AbstractEntity) {
-            body.append(((AbstractEntity) (entity)).describe());
-        }
-        body.append("\n\n\t Please click on the below link to access: \n\t ").append(OfficeServiceConfiguration.instance().getPortalWebUrl());
+        email.setSubject("Comment added by:" + currentUser.getFirstName() + "" + currentUser.getLastName() + " on " + entity.getClass().getSimpleName());
+        HashMap<String, Object> emailContext = new HashMap();
+        emailContext.put("createdBy", currentUser.getFirstName() + "" + currentUser.getLastName());
+        emailContext.put("comment", comment.getComment());
+        emailContext.put("reference", entity.getClass().getSimpleName());
+        emailContext.put("reference", entity.getClass().getSimpleName());
+        emailContext.put("description", ((AbstractEntity) (entity)).describe());
+        emailContext.put("comments", commentDao.findAll(entity.getId(), entity.getClass().getCanonicalName()));
+        emailContext.put("portalLoginLink", OfficeServiceConfiguration.instance().getPortalWebUrl());
+
+        email.setContext(emailContext);
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
-        email.setBody(body.toString());
+        email.setTemplateName("comment_added_template.html");
         email.setHtml(Boolean.TRUE);
         messagingService.sendEmail(email);
     }

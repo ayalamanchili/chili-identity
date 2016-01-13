@@ -1,0 +1,65 @@
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<html >
+    <head>
+        <title>System Soft Portal</title>
+        <style type="text/css">
+        </style>
+    </head>
+
+    <body>
+        <div class="wrapper" style="width:700px;margin-left:auto;margin-right:auto;border-style:solid;border-width:1px;border-color:#000000;border-radius:10px;">
+            <div class="header" style="width:700px;height:100px;background-color:#c3d7ff;border-top-right-radius:10px;border-top-left-radius:10px;">
+                <div class="logo" style="width:200px;height:75px;float:left;padding-top:25px;padding-left:30px;" ><img src="https://apps.sstech.us/sst-logo.png" /></div>
+            </div>
+
+
+
+            <div class="content" style="width:700px;background-color:#FFFFFF;float:left;font-family:Tahoma, Geneva, sans-serif;text-align:center;"><div>
+                    <h4>System Soft Portal Notification</h4>
+                </div>
+                <div>
+                    <div  style="text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;border:2px ridge; border-radius:5px;" >
+                        <span style="font-weight: bold;" th:text="${createdBy}"></span>
+                        <span> added the following comment: </span>
+                        <div th:utext="${comment}" style="text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;border:2px ridge; border-radius:5px;" ></div>
+                        <h4>Description</h4>
+                        <table>
+                            <tr>
+                                <td><b>Reference</b></td>
+                                <td th:text="${reference}" />
+                            </tr>
+                            <tr>
+                                <td><b>Description</b></td>
+                                <td><div th:utext="${description}" style="text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;border:2px ridge; border-radius:5px;" ></div></td>
+                            </tr>                         
+                        </table>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Comments</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="comment : ${comments}">
+                                    <td th:text="${comment.comment}"></td>
+                                    <td> Added By</td>
+                                    <td th:text="${comment.updatedBy}"></td>
+                                    <td> - </td>
+                                    <td th:text="${comment.updatedTS}"></td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+          <a th:href="${portalLoginLink}" ></a>
+        <div class="footer"  style="width:700px;margin:0px; padding: 0px;height:50px;background-color:#ebebe4;margin-left:auto;margin-right:auto;text-align:center;font-family:Tahoma, Geneva, sans-serif;font-size:10px;line-height:75px;clear:both;border-bottom-right-radius:10px;border-bottom-left-radius:10px;"><p>COPYRIGHT � 2014 sstech.us - All Rights Reserved</p></div>
+    </body>
+</html>
