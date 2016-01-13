@@ -23,7 +23,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Button;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -46,7 +45,7 @@ public class SearchProspectsPanel extends SearchComposite {
 
     private static Logger logger = Logger.getLogger(SearchProspectsPanel.class.getName());
     Button prospectsReport = new Button("Report");
-    EnumField statusF = new EnumField(OfficeWelcome.constants, "status", "Prospect", false, false, ProspectStatus.names());
+    EnumField statusF;
 
     public SearchProspectsPanel() {
         init("Prospect Search", "Prospect", OfficeWelcome.constants);
@@ -80,8 +79,8 @@ public class SearchProspectsPanel extends SearchComposite {
         addField("processDocSentDate", DataType.DATE_FIELD);
         addField("email", DataType.STRING_FIELD);
         addField("phoneNumber", DataType.LONG_FIELD);
-        mainPanel.add(statusF);
-        mainPanel.add(searchButton);
+        addEnumField("status", false, false, ProspectStatus.names());
+        statusF = (EnumField) fields.get("status");
         mainPanel.add(prospectsReport);
     }
 
@@ -95,9 +94,8 @@ public class SearchProspectsPanel extends SearchComposite {
         assignEntityValueFromField("email", contact);
         assignEntityValueFromField("phoneNumber", contact);
         assignEntityValueFromField("processDocSentDate", entity);
-        entity.put("status", new JSONString(statusF.getValue()));
+        assignEntityValueFromField("status", entity);
         entity.put("contact", contact);
-        logger.info(entity.toString());
         return entity;
     }
 
@@ -159,7 +157,7 @@ public class SearchProspectsPanel extends SearchComposite {
                 });
             }
         };
-        timer.schedule(2000);
+        timer.schedule(1000);
 
     }
 

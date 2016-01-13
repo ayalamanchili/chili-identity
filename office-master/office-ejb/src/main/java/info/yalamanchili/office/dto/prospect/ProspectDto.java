@@ -8,8 +8,6 @@
  */
 package info.yalamanchili.office.dto.prospect;
 
-import info.yalamanchili.office.dao.ext.CommentDao;
-import info.yalamanchili.office.entity.ext.Comment;
 import info.yalamanchili.office.entity.hr.PetitionFor;
 import info.yalamanchili.office.entity.hr.PlacedBy;
 import info.yalamanchili.office.entity.hr.ProspectStatus;
@@ -18,7 +16,6 @@ import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Sex;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Temporal;
