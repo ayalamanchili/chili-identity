@@ -58,6 +58,9 @@ public class ReadProspectsPanel extends ReadComposite {
                     @Override
                     public void onResponse(String response) {
                         entity = (JSONObject) JSONParser.parseLenient(response);
+                        if (ProspectStatus.CLOSED_WON.name().equals(JSONUtils.toString(getEntity(), "status"))) {
+                            addProspectWonFields();
+                        }
                         populateFieldsFromEntity(entity);
                         entityFieldsPanel.add(Utils.getLineSeperatorTag("Resume"));
                         String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "resumeURL") + "&entityId=" + JSONUtils.toString(entity, "id");
@@ -93,18 +96,10 @@ public class ReadProspectsPanel extends ReadComposite {
         assignFieldValueFromEntity("referredBy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("processDocSentDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
-        if (fields.containsKey("petitionFiledFor")) {
-            assignEntityValueFromField("petitionFiledFor", entity);
-        }
-        if (fields.containsKey("trfEmpType")) {
-            assignEntityValueFromField("trfEmpType", entity);
-        }
-        if (fields.containsKey("placedBy")) {
-            assignEntityValueFromField("placedBy", entity);
-        }
-        if (fields.containsKey("dateOfJoining")) {
-            assignEntityValueFromField("dateOfJoining", entity);
-        }
+        assignFieldValueFromEntity("petitionFiledFor", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("trfEmpType", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("placedBy", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("dateOfJoining", entity, DataType.DATE_FIELD);
     }
 
     @Override
@@ -136,12 +131,6 @@ public class ReadProspectsPanel extends ReadComposite {
         addField("processDocSentDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Status Information"));
         addEnumField("status", true, false, ProspectStatus.names(), Alignment.HORIZONTAL);
-        if (ProspectStatus.CLOSED_WON.name().equals(JSONUtils.toString(getEntity(), "status"))) {
-            addEnumField("petitionFiledFor", true, false, PetitionFor.names(), Alignment.HORIZONTAL);
-            addEnumField("trfEmpType", true, false, TransferEmployeeType.names(), Alignment.HORIZONTAL);
-            addEnumField("placedBy", true, false, PlacedBy.names(), Alignment.HORIZONTAL);
-            addField("dateOfJoining", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        }
         alignFields();
     }
 
@@ -165,4 +154,13 @@ public class ReadProspectsPanel extends ReadComposite {
         return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.hr.Prospect" + "/" + getEntityId();
     }
 
+    protected void addProspectWonFields() {
+        if (!fields.containsKey("petitionFiledFor")) {
+            addEnumField("petitionFiledFor", true, false, PetitionFor.names(), Alignment.HORIZONTAL);
+            addEnumField("trfEmpType", true, false, TransferEmployeeType.names(), Alignment.HORIZONTAL);
+            addEnumField("placedBy", true, false, PlacedBy.names(), Alignment.HORIZONTAL);
+            addField("dateOfJoining", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+            alignFields();
+        }
+    }
 }
