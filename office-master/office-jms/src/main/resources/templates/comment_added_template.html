@@ -26,7 +26,6 @@
                         <span style="font-weight: bold;" th:text="${createdBy}"></span>
                         <span> added the following comment: </span>
                         <div th:utext="${comment}" style="text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;border:2px ridge; border-radius:5px;" ></div>
-                        <h4>Description</h4>
                         <table>
                             <tr>
                                 <td><b>Reference</b></td>
@@ -34,13 +33,13 @@
                             </tr>
                             <tr>
                                 <td><b>Description</b></td>
-                                <td><div th:utext="${description}" style="text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;border:2px ridge; border-radius:5px;" ></div></td>
+                                <td><pre><div th:utext="${description}" style="text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;border:2px ridge; border-radius:5px;" ></div></pre></td>
                             </tr>                         
                         </table>
-                        <table>
+                        <table border='1' >
                             <thead>
                                 <tr>
-                                    <th>Comments</th>
+                                    <th>Previous Comments</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -50,7 +49,6 @@
                                     <td th:text="${comment.updatedBy}"></td>
                                     <td> - </td>
                                     <td th:text="${comment.updatedTS}"></td>
-
                                 </tr>
                             </tbody>
                         </table>
