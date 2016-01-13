@@ -13,6 +13,7 @@ import info.chili.dao.CRUDDao;
 import info.chili.email.Email;
 import info.chili.jpa.validation.Validate;
 import info.chili.reporting.ReportGenerator;
+import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.drive.FileDao;
@@ -20,6 +21,7 @@ import info.yalamanchili.office.dao.hr.ProspectDao;
 import info.yalamanchili.office.dao.invite.InviteCodeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.prospect.ProspectDto;
+import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.hr.Prospect;
 import info.yalamanchili.office.entity.hr.ProspectStatus;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -36,6 +38,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -46,6 +49,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -111,6 +115,13 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     }
 
     @GET
+    @Path("/search-suggestions")
+    @Transactional(propagation = Propagation.NEVER)
+    public List<Entry> getDropDown() {
+        return prospectDao.searchSuggestions();
+    }
+
+    @GET
     @Path("/clone/{id}")
     @Override
     public ProspectDto clone(@PathParam("id") Long id) {
@@ -154,18 +165,41 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
         }
     }
 
+    @GET
+    @Path("/search/{searchText}/{start}/{limit}")
+    @Transactional(propagation = Propagation.NEVER)
+    @Override
+    public List<ProspectDto> search(@PathParam("searchText") String searchText, @PathParam("start") int start,
+            @PathParam("limit") int limit, @QueryParam("column") List<String> columns) {
+        List<ProspectDto> res = new ArrayList();
+        for (Object p : getDao().sqlSearch(searchText, start, limit, columns, true)) {
+            res.add(map((Prospect) p));
+        }
+        return res;
+    }
+
     @PUT
     @Path("/search-prospect/{start}/{limit}")
-    @Transactional(readOnly = true)
+    @Transactional(propagation = Propagation.NEVER)
     public List<ProspectDto> search(Prospect entity, @PathParam("start") int start, @PathParam("limit") int limit) {
         List<ProspectDto> res = new ArrayList();
         Query searchQuery = SearchUtils.getSearchQuery(prospectDao.getEntityManager(), entity, new SearchUtils.SearchCriteria());
         searchQuery.setFirstResult(start);
         searchQuery.setMaxResults(limit);
         for (Object p : searchQuery.getResultList()) {
-            res.add(ProspectDto.map(mapper, (Prospect) p));
+            res.add(map((Prospect) p));
         }
         return res;
+    }
+
+    protected ProspectDto map(Prospect p) {
+        ProspectDto dto = new ProspectDto();
+        dto.setFirstName(p.getContact().getFirstName());
+        dto.setLastName(p.getContact().getLastName());
+        dto.setScreenedBy(p.getScreenedBy());
+        dto.setReferredBy(p.getReferredBy());
+        dto.setStatus(p.getStatus());
+        return dto;
     }
 
     protected final String[] ON_BOARDING_FORMS_LIST = {"W2_On_Boarding", "I9_On_Boarding"};
@@ -205,7 +239,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
         for (Prospect prospect : prospects) {
             if (prospect.getStatus().name().equals(status)) {
                 dto = ProspectDto.map(mapper, prospect);
-                if(!prospect.getStatus().equals(ProspectStatus.CLOSED_WON)){
+                if (!prospect.getStatus().equals(ProspectStatus.CLOSED_WON)) {
                     dto.setDateOfJoining(null);
                     dto.setPlacedby(null);
                     dto.setTrfEmptype(null);
@@ -217,7 +251,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
         table.setEntities(dtos);
         String[] columnOrder = new String[]{"employee", "dateOfBirth", "gender", "email", "phoneNumber", "referredBy", "screenedBy", "petitionFor", "placedby", "trfEmptype", "dateOfJoining"};
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
-        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Prospects "+status.toLowerCase()+" Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Prospects " + status.toLowerCase() + " Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
     }
 }

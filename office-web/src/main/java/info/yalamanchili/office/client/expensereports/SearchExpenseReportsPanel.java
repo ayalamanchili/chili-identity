@@ -50,7 +50,8 @@ class SearchExpenseReportsPanel extends SearchComposite {
         //TODO think about the limit
         return OfficeWelcome.constants.root_url() + "employee/dropdown/0/10000?column=id&column=firstName";
     }
-   protected String getLastNameDropDownUrl() {
+
+    protected String getLastNameDropDownUrl() {
         //TODO think about the limit
         return OfficeWelcome.constants.root_url() + "employee/dropdown/0/10000?column=id&column=lastName";
     }
@@ -65,7 +66,7 @@ class SearchExpenseReportsPanel extends SearchComposite {
                 sb.loadData(values.values());
             }
         });
-      HttpService.HttpServiceAsync.instance().doGet(getLastNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+        HttpService.HttpServiceAsync.instance().doGet(getLastNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
                 Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
@@ -111,6 +112,15 @@ class SearchExpenseReportsPanel extends SearchComposite {
 
     @Override
     protected void search(String searchText) {
+        if (getSearchText() != null) {
+            HttpService.HttpServiceAsync.instance().doGet(getSearchURI(getSearchText(), 0, 1000),
+                    OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+                        @Override
+                        public void onResponse(String result) {
+                            processSearchResult(result);
+                        }
+                    });
+        }
     }
 
     @Override

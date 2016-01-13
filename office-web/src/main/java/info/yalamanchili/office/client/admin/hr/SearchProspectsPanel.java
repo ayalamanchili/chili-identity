@@ -24,6 +24,7 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Button;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
@@ -32,7 +33,9 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.SearchComposite;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -47,18 +50,12 @@ public class SearchProspectsPanel extends SearchComposite {
 
     public SearchProspectsPanel() {
         init("Prospect Search", "Prospect", OfficeWelcome.constants);
-        advancedSearchDP.setOpen(true);
     }
 
     @Override
     protected void onOpenAdvancedSearch() {
         super.onOpenAdvancedSearch();
         TabPanel.instance().myOfficePanel.sidePanelTop.setHeight("100%");
-    }
-
-    @Override
-    protected void populateSearchSuggestBox() {
-
     }
 
     @Override
@@ -106,7 +103,15 @@ public class SearchProspectsPanel extends SearchComposite {
 
     @Override
     protected void search(String searchText) {
-
+        if (getSearchText() != null) {
+            HttpService.HttpServiceAsync.instance().doGet(getSearchURI(getSearchText(), 0, 1000),
+                    OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+                        @Override
+                        public void onResponse(String result) {
+                            processSearchResult(result);
+                        }
+                    });
+        }
     }
 
     @Override
@@ -129,7 +134,7 @@ public class SearchProspectsPanel extends SearchComposite {
     @Override
     protected String getSearchURI(String searchText, Integer start, Integer limit) {
         return URL.encode(OfficeWelcome.constants.root_url() + "prospect/search/" + searchText + "/" + start.toString() + "/"
-                + limit.toString());
+                + limit.toString() + "?column=contact.firstName&column=contact.lastName");
     }
 
     @Override
@@ -139,8 +144,27 @@ public class SearchProspectsPanel extends SearchComposite {
     }
 
     @Override
-    protected boolean disableRegularSearch() {
-        return true;
+    protected void populateSearchSuggestBox() {
+        Timer timer = new Timer() {
+            @Override
+            public void run() {
+                HttpService.HttpServiceAsync.instance().doGet(getnameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String entityString) {
+                        Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
+                        if (values != null) {
+                            loadSearchSuggestions(values.values());
+                        }
+                    }
+                });
+            }
+        };
+        timer.schedule(2000);
+
+    }
+
+    protected String getnameDropDownUrl() {
+        return OfficeWelcome.constants.root_url() + "prospect/search-suggestions";
     }
 
     @Override

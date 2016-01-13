@@ -67,7 +67,8 @@ public class Prospect extends AbstractEntity {
 
     @Enumerated(EnumType.STRING)
     protected PlacedBy placedBy;
-
+    
+    @Temporal(javax.persistence.TemporalType.DATE)
     protected Date dateOfJoining;
 
     public void setContact(Contact contact) {

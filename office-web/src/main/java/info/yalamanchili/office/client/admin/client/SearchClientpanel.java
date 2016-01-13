@@ -19,7 +19,6 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.SearchComposite;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.SuggestBox;
-import info.yalamanchili.office.client.admin.vendor.VendorType;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -47,7 +46,6 @@ public class SearchClientpanel extends SearchComposite {
     }
 
     protected String getnameDropDownUrl() {
-        //TODO think about the limit
         return OfficeWelcome.constants.root_url() + "client/dropdown/0/10000?column=id&column=name";
     }
 

@@ -96,10 +96,12 @@ public class ReadProspectsPanel extends ReadComposite {
         assignFieldValueFromEntity("referredBy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("processDocSentDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("petitionFiledFor", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("trfEmpType", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("placedBy", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("dateOfJoining", entity, DataType.DATE_FIELD);
+        if (ProspectStatus.CLOSED_WON.name().equals(JSONUtils.toString(getEntity(), "status"))) {
+            assignFieldValueFromEntity("petitionFiledFor", entity, DataType.ENUM_FIELD);
+            assignFieldValueFromEntity("trfEmpType", entity, DataType.ENUM_FIELD);
+            assignFieldValueFromEntity("placedBy", entity, DataType.ENUM_FIELD);
+            assignFieldValueFromEntity("dateOfJoining", entity, DataType.DATE_FIELD);
+        }
     }
 
     @Override
