@@ -104,7 +104,7 @@ public class AddressResource extends CRUDResource<Address> {
         Email email = new Email();
         email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject(" W2 Mailing Address Has Updated For :" + address.getContact().getFirstName() + " " + address.getContact().getLastName());
-        String messageText = " W2 Address for employee is : \n " + address.getStreet1() + " , " + address.getStreet2() + " \n " + address.getCity() + " , " + address.getCountry() + " , " + address.getState() + " , " + address.getZip();
+        String messageText = " W2 Address for employee is :   " + address.getStreet1() + " , " + address.getStreet2() + " , " + address.getCity() + " , " + address.getCountry() + " , " + address.getState() + " , " + address.getZip();
         email.setBody(messageText);
         MessagingService.instance().sendEmail(email);
     }
