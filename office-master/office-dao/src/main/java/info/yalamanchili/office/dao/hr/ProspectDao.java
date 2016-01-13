@@ -10,17 +10,15 @@ package info.yalamanchili.office.dao.hr;
 
 import info.chili.dao.CRUDDao;
 import info.chili.service.jrs.types.Entry;
+import info.yalamanchili.office.entity.hr.PetitionFor;
 import info.yalamanchili.office.entity.hr.Prospect;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -43,12 +41,16 @@ public class ProspectDao extends CRUDDao<Prospect> {
         return findAllQuery.getResultList();
     }
 
-    @GET
-    @Path("/search-suggestions")
-    @Transactional(propagation = Propagation.NEVER)
     public List<Entry> searchSuggestions() {
         Query findAllQuery = getEntityManager().createQuery("SELECT NEW " + Entry.class.getCanonicalName() + "(prospect.contact.id,prospect.contact.firstName,prospect.contact.lastName)" + " FROM " + Prospect.class.getCanonicalName() + " prospect)");
         return findAllQuery.getResultList();
+    }
+
+    public ProspectGraphDto graph() {
+        ProspectGraphDto dto = new ProspectGraphDto();
+        dto.getPetetionFor().put(PetitionFor.In_House, 2);
+        dto.getPetetionFor().put(PetitionFor.Client_Project, 4);
+        return dto;
     }
 
     public ProspectDao() {

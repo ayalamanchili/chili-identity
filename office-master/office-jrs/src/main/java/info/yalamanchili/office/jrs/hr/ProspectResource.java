@@ -18,10 +18,10 @@ import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.drive.FileDao;
 import info.yalamanchili.office.dao.hr.ProspectDao;
+import info.yalamanchili.office.dao.hr.ProspectGraphDto;
 import info.yalamanchili.office.dao.invite.InviteCodeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.prospect.ProspectDto;
-import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.hr.Prospect;
 import info.yalamanchili.office.entity.hr.ProspectStatus;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -142,6 +142,12 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     @CacheEvict(value = OfficeCacheKeys.PROSPECT, allEntries = true)
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
+    }
+
+    @GET
+    @Path("/graph")
+    public ProspectGraphDto graph() {
+        return prospectDao.graph();
     }
 
     @GET
