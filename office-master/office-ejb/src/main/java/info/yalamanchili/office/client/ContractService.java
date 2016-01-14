@@ -35,6 +35,7 @@ import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dto.client.ContractSearchDto;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.client.InvoiceFrequency;
+import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.profile.ClientInformationStatus;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -272,6 +273,8 @@ public class ContractService {
 
     public ContractDto mapClientInformation(ClientInformation ci) {
         ContractDto dto = mapper.map(ci, ContractDto.class);
+        Vendor vi = new Vendor();
+        BigDecimal tmp = new BigDecimal("100");
         if (ci.getEmployee() != null) {
             dto.setEmployee(ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
             dto.setEmployeeType(ci.getEmployee().getEmployeeType().getName());
@@ -283,8 +286,13 @@ public class ContractService {
             dto.setClient(ci.getClient().getName());
         }
         if (ci.getVendor() != null) {
-            dto.setVendor(ci.getVendor().getName());
+            vi = ci.getVendor();
+            dto.setVendor(vi.getName());
+            dto.setVendorFees(vi.getVendorFees());
+            BigDecimal value = BigDecimal.valueOf(vi.getVendorFees());
+            dto.setFinalBillingRate(dto.getBillingRate().subtract(value.divide(tmp).multiply(dto.getBillingRate())));
         }
+
         StringBuilder recruiters = new StringBuilder();
         for (Employee rec : ci.getRecruiters()) {
             recruiters.append(rec.getFirstName()).append(",");
@@ -378,7 +386,7 @@ public class ContractService {
                 getEffectiveOverTimePayRate1099(ci, dto);
                 getEffectiveInvoiceFrequency1099(ci, dto);
             }
-            getEffectiveBillingRate(ci, dto);
+            getEffectiveBillingRate(ci, dto, vi, tmp);
             getEffectiveOvertimeBillingRate(ci, dto);
             getEffectiveBillingInvoiceFrequency(ci, dto);
         }
@@ -395,7 +403,7 @@ public class ContractService {
         ContractTable table = getResultForReport(dto);
         String[] columnOrder = new String[]{"employee", "client", "vendor", "clientProject", "billingRate", "overTimeBillingRate", "startDate", "endDate"};
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
-        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Employees From SubContractor "+dto.getSubContractorName(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Employees From SubContractor " + dto.getSubContractorName(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
     }
 
@@ -403,7 +411,7 @@ public class ContractService {
         ContractTable table = getResultForReport(dto);
         String[] columnOrder = new String[]{"employee", "consultantJobTitle", "vendor", "billingRate", "startDate", "endDate", "subContractorName", "subcontractorPayRate"};
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
-        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Employees Working Under Client "+dto.getClient(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Employees Working Under Client " + dto.getClient(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
     }
 
@@ -411,7 +419,7 @@ public class ContractService {
         ContractTable table = getResultForReport(dto);
         String[] columnOrder = new String[]{"employee", "consultantJobTitle", "client", "billingRate", "startDate", "endDate", "subContractorName", "subcontractorPayRate"};
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
-        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Employees Working Under Vendor "+dto.getVendor(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Employees Working Under Vendor " + dto.getVendor(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
     }
 
@@ -419,7 +427,7 @@ public class ContractService {
         ContractTable table = searchContractsForRecruiter(dto, startDate, endDate);
         String[] columnOrder = new String[]{"employee", "vendor", "startDate", "endDate"};
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
-        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Employee Recruited By "+dto.getRecruiter(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Employee Recruited By " + dto.getRecruiter(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
     }
 
@@ -433,11 +441,13 @@ public class ContractService {
         return table;
     }
 
-    public void getEffectiveBillingRate(ClientInformation ci, ContractDto dto) {
+    public void getEffectiveBillingRate(ClientInformation ci, ContractDto dto, Vendor vi, BigDecimal tmp) {
         dto.setBillingRate(null);
         Query query = em.createNativeQuery("Select billingRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and billingRate is not null and effectiveDate <= NOW() order by effectiveDate desc LIMIT 1");
         for (Object obj : query.getResultList()) {
             dto.setBillingRate((BigDecimal) obj);
+            BigDecimal value = BigDecimal.valueOf(vi.getVendorFees());
+            dto.setFinalBillingRate(dto.getBillingRate().subtract(value.divide(tmp).multiply(dto.getBillingRate())));
         }
     }
 
@@ -519,7 +529,7 @@ public class ContractService {
             return null;
         }
     }
-    
+
     public ContractTable searchContractsForRecruiter(ContractSearchDto dto, Date startDate, Date endDate) {
         ContractTable table = search(dto, 0, 10000);
         List<ContractDto> tabledto = new ArrayList();
@@ -536,20 +546,20 @@ public class ContractService {
             }
             ctable.setEntities(activeCPDs(cdtos));
             return ctable;
-        }else{
+        } else {
             table.setEntities(activeCPDs(tabledto));
-           return table; 
+            return table;
         }
     }
-    
-    public List<ContractDto> activeCPDs(List<ContractDto> dtos){
+
+    public List<ContractDto> activeCPDs(List<ContractDto> dtos) {
         List<ContractDto> results = new ArrayList();
-        for(ContractDto dto : dtos){
-            if(dto.getEndDate()!=null){
-                if((dto.getEndDate().after(new Date())) || (dto.getEndDate().equals(new Date()))){
+        for (ContractDto dto : dtos) {
+            if (dto.getEndDate() != null) {
+                if ((dto.getEndDate().after(new Date())) || (dto.getEndDate().equals(new Date()))) {
                     results.add(dto);
                 }
-            }else{
+            } else {
                 results.add(dto);
             }
         }

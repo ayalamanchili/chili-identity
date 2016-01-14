@@ -56,6 +56,7 @@ public class ReadVendorsPanel extends ReadComposite {
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("vendorType", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("vendorFees", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("website", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("paymentTerms", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("vendorinvFrequency", entity, DataType.ENUM_FIELD);
@@ -74,6 +75,7 @@ public class ReadVendorsPanel extends ReadComposite {
         addField("name", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("description", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("vendorType", true, false, VendorType.names(), Alignment.HORIZONTAL);
+        addField("vendorFees", true, true, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("website", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("paymentTerms", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("vendorinvFrequency", true, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
@@ -88,7 +90,7 @@ public class ReadVendorsPanel extends ReadComposite {
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "vendor/" + entityId;
     }
-    
+
     @Override
     protected boolean enableAudit() {
         return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN);

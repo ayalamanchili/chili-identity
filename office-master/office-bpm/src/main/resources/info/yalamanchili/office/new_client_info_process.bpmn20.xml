@@ -68,6 +68,8 @@
                                        type="enum">
                     <activiti:value id="approved" name="Approved"/>
                     <activiti:value id="need client approval" name="Need Client Approval"/>
+                    <activiti:value id="ts exception list" name="TS Exception List"/>
+                    <activiti:value id="my apex approved ts" name="My Apex Approved TS"/>
                 </activiti:formProperty>
                 <activiti:formProperty id="subcontractorw4Filled" 
                                        name="SubContractor W9Filled"

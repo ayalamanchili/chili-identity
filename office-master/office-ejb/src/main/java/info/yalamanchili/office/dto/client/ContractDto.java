@@ -219,6 +219,10 @@ public class ContractDto implements Serializable {
     protected String employeeCompany;
 
     protected long employeeID;
+    
+    protected float vendorFees;
+    
+    protected BigDecimal finalBillingRate;
 
     public void setPaymentTerms1099(String paymentTerms1099) {
         this.paymentTerms1099 = paymentTerms1099;
@@ -765,6 +769,22 @@ public class ContractDto implements Serializable {
 
     public void setClientPaymentTerms(String clientPaymentTerms) {
         this.clientPaymentTerms = clientPaymentTerms;
+    }
+
+    public BigDecimal getFinalBillingRate() {
+        return finalBillingRate;
+    }
+
+    public void setFinalBillingRate(BigDecimal finalBillingRate) {
+        this.finalBillingRate = finalBillingRate;
+    }
+
+    public float getVendorFees() {
+        return vendorFees;
+    }
+
+    public void setVendorFees(float vendorFees) {
+        this.vendorFees = vendorFees;
     }
 
 

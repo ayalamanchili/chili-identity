@@ -14,15 +14,21 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.UpdateComposite;
+import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Prashanthi
  */
 public class UpdateVendorsPanel extends UpdateComposite {
+
+    private static Logger logger = Logger.getLogger(UpdateVendorsPanel.class.getName());
+    protected BooleanField submitForUpdateP = new BooleanField(OfficeWelcome.constants, "Select To Update CPD's Payment Terms", "Vendors", false, false, Alignment.HORIZONTAL);
+    protected BooleanField submitForUpdateF = new BooleanField(OfficeWelcome.constants, "Select To Update CPD's Frequency", "Vendors", false, false, Alignment.HORIZONTAL);
 
     public UpdateVendorsPanel(JSONObject entity) {
         initUpdateComposite(entity, "Vendors", OfficeWelcome.constants);
@@ -36,6 +42,7 @@ public class UpdateVendorsPanel extends UpdateComposite {
         assignEntityValueFromField("website", entity);
         assignEntityValueFromField("paymentTerms", entity);
         assignEntityValueFromField("vendorinvFrequency", entity);
+        assignEntityValueFromField("vendorFees", entity);
         return entity;
     }
 
@@ -63,6 +70,7 @@ public class UpdateVendorsPanel extends UpdateComposite {
         assignFieldValueFromEntity("website", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("paymentTerms", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("vendorinvFrequency", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("vendorFees", entity, DataType.FLOAT_FIELD);
     }
 
     @Override
@@ -76,10 +84,14 @@ public class UpdateVendorsPanel extends UpdateComposite {
 
     @Override
     protected void addListeners() {
+        submitForUpdateF.getBox().addClickHandler(this);
+        submitForUpdateP.getBox().addClickHandler(this);
     }
 
     @Override
     protected void configure() {
+        submitForUpdateF.setValue(false);
+        submitForUpdateP.setValue(false);
     }
 
     @Override
@@ -87,9 +99,12 @@ public class UpdateVendorsPanel extends UpdateComposite {
         addField("name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("vendorType", false, false, VendorType.names(), Alignment.HORIZONTAL);
+        addField("vendorFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("vendorinvFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+        entityFieldsPanel.add(submitForUpdateP);
+        entityFieldsPanel.add(submitForUpdateF);
         alignFields();
     }
 
@@ -99,6 +114,10 @@ public class UpdateVendorsPanel extends UpdateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "vendor";
+        if (submitForUpdateF.getValue() || submitForUpdateP.getValue()) {
+            return OfficeWelcome.constants.root_url() + "vendor/updatecpd" + "?submitForUpdateF=" + submitForUpdateF.getValue() +  "&submitForUpdateP=" + submitForUpdateP.getValue();
+        } else {
+            return OfficeWelcome.constants.root_url() + "vendor";
+        }
     }
 }
