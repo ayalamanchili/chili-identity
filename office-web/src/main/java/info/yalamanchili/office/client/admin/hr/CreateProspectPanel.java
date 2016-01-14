@@ -95,7 +95,6 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
             }
             entity.put("address", address);
         }
-        assignEntityValueFromField("comment", entity);
         assignEntityValueFromField("screenedBy", entity);
         assignEntityValueFromField("processDocSentDate", entity);
         assignEntityValueFromField("comment", entity);
