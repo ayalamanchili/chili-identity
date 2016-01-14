@@ -15,6 +15,7 @@ import info.chili.jpa.validation.Validate;
 import info.chili.reporting.ReportGenerator;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
+import info.yalamanchili.office.client.ContractService;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.drive.FileDao;
 import info.yalamanchili.office.dao.hr.ProspectDao;
@@ -22,6 +23,7 @@ import info.yalamanchili.office.dao.hr.ProspectGraphDto;
 import info.yalamanchili.office.dao.hr.ProspectReportDto;
 import info.yalamanchili.office.dao.invite.InviteCodeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.dto.client.ContractDto;
 import info.yalamanchili.office.dto.prospect.ProspectDto;
 import info.yalamanchili.office.entity.hr.Prospect;
 import info.yalamanchili.office.entity.hr.ProspectStatus;
@@ -29,6 +31,7 @@ import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.prospect.ProspectService;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -113,6 +116,20 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     @CacheEvict(value = OfficeCacheKeys.PROSPECT, allEntries = true)
     public Prospect update(ProspectDto prospect) {
         return prospectService.update(prospect);
+    }
+
+    @GET
+    @Path("/search-firstname")
+    @Transactional(propagation = Propagation.NEVER)
+    public List<Entry> getFirstNameDropDown() {
+        return prospectDao.searchforfirstname();
+    }
+
+    @GET
+    @Path("/search-lastname")
+    @Transactional(propagation = Propagation.NEVER)
+    public List<Entry> getLastNameDropDown() {
+        return prospectDao.searchforlastname();
     }
 
     @GET
@@ -201,7 +218,6 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
         dto.setId(p.getId());
         dto.setFirstName(p.getContact().getFirstName());
         dto.setLastName(p.getContact().getLastName());
-        dto.setScreenedBy(p.getScreenedBy());
         dto.setReferredBy(p.getReferredBy());
         dto.setStatus(p.getStatus());
         return dto;
@@ -234,35 +250,27 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
         }
     }
 
-    @GET
-    @Path("/report/{status}")
-    public void generateReport(@PathParam("status") String status) {
-        List<Prospect> prospects = prospectDao.query(0, 10000);
+    @PUT
+    @Path("/report")
+    public void generateReport(ProspectReportDto dto) {
+        List<Prospect> prospects = prospectDao.report(dto);
         List<ProspectDto> dtos = new ArrayList();
         ProspectTable table = new ProspectTable();
-        ProspectDto dto = null;
+        ProspectDto pdto = null;
         for (Prospect prospect : prospects) {
-            if (prospect.getStatus().name().equals(status)) {
-                dto = ProspectDto.map(mapper, prospect);
-                if (!prospect.getStatus().equals(ProspectStatus.CLOSED_WON)) {
-                    dto.setDateOfJoining(null);
-                    dto.setPlacedby(null);
-                    dto.setTrfEmptype(null);
-                    dto.setPetitionFor(null);
-                }
-                dtos.add(dto);
+            pdto = ProspectDto.map(mapper, prospect);
+            if (!prospect.getStatus().equals(ProspectStatus.CLOSED_WON)) {
+                pdto.setDateOfJoining(null);
+                pdto.setPlacedby(null);
+                pdto.setTrfEmptype(null);
+                pdto.setPetitionFor(null);
             }
+            dtos.add(pdto);
         }
         table.setEntities(dtos);
         String[] columnOrder = new String[]{"employee", "dateOfBirth", "gender", "email", "phoneNumber", "referredBy", "screenedBy", "petitionFor", "placedby", "trfEmptype", "dateOfJoining"};
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
-        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Prospects " + status.toLowerCase() + " Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Prospects Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
-    }
-
-    @PUT
-    @Path("/report")
-    public void generateReport(ProspectReportDto dto) {
-        prospectDao.report(dto);
     }
 }
