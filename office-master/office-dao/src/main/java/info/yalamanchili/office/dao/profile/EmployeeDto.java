@@ -7,9 +7,7 @@
  */
 package info.yalamanchili.office.dao.profile;
 
-import info.chili.commons.BeanMapper;
 import info.chili.security.SecurityUtils;
-import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.profile.Branch;
 import info.yalamanchili.office.entity.profile.EmployeeType;

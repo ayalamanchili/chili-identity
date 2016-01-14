@@ -24,8 +24,6 @@ import info.yalamanchili.office.dto.profile.ContactDto;
 import info.yalamanchili.office.dto.profile.ContactDto.ContactDtoTable;
 import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.profile.Address;
-import info.yalamanchili.office.entity.profile.BillingRate;
-import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
@@ -34,8 +32,6 @@ import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
 import info.yalamanchili.office.mapper.profile.ContactMapper;
 import info.yalamanchili.office.profile.ContactService;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -53,7 +49,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -109,32 +104,10 @@ public class VendorResource extends CRUDResource<Vendor> {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
     @Validate
     @CacheEvict(value = OfficeCacheKeys.VENDOR, allEntries = true)
-    @Async
     public Vendor update(Vendor vendor, @QueryParam("submitForUpdateF") Boolean submitForUpdateF, @QueryParam("submitForUpdateP") Boolean submitForUpdateP) {
-        TypedQuery<ClientInformation> q = em.createQuery("from " + ClientInformation.class.getCanonicalName() + " WHERE vendor_id=:vendorIdParam)", ClientInformation.class);
-        q.setParameter("vendorIdParam", vendor.getId());
-        Employee updatedByEmp = OfficeSecurityService.instance().getCurrentUser();
-        if (submitForUpdateP || submitForUpdateF) {
-            for (ClientInformation ci : q.getResultList()) {
-                if (submitForUpdateP) {
-                    ci.setVendorPaymentTerms(vendor.getPaymentTerms());
-                }
-                if (submitForUpdateF) {
-                    if (!ci.getInvoiceFrequency().equals(vendor.getVendorinvFrequency())) {
-                        ci.setInvoiceFrequency(vendor.getVendorinvFrequency());
-                        BillingRate br = new BillingRate();
-                        br.setClientInformation(ci);
-                        br.setBillingInvoiceFrequency(vendor.getVendorinvFrequency());
-                        //br.setUpdatedBy(updatedByEmp.getFirstName() + " " + updatedByEmp.getLastName());
-                        br.setUpdatedTs(Calendar.getInstance().getTime());
-                        br.setEffectiveDate(new Date());
-                        em.merge(br);
-                    }
-                }
-                em.merge(ci);
-            }
-        }
-        return super.save(vendor);
+        vendor = super.save(vendor);
+        vendorDao.updateExistingClientInformations(vendor, submitForUpdateF, submitForUpdateP, OfficeSecurityService.instance().getCurrentUserName());
+        return vendor;
     }
 
     @PUT
