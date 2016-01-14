@@ -10,6 +10,8 @@ package info.yalamanchili.office.dao.hr;
 
 import info.yalamanchili.office.entity.hr.ProspectStatus;
 import java.util.Date;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
