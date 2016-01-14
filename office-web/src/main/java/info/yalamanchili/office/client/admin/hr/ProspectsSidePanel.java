@@ -34,10 +34,10 @@ public class ProspectsSidePanel extends ALComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(ProspectsSidePanel.class.getName());
     public FlowPanel sidepanel = new FlowPanel();
-    Button prospectsReportB = new Button("Report");
-    EnumField statusF = new EnumField(OfficeWelcome.constants, "status", "Prospect", false, false, ProspectStatus.names(), Alignment.HORIZONTAL);
-    DateField startDateF = new DateField(OfficeWelcome.constants, "FromDate", "", false, false);
-    DateField endDateF = new DateField(OfficeWelcome.constants, "ToDate", "", false, false);
+    Button prospectsReportB = new Button("Reports");
+    EnumField statusF = new EnumField(OfficeWelcome.constants, "status", "Prospect", false, false, ProspectStatus.names(), Alignment.VERTICAL);
+    DateField startDateF = new DateField(OfficeWelcome.constants, "joiningDateTo", "Prospect", false, false, Alignment.VERTICAL);
+    DateField endDateF = new DateField(OfficeWelcome.constants, "joiningDateFrom", "Prospect", false, false, Alignment.VERTICAL);
 
     public ProspectsSidePanel() {
         init(sidepanel);

@@ -30,6 +30,7 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.SearchComposite;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.widgets.SuggestBox;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -116,7 +117,11 @@ public class SearchProspectsPanel extends SearchComposite {
 
     @Override
     protected void search(String searchText) {
-        if (getSearchText() != null) {
+        if (getKey() == null) {
+            clearSearch();
+            new ResponseStatusWidget().show("No prospect seleceted");
+
+        } else {
             HttpService.HttpServiceAsync.instance().doGet(getSearchURI(getSearchText(), 0, 1000),
                     OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
                         @Override

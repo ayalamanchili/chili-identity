@@ -59,7 +59,6 @@ public class ProspectDao extends CRUDDao<Prospect> {
     }
 
     public List<Prospect> report(ProspectReportDto dto) {
-//TODO implement report
         String searchQuery = getSearchQuery(dto);
         TypedQuery<Prospect> query = em.createQuery(searchQuery, Prospect.class);
         if (dto.getJoiningDateFrom() != null) {
