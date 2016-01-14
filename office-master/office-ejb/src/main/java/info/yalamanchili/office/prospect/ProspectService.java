@@ -22,6 +22,7 @@ import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Phone;
+import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.dozer.Mapper;
@@ -36,27 +37,28 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class ProspectService {
-
+    
     @PersistenceContext
     protected EntityManager em;
     @Autowired
     protected Mapper mapper;
-
+    
     @Autowired
     protected ProspectDao prospectDao;
-
+    
     public ProspectDto save(ProspectDto dto) {
         if (ContactDao.instance().findByEmail(dto.getEmail()) != null) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "email.alreday.exist", "Contact Already Exist With The Same Email");
         }
         Prospect entity = mapper.map(dto, Prospect.class);
+        entity.setStartDate(new Date());
         entity.setStatus(ProspectStatus.IN_PROGRESS);
         Contact contact = new Contact();
         contact.setFirstName(dto.getFirstName());
         contact.setLastName(dto.getLastName());
         contact.setDateOfBirth(dto.getDateOfBirth());
         contact.setSex(dto.getSex());
-
+        
         if (!Strings.isNullOrEmpty(dto.getEmail())) {
             Email email = new Email();
             email.setEmail(dto.getEmail());
@@ -112,7 +114,7 @@ public class ProspectService {
         dto.setId(entity.getId());
         return dto;
     }
-
+    
     public ProspectDto read(Long id) {
         Prospect ec = prospectDao.findById(id);
         ProspectDto dto = ProspectDto.map(mapper, ec);
@@ -135,10 +137,10 @@ public class ProspectService {
             dto.setTrfEmpType(null);
             dto.setPetitionFiledFor(null);
         }
-
+        
         return dto;
     }
-
+    
     public ProspectDto clone(Long id) {
         Prospect entity = prospectDao.clone(id);
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
@@ -146,11 +148,11 @@ public class ProspectService {
         ProspectDto res = ProspectDto.map(mapper, entity);
         return res;
     }
-
+    
     public static ProspectService instance() {
         return SpringContext.getBean(ProspectService.class);
     }
-
+    
     public Prospect update(ProspectDto dto) {
         Prospect entity = prospectDao.findById(dto.getId());
         if (entity.getStatus() == null) {
@@ -179,7 +181,7 @@ public class ProspectService {
             if (dto.getPetitionFiledFor() != null) {
                 entity.setPetitionFiledFor(dto.getPetitionFiledFor());
             }
-        }else{
+        } else {
             dto.setDateOfJoining(null);
             dto.setTrfEmpType(null);
             dto.setPlacedBy(null);

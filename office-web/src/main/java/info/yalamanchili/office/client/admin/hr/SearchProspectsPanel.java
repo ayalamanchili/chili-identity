@@ -104,11 +104,11 @@ public class SearchProspectsPanel extends SearchComposite {
         if (getSearchText() != null) {
             HttpService.HttpServiceAsync.instance().doGet(getSearchURI(getSearchText(), 0, 1000),
                     OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                        @Override
-                        public void onResponse(String result) {
-                            processSearchResult(result);
-                        }
-                    });
+                @Override
+                public void onResponse(String result) {
+                    processSearchResult(result);
+                }
+            });
         }
     }
 
@@ -116,11 +116,11 @@ public class SearchProspectsPanel extends SearchComposite {
     protected void search(JSONObject entity) {
         HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 10), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        processSearchResult(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                processSearchResult(result);
+            }
+        });
     }
 
     @Override
@@ -131,8 +131,7 @@ public class SearchProspectsPanel extends SearchComposite {
 
     @Override
     protected String getSearchURI(String searchText, Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "prospect/search/" + searchText + "/" + start.toString() + "/"
-                + limit.toString() + "?column=contact.firstName&column=contact.lastName");
+        return URL.encode(OfficeWelcome.constants.root_url() + "prospect/search/" + getKey());
     }
 
     @Override
@@ -149,8 +148,9 @@ public class SearchProspectsPanel extends SearchComposite {
                 HttpService.HttpServiceAsync.instance().doGet(getnameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String entityString) {
-                        Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
+                        Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
                         if (values != null) {
+                            suggestionsMap = values;
                             loadSearchSuggestions(values.values());
                         }
                     }
@@ -175,11 +175,11 @@ public class SearchProspectsPanel extends SearchComposite {
                 String reportUrl = OfficeWelcome.instance().constants.root_url() + "prospect/report/" + statusF.getValue();
                 HttpService.HttpServiceAsync.instance().doGet(reportUrl, OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
-                            @Override
-                            public void onResponse(String result) {
-                                new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
-                            }
-                        });
+                    @Override
+                    public void onResponse(String result) {
+                        new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
+                    }
+                });
             }
         }
         super.onClick(event);

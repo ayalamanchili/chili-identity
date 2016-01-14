@@ -19,6 +19,7 @@ import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.drive.FileDao;
 import info.yalamanchili.office.dao.hr.ProspectDao;
 import info.yalamanchili.office.dao.hr.ProspectGraphDto;
+import info.yalamanchili.office.dao.hr.ProspectReportDto;
 import info.yalamanchili.office.dao.invite.InviteCodeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.prospect.ProspectDto;
@@ -172,15 +173,12 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     }
 
     @GET
-    @Path("/search/{searchText}/{start}/{limit}")
+    @Path("/search/{prospectId}")
     @Transactional(propagation = Propagation.NEVER)
-    @Override
-    public List<ProspectDto> search(@PathParam("searchText") String searchText, @PathParam("start") int start,
+    public List<ProspectDto> search(@PathParam("prospectId") Long prospectId, @PathParam("start") int start,
             @PathParam("limit") int limit, @QueryParam("column") List<String> columns) {
         List<ProspectDto> res = new ArrayList();
-        for (Object p : getDao().sqlSearch(searchText, start, limit, columns, true)) {
-            res.add(map((Prospect) p));
-        }
+        res.add(map((Prospect) prospectDao.findById(prospectId)));
         return res;
     }
 
@@ -200,6 +198,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
 
     protected ProspectDto map(Prospect p) {
         ProspectDto dto = new ProspectDto();
+        dto.setId(p.getId());
         dto.setFirstName(p.getContact().getFirstName());
         dto.setLastName(p.getContact().getLastName());
         dto.setScreenedBy(p.getScreenedBy());
@@ -259,5 +258,11 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
         String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Prospects " + status.toLowerCase() + " Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
+    }
+
+    @PUT
+    @Path("/report")
+    public void generateReport(ProspectReportDto dto) {
+        prospectDao.report(dto);
     }
 }

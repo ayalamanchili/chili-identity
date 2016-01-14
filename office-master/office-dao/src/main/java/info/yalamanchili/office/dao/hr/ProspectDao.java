@@ -42,14 +42,19 @@ public class ProspectDao extends CRUDDao<Prospect> {
     }
 
     public List<Entry> searchSuggestions() {
-        Query findAllQuery = getEntityManager().createQuery("SELECT NEW " + Entry.class.getCanonicalName() + "(prospect.contact.id,prospect.contact.firstName,prospect.contact.lastName)" + " FROM " + Prospect.class.getCanonicalName() + " prospect)");
+        Query findAllQuery = getEntityManager().createQuery("SELECT NEW " + Entry.class.getCanonicalName() + "(prospect.id,prospect.contact.firstName,prospect.contact.lastName)" + " FROM " + Prospect.class.getCanonicalName() + " prospect)");
         return findAllQuery.getResultList();
+    }
+
+    public void report(ProspectReportDto dto) {
+//TODO implement report
     }
 
     public ProspectGraphDto graph() {
         ProspectGraphDto dto = new ProspectGraphDto();
         dto.getPetetionFor().put(PetitionFor.In_House, 2);
         dto.getPetetionFor().put(PetitionFor.Client_Project, 4);
+        //TODO implement this
         return dto;
     }
 
