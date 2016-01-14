@@ -186,6 +186,10 @@ public class ProspectService {
             dto.setTrfEmpType(null);
             dto.setPlacedBy(null);
             dto.setPetitionFiledFor(null);
+            entity.setDateOfJoining(null);
+            entity.setTrfEmpType(null);
+            entity.setPlacedBy(null);
+            entity.setPetitionFiledFor(null);
         }
         if (dto.getComment() != null) {
             CommentDao.instance().addComment(dto.getComment(), entity);
