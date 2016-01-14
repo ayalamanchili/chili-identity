@@ -12,11 +12,13 @@ import info.chili.jpa.validation.Unique;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -37,9 +39,10 @@ import org.hibernate.validator.constraints.NotEmpty;
         = @UniqueConstraint(columnNames = {"name"}))
 @Unique(entity = Subcontractor.class, fields = {"name"}, message = "{subcontractor.name.not.unique.msg}")
 public class Subcontractor extends AbstractEntity {
+
     @Transient
     private static final long serialVersionUID = 1L;
-    
+
     /**
      * sub contractor name
      */
@@ -60,8 +63,19 @@ public class Subcontractor extends AbstractEntity {
      */
     @ManyToMany(cascade = CascadeType.ALL)
     protected List<Address> locations;
-    
+
     protected String website;
+
+    @Temporal(javax.persistence.TemporalType.DATE)
+    protected Date coiEndDate;
+
+    public Date getCoiEndDate() {
+        return coiEndDate;
+    }
+
+    public void setCoiEndDate(Date coiEndDate) {
+        this.coiEndDate = coiEndDate;
+    }
 
     public String getName() {
         return name;
@@ -124,5 +138,5 @@ public class Subcontractor extends AbstractEntity {
     public void setWebsite(String website) {
         this.website = website;
     }
-    
+
 }

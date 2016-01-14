@@ -54,6 +54,7 @@ public class ReadSubcontractorPanel extends ReadComposite {
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("website", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("coiEndDate", entity, DataType.DATE_FIELD);
     }
 
     @Override
@@ -69,6 +70,7 @@ public class ReadSubcontractorPanel extends ReadComposite {
         addField("name", true, false, DataType.STRING_FIELD);
         addField("description", true, false, DataType.STRING_FIELD);
         addField("website", true, false, DataType.STRING_FIELD);
+        addField("coiEndDate", true, false, DataType.DATE_FIELD);
     }
 
     @Override
@@ -79,7 +81,7 @@ public class ReadSubcontractorPanel extends ReadComposite {
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "subcontractor/" + entityId;
     }
-    
+
     @Override
     protected boolean enableAudit() {
         return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN);

@@ -38,6 +38,7 @@ public class CreateSubcontractorPanel extends CreateComposite {
         assignEntityValueFromField("name", entity);
         assignEntityValueFromField("description", entity);
         assignEntityValueFromField("website", entity);
+        assignEntityValueFromField("coiEndDate", entity);
         logger.info(entity.toString());
         return entity;
     }
@@ -86,6 +87,7 @@ public class CreateSubcontractorPanel extends CreateComposite {
         addField("name", false, true, DataType.STRING_FIELD);
         addField("description", false, false, DataType.STRING_FIELD);
         addField("website", false, false, DataType.STRING_FIELD);
+        addField("coiEndDate", false, false, DataType.DATE_FIELD);
     }
 
     @Override
