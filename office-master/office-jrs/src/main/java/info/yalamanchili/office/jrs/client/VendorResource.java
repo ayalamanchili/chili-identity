@@ -125,7 +125,7 @@ public class VendorResource extends CRUDResource<Vendor> {
                         BillingRate br = new BillingRate();
                         br.setClientInformation(ci);
                         br.setBillingInvoiceFrequency(vendor.getVendorinvFrequency());
-                        br.setUpdatedBy(updatedByEmp.getFirstName() + " " + updatedByEmp.getLastName());
+                        //br.setUpdatedBy(updatedByEmp.getFirstName() + " " + updatedByEmp.getLastName());
                         br.setUpdatedTs(Calendar.getInstance().getTime());
                         br.setEffectiveDate(new Date());
                         em.merge(br);

@@ -11,7 +11,6 @@ import info.chili.jpa.AbstractEntity;
 import info.chili.jpa.validation.Unique;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -90,7 +89,7 @@ public class Vendor extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     protected InvoiceFrequency vendorinvFrequency;
     
-    protected float vendorFees;
+    protected Float vendorFees;
 
     public String getName() {
         return name;
@@ -209,14 +208,13 @@ public class Vendor extends AbstractEntity {
         this.vendorinvFrequency = vendorinvFrequency;
     }
 
-    public float getVendorFees() {
+    public Float getVendorFees() {
         return vendorFees;
     }
 
-    public void setVendorFees(float vendorFees) {
+    public void setVendorFees(Float vendorFees) {
         this.vendorFees = vendorFees;
     }
-
 
     @Override
     public String toString() {

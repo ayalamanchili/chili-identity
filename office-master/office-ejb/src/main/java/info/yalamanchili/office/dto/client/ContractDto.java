@@ -220,7 +220,7 @@ public class ContractDto implements Serializable {
 
     protected long employeeID;
     
-    protected float vendorFees;
+    protected Float vendorFees;
     
     protected BigDecimal finalBillingRate;
 
@@ -779,14 +779,13 @@ public class ContractDto implements Serializable {
         this.finalBillingRate = finalBillingRate;
     }
 
-    public float getVendorFees() {
+    public Float getVendorFees() {
         return vendorFees;
     }
 
-    public void setVendorFees(float vendorFees) {
+    public void setVendorFees(Float vendorFees) {
         this.vendorFees = vendorFees;
     }
-
 
     @XmlRootElement
     @XmlType

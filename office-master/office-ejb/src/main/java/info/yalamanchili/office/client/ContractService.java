@@ -46,7 +46,6 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.persistence.Query;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
@@ -274,7 +273,7 @@ public class ContractService {
     public ContractDto mapClientInformation(ClientInformation ci) {
         ContractDto dto = mapper.map(ci, ContractDto.class);
         Vendor vi = new Vendor();
-        BigDecimal tmp = new BigDecimal("100");
+        BigDecimal tmp = new BigDecimal(100);
         if (ci.getEmployee() != null) {
             dto.setEmployee(ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
             dto.setEmployeeType(ci.getEmployee().getEmployeeType().getName());
@@ -289,7 +288,7 @@ public class ContractService {
             vi = ci.getVendor();
             dto.setVendor(vi.getName());
             dto.setVendorFees(vi.getVendorFees());
-            BigDecimal value = BigDecimal.valueOf(vi.getVendorFees());
+            BigDecimal value = new BigDecimal(vi.getVendorFees());
             dto.setFinalBillingRate(dto.getBillingRate().subtract(value.divide(tmp).multiply(dto.getBillingRate())));
         }
 
@@ -446,7 +445,7 @@ public class ContractService {
         Query query = em.createNativeQuery("Select billingRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and billingRate is not null and effectiveDate <= NOW() order by effectiveDate desc LIMIT 1");
         for (Object obj : query.getResultList()) {
             dto.setBillingRate((BigDecimal) obj);
-            BigDecimal value = BigDecimal.valueOf(vi.getVendorFees());
+            BigDecimal value = new BigDecimal(vi.getVendorFees());
             dto.setFinalBillingRate(dto.getBillingRate().subtract(value.divide(tmp).multiply(dto.getBillingRate())));
         }
     }
