@@ -72,8 +72,15 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
                     public void onResponse(String response) {
                         logger.info(response);
                         entity = (JSONObject) JSONParser.parseLenient(response);
-                        if (ProspectStatus.CLOSED_WON.name().equals(JSONUtils.toString(getEntity(), "status"))) {
-                            addProspectWonFields();
+                        if (entity.get("id") != null) {
+                            entityFieldsPanel.add(getLineSeperatorTag("Status Information"));
+                            addEnumField("status", false, false, ProspectStatus.names(), Alignment.HORIZONTAL);
+                            statusField = (EnumField) fields.get("status");
+                            statusField.listBox.addChangeHandler(instance);
+                            alignFields();
+                            if (ProspectStatus.CLOSED_WON.name().equals(JSONUtils.toString(getEntity(), "status"))) {
+                                addProspectWonFields();
+                            }
                         }
                         populateFieldsFromEntity(entity);
                         populateComments();
@@ -188,7 +195,9 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         assignFieldValueFromEntity("referredBy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("screenedBy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("processDocSentDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
+        if (entity.get("id") != null) {
+            assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
+        }
         if (ProspectStatus.CLOSED_WON.name().equals(JSONUtils.toString(getEntity(), "status"))) {
             assignFieldValueFromEntity("petitionFiledFor", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("trfEmpType", entity, DataType.ENUM_FIELD);
@@ -248,12 +257,8 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         addField("screenedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("processDocSentDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(resumeUploadPanel);
-        entityFieldsPanel.add(getLineSeperatorTag("Status Information"));
-        addEnumField("status", false, false, ProspectStatus.names(), Alignment.HORIZONTAL);
         statesF = (EnumField) fields.get("state");
         countriesF = (EnumField) fields.get("country");
-        statusField = (EnumField) fields.get("status");
-        statusField.listBox.addChangeHandler(this);
         alignFields();
     }
 
