@@ -273,7 +273,6 @@ public class ContractService {
     public ContractDto mapClientInformation(ClientInformation ci) {
         ContractDto dto = mapper.map(ci, ContractDto.class);
         Vendor vi = new Vendor();
-        BigDecimal tmp = new BigDecimal(100);
         if (ci.getEmployee() != null) {
             dto.setEmployee(ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
             dto.setEmployeeType(ci.getEmployee().getEmployeeType().getName());
@@ -289,7 +288,7 @@ public class ContractService {
             dto.setVendor(vi.getName());
             dto.setVendorFees(vi.getVendorFees());
             BigDecimal value = new BigDecimal(vi.getVendorFees());
-            dto.setFinalBillingRate(dto.getBillingRate().subtract(value.divide(tmp).multiply(dto.getBillingRate())));
+            dto.setFinalBillingRate(dto.getBillingRate().subtract(value.divide(new BigDecimal(100)).multiply(dto.getBillingRate())));
         }
 
         StringBuilder recruiters = new StringBuilder();
@@ -385,7 +384,7 @@ public class ContractService {
                 getEffectiveOverTimePayRate1099(ci, dto);
                 getEffectiveInvoiceFrequency1099(ci, dto);
             }
-            getEffectiveBillingRate(ci, dto, vi, tmp);
+            getEffectiveBillingRate(ci, dto, vi);
             getEffectiveOvertimeBillingRate(ci, dto);
             getEffectiveBillingInvoiceFrequency(ci, dto);
         }
@@ -440,13 +439,13 @@ public class ContractService {
         return table;
     }
 
-    public void getEffectiveBillingRate(ClientInformation ci, ContractDto dto, Vendor vi, BigDecimal tmp) {
+    public void getEffectiveBillingRate(ClientInformation ci, ContractDto dto, Vendor vi) {
         dto.setBillingRate(null);
         Query query = em.createNativeQuery("Select billingRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and billingRate is not null and effectiveDate <= NOW() order by effectiveDate desc LIMIT 1");
         for (Object obj : query.getResultList()) {
             dto.setBillingRate((BigDecimal) obj);
             BigDecimal value = new BigDecimal(vi.getVendorFees());
-            dto.setFinalBillingRate(dto.getBillingRate().subtract(value.divide(tmp).multiply(dto.getBillingRate())));
+            dto.setFinalBillingRate(dto.getBillingRate().subtract(value.divide(new BigDecimal(100)).multiply(dto.getBillingRate())));
         }
     }
 
