@@ -159,11 +159,11 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
         super.delete(id);
     }
 
-    @GET
-    @Path("/graph")
-    public ProspectGraphDto graph() {
-        return prospectDao.graph();
-    }
+//    @PUT
+//    @Path("/graph")
+//    public List<Entry> graph(ProspectReportDto dto) {
+//        return prospectDao.graph(dto);
+//    }
 
     @GET
     @Path("/email-info/{id}")

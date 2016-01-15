@@ -10,6 +10,7 @@ package info.yalamanchili.office.jrs;
 import info.yalamanchili.office.Time.AssociateTimeAccuralService;
 import info.yalamanchili.office.Time.CorporateTimeAccuralService;
 import info.yalamanchili.office.Time.TimeJobService;
+import info.yalamanchili.office.dao.client.ClientDao;
 import info.yalamanchili.office.dao.message.NotificationGroupDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.SkillSetDao;
@@ -28,6 +29,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class OfficeServiceJobConfiguration {
+
+    @ManagedOperation
+    public void clientLocationReport() {
+        ClientDao.instance().clientWithAddressReport();
+    }
 
     @ManagedOperation
     public void processMonthlyTimeAccrual() {
@@ -108,7 +114,6 @@ public class OfficeServiceJobConfiguration {
     public void receiveEmails() {
         ReceiveEmailsService.instance().processNewMessages();
     }
-
 
     @ManagedOperation
     public void addCarryForwardHoursForIndiaTeam() {

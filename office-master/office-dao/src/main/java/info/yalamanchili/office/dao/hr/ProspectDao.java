@@ -9,16 +9,19 @@
 package info.yalamanchili.office.dao.hr;
 
 import com.google.common.base.Strings;
+import com.google.gson.Gson;
 import info.chili.dao.CRUDDao;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.entity.hr.PetitionFor;
 import info.yalamanchili.office.entity.hr.Prospect;
+import java.util.HashMap;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
+import org.activiti.engine.impl.util.json.JSONObject;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,12 +50,12 @@ public class ProspectDao extends CRUDDao<Prospect> {
         Query findAllQuery = getEntityManager().createQuery("SELECT NEW " + Entry.class.getCanonicalName() + "(prospect.id,prospect.contact.firstName,prospect.contact.lastName)" + " FROM " + Prospect.class.getCanonicalName() + " prospect)");
         return findAllQuery.getResultList();
     }
-    
+
     public List<Entry> searchforfirstname() {
         Query findAllQuery = getEntityManager().createQuery("SELECT NEW " + Entry.class.getCanonicalName() + "(prospect.id,prospect.contact.firstName)" + " FROM " + Prospect.class.getCanonicalName() + " prospect)");
         return findAllQuery.getResultList();
     }
-    
+
     public List<Entry> searchforlastname() {
         Query findAllQuery = getEntityManager().createQuery("SELECT NEW " + Entry.class.getCanonicalName() + "(prospect.id,prospect.contact.lastName)" + " FROM " + Prospect.class.getCanonicalName() + " prospect)");
         return findAllQuery.getResultList();
@@ -87,12 +90,25 @@ public class ProspectDao extends CRUDDao<Prospect> {
         return queryStr.toString().substring(0, queryStr.toString().lastIndexOf("and"));
     }
 
-    public ProspectGraphDto graph() {
-        ProspectGraphDto dto = new ProspectGraphDto();
-        dto.getPetetionFor().put(PetitionFor.In_House, 2);
-        dto.getPetetionFor().put(PetitionFor.Client_Project, 4);
+    public JSONObject graph(ProspectReportDto dto) {
+        Gson gson = new Gson();
+        HashMap<String, String> map = new HashMap();
+        int petetionforInHouseCount = 0;
+        int petetionforClientProjectCount = 0;
+        //TODO do similar for other enumerations
+        for (Prospect p : report(dto)) {
+            if (PetitionFor.In_House.equals(p.getPetitionFieldFor())) {
+                petetionforInHouseCount++;
+            }
+            if (PetitionFor.Client_Project.equals(p.getPetitionFieldFor())) {
+                petetionforClientProjectCount++;
+            }
+        }
+
+//        res.getPetetionFor().put(PetitionFor.In_House, petetionforInHouseCount);
+//        res.getPetetionFor().put(PetitionFor.Client_Project, petetionforClientProjectCount);
         //TODO implement this
-        return dto;
+        return null;
     }
 
     public ProspectDao() {

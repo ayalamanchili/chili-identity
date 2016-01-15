@@ -9,7 +9,12 @@ package info.yalamanchili.office.dao.client;
 
 import info.chili.spring.SpringContext;
 import info.chili.dao.CRUDDao;
+import info.chili.reporting.ReportGenerator;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.entity.client.Client;
+import info.yalamanchili.office.entity.profile.Address;
+import info.yalamanchili.office.jms.MessagingService;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -41,7 +46,25 @@ public class ClientDao extends CRUDDao<Client> {
     public static ClientDao instance() {
         return SpringContext.getBean(ClientDao.class);
     }
-    
+
+    @Transactional
+    public void clientWithAddressReport() {
+        List<ClientLocationDto> res = new ArrayList();
+        for (Client c : query(0, 2000)) {
+            ClientLocationDto dto = new ClientLocationDto();
+            dto.setClientName(c.getName());
+            for (Address a : c.getLocations()) {
+                dto.setStreet1(a.getStreet1());
+                dto.setCity(a.getCity());
+                dto.setState(a.getState());
+                break;
+            }
+            res.add(dto);
+        }
+        String[] columnOrder = new String[]{"clientName", "street1", "city", "state"};
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Client Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), OfficeServiceConfiguration.instance().getAdminEmail());
+    }
+
     @Transactional(readOnly = true)
     @Override
     public List<Client> query(int start, int limit) {
