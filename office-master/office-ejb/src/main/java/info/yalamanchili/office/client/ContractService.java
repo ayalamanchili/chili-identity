@@ -287,8 +287,10 @@ public class ContractService {
             vi = ci.getVendor();
             dto.setVendor(vi.getName());
             dto.setVendorFees(vi.getVendorFees());
-            BigDecimal value = new BigDecimal(vi.getVendorFees());
-            dto.setFinalBillingRate(dto.getBillingRate().subtract(value.divide(new BigDecimal(100)).multiply(dto.getBillingRate())));
+            if (vi.getVendorFees() != null && vi.getVendorFees() > 0) {
+                BigDecimal value = new BigDecimal(vi.getVendorFees());
+                dto.setFinalBillingRate(dto.getBillingRate().subtract(value.divide(new BigDecimal(100)).multiply(dto.getBillingRate())));
+            }
         }
 
         StringBuilder recruiters = new StringBuilder();
@@ -444,8 +446,10 @@ public class ContractService {
         Query query = em.createNativeQuery("Select billingRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and billingRate is not null and effectiveDate <= NOW() order by effectiveDate desc LIMIT 1");
         for (Object obj : query.getResultList()) {
             dto.setBillingRate((BigDecimal) obj);
-            BigDecimal value = new BigDecimal(vi.getVendorFees());
-            dto.setFinalBillingRate(dto.getBillingRate().subtract(value.divide(new BigDecimal(100)).multiply(dto.getBillingRate())));
+            if (vi.getVendorFees() != null && vi.getVendorFees() > 0) {
+                BigDecimal value = new BigDecimal(vi.getVendorFees());
+                dto.setFinalBillingRate(dto.getBillingRate().subtract(value.divide(new BigDecimal(100)).multiply(dto.getBillingRate())));
+            }
         }
     }
 

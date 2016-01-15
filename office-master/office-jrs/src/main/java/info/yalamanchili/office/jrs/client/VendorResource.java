@@ -17,6 +17,7 @@ import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.client.VendorDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
+import info.yalamanchili.office.dao.profile.BillingRateDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
@@ -24,14 +25,19 @@ import info.yalamanchili.office.dto.profile.ContactDto;
 import info.yalamanchili.office.dto.profile.ContactDto.ContactDtoTable;
 import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.profile.Address;
+import info.yalamanchili.office.entity.profile.BillingRate;
+import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
 import info.yalamanchili.office.mapper.profile.ContactMapper;
 import info.yalamanchili.office.profile.ContactService;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -107,7 +113,48 @@ public class VendorResource extends CRUDResource<Vendor> {
     public Vendor update(Vendor vendor, @QueryParam("submitForUpdateF") Boolean submitForUpdateF, @QueryParam("submitForUpdateP") Boolean submitForUpdateP) {
         vendor = super.save(vendor);
         if (submitForUpdateP || submitForUpdateF) {
-            vendorDao.updateExistingClientInformations(vendor, submitForUpdateF, submitForUpdateP, OfficeSecurityService.instance().getCurrentUserName());
+            //vendorDao.updateExistingClientInformations(vendor, submitForUpdateF, submitForUpdateP, OfficeSecurityService.instance().getCurrentUserName());
+            Employee emp = OfficeSecurityService.instance().getCurrentUser();
+            String submittedBy = emp.getFirstName() + " " + emp.getLastName();
+            TypedQuery<ClientInformation> q = em.createQuery("from " + ClientInformation.class.getCanonicalName() + " WHERE vendor_id=:vendorIdParam)", ClientInformation.class);
+            q.setParameter("vendorIdParam", vendor.getId());
+            for (ClientInformation ci : q.getResultList()) {
+                if (submitForUpdateP) {
+                    ci.setVendorPaymentTerms(vendor.getPaymentTerms());
+                }
+                if (submitForUpdateF) {
+                    if (!ci.getInvoiceFrequency().equals(vendor.getVendorinvFrequency())) {
+                        if (ci.getBillingRates().isEmpty()) {
+                            BillingRate firstBillingRate = new BillingRate();
+                            firstBillingRate.setBillingRate(ci.getBillingRate());
+                            firstBillingRate.setOverTimeBillingRate(ci.getOverTimeBillingRate());
+                            firstBillingRate.setBillingInvoiceFrequency(ci.getInvoiceFrequency());
+                            if (emp.getEmployeeType().getName().equals(EmployeeType.SUBCONTRACTOR)) {
+                                firstBillingRate.setSubContractorPayRate(ci.getSubcontractorPayRate());
+                                firstBillingRate.setSubContractorOverTimePayRate(ci.getSubcontractorOvertimePayRate());
+                                firstBillingRate.setSubContractorInvoiceFrequency(ci.getSubcontractorinvoiceFrequency());
+                            }
+                            if (emp.getEmployeeType().getName().equals(EmployeeType._1099_CONTRACTOR)) {
+                                firstBillingRate.setSubContractorPayRate(ci.getPayRate1099());
+                                firstBillingRate.setSubContractorOverTimePayRate(ci.getOverTimePayrate1099());
+                                firstBillingRate.setSubContractorInvoiceFrequency(ci.getInvoiceFrequency1099());
+                            }
+                            firstBillingRate.setEffectiveDate(ci.getStartDate());
+                            firstBillingRate.setClientInformation(ci);
+                            em.merge(firstBillingRate);
+                        }
+                        ci.setInvoiceFrequency(vendor.getVendorinvFrequency());
+                        BillingRate br = new BillingRate();
+                        br.setClientInformation(ci);
+                        br.setBillingInvoiceFrequency(vendor.getVendorinvFrequency());
+                        br.setUpdatedBy(submittedBy);
+                        br.setUpdatedTs(Calendar.getInstance().getTime());
+                        br.setEffectiveDate(new Date());
+                        em.merge(br);
+                    }
+                }
+                em.merge(ci);
+            }
         }
         return vendor;
     }
