@@ -114,8 +114,7 @@ public class VendorResource extends CRUDResource<Vendor> {
         vendor = super.save(vendor);
         if (submitForUpdateP || submitForUpdateF) {
             //vendorDao.updateExistingClientInformations(vendor, submitForUpdateF, submitForUpdateP, OfficeSecurityService.instance().getCurrentUserName());
-            Employee emp = OfficeSecurityService.instance().getCurrentUser();
-            String submittedBy = emp.getFirstName() + " " + emp.getLastName();
+            String submittedBy = OfficeSecurityService.instance().getCurrentUserName();
             TypedQuery<ClientInformation> q = em.createQuery("from " + ClientInformation.class.getCanonicalName() + " WHERE vendor_id=:vendorIdParam)", ClientInformation.class);
             q.setParameter("vendorIdParam", vendor.getId());
             for (ClientInformation ci : q.getResultList()) {
@@ -125,6 +124,7 @@ public class VendorResource extends CRUDResource<Vendor> {
                 if (submitForUpdateF) {
                     if (!ci.getInvoiceFrequency().equals(vendor.getVendorinvFrequency())) {
                         if (ci.getBillingRates().isEmpty()) {
+                            Employee emp = ci.getEmployee();
                             BillingRate firstBillingRate = new BillingRate();
                             firstBillingRate.setBillingRate(ci.getBillingRate());
                             firstBillingRate.setOverTimeBillingRate(ci.getOverTimeBillingRate());
