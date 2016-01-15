@@ -106,7 +106,9 @@ public class VendorResource extends CRUDResource<Vendor> {
     @CacheEvict(value = OfficeCacheKeys.VENDOR, allEntries = true)
     public Vendor update(Vendor vendor, @QueryParam("submitForUpdateF") Boolean submitForUpdateF, @QueryParam("submitForUpdateP") Boolean submitForUpdateP) {
         vendor = super.save(vendor);
-        vendorDao.updateExistingClientInformations(vendor, submitForUpdateF, submitForUpdateP, OfficeSecurityService.instance().getCurrentUserName());
+        if (submitForUpdateP || submitForUpdateF) {
+            vendorDao.updateExistingClientInformations(vendor, submitForUpdateF, submitForUpdateP, OfficeSecurityService.instance().getCurrentUserName());
+        }
         return vendor;
     }
 
