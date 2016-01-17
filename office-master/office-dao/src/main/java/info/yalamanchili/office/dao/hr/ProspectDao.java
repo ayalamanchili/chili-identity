@@ -10,6 +10,7 @@ package info.yalamanchili.office.dao.hr;
 
 import com.google.common.base.Strings;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import info.chili.dao.CRUDDao;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.entity.hr.PetitionFor;
@@ -21,7 +22,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
-import org.activiti.engine.impl.util.json.JSONObject;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -90,9 +90,7 @@ public class ProspectDao extends CRUDDao<Prospect> {
         return queryStr.toString().substring(0, queryStr.toString().lastIndexOf("and"));
     }
 
-    public JSONObject graph(ProspectReportDto dto) {
-        Gson gson = new Gson();
-        HashMap<String, String> map = new HashMap();
+    public String graph(ProspectReportDto dto) {
         int petetionforInHouseCount = 0;
         int petetionforClientProjectCount = 0;
         //TODO do similar for other enumerations
@@ -104,11 +102,11 @@ public class ProspectDao extends CRUDDao<Prospect> {
                 petetionforClientProjectCount++;
             }
         }
-
-//        res.getPetetionFor().put(PetitionFor.In_House, petetionforInHouseCount);
-//        res.getPetetionFor().put(PetitionFor.Client_Project, petetionforClientProjectCount);
-        //TODO implement this
-        return null;
+        JsonObject json = new JsonObject();
+        json.addProperty(PetitionFor.In_House.name(), petetionforInHouseCount);
+        json.addProperty(PetitionFor.Client_Project.name(), petetionforClientProjectCount);
+        Gson gson = new Gson();
+        return gson.toJson(json);
     }
 
     public ProspectDao() {

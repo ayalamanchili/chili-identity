@@ -39,6 +39,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -159,11 +160,12 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
         super.delete(id);
     }
 
-//    @PUT
-//    @Path("/graph")
-//    public List<Entry> graph(ProspectReportDto dto) {
-//        return prospectDao.graph(dto);
-//    }
+    @PUT
+    @Path("/graph")
+    @Produces("application/text")
+    public String graph(ProspectReportDto dto) {
+        return prospectDao.graph(dto);
+    }
 
     @GET
     @Path("/email-info/{id}")
