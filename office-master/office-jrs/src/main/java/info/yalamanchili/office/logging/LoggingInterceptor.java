@@ -12,9 +12,7 @@ import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,18 +89,5 @@ public class LoggingInterceptor {
             return false;
         }
         return true;
-    }
-
-    @Around("execution(* info.yalamanchili.office..*.*(..))")
-    public Object profile(ProceedingJoinPoint pjp) throws Throwable {
-        long start = System.currentTimeMillis();
-        Object output = pjp.proceed();
-        long elapsedTime = System.currentTimeMillis() - start;
-        if (log.isDebugEnabled()) {
-            if (!pjp.getSignature().toShortString().contains("EnableLoginInterceptor")) {
-                log.debug("Method " + pjp.getSignature().toShortString() + " execution time: " + elapsedTime + " milliseconds.");
-            }
-        }
-        return output;
     }
 }
