@@ -15,6 +15,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.Search;
+import org.hsqldb.util.DatabaseManagerSwing;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
 import org.springframework.jmx.export.annotation.ManagedOperation;
@@ -81,6 +82,11 @@ public class OfficeServiceConfiguration {
      */
     @Value("#{officeProperties['emailExceptionDetials']}")
     protected Boolean emailExceptionDetials = true;
+    /**
+     * enabling method profiling
+     */
+    @Value("#{officeProperties['enableProfiling']}")
+    protected Boolean enableProfiling;
     /**
      * Max image Size 2MB
      */
@@ -295,6 +301,14 @@ public class OfficeServiceConfiguration {
         this.bisEndpoint = bisEndpoint;
     }
 
+    public Boolean getEnableProfiling() {
+        return enableProfiling;
+    }
+
+    public void setEnableProfiling(Boolean enableProfiling) {
+        this.enableProfiling = enableProfiling;
+    }
+
     @ManagedOperation
     public void indexHibernateSearch() {
         logger.info("--------------started hiberante search indexing-------------");
@@ -305,6 +319,11 @@ public class OfficeServiceConfiguration {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
+    
+     @ManagedOperation
+    public void startDBManager() {
+         DatabaseManagerSwing.main(new String[]{ "--url", "jdbc:hsqldb:mem:office", "--user", "sa", "--password", "" });
     }
 
     public static OfficeServiceConfiguration instance() {
