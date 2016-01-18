@@ -95,8 +95,10 @@ public class SearchProspectsPanel extends SearchComposite {
         addField("lastName", DataType.STRING_FIELD);
         addField("referredBy", DataType.STRING_FIELD);
         addField("processDocSentDate", DataType.DATE_FIELD);
-        addField("email", DataType.STRING_FIELD);
-        addField("phoneNumber", DataType.LONG_FIELD);
+        addEnumField("petitionFiledFor", false, false, PetitionFor.names());
+        addEnumField("trfEmpType", false, false, TransferEmployeeType.names());
+        addEnumField("placedBy", false, false, PlacedBy.names());
+        addField("dateOfJoining", DataType.DATE_FIELD);
         addEnumField("status", false, false, ProspectStatus.names());
     }
 
@@ -107,8 +109,10 @@ public class SearchProspectsPanel extends SearchComposite {
         assignEntityValueFromField("firstName", contact);
         assignEntityValueFromField("lastName", contact);
         assignEntityValueFromField("referredBy", entity);
-        assignEntityValueFromField("email", contact);
-        assignEntityValueFromField("phoneNumber", contact);
+        assignEntityValueFromField("petitionFiledFor", entity);
+        assignEntityValueFromField("placedBy", entity);
+        assignEntityValueFromField("trfEmpType", entity);
+        assignEntityValueFromField("dateOfJoining", entity);
         assignEntityValueFromField("processDocSentDate", entity);
         assignEntityValueFromField("status", entity);
         entity.put("contact", contact);
