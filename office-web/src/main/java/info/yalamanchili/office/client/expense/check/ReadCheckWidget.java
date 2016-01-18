@@ -44,7 +44,7 @@ public class ReadCheckWidget extends ReadComposite {
         logger.info(entity.toString());
         assignFieldValueFromEntity("payableTo", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("checkAmount", entity, DataType.CURRENCY_FIELD);
-        assignEntityValueFromField("checkDate", entity);
+        assignFieldValueFromEntity("checkDate", entity, DataType.DATE_FIELD);
         if (ReadCheckWidgetType.CHECK_PAYMENT_INFO.equals(type)) {
             assignEntityValueFromField("bankName", entity);
             assignEntityValueFromField("bankRoutingNumber", entity);
@@ -70,7 +70,7 @@ public class ReadCheckWidget extends ReadComposite {
     protected void addWidgets() {
         addField("payableTo", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("checkAmount", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-        addField("checkDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("checkDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         if (ReadCheckWidgetType.CHECK_PAYMENT_INFO.equals(type)) {
             addField("bankName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("bankRoutingNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
