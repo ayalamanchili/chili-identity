@@ -128,7 +128,7 @@ public class Prospect extends AbstractEntity {
         return status;
     }
 
-    public PetitionFor getPetitionFieldFor() {
+    public PetitionFor getPetitionFiledFor() {
         return petitionFiledFor;
     }
 

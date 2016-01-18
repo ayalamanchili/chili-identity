@@ -348,9 +348,9 @@ public class ProspectDto implements Serializable {
             prospectContact.setTrfEmpType(entity.getTrfEmpType());
             prospectContact.setTrfEmptype(entity.getTrfEmpType().name());
         }
-        if (entity.getPetitionFieldFor() != null) {
-            prospectContact.setPetitionFiledFor(entity.getPetitionFieldFor());
-            prospectContact.setPetitionFor(entity.getPetitionFieldFor().name());
+        if (entity.getPetitionFiledFor() != null) {
+            prospectContact.setPetitionFiledFor(entity.getPetitionFiledFor());
+            prospectContact.setPetitionFor(entity.getPetitionFiledFor().name());
         }
         prospectContact.setId(entity.getId());
         return prospectContact;
