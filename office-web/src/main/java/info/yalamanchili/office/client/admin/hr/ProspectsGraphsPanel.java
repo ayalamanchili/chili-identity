@@ -32,12 +32,73 @@ public class ProspectsGraphsPanel extends Composite {
     protected void displayCharts(final JSONObject graphsDto) {
         ChartLoader chartLoader = new ChartLoader(ChartPackage.CORECHART);
         chartLoader.loadApi(() -> {
-            panel.add(getSummaryChart());
+            panel.add(getPetetionForChart());
+            panel.add(getPetetionForChart());
+            panel.add(getPlacedByChart());
             showProspectsGraphs(graphsDto);
         });
     }
 
     protected void showProspectsGraphs(JSONObject graphsDto) {
+        drawPetetionForChart(graphsDto);
+        drawEmployeeTypeChart(graphsDto);
+        drawPlacedByChart(graphsDto);
+    }
+
+    /**
+     * EmployeeType for chart
+     */
+    protected void drawPlacedByChart(JSONObject graphsDto) {
+        DataTable dataTable = DataTable.create();
+        dataTable.addColumn(ColumnType.STRING, "PlacedBy");
+        dataTable.addColumn(ColumnType.NUMBER, "Number");
+        dataTable.addRows(3);
+        dataTable.setValue(0, 0, PlacedBy.By_Recruiter.name());
+        dataTable.setValue(1, 0, PlacedBy.Corporate_Solutions_Team.name());
+        dataTable.setValue(2, 0, PlacedBy.Own_Placement.name());
+        dataTable.setValue(0, 1, Integer.valueOf(graphsDto.get(PlacedBy.By_Recruiter.name()).isNumber().toString()));
+        dataTable.setValue(1, 1, Integer.valueOf(graphsDto.get(PlacedBy.Corporate_Solutions_Team.name()).isNumber().toString()));
+        dataTable.setValue(2, 1, Integer.valueOf(graphsDto.get(PlacedBy.Own_Placement.name()).isNumber().toString()));
+        // Draw the chart
+        placedByChart.draw(dataTable);
+    }
+    private PieChart placedByChart;
+
+    private Widget getPlacedByChart() {
+        if (placedByChart == null) {
+            placedByChart = new PieChart();
+        }
+        return placedByChart;
+    }
+
+    /**
+     * EmployeeType for chart
+     */
+    protected void drawEmployeeTypeChart(JSONObject graphsDto) {
+        DataTable dataTable = DataTable.create();
+        dataTable.addColumn(ColumnType.STRING, "EmployeeType");
+        dataTable.addColumn(ColumnType.NUMBER, "Number");
+        dataTable.addRows(2);
+        dataTable.setValue(0, 0, TransferEmployeeType.Corporate_Employee.name());
+        dataTable.setValue(1, 0, TransferEmployeeType.Field_Employee.name());
+        dataTable.setValue(0, 1, Integer.valueOf(graphsDto.get(TransferEmployeeType.Corporate_Employee.name()).isNumber().toString()));
+        dataTable.setValue(1, 1, Integer.valueOf(graphsDto.get(TransferEmployeeType.Field_Employee.name()).isNumber().toString()));
+        // Draw the chart
+        employeeTypeChart.draw(dataTable);
+    }
+    private PieChart employeeTypeChart;
+
+    private Widget getEmployeerChart() {
+        if (employeeTypeChart == null) {
+            employeeTypeChart = new PieChart();
+        }
+        return employeeTypeChart;
+    }
+
+    /**
+     * Petetion for chart
+     */
+    protected void drawPetetionForChart(JSONObject graphsDto) {
         DataTable dataTable = DataTable.create();
         dataTable.addColumn(ColumnType.STRING, "PetitionFor");
         dataTable.addColumn(ColumnType.NUMBER, "Number");
@@ -47,14 +108,14 @@ public class ProspectsGraphsPanel extends Composite {
         dataTable.setValue(0, 1, Integer.valueOf(graphsDto.get(PetitionFor.Client_Project.name()).isNumber().toString()));
         dataTable.setValue(1, 1, Integer.valueOf(graphsDto.get(PetitionFor.In_House.name()).isNumber().toString()));
         // Draw the chart
-        timeSummaryChart.draw(dataTable);
+        petetionForChart.draw(dataTable);
     }
-    private PieChart timeSummaryChart;
+    private PieChart petetionForChart;
 
-    private Widget getSummaryChart() {
-        if (timeSummaryChart == null) {
-            timeSummaryChart = new PieChart();
+    private Widget getPetetionForChart() {
+        if (petetionForChart == null) {
+            petetionForChart = new PieChart();
         }
-        return timeSummaryChart;
+        return petetionForChart;
     }
 }
