@@ -171,15 +171,23 @@ public class ProspectService {
         if (entity.getStatus().equals(ProspectStatus.CLOSED_WON)) {
             if (dto.getDateOfJoining() != null) {
                 entity.setDateOfJoining(dto.getDateOfJoining());
+            }else{
+                entity.setDateOfJoining(null);
             }
             if (dto.getPlacedBy() != null) {
                 entity.setPlacedBy(dto.getPlacedBy());
+            }else{
+                entity.setPlacedBy(null);
             }
             if (dto.getTrfEmpType() != null) {
                 entity.setTrfEmpType(dto.getTrfEmpType());
+            }else{
+                entity.setTrfEmpType(null);
             }
             if (dto.getPetitionFiledFor() != null) {
                 entity.setPetitionFiledFor(dto.getPetitionFiledFor());
+            }else{
+                entity.setPetitionFiledFor(null);
             }
         } else {
             dto.setDateOfJoining(null);

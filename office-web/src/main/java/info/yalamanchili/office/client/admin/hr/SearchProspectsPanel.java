@@ -119,7 +119,7 @@ public class SearchProspectsPanel extends SearchComposite {
     protected void search(String searchText) {
         if (getKey() == null) {
             clearSearch();
-            new ResponseStatusWidget().show("No prospect seleceted");
+            new ResponseStatusWidget().show("No prospect selected");
 
         } else {
             HttpService.HttpServiceAsync.instance().doGet(getSearchURI(getSearchText(), 0, 1000),
