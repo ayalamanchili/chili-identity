@@ -137,8 +137,10 @@ public class ReadContractsPanel extends TReadComposite {
         assignFieldValueFromEntity("practice", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("sectorsAndBUs", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("employeeDetails", entity, DataType.RICH_TEXT_AREA);
-        assignFieldValueFromEntity("finalBillingRate", entity, DataType.CURRENCY_FIELD);
-        assignFieldValueFromEntity("vendorFees", entity, DataType.FLOAT_FIELD);
+        if (entity.containsKey("vendorFees")) {
+            assignFieldValueFromEntity("finalBillingRate", entity, DataType.CURRENCY_FIELD);
+            assignFieldValueFromEntity("vendorFees", entity, DataType.FLOAT_FIELD);
+        }
     }
     //pleado same for 1099 
 
@@ -186,9 +188,10 @@ public class ReadContractsPanel extends TReadComposite {
         String[] billingDuration = {"HOUR", "DAY", "MONTH", "WEEK"};
         addEnumField("billingRateDuration", true, false, billingDuration, Alignment.HORIZONTAL, 3, 1);
         addEnumField("overTimeRateDuration", true, false, billingDuration, Alignment.HORIZONTAL, 3, 2);
-        logger.info("hiiiii" + JSONUtils.toString(entity, "vendorFees"));
-        addField("finalBillingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 21, 1);
-        addField("vendorFees", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL, 21, 2);
+        if (entity.containsKey("vendorFees")) {
+            addField("finalBillingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 21, 1);
+            addField("vendorFees", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL, 21, 2);
+        }
         addEnumField("invoiceFrequency", true, false, InvoiceFrequency.names(), Alignment.HORIZONTAL, 4, 1);
         String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX", "UPLOAD"};
         addEnumField("invoiceDeliveryMethod", true, false, invoiceDeliveryMethods, Alignment.HORIZONTAL, 4, 2);
