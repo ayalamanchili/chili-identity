@@ -128,8 +128,8 @@ public class ProspectService {
             if (ec.getTrfEmpType() != null) {
                 dto.setTrfEmpType(ec.getTrfEmpType());
             }
-            if (ec.getPetitionFieldFor() != null) {
-                dto.setPetitionFiledFor(ec.getPetitionFieldFor());
+            if (ec.getPetitionFiledFor() != null) {
+                dto.setPetitionFiledFor(ec.getPetitionFiledFor());
             }
         } else {
             dto.setDateOfJoining(null);
