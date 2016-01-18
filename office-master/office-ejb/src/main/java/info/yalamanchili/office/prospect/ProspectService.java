@@ -37,15 +37,15 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class ProspectService {
-    
+
     @PersistenceContext
     protected EntityManager em;
     @Autowired
     protected Mapper mapper;
-    
+
     @Autowired
     protected ProspectDao prospectDao;
-    
+
     public ProspectDto save(ProspectDto dto) {
         if (ContactDao.instance().findByEmail(dto.getEmail()) != null) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "email.alreday.exist", "Contact Already Exist With The Same Email");
@@ -58,7 +58,7 @@ public class ProspectService {
         contact.setLastName(dto.getLastName());
         contact.setDateOfBirth(dto.getDateOfBirth());
         contact.setSex(dto.getSex());
-        
+
         if (!Strings.isNullOrEmpty(dto.getEmail())) {
             Email email = new Email();
             email.setEmail(dto.getEmail());
@@ -114,7 +114,7 @@ public class ProspectService {
         dto.setId(entity.getId());
         return dto;
     }
-    
+
     public ProspectDto read(Long id) {
         Prospect ec = prospectDao.findById(id);
         ProspectDto dto = ProspectDto.map(mapper, ec);
@@ -137,10 +137,10 @@ public class ProspectService {
             dto.setTrfEmpType(null);
             dto.setPetitionFiledFor(null);
         }
-        
+
         return dto;
     }
-    
+
     public ProspectDto clone(Long id) {
         Prospect entity = prospectDao.clone(id);
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
@@ -148,17 +148,17 @@ public class ProspectService {
         ProspectDto res = ProspectDto.map(mapper, entity);
         return res;
     }
-    
+
     public static ProspectService instance() {
         return SpringContext.getBean(ProspectService.class);
     }
-    
+
     public Prospect update(ProspectDto dto) {
         Prospect entity = prospectDao.findById(dto.getId());
-        if (entity.getStatus() == null) {
-            entity.setStatus(ProspectStatus.IN_PROGRESS);
-        } else if (dto.getStatus() != null) {
+        if (dto.getStatus() != null) {
             entity.setStatus(dto.getStatus());
+        } else {
+            entity.setStatus(ProspectStatus.IN_PROGRESS);
         }
         //entity = prospectDao.save(entity);
         Contact contact = entity.getContact();
@@ -171,22 +171,22 @@ public class ProspectService {
         if (entity.getStatus().equals(ProspectStatus.CLOSED_WON)) {
             if (dto.getDateOfJoining() != null) {
                 entity.setDateOfJoining(dto.getDateOfJoining());
-            }else{
+            } else {
                 entity.setDateOfJoining(null);
             }
             if (dto.getPlacedBy() != null) {
                 entity.setPlacedBy(dto.getPlacedBy());
-            }else{
+            } else {
                 entity.setPlacedBy(null);
             }
             if (dto.getTrfEmpType() != null) {
                 entity.setTrfEmpType(dto.getTrfEmpType());
-            }else{
+            } else {
                 entity.setTrfEmpType(null);
             }
             if (dto.getPetitionFiledFor() != null) {
                 entity.setPetitionFiledFor(dto.getPetitionFiledFor());
-            }else{
+            } else {
                 entity.setPetitionFiledFor(null);
             }
         } else {
