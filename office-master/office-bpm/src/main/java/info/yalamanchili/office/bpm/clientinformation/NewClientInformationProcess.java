@@ -8,14 +8,22 @@
  */
 package info.yalamanchili.office.bpm.clientinformation;
 
+import info.chili.audit.AuditService;
+import info.chili.email.Email;
 import info.yalamanchili.office.OfficeRoles;
-import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
 import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.ClientInformationStatus;
+import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.jms.MessagingService;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.activiti.engine.delegate.DelegateTask;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -44,10 +52,11 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
 
         //Status
         String status = (String) task.getExecution().getVariable("status");
+        String itemno = (String) task.getExecution().getVariable("itemNumber");
         if (task.getTaskDefinitionKey().equals("newClientInfoInvoicingAndBillingTask")) {
             if (status.equalsIgnoreCase("approved")) {
                 entity.setStatus(ClientInformationStatus.PENDING_HR_VERIFICATION);
-                new GenericTaskCompleteNotification().notify(task, false, OfficeRoles.OfficeRole.ROLE_BILLING_AND_INVOICING.name());
+                sendClientInforamtionTaskCompletedEmail(entity, itemno);
             } else {
                 entity.setStatus(ClientInformationStatus.CANCELED);
             }
@@ -62,6 +71,25 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
         ClientInformationDao.instance().save(entity);
     }
 
+    @Async
+    @Transactional
+    public void sendClientInforamtionTaskCompletedEmail(ClientInformation ci, String itemNo) {
+        if (ClientInformationStatus.PENDING_HR_VERIFICATION.equals(ci.getStatus())) {
+            Employee emp = OfficeSecurityService.instance().getCurrentUser();
+            Email email = new Email();
+            email.setTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_BILLING_AND_INVOICING.name()));
+            email.setRichText(Boolean.TRUE);
+            email.setSubject(" Client Inforamtion InvoicingAndBilling Task Completed For : " + ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
+            String messageText = " Client Inforamtion:: " + " ";
+            messageText = messageText.concat("Client :" + ci.getClient().getName()) + " ; ";
+            messageText = messageText.concat("Item_No :" + itemNo) + " ; ";
+            messageText = messageText.concat("PurchaseOrderNo :" + ci.getClientProject().getPurchaseOrderNo()) + " ; ";
+            messageText = messageText.concat("Updated_By :" + emp.getFirstName() + " " + emp.getLastName()) + " ; ";
+            email.setBody(messageText);
+            MessagingService.instance().sendEmail(email);
+        }
+    }
+
     protected ClientInformation getRequestFromTask(DelegateTask task) {
         Long entityId = (Long) task.getExecution().getVariable("entityId");
         if (entityId != null) {
@@ -69,4 +97,5 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
         }
         return null;
     }
+
 }
