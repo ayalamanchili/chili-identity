@@ -117,6 +117,10 @@ public class OfficeServiceConfiguration {
      */
     @Value("#{officeProperties['portal.web.url']}")
     protected String portalWebUrl;
+    /**
+     *
+     */
+    protected boolean lockCorporateEvaluations = false;
 
     public void setAdminEmail(String adminEmail) {
         this.adminEmail = adminEmail;
@@ -309,6 +313,15 @@ public class OfficeServiceConfiguration {
         this.enableProfiling = enableProfiling;
     }
 
+    @ManagedAttribute
+    public boolean isLockCorporateEvaluations() {
+        return lockCorporateEvaluations;
+    }
+
+    public void setLockCorporateEvaluations(boolean lockCorporateEvaluations) {
+        this.lockCorporateEvaluations = lockCorporateEvaluations;
+    }
+
     @ManagedOperation
     public void indexHibernateSearch() {
         logger.info("--------------started hiberante search indexing-------------");
@@ -320,10 +333,10 @@ public class OfficeServiceConfiguration {
             throw new RuntimeException(e);
         }
     }
-    
-     @ManagedOperation
+
+    @ManagedOperation
     public void startDBManager() {
-         DatabaseManagerSwing.main(new String[]{ "--url", "jdbc:hsqldb:mem:office", "--user", "sa", "--password", "" });
+        DatabaseManagerSwing.main(new String[]{"--url", "jdbc:hsqldb:mem:office", "--user", "sa", "--password", ""});
     }
 
     public static OfficeServiceConfiguration instance() {

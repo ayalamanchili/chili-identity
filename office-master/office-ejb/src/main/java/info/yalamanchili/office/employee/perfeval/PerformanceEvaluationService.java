@@ -20,6 +20,7 @@ import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.chili.bpm.types.Task;
+import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
@@ -99,7 +100,9 @@ public class PerformanceEvaluationService {
 
 //----------------------Corporate Employee Review----------------------------------
     public void saveCorporatePerformanceEvaluation(Employee employee, PerformanceEvaluationSaveDto dto, boolean startProcess) {
-        Mapper mapper = (Mapper) SpringContext.getBean("mapper");
+        if (OfficeServiceConfiguration.instance().isLockCorporateEvaluations()) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "performance.evaluation.locked", "Performance Evaluations are locked please contact HR");
+        }
         String year = dto.getYear();
         if (year == null) {
             year = dto.getPerformanceEvaluation().getEvaluationFYYear();
