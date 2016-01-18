@@ -8,7 +8,6 @@
  */
 package info.yalamanchili.office.bpm.clientinformation;
 
-import info.chili.audit.AuditService;
 import info.chili.email.Email;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
@@ -20,8 +19,6 @@ import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.ClientInformationStatus;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import org.activiti.engine.delegate.DelegateTask;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
@@ -83,7 +80,9 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
             String messageText = " Client Inforamtion:: " + " ";
             messageText = messageText.concat("Client :" + ci.getClient().getName()) + " ; ";
             messageText = messageText.concat("Item_No :" + itemNo) + " ; ";
-            messageText = messageText.concat("PurchaseOrderNo :" + ci.getClientProject().getPurchaseOrderNo()) + " ; ";
+            if (ci.getVendor()!=null) {
+                messageText = messageText.concat("PurchaseOrderNo :" + ci.getClientProject().getPurchaseOrderNo()) + " ; ";
+            }
             messageText = messageText.concat("Updated_By :" + emp.getFirstName() + " " + emp.getLastName()) + " ; ";
             email.setBody(messageText);
             MessagingService.instance().sendEmail(email);
