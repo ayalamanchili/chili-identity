@@ -82,7 +82,7 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
     public void fillData(JSONArray entities) {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
-            addOptionsWidget(i, entity);;
+            addOptionsWidget(i, entity);
             String status = JSONUtils.toString(entity, "status");
             table.setText(i, 1, JSONUtils.toString(entity, "firstName"));
             table.setText(i, 2, JSONUtils.toString(entity, "lastName"));
