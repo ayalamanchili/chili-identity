@@ -33,7 +33,7 @@ public class ProspectsGraphsPanel extends Composite {
         ChartLoader chartLoader = new ChartLoader(ChartPackage.CORECHART);
         chartLoader.loadApi(() -> {
             panel.add(getPetetionForChart());
-            panel.add(getPetetionForChart());
+            panel.add(getEmployeerChart());
             panel.add(getPlacedByChart());
             showProspectsGraphs(graphsDto);
         });

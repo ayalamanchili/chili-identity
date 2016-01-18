@@ -68,24 +68,24 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        logger.info(response);
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        if (entity.get("id") != null) {
-                            entityFieldsPanel.add(getLineSeperatorTag("Status Information"));
-                            addEnumField("status", false, false, ProspectStatus.names(), Alignment.HORIZONTAL);
-                            statusField = (EnumField) fields.get("status");
-                            statusField.listBox.addChangeHandler(instance);
-                            alignFields();
-                            if (ProspectStatus.CLOSED_WON.name().equals(JSONUtils.toString(getEntity(), "status"))) {
-                                addProspectWonFields();
-                            }
-                        }
-                        populateFieldsFromEntity(entity);
-                        populateComments();
+            @Override
+            public void onResponse(String response) {
+                logger.info(response);
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                if (entity.get("id") != null) {
+                    entityFieldsPanel.add(getLineSeperatorTag("Status Information"));
+                    addEnumField("status", false, false, ProspectStatus.names(), Alignment.HORIZONTAL);
+                    statusField = (EnumField) fields.get("status");
+                    statusField.listBox.addChangeHandler(instance);
+                    alignFields();
+                    if (ProspectStatus.CLOSED_WON.name().equals(JSONUtils.toString(getEntity(), "status"))) {
+                        addProspectWonFields();
                     }
-                });
+                }
+                populateFieldsFromEntity(entity);
+                populateComments();
+            }
+        });
     }
 
     protected void populateComments() {
@@ -150,7 +150,9 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         if (fields.containsKey("dateOfJoining")) {
             assignEntityValueFromField("dateOfJoining", entity);
         }
-        entity.put("resumeURL", resumeUploadPanel.getFileName());
+        if (!resumeUploadPanel.isEmpty()) {
+            entity.put("resumeURL", resumeUploadPanel.getFileName());
+        }
         return entity;
     }
 
@@ -158,16 +160,16 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        uploadResume(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                uploadResume(arg0);
+            }
+        });
     }
 
     protected void uploadResume(String entityStr) {
