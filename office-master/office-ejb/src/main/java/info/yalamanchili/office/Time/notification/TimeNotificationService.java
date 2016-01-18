@@ -41,7 +41,7 @@ public class TimeNotificationService {
 
     @Async
     public void sendOvertimeRequestSubmitedNotification(Employee emp) {
-        String[] roles = {OfficeRole.ROLE_ADMIN.name(), OfficeRole.ROLE_TIME.name(), OfficeRole.ROLE_EXPENSE.name()};
+        String[] roles = {OfficeRole.ROLE_ADMIN.name()};
         Email email = new Email();
         email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject("Overtime Pay request submited for" + emp.getFirstName() + " " + emp.getLastName());
