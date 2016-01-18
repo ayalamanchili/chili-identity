@@ -128,7 +128,7 @@ public class ProspectDao extends CRUDDao<Prospect> {
         json.addProperty(PetitionFor.Client_Project.name(), petetionforClientProjectCount);
         //transfer employee 
         json.addProperty(TransferEmployeeType.Corporate_Employee.name(), transferEmployeeTypeCorporateEmployeeCount);
-        json.addProperty(TransferEmployeeType.Corporate_Employee.name(), transferEmployeeTypeAssociateEmployeeCount);
+        json.addProperty(TransferEmployeeType.Field_Employee.name(), transferEmployeeTypeAssociateEmployeeCount);
         // placed by
         json.addProperty(PlacedBy.By_Recruiter.name(), placedByRecruiterCount);
         json.addProperty(PlacedBy.Own_Placement.name(), placedByOwnCount);
