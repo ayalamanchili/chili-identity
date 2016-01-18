@@ -12,6 +12,8 @@ import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.profile.BillingRate;
 import info.yalamanchili.office.entity.profile.ClientInformation;
+import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.EmployeeType;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -45,6 +47,7 @@ public class VendorDao extends CRUDDao<Vendor> {
     }
 
     @Async
+    @Transactional
     public void updateExistingClientInformations(Vendor vendor, Boolean submitForUpdateF, Boolean submitForUpdateP, String updatedBy) {
         TypedQuery<ClientInformation> q = em.createQuery("from " + ClientInformation.class.getCanonicalName() + " WHERE vendor_id=:vendorIdParam)", ClientInformation.class);
         q.setParameter("vendorIdParam", vendor.getId());
@@ -53,15 +56,37 @@ public class VendorDao extends CRUDDao<Vendor> {
                 ci.setVendorPaymentTerms(vendor.getPaymentTerms());
             }
             if (submitForUpdateF) {
-                if (!ci.getInvoiceFrequency().equals(vendor.getVendorinvFrequency())) {
-                    ci.setInvoiceFrequency(vendor.getVendorinvFrequency());
-                    BillingRate br = new BillingRate();
-                    br.setClientInformation(ci);
-                    br.setBillingInvoiceFrequency(vendor.getVendorinvFrequency());
-                    br.setUpdatedBy(updatedBy);
-                    br.setUpdatedTs(Calendar.getInstance().getTime());
-                    br.setEffectiveDate(new Date());
-                    em.merge(br);
+                if (vendor.getVendorinvFrequency() != null) {
+                    if (!ci.getInvoiceFrequency().equals(vendor.getVendorinvFrequency())) {
+                        if (ci.getBillingRates().isEmpty()) {
+                            Employee emp = ci.getEmployee();
+                            BillingRate firstBillingRate = new BillingRate();
+                            firstBillingRate.setBillingRate(ci.getBillingRate());
+                            firstBillingRate.setOverTimeBillingRate(ci.getOverTimeBillingRate());
+                            firstBillingRate.setBillingInvoiceFrequency(ci.getInvoiceFrequency());
+                            if (emp.getEmployeeType().getName().equals(EmployeeType.SUBCONTRACTOR)) {
+                                firstBillingRate.setSubContractorPayRate(ci.getSubcontractorPayRate());
+                                firstBillingRate.setSubContractorOverTimePayRate(ci.getSubcontractorOvertimePayRate());
+                                firstBillingRate.setSubContractorInvoiceFrequency(ci.getSubcontractorinvoiceFrequency());
+                            }
+                            if (emp.getEmployeeType().getName().equals(EmployeeType._1099_CONTRACTOR)) {
+                                firstBillingRate.setSubContractorPayRate(ci.getPayRate1099());
+                                firstBillingRate.setSubContractorOverTimePayRate(ci.getOverTimePayrate1099());
+                                firstBillingRate.setSubContractorInvoiceFrequency(ci.getInvoiceFrequency1099());
+                            }
+                            firstBillingRate.setEffectiveDate(ci.getStartDate());
+                            firstBillingRate.setClientInformation(ci);
+                            em.merge(firstBillingRate);
+                        }
+                        ci.setInvoiceFrequency(vendor.getVendorinvFrequency());
+                        BillingRate br = new BillingRate();
+                        br.setClientInformation(ci);
+                        br.setBillingInvoiceFrequency(vendor.getVendorinvFrequency());
+                        br.setUpdatedBy(updatedBy);
+                        br.setUpdatedTs(Calendar.getInstance().getTime());
+                        br.setEffectiveDate(new Date());
+                        em.merge(br);
+                    }
                 }
             }
             em.merge(ci);

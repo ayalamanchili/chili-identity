@@ -113,48 +113,7 @@ public class VendorResource extends CRUDResource<Vendor> {
     public Vendor update(Vendor vendor, @QueryParam("submitForUpdateF") Boolean submitForUpdateF, @QueryParam("submitForUpdateP") Boolean submitForUpdateP) {
         vendor = super.save(vendor);
         if (submitForUpdateP || submitForUpdateF) {
-            //vendorDao.updateExistingClientInformations(vendor, submitForUpdateF, submitForUpdateP, OfficeSecurityService.instance().getCurrentUserName());
-            String submittedBy = OfficeSecurityService.instance().getCurrentUserName();
-            TypedQuery<ClientInformation> q = em.createQuery("from " + ClientInformation.class.getCanonicalName() + " WHERE vendor_id=:vendorIdParam)", ClientInformation.class);
-            q.setParameter("vendorIdParam", vendor.getId());
-            for (ClientInformation ci : q.getResultList()) {
-                if (submitForUpdateP) {
-                    ci.setVendorPaymentTerms(vendor.getPaymentTerms());
-                }
-                if (submitForUpdateF) {
-                    if (!ci.getInvoiceFrequency().equals(vendor.getVendorinvFrequency())) {
-                        if (ci.getBillingRates().isEmpty()) {
-                            Employee emp = ci.getEmployee();
-                            BillingRate firstBillingRate = new BillingRate();
-                            firstBillingRate.setBillingRate(ci.getBillingRate());
-                            firstBillingRate.setOverTimeBillingRate(ci.getOverTimeBillingRate());
-                            firstBillingRate.setBillingInvoiceFrequency(ci.getInvoiceFrequency());
-                            if (emp.getEmployeeType().getName().equals(EmployeeType.SUBCONTRACTOR)) {
-                                firstBillingRate.setSubContractorPayRate(ci.getSubcontractorPayRate());
-                                firstBillingRate.setSubContractorOverTimePayRate(ci.getSubcontractorOvertimePayRate());
-                                firstBillingRate.setSubContractorInvoiceFrequency(ci.getSubcontractorinvoiceFrequency());
-                            }
-                            if (emp.getEmployeeType().getName().equals(EmployeeType._1099_CONTRACTOR)) {
-                                firstBillingRate.setSubContractorPayRate(ci.getPayRate1099());
-                                firstBillingRate.setSubContractorOverTimePayRate(ci.getOverTimePayrate1099());
-                                firstBillingRate.setSubContractorInvoiceFrequency(ci.getInvoiceFrequency1099());
-                            }
-                            firstBillingRate.setEffectiveDate(ci.getStartDate());
-                            firstBillingRate.setClientInformation(ci);
-                            em.merge(firstBillingRate);
-                        }
-                        ci.setInvoiceFrequency(vendor.getVendorinvFrequency());
-                        BillingRate br = new BillingRate();
-                        br.setClientInformation(ci);
-                        br.setBillingInvoiceFrequency(vendor.getVendorinvFrequency());
-                        br.setUpdatedBy(submittedBy);
-                        br.setUpdatedTs(Calendar.getInstance().getTime());
-                        br.setEffectiveDate(new Date());
-                        em.merge(br);
-                    }
-                }
-                em.merge(ci);
-            }
+            vendorDao.updateExistingClientInformations(vendor, submitForUpdateF, submitForUpdateP, OfficeSecurityService.instance().getCurrentUserName());
         }
         return vendor;
     }
