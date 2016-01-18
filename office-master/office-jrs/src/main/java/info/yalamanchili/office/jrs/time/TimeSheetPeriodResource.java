@@ -44,7 +44,7 @@ public class TimeSheetPeriodResource extends CRUDResource<TimeSheetPeriod> {
 
     @GET
     @Path("/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public TimeSheetPeriodResource.TimeSheetTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         TimeSheetPeriodResource.TimeSheetTable tableObj = new TimeSheetPeriodResource.TimeSheetTable();
         tableObj.setEntities(getDao().query(start, limit));
@@ -53,7 +53,7 @@ public class TimeSheetPeriodResource extends CRUDResource<TimeSheetPeriod> {
     }
 
     @PUT
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @Override
     public TimeSheetPeriod save(TimeSheetPeriod entity) {
         return super.save(entity);
@@ -61,7 +61,7 @@ public class TimeSheetPeriodResource extends CRUDResource<TimeSheetPeriod> {
 
     @PUT
     @Path("/delete/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @Override
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
@@ -69,7 +69,7 @@ public class TimeSheetPeriodResource extends CRUDResource<TimeSheetPeriod> {
 
     @XmlRootElement
     @XmlType
-    public static class TimeSheetTable implements java.io.Serializable{
+    public static class TimeSheetTable implements java.io.Serializable {
 
         protected Long size;
         protected List<TimeSheetPeriod> entities;

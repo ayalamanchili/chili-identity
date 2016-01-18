@@ -119,7 +119,7 @@ public class AdminResource {
     @Path("/createuser")
     @PUT
     @Produces("application/text")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RELATIONSHIP','ROLE_TIME','ROLE_SYSTEM_AND_NETWORK_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RELATIONSHIP','ROLE_SYSTEM_AND_NETWORK_ADMIN')")
     @CacheEvict(value = "employees", allEntries = true)
     @Validate
     public String createUser(EmployeeCreateDto employee) {

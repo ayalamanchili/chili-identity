@@ -62,7 +62,7 @@ public class ProjectResource extends CRUDResource<Project> {
     
     @GET
     @Path("/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_TIME','ROLE_EXPENSE','ROLE_RELATIONSHIP')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RELATIONSHIP')")
     public ProjectResource.ProjectTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         ProjectResource.ProjectTable tableObj = new ProjectResource.ProjectTable();
         tableObj.setEntities(getDao().query(start, limit));
@@ -72,7 +72,7 @@ public class ProjectResource extends CRUDResource<Project> {
 
     @PUT
     @Path("/sow/{projectId}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public void addSOW(@PathParam("projectId") Long projectId, StatementOfWork SOW) {
         Project project = (Project) getDao().findById(projectId);
         project.addSOW(SOW);
@@ -80,7 +80,7 @@ public class ProjectResource extends CRUDResource<Project> {
 
     @PUT
     @Validate
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @Override
     public Project save(Project entity) {
         return super.save(entity);

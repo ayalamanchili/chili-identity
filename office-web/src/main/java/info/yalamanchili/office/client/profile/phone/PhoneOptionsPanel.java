@@ -38,7 +38,7 @@ public class PhoneOptionsPanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addWidgets() {
-         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN,ROLE.ROLE_HR,ROLE.ROLE_TIME)) {
+         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN,ROLE.ROLE_HR)) {
             panel.add(addPhonelLink);
         }
 

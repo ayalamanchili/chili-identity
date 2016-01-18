@@ -37,7 +37,7 @@
         
         <userTask id="overTimeHoursAdjustmentHoursApprovalTask" 
                   name="Overtime Pay Rquest by: ${currentEmployee.firstName} ${currentEmployee.lastName} For: ${requestHours} Hours" 
-                  activiti:candidateGroups="ROLE_TIME,ROLE_EXPENSE,ROLE_ADMIN">
+                  activiti:candidateGroups="ROLE_ADMIN">
             <documentation>
                 Overtime Hours Pay Request by Employee
             </documentation>

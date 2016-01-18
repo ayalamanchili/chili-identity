@@ -56,7 +56,7 @@ public class TimeSheetResource extends CRUDResource<TimeSheet> {
 
     @GET
     @Path("/summary/{empId}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public TimeSummary getEmployeeTimeSummary(@PathParam("empId") Long empId) {
         Employee emp = EmployeeDao.instance().findById(empId);
         return timeService.getTimeSummary(emp);
@@ -82,7 +82,7 @@ public class TimeSheetResource extends CRUDResource<TimeSheet> {
 
     @GET
     @Path("/payperiod/{payperiodid}/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public TimeSheetResource.TimeSheetTable getTimeSheetsForPayPeriod(@PathParam("payperiodid") Long payperiodid, @PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("incluedeInactive") boolean includeInactive) {
         TimeSheetResource.TimeSheetTable tableObj = new TimeSheetResource.TimeSheetTable();
         TimeSheetPeriod period = TimeSheetPeriodDao.instance().findById(payperiodid);
@@ -94,7 +94,7 @@ public class TimeSheetResource extends CRUDResource<TimeSheet> {
 
     @GET
     @Path("/employee/{empId}/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public TimeSheetResource.TimeSheetTable getTimeSheetsForEmployee(@PathParam("empId") Long empId, @PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("incluedeInactive") boolean includeInactive) {
         TimeSheetResource.TimeSheetTable tableObj = new TimeSheetResource.TimeSheetTable();
         Employee emp = EmployeeDao.instance().findById(empId);

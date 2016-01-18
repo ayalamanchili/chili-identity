@@ -49,7 +49,7 @@ public class EmployeeDocumentResource extends CRUDResource<EmployeeDocument> {
     @Validate
     @Path("/{empId}")
     @Produces("application/text")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RELATIONSHIP','ROLE_TIME')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RELATIONSHIP')")
     public String createEmployeeDocument(@PathParam("empId") Long empId, EmployeeDocument doc) {
         doc.setEmployee(EmployeeDao.instance().findById(empId));
         return employeeDocumentDao.save(doc).getId().toString();
@@ -57,7 +57,7 @@ public class EmployeeDocumentResource extends CRUDResource<EmployeeDocument> {
 
     @PUT
     @Path("/delete/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RELATIONSHIP','ROLE_TIME')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RELATIONSHIP')")
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
     }

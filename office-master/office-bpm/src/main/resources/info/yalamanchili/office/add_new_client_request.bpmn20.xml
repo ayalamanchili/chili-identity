@@ -46,7 +46,7 @@
         <sequenceFlow id="flow1" sourceRef="addNewClientStart" targetRef="addNewClientTask" />
         <userTask id="addNewClientTask" 
                   name="Add New Client Request" 
-                  activiti:candidateGroups="ROLE_TIME,ROLE_ADMIN">
+                  activiti:candidateGroups="ROLE_ADMIN">
             <documentation>
                 Add Client Information:
                 Client Name: ${clientName} 

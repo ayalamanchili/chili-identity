@@ -85,7 +85,7 @@ public class AddressOptionsPanel extends ALComposite implements ClickHandler {
     @Override
     protected void addWidgets() {
         if (TabPanel.instance().myOfficePanel.isVisible()) {
-            if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_TIME)) {
+            if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR)) {
                 panel.add(manageHomeAddressL);
                 panel.add(addAddressLink);
             }

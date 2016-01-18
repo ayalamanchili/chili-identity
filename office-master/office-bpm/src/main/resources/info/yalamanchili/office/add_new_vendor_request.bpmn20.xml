@@ -47,7 +47,7 @@
         <sequenceFlow id="flow1" sourceRef="addNewVendorStart" targetRef="addNewVendorTask" />
         <userTask id="addNewVendorTask" 
                   name="Add New Vendor Request" 
-                  activiti:candidateGroups="ROLE_TIME,ROLE_ADMIN">
+                  activiti:candidateGroups="ROLE_ADMIN">
             <documentation>
                 Add Vendor Information:
                 Vendor Name: ${vendorName} 

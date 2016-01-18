@@ -52,7 +52,7 @@ public class AdjustmentHoursResource extends CRUDResource<AdjustmentHours> {
 
     @GET
     @Path("/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public AdjustmentHoursResource.BopnusPaymentTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         AdjustmentHoursResource.BopnusPaymentTable tableObj = new AdjustmentHoursResource.BopnusPaymentTable();
         tableObj.setEntities(getDao().query(start, limit));
