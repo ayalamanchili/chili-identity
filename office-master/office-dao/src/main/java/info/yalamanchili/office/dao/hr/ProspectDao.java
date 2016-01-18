@@ -100,10 +100,10 @@ public class ProspectDao extends CRUDDao<Prospect> {
         int placedByOwnCount = 0;
         int placedBySolutionsTeamCount = 0;
         for (Prospect p : report(dto)) {
-            if (PetitionFor.In_House.equals(p.getPetitionFieldFor())) {
+            if (PetitionFor.In_House.equals(p.getPetitionFiledFor())) {
                 petetionforInHouseCount++;
             }
-            if (PetitionFor.Client_Project.equals(p.getPetitionFieldFor())) {
+            if (PetitionFor.Client_Project.equals(p.getPetitionFiledFor())) {
                 petetionforClientProjectCount++;
             }
             if (TransferEmployeeType.Corporate_Employee.equals(p.getTrfEmpType())) {
