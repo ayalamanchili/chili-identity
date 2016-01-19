@@ -69,10 +69,18 @@ public class ProspectsSidePanel extends ALComposite implements ClickHandler {
 
     public JSONObject getObject() {
         JSONObject obj = new JSONObject();
-        if (statusF.getValue() == null) {
+        if ((statusF.getValue() == null) && (startDateF.getDate() == null) && (endDateF.getDate() == null)) {
             statusF.setMessage("Required");
+            startDateF.clearMessage();
+            endDateF.clearMessage();
+        } else if (startDateF.getDate() != null && endDateF.getDate() == null) {
+            endDateF.setMessage("Required");
+            statusF.clearMessage();
+        } else if (endDateF.getDate() != null && startDateF.getDate() == null) {
+            startDateF.setMessage("Required");
+            statusF.clearMessage();
         }
-        if (statusF.listBox.getSelectedValue() != null) {
+        if (statusF.getValue() != null) {
             obj.put("status", new JSONString(statusF.getValue()));
         }
         if (startDateF.getDate() != null) {
@@ -88,15 +96,18 @@ public class ProspectsSidePanel extends ALComposite implements ClickHandler {
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(reportB)) {
             JSONObject obj = getObject();
-            if (obj.containsKey("status")) {
+            if ((obj.containsKey("status") == true) || (obj.containsKey("joiningDateFrom") == true && obj.containsKey("joiningDateTo") == true)) {
                 String reportUrl = OfficeWelcome.instance().constants.root_url() + "prospect/report";
                 HttpService.HttpServiceAsync.instance().doPut(reportUrl, obj.toString(), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
-                    }
-                });
+                            @Override
+                            public void onResponse(String result) {
+                                new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
+                            }
+                        });
+                statusF.clearMessage();
+                startDateF.clearMessage();
+                endDateF.clearMessage();
             }
         }
         if (event.getSource().equals(graphsB)) {
@@ -105,13 +116,15 @@ public class ProspectsSidePanel extends ALComposite implements ClickHandler {
                 String graphUrl = OfficeWelcome.instance().constants.root_url() + "prospect/graph";
                 HttpService.HttpServiceAsync.instance().doPut(graphUrl, obj.toString(), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        logger.info(result);
-                        JSONObject graphObj = JSONParser.parseLenient(result).isObject();
-                        new GenericPopup(new ProspectsGraphsPanel(graphObj)).show();
-                    }
-                });
+                            @Override
+                            public void onResponse(String result) {
+                                logger.info(result);
+                                JSONObject graphObj = JSONParser.parseLenient(result).isObject();
+                                GenericPopup popup = new GenericPopup(new ProspectsGraphsPanel(graphObj));
+                                popup.setPixelSize(510, 600);
+                                popup.show();
+                            }
+                        });
             }
         }
     }
