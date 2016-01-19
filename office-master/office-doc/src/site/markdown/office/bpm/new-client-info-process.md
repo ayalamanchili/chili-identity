@@ -2,66 +2,70 @@ How To Add Client Information
 ----
 - [Login to Portal](../../office/forgot-password.html "Login")
 - Navigate to **MyOffice** -> **Employees** -> **Employee Tree Panel** -> **Client Information**
-- Add client information for an employee
-- Initially, the status of the client information is **PENDING_ACCOUNTS_VERIFICATION**
-- **Accounts Payable**, **Accounts Receivable**, **Expense** Departments, Either of these will review and approve the request
-- Then status of the client information will changed to **PENDING_HR_VERIFICATION**
-- Then **HR department** will review and approve the request
-- Then status will changed to **COMPLETED**
-
+- After the Client information is created, a task is created and assigned to **billing and invoice team**
+- After the **billing and invoice team**  completes the assigned task, the  task is created and assigned to the **HR department** to populate all remaining details,verify, and complete the process.
+- There is a option to create and update the previous project End Date.
+- Role_Contracts_Admin submit the new vendor and  new client request 
+- The Task and email sent to Role_Admin
+- Role_Admin, Role_Contracts_Admin and/or Role_Billing_Admin will able to update the Client Information
+- Once CPD Is Updated billing and invoice team will get the email notification with updated values with item no and etc
 Client Information Process
 =========
-![alt text](../../images/bpm/new_client_information.png "New Client Info")
+![alt text](../../images/clientinfo/Submit-Client-Information-process.png "New Client Info")
 
 Create New Client Information
 ----
- **Any person from the HR, Relationship, Contracts(TIME_ROLE), and/or Recruiting Depts may create new client information when a new employee joins a project or when an existing employee changes project.
+ **Any person from the Role_Admin, Role_Contracts_Admin and/or Recruiting Depts may create new client information when a new employee joins a project or when an existing employee changes project.
  - Goto --> **My Office** tab --> search for employee**
- ![alt text](../../images/clientinfo/adding-client-info.png "Client Information")
 
-Fill the required fields:
+Search For Employee
 ----
-![alt text](../../images/clientinfo/fill-client-info.png "Client Information")
+![alt text](../../images/clientinfo/search-employee.png "Client Information")
+Add New Client Client Inforamtion
+----
+![alt text](../../images/clientinfo/creat-new-client-info.png "Client Information")
 
+![alt text](../../images/clientinfo/save-client-info.png "Client Information")
 Once You click on "Save", ReadAllClientInformationPanel Will looks like this:
 ----
-![alt text](../../images/clientinfo/readall-client-info.png "Client Information")
-Client Information Accounts Department Task Created Notification Mail:
----
-![alt text](../../images/clientinfo/apd-task-created.png "Client Information")
+![alt text](../../images/clientinfo/Pending-Contracts-Submit.png "Client Information")
 
-Before Accounts Department Approval, status of client information:
+Update For Contracts Team
 ----
-![alt text](../../images/clientinfo/pending-accounts-verification.png "Client Information")
+![alt text](../../images/clientinfo/submit-client-info.png "Client Information")
 
-Client Information Accounts Department Task:
+Once You click on "Submit", ReadAllClientInformationPanel Will looks like this:
 ----
-![alt text](../../images/clientinfo/accounts-department-client-info-task.png "Client Information")
-![alt text](../../images/clientinfo/accounts-department-client-info-task-view.png "Client Information")
-![alt text](../../images/clientinfo/client-info-ad-approval.png "Client Information")
+![alt text](../../images/clientinfo/submit-client-information.png "Client Information")
 
-Accounts Department will receive Task completed notification mail after approval:
+Billing Invoicing Status 
 ----
-![alt text](../../images/clientinfo/apd-task-complete.png "Client Information")
+![alt text](../../images/clientinfo/Pending-Billing-Invoicing-Approval.png "Client Information")
 
-After Accounts Departments Approval, status of client information
+Billing Invoicing Team Task 
 ----
-![alt text](../../images/clientinfo/pending-hr-verification.png "Client Information")
+![alt text](../../images/clientinfo/Billing-Invoicing-Department-task.png "Client Information")
 
-Notification mail to HR Team Regarding Client information:
+Billing Invoicing Department Email 
 ----
-![alt text](../../images/clientinfo/hr-task-created.png "Client Information")
+![alt text](../../images/clientinfo/Billing-Invoicing-Department-Email.png "Client Information")
 
-Client information HR Task:
+Pending HR Verification Status 
 ----
-![alt text](../../images/clientinfo/client-info-hr-task.png "Client Information")
-![alt text](../../images/clientinfo/client-info-hr-task-view.png "Client Information")
+![alt text](../../images/clientinfo/Pending-HR-Verification-status.png "Client Information")
 
-Task Complete notification mail to HR team:
+Client Information Pending HR Verification Task
 ----
-![alt text](../../images/clientinfo/hr-task-complete.png "Client Information")
+![alt text](../../images/clientinfo/Client-Info-HR-DepartmentTask.png "Client Information")
 
-Once After HR approval, the status of the client information:
+Client Information Pending HR Verification Email
 ----
-![alt text](../../images/clientinfo/status-completed.png "Client Information")
+![alt text](../../images/clientinfo/HR-Department-Email.png "Client Information")
+Client Information Final Status 
+----
+![alt text](../../images/clientinfo/completed-status.png "Client Information")
 
+
+Submit NewVendorRequest and NewClientRequest
+----
+![alt text](../../images/clientinfo/submit-client-vendor-details.png "Client Information")
