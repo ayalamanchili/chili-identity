@@ -137,12 +137,11 @@ public class ProspectService {
             dto.setTrfEmpType(null);
             dto.setPetitionFiledFor(null);
         }
-
         return dto;
     }
 
     public ProspectDto clone(Long id) {
-        Prospect entity = prospectDao.clone(id);
+        Prospect entity = prospectDao.clone(id, "resumeURL");
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         entity.setStatus(ProspectStatus.IN_PROGRESS);
         ProspectDto res = ProspectDto.map(mapper, entity);
@@ -204,9 +203,13 @@ public class ProspectService {
         }
         if (!Strings.isNullOrEmpty(dto.getScreenedBy())) {
             entity.setScreenedBy(dto.getScreenedBy());
+        } else {
+            entity.setScreenedBy(null);
         }
         if (dto.getProcessDocSentDate() != null) {
             entity.setProcessDocSentDate(dto.getProcessDocSentDate());
+        } else {
+            entity.setProcessDocSentDate(null);
         }
         if (contact.getEmails().size() <= 0) {
             if (!Strings.isNullOrEmpty(dto.getEmail())) {
