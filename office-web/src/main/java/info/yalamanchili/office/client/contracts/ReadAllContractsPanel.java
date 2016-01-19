@@ -14,10 +14,10 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
-import info.chili.gwt.fields.FileField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.GenericPopup;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
@@ -135,7 +135,11 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.PRINT);
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_FULL_VIEW, Auth.ROLE.ROLE_RECRUITER)) {
+            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.PRINT);
+        } else {
+            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ);
+        }
     }
 
     @Override

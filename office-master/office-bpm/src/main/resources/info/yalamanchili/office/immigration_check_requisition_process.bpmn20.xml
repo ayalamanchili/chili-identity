@@ -25,9 +25,9 @@
                 Needed By Date  : #{entity.neededByDate}
                 Requested Date  : #{entity.requestedDate}
                 MailingAddress  : #{entity.mailingAddress}
-                caseType        : #{entity.caseType}
-                attorney        : #{entity.attorneyName}
-                status          : #{entity.status}
+                CaseType        : #{entity.caseType}
+                Attorney        : #{entity.attorneyName}
+                Status          : #{entity.status}
                 Follow instructions from below:
                 https://apps.sstech.us/site/office/expense/immigrationcheckprocess.html
             </documentation>
@@ -85,12 +85,12 @@
                 Needed By Date  : #{entity.neededByDate}
                 Requested Date  : #{entity.requestedDate}
                 MailingAddress  : #{entity.mailingAddress}
-                caseType        : #{entity.caseType}
-                attorney        : #{entity.attorneyName}
-                approvedBy      : #{entity.approvedBy}
-                approvedDate    : #{entity.approvedDate}
-                accountedBy     : #{entity.accountedBy}
-                status          : #{entity.status}
+                CaseType        : #{entity.caseType}
+                Attorney        : #{entity.attorneyName}
+                ApprovedBy      : #{entity.approvedBy}
+                ApprovedDate    : #{entity.approvedDate}
+                AccountedBy     : #{entity.accountedBy}
+                Status          : #{entity.status}
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.immigration.ImmigrationCheckRequestProcess" />

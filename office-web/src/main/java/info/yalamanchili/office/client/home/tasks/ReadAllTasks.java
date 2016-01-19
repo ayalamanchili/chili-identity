@@ -125,4 +125,19 @@ public class ReadAllTasks extends CRUDReadAllComposite {
     @Override
     public void updateClicked(String entityId) {
     }
+    
+     @Override
+    protected boolean enableQuickView() {
+        return true;
+    }
+
+    @Override
+    protected void onQuickView(int row, String id) {
+        new GenericPopup(new ReadTaskPanel(getEntity(id), false)).show();
+    }
+
+    @Override
+    protected boolean enablePersistedQuickView() {
+        return true;
+    }
 }

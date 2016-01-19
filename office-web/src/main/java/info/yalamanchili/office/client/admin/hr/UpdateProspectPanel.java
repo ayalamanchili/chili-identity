@@ -299,7 +299,7 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
 
     @Override
     protected String getURI() {
-        if (!getEntityId().isEmpty()) {
+        if (!getEntityId().isEmpty()) { 
             return OfficeWelcome.constants.root_url() + "prospect/update";
         } else {
             return OfficeWelcome.constants.root_url() + "prospect/save";
@@ -324,5 +324,13 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
                 removeProspectWonFields();
             }
         }
+    }
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        if(entity.get("resumeURL")==null){
+            resumeUploadPanel.setMessage("Please Select A File");
+            return false;
+        }
+        return true;
     }
 }

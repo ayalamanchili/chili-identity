@@ -53,7 +53,7 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
         if (task.getTaskDefinitionKey().equals("newClientInfoInvoicingAndBillingTask")) {
             if (status.equalsIgnoreCase("approved")) {
                 entity.setStatus(ClientInformationStatus.PENDING_HR_VERIFICATION);
-                sendClientInforamtionTaskCompletedEmail(entity, itemno);
+                sendNewClieniInformationNotification(entity, itemno);
             } else {
                 entity.setStatus(ClientInformationStatus.CANCELED);
             }
@@ -70,23 +70,21 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
 
     @Async
     @Transactional
-    public void sendClientInforamtionTaskCompletedEmail(ClientInformation ci, String itemNo) {
-        if (ClientInformationStatus.PENDING_HR_VERIFICATION.equals(ci.getStatus())) {
-            Employee emp = OfficeSecurityService.instance().getCurrentUser();
-            Email email = new Email();
-            email.setTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_BILLING_AND_INVOICING.name()));
-            email.setRichText(Boolean.TRUE);
-            email.setSubject(" Client Inforamtion InvoicingAndBilling Task Completed For : " + ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
-            String messageText = " Client Inforamtion:: " + " ";
-            messageText = messageText.concat("Client :" + ci.getClient().getName()) + " ; ";
-            messageText = messageText.concat("Item_No :" + itemNo) + " ; ";
-            if (ci.getVendor()!=null) {
-                messageText = messageText.concat("PurchaseOrderNo :" + ci.getClientProject().getPurchaseOrderNo()) + " ; ";
-            }
-            messageText = messageText.concat("Updated_By :" + emp.getFirstName() + " " + emp.getLastName()) + " ; ";
-            email.setBody(messageText);
-            MessagingService.instance().sendEmail(email);
+    public void sendNewClieniInformationNotification(ClientInformation ci, String itemNo) {
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
+        Email email = new Email();
+        email.setTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_BILLING_AND_INVOICING.name()));
+        email.setRichText(Boolean.TRUE);
+        email.setSubject("New Client Information for Processing for  : " + ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
+        String messageText = " Client Inforamtion:: " + " ";
+        messageText = messageText.concat("Client :" + ci.getClient().getName()) + " ; ";
+        messageText = messageText.concat("Item_No :" + itemNo) + " ; ";
+        if (ci.getVendor() != null) {
+            messageText = messageText.concat("PurchaseOrderNo :" + ci.getClientProject().getPurchaseOrderNo()) + " ; ";
         }
+        messageText = messageText.concat("Updated_By :" + emp.getFirstName() + " " + emp.getLastName()) + " ; ";
+        email.setBody(messageText);
+        MessagingService.instance().sendEmail(email);
     }
 
     protected ClientInformation getRequestFromTask(DelegateTask task) {
