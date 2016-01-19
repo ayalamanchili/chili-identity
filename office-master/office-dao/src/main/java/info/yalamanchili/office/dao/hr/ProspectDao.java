@@ -8,7 +8,6 @@
  */
 package info.yalamanchili.office.dao.hr;
 
-import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import info.chili.dao.CRUDDao;
@@ -79,7 +78,7 @@ public class ProspectDao extends CRUDDao<Prospect> {
         StringBuilder queryStr = new StringBuilder();
         queryStr.append("SELECT p from ").append(Prospect.class.getCanonicalName());
         queryStr.append(" p where ");
-        if (!Strings.isNullOrEmpty(searchDto.getStatus().name())) {
+        if (searchDto.getStatus() != null) {
             queryStr.append("p.status = '").append(searchDto.getStatus().name().trim()).append("' ").append(" and ");
         }
         if ((searchDto.getJoiningDateFrom()) != null) {
@@ -145,5 +144,4 @@ public class ProspectDao extends CRUDDao<Prospect> {
     public EntityManager getEntityManager() {
         return em;
     }
-
 }
