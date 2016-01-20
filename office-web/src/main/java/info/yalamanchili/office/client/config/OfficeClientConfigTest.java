@@ -35,7 +35,7 @@ public class OfficeClientConfigTest implements OfficeClientConfig {
 
     @Override
     public String getPortalDocumentationSiteUrl() {
-        return "https://apps.sstech.us/site/office/";
+        return "http://71.100.103.92/site/office/";
     }
 
     @Override
