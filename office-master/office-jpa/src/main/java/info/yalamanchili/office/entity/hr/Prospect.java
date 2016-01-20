@@ -11,15 +11,19 @@ package info.yalamanchili.office.entity.hr;
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.profile.Contact;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.validation.Valid;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Indexed;
@@ -53,9 +57,6 @@ public class Prospect extends AbstractEntity {
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date processDocSentDate;
 
-    @NotEmpty(message = "{resumeUrl.not.empty.msg}")
-    protected String resumeURL;
-
     @Enumerated(EnumType.STRING)
     protected ProspectStatus status;
 
@@ -67,9 +68,12 @@ public class Prospect extends AbstractEntity {
 
     @Enumerated(EnumType.STRING)
     protected PlacedBy placedBy;
-    
+
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date dateOfJoining;
+
+    @OneToMany(mappedBy = "prospect", cascade = CascadeType.ALL)
+    protected Set<Resume> resumeURL;
 
     public void setContact(Contact contact) {
         this.contact = contact;
@@ -89,10 +93,6 @@ public class Prospect extends AbstractEntity {
 
     public void setProcessDocSentDate(Date processDocSentDate) {
         this.processDocSentDate = processDocSentDate;
-    }
-
-    public void setResumeURL(String resumeURL) {
-        this.resumeURL = resumeURL;
     }
 
     public void setStatus(ProspectStatus status) {
@@ -118,10 +118,6 @@ public class Prospect extends AbstractEntity {
 
     public Date getProcessDocSentDate() {
         return processDocSentDate;
-    }
-
-    public String getResumeURL() {
-        return resumeURL;
     }
 
     public ProspectStatus getStatus() {
@@ -160,6 +156,26 @@ public class Prospect extends AbstractEntity {
         this.dateOfJoining = dateOfJoining;
     }
 
+    @XmlTransient
+    public Set<Resume> getResumeURL() {
+        if (this.resumeURL == null) {
+            this.resumeURL = new HashSet();
+        }
+        return resumeURL;
+    }
+
+    public void setResumeURL(Set<Resume> resumeURL) {
+        this.resumeURL = resumeURL;
+    }
+
+    public void addResume(Resume entity) {
+        if (entity == null) {
+            return;
+        }
+        getResumeURL().add(entity);
+        entity.setProspect(this);
+    }
+
     @Override
     public String describe() {
         StringBuilder description = new StringBuilder("\n");
@@ -172,6 +188,6 @@ public class Prospect extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "Prospect{" + "contact=" + contact + ", startDate=" + startDate + ", screenedBy=" + screenedBy + ", referredBy=" + referredBy + ", processDocSentDate=" + processDocSentDate + ", resumeURL=" + resumeURL + ", status=" + status + ", petitionFiledFor=" + petitionFiledFor + ", trfEmpType=" + trfEmpType + ", placedBy=" + placedBy + ", dateOfJoining=" + dateOfJoining + '}';
+        return "Prospect{" + "contact=" + contact + ", startDate=" + startDate + ", screenedBy=" + screenedBy + ", referredBy=" + referredBy + ", processDocSentDate=" + processDocSentDate + ", status=" + status + ", petitionFiledFor=" + petitionFiledFor + ", trfEmpType=" + trfEmpType + ", placedBy=" + placedBy + ", dateOfJoining=" + dateOfJoining + '}';
     }
 }

@@ -8,19 +8,17 @@
  */
 package info.yalamanchili.office.client.admin.hr;
 
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
-import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.data.CountryFactory;
 import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.DataType;
-import info.chili.gwt.fields.FileField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
-import info.chili.gwt.utils.Utils;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -62,13 +60,17 @@ public class ReadProspectsPanel extends ReadComposite {
                             addProspectWonFields();
                         }
                         populateFieldsFromEntity(entity);
-                        entityFieldsPanel.add(Utils.getLineSeperatorTag("Resume"));
-                        String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "resumeURL") + "&entityId=" + JSONUtils.toString(entity, "id");
-                        FileField fileField = new FileField(fileURL);
-                        entityFieldsPanel.add(fileField);
+                        JSONArray resumeURL = JSONUtils.toJSONArray(entity.get("resumeURL"));
+                        if (resumeURL != null) {
+                            populateExpenseReceipt(resumeURL);
+                        }
                         populateComments();
                     }
                 });
+    }
+
+    protected void populateExpenseReceipt(JSONArray items) {
+        entityFieldsPanel.add(new ReadAllResumePanel(items));
     }
 
     protected void populateComments() {

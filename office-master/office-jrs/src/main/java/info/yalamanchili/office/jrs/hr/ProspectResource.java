@@ -112,7 +112,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     @Validate
     @PreAuthorize("hasAnyRole('ROLE_PROSPECTS_MANAGER')")
     @CacheEvict(value = OfficeCacheKeys.PROSPECT, allEntries = true)
-    public Prospect update(ProspectDto prospect) {
+    public ProspectDto update(ProspectDto prospect) {
         return prospectService.update(prospect);
     }
 

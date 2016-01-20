@@ -12,9 +12,12 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.http.client.URL;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.FileUpload;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.data.CountryFactory;
@@ -43,7 +46,7 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
 
     private static Logger logger = Logger.getLogger(CreateProspectPanel.class.getName());
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "screenedBy", "Employee", false, true);
-    FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "Prospect", "resumeURL", "Prospect/resumeURL", false) {
+    FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "Prospect", "resumeURL", "Prospect/resumeURL", false, true) {
         @Override
         public void onUploadComplete(String res) {
             postCreateSuccess(res);
@@ -98,7 +101,22 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         assignEntityValueFromField("screenedBy", entity);
         assignEntityValueFromField("processDocSentDate", entity);
         assignEntityValueFromField("comment", entity);
-        entity.put("resumeURL", resumeUploadPanel.getFileName());
+        JSONArray resumeURL = new JSONArray();
+        if (!resumeUploadPanel.isEmpty()) {
+            int i = 0;
+            for (FileUpload upload : resumeUploadPanel.getFileUploads()) {
+                if (upload.getFilename() != null && !upload.getFilename().trim().isEmpty()) {
+                    JSONObject resume = new JSONObject();
+                    resume.put("fileURL", resumeUploadPanel.getFileName(upload));
+                    resume.put("name", new JSONString("File Name"));
+                    resumeURL.set(i, resume);
+                    i++;
+                }
+            }
+        }
+        if (resumeURL.size() > 0) {
+            entity.put("resumeURL", resumeURL);
+        }
         return entity;
     }
 
@@ -121,7 +139,11 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
 
     protected void uploadResume(String entityStr) {
         entity = JSONParser.parseLenient(entityStr).isObject();
-        resumeUploadPanel.upload(JSONUtils.toString(entity, "id"));
+        if (!resumeUploadPanel.isEmpty()) {
+            JSONObject post = (JSONObject) JSONParser.parseLenient(entityStr);
+            JSONArray resumeURL = JSONUtils.toJSONArray(post.get("resumeURL"));
+            resumeUploadPanel.upload(resumeURL, "fileURL");
+        }
     }
 
     @Override

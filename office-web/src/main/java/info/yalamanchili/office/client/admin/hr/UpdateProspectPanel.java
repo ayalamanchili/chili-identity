@@ -11,9 +11,12 @@ package info.yalamanchili.office.client.admin.hr;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.FileUpload;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.data.CountryFactory;
@@ -41,12 +44,13 @@ import java.util.logging.Logger;
 public class UpdateProspectPanel extends UpdateComposite implements ClickHandler, ChangeHandler {
 
     private Logger logger = Logger.getLogger(UpdateProspectPanel.class.getName());
-    FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "Prospect", "resumeURL", "Prospect/resumeURL", false) {
+    FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "Prospect", "resumeURL", "Prospect/resumeURL", false, true) {
         @Override
         public void onUploadComplete(String res) {
             postUpdateSuccess(null);
         }
     };
+    JSONArray resumeURL = new JSONArray();
 
     protected static UpdateProspectPanel instance;
 
@@ -68,24 +72,24 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                logger.info(response);
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                if (entity.get("id") != null) {
-                    entityFieldsPanel.add(getLineSeperatorTag("Status Information"));
-                    addEnumField("status", false, false, ProspectStatus.names(), Alignment.HORIZONTAL);
-                    statusField = (EnumField) fields.get("status");
-                    statusField.listBox.addChangeHandler(instance);
-                    alignFields();
-                    if (ProspectStatus.CLOSED_WON.name().equals(JSONUtils.toString(getEntity(), "status"))) {
-                        addProspectWonFields();
+                    @Override
+                    public void onResponse(String response) {
+                        logger.info(response);
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        if (entity.get("id") != null) {
+                            entityFieldsPanel.add(getLineSeperatorTag("Status Information"));
+                            addEnumField("status", false, false, ProspectStatus.names(), Alignment.HORIZONTAL);
+                            statusField = (EnumField) fields.get("status");
+                            statusField.listBox.addChangeHandler(instance);
+                            alignFields();
+                            if (ProspectStatus.CLOSED_WON.name().equals(JSONUtils.toString(getEntity(), "status"))) {
+                                addProspectWonFields();
+                            }
+                        }
+                        populateFieldsFromEntity(entity);
+                        populateComments();
                     }
-                }
-                populateFieldsFromEntity(entity);
-                populateComments();
-            }
-        });
+                });
     }
 
     protected void populateComments() {
@@ -150,8 +154,19 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         if (fields.containsKey("dateOfJoining")) {
             assignEntityValueFromField("dateOfJoining", entity);
         }
-        if (!resumeUploadPanel.isEmpty()) {
-            entity.put("resumeURL", resumeUploadPanel.getFileName());
+        int j = resumeURL.size();
+        logger.info(resumeURL.toString());
+        for (FileUpload upload : resumeUploadPanel.getFileUploads()) {
+            if (upload.getFilename() != null && !upload.getFilename().trim().isEmpty()) {
+                JSONObject resume = new JSONObject();
+                resume.put("fileURL", resumeUploadPanel.getFileName(upload));
+                resume.put("name", new JSONString("File Name"));
+                resumeURL.set(j, resume);
+                j++;
+            }
+        }
+        if (resumeURL.size() > 0) {
+            entity.put("resumeURL", resumeURL);
         }
         return entity;
     }
@@ -160,21 +175,23 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                uploadResume(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        uploadResume(arg0);
+                    }
+                });
     }
 
     protected void uploadResume(String entityStr) {
-        entity = JSONParser.parseLenient(entityStr).isObject();
-        resumeUploadPanel.upload(JSONUtils.toString(entity, "id"));
+        logger.info("in Update Panel11111:" + entityStr);
+        JSONObject post = (JSONObject) JSONParser.parseLenient(entityStr);
+        JSONArray resumeURL = JSONUtils.toJSONArray(post.get("resumeURL"));
+        resumeUploadPanel.upload(resumeURL, "fileURL");
     }
 
     @Override
@@ -206,6 +223,14 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
             assignFieldValueFromEntity("placedBy", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("dateOfJoining", entity, DataType.DATE_FIELD);
         }
+        resumeURL = JSONUtils.toJSONArray(entity.get("resumeURL"));
+        if (resumeURL.size() > 0) {
+            populateResumes(resumeURL);
+        }
+    }
+
+    protected void populateResumes(JSONArray items) {
+        entityFieldsPanel.insert(new ReadAllResumePanel(items), entityFieldsPanel.getWidgetIndex(resumeUploadPanel) + 1);
     }
 
     @Override
@@ -299,7 +324,7 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
 
     @Override
     protected String getURI() {
-        if (!getEntityId().isEmpty()) { 
+        if (!getEntityId().isEmpty()) {
             return OfficeWelcome.constants.root_url() + "prospect/update";
         } else {
             return OfficeWelcome.constants.root_url() + "prospect/save";
@@ -325,12 +350,13 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
             }
         }
     }
-    @Override
-    protected boolean processClientSideValidations(JSONObject entity) {
-        if(entity.get("resumeURL")==null){
-            resumeUploadPanel.setMessage("Please Select A File");
-            return false;
-        }
-        return true;
-    }
+
+//    @Override
+//    protected boolean processClientSideValidations(JSONObject entity) {
+//        if (entity.get("resumeURL") == null) {
+//            resumeUploadPanel.setMessage("Please Select A File");
+//            return false;
+//        }
+//        return true;
+//    }
 }

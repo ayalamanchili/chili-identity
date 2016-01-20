@@ -13,11 +13,13 @@ import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.hr.ProspectDao;
+import info.yalamanchili.office.dao.hr.ResumeDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dto.prospect.ProspectDto;
 import info.yalamanchili.office.entity.hr.Prospect;
 import info.yalamanchili.office.entity.hr.ProspectStatus;
+import info.yalamanchili.office.entity.hr.Resume;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
@@ -109,10 +111,16 @@ public class ProspectService {
             entity.setTrfEmpType(null);
             entity.setPetitionFiledFor(null);
         }
+        for (Resume resume : entity.getResumeURL()) {
+            if (!Strings.isNullOrEmpty(resume.getFileURL())) {
+                resume.setProspect(entity);
+            }
+        }
         entity = em.merge(entity);
         CommentDao.instance().addComment(dto.getComment(), entity);
         dto.setId(entity.getId());
-        return dto;
+        return mapper.map(entity, ProspectDto.class);
+        // return dto;
     }
 
     public ProspectDto read(Long id) {
@@ -152,7 +160,7 @@ public class ProspectService {
         return SpringContext.getBean(ProspectService.class);
     }
 
-    public Prospect update(ProspectDto dto) {
+    public ProspectDto update(ProspectDto dto) {
         Prospect entity = prospectDao.findById(dto.getId());
         if (dto.getStatus() != null) {
             entity.setStatus(dto.getStatus());
@@ -166,7 +174,7 @@ public class ProspectService {
         contact.setDateOfBirth(dto.getDateOfBirth());
         contact.setSex(dto.getSex());
         entity.setReferredBy(dto.getReferredBy());
-        entity.setResumeURL(dto.getResumeURL());
+        //       entity.setResumeURL(dto.getResumeURL());
         if (entity.getStatus().equals(ProspectStatus.CLOSED_WON)) {
             if (dto.getDateOfJoining() != null) {
                 entity.setDateOfJoining(dto.getDateOfJoining());
@@ -255,9 +263,19 @@ public class ProspectService {
             contact.getAddresss().get(0).setZip(dto.getAddress().getZip());
         }
         //contact
+        for (Resume resume : dto.getResumeURL()) {
+            if (resume.getId() == null) {
+                resume.setProspect(entity);
+                entity = prospectDao.getEntityManager().merge(entity);
+                entity.getResumeURL().add(resume);
+            } else {
+                ResumeDao.instance().save(resume);
+            }
+        }
         contact = em.merge(contact);
         entity.setContact(contact);
-        prospectDao.getEntityManager().merge(entity);
-        return entity;
+        prospectDao.getEntityManager().flush();
+        entity = prospectDao.findById(entity.getId());
+        return mapper.map(entity, ProspectDto.class);
     }
 }

@@ -11,11 +11,14 @@ package info.yalamanchili.office.dto.prospect;
 import info.yalamanchili.office.entity.hr.PetitionFor;
 import info.yalamanchili.office.entity.hr.PlacedBy;
 import info.yalamanchili.office.entity.hr.ProspectStatus;
+import info.yalamanchili.office.entity.hr.Resume;
 import info.yalamanchili.office.entity.hr.TransferEmployeeType;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Sex;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Temporal;
@@ -65,8 +68,7 @@ public class ProspectDto implements Serializable {
     @NotEmpty(message = "{referredBy.not.empty.msg}")
     protected String referredBy;
 
-    @NotEmpty(message = "{resumeUrl.not.empty.msg}")
-    protected String resumeURL;
+    protected Set<Resume> resumeURL;
 
     protected Date dateOfBirth;
 
@@ -239,12 +241,22 @@ public class ProspectDto implements Serializable {
         this.referredBy = referredBy;
     }
 
-    public String getResumeURL() {
+    public Set<Resume> getResumeURL() {
+        if (this.resumeURL == null) {
+            this.resumeURL = new HashSet();
+        }
         return resumeURL;
     }
 
-    public void setResumeURL(String resumeURL) {
+    public void setResumeURL(Set<Resume> resumeURL) {
         this.resumeURL = resumeURL;
+    }
+    
+    public void addResume(Resume entity) {
+        if (entity == null) {
+            return;
+        }
+        getResumeURL().add(entity);
     }
 
     public ProspectStatus getStatus() {
@@ -313,7 +325,7 @@ public class ProspectDto implements Serializable {
 
     @Override
     public String toString() {
-        return "ProspectDto{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", phoneNumber=" + phoneNumber + ", sex=" + sex + ", startDate=" + startDate + ", screenedBy=" + screenedBy + ", referredBy=" + referredBy + ", resumeURL=" + resumeURL + ", dateOfBirth=" + dateOfBirth + ", address=" + address + ", status=" + status + ", processDocSentDate=" + processDocSentDate + '}';
+        return "ProspectDto{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", phoneNumber=" + phoneNumber + ", sex=" + sex + ", startDate=" + startDate + ", screenedBy=" + screenedBy + ", referredBy=" + referredBy + ", dateOfBirth=" + dateOfBirth + ", address=" + address + ", status=" + status + ", processDocSentDate=" + processDocSentDate + '}';
     }
 
     public static ProspectDto map(Mapper mapper, info.yalamanchili.office.entity.hr.Prospect entity) {
