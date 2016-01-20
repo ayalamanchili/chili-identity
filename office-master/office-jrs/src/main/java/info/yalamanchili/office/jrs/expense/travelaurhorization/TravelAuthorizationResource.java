@@ -71,7 +71,10 @@ public class TravelAuthorizationResource extends CRUDResource<TravelAuthorizatio
     @Path("/{start}/{limit}")
     public TravelAuthorizationResource.TravelAurhorizationTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         TravelAuthorizationResource.TravelAurhorizationTable tableObj = new TravelAuthorizationResource.TravelAurhorizationTable();
-        if (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_ADMIN.name())) {
+        if ((OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_ADMIN.name()))
+                || (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_ACCOUNTS_PAYABLE.name()))
+                || (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name()))
+                || (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_CEO.name()))) {
             tableObj.setEntities(travelAuthorizationDao.queryAll(start, limit));
             tableObj.setSize(travelAuthorizationDao.size());
         } else {
