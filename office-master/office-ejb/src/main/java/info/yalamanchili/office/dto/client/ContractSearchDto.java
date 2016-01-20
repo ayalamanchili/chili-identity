@@ -9,6 +9,7 @@
 package info.yalamanchili.office.dto.client;
 
 import info.yalamanchili.office.entity.profile.ClientInformationCompany;
+import java.util.Date;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -28,6 +29,8 @@ public class ContractSearchDto extends ContractDto {
     protected String clientState;
     protected String vendorState;
     protected String vendorCity;
+    protected Date recruitedDateFrom;
+    protected Date recruitedDateTo;
 
     public String getClientCity() {
         return clientCity;
@@ -99,6 +102,22 @@ public class ContractSearchDto extends ContractDto {
 
     public void setEmployeeLastName(String employeeLastName) {
         this.employeeLastName = employeeLastName;
+    }
+
+    public Date getRecruitedDateFrom() {
+        return recruitedDateFrom;
+    }
+
+    public void setRecruitedDateFrom(Date recruitedDateFrom) {
+        this.recruitedDateFrom = recruitedDateFrom;
+    }
+
+    public Date getRecruitedDateTo() {
+        return recruitedDateTo;
+    }
+
+    public void setRecruitedDateTo(Date recruitedDateTo) {
+        this.recruitedDateTo = recruitedDateTo;
     }
 
 }
