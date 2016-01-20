@@ -216,6 +216,7 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         addField("screenedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("processDocSentDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("comment", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(getLineSeperatorTag("Upload Resume"));
         entityFieldsPanel.add(resumeUploadPanel);
         statesF = (EnumField) fields.get("state");
         countriesF = (EnumField) fields.get("country");

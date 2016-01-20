@@ -24,6 +24,7 @@ import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Phone;
+import java.util.Calendar;
 import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -114,6 +115,7 @@ public class ProspectService {
         for (Resume resume : entity.getResumeURL()) {
             if (!Strings.isNullOrEmpty(resume.getFileURL())) {
                 resume.setProspect(entity);
+                resume.setUpdatedTS(Calendar.getInstance().getTime());
             }
         }
         entity = em.merge(entity);
@@ -266,6 +268,7 @@ public class ProspectService {
         for (Resume resume : dto.getResumeURL()) {
             if (resume.getId() == null) {
                 resume.setProspect(entity);
+                resume.setUpdatedTS(Calendar.getInstance().getTime());
                 entity = prospectDao.getEntityManager().merge(entity);
                 entity.getResumeURL().add(resume);
             } else {

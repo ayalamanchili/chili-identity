@@ -68,6 +68,8 @@ public class ProspectDto implements Serializable {
     @NotEmpty(message = "{referredBy.not.empty.msg}")
     protected String referredBy;
 
+    @NotEmpty(message = "{resumeUrl.not.empty.msg}")
+    @Size(min = 1, message = "{resumeUrl.not.empty.msg}")
     protected Set<Resume> resumeURL;
 
     protected Date dateOfBirth;
