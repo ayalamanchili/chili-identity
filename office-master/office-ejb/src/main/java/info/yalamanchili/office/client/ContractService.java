@@ -23,7 +23,6 @@ import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
 import info.chili.reporting.ReportGenerator;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
@@ -99,6 +98,12 @@ public class ContractService {
             query.setParameter("endDateStartParam", endD, TemporalType.DATE);
             query.setParameter("endDateEndParam", DateUtils.addDays(endD, 31), TemporalType.DATE);
         }
+        if (searchDto.getRecruitedDateFrom() != null) {
+            query.setParameter("startDateParam", searchDto.getRecruitedDateFrom(), TemporalType.DATE);
+        }
+        if (searchDto.getRecruitedDateTo() != null) {
+            query.setParameter("endDateParam", searchDto.getRecruitedDateTo(), TemporalType.DATE);
+        }
         query.setFirstResult(start);
         query.setMaxResults(limit);
         for (ClientInformation ci : query.getResultList()) {
@@ -114,6 +119,12 @@ public class ContractService {
             if (searchDto.getEndDate() != null) {
                 sizeQuery.setParameter("endDateStartParam", endD, TemporalType.DATE);
                 sizeQuery.setParameter("endDateEndParam", DateUtils.addDays(endD, 31), TemporalType.DATE);
+            }
+            if (searchDto.getRecruitedDateFrom() != null) {
+                sizeQuery.setParameter("startDateParam", searchDto.getRecruitedDateFrom(), TemporalType.DATE);
+            }
+            if (searchDto.getRecruitedDateTo() != null) {
+                sizeQuery.setParameter("endDateParam", searchDto.getRecruitedDateTo(), TemporalType.DATE);
             }
             table.setSize(sizeQuery.getSingleResult());
         }
@@ -223,6 +234,15 @@ public class ContractService {
         if ((searchDto.getEndDate()) != null) {
             queryStr.append("ci.endDate between :endDateStartParam and :endDateEndParam").append(" and ");
         }
+
+        if (searchDto.getRecruitedDateFrom() != null) {
+            queryStr.append("ci.startDate between :startDateParam and  ");
+        }
+
+        if (searchDto.getRecruitedDateTo() != null) {
+            queryStr.append(":endDateParam and  ");
+        }
+
         if (!Strings.isNullOrEmpty(searchDto.getStatus())) {
             queryStr.append("ci.status = '").append(searchDto.getStatus().trim()).append("' ").append(" and ");
         }
@@ -295,10 +315,10 @@ public class ContractService {
 
         StringBuilder recruiters = new StringBuilder();
         for (Employee rec : ci.getRecruiters()) {
-            recruiters.append(rec.getFirstName()).append(",");
+            recruiters.append(rec.getFirstName()).append(" ").append(rec.getLastName()).append(" , ");
         }
         if (!recruiters.toString().isEmpty()) {
-            dto.setRecruiter(recruiters.toString());
+            dto.setRecruiter(recruiters.substring(0, recruiters.length()-2));
         }
         if (ci.getClientContact() != null) {
             dto.setClientContact(ci.getClientContact().details());
@@ -423,11 +443,18 @@ public class ContractService {
         MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
     }
 
-    public void generateRecruiterReport(ContractSearchDto dto, Date startDate, Date endDate) {
-        ContractTable table = searchContractsForRecruiter(dto, startDate, endDate);
-        String[] columnOrder = new String[]{"employee", "vendor", "startDate", "endDate"};
+    public void generateRecruiterReport(ContractSearchDto dto) {
+        ContractTable table = searchContractsForRecruiter(dto);
+        String[] columnOrder = new String[]{"employee", "client", "vendor", "startDate", "endDate", "billingRate", "recruiter"};
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
-        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Employee Recruited By " + dto.getRecruiter(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        String fileName = "";
+        if (dto.getRecruiter() != null) {
+            fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Employee Recruited By " + dto.getRecruiter(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        } else if (dto.getRecruitedDateFrom() != null && dto.getRecruitedDateTo() != null) {
+            String start = org.apache.http.client.utils.DateUtils.formatDate(dto.getRecruitedDateFrom(), "MM-dd-yyyy");
+            String end = org.apache.http.client.utils.DateUtils.formatDate(dto.getRecruitedDateTo(), "MM-dd-yyyy");
+            fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Employee Recruited Between " + start + " And " + end, OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        }
         MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
     }
 
@@ -532,26 +559,21 @@ public class ContractService {
         }
     }
 
-    public ContractTable searchContractsForRecruiter(ContractSearchDto dto, Date startDate, Date endDate) {
+    public ContractTable searchContractsForRecruiter(ContractSearchDto dto) {
         ContractTable table = search(dto, 0, 10000);
         List<ContractDto> tabledto = new ArrayList();
         List<ContractDto> dtos = new ArrayList();
         List<ContractDto> cdtos = new ArrayList();
         tabledto.addAll(table.getEntities());
         dtos.addAll(table.getEntities());
-        if (startDate != null || endDate != null) {
-            ContractTable ctable = new ContractTable();
-            for (ContractDto cdto : dtos) {
-                if (cdto.getStartDate().after(startDate) && cdto.getStartDate().before(endDate)) {
-                    cdtos.add(cdto);
-                }
-            }
-            ctable.setEntities(activeCPDs(cdtos));
-            return ctable;
-        } else {
-            table.setEntities(activeCPDs(tabledto));
-            return table;
+        ContractTable ctable = new ContractTable();
+        for (ContractDto cdto : dtos) {
+            cdtos.add(cdto);
         }
+        if (activeCPDs(cdtos).size() > 0) {
+            ctable.setEntities(activeCPDs(cdtos));
+        }
+        return ctable;
     }
 
     public List<ContractDto> activeCPDs(List<ContractDto> dtos) {
