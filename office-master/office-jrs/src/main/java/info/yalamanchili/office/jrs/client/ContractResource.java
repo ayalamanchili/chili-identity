@@ -8,12 +8,8 @@
 package info.yalamanchili.office.jrs.client;
 
 import info.yalamanchili.office.client.ContractService;
-import info.yalamanchili.office.dto.client.ContractDto;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dto.client.ContractSearchDto;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -86,8 +82,8 @@ public class ContractResource {
 
     @PUT
     @Path("/recruiter-report")
-    public void generateRecruiterReport(ContractSearchDto dto, @QueryParam("fromDate")Date startDate, @QueryParam("toDate")Date endDate) {
-        ContractService.instance().generateRecruiterReport(dto, startDate, endDate);
+    public void generateRecruiterReport(ContractSearchDto dto) {
+        ContractService.instance().generateRecruiterReport(dto);
     }
 
     @GET
@@ -99,7 +95,7 @@ public class ContractResource {
     
     @PUT
     @Path("/recruiterSearch")
-    public ContractTable searchContractsForRecruiter(ContractSearchDto dto, @QueryParam("fromDate") Date startDate, @QueryParam("toDate") Date endDate) {
-        return ContractService.instance().searchContractsForRecruiter(dto, startDate, endDate);
+    public ContractTable searchContractsForRecruiter(ContractSearchDto dto) {
+        return ContractService.instance().searchContractsForRecruiter(dto);
     }
 }
