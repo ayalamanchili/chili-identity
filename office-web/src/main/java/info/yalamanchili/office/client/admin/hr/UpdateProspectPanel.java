@@ -188,7 +188,6 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
     }
 
     protected void uploadResume(String entityStr) {
-        logger.info("in Update Panel11111:" + entityStr);
         JSONObject post = (JSONObject) JSONParser.parseLenient(entityStr);
         JSONArray resumeURL = JSONUtils.toJSONArray(post.get("resumeURL"));
         resumeUploadPanel.upload(resumeURL, "fileURL");
@@ -283,6 +282,7 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         addField("referredBy", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("screenedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("processDocSentDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(getLineSeperatorTag("Upload Resume"));
         entityFieldsPanel.add(resumeUploadPanel);
         statesF = (EnumField) fields.get("state");
         countriesF = (EnumField) fields.get("country");
@@ -351,12 +351,12 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         }
     }
 
-//    @Override
-//    protected boolean processClientSideValidations(JSONObject entity) {
-//        if (entity.get("resumeURL") == null) {
-//            resumeUploadPanel.setMessage("Please Select A File");
-//            return false;
-//        }
-//        return true;
-//    }
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        if (entity.get("resumeURL") == null) {
+            resumeUploadPanel.setMessage("Please Add Resume");
+            return false;
+        }
+        return true;
+    }
 }
