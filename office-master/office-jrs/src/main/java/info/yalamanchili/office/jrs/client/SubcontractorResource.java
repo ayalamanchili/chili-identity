@@ -9,21 +9,27 @@ package info.yalamanchili.office.jrs.client;
 
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
+import info.chili.reporting.ReportGenerator;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.client.SubcontractorDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.profile.ContactDto;
 import info.yalamanchili.office.entity.client.Subcontractor;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
+import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.profile.AddressResource;
 import info.yalamanchili.office.mapper.profile.ContactMapper;
 import info.yalamanchili.office.profile.ContactService;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -199,7 +205,7 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
     @PUT
     @Validate
     @Path("/location/add/{subcontractorId}")
-   @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
     public void addlocation(@PathParam("subcontractorId") Long subcontractorId, Address address) {
         Subcontractor subcontractor = (Subcontractor) getDao().findById(subcontractorId);
         subcontractor.addLocations(address);
@@ -207,7 +213,7 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
 
     @PUT
     @Path("/location/remove/{subcontractorId}/{locationId}")
-   @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
     public void removeLocation(@PathParam("subcontractorId") Long subcontractorId, @PathParam("locationId") Long locationId) {
         Subcontractor subcontractor = (Subcontractor) getDao().findById(subcontractorId);
         if (subcontractor == null) {
@@ -255,6 +261,46 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
             result.add(entry);
         }
         return result;
+    }
+
+    @GET
+    @Path("/reports")
+    public void generateRecruiterReport(@QueryParam("coiFromEndDate") Date startDate, @QueryParam("coiToEndDate") Date endDate) {
+        SubcontractorTable table = searchForCOIEndDate(startDate, endDate);
+        if (table.getSize() > 0) {
+            String[] columnOrder = new String[]{"name", "description", "website", "coiEndDate"};
+            Employee emp = OfficeSecurityService.instance().getCurrentUser();
+            String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "COI End Date Rpoet ", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+            MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
+        }
+    }
+
+    @PUT
+    @Path("/report/{start}/{limit}")
+    public SubcontractorTable searchForCOIEndDate(@QueryParam("coiFromEndDate") Date startDate, @QueryParam("coiToEndDate") Date endDate) {
+        SubcontractorTable table = searchCOIEndDate(startDate, endDate);
+        return table;
+    }
+
+    private SubcontractorTable searchCOIEndDate(Date startDate, Date endDate) {
+        SubcontractorTable table = table(0, 1000);
+        SubcontractorTable resulttable = new SubcontractorTable();
+        List<Subcontractor> list = new ArrayList();
+        List<Subcontractor> finallist = new ArrayList();
+        list.addAll(table.getEntities());
+        for (Subcontractor sub : list) {
+            if (sub.getCoiEndDate() != null) {
+                if (sub.getCoiEndDate().after(startDate) && sub.getCoiEndDate().before(endDate)) {
+                    finallist.add(sub);
+                }
+            }
+        }
+        if (finallist.size() > 0) {
+            resulttable.setEntities(finallist);
+            resulttable.setSize(Long.valueOf(finallist.size()));
+        }
+        return resulttable;
+
     }
 
     @XmlRootElement
