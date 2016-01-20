@@ -14,6 +14,7 @@ import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
+import info.chili.gwt.utils.FormatUtils;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
 import java.util.logging.Logger;
@@ -56,9 +57,13 @@ public class ReadAllRecruiterPanel extends CRUDReadAllComposite {
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Employee"));
-        table.setText(0, 2, getKeyValue("Vendor"));
-        table.setText(0, 3, getKeyValue("Start Date"));
-        table.setText(0, 4, getKeyValue("End Date"));
+        table.setText(0, 2, getKeyValue("Client"));
+        table.setText(0, 3, getKeyValue("Vendor"));
+        table.setText(0, 4, getKeyValue("Start Date"));
+        table.setText(0, 5, getKeyValue("End Date"));
+        table.setText(0, 6, getKeyValue("Billing rate"));
+        table.setText(0, 7, getKeyValue("BillRate Duration"));
+        table.setText(0, 8, getKeyValue("Placement"));
     }
 
     @Override
@@ -67,9 +72,13 @@ public class ReadAllRecruiterPanel extends CRUDReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "employee"));
-            table.setText(i, 2, JSONUtils.toString(entity, "vendor"));
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
-            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
+            table.setText(i, 2, JSONUtils.toString(entity, "client"));
+            table.setText(i, 3, JSONUtils.toString(entity, "vendor"));
+            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
+            table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
+            table.setText(i, 6, FormatUtils.formarCurrency(JSONUtils.toString(entity, "billingRate")));
+            table.setText(i, 7, JSONUtils.toString(entity, "billingRateDuration"));
+            table.setText(i, 8, JSONUtils.toString(entity, "recruiter"));
         }
     }
 
