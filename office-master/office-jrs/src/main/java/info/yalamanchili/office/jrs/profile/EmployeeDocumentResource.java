@@ -13,8 +13,6 @@ import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.dao.profile.EmployeeDocumentDao;
 import info.yalamanchili.office.entity.privacy.PrivacyData;
-import info.yalamanchili.office.entity.profile.Address;
-import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeDocument;
 import info.yalamanchili.office.privacy.PrivacyAware;
 import java.util.List;
@@ -58,6 +56,7 @@ public class EmployeeDocumentResource extends CRUDResource<EmployeeDocument> {
     @PUT
     @Path("/delete/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RELATIONSHIP')")
+    @Override
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
     }

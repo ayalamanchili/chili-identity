@@ -17,6 +17,7 @@ import info.yalamanchili.office.entity.profile.WorkStatus;
 import info.yalamanchili.office.entity.profile.ext.Dependent;
 import info.yalamanchili.office.entity.profile.ext.EmployeeAdditionalDetails;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.validation.Valid;
@@ -80,19 +81,19 @@ public class OnBoardingEmployeeDto implements Serializable {
 
     @Valid
     private Address address;
-    
+
     @Valid
     private BankAccount bankAccount;
-    
+
     @Valid
     private List<Dependent> dependent;
-    
+
     @Valid
     private EmployeeAdditionalDetails employeeAdditionalDetails;
-    
+
     @Valid
     private List<EmergencyContactDto> emergencyContact;
-    
+
     private List<EmployeeDocument> documents;
 
     public List<EmployeeDocument> getDocuments() {
@@ -200,6 +201,9 @@ public class OnBoardingEmployeeDto implements Serializable {
     }
 
     public List<Dependent> getDependent() {
+        if (this.dependent == null) {
+            this.dependent = new ArrayList();
+        }
         return dependent;
     }
 
@@ -216,13 +220,14 @@ public class OnBoardingEmployeeDto implements Serializable {
     }
 
     public List<EmergencyContactDto> getEmergencyContact() {
+        if (this.emergencyContact == null) {
+            this.emergencyContact = new ArrayList();
+        }
         return emergencyContact;
     }
 
     public void setEmergencyContact(List<EmergencyContactDto> emergencyContact) {
         this.emergencyContact = emergencyContact;
     }
-
-
 
 }

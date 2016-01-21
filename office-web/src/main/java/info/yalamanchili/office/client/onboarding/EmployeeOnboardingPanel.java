@@ -21,6 +21,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.RootPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.UpdateComposite;
@@ -223,7 +224,6 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
 
     @Override
     protected void addListeners() {
-        // TODO Auto-generated method stub
         countriesF.listBox.addChangeHandler(this);
         addDependentsL.addClickHandler(this);
         addEmerContact.addClickHandler(this);
@@ -285,7 +285,6 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-        // TODO Auto-generated method stub
     }
 
     @Override
@@ -300,13 +299,12 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
 
                     @Override
                     public void onSuccess(String arg0) {
-                        uploadReceipts(arg0);
+                        uploadDocs(arg0);
                     }
                 });
     }
 
-    protected void uploadReceipts(String postString) {
-        logger.info("upload receiptsssss" + postString);
+    protected void uploadDocs(String postString) {
         if (!fileUploadPanel.isEmpty()) {
             JSONObject post = (JSONObject) JSONParser.parseLenient(postString);
             JSONArray employeeforms = JSONUtils.toJSONArray(post.get("documents"));
@@ -318,7 +316,8 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
 
     @Override
     protected void postUpdateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully Created Employee");
+        RootPanel.get().clear();
+        RootPanel.get().add(new HTML("Thank you. Please check your email on follow up instructions"));
     }
 
     @Override
