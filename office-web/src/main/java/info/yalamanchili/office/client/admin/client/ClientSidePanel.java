@@ -10,11 +10,15 @@ package info.yalamanchili.office.client.admin.client;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.FlowPanel;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CreateComposite;
+import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.OfficeWelcome;
 import java.util.logging.Logger;
 
 /**
@@ -26,6 +30,7 @@ public class ClientSidePanel extends ALComposite implements ClickHandler {
     private static Logger logger = Logger.getLogger(ClientSidePanel.class.getName());
     public FlowPanel clientsidepanel = new FlowPanel();
     ClickableLink createclientlink = new ClickableLink("Create Client");
+    ClickableLink clientSummaryReportL = new ClickableLink("Client Summary Report");
 
     public ClientSidePanel() {
         init(clientsidepanel);
@@ -34,10 +39,12 @@ public class ClientSidePanel extends ALComposite implements ClickHandler {
     @Override
     protected void addListeners() {
         createclientlink.addClickHandler(this);
+        clientSummaryReportL.addClickHandler(this);
     }
 
     @Override
     protected void configure() {
+        clientSummaryReportL.setTitle("report with full information of clients");
     }
 
     @Override
@@ -46,6 +53,9 @@ public class ClientSidePanel extends ALComposite implements ClickHandler {
             clientsidepanel.add(createclientlink);
         }
         clientsidepanel.add(new SearchClientpanel());
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CEO, Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
+            clientsidepanel.add(clientSummaryReportL);
+        }
     }
 
     @Override
@@ -54,5 +64,22 @@ public class ClientSidePanel extends ALComposite implements ClickHandler {
             TabPanel.instance().adminPanel.entityPanel.clear();
             TabPanel.instance().adminPanel.entityPanel.add(new CreateClientPanel(CreateComposite.CreateCompositeType.CREATE));
         }
+        if (event.getSource().equals(clientSummaryReportL)) {
+            generateClientInfoReport();
+        }
+    }
+
+    protected void generateClientInfoReport() {
+        HttpService.HttpServiceAsync.instance().doGet(getClientInfoReportUrl(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String result) {
+                        new ResponseStatusWidget().show("Report will be emailed to your primary email");
+                    }
+                });
+    }
+
+    protected String getClientInfoReportUrl() {
+        return OfficeWelcome.constants.root_url() + "client/clientinfo-report";
     }
 }
