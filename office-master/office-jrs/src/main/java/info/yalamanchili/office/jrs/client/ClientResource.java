@@ -28,6 +28,7 @@ import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.dto.profile.ContactDto.ContactDtoTable;
 import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.client.ProjectResource.ProjectTable;
@@ -204,6 +205,107 @@ public class ClientResource extends CRUDResource<Client> {
         ContactDao.instance().delete(contact.getId());
     }
 
+    @GET
+    @Path("/clientinfo-report")
+    public void clientReport() {
+        List<ClientInfoDto> res = new ArrayList();
+        for (Client ci : ClientDao.instance().query(0, 2000)) {
+            ClientInfoDto dto = new ClientInfoDto();
+            dto.setName(ci.getName());
+            if (ci.getWebsite() != null) {
+                dto.setWebSite(ci.getWebsite());
+            }
+            if (ci.getPaymentTerms() != null) {
+                dto.setPaymentTerms(ci.getPaymentTerms());
+            }
+            if (ci.getClientinvFrequency() != null) {
+                dto.setInvFrequency(ci.getClientinvFrequency().name().toLowerCase());
+            }
+            // for getting client locations
+            if (ci.getLocations().size() > 0) {
+                String clientAddressInfo = "\n";
+                for (Address address : ci.getLocations()) {
+                    clientAddressInfo = clientAddressInfo.concat(address.getStreet1() + "-");
+                    if (address.getStreet2() != null) {
+                        clientAddressInfo = clientAddressInfo.concat(address.getStreet2() + "-");
+                    }
+                    clientAddressInfo = clientAddressInfo.concat(address.getCity() + "-" + address.getState() + "-" + address.getCountry() + "-");
+                    if (address.getZip() != null) {
+                        clientAddressInfo = clientAddressInfo.concat(address.getZip() + "," + "\n");
+                    }
+                    dto.setClientLocations(clientAddressInfo);
+                }
+            }
+            // for getting Recruiter Contacts
+            if (ci.getContacts().size() > 0) {
+                String recContact = "\n";
+                for (Contact contact : ci.getContacts()) {
+                    String name = "\n";
+                    name = name.concat(contact.getFirstName() + " " + contact.getLastName());
+                    recContact = recContact.concat(name + " " + "-");
+                    if (contact.getEmails().size() > 0) {
+                        String email = " ";
+                        email = email.concat(contact.getEmails().get(0).getEmail());
+                        recContact = recContact.concat(email + " " + "-");
+                    }
+                    if (contact.getPhones().size() > 0) {
+                        for (Phone rphone : contact.getPhones()) {
+                            if (rphone.getCountryCode() != null) {
+                                String ccode = " ";
+                                ccode = ccode.concat(rphone.getCountryCode());
+                                recContact = recContact.concat(ccode + " " + "-");
+                            }
+                            String phone = " ";
+                            phone = phone.concat(rphone.getPhoneNumber());
+                            recContact = recContact.concat(phone + " " + "-");
+                            if (rphone.getExtension() != null) {
+                                String ext = " ";
+                                ext = ext.concat(rphone.getExtension());
+                                recContact = recContact.concat(ext + " " + ",");
+                            }
+                        }
+                    }
+                    dto.setRecruiterContact(recContact);
+                }
+            }
+            // for getting AcctPayContacts
+            if (ci.getClientAcctPayContacts().size() > 0) {
+                String actContact = "\n";
+                for (Contact acpaycnt : ci.getClientAcctPayContacts()) {
+                    String acname = "\n";
+                    acname = acname.concat(acpaycnt.getFirstName() + " " + acpaycnt.getLastName());
+                    actContact = actContact.concat(acname + " " + "-");
+                    if (acpaycnt.getEmails().size() > 0) {
+                        String acemail = " ";
+                        acemail = acemail.concat(acpaycnt.getEmails().get(0).getEmail());
+                        actContact = actContact.concat(acemail + " " + "-");
+                    }
+                    if (acpaycnt.getPhones().size() > 0) {
+                        for (Phone acpayphone : acpaycnt.getPhones()) {
+                            if (acpayphone.getCountryCode() != null) {
+                                String acccode = " ";
+                                acccode = acccode.concat(acpayphone.getCountryCode());
+                                actContact = actContact.concat(acccode + " " + "-");
+                            }
+                            String acphone = " ";
+                            acphone = acphone.concat(acpayphone.getPhoneNumber());
+                            actContact = actContact.concat(acphone + " " + "-");
+                            if (acpayphone.getExtension() != null) {
+                                String acext = " ";
+                                acext = acext.concat(acpayphone.getExtension());
+                                actContact = actContact.concat(acext + " " + ",");
+                            }
+                        }
+                    }
+                }
+                dto.setAcctPayContact(actContact);
+            }
+            res.add(dto);
+        }
+        String[] columnOrder = new String[]{"name", "webSite", "paymentTerms", "invFrequency", "clientLocations", "recruiterContact", "acctPayContact"};
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Client-Info-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
+    }
+
     /**
      * Get Client Contacts
      *
@@ -216,7 +318,8 @@ public class ClientResource extends CRUDResource<Client> {
     @Path("/clientcontact/{id}/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS','ROLE_BILLING_AND_INVOICING','ROLE_CONTRACTS_FULL_VIEW')")
     public ContactDtoTable getClientContacts(@PathParam("id") long id, @PathParam("start") int start,
-            @PathParam("limit") int limit) {
+            @PathParam("limit") int limit
+    ) {
         ContactDtoTable tableObj = new ContactDtoTable();
         Client client = (Client) getDao().findById(id);
         List<ContactDto> dtos = new ArrayList<>();
@@ -241,7 +344,8 @@ public class ClientResource extends CRUDResource<Client> {
     @Path("/acct-pay-contacts/{id}/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS','ROLE_BILLING_AND_INVOICING','ROLE_CONTRACTS_FULL_VIEW')")
     public ContactDtoTable getClientAcctPayContacts(@PathParam("id") long id, @PathParam("start") int start,
-            @PathParam("limit") int limit) {
+            @PathParam("limit") int limit
+    ) {
         Client contact = (Client) getDao().findById(id);
         return getContacts(contact.getClientAcctPayContacts());
     }
@@ -449,7 +553,7 @@ public class ClientResource extends CRUDResource<Client> {
         return dtos;
     }
 
-    @PUT
+    @GET
     @Path("/report")
     public void report(ClientSearchDto dto) {
         ClientDtoTable table = new ClientDtoTable();

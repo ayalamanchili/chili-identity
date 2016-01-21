@@ -64,6 +64,7 @@ public class ReadAllRecruiterPanel extends CRUDReadAllComposite {
         table.setText(0, 6, getKeyValue("Billing rate"));
         table.setText(0, 7, getKeyValue("BillRate Duration"));
         table.setText(0, 8, getKeyValue("Placement"));
+        table.setText(0, 9, getKeyValue("Location"));
     }
 
     @Override
@@ -79,6 +80,7 @@ public class ReadAllRecruiterPanel extends CRUDReadAllComposite {
             table.setText(i, 6, FormatUtils.formarCurrency(JSONUtils.toString(entity, "billingRate")));
             table.setText(i, 7, JSONUtils.toString(entity, "billingRateDuration"));
             table.setText(i, 8, JSONUtils.toString(entity, "recruiter"));
+            table.setText(i, 9, JSONUtils.toString(entity, "clientLocation"));
         }
     }
 

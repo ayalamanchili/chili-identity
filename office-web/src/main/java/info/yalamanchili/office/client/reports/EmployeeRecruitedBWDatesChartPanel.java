@@ -81,8 +81,10 @@ public class EmployeeRecruitedBWDatesChartPanel extends ReadAllComposite {
         String finalrecruiters = "";
         for (int j = 0; j < entities.size(); j++) {
             JSONObject obj = (JSONObject) entities.get(j);
-            String name = obj.get("recruiter").isString().stringValue();
-            finalrecruiters = finalrecruiters.concat(name + ";");
+            if (obj.containsKey("recruiter")) {
+                String name = obj.get("recruiter").isString().stringValue();
+                finalrecruiters = finalrecruiters.concat(name + ";");
+            }
         }
         //int count = 0;
         String[] recs = finalrecruiters.split(";");

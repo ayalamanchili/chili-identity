@@ -70,9 +70,9 @@ public class ReadPhonePanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
+        addField("countryCode", true, true, DataType.LONG_FIELD);
         addField("phoneNumber", true, true, DataType.LONG_FIELD);
         addField("extension", true, true, DataType.LONG_FIELD);
-        addField("countryCode", true, true, DataType.LONG_FIELD);
         addDropDown("phoneType", new SelectPhoneTypeWidget(false, false));
     }
 
