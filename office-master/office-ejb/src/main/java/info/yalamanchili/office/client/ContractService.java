@@ -318,7 +318,7 @@ public class ContractService {
             recruiters.append(rec.getFirstName()).append(" ").append(rec.getLastName()).append(" , ");
         }
         if (!recruiters.toString().isEmpty()) {
-            dto.setRecruiter(recruiters.substring(0, recruiters.length()-2));
+            dto.setRecruiter(recruiters.substring(0, recruiters.length() - 2));
         }
         if (ci.getClientContact() != null) {
             dto.setClientContact(ci.getClientContact().details());
@@ -419,6 +419,8 @@ public class ContractService {
         return ReportGenerator.generateReport(data.getEntities(), "contracts", format, OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
     }
 
+    @Async
+    @Transactional
     public void generateSubCReport(ContractSearchDto dto) {
         ContractTable table = getResultForReport(dto);
         String[] columnOrder = new String[]{"employee", "client", "vendor", "clientProject", "billingRate", "overTimeBillingRate", "startDate", "endDate"};
@@ -427,6 +429,8 @@ public class ContractService {
         MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
     }
 
+    @Async
+    @Transactional
     public void generateClientReport(ContractSearchDto dto) {
         ContractTable table = getResultForReport(dto);
         String[] columnOrder = new String[]{"employee", "consultantJobTitle", "vendor", "billingRate", "startDate", "endDate", "subContractorName", "subcontractorPayRate"};
@@ -435,6 +439,8 @@ public class ContractService {
         MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
     }
 
+    @Async
+    @Transactional
     public void generateVendorReport(ContractSearchDto dto) {
         ContractTable table = getResultForReport(dto);
         String[] columnOrder = new String[]{"employee", "consultantJobTitle", "client", "billingRate", "startDate", "endDate", "subContractorName", "subcontractorPayRate"};
@@ -443,9 +449,11 @@ public class ContractService {
         MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
     }
 
+    @Async
+    @Transactional
     public void generateRecruiterReport(ContractSearchDto dto) {
         ContractTable table = searchContractsForRecruiter(dto);
-        String[] columnOrder = new String[]{"employee", "client", "vendor", "startDate", "endDate", "billingRate", "recruiter"};
+        String[] columnOrder = new String[]{"employee", "client", "vendor", "startDate", "endDate", "billingRate", "recruiter", "clientLocation"};
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
         String fileName = "";
         if (dto.getRecruiter() != null) {
