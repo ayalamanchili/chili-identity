@@ -351,12 +351,12 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         }
     }
 
-    @Override
-    protected boolean processClientSideValidations(JSONObject entity) {
-        if (entity.get("resumeURL") == null) {
-            resumeUploadPanel.setMessage("Please Add Resume");
-            return false;
-        }
-        return true;
-    }
+//    @Override
+//    protected boolean processClientSideValidations(JSONObject entity) {
+//        if (entity.get("resumeURL") == null) {
+//            resumeUploadPanel.setMessage("Please Add Resume");
+//            return false;
+//        }
+//        return true;
+//    }
 }

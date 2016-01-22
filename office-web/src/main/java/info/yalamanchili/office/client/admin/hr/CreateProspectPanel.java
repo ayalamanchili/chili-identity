@@ -143,6 +143,8 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
             JSONObject post = (JSONObject) JSONParser.parseLenient(entityStr);
             JSONArray resumeURL = JSONUtils.toJSONArray(post.get("resumeURL"));
             resumeUploadPanel.upload(resumeURL, "fileURL");
+        } else {
+            postCreateSuccess(null);
         }
     }
 
