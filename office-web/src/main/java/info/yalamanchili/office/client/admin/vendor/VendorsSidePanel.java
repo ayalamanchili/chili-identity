@@ -53,7 +53,7 @@ public class VendorsSidePanel extends ALComposite implements ClickHandler {
             vendorsidepanel.add(createvendorslink);
         }
         vendorsidepanel.add(new SearchVendorPanel());
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CEO, Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CEO, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN)) {
             vendorsidepanel.add(vendorSummaryReportL);
         }
     }

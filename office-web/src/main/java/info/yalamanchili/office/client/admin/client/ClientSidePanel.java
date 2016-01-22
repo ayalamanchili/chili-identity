@@ -53,7 +53,7 @@ public class ClientSidePanel extends ALComposite implements ClickHandler {
             clientsidepanel.add(createclientlink);
         }
         clientsidepanel.add(new SearchClientpanel());
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CEO, Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CEO, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN)) {
             clientsidepanel.add(clientSummaryReportL);
         }
     }
