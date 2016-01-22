@@ -8,8 +8,10 @@
 package info.yalamanchili.office.jrs.client;
 
 import info.yalamanchili.office.client.ContractService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dto.client.ContractSearchDto;
+import info.yalamanchili.office.entity.profile.Employee;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -65,25 +67,29 @@ public class ContractResource {
     @PUT
     @Path("/sub-contractor-report")
     public void generateSubContractorReport(ContractSearchDto dto) {
-        ContractService.instance().generateSubCReport(dto);
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
+        ContractService.instance().generateSubCReport(dto, emp.getPrimaryEmail().getEmail());
     }
 
     @PUT
     @Path("/client-report")
     public void generateClientReport(ContractSearchDto dto) {
-        ContractService.instance().generateClientReport(dto);
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
+        ContractService.instance().generateClientReport(dto, emp.getPrimaryEmail().getEmail());
     }
 
     @PUT
     @Path("/vendor-report")
     public void generateVendorReport(ContractSearchDto dto) {
-        ContractService.instance().generateVendorReport(dto);
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
+        ContractService.instance().generateVendorReport(dto, emp.getPrimaryEmail().getEmail());
     }
 
     @PUT
     @Path("/recruiter-report")
     public void generateRecruiterReport(ContractSearchDto dto) {
-        ContractService.instance().generateRecruiterReport(dto);
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
+        ContractService.instance().generateRecruiterReport(dto, emp.getPrimaryEmail().getEmail());
     }
 
     @GET
