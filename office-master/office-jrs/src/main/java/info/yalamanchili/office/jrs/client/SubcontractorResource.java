@@ -270,7 +270,7 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
         if (table.getSize() > 0) {
             String[] columnOrder = new String[]{"name", "description", "website", "coiEndDate"};
             Employee emp = OfficeSecurityService.instance().getCurrentUser();
-            String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "COI End Date Rpoet ", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+            String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "COI End Date Report ", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
             MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
         }
     }

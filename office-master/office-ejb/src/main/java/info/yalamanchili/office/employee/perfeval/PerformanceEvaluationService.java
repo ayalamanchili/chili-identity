@@ -12,7 +12,6 @@ import com.google.common.base.Strings;
 import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
 import info.chili.commons.pdf.PdfDocumentData;
-import info.chili.reporting.ReportGenerator;
 import info.chili.security.Signature;
 import info.chili.service.jrs.types.Entry;
 import info.chili.spring.SpringContext;
@@ -41,11 +40,9 @@ import info.yalamanchili.office.entity.ext.QuestionCategory;
 import info.yalamanchili.office.entity.ext.QuestionContext;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.ext.QuestionService;
-import info.yalamanchili.office.jms.MessagingService;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -58,9 +55,7 @@ import javax.ws.rs.core.Response;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -425,9 +420,7 @@ public class PerformanceEvaluationService {
         performanceEvaluationDao.delete(id);
     }
 
-    @Async
-    @Transactional(readOnly = true)
-    public void getPerformanceEvaluationReport(String email, String year) {
+    public List<PerformanceEvaluationReportDto> getPerformanceEvaluationReport(String year) {
         List<PerformanceEvaluationReportDto> report = new ArrayList<>();
         for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
             PerformanceEvaluationReportDto dto = new PerformanceEvaluationReportDto();
@@ -436,24 +429,24 @@ public class PerformanceEvaluationService {
             dto.setEvaluationFYYear(year);
             if (prefEval != null) {
                 if (prefEval.getRating() != null && prefEval.getRating() > 0) {
-                    dto.setRating(prefEval.getRating());
+                    dto.setRating(String.valueOf(prefEval.getRating()));
                 }
                 if (prefEval.getStage() != null) {
                     dto.setStage(prefEval.getStage().name());
                 }
             }
-            if (dto.getRating() != null && dto.getRating() > 0) {
+            if (dto.getRating() != null) {
                 dto.setManagerReviewStarted("Yes");
             } else {
                 dto.setManagerReviewStarted("No");
             }
-            String prevyear = Integer.toString(Integer.valueOf(dto.getEvaluationFYYear()) - 1);
-            prefEval = getEvaluationForYear(prevyear, emp, null);
-            if (prefEval != null) {
-                if (prefEval.getRating() != null && prefEval.getRating() > 0) {
-                    dto.setPrevYearRating(prefEval.getRating());
-                }
-            }
+            /*String prevyear = Integer.toString(Integer.valueOf(dto.getEvaluationFYYear()) - 1);
+             prefEval = getEvaluationForYear(prevyear, emp, null);
+             if (prefEval != null) {
+             if (prefEval.getRating() != null && prefEval.getRating() > 0) {
+             dto.setPrevYearRating(prefEval.getRating());
+             }
+             }*/
             Employee perfEvalMgr = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Perf_Eval_Manager");
             if (perfEvalMgr != null) {
                 dto.setManager(perfEvalMgr.getFirstName() + " " + perfEvalMgr.getLastName());
@@ -465,8 +458,7 @@ public class PerformanceEvaluationService {
             }
             report.add(dto);
         }
-        String[] columnOrder = new String[]{"employee", "evaluationFYYear", "manager", "managerReviewStarted", "rating", "prevYearRating", "stage"};
-        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(report, " Performance-Evaluation-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
+        return report;
     }
 
     public static PerformanceEvaluationService instance() {

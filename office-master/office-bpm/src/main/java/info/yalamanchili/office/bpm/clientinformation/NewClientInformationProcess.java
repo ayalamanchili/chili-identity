@@ -74,15 +74,22 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
         Email email = new Email();
         email.setTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_BILLING_AND_INVOICING.name()));
-        email.setRichText(Boolean.TRUE);
-        email.setSubject("New Client Information for Processing for  : " + ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
-        String messageText = " Client Inforamtion:: " + " ";
-        messageText = messageText.concat("Client :" + ci.getClient().getName()) + " ; ";
-        messageText = messageText.concat("Item_No :" + itemNo) + " ; ";
+        email.setHtml(Boolean.TRUE);
+        email.setSubject("New File/ project   : " + ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
+        String messageText = " Client Inforamtion : ";
+        messageText = messageText.concat(" \n  Client :  " + ci.getClient().getName());
+        messageText = messageText.concat("\n  Item_No : " + itemNo);
         if (ci.getVendor() != null) {
-            messageText = messageText.concat("PurchaseOrderNo :" + ci.getClientProject().getPurchaseOrderNo()) + " ; ";
+            messageText = messageText.concat("\n Vendor  : " + ci.getVendor().getName());
         }
-        messageText = messageText.concat("Updated_By :" + emp.getFirstName() + " " + emp.getLastName()) + " ; ";
+        if (ci.getSubcontractor() != null) {
+            messageText = messageText.concat("\n Subcontractor :" + ci.getSubcontractor().getName());
+        }
+        if (ci.getCompany() != null) {
+            messageText = messageText.concat("\n Company :" + ci.getCompany().name());
+        }
+        messageText = messageText.concat("\n Project Start Date :" + ci.getStartDate());
+        messageText = messageText.concat("\n  Updated_By :" + emp.getFirstName() + " " + emp.getLastName());
         email.setBody(messageText);
         MessagingService.instance().sendEmail(email);
     }

@@ -68,6 +68,7 @@ public class EmployeeRecruitedBWDatesChartPanel extends ReadAllComposite {
     private Widget getSummaryChart() {
         if (timeSummaryChart == null) {
             timeSummaryChart = new BarChart();
+            timeSummaryChart.setPixelSize(1000, 600);
         }
         return timeSummaryChart;
     }
@@ -100,6 +101,10 @@ public class EmployeeRecruitedBWDatesChartPanel extends ReadAllComposite {
             dataTable.setValue(i, 0, key);
             dataTable.setValue(i, 1, values.get(key));
             i++;
+        }
+        for (int j = 0; j < entities.size(); j++) {
+            if(dataTable.getValueString(j, 0).startsWith("a") || dataTable.getValueString(j, 0).startsWith("A")){
+            }
         }
         // Draw the chart
         timeSummaryChart.draw(dataTable);
