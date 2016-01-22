@@ -139,6 +139,9 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
                 }
             } else {
                 table.setText(i, 1, JSONUtils.toString(entity, "employeeName"));
+                if (entity.get("companyName") != null) {
+                    table.setText(i, 4, (JSONUtils.toString(entity, "companyName")));
+                }
             }
             setEnumColumn(i, 2, entity, ImmigrationCaseType.class.getSimpleName(), "caseType");
             table.setText(i, 3, JSONUtils.toString(entity, "attorneyName"));

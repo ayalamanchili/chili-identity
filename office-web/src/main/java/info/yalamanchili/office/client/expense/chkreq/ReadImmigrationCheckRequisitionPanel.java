@@ -76,6 +76,11 @@ public class ReadImmigrationCheckRequisitionPanel extends ReadComposite {
             employeeSB.setValue(emp.get("firstName").isString().stringValue());
         } else {
             employeeSB.setValue(JSONUtils.toString(entity, "employeeName"));
+            if (entity.get("company") != null) {
+                JSONObject company = (JSONObject) entity.get("company");
+                JSONValue name = company.get("name");
+                entity.put("company", name);
+            };
         }
         assignFieldValueFromEntity("company", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("attorneyName", entity, DataType.STRING_FIELD);
@@ -104,7 +109,7 @@ public class ReadImmigrationCheckRequisitionPanel extends ReadComposite {
         addField("neededByDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("purpose", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addEnumField("caseType", true, true, ImmigrationCaseType.names(), Alignment.HORIZONTAL);
-        addField("amount", true, true, DataType.CURRENCY_FIELD,Alignment.HORIZONTAL);
+        addField("amount", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("company", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
