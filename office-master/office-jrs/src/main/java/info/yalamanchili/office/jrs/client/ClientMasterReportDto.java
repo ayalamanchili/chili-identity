@@ -14,7 +14,7 @@ import java.io.Serializable;
  *
  * @author Ramana.Lukalapu
  */
-public class ClientInfoDto implements Serializable {
+public class ClientMasterReportDto implements Serializable {
 
     protected String name;
     protected String webSite;

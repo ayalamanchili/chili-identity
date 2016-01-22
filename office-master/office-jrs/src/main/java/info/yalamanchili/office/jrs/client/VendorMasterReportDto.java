@@ -14,7 +14,7 @@ import java.io.Serializable;
  *
  * @author Ramana.Lukalapu
  */
-public class VendorInfoDto implements Serializable{
+public class VendorMasterReportDto implements Serializable{
     
     protected String name;
     protected String webSite;

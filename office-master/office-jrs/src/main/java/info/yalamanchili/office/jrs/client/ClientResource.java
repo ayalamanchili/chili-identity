@@ -53,6 +53,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -204,13 +205,13 @@ public class ClientResource extends CRUDResource<Client> {
         client.getClientAcctPayContacts().remove(contact);
         ContactDao.instance().delete(contact.getId());
     }
-
+    
     @GET
     @Path("/clientinfo-report")
     public void clientReport() {
-        List<ClientInfoDto> res = new ArrayList();
+        List<ClientMasterReportDto> res = new ArrayList();
         for (Client ci : ClientDao.instance().query(0, 2000)) {
-            ClientInfoDto dto = new ClientInfoDto();
+            ClientMasterReportDto dto = new ClientMasterReportDto();
             dto.setName(ci.getName());
             if (ci.getWebsite() != null) {
                 dto.setWebSite(ci.getWebsite());

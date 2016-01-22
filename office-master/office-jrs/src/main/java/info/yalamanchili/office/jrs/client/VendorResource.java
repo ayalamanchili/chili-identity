@@ -50,6 +50,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -254,9 +255,9 @@ public class VendorResource extends CRUDResource<Vendor> {
     @GET
     @Path("/vendorinfo-report")
     public void vendorReport() {
-        List<VendorInfoDto> res = new ArrayList();
+        List<VendorMasterReportDto> res = new ArrayList();
         for (Vendor vn : VendorDao.instance().query(0, 2000)) {
-            VendorInfoDto dto = new VendorInfoDto();
+            VendorMasterReportDto dto = new VendorMasterReportDto();
             dto.setName(vn.getName());
             if (vn.getWebsite() != null) {
                 dto.setWebSite(vn.getWebsite());
