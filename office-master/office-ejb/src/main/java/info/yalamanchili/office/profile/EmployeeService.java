@@ -18,7 +18,9 @@ import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
+import info.yalamanchili.office.dao.profile.CompanyDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.profile.EmployeeTypeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.profile.EmployeeCreateDto;
 import info.yalamanchili.office.dto.security.User;
@@ -28,6 +30,7 @@ import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.Preferences;
+import info.yalamanchili.office.entity.profile.Sex;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import java.util.Date;
 import java.util.HashMap;
@@ -35,6 +38,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.apache.commons.lang.time.DateUtils;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -75,6 +79,19 @@ public class EmployeeService {
         //Email notification
         sendNewEmployeeNotifiaction(emp);
         return emp.getId().toString();
+    }
+
+    public void createProject(CreateProjectEmployeeDto project) {
+        Employee projectEmp = new Employee();
+        projectEmp.setFirstName(project.getName());
+        projectEmp.setLastName(project.getName());
+        projectEmp.setDateOfBirth(DateUtils.addDays(new Date(), -1));
+        projectEmp.setStartDate(project.getStartDate());
+        projectEmp.setEmployeeType(EmployeeTypeDao.instance().findByName(EmployeeType.EMPLOYEE));
+        projectEmp.setCompany(CompanyDao.instance().findByCompanyName(Company.SSTECH_LLC));
+        projectEmp.setSex(Sex.MALE);
+        createCUser(projectEmp);
+        em.persist(projectEmp);
     }
 
     protected Employee createEmailAndOtherDefaults(Employee emp, String emailA) {

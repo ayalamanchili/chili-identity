@@ -40,6 +40,7 @@ import info.yalamanchili.office.config.OfficeFeatureFlipper;
 import info.yalamanchili.office.dao.security.EmployeeLoginDto;
 import info.yalamanchili.office.dto.profile.EmployeeCreateDto;
 import info.yalamanchili.office.dto.security.User;
+import info.yalamanchili.office.profile.CreateProjectEmployeeDto;
 import javax.ws.rs.HeaderParam;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -125,6 +126,16 @@ public class AdminResource {
     public String createUser(EmployeeCreateDto employee) {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
         return employeeService.createUser(employee);
+    }
+
+    @Path("/project")
+    @PUT
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN')")
+    @CacheEvict(value = "employees", allEntries = true)
+    @Validate
+    public void createProject(CreateProjectEmployeeDto project) {
+        EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
+        employeeService.createProject(project);
     }
 
     @GET
