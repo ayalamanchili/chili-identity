@@ -253,6 +253,7 @@ public class VendorResource extends CRUDResource<Vendor> {
 
     @GET
     @Path("/vendorinfo-report")
+    @Transactional
     public void vendorReport() {
         List<VendorMasterReportDto> res = new ArrayList();
         for (Vendor vn : VendorDao.instance().query(0, 2000)) {

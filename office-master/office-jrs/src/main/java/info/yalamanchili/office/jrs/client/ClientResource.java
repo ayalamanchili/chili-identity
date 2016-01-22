@@ -207,6 +207,7 @@ public class ClientResource extends CRUDResource<Client> {
     
     @GET
     @Path("/clientinfo-report")
+    @Transactional
     public void clientReport() {
         List<ClientMasterReportDto> res = new ArrayList();
         for (Client ci : ClientDao.instance().query(0, 2000)) {
