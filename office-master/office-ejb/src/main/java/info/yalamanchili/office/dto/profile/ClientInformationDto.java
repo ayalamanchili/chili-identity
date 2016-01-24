@@ -15,10 +15,12 @@ import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.client.Subcontractor;
 import info.yalamanchili.office.entity.client.Vendor;
+import info.yalamanchili.office.entity.hr.Resume;
 import info.yalamanchili.office.entity.practice.Practice;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.BillingDuration;
 import info.yalamanchili.office.entity.profile.BillingRate;
+import info.yalamanchili.office.entity.profile.CIDocument;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.ClientInformationCompany;
 import info.yalamanchili.office.entity.profile.ClientInformationStatus;
@@ -116,7 +118,7 @@ public class ClientInformationDto implements Serializable {
      *
      */
     protected String vendorPaymentTerms;
-    
+
     protected String clientPaymentTerms;
     /**
      * Vendor AP Contact
@@ -235,6 +237,34 @@ public class ClientInformationDto implements Serializable {
      * comments
      */
     protected List<ClientInfoComment> comments;
+
+    protected Set<CIDocument> cidocument;
+
+    public Set<CIDocument> getCidocument() {
+        return cidocument;
+    }
+
+    public void setCidocument(Set<CIDocument> cidocument) {
+        this.cidocument = cidocument;
+    }
+
+    public void addCidocument(CIDocument entity) {
+        if (entity == null) {
+            return;
+        }
+        getCidocument().add(entity);
+    }
+    
+    protected Long id;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     /**
      * -----------Tracking info---------------------------
      */

@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.profile;
 
+import com.google.common.base.Strings;
 import info.chili.commons.BeanMapper;
 import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.office.bpm.OfficeBPMService;
@@ -18,6 +19,7 @@ import info.yalamanchili.office.dao.client.VendorDao;
 import info.yalamanchili.office.dao.practice.PracticeDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.BillingRateDao;
+import info.yalamanchili.office.dao.profile.CiDocumentDao;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.dao.profile.CompanyDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
@@ -31,6 +33,7 @@ import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.practice.Practice;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.BillingRate;
+import info.yalamanchili.office.entity.profile.CIDocument;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.ClientInformationCompany;
 import info.yalamanchili.office.entity.profile.ClientInformationStatus;
@@ -74,7 +77,7 @@ public class ClientInformationService {
     @Autowired
     protected CompanyDao companyDao;
 
-    public void addClientInformation(Long empId, ClientInformationDto ciDto, Boolean submitForApproval) {
+    public ClientInformationDto addClientInformation(Long empId, ClientInformationDto ciDto, Boolean submitForApproval) {
         ClientInformation ci = mapper.map(ciDto, ClientInformation.class);
         validate(ci, submitForApproval);
         Client client = null;
@@ -204,7 +207,19 @@ public class ClientInformationService {
         } else {
             ci.setIsEndDateConfirmed(false);
         }
+        Set<CIDocument> cis = new HashSet<CIDocument>();
+        for (CIDocument receipt : ci.getCidocument()) {
+            if (!Strings.isNullOrEmpty(receipt.getFileURL())) {
+                receipt.setClientInformation(ci);
+                //cis.add(receipt);
+                //ciDto.addCidocument(receipt);
+                //ci.addCidocument(receipt);
+            }
+        }
+        //ci.setCidocument(cis);
+        //ciDto.setCidocument(cis);
         ci = clientInformationDao.save(ci);
+        //ClientInformationDto ci1 = mapper.map(ci, ClientInformationDto.class);
         emp.addClientInformation(ci);
         if (submitForApproval) {
             ci.setStatus(ClientInformationStatus.PENDING_INVOICING_BILLING_APPROVAL);
@@ -212,6 +227,9 @@ public class ClientInformationService {
         } else {
             ci.setStatus(ClientInformationStatus.PENDING_CONTRACTS_SUBMIT);
         }
+        ci = em.merge(ci);
+        ciDto.setId(ci.getId());
+        return mapper.map(ci, ClientInformationDto.class);
     }
 //TODO set these values
 
@@ -488,6 +506,15 @@ public class ClientInformationService {
             VendorDao.instance().save(middleVendor);
         }
         project.setClient(client);
+        for (CIDocument receipt : ci.getCidocument()) {
+            if (receipt.getId() == null) {
+                receipt.setClientInformation(ciEntity);
+                ciEntity = clientInformationDao.getEntityManager().merge(ciEntity);
+                ciEntity.getCidocument().add(receipt);
+            } else {
+                CiDocumentDao.instance().save(receipt);
+            }
+        }
         ClientDao.instance().save(client);
         project = ProjectDao.instance().save(project);
         ciEntity.setClientProject(project);

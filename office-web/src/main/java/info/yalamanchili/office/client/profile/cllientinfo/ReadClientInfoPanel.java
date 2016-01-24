@@ -9,6 +9,7 @@ package info.yalamanchili.office.client.profile.cllientinfo;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -69,7 +70,7 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        logger.info(entity.toString());
+        logger.info("read panel ci entity .."+entity.toString());
         assignFieldValueFromEntity("consultantJobTitle", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("company", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("client", entity, null);
@@ -135,6 +136,7 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
         assignFieldValueFromEntity("notes", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("practice", entity, null);
         assignFieldValueFromEntity("sectorsAndBUs", entity, DataType.STRING_FIELD);
+        //assignFieldValueFromEntity("cidocument", entity, null);
         populateComments();
     }
 
@@ -274,6 +276,8 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
         }
         addDropDown("practice", selectPractiseWidgetF);
         addField("sectorsAndBUs", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(getLineSeperatorTag("CPD Document"));
+
         alignFields();
     }
 
@@ -301,9 +305,20 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
                     public void onResponse(String response) {
                         entity = (JSONObject) JSONParser.parseLenient(response);
                         populateFieldsFromEntity(entity);
+                        JSONArray cidocument = JSONUtils.toJSONArray(entity.get("cidocument"));
+                        if (cidocument != null) {
+                            populateExpenseReceipt(cidocument);
+//                                String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "fileURL") + "&entityId=" + JSONUtils.toString(entity, "id");
+//                                FileField fileField = new FileField(fileURL);
+//                                entityFieldsPanel.add(fileField);
+                        }
                         populateComments();
                     }
                 });
+    }
+
+    protected void populateExpenseReceipt(JSONArray items) {
+        entityFieldsPanel.add(new ReadAllCiDocumentPanel(items));
     }
 
     protected void populateComments() {

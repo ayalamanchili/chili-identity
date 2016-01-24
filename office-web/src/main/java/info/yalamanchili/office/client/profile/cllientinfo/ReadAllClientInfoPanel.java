@@ -48,6 +48,7 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
+                        logger.info("read all result 0"+result);
                         postFetchTable(result);
                     }
                 });

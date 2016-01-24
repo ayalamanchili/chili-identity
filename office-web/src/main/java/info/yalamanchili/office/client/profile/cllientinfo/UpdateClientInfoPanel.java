@@ -35,14 +35,19 @@ import info.yalamanchili.office.client.profile.updateBillingRate.ReadAllUpdateBi
 import java.util.logging.Logger;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONString;
+import com.google.gwt.user.client.ui.FileUpload;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.BaseFieldWithTextBox;
 import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.fields.EnumField;
+import info.chili.gwt.fields.FileuploadField;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.utils.Utils;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientAcctPayContact;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
@@ -60,6 +65,14 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     protected String cistatus;
     protected boolean isSub = false;
     protected boolean is1099 = false;
+    JSONArray cidocument = new JSONArray();
+
+    FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "CIDocument", "cidocument", "CIDocument/fileURL", false, true) {
+        @Override
+        public void onUploadComplete(String res) {
+            postUpdateSuccess(null);
+        }
+    };
 
     public UpdateClientInfoPanel(JSONObject entity) {
         initUpdateComposite(entity, "ClientInfo", OfficeWelcome.constants);
@@ -125,6 +138,24 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignEntityValueFromField("notes", entity);
         assignEntityValueFromField("practice", entity);
         assignEntityValueFromField("sectorsAndBUs", entity);
+        JSONArray cidocument = new JSONArray();
+        logger.info(cidocument.toString());
+        if (!fileUploadPanel.isEmpty()) {
+            int i = 0;
+            for (FileUpload upload : fileUploadPanel.getFileUploads()) {
+                if (upload.getFilename() != null && !upload.getFilename().trim().isEmpty()) {
+                    JSONObject clientInformation = new JSONObject();
+                    clientInformation.put("fileURL", fileUploadPanel.getFileName(upload));
+                    clientInformation.put("name", new JSONString("File Name"));
+                    cidocument.set(i, clientInformation);
+                    i++;
+                }
+            }
+        }
+        logger.info("ASDASDNSKJFHDSJKFHDSJFSKJGDFKJGDFJGDFJG" + cidocument.toString());
+        if (cidocument.size() > 0) {
+            entity.put("cidocument", cidocument);
+        }
         return entity;
     }
 
@@ -155,6 +186,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+        logger.info("update panel entity ci doc ... "+entity);
         assignFieldValueFromEntity("consultantJobTitle", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("company", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("client", entity, null);
@@ -218,6 +250,16 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignFieldValueFromEntity("visaStatus", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("practice", entity, null);
         assignFieldValueFromEntity("sectorsAndBUs", entity, DataType.ENUM_FIELD);
+        cidocument = JSONUtils.toJSONArray(entity.get("cidocument"));
+        if (cidocument.size() > 0) {
+            if (cidocument != null) {
+                populateCiDocumentReceipt(cidocument);
+            }
+        }
+    }
+
+    protected void populateCiDocumentReceipt(JSONArray array) {
+        entityFieldsPanel.add(Utils.getLineSeperatorTag("CPD Document"));
     }
 
     @Override
@@ -411,6 +453,8 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         }
         addField("sectorsAndBUs", false, true, DataType.ENUM_FIELD);
         sectorsF = (EnumField) fields.get("sectorsAndBUs");
+        entityFieldsPanel.add(getLineSeperatorTag("CPD Document"));
+        entityFieldsPanel.add(fileUploadPanel);
         entityFieldsPanel.add(submitForApprovalF);
         alignFields();
     }
