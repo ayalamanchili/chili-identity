@@ -22,6 +22,7 @@ import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.profile.CompanyDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.expense.CheckRequisitionItem;
 import info.yalamanchili.office.entity.expense.ImmigrationCheckRequisition;
 import info.yalamanchili.office.entity.expense.ImmigrationCheckRequisitionStatus;
@@ -77,6 +78,11 @@ public class ImmigrationCheckRequisitionService {
             if (dto.getCompany() != null) {
                 emp.setCompany(CompanyDao.instance().findById(dto.getCompany().getId()));
             }
+        } else {
+            if (dto.getCompany() != null) {
+                Company company = CompanyDao.instance().findById(dto.getCompany().getId());
+                entity.setCompanyName(company.getName());
+            }
         }
         entity.setStatus(ImmigrationCheckRequisitionStatus.PENDING_APPROVAL);
         for (CheckRequisitionItem item : entity.getItems()) {
@@ -112,7 +118,13 @@ public class ImmigrationCheckRequisitionService {
         //add/update items
         if (entity.getEmployee() != null && dto.getCompany() != null) {
             entity.getEmployee().setCompany(CompanyDao.instance().findById(dto.getCompany().getId()));
+        } else {
+            if (dto.getCompany() != null) {
+                Company company = CompanyDao.instance().findById(dto.getCompany().getId());
+                entity.setCompanyName(company.getName());
+            }
         }
+
         for (CheckRequisitionItem item : dto.getItems()) {
             if (item.getId() != null) {
                 checkRequisitionItemDao.save(item);
@@ -132,7 +144,9 @@ public class ImmigrationCheckRequisitionService {
     }
 
     public ImmigrationCheckRequisitionSaveDto read(Long id) {
-        return mapper.map(immigrationCheckRequisitionDao.findById(id), ImmigrationCheckRequisitionSaveDto.class);
+        ImmigrationCheckRequisitionSaveDto dto =  mapper.map(immigrationCheckRequisitionDao.findById(id), ImmigrationCheckRequisitionSaveDto.class);
+        dto.setCompany(CompanyDao.instance().findByCompanyName(dto.getCompanyName()));
+        return dto;
     }
 
     public ImmigrationCheckRequisitionSaveDto clone(Long id) {
@@ -148,7 +162,9 @@ public class ImmigrationCheckRequisitionService {
     public Response getReport(ImmigrationCheckRequisition entity) {
         PdfDocumentData data = new PdfDocumentData();
         Employee emp = entity.getEmployee();
-        if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals("TechPillars")) {
+        if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals(Company.TECHPILLARS)) {
+            data.setTemplateUrl("/templates/pdf/check-request-tp-template.pdf");
+        } else if (emp == null && entity.getCompanyName().equals(Company.TECHPILLARS)) {
             data.setTemplateUrl("/templates/pdf/check-request-tp-template.pdf");
         } else {
             data.setTemplateUrl("/templates/pdf/check-request-template.pdf");

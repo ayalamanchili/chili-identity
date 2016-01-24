@@ -19,8 +19,12 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.LocalStorage;
+import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.config.OfficeClientConfig;
 import info.yalamanchili.office.client.login.LoginPage;
 import info.yalamanchili.office.client.resources.OfficeImages;
@@ -30,7 +34,7 @@ public class OfficeWelcome implements EntryPoint {
     public static Logger logger = Logger.getLogger(OfficeWelcome.class.getName());
     public JSONObject employee;
     public String employeeId;
-    public List<String> roles = new ArrayList<String>();
+    public List<String> roles = new ArrayList<>();
     public static OfficeConstants constants = (OfficeConstants) GWT.create(OfficeConstants.class);
     public static OfficeMessages messages = (OfficeMessages) GWT.create(OfficeMessages.class);
     public static EventBus EVENT_BUS = GWT.create(SimpleEventBus.class);
@@ -41,9 +45,19 @@ public class OfficeWelcome implements EntryPoint {
         URLParamProcessor.process();
         OfficeImages.INSTANCE.officeCss().ensureInjected();
         instance = this;
-        RootLayoutPanel.get().add(new LoginPage());
-        showFeedbackPage();
-//        UserLocation.getUserLocation();
+//try to login with existing session
+        HttpService.HttpServiceAsync.instance().login(null, null, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String userString) {
+                JSONObject user = (JSONObject) JSONParser.parseLenient(userString);
+                onMainModuleLoad(user);
+            }
+
+            @Override
+            public void onFailure(Throwable err) {
+                RootLayoutPanel.get().add(new LoginPage());
+            }
+        });
         //This is a hack to load the tab panel js fragment on back ground while the users enters his username and password
         GWT.runAsync(new com.google.gwt.core.client.RunAsyncCallback() {
             @Override

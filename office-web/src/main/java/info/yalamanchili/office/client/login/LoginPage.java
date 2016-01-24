@@ -181,7 +181,6 @@ public class LoginPage extends Composite {
                 return failureMessage;
             }
         });
-
     }
 
     protected void forgotPassword() {

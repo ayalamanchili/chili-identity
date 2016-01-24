@@ -19,7 +19,6 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -158,6 +157,11 @@ public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite impl
             JSONObject employee = (JSONObject) entity.get("employee");
             if (employee.get("company") != null) {
                 JSONObject company = (JSONObject) employee.get("company");
+                selectCompanyWidget.setSelectedValue(company);
+            }
+        } else {
+            if (entity.get("company") != null) {
+                JSONObject company = (JSONObject) entity.get("company");
                 selectCompanyWidget.setSelectedValue(company);
             }
         }
