@@ -11,6 +11,7 @@ import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.client.Subcontractor;
 import info.yalamanchili.office.entity.client.Vendor;
+import info.yalamanchili.office.entity.hr.Resume;
 import info.yalamanchili.office.entity.practice.Practice;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -935,17 +936,25 @@ public class ClientInformation extends AbstractEntity {
     protected Set<CIDocument> cidocument;
 
     @XmlTransient
-    public Set<CIDocument> getcIDocument() {
+    public Set<CIDocument> getCidocument() {
         if (this.cidocument == null) {
             this.cidocument = new HashSet();
         }
         return cidocument;
     }
 
-    public void setcIDocument(Set<CIDocument> cidocument) {
+    public void setCidocument(Set<CIDocument> cidocument) {
         this.cidocument = cidocument;
     }
 
+    public void addCidocument(CIDocument entity) {
+        if (entity == null) {
+            return;
+        }
+        getCidocument().add(entity);
+        entity.setClientInformation(this);
+    }
+    
     @Override
     public String describe() {
         StringBuilder description = new StringBuilder("\n");
