@@ -162,9 +162,9 @@ public class ImmigrationCheckRequisitionService {
     public Response getReport(ImmigrationCheckRequisition entity) {
         PdfDocumentData data = new PdfDocumentData();
         Employee emp = entity.getEmployee();
-        if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals("TechPillars")) {
+        if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals(Company.TECHPILLARS)) {
             data.setTemplateUrl("/templates/pdf/check-request-tp-template.pdf");
-        } else if (emp == null && entity.getCompanyName().equals("TechPillars")) {
+        } else if (emp == null && entity.getCompanyName().equals(Company.TECHPILLARS)) {
             data.setTemplateUrl("/templates/pdf/check-request-tp-template.pdf");
         } else {
             data.setTemplateUrl("/templates/pdf/check-request-template.pdf");
