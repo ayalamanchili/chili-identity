@@ -41,10 +41,13 @@ import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWi
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.user.client.ui.FileUpload;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.CurrencyField;
+import info.chili.gwt.fields.FileuploadField;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
@@ -64,6 +67,12 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     protected BooleanField submitForApprovalF = new BooleanField(OfficeWelcome.constants, "Submit For Approval", "ClientInfo", false, false, Alignment.HORIZONTAL);
     protected boolean isSub = false;
     protected boolean is1099 = false;
+    FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "CIDocument", "cidocument", "CIDocument/cidocument", false, true) {
+        @Override
+        public void onUploadComplete(String res) {
+            postCreateSuccess(res);
+        }
+    };
 
     public CreateClientInfoPanel(CreateCompositeType type) {
         super(type);
@@ -134,8 +143,35 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         assignEntityValueFromField("visaStatus", clientInfo);
         assignEntityValueFromField("practice", clientInfo);
         assignEntityValueFromField("sectorsAndBUs", clientInfo);
-        logger.info(clientInfo.toString());
+        logger.info("create panel entity 1" + clientInfo.toString());
+        JSONArray cidocument = new JSONArray();
+        if (!fileUploadPanel.isEmpty()) {
+            int i = 0;
+            for (FileUpload upload : fileUploadPanel.getFileUploads()) {
+                if (upload.getFilename() != null && !upload.getFilename().trim().isEmpty()) {
+                    JSONObject clientInformation = new JSONObject();
+                    clientInformation.put("fileURL", fileUploadPanel.getFileName(upload));
+                    clientInformation.put("name", new JSONString("File Name"));
+                    cidocument.set(i, clientInformation);
+                    i++;
+                }
+            }
+        }
+        if (cidocument.size() > 0) {
+            clientInfo.put("cidocument", cidocument);
+            //assignEntityValueFromField("cidocument", clientInfo);
+        }
+        logger.info("create panel entity 2" + clientInfo.toString());
         return clientInfo;
+    }
+
+    protected void uploadReceipts(String postString) {
+        entity = JSONParser.parseLenient(postString).isObject();
+        if (!fileUploadPanel.isEmpty()) {
+            JSONObject post = (JSONObject) JSONParser.parseLenient(postString);
+            JSONArray cidocument = JSONUtils.toJSONArray(post.get("cidocument"));
+            fileUploadPanel.upload(cidocument, "fileURL");
+        }
     }
 
     @Override
@@ -155,10 +191,10 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
 
                     @Override
                     public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
+                        uploadReceipts(arg0);
                     }
                 });
-
+        logger.info("dsfdsfdsfdsfdsf............................" + entity);
     }
 
     @Override
@@ -309,6 +345,8 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         endDateF = (DateField) fields.get("endDate");
         isEndDateConfirmedF = (BooleanField) fields.get("isEndDateConfirmed");
         isEndDateConfirmedF.setVisible(false);
+        entityFieldsPanel.add(getLineSeperatorTag("CPD Document"));
+        entityFieldsPanel.add(fileUploadPanel);
         entityActionsPanel.add(submitForApprovalF);
         submitForApprovalF.setValue(true);
         alignFields();
