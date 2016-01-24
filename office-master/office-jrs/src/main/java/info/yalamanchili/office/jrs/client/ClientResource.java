@@ -204,13 +204,14 @@ public class ClientResource extends CRUDResource<Client> {
         client.getClientAcctPayContacts().remove(contact);
         ContactDao.instance().delete(contact.getId());
     }
-
+    
     @GET
     @Path("/clientinfo-report")
+    @Transactional
     public void clientReport() {
-        List<ClientInfoDto> res = new ArrayList();
+        List<ClientMasterReportDto> res = new ArrayList();
         for (Client ci : ClientDao.instance().query(0, 2000)) {
-            ClientInfoDto dto = new ClientInfoDto();
+            ClientMasterReportDto dto = new ClientMasterReportDto();
             dto.setName(ci.getName());
             if (ci.getWebsite() != null) {
                 dto.setWebSite(ci.getWebsite());

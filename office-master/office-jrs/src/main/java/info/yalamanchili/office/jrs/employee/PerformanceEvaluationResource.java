@@ -9,26 +9,34 @@ package info.yalamanchili.office.jrs.employee;
 
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
+import info.chili.reporting.ReportGenerator;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.OfficeRoles;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.employee.PerformanceEvaluationDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.employee.PerformanceEvaluationSaveDto;
 import info.yalamanchili.office.dto.employee.QuestionComment;
+import info.yalamanchili.office.employee.perfeval.PerformanceEvaluationReportDto;
 import info.yalamanchili.office.employee.perfeval.PerformanceEvaluationService;
 import info.yalamanchili.office.entity.employee.PerformanceEvaluation;
 import info.yalamanchili.office.entity.ext.QuestionCategory;
 import info.yalamanchili.office.entity.ext.QuestionContext;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.jrs.CRUDResource;
+import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.media.Media;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -138,7 +146,17 @@ public class PerformanceEvaluationResource extends CRUDResource<PerformanceEvalu
     @GET
     @Path("/performance-evaluation-report")
     public void employeeperformanceEvaluationReport(@QueryParam("year") String year) {
-        performanceEvaluationService.getPerformanceEvaluationReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail(), year);
+        List<PerformanceEvaluationReportDto> report = new ArrayList<>();
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
+        report = performanceEvaluationService.getPerformanceEvaluationReport(year);
+        String[] columnOrder = new String[]{"employee", "evaluationFYYear", "manager", "managerReviewStarted", "rating", "stage"};
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(report, " Performance-Evaluation-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), emp.getPrimaryEmail().getEmail());
+    }
+    
+    @GET
+    @Path("/performance-evaluation-reportView")
+    public List<PerformanceEvaluationReportDto> employeeperformanceEvaluationReportView(@QueryParam("year") String year) {
+        return performanceEvaluationService.getPerformanceEvaluationReport(year);
     }
 
     @XmlRootElement

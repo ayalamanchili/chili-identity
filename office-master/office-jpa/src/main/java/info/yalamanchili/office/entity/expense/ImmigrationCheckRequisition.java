@@ -136,6 +136,8 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
      *
      */
     private String bpmProcessId;
+   
+    private String companyName;
 
     /**
      * GETTERS and SETTERS
@@ -288,6 +290,14 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
         this.bpmProcessId = bpmProcessId;
     }
 
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+    
     @PrePersist
     @PreUpdate
     public void updateTotalAmount() {

@@ -8,18 +8,20 @@
 package info.yalamanchili.office.employee.perfeval;
 
 import java.io.Serializable;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author prasanthi.p
  */
+@XmlRootElement
 public class PerformanceEvaluationReportDto implements Serializable {
 
     protected String employee;
     /**
      *
      */
-    protected Double rating;
+    protected String rating;
     /**
      *
      */
@@ -72,14 +74,14 @@ public class PerformanceEvaluationReportDto implements Serializable {
     /**
      * @return the rating
      */
-    public Double getRating() {
+    public String getRating() {
         return rating;
     }
 
     /**
      * @param rating the rating to set
      */
-    public void setRating(Double rating) {
+    public void setRating(String rating) {
         this.rating = rating;
     }
 
