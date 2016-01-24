@@ -20,11 +20,11 @@ import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.LocalStorage;
 import info.chili.gwt.rpc.HttpService;
-import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.config.OfficeClientConfig;
 import info.yalamanchili.office.client.login.LoginPage;
 import info.yalamanchili.office.client.resources.OfficeImages;
@@ -52,12 +52,17 @@ public class OfficeWelcome implements EntryPoint {
                 JSONObject user = (JSONObject) JSONParser.parseLenient(userString);
                 onMainModuleLoad(user);
             }
+//is session is not valid or present show login page
 
             @Override
             public void onFailure(Throwable err) {
                 RootLayoutPanel.get().add(new LoginPage());
+                downloadJSinBackground();
             }
         });
+    }
+
+    protected void downloadJSinBackground() {
         //This is a hack to load the tab panel js fragment on back ground while the users enters his username and password
         GWT.runAsync(new com.google.gwt.core.client.RunAsyncCallback() {
             @Override
@@ -95,9 +100,15 @@ public class OfficeWelcome implements EntryPoint {
                 RootLayoutPanel.get().clear();
                 RootLayout rootLayout = new RootLayout();
                 RootLayoutPanel.get().add(rootLayout);
+                History.addValueChangeHandler(new OfficeUrlRoutingHandler());
+                if (History.getToken() != null) {
+                    History.fireCurrentHistoryState();
+                }
             }
         });
+
         SessionTimeoutMonitor.get().initialize();
+
     }
 
     public String getCurrentUserName() {

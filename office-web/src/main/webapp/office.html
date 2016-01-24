@@ -24,7 +24,7 @@
                 if (typeof window.onload != 'function') {
                     window.onload = func;
                 } else {
-                    window.onload = function() {
+                    window.onload = function () {
                         if (oldonload) {
                             oldonload();
                         }
@@ -32,12 +32,14 @@
                     }
                 }
             }
-            addLoadEvent(function() {
+            addLoadEvent(function () {
                 document.getElementById("loading").style.display = "none";
             });
         </script>
     </head>
     <body>
-        <iframe src="javascript:''" id="__gwt_historyFrame"  style="position:absolute;width:0;height:0;border:0"></iframe>
+        <iframe src="javascript:''"
+                id="__gwt_historyFrame"
+                style="position:absolute;width:0;height:0;border:0"></iframe>
     </body>
 </html>

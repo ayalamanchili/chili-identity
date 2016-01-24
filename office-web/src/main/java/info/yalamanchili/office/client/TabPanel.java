@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import info.chili.gwt.callback.RunAsyncCallback;
@@ -98,12 +99,15 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         }
         tabPanel.add(helpPanel, "Help", false);
         tabPanel.addSelectionHandler(this);
-        if (Auth.isCorporateEmployee()) {
-            TabPanel.instance().tabPanel.selectTab(1);
-        } else if (Auth.isW2Contractor()) {
-            tabPanel.selectTab(5);
-        } else {
-            tabPanel.selectTab(6);
+        if (History.getToken().length() < 1) {
+            if (Auth.isCorporateEmployee()) {
+                logger.info("selecting tab 1");
+                TabPanel.instance().tabPanel.selectTab(1);
+            } else if (Auth.isW2Contractor()) {
+                tabPanel.selectTab(5);
+            } else {
+                tabPanel.selectTab(6);
+            }
         }
     }
 
@@ -210,6 +214,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     }
 
     public void selectHomeTab() {
+        tabPanel.selectTab(homePanel);
         clearEntityPanel(homePanel);
         homePanel.sidePanelTop.add(new HomeStackPanel());
         if (Auth.isCorporateEmployee()) {
@@ -279,7 +284,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
 
     public void selectReportingPanel() {
         clearEntityPanel(reportingPanel);
-        reportingPanel.entityTitlePanel.add( new ReportsMenu());
+        reportingPanel.entityTitlePanel.add(new ReportsMenu());
         if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_FULL_VIEW)) {
             ReportsMenu.contractingMaintainenceCmd.execute();
         } else if (Auth.hasAnyOfRoles(ROLE.ROLE_RELATIONSHIP)) {
