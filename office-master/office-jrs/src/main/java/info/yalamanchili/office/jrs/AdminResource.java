@@ -82,6 +82,13 @@ public class AdminResource {
         }
     }
 
+    @Path("/login")
+    @GET
+    //TODO cache it
+    public EmployeeLoginDto login(@HeaderParam("remote-ip") String ipAddress) {
+        return login(new CUser(securityService.getCurrentUserName()), ipAddress);
+    }
+
     @Path("/ping")
     @GET
     public void ping() {
