@@ -511,7 +511,7 @@ public class ClientInformation extends AbstractEntity {
     @XmlTransient
     public List<BillingRate> getBillingRates() {
         if (this.billingRates == null) {
-            this.billingRates = new ArrayList<BillingRate>();
+            this.billingRates = new ArrayList<>();
         }
         return this.billingRates;
     }
@@ -932,6 +932,7 @@ public class ClientInformation extends AbstractEntity {
     public void setInvoiceFrequency1099(InvoiceFrequency invoiceFrequency1099) {
         this.invoiceFrequency1099 = invoiceFrequency1099;
     }
+    
     @OneToMany(mappedBy = "clientInformation", cascade = CascadeType.ALL)
     protected Set<CIDocument> cidocument;
 

@@ -23,6 +23,7 @@ import info.yalamanchili.office.client.ContractService;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dto.client.ContractDto;
 import info.yalamanchili.office.dto.profile.ClientInformationDto;
+import info.yalamanchili.office.dto.profile.ClientInformationSaveDto;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.project.offboarding.ProjectOffBoardingService;
 import java.util.ArrayList;
@@ -69,8 +70,8 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_RECRUITER','ROLE_CONTRACTS_ADMIN')")
     @Validate
     @CacheEvict(value = OfficeCacheKeys.CLIENTINFORMATION, allEntries = true)
-    public ClientInformation save(ClientInformation entity, @QueryParam("submitForApproval") Boolean submitForApproval) {
-        return clientInformationService.update(entity, submitForApproval);
+    public ClientInformation save(ClientInformationSaveDto dto, @QueryParam("submitForApproval") Boolean submitForApproval) {
+        return clientInformationService.update(dto, submitForApproval);
     }
 
     @Override

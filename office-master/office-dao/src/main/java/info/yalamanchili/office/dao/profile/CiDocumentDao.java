@@ -15,11 +15,15 @@ import info.yalamanchili.office.entity.profile.CIDocument;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author prasanthi.p
  */
+@Repository
+@Scope("prototype")
 public class CiDocumentDao extends CRUDDao<CIDocument> {
 
     public CiDocumentDao() {

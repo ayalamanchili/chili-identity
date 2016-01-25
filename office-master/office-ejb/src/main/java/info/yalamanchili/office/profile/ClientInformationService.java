@@ -10,7 +10,6 @@ package info.yalamanchili.office.profile;
 import com.google.common.base.Strings;
 import info.chili.commons.BeanMapper;
 import info.chili.service.jrs.exception.ServiceException;
-import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.client.ContractService;
 import info.yalamanchili.office.dao.client.ClientDao;
@@ -27,6 +26,7 @@ import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.profile.ClientInformationDto;
+import info.yalamanchili.office.dto.profile.ClientInformationSaveDto;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.client.Subcontractor;
@@ -42,7 +42,6 @@ import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
-import info.yalamanchili.office.expense.expenserpt.ExpenseReportSaveDto;
 import info.yalamanchili.office.service.ServiceInterceptor;
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -51,6 +50,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Query;
 import javax.persistence.EntityManager;
@@ -350,7 +350,8 @@ public class ClientInformationService {
     }
 
 //merge save and addci methods
-    public ClientInformation update(ClientInformation ci, Boolean submitForApproval) {
+    public ClientInformation update(ClientInformationSaveDto dto, Boolean submitForApproval) {
+        ClientInformation ci = mapper.map(dto, ClientInformation.class);
         ClientInformation ciEntity = em.find(ClientInformation.class, ci.getId());
         validate(ci, submitForApproval);
         String abbreviation = getCompanyAbbreviation(ci.getCompany());
@@ -391,11 +392,7 @@ public class ClientInformationService {
         ciEntity.setClient(client);
         project.setName(abbreviation + "PR" + projectName(client.getName()));
         project.setName(project.getName() + project.getId().toString());
-        if (ci.isIsEndDateConfirmed() == true) {
-            ciEntity.setIsEndDateConfirmed(true);
-        } else {
-            ciEntity.setIsEndDateConfirmed(false);
-        }
+        ciEntity.setIsEndDateConfirmed((Objects.equals(Boolean.TRUE, ci.isIsEndDateConfirmed())));
         //Client Contact
         if (ci.getClientContact() == null) {
             ciEntity.setClientContact(null);
