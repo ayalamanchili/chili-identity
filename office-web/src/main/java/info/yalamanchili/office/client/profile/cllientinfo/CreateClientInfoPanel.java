@@ -143,7 +143,6 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         assignEntityValueFromField("visaStatus", clientInfo);
         assignEntityValueFromField("practice", clientInfo);
         assignEntityValueFromField("sectorsAndBUs", clientInfo);
-        logger.info("create panel entity 1" + clientInfo.toString());
         JSONArray cidocument = new JSONArray();
         if (!fileUploadPanel.isEmpty()) {
             int i = 0;
@@ -159,19 +158,18 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         }
         if (cidocument.size() > 0) {
             clientInfo.put("cidocument", cidocument);
-            //assignEntityValueFromField("cidocument", clientInfo);
         }
-        logger.info("create panel entity 2" + clientInfo.toString());
         return clientInfo;
     }
     
     protected void uploadDocuments(String postString) {
-        logger.info("dddddddddddddddd" + postString);
         entity = JSONParser.parseLenient(postString).isObject();
         if (!fileUploadPanel.isEmpty()) {
             JSONObject post = (JSONObject) JSONParser.parseLenient(postString);
             JSONArray cidocument = JSONUtils.toJSONArray(post.get("cidocument"));
             fileUploadPanel.upload(cidocument, "fileURL");
+        } else {
+            postCreateSuccess(null);
         }
     }
     
@@ -184,17 +182,17 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     protected void addButtonClicked() {
         HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                logger.info(arg0.getMessage());
-                handleErrorResponse(arg0);
-            }
-            
-            @Override
-            public void onSuccess(String arg0) {
-                uploadDocuments(arg0);
-            }
-        });
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        logger.info(arg0.getMessage());
+                        handleErrorResponse(arg0);
+                    }
+                    
+                    @Override
+                    public void onSuccess(String arg0) {
+                        uploadDocuments(arg0);
+                    }
+                });
     }
     
     @Override
@@ -390,27 +388,27 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     public void populateEndDate() {
         HttpService.HttpServiceAsync.instance().doGet(getProjectEndDate(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                if (arg0 != null) {
-                    Date date2 = new Date(arg0);
-                    previousProjectEndDate.setDate(date2);
+                    @Override
+                    public void onResponse(String arg0) {
+                        if (arg0 != null) {
+                            Date date2 = new Date(arg0);
+                            previousProjectEndDate.setDate(date2);
+                        }
+                    }
                 }
-            }
-        }
         );
     }
     
     public void loadVendor(String vendorEntityId) {
         HttpService.HttpServiceAsync.instance().doGet(getVendor(vendorEntityId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                JSONObject vendor = (JSONObject) JSONParser.parseLenient(response);
-                TextAreaField payTermF = (TextAreaField) fields.get("vendorPaymentTerms");
-                payTermF.setValue(JSONUtils.toString(vendor, "paymentTerms"));
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject vendor = (JSONObject) JSONParser.parseLenient(response);
+                        TextAreaField payTermF = (TextAreaField) fields.get("vendorPaymentTerms");
+                        payTermF.setValue(JSONUtils.toString(vendor, "paymentTerms"));
+                    }
+                });
     }
     
     protected String getVendor(String vendorEntityId) {
@@ -420,13 +418,13 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     public void loadClient(String clientEntityId) {
         HttpService.HttpServiceAsync.instance().doGet(getClient(clientEntityId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                JSONObject client = (JSONObject) JSONParser.parseLenient(response);
-                TextAreaField payTermF = (TextAreaField) fields.get("clientPaymentTerms");
-                payTermF.setValue(JSONUtils.toString(client, "paymentTerms"));
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject client = (JSONObject) JSONParser.parseLenient(response);
+                        TextAreaField payTermF = (TextAreaField) fields.get("clientPaymentTerms");
+                        payTermF.setValue(JSONUtils.toString(client, "paymentTerms"));
+                    }
+                });
     }
     
     protected String getClient(String clientEntityId) {

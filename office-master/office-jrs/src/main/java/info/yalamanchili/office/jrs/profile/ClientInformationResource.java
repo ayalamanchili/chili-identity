@@ -70,7 +70,7 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_RECRUITER','ROLE_CONTRACTS_ADMIN')")
     @Validate
     @CacheEvict(value = OfficeCacheKeys.CLIENTINFORMATION, allEntries = true)
-    public ClientInformation save(ClientInformationSaveDto dto, @QueryParam("submitForApproval") Boolean submitForApproval) {
+    public ClientInformationSaveDto save(ClientInformationSaveDto dto, @QueryParam("submitForApproval") Boolean submitForApproval) {
         return clientInformationService.update(dto, submitForApproval);
     }
 

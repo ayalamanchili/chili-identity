@@ -11,7 +11,6 @@ import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.client.Subcontractor;
 import info.yalamanchili.office.entity.client.Vendor;
-import info.yalamanchili.office.entity.hr.Resume;
 import info.yalamanchili.office.entity.practice.Practice;
 import java.math.BigDecimal;
 import java.util.ArrayList;

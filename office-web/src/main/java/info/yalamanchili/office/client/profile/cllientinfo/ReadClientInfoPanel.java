@@ -299,20 +299,20 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
-                JSONArray cidocuments = JSONUtils.toJSONArray(entity.get("cidocument"));
-                if (cidocuments != null) {
-                    populateCIDocuments(cidocuments);
-                }
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                        JSONArray cidocuments = JSONUtils.toJSONArray(entity.get("cidocument"));
+                        if (cidocuments != null) {
+                            populateCIDocuments(cidocuments);
+                        }
+                    }
+                });
     }
 
     protected void populateCIDocuments(JSONArray items) {
-        entityFieldsPanel.add(new ReadAllCiDocumentPanel(items));
+        entityFieldsPanel.add(new ReadAllCiDocumentPanel(getEntityId(), items));
     }
 
     protected void populateComments() {

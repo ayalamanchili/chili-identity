@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author prasanthi.p
  */
-@Path("secured/cidocument-receipt")
+@Path("secured/cidocument")
 @Component
 @Transactional
 @Scope("request")

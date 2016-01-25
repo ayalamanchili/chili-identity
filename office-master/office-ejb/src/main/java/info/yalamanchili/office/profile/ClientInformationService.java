@@ -350,7 +350,7 @@ public class ClientInformationService {
     }
 
 //merge save and addci methods
-    public ClientInformation update(ClientInformationSaveDto dto, Boolean submitForApproval) {
+    public ClientInformationSaveDto update(ClientInformationSaveDto dto, Boolean submitForApproval) {
         ClientInformation ci = mapper.map(dto, ClientInformation.class);
         ClientInformation ciEntity = em.find(ClientInformation.class, ci.getId());
         validate(ci, submitForApproval);
@@ -523,8 +523,8 @@ public class ClientInformationService {
             ci.setBpmProcessId(startNewClientInfoProcess(ci));
         }
         em.flush();
-        Employee updatedByEmp = OfficeSecurityService.instance().getCurrentUser();
-        return ci;
+        ci = em.find(ClientInformation.class, ci.getId());
+        return mapper.map(ci, ClientInformationSaveDto.class);
     }
 
     protected void validate(ClientInformation ci, Boolean submitForApproval) {
