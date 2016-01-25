@@ -257,8 +257,14 @@ public class VendorResource extends CRUDResource<Vendor> {
     public void vendorReport() {
         List<VendorMasterReportDto> res = new ArrayList();
         for (Vendor vn : VendorDao.instance().query(0, 2000)) {
+            res.add(populateVendorInfo(vn));
+        }
+         String[] columnOrder = new String[]{"vendorName", "webSite", "paymentTerms", "invFrequency", "vendorType", "vendorFees", "vendorLocations", "recruiterContact", "acctPayContact"};
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Vendor-Info-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
+    }
+    public VendorMasterReportDto populateVendorInfo(Vendor vn){
             VendorMasterReportDto dto = new VendorMasterReportDto();
-            dto.setName(vn.getName());
+            dto.setVendorName(vn.getName());
             if (vn.getWebsite() != null) {
                 dto.setWebSite(vn.getWebsite());
             }
@@ -357,11 +363,8 @@ public class VendorResource extends CRUDResource<Vendor> {
                 }
                 dto.setAcctPayContact(actContact);
             }
-            res.add(dto);
+            return dto;
         }
-        String[] columnOrder = new String[]{"name", "webSite", "paymentTerms", "invFrequency", "vendorType", "vendorFees", "vendorLocations", "recruiterContact", "acctPayContact"};
-        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Vendor-Info-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
-    }
 
     /**
      * Add Vendor locations
