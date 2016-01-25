@@ -10,6 +10,7 @@ package info.yalamanchili.office.profile;
 import com.google.common.base.Strings;
 import info.chili.commons.BeanMapper;
 import info.chili.service.jrs.exception.ServiceException;
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.client.ContractService;
 import info.yalamanchili.office.dao.client.ClientDao;
@@ -41,6 +42,7 @@ import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
+import info.yalamanchili.office.expense.expenserpt.ExpenseReportSaveDto;
 import info.yalamanchili.office.service.ServiceInterceptor;
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -207,17 +209,12 @@ public class ClientInformationService {
         } else {
             ci.setIsEndDateConfirmed(false);
         }
-        Set<CIDocument> cis = new HashSet<CIDocument>();
-        for (CIDocument receipt : ci.getCidocument()) {
-            if (!Strings.isNullOrEmpty(receipt.getFileURL())) {
-                receipt.setClientInformation(ci);
-                //cis.add(receipt);
-                //ciDto.addCidocument(receipt);
-                //ci.addCidocument(receipt);
+        //cidocument
+        for (CIDocument doc : ci.getCidocument()) {
+            if (!Strings.isNullOrEmpty(doc.getFileURL())) {
+                doc.setClientInformation(ci);
             }
         }
-        //ci.setCidocument(cis);
-        //ciDto.setCidocument(cis);
         ci = clientInformationDao.save(ci);
         //ClientInformationDto ci1 = mapper.map(ci, ClientInformationDto.class);
         emp.addClientInformation(ci);
@@ -254,6 +251,10 @@ public class ClientInformationService {
             default:
                 return "SSTL";
         }
+    }
+
+    public ClientInformationDto read(Long id) {
+        return mapper.map(clientInformationDao.findById(id), ClientInformationDto.class);
     }
 
     protected void updatePreviousProjectEndDate(Employee emp, ClientInformation ci) {
@@ -506,13 +507,14 @@ public class ClientInformationService {
             VendorDao.instance().save(middleVendor);
         }
         project.setClient(client);
-        for (CIDocument receipt : ci.getCidocument()) {
-            if (receipt.getId() == null) {
-                receipt.setClientInformation(ciEntity);
+
+        for (CIDocument document : ci.getCidocument()) {
+            if (document.getId() == null) {
+                document.setClientInformation(ciEntity);
                 ciEntity = clientInformationDao.getEntityManager().merge(ciEntity);
-                ciEntity.getCidocument().add(receipt);
+                ciEntity.getCidocument().add(document);
             } else {
-                CiDocumentDao.instance().save(receipt);
+                CiDocumentDao.instance().save(document);
             }
         }
         ClientDao.instance().save(client);

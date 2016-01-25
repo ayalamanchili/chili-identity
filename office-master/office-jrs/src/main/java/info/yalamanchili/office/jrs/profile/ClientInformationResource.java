@@ -22,6 +22,7 @@ import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.client.ContractService;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dto.client.ContractDto;
+import info.yalamanchili.office.dto.profile.ClientInformationDto;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.project.offboarding.ProjectOffBoardingService;
 import java.util.ArrayList;
@@ -78,10 +79,18 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
     }
 
     @GET
-    @Override
+    @Path("/read/{id}")
+    @Transactional(readOnly = true)
+    public ClientInformationDto readCIDto(@PathParam("id") Long id) {
+        return clientInformationService.read(id);
+    }
+
+    @GET
     @Path("/{id}")
+    @Transactional(readOnly = true)
+    @Override
     public ClientInformation read(@PathParam("id") Long id) {
-        return (ClientInformation) getDao().findById(id);
+        throw new UnsupportedOperationException();
     }
 
     @GET

@@ -164,7 +164,6 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
                 j++;
             }
         }
-        logger.info(expenseReceipts.toString());
         if (expenseReceipts.size() > 0) {
             entity.put(EXPENSE_RECEIPT, expenseReceipts);
         }

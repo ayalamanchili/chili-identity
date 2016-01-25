@@ -70,7 +70,6 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        logger.info("read panel ci entity .."+entity.toString());
         assignFieldValueFromEntity("consultantJobTitle", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("company", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("client", entity, null);
@@ -136,7 +135,6 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
         assignFieldValueFromEntity("notes", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("practice", entity, null);
         assignFieldValueFromEntity("sectorsAndBUs", entity, DataType.STRING_FIELD);
-        //assignFieldValueFromEntity("cidocument", entity, null);
         populateComments();
     }
 
@@ -294,30 +292,26 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "clientinformation/" + entityId;
+        return OfficeWelcome.constants.root_url() + "clientinformation/read/" + entityId;
     }
 
     @Override
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity);
-                        JSONArray cidocument = JSONUtils.toJSONArray(entity.get("cidocument"));
-                        if (cidocument != null) {
-                            populateExpenseReceipt(cidocument);
-//                                String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "fileURL") + "&entityId=" + JSONUtils.toString(entity, "id");
-//                                FileField fileField = new FileField(fileURL);
-//                                entityFieldsPanel.add(fileField);
-                        }
-                        populateComments();
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                populateFieldsFromEntity(entity);
+                JSONArray cidocuments = JSONUtils.toJSONArray(entity.get("cidocument"));
+                if (cidocuments != null) {
+                    populateCIDocuments(cidocuments);
+                }
+            }
+        });
     }
 
-    protected void populateExpenseReceipt(JSONArray items) {
+    protected void populateCIDocuments(JSONArray items) {
         entityFieldsPanel.add(new ReadAllCiDocumentPanel(items));
     }
 
@@ -346,11 +340,10 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
         tasksDP.setContent(new ReadAllTasks(tasksUrl + JSONUtils.toString(getEntity(), "bpmProcessId") + "/", true));
     }
 
+    @Override
     public void onClick(ClickEvent event) {
-
         if (event.getSource().equals(updateBillingRateIcn)) {
             new GenericPopup(new CreateUpdateBillingRatePanel(getEntityId(), getEntity())).show();
         }
-
     }
 }

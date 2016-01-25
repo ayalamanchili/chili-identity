@@ -15,7 +15,6 @@ import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.client.Subcontractor;
 import info.yalamanchili.office.entity.client.Vendor;
-import info.yalamanchili.office.entity.hr.Resume;
 import info.yalamanchili.office.entity.practice.Practice;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.BillingDuration;
@@ -36,6 +35,7 @@ import javax.persistence.Temporal;
 
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -240,6 +240,7 @@ public class ClientInformationDto implements Serializable {
 
     protected Set<CIDocument> cidocument;
 
+    @XmlElement
     public Set<CIDocument> getCidocument() {
         return cidocument;
     }
@@ -248,13 +249,6 @@ public class ClientInformationDto implements Serializable {
         this.cidocument = cidocument;
     }
 
-    public void addCidocument(CIDocument entity) {
-        if (entity == null) {
-            return;
-        }
-        getCidocument().add(entity);
-    }
-    
     protected Long id;
 
     public Long getId() {

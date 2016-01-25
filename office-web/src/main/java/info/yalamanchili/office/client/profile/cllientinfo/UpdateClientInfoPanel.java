@@ -47,7 +47,6 @@ import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.FileuploadField;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.utils.JSONUtils;
-import info.chili.gwt.utils.Utils;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientAcctPayContact;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
@@ -76,6 +75,26 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
 
     public UpdateClientInfoPanel(JSONObject entity) {
         initUpdateComposite(entity, "ClientInfo", OfficeWelcome.constants);
+    }
+
+    protected void populateCIDocuments() {
+        HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String response) {
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                logger.info("");
+                cidocument = JSONUtils.toJSONArray(entity.get("cidocument"));
+                if (cidocument != null) {
+                    entityFieldsPanel.add(new ReadAllCiDocumentPanel(cidocument));
+                }
+            }
+        });
+
+    }
+
+    protected String getReadURI() {
+        return OfficeWelcome.constants.root_url() + "clientinformation/read/" + getEntityId();
     }
 
     @Override
@@ -138,24 +157,21 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignEntityValueFromField("notes", entity);
         assignEntityValueFromField("practice", entity);
         assignEntityValueFromField("sectorsAndBUs", entity);
-        JSONArray cidocument = new JSONArray();
-        logger.info(cidocument.toString());
-        if (!fileUploadPanel.isEmpty()) {
-            int i = 0;
-            for (FileUpload upload : fileUploadPanel.getFileUploads()) {
-                if (upload.getFilename() != null && !upload.getFilename().trim().isEmpty()) {
-                    JSONObject clientInformation = new JSONObject();
-                    clientInformation.put("fileURL", fileUploadPanel.getFileName(upload));
-                    clientInformation.put("name", new JSONString("File Name"));
-                    cidocument.set(i, clientInformation);
-                    i++;
-                }
+        int j = cidocument.size();
+        logger.info("existing:" + cidocument.toString());
+        for (FileUpload upload : fileUploadPanel.getFileUploads()) {
+            if (upload.getFilename() != null && !upload.getFilename().trim().isEmpty()) {
+                JSONObject docs = new JSONObject();
+                docs.put("fileURL", fileUploadPanel.getFileName(upload));
+                docs.put("name", new JSONString("File Name"));
+                cidocument.set(j, docs);
+                j++;
             }
         }
-        logger.info("ASDASDNSKJFHDSJKFHDSJFSKJGDFKJGDFJGDFJG" + cidocument.toString());
         if (cidocument.size() > 0) {
             entity.put("cidocument", cidocument);
         }
+        logger.info("docs" + cidocument.toString());
         return entity;
     }
 
@@ -163,16 +179,16 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postUpdateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postUpdateSuccess(arg0);
+            }
+        });
 
     }
 
@@ -186,7 +202,6 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        logger.info("update panel entity ci doc ... "+entity);
         assignFieldValueFromEntity("consultantJobTitle", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("company", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("client", entity, null);
@@ -250,16 +265,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignFieldValueFromEntity("visaStatus", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("practice", entity, null);
         assignFieldValueFromEntity("sectorsAndBUs", entity, DataType.ENUM_FIELD);
-        cidocument = JSONUtils.toJSONArray(entity.get("cidocument"));
-        if (cidocument.size() > 0) {
-            if (cidocument != null) {
-                populateCiDocumentReceipt(cidocument);
-            }
-        }
-    }
-
-    protected void populateCiDocumentReceipt(JSONArray array) {
-        entityFieldsPanel.add(Utils.getLineSeperatorTag("CPD Document"));
+        populateCIDocuments();
     }
 
     @Override
@@ -519,13 +525,13 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     public void loadVendor(String vendorEntityId) {
         HttpService.HttpServiceAsync.instance().doGet(getVendor(vendorEntityId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        JSONObject vendor = (JSONObject) JSONParser.parseLenient(response);
-                        TextAreaField payTermF = (TextAreaField) fields.get("vendorPaymentTerms");
-                        payTermF.setValue(JSONUtils.toString(vendor, "paymentTerms"));
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                JSONObject vendor = (JSONObject) JSONParser.parseLenient(response);
+                TextAreaField payTermF = (TextAreaField) fields.get("vendorPaymentTerms");
+                payTermF.setValue(JSONUtils.toString(vendor, "paymentTerms"));
+            }
+        });
     }
 
     protected String getVendor(String vendorEntityId) {
