@@ -11,6 +11,8 @@ package info.yalamanchili.office.profile;
 import info.chili.document.dao.SerializedEntityDao;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
+import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.dao.expense.BankAccountDao;
 import info.yalamanchili.office.dao.invite.InviteCodeDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
@@ -42,6 +44,8 @@ import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
 import info.yalamanchili.office.entity.profile.onboarding.OnBoardingStatus;
 import info.yalamanchili.office.profile.invite.InviteCodeGeneratorService;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -184,6 +188,14 @@ public class EmployeeOnBoardingService {
         onboarding.setEmployee(emp);
         em.merge(onboarding);
 
+        //Create BPM User
+        if (emp.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee") || emp.getEmployeeType().getName().equalsIgnoreCase("Employee")) {
+            OfficeBPMIdentityService.instance().createUser(emp.getEmployeeId());
+            Map<String, Object> obj = new HashMap<>();
+            obj.put("entity", emp);
+            obj.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
+            OfficeBPMService.instance().startProcess("on_boarding_employee_process", obj);
+        }
         //Update BankAccount Information for Employee
         BankAccount bankAccount;
         bankAccount = employee.getBankAccount();
@@ -214,5 +226,4 @@ public class EmployeeOnBoardingService {
     public static EmployeeOnBoardingService instance() {
         return SpringContext.getBean(EmployeeOnBoardingService.class);
     }
-
 }
