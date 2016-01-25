@@ -9,14 +9,16 @@
 package info.yalamanchili.office.jrs.client;
 
 import java.io.Serializable;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Ramana.Lukalapu
  */
-public class VendorMasterReportDto implements Serializable{
-    
-    protected String name;
+@XmlRootElement
+public class VendorMasterReportDto implements Serializable {
+
+    protected String vendorName;
     protected String webSite;
     protected String paymentTerms;
     protected String invFrequency;
@@ -25,13 +27,15 @@ public class VendorMasterReportDto implements Serializable{
     protected String vendorLocations;
     protected String recruiterContact;
     protected String acctPayContact;
+    protected String employeeName;
+    protected String employeeType;
 
-    public String getName() {
-        return name;
+    public String getVendorName() {
+        return vendorName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setVendorName(String vendorName) {
+        this.vendorName = vendorName;
     }
 
     public String getWebSite() {
@@ -97,7 +101,20 @@ public class VendorMasterReportDto implements Serializable{
     public void setAcctPayContact(String acctPayContact) {
         this.acctPayContact = acctPayContact;
     }
-    
-    
-    
+
+    public String getEmployeeName() {
+        return employeeName;
+    }
+
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
+    }
+
+    public String getEmployeeType() {
+        return employeeType;
+    }
+
+    public void setEmployeeType(String employeeType) {
+        this.employeeType = employeeType;
+    }
 }

@@ -210,9 +210,16 @@ public class ClientResource extends CRUDResource<Client> {
     @Transactional
     public void clientReport() {
         List<ClientMasterReportDto> res = new ArrayList();
-        for (Client ci : ClientDao.instance().query(0, 2000)) {
-            ClientMasterReportDto dto = new ClientMasterReportDto();
-            dto.setName(ci.getName());
+         for (Client ci : ClientDao.instance().query(0, 2000)) {
+             res.add(populateClientInfo(ci));
+         }
+        String[] columnOrder = new String[]{"clientName", "webSite", "paymentTerms", "invFrequency", "clientLocations", "recruiterContact", "acctPayContact"};
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Client-Info-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
+    }
+    
+    public ClientMasterReportDto populateClientInfo(Client ci){
+        ClientMasterReportDto dto = new ClientMasterReportDto();
+            dto.setClientName(ci.getName());
             if (ci.getWebsite() != null) {
                 dto.setWebSite(ci.getWebsite());
             }
@@ -301,11 +308,10 @@ public class ClientResource extends CRUDResource<Client> {
                 }
                 dto.setAcctPayContact(actContact);
             }
-            res.add(dto);
-        }
-        String[] columnOrder = new String[]{"name", "webSite", "paymentTerms", "invFrequency", "clientLocations", "recruiterContact", "acctPayContact"};
-        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Client-Info-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
+            
+       return dto;
     }
+
 
     /**
      * Get Client Contacts
