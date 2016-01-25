@@ -52,13 +52,13 @@ public class ReadImmigrationCheckRequisitionPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity);
-                        populateComments(JSONUtils.toJSONArray(entity.get("items")));
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                populateFieldsFromEntity(entity);
+                populateComments(JSONUtils.toJSONArray(entity.get("items")));
+            }
+        });
     }
 
     protected void populateComments(JSONArray items) {
@@ -70,9 +70,11 @@ public class ReadImmigrationCheckRequisitionPanel extends ReadComposite {
     public void populateFieldsFromEntity(JSONObject entity) {
         JSONObject emp = (JSONObject) entity.get("employee");
         if (emp != null) {
-            JSONObject company = (JSONObject) emp.get("company");
-            JSONValue name = company.get("name");
-            entity.put("company", name);
+            if (emp.get("company") != null) {
+                JSONObject company = (JSONObject) emp.get("company");
+                JSONValue name = company.get("name");
+                entity.put("company", name);
+            }
             employeeSB.setValue(emp.get("firstName").isString().stringValue());
         } else {
             employeeSB.setValue(JSONUtils.toString(entity, "employeeName"));

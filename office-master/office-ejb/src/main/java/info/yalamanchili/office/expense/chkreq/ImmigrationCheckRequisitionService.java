@@ -78,11 +78,9 @@ public class ImmigrationCheckRequisitionService {
             if (dto.getCompany() != null) {
                 emp.setCompany(CompanyDao.instance().findById(dto.getCompany().getId()));
             }
-        } else {
-            if (dto.getCompany() != null) {
-                Company company = CompanyDao.instance().findById(dto.getCompany().getId());
-                entity.setCompanyName(company.getName());
-            }
+        } else if (dto.getCompany() != null) {
+            Company company = CompanyDao.instance().findById(dto.getCompany().getId());
+            entity.setCompanyName(company.getName());
         }
         entity.setStatus(ImmigrationCheckRequisitionStatus.PENDING_APPROVAL);
         for (CheckRequisitionItem item : entity.getItems()) {
@@ -118,11 +116,9 @@ public class ImmigrationCheckRequisitionService {
         //add/update items
         if (entity.getEmployee() != null && dto.getCompany() != null) {
             entity.getEmployee().setCompany(CompanyDao.instance().findById(dto.getCompany().getId()));
-        } else {
-            if (dto.getCompany() != null) {
-                Company company = CompanyDao.instance().findById(dto.getCompany().getId());
-                entity.setCompanyName(company.getName());
-            }
+        } else if (dto.getCompany() != null) {
+            Company company = CompanyDao.instance().findById(dto.getCompany().getId());
+            entity.setCompanyName(company.getName());
         }
 
         for (CheckRequisitionItem item : dto.getItems()) {
@@ -144,8 +140,10 @@ public class ImmigrationCheckRequisitionService {
     }
 
     public ImmigrationCheckRequisitionSaveDto read(Long id) {
-        ImmigrationCheckRequisitionSaveDto dto =  mapper.map(immigrationCheckRequisitionDao.findById(id), ImmigrationCheckRequisitionSaveDto.class);
-        dto.setCompany(CompanyDao.instance().findByCompanyName(dto.getCompanyName()));
+        ImmigrationCheckRequisitionSaveDto dto = mapper.map(immigrationCheckRequisitionDao.findById(id), ImmigrationCheckRequisitionSaveDto.class);
+        if (dto.getEmployee() == null && dto.getCompanyName() != null) {
+            dto.setCompany(CompanyDao.instance().findByCompanyName(dto.getCompanyName()));
+        }
         return dto;
     }
 
