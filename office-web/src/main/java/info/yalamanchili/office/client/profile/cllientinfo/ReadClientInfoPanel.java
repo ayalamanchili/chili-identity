@@ -52,22 +52,22 @@ import java.util.Map.Entry;
  * @author Prashanthi
  */
 public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
-
+    
     private static ReadClientInfoPanel instance;
     private static Logger logger = Logger.getLogger(ReadClientInfoPanel.class.getName());
     SelectPracticeWidget selectPractiseWidgetF = new SelectPracticeWidget(true, false, Alignment.HORIZONTAL);
     protected boolean isSubOr1099 = false;
-
-    public ReadClientInfoPanel(String id) {
-        instance = this;
-        initReadComposite(id, "ClientInfo", OfficeWelcome.constants);
-    }
-
+    
     public ReadClientInfoPanel(JSONObject entity) {
         instance = this;
         initReadComposite(entity, "ClientInfo", OfficeWelcome.constants);
     }
-
+    
+    public ReadClientInfoPanel(String id) {
+        instance = this;
+        initReadComposite(id, "ClientInfo", OfficeWelcome.constants);
+    }
+    
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("consultantJobTitle", entity, DataType.STRING_FIELD);
@@ -137,24 +137,24 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
         assignFieldValueFromEntity("sectorsAndBUs", entity, DataType.STRING_FIELD);
         populateComments();
     }
-
+    
     protected void renderBillingRatesPanel() {
-
+        
     }
-
+    
     protected boolean checkPermission() {
         return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_BILLING_ADMIN);
     }
-
+    
     protected JSONObject getEmployee() {
         return TreeEmployeePanel.instance().getEntity();
     }
-
+    
     @Override
     protected void addListeners() {
         updateBillingRateIcn.addClickHandler(this);
     }
-
+    
     @Override
     protected void configure() {
         for (Entry<String, BaseField> e : fields.entrySet()) {
@@ -163,18 +163,18 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
             }
         }
     }
-
+    
     SelectEmployeeWithRoleWidget selectRecruiterW = new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER, true, false, Alignment.HORIZONTAL) {
         @Override
         public boolean enableMultiSelect() {
             return true;
         }
     };
-
+    
     SelectVendorAcctPayContact selectVendorAPContactsW = null;
     SelectVendorRecruiterContactWidget selectVendorRecruiterContactsWidget = null;
     SelectClientAcctPayContact selectClientAcctPayContact = null;
-
+    
     @Override
     protected void addWidgets() {
         addField("consultantJobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -274,74 +274,77 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
         }
         addDropDown("practice", selectPractiseWidgetF);
         addField("sectorsAndBUs", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        populateCIDocuments();
         alignFields();
     }
-
+    
     ClickableImage updateBillingRateIcn = new ClickableImage("update", ChiliImages.INSTANCE.updateIcon_16_16());
-
+    
     protected void renderUpdateBillingRateFieldLink() {
         BaseField billRateField = fields.get("billingRate");
         billRateField.addWidgetToFieldPanel(updateBillingRateIcn);
     }
-
+    
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
-
+    
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "clientinformation/read/" + entityId;
     }
-
-    @Override
-    public void loadEntity(String entityId) {
-        HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
+    
+    protected void populateCIDocuments() {
+        HttpService.HttpServiceAsync.instance().doGet(getDocumentUrl(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String response) {
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity);
-                        JSONArray cidocuments = JSONUtils.toJSONArray(entity.get("cidocument"));
-                        if (cidocuments != null) {
-                            populateCIDocuments(cidocuments);
-                        }
+                        logger.info("sssssssssssssssssssssssss" + response);
+                        
+                        JSONArray docs = JSONUtils.toJSONArray(JSONParser.parseLenient(response).isObject().get("cidocument"));
+                        entityFieldsPanel.add(new ReadAllCiDocumentPanel(getEntityId(), docs));
                     }
                 });
     }
-
-    protected void populateCIDocuments(JSONArray items) {
-        entityFieldsPanel.add(new ReadAllCiDocumentPanel(getEntityId(), items));
+    
+    protected String getDocumentUrl() {
+        return OfficeWelcome.constants.root_url() + "cidocument/cidocs/" + getEntityId();
     }
-
+    
     protected void populateComments() {
         entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.profile.ClientInformation"));
     }
-
+    
     @Override
     protected boolean enableAudit() {
         return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS, Auth.ROLE.ROLE_RECRUITER);
     }
-
+    
     @Override
     protected String getAuditUrl() {
         return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.profile.ClientInformation" + "/" + getEntityId();
     }
-
+    
     @Override
     protected boolean enableViewTasks() {
         return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN);
     }
-
+    
     @Override
     protected void displayTasks() {
         String tasksUrl = OfficeWelcome.constants.root_url() + "bpm/tasks/process/";
         tasksDP.setContent(new ReadAllTasks(tasksUrl + JSONUtils.toString(getEntity(), "bpmProcessId") + "/", true));
     }
-
+    
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(updateBillingRateIcn)) {
             new GenericPopup(new CreateUpdateBillingRatePanel(getEntityId(), getEntity())).show();
         }
+    }
+    
+    @Override
+    public void loadEntity(String entityId) {
+        
     }
 }

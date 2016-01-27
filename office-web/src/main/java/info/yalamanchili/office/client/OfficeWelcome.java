@@ -42,7 +42,9 @@ public class OfficeWelcome implements EntryPoint {
 
     @Override
     public void onModuleLoad() {
-        URLParamProcessor.process();
+        if (URLParamProcessor.process()) {
+            return;
+        }
         OfficeImages.INSTANCE.officeCss().ensureInjected();
         instance = this;
 //try to login with existing session

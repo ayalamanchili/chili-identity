@@ -85,22 +85,18 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     }
 
     protected void populateCIDocuments() {
-        HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
+        HttpService.HttpServiceAsync.instance().doGet(getDocumentUrl(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String response) {
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        cidocument = JSONUtils.toJSONArray(entity.get("cidocument"));
-                        if (cidocument != null) {
-                            entityFieldsPanel.add(new ReadAllCiDocumentPanel(getEntityId(), cidocument));
-                        }
+                        JSONArray docs = JSONUtils.toJSONArray(JSONParser.parseLenient(response));
+                        entityFieldsPanel.add(new ReadAllCiDocumentPanel(getEntityId(), docs));
                     }
                 });
-
     }
 
-    protected String getReadURI() {
-        return OfficeWelcome.constants.root_url() + "clientinformation/read/" + getEntityId();
+    protected String getDocumentUrl() {
+        return OfficeWelcome.constants.root_url() + "cidocument/" + entityId;
     }
 
     @Override

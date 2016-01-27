@@ -125,9 +125,7 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
     @Path("/projects/dropdown/{id}/{start}/{limit}")
     public List<Entry> getClientContactsDropDown(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
         ClientInformation ci = ClientInformationDao.instance().findById(id);
-        List<Entry> result = new ArrayList<Entry>();
-//        To do, need to check - if we need to write a query to get project info from project object using clinet id
-//        for (Project project : ci.getClient().getProjects()) {
+        List<Entry> result = new ArrayList<>();
         Project project = ci.getClientProject();
         Entry entry = new Entry();
         entry.setId(project.getId().toString());

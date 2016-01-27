@@ -22,7 +22,7 @@ public class URLParamProcessor {
 
     private static Logger logger = Logger.getLogger(URLParamProcessor.class.getName());
 
-    public static void process() {
+    public static boolean process() {
         Map<String, List<String>> map = Window.Location.getParameterMap();
         for (Entry e : map.entrySet()) {
             String key = (String) e.getKey();
@@ -30,7 +30,9 @@ public class URLParamProcessor {
             logger.info("processing url param" + key);
             logger.info("processing url values" + values);
             processUrlParam(key, values);
+            return true;
         }
+        return false;
     }
 
     protected static void processUrlParam(String key, List<String> values) {
