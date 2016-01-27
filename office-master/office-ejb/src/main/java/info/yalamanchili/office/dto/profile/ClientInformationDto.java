@@ -321,6 +321,7 @@ public class ClientInformationDto implements Serializable {
     private Practice practice;
     @NotEmpty(message = "{sector.not.empty.msg}")
     protected String sectorsAndBUs;
+    protected String bpmProcessId;
 
     public String getConsultantJobTitle() {
         return consultantJobTitle;
@@ -879,5 +880,13 @@ public class ClientInformationDto implements Serializable {
 
     public void setIsEndDateConfirmed(Boolean isEndDateConfirmed) {
         this.isEndDateConfirmed = isEndDateConfirmed;
+    }
+
+    public String getBpmProcessId() {
+        return bpmProcessId;
+    }
+
+    public void setBpmProcessId(String bpmProcessId) {
+        this.bpmProcessId = bpmProcessId;
     }
 }
