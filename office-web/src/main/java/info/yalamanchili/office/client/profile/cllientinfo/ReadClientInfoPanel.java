@@ -274,8 +274,6 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
         }
         addDropDown("practice", selectPractiseWidgetF);
         addField("sectorsAndBUs", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        entityFieldsPanel.add(getLineSeperatorTag("CPD Document"));
-
         alignFields();
     }
 
