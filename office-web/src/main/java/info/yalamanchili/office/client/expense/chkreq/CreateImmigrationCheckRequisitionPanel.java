@@ -83,8 +83,8 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
     @Override
     public void onBlur(BlurEvent event) {
         if (event.getSource().equals(employeeSB.getSuggestBox().getValueBox())) {
-            companyWidget.getListBox().setSelectedIndex(0);
             if (employeeSB.getSelectedObject() != null) {
+                companyWidget.getListBox().setSelectedIndex(0);
                 populateCompany();
             }
         }
@@ -93,18 +93,18 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
     protected void populateCompany() {
         HttpService.HttpServiceAsync.instance().doGet(getEmployeeReadUrl(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        logger.info(arg0);
-                        if (!Strings.isNullOrEmpty(arg0)) {
-                            JSONObject emp = JSONParser.parseLenient(arg0).isObject();
-                            if (emp != null && emp.get("company") != null) {
-                                companyWidget.setSelectedValue(emp.get("company").isObject());
-                            }
-                        }
+            @Override
+            public void onResponse(String arg0) {
+                logger.info(arg0);
+                if (!Strings.isNullOrEmpty(arg0)) {
+                    JSONObject emp = JSONParser.parseLenient(arg0).isObject();
+                    if (emp != null && emp.get("company") != null) {
+                        companyWidget.setSelectedValue(emp.get("company").isObject());
                     }
-
                 }
+            }
+
+        }
         );
     }
 
@@ -150,17 +150,17 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        logger.info(arg0.getMessage());
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                logger.info(arg0.getMessage());
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postCreateSuccess(arg0);
+            }
+        });
 
     }
 
