@@ -136,7 +136,7 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
      *
      */
     private String bpmProcessId;
-   
+
     private String companyName;
 
     /**
@@ -297,7 +297,7 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
     }
-    
+
     @PrePersist
     @PreUpdate
     public void updateTotalAmount() {
@@ -307,10 +307,11 @@ public class ImmigrationCheckRequisition extends AbstractEntity {
         }
         this.setAmount(totalAmount);
     }
+
     @Override
     public String describe() {
         StringBuilder description = new StringBuilder("\n");
-        description.append("Employee         :").append(this.getEmployee().getFirstName()).append(" ").append(this.getEmployee().getLastName()).append("\n");
+        description.append("Employee         :").append(this.getEmployeeName()).append("\n");
         description.append("Case Type        :").append(this.getCaseType()).append("\n");
         description.append("Attorney Name    :").append(this.getAttorneyName()).append("\n");
         description.append("Amount           :").append(this.getAmount()).append("\n");
