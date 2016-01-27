@@ -74,14 +74,14 @@ public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite impl
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        logger.info(response);
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity);
+            @Override
+            public void onResponse(String response) {
+                logger.info(response);
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                populateFieldsFromEntity(entity);
 
-                    }
-                });
+            }
+        });
     }
 
     protected String getReadURI() {
@@ -139,16 +139,16 @@ public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite impl
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postUpdateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postUpdateSuccess(arg0);
+            }
+        });
     }
 
     @Override
@@ -159,11 +159,9 @@ public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite impl
                 JSONObject company = (JSONObject) employee.get("company");
                 selectCompanyWidget.setSelectedValue(company);
             }
-        } else {
-            if (entity.get("company") != null) {
-                JSONObject company = (JSONObject) entity.get("company");
-                selectCompanyWidget.setSelectedValue(company);
-            }
+        } else if (entity.get("company") != null) {
+            JSONObject company = (JSONObject) entity.get("company");
+            selectCompanyWidget.setSelectedValue(company);
         }
         assignFieldValueFromEntity("attorneyName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("mailingAddress", entity, DataType.STRING_FIELD);
@@ -200,8 +198,8 @@ public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite impl
     @Override
     public void onBlur(BlurEvent event) {
         if (event.getSource().equals(employeeSB.getSuggestBox().getValueBox())) {
-            selectCompanyWidget.getListBox().setSelectedIndex(0);
             if (employeeSB.getSelectedObject() != null) {
+                selectCompanyWidget.getListBox().setSelectedIndex(0);
                 populateCompany();
             }
         }
@@ -210,18 +208,18 @@ public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite impl
     protected void populateCompany() {
         HttpService.HttpServiceAsync.instance().doGet(getEmployeeReadUrl(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        logger.info(arg0);
-                        if (!Strings.isNullOrEmpty(arg0)) {
-                            JSONObject emp = JSONParser.parseLenient(arg0).isObject();
-                            if (emp != null && emp.get("company") != null) {
-                                selectCompanyWidget.setSelectedValue(emp.get("company").isObject());
-                            }
-                        }
+            @Override
+            public void onResponse(String arg0) {
+                logger.info(arg0);
+                if (!Strings.isNullOrEmpty(arg0)) {
+                    JSONObject emp = JSONParser.parseLenient(arg0).isObject();
+                    if (emp != null && emp.get("company") != null) {
+                        selectCompanyWidget.setSelectedValue(emp.get("company").isObject());
                     }
-
                 }
+            }
+
+        }
         );
     }
 
@@ -303,6 +301,7 @@ public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite impl
             updateItemPanels.remove(i - 1);
         }
     }
+
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
         if (entity.get("employee") == null && entity.get("employeeName") != null && entity.get("employeeName").isString().stringValue().trim().isEmpty()) {
