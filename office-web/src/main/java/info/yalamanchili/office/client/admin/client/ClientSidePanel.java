@@ -31,6 +31,7 @@ public class ClientSidePanel extends ALComposite implements ClickHandler {
     public FlowPanel clientsidepanel = new FlowPanel();
     ClickableLink createclientlink = new ClickableLink("Create Client");
     ClickableLink clientSummaryReportL = new ClickableLink("Client Summary Report");
+    ClickableLink activeClientsReportL = new ClickableLink("Active Clients Report");
 
     public ClientSidePanel() {
         init(clientsidepanel);
@@ -40,6 +41,7 @@ public class ClientSidePanel extends ALComposite implements ClickHandler {
     protected void addListeners() {
         createclientlink.addClickHandler(this);
         clientSummaryReportL.addClickHandler(this);
+        activeClientsReportL.addClickHandler(this);
     }
 
     @Override
@@ -52,10 +54,12 @@ public class ClientSidePanel extends ALComposite implements ClickHandler {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS)) {
             clientsidepanel.add(createclientlink);
         }
-        clientsidepanel.add(new SearchClientpanel());
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CEO, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN)) {
             clientsidepanel.add(clientSummaryReportL);
+            clientsidepanel.add(activeClientsReportL);
         }
+        clientsidepanel.add(new SearchClientpanel());
+
     }
 
     @Override
@@ -66,6 +70,9 @@ public class ClientSidePanel extends ALComposite implements ClickHandler {
         }
         if (event.getSource().equals(clientSummaryReportL)) {
             generateClientInfoReport();
+        }
+        if (event.getSource().equals(activeClientsReportL)) {
+            generateActiveClientInfoReport();
         }
     }
 
@@ -82,4 +89,19 @@ public class ClientSidePanel extends ALComposite implements ClickHandler {
     protected String getClientInfoReportUrl() {
         return OfficeWelcome.constants.root_url() + "client/clientinfo-report";
     }
+
+    protected void generateActiveClientInfoReport() {
+        HttpService.HttpServiceAsync.instance().doGet(getActiveClientInfoReportUrl(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String result) {
+                        new ResponseStatusWidget().show("Report will be emailed to your primary email");
+                    }
+                });
+    }
+
+    protected String getActiveClientInfoReportUrl() {
+        return OfficeWelcome.constants.root_url() + "contract/active-clientinfo-report";
+    }
+
 }

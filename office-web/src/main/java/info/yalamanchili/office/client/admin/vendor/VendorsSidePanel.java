@@ -31,6 +31,7 @@ public class VendorsSidePanel extends ALComposite implements ClickHandler {
     public FlowPanel vendorsidepanel = new FlowPanel();
     ClickableLink createvendorslink = new ClickableLink("Create Vendor");
     ClickableLink vendorSummaryReportL = new ClickableLink("Vendor Summary Report");
+    ClickableLink activeVendorsReportL = new ClickableLink("Active Vendors Report");
 
     public VendorsSidePanel() {
         init(vendorsidepanel);
@@ -40,6 +41,7 @@ public class VendorsSidePanel extends ALComposite implements ClickHandler {
     protected void addListeners() {
         createvendorslink.addClickHandler(this);
         vendorSummaryReportL.addClickHandler(this);
+        activeVendorsReportL.addClickHandler(this);
     }
 
     @Override
@@ -52,10 +54,11 @@ public class VendorsSidePanel extends ALComposite implements ClickHandler {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS)) {
             vendorsidepanel.add(createvendorslink);
         }
-        vendorsidepanel.add(new SearchVendorPanel());
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CEO, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN)) {
             vendorsidepanel.add(vendorSummaryReportL);
+            vendorsidepanel.add(activeVendorsReportL);
         }
+        vendorsidepanel.add(new SearchVendorPanel());
     }
 
     @Override
@@ -66,6 +69,9 @@ public class VendorsSidePanel extends ALComposite implements ClickHandler {
         }
         if (event.getSource().equals(vendorSummaryReportL)) {
             generateVendorInfoReport();
+        }
+        if (event.getSource().equals(activeVendorsReportL)) {
+            generateActiveVendorInfoReport();
         }
     }
 
@@ -82,4 +88,19 @@ public class VendorsSidePanel extends ALComposite implements ClickHandler {
     protected String getVendorInfoReportUrl() {
         return OfficeWelcome.constants.root_url() + "vendor/vendorinfo-report";
     }
+    
+    protected void generateActiveVendorInfoReport() {
+        HttpService.HttpServiceAsync.instance().doGet(getActiveVendorInfoReportUrl(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String result) {
+                        new ResponseStatusWidget().show("Report will be emailed to your primary email");
+                    }
+                });
+    }
+
+    protected String getActiveVendorInfoReportUrl() {
+        return OfficeWelcome.constants.root_url() + "contract/active-vendorinfo-report";
+    }
+    
 }

@@ -16,7 +16,6 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -58,8 +57,6 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
 
     SuggestBox employeeSbf = new SuggestBox(OfficeWelcome.constants, "firstName", "Employee", false, false);
     SuggestBox employeeSbl = new SuggestBox(OfficeWelcome.constants, "lastName", "Employee", false, false);
-    Anchor clientSummaryReportL = new Anchor("Active Clients Summary Report   ");
-    Anchor vendorSummaryReportL = new Anchor("Active Vendors Summary Report");
     
     MultiWordSuggestOracle data = new MultiWordSuggestOracle();
 
@@ -137,8 +134,6 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
         searchTasks.addClickHandler(this);
         reportTasks.addClickHandler(this);
         graphB.addClickHandler(this);
-        vendorSummaryReportL.addClickHandler(this);
-        clientSummaryReportL.addClickHandler(this);
     }
 
     @Override
@@ -178,10 +173,6 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
         } else if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_RECRUITER)) {
             panel.add(myClientL);
             panel.add(myVendorL);
-        }
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CEO, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN)) {
-            panel.add(clientSummaryReportL);
-            panel.add(vendorSummaryReportL);
         }
     }
 
@@ -687,41 +678,6 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                         });
                 clearFields();
         }
-        if (event.getSource().equals(vendorSummaryReportL)) {
-            generateActiveVendorInfoReport();
-        }
-        
-        if (event.getSource().equals(clientSummaryReportL)) {
-            generateActiveClientInfoReport();
-        }
-    }
-    
-    protected void generateActiveVendorInfoReport() {
-        HttpService.HttpServiceAsync.instance().doGet(getActiveVendorInfoReportUrl(), OfficeWelcome.instance().getHeaders(), true,
-                new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        new ResponseStatusWidget().show("Report will be emailed to your primary email");
-                    }
-                });
-    }
-
-    protected String getActiveVendorInfoReportUrl() {
-        return OfficeWelcome.constants.root_url() + "contract/active-vendorinfo-report";
-    }
-    
-    protected void generateActiveClientInfoReport() {
-        HttpService.HttpServiceAsync.instance().doGet(getActiveClientInfoReportUrl(), OfficeWelcome.instance().getHeaders(), true,
-                new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        new ResponseStatusWidget().show("Report will be emailed to your primary email");
-                    }
-                });
-    }
-
-    protected String getActiveClientInfoReportUrl() {
-        return OfficeWelcome.constants.root_url() + "contract/active-clientinfo-report";
     }
 
     @Override
