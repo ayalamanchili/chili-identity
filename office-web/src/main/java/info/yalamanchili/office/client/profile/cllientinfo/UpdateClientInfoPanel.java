@@ -66,7 +66,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     protected boolean is1099 = false;
     JSONArray cidocument = new JSONArray();
 
-    FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "CIDocument", "cidocument", "CIDocument/fileURL", false, true) {
+    FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "ClientInformation", "cidocument", "CIDocument/fileURL", false, true) {
         @Override
         public void onUploadComplete(String res) {
             postUpdateSuccess(null);
@@ -468,7 +468,6 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         }
         addField("sectorsAndBUs", false, true, DataType.ENUM_FIELD);
         sectorsF = (EnumField) fields.get("sectorsAndBUs");
-        entityFieldsPanel.add(getLineSeperatorTag("CPD Document"));
         entityFieldsPanel.add(fileUploadPanel);
         entityFieldsPanel.add(submitForApprovalF);
         alignFields();
