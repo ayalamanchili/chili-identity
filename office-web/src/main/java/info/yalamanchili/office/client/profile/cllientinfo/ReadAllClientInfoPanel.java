@@ -72,7 +72,6 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
             table.setText(0, 3, getKeyValue("ItemNo"));
             table.setText(0, 4, getKeyValue("BillRate"));
             table.setText(0, 5, getKeyValue("Frequency"));
-
         }
         table.setText(0, 6, getKeyValue("StartDate"));
         table.setText(0, 7, getKeyValue("EndDate"));
@@ -99,7 +98,7 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadClientInfoPanel(entityId));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadClientInfoPanel(getEntity(entityId)));
     }
 
     @Override
