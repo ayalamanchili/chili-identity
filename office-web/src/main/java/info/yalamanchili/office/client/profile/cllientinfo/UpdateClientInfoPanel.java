@@ -89,14 +89,16 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String response) {
-                        JSONArray docs = JSONUtils.toJSONArray(JSONParser.parseLenient(response));
+                        logger.info("sssssssssssssssssssssssss" + response);
+
+                        JSONArray docs = JSONUtils.toJSONArray(JSONParser.parseLenient(response).isObject().get("ciDocument"));
                         entityFieldsPanel.add(new ReadAllCiDocumentPanel(getEntityId(), docs));
                     }
                 });
     }
 
     protected String getDocumentUrl() {
-        return OfficeWelcome.constants.root_url() + "cidocument/" + entityId;
+        return OfficeWelcome.constants.root_url() + "cidocument/cidocs/" + getEntityId();
     }
 
     @Override
