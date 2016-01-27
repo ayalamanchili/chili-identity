@@ -259,112 +259,128 @@ public class VendorResource extends CRUDResource<Vendor> {
         for (Vendor vn : VendorDao.instance().query(0, 2000)) {
             res.add(populateVendorInfo(vn));
         }
-         String[] columnOrder = new String[]{"vendorName", "webSite", "paymentTerms", "invFrequency", "vendorType", "vendorFees", "vendorLocations", "recruiterContact", "acctPayContact"};
+        String[] columnOrder = new String[]{"vendorName", "webSite", "vendorType", "vendorFees", "vendorLocations", "recruiterContact", "acctPayContact"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Vendor-Info-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
-    public VendorMasterReportDto populateVendorInfo(Vendor vn){
-            VendorMasterReportDto dto = new VendorMasterReportDto();
-            dto.setVendorName(vn.getName());
-            if (vn.getWebsite() != null) {
-                dto.setWebSite(vn.getWebsite());
-            }
 
-            if (vn.getPaymentTerms() != null) {
-                dto.setPaymentTerms(vn.getPaymentTerms());
-            }
-
-            if (vn.getVendorinvFrequency() != null) {
-                dto.setInvFrequency(vn.getVendorinvFrequency().name().toLowerCase());
-            }
-
-            if (vn.getVendorType() != null) {
-                dto.setVendorType(vn.getVendorType().name().toLowerCase());
-            }
-
-            if (vn.getVendorFees() != null) {
-                dto.setVendorFees(vn.getVendorFees().toString());
-            }
-            // for getting vendor locations
-            if (vn.getLocations().size() > 0) {
-                String vendorAddressInfo = "\n";
-                for (Address address : vn.getLocations()) {
-                    vendorAddressInfo = vendorAddressInfo.concat(address.getStreet1() + "-");
-                    if (address.getStreet2() != null) {
-                        vendorAddressInfo = vendorAddressInfo.concat(address.getStreet2() + "-");
-                    }
-                    vendorAddressInfo = vendorAddressInfo.concat(address.getCity() + "-" + address.getState() + "-" + address.getCountry() + "-");
-                    if (address.getZip() != null) {
-                        vendorAddressInfo = vendorAddressInfo.concat(address.getZip() + "," + "\n");
-                    }
-                    dto.setVendorLocations(vendorAddressInfo);
+    public VendorMasterReportDto populateVendorInfo(Vendor vn) {
+        VendorMasterReportDto dto = new VendorMasterReportDto();
+        dto.setVendorName(vn.getName());
+        if (vn.getWebsite() != null) {
+            dto.setWebSite(vn.getWebsite());
+        }
+        if (vn.getVendorType() != null) {
+            dto.setVendorType(vn.getVendorType().name().toLowerCase());
+        }
+        if (vn.getVendorFees() != null) {
+            dto.setVendorFees(vn.getVendorFees().toString());
+        }
+        // for getting vendor locations
+        if (vn.getLocations().size() > 0) {
+            String vendorAddressInfo = "";
+            int count = vn.getLocations().size();
+            for (Address address : vn.getLocations()) {
+                vendorAddressInfo = vendorAddressInfo.concat("\n" + address.getStreet1() + "-");
+                if (address.getStreet2() != null) {
+                    vendorAddressInfo = vendorAddressInfo.concat(address.getStreet2() + "-");
                 }
-            }
-            // for getting Recruiter Contacts
-            if (vn.getContacts().size() > 0) {
-                String recContact = "\n";
-                for (Contact contact : vn.getContacts()) {
-                    String name = "\n";
-                    name = name.concat(contact.getFirstName() + " " + contact.getLastName());
-                    recContact = recContact.concat(name + " " + "-");
-                    if (contact.getEmails().size() > 0) {
-                        String email = " ";
-                        email = email.concat(contact.getEmails().get(0).getEmail());
-                        recContact = recContact.concat(email + " " + "-");
-                    }
-                    if (contact.getPhones().size() > 0) {
-                        for (Phone rphone : contact.getPhones()) {
-                            if (rphone.getCountryCode() != null) {
-                                String ccode = " ";
-                                ccode = ccode.concat(rphone.getCountryCode());
-                                recContact = recContact.concat(ccode + " " + "-");
-                            }
-                            String phone = " ";
-                            phone = phone.concat(rphone.getPhoneNumber());
-                            recContact = recContact.concat(phone + " " + "-");
-                            if (rphone.getExtension() != null) {
-                                String ext = " ";
-                                ext = ext.concat(rphone.getExtension());
-                                recContact = recContact.concat(ext + " " + ",");
-                            }
-                        }
-                    }
-                    dto.setRecruiterContact(recContact);
+                vendorAddressInfo = vendorAddressInfo.concat(address.getCity() + "-" + address.getState() + "-" + address.getCountry());
+                if (address.getZip() != null) {
+                    vendorAddressInfo = vendorAddressInfo.concat("-" + address.getZip());
                 }
+                if (count > 1) {
+                    vendorAddressInfo = vendorAddressInfo.concat(",");
+                }
+                dto.setVendorLocations(vendorAddressInfo);
+                count--;
             }
-            // for getting AcctPay Contacts
-            if (vn.getAcctPayContacts().size() > 0) {
-                String actContact = "\n";
-                for (Contact acpaycnt : vn.getAcctPayContacts()) {
-                    String acname = "\n";
-                    acname = acname.concat(acpaycnt.getFirstName() + " " + acpaycnt.getLastName());
-                    actContact = actContact.concat(acname + " " + "-");
-                    if (acpaycnt.getEmails().size() > 0) {
-                        String acemail = " ";
-                        acemail = acemail.concat(acpaycnt.getEmails().get(0).getEmail());
-                        actContact = actContact.concat(acemail + " " + "-");
-                    }
-                    if (acpaycnt.getPhones().size() > 0) {
-                        for (Phone acpayphone : acpaycnt.getPhones()) {
-                            if (acpayphone.getCountryCode() != null) {
-                                String acccode = " ";
-                                acccode = acccode.concat(acpayphone.getCountryCode());
-                                actContact = actContact.concat(acccode + " " + "-");
-                            }
-                            String acphone = " ";
-                            acphone = acphone.concat(acpayphone.getPhoneNumber());
-                            actContact = actContact.concat(acphone + " " + "-");
-                            if (acpayphone.getExtension() != null) {
-                                String acext = " ";
-                                acext = acext.concat(acpayphone.getExtension());
-                                actContact = actContact.concat(acext + " " + ",");
-                            }
+        }
+        // for getting Recruiter Contacts
+        if (vn.getContacts().size() > 0) {
+            String recContact = "";
+            int countc = vn.getContacts().size();
+            for (Contact contact : vn.getContacts()) {
+                String name = "";
+                name = name.concat(contact.getFirstName() + " " + contact.getLastName());
+                recContact = recContact.concat("\n" + name);
+                if (contact.getEmails().size() > 0) {
+                    String email = "";
+                    email = email.concat(contact.getEmails().get(0).getEmail());
+                    recContact = recContact.concat("-" + email);
+                }
+                if (contact.getPhones().size() > 0) {
+                    int countp = contact.getPhones().size();
+                    for (Phone rphone : contact.getPhones()) {
+                        String phone = "";
+                        if (rphone.getCountryCode() != null) {
+                            String ccode = "";
+                            ccode = ccode.concat(rphone.getCountryCode());
+                            recContact = recContact.concat("-" + ccode);
                         }
+                        phone = phone.concat(rphone.getPhoneNumber());
+                        recContact = recContact.concat("-" + phone);
+                        if (rphone.getExtension() != null) {
+                            String ext = "";
+                            ext = ext.concat(rphone.getExtension());
+                            recContact = recContact.concat("-"+ ext);
+                        }
+                        if(countp > 1) {
+                           recContact = recContact.concat("--");
+                       }
+                       countp--;
                     }
+                }
+                if(countc > 1){
+                    recContact = recContact.concat(",");
+                }
+                dto.setRecruiterContact(recContact);
+                countc--;
+            }
+        }
+        // for getting AcctPay Contacts
+        if (vn.getAcctPayContacts().size() > 0) {
+            String actContact = "";
+            int countap = vn.getAcctPayContacts().size();
+            for (Contact acpaycnt : vn.getAcctPayContacts()) {
+                String acname = "";
+                acname = acname.concat(acpaycnt.getFirstName() + " " + acpaycnt.getLastName());
+                actContact = actContact.concat("\n"+ acname);
+                if (acpaycnt.getEmails().size() > 0) {
+                    String acemail = "";
+                    acemail = acemail.concat(acpaycnt.getEmails().get(0).getEmail());
+                    actContact = actContact.concat("-"+ acemail);
+                }
+                if (acpaycnt.getPhones().size() > 0) {
+                    int countapp = acpaycnt.getPhones().size();
+                    for (Phone acpayphone : acpaycnt.getPhones()) {
+                        String acphone = "";
+                        if (acpayphone.getCountryCode() != null) {
+                            String acccode = "";
+                            acccode = acccode.concat(acpayphone.getCountryCode());
+                            actContact = actContact.concat("-"+ acccode);
+                        }
+                        acphone = acphone.concat(acpayphone.getPhoneNumber());
+                        actContact = actContact.concat("-"+ acphone);
+                        if (acpayphone.getExtension() != null) {
+                            String acext = "";
+                            acext = acext.concat(acpayphone.getExtension());
+                            actContact = actContact.concat("-"+ acext);
+                        }
+                        if(countapp > 1){
+                            actContact = actContact.concat("--");
+                        }
+                        countapp--;
+                    }
+                }
+                if(countap > 1){
+                    actContact = actContact.concat(",");
                 }
                 dto.setAcctPayContact(actContact);
+                countap--;
             }
-            return dto;
         }
+        return dto;
+    }
 
     /**
      * Add Vendor locations

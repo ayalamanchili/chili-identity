@@ -20,8 +20,6 @@ public class ClientMasterReportDto implements Serializable {
 
     protected String clientName;
     protected String webSite;
-    protected String paymentTerms;
-    protected String invFrequency;
     protected String clientLocations;
     protected String recruiterContact;
     protected String acctPayContact;
@@ -42,22 +40,6 @@ public class ClientMasterReportDto implements Serializable {
 
     public void setWebSite(String webSite) {
         this.webSite = webSite;
-    }
-
-    public String getPaymentTerms() {
-        return paymentTerms;
-    }
-
-    public void setPaymentTerms(String paymentTerms) {
-        this.paymentTerms = paymentTerms;
-    }
-
-    public String getInvFrequency() {
-        return invFrequency;
-    }
-
-    public void setInvFrequency(String invFrequency) {
-        this.invFrequency = invFrequency;
     }
 
     public String getClientLocations() {
@@ -99,4 +81,5 @@ public class ClientMasterReportDto implements Serializable {
     public void setEmployeeType(String employeeType) {
         this.employeeType = employeeType;
     }
+
 }

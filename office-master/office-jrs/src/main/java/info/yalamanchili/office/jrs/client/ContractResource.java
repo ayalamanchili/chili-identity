@@ -146,7 +146,7 @@ public class ContractResource {
             dtoss.setEmployeeType(ci.getEmployee().getEmployeeType().getName());
             dtos.add(dtoss);
         }
-        String[] columnOrder = new String[]{"employeeName", "employeeType", "clientName", "webSite", "paymentTerms", "invFrequency", "clientLocations", "recruiterContact", "acctPayContact"};
+        String[] columnOrder = new String[]{"employeeName", "employeeType", "clientName", "webSite", "clientLocations", "recruiterContact", "acctPayContact"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(dtos, "Active-Clients-Info-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
 
@@ -180,7 +180,7 @@ public class ContractResource {
                 dtos.add(dtoss);
             }
         }
-        String[] columnOrder = new String[]{"employeeName", "employeeType", "vendorName", "webSite", "paymentTerms", "invFrequency", "vendorType", "vendorFees", "vendorLocations", "recruiterContact", "acctPayContact"};
+        String[] columnOrder = new String[]{"employeeName", "employeeType", "vendorName", "webSite", "vendorType", "vendorFees", "vendorLocations", "recruiterContact", "acctPayContact"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(dtos, "Active-Vendors-Info-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
 

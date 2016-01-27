@@ -20,8 +20,6 @@ public class VendorMasterReportDto implements Serializable {
 
     protected String vendorName;
     protected String webSite;
-    protected String paymentTerms;
-    protected String invFrequency;
     protected String vendorType;
     protected String vendorFees;
     protected String vendorLocations;
@@ -44,22 +42,6 @@ public class VendorMasterReportDto implements Serializable {
 
     public void setWebSite(String webSite) {
         this.webSite = webSite;
-    }
-
-    public String getPaymentTerms() {
-        return paymentTerms;
-    }
-
-    public void setPaymentTerms(String paymentTerms) {
-        this.paymentTerms = paymentTerms;
-    }
-
-    public String getInvFrequency() {
-        return invFrequency;
-    }
-
-    public void setInvFrequency(String invFrequency) {
-        this.invFrequency = invFrequency;
     }
 
     public String getVendorType() {
@@ -117,4 +99,5 @@ public class VendorMasterReportDto implements Serializable {
     public void setEmployeeType(String employeeType) {
         this.employeeType = employeeType;
     }
+
 }
