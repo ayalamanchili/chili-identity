@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.client.admin.hr;
 
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -34,7 +35,7 @@ public class ReadProspectsPanel extends ReadComposite {
     private Logger logger = Logger.getLogger(ReadProspectsPanel.class.getName());
 
     private static ReadProspectsPanel instance;
-    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "screenedBy", "Employee", true, false);
+    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "assignedTo", "Employee", true, false, Alignment.HORIZONTAL);
 
     public static ReadProspectsPanel instance() {
         return instance;
@@ -53,20 +54,20 @@ public class ReadProspectsPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        if (ProspectStatus.CLOSED_WON.name().equals(JSONUtils.toString(getEntity(), "status"))) {
-                            addProspectWonFields();
-                        }
-                        populateFieldsFromEntity(entity);
-                        JSONArray resumeURL = JSONUtils.toJSONArray(entity.get("resumeURL"));
-                        if (resumeURL != null) {
-                            populateExpenseReceipt(resumeURL);
-                        }
-                        populateComments();
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                if (ProspectStatus.CLOSED_WON.name().equals(JSONUtils.toString(getEntity(), "status"))) {
+                    addProspectWonFields();
+                }
+                populateFieldsFromEntity(entity);
+                JSONArray resumeURL = JSONUtils.toJSONArray(entity.get("resumeURL"));
+                if (resumeURL != null) {
+                    populateExpenseReceipt(resumeURL);
+                }
+                populateComments();
+            }
+        });
     }
 
     protected void populateExpenseReceipt(JSONArray items) {
@@ -79,6 +80,10 @@ public class ReadProspectsPanel extends ReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+        JSONObject emp = (JSONObject) entity.get("assignedTo");
+        if (emp != null) {
+            employeeSB.setValue(emp.get("firstName").isString().stringValue());
+        }
         if (entity.get("address") != null) {
             JSONObject address = entity.get("address").isObject();
             assignFieldValueFromEntity("street1", address, DataType.STRING_FIELD);
@@ -113,7 +118,7 @@ public class ReadProspectsPanel extends ReadComposite {
 
     @Override
     protected void configure() {
-
+        employeeSB.getLabel().getElement().getStyle().setWidth(193, Style.Unit.PX);
     }
 
     @Override
@@ -132,6 +137,7 @@ public class ReadProspectsPanel extends ReadComposite {
         addEnumField("state", true, false, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
         addField("zip", true, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
         addField("screenedBy", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(employeeSB);
         addField("processDocSentDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Status Information"));
         addEnumField("status", true, false, ProspectStatus.names(), Alignment.HORIZONTAL);

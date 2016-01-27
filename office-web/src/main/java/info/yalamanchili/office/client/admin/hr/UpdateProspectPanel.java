@@ -8,9 +8,11 @@
  */
 package info.yalamanchili.office.client.admin.hr;
 
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -31,6 +33,8 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.chili.gwt.widgets.SuggestBox;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
@@ -44,6 +48,7 @@ import java.util.logging.Logger;
 public class UpdateProspectPanel extends UpdateComposite implements ClickHandler, ChangeHandler {
 
     private Logger logger = Logger.getLogger(UpdateProspectPanel.class.getName());
+    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "assignedTo", "Employee", false, true, Alignment.HORIZONTAL);
     FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "Prospect", "resumeURL", "Prospect/resumeURL", false, true) {
         @Override
         public void onUploadComplete(String res) {
@@ -72,24 +77,24 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        logger.info(response);
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        if (entity.get("id") != null) {
-                            entityFieldsPanel.add(getLineSeperatorTag("Status Information"));
-                            addEnumField("status", false, false, ProspectStatus.names(), Alignment.HORIZONTAL);
-                            statusField = (EnumField) fields.get("status");
-                            statusField.listBox.addChangeHandler(instance);
-                            alignFields();
-                            if (ProspectStatus.CLOSED_WON.name().equals(JSONUtils.toString(getEntity(), "status"))) {
-                                addProspectWonFields();
-                            }
-                        }
-                        populateFieldsFromEntity(entity);
-                        populateComments();
+            @Override
+            public void onResponse(String response) {
+                logger.info(response);
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                if (entity.get("id") != null) {
+                    entityFieldsPanel.add(getLineSeperatorTag("Status Information"));
+                    addEnumField("status", false, false, ProspectStatus.names(), Alignment.HORIZONTAL);
+                    statusField = (EnumField) fields.get("status");
+                    statusField.listBox.addChangeHandler(instance);
+                    alignFields();
+                    if (ProspectStatus.CLOSED_WON.name().equals(JSONUtils.toString(getEntity(), "status"))) {
+                        addProspectWonFields();
                     }
-                });
+                }
+                populateFieldsFromEntity(entity);
+                populateComments();
+            }
+        });
     }
 
     protected void populateComments() {
@@ -103,6 +108,9 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject address = new JSONObject();
+        if (employeeSB.getSelectedObject() != null) {
+            entity.put("assignedTo", employeeSB.getSelectedObject());
+        }
         assignEntityValueFromField("street1", address);
         assignEntityValueFromField("street2", address);
         assignEntityValueFromField("city", address);
@@ -175,16 +183,16 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        uploadResume(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                uploadResume(arg0);
+            }
+        });
     }
 
     protected void uploadResume(String entityStr) {
@@ -195,6 +203,10 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+        JSONObject emp = (JSONObject) entity.get("assignedTo");
+        if (emp != null) {
+            employeeSB.setValue(emp.get("firstName").isString().stringValue());
+        }
         if (entity.get("address") != null) {
             JSONObject address = entity.get("address").isObject();
             assignFieldValueFromEntity("street1", address, DataType.STRING_FIELD);
@@ -251,6 +263,21 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
     protected void configure() {
         countriesF.listBox.addChangeHandler(this);
         formatTextAreaFields();
+        employeeSB.getLabel().getElement().getStyle().setWidth(193, Style.Unit.PX);
+        HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                logger.info(entityString);
+                Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
+                if (values != null) {
+                    employeeSB.loadData(values);
+                }
+            }
+        });
+    }
+
+    private String getEmployeeIdsDropDownUrl() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_USER.name() + "/0/10000");
     }
 
     protected void formatTextAreaFields() {
@@ -280,6 +307,7 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         addEnumField("state", false, false, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
         addField("zip", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
         addField("referredBy", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(employeeSB);
         addField("screenedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("processDocSentDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Upload Resume"));

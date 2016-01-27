@@ -33,6 +33,7 @@ import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.widgets.SuggestBox;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import java.util.Map;
@@ -45,7 +46,7 @@ import java.util.logging.Logger;
 public class CreateProspectPanel extends CreateComposite implements ChangeHandler {
 
     private static Logger logger = Logger.getLogger(CreateProspectPanel.class.getName());
-    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "screenedBy", "Employee", false, true);
+    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "assignedTo", "Employee", false, false, Alignment.HORIZONTAL);
     FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "Prospect", "resumeURL", "Prospect/resumeURL", false, true) {
         @Override
         public void onUploadComplete(String res) {
@@ -98,6 +99,9 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
             }
             entity.put("address", address);
         }
+        if (employeeSB.getSelectedObject() != null) {
+            entity.put("assignedTo", employeeSB.getSelectedObject());
+        }
         assignEntityValueFromField("screenedBy", entity);
         assignEntityValueFromField("processDocSentDate", entity);
         assignEntityValueFromField("comment", entity);
@@ -125,16 +129,16 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         logger.info(getURI());
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        uploadResume(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                uploadResume(arg0);
+            }
+        });
     }
 
     protected void uploadResume(String entityStr) {
@@ -172,11 +176,10 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
     @Override
     protected void configure() {
         formatTextAreaFields();
-        employeeSB.getLabel().getElement().getStyle().setWidth(145, Style.Unit.PX);
+        employeeSB.getLabel().getElement().getStyle().setWidth(193, Style.Unit.PX);
         HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
-                logger.info(entityString);
                 Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
                 if (values != null) {
                     employeeSB.loadData(values);
@@ -196,7 +199,7 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
     }
 
     private String getEmployeeIdsDropDownUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Corporate Employee&employee-type=Employee");
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_USER.name() + "/0/10000");
     }
 
     @Override
@@ -216,6 +219,7 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         addEnumField("state", false, false, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
         addField("zip", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
         addField("screenedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(employeeSB);
         addField("processDocSentDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("comment", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Upload Resume"));

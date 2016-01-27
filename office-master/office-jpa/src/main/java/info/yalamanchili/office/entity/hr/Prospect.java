@@ -54,6 +54,8 @@ public class Prospect extends AbstractEntity {
     @NotEmpty(message = "{referredBy.not.empty.msg}")
     protected String referredBy;
 
+    protected Long assigned;
+
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date processDocSentDate;
 
@@ -154,6 +156,14 @@ public class Prospect extends AbstractEntity {
 
     public void setDateOfJoining(Date dateOfJoining) {
         this.dateOfJoining = dateOfJoining;
+    }
+
+    public Long getAssigned() {
+        return assigned;
+    }
+
+    public void setAssigned(Long assigned) {
+        this.assigned = assigned;
     }
 
     @XmlTransient

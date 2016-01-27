@@ -14,6 +14,7 @@ import info.yalamanchili.office.entity.hr.ProspectStatus;
 import info.yalamanchili.office.entity.hr.Resume;
 import info.yalamanchili.office.entity.hr.TransferEmployeeType;
 import info.yalamanchili.office.entity.profile.Address;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.Sex;
 import java.io.Serializable;
 import java.util.Date;
@@ -67,6 +68,8 @@ public class ProspectDto implements Serializable {
     protected String screenedBy;
     @NotEmpty(message = "{referredBy.not.empty.msg}")
     protected String referredBy;
+    
+    private Employee assignedTo;
     
     protected Set<Resume> resumeURL;
 
@@ -321,6 +324,14 @@ public class ProspectDto implements Serializable {
 
     public void setDateOfJoining(Date dateOfJoining) {
         this.dateOfJoining = dateOfJoining;
+    }
+
+    public Employee getAssignedTo() {
+        return assignedTo;
+    }
+
+    public void setAssignedTo(Employee assignedTo) {
+        this.assignedTo = assignedTo;
     }
 
     @Override

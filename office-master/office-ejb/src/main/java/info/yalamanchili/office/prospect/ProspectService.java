@@ -16,6 +16,7 @@ import info.yalamanchili.office.dao.hr.ProspectDao;
 import info.yalamanchili.office.dao.hr.ResumeDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dto.prospect.ProspectDto;
 import info.yalamanchili.office.entity.hr.Prospect;
 import info.yalamanchili.office.entity.hr.ProspectStatus;
@@ -54,6 +55,10 @@ public class ProspectService {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "email.alreday.exist", "Contact Already Exist With The Same Email");
         }
         Prospect entity = mapper.map(dto, Prospect.class);
+        if (dto.getAssignedTo() != null) {
+            entity.setAssigned(dto.getAssignedTo().getId());
+        }
+            
         entity.setStartDate(new Date());
         entity.setStatus(ProspectStatus.IN_PROGRESS);
         Contact contact = new Contact();
@@ -128,6 +133,9 @@ public class ProspectService {
     public ProspectDto read(Long id) {
         Prospect ec = prospectDao.findById(id);
         ProspectDto dto = ProspectDto.map(mapper, ec);
+        if (ec.getAssigned() != null) {
+            dto.setAssignedTo(EmployeeDao.instance().findById(ec.getAssigned()));
+        }
         if (ec.getStatus().equals(ProspectStatus.CLOSED_WON)) {
             if (ec.getDateOfJoining() != null) {
                 dto.setDateOfJoining(ec.getDateOfJoining());
@@ -164,6 +172,9 @@ public class ProspectService {
 
     public ProspectDto update(ProspectDto dto) {
         Prospect entity = prospectDao.findById(dto.getId());
+        if (dto.getAssignedTo() != null) {
+            entity.setAssigned(dto.getAssignedTo().getId());
+        }
         if (dto.getStatus() != null) {
             entity.setStatus(dto.getStatus());
         } else {
