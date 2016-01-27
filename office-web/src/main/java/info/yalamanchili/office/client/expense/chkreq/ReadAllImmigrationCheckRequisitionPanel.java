@@ -163,7 +163,7 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
                     @Override
                     public void onResponse(String arg0) {
                         logger.info(arg0);
-                        new ResponseStatusWidget().show("Copy created. Plase update and save.");
+                        new ResponseStatusWidget().show("Copy created. Please update and save.");
                         TabPanel.instance().expensePanel.entityPanel.clear();
                         TabPanel.instance().expensePanel.entityPanel.add(new UpdateImmigrationCheckRequisitionPanel(JSONParser.parseLenient(arg0).isObject()));
                     }
