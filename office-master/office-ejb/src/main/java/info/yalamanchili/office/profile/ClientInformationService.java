@@ -225,6 +225,7 @@ public class ClientInformationService {
             ci.setStatus(ClientInformationStatus.PENDING_CONTRACTS_SUBMIT);
         }
         ci = em.merge(ci);
+        ciDto.setBpmProcessId(ci.getBpmProcessId());
         ciDto.setId(ci.getId());
         return mapper.map(ci, ClientInformationDto.class);
     }
