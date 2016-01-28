@@ -253,7 +253,6 @@ public class VendorResource extends CRUDResource<Vendor> {
 
     @GET
     @Path("/vendorinfo-report")
-    @Transactional
     public void vendorReport() {
         VendorService.instance().generateVendorInfoReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
