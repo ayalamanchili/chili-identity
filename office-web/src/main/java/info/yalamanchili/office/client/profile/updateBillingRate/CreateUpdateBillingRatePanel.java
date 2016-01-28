@@ -31,11 +31,11 @@ import java.util.logging.Logger;
 public class CreateUpdateBillingRatePanel extends UpdateComposite {
     
     private static Logger logger = Logger.getLogger(CreateUpdateBillingRatePanel.class.getName());
-    protected String clientInfoId;
+    protected JSONObject clientInfo;
     protected boolean isSubOr1099 = false;
     
-    public CreateUpdateBillingRatePanel(String clientInfoId, JSONObject entity) {
-        this.clientInfoId = clientInfoId;
+    public CreateUpdateBillingRatePanel(JSONObject clientInfo, JSONObject entity) {
+        this.clientInfo = clientInfo;
         if (entity.get("employee") != null) {
             JSONObject employee = entity.get("employee").isObject();
             JSONObject employeeType = employee.get("employeeType").isObject();
@@ -78,23 +78,23 @@ public class CreateUpdateBillingRatePanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
-                    
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postUpdateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
+            
+            @Override
+            public void onSuccess(String arg0) {
+                postUpdateSuccess(arg0);
+            }
+        });
     }
     
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated Billing Rate Info");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadClientInfoPanel(clientInfoId));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadClientInfoPanel(clientInfo));
         GenericPopup.instance().hide();
     }
     
@@ -148,6 +148,6 @@ public class CreateUpdateBillingRatePanel extends UpdateComposite {
     
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "clientinformation/update-billing-rate/" + clientInfoId;
+        return OfficeWelcome.constants.root_url() + "clientinformation/update-billing-rate/" + JSONUtils.toString(clientInfo, "id");
     }
 }
