@@ -101,7 +101,7 @@ public class ClientSidePanel extends ALComposite implements ClickHandler {
     }
 
     protected String getActiveClientInfoReportUrl() {
-        return OfficeWelcome.constants.root_url() + "contract/active-clientinfo-report";
+        return OfficeWelcome.constants.root_url() + "client/active-clientinfo-report";
     }
 
 }

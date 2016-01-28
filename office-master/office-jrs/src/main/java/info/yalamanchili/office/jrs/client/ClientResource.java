@@ -14,6 +14,7 @@ import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.chili.reporting.ReportGenerator;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
+import info.yalamanchili.office.client.ClientService;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.client.ClientDao;
 import info.yalamanchili.office.dao.client.VendorDao;
@@ -28,7 +29,6 @@ import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.dto.profile.ContactDto.ContactDtoTable;
 import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.client.ProjectResource.ProjectTable;
@@ -207,128 +207,14 @@ public class ClientResource extends CRUDResource<Client> {
 
     @GET
     @Path("/clientinfo-report")
-    @Transactional
     public void clientReport() {
-        List<ClientMasterReportDto> res = new ArrayList();
-        for (Client ci : ClientDao.instance().query(0, 2000)) {
-            res.add(populateClientInfo(ci));
-        }
-        String[] columnOrder = new String[]{"clientName", "webSite", "clientLocations", "recruiterContact", "acctPayContact"};
-        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Client-Info-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
+        ClientService.instance().generateClientInfoReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
-
-    public ClientMasterReportDto populateClientInfo(Client ci) {
-        ClientMasterReportDto dto = new ClientMasterReportDto();
-        dto.setClientName(ci.getName());
-        if (ci.getWebsite() != null) {
-            dto.setWebSite(ci.getWebsite());
-        }
-        // for getting client locations
-        if (ci.getLocations().size() > 0) {
-            String clientAddressInfo = "";
-            int count = ci.getLocations().size();
-            for (Address address : ci.getLocations()) {
-                clientAddressInfo = clientAddressInfo.concat("\n" + address.getStreet1() + "-");
-                if (address.getStreet2() != null) {
-                    clientAddressInfo = clientAddressInfo.concat(address.getStreet2() + "-");
-                }
-                clientAddressInfo = clientAddressInfo.concat(address.getCity() + "-" + address.getState() + "-" + address.getCountry());
-                if (address.getZip() != null) {
-                    clientAddressInfo = clientAddressInfo.concat("-" + address.getZip());
-                }
-                if (count > 1) {
-                    clientAddressInfo = clientAddressInfo.concat(",");
-                }
-                dto.setClientLocations(clientAddressInfo);
-                count--;
-            }
-        }
-        // for getting Recruiter Contacts
-        if (ci.getContacts().size() > 0) {
-            String recContact = "";
-            int countc = ci.getContacts().size();
-            for (Contact contact : ci.getContacts()) {
-                String name = "";
-                name = name.concat(contact.getFirstName() + " " + contact.getLastName());
-                recContact = recContact.concat("\n" + name);
-                if (contact.getEmails().size() > 0) {
-                    String email = "";
-                    email = email.concat(contact.getEmails().get(0).getEmail());
-                    recContact = recContact.concat("-" + email);
-                }
-                if (contact.getPhones().size() > 0) {
-                    int countp = contact.getPhones().size();
-                    for (Phone rphone : contact.getPhones()) {
-                        String phone = "";
-                        if (rphone.getCountryCode() != null) {
-                            String ccode = "";
-                            ccode = ccode.concat(rphone.getCountryCode());
-                            recContact = recContact.concat("-" + ccode);
-                        }
-                        phone = phone.concat(rphone.getPhoneNumber());
-                        recContact = recContact.concat("-" + phone);
-                        if (rphone.getExtension() != null) {
-                            String ext = "";
-                            ext = ext.concat(rphone.getExtension());
-                            recContact = recContact.concat("-" + ext);
-                        }
-                        if (countp > 1) {
-                            recContact = recContact.concat("--");
-                        }
-                        countp--;
-                    }
-                }
-                if (countc > 1) {
-                    recContact = recContact.concat(",");
-                }
-                dto.setRecruiterContact(recContact);
-                countc--;
-            }
-        }
-        // for getting AcctPayContacts
-        if (ci.getClientAcctPayContacts().size() > 0) {
-            String actContact = "";
-            int countap = ci.getClientAcctPayContacts().size();
-            for (Contact acpaycnt : ci.getClientAcctPayContacts()) {
-                String acname = "";
-                acname = acname.concat(acpaycnt.getFirstName() + " " + acpaycnt.getLastName());
-                actContact = actContact.concat("\n" + acname);
-                if (acpaycnt.getEmails().size() > 0) {
-                    String acemail = "";
-                    acemail = acemail.concat(acpaycnt.getEmails().get(0).getEmail());
-                    actContact = actContact.concat("-" + acemail);
-                }
-                if (acpaycnt.getPhones().size() > 0) {
-                    int countapp = acpaycnt.getPhones().size();
-                    for (Phone acpayphone : acpaycnt.getPhones()) {
-                        String acphone = "";
-                        if (acpayphone.getCountryCode() != null) {
-                            String acccode = "";
-                            acccode = acccode.concat(acpayphone.getCountryCode());
-                            actContact = actContact.concat("-" + acccode);
-                        }
-                        acphone = acphone.concat(acpayphone.getPhoneNumber());
-                        actContact = actContact.concat("-" + acphone);
-                        if (acpayphone.getExtension() != null) {
-                            String acext = "";
-                            acext = acext.concat(acpayphone.getExtension());
-                            actContact = actContact.concat("-" + acext);
-                        }
-                        if (countapp > 1) {
-                            actContact = actContact.concat("--");
-                        }
-                        countapp--;
-                    }
-                }
-                if (countap > 1) {
-                    actContact = actContact.concat(",");
-                }
-                dto.setAcctPayContact(actContact);
-                countap--;
-            }
-        }
-
-        return dto;
+    
+    @GET
+    @Path("/active-clientinfo-report")
+    public void getActiveClientsReport() {
+        ClientService.instance().generateActiveClientsInfoReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
 
     /**
