@@ -6,7 +6,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.jrs.client;
+package info.yalamanchili.office.dto.client;
 
 import java.io.Serializable;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -16,24 +16,22 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Ramana.Lukalapu
  */
 @XmlRootElement
-public class VendorMasterReportDto implements Serializable {
+public class ClientMasterReportDto implements Serializable {
 
-    protected String vendorName;
+    protected String clientName;
     protected String webSite;
-    protected String vendorType;
-    protected String vendorFees;
-    protected String vendorLocations;
+    protected String clientLocations;
     protected String recruiterContact;
     protected String acctPayContact;
     protected String employeeName;
     protected String employeeType;
 
-    public String getVendorName() {
-        return vendorName;
+    public String getClientName() {
+        return clientName;
     }
 
-    public void setVendorName(String vendorName) {
-        this.vendorName = vendorName;
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
     }
 
     public String getWebSite() {
@@ -44,28 +42,12 @@ public class VendorMasterReportDto implements Serializable {
         this.webSite = webSite;
     }
 
-    public String getVendorType() {
-        return vendorType;
+    public String getClientLocations() {
+        return clientLocations;
     }
 
-    public void setVendorType(String vendorType) {
-        this.vendorType = vendorType;
-    }
-
-    public String getVendorFees() {
-        return vendorFees;
-    }
-
-    public void setVendorFees(String vendorFees) {
-        this.vendorFees = vendorFees;
-    }
-
-    public String getVendorLocations() {
-        return vendorLocations;
-    }
-
-    public void setVendorLocations(String vendorLocations) {
-        this.vendorLocations = vendorLocations;
+    public void setClientLocations(String clientLocations) {
+        this.clientLocations = clientLocations;
     }
 
     public String getRecruiterContact() {

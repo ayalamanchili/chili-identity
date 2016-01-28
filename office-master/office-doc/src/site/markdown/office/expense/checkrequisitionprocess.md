@@ -5,7 +5,6 @@ How to submit Check Requisition Request
  - Immigration Team submits the check request after entering all the relevant details
  - Payroll Department will review and approve the request
  - Accounting Department will review the approved request and dispatch the check
- - After approval process is complete, an email indicating final decision is generated and sent to user.
 
 Check Requisition Process Flow
 ----
