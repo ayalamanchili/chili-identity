@@ -34,7 +34,6 @@ import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.widgets.SuggestBox;
-import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
@@ -48,7 +47,7 @@ import java.util.logging.Logger;
 public class UpdateProspectPanel extends UpdateComposite implements ClickHandler, ChangeHandler {
 
     private Logger logger = Logger.getLogger(UpdateProspectPanel.class.getName());
-    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "assignedTo", "Employee", false, true, Alignment.HORIZONTAL);
+    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "assignedTo", "Employee", false, false, Alignment.HORIZONTAL);
     FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "Prospect", "resumeURL", "Prospect/resumeURL", false, true) {
         @Override
         public void onUploadComplete(String res) {
@@ -110,6 +109,8 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         JSONObject address = new JSONObject();
         if (employeeSB.getSelectedObject() != null) {
             entity.put("assignedTo", employeeSB.getSelectedObject());
+        } else {
+            entity.put("assignedTo", null);
         }
         assignEntityValueFromField("street1", address);
         assignEntityValueFromField("street2", address);
@@ -176,6 +177,7 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         if (resumeURL.size() > 0) {
             entity.put("resumeURL", resumeURL);
         }
+        logger.info("entity " + entity);
         return entity;
     }
 
@@ -263,7 +265,7 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
     protected void configure() {
         countriesF.listBox.addChangeHandler(this);
         formatTextAreaFields();
-        employeeSB.getLabel().getElement().getStyle().setWidth(193, Style.Unit.PX);
+        employeeSB.getLabel().getElement().getStyle().setWidth(197, Style.Unit.PX);
         HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
@@ -277,7 +279,7 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
     }
 
     private String getEmployeeIdsDropDownUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_USER.name() + "/0/10000");
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Corporate Employee");
     }
 
     protected void formatTextAreaFields() {
