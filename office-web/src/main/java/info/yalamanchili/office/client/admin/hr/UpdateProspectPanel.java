@@ -109,8 +109,6 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         JSONObject address = new JSONObject();
         if (employeeSB.getSelectedObject() != null) {
             entity.put("assignedTo", employeeSB.getSelectedObject());
-        } else {
-            entity.put("assignedTo", null);
         }
         assignEntityValueFromField("street1", address);
         assignEntityValueFromField("street2", address);
