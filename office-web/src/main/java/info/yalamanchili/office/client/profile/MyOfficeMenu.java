@@ -115,8 +115,8 @@ public class MyOfficeMenu extends CMenuBar {
         public void execute() {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
             TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
-            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new ProspectsSidePanel());
             TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllProspectsPanel());
+            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new ProspectsSidePanel());
         }
     };
 }

@@ -32,6 +32,7 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.widgets.SuggestBox;
+import info.yalamanchili.office.client.profile.employee.SelectCorpEmployeeWidget;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -42,6 +43,7 @@ import java.util.logging.Logger;
 public class SearchProspectsPanel extends SearchComposite {
 
     private static Logger logger = Logger.getLogger(SearchProspectsPanel.class.getName());
+    SelectCorpEmployeeWidget employeeF = new SelectCorpEmployeeWidget("AssignedTo",false, false);
 
     public SearchProspectsPanel() {
         init("Prospect Search", "Prospect", OfficeWelcome.constants);
@@ -94,6 +96,7 @@ public class SearchProspectsPanel extends SearchComposite {
         addField("firstName", DataType.STRING_FIELD);
         addField("lastName", DataType.STRING_FIELD);
         addField("referredBy", DataType.STRING_FIELD);
+        addDropDown("assignedTo", employeeF);
         addField("processDocSentDate", DataType.DATE_FIELD);
         addEnumField("petitionFiledFor", false, false, PetitionFor.names());
         addEnumField("trfEmpType", false, false, TransferEmployeeType.names());
@@ -109,6 +112,9 @@ public class SearchProspectsPanel extends SearchComposite {
         assignEntityValueFromField("firstName", contact);
         assignEntityValueFromField("lastName", contact);
         assignEntityValueFromField("referredBy", entity);
+        if (employeeF.getSelectedObject() != null) {
+            entity.put("assigned", employeeF.getSelectedObject().get("id"));
+        }
         assignEntityValueFromField("petitionFiledFor", entity);
         assignEntityValueFromField("placedBy", entity);
         assignEntityValueFromField("trfEmpType", entity);
@@ -128,11 +134,11 @@ public class SearchProspectsPanel extends SearchComposite {
         } else {
             HttpService.HttpServiceAsync.instance().doGet(getSearchURI(getSearchText(), 0, 1000),
                     OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                        @Override
-                        public void onResponse(String result) {
-                            processSearchResult(result);
-                        }
-                    });
+                @Override
+                public void onResponse(String result) {
+                    processSearchResult(result);
+                }
+            });
         }
     }
 
@@ -140,11 +146,11 @@ public class SearchProspectsPanel extends SearchComposite {
     protected void search(JSONObject entity) {
         HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 1000), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        processSearchResult(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                processSearchResult(result);
+            }
+        });
     }
 
     @Override
