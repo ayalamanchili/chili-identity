@@ -53,6 +53,7 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientAcctPayContact;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
+import info.yalamanchili.office.client.admin.vendorlocation.SelectVendorLocationsWidget;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
 import java.util.Date;
 
@@ -99,7 +100,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         assignEntityValueFromField("vendor", clientInfo);
         //assignEntityValueFromField("vendorContact", clientInfo);
         assignEntityValueFromField("vendorAPContacts", clientInfo);
-        //assignEntityValueFromField("vendorLocation", clientInfo);
+        assignEntityValueFromField("vendorLocation", clientInfo);
         assignEntityValueFromField("vendorRecruiters", clientInfo);
         assignEntityValueFromField("middleVendor", clientInfo);
         assignEntityValueFromField("vendorPaymentTerms", clientInfo);
@@ -264,6 +265,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         //Vendor
         addDropDown("vendor", selectVendorWidgetF);
         entityFieldsPanel.add(addVendorL);
+        addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, true, Alignment.HORIZONTAL));
         //addDropDown("vendorContact", new SelectVendorContactWidget(false, false, Alignment.HORIZONTAL));
         selectVendorAPContactsW = new SelectVendorAcctPayContact(false, false, Alignment.HORIZONTAL) {
             @Override
@@ -272,7 +274,6 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             }
         };
         addDropDown("vendorAPContacts", selectVendorAPContactsW);
-        //addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, false, Alignment.HORIZONTAL));
         selectVendorRecruiterContactsWidget = new SelectVendorRecruiterContactWidget(false, false, Alignment.HORIZONTAL) {
             @Override
             public boolean enableMultiSelect() {

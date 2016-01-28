@@ -49,6 +49,7 @@ import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientAcctPayContact;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
+import info.yalamanchili.office.client.admin.vendorlocation.SelectVendorLocationsWidget;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
 import java.util.Map;
 
@@ -89,8 +90,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String response) {
-                        logger.info("sssssssssssssssssssssssss" + response);
-
+                        logger.info("Response: " + response);
                         JSONArray docs = JSONUtils.toJSONArray(JSONParser.parseLenient(response).isObject().get("ciDocument"));
                         entityFieldsPanel.add(new ReadAllCiDocumentPanel(getEntityId(), docs));
                     }
@@ -113,6 +113,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignEntityValueFromField("vendor", entity);
         assignEntityValueFromField("vendorAPContacts", entity);
         assignEntityValueFromField("vendorRecruiters", entity);
+        assignEntityValueFromField("vendorLocation", entity);
         assignEntityValueFromField("middleVendor", entity);
         assignEntityValueFromField("vendorPaymentTerms", entity);
         assignEntityValueFromField("startDate", entity);
@@ -218,6 +219,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignFieldValueFromEntity("clientPaymentTerms", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("vendor", entity, null);
         assignFieldValueFromEntity("vendorAPContacts", entity, null);
+        assignFieldValueFromEntity("vendorLocation", entity, null);
         assignFieldValueFromEntity("vendorRecruiters", entity, null);
         assignFieldValueFromEntity("middleVendor", entity, null);
         assignFieldValueFromEntity("vendorPaymentTerms", entity, DataType.TEXT_AREA_FIELD);
@@ -329,6 +331,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         addDropDown("clientContact", new SelectClientContactWidget(false, false, Alignment.HORIZONTAL));
         addField("clientPaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addDropDown("vendor", selectVendorWidgetF);
+        addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, true, Alignment.HORIZONTAL));
         selectVendorAPContactsW = new SelectVendorAcctPayContact(false, false, Alignment.HORIZONTAL) {
             @Override
             public boolean enableMultiSelect() {

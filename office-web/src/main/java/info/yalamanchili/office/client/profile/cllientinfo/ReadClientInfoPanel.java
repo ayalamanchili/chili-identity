@@ -37,6 +37,7 @@ import info.yalamanchili.office.client.admin.vendor.SelectMiddleVendorWidget;
 import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
 import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorAcctPayContact;
 import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorRecruiterContactWidget;
+import info.yalamanchili.office.client.admin.vendorlocation.SelectVendorLocationsWidget;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
@@ -77,6 +78,7 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
         assignFieldValueFromEntity("clientLocation", entity, null);
         assignFieldValueFromEntity("clientContact", entity, null);
         assignFieldValueFromEntity("vendor", entity, null);
+        assignFieldValueFromEntity("vendorLocation", entity, null);
         assignFieldValueFromEntity("vendorAPContacts", entity, null);
         assignFieldValueFromEntity("vendorRecruiters", entity, null);
         assignFieldValueFromEntity("middleVendor", entity, null);
@@ -192,7 +194,8 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
         addDropDown("clientAPContacts", selectClientAcctPayContact);
         addDropDown("clientContact", new SelectClientContactWidget(true, false, Alignment.HORIZONTAL));
         addField("clientPaymentTerms", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        addDropDown("vendor", new SelectVendorWidget(true, false, Alignment.HORIZONTAL));
+        addDropDown("vendor", new SelectVendorWidget(true, true, Alignment.HORIZONTAL));
+        addDropDown("vendorLocation", new SelectVendorLocationsWidget(true, true, Alignment.HORIZONTAL));
         selectVendorAPContactsW = new SelectVendorAcctPayContact(false, false, Alignment.HORIZONTAL) {
             @Override
             public boolean enableMultiSelect() {
