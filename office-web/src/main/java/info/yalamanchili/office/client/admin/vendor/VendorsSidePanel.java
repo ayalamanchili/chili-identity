@@ -100,7 +100,7 @@ public class VendorsSidePanel extends ALComposite implements ClickHandler {
     }
 
     protected String getActiveVendorInfoReportUrl() {
-        return OfficeWelcome.constants.root_url() + "contract/active-vendorinfo-report";
+        return OfficeWelcome.constants.root_url() + "vendor/active-vendorinfo-report";
     }
     
 }
