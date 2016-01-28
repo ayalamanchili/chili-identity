@@ -354,7 +354,6 @@ public class ClientInformationService {
     public ClientInformationSaveDto update(ClientInformationSaveDto dto, Boolean submitForApproval) {
         ClientInformation ci = mapper.map(dto, ClientInformation.class);
         ClientInformation ciEntity = em.find(ClientInformation.class, ci.getId());
-        validate(ci, submitForApproval);
         String abbreviation = getCompanyAbbreviation(ci.getCompany());
         if (!ClientInformationStatus.PENDING_CONTRACTS_SUBMIT.equals(ci.getStatus()) && !submitForApproval) {
             if (ciEntity.getBillingRate() != null) {
@@ -383,6 +382,7 @@ public class ClientInformationService {
 
             }
         }
+        validate(ci, submitForApproval);
         BeanMapper.merge(ci, ciEntity);
         Project project = ProjectDao.instance().findById(ci.getClientProject().getId());
         Client client;
@@ -532,7 +532,7 @@ public class ClientInformationService {
         if (submitForApproval) {
             ServiceInterceptor.instance().validateInput(ci, ClientInformation.SubmitChecks.class);
         }
-        if (!ClientInformationStatus.PENDING_CONTRACTS_SUBMIT.equals(ci.getStatus()) && !submitForApproval) {
+        if (ci.getStatus() != null && !ClientInformationStatus.PENDING_CONTRACTS_SUBMIT.equals(ci.getStatus()) && !submitForApproval ) {
             ServiceInterceptor.instance().validateInput(ci, ClientInformation.SubmitChecks.class);
         }
     }
