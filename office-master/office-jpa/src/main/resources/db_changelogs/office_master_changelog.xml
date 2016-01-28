@@ -90,4 +90,6 @@
     <include file="db_changelogs/01-21-2016_changelog.xml"/>
     <include file="db_changelogs/01-22-2016_changelog.xml"/>
     <include file="db_changelogs/01-25-2016_changelog.xml"/>
+    <include file="db_changelogs/01-28-2016_changelog.xml"/>
+    <include file="db_changelogs/01-28-2016-2_changelog.xml"/>
 </databaseChangeLog>
