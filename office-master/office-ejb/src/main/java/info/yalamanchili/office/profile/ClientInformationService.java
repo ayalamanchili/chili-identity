@@ -532,6 +532,9 @@ public class ClientInformationService {
         if (submitForApproval) {
             ServiceInterceptor.instance().validateInput(ci, ClientInformation.SubmitChecks.class);
         }
+        if (!ClientInformationStatus.PENDING_CONTRACTS_SUBMIT.equals(ci.getStatus()) && !submitForApproval) {
+            ServiceInterceptor.instance().validateInput(ci, ClientInformation.SubmitChecks.class);
+        }
     }
 
     private String projectName(String name) {
