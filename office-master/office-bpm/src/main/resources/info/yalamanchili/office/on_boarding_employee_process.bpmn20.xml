@@ -30,6 +30,11 @@
             <documentation>
                 On Boarding Forms and Data Validation Task
                 Employee Name       : #{entity.firstName} #{entity.lastName}
+                Employee Type       : #{entity.employeeType.name}
+                Gender              : #{entity.sex}
+                Date Of Birth       : #{entity.getDateOfBirth()}
+                Email               : #{entity.getEmails().get(0).getEmail()}
+                Address             : #{address.street1} - #{address.city} - #{address.state} - #{address.country}
                 Start Date          : #{entity.startDate}
             </documentation>
             <extensionElements>
@@ -82,19 +87,19 @@
                       targetRef="eVerifyTask">
         </sequenceFlow>
         
-         <sequenceFlow sourceRef="formsValidationGateway" 
+        <sequenceFlow sourceRef="formsValidationGateway" 
                       targetRef="onBoardingEmployeeProcessEnd">
             <conditionExpression xsi:type="tFormalExpression">
                 ${status == 'rejected'}
             </conditionExpression>
-         </sequenceFlow>
+        </sequenceFlow>
          
-          <sequenceFlow sourceRef="formsValidationGateway" 
+        <sequenceFlow sourceRef="formsValidationGateway" 
                       targetRef="eVerifyTask">
             <conditionExpression xsi:type="tFormalExpression">
                 ${status == 'approved'}
             </conditionExpression>
-         </sequenceFlow>
+        </sequenceFlow>
         
         <!--         BackGround And Drug Screening Test Task : ROLE_BACKGROUND_SCREENING_MGR-->
         <userTask id="backGroundAndDrugScreeningTestTask" 
@@ -103,6 +108,11 @@
             <documentation>
                 BackGround And Drug Screening Test Task
                 Employee Name       : #{entity.firstName} #{entity.lastName}
+                Employee Type       : #{entity.employeeType.name}
+                Gender              : #{entity.sex}
+                Date Of Birth       : #{entity.getDateOfBirth()}
+                Email               : #{entity.getEmails().get(0).getEmail()}
+                Address             : #{address.street1} - #{address.city} - #{address.state} - #{address.country}
                 Start Date          : #{entity.startDate}
             </documentation>
             <extensionElements>
@@ -153,6 +163,11 @@
             <documentation>
                 E Verify Task for E_Verify Manager
                 Employee Name       : #{entity.firstName} #{entity.lastName}
+                Employee Type       : #{entity.employeeType.name}
+                Gender              : #{entity.sex}
+                Date Of Birth       : #{entity.getDateOfBirth()}
+                Email               : #{entity.getEmails().get(0).getEmail()}
+                Address             : #{address.street1} - #{address.city} - #{address.state} - #{address.country}
                 Start Date          : #{entity.startDate}
             </documentation>
             <extensionElements>
@@ -184,7 +199,7 @@
                       targetRef="eVerifyTaskEscalation" />
         <serviceTask id="eVerifyTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
         <!--          E Verify Manager task : Decision -->
-       <sequenceFlow sourceRef="eVerifyTask" targetRef="join1">
+        <sequenceFlow sourceRef="eVerifyTask" targetRef="join1">
             <conditionExpression xsi:type="tFormalExpression">
                 ${status == 'approved' and entity.employeeType.name == 'Corporate Employee'}
             </conditionExpression>
@@ -211,6 +226,11 @@
             <documentation>
                 Payroll Registration Task for Payroll Department
                 Employee Name       : #{entity.firstName} #{entity.lastName}
+                Employee Type       : #{entity.employeeType.name}
+                Gender              : #{entity.sex}
+                Date Of Birth       : #{entity.getDateOfBirth()}
+                Email               : #{entity.getEmails().get(0).getEmail()}
+                Address             : #{address.street1} - #{address.city} - #{address.state} - #{address.country}
                 Start Date          : #{entity.startDate}
             </documentation>
             <extensionElements>
@@ -250,20 +270,47 @@
                      activiti:expression="#{onBoardingEmployeeProcessBean.sendEmployeeOnBoardingCompletedEmail(entity)}" />  
         
         <sequenceFlow sourceRef="sendEmployeeOnBoardingCompletedEmail" 
-                      targetRef="createServiceTicketforNetworkDept">
+                      targetRef="ServiceTicketTaskforNetworkDept">
             <conditionExpression xsi:type="tFormalExpression">
                 ${entity.employeeType.name == 'Corporate Employee'}
             </conditionExpression>
         </sequenceFlow>
-        <sequenceFlow sourceRef="sendEmployeeOnBoardingCompletedEmail" targetRef="onBoardingEmployeeProcessEnd" />
         
-        <!--         Create Service Ticket For Network Department -->
-        <serviceTask id="createServiceTicketforNetworkDept" 
-                     name="Create Service Ticket For Network Department Task" 
-                     activiti:expression="#{onBoardingEmployeeProcessBean.createServiceTicketforNetworkDept(entity)}" />  
-        
-        <sequenceFlow sourceRef="createServiceTicketforNetworkDept" targetRef="onBoardingEmployeeProcessEnd" />
-        
+        <!-- Create Service Ticket For Network Department  -->
+        <userTask id="ServiceTicketTaskforNetworkDept" 
+                  name="Service Ticket for ${entity.firstName} ${entity.lastName}" 
+                  activiti:candidateGroups="ROLE_SYSTEM_AND_NETWORK_ADMIN">
+            <documentation>
+                Service Ticket For Network Department
+                Please provide network related support to this employee and complete the task.
+                Employee Name       : #{entity.firstName} #{entity.lastName}
+                Employee Type       : #{entity.employeeType.name}
+                Gender              : #{entity.sex}
+                Date Of Birth       : #{entity.getDateOfBirth()}
+                Email               : #{entity.getEmails().get(0).getEmail()}
+                Address             : #{address.street1} - #{address.city} - #{address.state} - #{address.country}
+                Start Date          : #{entity.startDate}
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification" />
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="true" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <boundaryEvent id="ServiceTicketTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="ServiceTicketTaskforNetworkDept">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="ServiceTicketTaskEscalationTimer" 
+                      targetRef="ServiceTicketTaskEscalation" />
+        <serviceTask id="ServiceTicketTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <sequenceFlow sourceRef="ServiceTicketTaskforNetworkDept" targetRef="onBoardingEmployeeProcessEnd" />
         <endEvent id="onBoardingEmployeeProcessEnd" />
     </process>
 </definitions>
