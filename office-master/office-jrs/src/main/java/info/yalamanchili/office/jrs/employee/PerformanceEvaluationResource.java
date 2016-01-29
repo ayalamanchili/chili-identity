@@ -149,10 +149,10 @@ public class PerformanceEvaluationResource extends CRUDResource<PerformanceEvalu
         List<PerformanceEvaluationReportDto> report = new ArrayList<>();
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
         report = performanceEvaluationService.getPerformanceEvaluationReport(year);
-        String[] columnOrder = new String[]{"employee", "evaluationFYYear", "manager", "managerReviewStarted", "rating", "stage"};
+        String[] columnOrder = new String[]{"employee", "evaluationFYYear", "startDate", "manager", "managerReviewStarted", "rating", "stage"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(report, " Performance-Evaluation-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), emp.getPrimaryEmail().getEmail());
     }
-    
+
     @GET
     @Path("/performance-evaluation-reportView")
     public List<PerformanceEvaluationReportDto> employeeperformanceEvaluationReportView(@QueryParam("year") String year) {
