@@ -425,6 +425,7 @@ public class PerformanceEvaluationService {
         for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
             PerformanceEvaluationReportDto dto = new PerformanceEvaluationReportDto();
             dto.setEmployee(emp.getFirstName() + " " + emp.getLastName());
+            dto.setStartDate(emp.getStartDate());
             PerformanceEvaluation prefEval = getEvaluationForYear(year, emp, null);
             dto.setEvaluationFYYear(year);
             if (prefEval != null) {

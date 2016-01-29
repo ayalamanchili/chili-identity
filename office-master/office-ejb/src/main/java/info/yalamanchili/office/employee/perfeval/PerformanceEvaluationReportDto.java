@@ -8,6 +8,7 @@
 package info.yalamanchili.office.employee.perfeval;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -42,6 +43,16 @@ public class PerformanceEvaluationReportDto implements Serializable {
      *
      */
     protected String managerReviewStarted;
+
+    protected Date startDate;
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
 
     /**
      * @return the employee
@@ -115,7 +126,6 @@ public class PerformanceEvaluationReportDto implements Serializable {
         this.prevYearRating = prevYearRating;
     }
 
-   
     public String getManagerReviewStarted() {
         return managerReviewStarted;
     }
