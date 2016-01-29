@@ -10,8 +10,6 @@ package info.yalamanchili.office.profile;
 
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
-import info.yalamanchili.office.client.ContractService;
-import info.yalamanchili.office.dao.client.VendorDao;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.ClientInformation;
@@ -22,7 +20,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

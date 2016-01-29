@@ -42,10 +42,10 @@ public class OfficeWelcome implements EntryPoint {
 
     @Override
     public void onModuleLoad() {
+        OfficeImages.INSTANCE.officeCss().ensureInjected();
         if (URLParamProcessor.process()) {
             return;
         }
-        OfficeImages.INSTANCE.officeCss().ensureInjected();
         instance = this;
 //try to login with existing session
         HttpService.HttpServiceAsync.instance().login(null, null, new ALAsyncCallback<String>() {
@@ -58,6 +58,7 @@ public class OfficeWelcome implements EntryPoint {
 
             @Override
             public void onFailure(Throwable err) {
+                loadingWidget.hide();
                 RootLayoutPanel.get().add(new LoginPage());
                 downloadJSinBackground();
             }
