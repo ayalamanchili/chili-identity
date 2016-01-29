@@ -176,13 +176,17 @@ public class ProbationPeriodEvaluationService {
         List<ProbationPeriodEvaluationReportDto> res = new ArrayList<ProbationPeriodEvaluationReportDto>();
         for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
             ProbationPeriodEvaluationReportDto dto = mapper.map(emp, ProbationPeriodEvaluationReportDto.class);
+            List<ProbationPeriodEvaluation> evaluation = probationPeriodEvaluationDao.getEvaluations(emp);
             dto.setEmployee(emp.getFirstName() + " " + emp.getLastName());
             dto.setEmail(EmployeeDao.instance().getPrimaryEmail(emp));
             dto.setStartDate(emp.getStartDate());
-
+            if(evaluation.size() > 0){
+            dto.setStage(evaluation.get(0).getStage().name());
+            }
             res.add(dto);
         }
-        MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(res, "Probation-Period-Evaluation-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
+        String[] columnOrder = new String[]{"employee", "startDate", "email", "stage"};
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Probation-Period-Evaluation-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
 
     public static ProbationPeriodEvaluationService instance() {
