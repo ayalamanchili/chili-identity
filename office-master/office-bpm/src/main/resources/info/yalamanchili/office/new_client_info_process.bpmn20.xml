@@ -26,10 +26,10 @@
                 Employee Type               : #{clientInfo.employee.employeeType.name}
                 Consultant Job Title        : #{clientInfo.consultantJobTitle}
                 Client                      : #{clientInfo.client.name}
-                Client AP Contact           : #{contractDto.clientAPContact}
+                Client AP Contact           : #{clientAP}
                 Vendor                      : #{clientInfo.vendor.name}
-                Vendor AP Contact           : #{contractDto.vendorAPContact}
-                Vendor Payment Terms        : #{contractDto.vendorPaymentTerms}
+                Vendor AP Contact           : #{vendorAP}
+                Vendor Payment Terms        : #{clientInfo.vendorPaymentTerms}
                 Project Start Date          : #{clientInfo.startDate}
                 Project End Date            : #{clientInfo.endDate}
                 Billing Rate                : #{clientInfo.billingRate}
@@ -111,10 +111,10 @@
                 Employee Type               : #{clientInfo.employee.employeeType.name}
                 Consultant Job Title        : #{clientInfo.consultantJobTitle}
                 Client                      : #{clientInfo.client.name}
-                Client AP Contact           : #{contractDto.clientAPContact}
+                Client AP Contact           : #{clientAP}
                 Vendor                      : #{clientInfo.vendor.name}
-                Vendor AP Contact           : #{contractDto.vendorAPContact}
-                Vendor Payment Terms        : #{contractDto.vendorPaymentTerms}
+                Vendor AP Contact           : #{vendorAP}
+                Vendor Payment Terms        : #{clientInfo.vendorPaymentTerms}
                 Project Start Date          : #{clientInfo.startDate}
                 Project End Date            : #{clientInfo.endDate}
                 Billing Rate                : #{clientInfo.billingRate}

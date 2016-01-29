@@ -13,6 +13,8 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.composite.BaseField;
+import info.chili.gwt.composite.BaseFieldWithTextBox;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
@@ -25,6 +27,7 @@ import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 /**
@@ -52,13 +55,13 @@ public class ReadImmigrationCheckRequisitionPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
-                populateComments(JSONUtils.toJSONArray(entity.get("items")));
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                        populateComments(JSONUtils.toJSONArray(entity.get("items")));
+                    }
+                });
     }
 
     protected void populateComments(JSONArray items) {
@@ -101,6 +104,11 @@ public class ReadImmigrationCheckRequisitionPanel extends ReadComposite {
     @Override
     protected void configure() {
         employeeSB.getLabel().getElement().getStyle().setWidth(145, Style.Unit.PX);
+        for (Entry<String, BaseField> e : fields.entrySet()) {
+            if (e.getValue() instanceof BaseFieldWithTextBox) {
+                setVisibleLengthSize(e.getKey(), 30);
+            }
+        }
     }
 
     @Override

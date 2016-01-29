@@ -76,7 +76,7 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
         email.setTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_BILLING_AND_INVOICING.name()));
         email.setHtml(Boolean.TRUE);
         email.setSubject("New File/ project   : " + ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
-        String messageText = " Client Inforamtion : ";
+        String messageText = " Client Information : ";
         messageText = messageText.concat(" \n  Client :  " + ci.getClient().getName());
         messageText = messageText.concat("\n  Item_No : " + itemNo);
         if (ci.getVendor() != null) {

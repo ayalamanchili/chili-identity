@@ -10,7 +10,6 @@ package info.yalamanchili.office.profile;
 import com.google.common.base.Strings;
 import info.chili.commons.BeanMapper;
 import info.chili.service.jrs.exception.ServiceException;
-import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.client.ContractService;
 import info.yalamanchili.office.dao.client.ClientDao;
 import info.yalamanchili.office.dao.client.ProjectDao;
@@ -47,9 +46,7 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Query;
@@ -94,12 +91,12 @@ public class ClientInformationService {
         client = ClientDao.instance().findById(ci.getClient().getId());
         ci.setClient(client);
         if (ci.getClientContact() != null) {
-            Contact contact = ContactDao.instance().findById(ci.getClientContact().getId());
-            ci.setClientContact(contact);
+            ci.setClientContact(ContactDao.instance().findById(ci.getClientContact().getId()));
+     //       ci.setClientContact(contact);
         }
         if (ci.getClientLocation() != null) {
-            Address address = AddressDao.instance().findById(ci.getClientLocation().getId());
-            ci.setClientLocation(address);
+            ci.setClientLocation(AddressDao.instance().findById(ci.getClientLocation().getId()));
+     //       ci.setClientLocation(address);
         }
         ci.setClientAPContacts(null);
         if (ciDto.getClientAPContacts() != null) {
@@ -114,8 +111,8 @@ public class ClientInformationService {
             ci.setVendor(vendor);
         }
         if (ci.getVendorContact() != null) {
-            Contact contact = ContactDao.instance().findById(ci.getVendorContact().getId());
-            ci.setVendorContact(contact);
+            ci.setVendorContact(ContactDao.instance().findById(ci.getVendorContact().getId()));
+    //        ci.setVendorContact(contact);
         }
         ci.setVendorAPContacts(null);
         if (ciDto.getVendorAPContacts() != null) {
@@ -127,8 +124,8 @@ public class ClientInformationService {
         }
 
         if (ci.getVendorLocation() != null) {
-            Address address = AddressDao.instance().findById(ci.getVendorLocation().getId());
-            ci.setVendorLocation(address);
+            ci.setVendorLocation(AddressDao.instance().findById(ci.getVendorLocation().getId()));
+  //          ci.setVendorLocation(address);
         }
 
         ci.setVendorRecruiters(null);
@@ -160,12 +157,12 @@ public class ClientInformationService {
             project.setSubContractorWorkOrderNo(abbreviation + "WO" + projectName(subcontractor.getName()));
         }
         if (ci.getSubcontractorContact() != null) {
-            Contact contact = ContactDao.instance().findById(ci.getSubcontractorContact().getId());
-            ci.setSubcontractorContact(contact);
+            ci.setSubcontractorContact(ContactDao.instance().findById(ci.getSubcontractorContact().getId()));
+   //         ci.setSubcontractorContact(contact);
         }
         if (ci.getSubcontractorAddress() != null) {
-            Address address = AddressDao.instance().findById(ci.getSubcontractorAddress().getId());
-            ci.setSubcontractorAddress(address);
+            ci.setSubcontractorAddress(AddressDao.instance().findById(ci.getSubcontractorAddress().getId()));
+     //       ci.setSubcontractorAddress(address);
         }
         if (ci.isEndPreviousProject()) {
             updatePreviousProjectEndDate(emp, ci);
@@ -187,8 +184,8 @@ public class ClientInformationService {
         }
 
         if (ci.getPractice() != null) {
-            Practice practice = PracticeDao.instance().findById(ci.getPractice().getId());
-            ci.setPractice(practice);
+            ci.setPractice(PracticeDao.instance().findById(ci.getPractice().getId()));
+     //       ci.setPractice(practice);
         }
         project.setStartDate(ci.getStartDate());
         project.setClient(client);
@@ -220,12 +217,12 @@ public class ClientInformationService {
         emp.addClientInformation(ci);
         if (submitForApproval) {
             ci.setStatus(ClientInformationStatus.PENDING_INVOICING_BILLING_APPROVAL);
-            ci.setBpmProcessId(startNewClientInfoProcess(ci));
+            ClientInformationProcessBean.instance().startNewClientInfoProcess(ci);
         } else {
             ci.setStatus(ClientInformationStatus.PENDING_CONTRACTS_SUBMIT);
         }
         ci = em.merge(ci);
-        ciDto.setBpmProcessId(ci.getBpmProcessId());
+//        ciDto.setBpmProcessId(ci.getBpmProcessId());
         ciDto.setId(ci.getId());
         return mapper.map(ci, ClientInformationDto.class);
     }
@@ -341,15 +338,6 @@ public class ClientInformationService {
         ContractService.instance().sendBillingRateUpdatedEmail(ci, billingRate.getEffectiveDate(), billingRate.getUpdatedBy());
     }
 
-    protected String startNewClientInfoProcess(ClientInformation ci) {
-        Map<String, Object> vars = new HashMap<>();
-        vars.put("clientInfo", ci);
-        vars.put("entityId", ci.getId());
-        vars.put("contractDto", ContractService.instance().mapClientInformation(ci));
-        vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
-        return OfficeBPMService.instance().startProcess("new_client_info_process", vars);
-    }
-
 //merge save and addci methods
     public ClientInformationSaveDto update(ClientInformationSaveDto dto, Boolean submitForApproval) {
         ClientInformation ci = mapper.map(dto, ClientInformation.class);
@@ -398,8 +386,8 @@ public class ClientInformationService {
         if (ci.getClientContact() == null) {
             ciEntity.setClientContact(null);
         } else {
-            Contact contact = ContactDao.instance().findById(ci.getClientContact().getId());
-            ciEntity.setClientContact(contact);
+            ciEntity.setClientContact(ContactDao.instance().findById(ci.getClientContact().getId()));
+    //        ciEntity.setClientContact(contact);
         }
         //Client Acct Pay Contact
         Set<Contact> newClientAPs = new HashSet();
@@ -413,8 +401,8 @@ public class ClientInformationService {
         if (ci.getClientLocation() == null) {
             ciEntity.setClientLocation(null);
         } else {
-            Address address = AddressDao.instance().findById(ci.getClientLocation().getId());
-            ciEntity.setClientLocation(address);
+            ciEntity.setClientLocation(AddressDao.instance().findById(ci.getClientLocation().getId()));
+   //         ciEntity.setClientLocation(address);
         }
         if (ci.getVendor() == null) {
             ciEntity.setVendor(null);
@@ -427,8 +415,8 @@ public class ClientInformationService {
             if (ci.getVendorContact() == null) {
                 ciEntity.setVendorContact(null);
             } else {
-                Contact contact = ContactDao.instance().findById(ci.getVendorContact().getId());
-                ciEntity.setVendorContact(contact);
+                ciEntity.setVendorContact(ContactDao.instance().findById(ci.getVendorContact().getId()));
+    //            ciEntity.setVendorContact(contact);
             }
             //Vendor Acct Pay Contact
             Set<Contact> newAPs = new HashSet();
@@ -450,8 +438,8 @@ public class ClientInformationService {
             if (ci.getVendorLocation() == null) {
                 ciEntity.setVendorLocation(null);
             } else {
-                Address address = AddressDao.instance().findById(ci.getVendorLocation().getId());
-                ciEntity.setVendorLocation(address);
+                ciEntity.setVendorLocation(AddressDao.instance().findById(ci.getVendorLocation().getId()));
+      //          ciEntity.setVendorLocation(address);
             }
         }
         if (ci.getEndDate() != null) {
@@ -468,15 +456,15 @@ public class ClientInformationService {
             if (ci.getSubcontractorContact() == null) {
                 ciEntity.setSubcontractorContact(null);
             } else {
-                Contact contact = ContactDao.instance().findById(ci.getSubcontractorContact().getId());
-                ciEntity.setSubcontractorContact(contact);
+                ciEntity.setSubcontractorContact(ContactDao.instance().findById(ci.getSubcontractorContact().getId()));
+    //            ciEntity.setSubcontractorContact(contact);
             }
             //Subcontractor location
             if (ci.getSubcontractorAddress() == null) {
                 ciEntity.setSubcontractorAddress(null);
             } else {
-                Address address = AddressDao.instance().findById(ci.getSubcontractorAddress().getId());
-                ciEntity.setSubcontractorAddress(address);
+                ciEntity.setSubcontractorAddress(AddressDao.instance().findById(ci.getSubcontractorAddress().getId()));
+      //          ciEntity.setSubcontractorAddress(address);
             }
         }
         Set<Employee> newRecs = new HashSet();
@@ -487,8 +475,8 @@ public class ClientInformationService {
         }
         ciEntity.setRecruiters(newRecs);
         if (ci.getPractice() != null) {
-            Practice practice = PracticeDao.instance().findById(ci.getPractice().getId());
-            ciEntity.setPractice(practice);
+            ciEntity.setPractice(PracticeDao.instance().findById(ci.getPractice().getId()));
+  //          ciEntity.setPractice(practice);
         }
         if (vendor != null) {
             project.setVendor(vendor);
@@ -521,7 +509,7 @@ public class ClientInformationService {
         ciEntity = clientInformationDao.save(ciEntity);
         if (ClientInformationStatus.PENDING_CONTRACTS_SUBMIT.equals(ci.getStatus()) && submitForApproval) {
             ciEntity.setStatus(ClientInformationStatus.PENDING_INVOICING_BILLING_APPROVAL);
-            ci.setBpmProcessId(startNewClientInfoProcess(ci));
+            ClientInformationProcessBean.instance().startNewClientInfoProcess(ci);
         }
         em.flush();
         ci = em.find(ClientInformation.class, ci.getId());

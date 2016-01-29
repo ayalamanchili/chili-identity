@@ -339,7 +339,7 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
 
     @Override
     protected boolean enableViewTasks() {
-        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN);
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING);
     }
 
     @Override
