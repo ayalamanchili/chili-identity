@@ -64,22 +64,6 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
         initReadComposite(entity, "ClientInfo", OfficeWelcome.constants);
     }
 
-//    public ReadClientInfoPanel(String id) {
-//        instance = this;
-//        initReadComposite(id, "ClientInfo", OfficeWelcome.constants);
-//    }
-//
-//    @Override
-//    public void loadEntity(String entityId) {
-//        HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
-//                new ALAsyncCallback<String>() {
-//            @Override
-//            public void onResponse(String response) {
-//                entity = (JSONObject) JSONParser.parseLenient(response);
-//                populateFieldsFromEntity(entity);
-//            }
-//        });
-//    }
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("consultantJobTitle", entity, DataType.STRING_FIELD);
@@ -339,7 +323,7 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
 
     @Override
     protected boolean enableViewTasks() {
-        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING);
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN);
     }
 
     @Override
