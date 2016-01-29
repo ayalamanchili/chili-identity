@@ -88,13 +88,13 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     protected void populateCIDocuments() {
         HttpService.HttpServiceAsync.instance().doGet(getDocumentUrl(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        logger.info("Response: " + response);
-                        JSONArray docs = JSONUtils.toJSONArray(JSONParser.parseLenient(response).isObject().get("ciDocument"));
-                        entityFieldsPanel.add(new ReadAllCiDocumentPanel(getEntityId(), docs));
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                logger.info("Response: " + response);
+                JSONArray docs = JSONUtils.toJSONArray(JSONParser.parseLenient(response).isObject().get("ciDocument"));
+                entityFieldsPanel.add(new ReadAllCiDocumentPanel(getEntityId(), docs));
+            }
+        });
     }
 
     protected String getDocumentUrl() {
@@ -182,16 +182,16 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        uploadDocuments(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                uploadDocuments(arg0);
+            }
+        });
 
     }
 
@@ -485,7 +485,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     public void onClick(ClickEvent event) {
         super.onClick(event);
         if (event.getSource().equals(updateBillingRateIcn)) {
-            new GenericPopup(new CreateUpdateBillingRatePanel(getEntityId(), getEntity())).show();
+            new GenericPopup(new CreateUpdateBillingRatePanel(getEntity(), getEntity())).show();
         }
         if (submitForApprovalF.getValue()) {
             setButtonText("Submit");
@@ -534,13 +534,13 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     public void loadVendor(String vendorEntityId) {
         HttpService.HttpServiceAsync.instance().doGet(getVendor(vendorEntityId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        JSONObject vendor = (JSONObject) JSONParser.parseLenient(response);
-                        TextAreaField payTermF = (TextAreaField) fields.get("vendorPaymentTerms");
-                        payTermF.setValue(JSONUtils.toString(vendor, "paymentTerms"));
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                JSONObject vendor = (JSONObject) JSONParser.parseLenient(response);
+                TextAreaField payTermF = (TextAreaField) fields.get("vendorPaymentTerms");
+                payTermF.setValue(JSONUtils.toString(vendor, "paymentTerms"));
+            }
+        });
     }
 
     protected String getVendor(String vendorEntityId) {

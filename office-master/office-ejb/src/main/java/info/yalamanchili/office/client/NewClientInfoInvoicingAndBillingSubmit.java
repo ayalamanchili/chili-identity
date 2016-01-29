@@ -10,6 +10,7 @@ package info.yalamanchili.office.client;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.entity.profile.ClientInformation;
+import info.yalamanchili.office.entity.profile.Contact;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
 import org.springframework.stereotype.Component;
@@ -62,7 +63,26 @@ public class NewClientInfoInvoicingAndBillingSubmit implements JavaDelegate {
             }
             execution.setVariable("clientInfo", ci);
             ci = dao.save(ci);
-            execution.setVariable("contractDto", ContractService.instance().mapClientInformation(ci));
+            StringBuilder cliAP = new StringBuilder();
+            StringBuilder venAP = new StringBuilder();
+            String clientAP = "";
+            String vendorAP = "";
+            for (Contact clientAPcontact : ci.getClientAPContacts()) {
+                cliAP.append(clientAPcontact.details());
+                cliAP.append(" ");
+            }
+            if (ci.getClientAPContacts() != null) {
+                clientAP = cliAP.toString().replaceAll("br/", "");
+            }
+            for (Contact vendorAPcontact : ci.getVendorAPContacts()) {
+                venAP.append(vendorAPcontact.details());
+                venAP.append(" ");
+            }
+            if (ci.getVendorAPContacts() != null) {
+                vendorAP = venAP.toString().replaceAll("br/", "");
+            }
+            execution.setVariable("clientAP", clientAP);
+            execution.setVariable("vendorAP", vendorAP);
         }
     }
 }

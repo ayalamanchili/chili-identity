@@ -14,7 +14,6 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DisclosurePanel;
-import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
@@ -45,15 +44,17 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
     public ReadAllUpdateBillingRatePanel() {
     }
 
-    public ReadAllUpdateBillingRatePanel(String parentId) {
+    static JSONObject clientInfo;
+
+    public ReadAllUpdateBillingRatePanel(JSONObject clientInfo) {
         instance = this;
-        this.parentId = parentId;
+        this.clientInfo = clientInfo;
         initTable("BillingRate", OfficeWelcome.constants);
     }
 
-    public ReadAllUpdateBillingRatePanel(String parentId, boolean isSubOr1099) {
+    public ReadAllUpdateBillingRatePanel(JSONObject clientInfo, boolean isSubOr1099) {
         instance = this;
-        this.parentId = parentId;
+        this.clientInfo = clientInfo;
         this.isSubOr1099 = isSubOr1099;
         initTable("BillingRate", OfficeWelcome.constants);
     }
@@ -76,18 +77,18 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        postDeleteSuccess();
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                postDeleteSuccess();
+            }
+        });
     }
 
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Billing Rate Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadClientInfoPanel(parentId));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadClientInfoPanel(clientInfo));
     }
 
     @Override
@@ -99,11 +100,11 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllURL(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        postFetchTable(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                postFetchTable(result);
+            }
+        });
     }
 
     @Override
@@ -172,7 +173,7 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
             @Override
             public void onOpen(OpenEvent<DisclosurePanel> event) {
                 billingRatesDP.setContent(
-                        new ReadAllUpdateBillingRatePanel(clientInfoId, isSubOr1099));
+                        new ReadAllUpdateBillingRatePanel(clientInfo, isSubOr1099));
 
             }
         });
@@ -186,7 +187,7 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
             @Override
             public void onOpen(OpenEvent<DisclosurePanel> event) {
                 billingRatesDP.setContent(
-                        new ReadAllUpdateBillingRatePanel(clientInfoId));
+                        new ReadAllUpdateBillingRatePanel(clientInfo));
 
             }
         });

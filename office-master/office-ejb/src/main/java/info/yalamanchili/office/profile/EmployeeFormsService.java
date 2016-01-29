@@ -51,9 +51,12 @@ public class EmployeeFormsService {
     public JoiningFormsDto getJoiningForm(Employee emp) {
         JoiningFormsDto dto = new JoiningFormsDto();
         dto.setEmployee(emp);
-        List<Address> listOfAddress = emp.getAddresss();
-        Address address = listOfAddress.get(0);
-        dto.setAddress(address);
+        // To avoid index 0, size 0 exception while invoking this method
+        if (emp.getAddresss().size() > 0) {
+            List<Address> listOfAddress = emp.getAddresss();
+            Address address = listOfAddress.get(0);
+            dto.setAddress(address);
+        }
         List<Dependent> dependent = DependentDao.instance().findAll(emp.getId(), emp.getClass().getCanonicalName());
         dto.setDependent(dependent);
         EmployeeAdditionalDetails empAddnlDetails = EmployeeAdditionalDetailsDao.instance().find(emp);

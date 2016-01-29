@@ -220,8 +220,8 @@ public class ClientInformationService {
             ClientInformationProcessBean.instance().startNewClientInfoProcess(ci);
         } else {
             ci.setStatus(ClientInformationStatus.PENDING_CONTRACTS_SUBMIT);
+            ci = em.merge(ci);
         }
-        ci = em.merge(ci);
 //        ciDto.setBpmProcessId(ci.getBpmProcessId());
         ciDto.setId(ci.getId());
         return mapper.map(ci, ClientInformationDto.class);
@@ -509,7 +509,7 @@ public class ClientInformationService {
         ciEntity = clientInformationDao.save(ciEntity);
         if (ClientInformationStatus.PENDING_CONTRACTS_SUBMIT.equals(ci.getStatus()) && submitForApproval) {
             ciEntity.setStatus(ClientInformationStatus.PENDING_INVOICING_BILLING_APPROVAL);
-            ClientInformationProcessBean.instance().startNewClientInfoProcess(ci);
+            ClientInformationProcessBean.instance().startNewClientInfoProcess(ciEntity);
         }
         em.flush();
         ci = em.find(ClientInformation.class, ci.getId());
