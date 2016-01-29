@@ -44,6 +44,7 @@ public class ClientInformationProcessBean {
         StringBuilder cliAP = new StringBuilder();
         String clientAP = "";
         String vendorAP = "";
+        String bpmProcessId = null;
         for (Contact clientAPcontact : ci.getClientAPContacts()) {
             cliAP.append(clientAPcontact.details());
             cliAP.append(" ");
@@ -64,10 +65,12 @@ public class ClientInformationProcessBean {
         vars.put("clientAP", clientAP);
         vars.put("vendorAP", vendorAP);
         vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
-        String bpmProcessId = OfficeBPMService.instance().startProcess("new_client_info_process", vars);
-        ClientInformation ciEntity = em.find(ClientInformation.class, ci.getId());
-        ciEntity.setBpmProcessId(bpmProcessId);
-        ClientInformationDao.instance().save(ciEntity);
+        bpmProcessId = OfficeBPMService.instance().startProcess("new_client_info_process", vars);
+        if (bpmProcessId != null && !bpmProcessId.isEmpty()) {
+            ClientInformation ciEntity = em.find(ClientInformation.class, ci.getId());
+            ciEntity.setBpmProcessId(bpmProcessId);
+            ClientInformationDao.instance().save(ciEntity);
+        }
     }
 
     public static ClientInformationProcessBean instance() {
