@@ -1636,11 +1636,20 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Check_payableTo_info();
 
   /**
-   * Translated "Client Contact".
+   * Translated "Client Account Payable Contact".
    * 
-   * @return translated "Client Contact"
+   * @return translated "Client Account Payable Contact"
    */
-  @DefaultStringValue("Client Contact")
+  @DefaultStringValue("Client Account Payable Contact")
+  @Key("ClientAcctPayContact_clientAcctPayContact")
+  String ClientAcctPayContact_clientAcctPayContact();
+
+  /**
+   * Translated "Client Recruiter".
+   * 
+   * @return translated "Client Recruiter"
+   */
+  @DefaultStringValue("Client Recruiter")
   @Key("ClientContact_clientContact")
   String ClientContact_clientContact();
 
@@ -1726,11 +1735,29 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String ClientInfo_ciPrimary_info();
 
   /**
-   * Translated "Client Contact".
+   * Translated "CPD Document".
    * 
-   * @return translated "Client Contact"
+   * @return translated "CPD Document"
    */
-  @DefaultStringValue("Client Contact")
+  @DefaultStringValue("CPD Document")
+  @Key("ClientInfo_cidocument")
+  String ClientInfo_cidocument();
+
+  /**
+   * Translated "CPD Document".
+   * 
+   * @return translated "CPD Document"
+   */
+  @DefaultStringValue("CPD Document")
+  @Key("ClientInfo_cidocument_info")
+  String ClientInfo_cidocument_info();
+
+  /**
+   * Translated "Client Recruiter".
+   * 
+   * @return translated "Client Recruiter"
+   */
+  @DefaultStringValue("Client Recruiter")
   @Key("ClientInfo_clientContact")
   String ClientInfo_clientContact();
 
@@ -1769,6 +1796,24 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Client Location of the client")
   @Key("ClientInfo_clientLocation_info")
   String ClientInfo_clientLocation_info();
+
+  /**
+   * Translated "Client Payment Terms".
+   * 
+   * @return translated "Client Payment Terms"
+   */
+  @DefaultStringValue("Client Payment Terms")
+  @Key("ClientInfo_clientPaymentTerms")
+  String ClientInfo_clientPaymentTerms();
+
+  /**
+   * Translated "Client Payment Terms".
+   * 
+   * @return translated "Client Payment Terms"
+   */
+  @DefaultStringValue("Client Payment Terms")
+  @Key("ClientInfo_clientPaymentTerms_info")
+  String ClientInfo_clientPaymentTerms_info();
 
   /**
    * Translated "Company".
@@ -1924,6 +1969,24 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String ClientInfo_invoiceFrequency();
 
   /**
+   * Translated "Invoice Frequency1099".
+   * 
+   * @return translated "Invoice Frequency1099"
+   */
+  @DefaultStringValue("Invoice Frequency1099")
+  @Key("ClientInfo_invoiceFrequency1099")
+  String ClientInfo_invoiceFrequency1099();
+
+  /**
+   * Translated "Invoice Frequency1099 of the client".
+   * 
+   * @return translated "Invoice Frequency1099 of the client"
+   */
+  @DefaultStringValue("Invoice Frequency1099 of the client")
+  @Key("ClientInfo_invoiceFrequency1099_info")
+  String ClientInfo_invoiceFrequency1099_info();
+
+  /**
    * Translated "Invoice Frequency of the client".
    * 
    * @return translated "Invoice Frequency of the client"
@@ -1949,6 +2012,24 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Is CPDFilled")
   @Key("ClientInfo_isCPDFilled_info")
   String ClientInfo_isCPDFilled_info();
+
+  /**
+   * Translated "Is EndDate Confirmed".
+   * 
+   * @return translated "Is EndDate Confirmed"
+   */
+  @DefaultStringValue("Is EndDate Confirmed")
+  @Key("ClientInfo_isEndDateConfirmed")
+  String ClientInfo_isEndDateConfirmed();
+
+  /**
+   * Translated "Is EndDate Confirmed".
+   * 
+   * @return translated "Is EndDate Confirmed"
+   */
+  @DefaultStringValue("Is EndDate Confirmed")
+  @Key("ClientInfo_isEndDateConfirmed_info")
+  String ClientInfo_isEndDateConfirmed_info();
 
   /**
    * Translated "Item Number".
@@ -2005,11 +2086,29 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String ClientInfo_logisticsPreparation_info();
 
   /**
-   * Translated "Contract Team Notes".
+   * Translated "Project Name".
    * 
-   * @return translated "Contract Team Notes"
+   * @return translated "Project Name"
    */
-  @DefaultStringValue("Contract Team Notes")
+  @DefaultStringValue("Project Name")
+  @Key("ClientInfo_name")
+  String ClientInfo_name();
+
+  /**
+   * Translated "Project Name".
+   * 
+   * @return translated "Project Name"
+   */
+  @DefaultStringValue("Project Name")
+  @Key("ClientInfo_name_info")
+  String ClientInfo_name_info();
+
+  /**
+   * Translated "Notes".
+   * 
+   * @return translated "Notes"
+   */
+  @DefaultStringValue("Notes")
   @Key("ClientInfo_notes")
   String ClientInfo_notes();
 
@@ -2023,74 +2122,74 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String ClientInfo_notes_info();
 
   /**
-   * Translated "Over Time Billing Rate".
+   * Translated "Overtime Billing Rate".
    * 
-   * @return translated "Over Time Billing Rate"
+   * @return translated "Overtime Billing Rate"
    */
-  @DefaultStringValue("Over Time Billing Rate")
+  @DefaultStringValue("Overtime Billing Rate")
   @Key("ClientInfo_overTimeBillingRate")
   String ClientInfo_overTimeBillingRate();
 
   /**
-   * Translated "Over Time Billing Rate of the client".
+   * Translated "Overtime Billing Rate of the client".
    * 
-   * @return translated "Over Time Billing Rate of the client"
+   * @return translated "Overtime Billing Rate of the client"
    */
-  @DefaultStringValue("Over Time Billing Rate of the client")
+  @DefaultStringValue("Overtime Billing Rate of the client")
   @Key("ClientInfo_overTimeBillingRate_info")
   String ClientInfo_overTimeBillingRate_info();
 
   /**
-   * Translated "Over Time PayRate".
+   * Translated "Overtime PayRate".
    * 
-   * @return translated "Over Time PayRate"
+   * @return translated "Overtime PayRate"
    */
-  @DefaultStringValue("Over Time PayRate")
+  @DefaultStringValue("Overtime PayRate")
   @Key("ClientInfo_overTimePayRate")
   String ClientInfo_overTimePayRate();
 
   /**
-   * Translated "Over Time PayRate of the client".
+   * Translated "Overtime PayRate of the client".
    * 
-   * @return translated "Over Time PayRate of the client"
+   * @return translated "Overtime PayRate of the client"
    */
-  @DefaultStringValue("Over Time PayRate of the client")
+  @DefaultStringValue("Overtime PayRate of the client")
   @Key("ClientInfo_overTimePayRate_info")
   String ClientInfo_overTimePayRate_info();
 
   /**
-   * Translated "OverTime PayRate1099".
+   * Translated "Overtime PayRate1099".
    * 
-   * @return translated "OverTime PayRate1099"
+   * @return translated "Overtime PayRate1099"
    */
-  @DefaultStringValue("OverTime PayRate1099")
+  @DefaultStringValue("Overtime PayRate1099")
   @Key("ClientInfo_overTimePayrate1099")
   String ClientInfo_overTimePayrate1099();
 
   /**
-   * Translated "OverTime PayRate1099 of the client".
+   * Translated "Overtime PayRate1099 of the client".
    * 
-   * @return translated "OverTime PayRate1099 of the client"
+   * @return translated "Overtime PayRate1099 of the client"
    */
-  @DefaultStringValue("OverTime PayRate1099 of the client")
+  @DefaultStringValue("Overtime PayRate1099 of the client")
   @Key("ClientInfo_overTimePayrate1099_info")
   String ClientInfo_overTimePayrate1099_info();
 
   /**
-   * Translated "Over Time Rate Duration".
+   * Translated "Overtime Rate Duration".
    * 
-   * @return translated "Over Time Rate Duration"
+   * @return translated "Overtime Rate Duration"
    */
-  @DefaultStringValue("Over Time Rate Duration")
+  @DefaultStringValue("Overtime Rate Duration")
   @Key("ClientInfo_overTimeRateDuration")
   String ClientInfo_overTimeRateDuration();
 
   /**
-   * Translated "Over Time Rate Duration of the client info".
+   * Translated "Overtime Rate Duration of the client info".
    * 
-   * @return translated "Over Time Rate Duration of the client info"
+   * @return translated "Overtime Rate Duration of the client info"
    */
-  @DefaultStringValue("Over Time Rate Duration of the client info")
+  @DefaultStringValue("Overtime Rate Duration of the client info")
   @Key("ClientInfo_overTimeRateDuration_info")
   String ClientInfo_overTimeRateDuration_info();
 
@@ -2257,20 +2356,20 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String ClientInfo_servicesAndPractices_info();
 
   /**
-   * Translated "Signed CopyOf WorkOrder".
+   * Translated "Signed Copy Of WorkOrder".
    * 
-   * @return translated "Signed CopyOf WorkOrder"
+   * @return translated "Signed Copy Of WorkOrder"
    */
-  @DefaultStringValue("Signed CopyOf WorkOrder")
+  @DefaultStringValue("Signed Copy Of WorkOrder")
   @Key("ClientInfo_signedCopyOfWorkOrder")
   String ClientInfo_signedCopyOfWorkOrder();
 
   /**
-   * Translated "Signed CopyOf WorkOrder of the client".
+   * Translated "Signed Copy Of WorkOrder of the client".
    * 
-   * @return translated "Signed CopyOf WorkOrder of the client"
+   * @return translated "Signed Copy Of WorkOrder of the client"
    */
-  @DefaultStringValue("Signed CopyOf WorkOrder of the client")
+  @DefaultStringValue("Signed Copy Of WorkOrder of the client")
   @Key("ClientInfo_signedCopyOfWorkOrder_info")
   String ClientInfo_signedCopyOfWorkOrder_info();
 
@@ -2329,11 +2428,11 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String ClientInfo_subContractorWorkOrderNo_info();
 
   /**
-   * Translated "Subcontractor certificate of insurance".
+   * Translated "SubContractor Certificate Of Insurance".
    * 
-   * @return translated "Subcontractor certificate of insurance"
+   * @return translated "SubContractor Certificate Of Insurance"
    */
-  @DefaultStringValue("Subcontractor certificate of insurance")
+  @DefaultStringValue("SubContractor Certificate Of Insurance")
   @Key("ClientInfo_subcontractCOI")
   String ClientInfo_subcontractCOI();
 
@@ -2347,92 +2446,92 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String ClientInfo_subcontractCOI_info();
 
   /**
-   * Translated "Subcontractor Overtime PayRate".
+   * Translated "SubContractor Overtime PayRate".
    * 
-   * @return translated "Subcontractor Overtime PayRate"
+   * @return translated "SubContractor Overtime PayRate"
    */
-  @DefaultStringValue("Subcontractor Overtime PayRate")
+  @DefaultStringValue("SubContractor Overtime PayRate")
   @Key("ClientInfo_subcontractorOvertimePayRate")
   String ClientInfo_subcontractorOvertimePayRate();
 
   /**
-   * Translated "Subcontractor Overtime PayRate of the client".
+   * Translated "SubContractor Overtime PayRate of the client".
    * 
-   * @return translated "Subcontractor Overtime PayRate of the client"
+   * @return translated "SubContractor Overtime PayRate of the client"
    */
-  @DefaultStringValue("Subcontractor Overtime PayRate of the client")
+  @DefaultStringValue("SubContractor Overtime PayRate of the client")
   @Key("ClientInfo_subcontractorOvertimePayRate_info")
   String ClientInfo_subcontractorOvertimePayRate_info();
 
   /**
-   * Translated "Subcontractor PayRate".
+   * Translated "SubContractor PayRate".
    * 
-   * @return translated "Subcontractor PayRate"
+   * @return translated "SubContractor PayRate"
    */
-  @DefaultStringValue("Subcontractor PayRate")
+  @DefaultStringValue("SubContractor PayRate")
   @Key("ClientInfo_subcontractorPayRate")
   String ClientInfo_subcontractorPayRate();
 
   /**
-   * Translated "Subcontractor PayRate of the client".
+   * Translated "SubContractor PayRate of the client".
    * 
-   * @return translated "Subcontractor PayRate of the client"
+   * @return translated "SubContractor PayRate of the client"
    */
-  @DefaultStringValue("Subcontractor PayRate of the client")
+  @DefaultStringValue("SubContractor PayRate of the client")
   @Key("ClientInfo_subcontractorPayRate_info")
   String ClientInfo_subcontractorPayRate_info();
 
   /**
-   * Translated "Subcontractor InvoiceFrequency".
+   * Translated "SubContractor Invoice Pattern".
    * 
-   * @return translated "Subcontractor InvoiceFrequency"
+   * @return translated "SubContractor Invoice Pattern"
    */
-  @DefaultStringValue("Subcontractor InvoiceFrequency")
+  @DefaultStringValue("SubContractor Invoice Pattern")
   @Key("ClientInfo_subcontractorinvoiceFrequency")
   String ClientInfo_subcontractorinvoiceFrequency();
 
   /**
-   * Translated "Subcontractor InvoiceFrequency of the client".
+   * Translated "SubContractor Invoice Pattern of the client".
    * 
-   * @return translated "Subcontractor InvoiceFrequency of the client"
+   * @return translated "SubContractor Invoice Pattern of the client"
    */
-  @DefaultStringValue("Subcontractor InvoiceFrequency of the client")
+  @DefaultStringValue("SubContractor Invoice Pattern of the client")
   @Key("ClientInfo_subcontractorinvoiceFrequency_info")
   String ClientInfo_subcontractorinvoiceFrequency_info();
 
   /**
-   * Translated "Subcontractor PaymentTerms".
+   * Translated "SubContractor Payment Terms".
    * 
-   * @return translated "Subcontractor PaymentTerms"
+   * @return translated "SubContractor Payment Terms"
    */
-  @DefaultStringValue("Subcontractor PaymentTerms")
+  @DefaultStringValue("SubContractor Payment Terms")
   @Key("ClientInfo_subcontractorpaymentTerms")
   String ClientInfo_subcontractorpaymentTerms();
 
   /**
-   * Translated "Subcontractor PaymentTerms of the client".
+   * Translated "SubContractor Payment Terms of the client".
    * 
-   * @return translated "Subcontractor PaymentTerms of the client"
+   * @return translated "SubContractor Payment Terms of the client"
    */
-  @DefaultStringValue("Subcontractor PaymentTerms of the client")
+  @DefaultStringValue("SubContractor Payment Terms of the client")
   @Key("ClientInfo_subcontractorpaymentTerms_info")
   String ClientInfo_subcontractorpaymentTerms_info();
 
   /**
-   * Translated "Subcontractor W9Filled".
+   * Translated "SubContractor W9Filled".
    * 
-   * @return translated "Subcontractor W9Filled"
+   * @return translated "SubContractor W9Filled"
    */
-  @DefaultStringValue("Subcontractor W9Filled")
+  @DefaultStringValue("SubContractor W9Filled")
   @Key("ClientInfo_subcontractorw4Filled")
   String ClientInfo_subcontractorw4Filled();
 
   /**
-   * Translated "Subcontractor W9Filled of the client".
+   * Translated "SubContractor W9Filled of the client".
    * 
-   * @return translated "Subcontractor W9Filled of the client"
+   * @return translated "SubContractor W9Filled of the client"
    */
-  @DefaultStringValue("Subcontractor W9Filled of the client")
+  @DefaultStringValue("SubContractor W9Filled of the client")
   @Key("ClientInfo_subcontractorw4Filled_info")
   String ClientInfo_subcontractorw4Filled_info();
 
@@ -2527,6 +2626,69 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String ClientInfo_w4Filled_info();
 
   /**
+   * Translated "Canceled".
+   * 
+   * @return translated "Canceled"
+   */
+  @DefaultStringValue("Canceled")
+  @Key("ClientInformationStatus_CANCELED")
+  String ClientInformationStatus_CANCELED();
+
+  /**
+   * Translated "Completed".
+   * 
+   * @return translated "Completed"
+   */
+  @DefaultStringValue("Completed")
+  @Key("ClientInformationStatus_COMPLETED")
+  String ClientInformationStatus_COMPLETED();
+
+  /**
+   * Translated "Pending Contracts Submit.".
+   * 
+   * @return translated "Pending Contracts Submit."
+   */
+  @DefaultStringValue("Pending Contracts Submit.")
+  @Key("ClientInformationStatus_PENDING_CONTRACTS_SUBMIT")
+  String ClientInformationStatus_PENDING_CONTRACTS_SUBMIT();
+
+  /**
+   * Translated "Pending HR Verification".
+   * 
+   * @return translated "Pending HR Verification"
+   */
+  @DefaultStringValue("Pending HR Verification")
+  @Key("ClientInformationStatus_PENDING_HR_VERIFICATION")
+  String ClientInformationStatus_PENDING_HR_VERIFICATION();
+
+  /**
+   * Translated "Pending Billing-Invoicing Approval".
+   * 
+   * @return translated "Pending Billing-Invoicing Approval"
+   */
+  @DefaultStringValue("Pending Billing-Invoicing Approval")
+  @Key("ClientInformationStatus_PENDING_INVOICING_BILLING_APPROVAL")
+  String ClientInformationStatus_PENDING_INVOICING_BILLING_APPROVAL();
+
+  /**
+   * Translated "Is EndDate Confirmed".
+   * 
+   * @return translated "Is EndDate Confirmed"
+   */
+  @DefaultStringValue("Is EndDate Confirmed")
+  @Key("ClientInformation_isEndDateConfirmed")
+  String ClientInformation_isEndDateConfirmed();
+
+  /**
+   * Translated "Is EndDate Confirmed".
+   * 
+   * @return translated "Is EndDate Confirmed"
+   */
+  @DefaultStringValue("Is EndDate Confirmed")
+  @Key("ClientInformation_isEndDateConfirmed_info")
+  String ClientInformation_isEndDateConfirmed_info();
+
+  /**
    * Translated "City".
    * 
    * @return translated "City"
@@ -2554,11 +2716,11 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String ClientLocation_clientLocation();
 
   /**
-   * Translated "ClientLocation of the client".
+   * Translated "Client Location of the client".
    * 
-   * @return translated "ClientLocation of the client"
+   * @return translated "Client Location of the client"
    */
-  @DefaultStringValue("ClientLocation of the client")
+  @DefaultStringValue("Client Location of the client")
   @Key("ClientLocation_clientLocation_info")
   String ClientLocation_clientLocation_info();
 
@@ -2653,6 +2815,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String ClientLocation_zip_info();
 
   /**
+   * Translated "City".
+   * 
+   * @return translated "City"
+   */
+  @DefaultStringValue("City")
+  @Key("Client_city")
+  String Client_city();
+
+  /**
    * Translated "Client".
    * 
    * @return translated "Client"
@@ -2741,6 +2912,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Payment Terms")
   @Key("Client_paymentTerms_info")
   String Client_paymentTerms_info();
+
+  /**
+   * Translated "State".
+   * 
+   * @return translated "State"
+   */
+  @DefaultStringValue("State")
+  @Key("Client_state")
+  String Client_state();
 
   /**
    * Translated "Website".
@@ -3463,6 +3643,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Contract_client();
 
   /**
+   * Translated "Client AP Contact".
+   * 
+   * @return translated "Client AP Contact"
+   */
+  @DefaultStringValue("Client AP Contact")
+  @Key("Contract_clientAPContact")
+  String Contract_clientAPContact();
+
+  /**
    * Translated "Client City".
    * 
    * @return translated "Client City"
@@ -3481,11 +3670,11 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Contract_clientCity_info();
 
   /**
-   * Translated "Client Contact".
+   * Translated "Client Recruiter".
    * 
-   * @return translated "Client Contact"
+   * @return translated "Client Recruiter"
    */
-  @DefaultStringValue("Client Contact")
+  @DefaultStringValue("Client Recruiter")
   @Key("Contract_clientContact")
   String Contract_clientContact();
 
@@ -3515,6 +3704,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Client Location of the client ")
   @Key("Contract_clientLocation_info")
   String Contract_clientLocation_info();
+
+  /**
+   * Translated "Client Payment Terms".
+   * 
+   * @return translated "Client Payment Terms"
+   */
+  @DefaultStringValue("Client Payment Terms")
+  @Key("Contract_clientPaymentTerms")
+  String Contract_clientPaymentTerms();
 
   /**
    * Translated "Project Name".
@@ -3562,20 +3760,38 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Contract_client_info();
 
   /**
-   * Translated "Consultant Job Title ".
+   * Translated "Company".
    * 
-   * @return translated "Consultant Job Title "
+   * @return translated "Company"
    */
-  @DefaultStringValue("Consultant Job Title ")
+  @DefaultStringValue("Company")
+  @Key("Contract_company")
+  String Contract_company();
+
+  /**
+   * Translated "Company info".
+   * 
+   * @return translated "Company info"
+   */
+  @DefaultStringValue("Company info")
+  @Key("Contract_company_info")
+  String Contract_company_info();
+
+  /**
+   * Translated "Job Title ".
+   * 
+   * @return translated "Job Title "
+   */
+  @DefaultStringValue("Job Title ")
   @Key("Contract_consultantJobTitle")
   String Contract_consultantJobTitle();
 
   /**
-   * Translated "Consultant Job Title of the client".
+   * Translated "Job Title of the consultant".
    * 
-   * @return translated "Consultant Job Title of the client"
+   * @return translated "Job Title of the consultant"
    */
-  @DefaultStringValue("Consultant Job Title of the client")
+  @DefaultStringValue("Job Title of the consultant")
   @Key("Contract_consultantJobTitle_info")
   String Contract_consultantJobTitle_info();
 
@@ -3589,22 +3805,22 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Contract_employee();
 
   /**
-   * Translated "Company".
+   * Translated "Employee Contact".
    * 
-   * @return translated "Company"
+   * @return translated "Employee Contact"
    */
-  @DefaultStringValue("Company")
-  @Key("Contract_employeeCompany")
-  String Contract_employeeCompany();
+  @DefaultStringValue("Employee Contact")
+  @Key("Contract_employeeDetails")
+  String Contract_employeeDetails();
 
   /**
-   * Translated "Company".
+   * Translated "Employee Contact".
    * 
-   * @return translated "Company"
+   * @return translated "Employee Contact"
    */
-  @DefaultStringValue("Company")
-  @Key("Contract_employeeCompany_info")
-  String Contract_employeeCompany_info();
+  @DefaultStringValue("Employee Contact")
+  @Key("Contract_employeeDetails_info")
+  String Contract_employeeDetails_info();
 
   /**
    * Translated "Employee First Name".
@@ -3661,22 +3877,31 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Contract_employee_info();
 
   /**
-   * Translated "Project To Date".
+   * Translated "Project EndDate".
    * 
-   * @return translated "Project To Date"
+   * @return translated "Project EndDate"
    */
-  @DefaultStringValue("Project To Date")
+  @DefaultStringValue("Project EndDate")
   @Key("Contract_endDate")
   String Contract_endDate();
 
   /**
-   * Translated "Project To Date".
+   * Translated "Project EndDate".
    * 
-   * @return translated "Project To Date"
+   * @return translated "Project EndDate"
    */
-  @DefaultStringValue("Project To Date")
+  @DefaultStringValue("Project EndDate")
   @Key("Contract_endDate_info")
   String Contract_endDate_info();
+
+  /**
+   * Translated "Final Billing Rate".
+   * 
+   * @return translated "Final Billing Rate"
+   */
+  @DefaultStringValue("Final Billing Rate")
+  @Key("Contract_finalBillingRate")
+  String Contract_finalBillingRate();
 
   /**
    * Translated "HR Orientation".
@@ -3733,20 +3958,38 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Contract_invoiceDeliveryMethod_info();
 
   /**
-   * Translated "Invoice Frequency".
+   * Translated "Invoice Pattern".
    * 
-   * @return translated "Invoice Frequency"
+   * @return translated "Invoice Pattern"
    */
-  @DefaultStringValue("Invoice Frequency")
+  @DefaultStringValue("Invoice Pattern")
   @Key("Contract_invoiceFrequency")
   String Contract_invoiceFrequency();
 
   /**
-   * Translated "Invoice Frequency of the client".
+   * Translated "Invoice Pattern 1099".
    * 
-   * @return translated "Invoice Frequency of the client"
+   * @return translated "Invoice Pattern 1099"
    */
-  @DefaultStringValue("Invoice Frequency of the client")
+  @DefaultStringValue("Invoice Pattern 1099")
+  @Key("Contract_invoiceFrequency1099")
+  String Contract_invoiceFrequency1099();
+
+  /**
+   * Translated "Invoice Pattern 1099".
+   * 
+   * @return translated "Invoice Pattern 1099"
+   */
+  @DefaultStringValue("Invoice Pattern 1099")
+  @Key("Contract_invoiceFrequency1099_info")
+  String Contract_invoiceFrequency1099_info();
+
+  /**
+   * Translated "Invoice Pattern of the client".
+   * 
+   * @return translated "Invoice Pattern of the client"
+   */
+  @DefaultStringValue("Invoice Pattern of the client")
   @Key("Contract_invoiceFrequency_info")
   String Contract_invoiceFrequency_info();
 
@@ -3823,11 +4066,11 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Contract_middleVendor_info();
 
   /**
-   * Translated "Contracts Team Comments".
+   * Translated "Notes".
    * 
-   * @return translated "Contracts Team Comments"
+   * @return translated "Notes"
    */
-  @DefaultStringValue("Contracts Team Comments")
+  @DefaultStringValue("Notes")
   @Key("Contract_notes")
   String Contract_notes();
 
@@ -3841,74 +4084,74 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Contract_notes_info();
 
   /**
-   * Translated "Over Time Billing Rate".
+   * Translated "Overtime Billing Rate".
    * 
-   * @return translated "Over Time Billing Rate"
+   * @return translated "Overtime Billing Rate"
    */
-  @DefaultStringValue("Over Time Billing Rate")
+  @DefaultStringValue("Overtime Billing Rate")
   @Key("Contract_overTimeBillingRate")
   String Contract_overTimeBillingRate();
 
   /**
-   * Translated "Over Time Billing Rate of the vendor".
+   * Translated "Overtime Billing Rate of the vendor".
    * 
-   * @return translated "Over Time Billing Rate of the vendor"
+   * @return translated "Overtime Billing Rate of the vendor"
    */
-  @DefaultStringValue("Over Time Billing Rate of the vendor")
+  @DefaultStringValue("Overtime Billing Rate of the vendor")
   @Key("Contract_overTimeBillingRate_info")
   String Contract_overTimeBillingRate_info();
 
   /**
-   * Translated "Over Time PayRate".
+   * Translated "Overtime Pay Rate".
    * 
-   * @return translated "Over Time PayRate"
+   * @return translated "Overtime Pay Rate"
    */
-  @DefaultStringValue("Over Time PayRate")
+  @DefaultStringValue("Overtime Pay Rate")
   @Key("Contract_overTimePayRate")
   String Contract_overTimePayRate();
 
   /**
-   * Translated "Over Time PayRate of the vendor".
+   * Translated "Overtime Pay Rate of the vendor".
    * 
-   * @return translated "Over Time PayRate of the vendor"
+   * @return translated "Overtime Pay Rate of the vendor"
    */
-  @DefaultStringValue("Over Time PayRate of the vendor")
+  @DefaultStringValue("Overtime Pay Rate of the vendor")
   @Key("Contract_overTimePayRate_info")
   String Contract_overTimePayRate_info();
 
   /**
-   * Translated "OverTime PayRate1099".
+   * Translated "Overtime Pay Rate 1099".
    * 
-   * @return translated "OverTime PayRate1099"
+   * @return translated "Overtime Pay Rate 1099"
    */
-  @DefaultStringValue("OverTime PayRate1099")
+  @DefaultStringValue("Overtime Pay Rate 1099")
   @Key("Contract_overTimePayrate1099")
   String Contract_overTimePayrate1099();
 
   /**
-   * Translated "OverTime PayRate1099 of the client".
+   * Translated "OverTime Pay Rate 1099 of the client".
    * 
-   * @return translated "OverTime PayRate1099 of the client"
+   * @return translated "OverTime Pay Rate 1099 of the client"
    */
-  @DefaultStringValue("OverTime PayRate1099 of the client")
+  @DefaultStringValue("OverTime Pay Rate 1099 of the client")
   @Key("Contract_overTimePayrate1099_info")
   String Contract_overTimePayrate1099_info();
 
   /**
-   * Translated "Over Time Rate Duration".
+   * Translated "Overtime Rate Duration".
    * 
-   * @return translated "Over Time Rate Duration"
+   * @return translated "Overtime Rate Duration"
    */
-  @DefaultStringValue("Over Time Rate Duration")
+  @DefaultStringValue("Overtime Rate Duration")
   @Key("Contract_overTimeRateDuration")
   String Contract_overTimeRateDuration();
 
   /**
-   * Translated "Over Time Rate Duration of the client ".
+   * Translated "Overtime Rate Duration of the client ".
    * 
-   * @return translated "Over Time Rate Duration of the client "
+   * @return translated "Overtime Rate Duration of the client "
    */
-  @DefaultStringValue("Over Time Rate Duration of the client ")
+  @DefaultStringValue("Overtime Rate Duration of the client ")
   @Key("Contract_overTimeRateDuration_info")
   String Contract_overTimeRateDuration_info();
 
@@ -3922,20 +4165,20 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Contract_payRate();
 
   /**
-   * Translated "PayRate1099 ".
+   * Translated "PayRate 1099 ".
    * 
-   * @return translated "PayRate1099 "
+   * @return translated "PayRate 1099 "
    */
-  @DefaultStringValue("PayRate1099 ")
+  @DefaultStringValue("PayRate 1099 ")
   @Key("Contract_payRate1099")
   String Contract_payRate1099();
 
   /**
-   * Translated "PayRate1099 of the client".
+   * Translated "PayRate 1099 of the client".
    * 
-   * @return translated "PayRate1099 of the client"
+   * @return translated "PayRate 1099 of the client"
    */
-  @DefaultStringValue("PayRate1099 of the client")
+  @DefaultStringValue("PayRate 1099 of the client")
   @Key("Contract_payRate1099_info")
   String Contract_payRate1099_info();
 
@@ -3949,40 +4192,58 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Contract_payRate_info();
 
   /**
-   * Translated "PayTime Duration1099".
+   * Translated "Pay Time Duration 1099".
    * 
-   * @return translated "PayTime Duration1099"
+   * @return translated "Pay Time Duration 1099"
    */
-  @DefaultStringValue("PayTime Duration1099")
+  @DefaultStringValue("Pay Time Duration 1099")
   @Key("Contract_payTimeDuration1099")
   String Contract_payTimeDuration1099();
 
   /**
-   * Translated "PayTime Duration1099 of the client".
+   * Translated "Pay Time Duration 1099 of the client".
    * 
-   * @return translated "PayTime Duration1099 of the client"
+   * @return translated "Pay Time Duration 1099 of the client"
    */
-  @DefaultStringValue("PayTime Duration1099 of the client")
+  @DefaultStringValue("Pay Time Duration 1099 of the client")
   @Key("Contract_payTimeDuration1099_info")
   String Contract_payTimeDuration1099_info();
 
   /**
-   * Translated "PaymentTerms1099".
+   * Translated "Payment Terms 1099".
    * 
-   * @return translated "PaymentTerms1099"
+   * @return translated "Payment Terms 1099"
    */
-  @DefaultStringValue("PaymentTerms1099")
+  @DefaultStringValue("Payment Terms 1099")
   @Key("Contract_paymentTerms1099")
   String Contract_paymentTerms1099();
 
   /**
-   * Translated "PaymentTerms1099 of the client".
+   * Translated "Payment Terms 1099 of the client".
    * 
-   * @return translated "PaymentTerms1099 of the client"
+   * @return translated "Payment Terms 1099 of the client"
    */
-  @DefaultStringValue("PaymentTerms1099 of the client")
+  @DefaultStringValue("Payment Terms 1099 of the client")
   @Key("Contract_paymentTerms1099_info")
   String Contract_paymentTerms1099_info();
+
+  /**
+   * Translated "Services And Practices".
+   * 
+   * @return translated "Services And Practices"
+   */
+  @DefaultStringValue("Services And Practices")
+  @Key("Contract_practice")
+  String Contract_practice();
+
+  /**
+   * Translated "Services And Practices".
+   * 
+   * @return translated "Services And Practices"
+   */
+  @DefaultStringValue("Services And Practices")
+  @Key("Contract_practice_info")
+  String Contract_practice_info();
 
   /**
    * Translated "Purchase OrderNo".
@@ -4021,6 +4282,24 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Contract_recruiter_info();
 
   /**
+   * Translated "Sectors And BUs".
+   * 
+   * @return translated "Sectors And BUs"
+   */
+  @DefaultStringValue("Sectors And BUs")
+  @Key("Contract_sectorsAndBUs")
+  String Contract_sectorsAndBUs();
+
+  /**
+   * Translated "Sectors And BUs".
+   * 
+   * @return translated "Sectors And BUs"
+   */
+  @DefaultStringValue("Sectors And BUs")
+  @Key("Contract_sectorsAndBUs_info")
+  String Contract_sectorsAndBUs_info();
+
+  /**
    * Translated "Signed Copy Of Work Order".
    * 
    * @return translated "Signed Copy Of Work Order"
@@ -4057,20 +4336,20 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Contract_specialInvoiceInstructions_info();
 
   /**
-   * Translated "Project From Date".
+   * Translated "Project StartDate".
    * 
-   * @return translated "Project From Date"
+   * @return translated "Project StartDate"
    */
-  @DefaultStringValue("Project From Date")
+  @DefaultStringValue("Project StartDate")
   @Key("Contract_startDate")
   String Contract_startDate();
 
   /**
-   * Translated "Project From Date ".
+   * Translated "Project StartDate ".
    * 
-   * @return translated "Project From Date "
+   * @return translated "Project StartDate "
    */
-  @DefaultStringValue("Project From Date ")
+  @DefaultStringValue("Project StartDate ")
   @Key("Contract_startDate_info")
   String Contract_startDate_info();
 
@@ -4093,38 +4372,47 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Contract_state_info();
 
   /**
-   * Translated "Sub Contractor Contact Name".
+   * Translated "Status".
    * 
-   * @return translated "Sub Contractor Contact Name"
+   * @return translated "Status"
    */
-  @DefaultStringValue("Sub Contractor Contact Name")
+  @DefaultStringValue("Status")
+  @Key("Contract_status")
+  String Contract_status();
+
+  /**
+   * Translated "SubContractor Contact".
+   * 
+   * @return translated "SubContractor Contact"
+   */
+  @DefaultStringValue("SubContractor Contact")
   @Key("Contract_subContractorContactName")
   String Contract_subContractorContactName();
 
   /**
-   * Translated "Sub Contractor Contact Name of the client".
+   * Translated "SubContractor Contact Name of the client".
    * 
-   * @return translated "Sub Contractor Contact Name of the client"
+   * @return translated "SubContractor Contact Name of the client"
    */
-  @DefaultStringValue("Sub Contractor Contact Name of the client")
+  @DefaultStringValue("SubContractor Contact Name of the client")
   @Key("Contract_subContractorContactName_info")
   String Contract_subContractorContactName_info();
 
   /**
-   * Translated "Sub Contractor Name".
+   * Translated "SubContractor Name".
    * 
-   * @return translated "Sub Contractor Name"
+   * @return translated "SubContractor Name"
    */
-  @DefaultStringValue("Sub Contractor Name")
+  @DefaultStringValue("SubContractor Name")
   @Key("Contract_subContractorName")
   String Contract_subContractorName();
 
   /**
-   * Translated "Sub Contractor Name of the client".
+   * Translated "SubContractor Name of the client".
    * 
-   * @return translated "Sub Contractor Name of the client"
+   * @return translated "SubContractor Name of the client"
    */
-  @DefaultStringValue("Sub Contractor Name of the client")
+  @DefaultStringValue("SubContractor Name of the client")
   @Key("Contract_subContractorName_info")
   String Contract_subContractorName_info();
 
@@ -4147,128 +4435,128 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Contract_subContractorWorkOrderNo_info();
 
   /**
-   * Translated "Subcontract certificate of insurance".
+   * Translated "SubContract certificate of insurance".
    * 
-   * @return translated "Subcontract certificate of insurance"
+   * @return translated "SubContract certificate of insurance"
    */
-  @DefaultStringValue("Subcontract certificate of insurance")
+  @DefaultStringValue("SubContract certificate of insurance")
   @Key("Contract_subcontractCOI")
   String Contract_subcontractCOI();
 
   /**
-   * Translated "Subcontract certificate of insurance of the client".
+   * Translated "SubContract certificate of insurance of the client".
    * 
-   * @return translated "Subcontract certificate of insurance of the client"
+   * @return translated "SubContract certificate of insurance of the client"
    */
-  @DefaultStringValue("Subcontract certificate of insurance of the client")
+  @DefaultStringValue("SubContract certificate of insurance of the client")
   @Key("Contract_subcontractCOI_info")
   String Contract_subcontractCOI_info();
 
   /**
-   * Translated "Subcontractor Address".
+   * Translated "SubContractor Address".
    * 
-   * @return translated "Subcontractor Address"
+   * @return translated "SubContractor Address"
    */
-  @DefaultStringValue("Subcontractor Address")
+  @DefaultStringValue("SubContractor Address")
   @Key("Contract_subcontractorAddress")
   String Contract_subcontractorAddress();
 
   /**
-   * Translated "Subcontractor Address of the contract info".
+   * Translated "SubContractor Address of the contract info".
    * 
-   * @return translated "Subcontractor Address of the contract info"
+   * @return translated "SubContractor Address of the contract info"
    */
-  @DefaultStringValue("Subcontractor Address of the contract info")
+  @DefaultStringValue("SubContractor Address of the contract info")
   @Key("Contract_subcontractorAddress_info")
   String Contract_subcontractorAddress_info();
 
   /**
-   * Translated "Subcontractor Overtime PayRate".
+   * Translated "SubContractor Overtime Pay".
    * 
-   * @return translated "Subcontractor Overtime PayRate"
+   * @return translated "SubContractor Overtime Pay"
    */
-  @DefaultStringValue("Subcontractor Overtime PayRate")
+  @DefaultStringValue("SubContractor Overtime Pay")
   @Key("Contract_subcontractorOvertimePayRate")
   String Contract_subcontractorOvertimePayRate();
 
   /**
-   * Translated "Subcontractor Overtime PayRate Contract info".
+   * Translated "SubContractor Overtime Pay Rate Contract info".
    * 
-   * @return translated "Subcontractor Overtime PayRate Contract info"
+   * @return translated "SubContractor Overtime Pay Rate Contract info"
    */
-  @DefaultStringValue("Subcontractor Overtime PayRate Contract info")
+  @DefaultStringValue("SubContractor Overtime Pay Rate Contract info")
   @Key("Contract_subcontractorOvertimePayRate_info")
   String Contract_subcontractorOvertimePayRate_info();
 
   /**
-   * Translated "Subcontractor PayRate".
+   * Translated "SubContractor Pay Rate".
    * 
-   * @return translated "Subcontractor PayRate"
+   * @return translated "SubContractor Pay Rate"
    */
-  @DefaultStringValue("Subcontractor PayRate")
+  @DefaultStringValue("SubContractor Pay Rate")
   @Key("Contract_subcontractorPayRate")
   String Contract_subcontractorPayRate();
 
   /**
-   * Translated "Subcontractor PayRate of the contract info".
+   * Translated "SubContractor Pay Rate of the contract info".
    * 
-   * @return translated "Subcontractor PayRate of the contract info"
+   * @return translated "SubContractor Pay Rate of the contract info"
    */
-  @DefaultStringValue("Subcontractor PayRate of the contract info")
+  @DefaultStringValue("SubContractor Pay Rate of the contract info")
   @Key("Contract_subcontractorPayRate_info")
   String Contract_subcontractorPayRate_info();
 
   /**
-   * Translated "Subcontractor InvoiceFrequency".
+   * Translated "SubContractor Invoice Pattern".
    * 
-   * @return translated "Subcontractor InvoiceFrequency"
+   * @return translated "SubContractor Invoice Pattern"
    */
-  @DefaultStringValue("Subcontractor InvoiceFrequency")
+  @DefaultStringValue("SubContractor Invoice Pattern")
   @Key("Contract_subcontractorinvoiceFrequency")
   String Contract_subcontractorinvoiceFrequency();
 
   /**
-   * Translated "Subcontractor InvoiceFrequency of the client".
+   * Translated "SubContractor Invoice Pattern of the client".
    * 
-   * @return translated "Subcontractor InvoiceFrequency of the client"
+   * @return translated "SubContractor Invoice Pattern of the client"
    */
-  @DefaultStringValue("Subcontractor InvoiceFrequency of the client")
+  @DefaultStringValue("SubContractor Invoice Pattern of the client")
   @Key("Contract_subcontractorinvoiceFrequency_info")
   String Contract_subcontractorinvoiceFrequency_info();
 
   /**
-   * Translated "Subcontractor PaymentTerms".
+   * Translated "SubContractor Payment Terms".
    * 
-   * @return translated "Subcontractor PaymentTerms"
+   * @return translated "SubContractor Payment Terms"
    */
-  @DefaultStringValue("Subcontractor PaymentTerms")
+  @DefaultStringValue("SubContractor Payment Terms")
   @Key("Contract_subcontractorpaymentTerms")
   String Contract_subcontractorpaymentTerms();
 
   /**
-   * Translated "Subcontractor PaymentTerms of the client".
+   * Translated "SubContractor Payment Terms of the client".
    * 
-   * @return translated "Subcontractor PaymentTerms of the client"
+   * @return translated "SubContractor Payment Terms of the client"
    */
-  @DefaultStringValue("Subcontractor PaymentTerms of the client")
+  @DefaultStringValue("SubContractor Payment Terms of the client")
   @Key("Contract_subcontractorpaymentTerms_info")
   String Contract_subcontractorpaymentTerms_info();
 
   /**
-   * Translated "Subcontractor W9Filled".
+   * Translated "SubContractor W9Filled".
    * 
-   * @return translated "Subcontractor W9Filled"
+   * @return translated "SubContractor W9Filled"
    */
-  @DefaultStringValue("Subcontractor W9Filled")
+  @DefaultStringValue("SubContractor W9Filled")
   @Key("Contract_subcontractorw4Filled")
   String Contract_subcontractorw4Filled();
 
   /**
-   * Translated "Subcontractor W9Filled of the client".
+   * Translated "SubContractor W9Filled of the client".
    * 
-   * @return translated "Subcontractor W9Filled of the client"
+   * @return translated "SubContractor W9Filled of the client"
    */
-  @DefaultStringValue("Subcontractor W9Filled of the client")
+  @DefaultStringValue("SubContractor W9Filled of the client")
   @Key("Contract_subcontractorw4Filled_info")
   String Contract_subcontractorw4Filled_info();
 
@@ -4372,6 +4660,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Contract_vendorContact_info();
 
   /**
+   * Translated "Vendor Fees %".
+   * 
+   * @return translated "Vendor Fees %"
+   */
+  @DefaultStringValue("Vendor Fees %")
+  @Key("Contract_vendorFees")
+  String Contract_vendorFees();
+
+  /**
    * Translated "Vendor Location".
    * 
    * @return translated "Vendor Location"
@@ -4388,6 +4685,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Vendor Location of the vendor")
   @Key("Contract_vendorLocation_info")
   String Contract_vendorLocation_info();
+
+  /**
+   * Translated "Vendor Payment Terms".
+   * 
+   * @return translated "Vendor Payment Terms"
+   */
+  @DefaultStringValue("Vendor Payment Terms")
+  @Key("Contract_vendorPaymentTerms")
+  String Contract_vendorPaymentTerms();
 
   /**
    * Translated "Vendor Recruiter".
@@ -5812,6 +6118,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Employee_achBlocked_info();
 
   /**
+   * Translated "Assigned To".
+   * 
+   * @return translated "Assigned To"
+   */
+  @DefaultStringValue("Assigned To")
+  @Key("Employee_assignedTo")
+  String Employee_assignedTo();
+
+  /**
    * Translated "Account Number".
    * 
    * @return translated "Account Number"
@@ -7153,6 +7468,24 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String ExpenseReport_expenseReimbursePaymentMode_info();
 
   /**
+   * Translated "Expense Report Number".
+   * 
+   * @return translated "Expense Report Number"
+   */
+  @DefaultStringValue("Expense Report Number")
+  @Key("ExpenseReport_expenseReportNumber")
+  String ExpenseReport_expenseReportNumber();
+
+  /**
+   * Translated "Expense Report Number".
+   * 
+   * @return translated "Expense Report Number"
+   */
+  @DefaultStringValue("Expense Report Number")
+  @Key("ExpenseReport_expenseReportNumber_info")
+  String ExpenseReport_expenseReportNumber_info();
+
+  /**
    * Translated "Expense Reports".
    * 
    * @return translated "Expense Reports"
@@ -7279,15 +7612,6 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String ExpenseReport_startDate_info();
 
   /**
-   * Translated "Status".
-   * 
-   * @return translated "Status"
-   */
-  @DefaultStringValue("Status")
-  @Key("ExpenseReport_status")
-  String ExpenseReport_status();
-
-  /**
    * Translated "Submit For Approval".
    * 
    * @return translated "Submit For Approval"
@@ -7331,6 +7655,51 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Employee")
   @Key("ExpenseReports_employee")
   String ExpenseReports_employee();
+
+  /**
+   * Translated "Employee First Name".
+   * 
+   * @return translated "Employee First Name"
+   */
+  @DefaultStringValue("Employee First Name")
+  @Key("ExpenseReports_employeeFirstName")
+  String ExpenseReports_employeeFirstName();
+
+  /**
+   * Translated "Employee First Name".
+   * 
+   * @return translated "Employee First Name"
+   */
+  @DefaultStringValue("Employee First Name")
+  @Key("ExpenseReports_employeeFirstName_info")
+  String ExpenseReports_employeeFirstName_info();
+
+  /**
+   * Translated "Employee Last Name".
+   * 
+   * @return translated "Employee Last Name"
+   */
+  @DefaultStringValue("Employee Last Name")
+  @Key("ExpenseReports_employeeLastName")
+  String ExpenseReports_employeeLastName();
+
+  /**
+   * Translated "Employee Last Name".
+   * 
+   * @return translated "Employee Last Name"
+   */
+  @DefaultStringValue("Employee Last Name")
+  @Key("ExpenseReports_employeeLastName_info")
+  String ExpenseReports_employeeLastName_info();
+
+  /**
+   * Translated "Status".
+   * 
+   * @return translated "Status"
+   */
+  @DefaultStringValue("Status")
+  @Key("ExpenseReports_status")
+  String ExpenseReports_status();
 
   /**
    * Translated "Amount".
@@ -8600,6 +8969,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Not Required")
   @Key("InvoiceFrequency_NOT_REQUIRED")
   String InvoiceFrequency_NOT_REQUIRED();
+
+  /**
+   * Translated "Scheduled".
+   * 
+   * @return translated "Scheduled"
+   */
+  @DefaultStringValue("Scheduled")
+  @Key("InvoiceFrequency_SCHEDULED")
+  String InvoiceFrequency_SCHEDULED();
 
   /**
    * Translated "Semi-Monthly".
@@ -10015,6 +10393,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String ProspectStatus_NEW();
 
   /**
+   * Translated "Assigned To".
+   * 
+   * @return translated "Assigned To"
+   */
+  @DefaultStringValue("Assigned To")
+  @Key("Prospect_assignedTo")
+  String Prospect_assignedTo();
+
+  /**
    * Translated "City".
    * 
    * @return translated "City"
@@ -10033,6 +10420,24 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Prospect_city_info();
 
   /**
+   * Translated "Comment".
+   * 
+   * @return translated "Comment"
+   */
+  @DefaultStringValue("Comment")
+  @Key("Prospect_comment")
+  String Prospect_comment();
+
+  /**
+   * Translated "Comment".
+   * 
+   * @return translated "Comment"
+   */
+  @DefaultStringValue("Comment")
+  @Key("Prospect_comment_info")
+  String Prospect_comment_info();
+
+  /**
    * Translated "Country".
    * 
    * @return translated "Country"
@@ -10040,6 +10445,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Country")
   @Key("Prospect_country")
   String Prospect_country();
+
+  /**
+   * Translated "Country code".
+   * 
+   * @return translated "Country code"
+   */
+  @DefaultStringValue("Country code")
+  @Key("Prospect_countryCode")
+  String Prospect_countryCode();
 
   /**
    * Translated "Country".
@@ -10069,6 +10483,24 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Prospect_dateOfBirth_info();
 
   /**
+   * Translated "Date Of Joining".
+   * 
+   * @return translated "Date Of Joining"
+   */
+  @DefaultStringValue("Date Of Joining")
+  @Key("Prospect_dateOfJoining")
+  String Prospect_dateOfJoining();
+
+  /**
+   * Translated "Date Of Joining".
+   * 
+   * @return translated "Date Of Joining"
+   */
+  @DefaultStringValue("Date Of Joining")
+  @Key("Prospect_dateOfJoining_info")
+  String Prospect_dateOfJoining_info();
+
+  /**
    * Translated "Email".
    * 
    * @return translated "Email"
@@ -10085,6 +10517,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Email")
   @Key("Prospect_email_info")
   String Prospect_email_info();
+
+  /**
+   * Translated "Extension".
+   * 
+   * @return translated "Extension"
+   */
+  @DefaultStringValue("Extension")
+  @Key("Prospect_extension")
+  String Prospect_extension();
 
   /**
    * Translated "First Name".
@@ -10105,6 +10546,24 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Prospect_firstName_info();
 
   /**
+   * Translated "Joining Date From".
+   * 
+   * @return translated "Joining Date From"
+   */
+  @DefaultStringValue("Joining Date From")
+  @Key("Prospect_joiningDateFrom")
+  String Prospect_joiningDateFrom();
+
+  /**
+   * Translated "Joining Date To".
+   * 
+   * @return translated "Joining Date To"
+   */
+  @DefaultStringValue("Joining Date To")
+  @Key("Prospect_joiningDateTo")
+  String Prospect_joiningDateTo();
+
+  /**
    * Translated "Last Name".
    * 
    * @return translated "Last Name"
@@ -10123,6 +10582,24 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Prospect_lastName_info();
 
   /**
+   * Translated "Petition Filed For".
+   * 
+   * @return translated "Petition Filed For"
+   */
+  @DefaultStringValue("Petition Filed For")
+  @Key("Prospect_petitionFiledFor")
+  String Prospect_petitionFiledFor();
+
+  /**
+   * Translated "Petition Filed For".
+   * 
+   * @return translated "Petition Filed For"
+   */
+  @DefaultStringValue("Petition Filed For")
+  @Key("Prospect_petitionFiledFor_info")
+  String Prospect_petitionFiledFor_info();
+
+  /**
    * Translated "Phone Number".
    * 
    * @return translated "Phone Number"
@@ -10139,6 +10616,24 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Phone Number")
   @Key("Prospect_phoneNumber_info")
   String Prospect_phoneNumber_info();
+
+  /**
+   * Translated "Placed By".
+   * 
+   * @return translated "Placed By"
+   */
+  @DefaultStringValue("Placed By")
+  @Key("Prospect_placedBy")
+  String Prospect_placedBy();
+
+  /**
+   * Translated "Placed By".
+   * 
+   * @return translated "Placed By"
+   */
+  @DefaultStringValue("Placed By")
+  @Key("Prospect_placedBy_info")
+  String Prospect_placedBy_info();
 
   /**
    * Translated "Process Doc Sent Date".
@@ -10319,6 +10814,24 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Street2")
   @Key("Prospect_street2_info")
   String Prospect_street2_info();
+
+  /**
+   * Translated "Transfer Employee Type".
+   * 
+   * @return translated "Transfer Employee Type"
+   */
+  @DefaultStringValue("Transfer Employee Type")
+  @Key("Prospect_trfEmpType")
+  String Prospect_trfEmpType();
+
+  /**
+   * Translated "Transfer Employee Type".
+   * 
+   * @return translated "Transfer Employee Type"
+   */
+  @DefaultStringValue("Transfer Employee Type")
+  @Key("Prospect_trfEmpType_info")
+  String Prospect_trfEmpType_info();
 
   /**
    * Translated "Zip".
@@ -10744,15 +11257,6 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Role_ROLE_ACCOUNTS_RECEIVABLE();
 
   /**
-   * Translated "Account View".
-   * 
-   * @return translated "Account View"
-   */
-  @DefaultStringValue("Account View")
-  @Key("Role_ROLE_ACCOUNT_VIEW")
-  String Role_ROLE_ACCOUNT_VIEW();
-
-  /**
    * Translated "Admin".
    * 
    * @return translated "Admin"
@@ -10771,13 +11275,22 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Role_ROLE_BACKGROUND_SCREENING_MGR();
 
   /**
-   * Translated "Billing".
+   * Translated "Billing Admin".
    * 
-   * @return translated "Billing"
+   * @return translated "Billing Admin"
    */
-  @DefaultStringValue("Billing")
-  @Key("Role_ROLE_BILLING")
-  String Role_ROLE_BILLING();
+  @DefaultStringValue("Billing Admin")
+  @Key("Role_ROLE_BILLING_ADMIN")
+  String Role_ROLE_BILLING_ADMIN();
+
+  /**
+   * Translated "Billing and Invoicing Team".
+   * 
+   * @return translated "Billing and Invoicing Team"
+   */
+  @DefaultStringValue("Billing and Invoicing Team")
+  @Key("Role_ROLE_BILLING_AND_INVOICING")
+  String Role_ROLE_BILLING_AND_INVOICING();
 
   /**
    * Translated "BIS View".
@@ -10834,6 +11347,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Role_ROLE_CONSULTANT_TIME_REPORTS();
 
   /**
+   * Translated "Contracts".
+   * 
+   * @return translated "Contracts"
+   */
+  @DefaultStringValue("Contracts")
+  @Key("Role_ROLE_CONTRACTS")
+  String Role_ROLE_CONTRACTS();
+
+  /**
    * Translated "Contracts Administration".
    * 
    * @return translated "Contracts Administration"
@@ -10841,6 +11363,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Contracts Administration")
   @Key("Role_ROLE_CONTRACTS_ADMIN")
   String Role_ROLE_CONTRACTS_ADMIN();
+
+  /**
+   * Translated "Contracts Full View".
+   * 
+   * @return translated "Contracts Full View"
+   */
+  @DefaultStringValue("Contracts Full View")
+  @Key("Role_ROLE_CONTRACTS_FULL_VIEW")
+  String Role_ROLE_CONTRACTS_FULL_VIEW();
 
   /**
    * Translated "Corporate Data".
@@ -10967,15 +11498,6 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Information Technology")
   @Key("Role_ROLE_INFORMATION_TECHNOLOGY")
   String Role_ROLE_INFORMATION_TECHNOLOGY();
-
-  /**
-   * Translated "Invoicing".
-   * 
-   * @return translated "Invoicing"
-   */
-  @DefaultStringValue("Invoicing")
-  @Key("Role_ROLE_INVOICING")
-  String Role_ROLE_INVOICING();
 
   /**
    * Translated "IT Developer".
@@ -12049,20 +12571,20 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String StatusReport_submittedDate_info();
 
   /**
-   * Translated "Sub Contractor Contact".
+   * Translated "SubContractor Contact".
    * 
-   * @return translated "Sub Contractor Contact"
+   * @return translated "SubContractor Contact"
    */
-  @DefaultStringValue("Sub Contractor Contact")
+  @DefaultStringValue("SubContractor Contact")
   @Key("SubcontractorContact_subcontractorContact")
   String SubcontractorContact_subcontractorContact();
 
   /**
-   * Translated "Sub Contractor Contact of the client".
+   * Translated "SubContractor Contact of the client".
    * 
-   * @return translated "Sub Contractor Contact of the client"
+   * @return translated "SubContractor Contact of the client"
    */
-  @DefaultStringValue("Sub Contractor Contact of the client")
+  @DefaultStringValue("SubContractor Contact of the client")
   @Key("SubcontractorContact_subcontractorContact_info")
   String SubcontractorContact_subcontractorContact_info();
 
@@ -12175,20 +12697,20 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String SubcontractorLocation_zip_info();
 
   /**
-   * Translated "Subcontractor Location".
+   * Translated "SubContractor Location".
    * 
-   * @return translated "Subcontractor Location"
+   * @return translated "SubContractor Location"
    */
-  @DefaultStringValue("Subcontractor Location")
+  @DefaultStringValue("SubContractor Location")
   @Key("SubcontractorLocation_subcontractorLocation")
   String SubcontractorLocation_subcontractorLocation();
 
   /**
-   * Translated "Subcontractor Location of the client".
+   * Translated "SubContractor Location of the client".
    * 
-   * @return translated "Subcontractor Location of the client"
+   * @return translated "SubContractor Location of the client"
    */
-  @DefaultStringValue("Subcontractor Location of the client")
+  @DefaultStringValue("SubContractor Location of the client")
   @Key("SubcontractorLocation_subcontractorLocation_info")
   String SubcontractorLocation_subcontractorLocation_info();
 
@@ -12209,6 +12731,24 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Subcontractor Location ")
   @Key("SubcontractorLocation_vendorLocation_info")
   String SubcontractorLocation_vendorLocation_info();
+
+  /**
+   * Translated "COI EndDate".
+   * 
+   * @return translated "COI EndDate"
+   */
+  @DefaultStringValue("COI EndDate")
+  @Key("Subcontractor_coiEndDate")
+  String Subcontractor_coiEndDate();
+
+  /**
+   * Translated "COI EndDate".
+   * 
+   * @return translated "COI EndDate"
+   */
+  @DefaultStringValue("COI EndDate")
+  @Key("Subcontractor_coiEndDate_info")
+  String Subcontractor_coiEndDate_info();
 
   /**
    * Translated "Description".
@@ -12247,11 +12787,11 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Subcontractor_name_info();
 
   /**
-   * Translated "Sub Contractor".
+   * Translated "SubContractor".
    * 
-   * @return translated "Sub Contractor"
+   * @return translated "SubContractor"
    */
-  @DefaultStringValue("Sub Contractor")
+  @DefaultStringValue("SubContractor")
   @Key("Subcontractor_subcontractor")
   String Subcontractor_subcontractor();
 
@@ -13777,6 +14317,24 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String TravelType_OUT_OF_STATE();
 
   /**
+   * Translated "InvoiceFrequency".
+   * 
+   * @return translated "InvoiceFrequency"
+   */
+  @DefaultStringValue("InvoiceFrequency")
+  @Key("UpdateBillingRate_billingInvoiceFrequency")
+  String UpdateBillingRate_billingInvoiceFrequency();
+
+  /**
+   * Translated "InvoiceFrequency".
+   * 
+   * @return translated "InvoiceFrequency"
+   */
+  @DefaultStringValue("InvoiceFrequency")
+  @Key("UpdateBillingRate_billingInvoiceFrequency_info")
+  String UpdateBillingRate_billingInvoiceFrequency_info();
+
+  /**
    * Translated "Billing Rate".
    * 
    * @return translated "Billing Rate"
@@ -13813,38 +14371,38 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String UpdateBillingRate_effectiveDate_info();
 
   /**
-   * Translated "Over Time Billing  Rate ".
+   * Translated "Overtime Billing  Rate ".
    * 
-   * @return translated "Over Time Billing  Rate "
+   * @return translated "Overtime Billing  Rate "
    */
-  @DefaultStringValue("Over Time Billing  Rate ")
+  @DefaultStringValue("Overtime Billing  Rate ")
   @Key("UpdateBillingRate_overTimeBillingRate")
   String UpdateBillingRate_overTimeBillingRate();
 
   /**
-   * Translated "Over Time Billing  Rate of the client".
+   * Translated "Overtime Billing  Rate of the client".
    * 
-   * @return translated "Over Time Billing  Rate of the client"
+   * @return translated "Overtime Billing  Rate of the client"
    */
-  @DefaultStringValue("Over Time Billing  Rate of the client")
+  @DefaultStringValue("Overtime Billing  Rate of the client")
   @Key("UpdateBillingRate_overTimeBillingRate_info")
   String UpdateBillingRate_overTimeBillingRate_info();
 
   /**
-   * Translated "Over Time Pay Rate".
+   * Translated "Overtime Pay Rate".
    * 
-   * @return translated "Over Time Pay Rate"
+   * @return translated "Overtime Pay Rate"
    */
-  @DefaultStringValue("Over Time Pay Rate")
+  @DefaultStringValue("Overtime Pay Rate")
   @Key("UpdateBillingRate_overTimePayRate")
   String UpdateBillingRate_overTimePayRate();
 
   /**
-   * Translated "Over Time Pay Rate of the client".
+   * Translated "Overtime Pay Rate of the client".
    * 
-   * @return translated "Over Time Pay Rate of the client"
+   * @return translated "Overtime Pay Rate of the client"
    */
-  @DefaultStringValue("Over Time Pay Rate of the client")
+  @DefaultStringValue("Overtime Pay Rate of the client")
   @Key("UpdateBillingRate_overTimePayRate_info")
   String UpdateBillingRate_overTimePayRate_info();
 
@@ -13865,6 +14423,60 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Updated pay rate")
   @Key("UpdateBillingRate_payRate_info")
   String UpdateBillingRate_payRate_info();
+
+  /**
+   * Translated "SubContractor InvoiceFrequency".
+   * 
+   * @return translated "SubContractor InvoiceFrequency"
+   */
+  @DefaultStringValue("SubContractor InvoiceFrequency")
+  @Key("UpdateBillingRate_subContractorInvoiceFrequency")
+  String UpdateBillingRate_subContractorInvoiceFrequency();
+
+  /**
+   * Translated "SubContractor InvoiceFrequency".
+   * 
+   * @return translated "SubContractor InvoiceFrequency"
+   */
+  @DefaultStringValue("SubContractor InvoiceFrequency")
+  @Key("UpdateBillingRate_subContractorInvoiceFrequency_info")
+  String UpdateBillingRate_subContractorInvoiceFrequency_info();
+
+  /**
+   * Translated "SubContractor Overtime PayRate ".
+   * 
+   * @return translated "SubContractor Overtime PayRate "
+   */
+  @DefaultStringValue("SubContractor Overtime PayRate ")
+  @Key("UpdateBillingRate_subContractorOverTimePayRate")
+  String UpdateBillingRate_subContractorOverTimePayRate();
+
+  /**
+   * Translated "SubContractor Overtime PayRate".
+   * 
+   * @return translated "SubContractor Overtime PayRate"
+   */
+  @DefaultStringValue("SubContractor Overtime PayRate")
+  @Key("UpdateBillingRate_subContractorOverTimePayRate_info")
+  String UpdateBillingRate_subContractorOverTimePayRate_info();
+
+  /**
+   * Translated "SubContractor PayRate".
+   * 
+   * @return translated "SubContractor PayRate"
+   */
+  @DefaultStringValue("SubContractor PayRate")
+  @Key("UpdateBillingRate_subContractorPayRate")
+  String UpdateBillingRate_subContractorPayRate();
+
+  /**
+   * Translated "SubContractor PayRate".
+   * 
+   * @return translated "SubContractor PayRate"
+   */
+  @DefaultStringValue("SubContractor PayRate")
+  @Key("UpdateBillingRate_subContractorPayRate_info")
+  String UpdateBillingRate_subContractorPayRate_info();
 
   /**
    * Translated "Vendor Account Payable Contact".
@@ -14227,6 +14839,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Vendor_vendor_info();
 
   /**
+   * Translated "Vendor City".
+   * 
+   * @return translated "Vendor City"
+   */
+  @DefaultStringValue("Vendor City")
+  @Key("Vendors_city")
+  String Vendors_city();
+
+  /**
    * Translated "Description".
    * 
    * @return translated "Description"
@@ -14279,6 +14900,42 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Payment Terms")
   @Key("Vendors_paymentTerms_info")
   String Vendors_paymentTerms_info();
+
+  /**
+   * Translated "Vendor State".
+   * 
+   * @return translated "Vendor State"
+   */
+  @DefaultStringValue("Vendor State")
+  @Key("Vendors_state")
+  String Vendors_state();
+
+  /**
+   * Translated "Vendor Fees %".
+   * 
+   * @return translated "Vendor Fees %"
+   */
+  @DefaultStringValue("Vendor Fees %")
+  @Key("Vendors_vendorFees")
+  String Vendors_vendorFees();
+
+  /**
+   * Translated "Vendor Fees %".
+   * 
+   * @return translated "Vendor Fees %"
+   */
+  @DefaultStringValue("Vendor Fees %")
+  @Key("Vendors_vendorFees_info")
+  String Vendors_vendorFees_info();
+
+  /**
+   * Translated "Name".
+   * 
+   * @return translated "Name"
+   */
+  @DefaultStringValue("Name")
+  @Key("Vendors_vendorName")
+  String Vendors_vendorName();
 
   /**
    * Translated "Vendor Type".
@@ -14387,6 +15044,177 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Purchasing Card")
   @Key("banquetExpensePaymentMode_PURCHASING_CARD")
   String banquetExpensePaymentMode_PURCHASING_CARD();
+
+  /**
+   * Translated "Bi-Weekly".
+   * 
+   * @return translated "Bi-Weekly"
+   */
+  @DefaultStringValue("Bi-Weekly")
+  @Key("billingInvoiceFrequency_BI_WEEKLY")
+  String billingInvoiceFrequency_BI_WEEKLY();
+
+  /**
+   * Translated "Monthly".
+   * 
+   * @return translated "Monthly"
+   */
+  @DefaultStringValue("Monthly")
+  @Key("billingInvoiceFrequency_MONTHLY")
+  String billingInvoiceFrequency_MONTHLY();
+
+  /**
+   * Translated "Monthly Every 4 Weeks".
+   * 
+   * @return translated "Monthly Every 4 Weeks"
+   */
+  @DefaultStringValue("Monthly Every 4 Weeks")
+  @Key("billingInvoiceFrequency_MONTHLY_EVERY_4_WEEKS")
+  String billingInvoiceFrequency_MONTHLY_EVERY_4_WEEKS();
+
+  /**
+   * Translated "Monthly First Sunday".
+   * 
+   * @return translated "Monthly First Sunday"
+   */
+  @DefaultStringValue("Monthly First Sunday")
+  @Key("billingInvoiceFrequency_MONTHLY_FIRST_SUNDAY")
+  String billingInvoiceFrequency_MONTHLY_FIRST_SUNDAY();
+
+  /**
+   * Translated "Monthly Last Friday".
+   * 
+   * @return translated "Monthly Last Friday"
+   */
+  @DefaultStringValue("Monthly Last Friday")
+  @Key("billingInvoiceFrequency_MONTHLY_LAST_FRIDAY")
+  String billingInvoiceFrequency_MONTHLY_LAST_FRIDAY();
+
+  /**
+   * Translated "Monthly Last Saturday".
+   * 
+   * @return translated "Monthly Last Saturday"
+   */
+  @DefaultStringValue("Monthly Last Saturday")
+  @Key("billingInvoiceFrequency_MONTHLY_LAST_SATURDAY")
+  String billingInvoiceFrequency_MONTHLY_LAST_SATURDAY();
+
+  /**
+   * Translated "Not Required".
+   * 
+   * @return translated "Not Required"
+   */
+  @DefaultStringValue("Not Required")
+  @Key("billingInvoiceFrequency_NOT_REQUIRED")
+  String billingInvoiceFrequency_NOT_REQUIRED();
+
+  /**
+   * Translated "Scheduled".
+   * 
+   * @return translated "Scheduled"
+   */
+  @DefaultStringValue("Scheduled")
+  @Key("billingInvoiceFrequency_SCHEDULED")
+  String billingInvoiceFrequency_SCHEDULED();
+
+  /**
+   * Translated "Semi-Monthly".
+   * 
+   * @return translated "Semi-Monthly"
+   */
+  @DefaultStringValue("Semi-Monthly")
+  @Key("billingInvoiceFrequency_SEMI_MONTHLY")
+  String billingInvoiceFrequency_SEMI_MONTHLY();
+
+  /**
+   * Translated "Weekly".
+   * 
+   * @return translated "Weekly"
+   */
+  @DefaultStringValue("Weekly")
+  @Key("billingInvoiceFrequency_WEEKLY")
+  String billingInvoiceFrequency_WEEKLY();
+
+  /**
+   * Translated "Weekly CSV Excel Sheet".
+   * 
+   * @return translated "Weekly CSV Excel Sheet"
+   */
+  @DefaultStringValue("Weekly CSV Excel Sheet")
+  @Key("billingInvoiceFrequency_WEEKLY_CSV_EXCEL_SHEET")
+  String billingInvoiceFrequency_WEEKLY_CSV_EXCEL_SHEET();
+
+  /**
+   * Translated "Weekly Ending Friday".
+   * 
+   * @return translated "Weekly Ending Friday"
+   */
+  @DefaultStringValue("Weekly Ending Friday")
+  @Key("billingInvoiceFrequency_WEEKLY_ENDING_FRIDAY")
+  String billingInvoiceFrequency_WEEKLY_ENDING_FRIDAY();
+
+  /**
+   * Translated "Weekly Ending Sunday".
+   * 
+   * @return translated "Weekly Ending Sunday"
+   */
+  @DefaultStringValue("Weekly Ending Sunday")
+  @Key("billingInvoiceFrequency_WEEKLY_ENDING_SUNDAY")
+  String billingInvoiceFrequency_WEEKLY_ENDING_SUNDAY();
+
+  /**
+   * Translated "Weekly Monday To Sunday".
+   * 
+   * @return translated "Weekly Monday To Sunday"
+   */
+  @DefaultStringValue("Weekly Monday To Sunday")
+  @Key("billingInvoiceFrequency_WEEKLY_MON_TO_SUN")
+  String billingInvoiceFrequency_WEEKLY_MON_TO_SUN();
+
+  /**
+   * Translated "Weekly To Be Uploaded".
+   * 
+   * @return translated "Weekly To Be Uploaded"
+   */
+  @DefaultStringValue("Weekly To Be Uploaded")
+  @Key("billingInvoiceFrequency_WEEKLY_TO_BE_UPLOADED")
+  String billingInvoiceFrequency_WEEKLY_TO_BE_UPLOADED();
+
+  /**
+   * Translated "Day".
+   * 
+   * @return translated "Day"
+   */
+  @DefaultStringValue("Day")
+  @Key("billingRateDuration_DAY")
+  String billingRateDuration_DAY();
+
+  /**
+   * Translated "Hour".
+   * 
+   * @return translated "Hour"
+   */
+  @DefaultStringValue("Hour")
+  @Key("billingRateDuration_HOUR")
+  String billingRateDuration_HOUR();
+
+  /**
+   * Translated "Month".
+   * 
+   * @return translated "Month"
+   */
+  @DefaultStringValue("Month")
+  @Key("billingRateDuration_MONTH")
+  String billingRateDuration_MONTH();
+
+  /**
+   * Translated "Week".
+   * 
+   * @return translated "Week"
+   */
+  @DefaultStringValue("Week")
+  @Key("billingRateDuration_WEEK")
+  String billingRateDuration_WEEK();
 
   /**
    * Translated "Amendment".
@@ -14578,6 +15406,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String clientinvFrequency_NOT_REQUIRED();
 
   /**
+   * Translated "Scheduled".
+   * 
+   * @return translated "Scheduled"
+   */
+  @DefaultStringValue("Scheduled")
+  @Key("clientinvFrequency_SCHEDULED")
+  String clientinvFrequency_SCHEDULED();
+
+  /**
    * Translated "Semi-Monthly".
    * 
    * @return translated "Semi-Monthly"
@@ -14639,6 +15476,78 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Weekly To Be Uploaded")
   @Key("clientinvFrequency_WEEKLY_TO_BE_UPLOADED")
   String clientinvFrequency_WEEKLY_TO_BE_UPLOADED();
+
+  /**
+   * Translated "ACO360".
+   * 
+   * @return translated "ACO360"
+   */
+  @DefaultStringValue("ACO360")
+  @Key("company_ACO360")
+  String company_ACO360();
+
+  /**
+   * Translated "CGS INC".
+   * 
+   * @return translated "CGS INC"
+   */
+  @DefaultStringValue("CGS INC")
+  @Key("company_CGS_INC")
+  String company_CGS_INC();
+
+  /**
+   * Translated "Capmark Solutions".
+   * 
+   * @return translated "Capmark Solutions"
+   */
+  @DefaultStringValue("Capmark Solutions")
+  @Key("company_CapMark_Solutions")
+  String company_CapMark_Solutions();
+
+  /**
+   * Translated "INC".
+   * 
+   * @return translated "INC"
+   */
+  @DefaultStringValue("INC")
+  @Key("company_SSTECH_INC")
+  String company_SSTECH_INC();
+
+  /**
+   * Translated "LLC".
+   * 
+   * @return translated "LLC"
+   */
+  @DefaultStringValue("LLC")
+  @Key("company_SSTECH_LLC")
+  String company_SSTECH_LLC();
+
+  /**
+   * Translated "SST Canada".
+   * 
+   * @return translated "SST Canada"
+   */
+  @DefaultStringValue("SST Canada")
+  @Key("company_SST_Canada")
+  String company_SST_Canada();
+
+  /**
+   * Translated "SST PVT".
+   * 
+   * @return translated "SST PVT"
+   */
+  @DefaultStringValue("SST PVT")
+  @Key("company_SST_PVT")
+  String company_SST_PVT();
+
+  /**
+   * Translated "Techpillars".
+   * 
+   * @return translated "Techpillars"
+   */
+  @DefaultStringValue("Techpillars")
+  @Key("company_Techpillars")
+  String company_Techpillars();
 
   /**
    * Translated "Employee Expense".
@@ -14857,6 +15766,150 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String invoiceDeliveryMethod_MANUAL();
 
   /**
+   * Translated "Upload".
+   * 
+   * @return translated "Upload"
+   */
+  @DefaultStringValue("Upload")
+  @Key("invoiceDeliveryMethod_UPLOAD")
+  String invoiceDeliveryMethod_UPLOAD();
+
+  /**
+   * Translated "Bi-Weekly".
+   * 
+   * @return translated "Bi-Weekly"
+   */
+  @DefaultStringValue("Bi-Weekly")
+  @Key("invoiceFrequency1099_BI_WEEKLY")
+  String invoiceFrequency1099_BI_WEEKLY();
+
+  /**
+   * Translated "Monthly".
+   * 
+   * @return translated "Monthly"
+   */
+  @DefaultStringValue("Monthly")
+  @Key("invoiceFrequency1099_MONTHLY")
+  String invoiceFrequency1099_MONTHLY();
+
+  /**
+   * Translated "Monthly Every 4 Weeks".
+   * 
+   * @return translated "Monthly Every 4 Weeks"
+   */
+  @DefaultStringValue("Monthly Every 4 Weeks")
+  @Key("invoiceFrequency1099_MONTHLY_EVERY_4_WEEKS")
+  String invoiceFrequency1099_MONTHLY_EVERY_4_WEEKS();
+
+  /**
+   * Translated "Monthly First Sunday".
+   * 
+   * @return translated "Monthly First Sunday"
+   */
+  @DefaultStringValue("Monthly First Sunday")
+  @Key("invoiceFrequency1099_MONTHLY_FIRST_SUNDAY")
+  String invoiceFrequency1099_MONTHLY_FIRST_SUNDAY();
+
+  /**
+   * Translated "Monthly Last Friday".
+   * 
+   * @return translated "Monthly Last Friday"
+   */
+  @DefaultStringValue("Monthly Last Friday")
+  @Key("invoiceFrequency1099_MONTHLY_LAST_FRIDAY")
+  String invoiceFrequency1099_MONTHLY_LAST_FRIDAY();
+
+  /**
+   * Translated "Monthly Last Saturday".
+   * 
+   * @return translated "Monthly Last Saturday"
+   */
+  @DefaultStringValue("Monthly Last Saturday")
+  @Key("invoiceFrequency1099_MONTHLY_LAST_SATURDAY")
+  String invoiceFrequency1099_MONTHLY_LAST_SATURDAY();
+
+  /**
+   * Translated "Not Required".
+   * 
+   * @return translated "Not Required"
+   */
+  @DefaultStringValue("Not Required")
+  @Key("invoiceFrequency1099_NOT_REQUIRED")
+  String invoiceFrequency1099_NOT_REQUIRED();
+
+  /**
+   * Translated "Scheduled".
+   * 
+   * @return translated "Scheduled"
+   */
+  @DefaultStringValue("Scheduled")
+  @Key("invoiceFrequency1099_SCHEDULED")
+  String invoiceFrequency1099_SCHEDULED();
+
+  /**
+   * Translated "Semi-Monthly".
+   * 
+   * @return translated "Semi-Monthly"
+   */
+  @DefaultStringValue("Semi-Monthly")
+  @Key("invoiceFrequency1099_SEMI_MONTHLY")
+  String invoiceFrequency1099_SEMI_MONTHLY();
+
+  /**
+   * Translated "Weekly".
+   * 
+   * @return translated "Weekly"
+   */
+  @DefaultStringValue("Weekly")
+  @Key("invoiceFrequency1099_WEEKLY")
+  String invoiceFrequency1099_WEEKLY();
+
+  /**
+   * Translated "Weekly CSV Excel Sheet".
+   * 
+   * @return translated "Weekly CSV Excel Sheet"
+   */
+  @DefaultStringValue("Weekly CSV Excel Sheet")
+  @Key("invoiceFrequency1099_WEEKLY_CSV_EXCEL_SHEET")
+  String invoiceFrequency1099_WEEKLY_CSV_EXCEL_SHEET();
+
+  /**
+   * Translated "Weekly Ending Friday".
+   * 
+   * @return translated "Weekly Ending Friday"
+   */
+  @DefaultStringValue("Weekly Ending Friday")
+  @Key("invoiceFrequency1099_WEEKLY_ENDING_FRIDAY")
+  String invoiceFrequency1099_WEEKLY_ENDING_FRIDAY();
+
+  /**
+   * Translated "Weekly Ending Sunday".
+   * 
+   * @return translated "Weekly Ending Sunday"
+   */
+  @DefaultStringValue("Weekly Ending Sunday")
+  @Key("invoiceFrequency1099_WEEKLY_ENDING_SUNDAY")
+  String invoiceFrequency1099_WEEKLY_ENDING_SUNDAY();
+
+  /**
+   * Translated "Weekly Monday To Sunday".
+   * 
+   * @return translated "Weekly Monday To Sunday"
+   */
+  @DefaultStringValue("Weekly Monday To Sunday")
+  @Key("invoiceFrequency1099_WEEKLY_MON_TO_SUN")
+  String invoiceFrequency1099_WEEKLY_MON_TO_SUN();
+
+  /**
+   * Translated "Weekly To Be Uploaded".
+   * 
+   * @return translated "Weekly To Be Uploaded"
+   */
+  @DefaultStringValue("Weekly To Be Uploaded")
+  @Key("invoiceFrequency1099_WEEKLY_TO_BE_UPLOADED")
+  String invoiceFrequency1099_WEEKLY_TO_BE_UPLOADED();
+
+  /**
    * Translated "Bi-Weekly".
    * 
    * @return translated "Bi-Weekly"
@@ -14918,6 +15971,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Not Required")
   @Key("invoiceFrequency_NOT_REQUIRED")
   String invoiceFrequency_NOT_REQUIRED();
+
+  /**
+   * Translated "Scheduled".
+   * 
+   * @return translated "Scheduled"
+   */
+  @DefaultStringValue("Scheduled")
+  @Key("invoiceFrequency_SCHEDULED")
+  String invoiceFrequency_SCHEDULED();
 
   /**
    * Translated "Semi-Monthly".
@@ -15008,6 +16070,123 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Purchasing Card")
   @Key("otherExpensePaymentMode_PURCHASING_CARD")
   String otherExpensePaymentMode_PURCHASING_CARD();
+
+  /**
+   * Translated "Day".
+   * 
+   * @return translated "Day"
+   */
+  @DefaultStringValue("Day")
+  @Key("overTimeRateDuration_DAY")
+  String overTimeRateDuration_DAY();
+
+  /**
+   * Translated "Hour".
+   * 
+   * @return translated "Hour"
+   */
+  @DefaultStringValue("Hour")
+  @Key("overTimeRateDuration_HOUR")
+  String overTimeRateDuration_HOUR();
+
+  /**
+   * Translated "Month".
+   * 
+   * @return translated "Month"
+   */
+  @DefaultStringValue("Month")
+  @Key("overTimeRateDuration_MONTH")
+  String overTimeRateDuration_MONTH();
+
+  /**
+   * Translated "Week".
+   * 
+   * @return translated "Week"
+   */
+  @DefaultStringValue("Week")
+  @Key("overTimeRateDuration_WEEK")
+  String overTimeRateDuration_WEEK();
+
+  /**
+   * Translated "Day".
+   * 
+   * @return translated "Day"
+   */
+  @DefaultStringValue("Day")
+  @Key("payTimeDuration1099_DAY")
+  String payTimeDuration1099_DAY();
+
+  /**
+   * Translated "Hour".
+   * 
+   * @return translated "Hour"
+   */
+  @DefaultStringValue("Hour")
+  @Key("payTimeDuration1099_HOUR")
+  String payTimeDuration1099_HOUR();
+
+  /**
+   * Translated "Month".
+   * 
+   * @return translated "Month"
+   */
+  @DefaultStringValue("Month")
+  @Key("payTimeDuration1099_MONTH")
+  String payTimeDuration1099_MONTH();
+
+  /**
+   * Translated "Week".
+   * 
+   * @return translated "Week"
+   */
+  @DefaultStringValue("Week")
+  @Key("payTimeDuration1099_WEEK")
+  String payTimeDuration1099_WEEK();
+
+  /**
+   * Translated "Client Project".
+   * 
+   * @return translated "Client Project"
+   */
+  @DefaultStringValue("Client Project")
+  @Key("petitionFiledFor_Client_Project")
+  String petitionFiledFor_Client_Project();
+
+  /**
+   * Translated "In House".
+   * 
+   * @return translated "In House"
+   */
+  @DefaultStringValue("In House")
+  @Key("petitionFiledFor_In_House")
+  String petitionFiledFor_In_House();
+
+  /**
+   * Translated "By Recruiter".
+   * 
+   * @return translated "By Recruiter"
+   */
+  @DefaultStringValue("By Recruiter")
+  @Key("placedBy_By_Recruiter")
+  String placedBy_By_Recruiter();
+
+  /**
+   * Translated "Solutions Team".
+   * 
+   * @return translated "Solutions Team"
+   */
+  @DefaultStringValue("Solutions Team")
+  @Key("placedBy_Corporate_Solutions_Team")
+  String placedBy_Corporate_Solutions_Team();
+
+  /**
+   * Translated "Own Placements".
+   * 
+   * @return translated "Own Placements"
+   */
+  @DefaultStringValue("Own Placements")
+  @Key("placedBy_Own_Placement")
+  String placedBy_Own_Placement();
 
   /**
    * Translated "Addresses".
@@ -15118,15 +16297,6 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String role_ROLE_ACCOUNTS_RECEIVABLE();
 
   /**
-   * Translated "Account View".
-   * 
-   * @return translated "Account View"
-   */
-  @DefaultStringValue("Account View")
-  @Key("role_ROLE_ACCOUNT_VIEW")
-  String role_ROLE_ACCOUNT_VIEW();
-
-  /**
    * Translated "Admin".
    * 
    * @return translated "Admin"
@@ -15145,13 +16315,22 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String role_ROLE_BACKGROUND_SCREENING_MGR();
 
   /**
-   * Translated "Billing".
+   * Translated "Billing Admin".
    * 
-   * @return translated "Billing"
+   * @return translated "Billing Admin"
    */
-  @DefaultStringValue("Billing")
-  @Key("role_ROLE_BILLING")
-  String role_ROLE_BILLING();
+  @DefaultStringValue("Billing Admin")
+  @Key("role_ROLE_BILLING_ADMIN")
+  String role_ROLE_BILLING_ADMIN();
+
+  /**
+   * Translated "Billing and Invoicing Team".
+   * 
+   * @return translated "Billing and Invoicing Team"
+   */
+  @DefaultStringValue("Billing and Invoicing Team")
+  @Key("role_ROLE_BILLING_AND_INVOICING")
+  String role_ROLE_BILLING_AND_INVOICING();
 
   /**
    * Translated "BIS View".
@@ -15208,6 +16387,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String role_ROLE_CONSULTANT_TIME_REPORTS();
 
   /**
+   * Translated "Contracts".
+   * 
+   * @return translated "Contracts"
+   */
+  @DefaultStringValue("Contracts")
+  @Key("role_ROLE_CONTRACTS")
+  String role_ROLE_CONTRACTS();
+
+  /**
    * Translated "Contracts Administration".
    * 
    * @return translated "Contracts Administration"
@@ -15215,6 +16403,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Contracts Administration")
   @Key("role_ROLE_CONTRACTS_ADMIN")
   String role_ROLE_CONTRACTS_ADMIN();
+
+  /**
+   * Translated "Contracts Full View".
+   * 
+   * @return translated "Contracts Full View"
+   */
+  @DefaultStringValue("Contracts Full View")
+  @Key("role_ROLE_CONTRACTS_FULL_VIEW")
+  String role_ROLE_CONTRACTS_FULL_VIEW();
 
   /**
    * Translated "Corporate Data".
@@ -15341,15 +16538,6 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Information Technology")
   @Key("role_ROLE_INFORMATION_TECHNOLOGY")
   String role_ROLE_INFORMATION_TECHNOLOGY();
-
-  /**
-   * Translated "Invoicing".
-   * 
-   * @return translated "Invoicing"
-   */
-  @DefaultStringValue("Invoicing")
-  @Key("role_ROLE_INVOICING")
-  String role_ROLE_INVOICING();
 
   /**
    * Translated "IT Developer".
@@ -15537,6 +16725,141 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
    * @return translated "Bi-Weekly"
    */
   @DefaultStringValue("Bi-Weekly")
+  @Key("subContractorInvoiceFrequency_BI_WEEKLY")
+  String subContractorInvoiceFrequency_BI_WEEKLY();
+
+  /**
+   * Translated "Monthly".
+   * 
+   * @return translated "Monthly"
+   */
+  @DefaultStringValue("Monthly")
+  @Key("subContractorInvoiceFrequency_MONTHLY")
+  String subContractorInvoiceFrequency_MONTHLY();
+
+  /**
+   * Translated "Monthly Every 4 Weeks".
+   * 
+   * @return translated "Monthly Every 4 Weeks"
+   */
+  @DefaultStringValue("Monthly Every 4 Weeks")
+  @Key("subContractorInvoiceFrequency_MONTHLY_EVERY_4_WEEKS")
+  String subContractorInvoiceFrequency_MONTHLY_EVERY_4_WEEKS();
+
+  /**
+   * Translated "Monthly First Sunday".
+   * 
+   * @return translated "Monthly First Sunday"
+   */
+  @DefaultStringValue("Monthly First Sunday")
+  @Key("subContractorInvoiceFrequency_MONTHLY_FIRST_SUNDAY")
+  String subContractorInvoiceFrequency_MONTHLY_FIRST_SUNDAY();
+
+  /**
+   * Translated "Monthly Last Friday".
+   * 
+   * @return translated "Monthly Last Friday"
+   */
+  @DefaultStringValue("Monthly Last Friday")
+  @Key("subContractorInvoiceFrequency_MONTHLY_LAST_FRIDAY")
+  String subContractorInvoiceFrequency_MONTHLY_LAST_FRIDAY();
+
+  /**
+   * Translated "Monthly Last Saturday".
+   * 
+   * @return translated "Monthly Last Saturday"
+   */
+  @DefaultStringValue("Monthly Last Saturday")
+  @Key("subContractorInvoiceFrequency_MONTHLY_LAST_SATURDAY")
+  String subContractorInvoiceFrequency_MONTHLY_LAST_SATURDAY();
+
+  /**
+   * Translated "Not Required".
+   * 
+   * @return translated "Not Required"
+   */
+  @DefaultStringValue("Not Required")
+  @Key("subContractorInvoiceFrequency_NOT_REQUIRED")
+  String subContractorInvoiceFrequency_NOT_REQUIRED();
+
+  /**
+   * Translated "Scheduled".
+   * 
+   * @return translated "Scheduled"
+   */
+  @DefaultStringValue("Scheduled")
+  @Key("subContractorInvoiceFrequency_SCHEDULED")
+  String subContractorInvoiceFrequency_SCHEDULED();
+
+  /**
+   * Translated "Semi-Monthly".
+   * 
+   * @return translated "Semi-Monthly"
+   */
+  @DefaultStringValue("Semi-Monthly")
+  @Key("subContractorInvoiceFrequency_SEMI_MONTHLY")
+  String subContractorInvoiceFrequency_SEMI_MONTHLY();
+
+  /**
+   * Translated "Weekly".
+   * 
+   * @return translated "Weekly"
+   */
+  @DefaultStringValue("Weekly")
+  @Key("subContractorInvoiceFrequency_WEEKLY")
+  String subContractorInvoiceFrequency_WEEKLY();
+
+  /**
+   * Translated "Weekly CSV Excel Sheet".
+   * 
+   * @return translated "Weekly CSV Excel Sheet"
+   */
+  @DefaultStringValue("Weekly CSV Excel Sheet")
+  @Key("subContractorInvoiceFrequency_WEEKLY_CSV_EXCEL_SHEET")
+  String subContractorInvoiceFrequency_WEEKLY_CSV_EXCEL_SHEET();
+
+  /**
+   * Translated "Weekly Ending Friday".
+   * 
+   * @return translated "Weekly Ending Friday"
+   */
+  @DefaultStringValue("Weekly Ending Friday")
+  @Key("subContractorInvoiceFrequency_WEEKLY_ENDING_FRIDAY")
+  String subContractorInvoiceFrequency_WEEKLY_ENDING_FRIDAY();
+
+  /**
+   * Translated "Weekly Ending Sunday".
+   * 
+   * @return translated "Weekly Ending Sunday"
+   */
+  @DefaultStringValue("Weekly Ending Sunday")
+  @Key("subContractorInvoiceFrequency_WEEKLY_ENDING_SUNDAY")
+  String subContractorInvoiceFrequency_WEEKLY_ENDING_SUNDAY();
+
+  /**
+   * Translated "Weekly Monday To Sunday".
+   * 
+   * @return translated "Weekly Monday To Sunday"
+   */
+  @DefaultStringValue("Weekly Monday To Sunday")
+  @Key("subContractorInvoiceFrequency_WEEKLY_MON_TO_SUN")
+  String subContractorInvoiceFrequency_WEEKLY_MON_TO_SUN();
+
+  /**
+   * Translated "Weekly To Be Uploaded".
+   * 
+   * @return translated "Weekly To Be Uploaded"
+   */
+  @DefaultStringValue("Weekly To Be Uploaded")
+  @Key("subContractorInvoiceFrequency_WEEKLY_TO_BE_UPLOADED")
+  String subContractorInvoiceFrequency_WEEKLY_TO_BE_UPLOADED();
+
+  /**
+   * Translated "Bi-Weekly".
+   * 
+   * @return translated "Bi-Weekly"
+   */
+  @DefaultStringValue("Bi-Weekly")
   @Key("subcontractorinvoiceFrequency_BI_WEEKLY")
   String subcontractorinvoiceFrequency_BI_WEEKLY();
 
@@ -15593,6 +16916,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Not Required")
   @Key("subcontractorinvoiceFrequency_NOT_REQUIRED")
   String subcontractorinvoiceFrequency_NOT_REQUIRED();
+
+  /**
+   * Translated "Scheduled".
+   * 
+   * @return translated "Scheduled"
+   */
+  @DefaultStringValue("Scheduled")
+  @Key("subcontractorinvoiceFrequency_SCHEDULED")
+  String subcontractorinvoiceFrequency_SCHEDULED();
 
   /**
    * Translated "Semi-Monthly".
@@ -15784,6 +17116,24 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String travelType_OUT_OF_STATE();
 
   /**
+   * Translated "Corporate Employee".
+   * 
+   * @return translated "Corporate Employee"
+   */
+  @DefaultStringValue("Corporate Employee")
+  @Key("trfEmpType_Corporate_Employee")
+  String trfEmpType_Corporate_Employee();
+
+  /**
+   * Translated "Associate Employee".
+   * 
+   * @return translated "Associate Employee"
+   */
+  @DefaultStringValue("Associate Employee")
+  @Key("trfEmpType_Field_Employee")
+  String trfEmpType_Field_Employee();
+
+  /**
    * Translated "Sub Contractor".
    * 
    * @return translated "Sub Contractor"
@@ -15872,6 +17222,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Not Required")
   @Key("vendorinvFrequency_NOT_REQUIRED")
   String vendorinvFrequency_NOT_REQUIRED();
+
+  /**
+   * Translated "Scheduled".
+   * 
+   * @return translated "Scheduled"
+   */
+  @DefaultStringValue("Scheduled")
+  @Key("vendorinvFrequency_SCHEDULED")
+  String vendorinvFrequency_SCHEDULED();
 
   /**
    * Translated "Semi-Monthly".
