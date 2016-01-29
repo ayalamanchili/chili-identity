@@ -193,6 +193,7 @@ public class EmployeeOnBoardingService {
             OfficeBPMIdentityService.instance().createUser(emp.getEmployeeId());
             Map<String, Object> obj = new HashMap<>();
             obj.put("entity", emp);
+            obj.put("address", emp.getAddresss().get(0));
             obj.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
             OfficeBPMService.instance().startProcess("on_boarding_employee_process", obj);
         }
@@ -206,11 +207,14 @@ public class EmployeeOnBoardingService {
             dependentDao.save(dependent, emp.getId(), emp.getClass().getCanonicalName());
         }
         //employee documents
-        for (EmployeeDocument empDoc : employee.getDocuments()) {
-            empDoc.setDocumentType(DocumentType.ON_BOARDING);
-            empDoc.setEmployee(emp);
-            empDoc.setId(employeeDocumentDao.save(empDoc).getId());
-        }
+            for (EmployeeDocument empDoc : employee.getDocuments()) {
+                //To avoid empty file uploaded to employee docs if employee doesn't upload any form while onboarding
+                if (empDoc.getFileUrl() != null) {
+                    empDoc.setDocumentType(DocumentType.ON_BOARDING);
+                    empDoc.setEmployee(emp);
+                    empDoc.setId(employeeDocumentDao.save(empDoc).getId());
+                }
+            }
         //Update Additional Information for Employee
         EmployeeAdditionalDetails employeeAdditionalDetails;
         employeeAdditionalDetails = employee.getEmployeeAdditionalDetails();
