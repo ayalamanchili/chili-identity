@@ -86,6 +86,14 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
         return clientInformationService.read(id);
     }
 
+    @PUT
+    @Path("/delete/{id}")
+    @CacheEvict(value = OfficeCacheKeys.CLIENTINFORMATION, allEntries = true)
+    @Override
+    public void delete(@PathParam("id") Long id) {
+        clientInformationService.delete(id);
+    }
+
     @GET
     @Path("/{id}")
     @Transactional(readOnly = true)

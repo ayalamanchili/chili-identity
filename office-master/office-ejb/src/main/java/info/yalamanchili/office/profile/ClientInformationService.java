@@ -10,6 +10,7 @@ package info.yalamanchili.office.profile;
 import com.google.common.base.Strings;
 import info.chili.commons.BeanMapper;
 import info.chili.service.jrs.exception.ServiceException;
+import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.client.ContractService;
 import info.yalamanchili.office.dao.client.ClientDao;
 import info.yalamanchili.office.dao.client.ProjectDao;
@@ -30,8 +31,6 @@ import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.client.Subcontractor;
 import info.yalamanchili.office.entity.client.Vendor;
-import info.yalamanchili.office.entity.practice.Practice;
-import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.BillingRate;
 import info.yalamanchili.office.entity.profile.CIDocument;
 import info.yalamanchili.office.entity.profile.ClientInformation;
@@ -92,11 +91,11 @@ public class ClientInformationService {
         ci.setClient(client);
         if (ci.getClientContact() != null) {
             ci.setClientContact(ContactDao.instance().findById(ci.getClientContact().getId()));
-     //       ci.setClientContact(contact);
+            //       ci.setClientContact(contact);
         }
         if (ci.getClientLocation() != null) {
             ci.setClientLocation(AddressDao.instance().findById(ci.getClientLocation().getId()));
-     //       ci.setClientLocation(address);
+            //       ci.setClientLocation(address);
         }
         ci.setClientAPContacts(null);
         if (ciDto.getClientAPContacts() != null) {
@@ -112,7 +111,7 @@ public class ClientInformationService {
         }
         if (ci.getVendorContact() != null) {
             ci.setVendorContact(ContactDao.instance().findById(ci.getVendorContact().getId()));
-    //        ci.setVendorContact(contact);
+            //        ci.setVendorContact(contact);
         }
         ci.setVendorAPContacts(null);
         if (ciDto.getVendorAPContacts() != null) {
@@ -125,7 +124,7 @@ public class ClientInformationService {
 
         if (ci.getVendorLocation() != null) {
             ci.setVendorLocation(AddressDao.instance().findById(ci.getVendorLocation().getId()));
-  //          ci.setVendorLocation(address);
+            //          ci.setVendorLocation(address);
         }
 
         ci.setVendorRecruiters(null);
@@ -158,11 +157,11 @@ public class ClientInformationService {
         }
         if (ci.getSubcontractorContact() != null) {
             ci.setSubcontractorContact(ContactDao.instance().findById(ci.getSubcontractorContact().getId()));
-   //         ci.setSubcontractorContact(contact);
+            //         ci.setSubcontractorContact(contact);
         }
         if (ci.getSubcontractorAddress() != null) {
             ci.setSubcontractorAddress(AddressDao.instance().findById(ci.getSubcontractorAddress().getId()));
-     //       ci.setSubcontractorAddress(address);
+            //       ci.setSubcontractorAddress(address);
         }
         if (ci.isEndPreviousProject()) {
             updatePreviousProjectEndDate(emp, ci);
@@ -185,7 +184,7 @@ public class ClientInformationService {
 
         if (ci.getPractice() != null) {
             ci.setPractice(PracticeDao.instance().findById(ci.getPractice().getId()));
-     //       ci.setPractice(practice);
+            //       ci.setPractice(practice);
         }
         project.setStartDate(ci.getStartDate());
         project.setClient(client);
@@ -387,7 +386,7 @@ public class ClientInformationService {
             ciEntity.setClientContact(null);
         } else {
             ciEntity.setClientContact(ContactDao.instance().findById(ci.getClientContact().getId()));
-    //        ciEntity.setClientContact(contact);
+            //        ciEntity.setClientContact(contact);
         }
         //Client Acct Pay Contact
         Set<Contact> newClientAPs = new HashSet();
@@ -402,7 +401,7 @@ public class ClientInformationService {
             ciEntity.setClientLocation(null);
         } else {
             ciEntity.setClientLocation(AddressDao.instance().findById(ci.getClientLocation().getId()));
-   //         ciEntity.setClientLocation(address);
+            //         ciEntity.setClientLocation(address);
         }
         if (ci.getVendor() == null) {
             ciEntity.setVendor(null);
@@ -416,7 +415,7 @@ public class ClientInformationService {
                 ciEntity.setVendorContact(null);
             } else {
                 ciEntity.setVendorContact(ContactDao.instance().findById(ci.getVendorContact().getId()));
-    //            ciEntity.setVendorContact(contact);
+                //            ciEntity.setVendorContact(contact);
             }
             //Vendor Acct Pay Contact
             Set<Contact> newAPs = new HashSet();
@@ -439,7 +438,7 @@ public class ClientInformationService {
                 ciEntity.setVendorLocation(null);
             } else {
                 ciEntity.setVendorLocation(AddressDao.instance().findById(ci.getVendorLocation().getId()));
-      //          ciEntity.setVendorLocation(address);
+                //          ciEntity.setVendorLocation(address);
             }
         }
         if (ci.getEndDate() != null) {
@@ -457,14 +456,14 @@ public class ClientInformationService {
                 ciEntity.setSubcontractorContact(null);
             } else {
                 ciEntity.setSubcontractorContact(ContactDao.instance().findById(ci.getSubcontractorContact().getId()));
-    //            ciEntity.setSubcontractorContact(contact);
+                //            ciEntity.setSubcontractorContact(contact);
             }
             //Subcontractor location
             if (ci.getSubcontractorAddress() == null) {
                 ciEntity.setSubcontractorAddress(null);
             } else {
                 ciEntity.setSubcontractorAddress(AddressDao.instance().findById(ci.getSubcontractorAddress().getId()));
-      //          ciEntity.setSubcontractorAddress(address);
+                //          ciEntity.setSubcontractorAddress(address);
             }
         }
         Set<Employee> newRecs = new HashSet();
@@ -476,7 +475,7 @@ public class ClientInformationService {
         ciEntity.setRecruiters(newRecs);
         if (ci.getPractice() != null) {
             ciEntity.setPractice(PracticeDao.instance().findById(ci.getPractice().getId()));
-  //          ciEntity.setPractice(practice);
+            //          ciEntity.setPractice(practice);
         }
         if (vendor != null) {
             project.setVendor(vendor);
@@ -520,7 +519,7 @@ public class ClientInformationService {
         if (submitForApproval) {
             ServiceInterceptor.instance().validateInput(ci, ClientInformation.SubmitChecks.class);
         }
-        if (ci.getStatus() != null && !ClientInformationStatus.PENDING_CONTRACTS_SUBMIT.equals(ci.getStatus()) && !submitForApproval ) {
+        if (ci.getStatus() != null && !ClientInformationStatus.PENDING_CONTRACTS_SUBMIT.equals(ci.getStatus()) && !submitForApproval) {
             ServiceInterceptor.instance().validateInput(ci, ClientInformation.SubmitChecks.class);
         }
     }
@@ -550,5 +549,11 @@ public class ClientInformationService {
 
         String projectName = "-" + acronym + "-" + "TS" + MMYY + "-";
         return projectName.toUpperCase();
+    }
+
+    public void delete(Long id) {
+        ClientInformation entity = clientInformationDao.findById(id);
+        OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
+        clientInformationDao.delete(id);
     }
 }
