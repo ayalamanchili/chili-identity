@@ -174,8 +174,6 @@ public class ProspectService {
         Prospect entity = prospectDao.findById(dto.getId());
         if (dto.getAssignedTo() != null) {
             entity.setAssigned(dto.getAssignedTo().getId());
-        } else {
-            entity.setAssigned(null);
         }
         if (dto.getStatus() != null) {
             entity.setStatus(dto.getStatus());
