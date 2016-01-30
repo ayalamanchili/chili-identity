@@ -62,12 +62,8 @@ public class ClientInformationProcessBean {
         vars.put("clientAP", clientAP);
         vars.put("vendorAP", vendorAP);
         vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
-        bpmProcessId = OfficeBPMService.instance().startProcess("new_client_info_process", vars);
-        if (bpmProcessId != null && !bpmProcessId.isEmpty()) {
-            ClientInformation ciEntity = em.find(ClientInformation.class, ci.getId());
-            ciEntity.setBpmProcessId(bpmProcessId);
-            ClientInformationDao.instance().save(ciEntity);
-        }
+        ci.setBpmProcessId(OfficeBPMService.instance().startProcess("new_client_info_process", vars));
+        ClientInformationDao.instance().save(ci);
     }
 
     public static ClientInformationProcessBean instance() {
