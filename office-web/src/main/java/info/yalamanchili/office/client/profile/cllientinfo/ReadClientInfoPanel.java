@@ -297,8 +297,10 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
                 new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String response) {
-                JSONArray docs = JSONUtils.toJSONArray(JSONParser.parseLenient(response).isObject().get("ciDocument"));
-                entityFieldsPanel.add(new ReadAllCiDocumentPanel(getEntityId(), docs));
+                if (!response.trim().toString().equals("null")) { 
+                    JSONArray docs = JSONUtils.toJSONArray(JSONParser.parseLenient(response).isObject().get("ciDocument"));
+                    entityFieldsPanel.add(new ReadAllCiDocumentPanel(getEntityId(), docs));
+                }
             }
         });
     }
