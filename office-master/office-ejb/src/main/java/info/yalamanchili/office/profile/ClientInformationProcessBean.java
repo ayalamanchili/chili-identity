@@ -62,7 +62,7 @@ public class ClientInformationProcessBean {
         vars.put("vendorAP", vendorAP);
         vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
         ci.setBpmProcessId(OfficeBPMService.instance().startProcess("new_client_info_process", vars));
-        ClientInformationDao.instance().save(ci);
+        ClientInformationDao.instance().getEntityManager().merge(ci);
     }
 
     public static ClientInformationProcessBean instance() {
