@@ -33,9 +33,9 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
     @Override
     public void processTask(DelegateTask task) {
         super.processTask(task);
-        if ("create".equals(task.getEventName()) || "assignment".equals(task.getEventName())) {
-            getRequestFromTask(task).setBpmProcessId(task.getExecution().getProcessInstanceId());
-        }
+//        if ("create".equals(task.getEventName()) || "assignment".equals(task.getEventName())) {
+//            getRequestFromTask(task).setBpmProcessId(task.getExecution().getProcessInstanceId());
+//        }
         if ("complete".equals(task.getEventName())) {
             clientInforamtionTaskCompleted(task);
         }
