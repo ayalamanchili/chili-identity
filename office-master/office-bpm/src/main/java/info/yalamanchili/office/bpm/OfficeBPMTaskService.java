@@ -163,7 +163,7 @@ public class OfficeBPMTaskService {
         count = count + bpmTaskService.createTaskQuery().taskId(taskId).taskCandidateGroupIn(roles).count();
         count = count + bpmTaskService.createTaskQuery().taskId(taskId).taskCandidateUser(user).count();
         if (count == 0) {
-            throw new ServiceException(ServiceException.StatusCode.NOT_AUTHORIZED_REQUEST, "SYSTEM", "NOT.AUTHORIZED", "NOT AUTHORIZED");
+            throw new ServiceException(ServiceException.StatusCode.NOT_AUTHORIZED_REQUEST, "SYSTEM", "NOT.AUTHORIZED", "Task cannot be accessed anymore.");
         }
     }
 
