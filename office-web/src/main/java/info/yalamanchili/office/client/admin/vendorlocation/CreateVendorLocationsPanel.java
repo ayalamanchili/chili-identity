@@ -17,7 +17,9 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CreateComposite;
+import info.chili.gwt.data.CanadaStatesFactory;
 import info.chili.gwt.data.IndiaStatesFactory;
+import info.chili.gwt.data.JapanStatesFactory;
 import info.chili.gwt.fields.EnumField;
 import info.yalamanchili.office.client.profile.address.CreateAddressPanel;
 import info.yalamanchili.office.client.admin.vendor.TreeVendorsPanel;
@@ -94,6 +96,12 @@ public class CreateVendorLocationsPanel extends CreateAddressPanel implements Ch
             case "INDIA":
                 statesF.setValues(IndiaStatesFactory.getStates().toArray(new String[0]));
                 break;
+            case "CANADA":
+                statesF.setValues(CanadaStatesFactory.getStates().toArray(new String[0]));
+                break; 
+            case "JAPAN":
+                statesF.setValues(JapanStatesFactory.getStates().toArray(new String[0]));
+                break; 
         }
     }
 }
