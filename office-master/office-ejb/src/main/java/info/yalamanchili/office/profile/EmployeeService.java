@@ -35,6 +35,7 @@ import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -149,7 +150,12 @@ public class EmployeeService {
         javax.persistence.Query findUserQuery = em.createQuery("from Employee where employeeId=:empIdParam");
         findUserQuery.setParameter("empIdParam", empId);
         if (findUserQuery.getResultList().size() > 0) {
-            empId = empId + Integer.toString(dateofBirth.getDate());
+            if (dateofBirth != null) {
+                empId = empId + Integer.toString(dateofBirth.getDate());
+            } else {
+                Random random = new Random();
+                empId = empId + Integer.toString(random.nextInt(100) + 1);
+            }
         }
         if (empId.contains(" ")) {
             empId = empId.replace(" ", "_");
