@@ -210,7 +210,6 @@ public class ClientInformationService {
             }
         }
         emp.addClientInformation(ci);
-        ci = clientInformationDao.getEntityManager().merge(ci);
         if (submitForApproval) {
             ci.setStatus(ClientInformationStatus.PENDING_INVOICING_BILLING_APPROVAL);
             ClientInformationProcessBean.instance().startNewClientInfoProcess(ci, OfficeSecurityService.instance().getCurrentUser());
