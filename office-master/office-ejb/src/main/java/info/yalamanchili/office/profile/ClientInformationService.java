@@ -75,6 +75,12 @@ public class ClientInformationService {
     @Autowired
     protected CompanyDao companyDao;
 
+    @Autowired
+    protected ClientDao clientDao;
+
+    @Autowired
+    protected VendorDao vendorDao;
+
     public ClientInformationDto addClientInformation(Long empId, ClientInformationDto ciDto, Boolean submitForApproval) {
         ClientInformation ci = mapper.map(ciDto, ClientInformation.class);
         validate(ci, submitForApproval);
@@ -87,7 +93,7 @@ public class ClientInformationService {
         if (abbreviation == null || abbreviation.isEmpty()) {
             abbreviation = "SSTL";
         }
-        client = ClientDao.instance().findById(ci.getClient().getId());
+        client = clientDao.findById(ci.getClient().getId());
         ci.setClient(client);
         if (ci.getClientContact() != null) {
             ci.setClientContact(ContactDao.instance().findById(ci.getClientContact().getId()));
@@ -104,7 +110,7 @@ public class ClientInformationService {
             }
         }
         if (ci.getVendor() != null) {
-            vendor = VendorDao.instance().findById(ci.getVendor().getId());
+            vendor = vendorDao.findById(ci.getVendor().getId());
             ci.setVendor(vendor);
         }
         if (ci.getVendorContact() != null) {
@@ -131,13 +137,13 @@ public class ClientInformationService {
                 }
             }
         }
-
         if (ci.getMiddleVendor() != null) {
-            middleVendor = VendorDao.instance().findById(ci.getMiddleVendor().getId());
+            middleVendor = vendorDao.findById(ci.getMiddleVendor().getId());
             ci.setMiddleVendor(middleVendor);
         }
+        ProjectDao projectDao = ProjectDao.instance();
         if (ci.getClientProject() != null) {
-            project = ProjectDao.instance().findById(ci.getClientProject().getId());
+            project = projectDao.findById(ci.getClientProject().getId());
             ci.setClientProject(project);
         }
         ci.setRecruiters(null);
@@ -165,11 +171,11 @@ public class ClientInformationService {
             client.getVendors().add(vendor);
             vendor.getClients().add(client);
             project.setPurchaseOrderNo(abbreviation + "PO" + projectName(vendor.getName()));
-            VendorDao.instance().save(vendor);
+            vendorDao.save(vendor);
         }
         if (middleVendor != null) {
             project.setMiddleVendor(middleVendor);
-            VendorDao.instance().save(middleVendor);
+            vendorDao.save(middleVendor);
         }
         if (ci.getEndDate() != null) {
             project.setEndDate(ci.getEndDate());
@@ -181,8 +187,8 @@ public class ClientInformationService {
         project.setStartDate(ci.getStartDate());
         project.setClient(client);
         project.setName(abbreviation + "PR" + projectName(client.getName()));
-        project = ProjectDao.instance().save(project);
-        ClientDao.instance().save(client);
+        project = projectDao.save(project);
+        clientDao.save(client);
         project.setName(project.getName() + project.getId().toString());
         if (vendor != null) {
             project.setPurchaseOrderNo(project.getPurchaseOrderNo() + project.getId().toString());
@@ -190,7 +196,7 @@ public class ClientInformationService {
         if (ci.getSubcontractor() != null) {
             project.setSubContractorWorkOrderNo(project.getSubContractorWorkOrderNo() + project.getId().toString());
         }
-        project = ProjectDao.instance().save(project);
+        project = projectDao.save(project);
         ci.setClientProject(project);
         if (ci.isIsEndDateConfirmed() != null && ci.isIsEndDateConfirmed() == true) {
             ci.setIsEndDateConfirmed(true);
@@ -206,7 +212,7 @@ public class ClientInformationService {
         emp.addClientInformation(ci);
         if (submitForApproval) {
             ci.setStatus(ClientInformationStatus.PENDING_INVOICING_BILLING_APPROVAL);
-            ci.setBpmProcessId(ClientInformationProcessBean.instance().startNewClientInfoProcess(ci));
+            ClientInformationProcessBean.instance().startNewClientInfoProcess(ci, OfficeSecurityService.instance().getCurrentUser());
         } else {
             ci.setStatus(ClientInformationStatus.PENDING_CONTRACTS_SUBMIT);
         }
@@ -364,7 +370,7 @@ public class ClientInformationService {
         Vendor vendor = null;
         Vendor middleVendor = null;
         ciEntity.setClient(null);
-        client = ClientDao.instance().findById(ci.getClient().getId());
+        client = clientDao.findById(ci.getClient().getId());
         ciEntity.setClient(client);
         project.setName(abbreviation + "PR" + projectName(client.getName()));
         project.setName(project.getName() + project.getId().toString());
@@ -392,7 +398,7 @@ public class ClientInformationService {
         if (ci.getVendor() == null) {
             ciEntity.setVendor(null);
         } else {
-            vendor = VendorDao.instance().findById(ci.getVendor().getId());
+            vendor = vendorDao.findById(ci.getVendor().getId());
             ciEntity.setVendor(vendor);
             project.setPurchaseOrderNo(abbreviation + "PO" + projectName(vendor.getName()));
             project.setPurchaseOrderNo(project.getPurchaseOrderNo() + project.getId().toString());
@@ -462,15 +468,15 @@ public class ClientInformationService {
             project.setVendor(vendor);
             client.getVendors().add(vendor);
             vendor.getClients().add(client);
-            VendorDao.instance().save(vendor);
+            vendorDao.save(vendor);
         }
         if (ci.getMiddleVendor() != null) {
-            middleVendor = VendorDao.instance().findById(ci.getMiddleVendor().getId());
+            middleVendor = vendorDao.findById(ci.getMiddleVendor().getId());
             ciEntity.setMiddleVendor(middleVendor);
         }
         if (middleVendor != null) {
             project.setMiddleVendor(middleVendor);
-            VendorDao.instance().save(middleVendor);
+            vendorDao.save(middleVendor);
         }
         project.setClient(client);
 
@@ -483,13 +489,13 @@ public class ClientInformationService {
                 CiDocumentDao.instance().save(document);
             }
         }
-        ClientDao.instance().save(client);
+        clientDao.save(client);
         project = ProjectDao.instance().save(project);
         ciEntity.setClientProject(project);
         ciEntity = clientInformationDao.save(ciEntity);
         if (ClientInformationStatus.PENDING_CONTRACTS_SUBMIT.equals(ci.getStatus()) && submitForApproval) {
             ciEntity.setStatus(ClientInformationStatus.PENDING_INVOICING_BILLING_APPROVAL);
-            ci.setBpmProcessId(ClientInformationProcessBean.instance().startNewClientInfoProcess(ciEntity));
+            ClientInformationProcessBean.instance().startNewClientInfoProcess(ciEntity, OfficeSecurityService.instance().getCurrentUser());
         }
         em.flush();
         ci = em.find(ClientInformation.class, ci.getId());

@@ -10,14 +10,15 @@ package info.yalamanchili.office.profile;
 
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
-import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Contact;
+import info.yalamanchili.office.entity.profile.Employee;
 import java.util.HashMap;
 import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.context.annotation.Scope;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -31,7 +32,8 @@ public class ClientInformationProcessBean {
     @PersistenceContext
     protected EntityManager em;
 
-    public String startNewClientInfoProcess(ClientInformation ci) {
+    @Async
+    public void startNewClientInfoProcess(ClientInformation ci, Employee currentUser) {
         Map<String, Object> vars = new HashMap<>();
         StringBuilder cliAP = new StringBuilder();
         String clientAP = "";
@@ -55,8 +57,8 @@ public class ClientInformationProcessBean {
         vars.put("entityId", ci.getId());
         vars.put("clientAP", clientAP);
         vars.put("vendorAP", vendorAP);
-        vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
-        return OfficeBPMService.instance().startProcess("new_client_info_process", vars);
+        vars.put("currentEmployee", currentUser);
+        OfficeBPMService.instance().startProcess("new_client_info_process", vars);
     }
 
     public static ClientInformationProcessBean instance() {

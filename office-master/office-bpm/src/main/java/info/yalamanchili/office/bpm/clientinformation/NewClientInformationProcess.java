@@ -29,15 +29,18 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
-
+    
     @Override
     public void processTask(DelegateTask task) {
         super.processTask(task);
+        if ("create".equals(task.getEventName()) || "assignment".equals(task.getEventName())) {
+            getRequestFromTask(task).setBpmProcessId(task.getExecution().getProcessInstanceId());
+        }
         if ("complete".equals(task.getEventName())) {
             clientInforamtionTaskCompleted(task);
         }
     }
-
+    
     protected void clientInforamtionTaskCompleted(DelegateTask task) {
         ClientInformation entity = getRequestFromTask(task);
         if (entity == null) {
@@ -67,7 +70,7 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
         }
         ClientInformationDao.instance().save(entity);
     }
-
+    
     @Async
     @Transactional
     public void sendNewClieniInformationNotification(ClientInformation ci, String itemNo) {
@@ -93,7 +96,7 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
         email.setBody(messageText);
         MessagingService.instance().sendEmail(email);
     }
-
+    
     protected ClientInformation getRequestFromTask(DelegateTask task) {
         Long entityId = (Long) task.getExecution().getVariable("entityId");
         if (entityId != null) {
@@ -101,5 +104,5 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
         }
         return null;
     }
-
+    
 }
