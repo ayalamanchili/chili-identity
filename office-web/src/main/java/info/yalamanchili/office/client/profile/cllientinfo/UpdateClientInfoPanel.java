@@ -91,8 +91,10 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             @Override
             public void onResponse(String response) {
                 logger.info("Response: " + response);
-                JSONArray docs = JSONUtils.toJSONArray(JSONParser.parseLenient(response).isObject().get("ciDocument"));
-                entityFieldsPanel.add(new ReadAllCiDocumentPanel(getEntityId(), docs));
+                if (!response.trim().toString().equals("null")) {
+                    JSONArray docs = JSONUtils.toJSONArray(JSONParser.parseLenient(response).isObject().get("ciDocument"));
+                    entityFieldsPanel.add(new ReadAllCiDocumentPanel(getEntityId(), docs));
+                }
             }
         });
     }
