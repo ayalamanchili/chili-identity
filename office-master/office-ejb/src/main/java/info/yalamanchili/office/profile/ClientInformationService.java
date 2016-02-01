@@ -209,10 +209,11 @@ public class ClientInformationService {
                 doc.setClientInformation(ci);
             }
         }
+        ci = clientInformationDao.save(ci);
         emp.addClientInformation(ci);
         if (submitForApproval) {
             ci.setStatus(ClientInformationStatus.PENDING_INVOICING_BILLING_APPROVAL);
-            ClientInformationProcessBean.instance().startNewClientInfoProcess(ci, OfficeSecurityService.instance().getCurrentUser());
+            ci.setBpmProcessId(ClientInformationProcessBean.instance().startNewClientInfoProcess(ci, OfficeSecurityService.instance().getCurrentUser()));
         } else {
             ci.setStatus(ClientInformationStatus.PENDING_CONTRACTS_SUBMIT);
         }
@@ -495,7 +496,7 @@ public class ClientInformationService {
         ciEntity = clientInformationDao.save(ciEntity);
         if (ClientInformationStatus.PENDING_CONTRACTS_SUBMIT.equals(ci.getStatus()) && submitForApproval) {
             ciEntity.setStatus(ClientInformationStatus.PENDING_INVOICING_BILLING_APPROVAL);
-            ClientInformationProcessBean.instance().startNewClientInfoProcess(ciEntity, OfficeSecurityService.instance().getCurrentUser());
+            ci.setBpmProcessId(ClientInformationProcessBean.instance().startNewClientInfoProcess(ciEntity, OfficeSecurityService.instance().getCurrentUser()));
         }
         em.flush();
         ci = em.find(ClientInformation.class, ci.getId());

@@ -32,8 +32,7 @@ public class ClientInformationProcessBean {
     @PersistenceContext
     protected EntityManager em;
 
-    @Async
-    public void startNewClientInfoProcess(ClientInformation ci, Employee currentUser) {
+    public String startNewClientInfoProcess(ClientInformation ci, Employee currentUser) {
         Map<String, Object> vars = new HashMap<>();
         StringBuilder cliAP = new StringBuilder();
         String clientAP = "";
@@ -58,7 +57,7 @@ public class ClientInformationProcessBean {
         vars.put("clientAP", clientAP);
         vars.put("vendorAP", vendorAP);
         vars.put("currentEmployee", currentUser);
-        OfficeBPMService.instance().startProcess("new_client_info_process", vars);
+        return OfficeBPMService.instance().startProcess("new_client_info_process", vars);
     }
 
     public static ClientInformationProcessBean instance() {
