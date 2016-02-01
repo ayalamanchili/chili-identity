@@ -367,7 +367,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
                     || (Auth.is1099(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity()))) {
                 isSubOr1099 = true;
             }
-            entityFieldsPanel.add(ReadAllUpdateBillingRatePanel.renderBillingRateHistory(getEntityId(), isSubOr1099));
+            entityFieldsPanel.add(ReadAllUpdateBillingRatePanel.renderBillingRateHistory(getEntity(), isSubOr1099));
             if (!cistatus.equals("PENDING_CONTRACTS_SUBMIT")) {
                 renderUpdateBillingRateFieldLink();
             }

@@ -220,7 +220,7 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
                 isSubOr1099 = true;
             }
             addField("billingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-            entityFieldsPanel.add(ReadAllUpdateBillingRatePanel.renderBillingRateHistory(getEntityId(), isSubOr1099));
+            entityFieldsPanel.add(ReadAllUpdateBillingRatePanel.renderBillingRateHistory(getEntity(), isSubOr1099));
             if (Auth.hasAnyOfRoles(ROLE.ROLE_BILLING_ADMIN, ROLE.ROLE_CONTRACTS_ADMIN)) {
                 renderUpdateBillingRateFieldLink();
             }
