@@ -154,6 +154,19 @@ public class OfficeBPMTaskService {
         }
     }
 
+    public void checkAccess(String taskId) {
+        OfficeSecurityService officeSecurityService = OfficeSecurityService.instance();
+        String user = officeSecurityService.getCurrentUserName();
+        List<String> roles = officeSecurityService.getCurrentUserRoles();
+        long count = 0;
+        count = count + bpmTaskService.createTaskQuery().taskId(taskId).taskAssignee(user).count();
+        count = count + bpmTaskService.createTaskQuery().taskId(taskId).taskCandidateGroupIn(roles).count();
+        count = count + bpmTaskService.createTaskQuery().taskId(taskId).taskCandidateUser(user).count();
+        if (count == 0) {
+            throw new ServiceException(ServiceException.StatusCode.NOT_AUTHORIZED_REQUEST, "SYSTEM", "NOT.AUTHORIZED", "NOT AUTHORIZED");
+        }
+    }
+
     public Task getTaskForId(String taskId) {
         org.activiti.engine.task.Task bpmTask = bpmTaskService.createTaskQuery().taskId(taskId).singleResult();
         if (bpmTask != null) {

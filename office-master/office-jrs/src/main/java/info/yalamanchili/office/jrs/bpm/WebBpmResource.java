@@ -36,12 +36,12 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author ayalamanchili
  */
-@Path("secured/web/bpm/")
-@Component
-@Scope("request")
-@Produces("application/json")
-@Consumes("application/json")
-@Transactional
+//@Path("secured/web/bpm/")
+//@Component
+//@Scope("request")
+//@Produces("application/json")
+//@Consumes("application/json")
+//@Transactional
 public class WebBpmResource {
 
     @Autowired

@@ -200,6 +200,13 @@ public class BPMResource {
     }
 
     @GET
+    @Path("/viewtask/{taskId}")
+    public Task viewTask(@PathParam("taskId") String taskId) {
+        officeBPMTaskService.checkAccess(taskId);
+        return officeBPMTaskService.getTaskForId(taskId);
+    }
+
+    @GET
     @Path("/task_form_properties/{taskId}")
     public List<FormProperty> getTaskFormProperties(@PathParam("taskId") String taskId) {
         return officeBPMFormService.getTaskFormProperties(taskId);
