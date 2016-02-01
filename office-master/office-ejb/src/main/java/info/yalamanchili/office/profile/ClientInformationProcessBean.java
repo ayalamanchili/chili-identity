@@ -41,7 +41,6 @@ public class ClientInformationProcessBean {
         StringBuilder cliAP = new StringBuilder();
         String clientAP = "";
         String vendorAP = "";
-        String bpmProcessId = null;
         for (Contact clientAPcontact : ci.getClientAPContacts()) {
             cliAP.append(clientAPcontact.details());
             cliAP.append(" ");
