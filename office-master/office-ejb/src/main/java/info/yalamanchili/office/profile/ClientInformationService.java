@@ -203,7 +203,6 @@ public class ClientInformationService {
                 doc.setClientInformation(ci);
             }
         }
-        ci = clientInformationDao.save(ci);
         emp.addClientInformation(ci);
         if (submitForApproval) {
             ci.setStatus(ClientInformationStatus.PENDING_INVOICING_BILLING_APPROVAL);
@@ -211,7 +210,6 @@ public class ClientInformationService {
         } else {
             ci.setStatus(ClientInformationStatus.PENDING_CONTRACTS_SUBMIT);
         }
-        ci = em.merge(ci);
         ciDto.setId(ci.getId());
         return mapper.map(ci, ClientInformationDto.class);
     }
