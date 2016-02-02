@@ -9,6 +9,7 @@ package info.yalamanchili.office.client;
 
 import com.google.common.base.Strings;
 import info.chili.audit.AuditService;
+import info.chili.commons.HtmlUtils;
 import info.chili.commons.pdf.PDFUtils;
 import info.chili.docs.MakeHTML;
 import info.chili.email.Email;
@@ -552,7 +553,8 @@ public class ContractService {
         if (ci != null) {
             ContractDto dto = mapClientInformation(ci);
             String report = MakeHTML.makeHTML(dto).replaceAll("<null>", "");
-            byte[] pdf = PDFUtils.convertToPDF(report);
+            String str = HtmlUtils.cleanData(report);
+            byte[] pdf = PDFUtils.convertToPDF(str);
             return Response.ok(pdf)
                     .header("content-disposition", "filename = Contract_Report.pdf")
                     .header("Content-Length", pdf)
