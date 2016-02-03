@@ -17,6 +17,7 @@ import info.chili.gwt.rpc.HttpService;
 import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.data.CanadaStatesFactory;
 import info.chili.gwt.data.CountryFactory;
@@ -26,7 +27,7 @@ import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 
-public class UpdateAddressPanel extends UpdateComposite implements ChangeHandler{
+public class UpdateAddressPanel extends UpdateComposite implements ChangeHandler {
 
     private static Logger logger = Logger.getLogger(UpdateAddressPanel.class.getName());
 
@@ -68,16 +69,16 @@ public class UpdateAddressPanel extends UpdateComposite implements ChangeHandler
         logger.info(entity.toString());
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postUpdateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postUpdateSuccess(arg0);
+                    }
+                });
     }
 
     protected void populateComments() {
@@ -116,7 +117,8 @@ public class UpdateAddressPanel extends UpdateComposite implements ChangeHandler
 
     @Override
     protected void configure() {
-        countriesF.listBox.addChangeHandler(this);    }
+        countriesF.listBox.addChangeHandler(this);
+    }
 
     @Override
     protected void addWidgets() {
@@ -124,8 +126,20 @@ public class UpdateAddressPanel extends UpdateComposite implements ChangeHandler
         addField("street1", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("street2", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("city", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        JSONValue service = entity.get("country");
         addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
-        addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+        switch (service.isString().stringValue()) {
+            case "USA":
+                addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+                break;
+            case "INDIA":
+                addEnumField("state", false, true, IndiaStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+                break;
+            case "CANADA":
+                addEnumField("state", false, true, CanadaStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+                break;
+        }
+        addField("state", false, true, DataType.ENUM_FIELD);
         addField("zip", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         if (UpdateAddressPanelType.ALL.equals(type)) {
             addDropDown("addressType", new SelectAddressTypeWidget(false, false));
@@ -135,8 +149,8 @@ public class UpdateAddressPanel extends UpdateComposite implements ChangeHandler
             addField("notifyChange", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("changeNotes", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         }
-        statesF = (EnumField) fields.get("state");
         countriesF = (EnumField) fields.get("country");
+        statesF = (EnumField) fields.get("state");
         alignFields();
     }
 
@@ -151,7 +165,7 @@ public class UpdateAddressPanel extends UpdateComposite implements ChangeHandler
                 break;
             case "CANADA":
                 statesF.setValues(CanadaStatesFactory.getStates().toArray(new String[0]));
-                break;  
+                break;
         }
     }
 

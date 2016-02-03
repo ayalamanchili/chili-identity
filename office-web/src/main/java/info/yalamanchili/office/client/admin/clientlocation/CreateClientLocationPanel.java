@@ -99,10 +99,7 @@ public class CreateClientLocationPanel extends CreateAddressPanel implements Cha
                 break;
             case "CANADA":
                 statesF.setValues(CanadaStatesFactory.getStates().toArray(new String[0]));
-                break; 
-            case "JAPAN":
-                statesF.setValues(JapanStatesFactory.getStates().toArray(new String[0]));
-                break; 
+                break;
         }
     }
 }

@@ -10,8 +10,10 @@ package info.yalamanchili.office.client.admin.subcntrlocation;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
+import info.chili.gwt.data.CanadaStatesFactory;
 import info.chili.gwt.data.CountryFactory;
 import info.chili.gwt.data.IndiaStatesFactory;
 import info.chili.gwt.data.USAStatesFactory;
@@ -97,9 +99,20 @@ public class UpdateSubcontractorLocationPanel extends UpdateComposite implements
         addField("street1", false, true, DataType.STRING_FIELD);
         addField("street2", false, false, DataType.STRING_FIELD);
         addField("city", false, true, DataType.STRING_FIELD);
-        addField("state", false, true, DataType.ENUM_FIELD);
+        JSONValue service = entity.get("country");
         addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]));
-        addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]));
+        switch (service.isString().stringValue()) {
+            case "USA":
+                addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]));
+                break;
+            case "INDIA":
+                addEnumField("state", false, true, IndiaStatesFactory.getStates().toArray(new String[0]));
+                break;
+            case "CANADA":
+                addEnumField("state", false, true, CanadaStatesFactory.getStates().toArray(new String[0]));
+                break;
+        }
+        addField("state", false, true, DataType.ENUM_FIELD);
         addField("zip", false, false, DataType.STRING_FIELD);
         countriesF = (EnumField) fields.get("country");
         statesF = (EnumField) fields.get("state");
@@ -123,6 +136,9 @@ public class UpdateSubcontractorLocationPanel extends UpdateComposite implements
             case "INDIA":
                 statesF.setValues(IndiaStatesFactory.getStates().toArray(new String[0]));
                 break;
+            case "CANADA":
+                statesF.setValues(CanadaStatesFactory.getStates().toArray(new String[0]));
+                break; 
         }
     }
 }
