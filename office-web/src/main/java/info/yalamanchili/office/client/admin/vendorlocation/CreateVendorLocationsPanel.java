@@ -70,7 +70,7 @@ public class CreateVendorLocationsPanel extends CreateAddressPanel implements Ch
         addField("state", false, true, DataType.ENUM_FIELD);
         addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]));
         addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]));
-        addField("zip", false, false, DataType.LONG_FIELD);
+        addField("zip", false, false, DataType.STRING_FIELD);
         countriesF = (EnumField) fields.get("country");
         statesF = (EnumField) fields.get("state");
     }

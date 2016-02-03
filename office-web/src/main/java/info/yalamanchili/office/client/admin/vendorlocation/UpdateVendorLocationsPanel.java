@@ -72,7 +72,7 @@ public class UpdateVendorLocationsPanel extends UpdateComposite implements Chang
         assignFieldValueFromEntity("city", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("state", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("country", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("zip", entity, DataType.LONG_FIELD);
+        assignFieldValueFromEntity("zip", entity, DataType.STRING_FIELD);
     }
 
     @Override
@@ -102,7 +102,7 @@ public class UpdateVendorLocationsPanel extends UpdateComposite implements Chang
         addField("state", false, true, DataType.ENUM_FIELD);
         addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]));
         addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]));
-        addField("zip", false, false, DataType.LONG_FIELD);
+        addField("zip", false, false, DataType.STRING_FIELD);
         countriesF = (EnumField) fields.get("country");
         statesF = (EnumField) fields.get("state");
     }
