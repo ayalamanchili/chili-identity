@@ -102,9 +102,18 @@ public class AddressResource extends CRUDResource<Address> {
     public void sendAddressChangeRequestSubmittedEmail(Address address) {
         String[] roles = {OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name()};
         Email email = new Email();
+        email.setHtml(Boolean.TRUE);
         email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject(" W2 Mailing Address Has Updated For :" + address.getContact().getFirstName() + " " + address.getContact().getLastName());
-        String messageText = " W2 Address for employee is :   " + address.getStreet1() + " , " + address.getStreet2() + " , " + address.getCity() + " , " + address.getCountry() + " , " + address.getState() + " , " + address.getZip();
+        String messageText = " W2 Address for employee is :   " + address.getContact().getFirstName() + " " + address.getContact().getLastName();
+        messageText = messageText.concat("\n Street1  : " + address.getStreet1());
+        if (address.getStreet2() != null) {
+            messageText = messageText.concat("\n  Street2 : " + address.getStreet2());
+        }
+        messageText = messageText.concat("\n  City    : " + address.getCity());
+        messageText = messageText.concat("\n  Country : " + address.getCountry());
+        messageText = messageText.concat("\n  State   : " + address.getState());
+        messageText = messageText.concat("\n  Zip     : " + address.getZip());
         email.setBody(messageText);
         MessagingService.instance().sendEmail(email);
     }
