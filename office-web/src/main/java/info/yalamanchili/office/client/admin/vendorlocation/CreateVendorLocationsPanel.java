@@ -98,10 +98,7 @@ public class CreateVendorLocationsPanel extends CreateAddressPanel implements Ch
                 break;
             case "CANADA":
                 statesF.setValues(CanadaStatesFactory.getStates().toArray(new String[0]));
-                break; 
-            case "JAPAN":
-                statesF.setValues(JapanStatesFactory.getStates().toArray(new String[0]));
-                break; 
+                break;
         }
     }
 }
