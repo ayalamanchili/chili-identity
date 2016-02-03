@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.chili.gwt.data.CanadaStatesFactory;
 import info.chili.gwt.data.CountryFactory;
 import info.chili.gwt.data.IndiaStatesFactory;
 import info.chili.gwt.data.USAStatesFactory;
@@ -99,7 +100,7 @@ public class UpdateAddressPanel extends UpdateComposite implements ChangeHandler
         assignFieldValueFromEntity("city", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("state", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("country", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("zip", entity, DataType.LONG_FIELD);
+        assignFieldValueFromEntity("zip", entity, DataType.STRING_FIELD);
         if (UpdateAddressPanelType.ALL.equals(type)) {
             assignFieldValueFromEntity("addressType", entity, null);
         }
@@ -123,9 +124,9 @@ public class UpdateAddressPanel extends UpdateComposite implements ChangeHandler
         addField("street1", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("street2", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("city", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
         addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
-        addField("zip", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
+        addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+        addField("zip", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         if (UpdateAddressPanelType.ALL.equals(type)) {
             addDropDown("addressType", new SelectAddressTypeWidget(false, false));
         }
@@ -148,6 +149,9 @@ public class UpdateAddressPanel extends UpdateComposite implements ChangeHandler
             case "INDIA":
                 statesF.setValues(IndiaStatesFactory.getStates().toArray(new String[0]));
                 break;
+            case "CANADA":
+                statesF.setValues(CanadaStatesFactory.getStates().toArray(new String[0]));
+                break;  
         }
     }
 

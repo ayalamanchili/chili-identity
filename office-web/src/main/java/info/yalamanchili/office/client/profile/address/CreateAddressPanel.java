@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
+import info.chili.gwt.data.CanadaStatesFactory;
 import info.chili.gwt.data.CountryFactory;
 import info.chili.gwt.data.IndiaStatesFactory;
 import info.chili.gwt.data.USAStatesFactory;
@@ -165,7 +166,7 @@ public class CreateAddressPanel extends CreateComposite implements ChangeHandler
         addField("state", false, true, DataType.ENUM_FIELD, Alignment.HORIZONTAL);
         addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
         addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
-        addField("zip", false, true, DataType.LONG_FIELD, Alignment.HORIZONTAL);
+        addField("zip", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         if (CreateAddressPanelType.ALL.equals(type)) {
             addDropDown("addressType", new SelectAddressTypeWidget(false, false));
         }
@@ -204,6 +205,9 @@ public class CreateAddressPanel extends CreateComposite implements ChangeHandler
             case "INDIA":
                 statesF.setValues(IndiaStatesFactory.getStates().toArray(new String[0]));
                 break;
+            case "CANADA":
+                statesF.setValues(CanadaStatesFactory.getStates().toArray(new String[0]));
+                break;  
         }
     }
 }
