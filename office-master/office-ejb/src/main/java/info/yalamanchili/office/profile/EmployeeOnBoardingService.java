@@ -59,7 +59,7 @@ import org.springframework.stereotype.Component;
  *
  * @author Madhu.Badiginchala
  */
-@Component
+    @Component
 @Scope("request")
 public class EmployeeOnBoardingService {
 
@@ -183,6 +183,18 @@ public class EmployeeOnBoardingService {
             emergencyCnt.setEmployee(emp);
             em.merge(emergencyCnt);
         }
+        
+        //Update Dependent Information for Employee
+        for (Dependent dependent : employee.getDependent()) {
+            Dependent dep = new Dependent();
+            dep.setDfirstName(dependent.getDfirstName());
+            dep.setDlastName(dependent.getDlastName());
+            dep.setDdateOfBirth(dependent.getDdateOfBirth());
+            dep.setRelationship(dependent.getRelationship());
+            dep.setTargetEntityId(emp.getId());
+            dep.setTargetEntityName(Employee.class.getCanonicalName());
+            em.merge(dep);
+        }
 
         onboarding.setStatus(OnBoardingStatus.Pending_Document_Verification);
         onboarding.setEmployee(emp);
@@ -201,11 +213,7 @@ public class EmployeeOnBoardingService {
         BankAccount bankAccount;
         bankAccount = employee.getBankAccount();
         BankAccountDao.instance().save(bankAccount, emp.getId(), emp.getClass().getCanonicalName());
-
-        //Update Dependent Information for Employee
-        for (Dependent dependent : employee.getDependent()) {
-            dependentDao.save(dependent, emp.getId(), emp.getClass().getCanonicalName());
-        }
+        
         //employee documents
             for (EmployeeDocument empDoc : employee.getDocuments()) {
                 //To avoid empty file uploaded to employee docs if employee doesn't upload any form while onboarding
