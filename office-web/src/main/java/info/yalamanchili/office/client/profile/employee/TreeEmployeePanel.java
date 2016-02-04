@@ -48,6 +48,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected static final String CLIENT_INFO_NODE = "clientInfo";
     protected static final String PRIVACY_NODE = "privacy";
     protected static final String SKILL_SET_NODE = "skillset";
+    protected static final String IMMIGRATION_NODE = "immigration";
     protected static final String REPORTS_NODE = "reports";
     protected static final String SELF_SERVICE_NODE = "selfService";
     protected static final String PREFERENCES_NODE = "preferences";
@@ -60,6 +61,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected TreeEmpReportsPanel empReportsPanel;
     protected TreeEmpFormsPanel empDocsPanel;
     protected TreeEmpContactsPanel empContactsPanel;
+    protected TreeEmployeeImmigrationPanel empImmigrationPanel;
 
     public TreeEmployeePanel(JSONObject emp) {
         super();
@@ -67,6 +69,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         this.entity = emp;
         skillSetTreePanel = new TreeSkillSetPanel(getEntityId());
         empReportsPanel = new TreeEmpReportsPanel(getEntityId());
+        empImmigrationPanel = new TreeEmployeeImmigrationPanel(getEntityId());
         empDocsPanel = new TreeEmpFormsPanel(emp);
         empContactsPanel = new TreeEmpContactsPanel(emp);
         String name = JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName");
@@ -118,6 +121,9 @@ public class TreeEmployeePanel extends TreePanelComposite {
         }
         if ((Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_SYSTEM_AND_NETWORK_ADMIN) && Auth.isCorporateEmployee(entity)) || (Auth.isConsultantEmployee(entity) || Auth.isW2Contractor(entity) || Auth.is1099(entity) || Auth.isSubContractor(entity) && Auth.hasAnyOfRoles(ROLE.ROLE_CONSULTANT_TIME_ADMIN, ROLE.ROLE_ADMIN, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_SYSTEM_AND_NETWORK_ADMIN))) {
             addFirstChildLink("Deactivation", DEACTIVATION_USER_NODE);
+        }
+        if (Auth.isAdmin()) {
+            addFirstChildLink("Immigration", IMMIGRATION_NODE, empImmigrationPanel); 
         }
         this.rootItem.setState(true);
     }
@@ -199,6 +205,9 @@ public class TreeEmployeePanel extends TreePanelComposite {
         }
         if (empContactsPanel != null) {
             empContactsPanel.treeNodeSelected(entityNodeKey);
+        }
+        if (empImmigrationPanel != null) {
+            empImmigrationPanel.treeNodeSelected(entityNodeKey);
         }
     }
 
