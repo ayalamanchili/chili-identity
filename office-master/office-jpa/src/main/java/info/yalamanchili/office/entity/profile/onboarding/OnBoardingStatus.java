@@ -18,5 +18,6 @@ public enum OnBoardingStatus {
     Pending_Background_Check,
     Pending_EVerify,
     Pending_Payroll_Registration,
+    Pending_Network_Department_Approval,
     Complete,
 }
