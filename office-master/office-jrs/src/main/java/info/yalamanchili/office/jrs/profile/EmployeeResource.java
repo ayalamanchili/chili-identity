@@ -30,11 +30,14 @@ import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.client.ContractService;
 import info.yalamanchili.office.dao.practice.PracticeDao;
+import info.yalamanchili.office.dao.profile.ext.DependentDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.client.ContractDto;
 import info.yalamanchili.office.dto.profile.ClientInformationDto;
+import info.yalamanchili.office.dto.profile.DependentDto;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.privacy.PrivacyData;
+import info.yalamanchili.office.entity.profile.ext.Dependent;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.privacy.PrivacyAware;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
@@ -42,7 +45,9 @@ import info.yalamanchili.office.jrs.profile.EmailResource.EmailTable;
 import info.yalamanchili.office.jrs.profile.EmergencyContactResource.EmergencyContactTable;
 import info.yalamanchili.office.jrs.profile.PhoneResource.PhoneTable;
 import info.yalamanchili.office.jrs.profile.ClientInformationResource.ClientInformationTable;
+import info.yalamanchili.office.jrs.profile.DependentResource.DependentTable;
 import info.yalamanchili.office.profile.ClientInformationService;
+import info.yalamanchili.office.profile.DependentService;
 import info.yalamanchili.office.profile.EmergencyContactService;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import java.util.ArrayList;
@@ -385,6 +390,22 @@ public class EmployeeResource extends CRUDResource<Employee> {
         tableObj.setSize((long) emp.getEmergencyContacts().size());
         return tableObj;
     }
+    
+    /* Dependent */
+    @GET
+    @Path("/dependents/{id}/{start}/{limit}")
+    public DependentTable getDependents(@PathParam("id") long id, @PathParam("start") int start,
+            @PathParam("limit") int limit) {
+        DependentTable tableObj = new DependentTable();
+        Employee emp = (Employee) getDao().findById(id);
+        List<DependentDto> dependents = new ArrayList<DependentDto>();
+        for (Object ec : DependentDao.instance().findAll(emp.getId(), emp.getClass().getCanonicalName())) {
+            dependents.add(DependentDto.map(mapper, (Dependent) ec));
+        }
+        tableObj.setEntities(dependents);
+        tableObj.setSize((long) dependents.size());
+        return tableObj;
+    }
 
     @PUT
     @Validate
@@ -392,6 +413,14 @@ public class EmployeeResource extends CRUDResource<Employee> {
     public void addEmergencyContact(@PathParam("empId") Long empId, EmergencyContactDto ecDto) {
         EmergencyContactService emergencyContactService = (EmergencyContactService) SpringContext.getBean("emergencyContactService");
         emergencyContactService.addEmergencyContact(empId, ecDto);
+    }
+    
+    @PUT
+    @Path("/dependent/{empId}")
+    @Validate
+    public void addDependent(@PathParam("empId") Long empId, DependentDto depDto) {
+        DependentService dependentService = (DependentService) SpringContext.getBean("dependentService");
+        dependentService.addDependent(empId, depDto);
     }
 
     @GET
