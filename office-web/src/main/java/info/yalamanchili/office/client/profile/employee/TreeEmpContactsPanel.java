@@ -59,7 +59,6 @@ public class TreeEmpContactsPanel extends TreePanelComposite {
         if (DEPENDENT_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllDependentsPanel(employeeId));
-            TabPanel.instance().myOfficePanel.entityPanel.add(new DependentOptionsPanel());
         }
         if (COMPANY_CONTACT_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
