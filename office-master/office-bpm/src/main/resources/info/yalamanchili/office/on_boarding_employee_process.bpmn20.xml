@@ -14,7 +14,14 @@
         
         <startEvent id="onBoardingEmployeeProcessStart" />
        
-        <sequenceFlow sourceRef="onBoardingEmployeeProcessStart" targetRef="onBoardingFormsAndDataValidationTask" />
+        <sequenceFlow sourceRef="onBoardingEmployeeProcessStart" targetRef="sendEmployeeOnBoardingProcessStartEmail" />
+        
+         <serviceTask id="sendEmployeeOnBoardingProcessStartEmail" 
+                     name="Send Email to Employee Task" 
+                     activiti:expression="#{onBoardingEmployeeProcessBean.sendEmployeeOnBoardingProcessStartEmail(entity)}" />  
+        
+        <sequenceFlow sourceRef="sendEmployeeOnBoardingProcessStartEmail" 
+                      targetRef="onBoardingFormsAndDataValidationTask"/>
         
         <!-- On Boarding Form and Data Validation task : OnBoarding_Manager-->
         <userTask id="onBoardingFormsAndDataValidationTask" 
