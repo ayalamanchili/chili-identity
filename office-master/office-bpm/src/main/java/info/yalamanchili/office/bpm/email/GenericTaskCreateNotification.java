@@ -15,12 +15,8 @@ import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
 
@@ -58,7 +54,7 @@ public class GenericTaskCreateNotification implements TaskListener {
 
     protected String getTaskLink(DelegateTask delegateTask) {
         StringBuilder sb = new StringBuilder();
-        sb.append(OfficeServiceConfiguration.instance().getPortalWebUrl()).append("#home\\mytasks\\viewtask?id=").append(delegateTask.getId());
+        sb.append(OfficeServiceConfiguration.instance().getPortalWebUrl()).append("#?entity=info.chili.bpm.types.Task&id=").append(delegateTask.getId());
         return sb.toString();
     }
 

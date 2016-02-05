@@ -118,10 +118,9 @@ public class CommentResource {
         emailContext.put("createdBy", currentUser.getFirstName() + "" + currentUser.getLastName());
         emailContext.put("comment", comment.getComment());
         emailContext.put("reference", entity.getClass().getSimpleName());
-        emailContext.put("reference", entity.getClass().getSimpleName());
         emailContext.put("description", ((AbstractEntity) (entity)).describe());
         emailContext.put("comments", commentDao.findAll(entity.getId(), entity.getClass().getCanonicalName()));
-        emailContext.put("portalLoginLink", OfficeServiceConfiguration.instance().getPortalWebUrl());
+        emailContext.put("commentReferenceURL", OfficeServiceConfiguration.instance().getPortalWebUrl() + "#?entity=" + comment.getTargetEntityName() + "&id=" + comment.getTargetEntityId());
 
         email.setContext(emailContext);
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");

@@ -41,6 +41,9 @@ public class ReadProspectsPanel extends ReadComposite {
         return instance;
     }
 
+    public ReadProspectsPanel() {
+    }
+
     public ReadProspectsPanel(JSONObject entity) {
         instance = this;
         initReadComposite(entity, "Prospect", OfficeWelcome.constants);
@@ -54,20 +57,20 @@ public class ReadProspectsPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                if (ProspectStatus.CLOSED_WON.name().equals(JSONUtils.toString(getEntity(), "status"))) {
-                    addProspectWonFields();
-                }
-                populateFieldsFromEntity(entity);
-                JSONArray resumeURL = JSONUtils.toJSONArray(entity.get("resumeURL"));
-                if (resumeURL != null) {
-                    populateExpenseReceipt(resumeURL);
-                }
-                populateComments();
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        if (ProspectStatus.CLOSED_WON.name().equals(JSONUtils.toString(getEntity(), "status"))) {
+                            addProspectWonFields();
+                        }
+                        populateFieldsFromEntity(entity);
+                        JSONArray resumeURL = JSONUtils.toJSONArray(entity.get("resumeURL"));
+                        if (resumeURL != null) {
+                            populateExpenseReceipt(resumeURL);
+                        }
+                        populateComments();
+                    }
+                });
     }
 
     protected void populateExpenseReceipt(JSONArray items) {
@@ -150,7 +153,7 @@ public class ReadProspectsPanel extends ReadComposite {
     }
 
     @Override
-    protected String getURI() {
+    public String getURI() {
         return OfficeWelcome.constants.root_url() + "prospect/" + entityId;
     }
 

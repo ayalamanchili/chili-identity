@@ -13,14 +13,18 @@ import info.chili.reporting.ReportGenerator;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
+import info.yalamanchili.office.client.ContractService;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.client.SubcontractorDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.dto.client.ContractDto;
 import info.yalamanchili.office.dto.profile.ContactDto;
 import info.yalamanchili.office.entity.client.Subcontractor;
 import info.yalamanchili.office.entity.profile.Address;
+import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
@@ -37,7 +41,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -327,4 +333,5 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
             this.entities = entities;
         }
     }
+
 }

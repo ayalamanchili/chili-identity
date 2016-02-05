@@ -71,7 +71,7 @@ public class CreateClientLocationPanel extends CreateAddressPanel implements Cha
         addField("state", false, true, DataType.ENUM_FIELD);
         addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]));
         addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]));
-        addField("zip", false, false, DataType.LONG_FIELD);
+        addField("zip", false, false, DataType.STRING_FIELD);
         countriesF = (EnumField) fields.get("country");
         statesF = (EnumField) fields.get("state");
     }
@@ -99,10 +99,7 @@ public class CreateClientLocationPanel extends CreateAddressPanel implements Cha
                 break;
             case "CANADA":
                 statesF.setValues(CanadaStatesFactory.getStates().toArray(new String[0]));
-                break; 
-            case "JAPAN":
-                statesF.setValues(JapanStatesFactory.getStates().toArray(new String[0]));
-                break; 
+                break;
         }
     }
 }

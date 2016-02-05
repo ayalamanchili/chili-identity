@@ -27,6 +27,7 @@ import info.yalamanchili.office.client.profile.skillset.ReadSkillSetPopupPanel;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.companycontact.ReadAllCompanyContactPanel;
 import info.yalamanchili.office.client.profile.benefits.RetirementPlanReadPanel;
+import info.yalamanchili.office.client.profile.emergencycnt.ReadAllDependentsPopupPanel;
 import info.yalamanchili.office.client.profile.empdoc.ReadAllEmpDocsPopupPanel;
 import info.yalamanchili.office.client.profile.employee.ReadEmployeePopupPanel;
 import info.yalamanchili.office.client.profile.preferences.PreferencesPanel;
@@ -47,6 +48,7 @@ public class ProfileHome extends ALComposite {
     protected DisclosurePanel emailsPanel;
     protected DisclosurePanel addressesPanel;
     protected DisclosurePanel clientInfoPanel;
+    protected DisclosurePanel dependentsPanel;
     protected DisclosurePanel emergencyContactsPanel;
     protected DisclosurePanel companyContactsPanel;
     protected DisclosurePanel privacyPanel;
@@ -77,6 +79,7 @@ public class ProfileHome extends ALComposite {
         addEmailsPanel();
         addClientInfoPanel();
         addEmergencyContactsPanel();
+        addDependentsPanel();
         addCompanyContactsPanel();
         addSkillSetPanel();
         addEmpDocsPanel();
@@ -198,10 +201,31 @@ public class ProfileHome extends ALComposite {
         clientInfoPanel.setOpen(false);
         clientInfoPanel.setOpen(true);
     }
+
+    /*
+     * dependent
+     */
+    protected void addDependentsPanel() {
+        dependentsPanel = new DisclosurePanel("Dependents");
+        panel.add(dependentsPanel);
+        dependentsPanel.addStyleName("profileHome");
+        dependentsPanel.addOpenHandler(new OpenHandler<DisclosurePanel>() {
+            @Override
+            public void onOpen(OpenEvent<DisclosurePanel> event) {
+                dependentsPanel.setContent(
+                        new ReadAllDependentsPopupPanel(OfficeWelcome.instance().employeeId));
+            }
+        });
+    }
+
+    public void refreshDependentsPanel() {
+        dependentsPanel.setOpen(false);
+        dependentsPanel.setOpen(true);
+    }
+
     /*
      * emergency contact
      */
-
     protected void addEmergencyContactsPanel() {
         emergencyContactsPanel = new DisclosurePanel("Emergency Contacts");
         panel.add(emergencyContactsPanel);

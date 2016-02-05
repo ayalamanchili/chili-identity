@@ -12,11 +12,17 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ClickableLink;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.profile.emergencycnt.ReadAllDependentsPanel;
+import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
 /**
@@ -37,6 +43,11 @@ public class CreateDependentsPanel extends CreateComposite implements ClickHandl
         this.parentPanel = parent;
     }
 
+    public CreateDependentsPanel(CreateCompositeType type) {
+        super(type);
+        initCreateComposite("Dependent", OfficeWelcome.constants);
+    }
+
     @Override
     protected JSONObject populateEntityFromFields() {
         entity = new JSONObject();
@@ -51,38 +62,55 @@ public class CreateDependentsPanel extends CreateComposite implements ClickHandl
 
     @Override
     protected void createButtonClicked() {
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+                new AsyncCallback<String>() {
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        logger.info(arg0.getMessage());
+                        handleErrorResponse(arg0);
+                    }
 
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
     protected void addButtonClicked() {
-
     }
 
     @Override
     protected void postCreateSuccess(String result) {
-
+        new ResponseStatusWidget().show("Successfully Added Dependent");
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllDependentsPanel(
+                TreeEmployeePanel.instance().getEntityId()));
     }
 
     @Override
     protected void addListeners() {
-        deleteB.addClickHandler(this);
+        if (parentPanel != null) {
+            deleteB.addClickHandler(this);
+        }
     }
 
     @Override
     protected void configure() {
-        create.setVisible(false);
+        create.setVisible(true);
     }
 
     @Override
     protected void addWidgets() {
         addField("dfirstName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("dlastName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("dlastName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("ddateOfBirth", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("relationship", false, true, Relationship.names(), Alignment.HORIZONTAL);
+        if (parentPanel != null) {
+            entityActionsPanel.add(deleteB);
+        }
         alignFields();
-        entityActionsPanel.add(deleteB);
-
     }
 
     @Override
@@ -92,13 +120,16 @@ public class CreateDependentsPanel extends CreateComposite implements ClickHandl
 
     @Override
     protected String getURI() {
-        return "";
+        return OfficeWelcome.constants.root_url() + "employee/dependent/"
+                + TreeEmployeePanel.instance().getEntityId();
     }
 
     @Override
     public void onClick(ClickEvent event) {
-        if (event.getSource().equals(deleteB)) {
-            parentPanel.removePanel(index);
+        if (parentPanel != null) {
+            if (event.getSource().equals(deleteB)) {
+                parentPanel.removePanel(index);
+            }
         }
         super.onClick(event);
     }

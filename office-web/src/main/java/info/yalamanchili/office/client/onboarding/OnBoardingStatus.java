@@ -19,6 +19,8 @@ public enum OnBoardingStatus {
     Pending_Background_Check,
     Pending_EVerify,
     Pending_Payroll_Registration,
+    Pending_Network_Team_Provisioning,
+    Pending_Employee_Orientation,
     Complete;
 
     public static String[] names() {

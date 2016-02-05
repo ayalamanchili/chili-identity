@@ -57,6 +57,8 @@ public class BillingRate extends AbstractEntity {
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_ClinetInfo_BillingRates")
     protected ClientInformation clientInformation;
+    
+    @org.hibernate.annotations.Index(name = "BillingRate_EffectiveDate_IDX")
     @Temporal(javax.persistence.TemporalType.DATE)
     @NotNull(message = "{effectiveDate.not.empty.msg}")
     protected Date effectiveDate;
@@ -71,6 +73,7 @@ public class BillingRate extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     protected InvoiceFrequency subContractorInvoiceFrequency;
 
+    @org.hibernate.annotations.Index(name = "BillingRate_UpdatedTS_IDX")
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     protected Date updatedTs;
 

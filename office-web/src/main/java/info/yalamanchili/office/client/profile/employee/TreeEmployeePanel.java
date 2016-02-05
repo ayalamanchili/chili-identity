@@ -10,8 +10,6 @@ import info.yalamanchili.office.client.profile.address.AddressOptionsPanel;
 import info.yalamanchili.office.client.profile.address.ReadAllAddressesPanel;
 import info.yalamanchili.office.client.profile.email.EmailOptionsPanel;
 import info.yalamanchili.office.client.profile.email.ReadAllEmailsPanel;
-import info.yalamanchili.office.client.profile.emergencycnt.EmergencyContactOptionsPanel;
-import info.yalamanchili.office.client.profile.emergencycnt.ReadAllEmergencyContactsPanel;
 import info.yalamanchili.office.client.profile.phone.PhoneOptionsPanel;
 import info.yalamanchili.office.client.profile.phone.ReadAllPhonesPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.ReadAllClientInfoPanel;
@@ -29,10 +27,6 @@ import info.yalamanchili.office.client.profile.skillset.ReadSkillSetPanel;
 import info.yalamanchili.office.client.profile.skillset.TreeSkillSetPanel;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.Auth.ROLE;
-import info.yalamanchili.office.client.companycontact.CompanyContactOptionsPanel;
-import info.yalamanchili.office.client.companycontact.ReadAllCompanyContactPanel;
-import info.yalamanchili.office.client.profile.empdoc.EmpDocOptionsPanel;
-import info.yalamanchili.office.client.profile.empdoc.ReadAllEmpDocsPanel;
 import info.yalamanchili.office.client.profile.password.DeactivatationPanel;
 import info.yalamanchili.office.client.profile.preferences.PreferencesPanel;
 import info.yalamanchili.office.client.profile.privacy.PrivacyOptionsPanel;
@@ -52,21 +46,22 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected static final String EMAIL_NODE = "email";
     protected static final String PHONE_NODE = "phone";
     protected static final String CLIENT_INFO_NODE = "clientInfo";
-    protected static final String EMERGENCY_CONTACT_NODE = "emergencyContact";
-    protected static final String COMPANY_CONTACT_NODE = "companyContact";
     protected static final String PRIVACY_NODE = "privacy";
     protected static final String SKILL_SET_NODE = "skillset";
+    protected static final String IMMIGRATION_NODE = "immigration";
     protected static final String REPORTS_NODE = "reports";
     protected static final String SELF_SERVICE_NODE = "selfService";
-    protected static final String DOCUMENTS_NODE = "documents";
     protected static final String PREFERENCES_NODE = "preferences";
     protected static final String ROLES_NODE = "roles";
     protected static final String RESET_PASSWORD_NODE = "resetpassword";
     protected static final String DEACTIVATION_USER_NODE = "deactivation";
     protected static final String EMPLOYEE_FORMS = "employeeForms";
+    protected static final String EMPLOYEE_CONTACTS = "employeeContacts";
     protected TreeSkillSetPanel skillSetTreePanel;
     protected TreeEmpReportsPanel empReportsPanel;
     protected TreeEmpFormsPanel empDocsPanel;
+    protected TreeEmpContactsPanel empContactsPanel;
+    protected TreeEmployeeImmigrationPanel empImmigrationPanel;
 
     public TreeEmployeePanel(JSONObject emp) {
         super();
@@ -74,7 +69,9 @@ public class TreeEmployeePanel extends TreePanelComposite {
         this.entity = emp;
         skillSetTreePanel = new TreeSkillSetPanel(getEntityId());
         empReportsPanel = new TreeEmpReportsPanel(getEntityId());
+        empImmigrationPanel = new TreeEmployeeImmigrationPanel(getEntityId());
         empDocsPanel = new TreeEmpFormsPanel(emp);
+        empContactsPanel = new TreeEmpContactsPanel(emp);
         String name = JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName");
         init(name, OfficeWelcome.constants);
     }
@@ -99,21 +96,19 @@ public class TreeEmployeePanel extends TreePanelComposite {
         addFirstChildLink("Emails", EMAIL_NODE);
         addFirstChildLink("Phones", PHONE_NODE);
         addFirstChildLink("Client Information", CLIENT_INFO_NODE);
-        addFirstChildLink("Emergency Contacts", EMERGENCY_CONTACT_NODE);
-        addFirstChildLink("Company Contacts", COMPANY_CONTACT_NODE);
+        addFirstChildLink("Contacts", EMPLOYEE_CONTACTS, empContactsPanel);
         if (Auth.isEmployee(entity)) {
             addFirstChildLink("Skill Set", SKILL_SET_NODE, skillSetTreePanel);
         }
         if (Auth.isCorporateEmployee()) {
             addFirstChildLink("Self Service", SELF_SERVICE_NODE);
-            addFirstChildLink("Documents", DOCUMENTS_NODE);
         }
         if (Auth.isAdmin()) {
             addFirstChildLink("Roles", ROLES_NODE);
         }
         addFirstChildLink("Reports", REPORTS_NODE, empReportsPanel);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ON_BOARDING_MGR)) {
-            addFirstChildLink("Forms", EMPLOYEE_FORMS, empDocsPanel);
+            addFirstChildLink("Forms & Docs", EMPLOYEE_FORMS, empDocsPanel);
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP) && Auth.isEmployee(entity)) {
             addFirstChildLink("Reset Password", RESET_PASSWORD_NODE);
@@ -126,6 +121,9 @@ public class TreeEmployeePanel extends TreePanelComposite {
         }
         if ((Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_SYSTEM_AND_NETWORK_ADMIN) && Auth.isCorporateEmployee(entity)) || (Auth.isConsultantEmployee(entity) || Auth.isW2Contractor(entity) || Auth.is1099(entity) || Auth.isSubContractor(entity) && Auth.hasAnyOfRoles(ROLE.ROLE_CONSULTANT_TIME_ADMIN, ROLE.ROLE_ADMIN, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_SYSTEM_AND_NETWORK_ADMIN))) {
             addFirstChildLink("Deactivation", DEACTIVATION_USER_NODE);
+        }
+        if (Auth.isAdmin()) {
+            addFirstChildLink("Immigration", IMMIGRATION_NODE, empImmigrationPanel); 
         }
         this.rootItem.setState(true);
     }
@@ -152,16 +150,6 @@ public class TreeEmployeePanel extends TreePanelComposite {
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(getEntityId()));
             TabPanel.instance().myOfficePanel.entityPanel.add(new ClientInfoOptionsPanel());
         }
-        if (EMERGENCY_CONTACT_NODE.equals(entityNodeKey)) {
-            TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmergencyContactsPanel(getEntityId()));
-            TabPanel.instance().myOfficePanel.entityPanel.add(new EmergencyContactOptionsPanel());
-        }
-        if (COMPANY_CONTACT_NODE.equals(entityNodeKey)) {
-            TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllCompanyContactPanel(getEntityId()));
-            TabPanel.instance().myOfficePanel.entityPanel.add(new CompanyContactOptionsPanel());
-        }
         if (PRIVACY_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPrivacySettngsPanel(getEntityId()));
@@ -177,12 +165,6 @@ public class TreeEmployeePanel extends TreePanelComposite {
             //TODO ADD READ ALL Serviceticketspanel
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllServiceTicketsPanel(getEntityId()));
-        }
-        if (DOCUMENTS_NODE.equals(entityNodeKey)) {
-            TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmpDocsPanel(getEntityId()));
-            TabPanel.instance().myOfficePanel.entityPanel.add(new EmpDocOptionsPanel());
-            //TabPanel.instance().myOfficePanel.entityPanel.add(new CreateEmpDocPanel(getEntityId()));
         }
         if (DEACTIVATION_USER_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
@@ -220,6 +202,12 @@ public class TreeEmployeePanel extends TreePanelComposite {
         }
         if (empDocsPanel != null) {
             empDocsPanel.treeNodeSelected(entityNodeKey);
+        }
+        if (empContactsPanel != null) {
+            empContactsPanel.treeNodeSelected(entityNodeKey);
+        }
+        if (empImmigrationPanel != null) {
+            empImmigrationPanel.treeNodeSelected(entityNodeKey);
         }
     }
 

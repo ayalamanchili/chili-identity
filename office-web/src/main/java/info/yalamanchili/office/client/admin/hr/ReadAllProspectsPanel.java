@@ -92,11 +92,8 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
                 if (ProspectStatus.CLOSED_WON.name().equals(status)) {
                     ClickableLink invitationLink = new ClickableLink("OnBoarding invitecode");
                     invitationLink.setTitle(JSONUtils.toString(entity, "id"));
-                    invitationLink.addClickHandler(new ClickHandler() {
-                        @Override
-                        public void onClick(ClickEvent event) {
-                            getOnBoardInviteCode(((ClickableLink) event.getSource()).getTitle());
-                        }
+                    invitationLink.addClickHandler((ClickEvent event) -> {
+                        getOnBoardInviteCode(((ClickableLink) event.getSource()).getTitle());
                     });
                     table.setWidget(i, 6, invitationLink);
                 }

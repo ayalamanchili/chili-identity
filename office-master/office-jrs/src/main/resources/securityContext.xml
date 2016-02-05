@@ -25,37 +25,39 @@
         <!--<form-login authentication-success-handler-ref="authenticationSuccessHandler"/>-->
     </http>
      
-<!--    <beans:bean id="authenticationSuccessHandler"
-                class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
-        fix target default URL
-        <beans:property name="defaultTargetUrl" value="/problemSolution/home"/>
-    </beans:bean>-->
+    <security:global-method-security secured-annotations="enabled" pre-post-annotations="enabled"/>
+         
+        <!--    <beans:bean id="authenticationSuccessHandler"
+                    class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+            fix target default URL
+            <beans:property name="defaultTargetUrl" value="/problemSolution/home"/>
+        </beans:bean>-->
 
-    <authentication-manager>
-        <authentication-provider>
-            <password-encoder ref="passwordEncoder" />
-            <jdbc-user-service  id="userService" data-source-ref="officeSecurityDataSource"
+        <authentication-manager>
+            <authentication-provider>
+                <password-encoder ref="passwordEncoder" />
+                <jdbc-user-service  id="userService" data-source-ref="officeSecurityDataSource"
                                 users-by-username-query="select username, passwordHash ,enabled from CUser where username=?"
 
                                 authorities-by-username-query="select user.username, role.rolename from cuser user, crole role, userroles userroles 
 		      where user.userId = userroles.userId and userroles.roleId= role.roleId and user.username =?  " />
-        </authentication-provider>
-    </authentication-manager>
-    <beans:bean id ="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder" >
-        <beans:constructor-arg value="256"/>
-    </beans:bean>
-    <!-- this is standrad encryptor used for encrypting data.-->
-    <beans:bean id="hibernateStringEncryptor" class="org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor">
-        <beans:property name="registeredName" value="hibernateStringEncryptor"/>
-        <beans:property name="password" value="${jasypt.password}"/>
-    </beans:bean>
-    <!-- used for hasing-->
-    <beans:bean id="officeStringDigester" class="org.jasypt.digest.PooledStringDigester" >
-        <beans:property name="poolSize" value="2" />
-        <beans:property name="algorithm" value="SHA-1" />
-        <beans:property name="iterations" value="100000" />
-        <beans:property name="saltGenerator">
-            <beans:bean id="saltGenerator" class="org.jasypt.salt.ZeroSaltGenerator"/>
-        </beans:property>
-    </beans:bean>
+            </authentication-provider>
+        </authentication-manager>
+        <beans:bean id ="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder" >
+            <beans:constructor-arg value="256"/>
+        </beans:bean>
+        <!-- this is standrad encryptor used for encrypting data.-->
+        <beans:bean id="hibernateStringEncryptor" class="org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor">
+            <beans:property name="registeredName" value="hibernateStringEncryptor"/>
+            <beans:property name="password" value="${jasypt.password}"/>
+        </beans:bean>
+        <!-- used for hasing-->
+        <beans:bean id="officeStringDigester" class="org.jasypt.digest.PooledStringDigester" >
+            <beans:property name="poolSize" value="2" />
+            <beans:property name="algorithm" value="SHA-1" />
+            <beans:property name="iterations" value="100000" />
+            <beans:property name="saltGenerator">
+                <beans:bean id="saltGenerator" class="org.jasypt.salt.ZeroSaltGenerator"/>
+            </beans:property>
+        </beans:bean>
 </beans:beans>

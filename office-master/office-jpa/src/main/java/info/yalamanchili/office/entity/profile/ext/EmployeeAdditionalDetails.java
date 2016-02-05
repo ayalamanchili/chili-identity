@@ -12,6 +12,7 @@ import info.chili.jpa.AbstractHandleEntity;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.envers.Audited;
@@ -37,6 +38,7 @@ public class EmployeeAdditionalDetails extends AbstractHandleEntity {
      */
     @Enumerated(EnumType.STRING)
     @Field
+    @NotNull(message = "{maritalstatus.not.empty.msg}")
     protected MaritalStatus maritalStatus;
     /**
      *

@@ -11,6 +11,7 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.crud.CreateComposite;
+import info.chili.gwt.data.CanadaStatesFactory;
 import info.chili.gwt.data.CountryFactory;
 import info.chili.gwt.data.IndiaStatesFactory;
 import info.chili.gwt.data.USAStatesFactory;
@@ -68,7 +69,7 @@ public class CreateSubcontractorLocationPanel extends CreateAddressPanel impleme
         addField("state", false, true, DataType.ENUM_FIELD);
         addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]));
         addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]));
-        addField("zip", false, false, DataType.LONG_FIELD);
+        addField("zip", false, false, DataType.STRING_FIELD);
         countriesF = (EnumField) fields.get("country");
         statesF = (EnumField) fields.get("state");
     }
@@ -88,6 +89,9 @@ public class CreateSubcontractorLocationPanel extends CreateAddressPanel impleme
                 break;
             case "INDIA":
                 statesF.setValues(IndiaStatesFactory.getStates().toArray(new String[0]));
+                break;
+            case "CANADA":
+                statesF.setValues(CanadaStatesFactory.getStates().toArray(new String[0]));
                 break;
         }
     }    

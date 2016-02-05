@@ -21,7 +21,7 @@ Create New Client Information
 Search For Employee
 ----
 ![alt text](../../images/clientinfo/search-employee.png "Client Information")
-Add New Client Client Inforamtion
+Add New Client Client Information
 ----
 ![alt text](../../images/clientinfo/creat-new-client-info.png "Client Information")
 
