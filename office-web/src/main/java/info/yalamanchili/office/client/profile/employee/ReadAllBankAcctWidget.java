@@ -7,14 +7,12 @@ package info.yalamanchili.office.client.profile.employee;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.user.client.ui.Anchor;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
-import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -50,12 +48,10 @@ public class ReadAllBankAcctWidget extends CRUDReadAllComposite {
 
     @Override
     public void preFetchTable(int start) {
-        logger.info("ach url .... " + getReadAllFilesURL());
         HttpService.HttpServiceAsync.instance().doGet(getReadAllFilesURL(),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
-                        logger.info(result);
                         postFetchTable(result);
                     }
                 });
@@ -103,7 +99,6 @@ public class ReadAllBankAcctWidget extends CRUDReadAllComposite {
 
     @Override
     public void viewClicked(String entityId) {
-        logger.info("entity id ..... "+entityId);
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadBankAcctWidget(entityId));
     }
@@ -138,7 +133,7 @@ public class ReadAllBankAcctWidget extends CRUDReadAllComposite {
 
     @Override
     protected void configureCreateButton() {
-        createButton.setVisible(true);
+            createButton.setVisible(true);
     }
 
     @Override
