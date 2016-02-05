@@ -41,6 +41,7 @@ public class SubcontractorSidePanel extends ALComposite implements ClickHandler 
     private static Logger logger = Logger.getLogger(SubcontractorSidePanel.class.getName());
     public FlowPanel subcontractorSidePanel = new FlowPanel();
     ClickableLink createSubcontractorLink = new ClickableLink("Create Subcontractor");
+    ClickableLink SubcontractorSummaryReportL = new ClickableLink("Subcontractor Summary Report");
     CaptionPanel reportsCaptionPanel = new CaptionPanel();
     FlowPanel reportsPanel = new FlowPanel();
     Button reportsB = new Button("Report");
@@ -60,6 +61,7 @@ public class SubcontractorSidePanel extends ALComposite implements ClickHandler 
     @Override
     protected void addListeners() {
         createSubcontractorLink.addClickHandler(this);
+        SubcontractorSummaryReportL.addClickHandler(this);
         viewReportsB.addClickHandler(this);
         clearReportsL.addClickHandler(this);
         reportsB.addClickHandler(this);
@@ -67,6 +69,7 @@ public class SubcontractorSidePanel extends ALComposite implements ClickHandler 
 
     @Override
     protected void configure() {
+           SubcontractorSummaryReportL.setTitle("report with full information of subcontractor");
         reportsCaptionPanel.setCaptionHTML("COI End Date Report");
     }
 
@@ -74,6 +77,7 @@ public class SubcontractorSidePanel extends ALComposite implements ClickHandler 
     protected void addWidgets() {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS)) {
             subcontractorSidePanel.add(createSubcontractorLink);
+             subcontractorSidePanel.add(SubcontractorSummaryReportL);
         }
         subcontractorSidePanel.add(new SearchSubcontractorPanel());
         reportsPanel.add(startDateF);
@@ -90,6 +94,9 @@ public class SubcontractorSidePanel extends ALComposite implements ClickHandler 
             TabPanel.instance().adminPanel.entityPanel.clear();
             TabPanel.instance().adminPanel.entityPanel.add(new CreateSubcontractorPanel(CreateComposite.CreateCompositeType.CREATE));
         }
+          if (event.getSource().equals(SubcontractorSummaryReportL)) {
+            generateSubcontractorInfoReport();
+          }
         if (event.getSource().equals(viewReportsB)) {
             viewReport();
         }
@@ -162,5 +169,20 @@ public class SubcontractorSidePanel extends ALComposite implements ClickHandler 
             search.put("coiFromEndDate", new JSONString(DateUtils.toDateString(endDateF.getDate())));
         }
         return search;
+    }
+
+     protected void generateSubcontractorInfoReport() {
+         logger.info("report url .... "+getSubcontractorInfoReportUrl());
+        HttpService.HttpServiceAsync.instance().doGet(getSubcontractorInfoReportUrl(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String result) {
+                        new ResponseStatusWidget().show("Report will be emailed to your primary email");
+                    }
+                });
+    }
+
+    protected String getSubcontractorInfoReportUrl() {
+          return OfficeWelcome.constants.root_url() + "contract/subvendor-report";
     }
 }
