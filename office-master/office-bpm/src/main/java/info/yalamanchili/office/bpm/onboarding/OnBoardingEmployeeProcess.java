@@ -85,7 +85,7 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
         if (entity.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
             empOnBoarding.setStatus(OnBoardingStatus.Pending_Network_Team_Provisioning);
         } else {
-            empOnBoarding.setStatus(OnBoardingStatus.Complete);
+            empOnBoarding.setStatus(OnBoardingStatus.Pending_Employee_Orientation);
         }
         new GenericTaskCompleteNotification().notify(dt);
         EmployeeOnBoardingDao.instance().save(empOnBoarding);
