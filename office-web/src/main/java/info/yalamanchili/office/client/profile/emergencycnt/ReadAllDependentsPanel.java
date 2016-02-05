@@ -10,6 +10,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
@@ -18,7 +19,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.profile.employee.DependentOptionsPanel;
+import info.yalamanchili.office.client.onboarding.CreateDependentsPanel;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
@@ -42,7 +43,7 @@ public class ReadAllDependentsPanel extends CRUDReadAllComposite {
         this.targetClassName = targetClassName;
         initTable("Dependent", OfficeWelcome.constants);
     }
-    
+
     public ReadAllDependentsPanel(String parentId) {
         instance = this;
         this.parentId = parentId;
@@ -106,7 +107,6 @@ public class ReadAllDependentsPanel extends CRUDReadAllComposite {
 
     @Override
     public void deleteClicked(String entityId) {
-        logger.info("get delete url ... "+getDeleteURL(entityId));
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
@@ -121,7 +121,6 @@ public class ReadAllDependentsPanel extends CRUDReadAllComposite {
         new ResponseStatusWidget().show("Successfully Deleted Dependent Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllDependentsPanel(TreeEmployeePanel.instance().getEntityId()));
-        TabPanel.instance().myOfficePanel.entityPanel.add(new DependentOptionsPanel());
     }
 
     @Override
@@ -133,5 +132,17 @@ public class ReadAllDependentsPanel extends CRUDReadAllComposite {
 
     protected String getDeleteURL(String entityId) {
         return OfficeWelcome.instance().constants.root_url() + "dependent/delete/" + entityId;
+    }
+
+    @Override
+    protected void configureCreateButton() {
+        createButton.setText("Add Dependent");
+        createButton.setVisible(true);
+    }
+
+    @Override
+    protected void createButtonClicked() {
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new CreateDependentsPanel(CreateComposite.CreateCompositeType.CREATE));
     }
 }

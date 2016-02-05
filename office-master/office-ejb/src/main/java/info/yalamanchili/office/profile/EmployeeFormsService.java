@@ -52,7 +52,7 @@ public class EmployeeFormsService {
         JoiningFormsDto dto = new JoiningFormsDto();
         dto.setEmployee(emp);
         // To avoid index 0, size 0 exception while invoking this method
-        if (emp.getAddresss()!=null && emp.getAddresss().size() > 0) {
+        if (emp.getAddresss().size() > 0) {
             List<Address> listOfAddress = emp.getAddresss();
             Address address = listOfAddress.get(0);
             dto.setAddress(address);

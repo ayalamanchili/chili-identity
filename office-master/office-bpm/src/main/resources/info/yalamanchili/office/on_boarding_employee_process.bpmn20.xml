@@ -14,7 +14,14 @@
         
         <startEvent id="onBoardingEmployeeProcessStart" />
        
-        <sequenceFlow sourceRef="onBoardingEmployeeProcessStart" targetRef="onBoardingFormsAndDataValidationTask" />
+        <sequenceFlow sourceRef="onBoardingEmployeeProcessStart" targetRef="sendEmployeeOnBoardingProcessStartEmail" />
+        
+         <serviceTask id="sendEmployeeOnBoardingProcessStartEmail" 
+                     name="Send Email to Employee Task" 
+                     activiti:expression="#{onBoardingEmployeeProcessBean.sendEmployeeOnBoardingProcessStartEmail(entity)}" />  
+        
+        <sequenceFlow sourceRef="sendEmployeeOnBoardingProcessStartEmail" 
+                      targetRef="onBoardingFormsAndDataValidationTask"/>
         
         <!-- On Boarding Form and Data Validation task : OnBoarding_Manager-->
         <userTask id="onBoardingFormsAndDataValidationTask" 
@@ -312,7 +319,7 @@
         <!-- Employee Orientation Task -->
         <userTask id="EmployeeOrientationTask" 
                   name="Employee Orientation Task for ${entity.firstName} ${entity.lastName}" 
-                  activiti:candidateGroups="ROLE_HR">
+                  activiti:candidateGroups="ROLE_ON_BOARDING_MGR">
             <documentation>
                 Employee Orientation Task For #{entity.firstName} #{entity.lastName}
                 Please inform company standards, policies and his/her work related activities to the employee and complete this task.
@@ -326,8 +333,8 @@
                 Start Date          : #{entity.startDate}
             </documentation>
             <extensionElements>
-                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
-                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification" />
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
                 <activiti:formProperty id="notes" 
                                        name="Notes"
                                        required="true" 
@@ -346,12 +353,12 @@
         <serviceTask id="EmployeeOrientationTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
         <sequenceFlow sourceRef="EmployeeOrientationTask" targetRef="join2">
             <conditionExpression xsi:type="tFormalExpression">
-                ${status == 'approved' and entity.employeeType.name == 'Corporate Employee'}
+                ${entity.employeeType.name == 'Corporate Employee'}
             </conditionExpression>
         </sequenceFlow>
         <sequenceFlow sourceRef="EmployeeOrientationTask" targetRef="sendEmployeeOnBoardingCompletedEmail" >
             <conditionExpression xsi:type="tFormalExpression">
-                ${status == 'approved' and entity.employeeType.name == 'Employee'}
+                ${entity.employeeType.name == 'Employee'}
             </conditionExpression>
         </sequenceFlow>
         

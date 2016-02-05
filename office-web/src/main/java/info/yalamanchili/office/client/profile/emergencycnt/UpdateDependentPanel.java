@@ -15,7 +15,6 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.onboarding.Relationship;
-import info.yalamanchili.office.client.profile.employee.DependentOptionsPanel;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 
 /**
@@ -60,7 +59,6 @@ public class UpdateDependentPanel extends UpdateComposite {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllDependentsPanel(
                 TreeEmployeePanel.instance().getEntityId()));
-        TabPanel.instance().myOfficePanel.entityPanel.add(new DependentOptionsPanel());
     }
 
     @Override
