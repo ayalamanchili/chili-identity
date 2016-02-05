@@ -11,15 +11,11 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
-import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
-import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.admin.hr.ProspectStatus;
-import info.yalamanchili.office.client.admin.hr.UpdateProspectPanel;
 import info.yalamanchili.office.client.expense.bnkacct.AccountType;
 
 /**
@@ -29,7 +25,6 @@ import info.yalamanchili.office.client.expense.bnkacct.AccountType;
 public class UpdateBankAccountPanel extends UpdateComposite {
 
     public UpdateBankAccountPanel(JSONObject entity) {
-        OfficeWelcome.logger.info("update panel entity ... " + entity);
         initUpdateComposite(entity, "Bank Account", OfficeWelcome.constants);
     }
 
@@ -41,7 +36,6 @@ public class UpdateBankAccountPanel extends UpdateComposite {
 
     public UpdateBankAccountPanel(String parentId) {
         instance = this;
-        OfficeWelcome.logger.info("update panel entity ... " + parentId);
         initUpdateComposite(parentId, "Bank Account", OfficeWelcome.constants);
     }
 
@@ -77,7 +71,6 @@ public class UpdateBankAccountPanel extends UpdateComposite {
 
     @Override
     protected void updateButtonClicked() {
-        OfficeWelcome.logger.info("get uri after update button clicked .. " + getURI());
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
                     @Override
@@ -110,7 +103,6 @@ public class UpdateBankAccountPanel extends UpdateComposite {
         new ResponseStatusWidget().show("Successfully Updated BankAccount");
         TabPanel.instance().getAdminPanel().entityPanel.clear();
         TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllBankAcctWidget(TreeEmployeePanel.instance().getEntityId()));
-
     }
 
     @Override
