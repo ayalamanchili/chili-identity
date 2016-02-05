@@ -20,7 +20,6 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.onboarding.CreateDependentsPanel;
-import info.yalamanchili.office.client.profile.employee.DependentOptionsPanel;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
@@ -122,7 +121,6 @@ public class ReadAllDependentsPanel extends CRUDReadAllComposite {
         new ResponseStatusWidget().show("Successfully Deleted Dependent Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllDependentsPanel(TreeEmployeePanel.instance().getEntityId()));
-        TabPanel.instance().myOfficePanel.entityPanel.add(new DependentOptionsPanel());
     }
 
     @Override
