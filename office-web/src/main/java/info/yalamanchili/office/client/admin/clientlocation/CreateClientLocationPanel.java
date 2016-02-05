@@ -17,7 +17,9 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CreateComposite;
+import info.chili.gwt.data.CanadaStatesFactory;
 import info.chili.gwt.data.IndiaStatesFactory;
+import info.chili.gwt.data.JapanStatesFactory;
 import info.chili.gwt.fields.EnumField;
 import info.yalamanchili.office.client.profile.address.CreateAddressPanel;
 import info.yalamanchili.office.client.admin.client.TreeClientPanel;
@@ -69,7 +71,7 @@ public class CreateClientLocationPanel extends CreateAddressPanel implements Cha
         addField("state", false, true, DataType.ENUM_FIELD);
         addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]));
         addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]));
-        addField("zip", false, false, DataType.LONG_FIELD);
+        addField("zip", false, false, DataType.STRING_FIELD);
         countriesF = (EnumField) fields.get("country");
         statesF = (EnumField) fields.get("state");
     }
@@ -94,6 +96,9 @@ public class CreateClientLocationPanel extends CreateAddressPanel implements Cha
                 break;
             case "INDIA":
                 statesF.setValues(IndiaStatesFactory.getStates().toArray(new String[0]));
+                break;
+            case "CANADA":
+                statesF.setValues(CanadaStatesFactory.getStates().toArray(new String[0]));
                 break;
         }
     }

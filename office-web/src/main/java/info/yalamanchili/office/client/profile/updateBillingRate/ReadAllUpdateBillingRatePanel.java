@@ -46,15 +46,15 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
 
     static JSONObject clientInfo;
 
-    public ReadAllUpdateBillingRatePanel(JSONObject clientInfo) {
+    public ReadAllUpdateBillingRatePanel(JSONObject clientInformation) {
         instance = this;
-        this.clientInfo = clientInfo;
+        this.clientInfo = clientInformation;
         initTable("BillingRate", OfficeWelcome.constants);
     }
 
-    public ReadAllUpdateBillingRatePanel(JSONObject clientInfo, boolean isSubOr1099) {
+    public ReadAllUpdateBillingRatePanel(JSONObject clientInformation, boolean isSubOr1099) {
         instance = this;
-        this.clientInfo = clientInfo;
+        this.clientInfo = clientInformation;
         this.isSubOr1099 = isSubOr1099;
         initTable("BillingRate", OfficeWelcome.constants);
     }
@@ -156,7 +156,7 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
     }
 
     private String getReadAllURL() {
-        return OfficeWelcome.constants.root_url() + "clientinformation/billing-rates/" + parentId;
+        return OfficeWelcome.constants.root_url() + "clientinformation/billing-rates/" + JSONUtils.toString(clientInfo, "id");
     }
 
     /**
@@ -166,28 +166,28 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
      * @param entityFieldsPanel
      * @return
      */
-    public static Widget renderBillingRateHistory(final String clientInfoId, final boolean isSubOr1099) {
+    public static Widget renderBillingRateHistory(final JSONObject clientInformation, final boolean isSubOr1099) {
         final DisclosurePanel billingRatesDP = new DisclosurePanel("Billing Rate History");
         billingRatesDP.setWidth("100%");
         billingRatesDP.addOpenHandler(new OpenHandler<DisclosurePanel>() {
             @Override
             public void onOpen(OpenEvent<DisclosurePanel> event) {
                 billingRatesDP.setContent(
-                        new ReadAllUpdateBillingRatePanel(clientInfo, isSubOr1099));
+                        new ReadAllUpdateBillingRatePanel(clientInformation, isSubOr1099));
 
             }
         });
         return billingRatesDP;
     }
 
-    public static Widget renderBillingRateHistory(final String clientInfoId) {
+    public static Widget renderBillingRateHistory(final JSONObject clientInformation) {
         final DisclosurePanel billingRatesDP = new DisclosurePanel("Billing Rate History");
         billingRatesDP.setWidth("100%");
         billingRatesDP.addOpenHandler(new OpenHandler<DisclosurePanel>() {
             @Override
             public void onOpen(OpenEvent<DisclosurePanel> event) {
                 billingRatesDP.setContent(
-                        new ReadAllUpdateBillingRatePanel(clientInfo));
+                        new ReadAllUpdateBillingRatePanel(clientInformation));
 
             }
         });

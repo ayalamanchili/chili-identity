@@ -45,7 +45,7 @@ public class VendorService {
             res.add(populateVendorInfo(vn));
         }
         String[] columnOrder = new String[]{"vendorName", "webSite", "vendorType", "vendorFees", "vendorLocations", "recruiterContact", "acctPayContact"};
-        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Vendor-Info-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Vendor Summary Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
     
      
@@ -80,7 +80,7 @@ public class VendorService {
             }
         }
         String[] columnOrder = new String[]{"employeeName", "employeeType", "vendorName", "webSite", "vendorType", "vendorFees", "vendorLocations", "recruiterContact", "acctPayContact"};
-        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(dtos, "Active-Vendors-Info-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(dtos, "Active Vendors Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
 
     public VendorMasterReportDto populateVendorInfo(Vendor vn) {

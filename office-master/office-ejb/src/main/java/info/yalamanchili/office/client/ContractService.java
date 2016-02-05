@@ -9,6 +9,7 @@ package info.yalamanchili.office.client;
 
 import com.google.common.base.Strings;
 import info.chili.audit.AuditService;
+import info.chili.commons.HtmlUtils;
 import info.chili.commons.pdf.PDFUtils;
 import info.chili.docs.MakeHTML;
 import info.chili.email.Email;
@@ -473,7 +474,7 @@ public class ContractService {
 
     public void getEffectiveBillingRate(ClientInformation ci, ContractDto dto, Vendor vi) {
         dto.setBillingRate(null);
-        Query query = em.createNativeQuery("Select billingRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and billingRate is not null and effectiveDate <= NOW() order by effectiveDate desc LIMIT 1");
+        Query query = em.createNativeQuery("Select billingRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and billingRate is not null and effectiveDate <= NOW() order by effectiveDate desc,updatedTs desc LIMIT 1");
         for (Object obj : query.getResultList()) {
             dto.setBillingRate((BigDecimal) obj);
             if (vi.getVendorFees() != null && vi.getVendorFees() > 0) {
@@ -485,7 +486,7 @@ public class ContractService {
 
     public void getEffectiveOvertimeBillingRate(ClientInformation ci, ContractDto dto) {
         dto.setOverTimeBillingRate(null);
-        Query query = em.createNativeQuery("Select overTimeBillingRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and overTimeBillingRate is not null and effectiveDate <= NOW() order by effectiveDate desc LIMIT 1");
+        Query query = em.createNativeQuery("Select overTimeBillingRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and overTimeBillingRate is not null and effectiveDate <= NOW() order by effectiveDate desc,updatedTs desc LIMIT 1");
         for (Object obj : query.getResultList()) {
             dto.setOverTimeBillingRate((BigDecimal) obj);
         }
@@ -493,7 +494,7 @@ public class ContractService {
 
     public void getEffectiveBillingInvoiceFrequency(ClientInformation ci, ContractDto dto) {
         dto.setInvoiceFrequency(null);
-        Query query = em.createNativeQuery("Select billingInvoiceFrequency from BILLINGRATE where clientInformation_id=" + ci.getId() + " and billingInvoiceFrequency is not null and effectiveDate <= NOW() order by effectiveDate desc LIMIT 1");
+        Query query = em.createNativeQuery("Select billingInvoiceFrequency from BILLINGRATE where clientInformation_id=" + ci.getId() + " and billingInvoiceFrequency is not null and effectiveDate <= NOW() order by effectiveDate desc,updatedTs desc LIMIT 1");
         for (Object obj : query.getResultList()) {
             dto.setInvoiceFrequency(InvoiceFrequency.valueOf((String) obj));
         }
@@ -501,7 +502,7 @@ public class ContractService {
 
     public void getEffectiveSubConPayRate(ClientInformation ci, ContractDto dto) {
         dto.setSubcontractorPayRate(null);
-        Query query = em.createNativeQuery("Select subContractorPayRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and subContractorPayRate is not null and effectiveDate <= NOW() order by effectiveDate desc LIMIT 1");
+        Query query = em.createNativeQuery("Select subContractorPayRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and subContractorPayRate is not null and effectiveDate <= NOW() order by effectiveDate desc,updatedTs desc LIMIT 1");
         for (Object obj : query.getResultList()) {
             dto.setSubcontractorPayRate((BigDecimal) obj);
         }
@@ -509,7 +510,7 @@ public class ContractService {
 
     public void getEffectiveSubConOverTimePayRate(ClientInformation ci, ContractDto dto) {
         dto.setSubcontractorOvertimePayRate(null);
-        Query query = em.createNativeQuery("Select subContractorOverTimePayRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and subContractorOverTimePayRate is not null and effectiveDate <= NOW() order by effectiveDate desc LIMIT 1");
+        Query query = em.createNativeQuery("Select subContractorOverTimePayRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and subContractorOverTimePayRate is not null and effectiveDate <= NOW() order by effectiveDate desc,updatedTs desc LIMIT 1");
         for (Object obj : query.getResultList()) {
             dto.setSubcontractorOvertimePayRate((BigDecimal) obj);
         }
@@ -517,7 +518,7 @@ public class ContractService {
 
     public void getEffectiveSubConInvoiceFrequency(ClientInformation ci, ContractDto dto) {
         dto.setSubcontractorinvoiceFrequency(null);
-        Query query = em.createNativeQuery("Select subContractorInvoiceFrequency from BILLINGRATE where clientInformation_id=" + ci.getId() + " and subContractorInvoiceFrequency is not null and effectiveDate <= NOW() order by effectiveDate desc LIMIT 1");
+        Query query = em.createNativeQuery("Select subContractorInvoiceFrequency from BILLINGRATE where clientInformation_id=" + ci.getId() + " and subContractorInvoiceFrequency is not null and effectiveDate <= NOW() order by effectiveDate desc,updatedTs desc LIMIT 1");
         for (Object obj : query.getResultList()) {
             dto.setSubcontractorinvoiceFrequency(InvoiceFrequency.valueOf((String) obj));
         }
@@ -525,7 +526,7 @@ public class ContractService {
 
     public void getEffectivePayRate1099(ClientInformation ci, ContractDto dto) {
         dto.setPayRate1099(null);
-        Query query = em.createNativeQuery("Select subContractorPayRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and subContractorPayRate is not null and effectiveDate <= NOW() order by effectiveDate desc LIMIT 1");
+        Query query = em.createNativeQuery("Select subContractorPayRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and subContractorPayRate is not null and effectiveDate <= NOW() order by effectiveDate desc,updatedTs desc LIMIT 1");
         for (Object obj : query.getResultList()) {
             dto.setPayRate1099((BigDecimal) obj);
         }
@@ -533,7 +534,7 @@ public class ContractService {
 
     public void getEffectiveOverTimePayRate1099(ClientInformation ci, ContractDto dto) {
         dto.setOverTimePayrate1099(null);
-        Query query = em.createNativeQuery("Select subContractorOverTimePayRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and subContractorOverTimePayRate is not null and effectiveDate <= NOW() order by effectiveDate desc LIMIT 1");
+        Query query = em.createNativeQuery("Select subContractorOverTimePayRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and subContractorOverTimePayRate is not null and effectiveDate <= NOW() order by effectiveDate desc,updatedTs desc LIMIT 1");
         for (Object obj : query.getResultList()) {
             dto.setOverTimePayrate1099((BigDecimal) obj);
         }
@@ -541,7 +542,7 @@ public class ContractService {
 
     public void getEffectiveInvoiceFrequency1099(ClientInformation ci, ContractDto dto) {
         dto.setInvoiceFrequency1099(null);
-        Query query = em.createNativeQuery("Select subContractorInvoiceFrequency from BILLINGRATE where clientInformation_id=" + ci.getId() + " and subContractorInvoiceFrequency is not null and effectiveDate <= NOW() order by effectiveDate desc LIMIT 1");
+        Query query = em.createNativeQuery("Select subContractorInvoiceFrequency from BILLINGRATE where clientInformation_id=" + ci.getId() + " and subContractorInvoiceFrequency is not null and effectiveDate <= NOW() order by effectiveDate desc,updatedTs desc LIMIT 1");
         for (Object obj : query.getResultList()) {
             dto.setInvoiceFrequency1099(InvoiceFrequency.valueOf((String) obj));
         }
@@ -552,7 +553,8 @@ public class ContractService {
         if (ci != null) {
             ContractDto dto = mapClientInformation(ci);
             String report = MakeHTML.makeHTML(dto).replaceAll("<null>", "");
-            byte[] pdf = PDFUtils.convertToPDF(report);
+            String str = HtmlUtils.cleanData(report);
+            byte[] pdf = PDFUtils.convertToPDF(str);
             return Response.ok(pdf)
                     .header("content-disposition", "filename = Contract_Report.pdf")
                     .header("Content-Length", pdf)

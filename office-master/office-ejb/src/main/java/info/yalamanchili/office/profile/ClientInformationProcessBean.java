@@ -10,10 +10,9 @@ package info.yalamanchili.office.profile;
 
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
-import info.yalamanchili.office.dao.profile.ClientInformationDao;
-import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Contact;
+import info.yalamanchili.office.entity.profile.Employee;
 import java.util.HashMap;
 import java.util.Map;
 import javax.persistence.EntityManager;
@@ -21,7 +20,6 @@ import javax.persistence.PersistenceContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -34,14 +32,11 @@ public class ClientInformationProcessBean {
     @PersistenceContext
     protected EntityManager em;
 
-    @Async
-    @Transactional
-    public void startNewClientInfoProcess(ClientInformation ci) {
+    public String startNewClientInfoProcess(ClientInformation ci, Employee currentUser) {
         Map<String, Object> vars = new HashMap<>();
         StringBuilder cliAP = new StringBuilder();
         String clientAP = "";
         String vendorAP = "";
-        String bpmProcessId = null;
         for (Contact clientAPcontact : ci.getClientAPContacts()) {
             cliAP.append(clientAPcontact.details());
             cliAP.append(" ");
@@ -61,9 +56,8 @@ public class ClientInformationProcessBean {
         vars.put("entityId", ci.getId());
         vars.put("clientAP", clientAP);
         vars.put("vendorAP", vendorAP);
-        vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
-        ci.setBpmProcessId(OfficeBPMService.instance().startProcess("new_client_info_process", vars));
-        ClientInformationDao.instance().save(ci);
+        vars.put("currentEmployee", currentUser);
+        return OfficeBPMService.instance().startProcess("new_client_info_process", vars);
     }
 
     public static ClientInformationProcessBean instance() {

@@ -36,7 +36,7 @@ public class ReadBankAcctWidget extends ReadComposite {
 
     @Override
     public void loadEntity(String entityId) {
-        HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
+        HttpService.HttpServiceAsync.instance().doGet(getURI1(entityId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -75,8 +75,8 @@ public class ReadBankAcctWidget extends ReadComposite {
         addField("bankName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("bankRoutingNumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("bankAccountNumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("bankAddress1",true,true,DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("bankAddress2",true,false,DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("bankAddress1", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("bankAddress2", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("accountType", true, true, AccountType.names(), Alignment.HORIZONTAL);
         addField("achBlocked", true, true, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         alignFields();
@@ -86,8 +86,12 @@ public class ReadBankAcctWidget extends ReadComposite {
     protected void addWidgetsBeforeCaptionPanel() {
     }
 
+    protected String getURI1(String entityId) {
+        return OfficeWelcome.constants.root_url() + "employee-forms/" + entityId;
+    }
+
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "employee-forms/ach/" + entityId;
+        return "";
     }
 }

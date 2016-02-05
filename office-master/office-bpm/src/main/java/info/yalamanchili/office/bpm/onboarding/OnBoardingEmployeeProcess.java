@@ -57,19 +57,19 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
         EmployeeOnBoardingDao.instance().save(empOnBoarding);
         dt.getExecution().setVariable("entity", entity);
     }
-      
-    protected void  backgroundAndDrugScreeningTaskCompleted(Employee entity, DelegateTask dt){
+
+    protected void backgroundAndDrugScreeningTaskCompleted(Employee entity, DelegateTask dt) {
         String status = (String) dt.getExecution().getVariable("status");
         EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
         if (status.equalsIgnoreCase("approved")) {
             empOnBoarding.setStatus(OnBoardingStatus.Pending_EVerify);
-             new GenericTaskCompleteNotification().notify(dt);
+            new GenericTaskCompleteNotification().notify(dt);
         }
         EmployeeOnBoardingDao.instance().save(empOnBoarding);
         dt.getExecution().setVariable("entity", entity);
     }
-    
-    protected void  eVerifyTaskCompleted(Employee entity, DelegateTask dt){
+
+    protected void eVerifyTaskCompleted(Employee entity, DelegateTask dt) {
         String status = (String) dt.getExecution().getVariable("status");
         EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
         if (status.equalsIgnoreCase("approved")) {
@@ -79,39 +79,46 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
         EmployeeOnBoardingDao.instance().save(empOnBoarding);
         dt.getExecution().setVariable("entity", entity);
     }
-    
-    protected void  payrollRegistrationTaskCompleted(Employee entity, DelegateTask dt){
-        String status = (String) dt.getExecution().getVariable("status");
+
+    protected void payrollRegistrationTaskCompleted(Employee entity, DelegateTask dt) {
         EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
-        empOnBoarding.setStatus(OnBoardingStatus.Complete);
+        if (entity.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
+            empOnBoarding.setStatus(OnBoardingStatus.Pending_Network_Team_Provisioning);
+        } else {
+            empOnBoarding.setStatus(OnBoardingStatus.Pending_Employee_Orientation);
+        }
         new GenericTaskCompleteNotification().notify(dt);
         EmployeeOnBoardingDao.instance().save(empOnBoarding);
         dt.getExecution().setVariable("entity", entity);
     }
-    /*
-    protected void sendInfoToOtherSystemsTaskCompleted(Employee entity,DelegateTask dt){
-        
+
+    protected void createServiceTicketForNetworkDept(Employee entity, DelegateTask dt) {
+        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
+        empOnBoarding.setStatus(OnBoardingStatus.Complete);
+        new GenericTaskCompleteNotification().notify(dt);
+        EmployeeOnBoardingDao.instance().save(empOnBoarding);
     }
     
-    protected void createServiceTicketForNetworkDept(Employee entity,DelegateTask dt){
-        
+     protected void createEmployeeOrientationTask(Employee entity, DelegateTask dt) {
+        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
+        empOnBoarding.setStatus(OnBoardingStatus.Complete);
+        new GenericTaskCompleteNotification().notify(dt);
+        EmployeeOnBoardingDao.instance().save(empOnBoarding);
     }
-    */
-   protected Employee getRequestFromTask(DelegateTask task) {
+
+    protected Employee getRequestFromTask(DelegateTask task) {
         Employee entity = (Employee) task.getExecution().getVariable("entity");
         if (entity != null) {
             return entity;
         }
         return null;
-        }
-       
-   
+    }
+
     private void employeeOnBoardingTaskCompleted(DelegateTask dt) {
         Employee entity = getRequestFromTask(dt);
         if (entity == null) {
             return;
         }
-        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
         //Notes
         String notes = (String) dt.getExecution().getVariable("notes");
         CommentDao.instance().addComment(notes, entity);
@@ -125,21 +132,19 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
                 onBoardingFormsAndDataValidationTaskCompleted(entity, dt);
                 break;
             case "backGroundAndDrugScreeningTestTask":
-                 backgroundAndDrugScreeningTaskCompleted(entity, dt);
+                backgroundAndDrugScreeningTaskCompleted(entity, dt);
                 break;
             case "eVerifyTask":
-                 eVerifyTaskCompleted(entity, dt);    
+                eVerifyTaskCompleted(entity, dt);
                 break;
             case "payrollRegistrationTask":
-                 payrollRegistrationTaskCompleted(entity, dt);
+                payrollRegistrationTaskCompleted(entity, dt);
                 break;
-           /* case "sendInformationToOtherSystemsTask":
-                 sendInfoToOtherSystemsTaskCompleted(entity, dt);
-            case "createServiceTicketforNetworkDept":
+            case "ServiceTicketTaskforNetworkDept":
                 createServiceTicketForNetworkDept(entity, dt);
-            case "sendEmployeeOnBoardingCompletedEmail":
-            */
+            case "EmployeeOrientationTask":
+                createEmployeeOrientationTask(entity, dt);
         }
-    }  
-       
+    }
+
 }

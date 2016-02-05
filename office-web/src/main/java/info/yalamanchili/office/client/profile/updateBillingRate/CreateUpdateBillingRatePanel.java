@@ -8,7 +8,9 @@
 package info.yalamanchili.office.client.profile.updateBillingRate;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
@@ -29,11 +31,12 @@ import java.util.logging.Logger;
  * @author prasanthi.p
  */
 public class CreateUpdateBillingRatePanel extends UpdateComposite {
-    
+
     private static Logger logger = Logger.getLogger(CreateUpdateBillingRatePanel.class.getName());
     protected JSONObject clientInfo;
+    protected JSONObject ci;
     protected boolean isSubOr1099 = false;
-    
+
     public CreateUpdateBillingRatePanel(JSONObject clientInfo, JSONObject entity) {
         this.clientInfo = clientInfo;
         if (entity.get("employee") != null) {
@@ -46,7 +49,7 @@ public class CreateUpdateBillingRatePanel extends UpdateComposite {
         }
         initUpdateComposite(entity, "UpdateBillingRate", OfficeWelcome.constants);
     }
-    
+
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject billingRate = new JSONObject();
@@ -61,7 +64,7 @@ public class CreateUpdateBillingRatePanel extends UpdateComposite {
         }
         return billingRate;
     }
-    
+
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
 //        assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
@@ -73,7 +76,7 @@ public class CreateUpdateBillingRatePanel extends UpdateComposite {
 //            assignFieldValueFromEntity("subContractorInvoiceFrequency", entity, DataType.ENUM_FIELD);
 //        }
     }
-    
+
     @Override
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
@@ -82,30 +85,50 @@ public class CreateUpdateBillingRatePanel extends UpdateComposite {
             public void onFailure(Throwable arg0) {
                 handleErrorResponse(arg0);
             }
-            
+
             @Override
             public void onSuccess(String arg0) {
+                logger.info("in arg0" + arg0);
                 postUpdateSuccess(arg0);
             }
         });
     }
-    
+
     @Override
     protected void postUpdateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully Updated Billing Rate Info");
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadClientInfoPanel(clientInfo));
-        GenericPopup.instance().hide();
+        loadClientInformation();
+    }
+
+    protected void loadClientInformation() {
+        HttpService.HttpServiceAsync.instance().doGet(getCIId(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String response) {
+                ci = (JSONObject) JSONParser.parseLenient(response);
+                readClientInformation(ci);
+            }
+        });
     }
     
+    protected void readClientInformation(JSONObject ci) {
+        new ResponseStatusWidget().show("Successfully Updated Billing Rate Info");
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadClientInfoPanel(ci));
+        GenericPopup.instance().hide();
+    }
+
+    protected String getCIId() {
+        return OfficeWelcome.constants.root_url() + "clientinformation/read/" + JSONUtils.toString(clientInfo, "id");
+    }
+
     @Override
     protected void addListeners() {
     }
-    
+
     @Override
     protected void configure() {
     }
-    
+
     @Override
     protected void addWidgets() {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN, ROLE.ROLE_BILLING_AND_INVOICING)) {
@@ -141,11 +164,11 @@ public class CreateUpdateBillingRatePanel extends UpdateComposite {
         }
         alignFields();
     }
-    
+
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
-    
+
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "clientinformation/update-billing-rate/" + JSONUtils.toString(clientInfo, "id");

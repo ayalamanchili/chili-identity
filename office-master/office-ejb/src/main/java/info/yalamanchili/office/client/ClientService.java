@@ -45,7 +45,7 @@ public class ClientService {
             res.add(populateClientInfo(ci));
         }
         String[] columnOrder = new String[]{"clientName", "webSite", "clientLocations", "recruiterContact", "acctPayContact"};
-        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Client-Info-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Client Summary Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
     
     @Async
@@ -78,7 +78,7 @@ public class ClientService {
             dtos.add(dtoss);
         }
         String[] columnOrder = new String[]{"employeeName", "employeeType", "clientName", "webSite", "clientLocations", "recruiterContact", "acctPayContact"};
-        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(dtos, "Active-Clients-Info-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(dtos, "Active Clients Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
 
     }
 

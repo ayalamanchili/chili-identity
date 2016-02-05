@@ -73,9 +73,9 @@ public class ReadAddressPanel extends ReadComposite {
         assignFieldValueFromEntity("street1", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("street2", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("city", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("state", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("state", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("country", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("zip", entity, DataType.LONG_FIELD);
+        assignFieldValueFromEntity("zip", entity, DataType.STRING_FIELD);
         if (ReadAddressPanelType.ALL.equals(type)) {
             assignFieldValueFromEntity("addressType", entity, null);
         }
@@ -95,9 +95,9 @@ public class ReadAddressPanel extends ReadComposite {
         addField("street1", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("street2", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("city", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addEnumField("state", true, false, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
         addEnumField("country", true, false, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
-        addField("zip", true, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
+        addField("state", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("zip", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         if (ReadAddressPanelType.ALL.equals(type)) {
             addDropDown("addressType", new SelectAddressTypeWidget(true, false));
         }
