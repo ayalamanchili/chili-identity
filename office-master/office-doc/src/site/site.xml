@@ -45,6 +45,11 @@
                     <item name="Submit Project End Details" href="/office/project-offboarding.html"/>
                 </item>
             </item>
+            <item name="Employee OnBoarding" href="/office/employee-onboarding.html" collapse="true">
+                <item name="Verify Employee Forms And Data" href="/office/verifyformsanddocs.html"/>
+                <item name="How To Fill Onboarding Form" href="/office/howtosubmitonboardingform.html"/>
+            </item>
+
             <item name="Profile" href="office/profile/profile.html" collapse="true">
                 <item name="Manage Profle" href="office/profile/profile.html"/>
                 <item name="Manage Address" href="office/profile/manage-address.html"/>
