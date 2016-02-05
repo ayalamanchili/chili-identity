@@ -9,7 +9,6 @@
 package info.yalamanchili.office.profile;
 
 import info.chili.commons.BeanMapper;
-import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.dao.profile.ext.DependentDao;
 import info.yalamanchili.office.dto.profile.DependentDto;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -51,15 +50,15 @@ public class DependentService {
         em.merge(dependent);
     }
 
-    public Dependent update(DependentDto ec) {
+    public Dependent update(DependentDto dependentDto) {
         //TODO user dozer mapping?
-        Dependent ecEntity = em.find(Dependent.class, ec.getId());
-        ecEntity = (Dependent) BeanMapper.merge(ec, ecEntity);
+        Dependent ecEntity = em.find(Dependent.class, dependentDto.getId());
+        ecEntity = (Dependent) BeanMapper.merge(dependentDto, ecEntity);
         //Contact
-        ecEntity.setDfirstName(ec.getDfirstName());
-        ecEntity.setDlastName(ec.getDlastName());
-        ecEntity.setDdateOfBirth(ec.getDdateOfBirth());
-        ecEntity.setRelationship(ec.getRelationship());
+        ecEntity.setDfirstName(dependentDto.getDfirstName());
+        ecEntity.setDlastName(dependentDto.getDlastName());
+        ecEntity.setDdateOfBirth(dependentDto.getDdateOfBirth());
+        ecEntity.setRelationship(dependentDto.getRelationship());
         em.merge(ecEntity);
         return ecEntity;
     }
