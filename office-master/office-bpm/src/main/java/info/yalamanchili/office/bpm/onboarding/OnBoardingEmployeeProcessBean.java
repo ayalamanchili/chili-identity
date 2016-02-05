@@ -28,6 +28,17 @@ public class OnBoardingEmployeeProcessBean {
     @Autowired
     protected MailUtils mailUtils;
 
+    public void sendEmployeeOnBoardingProcessStartEmail(Employee emp) {
+        Email email = new Email();
+        email.setHtml(Boolean.TRUE);
+        email.addTo(emp.getPrimaryEmail().getEmail());
+        email.setSubject("Welcome to System Soft Portal");
+        String messageTextforuser = "Hai " + emp.getFirstName() + " " + emp.getLastName()+" \n";
+        messageTextforuser = messageTextforuser.concat("Thank you For Completing the onboarding form. \n Our Onboarding Manager Will get in touch with you once the process complete");
+        email.setBody(messageTextforuser);
+        MessagingService.instance().sendEmail(email);
+    }
+
     public void sendEmployeeOnBoardingCompletedEmail(Employee emp) {
         Email email = new Email();
         email.setHtml(Boolean.TRUE);
