@@ -34,6 +34,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.persistence.Query;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -147,6 +148,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     @GET
     @Override
     @Path("/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_PROSPECTS_MANAGER')")
     public ProspectDto read(@PathParam("id") Long id) {
         return prospectService.read(id);
     }

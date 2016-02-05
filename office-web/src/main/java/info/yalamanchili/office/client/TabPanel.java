@@ -232,6 +232,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     }
 
     public void selectMyOfficeTab() {
+        tabPanel.selectTab(myOfficePanel);
         clearEntityPanel(myOfficePanel);
         myOfficePanel.entityTitlePanel.add(new MyOfficeMenu());
         myOfficePanel.entityPanel.add(new ReadAllEmployeesPanel());

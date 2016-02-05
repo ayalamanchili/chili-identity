@@ -8,10 +8,12 @@ package info.yalamanchili.office.client;
 import com.google.common.base.Splitter;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.rpc.HttpService;
+import info.yalamanchili.office.client.admin.hr.ReadAllProspectsPanel;
 import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
 import info.yalamanchili.office.client.home.tasks.ReadTaskPanel;
 import java.util.Map;
@@ -29,17 +31,31 @@ public class OfficeUrlRoutingHandler implements ValueChangeHandler<String> {
     public void onValueChange(ValueChangeEvent<String> event) {
         String urltoken = event.getValue();
         logger.info("------------urltoken:" + urltoken + ":");
-        if (urltoken.contains("home")) {
-            if (urltoken.contains("mytasks")) {
-                if (urltoken.contains("viewtask")) {
-                    viewTask(urltoken, splitQuery(urltoken));
-                }
+        Map<String, String> params = splitQuery(urltoken);
+        if (params.containsKey("entity")) {
+            switch (params.get("entity")) {
+                case "info.chili.bpm.types.Task":
+                    taskNavigation(params);
+                    break;
+                case "info.yalamanchili.office.entity.hr.Prospect":
+                    prospectNavigation(params);
+                    break;
+                //TODO add navigation to add entities that have comment
             }
         }
     }
 
-    protected void viewTask(String taskId, Map<String, String> params) {
-        logger.info(params.toString());
+    protected void commentNavigation(Map<String, String> params) {
+
+    }
+
+    protected void prospectNavigation(Map<String, String> params) {
+        TabPanel.instance().tabPanel.selectTab(TabPanel.instance().myOfficePanel);
+        ReadAllProspectsPanel readAllProspects = new ReadAllProspectsPanel(new JSONArray());
+        readAllProspects.viewClicked(params.get("id"));
+    }
+
+    protected void taskNavigation(Map<String, String> params) {
         TabPanel.instance().homePanel.entityPanel.clear();
         if (params.get("id") != null) {
             String url = OfficeWelcome.constants.root_url() + "bpm/viewtask/" + params.get("id");
@@ -53,7 +69,6 @@ public class OfficeUrlRoutingHandler implements ValueChangeHandler<String> {
 
                         @Override
                         public void onResponse(String response) {
-                            logger.info("resp" + response);
                             JSONObject task = (JSONObject) JSONParser.parseLenient(response);
                             TabPanel.instance().homePanel.entityPanel.add(new ReadTaskPanel(task, false));
                         }
@@ -61,6 +76,7 @@ public class OfficeUrlRoutingHandler implements ValueChangeHandler<String> {
         }
     }
 
+//TODO move to commons
     public static Map<String, String> splitQuery(String url) {
         return Splitter.on('&').trimResults().withKeyValueSeparator("=").split(url.split("\\?")[1]);
     }
