@@ -17,38 +17,23 @@ import java.util.List;
  */
 public class EmployeeSkillSetReportDto {
 
-    protected String name;
-    protected String technologyGroup;
-    protected String practice;
+    protected String employee;
     protected String skills;
     protected String certifications;
-    protected String tags;
-
+    protected String skillSetTags;
+    protected String resumeUploadStatus;
+    protected String practice;
+    protected String technologyGroup;
+   
     public EmployeeSkillSetReportDto() {
     }
 
-    public String getName() {
-        return name;
+    public String getEmployee() {
+        return employee;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getTechnologyGroup() {
-        return technologyGroup;
-    }
-
-    public void setTechnologyGroup(String technologyGroup) {
-        this.technologyGroup = technologyGroup;
-    }
-
-    public String getPractice() {
-        return practice;
-    }
-
-    public void setPractice(String practice) {
-        this.practice = practice;
+    public void setEmployee(String employee) {
+        this.employee = employee;
     }
 
     public String getSkills() {
@@ -67,12 +52,36 @@ public class EmployeeSkillSetReportDto {
         this.certifications = certifications;
     }
 
-    public String getTags() {
-        return tags;
+    public String getSkillSetTags() {
+        return skillSetTags;
     }
 
-    public void setTags(String tags) {
-        this.tags = tags;
+    public void setSkillSetTags(String skillSetTags) {
+        this.skillSetTags = skillSetTags;
+    }
+
+    public String getResumeUploadStatus() {
+        return resumeUploadStatus;
+    }
+
+    public void setResumeUploadStatus(String resumeUploadStatus) {
+        this.resumeUploadStatus = resumeUploadStatus;
+    }
+
+    public String getPractice() {
+        return practice;
+    }
+
+    public void setPractice(String practice) {
+        this.practice = practice;
+    }
+
+    public String getTechnologyGroup() {
+        return technologyGroup;
+    }
+
+    public void setTechnologyGroup(String technologyGroup) {
+        this.technologyGroup = technologyGroup;
     }
 
 }

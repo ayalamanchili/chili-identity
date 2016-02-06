@@ -29,6 +29,7 @@ import javax.persistence.TypedQuery;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -98,37 +99,66 @@ public class RecruitingReportsService {
         return sb.toString();
     }
 
-    public void generateEmployeeSkillSetReport() {
+    @Async
+    @Transactional
+    public void generateEmployeeSkillSetReport(String email) {
         List<EmployeeSkillSetReportDto> res = new ArrayList<>();
         for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee", "Employee")) {
             EmployeeSkillSetReportDto dto = new EmployeeSkillSetReportDto();
-            dto.setName(emp.getFirstName() + emp.getLastName());
+            dto.setEmployee(emp.getFirstName() + emp.getLastName());
             if (emp.getSkillSet() != null) {
+                if (emp.getSkillSet().getSkills().size() > 0) {
+                    int count = emp.getSkillSet().getSkills().size();
+                    StringBuilder skills = new StringBuilder("");
+                    for (Skill skill : emp.getSkillSet().getSkills()) {
+                        skills.append(skill.getName());
+                        if (count > 1) {
+                            skills.append(",");
+                            count--;
+                        }
+                    }
+                    dto.setSkills(skills.toString());
+                }
+                if (emp.getSkillSet().getCertifications().size() > 0) {
+                    int councert = emp.getSkillSet().getCertifications().size();
+                    StringBuilder certifications = new StringBuilder("");
+                    for (Certification cert : emp.getSkillSet().getCertifications()) {
+                        certifications.append(cert.getName());
+                        if (councert > 1) {
+                            certifications.append(",");
+                            councert--;
+                        }
+                    }
+                    dto.setCertifications(certifications.toString());
+                }
+                if (emp.getSkillSet().getTags().size() > 0) {
+                    int counttags = emp.getSkillSet().getTags().size();
+                    StringBuilder tags = new StringBuilder("");
+                    for (SkillSetTag tag : emp.getSkillSet().getTags()) {
+                        tags.append(tag.getName());
+                        if (counttags > 1) {
+                            tags.append(",");
+                            counttags--;
+                        }
+                    }
+                    dto.setSkillSetTags(tags.toString());
+                }
+                if (emp.getSkillSet().getResumeUrl() != null && emp.getSkillSet().getResumeUrl().contains("SkillSet")) {
+                    dto.setResumeUploadStatus("Yes");
+                } else {
+                    dto.setResumeUploadStatus("No");
+                }
                 if (emp.getSkillSet().getPractice() != null) {
                     dto.setPractice(emp.getSkillSet().getPractice().getName());
                 }
                 if (emp.getSkillSet().getTechnologyGroup() != null) {
                     dto.setTechnologyGroup(emp.getSkillSet().getTechnologyGroup().getName());
                 }
-                StringBuilder skills = new StringBuilder("");
-                for (Skill skill : emp.getSkillSet().getSkills()) {
-                    skills.append(skill.getName()).append(",");
-                }
-                dto.setSkills(skills.toString());
-                StringBuilder certifications = new StringBuilder("");
-                for (Certification cert : emp.getSkillSet().getCertifications()) {
-                    certifications.append(cert.getName()).append(",");
-                }
-                dto.setCertifications(skills.toString());
-                StringBuilder tags = new StringBuilder("");
-                for (SkillSetTag tag : emp.getSkillSet().getTags()) {
-                    tags.append(tag.getName()).append(",");
-                }
-                dto.setTags(tags.toString());
             }
             res.add(dto);
         }
-        MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(res, "SkillSet-Information-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), OfficeServiceConfiguration.instance().getAdminEmail());
+        String[] columnOrder = new String[]{"employee", "skills", "certifications", "skillSetTags", "practice", "technologyGroup", "resumeUploadStatus"};
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Employee-SkillSet-Information-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
 
     protected boolean disableRegularSearch() {
