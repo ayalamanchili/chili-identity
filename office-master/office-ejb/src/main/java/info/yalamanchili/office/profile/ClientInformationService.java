@@ -102,11 +102,9 @@ public class ClientInformationService {
             ci.setClientLocation(AddressDao.instance().findById(ci.getClientLocation().getId()));
         }
         ci.setClientAPContacts(null);
-        if (ciDto.getClientAPContacts() != null) {
-            for (Contact clientAPCnt : ciDto.getClientAPContacts()) {
-                if (clientAPCnt.getId() != null) {
-                    ci.getClientAPContacts().add(ContactDao.instance().findById(clientAPCnt.getId()));
-                }
+        for (Contact clientAPCnt : ciDto.getClientAPContacts()) {
+            if (clientAPCnt.getId() != null) {
+                ci.getClientAPContacts().add(ContactDao.instance().findById(clientAPCnt.getId()));
             }
         }
         if (ci.getVendor() != null) {
@@ -117,24 +115,18 @@ public class ClientInformationService {
             ci.setVendorContact(ContactDao.instance().findById(ci.getVendorContact().getId()));
         }
         ci.setVendorAPContacts(null);
-        if (ciDto.getVendorAPContacts() != null) {
-            for (Contact vendorAPContact : ciDto.getVendorAPContacts()) {
-                if (vendorAPContact.getId() != null) {
-                    ci.getVendorAPContacts().add(ContactDao.instance().findById(vendorAPContact.getId()));
-                }
+        for (Contact vendorAPContact : ciDto.getVendorAPContacts()) {
+            if (vendorAPContact.getId() != null) {
+                ci.getVendorAPContacts().add(ContactDao.instance().findById(vendorAPContact.getId()));
             }
         }
-
         if (ci.getVendorLocation() != null) {
             ci.setVendorLocation(AddressDao.instance().findById(ci.getVendorLocation().getId()));
         }
-
         ci.setVendorRecruiters(null);
-        if (ciDto.getVendorRecruiters() != null) {
-            for (Contact vendorRecruiter : ciDto.getVendorRecruiters()) {
-                if (vendorRecruiter.getId() != null) {
-                    ci.getVendorRecruiters().add(ContactDao.instance().findById(vendorRecruiter.getId()));
-                }
+        for (Contact vendorRecruiter : ciDto.getVendorRecruiters()) {
+            if (vendorRecruiter.getId() != null) {
+                ci.getVendorRecruiters().add(ContactDao.instance().findById(vendorRecruiter.getId()));
             }
         }
         if (ci.getMiddleVendor() != null) {
@@ -147,11 +139,9 @@ public class ClientInformationService {
             ci.setClientProject(project);
         }
         ci.setRecruiters(null);
-        if (ciDto.getRecruiters() != null) {
-            for (Employee recruiter : ciDto.getRecruiters()) {
-                if (recruiter.getId() != null) {
-                    ci.getRecruiters().add(EmployeeDao.instance().findById(recruiter.getId()));
-                }
+        for (Employee recruiter : ciDto.getRecruiters()) {
+            if (recruiter.getId() != null) {
+                ci.getRecruiters().add(EmployeeDao.instance().findById(recruiter.getId()));
             }
         }
         if (ci.getSubcontractor() != null) {

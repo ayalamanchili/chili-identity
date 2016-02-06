@@ -29,6 +29,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.Temporal;
@@ -396,6 +397,9 @@ public class ClientInformationDto implements Serializable {
     }
 
     public Set<Contact> getClientAPContacts() {
+        if (clientAPContacts == null) {
+            this.clientAPContacts = new HashSet<>();
+        }
         return clientAPContacts;
     }
 
@@ -460,12 +464,12 @@ public class ClientInformationDto implements Serializable {
     }
 
     /**
-     * @generated
+     * @return @generated
      */
     @XmlTransient
     public List<BillingRate> getBillingRates() {
         if (this.billingRates == null) {
-            this.billingRates = new ArrayList<BillingRate>();
+            this.billingRates = new ArrayList<>();
         }
         return this.billingRates;
     }
@@ -530,6 +534,9 @@ public class ClientInformationDto implements Serializable {
     }
 
     public Set<Employee> getRecruiters() {
+        if (recruiters == null) {
+            this.recruiters = new HashSet<>();
+        }
         return recruiters;
     }
 
@@ -835,6 +842,9 @@ public class ClientInformationDto implements Serializable {
     }
 
     public Set<Contact> getVendorAPContacts() {
+        if (vendorAPContacts == null) {
+            this.vendorAPContacts = new HashSet<>();
+        }
         return vendorAPContacts;
     }
 
@@ -843,6 +853,9 @@ public class ClientInformationDto implements Serializable {
     }
 
     public Set<Contact> getVendorRecruiters() {
+        if (vendorRecruiters == null) {
+            this.vendorRecruiters = new HashSet<>();
+        }
         return vendorRecruiters;
     }
 
