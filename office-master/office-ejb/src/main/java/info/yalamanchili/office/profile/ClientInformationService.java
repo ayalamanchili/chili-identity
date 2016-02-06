@@ -147,9 +147,11 @@ public class ClientInformationService {
             ci.setClientProject(project);
         }
         ci.setRecruiters(null);
-        for (Employee recruiter : ciDto.getRecruiters()) {
-            if (recruiter.getId() != null) {
-                ci.getRecruiters().add(EmployeeDao.instance().findById(recruiter.getId()));
+        if (ciDto.getRecruiters() != null) {
+            for (Employee recruiter : ciDto.getRecruiters()) {
+                if (recruiter.getId() != null) {
+                    ci.getRecruiters().add(EmployeeDao.instance().findById(recruiter.getId()));
+                }
             }
         }
         if (ci.getSubcontractor() != null) {
