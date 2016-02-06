@@ -9,6 +9,7 @@
 package info.yalamanchili.office.jrs.reports;
 
 import info.yalamanchili.office.dao.profile.EmployeeDto;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.reports.recruiting.RecruitingReportsService;
 import info.yalamanchili.office.reports.recruiting.SkillSetSearchDto;
 import java.util.List;
@@ -20,6 +21,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,5 +50,12 @@ public class RecruitingReportsResource {
     @Path("/search-skillset")
     public List<EmployeeDto> searchSkillSet(SkillSetSearchDto searchDto) {
         return recruitingReportsService.searchSkillSet(searchDto);
+    }
+    
+    @GET
+    @Path("/employee-skill-report")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CEO','ROLE_RECRUITER')")
+    public void getEmployeeSkillSetReport() {
+        recruitingReportsService.generateEmployeeSkillSetReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
 }
