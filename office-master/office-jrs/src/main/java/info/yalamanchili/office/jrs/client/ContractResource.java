@@ -7,11 +7,19 @@
  */
 package info.yalamanchili.office.jrs.client;
 
+import info.chili.reporting.ReportGenerator;
 import info.yalamanchili.office.client.ContractService;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.dto.client.ContractDto;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dto.client.ContractSearchDto;
+import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.jms.MessagingService;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -103,5 +111,24 @@ public class ContractResource {
     @Path("/recruiterSearch")
     public ContractTable searchContractsForRecruiter(ContractSearchDto dto) {
         return ContractService.instance().searchContractsForRecruiter(dto);
+    }
+    
+    @GET
+    @Path("/subvendor-report")
+    public void subVendorReport() {
+        ContractDto.ContractTable table = new ContractDto.ContractTable();
+        String[] types = {"Subcontractor"};
+        List<Employee> emps = EmployeeDao.instance().getEmployeesByType(types);
+        List<ContractDto> dtos = new ArrayList();
+        for (Employee emp : emps) {
+            if (emp.getClientInformations() != null && emp.getClientInformations().size() > 0) {
+                for (ClientInformation ci : emp.getClientInformations()) {
+                    dtos.add(ContractService.instance().mapClientInformation(ci));
+                }
+            }
+        }
+        table.setEntities(dtos);
+        String[] columnOrder = new String[]{"employee", "employeeType", "vendor", "vendorLocation", "vendorContact", "vendorRecruiter", "subContractorName", "subcontractorAddress", "startDate", "endDate", "subcontractorPayRate"};
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(table.getEntities(), "SubContractors Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
 }
