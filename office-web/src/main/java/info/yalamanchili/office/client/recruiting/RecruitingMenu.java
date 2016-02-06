@@ -23,6 +23,7 @@ import info.yalamanchili.office.client.profile.skill.SkillSidePanel;
 import info.yalamanchili.office.client.profile.technologyGroup.ReadAllTechnologyGroupPanel;
 import info.yalamanchili.office.client.profile.technologyGroup.TechnologyGroupSidePanel;
 import info.yalamanchili.office.client.recruiting.reports.ResumeSearchWidget;
+import info.yalamanchili.office.client.recruiting.reports.SkillSetReportSidePanel;
 
 /**
  *
@@ -39,6 +40,9 @@ public class RecruitingMenu extends CMenuBar {
             addMenuItem("TechnologyGroup", "TechnologyGroup", technologyGroupMaintainenceCmd);
             addMenuItem("SkillSet Tags", "SkillSet Tags", skillSetTagsMaintainenceCmd);
             addMenuItem("Find Candidates", "Find Candidates", reportsCmd);
+        }
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CEO, Auth.ROLE.ROLE_RECRUITER )){
+            addMenuItem("SkillSet Reports", "SkillSet Reports", skillReportsCmd);
         }
     }
     static Command skillSetTagsMaintainenceCmd = new Command() {
@@ -99,6 +103,13 @@ public class RecruitingMenu extends CMenuBar {
             TabPanel.instance().getRecruitingPanel().sidePanelBottom.clear();
             TabPanel.instance().getRecruitingPanel().entityPanel.add(new ReadAllCertificationsPanel());
             TabPanel.instance().getRecruitingPanel().sidePanelTop.add(new CertificationSidePanel());
+        }
+    };
+    static Command skillReportsCmd = new Command() {
+        public void execute() {
+            TabPanel.instance().getRecruitingPanel().entityPanel.clear();
+            TabPanel.instance().getRecruitingPanel().sidePanelTop.clear();
+            TabPanel.instance().getRecruitingPanel().sidePanelTop.add(new SkillSetReportSidePanel());
         }
     };
 }
