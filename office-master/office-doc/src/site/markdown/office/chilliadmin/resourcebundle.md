@@ -11,11 +11,11 @@ How to submit Resource Bundle
 
 Create Resource Bundle
 ----
-![alt text](../../images/chilliadmin/create-resource-bundle.png "Advance Requisition")
+![alt text](../../images/chilliadmin/create-resource-bundle.png "Performance Evaluation Question")
 Create Resource Bundle Resource
 ----
-![alt text](../../images/chilliadmin/create-resource.png "Advance Requisition")
+![alt text](../../images/chilliadmin/create-resource.png "Performance Evaluation Question")
 
 Adding Performance Evaluation Questions
 ----
-![alt text](../../images/chilliadmin/perf-question.png "Advance Requisition")
+![alt text](../../images/chilliadmin/perf-question.png "Performance Evaluation Question")
