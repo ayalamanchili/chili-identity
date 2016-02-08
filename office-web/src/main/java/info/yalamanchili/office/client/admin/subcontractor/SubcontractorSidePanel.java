@@ -183,6 +183,6 @@ public class SubcontractorSidePanel extends ALComposite implements ClickHandler 
     }
 
     protected String getSubcontractorInfoReportUrl() {
-          return OfficeWelcome.constants.root_url() + "contract/subvendor-report";
+          return OfficeWelcome.constants.root_url() + "contract/subcontractors-report";
     }
 }

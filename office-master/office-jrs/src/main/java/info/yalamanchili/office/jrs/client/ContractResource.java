@@ -114,8 +114,8 @@ public class ContractResource {
     }
     
     @GET
-    @Path("/subvendor-report")
-    public void subVendorReport() {
+    @Path("/subcontractors-report")
+    public void subcontractorsReport() {
         ContractDto.ContractTable table = new ContractDto.ContractTable();
         String[] types = {"Subcontractor"};
         List<Employee> emps = EmployeeDao.instance().getEmployeesByType(types);
