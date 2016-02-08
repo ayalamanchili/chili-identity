@@ -109,6 +109,7 @@ public class RecruitingMenu extends CMenuBar {
         public void execute() {
             TabPanel.instance().getRecruitingPanel().entityPanel.clear();
             TabPanel.instance().getRecruitingPanel().sidePanelTop.clear();
+            TabPanel.instance().getRecruitingPanel().sidePanelBottom.clear();
             TabPanel.instance().getRecruitingPanel().sidePanelTop.add(new SkillSetReportSidePanel());
         }
     };
