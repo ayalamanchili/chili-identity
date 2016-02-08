@@ -22,6 +22,8 @@ public class EmployeeLocationDto implements Serializable {
 
     protected String state;
     protected String city;
+    protected String branch;
+    protected String country;
 
     public String getState() {
         return state;
@@ -37,5 +39,21 @@ public class EmployeeLocationDto implements Serializable {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getBranch() {
+        return branch;
+    }
+
+    public void setBranch(String branch) {
+        this.branch = branch;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 }
