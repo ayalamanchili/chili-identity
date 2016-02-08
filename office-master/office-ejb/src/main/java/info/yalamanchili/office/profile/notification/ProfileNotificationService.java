@@ -50,6 +50,7 @@ public class ProfileNotificationService {
     public void skillSetUpdatedNotification(Employee emp) {
         String[] roles = {OfficeRole.ROLE_RECRUITER.name()};
         Email email = new Email();
+        email.setHtml(Boolean.TRUE);
         email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject("Employee Skillset Updated");
         String messageText = emp.getFirstName() + " " + emp.getLastName() + "'s Skillset Updated";

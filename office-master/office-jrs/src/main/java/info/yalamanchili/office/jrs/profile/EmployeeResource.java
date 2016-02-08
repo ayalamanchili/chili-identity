@@ -267,8 +267,8 @@ public class EmployeeResource extends CRUDResource<Employee> {
         profileNotificationservice.skillSetUpdatedNotification(emp);
         return emp.getSkillSet().getId().toString();
     }
-    /* Preferences*/
 
+    /* Preferences*/
     @GET
     @Path("/preferences/{empId}")
     public Preferences getPreferences(@PathParam("empId") long empId) {
@@ -390,7 +390,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         tableObj.setSize((long) emp.getEmergencyContacts().size());
         return tableObj;
     }
-    
+
     /* Dependent */
     @GET
     @Path("/dependents/{id}/{start}/{limit}")
@@ -414,7 +414,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         EmergencyContactService emergencyContactService = (EmergencyContactService) SpringContext.getBean("emergencyContactService");
         emergencyContactService.addEmergencyContact(empId, ecDto);
     }
-    
+
     @PUT
     @Path("/dependent/{empId}")
     @Validate
@@ -554,7 +554,37 @@ public class EmployeeResource extends CRUDResource<Employee> {
         if (!Strings.isNullOrEmpty(dto.getState())) {
             queryStr.append("address.state = '").append(dto.getState().trim()).append("' ").append(" and ");
         }
+        if (!Strings.isNullOrEmpty(dto.getCountry())) {
+            queryStr.append("address.country = '").append(dto.getCountry().trim()).append("' ").append(" and ");
+        }
+        if (!Strings.isNullOrEmpty(dto.getBranch())) {
+            queryStr.append("emp.branch = '").append(dto.getBranch().trim()).append("' ").append(" and ");
+        }
+
         return queryStr.toString().substring(0, queryStr.toString().lastIndexOf("and"));
+    }
+
+    @PUT
+    @Path("/emp-address")
+    public List<EmployeeLocationReportDto> searchEmployeeAddress(EmployeeLocationDto dto) {
+        TypedQuery<Employee> q = em.createQuery(getSearchQuery(dto), Employee.class);
+        List<EmployeeLocationReportDto> dtos = new ArrayList();
+        for (Employee emp : q.getResultList()) {
+            dtos.add(EmployeeLocationReportDto.map(mapper, emp, dto));
+        }
+        return dtos;
+    }
+
+    @PUT
+    @Path("/emp-address-report")
+    public void getEmpAddressReport(EmployeeLocationDto dto) {
+        Employee employee = OfficeSecurityService.instance().getCurrentUser();
+        List<EmployeeLocationReportDto> dtos = searchEmployeeAddress(dto);
+        if (dtos.size() > 0) {
+            String[] columnOrder = new String[]{"employee", "branch", "street1", "street2", "city", "state", "country"};
+            String fileName = ReportGenerator.generateExcelOrderedReport(dtos, "Employee In A Location report ", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+            MessagingService.instance().emailReport(fileName, employee.getPrimaryEmail().getEmail());
+        }
     }
 
     @XmlRootElement
