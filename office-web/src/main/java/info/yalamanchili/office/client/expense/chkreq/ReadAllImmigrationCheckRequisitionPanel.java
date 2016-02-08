@@ -55,7 +55,6 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
 
     @Override
     public void viewClicked(String entityId) {
-        logger.info("entityyyyyyyy ID:"+entityId);
         TabPanel.instance().expensePanel.entityPanel.clear();
         TabPanel.instance().expensePanel.entityPanel.add(new ReadImmigrationCheckRequisitionPanel(entityId));
     }

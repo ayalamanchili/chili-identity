@@ -40,7 +40,7 @@ public class OfficeUrlRoutingHandler implements ValueChangeHandler<String> {
         String urltoken = event.getValue();
         logger.info("------------urltoken:" + urltoken + ":");
         Map<String, String> params = splitQuery(urltoken);
-        logger.info("---------Params:" +params);
+        logger.info("---------Params:" + params);
         if (params.containsKey("entity")) {
             switch (params.get("entity")) {
                 case "info.chili.bpm.types.Task":
@@ -62,17 +62,17 @@ public class OfficeUrlRoutingHandler implements ValueChangeHandler<String> {
     }
 
     protected void prospectNavigation(Map<String, String> params) {
-        TabPanel.instance().tabPanel.selectTab(TabPanel.instance().myOfficePanel);
+        TabPanel.instance().tabPanel.selectTab(TabPanel.instance().myOfficePanel, false);
         ReadAllProspectsPanel readAllProspects = new ReadAllProspectsPanel(new JSONArray());
         readAllProspects.viewClicked(params.get("id"));
     }
-    
+
     protected void checkRequisitionNavigation(Map<String, String> params) {
-        TabPanel.instance().tabPanel.selectTab(TabPanel.instance().expensePanel);
+        TabPanel.instance().tabPanel.selectTab(TabPanel.instance().expensePanel, false);
         ReadAllImmigrationCheckRequisitionPanel readAllCheckRequisition = new ReadAllImmigrationCheckRequisitionPanel(new JSONArray());
         readAllCheckRequisition.viewClicked(params.get("id"));
     }
-    
+
     protected void taskNavigation(Map<String, String> params) {
         TabPanel.instance().homePanel.entityPanel.clear();
         if (params.get("id") != null) {

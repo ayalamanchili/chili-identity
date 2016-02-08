@@ -83,7 +83,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         tabPanel.add(drivePanel, "Drive", false);
         tabPanel.add(socialPanel, "Social", false);
         tabPanel.add(profilePanel, "Profile", false);
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_EXPENSE, ROLE.ROLE_BULK_IMPORT, ROLE.ROLE_CONTRACTS_ADMIN, ROLE.ROLE_BILLING_AND_INVOICING, ROLE.ROLE_CONTRACTS,ROLE.ROLE_BILLING_ADMIN)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_EXPENSE, ROLE.ROLE_BULK_IMPORT, ROLE.ROLE_CONTRACTS_ADMIN, ROLE.ROLE_BILLING_AND_INVOICING, ROLE.ROLE_CONTRACTS, ROLE.ROLE_BILLING_ADMIN)) {
             tabPanel.add(adminPanel, "Admin", false);
         }
 
@@ -259,6 +259,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     }
 
     public void selectExpenseTab() {
+        tabPanel.selectTab(expensePanel);
         clearEntityPanel(expensePanel);
         expensePanel.entityTitlePanel.add(new ExpenseMenu());
         TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllAdvanceRequisitionPanel());
@@ -300,7 +301,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_RECRUITER)) {
             recruitingPanel.entityPanel.add(new ReadAllSkillsPanel());
             recruitingPanel.sidePanelTop.add(new SkillSidePanel());
-        } else if(Auth.hasAnyOfRoles(ROLE.ROLE_CEO, ROLE.ROLE_ADMIN)){
+        } else if (Auth.hasAnyOfRoles(ROLE.ROLE_CEO, ROLE.ROLE_ADMIN)) {
             recruitingPanel.sidePanelTop.add(new SkillSetReportSidePanel());
         }
 
