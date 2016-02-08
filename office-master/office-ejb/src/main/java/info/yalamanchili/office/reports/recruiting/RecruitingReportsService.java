@@ -104,9 +104,9 @@ public class RecruitingReportsService {
     public void generateEmployeeSkillSetReport(String email) {
         List<EmployeeSkillSetReportDto> res = new ArrayList<>();
         for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee", "Employee")) {
-            EmployeeSkillSetReportDto dto = new EmployeeSkillSetReportDto();
-            dto.setEmployee(emp.getFirstName() + emp.getLastName());
             if (emp.getSkillSet() != null) {
+                EmployeeSkillSetReportDto dto = new EmployeeSkillSetReportDto();
+                dto.setEmployee(emp.getFirstName() + emp.getLastName());
                 if (emp.getSkillSet().getSkills().size() > 0) {
                     int count = emp.getSkillSet().getSkills().size();
                     StringBuilder skills = new StringBuilder("");
@@ -154,8 +154,8 @@ public class RecruitingReportsService {
                 if (emp.getSkillSet().getTechnologyGroup() != null) {
                     dto.setTechnologyGroup(emp.getSkillSet().getTechnologyGroup().getName());
                 }
+                res.add(dto);
             }
-            res.add(dto);
         }
         String[] columnOrder = new String[]{"employee", "skills", "certifications", "skillSetTags", "practice", "technologyGroup", "resumeUploadStatus"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Employee-SkillSet-Information-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
