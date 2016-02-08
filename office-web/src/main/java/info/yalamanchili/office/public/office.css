@@ -62,21 +62,27 @@
 
 
 /* TabLayout Panel */
-@sprite .gwt-TabLayoutPanel .gwt-TabLayoutPanelTab {
-    gwt-image: "tabButton";
-    height:auto;
+.gwt-TabLayoutPanel .gwt-TabLayoutPanelTab {
+    height: 33px;
+    overflow: hidden;
+    height: auto;
     width: 106px;
     text-align: center;
     margin-left: 3px;
     margin-right: 3px;
-    font-size: 12pt;
+    padding-top:3px;
+    font-size: 15px;
     font-family: Tahoma;
-    color: #000000;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    color: #F5F5F5;
 }
-@sprite .gwt-TabLayoutPanelTabs{
-    gwt-image: "tabButton";
-    height:auto;
+.gwt-TabLayoutPanelTabs {
+    height: 22px !important;
+    height: auto;
+    background: #797D84;
 }
+
 .tabPanel {
     height: 100%;
 }
@@ -108,9 +114,9 @@
 
 /* an element nested in each tab (useful for styling)*/
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelTabInner {
-
-    /*margin-top:3px;*/ 
-    margin-bottom:3px; 
+    margin-bottom: 0px;
+    border-right: 1px solid #2D5BA9;
+    height: 26px;
 }
 .gwt-DisclosurePanel .header {
     color: orange_light;
@@ -768,16 +774,16 @@ body{
 }
 
 .contractActive{
- background: #BFE0BC;
+    background: #BFE0BC;
 }
 .contractEnded{
- background: #E6BABA;
+    background: #E6BABA;
 }
 .contractNotStarted{
- background: #E6E383;
+    background: #E6E383;
 }
 .contractNotReady{
- background: #A3AADE;
+    background: #A3AADE;
 }
 
 
