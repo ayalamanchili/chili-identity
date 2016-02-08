@@ -74,6 +74,7 @@ public class ImmigrationCheckRequisitionResource extends CRUDResource<Immigratio
     @Path("/{id}")
     @Transactional(readOnly = true)
     @Override
+    @PreAuthorize("hasAnyRole('ROLE_GC_IMMIGRATION','ROLE_H1B_IMMIGRATION')")
     public ImmigrationCheckRequisitionSaveDto read(@PathParam("id") Long id) {
         return ImmigrationCheckRequisitionService.instance().read(id);
     }

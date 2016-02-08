@@ -48,13 +48,14 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
         this.url = url;
         initTable("ImmigrationCheckRequisition", OfficeWelcome.constants);
     }
-    ReadAllImmigrationCheckRequisitionPanel(JSONArray result) {
+    public ReadAllImmigrationCheckRequisitionPanel(JSONArray result) {
         instance = this;
         initTable("ImmigrationCheckRequisition", result, OfficeWelcome.constants);
     }
 
     @Override
     public void viewClicked(String entityId) {
+        logger.info("entityyyyyyyy ID:"+entityId);
         TabPanel.instance().expensePanel.entityPanel.clear();
         TabPanel.instance().expensePanel.entityPanel.add(new ReadImmigrationCheckRequisitionPanel(entityId));
     }
