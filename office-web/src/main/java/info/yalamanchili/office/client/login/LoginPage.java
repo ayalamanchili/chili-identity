@@ -51,8 +51,6 @@ public class LoginPage extends Composite {
     @UiField
     Image loginLogo;
     @UiField
-    Image loginFeatures;
-    @UiField
     Image loginCenter;
     @UiField
     Label usernameL;
@@ -116,8 +114,6 @@ public class LoginPage extends Composite {
     public LoginPage() {
         initWidget(uiBinder.createAndBindUi(this));
         loginB.addStyleName("loginB");
-        loginFeatures.setWidth("30%");
-        loginCenter.setWidth("65%");
         populateUsername();
     }
 //TODO move to chili gwt as abstract common methods

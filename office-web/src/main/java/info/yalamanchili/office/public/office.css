@@ -46,6 +46,8 @@
     pointer:hand;
 }      
 .loginCenterPanel{
+    display: block;
+    margin: auto;
 }
 .backgroundTextStyle {
     color: gray;

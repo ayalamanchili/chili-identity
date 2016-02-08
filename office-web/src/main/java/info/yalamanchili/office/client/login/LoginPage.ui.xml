@@ -38,7 +38,6 @@
         <g:center>
             <!--<g:Gridcen styleName="{style.loginFeatures}">-->
             <g:FlowPanel ui:field='loginCenterPanel' styleName="{officeImages.officeCss.loginCenterPanel}">
-                <g:Image ui:field='loginFeatures'  resource='{officeImages.loginFeatures}'/>
                 <g:Image ui:field='loginCenter'  resource='{officeImages.loginCenter}'/>           
             </g:FlowPanel>
                
