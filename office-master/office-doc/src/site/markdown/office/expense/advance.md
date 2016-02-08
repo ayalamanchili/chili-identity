@@ -2,7 +2,7 @@ How to submit Advance Requisition Request
 ==========
  - [Login to Portal](../../office/forgot-password.html "Login")
  - Navigate to Expense --> Advance Requisition --> Submit Advance Requisition 
- - Enter the user's basic information, and how the user intends to receive the payment
+ - Enter the employee basic information, and how the user intends to receive the payment
       - Using Bank Account Information (or) 
       - Using Check Information.
  - Submit the information after filling all relevant fields. 
