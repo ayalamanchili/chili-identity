@@ -8,18 +8,19 @@
  */
 package info.yalamanchili.office.entity.immigration;
 
-import info.chili.jpa.AbstractEntity;
 import info.chili.jpa.AbstractHandleEntity;
 import info.yalamanchili.office.entity.profile.Address;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
-import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.envers.Audited;
@@ -35,25 +36,33 @@ import org.hibernate.search.annotations.Indexed;
 @Audited
 public class LCA extends AbstractHandleEntity {
 
-    @Transient
     private static final long serialVersionUID = 11L;
 
     @OneToOne(cascade = CascadeType.ALL)
-    protected Address lcaAddresse1;
-    
+    protected Address lcaAddress1;
+
     @OneToOne(cascade = CascadeType.ALL)
-    protected Address lcaAddresse2;
+    protected Address lcaAddress2;
 
-    protected String prevPetitionLCAWages;
+    @Enumerated(EnumType.STRING)
+    protected LCAWageLevels lcaPrevWageLvl;
 
-    protected String currPetitionLCAWages;
+    protected BigDecimal lcaPrevMinWage;
+
+    protected BigDecimal lcaPrevMaxWage;
+
+    @Enumerated(EnumType.STRING)
+    protected LCAWageLevels lcaCurrWageLvl;
+
+    protected BigDecimal lcaCurrMinWage;
+
+    protected BigDecimal lcaCurrMaxWage;
 
     protected String jobTitle;
 
     @org.hibernate.annotations.Index(name = "LCA_NBR")
     protected String lcaNumber;
 
-    @org.hibernate.annotations.Index(name = "WTH_DRAWN_LCA_NBR")
     protected String withdrawnLCANumber;
 
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -70,36 +79,68 @@ public class LCA extends AbstractHandleEntity {
     @OneToMany(mappedBy = "lca", cascade = CascadeType.MERGE)
     protected List<Petition> petitions;
 
-    public Address getLcaAddresse1() {
-        return lcaAddresse1;
+    public Address getLcaAddress1() {
+        return lcaAddress1;
     }
 
-    public void setLcaAddresse1(Address lcaAddresse1) {
-        this.lcaAddresse1 = lcaAddresse1;
+    public void setLcaAddress1(Address lcaAddress1) {
+        this.lcaAddress1 = lcaAddress1;
     }
 
-    public Address getLcaAddresse2() {
-        return lcaAddresse2;
+    public Address getLcaAddress2() {
+        return lcaAddress2;
     }
 
-    public void setLcaAddresse2(Address lcaAddresse2) {
-        this.lcaAddresse2 = lcaAddresse2;
+    public void setLcaAddress2(Address lcaAddress2) {
+        this.lcaAddress2 = lcaAddress2;
     }
 
-    public String getPrevPetitionLCAWages() {
-        return prevPetitionLCAWages;
+    public LCAWageLevels getLcaPrevWageLvl() {
+        return lcaPrevWageLvl;
     }
 
-    public void setPrevPetitionLCAWages(String prevPetitionLCAWages) {
-        this.prevPetitionLCAWages = prevPetitionLCAWages;
+    public void setLcaPrevWageLvl(LCAWageLevels lcaPrevWageLvl) {
+        this.lcaPrevWageLvl = lcaPrevWageLvl;
     }
 
-    public String getCurrPetitionLCAWages() {
-        return currPetitionLCAWages;
+    public BigDecimal getLcaPrevMinWage() {
+        return lcaPrevMinWage;
     }
 
-    public void setCurrPetitionLCAWages(String currPetitionLCAWages) {
-        this.currPetitionLCAWages = currPetitionLCAWages;
+    public void setLcaPrevMinWage(BigDecimal lcaPrevMinWage) {
+        this.lcaPrevMinWage = lcaPrevMinWage;
+    }
+
+    public BigDecimal getLcaPrevMaxWage() {
+        return lcaPrevMaxWage;
+    }
+
+    public void setLcaPrevMaxWage(BigDecimal lcaPrevMaxWage) {
+        this.lcaPrevMaxWage = lcaPrevMaxWage;
+    }
+
+    public LCAWageLevels getLcaCurrWageLvl() {
+        return lcaCurrWageLvl;
+    }
+
+    public void setLcaCurrWageLvl(LCAWageLevels lcaCurrWageLvl) {
+        this.lcaCurrWageLvl = lcaCurrWageLvl;
+    }
+
+    public BigDecimal getLcaCurrMinWage() {
+        return lcaCurrMinWage;
+    }
+
+    public void setLcaCurrMinWage(BigDecimal lcaCurrMinWage) {
+        this.lcaCurrMinWage = lcaCurrMinWage;
+    }
+
+    public BigDecimal getLcaCurrMaxWage() {
+        return lcaCurrMaxWage;
+    }
+
+    public void setLcaCurrMaxWage(BigDecimal lcaCurrMaxWage) {
+        this.lcaCurrMaxWage = lcaCurrMaxWage;
     }
 
     public String getJobTitle() {
@@ -167,6 +208,11 @@ public class LCA extends AbstractHandleEntity {
             return;
         }
         getPetitions().add(petition);
+    }
+
+    @Override
+    public String toString() {
+        return "LCA{" + "lcaNumber=" + lcaNumber + ", lcaFiledDate=" + lcaFiledDate + ", lcaValidFromDate=" + lcaValidFromDate + ", lcaValidToDate=" + lcaValidToDate + '}';
     }
 
 }

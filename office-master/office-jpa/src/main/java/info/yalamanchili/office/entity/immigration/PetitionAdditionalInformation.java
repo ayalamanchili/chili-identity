@@ -17,7 +17,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
-import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
@@ -33,7 +32,6 @@ import org.hibernate.search.annotations.Indexed;
 @Audited
 public class PetitionAdditionalInformation extends AbstractEntity {
 
-    @Transient
     private static final long serialVersionUID = 2L;
 
     @Enumerated(EnumType.STRING)
@@ -112,6 +110,11 @@ public class PetitionAdditionalInformation extends AbstractEntity {
 
     public void setPetition(Petition petition) {
         this.petition = petition;
+    }
+
+    @Override
+    public String toString() {
+        return "PetitionAdditionalInformation{" + "petitionTrackingNumber=" + petitionTrackingNumber + ", petitionFolderMailedDate=" + petitionFolderMailedDate + ", petitionFolderMailTrkNbr=" + petitionFolderMailTrkNbr + '}';
     }
 
 }

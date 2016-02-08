@@ -6,20 +6,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.jrs.profile;
+package info.yalamanchili.office.jrs.profile.immigration;
 
-import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
-import info.yalamanchili.office.dao.expense.BankAccountDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.profile.PassportDao;
-import info.yalamanchili.office.entity.expense.BankAccount;
-import info.yalamanchili.office.entity.immigration.Passport;
-import info.yalamanchili.office.entity.profile.ClientInformation;
+import info.yalamanchili.office.dao.profile.immigration.LCADao;
+import info.yalamanchili.office.entity.immigration.LCA;
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.jrs.CRUDResource;
-import info.yalamanchili.office.profile.PassportService;
-import java.util.ArrayList;
+import info.yalamanchili.office.profile.immigration.LCAService;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -37,40 +31,49 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Madhu.Badiginchala
  */
-@Path("secured/passport")
+@Path("secured/lca")
 @Component
 @Transactional
 @Scope("request")
-public class PassportResource {
-
+public class LCAResource {
+    
     @Autowired
-    protected PassportDao passportDao;
+    protected LCADao lcaDao;
     @Autowired
-    protected PassportService passportService;
+    protected LCAService lcaService;
 
     @PUT
     @Path("/save/{empId}")
     @Validate
-    public Passport save(@PathParam("empId") Long empId, Passport passport) {
-        return passportService.savePassport(empId, passport);
+    public LCA save(@PathParam("empId") Long empId, LCA lca) {
+        return lcaService.savePassport(empId, lca);
+    }
+
+    @PUT
+    @Path("/delete/{id}")
+    public void delete(@PathParam("id") Long id) {
+        LCA lca = lcaDao.find(id);
+        if (lca.getId() != null) {
+            lcaDao.delete(id);
+        }
     }
 
     @GET
     @Path("/{id}/{start}/{limit}")
-    public PassportResource.PassportTable table(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
-        PassportResource.PassportTable tableObj = new PassportResource.PassportTable();
+    public LCAResource.LCATable table(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
+        LCAResource.LCATable tableObj = new LCAResource.LCATable();
         Employee emp = EmployeeDao.instance().findById(id);
-        tableObj.setEntities(passportDao.findAll(emp));
-        tableObj.setSize(passportDao.size());
+        tableObj.setEntities(lcaDao.findAll(emp));
+        tableObj.setSize(lcaDao.size());
         return tableObj;
     }
 
     @XmlRootElement
     @XmlType
-    public static class PassportTable implements java.io.Serializable {
+    public static class LCATable implements java.io.Serializable {
 
         protected Long size;
-        protected List<Passport> entities;
+        protected List<LCA> entities;
 
         public Long getSize() {
             return size;
@@ -81,11 +84,11 @@ public class PassportResource {
         }
 
         @XmlElement
-        public List<Passport> getEntities() {
+        public List<LCA> getEntities() {
             return entities;
         }
 
-        public void setEntities(List<Passport> entities) {
+        public void setEntities(List<LCA> entities) {
             this.entities = entities;
         }
     }

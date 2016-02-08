@@ -10,21 +10,14 @@ package info.yalamanchili.office.entity.immigration;
 
 import info.chili.jpa.AbstractHandleEntity;
 import java.util.Date;
-import java.util.Set;
 import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
-import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
@@ -41,17 +34,14 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Audited
 public class Petition extends AbstractHandleEntity {
 
-    @Transient
     private static final long serialVersionUID = 11L;
 
     @NotEmpty(message = "{firstName.not.empty.msg}")
     @Field
-    @org.hibernate.annotations.Index(name = "PET_FST_NM")
     protected String firstName;
 
     @NotEmpty(message = "{lastName.not.empty.msg}")
     @Field
-    @org.hibernate.annotations.Index(name = "PET_LST_NM")
     protected String lastName;
 
     @org.hibernate.annotations.Index(name = "PET_USR_NME")
@@ -252,6 +242,11 @@ public class Petition extends AbstractHandleEntity {
 
     public void setWorkedBy(String workedBy) {
         this.workedBy = workedBy;
+    }
+
+    @Override
+    public String toString() {
+        return "Petition{" + "firstName=" + firstName + ", lastName=" + lastName + ", workedBy=" + workedBy + ", attorneyName=" + attorneyName + ", visaClassification=" + visaClassification + ", visaProcessing=" + visaProcessing + ", petitionFileDate=" + petitionFileDate + ", receiptNumber=" + receiptNumber + ", petitionStatus=" + petitionStatus + ", petitionApprovalDate=" + petitionApprovalDate + ", petitionValidFromDate=" + petitionValidFromDate + ", petitionValidToDate=" + petitionValidToDate + '}';
     }
     
 }

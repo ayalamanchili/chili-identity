@@ -8,12 +8,10 @@
  */
 package info.yalamanchili.office.entity.immigration;
 
-import info.chili.jpa.AbstractEntity;
 import info.chili.jpa.AbstractHandleEntity;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Temporal;
-import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Indexed;
@@ -29,7 +27,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Audited
 public class Passport extends AbstractHandleEntity {
 
-    @Transient
     private static final long serialVersionUID = 11L;
 
     @NotEmpty(message = "{passportNumber.not.empty.msg}")
@@ -74,6 +71,11 @@ public class Passport extends AbstractHandleEntity {
 
     public void setPassportCountryOfIssuance(String passportCountryOfIssuance) {
         this.passportCountryOfIssuance = passportCountryOfIssuance;
+    }
+
+    @Override
+    public String toString() {
+        return "Passport{" + "passportNumber=" + passportNumber + ", passportIssuedDate=" + passportIssuedDate + ", passportExpiryDate=" + passportExpiryDate + ", passportCountryOfIssuance=" + passportCountryOfIssuance + '}';
     }
 
 }
