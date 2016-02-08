@@ -6,14 +6,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.dao.profile;
+package info.yalamanchili.office.dao.profile.immigration;
 
+/**
+ *
+ * @author Madhu.Badiginchala
+ */
 import info.chili.dao.AbstractHandleEntityDao;
-import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.dao.expense.BankAccountDao;
-import info.yalamanchili.office.entity.client.Subcontractor;
-import info.yalamanchili.office.entity.expense.BankAccount;
 import info.yalamanchili.office.entity.immigration.Passport;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

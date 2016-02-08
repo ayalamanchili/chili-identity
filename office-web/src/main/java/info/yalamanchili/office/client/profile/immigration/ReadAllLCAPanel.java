@@ -19,33 +19,33 @@ import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.admin.hr.UpdateProspectPanel;
+import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
 /**
  *
  * @author Madhu.Badiginchala
  */
-public class ReadAllPassportPanel extends CRUDReadAllComposite {
+public class ReadAllLCAPanel extends CRUDReadAllComposite {
 
-    private static Logger logger = Logger.getLogger(ReadAllPassportPanel.class.getName());
-    public static ReadAllPassportPanel instance;
+    private static Logger logger = Logger.getLogger(ReadAllLCAPanel.class.getName());
+    public static ReadAllLCAPanel instance;
     protected String url;
 
-    public ReadAllPassportPanel() {
+    public ReadAllLCAPanel() {
         instance = this;
-        initTable("Passport", OfficeWelcome.constants);
+        initTable("LCA", OfficeWelcome.constants);
     }
 
-    public ReadAllPassportPanel(JSONArray array) {
+    public ReadAllLCAPanel(JSONArray array) {
         instance = this;
-        initTable("Passport", array, OfficeWelcome.constants);
+        initTable("LCA", array, OfficeWelcome.constants);
     }
 
-    public ReadAllPassportPanel(String parentId) {
+    public ReadAllLCAPanel(String parentId) {
         instance = this;
         this.parentId = parentId;
-        initTable("Passport", OfficeWelcome.constants);
+        initTable("LCA", OfficeWelcome.constants);
     }
 
     @Override
@@ -65,16 +65,16 @@ public class ReadAllPassportPanel extends CRUDReadAllComposite {
         if (url != null) {
             return url;
         }
-        return OfficeWelcome.constants.root_url() + "passport/" + parentId + "/" + start.toString() + "/" + tableSize.toString();
+        return OfficeWelcome.constants.root_url() + "lca/" + parentId + "/" + start.toString() + "/" + tableSize.toString();
     }
 
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
-        table.setText(0, 1, getKeyValue("Passport Number"));
-        table.setText(0, 2, getKeyValue("Issued Date"));
-        table.setText(0, 3, getKeyValue("Expiry Date"));
-        table.setText(0, 4, getKeyValue("Issuance Country"));
+        table.setText(0, 1, getKeyValue("LCA Number"));
+        table.setText(0, 2, getKeyValue("LCA Filed Date"));
+        table.setText(0, 3, getKeyValue("LCA Valid From Date"));
+        table.setText(0, 4, getKeyValue("LCA Valid To Date"));
     }
 
     @Override
@@ -82,17 +82,17 @@ public class ReadAllPassportPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            table.setText(i, 1, JSONUtils.toString(entity, "passportNumber"));
-            table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "passportIssuedDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "passportExpiryDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 4, JSONUtils.toString(entity, "passportCountryOfIssuance"));           
+            table.setText(i, 1, JSONUtils.toString(entity, "lcaNumber"));
+            table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "lcaFiledDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "lcaValidFromDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "lcaValidToDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
         }
     }
 
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadPassportPanel(getEntity(entityId)));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadLCAPanel(getEntity(entityId)));
     }
 
     @Override
@@ -107,32 +107,32 @@ public class ReadAllPassportPanel extends CRUDReadAllComposite {
     }
 
     private String getDeleteURL(String entityId) {
-        return OfficeWelcome.instance().constants.root_url() + "passport/delete/" + entityId;
+        return OfficeWelcome.instance().constants.root_url() + "lca/delete/" + entityId;
     }
 
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("Successfully Deleted Passport Information");
-      //  TabPanel.instance().myOfficePanel.entityPanel.clear();
-     //   TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProspectsPanel());
+        new ResponseStatusWidget().show("Successfully Deleted LCA Information");
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllLCAPanel(TreeEmployeePanel.instance().getEntityId()));
     }
 
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateProspectPanel(entityId));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdatePassportPanel(getEntity(entityId)));
     }
 
     @Override
     protected void configureCreateButton() {
-        createButton.setText("Add Passport");
+        createButton.setText("Add LCA");
         createButton.setVisible(true);
     }
 
     @Override
     protected void createButtonClicked() {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new CreatePassportPanel(CreateComposite.CreateCompositeType.CREATE));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new CreateLCAPanel(CreateComposite.CreateCompositeType.CREATE));
     }
 
     @Override
@@ -148,7 +148,7 @@ public class ReadAllPassportPanel extends CRUDReadAllComposite {
     @Override
     protected void onQuickView(int row, String id) {
         if (!id.isEmpty()) {
-            new GenericPopup(new ReadPassportPanel(getEntity(id))).show();
+            new GenericPopup(new ReadLCAPanel(getEntity(id))).show();
         }
     }
 
@@ -157,4 +157,5 @@ public class ReadAllPassportPanel extends CRUDReadAllComposite {
         return true;
     }
 
+    
 }
