@@ -114,6 +114,7 @@ public class LoginPage extends Composite {
     public LoginPage() {
         initWidget(uiBinder.createAndBindUi(this));
         loginB.addStyleName("loginB");
+        loginCenter.addStyleName("loginCenterPanel");
         populateUsername();
     }
 //TODO move to chili gwt as abstract common methods
