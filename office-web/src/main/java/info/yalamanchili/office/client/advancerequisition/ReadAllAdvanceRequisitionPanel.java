@@ -49,7 +49,7 @@ public class ReadAllAdvanceRequisitionPanel extends CRUDReadAllComposite {
         initTable("AdvanceRequisition", OfficeWelcome.constants);
     }
 
-    ReadAllAdvanceRequisitionPanel(JSONArray result) {
+    public ReadAllAdvanceRequisitionPanel(JSONArray result) {
         instance = this;
         initTable("AdvanceRequisition", result, OfficeWelcome.constants);
     }

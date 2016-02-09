@@ -13,10 +13,12 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
+import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import java.util.logging.Logger;
 
 /**
@@ -53,18 +55,20 @@ public class ReadAllEmployeeOnBoardingPanel extends CRUDReadAllComposite {
 
     @Override
     public void createTableHeader() {
-        table.setText(0, 0, getKeyValue("Name"));
-        table.setText(0, 1, getKeyValue("StartDate"));
-        table.setText(0, 2, getKeyValue("EmployeeType"));
-        table.setText(0, 3, getKeyValue("Branch"));
-        table.setText(0, 4, getKeyValue("Email"));
-        table.setText(0, 5, getKeyValue("Status"));
+        table.setText(0, 0, getKeyValue("Table Action"));
+        table.setText(0, 1, getKeyValue("Name"));
+        table.setText(0, 2, getKeyValue("StartDate"));
+        table.setText(0, 3, getKeyValue("EmployeeType"));
+        table.setText(0, 4, getKeyValue("Branch"));
+        table.setText(0, 5, getKeyValue("Email"));
+        table.setText(0, 6, getKeyValue("Status"));
     }
 
     @Override
     public void fillData(JSONArray entities) {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
+            addOptionsWidget(i, entity);
             JSONObject emp;
             if (entity.containsKey("employee")) {
                 emp = (JSONObject) entity.get("employee");
@@ -72,13 +76,12 @@ public class ReadAllEmployeeOnBoardingPanel extends CRUDReadAllComposite {
                 emp = new JSONObject();
             }
             JSONObject empType = (JSONObject) emp.get("employeeType");
-            table.setText(i, 0, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
-            table.setText(i, 1, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startedDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 2, JSONUtils.toString(empType, "name"));
-            table.setText(i, 3, JSONUtils.toString(emp, "branch"));
-            table.setText(i, 4, JSONUtils.toString(entity, "email"));
-            setEnumColumn(i, 5, entity, OnBoardingStatus.class.getSimpleName(), "status");
-
+            table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
+            table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startedDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 3, JSONUtils.toString(empType, "name"));
+            table.setText(i, 4, JSONUtils.toString(emp, "branch"));
+            table.setText(i, 5, JSONUtils.toString(entity, "email"));
+            setEnumColumn(i, 6, entity, OnBoardingStatus.class.getSimpleName(), "status");
         }
     }
 
@@ -91,27 +94,24 @@ public class ReadAllEmployeeOnBoardingPanel extends CRUDReadAllComposite {
 
     @Override
     public void viewClicked(String entityId) {
-
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadEmployeeOnboardingPanel(entityId));
     }
 
     @Override
     public void deleteClicked(String entityId) {
-
     }
 
     @Override
     public void postDeleteSuccess() {
-
     }
 
     @Override
     public void updateClicked(String entityId) {
-
     }
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-
+        createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ);
     }
-
 }

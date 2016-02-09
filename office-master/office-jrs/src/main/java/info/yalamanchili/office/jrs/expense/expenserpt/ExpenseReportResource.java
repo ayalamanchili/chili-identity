@@ -76,6 +76,7 @@ public class ExpenseReportResource extends CRUDResource<ExpenseReport> {
     @Path("/{id}")
     @Transactional(readOnly = true)
     @Override
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CEO', 'ROLE_ACCOUNTS_PAYABLE', 'ROLE_GENERAL_EXPENSE_MANAGER' )")
     public ExpenseReportSaveDto read(@PathParam("id") Long id) {
         return ExpenseReportService.instance().read(id);
     }
