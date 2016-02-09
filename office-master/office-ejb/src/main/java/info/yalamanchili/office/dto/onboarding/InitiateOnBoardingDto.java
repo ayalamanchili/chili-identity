@@ -11,6 +11,7 @@ package info.yalamanchili.office.dto.onboarding;
 import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.profile.Branch;
 import info.yalamanchili.office.entity.profile.EmployeeType;
+import info.yalamanchili.office.entity.profile.WorkStatus;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Temporal;
@@ -52,7 +53,27 @@ public class InitiateOnBoardingDto implements Serializable {
      *
      */
     protected Branch branch;
+    
+    protected WorkStatus workStatus;
+    
+    protected String comment;
 
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public WorkStatus getWorkStatus() {
+        return workStatus;
+    }
+
+    public void setWorkStatus(WorkStatus workStatus) {
+        this.workStatus = workStatus;
+    }
+    
     public EmployeeType getEmployeeType() {
         return employeeType;
     }

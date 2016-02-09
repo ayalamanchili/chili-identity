@@ -24,6 +24,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -95,7 +96,7 @@ public class OnBoardingEmployeeDto implements Serializable {
     private List<EmergencyContactDto> emergencyContact;
 
     private List<EmployeeDocument> documents;
-
+    
     public List<EmployeeDocument> getDocuments() {
         return documents;
     }
@@ -219,6 +220,7 @@ public class OnBoardingEmployeeDto implements Serializable {
         this.employeeAdditionalDetails = employeeAdditionalDetails;
     }
 
+    @Size(min = 1, message = "{emergencycontact.min.size.msg}")
     public List<EmergencyContactDto> getEmergencyContact() {
         if (this.emergencyContact == null) {
             this.emergencyContact = new ArrayList();

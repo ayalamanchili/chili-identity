@@ -322,14 +322,15 @@ public class EmployeeFormsService {
             }
         }
         EmployeeOnBoarding onboarding = EmployeeOnBoardingDao.instance().findByEmployeeId(emp.getId());
-        Date onboardingDate = onboarding.getStartedDate();
-
+        Date onboardingDate = null;
+        if (onboarding != null) {
+            onboardingDate = onboarding.getStartedDate();
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+            data.getData().put("Date", sdf.format(onboardingDate));
+            Signature signature = new Signature(emp.getEmployeeId(), emp.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "Signature", DateUtils.dateToCalendar(onboardingDate), onboarding.getEmail(), null);
+            data.getSignatures().add(signature);
+        }
         data.getData().put("Name", emp.getFirstName() + " " + emp.getLastName());
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-        data.getData().put("Date", sdf.format(onboardingDate));
-
-        Signature signature = new Signature(emp.getEmployeeId(), emp.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "Signature", DateUtils.dateToCalendar(onboardingDate), onboarding.getEmail(), null);
-        data.getSignatures().add(signature);
 
         //TODO fill ach with emp and bank account details
         byte[] pdf = PDFUtils.generatePdf(data);

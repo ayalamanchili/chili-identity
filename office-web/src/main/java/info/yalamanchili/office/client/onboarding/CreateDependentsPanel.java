@@ -50,6 +50,13 @@ public class CreateDependentsPanel extends CreateComposite implements ClickHandl
 
     @Override
     protected JSONObject populateEntityFromFields() {
+        if (deleteB.isVisible() == false) {
+            create.setVisible(true);
+            entityActionsPanel.remove(deleteB);
+        } else {
+            create.setVisible(false);
+            entityActionsPanel.add(deleteB);
+        }
         entity = new JSONObject();
         assignEntityValueFromField("dfirstName", entity);
         assignEntityValueFromField("dlastName", entity);
@@ -62,6 +69,8 @@ public class CreateDependentsPanel extends CreateComposite implements ClickHandl
 
     @Override
     protected void createButtonClicked() {
+        deleteB.setVisible(false);
+        create.setVisible(true);
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
                     @Override
@@ -91,14 +100,11 @@ public class CreateDependentsPanel extends CreateComposite implements ClickHandl
 
     @Override
     protected void addListeners() {
-        if (parentPanel != null) {
-            deleteB.addClickHandler(this);
-        }
+        deleteB.addClickHandler(this);
     }
 
     @Override
     protected void configure() {
-        create.setVisible(true);
     }
 
     @Override
@@ -107,9 +113,6 @@ public class CreateDependentsPanel extends CreateComposite implements ClickHandl
         addField("dlastName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("ddateOfBirth", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("relationship", false, true, Relationship.names(), Alignment.HORIZONTAL);
-        if (parentPanel != null) {
-            entityActionsPanel.add(deleteB);
-        }
         alignFields();
     }
 
@@ -126,10 +129,8 @@ public class CreateDependentsPanel extends CreateComposite implements ClickHandl
 
     @Override
     public void onClick(ClickEvent event) {
-        if (parentPanel != null) {
-            if (event.getSource().equals(deleteB)) {
-                parentPanel.removePanel(index);
-            }
+        if (event.getSource().equals(deleteB)) {
+            parentPanel.removePanel(index);
         }
         super.onClick(event);
     }

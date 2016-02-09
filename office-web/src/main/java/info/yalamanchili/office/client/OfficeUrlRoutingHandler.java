@@ -52,6 +52,13 @@ public class OfficeUrlRoutingHandler implements ValueChangeHandler<String> {
                 case "info.yalamanchili.office.entity.expense.ImmigrationCheckRequisition":
                     checkRequisitionNavigation(params);
                     break;
+                case "info.yalamanchili.office.entity.expense.AdvanceRequisition":
+                    advanceRequisitionNavigation(params);
+                    break;
+                case "info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport":
+                    expenseReportNavigation(params);
+                    break;
+                
                 //TODO add navigation to add entities that have comment
             }
         }
@@ -71,6 +78,18 @@ public class OfficeUrlRoutingHandler implements ValueChangeHandler<String> {
         TabPanel.instance().tabPanel.selectTab(TabPanel.instance().expensePanel, false);
         ReadAllImmigrationCheckRequisitionPanel readAllCheckRequisition = new ReadAllImmigrationCheckRequisitionPanel(new JSONArray());
         readAllCheckRequisition.viewClicked(params.get("id"));
+    }
+    
+    protected void advanceRequisitionNavigation(Map<String, String> params) {
+        TabPanel.instance().tabPanel.selectTab(TabPanel.instance().expensePanel, false);
+        ReadAllAdvanceRequisitionPanel readAllAdvanceRequisition = new ReadAllAdvanceRequisitionPanel(new JSONArray());
+        readAllAdvanceRequisition.viewClicked(params.get("id"));
+    }
+    
+    protected void expenseReportNavigation(Map<String, String> params) {
+        TabPanel.instance().tabPanel.selectTab(TabPanel.instance().expensePanel, false);
+        ReadAllExpenseReportsPanel readAllExpense = new ReadAllExpenseReportsPanel(new JSONArray());
+        readAllExpense.viewClicked(params.get("id"));
     }
 
     protected void taskNavigation(Map<String, String> params) {
