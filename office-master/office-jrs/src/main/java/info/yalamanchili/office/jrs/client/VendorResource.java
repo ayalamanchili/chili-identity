@@ -19,7 +19,6 @@ import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.client.VendorDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
-import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.profile.ContactDto;
 import info.yalamanchili.office.dto.profile.ContactDto.ContactDtoTable;
@@ -63,13 +62,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Scope("request")
 public class VendorResource extends CRUDResource<Vendor> {
-
-    @Autowired
-    public EmployeeDao employeeDao;
+    
     @Autowired
     public VendorDao vendorDao;
-    @Autowired
-    protected ContactService contactService;
+
     @PersistenceContext
     protected EntityManager em;
     @Autowired
@@ -145,7 +141,7 @@ public class VendorResource extends CRUDResource<Vendor> {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
     public void addvendorContact(@PathParam("vendorId") Long vendorId, ContactDto dto) {
         Vendor vendor = (Vendor) getDao().findById(vendorId);
-        Contact contact = contactService.save(dto);
+        Contact contact = ContactService.instance().save(dto);
         vendor.addContact(contact);
     }
 
@@ -155,7 +151,7 @@ public class VendorResource extends CRUDResource<Vendor> {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
     public void addvendorAcctPayContact(@PathParam("vendorId") Long vendorId, ContactDto dto) {
         Vendor vendor = (Vendor) getDao().findById(vendorId);
-        Contact contact = contactService.save(dto);
+        Contact contact = ContactService.instance().save(dto);
         vendor.addAcctPayContact(contact);
     }
 
