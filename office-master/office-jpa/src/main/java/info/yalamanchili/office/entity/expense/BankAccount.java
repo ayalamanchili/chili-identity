@@ -14,6 +14,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -62,6 +63,7 @@ public class BankAccount extends AbstractHandleEntity {
      *
      */
     @NotEmpty(message = "{bankRoutingNumber.not.empty.msg}")
+    @Type(type = "encryptedString")
     protected String bankRoutingNumber;
     /**
      *
