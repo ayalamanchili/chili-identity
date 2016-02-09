@@ -356,22 +356,15 @@
                 ${entity.employeeType.name == 'Corporate Employee'}
             </conditionExpression>
         </sequenceFlow>
-        <sequenceFlow sourceRef="EmployeeOrientationTask" targetRef="sendEmployeeOnBoardingCompletedEmail" >
+        <sequenceFlow sourceRef="EmployeeOrientationTask" targetRef="onBoardingEmployeeProcessEnd" >
             <conditionExpression xsi:type="tFormalExpression">
                 ${entity.employeeType.name == 'Employee'}
             </conditionExpression>
         </sequenceFlow>
         
         <parallelGateway id="join2" />
-        <sequenceFlow sourceRef="join2" targetRef="sendEmployeeOnBoardingCompletedEmail" />
+        <sequenceFlow sourceRef="join2" targetRef="onBoardingEmployeeProcessEnd" />
         
-        <!--         Send Confirmation And Welcome Email to Employee -->
-        <serviceTask id="sendEmployeeOnBoardingCompletedEmail" 
-                     name="Send Confirmation And Welcome Email to Employee Task" 
-                     activiti:expression="#{onBoardingEmployeeProcessBean.sendEmployeeOnBoardingCompletedEmail(entity)}" />  
-        
-        <sequenceFlow sourceRef="sendEmployeeOnBoardingCompletedEmail" 
-                      targetRef="onBoardingEmployeeProcessEnd"/>
         <endEvent id="onBoardingEmployeeProcessEnd" />
     </process>
 </definitions>
