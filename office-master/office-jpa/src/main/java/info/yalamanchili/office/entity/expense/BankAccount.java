@@ -63,7 +63,7 @@ public class BankAccount extends AbstractHandleEntity {
      *
      */
     @NotEmpty(message = "{bankRoutingNumber.not.empty.msg}")
-    @Type(type = "encryptedString")
+//    @Type(type = "encryptedString")
     protected String bankRoutingNumber;
     /**
      *

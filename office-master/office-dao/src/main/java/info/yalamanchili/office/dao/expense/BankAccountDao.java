@@ -13,8 +13,8 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.expense.BankAccount;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +38,9 @@ public class BankAccountDao extends AbstractHandleEntityDao<BankAccount> {
     @Transactional
     public void mergeAll() {
         TypedQuery<BankAccount> q = em.createQuery("from " + BankAccount.class.getCanonicalName(), BankAccount.class);
+        HibernatePBEStringEncryptor e = (HibernatePBEStringEncryptor) SpringContext.getBean("hibernateStringEncryptor");
         for (BankAccount ba : q.getResultList()) {
+            ba.setBankAccountNumber(e.encrypt(ba.getBankAccountNumber()));
             em.merge(ba);
         }
     }
