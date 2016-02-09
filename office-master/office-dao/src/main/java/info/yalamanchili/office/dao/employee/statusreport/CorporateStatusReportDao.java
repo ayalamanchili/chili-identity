@@ -144,9 +144,14 @@ public class CorporateStatusReportDao extends CRUDDao<CorporateStatusReport> {
         }
         for (Employee emp : ng.getEmployees()) {
             if (find(emp, timePeriod.getStartDate(), timePeriod.getEndDate()) == null) {
-                CorporateStatusReport rpt = new CorporateStatusReport();
-                rpt.setEmployeeName(emp.getFirstName() + " " + emp.getLastName());
-                res.add(rpt);
+                if (emp.isActive() == true) {
+                    CorporateStatusReport rpt = new CorporateStatusReport();
+                    rpt.setEmployeeName(emp.getFirstName() + " " + emp.getLastName());
+                    rpt.setReportStartDate(timePeriod.getStartDate());
+                    rpt.setReportEndDate(timePeriod.getEndDate());
+                    rpt.setStatus(CropStatusReportStatus.NotSubmitted);
+                    res.add(rpt);
+                }
             }
         }
         return res;
