@@ -9,8 +9,8 @@
 package info.yalamanchili.office.profile.immigration;
 
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.profile.immigration.LCADao;
-import info.yalamanchili.office.entity.immigration.LCA;
+import info.yalamanchili.office.dao.profile.immigration.PetitionDao;
+import info.yalamanchili.office.entity.immigration.Petition;
 import info.yalamanchili.office.entity.profile.Employee;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -25,22 +25,24 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-public class LCAService {
+public class PetitionService {
 
     @PersistenceContext
     protected EntityManager em;
     @Autowired
     protected Mapper mapper;
     @Autowired
-    protected LCADao lcaDao;
+    protected PetitionDao petitionDao;
     @Autowired
     protected EmployeeDao employeeDao;
 
-    public LCA saveLCA(Long empId, LCA dto) {
-        LCA lca = mapper.map(dto, LCA.class);
+    public Petition savePetition(Long empId, Petition dto) {
+        Petition petition = mapper.map(dto, Petition.class);
         Employee emp = employeeDao.findById(empId);
-        lcaDao.save(lca, emp.getId(), emp.getClass().getCanonicalName());
-        return lca;
+        petition.setFirstName(emp.getFirstName());
+        petition.setLastName(emp.getLastName());
+        petition.setUserName(emp.getEmployeeId());
+        petitionDao.save(petition, emp.getId(), emp.getClass().getCanonicalName());
+        return petition;
     }
-
 }

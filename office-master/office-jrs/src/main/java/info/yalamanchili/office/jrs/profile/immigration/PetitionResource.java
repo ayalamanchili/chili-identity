@@ -10,10 +10,11 @@ package info.yalamanchili.office.jrs.profile.immigration;
 
 import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.profile.immigration.LCADao;
+import info.yalamanchili.office.dao.profile.immigration.PetitionDao;
 import info.yalamanchili.office.entity.immigration.LCA;
+import info.yalamanchili.office.entity.immigration.Petition;
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.profile.immigration.LCAService;
+import info.yalamanchili.office.profile.immigration.PetitionService;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -31,49 +32,49 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Madhu.Badiginchala
  */
-@Path("secured/lca")
+@Path("secured/petition")
 @Component
 @Transactional
 @Scope("request")
-public class LCAResource {
-    
+public class PetitionResource {
+
     @Autowired
-    protected LCADao lcaDao;
+    protected PetitionDao petitionDao;
     @Autowired
-    protected LCAService lcaService;
+    protected PetitionService petitionService;
 
     @PUT
     @Path("/save/{empId}")
     @Validate
-    public LCA save(@PathParam("empId") Long empId, LCA lca) {
-        return lcaService.saveLCA(empId, lca);
+    public Petition save(@PathParam("empId") Long empId, Petition dto) {
+        return petitionService.savePetition(empId, dto);
     }
 
     @PUT
     @Path("/delete/{id}")
     public void delete(@PathParam("id") Long id) {
-        LCA lca = lcaDao.find(id);
-        if (lca.getId() != null) {
-            lcaDao.delete(id);
+        Petition petition = petitionDao.find(id);
+        if (petition.getId() != null) {
+            petitionDao.delete(id);
         }
     }
 
     @GET
     @Path("/{id}/{start}/{limit}")
-    public LCAResource.LCATable table(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
-        LCAResource.LCATable tableObj = new LCAResource.LCATable();
+    public PetitionResource.PetitionTable table(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
+        PetitionResource.PetitionTable tableObj = new PetitionResource.PetitionTable();
         Employee emp = EmployeeDao.instance().findById(id);
-        tableObj.setEntities(lcaDao.findAll(emp));
-        tableObj.setSize(lcaDao.size());
+        tableObj.setEntities(petitionDao.findAll(emp));
+        tableObj.setSize(petitionDao.size());
         return tableObj;
     }
 
     @XmlRootElement
     @XmlType
-    public static class LCATable implements java.io.Serializable {
+    public static class PetitionTable implements java.io.Serializable {
 
         protected Long size;
-        protected List<LCA> entities;
+        protected List<Petition> entities;
 
         public Long getSize() {
             return size;
@@ -84,11 +85,11 @@ public class LCAResource {
         }
 
         @XmlElement
-        public List<LCA> getEntities() {
+        public List<Petition> getEntities() {
             return entities;
         }
 
-        public void setEntities(List<LCA> entities) {
+        public void setEntities(List<Petition> entities) {
             this.entities = entities;
         }
     }

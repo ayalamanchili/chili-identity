@@ -5,18 +5,21 @@
  */
 package info.yalamanchili.office.client.profile.immigration;
 
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.crud.CreateComposite;
-import info.chili.gwt.data.CountryFactory;
-import info.chili.gwt.data.USAStatesFactory;
+import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.profile.address.CreateAddressPanel;
+import info.yalamanchili.office.client.profile.address.CreateAddressWidget;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
@@ -27,6 +30,14 @@ import java.util.logging.Logger;
 public class CreateLCAPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreatePassportPanel.class.getName());
+
+    protected BooleanField addAddress = new BooleanField(OfficeWelcome.constants, "Add LCA Secondary Address", "LCA", false, false, Alignment.HORIZONTAL);
+    CreateAddressWidget createAddressWidget1 = new CreateAddressWidget(CreateAddressPanel.CreateAddressPanelType.MIN);
+    CreateAddressWidget createAddressWidget2 = new CreateAddressWidget(CreateAddressPanel.CreateAddressPanelType.MIN);
+    HTML wagesInfo = new HTML("<h4 style=\"color:#427fed\">" + "Wages Information</h4>");
+    HTML lcaAddress1 = new HTML("<h4 style=\"color:#427fed\">" + "LCA Primary Address </h4>");
+    HTML lcaAddress2 = new HTML("<h4 style=\"color:#427fed\">" + "LCA Secondary Address</h4>");
+    boolean isLCASecAddAvail = false;
 
     public CreateLCAPanel(CreateComposite.CreateCompositeType type) {
         super(type);
@@ -43,23 +54,16 @@ public class CreateLCAPanel extends CreateComposite {
         assignEntityValueFromField("lcaValidFromDate", lca);
         assignEntityValueFromField("lcaValidToDate", lca);
         assignEntityValueFromField("jobTitle", lca);
+        assignEntityValueFromField("withdrawnLCANumber", lca);
         // Address Information 1
-        assignEntityValueFromField("street1", lcaAddress1);
-        assignEntityValueFromField("street2", lcaAddress1);
-        assignEntityValueFromField("city", lcaAddress1);
-        assignEntityValueFromField("state", lcaAddress1);
-        assignEntityValueFromField("country", lcaAddress1);
-        assignEntityValueFromField("zip", lcaAddress1);
-        lca.put("lcaAddress1", lcaAddress1);
+        if (createAddressWidget1 != null) {
+            lca.put("lcaAddress1", createAddressWidget1.populateEntityFromFields());
+        }
         // Address Information 2
-        assignEntityValueFromField("street1", lcaAddress2);
-        assignEntityValueFromField("street2", lcaAddress2);
-        assignEntityValueFromField("city", lcaAddress2);
-        assignEntityValueFromField("state", lcaAddress2);
-        assignEntityValueFromField("country", lcaAddress2);
-        assignEntityValueFromField("zip", lcaAddress2);
-        lca.put("lcaAddress2", lcaAddress2);
-         // Other Information
+        if (isLCASecAddAvail) {
+            lca.put("lcaAddress2", createAddressWidget2.populateEntityFromFields());
+        }
+        // Other Information
         assignEntityValueFromField("lcaCurrWageLvl", lca);
         assignEntityValueFromField("lcaCurrMinWage", lca);
         assignEntityValueFromField("lcaCurrMaxWage", lca);
@@ -68,6 +72,7 @@ public class CreateLCAPanel extends CreateComposite {
         assignEntityValueFromField("lcaPrevMaxWage", lca);
         lca.put("targetEntityName", new JSONString("targetEntityName"));
         lca.put("targetEntityId", new JSONString("0"));
+        logger.info("entity: " + lca);
         return lca;
     }
 
@@ -89,7 +94,18 @@ public class CreateLCAPanel extends CreateComposite {
 
     @Override
     protected void addButtonClicked() {
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+                new AsyncCallback<String>() {
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
+            @Override
+            public void onSuccess(String arg0) {
+                postCreateSuccess(arg0);
+            }
+        });
     }
 
     @Override
@@ -101,7 +117,7 @@ public class CreateLCAPanel extends CreateComposite {
 
     @Override
     protected void addListeners() {
-
+        addAddress.getBox().addClickHandler(this);
     }
 
     @Override
@@ -116,28 +132,18 @@ public class CreateLCAPanel extends CreateComposite {
         addField("lcaValidFromDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("lcaValidToDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("jobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        entityFieldsPanel.add(getLineSeperatorTag("Add LCA Location-1"));
-        addField("street1", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("street2", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("city", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
-        addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
-        addField("zip", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
-        entityFieldsPanel.add(getLineSeperatorTag("Add LCA Location-2"));
-        addField("street1", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("street2", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("city", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
-        addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
-        addField("zip", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
-        entityFieldsPanel.add(getLineSeperatorTag("Wages Information"));
+        addField("withdrawnLCANumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(wagesInfo);
         addEnumField("lcaCurrWageLvl", false, true, LCAWageLevels.names(), Alignment.HORIZONTAL);
         addField("lcaCurrMinWage", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("lcaCurrMaxWage", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addEnumField("lcaPrevWageLvl", false, true, LCAWageLevels.names(), Alignment.HORIZONTAL);
         addField("lcaPrevMinWage", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("lcaPrevMaxWage", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-        entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
+        entityFieldsPanel.add(lcaAddress1);
+        entityFieldsPanel.add(createAddressWidget1);
+        entityActionsPanel.add(addAddress);
+        addAddress.setValue(false);
         alignFields();
     }
 
@@ -149,6 +155,20 @@ public class CreateLCAPanel extends CreateComposite {
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "lca/save/" + TreeEmployeePanel.instance().getEntityId();
+    }
+
+    @Override
+    public void onClick(ClickEvent event) {
+        if (addAddress.getValue()) {
+            entityFieldsPanel.add(lcaAddress2);
+            entityFieldsPanel.add(createAddressWidget2);
+            isLCASecAddAvail = true;
+        } else {
+            entityFieldsPanel.remove(lcaAddress2);
+            entityFieldsPanel.remove(createAddressWidget2);
+            isLCASecAddAvail = false;
+        }
+        super.onClick(event);
     }
 
 }

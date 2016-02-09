@@ -10,6 +10,7 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.TreePanelComposite;
 import info.yalamanchili.office.client.profile.immigration.ReadAllLCAPanel;
 import info.yalamanchili.office.client.profile.immigration.ReadAllPassportsPanel;
+import info.yalamanchili.office.client.profile.immigration.ReadAllPetitionsPanel;
 import java.util.logging.Logger;
 
 /**
@@ -41,7 +42,7 @@ public class TreeEmployeeImmigrationPanel extends TreePanelComposite {
     protected void addWidgets() {
         addFirstChildLink("Passport", PASSPORT_NODE);
         addFirstChildLink("LCA", LCA_NODE);
-//        addFirstChildLink("Petition", PETITION_NODE);
+        addFirstChildLink("Petition", PETITION_NODE);
     }
 
     @Override
@@ -54,10 +55,10 @@ public class TreeEmployeeImmigrationPanel extends TreePanelComposite {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
             TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllLCAPanel(employeeId));
         }
-//        if (PETITION_NODE.equals(entityNodeKey)) {
-//            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-//            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllPerformanceEvaluationPanel(employeeId));
-//        }
+        if (PETITION_NODE.equals(entityNodeKey)) {
+            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllPetitionsPanel(employeeId));
+        }
     }
 
     @Override
