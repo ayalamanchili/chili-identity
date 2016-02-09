@@ -45,7 +45,7 @@ public class EmployeeOnBoardingDao extends CRUDDao<EmployeeOnBoarding> {
             TypedQuery<EmployeeOnBoarding> findQuery = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " where email=:employeeEmailParam ", EmployeeOnBoarding.class);
             findQuery.setParameter("employeeEmailParam", email);
             return findQuery.getSingleResult();
-        }catch(NoResultException nre){
+        } catch (NoResultException nre) {
             return null;
         }
     }
@@ -56,8 +56,13 @@ public class EmployeeOnBoardingDao extends CRUDDao<EmployeeOnBoarding> {
         return findQuery.getSingleResult();
     }
 
+    public EmployeeOnBoarding findById(Long id) {
+        TypedQuery<EmployeeOnBoarding> findQuery = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " where id=:employeeIdParam ", EmployeeOnBoarding.class);
+        findQuery.setParameter("employeeIdParam", id);
+        return findQuery.getSingleResult();
+    }
+
     public static EmployeeOnBoardingDao instance() {
         return SpringContext.getBean(EmployeeOnBoardingDao.class);
     }
-
 }

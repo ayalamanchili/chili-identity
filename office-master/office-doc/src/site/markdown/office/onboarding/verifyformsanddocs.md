@@ -6,8 +6,8 @@ How To Verify Employee Forms And Data
 
 Search Employee:
 ------
-![alt text](../images/onboarding/search-emp.png "Employee Onboarding")
+![alt text](../../images/onboarding/search-emp.png "Employee Onboarding")
 
 Verify Forms And Data:
 ------
-![alt text](../images/onboarding/verify-emp-forms-docs.png "Employee Onboarding")
+![alt text](../../images/onboarding/verify-emp-forms-docs.png "Employee Onboarding")

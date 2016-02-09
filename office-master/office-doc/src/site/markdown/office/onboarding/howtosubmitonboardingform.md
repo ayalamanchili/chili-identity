@@ -8,12 +8,12 @@ How To Fill Onboarding Form:
 
 Click on the invitation link:
 -----
-![alt text](../images/onboarding/click-on-invite-link.png "Employee Onboarding")
+![alt text](../../images/onboarding/click-on-invite-link.png "Employee Onboarding")
 
 Fill The Onboarding Form:
 -----
-![alt text](../images/onboarding/fill-employee-onboarding-panel.png "Employee Onboarding")
+![alt text](../../images/onboarding/fill-employee-onboarding-panel.png "Employee Onboarding")
 
 Email To the employee to login to the portal after process complete:
 -----
-![alt text](../images/onboarding/userid-email.png "Employee Onboarding")
+![alt text](../../images/onboarding/userid-email.png "Employee Onboarding")
