@@ -46,10 +46,10 @@ import javax.xml.bind.annotation.XmlType;
 @Produces("application/json")
 @Consumes("application/json")
 public class EmployeeFormsResource extends CRUDResource<BankAccount> {
-
+    
     @Autowired
     protected EmployeeFormsService employeeFormsService;
-
+    
     @GET
     @Path("/ach/{id}")
     public BankAccount getBankAccount(@PathParam("id") Long employeeId) {
@@ -79,11 +79,10 @@ public class EmployeeFormsResource extends CRUDResource<BankAccount> {
         }
         accs.addAll(BankAccountDao.instance().findAll(emp));
         table.setEntities(accs);
-        table.setSize((long)accs.size());
+        table.setSize((long) accs.size());
         return table;
     }
-
-
+    
     @PUT
     @Path("/ach-delete/{id}")
     public void deleteBankAccount(@PathParam("id") Long employeeId) {
@@ -95,17 +94,17 @@ public class EmployeeFormsResource extends CRUDResource<BankAccount> {
         if (ba != null) {
             BankAccountDao.instance().delete(ba);
         }
-
+        
     }
-
+    
     @PUT
     @Path("/ach-save/{id}")
     @Validate
     public BankAccount save(@PathParam("id") Long employeeId, BankAccount entity) {
         Employee emp = EmployeeDao.instance().findById(employeeId);
-       return BankAccountDao.instance().save(entity, employeeId, emp.getClass().getCanonicalName());
+        return BankAccountDao.instance().save(entity, employeeId, emp.getClass().getCanonicalName());
     }
-
+    
     @PUT
     @Path("/update")
     @Validate
@@ -138,9 +137,19 @@ public class EmployeeFormsResource extends CRUDResource<BankAccount> {
         } else {
             result.setBankAddress2(null);
         }
+        if (entity.getAccountType() != null) {
+            result.setAccountType(entity.getAccountType());
+        } else {
+            result.setAccountType(null);
+        }
+        if (entity.getAchBlocked() != null) {
+            result.setAchBlocked(entity.getAchBlocked());
+        } else {
+            result.setAchBlocked(false);
+        }
         return result;
     }
-
+    
     @GET
     @Path("/ach-report/{id}")
     @Produces({"application/pdf"})
@@ -148,17 +157,17 @@ public class EmployeeFormsResource extends CRUDResource<BankAccount> {
         Employee emp = EmployeeDao.instance().findById(employeeId);
         return employeeFormsService.printACHForm(emp);
     }
-
+    
     @Autowired
     protected Mapper mapper;
-
+    
     @GET
     @Path("/joining-form/{id}")
     public JoiningFormsDto getJoiningForm(@PathParam("id") Long employeeId) {
         Employee emp = EmployeeDao.instance().findById(employeeId);
         return employeeFormsService.getJoiningForm(emp);
     }
-
+    
     @GET
     @Path("/joining-form-report/{id}")
     @Produces({"application/pdf"})
@@ -166,7 +175,7 @@ public class EmployeeFormsResource extends CRUDResource<BankAccount> {
         Employee emp = EmployeeDao.instance().findById(employeeId);
         return employeeFormsService.printJoiningForm(emp);
     }
-
+    
     @Override
     public CRUDDao getDao() {
         return null;
@@ -175,23 +184,23 @@ public class EmployeeFormsResource extends CRUDResource<BankAccount> {
     @XmlRootElement
     @XmlType
     public static class BankAccountTable implements java.io.Serializable {
-
+        
         protected Long size;
         protected List<BankAccount> entities;
-
+        
         public Long getSize() {
             return size;
         }
-
+        
         public void setSize(Long size) {
             this.size = size;
         }
-
+        
         @XmlElement
         public List<BankAccount> getEntities() {
             return entities;
         }
-
+        
         public void setEntities(List<BankAccount> entities) {
             this.entities = entities;
         }
