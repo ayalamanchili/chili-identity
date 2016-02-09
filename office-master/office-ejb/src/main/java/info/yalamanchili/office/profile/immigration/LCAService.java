@@ -8,10 +8,9 @@
  */
 package info.yalamanchili.office.profile.immigration;
 
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.immigration.LCADao;
-import info.yalamanchili.office.dao.profile.immigration.PassportDao;
 import info.yalamanchili.office.entity.immigration.LCA;
-import info.yalamanchili.office.entity.immigration.Passport;
 import info.yalamanchili.office.entity.profile.Employee;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,19 +26,21 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class LCAService {
-    
+
     @PersistenceContext
     protected EntityManager em;
     @Autowired
     protected Mapper mapper;
     @Autowired
     protected LCADao lcaDao;
-    
-    public LCA savePassport(Long empId, LCA dto) {
+    @Autowired
+    protected EmployeeDao employeeDao;
+
+    public LCA saveLCA(Long empId, LCA dto) {
         LCA lca = mapper.map(dto, LCA.class);
-        Employee emp = (Employee) em.find(Employee.class, empId);
+        Employee emp = employeeDao.findById(empId);
         lcaDao.save(lca, emp.getId(), emp.getClass().getCanonicalName());
         return lca;
     }
-    
+
 }

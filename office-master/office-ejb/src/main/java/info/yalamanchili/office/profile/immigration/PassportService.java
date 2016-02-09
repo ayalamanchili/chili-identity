@@ -12,6 +12,7 @@ package info.yalamanchili.office.profile.immigration;
  *
  * @author Madhu.Badiginchala
  */
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.immigration.PassportDao;
 import info.yalamanchili.office.entity.immigration.Passport;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -36,10 +37,12 @@ public class PassportService {
     protected Mapper mapper;
     @Autowired
     protected PassportDao passportDao;
+    @Autowired
+    protected EmployeeDao employeeDao;
     
     public Passport savePassport(Long empId, Passport dto) {
         Passport passport = mapper.map(dto, Passport.class);
-        Employee emp = (Employee) em.find(Employee.class, empId);
+        Employee emp = employeeDao.findById(empId);
         passportDao.save(passport, emp.getId(), emp.getClass().getCanonicalName());
         return passport;
     }

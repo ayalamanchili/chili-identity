@@ -46,7 +46,7 @@ public class LCAResource {
     @Path("/save/{empId}")
     @Validate
     public LCA save(@PathParam("empId") Long empId, LCA lca) {
-        return lcaService.savePassport(empId, lca);
+        return lcaService.saveLCA(empId, lca);
     }
 
     @PUT

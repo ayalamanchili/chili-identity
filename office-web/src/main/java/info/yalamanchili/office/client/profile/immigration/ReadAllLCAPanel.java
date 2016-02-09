@@ -17,6 +17,7 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
@@ -120,13 +121,15 @@ public class ReadAllLCAPanel extends CRUDReadAllComposite {
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdatePassportPanel(getEntity(entityId)));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateLCAPanel(getEntity(entityId)));
     }
 
     @Override
     protected void configureCreateButton() {
-        createButton.setText("Add LCA");
-        createButton.setVisible(true);
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_GC_IMMIGRATION)) {
+            createButton.setText("Add LCA");
+            createButton.setVisible(true);
+        }
     }
 
     @Override
@@ -137,7 +140,12 @@ public class ReadAllLCAPanel extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE);
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_GC_IMMIGRATION)) {
+            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE);
+        } else {
+            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ);
+        }
+
     }
 
     @Override
@@ -157,5 +165,4 @@ public class ReadAllLCAPanel extends CRUDReadAllComposite {
         return true;
     }
 
-    
 }
