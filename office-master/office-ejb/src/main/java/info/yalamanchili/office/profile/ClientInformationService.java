@@ -517,8 +517,8 @@ public class ClientInformationService {
 
         if (acronym.length() >= 4) {
             acronym = acronym.substring(0, 4);
-        } else if (name.length() <= 3) {
-            acronym = name.substring(0, name.length());
+        } else if (newname.length() <= 3) {
+            acronym = newname.substring(0, newname.length());
         } else {
             acronym = newname.substring(0, 4);
         }
