@@ -27,32 +27,32 @@ import java.util.logging.Logger;
  *
  * @author Madhu.Badiginchala
  */
-public class ReadAllLCAPanel extends CRUDReadAllComposite {
+public class ReadAllPetitionsPanel extends CRUDReadAllComposite {
 
-    private static Logger logger = Logger.getLogger(ReadAllLCAPanel.class.getName());
-    public static ReadAllLCAPanel instance;
+    private static Logger logger = Logger.getLogger(ReadAllPetitionsPanel.class.getName());
+    public static ReadAllPetitionsPanel instance;
     protected String url;
 
-    public ReadAllLCAPanel() {
+    public ReadAllPetitionsPanel() {
         instance = this;
-        initTable("LCA", OfficeWelcome.constants);
+        initTable("Petition", OfficeWelcome.constants);
     }
 
-    public ReadAllLCAPanel(JSONArray array) {
+    public ReadAllPetitionsPanel(JSONArray array) {
         instance = this;
-        initTable("LCA", array, OfficeWelcome.constants);
+        initTable("Petition", array, OfficeWelcome.constants);
     }
 
-    public ReadAllLCAPanel(String parentId) {
+    public ReadAllPetitionsPanel(String parentId) {
         instance = this;
         this.parentId = parentId;
-        initTable("LCA", OfficeWelcome.constants);
+        initTable("Petition", OfficeWelcome.constants);
     }
 
     @Override
     public void preFetchTable(int start) {
-        logger.info(getReadAllLCAsURL(start, OfficeWelcome.constants.tableSize()));
-        HttpService.HttpServiceAsync.instance().doGet(getReadAllLCAsURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), false,
+        logger.info(getReadAllPassportsURL(start, OfficeWelcome.constants.tableSize()));
+        HttpService.HttpServiceAsync.instance().doGet(getReadAllPassportsURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), false,
                 new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String result) {
@@ -62,7 +62,7 @@ public class ReadAllLCAPanel extends CRUDReadAllComposite {
         });
     }
 
-    private String getReadAllLCAsURL(Integer start, String tableSize) {
+    private String getReadAllPassportsURL(Integer start, String tableSize) {
         if (url != null) {
             return url;
         }
@@ -72,21 +72,23 @@ public class ReadAllLCAPanel extends CRUDReadAllComposite {
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
-        table.setText(0, 1, getKeyValue("LCA Number"));
-        table.setText(0, 2, getKeyValue("LCA Filed Date"));
-        table.setText(0, 3, getKeyValue("LCA Valid From Date"));
-        table.setText(0, 4, getKeyValue("LCA Valid To Date"));
+        table.setText(0, 1, getKeyValue("Petition Number")); 
+        table.setText(0, 2, getKeyValue("Filed Date")); 
+        table.setText(0, 3, getKeyValue("Status")); 
+        table.setText(0, 4, getKeyValue("Classification"));
+        table.setText(0, 5, getKeyValue("Processing"));
     }
-
+    
     @Override
     public void fillData(JSONArray entities) {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            table.setText(i, 1, JSONUtils.toString(entity, "lcaNumber"));
-            table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "lcaFiledDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "lcaValidFromDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "lcaValidToDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 1, JSONUtils.toString(entity, "receiptNumber"));
+            table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "petitionFileDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            setEnumColumn(i, 3, entity, PetitionStatus.class.getSimpleName(), "petitionStatus");
+            setEnumColumn(i, 4, entity, VisaClassificationType.class.getSimpleName(), "visaClassification");
+            setEnumColumn(i, 5, entity, VisaProcessingType.class.getSimpleName(), "visaProcessing");  
         }
     }
 
@@ -113,7 +115,7 @@ public class ReadAllLCAPanel extends CRUDReadAllComposite {
 
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("Successfully Deleted LCA Information");
+        new ResponseStatusWidget().show("Successfully Deleted Petition Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllLCAPanel(TreeEmployeePanel.instance().getEntityId()));
     }
@@ -127,7 +129,7 @@ public class ReadAllLCAPanel extends CRUDReadAllComposite {
     @Override
     protected void configureCreateButton() {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_GC_IMMIGRATION)) {
-            createButton.setText("Add LCA");
+            createButton.setText("Add Petition");
             createButton.setVisible(true);
         }
     }
@@ -135,7 +137,7 @@ public class ReadAllLCAPanel extends CRUDReadAllComposite {
     @Override
     protected void createButtonClicked() {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new CreateLCAPanel(CreateComposite.CreateCompositeType.CREATE));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new CreatePetitionPanel(CreateComposite.CreateCompositeType.CREATE));
     }
 
     @Override

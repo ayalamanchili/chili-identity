@@ -36,11 +36,11 @@ public class Petition extends AbstractHandleEntity {
 
     private static final long serialVersionUID = 11L;
 
-    @NotEmpty(message = "{firstName.not.empty.msg}")
+    //@NotEmpty(message = "{firstName.not.empty.msg}")
     @Field
     protected String firstName;
 
-    @NotEmpty(message = "{lastName.not.empty.msg}")
+    //@NotEmpty(message = "{lastName.not.empty.msg}")
     @Field
     protected String lastName;
 
