@@ -49,6 +49,7 @@ public class EmployeeOnBoardingResource {
 
     @GET
     @Path("{start}/{limit}")
+    @PreAuthorize("hasRole('ROLE_ON_BOARDING_MGR')")
     public EmployeeOnBoardingResource.EmployeeOnBoardingTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         EmployeeOnBoardingResource.EmployeeOnBoardingTable tableObj = new EmployeeOnBoardingResource.EmployeeOnBoardingTable();
         tableObj.setEntities(employeeOnBoardingDao.query(start, limit));
@@ -65,7 +66,7 @@ public class EmployeeOnBoardingResource {
 
     @Path("/initiate-onboarding")
     @PUT
-    @PreAuthorize("hasAnyRole('Role_ROLE_ON_BOARDING_MGR')")
+    @PreAuthorize("hasRole('ROLE_ON_BOARDING_MGR')")
     @Validate
     public void initiateOnBoarding(InitiateOnBoardingDto dto) {
         EmployeeOnBoardingService employeeOnBoardingService = (EmployeeOnBoardingService) SpringContext.getBean("employeeOnBoardingService");
@@ -79,6 +80,15 @@ public class EmployeeOnBoardingResource {
     public OnBoardingEmployeeDto onBoardEmployee(OnBoardingEmployeeDto employee) {
         EmployeeOnBoardingService employeeOnBoardingService = (EmployeeOnBoardingService) SpringContext.getBean("employeeOnBoardingService");
         return employeeOnBoardingService.onBoardEmployee(employee);
+    }
+    
+    @GET
+    @Path("/{id}")
+    @PreAuthorize("hasRole('ROLE_ON_BOARDING_MGR')")
+    public InitiateOnBoardingDto getEmpOnboardingDetails(@PathParam("id") Long entityId) {
+        EmployeeOnBoardingService employeeOnBoardingService = (EmployeeOnBoardingService) SpringContext.getBean("employeeOnBoardingService");
+        InitiateOnBoardingDto dto = employeeOnBoardingService.read(entityId);
+        return dto;
     }
 
     @XmlRootElement

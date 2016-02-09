@@ -38,14 +38,4 @@ public class OnBoardingEmployeeProcessBean {
         email.setBody(messageTextforuser);
         MessagingService.instance().sendEmail(email);
     }
-
-    public void sendEmployeeOnBoardingCompletedEmail(Employee emp) {
-        Email email = new Email();
-        email.setHtml(Boolean.TRUE);
-        email.addTo(emp.getPrimaryEmail().getEmail());
-        email.setSubject("Welcome to System Soft Portal");
-        String messageTextforuser = "Your Username and Employee Id is:" + emp.getEmployeeId() + " : \n Please follow the instructions to login into the portal https://apps.sstech.us/site/office/forgot-password.html";
-        email.setBody(messageTextforuser);
-        MessagingService.instance().sendEmail(email);
-    }
 }

@@ -33,7 +33,7 @@ public class MyOfficeMenu extends CMenuBar {
     @Override
     protected void configureMenu() {
         addMenuItem("Employees", "Employees", employeeMaintainenceCmd);
-        if (Auth.isAdmin()) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ON_BOARDING_MGR)) {
             addMenuItem("OnBoarding", "OnBoarding", onBoardingInfo);
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_PROSPECTS_MANAGER)) {
@@ -47,76 +47,58 @@ public class MyOfficeMenu extends CMenuBar {
         }
         addMenuItem("Information", "Information", corpEmpInfo);
     }
-    static Command employeeMaintainenceCmd = new Command() {
-        public void execute() {
-            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-            TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
-            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmployeesPanel());
-            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new EmployeeSidePanel());
-        }
+    static Command employeeMaintainenceCmd = () -> {
+        TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+        TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
+        TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmployeesPanel());
+        TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new EmployeeSidePanel());
     };
-    static Command employeeTypesMaintainenceCmd = new Command() {
-        public void execute() {
-            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-            TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
-            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmployeeTypesPanel());
-            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new EmployeeTypeSidePanel());
-        }
+    static Command employeeTypesMaintainenceCmd = () -> {
+        TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+        TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
+        TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmployeeTypesPanel());
+        TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new EmployeeTypeSidePanel());
     };
-    static Command phoneTypesMaintainenceCmd = new Command() {
-        public void execute() {
-            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-            TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
-            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllPhoneTypePanel());
-            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new PhoneTypeSidePanel());
-        }
+    static Command phoneTypesMaintainenceCmd = () -> {
+        TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+        TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
+        TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllPhoneTypePanel());
+        TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new PhoneTypeSidePanel());
     };
-    static Command addressTypesMaintainenceCmd = new Command() {
-        public void execute() {
-            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-            TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
-            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllAddressTypePanel());
-            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new AddressTypeSidePanel());
-        }
+    static Command addressTypesMaintainenceCmd = () -> {
+        TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+        TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
+        TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllAddressTypePanel());
+        TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new AddressTypeSidePanel());
     };
-    static Command emailTypesMaintainenceCmd = new Command() {
-        public void execute() {
-            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-            TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
-            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmailTypePanel());
-            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new EmailTypeSidePanel());
-        }
+    static Command emailTypesMaintainenceCmd = () -> {
+        TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+        TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
+        TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmailTypePanel());
+        TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new EmailTypeSidePanel());
     };
-    static Command companyContactTypeMaintainenceCmd = new Command() {
-        public void execute() {
-            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-            TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
-            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllCompanyContactTypePanel());
-            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new CompanyContactTypeSidePanel());
-        }
+    static Command companyContactTypeMaintainenceCmd = () -> {
+        TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+        TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
+        TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllCompanyContactTypePanel());
+        TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new CompanyContactTypeSidePanel());
     };
-    static Command corpEmpInfo = new Command() {
-        public void execute() {
-            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-            TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
-            FileField reportL = new FileField("Corporate Contacts Info", ChiliClientConfig.instance().getFileDownloadUrl() + "contact-info-reports/corp-emp-contact-info" + "&passthrough=true");
-            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(reportL);
-        }
+    static Command corpEmpInfo = () -> {
+        TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+        TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
+        FileField reportL = new FileField("Corporate Contacts Info", ChiliClientConfig.instance().getFileDownloadUrl() + "contact-info-reports/corp-emp-contact-info" + "&passthrough=true");
+        TabPanel.instance().getMyOfficePanel().sidePanelTop.add(reportL);
     };
-    static Command onBoardingInfo = new Command() {
-        public void execute() {
-            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-            TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
-            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmployeeOnBoardingPanel());
-            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new OnBoardingSidePanel());
-        }
+    static Command onBoardingInfo = () -> {
+        TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+        TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
+        TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmployeeOnBoardingPanel());
+        TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new OnBoardingSidePanel());
     };
-    static Command prospectsMaintainenceCmd = new Command() {
-        public void execute() {
-            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-            TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
-            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllProspectsPanel());
-            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new ProspectsSidePanel());
-        }
+    static Command prospectsMaintainenceCmd = () -> {
+        TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+        TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
+        TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllProspectsPanel());
+        TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new ProspectsSidePanel());
     };
 }

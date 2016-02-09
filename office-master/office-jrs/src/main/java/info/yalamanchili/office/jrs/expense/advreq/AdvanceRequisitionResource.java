@@ -62,6 +62,15 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
         AdvanceRequisitionService.instance().submitAdvanceRequisition(entity);
     }
 
+    @GET
+    @Path("/{id}")
+    @Transactional(readOnly = true)
+    @Override
+    @AccessCheck(companyContacts = {"Perf_Eval_Manager", "Reports_To"}, roles = {"ROLE_ADMIN", "ROLE_CEO", "ROLE_PAYROLL_AND_BENIFITS", "ROLE_ACCOUNTS_PAYABLE"}, strictOrderCheck = false)
+    public AdvanceRequisition read(@PathParam("id") Long id) {
+        return advanceRequisitionDao.findById(id);
+    }
+
     @PUT
     @Validate
     @Override
@@ -109,6 +118,7 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
     @Path("/search-advancerequisition/{start}/{limit}")
     @PreAuthorize("hasRole('ROLE_ADMIN','ROLE_CEO','ROLE_PAYROLL_AND_BENIFITS','ROLE_ACCOUNTS_PAYABLE')")
     @Transactional(readOnly = true)
+    @Override
     public List<AdvanceRequisition> search(AdvanceRequisition entity, @PathParam("start") int start, @PathParam("limit") int limit) {
         List<AdvanceRequisition> res = new ArrayList();
         Query searchQuery = SearchUtils.getSearchQuery(AdvanceRequisitionDao.instance().getEntityManager(), entity, new SearchUtils.SearchCriteria());

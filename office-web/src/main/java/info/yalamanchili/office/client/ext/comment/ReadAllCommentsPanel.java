@@ -83,7 +83,7 @@ public class ReadAllCommentsPanel extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN , Auth.ROLE.ROLE_BILLING_ADMIN , Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
         }
     }

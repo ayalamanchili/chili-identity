@@ -15,6 +15,7 @@ package info.yalamanchili.office.entity.employee.statusreport;
 public enum CropStatusReportStatus {
 
     Saved,
+    NotSubmitted,
     Pending_Manager_Approval,
     Approved,
     Rejected,

@@ -35,7 +35,7 @@ public class CreateBankAcctWidget extends CreateComposite {
         initCreateComposite("BankAccount", OfficeWelcome.constants);
         create.setVisible(false);
     }
-    
+
     public CreateBankAcctWidget(CreateComposite.CreateCompositeType type) {
         super(type);
         initCreateComposite("BankAccount", OfficeWelcome.constants);
@@ -62,19 +62,18 @@ public class CreateBankAcctWidget extends CreateComposite {
     @Override
     protected void createButtonClicked() {
         // TODO Auto-generated method stub
-        logger.info("create uri ... "+getURI());
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -120,6 +119,6 @@ public class CreateBankAcctWidget extends CreateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "employee-forms/ach-save/"+TreeEmployeePanel.instance().getEntityId();
+        return OfficeWelcome.constants.root_url() + "employee-forms/ach-save/" + TreeEmployeePanel.instance().getEntityId();
     }
 }

@@ -14,6 +14,7 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.dao.expense.BankAccountDao;
+import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.invite.InviteCodeDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
@@ -59,7 +60,7 @@ import org.springframework.stereotype.Component;
  *
  * @author Madhu.Badiginchala
  */
-    @Component
+@Component
 @Scope("request")
 public class EmployeeOnBoardingService {
 
@@ -88,6 +89,9 @@ public class EmployeeOnBoardingService {
             onboarding = em.merge(onboarding);
             InviteCodeGeneratorService.instance().sendInviteCodeEmail(code);
             EmployeeOnBoardingDao.instance().save(onboarding);
+            if (dto.getComment() != null) {
+                CommentDao.instance().addComment(dto.getComment(), onboarding);
+            }
         }
     }
 
@@ -183,7 +187,7 @@ public class EmployeeOnBoardingService {
             emergencyCnt.setEmployee(emp);
             em.merge(emergencyCnt);
         }
-        
+
         //Update Dependent Information for Employee
         for (Dependent dependent : employee.getDependent()) {
             Dependent dep = new Dependent();
@@ -213,16 +217,16 @@ public class EmployeeOnBoardingService {
         BankAccount bankAccount;
         bankAccount = employee.getBankAccount();
         BankAccountDao.instance().save(bankAccount, emp.getId(), emp.getClass().getCanonicalName());
-        
+
         //employee documents
+        //avoid null pointer issue with employee documents
+        if (employee.getDocuments() != null && employee.getDocuments().size() > 0) {
             for (EmployeeDocument empDoc : employee.getDocuments()) {
-                //To avoid empty file uploaded to employee docs if employee doesn't upload any form while onboarding
-                if (empDoc.getFileUrl() != null) {
-                    empDoc.setDocumentType(DocumentType.ON_BOARDING);
-                    empDoc.setEmployee(emp);
-                    empDoc.setId(employeeDocumentDao.save(empDoc).getId());
-                }
+                empDoc.setDocumentType(DocumentType.ON_BOARDING);
+                empDoc.setEmployee(emp);
+                empDoc.setId(employeeDocumentDao.save(empDoc).getId());
             }
+        }
         //Update Additional Information for Employee
         EmployeeAdditionalDetails employeeAdditionalDetails;
         employeeAdditionalDetails = employee.getEmployeeAdditionalDetails();
@@ -233,6 +237,30 @@ public class EmployeeOnBoardingService {
         employeeService.sendNewEmployeeNotifiaction(emp);
         InviteCodeDao.instance().invalidateCode(code);
         return employee;
+    }
+
+    public InitiateOnBoardingDto read(Long id) {
+        EmployeeOnBoarding onboarding = EmployeeOnBoardingDao.instance().findById(id);
+        Mapper mapper = (Mapper) SpringContext.getBean("mapper");
+        InitiateOnBoardingDto dto = mapper.map(onboarding, InitiateOnBoardingDto.class);
+        if (onboarding.getStatus() != null) {
+            if (onboarding.getEmployee() != null) {
+                Employee emp = onboarding.getEmployee();
+                dto.setEmployeeType(emp.getEmployeeType());
+                if (emp.getBranch() != null) {
+                    dto.setBranch(emp.getBranch());
+                }
+                if (emp.getCompany() != null) {
+                    dto.setCompany(emp.getCompany());
+                }
+                if (emp.getWorkStatus() != null) {
+                    dto.setWorkStatus(emp.getWorkStatus());
+                }
+            }
+            dto.setEmail(onboarding.getEmail());
+            dto.setStartDate(onboarding.getStartedDate());
+        }
+        return dto;
     }
 
     public static EmployeeOnBoardingService instance() {

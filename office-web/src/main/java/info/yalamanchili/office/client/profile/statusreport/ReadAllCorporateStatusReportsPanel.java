@@ -156,6 +156,8 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
     protected void addOptionsWidget(int row, JSONObject entity) {
         if (TabPanel.instance().homePanel.isVisible()) {
             createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE, TableRowOptionsWidget.OptionsType.COPY);
+        } else if (TabPanel.instance().reportingPanel.isVisible()) {
+            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ);
         } else {
             createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.COPY);
         }

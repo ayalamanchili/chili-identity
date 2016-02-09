@@ -17,6 +17,7 @@ import info.yalamanchili.office.entity.employee.statusreport.CorporateStatusRepo
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.employee.statusreport.CorporateStatusReportService;
 import info.yalamanchili.office.model.time.TimePeriod;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -113,7 +114,13 @@ public class CorporateStatusReportResource {
     @PUT
     @Path("/search")
     public List<CorporateStatusReport> search(CorporateStatusReportSearchDto dto) {
-        return corporateStatusReportDao.search(dto);
+        List<CorporateStatusReport> reports = new ArrayList();
+        List<CorporateStatusReport> reportresult = new ArrayList();
+        reports = corporateStatusReportDao.search(dto);
+        for (CorporateStatusReport report : reports) {
+            reportresult.add(report);
+        }
+        return reportresult;
     }
 
     @PUT
