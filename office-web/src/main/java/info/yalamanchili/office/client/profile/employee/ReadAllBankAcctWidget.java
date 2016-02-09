@@ -7,6 +7,7 @@ package info.yalamanchili.office.client.profile.employee;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.CreateComposite;
@@ -53,8 +54,15 @@ public class ReadAllBankAcctWidget extends CRUDReadAllComposite {
                     @Override
                     public void onResponse(String result) {
                         postFetchTable(result);
+                        JSONObject table = (JSONObject) JSONParser.parseLenient(result);
+                        if ("0".equals(table.get("size").isString().stringValue())) {
+                            createButton.setVisible(true);
+                        } else {
+                            createButton.setVisible(false);
+                        }
                     }
-                });
+                }
+        );
     }
 
     public String getReadAllFilesURL() {
@@ -129,11 +137,6 @@ public class ReadAllBankAcctWidget extends CRUDReadAllComposite {
     public void updateClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateBankAccountPanel(entityId));
-    }
-
-    @Override
-    protected void configureCreateButton() {
-            createButton.setVisible(true);
     }
 
     @Override
