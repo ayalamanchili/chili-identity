@@ -11,6 +11,7 @@ import info.yalamanchili.office.Time.AssociateTimeAccuralService;
 import info.yalamanchili.office.Time.CorporateTimeAccuralService;
 import info.yalamanchili.office.Time.TimeJobService;
 import info.yalamanchili.office.dao.client.ClientDao;
+import info.yalamanchili.office.dao.expense.BankAccountDao;
 import info.yalamanchili.office.dao.message.NotificationGroupDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.SkillSetDao;
@@ -39,6 +40,12 @@ public class OfficeServiceJobConfiguration {
     public void processMonthlyTimeAccrual() {
         CorporateTimeAccuralService.instance().accureMonthlyTime();
         AssociateTimeAccuralService.instance().accureMonthlyConsTime();
+    }
+//TODO temp for existing data encryptiong
+
+    @ManagedOperation
+    public void mergeBankAccounts() {
+        BankAccountDao.instance().mergeAll();
     }
 
     @ManagedOperation
