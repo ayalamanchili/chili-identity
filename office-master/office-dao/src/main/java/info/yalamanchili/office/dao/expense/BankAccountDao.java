@@ -35,23 +35,23 @@ public class BankAccountDao extends AbstractHandleEntityDao<BankAccount> {
     }
 //TODO temp for existing data encryption
 
-    @Transactional
-    public void mergeAll() {
-        TypedQuery<BankAccount> q = em.createQuery("from " + BankAccount.class.getCanonicalName(), BankAccount.class);
-        HibernatePBEStringEncryptor e = (HibernatePBEStringEncryptor) SpringContext.getBean("hibernateStringEncryptor");
-        for (BankAccount ba : q.getResultList()) {
-            ba.setBankAccountNumber(e.encrypt(ba.getBankAccountNumber()));
-            em.merge(ba);
-        }
-    }
-    
 //    @Transactional
 //    public void mergeAll() {
 //        TypedQuery<BankAccount> q = em.createQuery("from " + BankAccount.class.getCanonicalName(), BankAccount.class);
+//        HibernatePBEStringEncryptor e = (HibernatePBEStringEncryptor) SpringContext.getBean("hibernateStringEncryptor");
 //        for (BankAccount ba : q.getResultList()) {
-//           em.merge(ba);
+//            ba.setBankAccountNumber(e.encrypt(ba.getBankAccountNumber()));
+//            em.merge(ba);
 //        }
 //    }
+    
+    @Transactional
+    public void mergeAll() {
+        TypedQuery<BankAccount> q = em.createQuery("from " + BankAccount.class.getCanonicalName(), BankAccount.class);
+        for (BankAccount ba : q.getResultList()) {
+            em.merge(ba);
+        }
+    }
 
     public static BankAccountDao instance() {
         return SpringContext.getBean(BankAccountDao.class);
