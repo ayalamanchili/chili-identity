@@ -13,6 +13,7 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -31,6 +32,7 @@ public class Passport extends AbstractHandleEntity {
 
     @NotEmpty(message = "{passportNumber.not.empty.msg}")
     @org.hibernate.annotations.Index(name = "PASSPORT_NBR")
+    @Type(type = "encryptedString")
     protected String passportNumber;
 
     @Temporal(javax.persistence.TemporalType.DATE)

@@ -18,7 +18,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
-import org.hibernate.annotations.ForeignKey;
+import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Indexed;
 
@@ -53,7 +53,6 @@ public class PetitionAdditionalInformation extends AbstractEntity {
     protected String petitionFolderMailTrkNbr;
 
     @OneToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_PetitionAddInfo_Petition")
     protected Petition petition;
 
     public Polar getH4Applicability() {
@@ -104,6 +103,7 @@ public class PetitionAdditionalInformation extends AbstractEntity {
         this.petitionFolderMailTrkNbr = petitionFolderMailTrkNbr;
     }
 
+    @XmlTransient
     public Petition getPetition() {
         return petition;
     }

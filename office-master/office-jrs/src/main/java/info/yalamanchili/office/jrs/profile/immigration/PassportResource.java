@@ -13,16 +13,20 @@ package info.yalamanchili.office.jrs.profile.immigration;
  * @author Madhu.Badiginchala
  */
 import info.chili.jpa.validation.Validate;
+import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.immigration.PassportDao;
+import info.yalamanchili.office.entity.immigration.LCA;
 import info.yalamanchili.office.entity.immigration.Passport;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.profile.immigration.PassportService;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -70,6 +74,25 @@ public class PassportResource {
         tableObj.setEntities(passportDao.findAll(emp));
         tableObj.setSize(passportDao.size());
         return tableObj;
+    }
+
+    @GET
+    @Path("/dropdown/{id}/{start}/{limit}")
+    public List<Entry> getPassportDropDown(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit,
+            @QueryParam("column") List<String> columns) {
+        Employee emp = EmployeeDao.instance().findById(id);
+        return getPassportColumnDropDown(passportDao.findAll(emp));
+    }
+
+    protected List<Entry> getPassportColumnDropDown(List<Passport> passports) {
+        List<Entry> result = new ArrayList<>();
+        for (Passport passport : passports) {
+            Entry entry = new Entry();
+            entry.setId(passport.getId().toString());
+            entry.setValue(passport.getPassportNumber());
+            result.add(entry);
+        }
+        return result;
     }
 
     @XmlRootElement

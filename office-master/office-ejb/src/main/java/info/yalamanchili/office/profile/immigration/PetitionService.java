@@ -9,8 +9,13 @@
 package info.yalamanchili.office.profile.immigration;
 
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.profile.immigration.LCADao;
+import info.yalamanchili.office.dao.profile.immigration.PassportDao;
 import info.yalamanchili.office.dao.profile.immigration.PetitionDao;
+import info.yalamanchili.office.entity.immigration.LCA;
+import info.yalamanchili.office.entity.immigration.Passport;
 import info.yalamanchili.office.entity.immigration.Petition;
+import info.yalamanchili.office.entity.immigration.PetitionStatus;
 import info.yalamanchili.office.entity.profile.Employee;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -34,6 +39,10 @@ public class PetitionService {
     @Autowired
     protected PetitionDao petitionDao;
     @Autowired
+    protected LCADao lcaDao;
+    @Autowired
+    protected PassportDao passportDao;
+    @Autowired
     protected EmployeeDao employeeDao;
 
     public Petition savePetition(Long empId, Petition dto) {
@@ -42,6 +51,16 @@ public class PetitionService {
         petition.setFirstName(emp.getFirstName());
         petition.setLastName(emp.getLastName());
         petition.setUserName(emp.getEmployeeId());
+        petition.setPetitionStatus(PetitionStatus.Pending);
+        if (petition.getLca() != null) {
+            LCA lca = lcaDao.findById(petition.getLca().getId());
+            petition.setLca(lca);
+        }
+        if (petition.getPassport() != null) {
+            Passport passport = passportDao.findById(petition.getPassport().getId());
+            petition.setPassport(passport);
+        }
+        petition.getPetitionaddinfo().setPetition(petition);
         petitionDao.save(petition, emp.getId(), emp.getClass().getCanonicalName());
         return petition;
     }
