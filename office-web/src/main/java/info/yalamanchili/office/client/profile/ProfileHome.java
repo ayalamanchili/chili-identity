@@ -29,6 +29,7 @@ import info.yalamanchili.office.client.companycontact.ReadAllCompanyContactPanel
 import info.yalamanchili.office.client.profile.benefits.RetirementPlanReadPanel;
 import info.yalamanchili.office.client.profile.emergencycnt.ReadAllDependentsPopupPanel;
 import info.yalamanchili.office.client.profile.empdoc.ReadAllEmpDocsPopupPanel;
+import info.yalamanchili.office.client.profile.employee.ReadAllBankAcctWidget;
 import info.yalamanchili.office.client.profile.employee.ReadEmployeePopupPanel;
 import info.yalamanchili.office.client.profile.preferences.PreferencesPanel;
 import info.yalamanchili.office.client.profile.privacy.ReadAllPrivacySettingPopupPanel;
@@ -56,6 +57,7 @@ public class ProfileHome extends ALComposite {
     protected DisclosurePanel preferencesPanel;
     protected DisclosurePanel documentsPanel;
     protected DisclosurePanel benefitsDP;
+    protected DisclosurePanel bankAccountPanel;
 
     public ProfileHome() {
         instance = this;
@@ -80,6 +82,7 @@ public class ProfileHome extends ALComposite {
         addClientInfoPanel();
         addEmergencyContactsPanel();
         addDependentsPanel();
+        addBankAccountPanel();
         addCompanyContactsPanel();
         addSkillSetPanel();
         addEmpDocsPanel();
@@ -399,5 +402,28 @@ public class ProfileHome extends ALComposite {
     public void refreshEmpDocs() {
         documentsPanel.setOpen(false);
         documentsPanel.setOpen(true);
+    }
+
+    /*
+     * bankaccountpanel
+     */
+    
+   
+  protected void addBankAccountPanel() {
+        bankAccountPanel = new DisclosurePanel("Bank Account");
+        panel.add(bankAccountPanel);
+        bankAccountPanel.addStyleName("profileHome");
+        bankAccountPanel.addOpenHandler(new OpenHandler<DisclosurePanel>() {
+            @Override
+            public void onOpen(OpenEvent<DisclosurePanel> event) {
+                bankAccountPanel.setContent(
+                        new ReadAllBankAccountPopupPanel(OfficeWelcome.instance().employeeId));
+            }
+        });
+    }
+
+    public void refreshBankAccountPanel() {
+        bankAccountPanel.setOpen(false);
+        bankAccountPanel.setOpen(true);
     }
 }
