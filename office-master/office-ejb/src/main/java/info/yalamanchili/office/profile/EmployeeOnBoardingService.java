@@ -211,7 +211,8 @@ public class EmployeeOnBoardingService {
             obj.put("entity", emp);
             obj.put("address", emp.getAddresss().get(0));
             obj.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
-            OfficeBPMService.instance().startProcess("on_boarding_employee_process", obj);
+            onboarding.setBpmProcessId(OfficeBPMService.instance().startProcess("on_boarding_employee_process", obj));
+            em.merge(onboarding);
         }
         //Update BankAccount Information for Employee
         BankAccount bankAccount;
@@ -259,6 +260,7 @@ public class EmployeeOnBoardingService {
             }
             dto.setEmail(onboarding.getEmail());
             dto.setStartDate(onboarding.getStartedDate());
+            dto.setBpmProcessId(onboarding.getBpmProcessId());
         }
         return dto;
     }
