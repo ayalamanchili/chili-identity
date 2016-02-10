@@ -14,11 +14,13 @@ import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
+import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
 import info.yalamanchili.office.client.profile.contact.Branch;
 import info.yalamanchili.office.client.profile.contact.WorkStatus;
 import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWidget;
@@ -29,28 +31,28 @@ import java.util.logging.Logger;
  * @author radhika.mukkala
  */
 class ReadEmployeeOnboardingPanel extends ReadComposite {
-    
+
     private Logger logger = Logger.getLogger(ReadEmployeeOnboardingPanel.class.getName());
-    
+
     private static ReadEmployeeOnboardingPanel instance;
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "assignedTo", "Employee", true, false, Alignment.HORIZONTAL);
-    
+
     public static ReadEmployeeOnboardingPanel instance() {
         return instance;
     }
-    
+
     public ReadEmployeeOnboardingPanel() {
     }
-    
+
     public ReadEmployeeOnboardingPanel(JSONObject entity) {
         instance = this;
         initReadComposite(entity, "InitiateOnBoarding", OfficeWelcome.constants);
     }
-    
+
     public ReadEmployeeOnboardingPanel(String id) {
         initReadComposite(id, "InitiateOnBoarding", OfficeWelcome.constants);
     }
-    
+
     @Override
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
@@ -63,14 +65,13 @@ class ReadEmployeeOnboardingPanel extends ReadComposite {
                     }
                 });
     }
-    
+
     protected void populateComments() {
         entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding"));
     }
-    
+
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        logger.info("employee onboarding .... "+entity);
         assignFieldValueFromEntity("email", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("company", entity, null);
@@ -82,17 +83,17 @@ class ReadEmployeeOnboardingPanel extends ReadComposite {
         }
         assignFieldValueFromEntity("workStatus", entity, DataType.ENUM_FIELD);
     }
-    
+
     @Override
     protected void addListeners() {
-        
+
     }
-    
+
     @Override
     protected void configure() {
         employeeSB.getLabel().getElement().getStyle().setWidth(193, Style.Unit.PX);
     }
-    
+
     @Override
     protected void addWidgets() {
         addField("email", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -103,24 +104,35 @@ class ReadEmployeeOnboardingPanel extends ReadComposite {
         addEnumField("workStatus", true, false, WorkStatus.names(), Alignment.HORIZONTAL);
         alignFields();
     }
-    
+
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-        
+
     }
-    
+
     @Override
     public String getURI() {
         return OfficeWelcome.constants.root_url() + "on-board-employee/" + entityId;
     }
-    
+
     @Override
     protected boolean enableAudit() {
-        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ON_BOARDING_MGR);
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ON_BOARDING_MGR, Auth.ROLE.ROLE_HR_ADMINSTRATION);
     }
-    
+
     @Override
     protected String getAuditUrl() {
         return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding" + "/" + getEntityId();
+    }
+
+    @Override
+    protected boolean enableViewTasks() {
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ON_BOARDING_MGR, Auth.ROLE.ROLE_HR_ADMINSTRATION);
+    }
+
+    @Override
+    protected void displayTasks() {
+        String tasksUrl = OfficeWelcome.constants.root_url() + "bpm/tasks/process/";
+        tasksDP.setContent(new ReadAllTasks(tasksUrl + JSONUtils.toString(getEntity(), "bpmProcessId") + "/", true));
     }
 }
