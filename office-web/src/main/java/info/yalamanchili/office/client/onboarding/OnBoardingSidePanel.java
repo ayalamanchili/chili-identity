@@ -43,7 +43,7 @@ public class OnBoardingSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addWidgets() {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_HR,Auth.ROLE.ROLE_ON_BOARDING_MGR)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ON_BOARDING_MGR, Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
             OnBoardingSidePanel.add(createEmployeeOnboardingLink);
         }
     }
