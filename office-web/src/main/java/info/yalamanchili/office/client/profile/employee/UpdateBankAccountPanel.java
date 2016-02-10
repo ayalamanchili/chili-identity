@@ -25,7 +25,7 @@ import info.yalamanchili.office.client.expense.bnkacct.AccountType;
 public class UpdateBankAccountPanel extends UpdateComposite {
 
     public UpdateBankAccountPanel(JSONObject entity) {
-        initUpdateComposite(entity, "Bank Account", OfficeWelcome.constants);
+        initUpdateComposite(entity, "BankAccount", OfficeWelcome.constants);
     }
 
     protected static UpdateBankAccountPanel instance;
@@ -36,7 +36,7 @@ public class UpdateBankAccountPanel extends UpdateComposite {
 
     public UpdateBankAccountPanel(String parentId) {
         instance = this;
-        initUpdateComposite(parentId, "Bank Account", OfficeWelcome.constants);
+        initUpdateComposite(parentId, "BankAccount", OfficeWelcome.constants);
     }
 
     @Override
