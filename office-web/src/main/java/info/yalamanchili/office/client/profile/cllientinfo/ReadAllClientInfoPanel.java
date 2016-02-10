@@ -23,6 +23,7 @@ import info.chili.gwt.utils.FormatUtils;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.contracts.ClientInformationStatus;
+import static info.yalamanchili.office.client.expense.travelauthorization.ReadAllTravelAuthorizationPanel.instance;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
@@ -40,6 +41,10 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
         instance = this;
         this.parentId = parentId;
         initTable("Client Information", OfficeWelcome.constants);
+    }
+     public ReadAllClientInfoPanel(JSONArray result) {
+        instance = this;
+        initTable("Client Information", result, OfficeWelcome.constants);
     }
 
     @Override
