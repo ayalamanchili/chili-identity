@@ -23,6 +23,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import static info.yalamanchili.office.client.profile.selfservice.ReadAllServiceTicketsPanel.instance;
 import java.util.logging.Logger;
 
 /**
@@ -43,6 +44,10 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
         instance = this;
         this.parentId = parentId;
         initTable("StatusReport", OfficeWelcome.constants);
+    }
+    public ReadAllStatusReportPanel(JSONArray result) {
+        instance = this;
+        initTable("StatusReport", result, OfficeWelcome.constants);
     }
 
     @Override
