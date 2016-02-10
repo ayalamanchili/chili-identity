@@ -40,6 +40,10 @@ public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
         this.parentId = employeeId;
         initTable("SelfService", OfficeWelcome.constants);
     }
+    public ReadAllServiceTicketsPanel(JSONArray result) {
+        instance = this;
+        initTable("SelfService", result, OfficeWelcome.constants);
+    }
 
     public ReadAllServiceTicketsPanel() {
         instance = this;

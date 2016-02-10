@@ -25,6 +25,7 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import static info.yalamanchili.office.client.expense.travelauthorization.TravelAuthConstants.*;
+import static info.yalamanchili.office.client.expensereports.ReadAllExpenseReportsPanel.instance;
 import info.yalamanchili.office.client.expensereports.ReadExpenseReportPanel;
 import java.util.logging.Logger;
 
@@ -49,10 +50,11 @@ public class ReadAllTravelAuthorizationPanel extends CRUDReadAllComposite {
         initTable("TravelAuthorization", OfficeWelcome.constants);
     }
     
-    ReadAllTravelAuthorizationPanel(JSONArray result) {
+    public ReadAllTravelAuthorizationPanel(JSONArray result) {
         instance = this;
         initTable("TravelAuthorization", result, OfficeWelcome.constants);
     }
+    
 
     @Override
     public void viewClicked(String entityId) {

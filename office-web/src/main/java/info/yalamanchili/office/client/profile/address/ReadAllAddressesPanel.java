@@ -31,6 +31,10 @@ public class ReadAllAddressesPanel extends CRUDReadAllComposite {
         this.parentId = parentId;
         initTable("Address", OfficeWelcome.constants);
     }
+     public ReadAllAddressesPanel(JSONArray result) {
+        instance = this;
+        initTable("Address", result, OfficeWelcome.constants);
+    }
 
     @Override
     public void preFetchTable(int start) {
