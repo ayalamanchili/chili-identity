@@ -7,18 +7,23 @@
  */
 package info.yalamanchili.office.client.contracts;
 
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.BaseField;
 import info.chili.gwt.composite.BaseFieldWithTextBox;
 import info.chili.gwt.crud.TReadComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
+import info.yalamanchili.office.client.profile.cllientinfo.ReadAllCiDocumentPanel;
 import info.yalamanchili.office.client.profile.updateBillingRate.ReadAllUpdateBillingRatePanel;
 import info.yalamanchili.office.client.time.consultant.ReadAllConsultantTimeSheetsPanel;
 import java.util.Map;
@@ -62,6 +67,7 @@ public class ReadContractsPanel extends TReadComposite {
     public ReadContractsPanel(JSONObject entity) {
         instance = this;
         initReadComposite(entity, "Contract", OfficeWelcome.constants);
+        populateCIDocuments();
         populateComments();
     }
 
@@ -248,6 +254,24 @@ public class ReadContractsPanel extends TReadComposite {
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "contract/" + entityId;
+    }
+
+    protected void populateCIDocuments() {
+        HttpService.HttpServiceAsync.instance().doGet(getDocumentUrl(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (!response.trim().toString().equals("null")) {
+                            JSONArray docs = JSONUtils.toJSONArray(JSONParser.parseLenient(response).isObject().get("ciDocument"));
+                            entityFieldsPanel.setWidget(22, 1, new ReadAllCiDocumentPanel(getEntityId(), docs));
+                            entityFieldsPanel.getFlexCellFormatter().setColSpan(22, 1, 2);
+                        }
+                    }
+                });
+    }
+
+    protected String getDocumentUrl() {
+        return OfficeWelcome.constants.root_url() + "cidocument/cidocs/" + getEntityId();
     }
 
     public String getEmployeeId() {
