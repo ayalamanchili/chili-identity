@@ -22,7 +22,6 @@ import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
-import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -99,6 +98,10 @@ public class Petition extends AbstractHandleEntity {
     @OneToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Petition_AddInfo")
     protected PetitionAdditionalInformation petitionaddinfo;
+
+    @OneToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_Petition_Passport")
+    protected Passport passport;
 
     public String getFirstName() {
         return firstName;
@@ -244,9 +247,17 @@ public class Petition extends AbstractHandleEntity {
         this.workedBy = workedBy;
     }
 
+    public Passport getPassport() {
+        return passport;
+    }
+
+    public void setPassport(Passport passport) {
+        this.passport = passport;
+    }
+
     @Override
     public String toString() {
         return "Petition{" + "firstName=" + firstName + ", lastName=" + lastName + ", workedBy=" + workedBy + ", attorneyName=" + attorneyName + ", visaClassification=" + visaClassification + ", visaProcessing=" + visaProcessing + ", petitionFileDate=" + petitionFileDate + ", receiptNumber=" + receiptNumber + ", petitionStatus=" + petitionStatus + ", petitionApprovalDate=" + petitionApprovalDate + ", petitionValidFromDate=" + petitionValidFromDate + ", petitionValidToDate=" + petitionValidToDate + '}';
     }
-    
+
 }

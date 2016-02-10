@@ -29,6 +29,10 @@ public class CreatePetitionPanel extends CreateComposite {
     private static Logger logger = Logger.getLogger(CreatePetitionPanel.class.getName());
 
     HTML additionalInfo = new HTML("<h4 style=\"color:#427fed\">" + "Additional Information</h4>");
+    HTML linkInfo = new HTML("<h4 style=\"color:#427fed\">" + "Link Information</h4>");
+    HTML prevInfo = new HTML("<h4 style=\"color:#427fed\">" + "Previous Status Information</h4>");
+    SelectLCAWidget selectLCAWidgetF = new SelectLCAWidget(false, true, Alignment.HORIZONTAL);
+    SelectPassportWidget selectPassportWidgetF = new SelectPassportWidget(false, true, Alignment.HORIZONTAL);
 
     public CreatePetitionPanel(CreateComposite.CreateCompositeType type) {
         super(type);
@@ -38,20 +42,27 @@ public class CreatePetitionPanel extends CreateComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject petition = new JSONObject();
+        JSONObject petitionaddinfo = new JSONObject();
         assignEntityValueFromField("receiptNumber", petition);
+        assignEntityValueFromField("attorneyName", petition);
         assignEntityValueFromField("visaClassification", petition);
         assignEntityValueFromField("visaProcessing", petition);
         assignEntityValueFromField("petitionFileDate", petition);
-        assignEntityValueFromField("petitionStatus", petition);
+        assignEntityValueFromField("i140ApprovalStatus", petition);
+        assignEntityValueFromField("previousVisaStatus", petition);
+        assignEntityValueFromField("previousStatusExpiry", petition);
+        assignEntityValueFromField("lca", petition);
+        assignEntityValueFromField("passport", petition);
         assignEntityValueFromField("petitionApprovalDate", petition);
         assignEntityValueFromField("petitionValidFromDate", petition);
         assignEntityValueFromField("petitionValidToDate", petition);
-        assignEntityValueFromField("h4Applicability", petition);
-        assignEntityValueFromField("project", petition);
-        assignEntityValueFromField("sisterCompanyLetterUsed", petition);
-        assignEntityValueFromField("petitionTrackingNumber", petition);
-        assignEntityValueFromField("petitionFolderMailedDate", petition);
-        assignEntityValueFromField("petitionFolderMailTrkNbr", petition);
+        assignEntityValueFromField("h4Applicability", petitionaddinfo);
+        assignEntityValueFromField("project", petitionaddinfo);
+        assignEntityValueFromField("sisterCompanyLetterUsed", petitionaddinfo);
+        assignEntityValueFromField("petitionTrackingNumber", petitionaddinfo);
+        assignEntityValueFromField("petitionFolderMailedDate", petitionaddinfo);
+        assignEntityValueFromField("petitionFolderMailTrkNbr", petitionaddinfo);
+        petition.put("petitionaddinfo", petitionaddinfo);
         petition.put("targetEntityName", new JSONString("targetEntityName"));
         petition.put("targetEntityId", new JSONString("0"));
         logger.info("entity: " + petition);
@@ -110,13 +121,20 @@ public class CreatePetitionPanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         addField("receiptNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("attorneyName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("visaClassification", false, true, VisaClassificationType.names(), Alignment.HORIZONTAL);
         addEnumField("visaProcessing", false, true, VisaProcessingType.names(), Alignment.HORIZONTAL);
         addField("petitionFileDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addEnumField("petitionStatus", false, true, PetitionStatus.names(), Alignment.HORIZONTAL);
         addField("petitionApprovalDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("petitionValidFromDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("petitionValidToDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addEnumField("i140ApprovalStatus", false, true, Polar.names(), Alignment.HORIZONTAL);
+        entityFieldsPanel.add(linkInfo);
+        addDropDown("lca", selectLCAWidgetF);
+        addDropDown("passport", selectPassportWidgetF);
+        entityFieldsPanel.add(prevInfo);
+        addEnumField("previousVisaStatus", false, true, VisaStatus.names(), Alignment.HORIZONTAL);
+        addField("previousStatusExpiry", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(additionalInfo);
         addEnumField("h4Applicability", false, true, Polar.names(), Alignment.HORIZONTAL);
         addEnumField("project", false, true, PetitionFor.names(), Alignment.HORIZONTAL);
