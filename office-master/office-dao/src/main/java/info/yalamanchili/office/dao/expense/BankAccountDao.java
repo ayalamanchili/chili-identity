@@ -44,6 +44,14 @@ public class BankAccountDao extends AbstractHandleEntityDao<BankAccount> {
             em.merge(ba);
         }
     }
+    
+//    @Transactional
+//    public void mergeAll() {
+//        TypedQuery<BankAccount> q = em.createQuery("from " + BankAccount.class.getCanonicalName(), BankAccount.class);
+//        for (BankAccount ba : q.getResultList()) {
+//           em.merge(ba);
+//        }
+//    }
 
     public static BankAccountDao instance() {
         return SpringContext.getBean(BankAccountDao.class);
