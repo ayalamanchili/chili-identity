@@ -72,7 +72,6 @@ public class CorporateStatusReportResource {
         return entity;
     }
 
-
     @Path("/diff/{reportId}")
     @Produces(MediaType.TEXT_HTML)
     @GET
@@ -114,13 +113,7 @@ public class CorporateStatusReportResource {
     @PUT
     @Path("/search")
     public List<CorporateStatusReport> search(CorporateStatusReportSearchDto dto) {
-        List<CorporateStatusReport> reports = new ArrayList();
-        List<CorporateStatusReport> reportresult = new ArrayList();
-        reports = corporateStatusReportDao.search(dto);
-        for (CorporateStatusReport report : reports) {
-            reportresult.add(report);
-        }
-        return reportresult;
+        return corporateStatusReportDao.search(dto);
     }
 
     @PUT
