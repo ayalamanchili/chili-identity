@@ -45,6 +45,17 @@ public class AccessCheckService {
         return performAccessCheck(employee, accessCheck);
     }
 
+    public boolean performAccessCheck(Object returnObj, AccessCheck accessCheck) {
+        Employee employee = null;
+        if (!Strings.isNullOrEmpty(accessCheck.employeePropertyName())) {
+            employee = (Employee) ReflectionUtils.callGetter(returnObj, accessCheck.employeePropertyName());
+        }
+        if (employee == null) {
+            throw new RuntimeException("Invalid Access Check Method param");
+        }
+        return performAccessCheck(employee, accessCheck);
+    }
+
     public boolean performAccessCheck(Employee employee, AccessCheck accessCheck) {
         Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
         if (employee.getId().equals(currentUser.getId())) {

@@ -28,4 +28,6 @@ public @interface AccessCheck {
     String[] companyContacts() default {};
 
     boolean strictOrderCheck() default true;
+
+    boolean checkOnReturnObj() default false;
 }

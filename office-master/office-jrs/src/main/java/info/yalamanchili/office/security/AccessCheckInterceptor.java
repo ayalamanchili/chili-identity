@@ -34,18 +34,35 @@ public class AccessCheckInterceptor {
     @Transactional(readOnly = true)
     public Object accessCheck(ProceedingJoinPoint joinPoint, AccessCheck accessCheck) throws Throwable {
         Object result = null;
-        boolean validCall = AccessCheckService.instance().performAccessCheck(joinPoint, accessCheck);
-        try {
-            if (validCall) {
-                result = joinPoint.proceed();
-            } else {
-                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "access.voilation", "You dont have access to this data");
+        if (!accessCheck.checkOnReturnObj()) {
+            try {
+                if (AccessCheckService.instance().performAccessCheck(joinPoint, accessCheck)) {
+                    result = joinPoint.proceed();
+                } else {
+                    throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "access.voilation", "You dont have access to this data");
+                }
+            } catch (Exception e) {
+                if (e instanceof ServiceException) {
+                    throw e;
+                } else {
+                    throw new RuntimeException(e);
+                }
             }
-        } catch (Exception e) {
-            if (e instanceof ServiceException) {
-                throw e;
-            } else {
-                throw new RuntimeException(e);
+
+        } else {
+            try {
+                result = joinPoint.proceed();
+                if (AccessCheckService.instance().performAccessCheck(result, accessCheck)) {
+                    result = joinPoint.proceed();
+                } else {
+                    throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "access.voilation", "You dont have access to this data");
+                }
+            } catch (Exception e) {
+                if (e instanceof ServiceException) {
+                    throw e;
+                } else {
+                    throw new RuntimeException(e);
+                }
             }
         }
         return result;
