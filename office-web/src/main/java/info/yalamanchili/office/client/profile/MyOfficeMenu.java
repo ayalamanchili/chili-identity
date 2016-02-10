@@ -33,7 +33,7 @@ public class MyOfficeMenu extends CMenuBar {
     @Override
     protected void configureMenu() {
         addMenuItem("Employees", "Employees", employeeMaintainenceCmd);
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ON_BOARDING_MGR)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ON_BOARDING_MGR, ROLE.ROLE_HR_ADMINSTRATION)) {
             addMenuItem("OnBoarding", "OnBoarding", onBoardingInfo);
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_PROSPECTS_MANAGER)) {
