@@ -19,6 +19,7 @@ import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.chili.email.Email;
+import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
 import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.CorporateTimeSheet;
@@ -43,7 +44,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("prototype")
 @Transactional
 public class CorpEmpLeaveRequestProcess extends RuleBasedTaskDelegateListner implements TaskListener, JavaDelegate {
-    
+
     @Override
     public void processTask(DelegateTask task) {
         if ("create".equals(task.getEventName())) {
@@ -65,8 +66,9 @@ public class CorpEmpLeaveRequestProcess extends RuleBasedTaskDelegateListner imp
             assignLeaveRequestTask(task);
         }
         sendLeaveRequestCreatedNotification(task);
+        new GenericTaskCreateNotification().notify(task);
     }
-    
+
     protected void saveLeaveRequest(DelegateTask task) {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         CorporateTimeSheet ts = (CorporateTimeSheet) task.getExecution().getVariable("entity");
@@ -78,12 +80,12 @@ public class CorpEmpLeaveRequestProcess extends RuleBasedTaskDelegateListner imp
         task.getExecution().setVariable("entity", ts);
         task.getExecution().setVariable("entityId", ts.getId());
     }
-    
+
     protected final String SUBMITTED_STATUS = "Submitted";
     protected final String UPDATED_STATUS = "Updated";
     protected final String APPROVED_STATUS = "Approved";
     protected final String REJECTED_STATUS = "Rejected";
-    
+
     protected void sendLeaveRequestCreatedNotification(DelegateTask task) {
         String status = (String) task.getExecution().getVariable("status");
         if (status != null && !task.getTaskDefinitionKey().equals("unpaidLeaveFinalApprovalTask")) {
@@ -92,7 +94,7 @@ public class CorpEmpLeaveRequestProcess extends RuleBasedTaskDelegateListner imp
             sendLeaveRequestStatusNotification(SUBMITTED_STATUS, task);
         }
     }
-    
+
     protected void assignLeaveRequestTask(DelegateTask task) {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         Employee manager = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Reports_To");
@@ -124,7 +126,7 @@ public class CorpEmpLeaveRequestProcess extends RuleBasedTaskDelegateListner imp
             leaveRequestRejected(task);
         }
     }
-    
+
     protected CorporateTimeSheet getTimeSheetFromTask(DelegateTask task) {
         Long tsId = (Long) task.getExecution().getVariable("entityId");
         if (tsId != null) {
@@ -166,7 +168,7 @@ public class CorpEmpLeaveRequestProcess extends RuleBasedTaskDelegateListner imp
         CorporateTimeSheetDao.instance().save(ts);
         sendLeaveRequestStatusNotification(REJECTED_STATUS, task);
     }
-    
+
     protected void sendLeaveRequestStatusNotification(String status, DelegateTask task) {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         sendNotifyEmplyeeNotification(status, task);
@@ -194,11 +196,11 @@ public class CorpEmpLeaveRequestProcess extends RuleBasedTaskDelegateListner imp
         email.setHtml(Boolean.TRUE);
         messagingService.sendEmail(email);
     }
-    
+
     protected void sendNotifyEmplyeeNotification(String status, DelegateTask task) {
         List<Entry> notifyEmployees = (List<Entry>) task.getExecution().getVariable("notifyEmployees");
         Email email = new Email();
-        
+
         if (notifyEmployees != null) {
             for (Entry e : notifyEmployees) {
                 email.addTo(EmployeeDao.instance().getPrimaryEmail(e.getId()));
@@ -224,7 +226,7 @@ public class CorpEmpLeaveRequestProcess extends RuleBasedTaskDelegateListner imp
     public void execute(DelegateExecution execution) throws Exception {
         leaveRequestEscationTask(execution);
     }
-    
+
     protected void leaveRequestEscationTask(DelegateExecution execution) throws Exception {
         new EmailEscalation().execute(execution);
     }
