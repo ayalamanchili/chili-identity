@@ -62,7 +62,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Scope("request")
 public class VendorResource extends CRUDResource<Vendor> {
-    
+
     @Autowired
     public VendorDao vendorDao;
 
@@ -148,7 +148,7 @@ public class VendorResource extends CRUDResource<Vendor> {
     @PUT
     @Validate
     @Path("/acct-pay-contact/{vendorId}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING' , 'ROLE_BILLING_ADMIN')")
     public void addvendorAcctPayContact(@PathParam("vendorId") Long vendorId, ContactDto dto) {
         Vendor vendor = (Vendor) getDao().findById(vendorId);
         Contact contact = ContactService.instance().save(dto);
@@ -252,13 +252,12 @@ public class VendorResource extends CRUDResource<Vendor> {
     public void vendorReport() {
         VendorService.instance().generateVendorInfoReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
-    
+
     @GET
     @Path("/active-vendorinfo-report")
     public void getActiveVendorsReport() {
         VendorService.instance().generateActiveVendorsInfoReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
-
 
     /**
      * Add Vendor locations

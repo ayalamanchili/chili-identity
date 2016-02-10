@@ -172,7 +172,7 @@ public class ClientResource extends CRUDResource<Client> {
     @PUT
     @Validate
     @Path("/acct-pay-contact/{clientId}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING' , 'ROLE_BILLING_ADMIN')")
     public void addclientAcctPayContact(@PathParam("clientId") Long clientId, ContactDto dto) {
         Client client = (Client) getDao().findById(clientId);
         Contact contact = contactService.save(dto);
