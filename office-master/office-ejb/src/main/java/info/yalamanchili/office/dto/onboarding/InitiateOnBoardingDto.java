@@ -57,7 +57,17 @@ public class InitiateOnBoardingDto implements Serializable {
     protected WorkStatus workStatus;
     
     protected String comment;
+    
+    protected String bpmProcessId;
 
+    public String getBpmProcessId() {
+        return bpmProcessId;
+    }
+
+    public void setBpmProcessId(String bpmProcessId) {
+        this.bpmProcessId = bpmProcessId;
+    }
+    
     public String getComment() {
         return comment;
     }
