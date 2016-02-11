@@ -8,7 +8,7 @@
  */
 package info.yalamanchili.office.entity.immigration;
 
-import info.chili.jpa.AbstractHandleEntity;
+import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.profile.Address;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -34,9 +34,17 @@ import org.hibernate.search.annotations.Indexed;
 @XmlRootElement
 @Entity
 @Audited
-public class LCA extends AbstractHandleEntity {
+public class LCA extends AbstractEntity {
 
     private static final long serialVersionUID = 11L;
+
+    @Enumerated(EnumType.STRING)
+    protected VisaClassificationType visaClassification;
+
+    @Enumerated(EnumType.STRING)
+    protected SOCCodesAndOccupations socCodesAndOccupations;
+    
+    protected BigDecimal totalWorkingPositions;
 
     @OneToOne(cascade = CascadeType.ALL)
     protected Address lcaAddress1;
@@ -78,6 +86,9 @@ public class LCA extends AbstractHandleEntity {
 
     @OneToMany(mappedBy = "lca", cascade = CascadeType.MERGE)
     protected List<Petition> petitions;
+    
+    @Enumerated(EnumType.STRING)
+    protected LCAStatus status;
 
     public Address getLcaAddress1() {
         return lcaAddress1;
@@ -189,6 +200,38 @@ public class LCA extends AbstractHandleEntity {
 
     public void setLcaValidToDate(Date lcaValidToDate) {
         this.lcaValidToDate = lcaValidToDate;
+    }
+
+    public VisaClassificationType getVisaClassification() {
+        return visaClassification;
+    }
+
+    public void setVisaClassification(VisaClassificationType visaClassification) {
+        this.visaClassification = visaClassification;
+    }
+
+    public SOCCodesAndOccupations getSocCodesAndOccupations() {
+        return socCodesAndOccupations;
+    }
+
+    public void setSocCodesAndOccupations(SOCCodesAndOccupations socCodesAndOccupations) {
+        this.socCodesAndOccupations = socCodesAndOccupations;
+    }
+
+    public BigDecimal getTotalWorkingPositions() {
+        return totalWorkingPositions;
+    }
+
+    public void setTotalWorkingPositions(BigDecimal totalWorkingPositions) {
+        this.totalWorkingPositions = totalWorkingPositions;
+    }
+
+    public LCAStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(LCAStatus status) {
+        this.status = status;
     }
 
     @XmlTransient

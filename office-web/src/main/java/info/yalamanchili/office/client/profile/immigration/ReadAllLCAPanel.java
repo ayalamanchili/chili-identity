@@ -73,9 +73,10 @@ public class ReadAllLCAPanel extends CRUDReadAllComposite {
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("LCA Number"));
-        table.setText(0, 2, getKeyValue("LCA Filed Date"));
-        table.setText(0, 3, getKeyValue("LCA Valid From Date"));
-        table.setText(0, 4, getKeyValue("LCA Valid To Date"));
+        table.setText(0, 2, getKeyValue("Visa Classification"));
+        table.setText(0, 3, getKeyValue("Filed Date"));
+        table.setText(0, 4, getKeyValue("Valid From Date"));
+        table.setText(0, 5, getKeyValue("Valid To Date"));
     }
 
     @Override
@@ -84,16 +85,17 @@ public class ReadAllLCAPanel extends CRUDReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "lcaNumber"));
-            table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "lcaFiledDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "lcaValidFromDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "lcaValidToDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            setEnumColumn(i, 2, entity, VisaClassificationType.class.getSimpleName(), "visaClassification");
+            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "lcaFiledDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "lcaValidFromDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, "lcaValidToDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
         }
     }
 
     @Override
     public void viewClicked(String entityId) {
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadLCAPanel(getEntity(entityId)));
+        TabPanel.instance().immigrationPanel.entityPanel.clear();
+        TabPanel.instance().immigrationPanel.entityPanel.add(new ReadLCAPanel(getEntity(entityId)));
     }
 
     @Override
@@ -114,14 +116,14 @@ public class ReadAllLCAPanel extends CRUDReadAllComposite {
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted LCA Information");
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllLCAPanel(TreeEmployeePanel.instance().getEntityId()));
+        TabPanel.instance().immigrationPanel.entityPanel.clear();
+        TabPanel.instance().immigrationPanel.entityPanel.add(new ReadAllLCAPanel(TreeEmployeePanel.instance().getEntityId()));
     }
 
     @Override
     public void updateClicked(String entityId) {
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateLCAPanel(getEntity(entityId)));
+        TabPanel.instance().immigrationPanel.entityPanel.clear();
+        TabPanel.instance().immigrationPanel.entityPanel.add(new UpdateLCAPanel(getEntity(entityId)));
     }
 
     @Override
@@ -134,8 +136,8 @@ public class ReadAllLCAPanel extends CRUDReadAllComposite {
 
     @Override
     protected void createButtonClicked() {
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new CreateLCAPanel(CreateComposite.CreateCompositeType.CREATE));
+        TabPanel.instance().immigrationPanel.entityPanel.clear();
+        TabPanel.instance().immigrationPanel.entityPanel.add(new CreateLCAPanel(CreateComposite.CreateCompositeType.CREATE));
     }
 
     @Override

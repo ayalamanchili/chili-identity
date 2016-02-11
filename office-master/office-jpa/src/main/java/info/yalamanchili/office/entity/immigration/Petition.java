@@ -95,7 +95,7 @@ public class Petition extends AbstractHandleEntity {
     @ForeignKey(name = "FK_Petition_LCA")
     protected LCA lca;
 
-    @OneToOne(cascade = CascadeType.MERGE)
+    @OneToOne(cascade = CascadeType.ALL)
     @ForeignKey(name = "FK_Petition_AddInfo")
     protected PetitionAdditionalInformation petitionaddinfo;
 

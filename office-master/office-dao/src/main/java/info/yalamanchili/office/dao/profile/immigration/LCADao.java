@@ -8,7 +8,7 @@
  */
 package info.yalamanchili.office.dao.profile.immigration;
 
-import info.chili.dao.AbstractHandleEntityDao;
+import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.immigration.LCA;
 import javax.persistence.EntityManager;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 @Scope("prototype")
-public class LCADao extends AbstractHandleEntityDao<LCA> {
+public class LCADao extends CRUDDao<LCA> {
     
     @PersistenceContext
     protected EntityManager em;

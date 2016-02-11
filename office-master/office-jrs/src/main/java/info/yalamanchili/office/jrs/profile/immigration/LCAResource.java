@@ -8,17 +8,13 @@
  */
 package info.yalamanchili.office.jrs.profile.immigration;
 
+import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.chili.service.jrs.types.Entry;
-import info.yalamanchili.office.dao.client.ClientDao;
-import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.immigration.LCADao;
-import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.immigration.LCA;
-import info.yalamanchili.office.entity.profile.Contact;
-import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.profile.immigration.LCAService;
-import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -41,7 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 @Scope("request")
-public class LCAResource {
+public class LCAResource extends CRUDResource<LCA> {
 
     @Autowired
     protected LCADao lcaDao;
@@ -49,48 +45,41 @@ public class LCAResource {
     protected LCAService lcaService;
 
     @PUT
-    @Path("/save/{empId}")
+    @Override
     @Validate
-    public LCA save(@PathParam("empId") Long empId, LCA lca) {
-        return lcaService.saveLCA(empId, lca);
+    public LCA save(LCA lca) {
+        return lcaService.saveLCA(lca);
     }
 
     @PUT
     @Path("/delete/{id}")
+    @Override
     public void delete(@PathParam("id") Long id) {
-        LCA lca = lcaDao.find(id);
+        LCA lca = lcaDao.findById(id);
         if (lca.getId() != null) {
             lcaDao.delete(id);
         }
     }
 
     @GET
-    @Path("/{id}/{start}/{limit}")
-    public LCAResource.LCATable table(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
+    @Path("{start}/{limit}")
+    public LCAResource.LCATable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         LCAResource.LCATable tableObj = new LCAResource.LCATable();
-        Employee emp = EmployeeDao.instance().findById(id);
-        tableObj.setEntities(lcaDao.findAll(emp));
+        tableObj.setEntities(lcaDao.query(start, limit));
         tableObj.setSize(lcaDao.size());
         return tableObj;
     }
 
     @GET
-    @Path("/dropdown/{id}/{start}/{limit}")
-    public List<Entry> getLCADropDown(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit,
+    @Path("/dropdown/{start}/{limit}")
+    public List<Entry> getLCADropDown(@PathParam("start") int start, @PathParam("limit") int limit,
             @QueryParam("column") List<String> columns) {
-        Employee emp = EmployeeDao.instance().findById(id);
-        return getLCAColumnDropDown(lcaDao.findAll(emp));
+        return super.getDropDown(start, limit, columns);
     }
 
-    protected List<Entry> getLCAColumnDropDown(List<LCA> lcas) {
-        List<Entry> result = new ArrayList<>();
-        for (LCA lca : lcas) {
-            Entry entry = new Entry();
-            entry.setId(lca.getId().toString());
-            entry.setValue(lca.getLcaNumber());
-            result.add(entry);
-        }
-        return result;
+    @Override
+    public CRUDDao getDao() {
+        return lcaDao;
     }
 
     @XmlRootElement

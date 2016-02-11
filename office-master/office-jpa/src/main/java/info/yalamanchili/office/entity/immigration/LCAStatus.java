@@ -12,12 +12,11 @@ package info.yalamanchili.office.entity.immigration;
  *
  * @author Madhu.Badiginchala
  */
-public enum LCAWageLevels {
-
-    Level_1,
-    Level_2,
-    Level_3,
-    Level_4,
-    NA
-
+public enum LCAStatus {
+    
+    Pending,
+    Approved_Open,
+    Approved_Closed,
+    Withdrawn;
+    
 }

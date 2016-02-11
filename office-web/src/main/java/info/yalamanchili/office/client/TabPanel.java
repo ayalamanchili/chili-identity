@@ -37,6 +37,8 @@ import info.yalamanchili.office.client.drive.SearchDrivePanel;
 import info.yalamanchili.office.client.expense.ExpenseMenu;
 import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
 import info.yalamanchili.office.client.i18n.ReadAllci18nResourceBundlesPanel;
+import info.yalamanchili.office.client.profile.immigration.ImmigrationMenu;
+import info.yalamanchili.office.client.profile.immigration.ReadAllLCAPanel;
 import info.yalamanchili.office.client.profile.reports.ProfileReportsSidePanel;
 import info.yalamanchili.office.client.profile.selfservice.ReadAllServiceTicketsPanel;
 import info.yalamanchili.office.client.profile.skill.ReadAllSkillsPanel;
@@ -61,6 +63,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     public EntityLayout myOfficePanel = new EntityLayout();
     public EntityLayout timePanel = new EntityLayout();
     public EntityLayout expensePanel = new EntityLayout();
+    public EntityLayout immigrationPanel = new EntityLayout();
     public EntityLayout drivePanel = new EntityLayout();
     public EntityLayout socialPanel = new EntityLayout();
     public EntityLayout profilePanel = new EntityLayout();
@@ -80,6 +83,9 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
             tabPanel.add(timePanel, "Time", false);
         }
         tabPanel.add(expensePanel, "Expense", false);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN)) {
+            tabPanel.add(immigrationPanel, "Immigration", false);
+        }
         tabPanel.add(drivePanel, "Drive", false);
         tabPanel.add(socialPanel, "Social", false);
         tabPanel.add(profilePanel, "Profile", false);
@@ -146,6 +152,14 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
                 @Override
                 public void onResponse() {
                     selectExpenseTab();
+                }
+            });
+        }
+        if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(immigrationPanel)) {
+            GWT.runAsync(new RunAsyncCallback() {
+                @Override
+                public void onResponse() {
+                    selectImmigrationTab();
                 }
             });
         }
@@ -266,6 +280,14 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         TabPanel.instance().getExpensePanel().sidePanelTop.add(new AdvanceRequisitionSidePanel());
     }
 
+    public void selectImmigrationTab() {
+        tabPanel.selectTab(immigrationPanel);
+        clearEntityPanel(immigrationPanel);
+        immigrationPanel.entityTitlePanel.add(new ImmigrationMenu());
+        TabPanel.instance().getImmigrationPanel().entityPanel.add(new ReadAllLCAPanel());
+        //      TabPanel.instance().getExpensePanel().sidePanelTop.add(new AdvanceRequisitionSidePanel());
+    }
+
     public void selectDriveTab() {
         clearEntityPanel(drivePanel);
         drivePanel.sidePanelTop.add(new DriveTreePanel());
@@ -342,6 +364,10 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
 
     public EntityLayout getExpensePanel() {
         return expensePanel;
+    }
+
+    public EntityLayout getImmigrationPanel() {
+        return immigrationPanel;
     }
 
     public EntityLayout getProfilePanel() {

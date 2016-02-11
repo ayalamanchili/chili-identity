@@ -70,8 +70,6 @@ public class CreateLCAPanel extends CreateComposite {
         assignEntityValueFromField("lcaPrevWageLvl", lca);
         assignEntityValueFromField("lcaPrevMinWage", lca);
         assignEntityValueFromField("lcaPrevMaxWage", lca);
-        lca.put("targetEntityName", new JSONString("targetEntityName"));
-        lca.put("targetEntityId", new JSONString("0"));
         logger.info("entity: " + lca);
         return lca;
     }
@@ -154,7 +152,7 @@ public class CreateLCAPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "lca/save/" + TreeEmployeePanel.instance().getEntityId();
+        return OfficeWelcome.constants.root_url() + "lca/save";
     }
 
     @Override

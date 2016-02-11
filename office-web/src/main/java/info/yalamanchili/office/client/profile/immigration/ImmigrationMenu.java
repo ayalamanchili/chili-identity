@@ -1,0 +1,57 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package info.yalamanchili.office.client.profile.immigration;
+
+import com.google.gwt.user.client.Command;
+import info.chili.gwt.widgets.CMenuBar;
+import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.TabPanel;
+
+/**
+ *
+ * @author Madhu.Badiginchala
+ */
+public class ImmigrationMenu extends CMenuBar {
+
+    @Override
+    protected void configureMenu() {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_GC_IMMIGRATION)) {
+             addMenuItem("LCA", "LCA", immigrationlcaCmd);
+        }      
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_GC_IMMIGRATION)) {
+             addMenuItem("Petition", "Petition", immigrationpetitionCmd);
+        }  
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_GC_IMMIGRATION)) {
+             addMenuItem("Tracker", "Tracker", immigrationtrackerCmd);
+        }  
+    }
+
+    static Command immigrationlcaCmd = new Command() {
+        public void execute() {
+            TabPanel.instance().getImmigrationPanel().entityPanel.clear();
+            TabPanel.instance().getImmigrationPanel().sidePanelTop.clear();
+            TabPanel.instance().getImmigrationPanel().entityPanel.add(new ReadAllLCAPanel());
+       //     TabPanel.instance().getImmigrationPanel().sidePanelTop.add(new ExpenseCategorySidePanel());
+        }
+    };
+    static Command immigrationpetitionCmd = new Command() {
+        public void execute() {
+            TabPanel.instance().getImmigrationPanel().entityPanel.clear();
+            TabPanel.instance().getImmigrationPanel().sidePanelTop.clear();
+            TabPanel.instance().getImmigrationPanel().entityPanel.add(new ReadAllPetitionsPanel());
+       //     TabPanel.instance().getImmigrationPanel().sidePanelTop.add(new AdvanceRequisitionSidePanel());
+        }
+    };
+    static Command immigrationtrackerCmd = new Command() {
+        public void execute() {
+            TabPanel.instance().getImmigrationPanel().entityPanel.clear();
+            TabPanel.instance().getImmigrationPanel().sidePanelTop.clear();
+            TabPanel.instance().getImmigrationPanel().entityPanel.add(new ReadAllPetitionsPanel());
+      //      TabPanel.instance().getImmigrationPanel().sidePanelTop.add(new ImmigrationCheckRequisitionSidePanel());
+        }
+    };
+    
+}

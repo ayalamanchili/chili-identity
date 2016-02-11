@@ -11,7 +11,6 @@ package info.yalamanchili.office.profile.immigration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.immigration.LCADao;
 import info.yalamanchili.office.entity.immigration.LCA;
-import info.yalamanchili.office.entity.profile.Employee;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.dozer.Mapper;
@@ -36,10 +35,9 @@ public class LCAService {
     @Autowired
     protected EmployeeDao employeeDao;
 
-    public LCA saveLCA(Long empId, LCA dto) {
+    public LCA saveLCA(LCA dto) {
         LCA lca = mapper.map(dto, LCA.class);
-        Employee emp = employeeDao.findById(empId);
-        lcaDao.save(lca, emp.getId(), emp.getClass().getCanonicalName());
+        lcaDao.save(lca);
         return lca;
     }
 

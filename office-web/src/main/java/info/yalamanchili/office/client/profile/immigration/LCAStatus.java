@@ -9,16 +9,15 @@ package info.yalamanchili.office.client.profile.immigration;
  *
  * @author Madhu.Badiginchala
  */
-public enum LCAWageLevels {
+public enum LCAStatus {
 
-    Level_1,
-    Level_2,
-    Level_3,
-    Level_4,
-    NA;
+    Pending,
+    Approved_Open,
+    Approved_Closed,
+    Withdrawn;
 
     public static String[] names() {
-        LCAWageLevels[] values = values();
+        LCAStatus[] values = values();
         String[] names = new String[values.length];
         for (int i = 0; i < values.length; i++) {
             names[i] = values[i].name();
