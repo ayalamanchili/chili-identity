@@ -8,9 +8,12 @@
 package info.yalamanchili.office.client.expense.travelauthorization;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.HTML;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.Auth;
@@ -54,10 +57,23 @@ public class ReadTravelAuthorizationPanel extends ReadComposite {
         initReadComposite(entity, "TravelAuthorization", OfficeWelcome.constants);
         populateComments();
     }
+     public ReadTravelAuthorizationPanel(String id) {
+        instance = this;
+        initReadComposite(id, "TravelAuthorization", OfficeWelcome.constants);
+    }
 
     @Override
     public void loadEntity(String entityId) {
-
+        HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        logger.info("read ec6 response" + response);
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                        populateComments();
+                    }
+                });
     }
 
     protected final void populateComments() {

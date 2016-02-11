@@ -24,10 +24,12 @@ import info.yalamanchili.office.client.expense.travelauthorization.ReadAllTravel
 import info.yalamanchili.office.client.expensereports.ReadAllExpenseReportsPanel;
 import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
 import info.yalamanchili.office.client.home.tasks.ReadTaskPanel;
+import info.yalamanchili.office.client.onboarding.ReadAllEmployeeOnBoardingPanel;
 import info.yalamanchili.office.client.profile.address.ReadAllAddressesPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.ReadAllClientInfoPanel;
 import info.yalamanchili.office.client.profile.selfservice.ReadAllServiceTicketsPanel;
 import info.yalamanchili.office.client.profile.statusreport.ReadAllStatusReportPanel;
+import info.yalamanchili.office.client.time.consultant.ReadAllConsultantTimeSheetsPanel;
 import info.yalamanchili.office.client.time.corp.ReadAllCorporateTimeSheetPanel;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -66,23 +68,26 @@ public class OfficeUrlRoutingHandler implements ValueChangeHandler<String> {
                 case "info.yalamanchili.office.entity.expense.TravelAuthorization":
                     travelAuthorizationNavigation(params);
                     break;
-                case "info.yalamanchili.office.entity.employees.ClientInformation":
+                case "info.yalamanchili.office.entity.profile.ClientInformation":
                     clientInformationNavigation(params);
                     break;
-                case "info.yalamanchili.office.entity.reports.Contracts":
-                    contractsNavigation(params);
+                case "info.yalamanchili.office.entity.selfserv.ServiceTicket":
+                    selfServiceNavigation(params);
                     break;
-                case "info.yalamanchili.office.entity.home.SelfService":
-                    selfServiceNavigation(params);   
-                    break;
-                case "info.yalamanchili.office.entity.home.StatusReport":
+                case "info.yalamanchili.office.entity.employee.statusreport.StatusReport":
                     statusReportNavigation(params);
                     break;
-                case "info.yalamanchili.ofice.entity.employees.Addresses":
+                case "info.yalamanchili.office.entity.profile.Address":
                     addressesNavigation(params);
                     break;
-                case "info.yalamanchili.office.entity.time.CorporateTime":
+                case "info.yalamanchili.office.entity.time.CorporateTimeSheet":
                     corporateTimeNavigation(params);
+                    break;
+                case "info.yalamanchili.office.entity.time.ConsultantTimeSheet":
+                    ConsultantTimeNavigation(params);
+                    break;
+                case "info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding":
+                    onboardingTimeNavigation(params);
                     break;
                 //TODO add navigation to add entities that have comment
             }
@@ -104,57 +109,70 @@ public class OfficeUrlRoutingHandler implements ValueChangeHandler<String> {
         ReadAllImmigrationCheckRequisitionPanel readAllCheckRequisition = new ReadAllImmigrationCheckRequisitionPanel(new JSONArray());
         readAllCheckRequisition.viewClicked(params.get("id"));
     }
-    
+
     protected void advanceRequisitionNavigation(Map<String, String> params) {
         TabPanel.instance().tabPanel.selectTab(TabPanel.instance().expensePanel, false);
         ReadAllAdvanceRequisitionPanel readAllAdvanceRequisition = new ReadAllAdvanceRequisitionPanel(new JSONArray());
         readAllAdvanceRequisition.viewClicked(params.get("id"));
     }
-    
+
     protected void expenseReportNavigation(Map<String, String> params) {
         TabPanel.instance().tabPanel.selectTab(TabPanel.instance().expensePanel, false);
         ReadAllExpenseReportsPanel readAllExpense = new ReadAllExpenseReportsPanel(new JSONArray());
         readAllExpense.viewClicked(params.get("id"));
     }
-    
-    protected void travelAuthorizationNavigation(Map<String,String> params){
-        TabPanel.instance().tabPanel.selectTab(TabPanel.instance().expensePanel,false);
+
+    protected void travelAuthorizationNavigation(Map<String, String> params) {
+        TabPanel.instance().tabPanel.selectTab(TabPanel.instance().expensePanel, false);
         ReadAllTravelAuthorizationPanel readAlltravelauthorization = new ReadAllTravelAuthorizationPanel(new JSONArray());
         readAlltravelauthorization.viewClicked(params.get("id"));
     }
-    
-    protected void clientInformationNavigation(Map<String,String> params){
-        TabPanel.instance().tabPanel.selectTab(TabPanel.instance().expensePanel,false);
+
+    protected void clientInformationNavigation(Map<String, String> params) {
+        TabPanel.instance().tabPanel.selectTab(TabPanel.instance().myOfficePanel, false);
         ReadAllClientInfoPanel readAllclientInfo = new ReadAllClientInfoPanel(new JSONArray());
         readAllclientInfo.viewClicked(params.get("id"));
-    }
-    
-     protected void contractsNavigation(Map<String,String> params){
-        TabPanel.instance().tabPanel.selectTab(TabPanel.instance().expensePanel,false);
+        TabPanel.instance().tabPanel.selectTab(TabPanel.instance().reportingPanel, false);
         ReadAllContractsPanel readAllcontracts = new ReadAllContractsPanel(new JSONArray());
         readAllcontracts.viewClicked(params.get("id"));
     }
-     
-      protected void selfServiceNavigation(Map<String,String> params){
-        TabPanel.instance().tabPanel.selectTab(TabPanel.instance().expensePanel,false);
+
+    protected void selfServiceNavigation(Map<String, String> params) {
+        TabPanel.instance().tabPanel.selectTab(TabPanel.instance().homePanel, false);
         ReadAllServiceTicketsPanel readAllserviceTicket = new ReadAllServiceTicketsPanel(new JSONArray());
         readAllserviceTicket.viewClicked(params.get("id"));
     }
-      protected void statusReportNavigation(Map<String,String> params){
-        TabPanel.instance().tabPanel.selectTab(TabPanel.instance().expensePanel,false);
+
+    protected void statusReportNavigation(Map<String, String> params) {
+        TabPanel.instance().tabPanel.selectTab(TabPanel.instance().homePanel, false);
         ReadAllStatusReportPanel readallstatusreport = new ReadAllStatusReportPanel(new JSONArray());
         readallstatusreport.viewClicked(params.get("id"));
     }
-       protected void addressesNavigation(Map<String,String> params){
-        TabPanel.instance().tabPanel.selectTab(TabPanel.instance().expensePanel,false);
+
+    protected void addressesNavigation(Map<String, String> params) {
+        TabPanel.instance().tabPanel.selectTab(TabPanel.instance().myOfficePanel, false);
         ReadAllAddressesPanel readalladdress = new ReadAllAddressesPanel(new JSONArray());
         readalladdress.viewClicked(params.get("id"));
     }
-         protected void corporateTimeNavigation(Map<String,String> params){
-        TabPanel.instance().tabPanel.selectTab(TabPanel.instance().expensePanel,false);
+
+    protected void corporateTimeNavigation(Map<String, String> params) {
+        TabPanel.instance().tabPanel.selectTab(TabPanel.instance().timePanel, false);
         ReadAllCorporateTimeSheetPanel readallcorporatetimesheet = new ReadAllCorporateTimeSheetPanel(new JSONArray());
         readallcorporatetimesheet.viewClicked(params.get("id"));
     }
+
+    protected void ConsultantTimeNavigation(Map<String, String> params) {
+        TabPanel.instance().tabPanel.selectTab(TabPanel.instance().timePanel, false);
+        ReadAllConsultantTimeSheetsPanel readallConsultanttimesheet = new ReadAllConsultantTimeSheetsPanel(new JSONArray().toString());
+        readallConsultanttimesheet.viewClicked(params.get("id"));
+    }
+
+    protected void onboardingTimeNavigation(Map<String, String> params) {
+        TabPanel.instance().tabPanel.selectTab(TabPanel.instance().myOfficePanel, false);
+        ReadAllEmployeeOnBoardingPanel readallonboarding = new ReadAllEmployeeOnBoardingPanel(new JSONArray());
+        readallonboarding.viewClicked(params.get("id"));
+    }
+
     protected void taskNavigation(Map<String, String> params) {
         TabPanel.instance().homePanel.entityPanel.clear();
         if (params.get("id") != null) {
