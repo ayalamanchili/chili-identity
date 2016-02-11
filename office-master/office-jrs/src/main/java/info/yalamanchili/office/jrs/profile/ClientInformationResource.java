@@ -26,6 +26,7 @@ import info.yalamanchili.office.dto.profile.ClientInformationDto;
 import info.yalamanchili.office.dto.profile.ClientInformationSaveDto;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.project.offboarding.ProjectOffBoardingService;
+import info.yalamanchili.office.security.AccessCheck;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -82,6 +83,7 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
     @GET
     @Path("/read/{id}")
     @Transactional(readOnly = true)
+//    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_HR","ROLE_CONTRACTS_ADMIN", "ROLE_BILLING_ADMIN", "ROLE_RECRUITER", "ROLE_BILLING_AND_INVOICING"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
     public ClientInformationDto readCIDto(@PathParam("id") Long id) {
         return clientInformationService.read(id);
     }

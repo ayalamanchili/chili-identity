@@ -29,6 +29,7 @@ import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.prospect.ProspectService;
+import info.yalamanchili.office.security.AccessCheck;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -148,7 +149,8 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     @GET
     @Override
     @Path("/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_PROSPECTS_MANAGER')")
+//    @PreAuthorize("hasAnyRole('ROLE_PROSPECTS_MANAGER')")
+    @AccessCheck(roles = {"ROLE_PROSPECTS_MANAGER"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
     public ProspectDto read(@PathParam("id") Long id) {
         return prospectService.read(id);
     }

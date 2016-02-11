@@ -18,6 +18,7 @@ import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.employee.statusreport.StatusReportService;
 import info.yalamanchili.office.entity.employee.statusreport.ReportDocument;
+import info.yalamanchili.office.security.AccessCheck;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -59,6 +60,7 @@ public class StatusReportResource extends CRUDResource<StatusReport> {
     @Path("/{id}")
     @Transactional(readOnly = true)
     @Override
+//    @AccessCheck(roles = {"ROLE_H1B_IMMIGRATION", "ROLE_HR","ROLE_RELATIONSHIP"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
     public StatusReport read(@PathParam("id") Long id) {
         return StatusReportService.instance().read(id);
     }

@@ -15,6 +15,7 @@ import info.yalamanchili.office.dto.onboarding.InitiateOnBoardingDto;
 import info.yalamanchili.office.dto.onboarding.OnBoardingEmployeeDto;
 import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
 import info.yalamanchili.office.profile.EmployeeOnBoardingService;
+import info.yalamanchili.office.security.AccessCheck;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -81,10 +82,11 @@ public class EmployeeOnBoardingResource {
         EmployeeOnBoardingService employeeOnBoardingService = (EmployeeOnBoardingService) SpringContext.getBean("employeeOnBoardingService");
         return employeeOnBoardingService.onBoardEmployee(employee);
     }
-    
+
     @GET
     @Path("/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ON_BOARDING_MGR','ROLE_HR_ADMINSTRATION')")
+//    @PreAuthorize("hasAnyRole('ROLE_ON_BOARDING_MGR','ROLE_HR_ADMINSTRATION')")
+    @AccessCheck(roles = {"ROLE_ON_BOARDING_MGR", "ROLE_HR_ADMINSTRATION"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
     public InitiateOnBoardingDto getEmpOnboardingDetails(@PathParam("id") Long entityId) {
         EmployeeOnBoardingService employeeOnBoardingService = (EmployeeOnBoardingService) SpringContext.getBean("employeeOnBoardingService");
         InitiateOnBoardingDto dto = employeeOnBoardingService.read(entityId);

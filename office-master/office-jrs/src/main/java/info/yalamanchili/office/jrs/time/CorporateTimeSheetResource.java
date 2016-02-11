@@ -49,6 +49,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet> {
 
     @GET
+    @Path("/{id}")
+    @Transactional(readOnly = true)
+    @Override
+//    @AccessCheck(companyContacts = {"Reports_To","Perf_Eval_Manager"}, roles = {"ROLE_ADMIN", "ROLE_CEO", "ROLE_PAYROLL_AND_BENIFITS", "ROLE_ACCOUNTS_PAYABLE"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
+    public CorporateTimeSheet read(@PathParam("id") Long id) {
+        return corporateTimeSheetDao.findById(id);
+    }
+
+    @GET
     @Path("/summary")
     public CorporateTimeSummary getCorporateTimeSummary() {
         return CorporateTimeService.instance().getYearlySummary(OfficeSecurityService.instance().getCurrentUser());
