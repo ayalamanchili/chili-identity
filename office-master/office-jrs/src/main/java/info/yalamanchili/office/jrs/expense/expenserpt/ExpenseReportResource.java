@@ -76,7 +76,7 @@ public class ExpenseReportResource extends CRUDResource<ExpenseReport> {
     @Path("/{id}")
     @Transactional(readOnly = true)
     @Override
-//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CEO', 'ROLE_ACCOUNTS_PAYABLE', 'ROLE_GENERAL_EXPENSE_MANAGER' )")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CEO', 'ROLE_ACCOUNTS_PAYABLE', 'ROLE_GENERAL_EXPENSE_MANAGER' )")
     @AccessCheck(companyContacts = {"Perf_Eval_Manager", "Reports_To"},roles = {"ROLE_ADMIN", "ROLE_CEO", "ROLE_GENERAL_EXPENSE_MANAGER", "ROLE_ACCOUNTS_PAYABLE"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
     public ExpenseReportSaveDto read(@PathParam("id") Long id) {
         return ExpenseReportService.instance().read(id);

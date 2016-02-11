@@ -63,7 +63,7 @@ public class TravelAuthorizationResource extends CRUDResource<TravelAuthorizatio
     @Path("/{id}")
     @Transactional(readOnly = true)
     @Override
-//    @AccessCheck(companyContacts = {"Reports_To", "Perf_Eval_Manager"}, roles = {"ROLE_ADMIN", "ROLE_CEO","ROLE_TRAVEL_BOOKING_MANAGER"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
+    @AccessCheck(companyContacts = {"Reports_To", "Perf_Eval_Manager"}, roles = {"ROLE_ADMIN", "ROLE_CEO","ROLE_TRAVEL_BOOKING_MANAGER"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
     public TravelAuthorization read(@PathParam("id") Long id) {
         return travelAuthorizationDao.findById(id);
     }

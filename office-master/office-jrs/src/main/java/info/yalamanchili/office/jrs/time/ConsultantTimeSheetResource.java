@@ -54,7 +54,7 @@ public class ConsultantTimeSheetResource extends CRUDResource<ConsultantTimeShee
     @Path("/{id}")
     @Transactional(readOnly = true)
     @Override
-//    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_CEO", "ROLE_CONSULTANT_TIME_ADMIN"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
+    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_CEO", "ROLE_CONSULTANT_TIME_ADMIN"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
     public ConsultantTimeSheet read(@PathParam("id") Long id) {
         return consultantTimeSheetDao.findById(id);
     }

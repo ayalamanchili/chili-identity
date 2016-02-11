@@ -149,7 +149,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     @GET
     @Override
     @Path("/{id}")
-//    @PreAuthorize("hasAnyRole('ROLE_PROSPECTS_MANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_PROSPECTS_MANAGER')")
     @AccessCheck(roles = {"ROLE_PROSPECTS_MANAGER"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
     public ProspectDto read(@PathParam("id") Long id) {
         return prospectService.read(id);

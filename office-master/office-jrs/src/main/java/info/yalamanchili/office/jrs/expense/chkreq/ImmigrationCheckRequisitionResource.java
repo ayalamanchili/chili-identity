@@ -74,8 +74,8 @@ public class ImmigrationCheckRequisitionResource extends CRUDResource<Immigratio
     @Path("/{id}")
     @Transactional(readOnly = true)
     @Override
-//    @PreAuthorize("hasAnyRole('ROLE_GC_IMMIGRATION','ROLE_H1B_IMMIGRATION')")
-    @AccessCheck(companyContacts = {"Perf_Eval_Manager", "Reports_To"},roles = {"ROLE_GC_IMMIGRATION", "ROLE_H1B_IMMIGRATION"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
+    @PreAuthorize("hasAnyRole('ROLE_GC_IMMIGRATION','ROLE_H1B_IMMIGRATION')")
+    @AccessCheck(roles = {"ROLE_GC_IMMIGRATION", "ROLE_H1B_IMMIGRATION"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
     public ImmigrationCheckRequisitionSaveDto read(@PathParam("id") Long id) {
         return ImmigrationCheckRequisitionService.instance().read(id);
     }

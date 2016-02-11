@@ -85,7 +85,7 @@ public class EmployeeOnBoardingResource {
 
     @GET
     @Path("/{id}")
-//    @PreAuthorize("hasAnyRole('ROLE_ON_BOARDING_MGR','ROLE_HR_ADMINSTRATION')")
+    @PreAuthorize("hasAnyRole('ROLE_ON_BOARDING_MGR','ROLE_HR_ADMINSTRATION')")
     @AccessCheck(roles = {"ROLE_ON_BOARDING_MGR", "ROLE_HR_ADMINSTRATION"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
     public InitiateOnBoardingDto getEmpOnboardingDetails(@PathParam("id") Long entityId) {
         EmployeeOnBoardingService employeeOnBoardingService = (EmployeeOnBoardingService) SpringContext.getBean("employeeOnBoardingService");

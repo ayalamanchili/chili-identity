@@ -83,7 +83,7 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
     @GET
     @Path("/read/{id}")
     @Transactional(readOnly = true)
-//    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_HR","ROLE_CONTRACTS_ADMIN", "ROLE_BILLING_ADMIN", "ROLE_RECRUITER", "ROLE_BILLING_AND_INVOICING"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
+    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_HR","ROLE_CONTRACTS_ADMIN", "ROLE_BILLING_ADMIN", "ROLE_RECRUITER", "ROLE_BILLING_AND_INVOICING"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
     public ClientInformationDto readCIDto(@PathParam("id") Long id) {
         return clientInformationService.read(id);
     }
