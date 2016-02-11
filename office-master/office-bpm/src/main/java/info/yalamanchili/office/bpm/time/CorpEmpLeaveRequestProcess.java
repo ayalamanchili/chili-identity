@@ -66,7 +66,6 @@ public class CorpEmpLeaveRequestProcess extends RuleBasedTaskDelegateListner imp
             assignLeaveRequestTask(task);
         }
         sendLeaveRequestCreatedNotification(task);
-        new GenericTaskCreateNotification().notify(task);
     }
 
     protected void saveLeaveRequest(DelegateTask task) {
