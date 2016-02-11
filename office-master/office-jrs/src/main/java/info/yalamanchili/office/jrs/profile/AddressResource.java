@@ -67,7 +67,7 @@ public class AddressResource extends CRUDResource<Address> {
     @Path("/{id}")
     @Transactional(readOnly = true)
     @Override
-    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_HR", "ROLE_RELATIONSHIP", "ROLE_PAYROLL_AND_BENIFITS", "ROLE_HEALTH_INSURANCE_MANAGER"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
+    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_HR_ADMIN", "ROLE_HR", "ROLE_RELATIONSHIP", "ROLE_PAYROLL_AND_BENIFITS", "ROLE_HEALTH_INSURANCE_MANAGER", "ROLE_H1B_IMMIGRATION"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
     public Address read(@PathParam("id") Long id) {
         return addressDao.findById(id);
     }

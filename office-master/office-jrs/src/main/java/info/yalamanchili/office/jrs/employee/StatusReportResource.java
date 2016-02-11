@@ -33,7 +33,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,8 +60,7 @@ public class StatusReportResource extends CRUDResource<StatusReport> {
     @Path("/{id}")
     @Transactional(readOnly = true)
     @Override
-    @PreAuthorize("hasAnyRole('ROLE_H1B_IMMIGRATION','ROLE_HR','ROLE_RELATIONSHIP')")
-    @AccessCheck(roles = {"ROLE_H1B_IMMIGRATION", "ROLE_HR","ROLE_RELATIONSHIP"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
+    @AccessCheck(roles = {"ROLE_H1B_IMMIGRATION", "Auth.ROLE.ROLE_IT_DEVELOPER", "ROLE_RELATIONSHIP"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
     public StatusReport read(@PathParam("id") Long id) {
         return StatusReportService.instance().read(id);
     }

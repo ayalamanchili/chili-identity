@@ -73,7 +73,7 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Client"));
         table.setText(0, 2, getKeyValue("Vendor"));
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_BILLING_ADMIN)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS, Auth.ROLE.ROLE_RECRUITER)) {
             table.setText(0, 3, getKeyValue("ItemNo"));
             table.setText(0, 4, getKeyValue("BillRate"));
             table.setText(0, 5, getKeyValue("Frequency"));
