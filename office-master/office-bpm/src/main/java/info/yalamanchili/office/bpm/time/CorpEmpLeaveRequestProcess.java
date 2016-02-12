@@ -21,6 +21,7 @@ import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.chili.email.Email;
 import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
 import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.CorporateTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
@@ -191,9 +192,19 @@ public class CorpEmpLeaveRequestProcess extends RuleBasedTaskDelegateListner imp
         }
         messageBuilder.append("Task  Details: \n Name: ").append(task.getName()).append("\n");
         messageBuilder.append("Description: ").append(task.getDescription()).append("\n");
+        if (!email.getTos().equals(emp)) {
+            messageBuilder.append("\n\n\t Please click on the below link to complete the task: \n\t " + getTaskLink(task));
+            email.getHeaders().put("task-id", task.getId());
+        }
         email.setBody(messageBuilder.toString());
         email.setHtml(Boolean.TRUE);
         messagingService.sendEmail(email);
+    }
+
+    protected String getTaskLink(DelegateTask delegateTask) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(OfficeServiceConfiguration.instance().getPortalWebUrl()).append("#?entity=info.chili.bpm.types.Task&id=").append(delegateTask.getId());
+        return sb.toString();
     }
 
     protected void sendNotifyEmplyeeNotification(String status, DelegateTask task) {
