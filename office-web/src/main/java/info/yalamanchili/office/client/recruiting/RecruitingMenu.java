@@ -39,10 +39,9 @@ public class RecruitingMenu extends CMenuBar {
             addMenuItem("Practice", "Practice", practiceMaintainenceCmd);
             addMenuItem("TechnologyGroup", "TechnologyGroup", technologyGroupMaintainenceCmd);
             addMenuItem("SkillSet Tags", "SkillSet Tags", skillSetTagsMaintainenceCmd);
-            addMenuItem("Find Candidates", "Find Candidates", reportsCmd);
         }
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CEO, Auth.ROLE.ROLE_RECRUITER )){
-            addMenuItem("SkillSet Reports", "SkillSet Reports", skillReportsCmd);
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CEO, Auth.ROLE.ROLE_RECRUITER)) {
+            addMenuItem("Find Candidates", "Find Candidates", reportsCmd);
         }
     }
     static Command skillSetTagsMaintainenceCmd = new Command() {
@@ -80,10 +79,11 @@ public class RecruitingMenu extends CMenuBar {
         @Override
         public void execute() {
             TabPanel.instance().getRecruitingPanel().entityPanel.clear();
-            TabPanel.instance().getRecruitingPanel().sidePanelTop.clear();
-            TabPanel.instance().getRecruitingPanel().sidePanelTop.add(new SkillSetSearchPanel());
-            TabPanel.instance().getRecruitingPanel().sidePanelBottom.clear();
-            TabPanel.instance().getRecruitingPanel().sidePanelBottom.add(new ResumeSearchWidget());
+            TabPanel.instance().getRecruitingPanel().sidePanel.clear();
+            TabPanel.instance().getRecruitingPanel().sidePanel.add(new SkillSetReportSidePanel());
+            TabPanel.instance().getRecruitingPanel().sidePanel.add(new SkillSetSearchPanel());
+            TabPanel.instance().getRecruitingPanel().sidePanel.add(new ResumeSearchWidget());
+
         }
     };
     static Command skillsMaintainenceCmd = new Command() {
@@ -103,14 +103,6 @@ public class RecruitingMenu extends CMenuBar {
             TabPanel.instance().getRecruitingPanel().sidePanelBottom.clear();
             TabPanel.instance().getRecruitingPanel().entityPanel.add(new ReadAllCertificationsPanel());
             TabPanel.instance().getRecruitingPanel().sidePanelTop.add(new CertificationSidePanel());
-        }
-    };
-    static Command skillReportsCmd = new Command() {
-        public void execute() {
-            TabPanel.instance().getRecruitingPanel().entityPanel.clear();
-            TabPanel.instance().getRecruitingPanel().sidePanelTop.clear();
-            TabPanel.instance().getRecruitingPanel().sidePanelBottom.clear();
-            TabPanel.instance().getRecruitingPanel().sidePanelTop.add(new SkillSetReportSidePanel());
         }
     };
 }
