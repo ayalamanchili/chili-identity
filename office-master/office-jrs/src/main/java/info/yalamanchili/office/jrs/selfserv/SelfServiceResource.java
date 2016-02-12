@@ -15,6 +15,7 @@ import info.yalamanchili.office.dao.selfserv.ServiceTicketDao;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.selfserv.ServiceTicket;
 import info.yalamanchili.office.entity.selfserv.TicketComment;
+import info.yalamanchili.office.security.AccessCheck;
 import info.yalamanchili.office.selfserv.SelfService;
 import info.yalamanchili.office.selfserv.ServiceTicketUpdateDto;
 import java.util.ArrayList;
@@ -79,6 +80,7 @@ public class SelfServiceResource {
 
     @GET
     @Path("/{ticketId}")
+//    @AccessCheck(roles = {"ROLE_SELFSERVICE_TRIAGE" }, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
     public ServiceTicket viewServiceTicket(@PathParam("ticketId") long ticketId) {
         return ServiceTicketDao.instance().findById(ticketId);
     }

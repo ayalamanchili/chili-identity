@@ -49,17 +49,16 @@ public class ReadAllTravelAuthorizationPanel extends CRUDReadAllComposite {
         this.url = url;
         initTable("TravelAuthorization", OfficeWelcome.constants);
     }
-    
+
     public ReadAllTravelAuthorizationPanel(JSONArray result) {
         instance = this;
         initTable("TravelAuthorization", result, OfficeWelcome.constants);
     }
-    
 
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().expensePanel.entityPanel.clear();
-        TabPanel.instance().expensePanel.entityPanel.add(new ReadTravelAuthorizationPanel(getEntity(entityId)));
+        TabPanel.instance().expensePanel.entityPanel.add(new ReadTravelAuthorizationPanel(entityId));
     }
 
     @Override
@@ -135,7 +134,7 @@ public class ReadAllTravelAuthorizationPanel extends CRUDReadAllComposite {
     protected void addOptionsWidget(int row, JSONObject entity) {
         String status = JSONUtils.toString(entity, "status");
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CEO)) {
-            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE,TableRowOptionsWidget.OptionsType.PRINT);
+            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE, TableRowOptionsWidget.OptionsType.PRINT);
         } else {
             createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.PRINT);
             if ((TravelAuthorizationStatus.PENDING_CEO_APPROVAL.name().equals(status))
@@ -176,7 +175,8 @@ public class ReadAllTravelAuthorizationPanel extends CRUDReadAllComposite {
     protected boolean autoShowDocumentation() {
         return true;
     }
-     @Override
+
+    @Override
     protected boolean enableQuickView() {
         return true;
     }
@@ -185,8 +185,9 @@ public class ReadAllTravelAuthorizationPanel extends CRUDReadAllComposite {
     protected void onQuickView(int row, String id) {
         new GenericPopup(new ReadTravelAuthorizationPanel(getEntity(id)), Window.getClientWidth() / 3, 0).show();
     }
+
     @Override
-    protected boolean enablePersistedQuickView(){
+    protected boolean enablePersistedQuickView() {
         return true;
     }
 }

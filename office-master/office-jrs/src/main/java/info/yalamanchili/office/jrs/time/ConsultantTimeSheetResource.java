@@ -21,6 +21,7 @@ import info.yalamanchili.office.entity.time.ConsultantTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import info.yalamanchili.office.jrs.CRUDResource;
+import info.yalamanchili.office.security.AccessCheck;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -48,6 +49,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Scope("request")
 public class ConsultantTimeSheetResource extends CRUDResource<ConsultantTimeSheet> {
+
+    @GET
+    @Path("/{id}")
+    @Transactional(readOnly = true)
+    @Override
+    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_CEO", "ROLE_CONSULTANT_TIME_ADMIN"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
+    public ConsultantTimeSheet read(@PathParam("id") Long id) {
+        return consultantTimeSheetDao.findById(id);
+    }
 
     @GET
     @Path("/summary")
