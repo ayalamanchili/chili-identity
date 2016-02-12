@@ -131,7 +131,7 @@ public class ExpenseReportResource extends CRUDResource<ExpenseReport> {
     @PUT
     @Path("/search-expensereport/{start}/{limit}")
     @Transactional(readOnly = true)
-    @PreAuthorize("hasRole('ROLE_ADMIN','ROLE_CEO','ROLE_PAYROLL_AND_BENIFITS','ROLE_ACCOUNTS_PAYABLE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CEO','ROLE_PAYROLL_AND_BENIFITS','ROLE_ACCOUNTS_PAYABLE')")
     public List<ExpenseReport> search(ExpenseReport entity, @PathParam("start") int start, @PathParam("limit") int limit) {
         List<ExpenseReport> res = new ArrayList();
         Query searchQuery = SearchUtils.getSearchQuery(ExpenseReportsDao.instance().getEntityManager(), entity, new SearchUtils.SearchCriteria());
