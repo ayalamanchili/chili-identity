@@ -128,7 +128,7 @@ public class ContractResource {
             }
         }
         table.setEntities(dtos);
-        String[] columnOrder = new String[]{"employee", "employeeType", "vendor", "vendorLocation", "vendorContact", "vendorRecruiter", "subContractorName", "subcontractorAddress", "startDate", "endDate", "subcontractorPayRate"};
+        String[] columnOrder = new String[]{"employee", "employeeType", "vendor", "vendorLocation", "vendorAPContact", "vendorRecruiter", "subContractorName", "subcontractorAddress", "subContractorContactName","startDate", "endDate", "subcontractorPayRate"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(table.getEntities(), "SubContractors Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
 }
