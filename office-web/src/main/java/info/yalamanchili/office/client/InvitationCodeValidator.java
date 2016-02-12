@@ -17,7 +17,6 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
 import info.chili.gwt.rpc.HttpService;
-import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.onboarding.EmployeeOnboardingPanel;
 import info.yalamanchili.office.client.resources.OfficeImages;
 import java.util.List;
@@ -27,7 +26,7 @@ import java.util.List;
  * @author ayalamanchili
  */
 public class InvitationCodeValidator {
-    
+
     public static boolean validate(List<String> values) {
         if (values.size() == 1 && !Strings.isNullOrEmpty(values.get(0))) {
             JSONObject entity = new JSONObject();
@@ -40,7 +39,7 @@ public class InvitationCodeValidator {
                             RootPanel.get().add(new Image(OfficeImages.INSTANCE.logo()));
                             RootPanel.get().add(new EmployeeOnboardingPanel(arg0));
                         }
-                        
+
                         @Override
                         public void onFailure(Throwable caught) {
                             //TODO throw validation messge
@@ -58,8 +57,8 @@ public class InvitationCodeValidator {
         }
         return false;
     }
-    
+
     protected static String getInviteCodeValidateURI() {
-        return OfficeWelcome.constants.root_url() + "invitecode/validate";
+        return OfficeWelcome.constants.public_url() + "invitecode/validate";
     }
 }

@@ -26,7 +26,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
@@ -57,13 +56,6 @@ public class EmployeeOnBoardingResource {
         return tableObj;
     }
 
-    @GET
-    @Path("/getdetails/{invitationCode}")
-    public OnBoardingEmployeeDto getdetails(@PathParam("invitationCode") String invitationCode) {
-        EmployeeOnBoardingService employeeOnBoardingService = (EmployeeOnBoardingService) SpringContext.getBean("employeeOnBoardingService");
-        return employeeOnBoardingService.getOnboardingInfo(invitationCode);
-    }
-
     @Path("/initiate-onboarding")
     @PUT
     @PreAuthorize("hasAnyRole('ROLE_ON_BOARDING_MGR','ROLE_HR_ADMINSTRATION')")
@@ -71,15 +63,6 @@ public class EmployeeOnBoardingResource {
     public void initiateOnBoarding(InitiateOnBoardingDto dto) {
         EmployeeOnBoardingService employeeOnBoardingService = (EmployeeOnBoardingService) SpringContext.getBean("employeeOnBoardingService");
         employeeOnBoardingService.initiateOnBoarding(dto);
-    }
-
-    @Path("/on-board-employee")
-    @PUT
-    @CacheEvict(value = "employees", allEntries = true)
-    @Validate
-    public OnBoardingEmployeeDto onBoardEmployee(OnBoardingEmployeeDto employee) {
-        EmployeeOnBoardingService employeeOnBoardingService = (EmployeeOnBoardingService) SpringContext.getBean("employeeOnBoardingService");
-        return employeeOnBoardingService.onBoardEmployee(employee);
     }
 
     @GET

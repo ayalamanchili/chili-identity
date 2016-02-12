@@ -11,7 +11,6 @@ package info.yalamanchili.office.jrs.invite;
 import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.entity.profile.invite.InviteCode;
 import info.yalamanchili.office.profile.invite.InviteCodeGeneratorService;
-import info.yalamanchili.office.profile.invite.InviteCodeValidationService;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.PUT;
@@ -41,12 +40,5 @@ public class InviteCodeResource {
         InviteCodeGeneratorService.instance().generate(entity, sendEmail);
     }
 
-    @PUT
-    @Validate
-    @Path("/validate")
-    @Produces("application/text")
-    public String validate(InviteCode entity) {
-        return InviteCodeValidationService.instance().inviteCodeValidator(entity);
-    }
 
 }

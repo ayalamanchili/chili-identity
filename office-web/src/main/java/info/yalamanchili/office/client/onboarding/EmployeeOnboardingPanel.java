@@ -8,6 +8,8 @@
  */
 package info.yalamanchili.office.client.onboarding;
 
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -23,6 +25,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.RootPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.CRUDComposite;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.data.CountryFactory;
@@ -31,6 +34,7 @@ import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.FileuploadField;
+import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
@@ -49,14 +53,14 @@ import java.util.logging.Logger;
  *
  * @author Madhu.Badiginchala
  */
-public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHandler, ChangeHandler {
+public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHandler, ChangeHandler, BlurHandler {
 
     private static Logger logger = Logger.getLogger(EmployeeOnboardingPanel.class.getName());
     protected SelectCompanyWidget selectCompnayWidget = new SelectCompanyWidget(false, true, Alignment.HORIZONTAL);
     protected ClickableLink addDependentsL = new ClickableLink("Add Dependents");
     protected ClickableLink addEmerContact = new ClickableLink("Add Emergency Contacts");
-    protected List<CreateDependentsPanel> createDependentsPanel = new ArrayList<>();
-    protected List<CreateEmergencyContactWidget> createEmergencyContactPanel = new ArrayList<>();
+    protected List<CreateDependentsPanel> dependentsPanels = new ArrayList<>();
+    protected List<CreateEmergencyContactWidget> emergencyContactsPanels = new ArrayList<>();
     HTML emptyLine = new HTML("<br/>");
 
     protected static HTML formsInfo = new HTML("\n"
@@ -129,7 +133,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
     }
 
     protected String getReadURI(String invitationCode) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "on-board-employee/getdetails/" + invitationCode);
+        return URL.encode(OfficeWelcome.constants.public_url() + "onboarding/getdetails/" + invitationCode);
     }
 
     @Override
@@ -171,20 +175,20 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         bankAccount.put("targetEntityId", new JSONString("0"));
         employee.put("bankAccount", bankAccount);
         // Dependent Information
-        if (createDependentsPanel.size() > 0) {
+        if (dependentsPanels.size() > 0) {
             JSONArray dependent = new JSONArray();
             int i = 0;
-            for (CreateDependentsPanel panel : createDependentsPanel) {
+            for (CreateDependentsPanel panel : dependentsPanels) {
                 dependent.set(i, panel.populateEntityFromFields());
                 i++;
             }
             employee.put("dependent", dependent);
         }
         // Emergency Contact Information
-        if (createEmergencyContactPanel.size() > 0) {
+        if (emergencyContactsPanels.size() > 0) {
             JSONArray emergencyContact = new JSONArray();
             int i = 0;
-            for (CreateEmergencyContactWidget panel : createEmergencyContactPanel) {
+            for (CreateEmergencyContactWidget panel : emergencyContactsPanels) {
                 emergencyContact.set(i, panel.populateEntityFromFields());
                 i++;
             }
@@ -223,6 +227,8 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         countriesF.listBox.addChangeHandler(this);
         addDependentsL.addClickHandler(this);
         addEmerContact.addClickHandler(this);
+        firstNameF.getTextbox().addBlurHandler(this);
+        lastNameF.getTextbox().addBlurHandler(this);
     }
 
     @Override
@@ -234,6 +240,11 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         emerInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         update.setText("Submit");
     }
+
+    StringField firstNameF;
+    StringField lastNameF;
+    StringField baFirstNameF;
+    StringField baLastNameF;
 
     @Override
     protected void addWidgets() {
@@ -256,8 +267,8 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         addField("zip", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(bankInfo);
         addField("accountFirstName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("accountLastName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("bankName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("accountLastName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("bankName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("bankRoutingNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("bankAccountNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("bankAddress1", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -276,6 +287,10 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         entityFieldsPanel.add(addEmerContact);
         countriesF = (EnumField) fields.get("country");
         statesF = (EnumField) fields.get("state");
+        firstNameF = (StringField) fields.get("firstName");
+        lastNameF = (StringField) fields.get("lastName");
+        baFirstNameF = (StringField) fields.get("accountFirstName");
+        baLastNameF = (StringField) fields.get("accountLastName");
         entityFieldsPanel.add(emptyLine);
         alignFields();
     }
@@ -299,6 +314,11 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
                         uploadDocs(arg0);
                     }
                 });
+    }
+
+    @Override
+    protected CRUDComposite getChildWidget(int childIndexWidget) {
+        return emergencyContactsPanels.get(childIndexWidget);
     }
 
     protected void uploadDocs(String postString) {
@@ -341,12 +361,11 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "on-board-employee/on-board-employee";
+        return OfficeWelcome.constants.public_url() + "onboarding/on-board-employee";
     }
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-
         assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("dateOfBirth", entity, DataType.DATE_FIELD);
@@ -374,31 +393,41 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addDependentsL)) {
             CreateDependentsPanel panel = null;
-            int i = createDependentsPanel.size();
+            int i = dependentsPanels.size();
             panel = new CreateDependentsPanel(this, i);
-            createDependentsPanel.add(panel);
+            dependentsPanels.add(panel);
             entityFieldsPanel.add(panel);
         } else if (event.getSource().equals(addEmerContact)) {
             CreateEmergencyContactWidget panel = null;
-            int x = createEmergencyContactPanel.size();
+            int x = emergencyContactsPanels.size();
             panel = new CreateEmergencyContactWidget(CreateComposite.CreateCompositeType.ADD, this, x);
-            createEmergencyContactPanel.add(panel);
+            emergencyContactsPanels.add(panel);
             entityFieldsPanel.add(panel);
         }
         super.onClick(event);
     }
 
     public void removePanel(int i) {
-        if (createDependentsPanel.size() > 0) {
-            createDependentsPanel.get(i).removeFromParent();
-            createDependentsPanel.remove(i);
+        if (dependentsPanels.size() > 0) {
+            dependentsPanels.get(i).removeFromParent();
+            dependentsPanels.remove(i);
         }
     }
 
     public void removeEmergencyContactPanel(int x) {
-        if (createEmergencyContactPanel.size() > 0) {
-            createEmergencyContactPanel.get(x).removeFromParent();
-            createEmergencyContactPanel.remove(x);
+        if (emergencyContactsPanels.size() > 0) {
+            emergencyContactsPanels.get(x).removeFromParent();
+            emergencyContactsPanels.remove(x);
+        }
+    }
+
+    @Override
+    public void onBlur(BlurEvent event) {
+        if (event.getSource().equals(firstNameF.getTextbox())) {
+            baFirstNameF.setValue(firstNameF.getValue());
+        }
+        if (event.getSource().equals(lastNameF.getTextbox())) {
+            baLastNameF.setValue(lastNameF.getValue());
         }
     }
 

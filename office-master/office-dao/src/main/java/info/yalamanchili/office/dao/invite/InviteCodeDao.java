@@ -36,7 +36,7 @@ public class InviteCodeDao {
 
     public InviteCode find(String invitationCode) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("invitationCode").is(invitationCode));
+        query.addCriteria(Criteria.where("invitationCode").is(invitationCode.trim()));
         return mongoTemplate.findOne(query, InviteCode.class);
     }
 

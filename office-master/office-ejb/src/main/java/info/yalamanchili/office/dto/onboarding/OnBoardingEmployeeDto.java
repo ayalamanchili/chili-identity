@@ -54,9 +54,6 @@ public class OnBoardingEmployeeDto implements Serializable {
      */
     protected String middleInitial;
     @Past(message = "{dateOfBirth.past.msg}")
-    /**
-     *
-     */
     @NotNull(message = "{dateOfBirth.not.empty.msg}")
     protected Date dateOfBirth;
     /**
@@ -81,9 +78,11 @@ public class OnBoardingEmployeeDto implements Serializable {
     protected String ssn;
 
     @Valid
+    @NotNull
     private Address address;
 
     @Valid
+    @NotNull
     private BankAccount bankAccount;
 
     @Valid
@@ -96,7 +95,7 @@ public class OnBoardingEmployeeDto implements Serializable {
     private List<EmergencyContactDto> emergencyContact;
 
     private List<EmployeeDocument> documents;
-    
+
     public List<EmployeeDocument> getDocuments() {
         return documents;
     }
