@@ -35,6 +35,7 @@ import info.yalamanchili.office.dto.client.ContractSearchDto;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import info.yalamanchili.office.entity.client.Vendor;
+import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.ClientInformationStatus;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -372,8 +373,9 @@ public class ContractService {
         if (ci.getSubcontractorContact() != null) {
             dto.setSubContractorContactName(ci.getSubcontractorContact().details());
         }
-        if (ci.getSubcontractorAddress() != null) {
-            dto.setSubcontractorAddress(ci.getSubcontractorAddress().getStreet1() + " " + ci.getSubcontractorAddress().getCity());
+         if (ci.getSubcontractor().getLocations().size() > 0) {
+            Address address = ci.getSubcontractor().getLocations().get(0);
+            dto.setSubcontractorAddress(address.getStreet1() + " " + address.getCity() + " " + address.getState() + " " + address.getCountry());
         }
         if (ci.getStatus() != null) {
             dto.setStatus(ci.getStatus().toString());
