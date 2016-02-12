@@ -13,6 +13,7 @@ import info.chili.jpa.validation.Validate;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.dao.profile.immigration.LCADao;
 import info.yalamanchili.office.entity.immigration.LCA;
+import info.yalamanchili.office.entity.immigration.LCADto;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.profile.immigration.LCAService;
 import java.util.List;
@@ -45,15 +46,14 @@ public class LCAResource extends CRUDResource<LCA> {
     protected LCAService lcaService;
 
     @PUT
-    @Override
+    @Path("/save")
     @Validate
-    public LCA save(LCA lca) {
+    public LCA save(LCADto lca) {
         return lcaService.saveLCA(lca);
     }
 
     @PUT
     @Path("/delete/{id}")
-    @Override
     public void delete(@PathParam("id") Long id) {
         LCA lca = lcaDao.findById(id);
         if (lca.getId() != null) {
@@ -62,21 +62,37 @@ public class LCAResource extends CRUDResource<LCA> {
     }
 
     @GET
-    @Path("{start}/{limit}")
+    @Path("/{start}/{limit}")
     public LCAResource.LCATable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         LCAResource.LCATable tableObj = new LCAResource.LCATable();
-        tableObj.setEntities(lcaDao.query(start, limit));
-        tableObj.setSize(lcaDao.size());
+        tableObj.setEntities(getDao().query(start, limit));
+        tableObj.setSize(getDao().size());
         return tableObj;
     }
 
     @GET
-    @Path("/dropdown/{start}/{limit}")
-    public List<Entry> getLCADropDown(@PathParam("start") int start, @PathParam("limit") int limit,
+    @Path("/dropdown/{id}/{start}/{limit}")
+    public List<Entry> getLCADropDown(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit,
             @QueryParam("column") List<String> columns) {
         return super.getDropDown(start, limit, columns);
     }
+//    @GET
+//    @Path("/dropdown/{start}/{limit}")
+//    public List<Entry> getLCADropDown(@PathParam("start") int start, @PathParam("limit") int limit,
+//            @QueryParam("column") List<String> columns) {
+//        return super.getDropDown(start, limit, columns);
+//    }
 
+//    protected List<Entry> getLCAColumnDropDown(List<LCA> lcas) {
+//        List<Entry> result = new ArrayList<>();
+//        for (LCA lca : lcas) {
+//            Entry entry = new Entry();
+//            entry.setId(lca.getId().toString());
+//            entry.setValue(lca.getLcaNumber());
+//            result.add(entry);
+//        }
+//        return result;
+//    }
     @Override
     public CRUDDao getDao() {
         return lcaDao;

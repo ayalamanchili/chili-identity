@@ -9,6 +9,7 @@
 package info.yalamanchili.office.entity.immigration;
 
 import info.chili.jpa.AbstractHandleEntity;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -50,7 +51,7 @@ public class Petition extends AbstractHandleEntity {
 //    @CollectionTable(name="WorkedBy", joinColumns=@JoinColumn(name="id"))
 //    @Column(name="workedBy")
     @org.hibernate.annotations.Index(name = "PET_WRK_BY")
-    protected String workedBy;
+    protected ArrayList<String> workedBy = new ArrayList<>();
 
     protected String attorneyName;
 
@@ -239,11 +240,11 @@ public class Petition extends AbstractHandleEntity {
         this.petitionaddinfo = petitionaddinfo;
     }
 
-    public String getWorkedBy() {
+    public ArrayList<String> getWorkedBy() {
         return workedBy;
     }
 
-    public void setWorkedBy(String workedBy) {
+    public void setWorkedBy(ArrayList<String> workedBy) {
         this.workedBy = workedBy;
     }
 

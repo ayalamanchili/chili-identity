@@ -10,7 +10,6 @@ import info.chili.gwt.composite.SelectComposite;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
 /**
@@ -38,7 +37,7 @@ public class SelectLCAWidget extends SelectComposite {
 
     @Override
     protected void fetchDropDownData() {
-        HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 100, "id", "lcaNumber"),
+        HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 1000, "id", "lcaNumber"),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String entityString) {
@@ -49,7 +48,7 @@ public class SelectLCAWidget extends SelectComposite {
 
     @Override
     protected String getDropDownURL(Integer start, Integer limit, String... columns) {
-        return super.generateDropdownUrl(OfficeWelcome.constants.root_url() + "lca/dropdown/" + TreeEmployeePanel.instance().getEntityId(), start, limit, columns);
+        return super.generateDropdownUrl(OfficeWelcome.constants.root_url() + "lca/dropdown", start, limit, columns);
     }
 
     @Override

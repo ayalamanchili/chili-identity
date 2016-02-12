@@ -10,7 +10,7 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.TreePanelComposite;
 import info.yalamanchili.office.client.profile.immigration.ReadAllLCAPanel;
 import info.yalamanchili.office.client.profile.immigration.ReadAllPassportsPanel;
-import info.yalamanchili.office.client.profile.immigration.ReadAllPetitionsPanel;
+import info.yalamanchili.office.client.profile.immigration.ReadAllEmployeePetitionsPanel;
 import java.util.logging.Logger;
 
 /**
@@ -21,8 +21,8 @@ public class TreeEmployeeImmigrationPanel extends TreePanelComposite {
 
     private static Logger logger = Logger.getLogger(TreeEmployeeImmigrationPanel.class.getName());
     protected static final String PASSPORT_NODE = "passport-immigration";
-    protected static final String LCA_NODE = "lca-immigration";
-    protected static final String PETITION_NODE = "petition-immigration";
+  //  protected static final String LCA_NODE = "lca-immigration";
+  //  protected static final String PETITION_NODE = "petition-immigration";
     protected String employeeId;
 
     public TreeEmployeeImmigrationPanel(String empId) {
@@ -41,8 +41,8 @@ public class TreeEmployeeImmigrationPanel extends TreePanelComposite {
     @Override
     protected void addWidgets() {
         addFirstChildLink("Passport", PASSPORT_NODE);
-        addFirstChildLink("LCA", LCA_NODE);
-        addFirstChildLink("Petition", PETITION_NODE);
+   //     addFirstChildLink("LCA", LCA_NODE);
+    //    addFirstChildLink("Petition", PETITION_NODE);
     }
 
     @Override
@@ -51,14 +51,14 @@ public class TreeEmployeeImmigrationPanel extends TreePanelComposite {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
             TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllPassportsPanel(employeeId));
         }
-        if (LCA_NODE.equals(entityNodeKey)) {
-            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllLCAPanel(employeeId));
-        }
-        if (PETITION_NODE.equals(entityNodeKey)) {
-            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllPetitionsPanel(employeeId));
-        }
+//        if (LCA_NODE.equals(entityNodeKey)) {
+//            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+//            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllLCAPanel(employeeId));
+//        }
+//        if (PETITION_NODE.equals(entityNodeKey)) {
+//            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+//            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmployeePetitionsPanel(employeeId));
+//        }
     }
 
     @Override

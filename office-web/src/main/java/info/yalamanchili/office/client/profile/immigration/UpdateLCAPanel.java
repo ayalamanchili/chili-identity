@@ -17,10 +17,10 @@ import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.profile.address.CreateAddressPanel;
 import info.yalamanchili.office.client.profile.address.CreateAddressWidget;
 import info.yalamanchili.office.client.profile.address.UpdateAddressPanel;
-import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
 /**
@@ -32,6 +32,8 @@ public class UpdateLCAPanel extends UpdateComposite {
     private static Logger logger = Logger.getLogger(UpdateLCAPanel.class.getName());
     protected BooleanField addAddress = new BooleanField(OfficeWelcome.constants, "Add LCA Secondary Address", "LCA", false, false, Alignment.HORIZONTAL);
     HTML wagesInfo = new HTML("<h4 style=\"color:#427fed\">" + "Wages Information</h4>");
+    HTML addInfo = new HTML("<h4 style=\"color:#427fed\">" + "Additional Information</h4>");
+    protected SelectCompanyWidget selectCompanyWidget = new SelectCompanyWidget(false, true, Alignment.HORIZONTAL);
     HTML lcaAddress1 = new HTML("<h4 style=\"color:#427fed\">" + "LCA Primary Address </h4>");
     HTML lcaAddress2 = new HTML("<h4 style=\"color:#427fed\">" + "LCA Secondary Address</h4>");
     UpdateLCAAddressWidget updateAddressWidget1;
@@ -45,12 +47,17 @@ public class UpdateLCAPanel extends UpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
+        logger.info("entity is :::" + entity);
         assignEntityValueFromField("lcaNumber", entity);
         assignEntityValueFromField("lcaFiledDate", entity);
         assignEntityValueFromField("lcaValidFromDate", entity);
         assignEntityValueFromField("lcaValidToDate", entity);
         assignEntityValueFromField("jobTitle", entity);
         assignEntityValueFromField("withdrawnLCANumber", entity);
+        assignEntityValueFromField("totalWorkingPositions", entity);
+        assignEntityValueFromField("visaClassification", entity);
+        assignEntityValueFromField("socCodesAndOccupations", entity);
+        assignEntityValueFromField("status", entity);
         // Address Information 1
         if (entity.containsKey("lcaAddress1")) {
             entity.put("lcaAddress1", updateAddressWidget1.populateEntityFromFields());
@@ -69,6 +76,12 @@ public class UpdateLCAPanel extends UpdateComposite {
         assignEntityValueFromField("lcaPrevWageLvl", entity);
         assignEntityValueFromField("lcaPrevMinWage", entity);
         assignEntityValueFromField("lcaPrevMaxWage", entity);
+        logger.info("entity is 222:::" + entity);
+        if (fields.containsKey("company") && selectCompanyWidget.getSelectedObject() != null) {
+            logger.info("entity is 333:::" + entity);
+            JSONObject company = selectCompanyWidget.getSelectedObject();
+            entity.put("company", company);
+        }
         return entity;
     }
 
@@ -102,6 +115,13 @@ public class UpdateLCAPanel extends UpdateComposite {
         assignFieldValueFromEntity("lcaPrevWageLvl", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("lcaPrevMinWage", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("lcaPrevMaxWage", entity, DataType.CURRENCY_FIELD);
+        assignFieldValueFromEntity("totalWorkingPositions", entity, DataType.LONG_FIELD);
+        assignFieldValueFromEntity("visaClassification", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("socCodesAndOccupations", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
+        if (fields.containsKey("company")) {
+            assignFieldValueFromEntity("company", entity, null);
+        }
         if (entity.containsKey("lcaAddress1")) {
             entityFieldsPanel.add(lcaAddress1);
             updateAddressWidget1 = new UpdateLCAAddressWidget(entity.get("lcaAddress1").isObject(), UpdateAddressPanel.UpdateAddressPanelType.MIN);
@@ -112,14 +132,14 @@ public class UpdateLCAPanel extends UpdateComposite {
             updateAddressWidget2 = new UpdateLCAAddressWidget(entity.get("lcaAddress2").isObject(), UpdateAddressPanel.UpdateAddressPanelType.MIN);
             entityFieldsPanel.add(updateAddressWidget2);
             entityActionsPanel.remove(addAddress);
-        } 
+        }
     }
 
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated LCA");
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllLCAPanel(TreeEmployeePanel.instance().getEntityId()));
+        TabPanel.instance().immigrationPanel.entityPanel.clear();
+        TabPanel.instance().immigrationPanel.entityPanel.add(new ReadAllLCAPanel());
     }
 
     @Override
@@ -134,11 +154,15 @@ public class UpdateLCAPanel extends UpdateComposite {
     @Override
     protected void addWidgets() {
         addField("lcaNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("totalWorkingPositions", false, true, DataType.LONG_FIELD, Alignment.HORIZONTAL);
+        addEnumField("visaClassification", false, true, VisaClassificationType.names(), Alignment.HORIZONTAL);
+        addDropDown("company", selectCompanyWidget);
+        addField("jobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("socCodesAndOccupations", false, true, SOCCodesAndOccupations.names(), Alignment.HORIZONTAL);
         addField("lcaFiledDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("lcaValidFromDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("lcaValidToDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("jobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("withdrawnLCANumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("status", false, true, LCAStatus.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(wagesInfo);
         addEnumField("lcaCurrWageLvl", false, true, LCAWageLevels.names(), Alignment.HORIZONTAL);
         addField("lcaCurrMinWage", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
@@ -146,6 +170,8 @@ public class UpdateLCAPanel extends UpdateComposite {
         addEnumField("lcaPrevWageLvl", false, true, LCAWageLevels.names(), Alignment.HORIZONTAL);
         addField("lcaPrevMinWage", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("lcaPrevMaxWage", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(addInfo);
+        addField("withdrawnLCANumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityActionsPanel.add(addAddress);
         addAddress.setValue(false);
         alignFields();
@@ -157,9 +183,9 @@ public class UpdateLCAPanel extends UpdateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "lca/save/" + TreeEmployeePanel.instance().getEntityId();
+        return OfficeWelcome.constants.root_url() + "lca/save";
     }
-    
+
     @Override
     public void onClick(ClickEvent event) {
         if (addAddress.getValue()) {

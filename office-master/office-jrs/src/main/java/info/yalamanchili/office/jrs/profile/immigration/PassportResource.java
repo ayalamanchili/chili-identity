@@ -16,7 +16,6 @@ import info.chili.jpa.validation.Validate;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.immigration.PassportDao;
-import info.yalamanchili.office.entity.immigration.LCA;
 import info.yalamanchili.office.entity.immigration.Passport;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.profile.immigration.PassportService;

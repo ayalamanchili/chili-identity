@@ -17,7 +17,6 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.hr.PetitionFor;
-import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
 /**
@@ -104,8 +103,8 @@ public class CreatePetitionPanel extends CreateComposite {
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Added Petition");
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPetitionsPanel(TreeEmployeePanel.instance().getEntityId()));
+        TabPanel.instance().immigrationPanel.entityPanel.clear();
+        TabPanel.instance().immigrationPanel.entityPanel.add(new ReadAllPetitionsPanel());
     }
 
     @Override
@@ -152,7 +151,7 @@ public class CreatePetitionPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "petition/save/" + TreeEmployeePanel.instance().getEntityId();
+        return OfficeWelcome.constants.root_url() + "petition/save";
     }
 
 }

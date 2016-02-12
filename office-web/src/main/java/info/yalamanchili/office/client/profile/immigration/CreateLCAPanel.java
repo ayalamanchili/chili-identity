@@ -6,21 +6,27 @@
 package info.yalamanchili.office.client.profile.immigration;
 
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.BooleanField;
+import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.IntegerField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.admin.notificationgroup.MultiSelectEmployeeWidget;
+import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.profile.address.CreateAddressPanel;
 import info.yalamanchili.office.client.profile.address.CreateAddressWidget;
-import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
+import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
 import java.util.logging.Logger;
 
 /**
@@ -34,7 +40,11 @@ public class CreateLCAPanel extends CreateComposite {
     protected BooleanField addAddress = new BooleanField(OfficeWelcome.constants, "Add LCA Secondary Address", "LCA", false, false, Alignment.HORIZONTAL);
     CreateAddressWidget createAddressWidget1 = new CreateAddressWidget(CreateAddressPanel.CreateAddressPanelType.MIN);
     CreateAddressWidget createAddressWidget2 = new CreateAddressWidget(CreateAddressPanel.CreateAddressPanelType.MIN);
+    protected SelectCompanyWidget selectCompanyWidget = new SelectCompanyWidget(false, true, Alignment.HORIZONTAL);
+    protected MultiSelectEmployeeWidget employeeSelectWidget = new MultiSelectEmployeeWidget("Employees", null, false, true);
     HTML wagesInfo = new HTML("<h4 style=\"color:#427fed\">" + "Wages Information</h4>");
+    HTML empInfo = new HTML("<h4 style=\"color:#427fed\">" + "Select Consultants</h4>");
+    HTML addInfo = new HTML("<h4 style=\"color:#427fed\">" + "Additional Information</h4>");
     HTML lcaAddress1 = new HTML("<h4 style=\"color:#427fed\">" + "LCA Primary Address </h4>");
     HTML lcaAddress2 = new HTML("<h4 style=\"color:#427fed\">" + "LCA Secondary Address</h4>");
     boolean isLCASecAddAvail = false;
@@ -49,10 +59,24 @@ public class CreateLCAPanel extends CreateComposite {
         JSONObject lca = new JSONObject();
         JSONObject lcaAddress1 = new JSONObject();
         JSONObject lcaAddress2 = new JSONObject();
+        JSONArray employees = new JSONArray();
+        int i = 0;
+        logger.info("size : " + employeeSelectWidget.getMultiSelectBox().getAllSelectedIds().size() );
+        for (String empId : employeeSelectWidget.getMultiSelectBox().getAllSelectedIds()) {
+            JSONObject emp = new JSONObject();
+            emp.put("id", new JSONString(empId));
+            employees.set(i, emp);
+            i++;
+        }
+        lca.put("employees", employees);
+        lca.put("worked", selectRecruiterW.getSelectedObjects());
         assignEntityValueFromField("lcaNumber", lca);
         assignEntityValueFromField("lcaFiledDate", lca);
         assignEntityValueFromField("lcaValidFromDate", lca);
         assignEntityValueFromField("lcaValidToDate", lca);
+        assignEntityValueFromField("totalWorkingPositions", lca);
+        assignEntityValueFromField("visaClassification", lca);
+        assignEntityValueFromField("socCodesAndOccupations", lca);
         assignEntityValueFromField("jobTitle", lca);
         assignEntityValueFromField("withdrawnLCANumber", lca);
         // Address Information 1
@@ -64,12 +88,25 @@ public class CreateLCAPanel extends CreateComposite {
             lca.put("lcaAddress2", createAddressWidget2.populateEntityFromFields());
         }
         // Other Information
+        if (fields.containsKey("company") && selectCompanyWidget.getSelectedObject() != null) {
+            JSONObject company = selectCompanyWidget.getSelectedObject();
+            lca.put("company", company);
+        }
         assignEntityValueFromField("lcaCurrWageLvl", lca);
         assignEntityValueFromField("lcaCurrMinWage", lca);
         assignEntityValueFromField("lcaCurrMaxWage", lca);
         assignEntityValueFromField("lcaPrevWageLvl", lca);
         assignEntityValueFromField("lcaPrevMinWage", lca);
         assignEntityValueFromField("lcaPrevMaxWage", lca);
+        assignEntityValueFromField("clientName", lca);
+        assignEntityValueFromField("vendorName", lca);
+        assignEntityValueFromField("nonDisplacement", lca);
+        assignEntityValueFromField("lcaPostingSentToVendor", lca);
+        assignEntityValueFromField("responseOnLcaPosting", lca);
+        assignEntityValueFromField("reminderEmail", lca);
+        assignEntityValueFromField("certifiedLcaSentConsultant", lca);
+        assignEntityValueFromField("lcaPostingSSTLocation", lca);
+        assignEntityValueFromField("lcaFiledInPIF", lca);
         logger.info("entity: " + lca);
         return lca;
     }
@@ -109,8 +146,8 @@ public class CreateLCAPanel extends CreateComposite {
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Added LCA");
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllLCAPanel(TreeEmployeePanel.instance().getEntityId()));
+        TabPanel.instance().immigrationPanel.entityPanel.clear();
+        TabPanel.instance().immigrationPanel.entityPanel.add(new ReadAllLCAPanel());
     }
 
     @Override
@@ -123,14 +160,26 @@ public class CreateLCAPanel extends CreateComposite {
 
     }
 
+    SelectEmployeeWithRoleWidget selectRecruiterW = new SelectEmployeeWithRoleWidget("WorkedBy", Auth.ROLE.ROLE_RECRUITER, false, false, Alignment.HORIZONTAL) {
+        @Override
+        public boolean enableMultiSelect() {
+            return true;
+        }
+    };
+
     @Override
     protected void addWidgets() {
         addField("lcaNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("lcaFiledDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("totalWorkingPositions", false, true, DataType.LONG_FIELD, Alignment.HORIZONTAL);
+        addEnumField("visaClassification", false, true, VisaClassificationType.names(), Alignment.HORIZONTAL);
+        addDropDown("company", selectCompanyWidget);
+        addField("jobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("socCodesAndOccupations", false, true, SOCCodesAndOccupations.names(), Alignment.HORIZONTAL);
         addField("lcaValidFromDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("lcaValidToDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("jobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("withdrawnLCANumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addDropDown("workedBy", selectRecruiterW);
+        entityFieldsPanel.add(empInfo);
+        entityFieldsPanel.add(employeeSelectWidget);
         entityFieldsPanel.add(wagesInfo);
         addEnumField("lcaCurrWageLvl", false, true, LCAWageLevels.names(), Alignment.HORIZONTAL);
         addField("lcaCurrMinWage", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
@@ -138,6 +187,17 @@ public class CreateLCAPanel extends CreateComposite {
         addEnumField("lcaPrevWageLvl", false, true, LCAWageLevels.names(), Alignment.HORIZONTAL);
         addField("lcaPrevMinWage", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("lcaPrevMaxWage", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(addInfo);
+        addField("clientName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("vendorName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("lcaFiledDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addEnumField("nonDisplacement", false, true, Polar.names(), Alignment.HORIZONTAL);
+        addField("lcaPostingSentToVendor", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("responseOnLcaPosting", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("reminderEmail", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("certifiedLcaSentConsultant", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("lcaPostingSSTLocation", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("lcaFiledInPIF", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(lcaAddress1);
         entityFieldsPanel.add(createAddressWidget1);
         entityActionsPanel.add(addAddress);
@@ -168,5 +228,5 @@ public class CreateLCAPanel extends CreateComposite {
         }
         super.onClick(event);
     }
-
+    
 }

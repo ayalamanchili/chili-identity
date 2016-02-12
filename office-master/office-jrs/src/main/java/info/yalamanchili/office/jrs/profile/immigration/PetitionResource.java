@@ -11,7 +11,6 @@ package info.yalamanchili.office.jrs.profile.immigration;
 import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.immigration.PetitionDao;
-import info.yalamanchili.office.entity.immigration.LCA;
 import info.yalamanchili.office.entity.immigration.Petition;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.profile.immigration.PetitionService;
@@ -59,12 +58,21 @@ public class PetitionResource {
         }
     }
 
+//    @GET
+//    @Path("/{id}/{start}/{limit}")
+//    public PetitionResource.PetitionTable table(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
+//        PetitionResource.PetitionTable tableObj = new PetitionResource.PetitionTable();
+//        Employee emp = EmployeeDao.instance().findById(id);
+//        tableObj.setEntities(petitionDao.findAll(emp));
+//        tableObj.setSize(petitionDao.size());
+//        return tableObj;
+//    }
+//
     @GET
-    @Path("/{id}/{start}/{limit}")
-    public PetitionResource.PetitionTable table(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
+    @Path("/{start}/{limit}")
+    public PetitionResource.PetitionTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         PetitionResource.PetitionTable tableObj = new PetitionResource.PetitionTable();
-        Employee emp = EmployeeDao.instance().findById(id);
-        tableObj.setEntities(petitionDao.findAll(emp));
+        tableObj.setEntities(petitionDao.query(start, limit));
         tableObj.setSize(petitionDao.size());
         return tableObj;
     }

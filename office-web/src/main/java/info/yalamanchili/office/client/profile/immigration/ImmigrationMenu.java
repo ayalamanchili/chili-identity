@@ -34,7 +34,7 @@ public class ImmigrationMenu extends CMenuBar {
             TabPanel.instance().getImmigrationPanel().entityPanel.clear();
             TabPanel.instance().getImmigrationPanel().sidePanelTop.clear();
             TabPanel.instance().getImmigrationPanel().entityPanel.add(new ReadAllLCAPanel());
-       //     TabPanel.instance().getImmigrationPanel().sidePanelTop.add(new ExpenseCategorySidePanel());
+  //          TabPanel.instance().getImmigrationPanel().sidePanelTop.add(new ExpenseCategorySidePanel());
         }
     };
     static Command immigrationpetitionCmd = new Command() {
@@ -42,16 +42,17 @@ public class ImmigrationMenu extends CMenuBar {
             TabPanel.instance().getImmigrationPanel().entityPanel.clear();
             TabPanel.instance().getImmigrationPanel().sidePanelTop.clear();
             TabPanel.instance().getImmigrationPanel().entityPanel.add(new ReadAllPetitionsPanel());
-       //     TabPanel.instance().getImmigrationPanel().sidePanelTop.add(new AdvanceRequisitionSidePanel());
+//            TabPanel.instance().getImmigrationPanel().sidePanelTop.add(new AdvanceRequisitionSidePanel());
         }
     };
     static Command immigrationtrackerCmd = new Command() {
         public void execute() {
-            TabPanel.instance().getImmigrationPanel().entityPanel.clear();
-            TabPanel.instance().getImmigrationPanel().sidePanelTop.clear();
-            TabPanel.instance().getImmigrationPanel().entityPanel.add(new ReadAllPetitionsPanel());
-      //      TabPanel.instance().getImmigrationPanel().sidePanelTop.add(new ImmigrationCheckRequisitionSidePanel());
+//            TabPanel.instance().getImmigrationPanel().entityPanel.clear();
+//            TabPanel.instance().getImmigrationPanel().sidePanelTop.clear();
+//            TabPanel.instance().getImmigrationPanel().entityPanel.add(new ReadAllLCAPanel());
+//            TabPanel.instance().getImmigrationPanel().sidePanelTop.add(new ImmigrationCheckRequisitionSidePanel());
         }
     };
     
 }
+

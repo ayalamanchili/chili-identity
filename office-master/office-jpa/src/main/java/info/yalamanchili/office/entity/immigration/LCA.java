@@ -9,20 +9,30 @@
 package info.yalamanchili.office.entity.immigration;
 
 import info.chili.jpa.AbstractEntity;
+import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.profile.Address;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.hibernate.annotations.CollectionOfElements;
+import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Indexed;
 
@@ -43,8 +53,20 @@ public class LCA extends AbstractEntity {
 
     @Enumerated(EnumType.STRING)
     protected SOCCodesAndOccupations socCodesAndOccupations;
-    
-    protected BigDecimal totalWorkingPositions;
+
+    protected Long totalWorkingPositions;
+
+    protected Long totalPendingPositions;
+
+    @CollectionOfElements
+    @JoinTable(name = "WorkedBy", joinColumns = {
+        @JoinColumn(name = "id")})
+    @Column(name = "workedBy")
+    protected Set<Long> workedBy;
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_LCA_Company")
+    protected Company company;
 
     @OneToOne(cascade = CascadeType.ALL)
     protected Address lcaAddress1;
@@ -84,12 +106,40 @@ public class LCA extends AbstractEntity {
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date lcaValidToDate;
 
-    @OneToMany(mappedBy = "lca", cascade = CascadeType.MERGE)
-    protected List<Petition> petitions;
-    
+//    @OneToMany(mappedBy = "lca", cascade = CascadeType.MERGE)
+//    protected List<Petition> petitions;
     @Enumerated(EnumType.STRING)
     protected LCAStatus status;
 
+    protected String clientName;
+
+    protected String vendorName;
+
+    @Temporal(javax.persistence.TemporalType.DATE)
+    protected Date lcaPostingSentToVendor;
+
+    @Temporal(javax.persistence.TemporalType.DATE)
+    protected Date responseOnLcaPosting;
+
+    @Temporal(javax.persistence.TemporalType.DATE)
+    protected Date reminderEmail;
+
+    @Temporal(javax.persistence.TemporalType.DATE)
+    protected Date certifiedLcaSentConsultant;
+
+    @Temporal(javax.persistence.TemporalType.DATE)
+    protected Date lcaPostingSSTLocation;
+
+    // Public Inspection File PIF
+    @Temporal(javax.persistence.TemporalType.DATE)
+    protected Date lcaFiledInPIF;
+
+    @Enumerated(EnumType.STRING)
+    protected Polar nonDisplacement;
+
+//    @OneToMany(cascade = CascadeType.ALL)
+//    @ForeignKey(name = "FK_LCA_Employee")
+//    protected List<LCAConsultants> lcaConsultants;
     public Address getLcaAddress1() {
         return lcaAddress1;
     }
@@ -218,11 +268,11 @@ public class LCA extends AbstractEntity {
         this.socCodesAndOccupations = socCodesAndOccupations;
     }
 
-    public BigDecimal getTotalWorkingPositions() {
+    public Long getTotalWorkingPositions() {
         return totalWorkingPositions;
     }
 
-    public void setTotalWorkingPositions(BigDecimal totalWorkingPositions) {
+    public void setTotalWorkingPositions(Long totalWorkingPositions) {
         this.totalWorkingPositions = totalWorkingPositions;
     }
 
@@ -234,25 +284,149 @@ public class LCA extends AbstractEntity {
         this.status = status;
     }
 
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    public Long getTotalPendingPositions() {
+        return totalPendingPositions;
+    }
+
+    public void setTotalPendingPositions(Long totalPendingPositions) {
+        this.totalPendingPositions = totalPendingPositions;
+    }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+    }
+
+    public String getVendorName() {
+        return vendorName;
+    }
+
+    public void setVendorName(String vendorName) {
+        this.vendorName = vendorName;
+    }
+
+    public Date getLcaPostingSentToVendor() {
+        return lcaPostingSentToVendor;
+    }
+
+    public void setLcaPostingSentToVendor(Date lcaPostingSentToVendor) {
+        this.lcaPostingSentToVendor = lcaPostingSentToVendor;
+    }
+
+    public Date getResponseOnLcaPosting() {
+        return responseOnLcaPosting;
+    }
+
+    public void setResponseOnLcaPosting(Date responseOnLcaPosting) {
+        this.responseOnLcaPosting = responseOnLcaPosting;
+    }
+
+    public Date getReminderEmail() {
+        return reminderEmail;
+    }
+
+    public void setReminderEmail(Date reminderEmail) {
+        this.reminderEmail = reminderEmail;
+    }
+
+    public Date getCertifiedLcaSentConsultant() {
+        return certifiedLcaSentConsultant;
+    }
+
+    public void setCertifiedLcaSentConsultant(Date certifiedLcaSentConsultant) {
+        this.certifiedLcaSentConsultant = certifiedLcaSentConsultant;
+    }
+
+    public Date getLcaPostingSSTLocation() {
+        return lcaPostingSSTLocation;
+    }
+
+    public void setLcaPostingSSTLocation(Date lcaPostingSSTLocation) {
+        this.lcaPostingSSTLocation = lcaPostingSSTLocation;
+    }
+
+    public Date getLcaFiledInPIF() {
+        return lcaFiledInPIF;
+    }
+
+    public void setLcaFiledInPIF(Date lcaFiledInPIF) {
+        this.lcaFiledInPIF = lcaFiledInPIF;
+    }
+
+    public Polar getNonDisplacement() {
+        return nonDisplacement;
+    }
+
+    public void setNonDisplacement(Polar nonDisplacement) {
+        this.nonDisplacement = nonDisplacement;
+    }
+
     @XmlTransient
-    public List<Petition> getPetitions() {
-        if (this.petitions == null) {
-            this.petitions = new ArrayList<>();
+    public Set<Long> getWorkedBy() {
+        if (this.workedBy == null) {
+            this.workedBy = new HashSet<>();
         }
-        return petitions;
+        return workedBy;
     }
 
-    public void setPetitions(List<Petition> petitions) {
-        this.petitions = petitions;
+    public void setWorkedBy(Set<Long> workedBy) {
+        this.workedBy = workedBy;
     }
 
-    public void addPetitions(Petition petition) {
-        if (petition == null) {
+    public void addWorkedBy(Long wrkedBy) {
+        if (wrkedBy == null) {
             return;
         }
-        getPetitions().add(petition);
+        getWorkedBy().add(wrkedBy);
     }
 
+//    @XmlTransient
+//    public List<LCAConsultants> getLcaConsultants() {
+//        if (this.lcaConsultants == null) {
+//            this.lcaConsultants = new ArrayList<>();
+//        }
+//        return lcaConsultants;
+//    }
+//
+//    public void setLcaConsultants(List<LCAConsultants> lcaConsultants) {
+//        this.lcaConsultants = lcaConsultants;
+//    }
+//
+//    public void addLcaConsultants(LCAConsultants lcaConsultant) {
+//        if (lcaConsultant == null) {
+//            return;
+//        }
+//        getLcaConsultants().add(lcaConsultant);
+//    }
+//    @XmlTransient
+//    public List<Petition> getPetitions() {
+//        if (this.petitions == null) {
+//            this.petitions = new ArrayList<>();
+//        }
+//        return petitions;
+//    }
+//
+//    public void setPetitions(List<Petition> petitions) {
+//        this.petitions = petitions;
+//    }
+//
+//    public void addPetitions(Petition petition) {
+//        if (petition == null) {
+//            return;
+//        }
+//        getPetitions().add(petition);
+//    }
     @Override
     public String toString() {
         return "LCA{" + "lcaNumber=" + lcaNumber + ", lcaFiledDate=" + lcaFiledDate + ", lcaValidFromDate=" + lcaValidFromDate + ", lcaValidToDate=" + lcaValidToDate + '}';

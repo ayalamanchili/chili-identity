@@ -83,7 +83,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
             tabPanel.add(timePanel, "Time", false);
         }
         tabPanel.add(expensePanel, "Expense", false);
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN)) {
             tabPanel.add(immigrationPanel, "Immigration", false);
         }
         tabPanel.add(drivePanel, "Drive", false);
@@ -285,7 +285,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         clearEntityPanel(immigrationPanel);
         immigrationPanel.entityTitlePanel.add(new ImmigrationMenu());
         TabPanel.instance().getImmigrationPanel().entityPanel.add(new ReadAllLCAPanel());
-        //      TabPanel.instance().getExpensePanel().sidePanelTop.add(new AdvanceRequisitionSidePanel());
+  //      TabPanel.instance().getImmigrationPanel().sidePanelTop.add(new AdvanceRequisitionSidePanel());
     }
 
     public void selectDriveTab() {

@@ -20,7 +20,6 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
 /**
@@ -66,7 +65,7 @@ public class ReadAllPetitionsPanel extends CRUDReadAllComposite {
         if (url != null) {
             return url;
         }
-        return OfficeWelcome.constants.root_url() + "petition/" + parentId + "/" + start.toString() + "/" + tableSize.toString();
+        return OfficeWelcome.constants.root_url() + "petition/" + start.toString() + "/" + tableSize.toString();
     }
 
     @Override
@@ -95,8 +94,8 @@ public class ReadAllPetitionsPanel extends CRUDReadAllComposite {
 
     @Override
     public void viewClicked(String entityId) {
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadPetitionPanel(getEntity(entityId)));
+        TabPanel.instance().immigrationPanel.entityPanel.clear();
+        TabPanel.instance().immigrationPanel.entityPanel.add(new ReadPetitionPanel(getEntity(entityId)));
     }
 
     @Override
@@ -117,14 +116,14 @@ public class ReadAllPetitionsPanel extends CRUDReadAllComposite {
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Petition Information");
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPetitionsPanel(TreeEmployeePanel.instance().getEntityId()));
+        TabPanel.instance().immigrationPanel.entityPanel.clear();
+        TabPanel.instance().immigrationPanel.entityPanel.add(new ReadAllPetitionsPanel());
     }
 
     @Override
     public void updateClicked(String entityId) {
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateLCAPanel(getEntity(entityId)));
+        TabPanel.instance().immigrationPanel.entityPanel.clear();
+        TabPanel.instance().immigrationPanel.entityPanel.add(new UpdateLCAPanel(getEntity(entityId)));
     }
 
     @Override
@@ -137,8 +136,8 @@ public class ReadAllPetitionsPanel extends CRUDReadAllComposite {
 
     @Override
     protected void createButtonClicked() {
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new CreatePetitionPanel(CreateComposite.CreateCompositeType.CREATE));
+        TabPanel.instance().immigrationPanel.entityPanel.clear();
+        TabPanel.instance().immigrationPanel.entityPanel.add(new CreatePetitionPanel(CreateComposite.CreateCompositeType.CREATE));
     }
 
     @Override
@@ -167,5 +166,5 @@ public class ReadAllPetitionsPanel extends CRUDReadAllComposite {
     protected boolean enablePersistedQuickView() {
         return true;
     }
-
+    
 }
