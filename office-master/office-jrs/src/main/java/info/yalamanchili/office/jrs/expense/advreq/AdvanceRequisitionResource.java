@@ -116,7 +116,7 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
 
     @PUT
     @Path("/search-advancerequisition/{start}/{limit}")
-    @PreAuthorize("hasRole('ROLE_ADMIN','ROLE_CEO','ROLE_PAYROLL_AND_BENIFITS','ROLE_ACCOUNTS_PAYABLE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CEO','ROLE_PAYROLL_AND_BENIFITS','ROLE_ACCOUNTS_PAYABLE')")
     @Transactional(readOnly = true)
     @Override
     public List<AdvanceRequisition> search(AdvanceRequisition entity, @PathParam("start") int start, @PathParam("limit") int limit) {
