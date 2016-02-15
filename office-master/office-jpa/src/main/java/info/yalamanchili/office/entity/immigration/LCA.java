@@ -12,15 +12,11 @@ import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.profile.Address;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -59,7 +55,7 @@ public class LCA extends AbstractEntity {
     protected Long totalPendingPositions;
 
     @CollectionOfElements
-    @JoinTable(name = "WorkedBy", joinColumns = {
+    @JoinTable(name = "LCAWorkedBy", joinColumns = {
         @JoinColumn(name = "id")})
     @Column(name = "workedBy")
     protected Set<Long> workedBy;
@@ -106,8 +102,6 @@ public class LCA extends AbstractEntity {
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date lcaValidToDate;
 
-//    @OneToMany(mappedBy = "lca", cascade = CascadeType.MERGE)
-//    protected List<Petition> petitions;
     @Enumerated(EnumType.STRING)
     protected LCAStatus status;
 
@@ -137,9 +131,6 @@ public class LCA extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     protected Polar nonDisplacement;
 
-//    @OneToMany(cascade = CascadeType.ALL)
-//    @ForeignKey(name = "FK_LCA_Employee")
-//    protected List<LCAConsultants> lcaConsultants;
     public Address getLcaAddress1() {
         return lcaAddress1;
     }
@@ -391,42 +382,6 @@ public class LCA extends AbstractEntity {
         getWorkedBy().add(wrkedBy);
     }
 
-//    @XmlTransient
-//    public List<LCAConsultants> getLcaConsultants() {
-//        if (this.lcaConsultants == null) {
-//            this.lcaConsultants = new ArrayList<>();
-//        }
-//        return lcaConsultants;
-//    }
-//
-//    public void setLcaConsultants(List<LCAConsultants> lcaConsultants) {
-//        this.lcaConsultants = lcaConsultants;
-//    }
-//
-//    public void addLcaConsultants(LCAConsultants lcaConsultant) {
-//        if (lcaConsultant == null) {
-//            return;
-//        }
-//        getLcaConsultants().add(lcaConsultant);
-//    }
-//    @XmlTransient
-//    public List<Petition> getPetitions() {
-//        if (this.petitions == null) {
-//            this.petitions = new ArrayList<>();
-//        }
-//        return petitions;
-//    }
-//
-//    public void setPetitions(List<Petition> petitions) {
-//        this.petitions = petitions;
-//    }
-//
-//    public void addPetitions(Petition petition) {
-//        if (petition == null) {
-//            return;
-//        }
-//        getPetitions().add(petition);
-//    }
     @Override
     public String toString() {
         return "LCA{" + "lcaNumber=" + lcaNumber + ", lcaFiledDate=" + lcaFiledDate + ", lcaValidFromDate=" + lcaValidFromDate + ", lcaValidToDate=" + lcaValidToDate + '}';

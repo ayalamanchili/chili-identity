@@ -13,16 +13,13 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.BooleanField;
-import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.fields.DataType;
-import info.chili.gwt.fields.IntegerField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.admin.notificationgroup.MultiSelectEmployeeWidget;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.profile.address.CreateAddressPanel;
 import info.yalamanchili.office.client.profile.address.CreateAddressWidget;
@@ -41,7 +38,7 @@ public class CreateLCAPanel extends CreateComposite {
     CreateAddressWidget createAddressWidget1 = new CreateAddressWidget(CreateAddressPanel.CreateAddressPanelType.MIN);
     CreateAddressWidget createAddressWidget2 = new CreateAddressWidget(CreateAddressPanel.CreateAddressPanelType.MIN);
     protected SelectCompanyWidget selectCompanyWidget = new SelectCompanyWidget(false, true, Alignment.HORIZONTAL);
-    protected MultiSelectEmployeeWidget employeeSelectWidget = new MultiSelectEmployeeWidget("Employees", null, false, true);
+    protected MultiSelectConsultantWidget employeeSelectWidget = new MultiSelectConsultantWidget("Employees", null, false, true);
     HTML wagesInfo = new HTML("<h4 style=\"color:#427fed\">" + "Wages Information</h4>");
     HTML empInfo = new HTML("<h4 style=\"color:#427fed\">" + "Select Consultants</h4>");
     HTML addInfo = new HTML("<h4 style=\"color:#427fed\">" + "Additional Information</h4>");
@@ -78,7 +75,6 @@ public class CreateLCAPanel extends CreateComposite {
         assignEntityValueFromField("visaClassification", lca);
         assignEntityValueFromField("socCodesAndOccupations", lca);
         assignEntityValueFromField("jobTitle", lca);
-        assignEntityValueFromField("withdrawnLCANumber", lca);
         // Address Information 1
         if (createAddressWidget1 != null) {
             lca.put("lcaAddress1", createAddressWidget1.populateEntityFromFields());

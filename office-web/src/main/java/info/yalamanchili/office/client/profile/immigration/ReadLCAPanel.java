@@ -12,7 +12,6 @@ import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.admin.notificationgroup.MultiSelectEmployeeWidget;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
 import java.util.logging.Logger;
@@ -25,7 +24,7 @@ public class ReadLCAPanel extends ReadComposite {
 
     private static Logger logger = Logger.getLogger(ReadPassportPanel.class.getName());
     protected SelectCompanyWidget selectCompanyWidget = new SelectCompanyWidget(false, true, Alignment.HORIZONTAL);
-    protected MultiSelectEmployeeWidget employeeSelectWidget = new MultiSelectEmployeeWidget("Employees", null, false, true);
+    protected MultiSelectConsultantWidget employeeSelectWidget;
     HTML wagesInfo = new HTML("<h4 style=\"color:#427fed\">" + "Wages Information</h4>");
     HTML addInfo = new HTML("<h4 style=\"color:#427fed\">" + "Additional Information</h4>");
     HTML empInfo = new HTML("<h4 style=\"color:#427fed\">" + "Select Consultants</h4>");
@@ -45,7 +44,6 @@ public class ReadLCAPanel extends ReadComposite {
         assignFieldValueFromEntity("lcaValidFromDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("lcaValidToDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("jobTitle", entity, DataType.STRING_FIELD);
-//        assignFieldValueFromEntity("withdrawnLCANumber", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("lcaCurrWageLvl", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("lcaCurrMinWage", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("lcaCurrMaxWage", entity, DataType.CURRENCY_FIELD);
@@ -56,7 +54,6 @@ public class ReadLCAPanel extends ReadComposite {
         assignFieldValueFromEntity("visaClassification", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("socCodesAndOccupations", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("company", entity, null);
         assignFieldValueFromEntity("clientName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("vendorName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("lcaFiledDate", entity, DataType.DATE_FIELD);
@@ -67,6 +64,9 @@ public class ReadLCAPanel extends ReadComposite {
         assignFieldValueFromEntity("certifiedLcaSentConsultant", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("lcaPostingSSTLocation", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("lcaFiledInPIF", entity, DataType.DATE_FIELD);
+        if (fields.containsKey("company")) {
+            assignFieldValueFromEntity("company", entity, null);
+        }
         if (entity.containsKey("lcaAddress1")) {
             entityFieldsPanel.add(lcaAddress1);
             readAddressWidget1 = new ReadLCAAddressWidget(entity.get("lcaAddress1").isObject());
@@ -110,6 +110,8 @@ public class ReadLCAPanel extends ReadComposite {
         addEnumField("status", true, true, LCAStatus.names(), Alignment.HORIZONTAL);
         addDropDown("workedBy", selectRecruiterW);
         entityFieldsPanel.add(empInfo);
+        // Populate selected Consultants
+        employeeSelectWidget = new MultiSelectConsultantWidget("Employees", getEntityId(), true, true);
         entityFieldsPanel.add(employeeSelectWidget);
         entityFieldsPanel.add(wagesInfo);
         addEnumField("lcaCurrWageLvl", true, true, LCAWageLevels.names(), Alignment.HORIZONTAL);
