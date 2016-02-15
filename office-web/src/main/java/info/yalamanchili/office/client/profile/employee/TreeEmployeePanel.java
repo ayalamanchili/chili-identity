@@ -157,8 +157,6 @@ public class TreeEmployeePanel extends TreePanelComposite {
         }
         if (SKILL_SET_NODE.equals(entityNodeKey)) {
             //TODO mode this to comp
-            TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadSkillSetPanel(getEntityId()));
             skillSetTreePanel.loadEntity();
         }
         if (SELF_SERVICE_NODE.equals(entityNodeKey)) {

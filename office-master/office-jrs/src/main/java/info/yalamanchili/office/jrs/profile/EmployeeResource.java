@@ -228,6 +228,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @GET
     @Path("/skillset/{empId}")
     @PrivacyAware(key = PrivacyData.SKILL_SET)
+    @Transactional(readOnly = true)
     public SkillSet getSkillSet(@PathParam("empId") long empId) {
         Employee emp = (Employee) getDao().findById(empId);
         //If skillset not present create a empty skillset so certifications and skills can be added.

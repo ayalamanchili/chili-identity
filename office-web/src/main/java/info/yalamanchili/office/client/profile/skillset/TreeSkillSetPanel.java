@@ -83,13 +83,15 @@ public class TreeSkillSetPanel extends TreePanelComposite {
     public void loadEntity() {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        if (response != null && !response.isEmpty()) {
-                            entity = (JSONObject) JSONParser.parseLenient(response);
-                        }
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                if (response != null && !response.isEmpty()) {
+                    entity = (JSONObject) JSONParser.parseLenient(response);
+                    TabPanel.instance().myOfficePanel.entityPanel.clear();
+                    TabPanel.instance().myOfficePanel.entityPanel.add(new ReadSkillSetPanel(entity));
+                }
+            }
+        });
     }
 
     @Override
