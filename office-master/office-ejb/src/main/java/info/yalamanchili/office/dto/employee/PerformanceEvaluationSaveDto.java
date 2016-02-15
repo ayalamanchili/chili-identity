@@ -10,6 +10,7 @@ package info.yalamanchili.office.dto.employee;
 
 import info.yalamanchili.office.entity.employee.PerformanceEvaluation;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
 import javax.xml.bind.annotation.XmlElement;
@@ -57,6 +58,9 @@ public class PerformanceEvaluationSaveDto implements Serializable {
 
     @XmlElement
     public List<QuestionComment> getComments() {
+        if (this.comments == null) {
+            this.comments = new ArrayList();
+        }
         return comments;
     }
 
