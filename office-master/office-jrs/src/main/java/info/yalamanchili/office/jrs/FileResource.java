@@ -177,7 +177,7 @@ public class FileResource {
             if (res != null) {
                 return res;
             }
-            String fileName = item.getName();
+            String fileName = item.getName().replaceAll("[^a-zA-Z0-9\\._]+", "_");
             File file = new File(officeServiceConfiguration.getContentManagementLocationRoot() + item.getFieldName()
                     + fileName);
             try {
