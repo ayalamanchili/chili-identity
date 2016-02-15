@@ -9,11 +9,8 @@
 package info.yalamanchili.office.entity.immigration;
 
 import info.chili.jpa.AbstractHandleEntity;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlRootElement;
-import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Indexed;
 
@@ -25,25 +22,13 @@ import org.hibernate.search.annotations.Indexed;
 @XmlRootElement
 @Entity
 @Audited
-public class LCAConsultants extends AbstractHandleEntity {
+public class LCALink extends AbstractHandleEntity {
     
     private static final long serialVersionUID = 2L;
     
     protected String firstName;
     
     protected String lastName;
-    
-    @OneToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_LCA_Petition")
-    protected Petition petition;
-
-    public Petition getPetition() {
-        return petition;
-    }
-
-    public void setPetition(Petition petition) {
-        this.petition = petition;
-    }
 
     public String getFirstName() {
         return firstName;
