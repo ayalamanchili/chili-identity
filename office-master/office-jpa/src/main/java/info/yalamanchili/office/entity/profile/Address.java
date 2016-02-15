@@ -260,6 +260,21 @@ public class Address extends AbstractEntity {
         }
         return description.toString();
     }
+    /**
+     * needed for adderss read access check
+     */
+    protected Employee employee;
+
+    /**
+     *
+     * @return
+     */
+    @Transient
+    public Employee getEmployee() {
+        Employee emp = new Employee();
+        emp.setId(getContact().getId());
+        return emp;
+    }
 
     @Override
     public String toString() {
