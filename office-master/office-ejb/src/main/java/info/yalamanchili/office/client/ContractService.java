@@ -368,14 +368,13 @@ public class ContractService {
 
         if (ci.getSubcontractor() != null) {
             dto.setSubContractorName(ci.getSubcontractor().getName());
+            if (ci.getSubcontractor().getLocations().size() > 0) {
+                Address address = ci.getSubcontractor().getLocations().get(0);
+                dto.setSubcontractorAddress(address.getStreet1() + " " + address.getCity() + " " + address.getState() + " " + address.getCountry());
+            }
         }
-
         if (ci.getSubcontractorContact() != null) {
             dto.setSubContractorContactName(ci.getSubcontractorContact().details());
-        }
-         if (ci.getSubcontractor().getLocations().size() > 0) {
-            Address address = ci.getSubcontractor().getLocations().get(0);
-            dto.setSubcontractorAddress(address.getStreet1() + " " + address.getCity() + " " + address.getState() + " " + address.getCountry());
         }
         if (ci.getStatus() != null) {
             dto.setStatus(ci.getStatus().toString());
