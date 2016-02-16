@@ -66,6 +66,11 @@ public class ContractService {
     protected EntityManager em;
     @Autowired
     protected Mapper mapper;
+    
+    public ContractDto read(Long id) {
+        ClientInformation ci = ClientInformationDao.instance().findById(id);
+        return mapClientInformation(ci);
+    }
 
     public ContractTable getContractorPlacementInfo(int start, int limit) {
         String queryStr = "SELECT ci from " + ClientInformation.class.getCanonicalName() + " ci where ci.endDate>=:dateParam or ci.endDate is null ";
