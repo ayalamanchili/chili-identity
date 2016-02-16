@@ -12,6 +12,7 @@ import info.chili.jpa.AbstractHandleEntity;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -46,6 +47,9 @@ public class EmployeeAdditionalDetails extends AbstractHandleEntity {
     @Enumerated(EnumType.STRING)
     @Field
     protected Ethnicity ethnicity;
+    
+    @Lob
+    protected String rolesAndResponsibilities;
 
     public String getReferredBy() {
         return referredBy;
@@ -70,7 +74,12 @@ public class EmployeeAdditionalDetails extends AbstractHandleEntity {
     public void setEthnicity(Ethnicity ethnicity) {
         this.ethnicity = ethnicity;
     }
-    
-    
-    
+
+    public String getRolesAndResponsibilities() {
+        return rolesAndResponsibilities;
+    }
+
+    public void setRolesAndResponsibilities(String rolesAndResponsibilities) {
+        this.rolesAndResponsibilities = rolesAndResponsibilities;
+    }
 }
