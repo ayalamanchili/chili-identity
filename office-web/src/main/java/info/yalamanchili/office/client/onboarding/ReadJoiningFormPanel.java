@@ -8,19 +8,26 @@
  */
 package info.yalamanchili.office.client.onboarding;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.composite.BaseField;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.data.CountryFactory;
 import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.resources.ChiliImages;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.ClickableImage;
+import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.contact.Sex;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,10 +37,11 @@ import java.util.logging.Logger;
  *
  * @author Madhu.Badiginchala
  */
-public class ReadJoiningFormPanel extends ReadComposite {
+public class ReadJoiningFormPanel extends ReadComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(ReadJoiningFormPanel.class.getName());
     protected List<ReadDependentsPanel> readItemsPanels = new ArrayList<ReadDependentsPanel>();
+    ClickableImage rolesIcn = new ClickableImage("update", ChiliImages.INSTANCE.updateIcon_16_16());
 
     HTML emptyLine = new HTML("<br/>");
 
@@ -60,6 +68,7 @@ public class ReadJoiningFormPanel extends ReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+        logger.info("entity in populate joining form .... "+entity);
         JSONObject employee = (JSONObject) entity.get("employee");
         JSONObject empAddnlDetails = (JSONObject) entity.get("empAddnlDetails");
         JSONObject address = (JSONObject) entity.get("address");
@@ -77,6 +86,7 @@ public class ReadJoiningFormPanel extends ReadComposite {
         assignFieldValueFromEntity("referredBy", empAddnlDetails, DataType.STRING_FIELD);
         assignFieldValueFromEntity("maritalStatus", empAddnlDetails, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("ethnicity", empAddnlDetails, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("rolesAndResponsibilities", empAddnlDetails, DataType.RICH_TEXT_AREA);
         JSONArray dependents = JSONUtils.toJSONArray(entity.get("dependent"));
         populateDependents(dependents);
     }
@@ -93,7 +103,7 @@ public class ReadJoiningFormPanel extends ReadComposite {
 
     @Override
     protected void addListeners() {
-
+        rolesIcn.addClickHandler(this);
     }
 
     @Override
@@ -118,9 +128,16 @@ public class ReadJoiningFormPanel extends ReadComposite {
         addField("referredBy", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("maritalStatus", true, true, MaritalStatus.names(), Alignment.HORIZONTAL);
         addEnumField("ethnicity", true, true, Ethnicity.names(), Alignment.HORIZONTAL);
+        addField("rolesAndResponsibilities", true, true, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL);
+        renderRolesLink();
         entityFieldsPanel.add(getLineSeperatorTag("Dependent's Information"));
         entityFieldsPanel.add(emptyLine);
         alignFields();
+    }
+    
+    protected void renderRolesLink() {
+        BaseField rolesField = fields.get("rolesAndResponsibilities");
+        rolesField.addWidgetToFieldPanel(rolesIcn);
     }
 
     @Override
@@ -131,5 +148,12 @@ public class ReadJoiningFormPanel extends ReadComposite {
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "employee-forms/joining-form/" + entityId;
+    }
+
+    @Override
+    public void onClick(ClickEvent event) {
+        if(event.getSource().equals(rolesIcn)){
+           new GenericPopup(new CreateRolesAndResponsibilitiesPanel(entity)).show();
+        }
     }
 }
