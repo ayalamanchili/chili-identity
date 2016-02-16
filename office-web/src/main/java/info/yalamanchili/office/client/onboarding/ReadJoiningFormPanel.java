@@ -27,7 +27,6 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableImage;
 import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.contact.Sex;
 import java.util.ArrayList;
 import java.util.List;
