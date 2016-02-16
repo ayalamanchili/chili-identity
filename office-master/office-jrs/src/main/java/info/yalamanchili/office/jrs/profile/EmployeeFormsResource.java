@@ -15,6 +15,7 @@ import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dto.onboarding.JoiningFormsDto;
 import info.yalamanchili.office.entity.expense.BankAccount;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.ext.EmployeeAdditionalDetails;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.profile.EmployeeFormsService;
 import java.util.ArrayList;
@@ -148,6 +149,12 @@ public class EmployeeFormsResource extends CRUDResource<BankAccount> {
             result.setAchBlocked(false);
         }
         return result;
+    }
+    
+    @PUT
+    @Path("/roles-responsibilities/{id}")
+    public void updateRolesAndResponsibilities(@PathParam("id") String id, EmployeeAdditionalDetails details){
+        employeeFormsService.updateRolesAndResponsibilities(id, details);
     }
     
     @GET

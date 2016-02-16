@@ -18,6 +18,7 @@ import info.yalamanchili.office.dto.client.ContractSearchDto;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
+import info.yalamanchili.office.security.AccessCheck;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.Consumes;
@@ -29,6 +30,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +45,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Consumes("application/json")
 @Transactional(readOnly = true)
 public class ContractResource {
+
+    @GET
+    @Path("/read/{id}")
+    @Transactional(readOnly = true)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CONTRACTS_ADMIN', 'ROLE_BILLING_ADMIN')")
+    public ContractDto readCIDto(@PathParam("id") Long id) {
+        return ContractService.instance().read(id);
+    }
 
     @GET
     @Path("/search/{start}/{limit}")
@@ -112,7 +122,7 @@ public class ContractResource {
     public ContractTable searchContractsForRecruiter(ContractSearchDto dto) {
         return ContractService.instance().searchContractsForRecruiter(dto);
     }
-    
+
     @GET
     @Path("/subcontractors-report")
     public void subcontractorsReport() {
@@ -128,7 +138,7 @@ public class ContractResource {
             }
         }
         table.setEntities(dtos);
-        String[] columnOrder = new String[]{"employee", "employeeType", "vendor", "vendorLocation", "vendorAPContact", "vendorRecruiter", "subContractorName", "subcontractorAddress", "subContractorContactName","startDate", "endDate", "subcontractorPayRate"};
+        String[] columnOrder = new String[]{"employee", "employeeType", "vendor", "vendorLocation", "vendorAPContact", "vendorRecruiter", "subContractorName", "subcontractorAddress", "subContractorContactName", "startDate", "endDate", "subcontractorPayRate"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(table.getEntities(), "SubContractors Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
 }

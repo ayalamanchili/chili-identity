@@ -16,6 +16,7 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.expense.BankAccountDao;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.ext.DependentDao;
 import info.yalamanchili.office.dao.profile.ext.EmployeeAdditionalDetailsDao;
 import info.yalamanchili.office.dao.profile.onboarding.EmployeeOnBoardingDao;
@@ -36,7 +37,9 @@ import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Consumer;
 import javax.ws.rs.core.Response;
+import org.dozer.Mapper;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -89,18 +92,51 @@ public class EmployeeFormsService {
         } else {
             data.getData().put("genderFemale", "true");
         }
-
-        data.getData().put("maritalStatus", ead.getMaritalStatus().name());
+        if (ead != null) {
+            data.getData().put("maritalStatus", ead.getMaritalStatus().name());
+            if (ead.getEthnicity() != null) {
+                Ethnicity ethnicity = ead.getEthnicity();
+                switch (ethnicity) {
+                    case Asian:
+                        data.getData().put("asian", "true");
+                        break;
+                    case Latino_Hispanic:
+                        data.getData().put("hispanicLatino", "true");
+                        break;
+                    case AmericanIndian_AlaskaNative:
+                        data.getData().put("americanIndian", "true");
+                        break;
+                    case Black_AfricanAmerican:
+                        data.getData().put("black", "true");
+                        break;
+                    case NativeHawaiian_OtherPacificIslander:
+                        data.getData().put("hawalian", "true");
+                        break;
+                    case White:
+                        data.getData().put("white", "true");
+                        break;
+                }
+            }
+            if (ead.getReferredBy() != null) {
+                data.getData().put("referredBy", ead.getReferredBy());
+            }
+        }
 
         emp.getEmails().stream().filter((email) -> (email.getEmailType() != null)).filter((email) -> ("Personal".equals(email.getEmailType().getEmailType()))).forEach((email) -> {
             data.getData().put("email", email.getEmail() + "  ");
         });
 
-        emp.getPhones().stream().filter((phone) -> (phone.getPhoneType() != null)).forEach((phone) -> {
-            if ("Cell".equals(phone.getPhoneType().getPhoneType())) {
-                data.getData().put("cellPhone", phone.getPhoneNumber());
-            } else if ("Home".equals(phone.getPhoneType().getPhoneType())) {
-                data.getData().put("homePhone", phone.getPhoneNumber());
+        emp.getPhones().stream().filter((phone) -> (phone.getPhoneType() != null)).forEach(new Consumer<Phone>() {
+
+            public void accept(Phone phone) {
+                if (null != phone.getPhoneType().getPhoneType()) switch (phone.getPhoneType().getPhoneType()) {
+                    case "Cell":
+                        data.getData().put("cellPhone", phone.getPhoneNumber());
+                        break;
+                    case "Home":
+                        data.getData().put("homePhone", phone.getPhoneNumber());
+                        break;
+                }
             }
         });
         emp.getAddresss().stream().map((address) -> {
@@ -119,32 +155,6 @@ public class EmployeeFormsService {
                 data.getData().put("residentialAddress2", address.getCity() + " , " + address.getState() + " , " + zip);
             }
         });
-        if (ead.getEthnicity() != null) {
-            Ethnicity ethnicity = ead.getEthnicity();
-            switch (ethnicity) {
-                case Asian:
-                    data.getData().put("asian", "true");
-                    break;
-                case Latino_Hispanic:
-                    data.getData().put("hispanicLatino", "true");
-                    break;
-                case AmericanIndian_AlaskaNative:
-                    data.getData().put("americanIndian", "true");
-                    break;
-                case Black_AfricanAmerican:
-                    data.getData().put("black", "true");
-                    break;
-                case NativeHawaiian_OtherPacificIslander:
-                    data.getData().put("hawalian", "true");
-                    break;
-                case White:
-                    data.getData().put("white", "true");
-                    break;
-            }
-        }
-        if (ead.getReferredBy() != null) {
-            data.getData().put("referredBy", ead.getReferredBy());
-        }
         //section 2: Dependents
         int counter = 0;
         for (Dependent dep : dto.getDependent()) {
@@ -213,19 +223,23 @@ public class EmployeeFormsService {
         });
 
         //section 5 :Emergency Contact Information - Other
-        for (EmergencyContact emergencyContact : emp.getEmergencyContacts()) {
-            if ((emergencyContact.getContact() != null)
-                    && (emergencyContact.getRelation() != null)) {
-                data.getData().put("ecName2", emergencyContact.getContact().getFirstName());
-                data.getData().put("ecRelation2", emergencyContact.getRelation());
-                for (Phone phone : emergencyContact.getContact().getPhones()) {
-                    data.getData().put("ecPhone2", phone.getPhoneNumber());
-                }
-                for (Address address1 : emergencyContact.getContact().getAddresss()) {
-                    data.getData().put("ecAddress2", address1.getStreet1() + "," + address1.getCity() + "," + address1.getState() + "," + address1.getCountry());
-                }
-            }
-        }
+        emp.getEmergencyContacts().stream().filter((emergencyContact) -> ((emergencyContact.getContact() != null)
+                && (emergencyContact.getRelation() != null))).map((emergencyContact) -> {
+                    data.getData().put("ecName2", emergencyContact.getContact().getFirstName());
+                    return emergencyContact;
+        }).map((emergencyContact) -> {
+            data.getData().put("ecRelation2", emergencyContact.getRelation());
+            return emergencyContact;
+        }).map((emergencyContact) -> {
+            emergencyContact.getContact().getPhones().stream().forEach((phone) -> {
+                data.getData().put("ecPhone2", phone.getPhoneNumber());
+            });
+            return emergencyContact;
+        }).forEach((EmergencyContact emergencyContact) -> {
+            emergencyContact.getContact().getAddresss().stream().forEach((address1) -> {
+                data.getData().put("ecAddress2", address1.getStreet1() + "," + address1.getCity() + "," + address1.getState() + "," + address1.getCountry());
+            });
+        });
         data.getData().put("employeeId", emp.getEmployeeId());
         if (emp.getJobTitle() != null) {
             data.getData().put("designation", emp.getJobTitle());
@@ -244,10 +258,7 @@ public class EmployeeFormsService {
                 data.getData().put("perfEvol", manager.getFirstName() + " , " + manager.getLastName());
             }
         }
-        if (emp.getCompany().getAbbreviation() != null) {
-            data.getData().put("companyCode", emp.getCompany().getAbbreviation());
-        }
-        if (emp.getCompany().getId() != null) {
+        if (emp.getCompany() != null) {
             Company company = emp.getCompany();
             String nameOfCompany = company.getName();
             if (nameOfCompany.contains("LLC")) {
@@ -258,6 +269,9 @@ public class EmployeeFormsService {
                 data.getData().put("companyTP", "true");
             } else if (nameOfCompany.contains("CGS")) {
                 data.getData().put("companyCGS", "true");
+            }
+            if (emp.getCompany().getAbbreviation() != null) {
+                data.getData().put("companyCode", emp.getCompany().getAbbreviation());
             }
         }
 
@@ -278,7 +292,7 @@ public class EmployeeFormsService {
 
         //print ACH Form with the employee and bank details. @radhika
         data.getData().put("employeeName", emp.getLastName() + " , " + emp.getFirstName());
-        for (Address address : emp.getAddresss()) {
+        emp.getAddresss().stream().forEach((address) -> {
             String street2 = address.getStreet2();
             String zip = address.getZip();
 
@@ -293,7 +307,7 @@ public class EmployeeFormsService {
             } else {
                 data.getData().put("address2", address.getCity() + " , " + address.getState() + " , " + address.getCountry() + " ," + zip);
             }
-        }
+        });
         data.getData().put("accountNumber", ba.getBankAccountNumber());
         data.getData().put("routingNumber", ba.getBankRoutingNumber());
 
@@ -316,11 +330,9 @@ public class EmployeeFormsService {
         } else if (ba.getAchBlocked() == true) {
             data.getData().put("achReversalBlockYes", "true");
         }
-        for (Phone phone : emp.getPhones()) {
-            if (phone.getPhoneNumber() != null) {
-                data.getData().put("phoneNumber", emp.getPhones().get(0).getPhoneNumber());
-            }
-        }
+        emp.getPhones().stream().filter((phone) -> (phone.getPhoneNumber() != null)).forEach((_item) -> {
+            data.getData().put("phoneNumber", emp.getPhones().get(0).getPhoneNumber());
+        });
         EmployeeOnBoarding onboarding = EmployeeOnBoardingDao.instance().findByEmployeeId(emp.getId());
         Date onboardingDate = null;
         if (onboarding != null) {
@@ -343,5 +355,13 @@ public class EmployeeFormsService {
 
     public static EmployeeFormsService instance() {
         return SpringContext.getBean(EmployeeService.class);
+    }
+
+    public void updateRolesAndResponsibilities(String id, EmployeeAdditionalDetails details) {
+        Long id1 = Long.valueOf(id);
+        Employee emp = EmployeeDao.instance().findById(id1);
+        EmployeeAdditionalDetails empAdditionalDetails = EmployeeAdditionalDetailsDao.instance().find(emp);
+        empAdditionalDetails.setRolesAndResponsibilities(details.getRolesAndResponsibilities());
+        EmployeeAdditionalDetailsDao.instance().save(empAdditionalDetails, emp);
     }
 }

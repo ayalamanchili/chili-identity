@@ -53,7 +53,7 @@ public class ReadAllBisContractsPanel extends CRUDReadAllComposite {
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().reportingPanel.entityPanel.clear();
-        TabPanel.instance().reportingPanel.entityPanel.add(new ReadContractsPanel(getEntity(entityId)));
+        TabPanel.instance().reportingPanel.entityPanel.add(new ReadContractsPanel(entityId));
     }
 
     @Override

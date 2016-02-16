@@ -26,9 +26,8 @@ import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
 import info.yalamanchili.office.client.home.tasks.ReadTaskPanel;
 import info.yalamanchili.office.client.onboarding.ReadAllEmployeeOnBoardingPanel;
 import info.yalamanchili.office.client.profile.address.ReadAllAddressesPanel;
-import info.yalamanchili.office.client.profile.cllientinfo.ReadAllClientInfoPanel;
 import info.yalamanchili.office.client.profile.selfservice.ReadAllServiceTicketsPanel;
-import info.yalamanchili.office.client.profile.statusreport.ReadAllStatusReportPanel;
+import info.yalamanchili.office.client.profile.statusreport.ReadStatusReportPanel;
 import info.yalamanchili.office.client.time.consultant.ReadAllConsultantTimeSheetsPanel;
 import info.yalamanchili.office.client.time.corp.ReadAllCorporateTimeSheetPanel;
 import java.util.Map;
@@ -65,7 +64,7 @@ public class OfficeUrlRoutingHandler implements ValueChangeHandler<String> {
                 case "info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport":
                     expenseReportNavigation(params);
                     break;
-                case "info.yalamanchili.office.entity.expense.TravelAuthorization":
+                case "info.yalamanchili.office.entity.expense.travelauthorization.TravelAuthorization":
                     travelAuthorizationNavigation(params);
                     break;
                 case "info.yalamanchili.office.entity.profile.ClientInformation":
@@ -129,9 +128,6 @@ public class OfficeUrlRoutingHandler implements ValueChangeHandler<String> {
     }
 
     protected void clientInformationNavigation(Map<String, String> params) {
-        TabPanel.instance().tabPanel.selectTab(TabPanel.instance().myOfficePanel, false);
-        ReadAllClientInfoPanel readAllclientInfo = new ReadAllClientInfoPanel(new JSONArray());
-        readAllclientInfo.viewClicked(params.get("id"));
         TabPanel.instance().tabPanel.selectTab(TabPanel.instance().reportingPanel, false);
         ReadAllContractsPanel readAllcontracts = new ReadAllContractsPanel(new JSONArray());
         readAllcontracts.viewClicked(params.get("id"));
@@ -145,8 +141,8 @@ public class OfficeUrlRoutingHandler implements ValueChangeHandler<String> {
 
     protected void statusReportNavigation(Map<String, String> params) {
         TabPanel.instance().tabPanel.selectTab(TabPanel.instance().homePanel, false);
-        ReadAllStatusReportPanel readallstatusreport = new ReadAllStatusReportPanel(new JSONArray());
-        readallstatusreport.viewClicked(params.get("id"));
+        TabPanel.instance().homePanel.entityPanel.clear();
+        TabPanel.instance().homePanel.entityPanel.add(new ReadStatusReportPanel(params.get("id")));
     }
 
     protected void addressesNavigation(Map<String, String> params) {
