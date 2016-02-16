@@ -29,8 +29,8 @@ public class ReadAllClientInfoPopupPanel extends ReadAllClientInfoPanel {
 
     @Override
     public void viewClicked(String entityId) {
-        ReadClientInfoPopupPanel readClientInfoPanel = new ReadClientInfoPopupPanel(getEntity(entityId));
-        new GenericPopup(readClientInfoPanel).show();
+//        ReadClientInfoPopupPanel readClientInfoPanel = new ReadClientInfoPopupPanel(getEntity(entityId));
+//        new GenericPopup(readClientInfoPanel).show();
     }
 
     @Override
