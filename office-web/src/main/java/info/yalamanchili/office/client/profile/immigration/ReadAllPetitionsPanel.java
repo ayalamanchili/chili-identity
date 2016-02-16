@@ -137,7 +137,9 @@ public class ReadAllPetitionsPanel extends CRUDReadAllComposite {
     @Override
     protected void createButtonClicked() {
         TabPanel.instance().immigrationPanel.entityPanel.clear();
+        logger.info(" in read all panels");
         TabPanel.instance().immigrationPanel.entityPanel.add(new CreatePetitionPanel(CreateComposite.CreateCompositeType.CREATE));
+        logger.info(" in read all panels222");
     }
 
     @Override

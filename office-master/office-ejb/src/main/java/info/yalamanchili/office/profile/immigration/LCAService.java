@@ -55,9 +55,9 @@ public class LCAService {
         if (lca.getCompany() != null) {
             lca.setCompany(companyDao.findById(lca.getCompany().getId()));
         }
-        for (Employee emp : dto.getWorked()) {
+        for (Employee emp : dto.getWorkedByEmployees()) {
             if (emp.getId() != null) {
-                lca.addWorkedBy(emp.getId());
+                lca.addWorkedByEmployee(employeeDao.findById(emp.getId()));
             }
         }
         lca = lcaDao.save(lca);
@@ -81,13 +81,13 @@ public class LCAService {
         if (lca.getCompany() != null) {
             lca.setCompany(companyDao.findById(lca.getCompany().getId()));
         }
-        Set<Long> newRecs = new HashSet();
-        for (Employee emp : dto.getWorked()) {
+        Set<Employee> newRecs = new HashSet();
+        for (Employee emp : dto.getWorkedByEmployees()) {
             if (emp.getId() != null) {
-                newRecs.add(emp.getId());
+                newRecs.add(employeeDao.findById(emp.getId()));
             }
         }
-        lca.setWorkedBy(newRecs);
+        lca.setWorkedByEmployees(newRecs);
         lca = em.merge(lca);
         for (LCALink link : lcaLinkDao.findLCA(lca.getId(), lca.getClass().getCanonicalName())) {
             if (link.getId() != null) {

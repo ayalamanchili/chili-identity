@@ -9,16 +9,22 @@
 package info.yalamanchili.office.entity.immigration;
 
 import info.chili.jpa.AbstractHandleEntity;
-import java.util.ArrayList;
+import info.yalamanchili.office.entity.profile.Employee;
+import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
@@ -47,11 +53,9 @@ public class Petition extends AbstractHandleEntity {
     @org.hibernate.annotations.Index(name = "PET_USR_NME")
     protected String userName;
 
-//    @ElementCollection
-//    @CollectionTable(name="WorkedBy", joinColumns=@JoinColumn(name="id"))
-//    @Column(name="workedBy")
-    @org.hibernate.annotations.Index(name = "PET_WRK_BY")
-    protected ArrayList<String> workedBy = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.EAGER)
+    @ForeignKey(name = "FK_Petition_WorkedBy")
+    protected Set<Employee> workedByEmployees;
 
     protected String attorneyName;
 
@@ -92,6 +96,13 @@ public class Petition extends AbstractHandleEntity {
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date petitionValidToDate;
 
+    @Enumerated(EnumType.STRING)
+    protected LCAWageLevels lcaPrevWageLvl;
+
+    protected BigDecimal lcaPrevMinWage;
+
+    protected BigDecimal lcaPrevMaxWage;
+
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Petition_LCA")
     protected LCA lca;
@@ -103,6 +114,8 @@ public class Petition extends AbstractHandleEntity {
     @OneToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Petition_Passport")
     protected Passport passport;
+
+    protected String withdrawnLCANumber;
 
     public String getFirstName() {
         return firstName;
@@ -240,14 +253,6 @@ public class Petition extends AbstractHandleEntity {
         this.petitionaddinfo = petitionaddinfo;
     }
 
-    public ArrayList<String> getWorkedBy() {
-        return workedBy;
-    }
-
-    public void setWorkedBy(ArrayList<String> workedBy) {
-        this.workedBy = workedBy;
-    }
-
     public Passport getPassport() {
         return passport;
     }
@@ -256,9 +261,54 @@ public class Petition extends AbstractHandleEntity {
         this.passport = passport;
     }
 
+    public LCAWageLevels getLcaPrevWageLvl() {
+        return lcaPrevWageLvl;
+    }
+
+    public void setLcaPrevWageLvl(LCAWageLevels lcaPrevWageLvl) {
+        this.lcaPrevWageLvl = lcaPrevWageLvl;
+    }
+
+    public BigDecimal getLcaPrevMinWage() {
+        return lcaPrevMinWage;
+    }
+
+    public void setLcaPrevMinWage(BigDecimal lcaPrevMinWage) {
+        this.lcaPrevMinWage = lcaPrevMinWage;
+    }
+
+    public BigDecimal getLcaPrevMaxWage() {
+        return lcaPrevMaxWage;
+    }
+
+    public void setLcaPrevMaxWage(BigDecimal lcaPrevMaxWage) {
+        this.lcaPrevMaxWage = lcaPrevMaxWage;
+    }
+
+    public String getWithdrawnLCANumber() {
+        return withdrawnLCANumber;
+    }
+
+    public void setWithdrawnLCANumber(String withdrawnLCANumber) {
+        this.withdrawnLCANumber = withdrawnLCANumber;
+    }
+
+    @XmlTransient
+    public Set<Employee> getWorkedByEmployees() {
+        if (this.workedByEmployees == null) {
+            this.workedByEmployees = new HashSet<>();
+        }
+        return workedByEmployees;
+    }
+
+    public void setWorkedByEmployees(Set<Employee> workedByEmployees) {
+        this.workedByEmployees = workedByEmployees;
+    }
+  
+    
     @Override
     public String toString() {
-        return "Petition{" + "firstName=" + firstName + ", lastName=" + lastName + ", workedBy=" + workedBy + ", attorneyName=" + attorneyName + ", visaClassification=" + visaClassification + ", visaProcessing=" + visaProcessing + ", petitionFileDate=" + petitionFileDate + ", receiptNumber=" + receiptNumber + ", petitionStatus=" + petitionStatus + ", petitionApprovalDate=" + petitionApprovalDate + ", petitionValidFromDate=" + petitionValidFromDate + ", petitionValidToDate=" + petitionValidToDate + '}';
+        return "Petition{" + "firstName=" + firstName + ", lastName=" + lastName + ", attorneyName=" + attorneyName + ", visaClassification=" + visaClassification + ", visaProcessing=" + visaProcessing + ", petitionFileDate=" + petitionFileDate + ", receiptNumber=" + receiptNumber + ", petitionStatus=" + petitionStatus + ", petitionApprovalDate=" + petitionApprovalDate + ", petitionValidFromDate=" + petitionValidFromDate + ", petitionValidToDate=" + petitionValidToDate + '}';
     }
 
 }

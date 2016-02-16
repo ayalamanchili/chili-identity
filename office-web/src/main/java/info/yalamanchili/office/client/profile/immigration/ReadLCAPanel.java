@@ -47,9 +47,9 @@ public class ReadLCAPanel extends ReadComposite {
         assignFieldValueFromEntity("lcaCurrWageLvl", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("lcaCurrMinWage", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("lcaCurrMaxWage", entity, DataType.CURRENCY_FIELD);
-        assignFieldValueFromEntity("lcaPrevWageLvl", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("lcaPrevMinWage", entity, DataType.CURRENCY_FIELD);
-        assignFieldValueFromEntity("lcaPrevMaxWage", entity, DataType.CURRENCY_FIELD);
+//        assignFieldValueFromEntity("lcaPrevWageLvl", entity, DataType.ENUM_FIELD);
+//        assignFieldValueFromEntity("lcaPrevMinWage", entity, DataType.CURRENCY_FIELD);
+//        assignFieldValueFromEntity("lcaPrevMaxWage", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("totalWorkingPositions", entity, DataType.LONG_FIELD);
         assignFieldValueFromEntity("visaClassification", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
@@ -64,6 +64,7 @@ public class ReadLCAPanel extends ReadComposite {
         assignFieldValueFromEntity("certifiedLcaSentConsultant", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("lcaPostingSSTLocation", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("lcaFiledInPIF", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("workedByEmployees", entity, null);
         if (fields.containsKey("company")) {
             assignFieldValueFromEntity("company", entity, null);
         }
@@ -108,7 +109,7 @@ public class ReadLCAPanel extends ReadComposite {
         addField("lcaValidFromDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("lcaValidToDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("status", true, true, LCAStatus.names(), Alignment.HORIZONTAL);
-        addDropDown("workedBy", selectRecruiterW);
+        addDropDown("workedByEmployees", selectRecruiterW);
         entityFieldsPanel.add(empInfo);
         // Populate selected Consultants
         employeeSelectWidget = new MultiSelectConsultantWidget("Employees", getEntityId(), true, true);
@@ -117,9 +118,9 @@ public class ReadLCAPanel extends ReadComposite {
         addEnumField("lcaCurrWageLvl", true, true, LCAWageLevels.names(), Alignment.HORIZONTAL);
         addField("lcaCurrMinWage", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("lcaCurrMaxWage", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-        addEnumField("lcaPrevWageLvl", true, true, LCAWageLevels.names(), Alignment.HORIZONTAL);
-        addField("lcaPrevMinWage", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-        addField("lcaPrevMaxWage", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+//        addEnumField("lcaPrevWageLvl", true, true, LCAWageLevels.names(), Alignment.HORIZONTAL);
+//        addField("lcaPrevMinWage", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+//        addField("lcaPrevMaxWage", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(addInfo);
         addField("clientName", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("vendorName", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);

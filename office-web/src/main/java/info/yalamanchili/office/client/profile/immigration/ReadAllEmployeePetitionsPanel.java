@@ -10,7 +10,6 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
-import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
@@ -138,7 +137,7 @@ public class ReadAllEmployeePetitionsPanel extends CRUDReadAllComposite {
     @Override
     protected void createButtonClicked() {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new CreatePetitionPanel(CreateComposite.CreateCompositeType.CREATE));
+//        TabPanel.instance().myOfficePanel.entityPanel.add(new CreatePetitionPanel(CreateComposite.CreateCompositeType.CREATE));
     }
 
     @Override

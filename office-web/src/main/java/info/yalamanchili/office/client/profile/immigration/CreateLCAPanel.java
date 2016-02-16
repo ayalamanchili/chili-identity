@@ -66,7 +66,7 @@ public class CreateLCAPanel extends CreateComposite {
             i++;
         }
         lca.put("employees", employees);
-        lca.put("worked", selectRecruiterW.getSelectedObjects());
+        lca.put("workedByEmployees", selectRecruiterW.getSelectedObjects());
         assignEntityValueFromField("lcaNumber", lca);
         assignEntityValueFromField("lcaFiledDate", lca);
         assignEntityValueFromField("lcaValidFromDate", lca);
@@ -91,9 +91,9 @@ public class CreateLCAPanel extends CreateComposite {
         assignEntityValueFromField("lcaCurrWageLvl", lca);
         assignEntityValueFromField("lcaCurrMinWage", lca);
         assignEntityValueFromField("lcaCurrMaxWage", lca);
-        assignEntityValueFromField("lcaPrevWageLvl", lca);
-        assignEntityValueFromField("lcaPrevMinWage", lca);
-        assignEntityValueFromField("lcaPrevMaxWage", lca);
+//        assignEntityValueFromField("lcaPrevWageLvl", lca);
+//        assignEntityValueFromField("lcaPrevMinWage", lca);
+//        assignEntityValueFromField("lcaPrevMaxWage", lca);
         assignEntityValueFromField("clientName", lca);
         assignEntityValueFromField("vendorName", lca);
         assignEntityValueFromField("nonDisplacement", lca);
@@ -173,16 +173,16 @@ public class CreateLCAPanel extends CreateComposite {
         addEnumField("socCodesAndOccupations", false, true, SOCCodesAndOccupations.names(), Alignment.HORIZONTAL);
         addField("lcaValidFromDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("lcaValidToDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addDropDown("workedBy", selectRecruiterW);
+        addDropDown("workedByEmployees", selectRecruiterW);
         entityFieldsPanel.add(empInfo);
         entityFieldsPanel.add(employeeSelectWidget);
         entityFieldsPanel.add(wagesInfo);
         addEnumField("lcaCurrWageLvl", false, true, LCAWageLevels.names(), Alignment.HORIZONTAL);
         addField("lcaCurrMinWage", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("lcaCurrMaxWage", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-        addEnumField("lcaPrevWageLvl", false, true, LCAWageLevels.names(), Alignment.HORIZONTAL);
-        addField("lcaPrevMinWage", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-        addField("lcaPrevMaxWage", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+//        addEnumField("lcaPrevWageLvl", false, true, LCAWageLevels.names(), Alignment.HORIZONTAL);
+//        addField("lcaPrevMinWage", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+//        addField("lcaPrevMaxWage", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(addInfo);
         addField("clientName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("vendorName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);

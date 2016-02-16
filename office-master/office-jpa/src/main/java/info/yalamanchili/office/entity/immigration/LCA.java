@@ -11,23 +11,22 @@ package info.yalamanchili.office.entity.immigration;
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.profile.Address;
+import info.yalamanchili.office.entity.profile.Employee;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import org.hibernate.annotations.CollectionOfElements;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Indexed;
@@ -54,11 +53,9 @@ public class LCA extends AbstractEntity {
 
     protected Long totalPendingPositions;
 
-    @CollectionOfElements
-    @JoinTable(name = "LCAWorkedBy", joinColumns = {
-        @JoinColumn(name = "id")})
-    @Column(name = "workedBy")
-    protected Set<Long> workedBy;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @ForeignKey(name = "FK_LCA_WorkedBy")
+    protected Set<Employee> workedByEmployees;
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_LCA_Company")
@@ -71,13 +68,6 @@ public class LCA extends AbstractEntity {
     protected Address lcaAddress2;
 
     @Enumerated(EnumType.STRING)
-    protected LCAWageLevels lcaPrevWageLvl;
-
-    protected BigDecimal lcaPrevMinWage;
-
-    protected BigDecimal lcaPrevMaxWage;
-
-    @Enumerated(EnumType.STRING)
     protected LCAWageLevels lcaCurrWageLvl;
 
     protected BigDecimal lcaCurrMinWage;
@@ -88,8 +78,6 @@ public class LCA extends AbstractEntity {
 
     @org.hibernate.annotations.Index(name = "LCA_NBR")
     protected String lcaNumber;
-
-    protected String withdrawnLCANumber;
 
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date lcaFiledDate;
@@ -147,30 +135,6 @@ public class LCA extends AbstractEntity {
         this.lcaAddress2 = lcaAddress2;
     }
 
-    public LCAWageLevels getLcaPrevWageLvl() {
-        return lcaPrevWageLvl;
-    }
-
-    public void setLcaPrevWageLvl(LCAWageLevels lcaPrevWageLvl) {
-        this.lcaPrevWageLvl = lcaPrevWageLvl;
-    }
-
-    public BigDecimal getLcaPrevMinWage() {
-        return lcaPrevMinWage;
-    }
-
-    public void setLcaPrevMinWage(BigDecimal lcaPrevMinWage) {
-        this.lcaPrevMinWage = lcaPrevMinWage;
-    }
-
-    public BigDecimal getLcaPrevMaxWage() {
-        return lcaPrevMaxWage;
-    }
-
-    public void setLcaPrevMaxWage(BigDecimal lcaPrevMaxWage) {
-        this.lcaPrevMaxWage = lcaPrevMaxWage;
-    }
-
     public LCAWageLevels getLcaCurrWageLvl() {
         return lcaCurrWageLvl;
     }
@@ -209,14 +173,6 @@ public class LCA extends AbstractEntity {
 
     public void setLcaNumber(String lcaNumber) {
         this.lcaNumber = lcaNumber;
-    }
-
-    public String getWithdrawnLCANumber() {
-        return withdrawnLCANumber;
-    }
-
-    public void setWithdrawnLCANumber(String withdrawnLCANumber) {
-        this.withdrawnLCANumber = withdrawnLCANumber;
     }
 
     public Date getLcaFiledDate() {
@@ -364,22 +320,22 @@ public class LCA extends AbstractEntity {
     }
 
     @XmlTransient
-    public Set<Long> getWorkedBy() {
-        if (this.workedBy == null) {
-            this.workedBy = new HashSet<>();
+    public Set<Employee> getWorkedByEmployees() {
+        if (this.workedByEmployees == null) {
+            this.workedByEmployees = new HashSet<>();
         }
-        return workedBy;
+        return workedByEmployees;
     }
 
-    public void setWorkedBy(Set<Long> workedBy) {
-        this.workedBy = workedBy;
+    public void setWorkedByEmployees(Set<Employee> workedByEmployees) {
+        this.workedByEmployees = workedByEmployees;
     }
 
-    public void addWorkedBy(Long wrkedBy) {
-        if (wrkedBy == null) {
+    public void addWorkedByEmployee(Employee emp) {
+        if (emp == null) {
             return;
         }
-        getWorkedBy().add(wrkedBy);
+        getWorkedByEmployees().add(emp);
     }
 
     @Override

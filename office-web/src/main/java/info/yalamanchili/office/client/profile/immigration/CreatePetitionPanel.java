@@ -5,36 +5,51 @@
  */
 package info.yalamanchili.office.client.profile.immigration;
 
+import com.google.common.base.Strings;
+import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.http.client.URL;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.chili.gwt.widgets.SuggestBox;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.hr.PetitionFor;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
  *
  * @author Madhu.Badiginchala
  */
-public class CreatePetitionPanel extends CreateComposite {
+public class CreatePetitionPanel extends CreateComposite implements ClickHandler, BlurHandler {
 
     private static Logger logger = Logger.getLogger(CreatePetitionPanel.class.getName());
 
     HTML additionalInfo = new HTML("<h4 style=\"color:#427fed\">" + "Additional Information</h4>");
     HTML linkInfo = new HTML("<h4 style=\"color:#427fed\">" + "Link Information</h4>");
     HTML prevInfo = new HTML("<h4 style=\"color:#427fed\">" + "Previous Status Information</h4>");
+    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, true, Alignment.HORIZONTAL);
     SelectLCAWidget selectLCAWidgetF = new SelectLCAWidget(false, true, Alignment.HORIZONTAL);
-    SelectPassportWidget selectPassportWidgetF = new SelectPassportWidget(false, true, Alignment.HORIZONTAL);
+//    SelectPassportWidget selectPassportWidgetF = new SelectPassportWidget(false, true, Alignment.HORIZONTAL);
 
     public CreatePetitionPanel(CreateComposite.CreateCompositeType type) {
         super(type);
+        logger.info("im here in create panel");
         initCreateComposite("Petition", OfficeWelcome.constants);
     }
 
@@ -50,8 +65,8 @@ public class CreatePetitionPanel extends CreateComposite {
         assignEntityValueFromField("i140ApprovalStatus", petition);
         assignEntityValueFromField("previousVisaStatus", petition);
         assignEntityValueFromField("previousStatusExpiry", petition);
-        assignEntityValueFromField("lca", petition);
-        assignEntityValueFromField("passport", petition);
+//        assignEntityValueFromField("lca", petition);
+//        assignEntityValueFromField("passport", petition);
         assignEntityValueFromField("petitionApprovalDate", petition);
         assignEntityValueFromField("petitionValidFromDate", petition);
         assignEntityValueFromField("petitionValidToDate", petition);
@@ -114,11 +129,27 @@ public class CreatePetitionPanel extends CreateComposite {
 
     @Override
     protected void configure() {
+        employeeSB.getLabel().getElement().getStyle().setWidth(145, Style.Unit.PX);
+        HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                logger.info(entityString);
+                Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
+                if (values != null) {
+                    employeeSB.loadData(values);
+                }
+            }
+        });
+    }
 
+    private String getEmployeeIdsDropDownUrl() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_USER.name() + "/0/10000");
     }
 
     @Override
     protected void addWidgets() {
+        logger.info("im here in create petiton");
+        entityFieldsPanel.add(employeeSB);
         addField("receiptNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("attorneyName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("visaClassification", false, true, VisaClassificationType.names(), Alignment.HORIZONTAL);
@@ -130,7 +161,7 @@ public class CreatePetitionPanel extends CreateComposite {
         addEnumField("i140ApprovalStatus", false, true, Polar.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(linkInfo);
         addDropDown("lca", selectLCAWidgetF);
-        addDropDown("passport", selectPassportWidgetF);
+//        addDropDown("passport", selectPassportWidgetF);
         entityFieldsPanel.add(prevInfo);
         addEnumField("previousVisaStatus", false, true, VisaStatus.names(), Alignment.HORIZONTAL);
         addField("previousStatusExpiry", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
@@ -152,6 +183,39 @@ public class CreatePetitionPanel extends CreateComposite {
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "petition/save";
+    }
+
+    @Override
+    public void onBlur(BlurEvent event) {
+        if (event.getSource().equals(employeeSB.getSuggestBox().getValueBox())) {
+            if (employeeSB.getSelectedObject() != null) {
+                selectLCAWidgetF.getListBox().setSelectedIndex(0);
+                populateLCA();
+            }
+        }
+    }
+    
+    protected void populateLCA() {
+        HttpService.HttpServiceAsync.instance().doGet(getEmployeeReadUrl(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String arg0) {
+                logger.info(arg0);
+                if (!Strings.isNullOrEmpty(arg0)) {
+                    JSONObject lcas = JSONParser.parseLenient(arg0).isObject();
+                    JSONArray entities = JSONUtils.toJSONArray(lcas.get("lca"));
+                    if (entities != null) {
+                        selectLCAWidgetF.setSelectedValues(entities);
+                    }
+                }
+            }
+
+        }
+        );
+    }
+
+    private String getEmployeeReadUrl() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "lca/dropdown/" + JSONUtils.toString(employeeSB.getSelectedObject(), "id"));
     }
 
 }

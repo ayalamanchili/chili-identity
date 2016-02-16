@@ -10,7 +10,6 @@ package info.yalamanchili.office.dao.profile.immigration;
 
 import info.chili.dao.AbstractHandleEntityDao;
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.entity.immigration.LCA;
 import info.yalamanchili.office.entity.immigration.LCALink;
 import java.util.Collections;
 import java.util.List;

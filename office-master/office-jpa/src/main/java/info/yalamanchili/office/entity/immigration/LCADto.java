@@ -24,8 +24,6 @@ public class LCADto extends LCA {
 
     protected Set<Employee> employees;
 
-    protected Set<Employee> worked;
-
     public Set<Employee> getEmployees() {
         if (employees == null) {
             this.employees = new HashSet<>();
@@ -35,17 +33,6 @@ public class LCADto extends LCA {
 
     public void setEmployees(Set<Employee> employees) {
         this.employees = employees;
-    }
-
-    public Set<Employee> getWorked() {
-        if (worked == null) {
-            this.worked = new HashSet<>();
-        }
-        return worked;
-    }
-
-    public void setWorked(Set<Employee> worked) {
-        this.worked = worked;
     }
 
 }

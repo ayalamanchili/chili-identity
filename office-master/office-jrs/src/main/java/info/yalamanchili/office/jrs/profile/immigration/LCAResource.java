@@ -23,6 +23,8 @@ import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.MultiSelectObj;
 import info.yalamanchili.office.profile.immigration.LCAService;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -116,6 +118,22 @@ public class LCAResource extends CRUDResource<LCA> {
             @QueryParam("column") List<String> columns) {
         return super.getDropDown(start, limit, columns);
     }
+    
+    @GET
+    @Path("/dropdown/{id}")
+    public List<LCA> getLCAEmployeeDown(@PathParam("id") long id) {
+        Employee emp = EmployeeDao.instance().findById(id);    
+        Date todayDate = new Date();
+        List<LCA> result = new ArrayList<>();
+        for (LCALink lcaLink : lcaLinkDao.findAll(emp)) {
+            LCA lca = lcaDao.findById(lcaLink.getSourceEntityId());
+            if (todayDate.compareTo(lca.getLcaValidToDate()) <= 0) {
+                result.add(lca);
+            }           
+        }
+        return result;
+    }    
+
 
     @Override
     public CRUDDao getDao() {
