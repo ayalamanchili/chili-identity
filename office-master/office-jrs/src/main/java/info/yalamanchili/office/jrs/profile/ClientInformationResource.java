@@ -194,9 +194,9 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
     @PUT
     @Path("/search-projects-between-days/{start}/{limit}")
     @Cacheable(OfficeCacheKeys.EMPLOYEES)
-    public ClientInformationTable table(@PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate) {
+    public ClientInformationTable table(@PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate, @QueryParam("value") String value) {
         ClientInformationTable table = new ClientInformationTable();
-        List<ClientInformation> clients = clientInformationDao.queryForProjEndBetweenDays(start, limit, startDate, endDate);
+        List<ClientInformation> clients = clientInformationDao.queryForProjEndBetweenDays(start, limit, startDate, endDate, value);
         if (clients != null && clients.size() > 0) {
             table.setEntities(clients);
             table.setSize(Long.valueOf(clients.size()));
@@ -208,9 +208,9 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
 
     @GET
     @Path("/ended-projects-report")
-    public void report(@QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate) {
+    public void report(@QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate, @QueryParam("value") String value) {
         ContractDto.ContractTable ctable = new ContractDto.ContractTable();
-        List<ClientInformation> clients = clientInformationDao.queryForProjEndBetweenDays(0, 10000, startDate, endDate);
+        List<ClientInformation> clients = clientInformationDao.queryForProjEndBetweenDays(0, 10000, startDate, endDate, value);
         if (clients != null && clients.size() > 0) {
             for (ClientInformation ci : clients) {
                 ctable.getEntities().add(ContractService.instance().mapClientInformation(ci));
@@ -220,7 +220,7 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
         String start = DateUtils.formatDate(startDate, "MM-dd-yyyy");
         String end = DateUtils.formatDate(endDate, "MM-dd-yyyy");
-        String fileName = ReportGenerator.generateExcelOrderedReport(ctable.getEntities(), "ProjectsEnded Or Going To End Between " + start + " and " + end, OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        String fileName = ReportGenerator.generateExcelOrderedReport(ctable.getEntities(), "Emp Projects Going To Start Or End Between " + start + " and " + end, OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
     }
 

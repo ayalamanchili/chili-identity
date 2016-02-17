@@ -12,7 +12,6 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.chili.email.Email;
-import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.Feedback.Feedback;
 import info.yalamanchili.office.entity.message.Message;
@@ -65,7 +64,10 @@ public class ProfileNotificationService {
         Email email = new Email();
         email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject("New System Soft Office User Created");
-        String messageText = "New " + employee.getEmployeeType().getName() + " has been Created.. \n Employee Name is: " + employee.getFirstName() + "  " + employee.getLastName() + " \n Employee Id is: " + employee.getEmployeeId() + " \n Created By " + currentEmployee.getFirstName() + " " + currentEmployee.getLastName();
+        String messageText = "New " + employee.getEmployeeType().getName() + " has been Created.. \n Employee Name is: " + employee.getFirstName() + "  " + employee.getLastName() + " \n Employee Id is: " + employee.getEmployeeId();
+        if (currentEmployee != null) {
+            messageText = messageText.concat(" \n Created By " + currentEmployee.getFirstName() + " " + currentEmployee.getLastName());
+        }
         String messageTxt = messageText.replaceAll("[^a-zA-Z0-9\\.;:_ ,]+", " ");
         email.setBody(messageTxt);
         messagingService.sendEmail(email);

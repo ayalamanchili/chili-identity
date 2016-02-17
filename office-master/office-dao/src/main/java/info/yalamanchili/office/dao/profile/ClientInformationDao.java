@@ -48,15 +48,25 @@ public class ClientInformationDao extends CRUDDao<ClientInformation> {
             return null;
         }
     }
-    
+
     @Transactional(readOnly = true)
-    public List<ClientInformation> queryForProjEndBetweenDays(int start, int limit, Date startDate, Date endDate) {
-        Query findAllQuery = getEntityManager().createQuery("from " + ClientInformation.class.getCanonicalName() + " WHERE endDate>=:startDateParam AND endDate<=:endDateParam", entityCls);
-        findAllQuery.setParameter("startDateParam", startDate);
-        findAllQuery.setParameter("endDateParam", endDate);
-        findAllQuery.setFirstResult(start);
-        findAllQuery.setMaxResults(limit);
-        return findAllQuery.getResultList();
+    public List<ClientInformation> queryForProjEndBetweenDays(int start, int limit, Date startDate, Date endDate, String value) {
+        if (value.equalsIgnoreCase("enddate")) {
+            Query findAllQuery = getEntityManager().createQuery("from " + ClientInformation.class.getCanonicalName() + " WHERE endDate>=:startDateParam AND endDate<=:endDateParam", entityCls);
+            findAllQuery.setParameter("startDateParam", startDate);
+            findAllQuery.setParameter("endDateParam", endDate);
+            findAllQuery.setFirstResult(start);
+            findAllQuery.setMaxResults(limit);
+            return findAllQuery.getResultList();
+        }
+        else {
+            Query findAllQuery = getEntityManager().createQuery("from " + ClientInformation.class.getCanonicalName() + " WHERE startDate>=:startDateParam AND startDate<=:endDateParam", entityCls);
+            findAllQuery.setParameter("startDateParam", startDate);
+            findAllQuery.setParameter("endDateParam", endDate);
+            findAllQuery.setFirstResult(start);
+            findAllQuery.setMaxResults(limit);
+            return findAllQuery.getResultList();
+        }
     }
 
     @Override

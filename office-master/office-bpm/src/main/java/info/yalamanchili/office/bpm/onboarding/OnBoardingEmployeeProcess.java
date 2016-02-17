@@ -46,13 +46,11 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
         String status = (String) dt.getExecution().getVariable("status");
         EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
         if (status.equalsIgnoreCase("approved")) {
-            if (entity.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
-                empOnBoarding.setStatus(OnBoardingStatus.Pending_Background_Check);
-                new GenericTaskCompleteNotification().notify(dt);
-            } else {
-                empOnBoarding.setStatus(OnBoardingStatus.Pending_EVerify);
-                new GenericTaskCompleteNotification().notify(dt);
-            }
+            empOnBoarding.setStatus(OnBoardingStatus.Pending_HR_Validation);
+            new GenericTaskCompleteNotification().notify(dt);
+        } else {
+            empOnBoarding.setStatus(OnBoardingStatus.Rejected);
+            new GenericTaskCompleteNotification().notify(dt);
         }
         EmployeeOnBoardingDao.instance().save(empOnBoarding);
         dt.getExecution().setVariable("entity", entity);
@@ -62,7 +60,10 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
         String status = (String) dt.getExecution().getVariable("status");
         EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
         if (status.equalsIgnoreCase("approved")) {
-            empOnBoarding.setStatus(OnBoardingStatus.Pending_EVerify);
+            empOnBoarding.setStatus(OnBoardingStatus.Pending_HR_Validation);
+            new GenericTaskCompleteNotification().notify(dt);
+        }else {
+            empOnBoarding.setStatus(OnBoardingStatus.Rejected);
             new GenericTaskCompleteNotification().notify(dt);
         }
         EmployeeOnBoardingDao.instance().save(empOnBoarding);
@@ -73,33 +74,40 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
         String status = (String) dt.getExecution().getVariable("status");
         EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
         if (status.equalsIgnoreCase("approved")) {
-            empOnBoarding.setStatus(OnBoardingStatus.Pending_Payroll_Registration);
+            empOnBoarding.setStatus(OnBoardingStatus.Pending_HR_Validation);
+            new GenericTaskCompleteNotification().notify(dt);
+        } else {
+            empOnBoarding.setStatus(OnBoardingStatus.Rejected);
             new GenericTaskCompleteNotification().notify(dt);
         }
+        EmployeeOnBoardingDao.instance().save(empOnBoarding);
+        dt.getExecution().setVariable("entity", entity);
+    }
+    
+    protected void createServiceTicketForNetworkDept(Employee entity, DelegateTask dt) {
+        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
+        empOnBoarding.setStatus(OnBoardingStatus.Pending_HR_Validation);
+        new GenericTaskCompleteNotification().notify(dt);
+        EmployeeOnBoardingDao.instance().save(empOnBoarding);
+    }
+    
+    protected void createFinalValidationTask(Employee entity, DelegateTask dt) {
+        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
+        empOnBoarding.setStatus(OnBoardingStatus.Pending_Payroll_Registration);
+        new GenericTaskCompleteNotification().notify(dt);
         EmployeeOnBoardingDao.instance().save(empOnBoarding);
         dt.getExecution().setVariable("entity", entity);
     }
 
     protected void payrollRegistrationTaskCompleted(Employee entity, DelegateTask dt) {
         EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
-        if (entity.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
-            empOnBoarding.setStatus(OnBoardingStatus.Pending_Network_Team_Provisioning);
-        } else {
-            empOnBoarding.setStatus(OnBoardingStatus.Pending_Employee_Orientation);
-        }
+        empOnBoarding.setStatus(OnBoardingStatus.Pending_Employee_Orientation);
         new GenericTaskCompleteNotification().notify(dt);
         EmployeeOnBoardingDao.instance().save(empOnBoarding);
         dt.getExecution().setVariable("entity", entity);
     }
 
-    protected void createServiceTicketForNetworkDept(Employee entity, DelegateTask dt) {
-        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
-        empOnBoarding.setStatus(OnBoardingStatus.Complete);
-        new GenericTaskCompleteNotification().notify(dt);
-        EmployeeOnBoardingDao.instance().save(empOnBoarding);
-    }
-    
-     protected void createEmployeeOrientationTask(Employee entity, DelegateTask dt) {
+    protected void createEmployeeOrientationTask(Employee entity, DelegateTask dt) {
         EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
         empOnBoarding.setStatus(OnBoardingStatus.Complete);
         new GenericTaskCompleteNotification().notify(dt);
@@ -137,13 +145,18 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
             case "eVerifyTask":
                 eVerifyTaskCompleted(entity, dt);
                 break;
+            case "ServiceTicketTaskforNetworkDept":
+                createServiceTicketForNetworkDept(entity, dt);
+                break;
+            case "onboardingFinalValidationTask":
+                createFinalValidationTask(entity, dt);
+                break;
             case "payrollRegistrationTask":
                 payrollRegistrationTaskCompleted(entity, dt);
                 break;
-            case "ServiceTicketTaskforNetworkDept":
-                createServiceTicketForNetworkDept(entity, dt);
-            case "EmployeeOrientationTask":
+            case "employeeOrientationTask":
                 createEmployeeOrientationTask(entity, dt);
+                break;
         }
     }
 

@@ -35,6 +35,7 @@ import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 /**
  *
@@ -47,10 +48,10 @@ import javax.xml.bind.annotation.XmlType;
 @Produces("application/json")
 @Consumes("application/json")
 public class EmployeeFormsResource extends CRUDResource<BankAccount> {
-    
+
     @Autowired
     protected EmployeeFormsService employeeFormsService;
-    
+
     @GET
     @Path("/ach/{id}")
     public BankAccount getBankAccount(@PathParam("id") Long employeeId) {
@@ -61,14 +62,14 @@ public class EmployeeFormsResource extends CRUDResource<BankAccount> {
         BankAccount ba = BankAccountDao.instance().find(emp);
         return ba;
     }
-    
+
     @GET
     @Override
     @Path("/{id}")
     public BankAccount read(@PathParam("id") Long id) {
         return BankAccountDao.instance().find(id);
     }
-    
+
     @GET
     @Path("/achs/{id}")
     public BankAccountTable getBankAccounts(@PathParam("id") Long employeeId) {
@@ -83,7 +84,7 @@ public class EmployeeFormsResource extends CRUDResource<BankAccount> {
         table.setSize((long) accs.size());
         return table;
     }
-    
+
     @PUT
     @Path("/ach-delete/{id}")
     public void deleteBankAccount(@PathParam("id") Long employeeId) {
@@ -95,9 +96,9 @@ public class EmployeeFormsResource extends CRUDResource<BankAccount> {
         if (ba != null) {
             BankAccountDao.instance().delete(ba);
         }
-        
+
     }
-    
+
     @PUT
     @Path("/ach-save/{id}")
     @Validate
@@ -105,7 +106,7 @@ public class EmployeeFormsResource extends CRUDResource<BankAccount> {
         Employee emp = EmployeeDao.instance().findById(employeeId);
         return BankAccountDao.instance().save(entity, employeeId, emp.getClass().getCanonicalName());
     }
-    
+
     @PUT
     @Path("/update")
     @Validate
@@ -150,13 +151,14 @@ public class EmployeeFormsResource extends CRUDResource<BankAccount> {
         }
         return result;
     }
-    
+
     @PUT
     @Path("/roles-responsibilities/{id}")
-    public void updateRolesAndResponsibilities(@PathParam("id") String id, EmployeeAdditionalDetails details){
+    @PreAuthorize("hasAnyRole('ROLE_HR_ADMINSTRATION','ROLE_ON_BOARDING_MGR')")
+    public void updateRolesAndResponsibilities(@PathParam("id") String id, EmployeeAdditionalDetails details) {
         employeeFormsService.updateRolesAndResponsibilities(id, details);
     }
-    
+
     @GET
     @Path("/ach-report/{id}")
     @Produces({"application/pdf"})
@@ -164,17 +166,17 @@ public class EmployeeFormsResource extends CRUDResource<BankAccount> {
         Employee emp = EmployeeDao.instance().findById(employeeId);
         return employeeFormsService.printACHForm(emp);
     }
-    
+
     @Autowired
     protected Mapper mapper;
-    
+
     @GET
     @Path("/joining-form/{id}")
     public JoiningFormsDto getJoiningForm(@PathParam("id") Long employeeId) {
         Employee emp = EmployeeDao.instance().findById(employeeId);
         return employeeFormsService.getJoiningForm(emp);
     }
-    
+
     @GET
     @Path("/joining-form-report/{id}")
     @Produces({"application/pdf"})
@@ -182,32 +184,32 @@ public class EmployeeFormsResource extends CRUDResource<BankAccount> {
         Employee emp = EmployeeDao.instance().findById(employeeId);
         return employeeFormsService.printJoiningForm(emp);
     }
-    
+
     @Override
     public CRUDDao getDao() {
         return null;
     }
-    
+
     @XmlRootElement
     @XmlType
     public static class BankAccountTable implements java.io.Serializable {
-        
+
         protected Long size;
         protected List<BankAccount> entities;
-        
+
         public Long getSize() {
             return size;
         }
-        
+
         public void setSize(Long size) {
             this.size = size;
         }
-        
+
         @XmlElement
         public List<BankAccount> getEntities() {
             return entities;
         }
-        
+
         public void setEntities(List<BankAccount> entities) {
             this.entities = entities;
         }

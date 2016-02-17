@@ -23,7 +23,6 @@ import info.yalamanchili.office.client.Auth;
 import info.chili.gwt.crud.CreateComposite;
 import info.yalamanchili.office.client.profile.password.ResetPasswordPanel;
 import info.yalamanchili.office.client.profile.role.MultiSelectRoleWidget;
-import info.yalamanchili.office.client.profile.skillset.ReadSkillSetPanel;
 import info.yalamanchili.office.client.profile.skillset.TreeSkillSetPanel;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.Auth.ROLE;
@@ -107,7 +106,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
             addFirstChildLink("Roles", ROLES_NODE);
         }
         addFirstChildLink("Reports", REPORTS_NODE, empReportsPanel);
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ON_BOARDING_MGR)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ON_BOARDING_MGR, ROLE.ROLE_HR_ADMINSTRATION)) {
             addFirstChildLink("Forms & Docs", EMPLOYEE_FORMS, empDocsPanel);
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP) && Auth.isEmployee(entity)) {

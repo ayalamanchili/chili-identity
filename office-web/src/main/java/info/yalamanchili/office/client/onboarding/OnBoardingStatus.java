@@ -21,7 +21,9 @@ public enum OnBoardingStatus {
     Pending_Payroll_Registration,
     Pending_Network_Team_Provisioning,
     Pending_Employee_Orientation,
-    Complete;
+    Pending_HR_Validation,
+    Complete,
+    Rejected;
 
     public static String[] names() {
         OnBoardingStatus[] values = values();

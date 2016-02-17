@@ -218,7 +218,6 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
             }
         }
         employee.put("documents", onBoardingDocs);
-        logger.info("employee" + employee.toString());
         return employee;
     }
 
@@ -285,6 +284,9 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         entityFieldsPanel.add(addDependentsL);
         entityFieldsPanel.add(emerInfo);
         entityFieldsPanel.add(addEmerContact);
+        CreateEmergencyContactWidget panel = new CreateEmergencyContactWidget(CreateComposite.CreateCompositeType.ADD, this, 0);
+        emergencyContactsPanels.add(panel);
+        entityFieldsPanel.add(panel);
         countriesF = (EnumField) fields.get("country");
         statesF = (EnumField) fields.get("state");
         firstNameF = (StringField) fields.get("firstName");
@@ -301,7 +303,6 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
 
     @Override
     protected void updateButtonClicked() {
-        logger.info("entity details:" + entity.toString());
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
                     @Override
@@ -430,5 +431,4 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
             baLastNameF.setValue(lastNameF.getValue());
         }
     }
-
 }
