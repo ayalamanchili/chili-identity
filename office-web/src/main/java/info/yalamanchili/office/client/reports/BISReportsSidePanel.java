@@ -19,6 +19,8 @@ import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -57,7 +59,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
 
     SuggestBox employeeSbf = new SuggestBox(OfficeWelcome.constants, "firstName", "Employee", false, false);
     SuggestBox employeeSbl = new SuggestBox(OfficeWelcome.constants, "lastName", "Employee", false, false);
-    
+
     MultiWordSuggestOracle data = new MultiWordSuggestOracle();
 
     protected SelectCompanyWidget selectCompnayWidget = new SelectCompanyWidget(false, false);
@@ -76,7 +78,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
     protected DisclosurePanel myVlocationL = new DisclosurePanel("Vendors in a Location");
     protected DisclosurePanel myClocationL = new DisclosurePanel("Clients in a Location");
     protected DisclosurePanel empLocationL = new DisclosurePanel("Emp Working in a Location");
-    protected DisclosurePanel projEndL = new DisclosurePanel("Emp Projects Going To End");
+    protected DisclosurePanel projEndL = new DisclosurePanel("Emp Projects Going To Start / End");
 
     ClickableLink clearReportsL = new ClickableLink("clear");
     protected Button searchTasks = new Button("Search");
@@ -95,6 +97,8 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
     FlowPanel cLocationPanel = new FlowPanel();
     FlowPanel empLocPanel = new FlowPanel();
     FlowPanel projEndPanel = new FlowPanel();
+    
+    HorizontalPanel hPanel = new HorizontalPanel();
 
     SelectEmployeeWithRoleWidget selectRecruiterW = new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER, false, false);
     StringField employeeFirstNameField = new StringField(OfficeWelcome.constants, "employeeFirstName", "Contract", false, false);
@@ -111,6 +115,8 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
     EnumField invoiceField = new EnumField(OfficeWelcome.constants, "invoiceFrequency", "Contract", false, false, InvoiceFrequency.names());
     StringField vendorField = new StringField(OfficeWelcome.constants, "vendor", "Contract", false, false);
     ListBox li = new ListBox();
+    ListBox projectEndLi = new ListBox();
+    Label label = new Label(" Based");
 
     private static Logger logger = Logger.getLogger(BISReportsSidePanel.class.getName());
 
@@ -140,6 +146,8 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
     protected void configure() {
         li.addItem("Joined", "joined");
         li.addItem("Left", "left");
+        projectEndLi.addItem("EndDate", "enddate");
+        projectEndLi.addItem("StartDate", "startdate");
         HttpService.HttpServiceAsync.instance().doGet(getFirstNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
@@ -394,6 +402,8 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                     String empUrl1 = OfficeWelcome.constants.root_url() + "clientinformation/search-projects-between-days/0/1000";
                     empUrl1 = empUrl1.concat("?startDate=" + sdf.format(projectStartDate.getDate()));
                     empUrl1 = empUrl1.concat("&endDate=" + sdf.format(projectEndDate.getDate()));
+                    obj.put("value", new JSONString(projectEndLi.getSelectedValue()));
+                    empUrl1 = empUrl1.concat("&value=" + projectEndLi.getSelectedValue());
                     HttpService.HttpServiceAsync.instance().doPut(URL.encode(empUrl1), obj.toString(), OfficeWelcome.instance().getHeaders(), true,
                             new ALAsyncCallback<String>() {
                                 @Override
@@ -613,6 +623,8 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                 if (obj.containsKey("startDate") == true && obj.containsKey("endDate") == true) {
                     empUrl1 = empUrl1.concat("?startDate=" + sdf.format(projectStartDate.getDate()));
                     empUrl1 = empUrl1.concat("&endDate=" + sdf.format(projectEndDate.getDate()));
+                    obj.put("value", new JSONString(projectEndLi.getSelectedValue()));
+                    empUrl1 = empUrl1.concat("&value=" + projectEndLi.getSelectedValue());
                     HttpService.HttpServiceAsync.instance().doGet(empUrl1, OfficeWelcome.instance().getHeaders(), true,
                             new ALAsyncCallback<String>() {
                                 @Override
@@ -655,28 +667,28 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                 }
             }
         }
-        if(event.getSource().equals(graphB)){
+        if (event.getSource().equals(graphB)) {
             JSONObject obj = new JSONObject();
-                obj.put("recruitedDateFrom", new JSONString(DateUtils.toDateString(projectStartDate.getDate())));
-                obj.put("recruitedDateTo", new JSONString(DateUtils.toDateString(projectEndDate.getDate())));
-                String chartUrl = OfficeWelcome.constants.root_url() + "contract/recruiterSearch";
-                HttpService.HttpServiceAsync.instance().doPut(URL.encode(chartUrl), obj.toString(), OfficeWelcome.instance().getHeaders(), true,
-                        new ALAsyncCallback<String>() {
-                            @Override
-                            public void onResponse(String result) {
-                                if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                                    new ResponseStatusWidget().show("no results");
-                                } else {
-                                    TabPanel.instance().reportingPanel.entityPanel.clear();
-                                    //TODO use size and entities attributes
-                                    JSONObject resObj = JSONParser.parseLenient(result).isObject();
-                                    String key = (String) resObj.keySet().toArray()[0];
-                                    JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-                                    TabPanel.instance().reportingPanel.entityPanel.add(new EmployeeRecruitedBWDatesChartPanel(results));
-                                }
+            obj.put("recruitedDateFrom", new JSONString(DateUtils.toDateString(projectStartDate.getDate())));
+            obj.put("recruitedDateTo", new JSONString(DateUtils.toDateString(projectEndDate.getDate())));
+            String chartUrl = OfficeWelcome.constants.root_url() + "contract/recruiterSearch";
+            HttpService.HttpServiceAsync.instance().doPut(URL.encode(chartUrl), obj.toString(), OfficeWelcome.instance().getHeaders(), true,
+                    new ALAsyncCallback<String>() {
+                        @Override
+                        public void onResponse(String result) {
+                            if (result == null || JSONParser.parseLenient(result).isObject() == null) {
+                                new ResponseStatusWidget().show("no results");
+                            } else {
+                                TabPanel.instance().reportingPanel.entityPanel.clear();
+                                //TODO use size and entities attributes
+                                JSONObject resObj = JSONParser.parseLenient(result).isObject();
+                                String key = (String) resObj.keySet().toArray()[0];
+                                JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
+                                TabPanel.instance().reportingPanel.entityPanel.add(new EmployeeRecruitedBWDatesChartPanel(results));
                             }
-                        });
-                clearFields();
+                        }
+                    });
+            clearFields();
         }
     }
 
@@ -767,6 +779,9 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
         }
         if (event.getSource().equals(projEndL)) {
             TabPanel.instance().reportingPanel.sidePanelTop.setHeight("100%");
+            hPanel.add(projectEndLi);
+            hPanel.add(label);
+            projEndPanel.add(hPanel);
             projEndPanel.add(projectStartDate);
             projEndPanel.add(projectEndDate);
             projEndPanel.add(searchTasks);
