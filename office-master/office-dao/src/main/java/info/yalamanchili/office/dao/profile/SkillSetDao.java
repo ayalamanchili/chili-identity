@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.dao.profile;
 
+import com.google.common.base.Strings;
 import info.chili.commons.FileSearchUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.security.SecurityUtils;
@@ -44,12 +45,14 @@ public class SkillSetDao extends CRUDDao<SkillSet> {
     @Transactional
     public void extractResumeContent(Long skillSetId) {
         SkillSet entity = findById(skillSetId);
-        String resumeUrl = OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + entity.getResumeUrl();
-        resumeUrl = resumeUrl.replace("entityId", entity.getId().toString());
-        File file = new File(resumeUrl);
-        String resumeContent = FileSearchUtils.extractFileContents(file);
-        entity.setResumeContent(resumeContent);
-        getEntityManager().merge(entity);
+        if (!Strings.isNullOrEmpty(entity.getResumeUrl())) {
+            String resumeUrl = OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + entity.getResumeUrl();
+            resumeUrl = resumeUrl.replace("entityId", entity.getId().toString());
+            File file = new File(resumeUrl);
+            String resumeContent = FileSearchUtils.extractFileContents(file);
+            entity.setResumeContent(resumeContent);
+            getEntityManager().merge(entity);
+        }
     }
 
     public SkillSetDao() {
