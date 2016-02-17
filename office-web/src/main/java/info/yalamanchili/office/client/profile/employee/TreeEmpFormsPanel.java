@@ -52,7 +52,7 @@ public class TreeEmpFormsPanel extends TreePanelComposite {
                 Window.open(ChiliClientConfig.instance().getFileDownloadUrl() + "employee-forms/ach-report/" + TreeEmployeePanel.instance().getEntityId() + "&passthrough=true", "_blank", "");
             }
         });
-        
+
         printJoiningFormL.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
@@ -67,9 +67,13 @@ public class TreeEmpFormsPanel extends TreePanelComposite {
 
     @Override
     protected void addWidgets() {
-        addFirstChildLink("ACH Form", ACH_FORM);
-        addFirstChildLink("Joining Form", JOINING_FORM);
-        if (Auth.isCorporateEmployee()) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ON_BOARDING_MGR)) {
+            addFirstChildLink("ACH Form", ACH_FORM);
+        }
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ON_BOARDING_MGR, Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
+            addFirstChildLink("Joining Form", JOINING_FORM);
+        }
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ON_BOARDING_MGR)) {
             addFirstChildLink("Documents", DOCUMENTS_NODE);
         }
     }
