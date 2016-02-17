@@ -20,5 +20,7 @@ public enum OnBoardingStatus {
     Pending_Payroll_Registration,
     Pending_Network_Team_Provisioning,
     Pending_Employee_Orientation,
+    Pending_HR_Validation,
     Complete,
+    Rejected,
 }
