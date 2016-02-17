@@ -17,7 +17,7 @@ import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.callback.ALAsyncCallback;
-import info.chili.gwt.crud.CreateComposite;
+import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
@@ -35,55 +35,58 @@ import java.util.logging.Logger;
  *
  * @author Madhu.Badiginchala
  */
-public class CreatePetitionPanel extends CreateComposite implements ClickHandler, BlurHandler {
+public class UpdatePetitionPanel extends UpdateComposite implements ClickHandler, BlurHandler {
 
-    private static Logger logger = Logger.getLogger(CreatePetitionPanel.class.getName());
-
+    private static Logger logger = Logger.getLogger(UpdatePetitionPanel.class.getName());
     HTML additionalInfo = new HTML("<h4 style=\"color:#427fed\">" + "Additional Information</h4>");
     HTML linkInfo = new HTML("<h4 style=\"color:#427fed\">" + "Link Information</h4>");
     HTML prevInfo = new HTML("<h4 style=\"color:#427fed\">" + "Previous Status Information</h4>");
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "consultant", "Consultant", false, true, Alignment.HORIZONTAL);
     SelectLCAWidget selectLCAWidgetF = new SelectLCAWidget(false, true, Alignment.HORIZONTAL);
     SelectPassportWidget selectPassportWidgetF = new SelectPassportWidget(false, true, Alignment.HORIZONTAL);
+    JSONObject petitionEmployee;
+    protected boolean empChange = false;
 
-    public CreatePetitionPanel(CreateComposite.CreateCompositeType type) {
-        super(type);
-        logger.info("im here in create panel");
-        initCreateComposite("Petition", OfficeWelcome.constants);
+    public UpdatePetitionPanel(JSONObject entity) {
+        initUpdateComposite(entity, "Petition", OfficeWelcome.constants);
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject petition = new JSONObject();
+        logger.info("entity is :::" + entity);
+        if (employeeSB.getSelectedObject() != null) {
+            empChange = true;
+        }
         JSONObject petitionaddinfo = new JSONObject();
-        assignEntityValueFromField("receiptNumber", petition);
-        assignEntityValueFromField("attorneyName", petition);
-        assignEntityValueFromField("visaClassification", petition);
-        assignEntityValueFromField("visaProcessing", petition);
-        assignEntityValueFromField("petitionFileDate", petition);
-        assignEntityValueFromField("i140ApprovalStatus", petition);
-        assignEntityValueFromField("previousVisaStatus", petition);
-        assignEntityValueFromField("previousStatusExpiry", petition);
-        assignEntityValueFromField("lca", petition);
-        assignEntityValueFromField("passport", petition);
-        assignEntityValueFromField("petitionApprovalDate", petition);
-        assignEntityValueFromField("petitionValidFromDate", petition);
-        assignEntityValueFromField("petitionValidToDate", petition);
+        assignEntityValueFromField("receiptNumber", entity);
+        assignEntityValueFromField("attorneyName", entity);
+        assignEntityValueFromField("visaClassification", entity);
+        assignEntityValueFromField("visaProcessing", entity);
+        assignEntityValueFromField("petitionFileDate", entity);
+        assignEntityValueFromField("i140ApprovalStatus", entity);
+        assignEntityValueFromField("previousVisaStatus", entity);
+        assignEntityValueFromField("previousStatusExpiry", entity);
+        assignEntityValueFromField("petitionStatus", entity);
+        assignEntityValueFromField("lca", entity);
+        assignEntityValueFromField("passport", entity);
+        assignEntityValueFromField("petitionApprovalDate", entity);
+        assignEntityValueFromField("petitionValidFromDate", entity);
+        assignEntityValueFromField("petitionValidToDate", entity);
         assignEntityValueFromField("h4Applicability", petitionaddinfo);
         assignEntityValueFromField("project", petitionaddinfo);
         assignEntityValueFromField("sisterCompanyLetterUsed", petitionaddinfo);
         assignEntityValueFromField("petitionTrackingNumber", petitionaddinfo);
         assignEntityValueFromField("petitionFolderMailedDate", petitionaddinfo);
         assignEntityValueFromField("petitionFolderMailTrkNbr", petitionaddinfo);
-        petition.put("petitionaddinfo", petitionaddinfo);
-        logger.info("entity here: " + petition);
-        return petition;
+        entity.put("petitionaddinfo", petitionaddinfo);
+        logger.info("entity are :::" + entity);
+        return entity;
     }
 
     @Override
-    protected void createButtonClicked() {
-        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
-                new AsyncCallback<String>() {
+    protected void updateButtonClicked() {
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
+                OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
             @Override
             public void onFailure(Throwable arg0) {
                 handleErrorResponse(arg0);
@@ -91,30 +94,44 @@ public class CreatePetitionPanel extends CreateComposite implements ClickHandler
 
             @Override
             public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
+                postUpdateSuccess(arg0);
             }
         });
     }
 
     @Override
-    protected void addButtonClicked() {
-        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
-                new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
-
-            @Override
-            public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
-            }
-        });
+    public void populateFieldsFromEntity(JSONObject entity) {
+        logger.info("in update petition panel" + entity);
+        if (entity.get("petitionEmployee") != null) {
+            petitionEmployee = (JSONObject) entity.get("petitionEmployee");
+            employeeSB.setValue(petitionEmployee.get("firstName").isString().stringValue());
+        }
+        assignFieldValueFromEntity("receiptNumber", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("visaClassification", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("visaProcessing", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("petitionFileDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("lca", entity, null);
+        assignFieldValueFromEntity("passport", entity, null);
+        assignFieldValueFromEntity("previousVisaStatus", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("previousStatusExpiry", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("petitionStatus", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("petitionApprovalDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("petitionValidFromDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("petitionValidToDate", entity, DataType.DATE_FIELD);
+        if (entity.containsKey("petitionaddinfo")) {
+            JSONObject petitionaddinfo = entity.get("petitionaddinfo").isObject();
+            assignFieldValueFromEntity("h4Applicability", petitionaddinfo, DataType.ENUM_FIELD);
+            assignFieldValueFromEntity("project", petitionaddinfo, DataType.ENUM_FIELD);
+            assignFieldValueFromEntity("sisterCompanyLetterUsed", petitionaddinfo, DataType.ENUM_FIELD);
+            assignFieldValueFromEntity("petitionTrackingNumber", petitionaddinfo, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("petitionFolderMailedDate", petitionaddinfo, DataType.DATE_FIELD);
+            assignFieldValueFromEntity("petitionFolderMailTrkNbr", petitionaddinfo, DataType.STRING_FIELD);
+        }
     }
 
     @Override
-    protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully Added Petition");
+    protected void postUpdateSuccess(String result) {
+        new ResponseStatusWidget().show("Successfully Updated Petition");
         TabPanel.instance().immigrationPanel.entityPanel.clear();
         TabPanel.instance().immigrationPanel.entityPanel.add(new ReadAllPetitionsPanel());
     }
@@ -152,6 +169,7 @@ public class CreatePetitionPanel extends CreateComposite implements ClickHandler
         addEnumField("visaClassification", false, true, VisaClassificationType.names(), Alignment.HORIZONTAL);
         addEnumField("visaProcessing", false, true, VisaProcessingType.names(), Alignment.HORIZONTAL);
         addField("petitionFileDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addEnumField("petitionStatus", true, true, PetitionStatus.names(), Alignment.HORIZONTAL);
         addField("petitionApprovalDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("petitionValidFromDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("petitionValidToDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
@@ -179,7 +197,11 @@ public class CreatePetitionPanel extends CreateComposite implements ClickHandler
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "petition/save/" + JSONUtils.toString(employeeSB.getSelectedObject(), "id");
+        if (empChange) {
+            return OfficeWelcome.constants.root_url() + "petition/save/" + JSONUtils.toString(employeeSB.getSelectedObject(), "id");
+        } else {
+            return OfficeWelcome.constants.root_url() + "petition/save/" + JSONUtils.toString(petitionEmployee, "id");
+        }
     }
 
     @Override
@@ -187,9 +209,9 @@ public class CreatePetitionPanel extends CreateComposite implements ClickHandler
         if (event.getSource().equals(employeeSB.getSuggestBox().getValueBox())) {
             if (employeeSB.getSelectedObject() != null) {
                 logger.info("hi htere");
+                selectLCAWidgetF.getListBox().setSelectedIndex(0);
                 populateLCA();
                 populatePassport();
-
             }
         }
     }
@@ -210,6 +232,7 @@ public class CreatePetitionPanel extends CreateComposite implements ClickHandler
                     }
                 }
             }
+
         }
         );
     }
@@ -234,6 +257,7 @@ public class CreatePetitionPanel extends CreateComposite implements ClickHandler
                     }
                 }
             }
+
         }
         );
     }

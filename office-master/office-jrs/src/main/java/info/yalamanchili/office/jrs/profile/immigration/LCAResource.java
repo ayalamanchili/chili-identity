@@ -121,14 +121,17 @@ public class LCAResource extends CRUDResource<LCA> {
     
     @GET
     @Path("/dropdown/{id}")
-    public List<LCA> getLCAEmployeeDown(@PathParam("id") long id) {
+    public List<Entry> getLCAEmployeeDown(@PathParam("id") long id) {
         Employee emp = EmployeeDao.instance().findById(id);    
         Date todayDate = new Date();
-        List<LCA> result = new ArrayList<>();
+        List<Entry> result = new ArrayList<>();
         for (LCALink lcaLink : lcaLinkDao.findAll(emp)) {
             LCA lca = lcaDao.findById(lcaLink.getSourceEntityId());
             if (todayDate.compareTo(lca.getLcaValidToDate()) <= 0) {
-                result.add(lca);
+            Entry entry = new Entry();
+            entry.setId(lca.getId().toString());
+            entry.setValue(lca.getLcaNumber());
+            result.add(entry);
             }           
         }
         return result;

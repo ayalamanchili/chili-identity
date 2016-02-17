@@ -8,11 +8,11 @@
  */
 package info.yalamanchili.office.jrs.profile.immigration;
 
+import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
-import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.immigration.PetitionDao;
 import info.yalamanchili.office.entity.immigration.Petition;
-import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.profile.immigration.PetitionService;
 import java.util.List;
 import javax.ws.rs.GET;
@@ -35,7 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 @Scope("request")
-public class PetitionResource {
+public class PetitionResource extends CRUDResource<Petition> {
 
     @Autowired
     protected PetitionDao petitionDao;
@@ -43,31 +43,21 @@ public class PetitionResource {
     protected PetitionService petitionService;
 
     @PUT
-    @Path("/save/{empId}")
+    @Path("/save/{id}")
     @Validate
-    public Petition save(@PathParam("empId") Long empId, Petition dto) {
+    public Petition save(@PathParam("id") Long empId, Petition dto) {
         return petitionService.savePetition(empId, dto);
     }
 
     @PUT
     @Path("/delete/{id}")
     public void delete(@PathParam("id") Long id) {
-        Petition petition = petitionDao.find(id);
+        Petition petition = petitionDao.findById(id);
         if (petition.getId() != null) {
             petitionDao.delete(id);
         }
     }
 
-//    @GET
-//    @Path("/{id}/{start}/{limit}")
-//    public PetitionResource.PetitionTable table(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
-//        PetitionResource.PetitionTable tableObj = new PetitionResource.PetitionTable();
-//        Employee emp = EmployeeDao.instance().findById(id);
-//        tableObj.setEntities(petitionDao.findAll(emp));
-//        tableObj.setSize(petitionDao.size());
-//        return tableObj;
-//    }
-//
     @GET
     @Path("/{start}/{limit}")
     public PetitionResource.PetitionTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
@@ -75,6 +65,11 @@ public class PetitionResource {
         tableObj.setEntities(petitionDao.query(start, limit));
         tableObj.setSize(petitionDao.size());
         return tableObj;
+    }
+
+    @Override
+    public CRUDDao getDao() {
+        return petitionDao;
     }
 
     @XmlRootElement

@@ -9,6 +9,7 @@
 package info.yalamanchili.office.dao.profile.immigration;
 
 import info.chili.dao.AbstractHandleEntityDao;
+import info.chili.jpa.AbstractEntity;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.immigration.LCALink;
 import java.util.Collections;
@@ -27,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Scope("prototype")
 public class LCALinkDao extends AbstractHandleEntityDao<LCALink> {
-    
+
     @PersistenceContext
     protected EntityManager em;
 
@@ -51,12 +52,23 @@ public class LCALinkDao extends AbstractHandleEntityDao<LCALink> {
             return Collections.EMPTY_LIST;
         }
     }
-    
+
+    @Transactional(readOnly = true)
+    public List<LCALink> findAllLCA(AbstractEntity target) {
+        TypedQuery<LCALink> query = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " where targetEntityName=:targetEntityNameParam and targetEntityId=:targetEntityIdParam", entityCls);
+        query.setParameter("targetEntityNameParam", target.getClass().getCanonicalName());
+        query.setParameter("targetEntityIdParam", target.getId());
+        if (query.getResultList().size() > 0) {
+            return query.getResultList();
+        } else {
+            //TODO throw exception
+            return Collections.EMPTY_LIST;
+        }
+    }
+
     @Override
     public EntityManager getEntityManager() {
         return em;
     }
-    
-    
-    
+
 }

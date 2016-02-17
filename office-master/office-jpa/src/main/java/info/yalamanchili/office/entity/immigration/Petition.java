@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.entity.immigration;
 
+import info.chili.jpa.AbstractEntity;
 import info.chili.jpa.AbstractHandleEntity;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.math.BigDecimal;
@@ -27,7 +28,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
-import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 
 /**
@@ -38,20 +38,13 @@ import org.hibernate.search.annotations.Indexed;
 @XmlRootElement
 @Entity
 @Audited
-public class Petition extends AbstractHandleEntity {
+public class Petition extends AbstractEntity {
 
     private static final long serialVersionUID = 11L;
 
-    //@NotEmpty(message = "{firstName.not.empty.msg}")
-    @Field
-    protected String firstName;
-
-    //@NotEmpty(message = "{lastName.not.empty.msg}")
-    @Field
-    protected String lastName;
-
-    @org.hibernate.annotations.Index(name = "PET_USR_NME")
-    protected String userName;
+    @ManyToOne
+    @ForeignKey(name = "FK_Emp_TravelAuths")
+    protected Employee petitionEmployee;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @ForeignKey(name = "FK_Petition_WorkedBy")
@@ -117,28 +110,12 @@ public class Petition extends AbstractHandleEntity {
 
     protected String withdrawnLCANumber;
 
-    public String getFirstName() {
-        return firstName;
+    public Employee getPetitionEmployee() {
+        return petitionEmployee;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setPetitionEmployee(Employee petitionEmployee) {
+        this.petitionEmployee = petitionEmployee;
     }
 
     public String getAttorneyName() {
@@ -308,7 +285,7 @@ public class Petition extends AbstractHandleEntity {
     
     @Override
     public String toString() {
-        return "Petition{" + "firstName=" + firstName + ", lastName=" + lastName + ", attorneyName=" + attorneyName + ", visaClassification=" + visaClassification + ", visaProcessing=" + visaProcessing + ", petitionFileDate=" + petitionFileDate + ", receiptNumber=" + receiptNumber + ", petitionStatus=" + petitionStatus + ", petitionApprovalDate=" + petitionApprovalDate + ", petitionValidFromDate=" + petitionValidFromDate + ", petitionValidToDate=" + petitionValidToDate + '}';
+        return "Petition{" + "attorneyName=" + attorneyName + ", visaClassification=" + visaClassification + ", visaProcessing=" + visaProcessing + ", petitionFileDate=" + petitionFileDate + ", receiptNumber=" + receiptNumber + ", petitionStatus=" + petitionStatus + ", petitionApprovalDate=" + petitionApprovalDate + ", petitionValidFromDate=" + petitionValidFromDate + ", petitionValidToDate=" + petitionValidToDate + '}';
     }
 
 }

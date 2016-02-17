@@ -55,7 +55,7 @@ public class ReadAllPetitionsPanel extends CRUDReadAllComposite {
                 new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String result) {
-                logger.info(result);
+                logger.info(":::::::::" + result);
                 postFetchTable(result);
             }
         });
@@ -123,7 +123,7 @@ public class ReadAllPetitionsPanel extends CRUDReadAllComposite {
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().immigrationPanel.entityPanel.clear();
-        TabPanel.instance().immigrationPanel.entityPanel.add(new UpdateLCAPanel(getEntity(entityId)));
+        TabPanel.instance().immigrationPanel.entityPanel.add(new UpdatePetitionPanel(getEntity(entityId)));
     }
 
     @Override
@@ -137,9 +137,7 @@ public class ReadAllPetitionsPanel extends CRUDReadAllComposite {
     @Override
     protected void createButtonClicked() {
         TabPanel.instance().immigrationPanel.entityPanel.clear();
-        logger.info(" in read all panels");
         TabPanel.instance().immigrationPanel.entityPanel.add(new CreatePetitionPanel(CreateComposite.CreateCompositeType.CREATE));
-        logger.info(" in read all panels222");
     }
 
     @Override

@@ -20,6 +20,7 @@ import info.yalamanchili.office.entity.immigration.Passport;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.profile.immigration.PassportService;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -76,23 +77,35 @@ public class PassportResource {
     }
 
     @GET
-    @Path("/dropdown/{id}/{start}/{limit}")
-    public List<Entry> getPassportDropDown(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit,
-            @QueryParam("column") List<String> columns) {
-        Employee emp = EmployeeDao.instance().findById(id);
-        return getPassportColumnDropDown(passportDao.findAll(emp));
-    }
-
-    protected List<Entry> getPassportColumnDropDown(List<Passport> passports) {
+    @Path("/dropdown/{start}/{limit}")
+    public List<Entry> getPassportDropDown(@PathParam("start") int start, @PathParam("limit") int limit) {
         List<Entry> result = new ArrayList<>();
-        for (Passport passport : passports) {
-            Entry entry = new Entry();
+        for (Passport passport : passportDao.query(start, limit)) {
+             Entry entry = new Entry();
             entry.setId(passport.getId().toString());
             entry.setValue(passport.getPassportNumber());
             result.add(entry);
         }
-        return result;
+        return result;       
     }
+
+    
+    @GET
+    @Path("/dropdown/{id}")
+    public List<Entry> getLCAEmployeeDown(@PathParam("id") long id) {
+        Employee emp = EmployeeDao.instance().findById(id);    
+        Date todayDate = new Date();
+        List<Entry> result = new ArrayList<>();
+        for (Passport passport : passportDao.findAll(emp)) {
+            if (todayDate.compareTo(passport.getPassportExpiryDate()) <= 0) {
+            Entry entry = new Entry();
+            entry.setId(passport.getId().toString());
+            entry.setValue(passport.getPassportNumber());
+            result.add(entry);
+            }           
+        }
+        return result;
+    }   
 
     @XmlRootElement
     @XmlType

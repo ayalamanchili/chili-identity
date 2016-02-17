@@ -10,7 +10,6 @@ import info.chili.gwt.composite.SelectComposite;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
 /**
@@ -38,7 +37,7 @@ public class SelectPassportWidget extends SelectComposite {
 
     @Override
     protected void fetchDropDownData() {
-        HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 100, "id", "passportNumber"),
+        HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, "id", "passportNumber"),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String entityString) {
@@ -49,7 +48,8 @@ public class SelectPassportWidget extends SelectComposite {
 
     @Override
     protected String getDropDownURL(Integer start, Integer limit, String... columns) {
-        return super.generateDropdownUrl(OfficeWelcome.constants.root_url() + "passport/dropdown/" + TreeEmployeePanel.instance().getEntityId(), start, limit, columns);
+        logger.info("here" + super.generateDropdownUrl(OfficeWelcome.constants.root_url() + "passport/dropdown", start, limit, columns));
+        return super.generateDropdownUrl(OfficeWelcome.constants.root_url() + "passport/dropdown", start, limit, columns);
     }
 
     @Override

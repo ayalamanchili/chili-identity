@@ -9,6 +9,7 @@
 package info.yalamanchili.office.dao.profile.immigration;
 
 import info.chili.dao.AbstractHandleEntityDao;
+import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.immigration.Petition;
 import javax.persistence.EntityManager;
@@ -22,7 +23,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 @Scope("prototype")
-public class PetitionDao extends AbstractHandleEntityDao<Petition> {
+public class PetitionDao extends CRUDDao<Petition> {
 
     @PersistenceContext
     protected EntityManager em;

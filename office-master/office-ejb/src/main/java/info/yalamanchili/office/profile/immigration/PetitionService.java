@@ -47,10 +47,7 @@ public class PetitionService {
 
     public Petition savePetition(Long empId, Petition dto) {
         Petition petition = mapper.map(dto, Petition.class);
-        Employee emp = employeeDao.findById(empId);
-        petition.setFirstName(emp.getFirstName());
-        petition.setLastName(emp.getLastName());
-        petition.setUserName(emp.getEmployeeId());
+        petition.setPetitionEmployee(employeeDao.findById(empId));
         petition.setPetitionStatus(PetitionStatus.Pending);
         if (petition.getLca() != null) {
             LCA lca = lcaDao.findById(petition.getLca().getId());
@@ -61,7 +58,7 @@ public class PetitionService {
             petition.setPassport(passport);
         }
         petition.getPetitionaddinfo().setPetition(petition);
-        petitionDao.save(petition, emp.getId(), emp.getClass().getCanonicalName());
+        petition = petitionDao.save(petition);
         return petition;
     }
 }

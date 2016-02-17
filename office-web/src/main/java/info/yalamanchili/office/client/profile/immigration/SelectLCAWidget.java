@@ -55,5 +55,5 @@ public class SelectLCAWidget extends SelectComposite {
     protected void validate() {
         clearMessage();
     }
-    
+
 }
