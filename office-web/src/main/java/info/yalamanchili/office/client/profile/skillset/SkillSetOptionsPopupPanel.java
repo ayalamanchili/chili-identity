@@ -49,4 +49,8 @@ public class SkillSetOptionsPopupPanel extends SkillSetOptionsPanel {
                     });
         }
     }
+    
+     protected String getSkillSetURI() {
+        return OfficeWelcome.constants.root_url() + "employee/skillset/" + OfficeWelcome.instance().employeeId;
+    }
 }

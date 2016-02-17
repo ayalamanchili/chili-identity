@@ -21,6 +21,7 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 
 /**
  *
@@ -63,17 +64,17 @@ public class SkillSetOptionsPanel extends ALComposite implements ClickHandler {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             HttpService.HttpServiceAsync.instance().doGet(getSkillSetURI(),
                     OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                        @Override
-                        public void onResponse(String arg0) {
-                            if (arg0 != null) {
-                                TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateSkillSetPanel((JSONObject) JSONParser.parseLenient(arg0)));
-                            }
-                        }
-                    });
+                @Override
+                public void onResponse(String arg0) {
+                    if (arg0 != null) {
+                        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateSkillSetPanel((JSONObject) JSONParser.parseLenient(arg0)));
+                    }
+                }
+            });
         }
     }
 
     protected String getSkillSetURI() {
-        return OfficeWelcome.constants.root_url() + "employee/skillset/" + employeeId;
+        return OfficeWelcome.constants.root_url() + "employee/skillset/" + TreeEmployeePanel.instance().getEntityId();
     }
 }
