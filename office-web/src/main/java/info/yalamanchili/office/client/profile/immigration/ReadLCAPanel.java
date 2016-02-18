@@ -7,7 +7,7 @@ package info.yalamanchili.office.client.profile.immigration;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.HTML;
-import info.chili.gwt.crud.ReadComposite;
+import info.chili.gwt.crud.TReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.Auth;
@@ -20,10 +20,11 @@ import java.util.logging.Logger;
  *
  * @author Madhu.Badiginchala
  */
-public class ReadLCAPanel extends ReadComposite {
+public class ReadLCAPanel extends TReadComposite {
 
-    private static Logger logger = Logger.getLogger(ReadPassportPanel.class.getName());
-    protected SelectCompanyWidget selectCompanyWidget = new SelectCompanyWidget(false, true, Alignment.HORIZONTAL);
+    private static ReadLCAPanel instance;
+    private static Logger logger = Logger.getLogger(ReadLCAPanel.class.getName());
+    protected SelectCompanyWidget selectCompanyWidget = new SelectCompanyWidget(false, false, Alignment.HORIZONTAL);
     protected MultiSelectConsultantWidget employeeSelectWidget;
     HTML wagesInfo = new HTML("<h4 style=\"color:#427fed\">" + "Wages Information</h4>");
     HTML addInfo = new HTML("<h4 style=\"color:#427fed\">" + "Additional Information</h4>");
@@ -34,6 +35,7 @@ public class ReadLCAPanel extends ReadComposite {
     ReadLCAAddressWidget readAddressWidget2;
 
     public ReadLCAPanel(JSONObject entity) {
+        instance = this;
         initReadComposite(entity, "LCA", OfficeWelcome.constants);
     }
 
@@ -47,9 +49,6 @@ public class ReadLCAPanel extends ReadComposite {
         assignFieldValueFromEntity("lcaCurrWageLvl", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("lcaCurrMinWage", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("lcaCurrMaxWage", entity, DataType.CURRENCY_FIELD);
-//        assignFieldValueFromEntity("lcaPrevWageLvl", entity, DataType.ENUM_FIELD);
-//        assignFieldValueFromEntity("lcaPrevMinWage", entity, DataType.CURRENCY_FIELD);
-//        assignFieldValueFromEntity("lcaPrevMaxWage", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("totalWorkingPositions", entity, DataType.LONG_FIELD);
         assignFieldValueFromEntity("visaClassification", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
@@ -65,18 +64,9 @@ public class ReadLCAPanel extends ReadComposite {
         assignFieldValueFromEntity("lcaPostingSSTLocation", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("lcaFiledInPIF", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("workedByEmployees", entity, null);
+        assignFieldValueFromEntity("withdrawnLCANumber", entity, DataType.STRING_FIELD);
         if (fields.containsKey("company")) {
             assignFieldValueFromEntity("company", entity, null);
-        }
-        if (entity.containsKey("lcaAddress1")) {
-            entityFieldsPanel.add(lcaAddress1);
-            readAddressWidget1 = new ReadLCAAddressWidget(entity.get("lcaAddress1").isObject());
-            entityFieldsPanel.add(readAddressWidget1);
-        }
-        if (entity.containsKey("lcaAddress2")) {
-            entityFieldsPanel.add(lcaAddress2);
-            readAddressWidget2 = new ReadLCAAddressWidget(entity.get("lcaAddress2").isObject());
-            entityFieldsPanel.add(readAddressWidget2);
         }
     }
 
@@ -100,38 +90,43 @@ public class ReadLCAPanel extends ReadComposite {
     @Override
     protected void addWidgets() {
         logger.info("entity read : " + entity);
-        addField("lcaNumber", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("totalWorkingPositions", true, true, DataType.LONG_FIELD, Alignment.HORIZONTAL);
-        addEnumField("visaClassification", true, true, VisaClassificationType.names(), Alignment.HORIZONTAL);
-        addDropDown("company", selectCompanyWidget);
-        addField("jobTitle", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addEnumField("socCodesAndOccupations", true, true, SOCCodesAndOccupations.names(), Alignment.HORIZONTAL);
-        addField("lcaValidFromDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("lcaValidToDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addEnumField("status", true, true, LCAStatus.names(), Alignment.HORIZONTAL);
-        addDropDown("workedByEmployees", selectRecruiterW);
-        entityFieldsPanel.add(empInfo);
-        // Populate selected Consultants
-        employeeSelectWidget = new MultiSelectConsultantWidget("Employees", getEntityId(), true, true);
-        entityFieldsPanel.add(employeeSelectWidget);
-        entityFieldsPanel.add(wagesInfo);
-        addEnumField("lcaCurrWageLvl", true, true, LCAWageLevels.names(), Alignment.HORIZONTAL);
-        addField("lcaCurrMinWage", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-        addField("lcaCurrMaxWage", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-//        addEnumField("lcaPrevWageLvl", true, true, LCAWageLevels.names(), Alignment.HORIZONTAL);
-//        addField("lcaPrevMinWage", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-//        addField("lcaPrevMaxWage", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-        entityFieldsPanel.add(addInfo);
-        addField("clientName", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("vendorName", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("lcaFiledDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addEnumField("nonDisplacement", true, true, Polar.names(), Alignment.HORIZONTAL);
-        addField("lcaPostingSentToVendor", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("responseOnLcaPosting", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("reminderEmail", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("certifiedLcaSentConsultant", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("lcaPostingSSTLocation", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("lcaFiledInPIF", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("lcaNumber", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 1);
+        addEnumField("visaClassification", true, true, VisaClassificationType.names(), Alignment.HORIZONTAL, 1, 2);
+        employeeSelectWidget = new MultiSelectConsultantWidget("Employees", getEntityId(), true, false);
+        entityFieldsPanel.setWidget(2, 1, employeeSelectWidget);
+        entityFieldsPanel.getFlexCellFormatter().setColSpan(2, 1, 2);
+        addDropDown("workedByEmployees", selectRecruiterW, 3, 1);
+        addDropDown("company", selectCompanyWidget, 3, 2);
+        addField("jobTitle", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 4, 1);
+        addEnumField("socCodesAndOccupations", true, false, SOCCodesAndOccupations.names(), Alignment.HORIZONTAL, 4, 2);
+        addField("lcaValidFromDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 5, 1);
+        addField("lcaValidToDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 5, 2);
+        addEnumField("lcaCurrWageLvl", true, true, LCAWageLevels.names(), Alignment.HORIZONTAL, 6, 1);
+        addField("lcaCurrMinWage", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 7, 1);
+        addField("lcaCurrMaxWage", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 7, 2);
+        if (entity.containsKey("lcaAddress1")) {
+            entityFieldsPanel.setWidget(8, 1, lcaAddress1);
+            readAddressWidget1 = new ReadLCAAddressWidget(entity.get("lcaAddress1").isObject());
+            entityFieldsPanel.setWidget(9, 1, readAddressWidget1);
+        }
+        if (entity.containsKey("lcaAddress2")) {
+            entityFieldsPanel.setWidget(8, 2, lcaAddress2);
+            readAddressWidget2 = new ReadLCAAddressWidget(entity.get("lcaAddress2").isObject());
+            entityFieldsPanel.setWidget(9, 2, readAddressWidget2);
+        }
+        addField("clientName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 10, 1);
+        addField("vendorName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 10, 2);
+        addField("lcaPostingSentToVendor", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 11, 1);
+        addField("responseOnLcaPosting", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 11, 2);
+        addEnumField("nonDisplacement", true, false, Polar.names(), Alignment.HORIZONTAL, 12, 1);
+        addField("reminderEmail", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 12, 2);
+        addField("certifiedLcaSentConsultant", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 13, 1);
+        addField("lcaPostingSSTLocation", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 13, 2);
+        addField("lcaFiledDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 14, 1);
+        addField("lcaFiledInPIF", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 14, 2);
+        addField("totalWorkingPositions", true, false, DataType.LONG_FIELD, Alignment.HORIZONTAL, 15, 1);
+        addEnumField("status", true, false, LCAStatus.names(), Alignment.HORIZONTAL, 15, 2);
+        addField("withdrawnLCANumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 16, 1);
         alignFields();
 
     }

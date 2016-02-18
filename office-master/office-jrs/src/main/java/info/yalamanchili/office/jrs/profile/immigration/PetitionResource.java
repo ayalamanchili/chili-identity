@@ -48,6 +48,13 @@ public class PetitionResource extends CRUDResource<Petition> {
     public Petition save(@PathParam("id") Long empId, Petition dto) {
         return petitionService.savePetition(empId, dto);
     }
+    
+    @PUT
+    @Path("/update/{id}")
+    @Validate
+    public Petition update(@PathParam("id") Long empId, Petition dto) {
+        return petitionService.updatePetition(empId, dto);
+    }
 
     @PUT
     @Path("/delete/{id}")

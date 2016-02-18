@@ -16,6 +16,7 @@ import info.yalamanchili.office.entity.immigration.LCA;
 import info.yalamanchili.office.entity.immigration.LCALink;
 import info.yalamanchili.office.entity.immigration.LCADto;
 import info.yalamanchili.office.entity.immigration.LCAStatus;
+import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.HashSet;
 import java.util.Set;
@@ -55,6 +56,7 @@ public class LCAService {
         if (lca.getCompany() != null) {
             lca.setCompany(companyDao.findById(lca.getCompany().getId()));
         }
+        lca.setWorkedByEmployees(null);
         for (Employee emp : dto.getWorkedByEmployees()) {
             if (emp.getId() != null) {
                 lca.addWorkedByEmployee(employeeDao.findById(emp.getId()));
@@ -81,6 +83,7 @@ public class LCAService {
         if (lca.getCompany() != null) {
             lca.setCompany(companyDao.findById(lca.getCompany().getId()));
         }
+        lca.setWorkedByEmployees(null);
         Set<Employee> newRecs = new HashSet();
         for (Employee emp : dto.getWorkedByEmployees()) {
             if (emp.getId() != null) {

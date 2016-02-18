@@ -37,8 +37,8 @@ public class CreateLCAPanel extends CreateComposite {
     protected BooleanField addAddress = new BooleanField(OfficeWelcome.constants, "Add LCA Secondary Address", "LCA", false, false, Alignment.HORIZONTAL);
     CreateAddressWidget createAddressWidget1 = new CreateAddressWidget(CreateAddressPanel.CreateAddressPanelType.MIN);
     CreateAddressWidget createAddressWidget2 = new CreateAddressWidget(CreateAddressPanel.CreateAddressPanelType.MIN);
-    protected SelectCompanyWidget selectCompanyWidget = new SelectCompanyWidget(false, true, Alignment.HORIZONTAL);
-    protected MultiSelectConsultantWidget employeeSelectWidget = new MultiSelectConsultantWidget("Employees", null, false, true);
+    protected SelectCompanyWidget selectCompanyWidget = new SelectCompanyWidget(false, false, Alignment.HORIZONTAL);
+    protected MultiSelectConsultantWidget employeeSelectWidget = new MultiSelectConsultantWidget("Employees", null, false, false);
     HTML wagesInfo = new HTML("<h4 style=\"color:#427fed\">" + "Wages Information</h4>");
     HTML empInfo = new HTML("<h4 style=\"color:#427fed\">" + "Select Consultants</h4>");
     HTML addInfo = new HTML("<h4 style=\"color:#427fed\">" + "Additional Information</h4>");
@@ -75,6 +75,7 @@ public class CreateLCAPanel extends CreateComposite {
         assignEntityValueFromField("visaClassification", lca);
         assignEntityValueFromField("socCodesAndOccupations", lca);
         assignEntityValueFromField("jobTitle", lca);
+        assignEntityValueFromField("withdrawnLCANumber", lca);
         // Address Information 1
         if (createAddressWidget1 != null) {
             lca.put("lcaAddress1", createAddressWidget1.populateEntityFromFields());
@@ -91,9 +92,6 @@ public class CreateLCAPanel extends CreateComposite {
         assignEntityValueFromField("lcaCurrWageLvl", lca);
         assignEntityValueFromField("lcaCurrMinWage", lca);
         assignEntityValueFromField("lcaCurrMaxWage", lca);
-//        assignEntityValueFromField("lcaPrevWageLvl", lca);
-//        assignEntityValueFromField("lcaPrevMinWage", lca);
-//        assignEntityValueFromField("lcaPrevMaxWage", lca);
         assignEntityValueFromField("clientName", lca);
         assignEntityValueFromField("vendorName", lca);
         assignEntityValueFromField("nonDisplacement", lca);
@@ -166,11 +164,11 @@ public class CreateLCAPanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         addField("lcaNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("totalWorkingPositions", false, true, DataType.LONG_FIELD, Alignment.HORIZONTAL);
+        addField("totalWorkingPositions", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
         addEnumField("visaClassification", false, true, VisaClassificationType.names(), Alignment.HORIZONTAL);
         addDropDown("company", selectCompanyWidget);
         addField("jobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addEnumField("socCodesAndOccupations", false, true, SOCCodesAndOccupations.names(), Alignment.HORIZONTAL);
+        addEnumField("socCodesAndOccupations", false, false, SOCCodesAndOccupations.names(), Alignment.HORIZONTAL);
         addField("lcaValidFromDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("lcaValidToDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addDropDown("workedByEmployees", selectRecruiterW);
@@ -180,20 +178,18 @@ public class CreateLCAPanel extends CreateComposite {
         addEnumField("lcaCurrWageLvl", false, true, LCAWageLevels.names(), Alignment.HORIZONTAL);
         addField("lcaCurrMinWage", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("lcaCurrMaxWage", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-//        addEnumField("lcaPrevWageLvl", false, true, LCAWageLevels.names(), Alignment.HORIZONTAL);
-//        addField("lcaPrevMinWage", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-//        addField("lcaPrevMaxWage", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(addInfo);
-        addField("clientName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("vendorName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("lcaFiledDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addEnumField("nonDisplacement", false, true, Polar.names(), Alignment.HORIZONTAL);
-        addField("lcaPostingSentToVendor", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("responseOnLcaPosting", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("reminderEmail", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("certifiedLcaSentConsultant", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("lcaPostingSSTLocation", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("lcaFiledInPIF", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("clientName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("vendorName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("nonDisplacement", false, false, Polar.names(), Alignment.HORIZONTAL);
+        addField("lcaPostingSentToVendor", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("responseOnLcaPosting", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("reminderEmail", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("certifiedLcaSentConsultant", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("lcaPostingSSTLocation", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("lcaFiledDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("lcaFiledInPIF", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("withdrawnLCANumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(lcaAddress1);
         entityFieldsPanel.add(createAddressWidget1);
         entityActionsPanel.add(addAddress);

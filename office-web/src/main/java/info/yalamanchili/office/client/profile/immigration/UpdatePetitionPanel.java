@@ -28,6 +28,7 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.hr.PetitionFor;
+import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -72,6 +73,7 @@ public class UpdatePetitionPanel extends UpdateComposite implements ClickHandler
         assignEntityValueFromField("petitionApprovalDate", entity);
         assignEntityValueFromField("petitionValidFromDate", entity);
         assignEntityValueFromField("petitionValidToDate", entity);
+        assignEntityValueFromField("workedByEmployees", entity);
         assignEntityValueFromField("h4Applicability", petitionaddinfo);
         assignEntityValueFromField("project", petitionaddinfo);
         assignEntityValueFromField("sisterCompanyLetterUsed", petitionaddinfo);
@@ -112,6 +114,7 @@ public class UpdatePetitionPanel extends UpdateComposite implements ClickHandler
         assignFieldValueFromEntity("petitionFileDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("lca", entity, null);
         assignFieldValueFromEntity("passport", entity, null);
+        assignFieldValueFromEntity("workedByEmployees", entity, null);
         assignFieldValueFromEntity("previousVisaStatus", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("previousStatusExpiry", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("petitionStatus", entity, DataType.ENUM_FIELD);
@@ -160,6 +163,13 @@ public class UpdatePetitionPanel extends UpdateComposite implements ClickHandler
         return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_USER.name() + "/0/10000");
     }
 
+    SelectEmployeeWithRoleWidget selectRecruiterW = new SelectEmployeeWithRoleWidget("WorkedBy", Auth.ROLE.ROLE_RECRUITER, false, false, Alignment.HORIZONTAL) {
+        @Override
+        public boolean enableMultiSelect() {
+            return true;
+        }
+    };
+
     @Override
     protected void addWidgets() {
         logger.info("im here in create petiton");
@@ -174,6 +184,7 @@ public class UpdatePetitionPanel extends UpdateComposite implements ClickHandler
         addField("petitionValidFromDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("petitionValidToDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("i140ApprovalStatus", false, true, Polar.names(), Alignment.HORIZONTAL);
+        addDropDown("workedByEmployees", selectRecruiterW);
         entityFieldsPanel.add(linkInfo);
         addDropDown("lca", selectLCAWidgetF);
         addDropDown("passport", selectPassportWidgetF);
@@ -198,9 +209,9 @@ public class UpdatePetitionPanel extends UpdateComposite implements ClickHandler
     @Override
     protected String getURI() {
         if (empChange) {
-            return OfficeWelcome.constants.root_url() + "petition/save/" + JSONUtils.toString(employeeSB.getSelectedObject(), "id");
+            return OfficeWelcome.constants.root_url() + "petition/update/" + JSONUtils.toString(employeeSB.getSelectedObject(), "id");
         } else {
-            return OfficeWelcome.constants.root_url() + "petition/save/" + JSONUtils.toString(petitionEmployee, "id");
+            return OfficeWelcome.constants.root_url() + "petition/update/" + JSONUtils.toString(petitionEmployee, "id");
         }
     }
 

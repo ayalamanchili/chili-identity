@@ -45,7 +45,7 @@ public class UpdateLCAPanel extends UpdateComposite {
     UpdateLCAAddressWidget updateAddressWidget2;
     CreateAddressWidget createAddressWidget2 = new CreateAddressWidget(CreateAddressPanel.CreateAddressPanelType.MIN);
     boolean isLCASecAddAvail = false;
-    protected MultiSelectConsultantWidget employeeSelectWidget; 
+    protected MultiSelectConsultantWidget employeeSelectWidget;
 
     public UpdateLCAPanel(JSONObject entity) {
         initUpdateComposite(entity, "LCA", OfficeWelcome.constants);
@@ -53,7 +53,6 @@ public class UpdateLCAPanel extends UpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        logger.info("entity is :::" + entity);
         assignEntityValueFromField("lcaNumber", entity);
         assignEntityValueFromField("lcaFiledDate", entity);
         assignEntityValueFromField("lcaValidFromDate", entity);
@@ -78,10 +77,7 @@ public class UpdateLCAPanel extends UpdateComposite {
         assignEntityValueFromField("lcaCurrWageLvl", entity);
         assignEntityValueFromField("lcaCurrMinWage", entity);
         assignEntityValueFromField("lcaCurrMaxWage", entity);
-//        assignEntityValueFromField("lcaPrevWageLvl", entity);
-//        assignEntityValueFromField("lcaPrevMinWage", entity);
-//        assignEntityValueFromField("lcaPrevMaxWage", entity);
-         assignEntityValueFromField("clientName", entity);
+        assignEntityValueFromField("clientName", entity);
         assignEntityValueFromField("vendorName", entity);
         assignEntityValueFromField("nonDisplacement", entity);
         assignEntityValueFromField("lcaPostingSentToVendor", entity);
@@ -90,16 +86,15 @@ public class UpdateLCAPanel extends UpdateComposite {
         assignEntityValueFromField("certifiedLcaSentConsultant", entity);
         assignEntityValueFromField("lcaPostingSSTLocation", entity);
         assignEntityValueFromField("lcaFiledInPIF", entity);
-        logger.info("entity is 222:::" + entity);
         assignEntityValueFromField("workedByEmployees", entity);
+        assignEntityValueFromField("withdrawnLCANumber", entity);
         if (fields.containsKey("company") && selectCompanyWidget.getSelectedObject() != null) {
-            logger.info("entity is 333:::" + entity);
             JSONObject company = selectCompanyWidget.getSelectedObject();
             entity.put("company", company);
         }
         JSONArray employees = new JSONArray();
         int i = 0;
-        logger.info("size : " + employeeSelectWidget.getMultiSelectBox().getAllSelectedIds().size() );
+        logger.info("size : " + employeeSelectWidget.getMultiSelectBox().getAllSelectedIds().size());
         for (String empId : employeeSelectWidget.getMultiSelectBox().getAllSelectedIds()) {
             JSONObject emp = new JSONObject();
             emp.put("id", new JSONString(empId));
@@ -136,9 +131,6 @@ public class UpdateLCAPanel extends UpdateComposite {
         assignFieldValueFromEntity("lcaCurrWageLvl", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("lcaCurrMinWage", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("lcaCurrMaxWage", entity, DataType.CURRENCY_FIELD);
-//        assignFieldValueFromEntity("lcaPrevWageLvl", entity, DataType.ENUM_FIELD);
-//        assignFieldValueFromEntity("lcaPrevMinWage", entity, DataType.CURRENCY_FIELD);
-//        assignFieldValueFromEntity("lcaPrevMaxWage", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("totalWorkingPositions", entity, DataType.LONG_FIELD);
         assignFieldValueFromEntity("visaClassification", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
@@ -154,6 +146,7 @@ public class UpdateLCAPanel extends UpdateComposite {
         assignFieldValueFromEntity("lcaPostingSSTLocation", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("lcaFiledInPIF", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("workedByEmployees", entity, null);
+        assignFieldValueFromEntity("withdrawnLCANumber", entity, DataType.STRING_FIELD);
         if (fields.containsKey("company")) {
             assignFieldValueFromEntity("company", entity, null);
         }
@@ -212,9 +205,6 @@ public class UpdateLCAPanel extends UpdateComposite {
         addEnumField("lcaCurrWageLvl", false, true, LCAWageLevels.names(), Alignment.HORIZONTAL);
         addField("lcaCurrMinWage", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("lcaCurrMaxWage", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-//        addEnumField("lcaPrevWageLvl", false, true, LCAWageLevels.names(), Alignment.HORIZONTAL);
-//        addField("lcaPrevMinWage", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-//        addField("lcaPrevMaxWage", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(addInfo);
         addField("clientName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("vendorName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -226,6 +216,7 @@ public class UpdateLCAPanel extends UpdateComposite {
         addField("certifiedLcaSentConsultant", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("lcaPostingSSTLocation", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("lcaFiledInPIF", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("withdrawnLCANumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityActionsPanel.add(addAddress);
         addAddress.setValue(false);
         alignFields();

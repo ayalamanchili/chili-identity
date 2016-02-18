@@ -57,8 +57,43 @@ public class PetitionService {
             Passport passport = passportDao.findById(petition.getPassport().getId());
             petition.setPassport(passport);
         }
-        petition.getPetitionaddinfo().setPetition(petition);
+        petition.setWorkedByEmployees(null);
+        for (Employee emp : dto.getWorkedByEmployees()) {
+            if (emp.getId() != null) {
+                petition.addWorkedByEmployee(employeeDao.findById(emp.getId()));
+            }
+        }
+        if (petition.getPetitionaddinfo() != null) {
+            petition.getPetitionaddinfo().setPetition(petition);
+        }
         petition = petitionDao.save(petition);
+        return petition;
+    }
+
+    public Petition updatePetition(Long empId, Petition dto) {
+        Petition petition = mapper.map(dto, Petition.class);
+        petition.setPetitionEmployee(employeeDao.findById(empId));
+        if (petition.getPetitionStatus() == null) {
+            petition.setPetitionStatus(PetitionStatus.Pending);
+        }
+        if (petition.getLca() != null) {
+            LCA lca = lcaDao.findById(petition.getLca().getId());
+            petition.setLca(lca);
+        }
+        if (petition.getPassport() != null) {
+            Passport passport = passportDao.findById(petition.getPassport().getId());
+            petition.setPassport(passport);
+        }
+        petition.setWorkedByEmployees(null);
+        for (Employee emp : dto.getWorkedByEmployees()) {
+            if (emp.getId() != null) {
+                petition.addWorkedByEmployee(employeeDao.findById(emp.getId()));
+            }
+        }
+        if (petition.getPetitionaddinfo() != null) {
+            petition.getPetitionaddinfo().setPetition(petition);
+        }
+        petition = em.merge(petition);
         return petition;
     }
 }

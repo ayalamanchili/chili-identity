@@ -25,8 +25,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Indexed;
@@ -43,6 +43,7 @@ public class LCA extends AbstractEntity {
 
     private static final long serialVersionUID = 11L;
 
+    @NotNull(message = "{lca.visaclassification.not.empty.msg}")
     @Enumerated(EnumType.STRING)
     protected VisaClassificationType visaClassification;
 
@@ -67,15 +68,22 @@ public class LCA extends AbstractEntity {
     @OneToOne(cascade = CascadeType.ALL)
     protected Address lcaAddress2;
 
+    @NotNull(message = "{lca.lcaCurrWageLvl.not.empty.msg}")
     @Enumerated(EnumType.STRING)
     protected LCAWageLevels lcaCurrWageLvl;
 
+    @NotNull(message = "{lca.lcaCurrMinWage.not.empty.msg}")
     protected BigDecimal lcaCurrMinWage;
 
+    @NotNull(message = "{lca.lcaCurrMaxWage.not.empty.msg}")
     protected BigDecimal lcaCurrMaxWage;
 
+    @NotNull(message = "{lca.jobTitle.not.empty.msg}")
     protected String jobTitle;
+    
+    protected String withdrawnLCANumber;
 
+    @NotNull(message = "{lca.lcaNumber.not.empty.msg}")
     @org.hibernate.annotations.Index(name = "LCA_NBR")
     protected String lcaNumber;
 
@@ -319,7 +327,6 @@ public class LCA extends AbstractEntity {
         this.nonDisplacement = nonDisplacement;
     }
 
-    @XmlTransient
     public Set<Employee> getWorkedByEmployees() {
         if (this.workedByEmployees == null) {
             this.workedByEmployees = new HashSet<>();
@@ -336,6 +343,14 @@ public class LCA extends AbstractEntity {
             return;
         }
         getWorkedByEmployees().add(emp);
+    }
+
+    public String getWithdrawnLCANumber() {
+        return withdrawnLCANumber;
+    }
+
+    public void setWithdrawnLCANumber(String withdrawnLCANumber) {
+        this.withdrawnLCANumber = withdrawnLCANumber;
     }
 
     @Override

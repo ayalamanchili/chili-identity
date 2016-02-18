@@ -9,7 +9,6 @@
 package info.yalamanchili.office.entity.immigration;
 
 import info.chili.jpa.AbstractEntity;
-import info.chili.jpa.AbstractHandleEntity;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -270,7 +269,6 @@ public class Petition extends AbstractEntity {
         this.withdrawnLCANumber = withdrawnLCANumber;
     }
 
-    @XmlTransient
     public Set<Employee> getWorkedByEmployees() {
         if (this.workedByEmployees == null) {
             this.workedByEmployees = new HashSet<>();
@@ -281,8 +279,14 @@ public class Petition extends AbstractEntity {
     public void setWorkedByEmployees(Set<Employee> workedByEmployees) {
         this.workedByEmployees = workedByEmployees;
     }
-  
-    
+
+    public void addWorkedByEmployee(Employee emp) {
+        if (emp == null) {
+            return;
+        }
+        getWorkedByEmployees().add(emp);
+    }
+
     @Override
     public String toString() {
         return "Petition{" + "attorneyName=" + attorneyName + ", visaClassification=" + visaClassification + ", visaProcessing=" + visaProcessing + ", petitionFileDate=" + petitionFileDate + ", receiptNumber=" + receiptNumber + ", petitionStatus=" + petitionStatus + ", petitionApprovalDate=" + petitionApprovalDate + ", petitionValidFromDate=" + petitionValidFromDate + ", petitionValidToDate=" + petitionValidToDate + '}';

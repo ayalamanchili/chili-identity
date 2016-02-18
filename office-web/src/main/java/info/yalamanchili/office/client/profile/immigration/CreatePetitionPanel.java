@@ -28,6 +28,7 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.hr.PetitionFor;
+import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -76,6 +77,7 @@ public class CreatePetitionPanel extends CreateComposite implements ClickHandler
         assignEntityValueFromField("petitionFolderMailedDate", petitionaddinfo);
         assignEntityValueFromField("petitionFolderMailTrkNbr", petitionaddinfo);
         petition.put("petitionaddinfo", petitionaddinfo);
+        petition.put("workedByEmployees", selectRecruiterW.getSelectedObjects());
         logger.info("entity here: " + petition);
         return petition;
     }
@@ -126,7 +128,7 @@ public class CreatePetitionPanel extends CreateComposite implements ClickHandler
 
     @Override
     protected void configure() {
-        employeeSB.getLabel().getElement().getStyle().setWidth(145, Style.Unit.PX);
+        employeeSB.getLabel().getElement().getStyle().setWidth(253, Style.Unit.PX);
         HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
@@ -143,6 +145,13 @@ public class CreatePetitionPanel extends CreateComposite implements ClickHandler
         return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_USER.name() + "/0/10000");
     }
 
+    SelectEmployeeWithRoleWidget selectRecruiterW = new SelectEmployeeWithRoleWidget("WorkedBy", Auth.ROLE.ROLE_RECRUITER, false, false, Alignment.HORIZONTAL) {
+        @Override
+        public boolean enableMultiSelect() {
+            return true;
+        }
+    };
+
     @Override
     protected void addWidgets() {
         logger.info("im here in create petiton");
@@ -151,11 +160,10 @@ public class CreatePetitionPanel extends CreateComposite implements ClickHandler
         addField("attorneyName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("visaClassification", false, true, VisaClassificationType.names(), Alignment.HORIZONTAL);
         addEnumField("visaProcessing", false, true, VisaProcessingType.names(), Alignment.HORIZONTAL);
-        addField("petitionFileDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("petitionApprovalDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("petitionValidFromDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("petitionValidToDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("i140ApprovalStatus", false, true, Polar.names(), Alignment.HORIZONTAL);
+        addDropDown("workedByEmployees", selectRecruiterW);
         entityFieldsPanel.add(linkInfo);
         addDropDown("lca", selectLCAWidgetF);
         addDropDown("passport", selectPassportWidgetF);
@@ -166,9 +174,11 @@ public class CreatePetitionPanel extends CreateComposite implements ClickHandler
         addEnumField("h4Applicability", false, true, Polar.names(), Alignment.HORIZONTAL);
         addEnumField("project", false, true, PetitionFor.names(), Alignment.HORIZONTAL);
         addEnumField("sisterCompanyLetterUsed", false, true, Polar.names(), Alignment.HORIZONTAL);
+        addField("petitionFileDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("petitionTrackingNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("petitionFolderMailedDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("petitionFolderMailTrkNbr", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("petitionApprovalDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
