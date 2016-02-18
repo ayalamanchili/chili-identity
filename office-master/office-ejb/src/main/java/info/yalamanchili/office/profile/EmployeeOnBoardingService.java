@@ -44,8 +44,10 @@ import info.yalamanchili.office.entity.profile.invite.InviteCode;
 import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
 import info.yalamanchili.office.entity.profile.onboarding.OnBoardingStatus;
 import info.yalamanchili.office.profile.invite.InviteCodeGeneratorService;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -126,9 +128,9 @@ public class EmployeeOnBoardingService {
     @Autowired
     protected EmployeeDocumentDao employeeDocumentDao;
 
-    public OnBoardingEmployeeDto onBoardEmployee(OnBoardingEmployeeDto employee) {
-        Employee emp = mapper.map(employee, Employee.class);
-        InviteCode code = InviteCodeDao.instance().find(employee.getInviteCode().trim());
+    public OnBoardingEmployeeDto onBoardEmployee(OnBoardingEmployeeDto dto) {
+        Employee emp = mapper.map(dto, Employee.class);
+        InviteCode code = InviteCodeDao.instance().find(dto.getInviteCode().trim());
         EmployeeOnBoarding onboarding = EmployeeOnBoardingDao.instance().findByEmail(code.getEmail());
         InitiateOnBoardingDto initiateDto = (InitiateOnBoardingDto) SerializedEntityDao.instance().findAndConvert(code.getClass().getCanonicalName(), code.getId());
         emp.setEmployeeType(em.find(EmployeeType.class, initiateDto.getEmployeeType().getId()));
@@ -136,8 +138,8 @@ public class EmployeeOnBoardingService {
             emp.setCompany(em.find(Company.class, initiateDto.getCompany().getId()));
         }
         emp.setStartDate(initiateDto.getStartDate());
-        emp.setWorkStatus(employee.getWorkStatus());
-        emp.setSsn(employee.getSsn());
+        emp.setWorkStatus(dto.getWorkStatus());
+        emp.setSsn(dto.getSsn());
         emp.setBranch(initiateDto.getBranch());
         emp = employeeService.createCUser(emp);
         //Create employee with basic information
@@ -148,7 +150,7 @@ public class EmployeeOnBoardingService {
         }
         //Update Address for Employee
         Address address;
-        address = employee.getAddress();
+        address = dto.getAddress();
         emp.getAddresss().add(address);
         address.setContact(emp);
 
@@ -156,7 +158,7 @@ public class EmployeeOnBoardingService {
         emp = em.merge(emp);
 
         //Update Emergency Contact for Employee
-        for (EmergencyContactDto ec : employee.getEmergencyContact()) {
+        for (EmergencyContactDto ec : dto.getEmergencyContact()) {
             Contact contact = new Contact();
             contact.setFirstName(ec.getFirstName());
             contact.setLastName(ec.getLastName());
@@ -189,7 +191,7 @@ public class EmployeeOnBoardingService {
         }
 
         //Update Dependent Information for Employee
-        for (Dependent dependent : employee.getDependent()) {
+        for (Dependent dependent : dto.getDependent()) {
             Dependent dep = new Dependent();
             dep.setDfirstName(dependent.getDfirstName());
             dep.setDlastName(dependent.getDlastName());
@@ -202,42 +204,40 @@ public class EmployeeOnBoardingService {
 
         onboarding.setStatus(OnBoardingStatus.Pending_Document_Verification);
         onboarding.setEmployee(emp);
-        em.merge(onboarding);
+        onboarding = em.merge(onboarding);
 
         //Create BPM User
         if (emp.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee") || emp.getEmployeeType().getName().equalsIgnoreCase("Employee")) {
             OfficeBPMIdentityService.instance().createUser(emp.getEmployeeId());
             Map<String, Object> obj = new HashMap<>();
-            obj.put("entity", emp);
-            obj.put("address", emp.getAddresss().get(0));
-            obj.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
+            obj.put("entity", onboarding);
+            obj.put("entityId", onboarding.getId());
+            obj.put("employee", emp);
             onboarding.setBpmProcessId(OfficeBPMService.instance().startProcess("on_boarding_employee_process", obj));
             em.merge(onboarding);
         }
         //Update BankAccount Information for Employee
         BankAccount bankAccount;
-        bankAccount = employee.getBankAccount();
+        bankAccount = dto.getBankAccount();
         BankAccountDao.instance().save(bankAccount, emp.getId(), emp.getClass().getCanonicalName());
-
-        //employee documents
-        //avoid null pointer issue with employee documents
-        if (employee.getDocuments() != null && employee.getDocuments().size() > 0) {
-            for (EmployeeDocument empDoc : employee.getDocuments()) {
-                empDoc.setDocumentType(DocumentType.ON_BOARDING);
-                empDoc.setEmployee(emp);
-                empDoc.setId(employeeDocumentDao.save(empDoc).getId());
-            }
+        List<EmployeeDocument> docs = new ArrayList();
+        for (EmployeeDocument empDoc : dto.getDocuments()) {
+            empDoc.setDocumentType(DocumentType.ON_BOARDING);
+            empDoc.setEmployee(emp);
+            empDoc.setId(employeeDocumentDao.save(empDoc).getId());
+            docs.add(empDoc);
         }
+        dto.setDocuments(docs);
         //Update Additional Information for Employee
         EmployeeAdditionalDetails employeeAdditionalDetails;
-        employeeAdditionalDetails = employee.getEmployeeAdditionalDetails();
+        employeeAdditionalDetails = dto.getEmployeeAdditionalDetails();
         EmployeeAdditionalDetailsDao.instance().save(employeeAdditionalDetails, emp.getId(), emp.getClass().getCanonicalName());
         //create cert
         OfficeSecurityService.instance().createUserCert(emp, null, null);
         //Email notification
         employeeService.sendNewEmployeeNotifiaction(emp);
         InviteCodeDao.instance().invalidateCode(code);
-        return employee;
+        return dto;
     }
 
     public InitiateOnBoardingDto read(Long id) {

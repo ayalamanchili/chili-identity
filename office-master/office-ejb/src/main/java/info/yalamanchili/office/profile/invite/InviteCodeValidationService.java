@@ -43,6 +43,18 @@ public class InviteCodeValidationService {
         throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.invitationcode", "Invalid Invitation Code");
     }
 
+    public String exists(String code) {
+        if (Strings.isNullOrEmpty(code)) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.invitationcode", "Invalid Invitation Code");
+        }
+        InviteCode inviteCode = InviteCodeDao.instance().find(code);
+        if (inviteCode != null) {
+            return code;
+        } else {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.invitationcode", "Invalid Invitation Code");
+        }
+    }
+
     public static InviteCodeValidationService instance() {
         return SpringContext.getBean(InviteCodeValidationService.class);
     }

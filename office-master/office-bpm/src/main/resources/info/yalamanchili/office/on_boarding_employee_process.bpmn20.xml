@@ -18,7 +18,7 @@
         
         <serviceTask id="sendEmployeeOnBoardingProcessStartEmail" 
                      name="Send Email to Employee Task" 
-                     activiti:expression="#{onBoardingEmployeeProcessBean.sendEmployeeOnBoardingProcessStartEmail(entity)}" />  
+                     activiti:expression="#{onBoardingEmployeeProcessBean.sendEmployeeOnBoardingProcessStartEmail(employee)}" />  
         
         <sequenceFlow sourceRef="sendEmployeeOnBoardingProcessStartEmail" 
                       targetRef="fork3"/>
@@ -34,29 +34,28 @@
         <sequenceFlow sourceRef="fork3" 
                       targetRef="backGroundAndDrugScreeningTestTask">
             <conditionExpression xsi:type="tFormalExpression">
-                ${entity.employeeType.name == 'Corporate Employee'}
+                ${employee.employeeType.name == 'Corporate Employee'}
             </conditionExpression>
         </sequenceFlow>
         <sequenceFlow sourceRef="fork3" 
                       targetRef="ServiceTicketTaskforNetworkDept">
             <conditionExpression xsi:type="tFormalExpression">
-                ${entity.employeeType.name == 'Corporate Employee'}
+                ${employee.employeeType.name == 'Corporate Employee'}
             </conditionExpression>
         </sequenceFlow>
         
         <!-- On Boarding Form and Data Validation task : OnBoarding_Manager-->
         <userTask id="onBoardingFormsAndDataValidationTask" 
-                  name="On Boarding Forms and Data Validation task for ${entity.firstName} ${entity.lastName}" 
+                  name="On Boarding Forms and Data Validation task for ${employee.firstName} ${employee.lastName}" 
                   activiti:candidateGroups="ROLE_ON_BOARDING_MGR">
             <documentation>
-                On Boarding Forms and Data Validation Task For #{entity.firstName} #{entity.lastName}
-                Employee Name       : #{entity.firstName} #{entity.lastName}
-                Employee Type       : #{entity.employeeType.name}
-                Gender              : #{entity.sex}
-                Date Of Birth       : #{entity.getDateOfBirth()}
-                Email               : #{entity.getEmails().get(0).getEmail()}
-                Address             : #{address.street1} - #{address.city} - #{address.state} - #{address.country}
-                Start Date          : #{entity.startDate}
+                On Boarding Forms and Data Validation Task For #{employee.firstName} #{employee.lastName}
+                Employee Name       : #{employee.firstName} #{employee.lastName}
+                Employee Type       : #{employee.employeeType.name}
+                Gender              : #{employee.sex}
+                Date Of Birth       : #{employee.getDateOfBirth()}
+                Email               : #{employee.getEmails().get(0).getEmail()}
+                Start Date          : #{employee.startDate}
                 
                 Please follow below instructions 
                 http://apps.sstech.us/site/office/verifyformsanddocs.html  
@@ -105,17 +104,16 @@
         
         <!--         E Verify Manager task : E_Verify_Manager-->
         <userTask id="eVerifyTask" 
-                  name="E Verify Task for ${entity.firstName} ${entity.lastName}" 
+                  name="E Verify Task for ${employee.firstName} ${employee.lastName}" 
                   activiti:candidateGroups="ROLE_E_VERIFY_MGR">
             <documentation>
-                E Verify Task for #{entity.firstName} #{entity.lastName}
-                Employee Name       : #{entity.firstName} #{entity.lastName}
-                Employee Type       : #{entity.employeeType.name}
-                Gender              : #{entity.sex}
-                Date Of Birth       : #{entity.getDateOfBirth()}
-                Email               : #{entity.getEmails().get(0).getEmail()}
-                Address             : #{address.street1} - #{address.city} - #{address.state} - #{address.country}
-                Start Date          : #{entity.startDate}
+                E Verify Task for #{employee.firstName} #{employee.lastName}
+                Employee Name       : #{employee.firstName} #{employee.lastName}
+                Employee Type       : #{employee.employeeType.name}
+                Gender              : #{employee.sex}
+                Date Of Birth       : #{employee.getDateOfBirth()}
+                Email               : #{employee.getEmails().get(0).getEmail()}
+                Start Date          : #{employee.startDate}
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
@@ -160,17 +158,16 @@
         
         <!--         BackGround And Drug Screening Test Task : ROLE_BACKGROUND_SCREENING_MGR-->
         <userTask id="backGroundAndDrugScreeningTestTask" 
-                  name="BackGround And Drug Screening Test Task  for ${entity.firstName} ${entity.lastName}" 
+                  name="BackGround And Drug Screening Test Task  for ${employee.firstName} ${employee.lastName}" 
                   activiti:candidateGroups="ROLE_BACKGROUND_SCREENING_MGR">
             <documentation>
-                BackGround And Drug Screening Task for #{entity.firstName} #{entity.lastName}
-                Employee Name       : #{entity.firstName} #{entity.lastName}
-                Employee Type       : #{entity.employeeType.name}
-                Gender              : #{entity.sex}
-                Date Of Birth       : #{entity.getDateOfBirth()}
-                Email               : #{entity.getEmails().get(0).getEmail()}
-                Address             : #{address.street1} - #{address.city} - #{address.state} - #{address.country}
-                Start Date          : #{entity.startDate}
+                BackGround And Drug Screening Task for #{employee.firstName} #{employee.lastName}
+                Employee Name       : #{employee.firstName} #{employee.lastName}
+                Employee Type       : #{employee.employeeType.name}
+                Gender              : #{employee.sex}
+                Date Of Birth       : #{employee.getDateOfBirth()}
+                Email               : #{employee.getEmails().get(0).getEmail()}
+                Start Date          : #{employee.startDate}
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
@@ -215,19 +212,18 @@
         
         <!-- Create Service Ticket For Network Department  -->
         <userTask id="ServiceTicketTaskforNetworkDept" 
-                  name="Network Department Task for ${entity.firstName} ${entity.lastName}" 
+                  name="Network Department Task for ${employee.firstName} ${employee.lastName}" 
                   activiti:candidateGroups="ROLE_SYSTEM_AND_NETWORK_ADMIN">
             <documentation>
-                Network Department Task for #{entity.firstName} #{entity.lastName}
+                Network Department Task for #{employee.firstName} #{employee.lastName}
                 Please provide network related support to this employee and complete the task.
                 
-                Employee Name       : #{entity.firstName} #{entity.lastName}
-                Employee Type       : #{entity.employeeType.name}
-                Gender              : #{entity.sex}
-                Date Of Birth       : #{entity.getDateOfBirth()}
-                Email               : #{entity.getEmails().get(0).getEmail()}
-                Address             : #{address.street1} - #{address.city} - #{address.state} - #{address.country}
-                Start Date          : #{entity.startDate}
+                Employee Name       : #{employee.firstName} #{employee.lastName}
+                Employee Type       : #{employee.employeeType.name}
+                Gender              : #{employee.sex}
+                Date Of Birth       : #{employee.getDateOfBirth()}
+                Email               : #{employee.getEmails().get(0).getEmail()}
+                Start Date          : #{employee.startDate}
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
@@ -255,18 +251,17 @@
         
         <!-- Final Validation Task -->
         <userTask id="onboardingFinalValidationTask" 
-                  name="Final Validation Task for ${entity.firstName} ${entity.lastName}" 
+                  name="Final Validation Task for ${employee.firstName} ${employee.lastName}" 
                   activiti:candidateGroups="ROLE_HR_ADMINSTRATION">
             <documentation>
-                Final Validation Task For #{entity.firstName} #{entity.lastName}
+                Final Validation Task For #{employee.firstName} #{employee.lastName}
                 
-                Employee Name       : #{entity.firstName} #{entity.lastName}
-                Employee Type       : #{entity.employeeType.name}
-                Gender              : #{entity.sex}
-                Date Of Birth       : #{entity.getDateOfBirth()}
-                Email               : #{entity.getEmails().get(0).getEmail()}
-                Address             : #{address.street1} - #{address.city} - #{address.state} - #{address.country}
-                Start Date          : #{entity.startDate}
+                Employee Name       : #{employee.firstName} #{employee.lastName}
+                Employee Type       : #{employee.employeeType.name}
+                Gender              : #{employee.sex}
+                Date Of Birth       : #{employee.getDateOfBirth()}
+                Email               : #{employee.getEmails().get(0).getEmail()}
+                Start Date          : #{employee.startDate}
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
@@ -291,17 +286,16 @@
         
         <!--         Payroll Registration Task :  Payroll Department -->
         <userTask id="payrollRegistrationTask" 
-                  name="Payroll Registration Task for ${entity.firstName} ${entity.lastName}" 
+                  name="Payroll Registration Task for ${employee.firstName} ${employee.lastName}" 
                   activiti:candidateGroups="ROLE_PAYROLL_AND_BENIFITS">
             <documentation>
-                Payroll Registration Task for #{entity.firstName} #{entity.lastName}
-                Employee Name       : #{entity.firstName} #{entity.lastName}
-                Employee Type       : #{entity.employeeType.name}
-                Gender              : #{entity.sex}
-                Date Of Birth       : #{entity.getDateOfBirth()}
-                Email               : #{entity.getEmails().get(0).getEmail()}
-                Address             : #{address.street1} - #{address.city} - #{address.state} - #{address.country}
-                Start Date          : #{entity.startDate}
+                Payroll Registration Task for #{employee.firstName} #{employee.lastName}
+                Employee Name       : #{employee.firstName} #{employee.lastName}
+                Employee Type       : #{employee.employeeType.name}
+                Gender              : #{employee.sex}
+                Date Of Birth       : #{employee.getDateOfBirth()}
+                Email               : #{employee.getEmails().get(0).getEmail()}
+                Start Date          : #{employee.startDate}
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
@@ -328,19 +322,18 @@
         
         <!-- Employee Orientation Task -->
         <userTask id="employeeOrientationTask" 
-                  name="Employee Orientation Task for ${entity.firstName} ${entity.lastName}" 
+                  name="Employee Orientation Task for ${employee.firstName} ${employee.lastName}" 
                   activiti:candidateGroups="ROLE_ON_BOARDING_MGR">
             <documentation>
-                Employee Orientation Task For #{entity.firstName} #{entity.lastName}
+                Employee Orientation Task For #{employee.firstName} #{employee.lastName}
                 Please inform company standards, policies and his/her work related activities to the employee and complete this task.
                 
-                Employee Name       : #{entity.firstName} #{entity.lastName}
-                Employee Type       : #{entity.employeeType.name}
-                Gender              : #{entity.sex}
-                Date Of Birth       : #{entity.getDateOfBirth()}
-                Email               : #{entity.getEmails().get(0).getEmail()}
-                Address             : #{address.street1} - #{address.city} - #{address.state} - #{address.country}
-                Start Date          : #{entity.startDate}
+                Employee Name       : #{employee.firstName} #{employee.lastName}
+                Employee Type       : #{employee.employeeType.name}
+                Gender              : #{employee.sex}
+                Date Of Birth       : #{employee.getDateOfBirth()}
+                Email               : #{employee.getEmails().get(0).getEmail()}
+                Start Date          : #{employee.startDate}
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
@@ -370,7 +363,7 @@
         </sequenceFlow>
         <serviceTask id="deleteEmployee" 
                      name="Delete Employee" 
-                     activiti:expression="#{onBoardingEmployeeProcessBean.deleteEmployee(entity)}" />  
+                     activiti:expression="#{onBoardingEmployeeProcessBean.deleteEmployee(employee)}" />  
         <sequenceFlow sourceRef="deleteEmployee" 
                       targetRef="onBoardingEmployeeProcessEnd"/>
         <endEvent id="onBoardingEmployeeProcessEnd" />

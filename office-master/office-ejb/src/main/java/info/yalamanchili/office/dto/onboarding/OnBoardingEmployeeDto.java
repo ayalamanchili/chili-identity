@@ -97,6 +97,9 @@ public class OnBoardingEmployeeDto implements Serializable {
     private List<EmployeeDocument> documents;
 
     public List<EmployeeDocument> getDocuments() {
+        if (this.documents == null) {
+            this.documents = new ArrayList();
+        }
         return documents;
     }
 

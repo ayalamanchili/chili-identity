@@ -41,7 +41,6 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.expense.bnkacct.AccountType;
 import info.yalamanchili.office.client.profile.contact.Sex;
 import info.yalamanchili.office.client.profile.contact.WorkStatus;
@@ -56,7 +55,6 @@ import java.util.logging.Logger;
 public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHandler, ChangeHandler, BlurHandler {
 
     private static Logger logger = Logger.getLogger(EmployeeOnboardingPanel.class.getName());
-    protected SelectCompanyWidget selectCompnayWidget = new SelectCompanyWidget(false, true, Alignment.HORIZONTAL);
     protected ClickableLink addDependentsL = new ClickableLink("Add Dependents");
     protected ClickableLink addEmerContact = new ClickableLink("Add Emergency Contacts");
     protected List<CreateDependentsPanel> dependentsPanels = new ArrayList<>();
@@ -115,6 +113,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         this.invitationCode = inviteCode;
         instance = this;
         initUpdateComposite(invitationCode, "Employee", OfficeWelcome.constants);
+        fileUploadPanel.appendUploadUrl("?public=true&token=" + inviteCode);
     }
 
     @Override

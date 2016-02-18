@@ -8,14 +8,11 @@
  */
 package info.yalamanchili.office.bpm.onboarding;
 
-import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
 import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
 import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.profile.onboarding.EmployeeOnBoardingDao;
-import info.yalamanchili.office.dao.security.OfficeSecurityService;
-import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
 import info.yalamanchili.office.entity.profile.onboarding.OnBoardingStatus;
 import org.activiti.engine.delegate.DelegateTask;
@@ -42,99 +39,11 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
         }
     }
 
-    protected void onBoardingFormsAndDataValidationTaskCompleted(Employee entity, DelegateTask dt) {
-        String status = (String) dt.getExecution().getVariable("status");
-        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
-        if (status.equalsIgnoreCase("approved")) {
-            empOnBoarding.setStatus(OnBoardingStatus.Pending_HR_Validation);
-            new GenericTaskCompleteNotification().notify(dt);
-        } else {
-            empOnBoarding.setStatus(OnBoardingStatus.Rejected);
-            new GenericTaskCompleteNotification().notify(dt);
-        }
-        EmployeeOnBoardingDao.instance().save(empOnBoarding);
-        dt.getExecution().setVariable("entity", entity);
-    }
-
-    protected void backgroundAndDrugScreeningTaskCompleted(Employee entity, DelegateTask dt) {
-        String status = (String) dt.getExecution().getVariable("status");
-        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
-        if (status.equalsIgnoreCase("approved")) {
-            empOnBoarding.setStatus(OnBoardingStatus.Pending_HR_Validation);
-            new GenericTaskCompleteNotification().notify(dt);
-        }else {
-            empOnBoarding.setStatus(OnBoardingStatus.Rejected);
-            new GenericTaskCompleteNotification().notify(dt);
-        }
-        EmployeeOnBoardingDao.instance().save(empOnBoarding);
-        dt.getExecution().setVariable("entity", entity);
-    }
-
-    protected void eVerifyTaskCompleted(Employee entity, DelegateTask dt) {
-        String status = (String) dt.getExecution().getVariable("status");
-        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
-        if (status.equalsIgnoreCase("approved")) {
-            empOnBoarding.setStatus(OnBoardingStatus.Pending_HR_Validation);
-            new GenericTaskCompleteNotification().notify(dt);
-        } else {
-            empOnBoarding.setStatus(OnBoardingStatus.Rejected);
-            new GenericTaskCompleteNotification().notify(dt);
-        }
-        EmployeeOnBoardingDao.instance().save(empOnBoarding);
-        dt.getExecution().setVariable("entity", entity);
-    }
-    
-    protected void createServiceTicketForNetworkDept(Employee entity, DelegateTask dt) {
-        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
-        empOnBoarding.setStatus(OnBoardingStatus.Pending_HR_Validation);
-        new GenericTaskCompleteNotification().notify(dt);
-        EmployeeOnBoardingDao.instance().save(empOnBoarding);
-    }
-    
-    protected void createFinalValidationTask(Employee entity, DelegateTask dt) {
-        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
-        empOnBoarding.setStatus(OnBoardingStatus.Pending_Payroll_Registration);
-        new GenericTaskCompleteNotification().notify(dt);
-        EmployeeOnBoardingDao.instance().save(empOnBoarding);
-        dt.getExecution().setVariable("entity", entity);
-    }
-
-    protected void payrollRegistrationTaskCompleted(Employee entity, DelegateTask dt) {
-        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
-        empOnBoarding.setStatus(OnBoardingStatus.Pending_Employee_Orientation);
-        new GenericTaskCompleteNotification().notify(dt);
-        EmployeeOnBoardingDao.instance().save(empOnBoarding);
-        dt.getExecution().setVariable("entity", entity);
-    }
-
-    protected void createEmployeeOrientationTask(Employee entity, DelegateTask dt) {
-        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
-        empOnBoarding.setStatus(OnBoardingStatus.Complete);
-        new GenericTaskCompleteNotification().notify(dt);
-        EmployeeOnBoardingDao.instance().save(empOnBoarding);
-    }
-
-    protected Employee getRequestFromTask(DelegateTask task) {
-        Employee entity = (Employee) task.getExecution().getVariable("entity");
-        if (entity != null) {
-            return entity;
-        }
-        return null;
-    }
-
     private void employeeOnBoardingTaskCompleted(DelegateTask dt) {
-        Employee entity = getRequestFromTask(dt);
-        if (entity == null) {
-            return;
-        }
+        EmployeeOnBoarding entity = getRequestFromTask(dt);
         //Notes
         String notes = (String) dt.getExecution().getVariable("notes");
         CommentDao.instance().addComment(notes, entity);
-        //
-        Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
-        if (currentUser.getEmployeeId().equals(entity.getEmployeeId())) {
-            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.self.approve.corp.expenseReport", "You cannot approve your expenseReport task");
-        }
         switch (dt.getTaskDefinitionKey()) {
             case "onBoardingFormsAndDataValidationTask":
                 onBoardingFormsAndDataValidationTaskCompleted(entity, dt);
@@ -160,4 +69,79 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
         }
     }
 
+    protected void onBoardingFormsAndDataValidationTaskCompleted(EmployeeOnBoarding entity, DelegateTask dt) {
+        String status = (String) dt.getExecution().getVariable("status");
+        if (status.equalsIgnoreCase("approved")) {
+            entity.setStatus(OnBoardingStatus.Pending_HR_Validation);
+            new GenericTaskCompleteNotification().notify(dt);
+        } else {
+            entity.setStatus(OnBoardingStatus.Rejected);
+            new GenericTaskCompleteNotification().notify(dt);
+        }
+        EmployeeOnBoardingDao.instance().save(entity);
+    }
+
+    protected void backgroundAndDrugScreeningTaskCompleted(EmployeeOnBoarding entity, DelegateTask dt) {
+        String status = (String) dt.getExecution().getVariable("status");
+        if (status.equalsIgnoreCase("approved")) {
+            entity.setStatus(OnBoardingStatus.Pending_HR_Validation);
+            new GenericTaskCompleteNotification().notify(dt);
+        } else {
+            entity.setStatus(OnBoardingStatus.Rejected);
+            new GenericTaskCompleteNotification().notify(dt);
+        }
+        EmployeeOnBoardingDao.instance().save(entity);
+    }
+
+    protected void eVerifyTaskCompleted(EmployeeOnBoarding entity, DelegateTask dt) {
+        String status = (String) dt.getExecution().getVariable("status");
+        if (status.equalsIgnoreCase("approved")) {
+            entity.setStatus(OnBoardingStatus.Pending_HR_Validation);
+            new GenericTaskCompleteNotification().notify(dt);
+        } else {
+            entity.setStatus(OnBoardingStatus.Rejected);
+            new GenericTaskCompleteNotification().notify(dt);
+        }
+        EmployeeOnBoardingDao.instance().save(entity);
+    }
+
+    protected void createServiceTicketForNetworkDept(EmployeeOnBoarding entity, DelegateTask dt) {
+        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
+        empOnBoarding.setStatus(OnBoardingStatus.Pending_HR_Validation);
+        new GenericTaskCompleteNotification().notify(dt);
+        EmployeeOnBoardingDao.instance().save(empOnBoarding);
+    }
+
+    protected void createFinalValidationTask(EmployeeOnBoarding entity, DelegateTask dt) {
+        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
+        empOnBoarding.setStatus(OnBoardingStatus.Pending_Payroll_Registration);
+        new GenericTaskCompleteNotification().notify(dt);
+        EmployeeOnBoardingDao.instance().save(empOnBoarding);
+        dt.getExecution().setVariable("entity", entity);
+    }
+
+    protected void payrollRegistrationTaskCompleted(EmployeeOnBoarding entity, DelegateTask dt) {
+        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
+        empOnBoarding.setStatus(OnBoardingStatus.Pending_Employee_Orientation);
+        new GenericTaskCompleteNotification().notify(dt);
+        EmployeeOnBoardingDao.instance().save(empOnBoarding);
+        dt.getExecution().setVariable("entity", entity);
+    }
+
+    protected void createEmployeeOrientationTask(EmployeeOnBoarding entity, DelegateTask dt) {
+        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
+        empOnBoarding.setStatus(OnBoardingStatus.Complete);
+        new GenericTaskCompleteNotification().notify(dt);
+        EmployeeOnBoardingDao.instance().save(empOnBoarding);
+    }
+
+    protected EmployeeOnBoarding getRequestFromTask(DelegateTask task) {
+        Long entityId = (Long) task.getExecution().getVariable("entityId");
+        EmployeeOnBoarding entity = EmployeeOnBoardingDao.instance().findById(entityId);
+        if (entity != null) {
+            return entity;
+        } else {
+            throw new RuntimeException("on boarding entity not found");
+        }
+    }
 }
