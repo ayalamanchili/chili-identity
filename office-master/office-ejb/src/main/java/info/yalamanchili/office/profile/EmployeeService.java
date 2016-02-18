@@ -73,7 +73,7 @@ public class EmployeeService {
         emp = createEmailAndOtherDefaults(emp, employee.getEmail());
         //Create BPM User
         if (emp.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
-            createBPMUser(emp);
+            createBPMUser(emp, true);
         }
         //create cert
         OfficeSecurityService.instance().createUserCert(emp, null, null);
@@ -117,11 +117,17 @@ public class EmployeeService {
         }
     }
 
-    public void createBPMUser(Employee employee) {
+    public void createBPMUser(Employee employee, boolean startprocess) {
         OfficeBPMIdentityService.instance().createUser(employee.getEmployeeId());
-        Map<String, Object> obj = new HashMap<>();
-        obj.put("employee", employee);
-        OfficeBPMService.instance().startProcess("new_corp_employee_process", obj);
+        if (startprocess) {
+            startNewCorporateEmployeeProcess(employee);
+        }
+    }
+    
+    protected void startNewCorporateEmployeeProcess(Employee employee){
+         Map<String, Object> obj = new HashMap<>();
+            obj.put("employee", employee);
+            OfficeBPMService.instance().startProcess("new_corp_employee_process", obj);
     }
 
     public Employee createCUser(Employee employee) {

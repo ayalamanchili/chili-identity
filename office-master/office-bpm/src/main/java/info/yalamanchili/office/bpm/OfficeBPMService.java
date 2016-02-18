@@ -38,7 +38,7 @@ public class OfficeBPMService {
     protected IdentityService bpmIdentityService;
     @Autowired
     protected RuntimeService bpmRuntimeService;
-    protected HashMap<String, String> processMap = new HashMap<String, String>();
+    protected HashMap<String, String> processMap = new HashMap<>();
 
     public void deployProcess(String processId) {
         DeploymentQuery deploymentQuery = bpmRepositoryService.createDeploymentQuery().deploymentId(processId);

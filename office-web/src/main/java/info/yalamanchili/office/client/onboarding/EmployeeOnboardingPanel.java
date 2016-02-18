@@ -283,7 +283,12 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         entityFieldsPanel.add(addDependentsL);
         entityFieldsPanel.add(emerInfo);
         entityFieldsPanel.add(addEmerContact);
-        CreateEmergencyContactWidget panel = new CreateEmergencyContactWidget(CreateComposite.CreateCompositeType.ADD, this, 0);
+        CreateEmergencyContactWidget panel = new CreateEmergencyContactWidget(CreateComposite.CreateCompositeType.ADD, this, 0) {
+            @Override
+            protected void setFocus() {
+
+            }
+        };
         emergencyContactsPanels.add(panel);
         entityFieldsPanel.add(panel);
         countriesF = (EnumField) fields.get("country");

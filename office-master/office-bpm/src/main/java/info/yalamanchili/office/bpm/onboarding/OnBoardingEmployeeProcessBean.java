@@ -54,7 +54,8 @@ public class OnBoardingEmployeeProcessBean {
         empOnBoarding.setStatus(OnBoardingStatus.Rejected);
         CUser user1 = emp.getUser();
         user1.setEnabled(false);
-        OfficeBPMTaskService.instance().deleteAllTasksForProcessId(empOnBoarding.getBpmProcessId(), true);
+        OfficeBPMTaskService.instance().deleteAllTasksForProcessId(empOnBoarding.getBpmProcessId(), false);
+        //TODO this should be only done in case of a corporate employee since for others bpm user is not created.
         OfficeBPMIdentityService.instance().deleteUser(emp.getUser().getUsername());
     }
 }
