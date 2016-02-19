@@ -18,7 +18,6 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.BaseField;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.data.CountryFactory;
-import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.resources.ChiliImages;
 import info.chili.gwt.rpc.HttpService;
@@ -67,7 +66,6 @@ public class ReadJoiningFormPanel extends ReadComposite implements ClickHandler 
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        logger.info("entity in populate joining form .... "+entity);
         JSONObject employee = (JSONObject) entity.get("employee");
         JSONObject empAddnlDetails = (JSONObject) entity.get("empAddnlDetails");
         JSONObject address = (JSONObject) entity.get("address");
@@ -80,8 +78,8 @@ public class ReadJoiningFormPanel extends ReadComposite implements ClickHandler 
         assignFieldValueFromEntity("street2", address, DataType.STRING_FIELD);
         assignFieldValueFromEntity("city", address, DataType.STRING_FIELD);
         assignFieldValueFromEntity("country", address, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("state", address, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("zip", address, DataType.LONG_FIELD);
+        assignFieldValueFromEntity("state", address, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("zip", address, DataType.STRING_FIELD);
         assignFieldValueFromEntity("referredBy", empAddnlDetails, DataType.STRING_FIELD);
         assignFieldValueFromEntity("maritalStatus", empAddnlDetails, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("ethnicity", empAddnlDetails, DataType.ENUM_FIELD);
@@ -121,8 +119,8 @@ public class ReadJoiningFormPanel extends ReadComposite implements ClickHandler 
         addField("street2", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("city", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("country", true, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
-        addEnumField("state", true, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
-        addField("zip", true, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
+        addField("state", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("zip", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Additional Information"));
         addField("referredBy", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("maritalStatus", true, true, MaritalStatus.names(), Alignment.HORIZONTAL);
