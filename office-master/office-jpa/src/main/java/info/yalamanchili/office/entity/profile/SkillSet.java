@@ -21,6 +21,7 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -198,6 +199,21 @@ public class SkillSet extends AbstractEntity {
     @PreUpdate
     protected void populateUpdatedTimeStamp() {
         this.setLastUpdated(new Date());
+    }
+
+    @OneToMany(mappedBy = "skillSet", cascade = CascadeType.ALL)
+    protected Set<SkillSetFile> skillSetFile;
+
+    @XmlTransient
+    public Set<SkillSetFile> getSkillSetFile() {
+        if (this.skillSetFile == null) {
+            this.skillSetFile = new HashSet();
+        }
+        return skillSetFile;
+    }
+
+    public void setSkillSetFile(Set<SkillSetFile> skillSetFile) {
+        this.skillSetFile = skillSetFile;
     }
 
     @Override
