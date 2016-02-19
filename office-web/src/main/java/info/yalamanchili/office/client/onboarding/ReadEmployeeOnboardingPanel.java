@@ -8,7 +8,6 @@ package info.yalamanchili.office.client.onboarding;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
-import com.google.gwt.json.client.JSONValue;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
@@ -73,14 +72,10 @@ class ReadEmployeeOnboardingPanel extends ReadComposite {
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("email", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("employeeType", entity, null);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("company", entity, null);
         assignFieldValueFromEntity("branch", entity, DataType.ENUM_FIELD);
-        if (entity.get("employeeType") != null) {
-            JSONObject empType = entity.get("employeeType").isObject();
-            JSONValue name = empType.get("name");
-            entity.put("employeeType", name);
-        }
         assignFieldValueFromEntity("workStatus", entity, DataType.ENUM_FIELD);
     }
 
