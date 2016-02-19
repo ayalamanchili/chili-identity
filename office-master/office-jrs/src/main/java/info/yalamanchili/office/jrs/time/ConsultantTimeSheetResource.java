@@ -81,7 +81,7 @@ public class ConsultantTimeSheetResource extends CRUDResource<ConsultantTimeShee
 
     @Override
     @Validate
-    @PreAuthorize("hasAnyRole('ROLE_RELATIONSHIP','ROLE_PAYROLL_AND_BENIFITS')")
+    @PreAuthorize("hasAnyRole('ROLE_RELATIONSHIP','ROLE_PAYROLL_AND_BENIFITS','ROLE_CONSULTANT_TIME_ADMIN')")
     public ConsultantTimeSheet save(ConsultantTimeSheet entity) {
         if (entity.getId() == null) {
             Employee emp = EmployeeDao.instance().findById(entity.getEmployee().getId());
