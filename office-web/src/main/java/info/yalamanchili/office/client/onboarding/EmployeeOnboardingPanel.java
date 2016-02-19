@@ -19,15 +19,19 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.thirdparty.streamhtmlparser.util.HtmlUtils;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDComposite;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.UpdateComposite;
+import info.chili.gwt.data.CanadaStatesFactory;
 import info.chili.gwt.data.CountryFactory;
 import info.chili.gwt.data.IndiaStatesFactory;
 import info.chili.gwt.data.USAStatesFactory;
@@ -38,6 +42,7 @@ import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.utils.Utils;
 import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -60,6 +65,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
     protected List<CreateDependentsPanel> dependentsPanels = new ArrayList<>();
     protected List<CreateEmergencyContactWidget> emergencyContactsPanels = new ArrayList<>();
     HTML emptyLine = new HTML("<br/>");
+    protected CheckBox noDependentsCB = new CheckBox("No Dependents", false);
 
     protected static HTML formsInfo = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
@@ -227,6 +233,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         addEmerContact.addClickHandler(this);
         firstNameF.getTextbox().addBlurHandler(this);
         lastNameF.getTextbox().addBlurHandler(this);
+        noDependentsCB.addClickHandler(this);
     }
 
     @Override
@@ -262,7 +269,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         addField("city", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
         addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
-        addField("zip", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
+        addField("zip", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(bankInfo);
         addField("accountFirstName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("accountLastName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -280,6 +287,8 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         entityFieldsPanel.add(formsInfo);
         entityFieldsPanel.add(fileUploadPanel);
         entityFieldsPanel.add(depsInfo);
+        entityFieldsPanel.add(Utils.getLineSeperatorTag("If You Have No Dependents, Please Select This CheckBox"));
+        entityFieldsPanel.add(noDependentsCB);
         entityFieldsPanel.add(addDependentsL);
         entityFieldsPanel.add(emerInfo);
         entityFieldsPanel.add(addEmerContact);
@@ -351,6 +360,9 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
             case "INDIA":
                 statesF.setValues(IndiaStatesFactory.getStates().toArray(new String[0]));
                 break;
+            case "CANADA":
+                statesF.setValues(CanadaStatesFactory.getStates().toArray(new String[0]));
+                break;
         }
     }
 
@@ -390,7 +402,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
             assignFieldValueFromEntity("city", address, DataType.STRING_FIELD);
             assignFieldValueFromEntity("country", address, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("state", address, DataType.ENUM_FIELD);
-            assignFieldValueFromEntity("zip", address, DataType.LONG_FIELD);
+            assignFieldValueFromEntity("zip", address, DataType.STRING_FIELD);
         }
     }
 
@@ -401,13 +413,19 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
             int i = dependentsPanels.size();
             panel = new CreateDependentsPanel(this, i);
             dependentsPanels.add(panel);
-            entityFieldsPanel.add(panel);
+            entityFieldsPanel.insert(panel, entityFieldsPanel.getWidgetIndex(emerInfo));
         } else if (event.getSource().equals(addEmerContact)) {
             CreateEmergencyContactWidget panel = null;
             int x = emergencyContactsPanels.size();
             panel = new CreateEmergencyContactWidget(CreateComposite.CreateCompositeType.ADD, this, x);
             emergencyContactsPanels.add(panel);
             entityFieldsPanel.add(panel);
+        } else if (event.getSource().equals(noDependentsCB)) {
+            if (noDependentsCB.getValue() == true) {
+                entityFieldsPanel.remove(addDependentsL);
+            } else {
+                entityFieldsPanel.insert(addDependentsL, entityFieldsPanel.getWidgetIndex(emerInfo));
+            }
         }
         super.onClick(event);
     }
