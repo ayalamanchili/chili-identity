@@ -128,7 +128,6 @@ public class ReportsMenu extends CMenuBar {
     static Command addressReportMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getReportingPanel().entityPanel.clear();
-            TabPanel.instance().getReportingPanel().entityPanel.add(new ReadAllAddressReportsPanel());
             TabPanel.instance().getReportingPanel().sidePanelTop.clear();
             TabPanel.instance().getReportingPanel().sidePanelTop.add(new AddressReportSidePanel());
         }
