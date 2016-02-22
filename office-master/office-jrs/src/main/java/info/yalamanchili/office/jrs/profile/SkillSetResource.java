@@ -59,14 +59,8 @@ public class SkillSetResource extends CRUDResource<SkillSet> {
     //To add Skills
     @PUT
     @Path("/skills/add/{skill}")
-    public void addSkills(@PathParam("skill") String name) {
-        SkillDao.instance().addSkill(name);
-    }
-
-    @PUT
-    @Path("/skills/add/{skillSetId}/{skill}")
-    public void addSkills(@PathParam("skillSetId") Long skillSetId, @PathParam("skill") String name) {
-        SkillDao.instance().addSkill(skillSetId, name);
+    public void addSkills(@QueryParam("skillSetId") Long skillSetId, @PathParam("skill") String name) {
+        SkillDao.instance().addSkill(skillSetDao.findById(skillSetId), name);
     }
 
     // to remove skills

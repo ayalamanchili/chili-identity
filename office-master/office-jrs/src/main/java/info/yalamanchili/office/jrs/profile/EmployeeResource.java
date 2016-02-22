@@ -249,10 +249,10 @@ public class EmployeeResource extends CRUDResource<Employee> {
         SkillSet skillSetUpdated = emp.getSkillSet();
         if (skillSetUpdated == null) {
             skillSetUpdated = mapper.map(skillset, SkillSet.class);
-        }
+                }
         if (skillset.getResumeUrl() != null) {
             skillSetUpdated.setResumeUrl(skillset.getResumeUrl());
-        }
+            }
         if (skillset.getPractice() == null || skillset.getPractice().getId() == null) {
             skillSetUpdated.setPractice(null);
         } else {
@@ -512,7 +512,11 @@ public class EmployeeResource extends CRUDResource<Employee> {
         List<ClientInformation> dtos = new ArrayList();
         for (Employee emp : q.getResultList()) {
             for (ClientInformation ci : emp.getClientInformations()) {
-                if ((ci.getEndDate().after(new Date())) || (ci.getEndDate().equals(new Date())) || (ci.getEndDate() == null)) {
+                if (ci.getEndDate() != null) {
+                    if ((ci.getEndDate().after(new Date())) || (ci.getEndDate().equals(new Date()))) {
+                        dtos.add(ci);
+                    }
+                } else {
                     dtos.add(ci);
                 }
             }
@@ -545,7 +549,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     protected String getSearchQuery(EmployeeLocationDto dto) {
         StringBuilder queryStr = new StringBuilder();
         queryStr.append("SELECT emp from ").append(Employee.class.getCanonicalName()).append(" as emp");
-        if (!Strings.isNullOrEmpty(dto.getCity()) || !Strings.isNullOrEmpty(dto.getState())) {
+        if (!Strings.isNullOrEmpty(dto.getCity()) || !Strings.isNullOrEmpty(dto.getState()) || !Strings.isNullOrEmpty(dto.getCountry())) {
             queryStr.append(" join emp.addresss as address");
         }
         queryStr.append("  where ");

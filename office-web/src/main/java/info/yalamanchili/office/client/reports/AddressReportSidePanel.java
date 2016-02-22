@@ -5,6 +5,9 @@
  */
 package info.yalamanchili.office.client.reports;
 
+import com.google.common.base.Strings;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
@@ -15,6 +18,9 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.data.CanadaStatesFactory;
+import info.chili.gwt.data.CountryFactory;
+import info.chili.gwt.data.IndiaStatesFactory;
 import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.StringField;
@@ -29,12 +35,13 @@ import info.yalamanchili.office.client.profile.contact.Branch;
  *
  * @author hemalatha.duggirala
  */
-public class AddressReportSidePanel extends ALComposite implements ClickHandler {
+public class AddressReportSidePanel extends ALComposite implements ClickHandler, ChangeHandler {
 
     protected FlowPanel panel = new FlowPanel();
     EnumField branchB = new EnumField(OfficeWelcome.constants, "branch", "Employee", false, false, Branch.names());
     StringField cityField = new StringField(OfficeWelcome.constants, "city", "Employee", false, false);
-    EnumField stateFeild = new EnumField(OfficeWelcome.constants, "state", "Employee", false, false, USAStatesFactory.getStates().toArray(new String[0]));
+    EnumField countryField = new EnumField(OfficeWelcome.constants, "country", "Employee", false, true, CountryFactory.getCountries().toArray(new String[0]));
+    EnumField stateField = new EnumField(OfficeWelcome.constants, "state", "Employee", false, true, USAStatesFactory.getStates().toArray(new String[0]));
     Button viewB = new Button("View");
     Button reportsB = new Button("Generate");
 
@@ -46,6 +53,9 @@ public class AddressReportSidePanel extends ALComposite implements ClickHandler 
     protected void addListeners() {
         reportsB.addClickHandler(this);
         viewB.addClickHandler(this);
+        if (countryField != null) {
+            countryField.listBox.addChangeHandler(this);
+        }
     }
 
     @Override
@@ -56,7 +66,8 @@ public class AddressReportSidePanel extends ALComposite implements ClickHandler 
     protected void addWidgets() {
         panel.add(branchB);
         panel.add(cityField);
-        panel.add(stateFeild);
+        panel.add(countryField);
+        panel.add(stateField);
         panel.add(viewB);
         panel.add(reportsB);
     }
@@ -65,6 +76,7 @@ public class AddressReportSidePanel extends ALComposite implements ClickHandler 
     public void onClick(ClickEvent event) {
         JSONObject obj = getLocationObject();
         if (event.getSource().equals(reportsB)) {
+             if (!Strings.isNullOrEmpty(obj.get("city").isString().stringValue()) || obj.keySet().size() > 1) {
             HttpService.HttpServiceAsync.instance().doPut(getEmpAddressReportUrl(), obj.toString(), OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
                 @Override
@@ -72,9 +84,17 @@ public class AddressReportSidePanel extends ALComposite implements ClickHandler 
                     new ResponseStatusWidget().show("Report will be emailed to your primary email");
                 }
             });
+             } 
+            else {
+                new ResponseStatusWidget().show("Please select atleast one item to proceed");
+            }
+
+            clearField();
+            
         }
 
         if (event.getSource().equals(viewB)) {
+             if (!Strings.isNullOrEmpty(obj.get("city").isString().stringValue()) || obj.keySet().size() > 1) {
             HttpService.HttpServiceAsync.instance().doPut(getEmpAddressReadAllUrl(), obj.toString(), OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
                 @Override
@@ -90,6 +110,10 @@ public class AddressReportSidePanel extends ALComposite implements ClickHandler 
                     }
                 }
             });
+            } else {
+                new ResponseStatusWidget().show("Please select atleast one item to proceed");
+            }
+            clearField();
 
         }
     }
@@ -110,9 +134,34 @@ public class AddressReportSidePanel extends ALComposite implements ClickHandler 
         if (cityField.getValue() != null) {
             obj.put("city", new JSONString(cityField.getValue()));
         }
-        if (stateFeild.getValue() != null) {
-            obj.put("state", new JSONString(stateFeild.getValue()));
+        if (stateField.getValue() != null) {
+            obj.put("state", new JSONString(stateField.getValue()));
+        }
+        if (countryField.getValue() != null) {
+            obj.put("country", new JSONString(countryField.getValue()));
         }
         return obj;
+    }
+
+    protected void clearField() {
+        branchB.listBox.setSelectedIndex(0);
+        cityField.setValue("");
+        countryField.listBox.setSelectedIndex(0);
+        stateField.listBox.setSelectedIndex(0);
+
+    }
+
+    public void onChange(ChangeEvent event) {
+        switch (countryField.getValue()) {
+            case "USA":
+                stateField.setValues(USAStatesFactory.getStates().toArray(new String[0]));
+                break;
+            case "INDIA":
+                stateField.setValues(IndiaStatesFactory.getStates().toArray(new String[0]));
+                break;
+            case "CANADA":
+                stateField.setValues(CanadaStatesFactory.getStates().toArray(new String[0]));
+                break;
+        }
     }
 }

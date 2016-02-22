@@ -10,14 +10,13 @@ package info.yalamanchili.office.dao.profile;
 import com.google.common.base.Strings;
 import info.chili.commons.FileSearchUtils;
 import info.chili.dao.CRUDDao;
-import info.chili.security.SecurityUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.SkillSet;
 import java.io.File;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Repository;
@@ -60,13 +59,7 @@ public class SkillSetDao extends CRUDDao<SkillSet> {
     }
 
     public SkillSet getCurrentUserSkillSet() {
-        TypedQuery<SkillSet> query = em.createQuery("from " + SkillSet.class.getCanonicalName() + " where employee.employeeId=:empIdParam", SkillSet.class);
-        query.setParameter("empIdParam", SecurityUtils.getCurrentUser());
-        if (query.getResultList().size() > 0) {
-            return query.getResultList().get(0);
-        } else {
-            return null;
-        }
+        return OfficeSecurityService.instance().getCurrentUser().getSkillSet();
     }
 
     @PersistenceContext

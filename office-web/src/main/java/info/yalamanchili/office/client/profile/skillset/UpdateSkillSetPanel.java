@@ -152,7 +152,6 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
 
     @Override
     protected void updateButtonClicked() {
-        logger.info("uriissssssssss" + getURI());
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
                     @Override
@@ -210,10 +209,10 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
         tagsSB.getSuggestBox().addKeyPressHandler(new KeyPressHandler() {
             @Override
             public void onKeyPress(KeyPressEvent event) {
-                if(event.getCharCode()==KeyCodes.KEY_ENTER){
+                if (event.getCharCode() == KeyCodes.KEY_ENTER) {
                     addTagClicked();
                 }
-                if(event.getCharCode()==KeyCodes.KEY_DELETE){
+                if (event.getCharCode() == KeyCodes.KEY_DELETE) {
                     removeTagClicked();
                 }
             }
@@ -221,10 +220,10 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
         skillSB.getSuggestBox().addKeyPressHandler(new KeyPressHandler() {
             @Override
             public void onKeyPress(KeyPressEvent event) {
-                if(event.getCharCode()==KeyCodes.KEY_ENTER){
+                if (event.getCharCode() == KeyCodes.KEY_ENTER) {
                     addSkillClicked();
                 }
-                if(event.getCharCode()==KeyCodes.KEY_DELETE){
+                if (event.getCharCode() == KeyCodes.KEY_DELETE) {
                     removeSkillClicked();
                 }
             }
@@ -232,10 +231,10 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
         certSB.getSuggestBox().addKeyPressHandler(new KeyPressHandler() {
             @Override
             public void onKeyPress(KeyPressEvent event) {
-                if(event.getCharCode()==KeyCodes.KEY_ENTER){
+                if (event.getCharCode() == KeyCodes.KEY_ENTER) {
                     addCertClicked();
                 }
-                if(event.getCharCode()==KeyCodes.KEY_DELETE){
+                if (event.getCharCode() == KeyCodes.KEY_DELETE) {
                     removeCertClicked();
                 }
             }
@@ -298,7 +297,7 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
             new GenericPopup(new GenericBPMStartFormPanel("AddNewTechnologyRequest", "add_new_technology_request")).show();
         }
         if (event.getSource().equals(newSkill)) {
-            new GenericPopup(new GenericBPMStartFormPanel("AddNewSkillRequest", "add_new_skill_request"),newSkill.getAbsoluteLeft(), newSkill.getAbsoluteTop()).show();
+            new GenericPopup(new GenericBPMStartFormPanel("AddNewSkillRequest", "add_new_skill_request"), newSkill.getAbsoluteLeft(), newSkill.getAbsoluteTop()).show();
         }
         if (event.getSource().equals(newCert)) {
             new GenericPopup(new GenericBPMStartFormPanel("AddNewCertificationsRequest", "add_new_certification_request"), newCert.getAbsoluteLeft(), newCert.getAbsoluteTop()).show();
@@ -411,7 +410,6 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
         if (skillSB.getValue() == null && skillSB.getValue().isEmpty()) {
             return;
         }
-        logger.info("addSkill Clickeddddddd" + addSkillUrl());
         HttpService.HttpServiceAsync.instance().doPut(addSkillUrl(), null,
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
                     @Override
@@ -424,7 +422,7 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
     }
 
     protected String addSkillUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "skillset/skills/add/" + getEntityId() + "/" + skillSB.getValue());
+        return URL.encode(OfficeWelcome.constants.root_url() + "skillset/skills/add/" + skillSB.getValue() + "?skillSetId=" + getEntityId());
     }
 
     protected void removeSkillClicked() {

@@ -10,8 +10,11 @@ package info.yalamanchili.office.dao.profile;
 import info.chili.commons.EntityQueryUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.Certification;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.Skill;
+import info.yalamanchili.office.entity.profile.SkillSet;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
@@ -35,17 +38,13 @@ public class SkillDao extends CRUDDao<Skill> {
     @PersistenceContext
     protected EntityManager em;
 
-    public void addSkill(String name) {
-        Skill skill = EntityQueryUtils.findEntity(getEntityManager(), Skill.class, "name", name.trim());
-        if (skill != null) {
-            SkillSetDao.instance().getCurrentUserSkillSet().addSkill(skill);
+    public void addSkill(SkillSet skillSet, String name) {
+        if (skillSet == null) {
+            skillSet = OfficeSecurityService.instance().getCurrentUser().getSkillSet();
         }
-    }
-
-    public void addSkill(Long skillSetId, String name) {
         Skill skill = EntityQueryUtils.findEntity(getEntityManager(), Skill.class, "name", name.trim());
         if (skill != null) {
-            SkillSetDao.instance().findById(skillSetId).addSkill(skill);
+            skillSet.addSkill(skill);
         }
     }
 

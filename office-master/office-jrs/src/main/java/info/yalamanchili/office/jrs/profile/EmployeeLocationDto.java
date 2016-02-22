@@ -56,4 +56,5 @@ public class EmployeeLocationDto implements Serializable {
     public void setCountry(String country) {
         this.country = country;
     }
+    
 }
