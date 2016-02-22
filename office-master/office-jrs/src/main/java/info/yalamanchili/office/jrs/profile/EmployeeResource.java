@@ -30,11 +30,14 @@ import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.client.ContractService;
 import info.yalamanchili.office.dao.practice.PracticeDao;
+import info.yalamanchili.office.dao.profile.SkillSetDao;
+import info.yalamanchili.office.dao.profile.SkillSetFileDao;
 import info.yalamanchili.office.dao.profile.ext.DependentDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.client.ContractDto;
 import info.yalamanchili.office.dto.profile.ClientInformationDto;
 import info.yalamanchili.office.dto.profile.DependentDto;
+import info.yalamanchili.office.dto.profile.SkillSetSaveDto;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.privacy.PrivacyData;
 import info.yalamanchili.office.entity.profile.ext.Dependent;
@@ -64,6 +67,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -249,10 +253,10 @@ public class EmployeeResource extends CRUDResource<Employee> {
         SkillSet skillSetUpdated = emp.getSkillSet();
         if (skillSetUpdated == null) {
             skillSetUpdated = mapper.map(skillset, SkillSet.class);
-        }
+                }
         if (skillset.getResumeUrl() != null) {
             skillSetUpdated.setResumeUrl(skillset.getResumeUrl());
-        }
+            }
         if (skillset.getPractice() == null || skillset.getPractice().getId() == null) {
             skillSetUpdated.setPractice(null);
         } else {
@@ -512,7 +516,11 @@ public class EmployeeResource extends CRUDResource<Employee> {
         List<ClientInformation> dtos = new ArrayList();
         for (Employee emp : q.getResultList()) {
             for (ClientInformation ci : emp.getClientInformations()) {
-                if ((ci.getEndDate().after(new Date())) || (ci.getEndDate().equals(new Date())) || (ci.getEndDate() == null)) {
+                if (ci.getEndDate() != null) {
+                    if ((ci.getEndDate().after(new Date())) || (ci.getEndDate().equals(new Date()))) {
+                        dtos.add(ci);
+                    }
+                } else {
                     dtos.add(ci);
                 }
             }
