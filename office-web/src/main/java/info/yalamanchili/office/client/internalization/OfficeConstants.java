@@ -1735,24 +1735,6 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String ClientInfo_ciPrimary_info();
 
   /**
-   * Translated "CPD Document".
-   * 
-   * @return translated "CPD Document"
-   */
-  @DefaultStringValue("CPD Document")
-  @Key("ClientInfo_cidocument")
-  String ClientInfo_cidocument();
-
-  /**
-   * Translated "CPD Document".
-   * 
-   * @return translated "CPD Document"
-   */
-  @DefaultStringValue("CPD Document")
-  @Key("ClientInfo_cidocument_info")
-  String ClientInfo_cidocument_info();
-
-  /**
    * Translated "Client Recruiter".
    * 
    * @return translated "Client Recruiter"
@@ -1843,11 +1825,11 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String ClientInfo_consultantJobTitle();
 
   /**
-   * Translated "Consultant Job Title of the Client Info".
+   * Translated "Consrultant Job Title of the Client Info".
    * 
-   * @return translated "Consultant Job Title of the Client Info"
+   * @return translated "Consrultant Job Title of the Client Info"
    */
-  @DefaultStringValue("Consultant Job Title of the Client Info")
+  @DefaultStringValue("Consrultant Job Title of the Client Info")
   @Key("ClientInfo_consultantJobTitle_info")
   String ClientInfo_consultantJobTitle_info();
 
@@ -2671,6 +2653,24 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String ClientInformationStatus_PENDING_INVOICING_BILLING_APPROVAL();
 
   /**
+   * Translated "Contract Document".
+   * 
+   * @return translated "Contract Document"
+   */
+  @DefaultStringValue("Contract Document")
+  @Key("ClientInformation_cidocument")
+  String ClientInformation_cidocument();
+
+  /**
+   * Translated "Contract Document".
+   * 
+   * @return translated "Contract Document"
+   */
+  @DefaultStringValue("Contract Document")
+  @Key("ClientInformation_cidocument_info")
+  String ClientInformation_cidocument_info();
+
+  /**
    * Translated "Is EndDate Confirmed".
    * 
    * @return translated "Is EndDate Confirmed"
@@ -3400,6 +3400,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String ConsultantTimeSummary_usedUnpaidHours_info();
 
   /**
+   * Translated "Consultant".
+   * 
+   * @return translated "Consultant"
+   */
+  @DefaultStringValue("Consultant")
+  @Key("Consultant_consultant")
+  String Consultant_consultant();
+
+  /**
    * Translated "Client Contact".
    * 
    * @return translated "Client Contact"
@@ -3895,11 +3904,11 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Contract_endDate_info();
 
   /**
-   * Translated "Final Billing Rate".
+   * Translated "Final Billing Rates".
    * 
-   * @return translated "Final Billing Rate"
+   * @return translated "Final Billing Rates"
    */
-  @DefaultStringValue("Final Billing Rate")
+  @DefaultStringValue("Final Billing Rates")
   @Key("Contract_finalBillingRate")
   String Contract_finalBillingRate();
 
@@ -6289,6 +6298,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Employee_company_info();
 
   /**
+   * Translated "Consultant".
+   * 
+   * @return translated "Consultant"
+   */
+  @DefaultStringValue("Consultant")
+  @Key("Employee_consultant")
+  String Employee_consultant();
+
+  /**
    * Translated "Country".
    * 
    * @return translated "Country"
@@ -6602,6 +6620,24 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Role")
   @Key("Employee_role_info")
   String Employee_role_info();
+
+  /**
+   * Translated "Roles And Responsibilities".
+   * 
+   * @return translated "Roles And Responsibilities"
+   */
+  @DefaultStringValue("Roles And Responsibilities")
+  @Key("Employee_rolesAndResponsibilities")
+  String Employee_rolesAndResponsibilities();
+
+  /**
+   * Translated "Roles And Responsibilities".
+   * 
+   * @return translated "Roles And Responsibilities"
+   */
+  @DefaultStringValue("Roles And Responsibilities")
+  @Key("Employee_rolesAndResponsibilities_info")
+  String Employee_rolesAndResponsibilities_info();
 
   /**
    * Translated "Search Employee".
@@ -8917,6 +8953,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String InvoiceFrequency_BI_WEEKLY();
 
   /**
+   * Translated "Do Not Send".
+   * 
+   * @return translated "Do Not Send"
+   */
+  @DefaultStringValue("Do Not Send")
+  @Key("InvoiceFrequency_DO_NOT_SEND")
+  String InvoiceFrequency_DO_NOT_SEND();
+
+  /**
    * Translated "Monthly".
    * 
    * @return translated "Monthly"
@@ -9095,6 +9140,258 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("IssueType Name")
   @Key("IssueType_name_info")
   String IssueType_name_info();
+
+  /**
+   * Translated "Certified LCA To Consultant".
+   * 
+   * @return translated "Certified LCA To Consultant"
+   */
+  @DefaultStringValue("Certified LCA To Consultant")
+  @Key("LCA_certifiedLcaSentConsultant")
+  String LCA_certifiedLcaSentConsultant();
+
+  /**
+   * Translated "Client Name".
+   * 
+   * @return translated "Client Name"
+   */
+  @DefaultStringValue("Client Name")
+  @Key("LCA_clientName")
+  String LCA_clientName();
+
+  /**
+   * Translated "Job Title".
+   * 
+   * @return translated "Job Title"
+   */
+  @DefaultStringValue("Job Title")
+  @Key("LCA_jobTitle")
+  String LCA_jobTitle();
+
+  /**
+   * Translated "LCA Number".
+   * 
+   * @return translated "LCA Number"
+   */
+  @DefaultStringValue("LCA Number")
+  @Key("LCA_lCA")
+  String LCA_lCA();
+
+  /**
+   * Translated "LCA Curr Max Wage".
+   * 
+   * @return translated "LCA Curr Max Wage"
+   */
+  @DefaultStringValue("LCA Curr Max Wage")
+  @Key("LCA_lcaCurrMaxWage")
+  String LCA_lcaCurrMaxWage();
+
+  /**
+   * Translated "LCA Curr Min Wage".
+   * 
+   * @return translated "LCA Curr Min Wage"
+   */
+  @DefaultStringValue("LCA Curr Min Wage")
+  @Key("LCA_lcaCurrMinWage")
+  String LCA_lcaCurrMinWage();
+
+  /**
+   * Translated "LCA Curr Wage Level".
+   * 
+   * @return translated "LCA Curr Wage Level"
+   */
+  @DefaultStringValue("LCA Curr Wage Level")
+  @Key("LCA_lcaCurrWageLvl")
+  String LCA_lcaCurrWageLvl();
+
+  /**
+   * Translated "LCA Filed With DOL".
+   * 
+   * @return translated "LCA Filed With DOL"
+   */
+  @DefaultStringValue("LCA Filed With DOL")
+  @Key("LCA_lcaFiledDate")
+  String LCA_lcaFiledDate();
+
+  /**
+   * Translated "LCA Filed In PIF".
+   * 
+   * @return translated "LCA Filed In PIF"
+   */
+  @DefaultStringValue("LCA Filed In PIF")
+  @Key("LCA_lcaFiledInPIF")
+  String LCA_lcaFiledInPIF();
+
+  /**
+   * Translated "LCA Number".
+   * 
+   * @return translated "LCA Number"
+   */
+  @DefaultStringValue("LCA Number")
+  @Key("LCA_lcaNumber")
+  String LCA_lcaNumber();
+
+  /**
+   * Translated "LCA Posting SSTech Location".
+   * 
+   * @return translated "LCA Posting SSTech Location"
+   */
+  @DefaultStringValue("LCA Posting SSTech Location")
+  @Key("LCA_lcaPostingSSTLocation")
+  String LCA_lcaPostingSSTLocation();
+
+  /**
+   * Translated "LCA Posting Sent To Vendor".
+   * 
+   * @return translated "LCA Posting Sent To Vendor"
+   */
+  @DefaultStringValue("LCA Posting Sent To Vendor")
+  @Key("LCA_lcaPostingSentToVendor")
+  String LCA_lcaPostingSentToVendor();
+
+  /**
+   * Translated "LCA Prev Max Wage".
+   * 
+   * @return translated "LCA Prev Max Wage"
+   */
+  @DefaultStringValue("LCA Prev Max Wage")
+  @Key("LCA_lcaPrevMaxWage")
+  String LCA_lcaPrevMaxWage();
+
+  /**
+   * Translated "LCA Prev Min Wage".
+   * 
+   * @return translated "LCA Prev Min Wage"
+   */
+  @DefaultStringValue("LCA Prev Min Wage")
+  @Key("LCA_lcaPrevMinWage")
+  String LCA_lcaPrevMinWage();
+
+  /**
+   * Translated "LCA Prev Wage Level ".
+   * 
+   * @return translated "LCA Prev Wage Level "
+   */
+  @DefaultStringValue("LCA Prev Wage Level ")
+  @Key("LCA_lcaPrevWageLvl")
+  String LCA_lcaPrevWageLvl();
+
+  /**
+   * Translated "Valid From Date".
+   * 
+   * @return translated "Valid From Date"
+   */
+  @DefaultStringValue("Valid From Date")
+  @Key("LCA_lcaValidFromDate")
+  String LCA_lcaValidFromDate();
+
+  /**
+   * Translated "Valid To Date".
+   * 
+   * @return translated "Valid To Date"
+   */
+  @DefaultStringValue("Valid To Date")
+  @Key("LCA_lcaValidToDate")
+  String LCA_lcaValidToDate();
+
+  /**
+   * Translated "Non Displacement".
+   * 
+   * @return translated "Non Displacement"
+   */
+  @DefaultStringValue("Non Displacement")
+  @Key("LCA_nonDisplacement")
+  String LCA_nonDisplacement();
+
+  /**
+   * Translated "Reminder Email".
+   * 
+   * @return translated "Reminder Email"
+   */
+  @DefaultStringValue("Reminder Email")
+  @Key("LCA_reminderEmail")
+  String LCA_reminderEmail();
+
+  /**
+   * Translated "Response on LCA Posting".
+   * 
+   * @return translated "Response on LCA Posting"
+   */
+  @DefaultStringValue("Response on LCA Posting")
+  @Key("LCA_responseOnLcaPosting")
+  String LCA_responseOnLcaPosting();
+
+  /**
+   * Translated "SOC Codes & Occupation".
+   * 
+   * @return translated "SOC Codes & Occupation"
+   */
+  @DefaultStringValue("SOC Codes & Occupation")
+  @Key("LCA_socCodesAndOccupations")
+  String LCA_socCodesAndOccupations();
+
+  /**
+   * Translated "Status".
+   * 
+   * @return translated "Status"
+   */
+  @DefaultStringValue("Status")
+  @Key("LCA_status")
+  String LCA_status();
+
+  /**
+   * Translated "Total Pending Positions".
+   * 
+   * @return translated "Total Pending Positions"
+   */
+  @DefaultStringValue("Total Pending Positions")
+  @Key("LCA_totalPendingPositions")
+  String LCA_totalPendingPositions();
+
+  /**
+   * Translated "Total Working Positions".
+   * 
+   * @return translated "Total Working Positions"
+   */
+  @DefaultStringValue("Total Working Positions")
+  @Key("LCA_totalWorkingPositions")
+  String LCA_totalWorkingPositions();
+
+  /**
+   * Translated "Vendor Name".
+   * 
+   * @return translated "Vendor Name"
+   */
+  @DefaultStringValue("Vendor Name")
+  @Key("LCA_vendorName")
+  String LCA_vendorName();
+
+  /**
+   * Translated "Visa Classification".
+   * 
+   * @return translated "Visa Classification"
+   */
+  @DefaultStringValue("Visa Classification")
+  @Key("LCA_visaClassification")
+  String LCA_visaClassification();
+
+  /**
+   * Translated "Withdrawn LCA Number".
+   * 
+   * @return translated "Withdrawn LCA Number"
+   */
+  @DefaultStringValue("Withdrawn LCA Number")
+  @Key("LCA_withdrawnLCANumber")
+  String LCA_withdrawnLCANumber();
+
+  /**
+   * Translated "Worked By".
+   * 
+   * @return translated "Worked By"
+   */
+  @DefaultStringValue("Worked By")
+  @Key("LCA_workedByEmployees")
+  String LCA_workedByEmployees();
 
   /**
    * Translated "Message".
@@ -9311,6 +9608,51 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Eg:Compensation for Overtime on Dec 14,2015 for 4 hours Eg:Subtracting for Advance hours 4.00 given on Jan 10th 2015.")
   @Key("PTOAccruedHoursAdjustment_adjustmentReason_info")
   String PTOAccruedHoursAdjustment_adjustmentReason_info();
+
+  /**
+   * Translated "Passport".
+   * 
+   * @return translated "Passport"
+   */
+  @DefaultStringValue("Passport")
+  @Key("Passport_passport")
+  String Passport_passport();
+
+  /**
+   * Translated "Issuance Country".
+   * 
+   * @return translated "Issuance Country"
+   */
+  @DefaultStringValue("Issuance Country")
+  @Key("Passport_passportCountryOfIssuance")
+  String Passport_passportCountryOfIssuance();
+
+  /**
+   * Translated "Expiry Date".
+   * 
+   * @return translated "Expiry Date"
+   */
+  @DefaultStringValue("Expiry Date")
+  @Key("Passport_passportExpiryDate")
+  String Passport_passportExpiryDate();
+
+  /**
+   * Translated "Issued Date".
+   * 
+   * @return translated "Issued Date"
+   */
+  @DefaultStringValue("Issued Date")
+  @Key("Passport_passportIssuedDate")
+  String Passport_passportIssuedDate();
+
+  /**
+   * Translated "Passport Number".
+   * 
+   * @return translated "Passport Number"
+   */
+  @DefaultStringValue("Passport Number")
+  @Key("Passport_passportNumber")
+  String Passport_passportNumber();
 
   /**
    * Translated "Complete".
@@ -9754,6 +10096,303 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String PerformanceEvaluation_year_info();
 
   /**
+   * Translated "Attorney Name".
+   * 
+   * @return translated "Attorney Name"
+   */
+  @DefaultStringValue("Attorney Name")
+  @Key("Petition_attorneyName")
+  String Petition_attorneyName();
+
+  /**
+   * Translated "H4 Applicability ".
+   * 
+   * @return translated "H4 Applicability "
+   */
+  @DefaultStringValue("H4 Applicability ")
+  @Key("Petition_h4Applicability")
+  String Petition_h4Applicability();
+
+  /**
+   * Translated "I140 Status".
+   * 
+   * @return translated "I140 Status"
+   */
+  @DefaultStringValue("I140 Status")
+  @Key("Petition_i140ApprovalStatus")
+  String Petition_i140ApprovalStatus();
+
+  /**
+   * Translated "Job Title".
+   * 
+   * @return translated "Job Title"
+   */
+  @DefaultStringValue("Job Title")
+  @Key("Petition_jobTitle")
+  String Petition_jobTitle();
+
+  /**
+   * Translated "LCA Number".
+   * 
+   * @return translated "LCA Number"
+   */
+  @DefaultStringValue("LCA Number")
+  @Key("Petition_lCA")
+  String Petition_lCA();
+
+  /**
+   * Translated "LCA Number".
+   * 
+   * @return translated "LCA Number"
+   */
+  @DefaultStringValue("LCA Number")
+  @Key("Petition_lca")
+  String Petition_lca();
+
+  /**
+   * Translated "LCA Curr Max Wage".
+   * 
+   * @return translated "LCA Curr Max Wage"
+   */
+  @DefaultStringValue("LCA Curr Max Wage")
+  @Key("Petition_lcaCurrMaxWage")
+  String Petition_lcaCurrMaxWage();
+
+  /**
+   * Translated "LCA Curr Min Wage".
+   * 
+   * @return translated "LCA Curr Min Wage"
+   */
+  @DefaultStringValue("LCA Curr Min Wage")
+  @Key("Petition_lcaCurrMinWage")
+  String Petition_lcaCurrMinWage();
+
+  /**
+   * Translated "LCA Curr Wage Level".
+   * 
+   * @return translated "LCA Curr Wage Level"
+   */
+  @DefaultStringValue("LCA Curr Wage Level")
+  @Key("Petition_lcaCurrWageLvl")
+  String Petition_lcaCurrWageLvl();
+
+  /**
+   * Translated "LCA Filed With DOL".
+   * 
+   * @return translated "LCA Filed With DOL"
+   */
+  @DefaultStringValue("LCA Filed With DOL")
+  @Key("Petition_lcaFiledDate")
+  String Petition_lcaFiledDate();
+
+  /**
+   * Translated "LCA Prev Max Wage".
+   * 
+   * @return translated "LCA Prev Max Wage"
+   */
+  @DefaultStringValue("LCA Prev Max Wage")
+  @Key("Petition_lcaPrevMaxWage")
+  String Petition_lcaPrevMaxWage();
+
+  /**
+   * Translated "LCA Prev Min Wage".
+   * 
+   * @return translated "LCA Prev Min Wage"
+   */
+  @DefaultStringValue("LCA Prev Min Wage")
+  @Key("Petition_lcaPrevMinWage")
+  String Petition_lcaPrevMinWage();
+
+  /**
+   * Translated "LCA Prev Wage Level ".
+   * 
+   * @return translated "LCA Prev Wage Level "
+   */
+  @DefaultStringValue("LCA Prev Wage Level ")
+  @Key("Petition_lcaPrevWageLvl")
+  String Petition_lcaPrevWageLvl();
+
+  /**
+   * Translated "Valid From Date".
+   * 
+   * @return translated "Valid From Date"
+   */
+  @DefaultStringValue("Valid From Date")
+  @Key("Petition_lcaValidFromDate")
+  String Petition_lcaValidFromDate();
+
+  /**
+   * Translated "Valid To Date".
+   * 
+   * @return translated "Valid To Date"
+   */
+  @DefaultStringValue("Valid To Date")
+  @Key("Petition_lcaValidToDate")
+  String Petition_lcaValidToDate();
+
+  /**
+   * Translated "Passport".
+   * 
+   * @return translated "Passport"
+   */
+  @DefaultStringValue("Passport")
+  @Key("Petition_passport")
+  String Petition_passport();
+
+  /**
+   * Translated "Petition Approval Date".
+   * 
+   * @return translated "Petition Approval Date"
+   */
+  @DefaultStringValue("Petition Approval Date")
+  @Key("Petition_petitionApprovalDate")
+  String Petition_petitionApprovalDate();
+
+  /**
+   * Translated "Petition Filed Date".
+   * 
+   * @return translated "Petition Filed Date"
+   */
+  @DefaultStringValue("Petition Filed Date")
+  @Key("Petition_petitionFileDate")
+  String Petition_petitionFileDate();
+
+  /**
+   * Translated "Petition Mail Tracking Number".
+   * 
+   * @return translated "Petition Mail Tracking Number"
+   */
+  @DefaultStringValue("Petition Mail Tracking Number")
+  @Key("Petition_petitionFolderMailTrkNbr")
+  String Petition_petitionFolderMailTrkNbr();
+
+  /**
+   * Translated "Petition Folder Mailed Date".
+   * 
+   * @return translated "Petition Folder Mailed Date"
+   */
+  @DefaultStringValue("Petition Folder Mailed Date")
+  @Key("Petition_petitionFolderMailedDate")
+  String Petition_petitionFolderMailedDate();
+
+  /**
+   * Translated "Petition Status".
+   * 
+   * @return translated "Petition Status"
+   */
+  @DefaultStringValue("Petition Status")
+  @Key("Petition_petitionStatus")
+  String Petition_petitionStatus();
+
+  /**
+   * Translated "Petition Tracking Number".
+   * 
+   * @return translated "Petition Tracking Number"
+   */
+  @DefaultStringValue("Petition Tracking Number")
+  @Key("Petition_petitionTrackingNumber")
+  String Petition_petitionTrackingNumber();
+
+  /**
+   * Translated "Petition Valid From Date".
+   * 
+   * @return translated "Petition Valid From Date"
+   */
+  @DefaultStringValue("Petition Valid From Date")
+  @Key("Petition_petitionValidFromDate")
+  String Petition_petitionValidFromDate();
+
+  /**
+   * Translated "Petition Valid To Date".
+   * 
+   * @return translated "Petition Valid To Date"
+   */
+  @DefaultStringValue("Petition Valid To Date")
+  @Key("Petition_petitionValidToDate")
+  String Petition_petitionValidToDate();
+
+  /**
+   * Translated "Previous Status Expiry ".
+   * 
+   * @return translated "Previous Status Expiry "
+   */
+  @DefaultStringValue("Previous Status Expiry ")
+  @Key("Petition_previousStatusExpiry")
+  String Petition_previousStatusExpiry();
+
+  /**
+   * Translated "Previous Visa Status".
+   * 
+   * @return translated "Previous Visa Status"
+   */
+  @DefaultStringValue("Previous Visa Status")
+  @Key("Petition_previousVisaStatus")
+  String Petition_previousVisaStatus();
+
+  /**
+   * Translated "Project".
+   * 
+   * @return translated "Project"
+   */
+  @DefaultStringValue("Project")
+  @Key("Petition_project")
+  String Petition_project();
+
+  /**
+   * Translated "Receipt Number".
+   * 
+   * @return translated "Receipt Number"
+   */
+  @DefaultStringValue("Receipt Number")
+  @Key("Petition_receiptNumber")
+  String Petition_receiptNumber();
+
+  /**
+   * Translated "Sister Company Letter Used ".
+   * 
+   * @return translated "Sister Company Letter Used "
+   */
+  @DefaultStringValue("Sister Company Letter Used ")
+  @Key("Petition_sisterCompanyLetterUsed")
+  String Petition_sisterCompanyLetterUsed();
+
+  /**
+   * Translated "Visa Classification".
+   * 
+   * @return translated "Visa Classification"
+   */
+  @DefaultStringValue("Visa Classification")
+  @Key("Petition_visaClassification")
+  String Petition_visaClassification();
+
+  /**
+   * Translated "Visa Processing".
+   * 
+   * @return translated "Visa Processing"
+   */
+  @DefaultStringValue("Visa Processing")
+  @Key("Petition_visaProcessing")
+  String Petition_visaProcessing();
+
+  /**
+   * Translated "Withdrawn LCA Number".
+   * 
+   * @return translated "Withdrawn LCA Number"
+   */
+  @DefaultStringValue("Withdrawn LCA Number")
+  @Key("Petition_withdrawnLCANumber")
+  String Petition_withdrawnLCANumber();
+
+  /**
+   * Translated "Worked By".
+   * 
+   * @return translated "Worked By"
+   */
+  @DefaultStringValue("Worked By")
+  @Key("Petition_workedBy")
+  String Petition_workedBy();
+
+  /**
    * Translated "Phone Type".
    * 
    * @return translated "Phone Type"
@@ -9941,6 +10580,42 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Employee can decide if they want to make their information public vs private with other employees ")
   @Key("Privacy_privacyMode_info")
   String Privacy_privacyMode_info();
+
+  /**
+   * Translated "Complete".
+   * 
+   * @return translated "Complete"
+   */
+  @DefaultStringValue("Complete")
+  @Key("ProbationPeriodEvaluationStage_Complete")
+  String ProbationPeriodEvaluationStage_Complete();
+
+  /**
+   * Translated "Pending Employee Acceptance".
+   * 
+   * @return translated "Pending Employee Acceptance"
+   */
+  @DefaultStringValue("Pending Employee Acceptance")
+  @Key("ProbationPeriodEvaluationStage_Employee_Acceptance")
+  String ProbationPeriodEvaluationStage_Employee_Acceptance();
+
+  /**
+   * Translated "Pending HR Approval".
+   * 
+   * @return translated "Pending HR Approval"
+   */
+  @DefaultStringValue("Pending HR Approval")
+  @Key("ProbationPeriodEvaluationStage_HR_Approval")
+  String ProbationPeriodEvaluationStage_HR_Approval();
+
+  /**
+   * Translated "Pending Manager Review".
+   * 
+   * @return translated "Pending Manager Review"
+   */
+  @DefaultStringValue("Pending Manager Review")
+  @Key("ProbationPeriodEvaluationStage_Manager_Review")
+  String ProbationPeriodEvaluationStage_Manager_Review();
 
   /**
    * Translated "Accepted Date".
@@ -14992,6 +15667,24 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Vendors_website_info();
 
   /**
+   * Translated "Worked By".
+   * 
+   * @return translated "Worked By"
+   */
+  @DefaultStringValue("Worked By")
+  @Key("WorkedBy_workedBy")
+  String WorkedBy_workedBy();
+
+  /**
+   * Translated "Worked By".
+   * 
+   * @return translated "Worked By"
+   */
+  @DefaultStringValue("Worked By")
+  @Key("WorkedBy_workedByEmployees")
+  String WorkedBy_workedByEmployees();
+
+  /**
    * Translated "Fiscal Year".
    * 
    * @return translated "Fiscal Year"
@@ -15053,6 +15746,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Bi-Weekly")
   @Key("billingInvoiceFrequency_BI_WEEKLY")
   String billingInvoiceFrequency_BI_WEEKLY();
+
+  /**
+   * Translated "Do Not Send".
+   * 
+   * @return translated "Do Not Send"
+   */
+  @DefaultStringValue("Do Not Send")
+  @Key("billingInvoiceFrequency_DO_NOT_SEND")
+  String billingInvoiceFrequency_DO_NOT_SEND();
 
   /**
    * Translated "Monthly".
@@ -15350,6 +16052,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Bi-Weekly")
   @Key("clientinvFrequency_BI_WEEKLY")
   String clientinvFrequency_BI_WEEKLY();
+
+  /**
+   * Translated "Do Not Send".
+   * 
+   * @return translated "Do Not Send"
+   */
+  @DefaultStringValue("Do Not Send")
+  @Key("clientinvFrequency_DO_NOT_SEND")
+  String clientinvFrequency_DO_NOT_SEND();
 
   /**
    * Translated "Monthly".
@@ -15784,6 +16495,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String invoiceFrequency1099_BI_WEEKLY();
 
   /**
+   * Translated "Do Not Send".
+   * 
+   * @return translated "Do Not Send"
+   */
+  @DefaultStringValue("Do Not Send")
+  @Key("invoiceFrequency1099_DO_NOT_SEND")
+  String invoiceFrequency1099_DO_NOT_SEND();
+
+  /**
    * Translated "Monthly".
    * 
    * @return translated "Monthly"
@@ -15917,6 +16637,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Bi-Weekly")
   @Key("invoiceFrequency_BI_WEEKLY")
   String invoiceFrequency_BI_WEEKLY();
+
+  /**
+   * Translated "Do Not Send".
+   * 
+   * @return translated "Do Not Send"
+   */
+  @DefaultStringValue("Do Not Send")
+  @Key("invoiceFrequency_DO_NOT_SEND")
+  String invoiceFrequency_DO_NOT_SEND();
 
   /**
    * Translated "Monthly".
@@ -16729,6 +17458,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String subContractorInvoiceFrequency_BI_WEEKLY();
 
   /**
+   * Translated "Do Not Send".
+   * 
+   * @return translated "Do Not Send"
+   */
+  @DefaultStringValue("Do Not Send")
+  @Key("subContractorInvoiceFrequency_DO_NOT_SEND")
+  String subContractorInvoiceFrequency_DO_NOT_SEND();
+
+  /**
    * Translated "Monthly".
    * 
    * @return translated "Monthly"
@@ -16862,6 +17600,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Bi-Weekly")
   @Key("subcontractorinvoiceFrequency_BI_WEEKLY")
   String subcontractorinvoiceFrequency_BI_WEEKLY();
+
+  /**
+   * Translated "Do Not Send".
+   * 
+   * @return translated "Do Not Send"
+   */
+  @DefaultStringValue("Do Not Send")
+  @Key("subcontractorinvoiceFrequency_DO_NOT_SEND")
+  String subcontractorinvoiceFrequency_DO_NOT_SEND();
 
   /**
    * Translated "Monthly".
@@ -17170,6 +17917,15 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String vendorinvFrequency_BI_WEEKLY();
 
   /**
+   * Translated "Do Not Send".
+   * 
+   * @return translated "Do Not Send"
+   */
+  @DefaultStringValue("Do Not Send")
+  @Key("vendorinvFrequency_DO_NOT_SEND")
+  String vendorinvFrequency_DO_NOT_SEND();
+
+  /**
    * Translated "Monthly".
    * 
    * @return translated "Monthly"
@@ -17294,6 +18050,60 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   @DefaultStringValue("Weekly To Be Uploaded")
   @Key("vendorinvFrequency_WEEKLY_TO_BE_UPLOADED")
   String vendorinvFrequency_WEEKLY_TO_BE_UPLOADED();
+
+  /**
+   * Translated "H1B Amendment".
+   * 
+   * @return translated "H1B Amendment"
+   */
+  @DefaultStringValue("H1B Amendment")
+  @Key("visaClassification_H1B_Amendment")
+  String visaClassification_H1B_Amendment();
+
+  /**
+   * Translated "H1B Amendment With Extension".
+   * 
+   * @return translated "H1B Amendment With Extension"
+   */
+  @DefaultStringValue("H1B Amendment With Extension")
+  @Key("visaClassification_H1B_Amendment_Extension")
+  String visaClassification_H1B_Amendment_Extension();
+
+  /**
+   * Translated "H1B Extension".
+   * 
+   * @return translated "H1B Extension"
+   */
+  @DefaultStringValue("H1B Extension")
+  @Key("visaClassification_H1B_Extension")
+  String visaClassification_H1B_Extension();
+
+  /**
+   * Translated "H1B Cap".
+   * 
+   * @return translated "H1B Cap"
+   */
+  @DefaultStringValue("H1B Cap")
+  @Key("visaClassification_H1B_New_Cap")
+  String visaClassification_H1B_New_Cap();
+
+  /**
+   * Translated "H1B Cap Exempt".
+   * 
+   * @return translated "H1B Cap Exempt"
+   */
+  @DefaultStringValue("H1B Cap Exempt")
+  @Key("visaClassification_H1B_New_Cap_Exempt")
+  String visaClassification_H1B_New_Cap_Exempt();
+
+  /**
+   * Translated "H1B Transfer".
+   * 
+   * @return translated "H1B Transfer"
+   */
+  @DefaultStringValue("H1B Transfer")
+  @Key("visaClassification_H1B_Transfer")
+  String visaClassification_H1B_Transfer();
 
   /**
    * Translated "Citizen".
