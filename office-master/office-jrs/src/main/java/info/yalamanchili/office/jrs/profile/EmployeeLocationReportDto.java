@@ -30,6 +30,7 @@ public class EmployeeLocationReportDto implements Serializable {
     protected String city;
     protected String state;
     protected String country;
+    protected String zip;
 
     public String getState() {
         return state;
@@ -95,13 +96,13 @@ public class EmployeeLocationReportDto implements Serializable {
         }
         if (emp.getAddresss().size() > 0) {
             for (Address address : emp.getAddresss()) {
-                if ((dto.getCity() != null && dto.getCity().equals(address.getCity())) || (dto.getState() != null && dto.getState().equals(address.getState()))) {
+                if ((dto.getCity() != null && dto.getCity().equals(address.getCity())) || (dto.getState() != null && dto.getState().equals(address.getState()) || (dto.getCountry() != null && dto.getCountry().equals(address.getCountry())))) {
                     reportdto.setStreet1(address.getStreet1());
                     reportdto.setStreet2(address.getStreet2());
                     reportdto.setCity(address.getCity());
                     reportdto.setState(address.getState());
                     reportdto.setCountry(address.getCountry());
-                }else{
+                } else {
                     reportdto.setStreet1(address.getStreet1());
                     reportdto.setStreet2(address.getStreet2());
                     reportdto.setCity(address.getCity());
