@@ -42,7 +42,7 @@ public class SkillSetOptionsPopupPanel extends SkillSetOptionsPanel {
                         public void onResponse(String arg0) {
                             logger.info("dddd" + arg0);
                             if (arg0 != null) {
-                                UpdateSkillSetPopupPanel updateSkillSetPanel = new UpdateSkillSetPopupPanel((JSONObject) (JSONParser.parseLenient(arg0)));
+                                UpdateSkillSetPopupPanel updateSkillSetPanel = new UpdateSkillSetPopupPanel(OfficeWelcome.instance().employeeId);
                                 new GenericPopup(updateSkillSetPanel).show();
                             }
                         }
