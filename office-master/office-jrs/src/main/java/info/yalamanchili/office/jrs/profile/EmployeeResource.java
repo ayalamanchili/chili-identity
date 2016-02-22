@@ -545,7 +545,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     protected String getSearchQuery(EmployeeLocationDto dto) {
         StringBuilder queryStr = new StringBuilder();
         queryStr.append("SELECT emp from ").append(Employee.class.getCanonicalName()).append(" as emp");
-        if (!Strings.isNullOrEmpty(dto.getCity()) || !Strings.isNullOrEmpty(dto.getState())) {
+        if (!Strings.isNullOrEmpty(dto.getCity()) || !Strings.isNullOrEmpty(dto.getState()) || !Strings.isNullOrEmpty(dto.getCountry())) {
             queryStr.append(" join emp.addresss as address");
         }
         queryStr.append("  where ");
