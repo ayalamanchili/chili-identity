@@ -135,9 +135,14 @@ public class SkillSetTagResource extends CRUDResource<SkillSetTag> {
 
     protected String mapTags(Set<SkillSetTag> tags) {
         StringBuilder res = new StringBuilder();
+        int countT = tags.size();
         for (SkillSetTag tag : tags) {
             res.append(tag.getName());
-            res.append(" ");
+            if (countT > 1) {
+                res.append(",  ");
+                countT--;
+            }
+
         }
         return res.toString();
     }
@@ -152,7 +157,7 @@ public class SkillSetTagResource extends CRUDResource<SkillSetTag> {
 
     @XmlRootElement
     @XmlType
-    public static class SkillSetTagTable implements java.io.Serializable{
+    public static class SkillSetTagTable implements java.io.Serializable {
 
         protected Long size;
         protected List<SkillSetTag> entities;
