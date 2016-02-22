@@ -9,21 +9,19 @@ package info.yalamanchili.office.jrs.profile;
 
 import info.chili.spring.SpringContext;
 import info.chili.dao.CRUDDao;
-import info.yalamanchili.office.dao.profile.CertificationDao;
 import info.yalamanchili.office.dao.profile.SkillDao;
 import info.yalamanchili.office.dao.profile.SkillSetDao;
-import info.yalamanchili.office.entity.privacy.PrivacyData;
 import info.yalamanchili.office.entity.profile.Certification;
 import info.yalamanchili.office.entity.profile.Skill;
 import info.yalamanchili.office.entity.profile.SkillSet;
 import info.yalamanchili.office.jrs.CRUDResource;
-import info.yalamanchili.office.jrs.MultiSelectObj;
-import info.yalamanchili.office.privacy.PrivacyAware;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -58,88 +56,112 @@ public class SkillSetResource extends CRUDResource<SkillSet> {
         skillSetDao.extractResumeContent(skillSetId);
     }
 
-    //TODO use jpa query to improve performance
-    @GET
-    @Path("/skills/{skillSetId}/{start}/{limit}")
-    @PrivacyAware(key = PrivacyData.SKILL_SET, identityClass = SkillSet.class, identityReference = "employee")
-    public MultiSelectObj getSkills(@PathParam("skillSetId") Long skillSetId, @PathParam("start") Integer start, @PathParam("limit") Integer limit) {
-        //TODO move logic to DAO
-        MultiSelectObj obj = new MultiSelectObj();
-        SkillSet skillSet = (SkillSet) getDao().findById(skillSetId);
-        SkillDao skillDao = (SkillDao) SpringContext.getBean("skillDao");
-        for (Skill skill : skillDao.query(start, limit)) {
-            obj.addAvailable(skill.getId().toString(), skill.getName());
-        }
-        for (Skill skill : skillSet.getSkills()) {
-            obj.addSelected(skill.getId().toString());
-        }
-        return obj;
+    //To add Skills
+    @PUT
+    @Path("/skills/add/{skill}")
+    public void addSkills(@PathParam("skill") String name) {
+        SkillDao.instance().addSkill(name);
+    }
+
+    @PUT
+    @Path("/skills/add/{skillSetId}/{skill}")
+    public void addSkills(@PathParam("skillSetId") Long skillSetId, @PathParam("skill") String name) {
+        SkillDao.instance().addSkill(skillSetId, name);
+    }
+
+    // to remove skills
+    @PUT
+    @Path("/skills/remove/{skill}")
+    public void removeSkills(@PathParam("skill") String name) {
+        SkillDao.instance().removeSkill(name);
+    }
+
+    @PUT
+    @Path("/skills/remove/{skillSetId}/{skill}")
+    public void removeSkills(@PathParam("skillSetId") Long skillSetId, @PathParam("skill") String name) {
+        SkillDao.instance().removeSkill(skillSetId, name);
     }
 
     @GET
-    @Path("/skills/add/{skillSetId}/")
-    public void addSkills(@PathParam("skillSetId") Long skillSetId, @QueryParam("id") List<Long> ids) {
-        SkillSet skillSet = (SkillSet) getDao().findById(skillSetId);
-        SkillDao skillDao = (SkillDao) SpringContext.getBean("skillDao");
-        for (Long skillId : ids) {
-            Skill skill = skillDao.findById(skillId);
-            skillSet.getSkills().add(skill);
-        }
+    @Path("/skills")
+    @Transactional(readOnly = true)
+    public String getSkills() {
+        return mapSkills(SkillDao.instance().getSkills());
     }
 
     @GET
-    @Path("/skills/remove/{skillSetId}/")
-    public void removeSkills(@PathParam("skillSetId") Long skillSetId, @QueryParam("id") List<Long> ids) {
-        //TODO move some logic to jpa
-        SkillSet skillSet = (SkillSet) getDao().findById(skillSetId);
-        SkillDao skillDao = (SkillDao) SpringContext.getBean("skillDao");
-        for (Long skillId : ids) {
-            Skill skill = skillDao.findById(skillId);
-            if (ids.contains(skillId)) {
-                skillSet.getSkills().remove(skill);
+    @Path("/skills/{skillSetId}")
+    @Transactional(readOnly = true)
+    public String getSkills(@PathParam("skillSetId") Long skillSetId) {
+        return mapSkills(SkillDao.instance().getSkillS(skillSetId));
+    }
+
+    protected String mapSkills(Set<Skill> skills) {
+        StringBuilder res = new StringBuilder();
+        int counts = skills.size();
+        for (Skill skill : skills) {
+            res.append(skill.getName());
+            if (counts > 1) {
+                res.append(",  ");
+                counts--;
             }
+
         }
+        return res.toString();
+    }
+
+    //To add Certifications
+    @PUT
+    @Path("/certifications/add/{certification}")
+    public void addCertifications(@PathParam("certification") String name) {
+        SkillDao.instance().addCertification(name);
+    }
+
+    @PUT
+    @Path("/certifications/add/{skillSetId}/{certification}")
+    public void addCertifications(@PathParam("skillSetId") Long skillSetId, @PathParam("certification") String name) {
+        SkillDao.instance().addCertification(skillSetId, name);
+    }
+
+    // to remove skills
+    @PUT
+    @Path("/certifications/remove/{certification}")
+    public void removeCertifications(@PathParam("certification") String name) {
+        SkillDao.instance().removeCertification(name);
+    }
+
+    @PUT
+    @Path("/certifications/remove/{skillSetId}/{certification}")
+    public void removeCertifications(@PathParam("skillSetId") Long skillSetId, @PathParam("certification") String name) {
+        SkillDao.instance().removeCertification(skillSetId, name);
     }
 
     @GET
-    @Path("/certifications/{skillSetId}/{start}/{limit}")
-    @PrivacyAware(key = PrivacyData.SKILL_SET, identityClass = SkillSet.class, identityReference = "employee")
-    public MultiSelectObj getCertifications(@PathParam("skillSetId") Long skillSetId, @PathParam("start") Integer start, @PathParam("limit") Integer limit) {
-        MultiSelectObj obj = new MultiSelectObj();
-        SkillSet skillSet = (SkillSet) getDao().findById(skillSetId);
-        CertificationDao certificationDao = (CertificationDao) SpringContext.getBean("certificationDao");
-        for (Certification certification : certificationDao.query(start, limit)) {
-            obj.addAvailable(certification.getId().toString(), certification.getName());
-        }
-        for (Certification certification : skillSet.getCertifications()) {
-            obj.addSelected(certification.getId().toString());
-        }
-        return obj;
+    @Path("/certifications")
+    @Transactional(readOnly = true)
+    public String getcertifications() {
+        return mapCertfications(SkillDao.instance().getCertifications());
     }
 
     @GET
-    @Path("/certifications/add/{skillSetId}/")
-    public void addCertifications(@PathParam("skillSetId") Long skillSetId, @QueryParam("id") List<Long> ids) {
-        SkillSet skillSet = (SkillSet) getDao().findById(skillSetId);
-        CertificationDao certificationDao = (CertificationDao) SpringContext.getBean("certificationDao");
-        for (Long certificationId : ids) {
-            Certification certification = certificationDao.findById(certificationId);
-            skillSet.getCertifications().add(certification);
-        }
+    @Path("/certifications/{skillSetId}")
+    @Transactional(readOnly = true)
+    public String getcertifications(@PathParam("skillSetId") Long skillSetId) {
+        return mapCertfications(SkillDao.instance().getCertifications(skillSetId));
     }
 
-    @GET
-    @Path("/certifications/remove/{skillSetId}/")
-    public void removeCertifications(@PathParam("skillSetId") Long skillSetId, @QueryParam("id") List<Long> ids) {
-        //TODO move some logic to jpa
-        SkillSet skillSet = (SkillSet) getDao().findById(skillSetId);
-        CertificationDao certificationDao = SpringContext.getBean(CertificationDao.class);
-        for (Long certificationId : ids) {
-            Certification certification = certificationDao.findById(certificationId);
-            if (ids.contains(certificationId)) {
-                skillSet.getCertifications().remove(certification);
+    protected String mapCertfications(Set<Certification> certs) {
+        StringBuilder res = new StringBuilder();
+        int countc = certs.size();
+        for (Certification certfic : certs) {
+            res.append(certfic.getName());
+            if (countc > 1) {
+                res.append(",  ");
+                countc--;
             }
+
         }
+        return res.toString();
     }
 
     @GET
