@@ -46,6 +46,12 @@ public class ReadAddressPanel extends ReadComposite {
         this.type = type;
         initReadComposite(entity, "Address", OfficeWelcome.constants);
     }
+    
+    public ReadAddressPanel(JSONObject entity, String className) {
+        instance = this;
+        this.type = type;
+        initReadComposite(entity, className, OfficeWelcome.constants);
+    }    
 
     public ReadAddressPanel(String id) {
         initReadComposite(id, "Address", OfficeWelcome.constants);

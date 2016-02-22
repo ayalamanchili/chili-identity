@@ -15,8 +15,8 @@ import info.yalamanchili.office.client.profile.address.ReadAddressPanel;
  */
 public class ReadLCAAddressWidget extends ReadAddressPanel {
 
-    public ReadLCAAddressWidget(JSONObject entity) {
-        super(entity);
+    public ReadLCAAddressWidget(JSONObject entity, String className) {
+        super(entity, className);
     }
 
     @Override

@@ -33,6 +33,8 @@ public class ReadLCAPanel extends TReadComposite {
     HTML lcaAddress2 = new HTML("<h4 style=\"color:#427fed\">" + "LCA Secondary Address</h4>");
     ReadLCAAddressWidget readAddressWidget1;
     ReadLCAAddressWidget readAddressWidget2;
+    String lcaAdd1 = "LCA Primary Address";
+    String lcaAdd2 = "LCA Secondary Address";
 
     public ReadLCAPanel(JSONObject entity) {
         instance = this;
@@ -105,13 +107,11 @@ public class ReadLCAPanel extends TReadComposite {
         addField("lcaCurrMinWage", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 7, 1);
         addField("lcaCurrMaxWage", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 7, 2);
         if (entity.containsKey("lcaAddress1")) {
-            entityFieldsPanel.setWidget(8, 1, lcaAddress1);
-            readAddressWidget1 = new ReadLCAAddressWidget(entity.get("lcaAddress1").isObject());
+            readAddressWidget1 = new ReadLCAAddressWidget(entity.get("lcaAddress1").isObject(), lcaAdd1);
             entityFieldsPanel.setWidget(9, 1, readAddressWidget1);
         }
         if (entity.containsKey("lcaAddress2")) {
-            entityFieldsPanel.setWidget(8, 2, lcaAddress2);
-            readAddressWidget2 = new ReadLCAAddressWidget(entity.get("lcaAddress2").isObject());
+            readAddressWidget2 = new ReadLCAAddressWidget(entity.get("lcaAddress2").isObject(), lcaAdd2);
             entityFieldsPanel.setWidget(9, 2, readAddressWidget2);
         }
         addField("clientName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 10, 1);

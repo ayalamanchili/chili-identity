@@ -19,4 +19,5 @@ public enum VisaClassificationType {
     H1B_Extension,
     H1B_Transfer,
     H1B_Amendment,
+    H1B_Amendment_Extension;
 }
