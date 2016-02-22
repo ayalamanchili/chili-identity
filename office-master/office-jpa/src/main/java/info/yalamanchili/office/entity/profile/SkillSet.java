@@ -10,10 +10,8 @@ package info.yalamanchili.office.entity.profile;
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.practice.Practice;
 import info.yalamanchili.office.entity.recruiting.SkillSetTag;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 
@@ -66,13 +64,13 @@ public class SkillSet extends AbstractEntity {
      */
     @ManyToMany(cascade = CascadeType.ALL)
     @ForeignKey(name = "FK_SkillSet_Skills")
-    protected List<Skill> skills;
+    protected Set<Skill> skills;
     /**
      * Certifications
      */
     @ManyToMany(cascade = CascadeType.ALL)
     @ForeignKey(name = "FK_SkillSet_Certifications")
-    protected List<Certification> certifications;
+    protected Set<Certification> certifications;
     /**
      * Employee
      */
@@ -127,26 +125,26 @@ public class SkillSet extends AbstractEntity {
     }
 
     @XmlTransient
-    public List<Skill> getSkills() {
+    public Set<Skill> getSkills() {
         if (this.skills == null) {
-            this.skills = new ArrayList<Skill>();
+            this.skills = new HashSet<Skill>();
         }
         return this.skills;
     }
 
-    public void setSkills(List<Skill> skills) {
+    public void setSkills(Set<Skill> skills) {
         this.skills = skills;
     }
 
     @XmlTransient
-    public List<Certification> getCertifications() {
+    public Set<Certification> getCertifications() {
         if (this.certifications == null) {
-            this.certifications = new ArrayList<Certification>();
+            this.certifications = new HashSet<Certification>();
         }
         return this.certifications;
     }
 
-    public void setCertifications(List<Certification> certifications) {
+    public void setCertifications(Set<Certification> certifications) {
         this.certifications = certifications;
     }
 
@@ -193,6 +191,22 @@ public class SkillSet extends AbstractEntity {
 
     public void removeTag(SkillSetTag tag) {
         getTags().remove(tag);
+    }
+
+    public void addSkill(Skill skill) {
+        getSkills().add(skill);
+    }
+
+    public void removeSkill(Skill skill) {
+        getSkills().remove(skill);
+    }
+
+    public void addCertification(Certification cert) {
+        getCertifications().add(cert);
+    }
+
+    public void removeCertification(Certification cert) {
+        getCertifications().remove(cert);
     }
 
     @PrePersist
