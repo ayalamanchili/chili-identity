@@ -23,7 +23,7 @@ import info.yalamanchili.office.client.Auth;
 import info.chili.gwt.crud.CreateComposite;
 import info.yalamanchili.office.client.profile.password.ResetPasswordPanel;
 import info.yalamanchili.office.client.profile.role.MultiSelectRoleWidget;
-import info.yalamanchili.office.client.profile.skillset.TreeSkillSetPanel;
+import info.yalamanchili.office.client.profile.skillset.SkillSetPanel;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.profile.password.DeactivatationPanel;
@@ -56,7 +56,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected static final String DEACTIVATION_USER_NODE = "deactivation";
     protected static final String EMPLOYEE_FORMS = "employeeForms";
     protected static final String EMPLOYEE_CONTACTS = "employeeContacts";
-    protected TreeSkillSetPanel skillSetTreePanel;
+    protected SkillSetPanel skillSetPanel;
     protected TreeEmpReportsPanel empReportsPanel;
     protected TreeEmpFormsPanel empDocsPanel;
     protected TreeEmpContactsPanel empContactsPanel;
@@ -66,7 +66,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         super();
         instance = this;
         this.entity = emp;
-        skillSetTreePanel = new TreeSkillSetPanel(getEntityId());
+        skillSetPanel = new SkillSetPanel(getEntityId());
         empReportsPanel = new TreeEmpReportsPanel(getEntityId());
         empImmigrationPanel = new TreeEmployeeImmigrationPanel(getEntityId());
         empDocsPanel = new TreeEmpFormsPanel(emp);
@@ -97,7 +97,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         addFirstChildLink("Client Information", CLIENT_INFO_NODE);
         addFirstChildLink("Contacts", EMPLOYEE_CONTACTS, empContactsPanel);
         if (Auth.isEmployee(entity)) {
-            addFirstChildLink("Skill Set", SKILL_SET_NODE, skillSetTreePanel);
+            addFirstChildLink("Skill Set", SKILL_SET_NODE, skillSetPanel);
         }
         if (Auth.isCorporateEmployee()) {
             addFirstChildLink("Self Service", SELF_SERVICE_NODE);
@@ -122,7 +122,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
             addFirstChildLink("Deactivation", DEACTIVATION_USER_NODE);
         }
         if (Auth.isAdmin()) {
-            addFirstChildLink("Immigration", IMMIGRATION_NODE, empImmigrationPanel); 
+            addFirstChildLink("Immigration", IMMIGRATION_NODE, empImmigrationPanel);
         }
         this.rootItem.setState(true);
     }
@@ -156,7 +156,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         }
         if (SKILL_SET_NODE.equals(entityNodeKey)) {
             //TODO mode this to comp
-            skillSetTreePanel.loadEntity();
+            skillSetPanel.loadEntity();
         }
         if (SELF_SERVICE_NODE.equals(entityNodeKey)) {
             //TODO ADD READ ALL Serviceticketspanel
@@ -189,10 +189,6 @@ public class TreeEmployeePanel extends TreePanelComposite {
         if (RESET_PASSWORD_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ResetPasswordPanel(CreateComposite.CreateCompositeType.CREATE));
-
-        } //TODO review
-        if (skillSetTreePanel != null) {
-            skillSetTreePanel.treeNodeSelected(entityNodeKey);
         }
         if (empReportsPanel != null) {
             empReportsPanel.treeNodeSelected(entityNodeKey);

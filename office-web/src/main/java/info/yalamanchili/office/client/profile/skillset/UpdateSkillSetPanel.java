@@ -13,7 +13,7 @@ import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
@@ -44,7 +44,7 @@ import java.util.logging.Logger;
  *
  * @author ayalamanchili
  */
-public class UpdateSkillSetPanel extends UpdateComposite implements KeyPressHandler, GenericListener {
+public class UpdateSkillSetPanel extends UpdateComposite implements GenericListener {
 
     private static Logger logger = Logger.getLogger(UpdateSkillSetPanel.class.getName());
     /**
@@ -79,10 +79,65 @@ public class UpdateSkillSetPanel extends UpdateComposite implements KeyPressHand
     RichTextArea tagsTA = new RichTextArea();
     ClickableLink createTagL = new ClickableLink("Create New Tag");
 
+    /**
+     * Skills
+     *
+     */
+    CaptionPanel skillp = new CaptionPanel("Skills");
+    FlowPanel skillpanel = new FlowPanel();
+    SuggestBox skillSB = new SuggestBox(OfficeWelcome.constants, "Search Skill", "Skill", false, false);
+    Button addSkill = new Button("Add Skill");
+    Button removeSkill = new Button("Remove Skill");
+    RichTextArea skillTa = new RichTextArea();
+    ClickableLink newSkill = new ClickableLink("Skills not present? submit request");
+
+    /*
+     * Certifications
+     *
+     */
+    CaptionPanel certp = new CaptionPanel("Certifications");
+    FlowPanel certPanel = new FlowPanel();
+    SuggestBox certSB = new SuggestBox(OfficeWelcome.constants, "Search Certifications", "Certification", false, false);
+    Button addCert = new Button("Add Certification");
+    Button removeCert = new Button("Remove Certification");
+    RichTextArea certTA = new RichTextArea();
+    ClickableLink newCert = new ClickableLink("Certifications not present? submit request");
+
     public UpdateSkillSetPanel(JSONObject entity) {
         initUpdateComposite(entity, "SkillSet", OfficeWelcome.constants);
         entityActionsPanel.add(tagsCP);
+        entityActionsPanel.add(skillp);
+        entityActionsPanel.add(certp);
         loadTagSuggestions();
+        loadSkillSuggestions();
+        loadCertSuggestions();
+    }
+
+    public UpdateSkillSetPanel(String empId) {
+        initUpdateComposite(empId, "SkillSet", OfficeWelcome.constants);
+        entityActionsPanel.add(tagsCP);
+        entityActionsPanel.add(skillp);
+        entityActionsPanel.add(certp);
+        loadTagSuggestions();
+        loadSkillSuggestions();
+        loadCertSuggestions();
+    }
+
+    @Override
+    public void loadEntity(String entityId) {
+        HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        logger.info(response);
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                    }
+                });
+    }
+
+    public String getReadURI() {
+        return OfficeWelcome.constants.root_url() + "employee/skillset/" + OfficeWelcome.instance().employeeId;
     }
 
     @Override
@@ -97,6 +152,7 @@ public class UpdateSkillSetPanel extends UpdateComposite implements KeyPressHand
 
     @Override
     protected void updateButtonClicked() {
+        logger.info("uriissssssssss" + getURI());
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
                     @Override
@@ -147,15 +203,57 @@ public class UpdateSkillSetPanel extends UpdateComposite implements KeyPressHand
     protected void addListeners() {
         newPracticeL.addClickHandler(this);
         newTGL.addClickHandler(this);
+        newSkill.addClickHandler(this);
+        newCert.addClickHandler(this);
         addTagB.addClickHandler(this);
         removeTagB.addClickHandler(this);
-        tagsSB.getSuggestBox().addKeyPressHandler(this);
+        tagsSB.getSuggestBox().addKeyPressHandler(new KeyPressHandler() {
+            @Override
+            public void onKeyPress(KeyPressEvent event) {
+                if(event.getCharCode()==KeyCodes.KEY_ENTER){
+                    addTagClicked();
+                }
+                if(event.getCharCode()==KeyCodes.KEY_DELETE){
+                    removeTagClicked();
+                }
+            }
+        });
+        skillSB.getSuggestBox().addKeyPressHandler(new KeyPressHandler() {
+            @Override
+            public void onKeyPress(KeyPressEvent event) {
+                if(event.getCharCode()==KeyCodes.KEY_ENTER){
+                    addSkillClicked();
+                }
+                if(event.getCharCode()==KeyCodes.KEY_DELETE){
+                    removeSkillClicked();
+                }
+            }
+        });
+        certSB.getSuggestBox().addKeyPressHandler(new KeyPressHandler() {
+            @Override
+            public void onKeyPress(KeyPressEvent event) {
+                if(event.getCharCode()==KeyCodes.KEY_ENTER){
+                    addCertClicked();
+                }
+                if(event.getCharCode()==KeyCodes.KEY_DELETE){
+                    removeCertClicked();
+                }
+            }
+        });
+        addSkill.addClickHandler(this);
+        removeSkill.addClickHandler(this);
+        addCert.addClickHandler(this);
+        removeCert.addClickHandler(this);
         createTagL.addClickHandler(this);
+        newCert.addClickHandler(this);
+        newSkill.addClickHandler(this);
     }
 
     @Override
     protected void configure() {
         tagsTA.setWidth("100%");
+        skillTa.setWidth("100%");
+        certTA.setWidth("100%");
     }
 
     @Override
@@ -173,6 +271,21 @@ public class UpdateSkillSetPanel extends UpdateComposite implements KeyPressHand
         tagsPanel.add(removeTagB);
         tagsPanel.add(tagsTA);
         tagsCP.setContentWidget(tagsPanel);
+        //Skills
+        skillpanel.add(skillSB);
+        skillSB.addWidgetToFieldPanel(newSkill);
+        skillpanel.add(addSkill);
+        skillpanel.add(removeSkill);
+        skillpanel.add(skillTa);
+        skillp.setContentWidget(skillpanel);
+        //Certifications
+        certPanel.add(certSB);
+        certSB.addWidgetToFieldPanel(newCert);
+        certPanel.add(addCert);
+        certPanel.add(removeCert);
+        certPanel.add(certTA);
+        certp.setContentWidget(certPanel);
+
     }
 
     @Override
@@ -184,11 +297,29 @@ public class UpdateSkillSetPanel extends UpdateComposite implements KeyPressHand
         if (event.getSource().equals(newTGL)) {
             new GenericPopup(new GenericBPMStartFormPanel("AddNewTechnologyRequest", "add_new_technology_request")).show();
         }
+        if (event.getSource().equals(newSkill)) {
+            new GenericPopup(new GenericBPMStartFormPanel("AddNewSkillRequest", "add_new_skill_request"),newSkill.getAbsoluteLeft(), newSkill.getAbsoluteTop()).show();
+        }
+        if (event.getSource().equals(newCert)) {
+            new GenericPopup(new GenericBPMStartFormPanel("AddNewCertificationsRequest", "add_new_certification_request"), newCert.getAbsoluteLeft(), newCert.getAbsoluteTop()).show();
+        }
         if (event.getSource().equals(addTagB)) {
             addTagClicked();
         }
         if (event.getSource().equals(removeTagB)) {
             removeTagClicked();
+        }
+        if (event.getSource().equals(addSkill)) {
+            addSkillClicked();
+        }
+        if (event.getSource().equals(removeSkill)) {
+            removeSkillClicked();
+        }
+        if (event.getSource().equals(addCert)) {
+            addCertClicked();
+        }
+        if (event.getSource().equals(removeCert)) {
+            removeCertClicked();
         }
         if (event.getSource().equals(createTagL)) {
             CreateSkillSetTagPanel createTagW = new CreateSkillSetTagPanel(getEntityId());
@@ -276,24 +407,151 @@ public class UpdateSkillSetPanel extends UpdateComposite implements KeyPressHand
         return OfficeWelcome.constants.root_url() + "employee/skillset/" + TreeEmployeePanel.instance().getEntityId();
     }
 
-    @Override
-    public void onKeyPress(KeyPressEvent event) {
-        int keyCode = event.getUnicodeCharCode();
-        if (keyCode == 0) {
-            // Probably Firefox
-            keyCode = event.getNativeEvent().getKeyCode();
+    protected void addSkillClicked() {
+        if (skillSB.getValue() == null && skillSB.getValue().isEmpty()) {
+            return;
         }
-        if (keyCode == KeyCodes.KEY_ENTER) {
-            addTagClicked();
+        logger.info("addSkill Clickeddddddd" + addSkillUrl());
+        HttpService.HttpServiceAsync.instance().doPut(addSkillUrl(), null,
+                OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String arg0) {
+                        loadSkills();
+                        new ResponseStatusWidget().show("Skill Added");
+                    }
+                });
+        skillSB.clearText();
+    }
+
+    protected String addSkillUrl() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "skillset/skills/add/" + getEntityId() + "/" + skillSB.getValue());
+    }
+
+    protected void removeSkillClicked() {
+        if (skillSB.getValue() == null && skillSB.getValue().isEmpty()) {
+            return;
         }
-        if (keyCode == KeyCodes.KEY_DELETE) {
-            logger.info("delete clicked");
-            removeTagClicked();
+        HttpService.HttpServiceAsync.instance().doPut(removeSkillUrl(), null,
+                OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String arg0) {
+                        loadSkills();
+                        new ResponseStatusWidget().show("Skill Removed");
+                    }
+                });
+        skillSB.clearText();
+    }
+
+    protected String removeSkillUrl() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "skillset/skills/remove/" + getEntityId() + "/" + skillSB.getValue());
+    }
+
+    protected void loadSkillSuggestions() {
+        HttpService.HttpServiceAsync.instance().doGet(getSkillsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
+                if (values != null) {
+                    skillSB.loadData(values);
+                }
+            }
+        });
+        loadSkills();
+    }
+
+    protected void loadSkills() {
+        HttpService.HttpServiceAsync.instance().doGet(getSkillsUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                if (entityString != null && !entityString.isEmpty()) {
+                    skillTa.setHTML(entityString);
+                }
+            }
+        });
+    }
+
+    protected String getSkillsUrl() {
+        return OfficeWelcome.constants.root_url() + "skillset/skills/" + getEntityId();
+    }
+
+    protected String getSkillsDropDownUrl() {
+        return OfficeWelcome.constants.root_url() + "skill/dropdown/0/10000?column=id&column=name";
+    }
+
+    protected void addCertClicked() {
+        if (certSB.getValue() == null && certSB.getValue().isEmpty()) {
+            return;
         }
+        HttpService.HttpServiceAsync.instance().doPut(addCertUrl(), null,
+                OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String arg0) {
+                        loadCertfications();
+                        new ResponseStatusWidget().show("Certification Added");
+                    }
+                });
+        certSB.clearText();
+    }
+
+    protected String addCertUrl() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "skillset/certifications/add/" + getEntityId() + "/" + certSB.getValue());
+    }
+
+    protected void removeCertClicked() {
+        if (certSB.getValue() == null && certSB.getValue().isEmpty()) {
+            return;
+        }
+        HttpService.HttpServiceAsync.instance().doPut(removeCertUrl(), null,
+                OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String arg0) {
+                        loadCertfications();
+                        new ResponseStatusWidget().show("Certification Removed");
+                    }
+                });
+        certSB.clearText();
+    }
+
+    protected String removeCertUrl() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "skillset/certifications/remove/" + getEntityId() + "/" + certSB.getValue());
+    }
+
+    protected void loadCertSuggestions() {
+        HttpService.HttpServiceAsync.instance().doGet(getCertDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
+                if (values != null) {
+                    certSB.loadData(values);
+                }
+            }
+        });
+        loadCertfications();
+    }
+
+    protected void loadCertfications() {
+        HttpService.HttpServiceAsync.instance().doGet(getCertificationssUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                if (entityString != null && !entityString.isEmpty()) {
+                    certTA.setHTML(entityString);
+                }
+            }
+        });
+    }
+
+    protected String getCertificationssUrl() {
+        return OfficeWelcome.constants.root_url() + "skillset/certifications/" + getEntityId();
+    }
+
+    protected String getCertDropDownUrl() {
+        return OfficeWelcome.constants.root_url() + "certification/dropdown/0/10000?column=id&column=name";
     }
 
     public void fireEvent() {
         loadTagSuggestions();
+        loadSkillSuggestions();
+        loadCertSuggestions();
     }
 
 }

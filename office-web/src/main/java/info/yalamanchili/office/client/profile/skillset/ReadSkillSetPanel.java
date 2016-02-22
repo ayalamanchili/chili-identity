@@ -43,6 +43,14 @@ public class ReadSkillSetPanel extends ReadComposite {
     CaptionPanel tagsCP = new CaptionPanel("Tags");
     FlowPanel tagsPanel = new FlowPanel();
     RichTextArea tagsTA = new RichTextArea();
+    //Skills
+    CaptionPanel skillsCP = new CaptionPanel("Skills");
+    FlowPanel skillsPanel = new FlowPanel();
+    RichTextArea skillsTA = new RichTextArea();
+    //Certifications
+    CaptionPanel certCP = new CaptionPanel("Certifications");
+    FlowPanel certPanel = new FlowPanel();
+    RichTextArea certTA = new RichTextArea();
     private static ReadSkillSetPanel instance;
 
     public static ReadSkillSetPanel instance() {
@@ -72,7 +80,11 @@ public class ReadSkillSetPanel extends ReadComposite {
     @Override
     protected void configure() {
         tagsTA.setWidth("100%");
+        skillsTA.setWidth("100%");
+        certTA.setWidth("100%");
         tagsTA.setEnabled(false);
+        skillsTA.setEnabled(false);
+        certTA.setEnabled(false);
     }
 
     @Override
@@ -86,7 +98,6 @@ public class ReadSkillSetPanel extends ReadComposite {
                     @Override
                     public void onResponse(String response) {
                         onLoadSuccess(response);
-                        loadTags();
                     }
                 });
     }
@@ -100,10 +111,42 @@ public class ReadSkillSetPanel extends ReadComposite {
                 }
             }
         });
+        loadSkills();
     }
 
     protected String getTagsUrl() {
         return OfficeWelcome.constants.root_url() + "skillsettag/tags/" + getEntityId();
+    }
+
+    protected void loadSkills() {
+        HttpService.HttpServiceAsync.instance().doGet(getSkillsUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                if (entityString != null && !entityString.isEmpty()) {
+                    skillsTA.setHTML(entityString);
+                }
+            }
+        });
+        loadCertfications();
+    }
+
+    protected String getSkillsUrl() {
+        return OfficeWelcome.constants.root_url() + "skillset/skills/" + getEntityId();
+    }
+
+    protected void loadCertfications() {
+        HttpService.HttpServiceAsync.instance().doGet(getCertificationssUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                if (entityString != null && !entityString.isEmpty()) {
+                    certTA.setHTML(entityString);
+                }
+            }
+        });
+    }
+
+    protected String getCertificationssUrl() {
+        return OfficeWelcome.constants.root_url() + "skillset/certifications/" + getEntityId();
     }
 
     protected void onLoadSuccess(String response) {
@@ -135,6 +178,7 @@ public class ReadSkillSetPanel extends ReadComposite {
         FileField fileField = new FileField(fileURL);
         entityFieldsPanel.add(fileField);
         entityFieldsPanel.add(new SkillSetOptionsPanel(empId));
+        loadTags();
     }
 
     @Override
@@ -146,6 +190,14 @@ public class ReadSkillSetPanel extends ReadComposite {
         tagsPanel.add(tagsTA);
         tagsCP.setContentWidget(tagsPanel);
         entityFieldsPanel.add(tagsCP);
+        //Skills
+        skillsPanel.add(skillsTA);
+        skillsCP.setContentWidget(skillsPanel);
+        entityFieldsPanel.add(skillsCP);
+        //Certifications
+        certPanel.add(certTA);
+        certCP.setContentWidget(certPanel);
+        entityFieldsPanel.add(certCP);
     }
 
     @Override

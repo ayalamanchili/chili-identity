@@ -54,5 +54,6 @@ public class ReadSkillSetPopupPanel extends ReadSkillSetPanel {
         entityFieldsPanel.add(fileField);
         //This is overrided
         entityFieldsPanel.add(new SkillSetOptionsPopupPanel(empId));
+        loadTags();
     }
 }

@@ -14,25 +14,21 @@ import info.yalamanchili.office.client.profile.email.ReadAllEmailsPopupPanel;
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
-import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.address.ReadAllAddressesPopupPanel;
-import info.yalamanchili.office.client.profile.certification.MuitiSelectCertificationWidget;
 import info.yalamanchili.office.client.profile.emergencycnt.ReadAllEmergencyContactsPopupPanel;
 import info.yalamanchili.office.client.profile.phone.ReadAllPhonesPopupPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.ReadAllClientInfoPopupPanel;
-import info.yalamanchili.office.client.profile.skill.MultiSelectSkillWidget;
 import info.yalamanchili.office.client.profile.skillset.CreateSkillSetPanel;
-import info.yalamanchili.office.client.profile.skillset.ReadSkillSetPopupPanel;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.companycontact.ReadAllCompanyContactPanel;
 import info.yalamanchili.office.client.profile.benefits.RetirementPlanReadPanel;
 import info.yalamanchili.office.client.profile.emergencycnt.ReadAllDependentsPopupPanel;
 import info.yalamanchili.office.client.profile.empdoc.ReadAllEmpDocsPopupPanel;
-import info.yalamanchili.office.client.profile.employee.ReadAllBankAcctWidget;
 import info.yalamanchili.office.client.profile.employee.ReadEmployeePopupPanel;
 import info.yalamanchili.office.client.profile.preferences.PreferencesPanel;
 import info.yalamanchili.office.client.profile.privacy.ReadAllPrivacySettingPopupPanel;
+import info.yalamanchili.office.client.profile.skillset.UpdateSkillSetPopupPanel;
 import java.util.logging.Logger;
 
 public class ProfileHome extends ALComposite {
@@ -280,10 +276,7 @@ public class ProfileHome extends ALComposite {
                             @Override
                             public void onResponse(String response) {
                                 if (response != null && !response.isEmpty()) {
-                                    JSONObject skillSet = (JSONObject) JSONParser.parseLenient(response);
-                                    skillSetPanel.add(new ReadSkillSetPopupPanel(OfficeWelcome.instance().employeeId));
-                                    skillSetPanel.add(new MultiSelectSkillWidget("Skills", JSONUtils.toString(skillSet, "id"), false, false));
-                                    skillSetPanel.add(new MuitiSelectCertificationWidget("Certifications", JSONUtils.toString(skillSet, "id"), false, false));
+                                    skillSetPanel.add(new UpdateSkillSetPopupPanel(OfficeWelcome.instance().employeeId));
                                 } else {
                                     TabPanel.instance().myOfficePanel.entityPanel.clear();
                                     skillSetPanel.add(new CreateSkillSetPanel(OfficeWelcome.instance().employeeId));
@@ -407,9 +400,7 @@ public class ProfileHome extends ALComposite {
     /*
      * bankaccountpanel
      */
-    
-   
-  protected void addBankAccountPanel() {
+    protected void addBankAccountPanel() {
         bankAccountPanel = new DisclosurePanel("Bank Account");
         panel.add(bankAccountPanel);
         bankAccountPanel.addStyleName("profileHome");
