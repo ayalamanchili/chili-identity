@@ -97,6 +97,30 @@ public class ReadContractsPanel extends TReadComposite {
                             assignFieldValueFromEntity("vendorFees", entity, DataType.FLOAT_FIELD);
                             alignFields();
                         }
+                        if (entity.containsKey("subContractorName")) {
+                            addField("subcontractorPayRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 6, 1);
+                            addField("subcontractorOvertimePayRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 6, 2);
+                            addEnumField("subcontractorinvoiceFrequency", true, false, InvoiceFrequency.names(), Alignment.HORIZONTAL, 8, 1);
+                            addField("subcontractorpaymentTerms", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 10, 2);
+                            addField("subContractorName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 11, 2);
+                            addField("subContractorContactName", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 12, 2);
+                            assignFieldValueFromEntity("subContractorContactName", entity, DataType.RICH_TEXT_AREA);
+                            assignFieldValueFromEntity("subcontractorPayRate", entity, DataType.CURRENCY_FIELD);
+                            assignFieldValueFromEntity("subcontractorOvertimePayRate", entity, DataType.CURRENCY_FIELD);
+                            assignFieldValueFromEntity("subcontractorinvoiceFrequency", entity, DataType.ENUM_FIELD);
+                            assignFieldValueFromEntity("subcontractorpaymentTerms", entity, DataType.STRING_FIELD);
+                            alignFields();
+                        }
+                        if (entity.containsKey("payRate1099")) {
+                            addField("payRate1099", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 7, 1);
+                            addField("overTimePayrate1099", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 7, 2);
+                            addEnumField("invoiceFrequency1099", true, false, InvoiceFrequency.names(), Alignment.HORIZONTAL, 8, 1);
+                            addField("paymentTerms1099", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 10, 2);
+                            assignFieldValueFromEntity("overTimePayrate1099", entity, DataType.CURRENCY_FIELD);
+                            assignFieldValueFromEntity("paymentTerms1099", entity, DataType.STRING_FIELD);
+                            assignFieldValueFromEntity("invoiceFrequency1099", entity, DataType.ENUM_FIELD);
+                            alignFields();
+                        }
                         populateFieldsFromEntity(entity);
                     }
                 });
@@ -145,24 +169,6 @@ public class ReadContractsPanel extends TReadComposite {
         assignFieldValueFromEntity("notes", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("timeSheetRequirement", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("specialInvoiceInstructions", entity, DataType.TEXT_AREA_FIELD);
-        if (isSubContractor(entity)) {
-            assignFieldValueFromEntity("subContractorName", entity, DataType.STRING_FIELD);
-            assignFieldValueFromEntity("subContractorContactName", entity, DataType.RICH_TEXT_AREA);
-            //         assignFieldValueFromEntity("subcontractorAddress", entity, DataType.STRING_FIELD);
-            assignFieldValueFromEntity("subcontractorPayRate", entity, DataType.CURRENCY_FIELD);
-            assignFieldValueFromEntity("subcontractorOvertimePayRate", entity, DataType.CURRENCY_FIELD);
-            assignFieldValueFromEntity("subcontractorinvoiceFrequency", entity, DataType.ENUM_FIELD);
-            assignFieldValueFromEntity("subcontractorpaymentTerms", entity, DataType.STRING_FIELD);
-            //           assignFieldValueFromEntity("subcontractorw4Filled", entity, DataType.BOOLEAN_FIELD);
-            //           assignFieldValueFromEntity("subcontractCOI", entity, DataType.BOOLEAN_FIELD);
-            //          assignFieldValueFromEntity("subContractorWorkOrderNo", entity, DataType.STRING_FIELD);
-        }
-        if (is1099(entity)) {
-            assignFieldValueFromEntity("payRate1099", entity, DataType.CURRENCY_FIELD);
-            assignFieldValueFromEntity("overTimePayrate1099", entity, DataType.CURRENCY_FIELD);
-            assignFieldValueFromEntity("paymentTerms1099", entity, DataType.STRING_FIELD);
-            assignFieldValueFromEntity("invoiceFrequency1099", entity, DataType.ENUM_FIELD);
-        }
         assignFieldValueFromEntity("practice", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("sectorsAndBUs", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("employeeDetails", entity, DataType.RICH_TEXT_AREA);
@@ -220,20 +226,6 @@ public class ReadContractsPanel extends TReadComposite {
         addField("timeSheetRequirement", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 6, 2);
         if ((isSubContractor(entity)) || (is1099(entity))) {
             isSubOr1099 = true;
-        }
-        if (isSubContractor(entity)) {
-            addField("subcontractorPayRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 6, 1);
-            addField("subcontractorOvertimePayRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 6, 2);
-            addEnumField("subcontractorinvoiceFrequency", true, false, InvoiceFrequency.names(), Alignment.HORIZONTAL, 8, 1);
-            addField("subcontractorpaymentTerms", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 10, 2);
-            addField("subContractorName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 11, 2);
-            addField("subContractorContactName", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 12, 2);
-        }
-        if (is1099(entity)) {
-            addField("payRate1099", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 7, 1);
-            addField("overTimePayrate1099", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 7, 2);
-            addEnumField("invoiceFrequency1099", true, false, InvoiceFrequency.names(), Alignment.HORIZONTAL, 8, 1);
-            addField("paymentTerms1099", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 10, 2);
         }
         entityFieldsPanel.setWidget(9, 1, ReadAllUpdateBillingRatePanel.renderBillingRateHistory(getEntity(), isSubOr1099));
         entityFieldsPanel.getFlexCellFormatter().setColSpan(9, 1, 2);
