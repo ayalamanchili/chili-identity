@@ -8,14 +8,18 @@ package info.yalamanchili.office.client.profile.immigration;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.HTML;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.TReadComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.admin.hr.PetitionFor;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
+import java.util.Date;
 import java.util.logging.Logger;
 
 /**
@@ -31,7 +35,14 @@ public class ReadPetitionPanel extends TReadComposite {
     SelectLCAWidget selectLCAWidgetF = new SelectLCAWidget(false, true, Alignment.HORIZONTAL);
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "consultant", "Consultant", true, true, Alignment.HORIZONTAL);
     SelectPassportWidget selectPassportWidgetF = new SelectPassportWidget(false, true, Alignment.HORIZONTAL);
+    HTML lcaAddress1 = new HTML("<h4 style=\"color:#427fed\">" + "LCA Primary Address </h4>");
+    HTML lcaAddress2 = new HTML("<h4 style=\"color:#427fed\">" + "LCA Secondary Address</h4>");
+    ReadLCAAddressWidget readAddressWidget1;
+    ReadLCAAddressWidget readAddressWidget2;
     JSONObject petitionEmployee;
+    JSONObject lca;
+    String lcaAdd1 = "LCA Primary Address";
+    String lcaAdd2 = "LCA Secondary Address";
 
     public ReadPetitionPanel(JSONObject entity) {
         initReadComposite(entity, "Petition", OfficeWelcome.constants);
@@ -66,6 +77,16 @@ public class ReadPetitionPanel extends TReadComposite {
             assignFieldValueFromEntity("petitionFolderMailedDate", petitionaddinfo, DataType.DATE_FIELD);
             assignFieldValueFromEntity("petitionFolderMailTrkNbr", petitionaddinfo, DataType.STRING_FIELD);
         }
+        if (entity.containsKey("lca")) {
+            assignFieldValueFromEntity("lcaFiledDate", lca, DataType.DATE_FIELD);
+            assignFieldValueFromEntity("lcaValidFromDate", lca, DataType.DATE_FIELD);
+            assignFieldValueFromEntity("lcaValidToDate", lca, DataType.DATE_FIELD);
+            assignFieldValueFromEntity("jobTitle", lca, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("lcaCurrWageLvl", lca, DataType.ENUM_FIELD);
+            assignFieldValueFromEntity("lcaCurrMinWage", lca, DataType.CURRENCY_FIELD);
+            assignFieldValueFromEntity("lcaCurrMaxWage", lca, DataType.CURRENCY_FIELD);
+            assignFieldValueFromEntity("withdrawnLCANumber", lca, DataType.STRING_FIELD);
+        }
     }
 
     @Override
@@ -87,6 +108,7 @@ public class ReadPetitionPanel extends TReadComposite {
 
     @Override
     protected void addWidgets() {
+        logger.info("entity is : " + entity);
         entityFieldsPanel.setWidget(1, 1, employeeSB);
         addField("receiptNumber", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 2);
         addEnumField("visaClassification", true, true, VisaClassificationType.names(), Alignment.HORIZONTAL, 2, 1);
@@ -94,23 +116,43 @@ public class ReadPetitionPanel extends TReadComposite {
         addField("petitionValidFromDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL, 3, 1);
         addField("petitionValidToDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL, 3, 2);
         addDropDown("workedByEmployees", selectRecruiterW, 4, 1);
-        addField("attorneyName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 4, 2);
-//        entityFieldsPanel.setWidget(5, 1, linkInfo);
-        addDropDown("lca", selectLCAWidgetF, 6, 1);
-        addDropDown("passport", selectPassportWidgetF, 6, 2);
-//        entityFieldsPanel.setWidget(7, 1, prevInfo);ou
-        addEnumField("previousVisaStatus", true, true, VisaStatus.names(), Alignment.HORIZONTAL, 8, 1);
-        addField("previousStatusExpiry", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL, 8, 2);
-//        entityFieldsPanel.setWidget(9, 1, additionalInfo);
-        addEnumField("h4Applicability", true, true, Polar.names(), Alignment.HORIZONTAL, 10, 1);
-        addEnumField("project", true, true, PetitionFor.names(), Alignment.HORIZONTAL, 10, 2);
-        addEnumField("sisterCompanyLetterUsed", true, true, Polar.names(), Alignment.HORIZONTAL, 11, 1);
-        addField("petitionFolderMailedDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL, 11, 2);
-        addField("petitionFolderMailTrkNbr", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 12, 1);
-        addField("petitionFileDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL, 12, 2);
-        addField("petitionTrackingNumber", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 13, 1);
-        addEnumField("petitionStatus", true, true, PetitionStatus.names(), Alignment.HORIZONTAL, 13, 2);
-        addField("petitionApprovalDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL, 14, 1);
+        addField("attorneyName", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 4, 2);
+        addDropDown("lca", selectLCAWidgetF, 5, 1);
+        addDropDown("passport", selectPassportWidgetF, 5, 2);
+        if (entity.containsKey("lca")) {
+            lca = entity.get("lca").isObject();
+            addField("lcaFiledDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 6, 1);
+            addField("jobTitle", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 6, 2);
+            addField("lcaValidFromDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 7, 1);
+            addField("lcaValidToDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 7, 2);
+            addEnumField("lcaCurrWageLvl", true, true, LCAWageLevels.names(), Alignment.HORIZONTAL, 8, 1);
+            addField("lcaCurrMinWage", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 9, 1);
+            addField("lcaCurrMaxWage", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 10, 1);
+            addEnumField("lcaPrevWageLvl", true, true, LCAWageLevels.names(), Alignment.HORIZONTAL, 8, 2);
+            addField("lcaPrevMinWage", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 9, 2);
+            addField("lcaPrevMaxWage", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 10, 2);
+            if (lca.containsKey("lcaAddress1")) {
+                readAddressWidget1 = new ReadLCAAddressWidget(lca.get("lcaAddress1").isObject(), lcaAdd1);
+                entityFieldsPanel.setWidget(12, 1, readAddressWidget1);
+            }
+            if (lca.containsKey("lcaAddress2")) {
+                readAddressWidget2 = new ReadLCAAddressWidget(lca.get("lcaAddress2").isObject(), lcaAdd2);
+                entityFieldsPanel.setWidget(12, 2, readAddressWidget2);
+            }
+            addField("withdrawnLCANumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 13, 1);
+        }
+        addEnumField("previousVisaStatus", true, true, VisaStatus.names(), Alignment.HORIZONTAL, 14, 1);
+        addField("previousStatusExpiry", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL, 14, 2);
+        addEnumField("i140ApprovalStatus", true, true, Polar.names(), Alignment.HORIZONTAL, 15, 1);
+        addEnumField("h4Applicability", true, true, Polar.names(), Alignment.HORIZONTAL, 15, 2);
+        addEnumField("project", true, true, PetitionFor.names(), Alignment.HORIZONTAL, 16, 1);
+        addEnumField("sisterCompanyLetterUsed", true, true, Polar.names(), Alignment.HORIZONTAL, 16, 2);
+        addField("petitionFolderMailedDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL, 17, 1);
+        addField("petitionFolderMailTrkNbr", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 17, 2);
+        addField("petitionFileDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL, 18, 1);
+        addField("petitionTrackingNumber", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 18, 2);
+        addEnumField("petitionStatus", true, true, PetitionStatus.names(), Alignment.HORIZONTAL, 19, 1);
+        addField("petitionApprovalDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL, 19, 2);
         alignFields();
 
     }
@@ -128,6 +170,24 @@ public class ReadPetitionPanel extends TReadComposite {
     @Override
     public void loadEntity(String entityId) {
 
+    }
+    
+    public void populatePrevLCAWages() {
+        HttpService.HttpServiceAsync.instance().doGet(getPrevLCAWages(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String arg0) {
+                        if (arg0 != null) {
+                            Date date2 = new Date(arg0);
+
+                        }
+                    }
+                }
+        );
+    }
+    
+     private String getPrevLCAWages() {
+        return OfficeWelcome.constants.root_url() + "lca/prevLCAWages/" + JSONUtils.toString(petitionEmployee, "id");
     }
 
 }

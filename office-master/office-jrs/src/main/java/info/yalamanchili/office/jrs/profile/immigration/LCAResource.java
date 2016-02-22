@@ -19,6 +19,7 @@ import info.yalamanchili.office.dao.profile.immigration.LCALinkDao;
 import info.yalamanchili.office.entity.immigration.LCA;
 import info.yalamanchili.office.entity.immigration.LCADto;
 import info.yalamanchili.office.entity.immigration.LCALink;
+import info.yalamanchili.office.entity.immigration.Petition;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.MultiSelectObj;
@@ -118,25 +119,32 @@ public class LCAResource extends CRUDResource<LCA> {
             @QueryParam("column") List<String> columns) {
         return super.getDropDown(start, limit, columns);
     }
-    
+
+    @GET
+    @Path("/prevLCAWages/{id}")
+    @Validate
+    public LCA getPrevLCAWages(@PathParam("id") Long empId, Petition dto) {
+        LCA lca = new LCA();
+        return lca;
+    }
+
     @GET
     @Path("/dropdown/{id}")
     public List<Entry> getLCAEmployeeDown(@PathParam("id") long id) {
-        Employee emp = EmployeeDao.instance().findById(id);    
+        Employee emp = EmployeeDao.instance().findById(id);
         Date todayDate = new Date();
         List<Entry> result = new ArrayList<>();
         for (LCALink lcaLink : lcaLinkDao.findAll(emp)) {
             LCA lca = lcaDao.findById(lcaLink.getSourceEntityId());
             if (todayDate.compareTo(lca.getLcaValidToDate()) <= 0) {
-            Entry entry = new Entry();
-            entry.setId(lca.getId().toString());
-            entry.setValue(lca.getLcaNumber());
-            result.add(entry);
-            }           
+                Entry entry = new Entry();
+                entry.setId(lca.getId().toString());
+                entry.setValue(lca.getLcaNumber());
+                result.add(entry);
+            }
         }
         return result;
-    }    
-
+    }
 
     @Override
     public CRUDDao getDao() {
