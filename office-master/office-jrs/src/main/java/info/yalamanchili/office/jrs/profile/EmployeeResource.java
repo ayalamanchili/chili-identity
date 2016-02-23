@@ -27,8 +27,6 @@ import info.yalamanchili.office.client.ContractService;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.practice.PracticeDao;
 import info.yalamanchili.office.dao.profile.EmployeeDto;
-import info.yalamanchili.office.dao.profile.SkillSetDao;
-import info.yalamanchili.office.dao.profile.SkillSetFileDao;
 import info.yalamanchili.office.dao.profile.ext.DependentDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.client.ContractDto;
