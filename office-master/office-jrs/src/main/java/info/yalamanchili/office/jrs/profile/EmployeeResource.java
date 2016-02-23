@@ -38,7 +38,6 @@ import info.yalamanchili.office.dto.profile.DependentDto;
 import info.yalamanchili.office.dto.profile.EmergencyContactDto;
 import info.yalamanchili.office.dto.profile.EmployeeSearchDto;
 import info.yalamanchili.office.dto.profile.SkillSetDto;
-import info.yalamanchili.office.dto.profile.SkillSetSaveDto;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.privacy.PrivacyData;
 import info.yalamanchili.office.entity.profile.ext.Dependent;
@@ -66,6 +65,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
@@ -243,75 +243,35 @@ public class EmployeeResource extends CRUDResource<Employee> {
 
     }
 
-//    @PUT
-//    @Validate
-//    @Path("/skillset/{empId}")
-//    @Produces("application/text")
-//    public String addSkillSet(@PathParam("empId") Long empId, SkillSetDto skillset) {
-//        Employee emp = (Employee) getDao().findById(empId);
-//        SkillSet skillSetUpdated = emp.getSkillSet();
-//        if (skillSetUpdated == null) {
-//            skillSetUpdated = mapper.map(skillset, SkillSet.class);
-//        }
-//        if (skillset.getSkillSetFile().size() > 0) {
-//           for (SkillSetFile file : skillset.getSkillSetFile()) {
-//                if (file.getId() == null) {
-//                    file.setskillSet(skillSetUpdated);
-//                    skillSetUpdated = SkillSetDao.instance().getEntityManager().merge(skillSetUpdated);
-//                    skillSetUpdated.getSkillSetFile().add(file);
-//                } else {
-//                    SkillSetFileDao.instance().save(file);
-//                }
-//            }
-//        }
-//        if (skillset.getPractice() == null || skillset.getPractice().getId() == null) {
-//            skillSetUpdated.setPractice(null);
-//        } else {
-//            skillSetUpdated.setPractice(PracticeDao.instance().findById(skillset.getPractice().getId()));
-//        }
-//        if (skillset.getTechnologyGroup() == null || skillset.getTechnologyGroup().getId() == null) {
-//            skillSetUpdated.setTechnologyGroup(null);
-//        } else {
-//            skillSetUpdated.setTechnologyGroup(TechnologyGroupDao.instance().findById(skillset.getTechnologyGroup().getId()));
-//        }
-//        emp.setSkillSet(skillSetUpdated);
-//        emp = em.merge(emp);
-//        profileNotificationservice.skillSetUpdatedNotification(emp);
-//        return emp.getSkillSet().getId().toString();
-//    }
-    
     @PUT
     @Validate
     @Path("/skillset/{empId}")
-    public SkillSetDto addSkillSet(@PathParam("empId") Long empId, SkillSetSaveDto skillSetSaveDto) {
-        SkillSet skillset = mapper.map(skillSetSaveDto, SkillSet.class);
-        Employee emp = EmployeeDao.instance().findById(empId);
-        SkillSet skillsetEntity = em.find(SkillSet.class, skillset.getId());
-        if (skillSetSaveDto.getSkillSetFile().size() > 0) {
-            for (SkillSetFile file : skillSetSaveDto.getSkillSetFile()) {
-                if (file.getId() == null) {
-                    file.setskillSet(skillsetEntity);
-                    skillsetEntity = SkillSetDao.instance().getEntityManager().merge(skillsetEntity);
-                    skillsetEntity.getSkillSetFile().add(file);
-                } else {
-                    SkillSetFileDao.instance().save(file);
-                }
-            }
+    @Produces("application/text")
+    public String addSkillSet(@PathParam("empId") Long empId, SkillSetDto skillset) {
+        Employee emp = (Employee) getDao().findById(empId);
+        SkillSet skillSetUpdated = emp.getSkillSet();
+        if (skillSetUpdated == null) {
+            skillSetUpdated = mapper.map(skillset, SkillSet.class);
+        }
+        if(skillset.getResumeUrl()!=null){
+            skillSetUpdated.setResumeUrl(skillset.getResumeUrl());
         }
         if (skillset.getPractice() == null || skillset.getPractice().getId() == null) {
-            skillsetEntity.setPractice(null);
+            skillSetUpdated.setPractice(null);
         } else {
-            skillsetEntity.setPractice(PracticeDao.instance().findById(skillset.getPractice().getId()));
+            skillSetUpdated.setPractice(PracticeDao.instance().findById(skillset.getPractice().getId()));
         }
         if (skillset.getTechnologyGroup() == null || skillset.getTechnologyGroup().getId() == null) {
-            skillsetEntity.setTechnologyGroup(null);
+            skillSetUpdated.setTechnologyGroup(null);
         } else {
-            skillsetEntity.setTechnologyGroup(TechnologyGroupDao.instance().findById(skillset.getTechnologyGroup().getId()));
+            skillSetUpdated.setTechnologyGroup(TechnologyGroupDao.instance().findById(skillset.getTechnologyGroup().getId()));
         }
+        emp.setSkillSet(skillSetUpdated);
+        emp = em.merge(emp);
         profileNotificationservice.skillSetUpdatedNotification(emp);
-        return mapper.map(skillsetEntity, SkillSetDto.class);
+        return emp.getSkillSet().getId().toString();
     }
-
+    
     /* Preferences*/
     @GET
     @Path("/preferences/{empId}")
