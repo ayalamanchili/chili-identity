@@ -12,9 +12,9 @@ import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.Certification;
-import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.Skill;
 import info.yalamanchili.office.entity.profile.SkillSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
@@ -62,11 +62,11 @@ public class SkillDao extends CRUDDao<Skill> {
         }
     }
 
-    public Set<Skill> getSkills() {
+    public List<Skill> getSkills() {
         return SkillSetDao.instance().getCurrentUserSkillSet().getSkills();
     }
 
-    public Set<Skill> getSkillS(Long skillSetId) {
+    public List<Skill> getSkillS(Long skillSetId) {
         return SkillSetDao.instance().findById(skillSetId).getSkills();
     }
 
@@ -98,11 +98,11 @@ public class SkillDao extends CRUDDao<Skill> {
         }
     }
 
-    public Set<Certification> getCertifications() {
+    public List<Certification> getCertifications() {
         return SkillSetDao.instance().getCurrentUserSkillSet().getCertifications();
     }
 
-    public Set<Certification> getCertifications(Long skillSetId) {
+    public List<Certification> getCertifications(Long skillSetId) {
         return SkillSetDao.instance().findById(skillSetId).getCertifications();
     }
 

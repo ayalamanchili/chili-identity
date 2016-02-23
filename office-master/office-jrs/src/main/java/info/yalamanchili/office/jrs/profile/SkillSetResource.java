@@ -90,7 +90,7 @@ public class SkillSetResource extends CRUDResource<SkillSet> {
         return mapSkills(SkillDao.instance().getSkillS(skillSetId));
     }
 
-    protected String mapSkills(Set<Skill> skills) {
+    protected String mapSkills(List<Skill> skills) {
         StringBuilder res = new StringBuilder();
         int counts = skills.size();
         for (Skill skill : skills) {
@@ -144,7 +144,7 @@ public class SkillSetResource extends CRUDResource<SkillSet> {
         return mapCertfications(SkillDao.instance().getCertifications(skillSetId));
     }
 
-    protected String mapCertfications(Set<Certification> certs) {
+    protected String mapCertfications(List<Certification> certs) {
         StringBuilder res = new StringBuilder();
         int countc = certs.size();
         for (Certification certfic : certs) {
