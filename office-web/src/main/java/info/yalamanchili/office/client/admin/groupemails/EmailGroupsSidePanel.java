@@ -13,14 +13,13 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.rpc.HttpService;
-import info.chili.gwt.utils.Alignment;
-import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWidget;
 
 /**
  *
@@ -30,8 +29,10 @@ public class EmailGroupsSidePanel extends ALComposite implements ClickHandler {
 
     protected FlowPanel panel = new FlowPanel();
     protected Button generateRepB = new Button("Generate");
-    SelectEmployeeTypeWidget selectEmployeeTypeWidgetF = new SelectEmployeeTypeWidget(false, true, Alignment.VERTICAL);
-
+    //SelectEmployeeTypeWidget selectEmployeeTypeWidgetF = new SelectEmployeeTypeWidget(false, true, Alignment.VERTICAL);
+    protected Label employeeType = new Label("Employee Type");
+    protected ListBox employeeTypeList = new ListBox();
+    
     public EmailGroupsSidePanel() {
         init(panel);
     }
@@ -43,12 +44,18 @@ public class EmailGroupsSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void configure() {
-
+        employeeTypeList.addItem("All Employees", "All Employees");
+        employeeTypeList.addItem("Corporate Employee", "Corporate Employee");
+        employeeTypeList.addItem("Employee", "Employee");
+        employeeTypeList.addItem("W2 Contractor", "W2 Contractor");
+        employeeTypeList.addItem("1099 Contractor", "1099 Contractor");
+        employeeTypeList.addItem("Subcontractor", "Subcontractor");
     }
 
     @Override
     protected void addWidgets() {
-        panel.add(selectEmployeeTypeWidgetF);
+        panel.add(employeeType);
+        panel.add(employeeTypeList);
         panel.add(generateRepB);
     }
 
@@ -70,6 +77,6 @@ public class EmailGroupsSidePanel extends ALComposite implements ClickHandler {
     }
 
     private String getEmailMenuReportUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "email-groups/type?employee-type=" + JSONUtils.toString(selectEmployeeTypeWidgetF.getSelectedObject(), "value"));
+        return URL.encode(OfficeWelcome.constants.root_url() + "email-groups/type?employee-type=" + employeeTypeList.getValue(employeeTypeList.getSelectedIndex()));
     }
 }
