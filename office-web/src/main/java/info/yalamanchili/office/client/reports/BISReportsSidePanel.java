@@ -79,6 +79,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
     protected DisclosurePanel myClocationL = new DisclosurePanel("Clients in a Location");
     protected DisclosurePanel empLocationL = new DisclosurePanel("Emp Working in a Location");
     protected DisclosurePanel projEndL = new DisclosurePanel("Emp Projects Going To Start / End");
+    protected DisclosurePanel subCMonthlyCL = new DisclosurePanel("SubContractor Monthly Compliance Projects");
 
     ClickableLink clearReportsL = new ClickableLink("clear");
     protected Button searchTasks = new Button("Search");
@@ -97,7 +98,8 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
     FlowPanel cLocationPanel = new FlowPanel();
     FlowPanel empLocPanel = new FlowPanel();
     FlowPanel projEndPanel = new FlowPanel();
-    
+    FlowPanel subCMCPanel = new FlowPanel();
+
     HorizontalPanel hPanel = new HorizontalPanel();
 
     SelectEmployeeWithRoleWidget selectRecruiterW = new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER, false, false);
@@ -137,6 +139,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
         empLocationL.addOpenHandler(this);
         projEndL.addOpenHandler(this);
         recruiterL.addOpenHandler(this);
+        subCMonthlyCL.addOpenHandler(this);
         searchTasks.addClickHandler(this);
         reportTasks.addClickHandler(this);
         graphB.addClickHandler(this);
@@ -178,6 +181,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
             panel.add(myVlocationL);
             panel.add(myClocationL);
             panel.add(empLocationL);
+            panel.add(subCMonthlyCL);
         } else if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_RECRUITER)) {
             panel.add(myClientL);
             panel.add(myVendorL);
@@ -244,7 +248,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                             @Override
                             public void onResponse(String result) {
                                 if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                                    new ResponseStatusWidget().show("no results");
+                                    new ResponseStatusWidget().show("No Results");
                                 } else {
                                     //TODO use size and entities attributes
                                     JSONObject resObj = JSONParser.parseLenient(result).isObject();
@@ -266,7 +270,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                                 @Override
                                 public void onResponse(String result) {
                                     if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                                        new ResponseStatusWidget().show("no results");
+                                        new ResponseStatusWidget().show("No Results");
                                     } else {
                                         //TODO use size and entities attributes
                                         JSONObject resObj = JSONParser.parseLenient(result).isObject();
@@ -289,7 +293,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                                 @Override
                                 public void onResponse(String result) {
                                     if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                                        new ResponseStatusWidget().show("no results");
+                                        new ResponseStatusWidget().show("No Results");
                                     } else {
                                         //TODO use size and entities attributes
                                         JSONObject resObj = JSONParser.parseLenient(result).isObject();
@@ -311,7 +315,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                                 @Override
                                 public void onResponse(String result) {
                                     if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                                        new ResponseStatusWidget().show("no results");
+                                        new ResponseStatusWidget().show("No Results");
                                     } else {
                                         //TODO use size and entities attributes
                                         JSONObject resObj = JSONParser.parseLenient(result).isObject();
@@ -332,7 +336,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                             @Override
                             public void onResponse(String result) {
                                 if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                                    new ResponseStatusWidget().show("no results");
+                                    new ResponseStatusWidget().show("No Results");
                                 } else {
                                     //TODO use size and entities attributes
                                     JSONObject resObj = JSONParser.parseLenient(result).isObject();
@@ -354,7 +358,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                                 @Override
                                 public void onResponse(String result) {
                                     if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                                        new ResponseStatusWidget().show("no results");
+                                        new ResponseStatusWidget().show("No Results");
                                     } else {
                                         //TODO use size and entities attributes
                                         JSONObject resObj = JSONParser.parseLenient(result).isObject();
@@ -382,7 +386,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                                 @Override
                                 public void onResponse(String result) {
                                     if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                                        new ResponseStatusWidget().show("no results");
+                                        new ResponseStatusWidget().show("No Results");
                                     } else {
                                         JSONObject resObj = JSONParser.parseLenient(result).isObject();
                                         String key = (String) resObj.keySet().toArray()[0];
@@ -409,7 +413,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                                 @Override
                                 public void onResponse(String result) {
                                     if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                                        new ResponseStatusWidget().show("no results");
+                                        new ResponseStatusWidget().show("No Results");
                                     } else {
                                         JSONObject resObj = JSONParser.parseLenient(result).isObject();
                                         String key = (String) resObj.keySet().toArray()[0];
@@ -438,7 +442,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                             @Override
                             public void onResponse(String result) {
                                 if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                                    new ResponseStatusWidget().show("no results");
+                                    new ResponseStatusWidget().show("No Results");
                                 } else {
                                     //TODO use size and entities attributes
                                     JSONObject resObj = JSONParser.parseLenient(result).isObject();
@@ -467,7 +471,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                             @Override
                             public void onResponse(String result) {
                                 if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                                    new ResponseStatusWidget().show("no results");
+                                    new ResponseStatusWidget().show("No Results");
                                 } else {
                                     //TODO use size and entities attributes
                                     JSONObject resObj = JSONParser.parseLenient(result).isObject();
@@ -496,7 +500,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                             @Override
                             public void onResponse(String result) {
                                 if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                                    new ResponseStatusWidget().show("no results");
+                                    new ResponseStatusWidget().show("No Results");
                                 } else {
                                     //TODO use size and entities attributes
                                     JSONObject resObj = JSONParser.parseLenient(result).isObject();
@@ -507,6 +511,31 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                             }
                         });
                 clearFields();
+            }
+            if (searchTasks.getParent().equals(subCMCPanel)) {
+                TabPanel.instance().getReportingPanel().entityPanel.clear();
+                JSONObject obj = getBWDatesObject();
+                if (obj.containsKey("startDate") == true && obj.containsKey("endDate") == true) {
+                    DateTimeFormat sdf = DateTimeFormat.getFormat("MM/dd/yyyy");
+                    String empUrl1 = OfficeWelcome.constants.root_url() + "employee/sub-contractor-monthly-compliance";
+                    empUrl1 = empUrl1.concat("?startDate=" + sdf.format(projectStartDate.getDate()));
+                    empUrl1 = empUrl1.concat("&endDate=" + sdf.format(projectEndDate.getDate()));
+                    HttpService.HttpServiceAsync.instance().doGet(URL.encode(empUrl1), OfficeWelcome.instance().getHeaders(), true,
+                            new ALAsyncCallback<String>() {
+                                @Override
+                                public void onResponse(String result) {
+                                    if (result == null || "0".equals(JSONParser.parseLenient(result).isObject().get("size").isString().stringValue())) {
+                                        new ResponseStatusWidget().show("No Results");
+                                    } else {
+                                        JSONObject resObj = JSONParser.parseLenient(result).isObject();
+                                        String key = (String) resObj.keySet().toArray()[0];
+                                        JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
+                                        TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllSubCMonthlyComplianceProjsPanel(results));
+                                    }
+                                }
+                            });
+                    clearFields();
+                }
             }
         }
         if (event.getSource().equals(reportTasks)) {
@@ -666,6 +695,24 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                     clearFields();
                 }
             }
+            if (reportTasks.getParent().equals(subCMCPanel)) {
+                TabPanel.instance().getReportingPanel().entityPanel.clear();
+                DateTimeFormat sdf = DateTimeFormat.getFormat("MM/dd/yyyy");
+                JSONObject obj = getBWDatesObject();
+                String empUrl1 = OfficeWelcome.constants.root_url() + "employee/sub-contractor-monthly-compliance-report";
+                if (obj.containsKey("startDate") == true && obj.containsKey("endDate") == true) {
+                    empUrl1 = empUrl1.concat("?startDate=" + sdf.format(projectStartDate.getDate()));
+                    empUrl1 = empUrl1.concat("&endDate=" + sdf.format(projectEndDate.getDate()));
+                    HttpService.HttpServiceAsync.instance().doGet(empUrl1, OfficeWelcome.instance().getHeaders(), true,
+                            new ALAsyncCallback<String>() {
+                                @Override
+                                public void onResponse(String result) {
+                                    new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
+                                }
+                            });
+                    clearFields();
+                }
+            }
         }
         if (event.getSource().equals(graphB)) {
             JSONObject obj = new JSONObject();
@@ -787,6 +834,14 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
             projEndPanel.add(searchTasks);
             projEndPanel.add(reportTasks);
             projEndL.setContent(projEndPanel);
+        }
+        if (event.getSource().equals(subCMonthlyCL)) {
+            TabPanel.instance().reportingPanel.sidePanelTop.setHeight("100%");
+            subCMCPanel.add(projectStartDate);
+            subCMCPanel.add(projectEndDate);
+            subCMCPanel.add(searchTasks);
+            subCMCPanel.add(reportTasks);
+            subCMonthlyCL.setContent(subCMCPanel);
         }
     }
 
