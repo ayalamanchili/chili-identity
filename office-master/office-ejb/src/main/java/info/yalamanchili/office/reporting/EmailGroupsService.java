@@ -38,15 +38,25 @@ public class EmailGroupsService {
     @Transactional(readOnly = true)
     public void getemailMenuReportsReport(String email, String employeeType) {
         List<EmployeeBasicInfoReportDto> res = new ArrayList<>();
-        for (Employee emp : EmployeeDao.instance().getAllEmployeesByType(employeeType.trim())) {
-            EmployeeBasicInfoReportDto dto = mapper.map(emp, EmployeeBasicInfoReportDto.class);
-            dto.setFirstName(emp.getFirstName());
-            dto.setLastName(emp.getLastName());
-            dto.setEmail(EmployeeDao.instance().getPrimaryEmail(emp));
-            dto.setType(emp.getEmployeeType().getName());
-            res.add(dto);
+        if (employeeType.equals("All Employees")) {
+            for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee", "Employee")) {
+                res.add(getAllEmployeeEmails(emp));
+            }
+        }else {
+            for (Employee emp : EmployeeDao.instance().getAllEmployeesByType(employeeType.trim())) {
+                res.add(getAllEmployeeEmails(emp));
+            }
         }
-        String[] columnOrder = new String[]{"firstName", "lastName", "type", "email"};
+        String[] columnOrder = new String[]{"email"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Email-Group-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
+    }
+
+    public EmployeeBasicInfoReportDto getAllEmployeeEmails(Employee emp) {
+        EmployeeBasicInfoReportDto dto = mapper.map(emp, EmployeeBasicInfoReportDto.class);
+        dto.setFirstName(emp.getFirstName());
+        dto.setLastName(emp.getLastName());
+        dto.setEmail(EmployeeDao.instance().getPrimaryEmail(emp));
+        dto.setType(emp.getEmployeeType().getName());
+        return dto;
     }
 }
