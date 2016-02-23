@@ -9,43 +9,47 @@ package info.yalamanchili.office.jrs.profile;
 
 import com.google.common.base.Strings;
 import info.chili.commons.SearchUtils;
-import info.chili.spring.SpringContext;
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.chili.reporting.ReportGenerator;
 import info.chili.security.domain.CUser;
 import info.chili.service.jrs.types.Entry;
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
-import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.TechnologyGroupDao;
-import info.yalamanchili.office.dto.profile.EmergencyContactDto;
-import info.yalamanchili.office.dao.profile.EmployeeDto;
 import info.yalamanchili.office.dao.profile.EmployeeReadDto;
 import info.yalamanchili.office.dto.profile.EmployeeSaveDto;
-import info.yalamanchili.office.dto.profile.EmployeeSearchDto;
-import info.yalamanchili.office.dto.profile.SkillSetDto;
 import info.yalamanchili.office.entity.profile.*;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.client.ContractService;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.practice.PracticeDao;
+import info.yalamanchili.office.dao.profile.EmployeeDto;
+import info.yalamanchili.office.dao.profile.SkillSetDao;
+import info.yalamanchili.office.dao.profile.SkillSetFileDao;
 import info.yalamanchili.office.dao.profile.ext.DependentDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.client.ContractDto;
+import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dto.profile.ClientInformationDto;
 import info.yalamanchili.office.dto.profile.DependentDto;
+import info.yalamanchili.office.dto.profile.EmergencyContactDto;
+import info.yalamanchili.office.dto.profile.EmployeeSearchDto;
+import info.yalamanchili.office.dto.profile.SkillSetDto;
+import info.yalamanchili.office.dto.profile.SkillSetSaveDto;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.privacy.PrivacyData;
 import info.yalamanchili.office.entity.profile.ext.Dependent;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.privacy.PrivacyAware;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
+import info.yalamanchili.office.jrs.profile.ClientInformationResource.ClientInformationTable;
+import info.yalamanchili.office.jrs.profile.DependentResource.DependentTable;
 import info.yalamanchili.office.jrs.profile.EmailResource.EmailTable;
 import info.yalamanchili.office.jrs.profile.EmergencyContactResource.EmergencyContactTable;
 import info.yalamanchili.office.jrs.profile.PhoneResource.PhoneTable;
-import info.yalamanchili.office.jrs.profile.ClientInformationResource.ClientInformationTable;
-import info.yalamanchili.office.jrs.profile.DependentResource.DependentTable;
 import info.yalamanchili.office.profile.ClientInformationService;
 import info.yalamanchili.office.profile.DependentService;
 import info.yalamanchili.office.profile.EmergencyContactService;
@@ -62,7 +66,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
@@ -240,33 +243,73 @@ public class EmployeeResource extends CRUDResource<Employee> {
 
     }
 
+//    @PUT
+//    @Validate
+//    @Path("/skillset/{empId}")
+//    @Produces("application/text")
+//    public String addSkillSet(@PathParam("empId") Long empId, SkillSetDto skillset) {
+//        Employee emp = (Employee) getDao().findById(empId);
+//        SkillSet skillSetUpdated = emp.getSkillSet();
+//        if (skillSetUpdated == null) {
+//            skillSetUpdated = mapper.map(skillset, SkillSet.class);
+//        }
+//        if (skillset.getSkillSetFile().size() > 0) {
+//           for (SkillSetFile file : skillset.getSkillSetFile()) {
+//                if (file.getId() == null) {
+//                    file.setskillSet(skillSetUpdated);
+//                    skillSetUpdated = SkillSetDao.instance().getEntityManager().merge(skillSetUpdated);
+//                    skillSetUpdated.getSkillSetFile().add(file);
+//                } else {
+//                    SkillSetFileDao.instance().save(file);
+//                }
+//            }
+//        }
+//        if (skillset.getPractice() == null || skillset.getPractice().getId() == null) {
+//            skillSetUpdated.setPractice(null);
+//        } else {
+//            skillSetUpdated.setPractice(PracticeDao.instance().findById(skillset.getPractice().getId()));
+//        }
+//        if (skillset.getTechnologyGroup() == null || skillset.getTechnologyGroup().getId() == null) {
+//            skillSetUpdated.setTechnologyGroup(null);
+//        } else {
+//            skillSetUpdated.setTechnologyGroup(TechnologyGroupDao.instance().findById(skillset.getTechnologyGroup().getId()));
+//        }
+//        emp.setSkillSet(skillSetUpdated);
+//        emp = em.merge(emp);
+//        profileNotificationservice.skillSetUpdatedNotification(emp);
+//        return emp.getSkillSet().getId().toString();
+//    }
+    
     @PUT
     @Validate
     @Path("/skillset/{empId}")
-    @Produces("application/text")
-    public String addSkillSet(@PathParam("empId") Long empId, SkillSetDto skillset) {
-        Employee emp = (Employee) getDao().findById(empId);
-        SkillSet skillSetUpdated = emp.getSkillSet();
-        if (skillSetUpdated == null) {
-            skillSetUpdated = mapper.map(skillset, SkillSet.class);
+    public SkillSetDto addSkillSet(@PathParam("empId") Long empId, SkillSetSaveDto skillSetSaveDto) {
+        SkillSet skillset = mapper.map(skillSetSaveDto, SkillSet.class);
+        Employee emp = EmployeeDao.instance().findById(empId);
+        SkillSet skillsetEntity = em.find(SkillSet.class, skillset.getId());
+        if (skillSetSaveDto.getSkillSetFile().size() > 0) {
+            for (SkillSetFile file : skillSetSaveDto.getSkillSetFile()) {
+                if (file.getId() == null) {
+                    file.setskillSet(skillsetEntity);
+                    skillsetEntity = SkillSetDao.instance().getEntityManager().merge(skillsetEntity);
+                    skillsetEntity.getSkillSetFile().add(file);
+                } else {
+                    SkillSetFileDao.instance().save(file);
                 }
-        if (skillset.getResumeUrl() != null) {
-            skillSetUpdated.setResumeUrl(skillset.getResumeUrl());
             }
+        }
         if (skillset.getPractice() == null || skillset.getPractice().getId() == null) {
-            skillSetUpdated.setPractice(null);
+            skillsetEntity.setPractice(null);
         } else {
-            skillSetUpdated.setPractice(PracticeDao.instance().findById(skillset.getPractice().getId()));
+            skillsetEntity.setPractice(PracticeDao.instance().findById(skillset.getPractice().getId()));
         }
         if (skillset.getTechnologyGroup() == null || skillset.getTechnologyGroup().getId() == null) {
-            skillSetUpdated.setTechnologyGroup(null);
+            skillsetEntity.setTechnologyGroup(null);
         } else {
-            skillSetUpdated.setTechnologyGroup(TechnologyGroupDao.instance().findById(skillset.getTechnologyGroup().getId()));
+            skillsetEntity.setTechnologyGroup(TechnologyGroupDao.instance().findById(skillset.getTechnologyGroup().getId()));
         }
-        emp.setSkillSet(skillSetUpdated);
-        emp = em.merge(emp);
         profileNotificationservice.skillSetUpdatedNotification(emp);
-        return emp.getSkillSet().getId().toString();
+        return mapper.map(skillsetEntity, SkillSetDto.class);
     }
 
     /* Preferences*/
@@ -479,9 +522,9 @@ public class EmployeeResource extends CRUDResource<Employee> {
     public EmployeeTable table(@PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate, @QueryParam("value") String value) {
         EmployeeTable table = new EmployeeTable();
         List<EmployeeDto> dtos = new ArrayList();
-        for (Object empObj : employeeDao.queryBetweenDays(start, limit, startDate, endDate, value)) {
+        employeeDao.queryBetweenDays(start, limit, startDate, endDate, value).stream().forEach((empObj) -> {
             dtos.add(info.yalamanchili.office.dao.profile.EmployeeDto.map(mapper, (Employee) empObj));
-        }
+        });
         table.setEntities(dtos);
         table.setSize(Long.valueOf(dtos.size()));
         return table;
@@ -510,8 +553,8 @@ public class EmployeeResource extends CRUDResource<Employee> {
     public List<ClientInformation> searchEmployee1(EmployeeLocationDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {
         TypedQuery<Employee> q = em.createQuery(getSearchQuery(dto), Employee.class);
         List<ClientInformation> dtos = new ArrayList();
-        for (Employee emp : q.getResultList()) {
-            for (ClientInformation ci : emp.getClientInformations()) {
+        q.getResultList().stream().forEach((Employee emp) -> {
+            emp.getClientInformations().stream().forEach((ClientInformation ci) -> {
                 if (ci.getEndDate() != null) {
                     if ((ci.getEndDate().after(new Date())) || (ci.getEndDate().equals(new Date()))) {
                         dtos.add(ci);
@@ -519,8 +562,8 @@ public class EmployeeResource extends CRUDResource<Employee> {
                 } else {
                     dtos.add(ci);
                 }
-            }
-        }
+            });
+        });
         return dtos;
     }
 
@@ -531,9 +574,9 @@ public class EmployeeResource extends CRUDResource<Employee> {
         ContractDto.ContractTable table = new ContractDto.ContractTable();
         List<ClientInformation> dtos = searchEmployee1(dto, 0, 1000);
         List<ContractDto> contractdtos = new ArrayList();
-        for (ClientInformation ci : dtos) {
+        dtos.stream().forEach((ci) -> {
             contractdtos.add(ContractService.instance().mapClientInformation(ci));
-        }
+        });
         table.setEntities(contractdtos);
         String[] columnOrder = new String[]{"employee", "client", "clientLocation", "vendor", "startDate", "endDate"};
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
@@ -574,9 +617,9 @@ public class EmployeeResource extends CRUDResource<Employee> {
     public List<EmployeeLocationReportDto> searchEmployeeAddress(EmployeeLocationDto dto) {
         TypedQuery<Employee> q = em.createQuery(getSearchQuery(dto), Employee.class);
         List<EmployeeLocationReportDto> dtos = new ArrayList();
-        for (Employee emp : q.getResultList()) {
+        q.getResultList().stream().forEach((emp) -> {
             dtos.add(EmployeeLocationReportDto.map(mapper, emp, dto));
-        }
+        });
         return dtos;
     }
 
@@ -589,6 +632,39 @@ public class EmployeeResource extends CRUDResource<Employee> {
             String[] columnOrder = new String[]{"employee", "branch", "street1", "street2", "city", "state", "country"};
             String fileName = ReportGenerator.generateExcelOrderedReport(dtos, "Employee In A Location report ", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
             MessagingService.instance().emailReport(fileName, employee.getPrimaryEmail().getEmail());
+        }
+    }
+
+    @GET
+    @Path("/sub-contractor-monthly-compliance")
+    public ContractTable subCMonthlyCompliance(@QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate) {
+        ContractTable table = new ContractTable();
+        List<ContractDto> dtos = new ArrayList();
+        List<Employee> emps = EmployeeDao.instance().getAllEmployeesByType(EmployeeType.SUBCONTRACTOR);
+        emps.stream().map((emp) -> emp.getClientInformations()).filter((cis) -> (cis.size() > 0)).forEach((cis) -> {
+            cis.stream().forEach((ci) -> {
+                if (ci.getEndDate() != null) {
+                    if (ci.getEndDate().after(startDate) && ci.getEndDate().before(endDate)) {
+                        dtos.add(ContractService.instance().mapClientInformation(ci));
+                    }
+                } else {
+                    dtos.add(ContractService.instance().mapClientInformation(ci));
+                }
+            });
+        });
+        table.setEntities(dtos);
+        table.setSize(Long.valueOf(dtos.size()));
+        return table;
+    }
+
+    @GET
+    @Path("/sub-contractor-monthly-compliance-report")
+    public void subCMonthlyComplianceReport(@QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate) {
+        ContractTable table = subCMonthlyCompliance(startDate, endDate);
+        if (table.getSize() > 0) {
+            String[] columnOrder = new String[]{"employee", "client", "vendor", "startDate", "endDate", "billingRate", "subcontractorPayRate", "subContractorName", "recruiter"};
+            String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "SubContractor Monthly Compliance Projects Report ", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+            MessagingService.instance().emailReport(fileName, OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
         }
     }
 
