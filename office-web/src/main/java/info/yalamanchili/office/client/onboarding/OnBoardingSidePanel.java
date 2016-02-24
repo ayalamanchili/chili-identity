@@ -25,7 +25,6 @@ public class OnBoardingSidePanel extends ALComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(OnBoardingSidePanel.class.getName());
     public FlowPanel OnBoardingSidePanel = new FlowPanel();
-    ClickableLink createEmployeeOnboardingLink = new ClickableLink("Employee Onboarding");
 
     public OnBoardingSidePanel() {
         init(OnBoardingSidePanel);
@@ -33,7 +32,6 @@ public class OnBoardingSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addListeners() {
-        createEmployeeOnboardingLink.addClickHandler(this);
     }
 
     @Override
@@ -43,17 +41,11 @@ public class OnBoardingSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addWidgets() {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ON_BOARDING_MGR, Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
-            OnBoardingSidePanel.add(createEmployeeOnboardingLink);
-        }
+        
     }
 
     @Override
     public void onClick(ClickEvent clickEvent) {
-        if (clickEvent.getSource().equals(createEmployeeOnboardingLink)) {
-            TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new InitiateOnBoardingPanel());
-        }
     }
 
 }
