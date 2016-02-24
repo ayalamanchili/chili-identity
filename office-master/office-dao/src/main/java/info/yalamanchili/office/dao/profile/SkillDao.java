@@ -48,17 +48,13 @@ public class SkillDao extends CRUDDao<Skill> {
         }
     }
 
-    public void removeSkill(String name) {
-        Skill skill = EntityQueryUtils.findEntity(getEntityManager(), Skill.class, "name", name.trim());
-        if (skill != null) {
-            SkillSetDao.instance().getCurrentUserSkillSet().removeSkill(skill);
+    public void removeSkill(SkillSet skillSet, String name) {
+        if (skillSet == null) {
+            skillSet = OfficeSecurityService.instance().getCurrentUser().getSkillSet();
         }
-    }
-
-    public void removeSkill(Long skillSetId, String name) {
         Skill skill = EntityQueryUtils.findEntity(getEntityManager(), Skill.class, "name", name.trim());
         if (skill != null) {
-            SkillSetDao.instance().findById(skillSetId).removeSkill(skill);
+            skillSet.removeSkill(skill);
         }
     }
 
@@ -70,31 +66,23 @@ public class SkillDao extends CRUDDao<Skill> {
         return SkillSetDao.instance().findById(skillSetId).getSkills();
     }
 
-    public void addCertification(String name) {
+    public void addCertification(SkillSet skillSet, String name) {
+        if (skillSet == null) {
+            skillSet = OfficeSecurityService.instance().getCurrentUser().getSkillSet();
+        }
         Certification cert = EntityQueryUtils.findEntity(getEntityManager(), Certification.class, "name", name.trim());
         if (cert != null) {
-            SkillSetDao.instance().getCurrentUserSkillSet().addCertification(cert);
+            skillSet.addCertification(cert);
         }
     }
 
-    public void addCertification(Long skillSetId, String name) {
-        Certification cert = EntityQueryUtils.findEntity(getEntityManager(), Certification.class, "name", name.trim());
-        if (cert != null) {
-            SkillSetDao.instance().findById(skillSetId).addCertification(cert);
+    public void removeCertification(SkillSet skillSet, String name) {
+        if (skillSet == null) {
+            skillSet = OfficeSecurityService.instance().getCurrentUser().getSkillSet();
         }
-    }
-
-    public void removeCertification(String name) {
         Certification cert = EntityQueryUtils.findEntity(getEntityManager(), Certification.class, "name", name.trim());
         if (cert != null) {
-            SkillSetDao.instance().getCurrentUserSkillSet().removeCertification(cert);
-        }
-    }
-
-    public void removeCertification(Long skillSetId, String name) {
-        Certification cert = EntityQueryUtils.findEntity(getEntityManager(), Certification.class, "name", name.trim());
-        if (cert != null) {
-            SkillSetDao.instance().findById(skillSetId).removeCertification(cert);
+            skillSet.removeCertification(cert);
         }
     }
 

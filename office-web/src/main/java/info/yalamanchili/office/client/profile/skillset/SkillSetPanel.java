@@ -11,6 +11,7 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.rpc.HttpService;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.TreePanelComposite;
@@ -51,7 +52,11 @@ public class SkillSetPanel extends TreePanelComposite {
                         if (response != null && !response.isEmpty()) {
                             entity = (JSONObject) JSONParser.parseLenient(response);
                             TabPanel.instance().myOfficePanel.entityPanel.clear();
-                            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadSkillSetPanel(entity));
+                            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
+                                TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateSkillSetPanel(entity));
+                            } else {
+                                TabPanel.instance().myOfficePanel.entityPanel.add(new ReadSkillSetPanel(entity));
+                            }
                         }
                     }
                 });

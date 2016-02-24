@@ -177,7 +177,7 @@ public class ReadSkillSetPanel extends ReadComposite {
         //TODO convert to generic field
         FileField fileField = new FileField(fileURL);
         entityFieldsPanel.add(fileField);
-        entityFieldsPanel.add(new SkillSetOptionsPanel(empId));
+        //entityFieldsPanel.add(new SkillSetOptionsPanel(empId));
         loadTags();
     }
 

@@ -11,6 +11,8 @@ import info.chili.commons.EntityQueryUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.profile.SkillSetDao;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.entity.profile.SkillSet;
 import info.yalamanchili.office.entity.recruiting.SkillSetTag;
 import java.util.Set;
 import javax.persistence.EntityManager;
@@ -36,31 +38,23 @@ public class SkillSetTagDao extends CRUDDao<SkillSetTag> {
         SkillSetDao.instance().findById(skillSetId).addTag(tag);
     }
 
-    public void addTag(Long skillSetId, String name) {
+    public void addTag(SkillSet skillSet, String name) {
+        if (skillSet == null) {
+            skillSet = OfficeSecurityService.instance().getCurrentUser().getSkillSet();
+        }
         SkillSetTag tag = EntityQueryUtils.findEntity(getEntityManager(), SkillSetTag.class, "name", name.trim());
         if (tag != null) {
-            SkillSetDao.instance().findById(skillSetId).addTag(tag);
+            skillSet.addTag(tag);
         }
     }
 
-    public void addTag(String name) {
-        SkillSetTag tag = EntityQueryUtils.findEntity(getEntityManager(), SkillSetTag.class, "name", name.trim());
-        if (tag != null) {
-            SkillSetDao.instance().getCurrentUserSkillSet().addTag(tag);
+    public void removeTag(SkillSet skillSet, String name) {
+        if (skillSet == null) {
+            skillSet = OfficeSecurityService.instance().getCurrentUser().getSkillSet();
         }
-    }
-
-    public void removeTag(String name) {
         SkillSetTag tag = EntityQueryUtils.findEntity(getEntityManager(), SkillSetTag.class, "name", name.trim());
         if (tag != null) {
-            SkillSetDao.instance().getCurrentUserSkillSet().removeTag(tag);
-        }
-    }
-
-    public void removeTag(Long skillSetId, String name) {
-        SkillSetTag tag = EntityQueryUtils.findEntity(getEntityManager(), SkillSetTag.class, "name", name.trim());
-        if (tag != null) {
-            SkillSetDao.instance().findById(skillSetId).removeTag(tag);
+            skillSet.removeTag(tag);
         }
     }
 
