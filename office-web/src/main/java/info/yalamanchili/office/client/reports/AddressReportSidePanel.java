@@ -119,11 +119,11 @@ public class AddressReportSidePanel extends ALComposite implements ClickHandler,
     }
 
     protected String getEmpAddressReportUrl() {
-        return OfficeWelcome.constants.root_url() + "employee/emp-address-report";
+        return OfficeWelcome.constants.root_url() + "contract/emp-address-report";
     }
 
     protected String getEmpAddressReadAllUrl() {
-        return OfficeWelcome.constants.root_url() + "employee/emp-address";
+        return OfficeWelcome.constants.root_url() + "contract/emp-address";
     }
 
     protected JSONObject getLocationObject() {

@@ -193,13 +193,25 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
 
     @PUT
     @Path("/search-projects-between-days/{start}/{limit}")
-    @Cacheable(OfficeCacheKeys.EMPLOYEES)
-    public ClientInformationTable table(@PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate, @QueryParam("value") String value) {
+    @Cacheable(OfficeCacheKeys.CLIENTINFORMATION)
+    public ClientInformationTable table(@PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate, @QueryParam("value") String value, @QueryParam("employeeType") String employeeType) {
         ClientInformationTable table = new ClientInformationTable();
         List<ClientInformation> clients = clientInformationDao.queryForProjEndBetweenDays(start, limit, startDate, endDate, value);
-        if (clients != null && clients.size() > 0) {
-            table.setEntities(clients);
-            table.setSize(Long.valueOf(clients.size()));
+        List<ClientInformation> cis = new ArrayList();
+        if (clients.size() > 0) {
+            for (ClientInformation ci : clients) {
+                if (employeeType != null) {
+                    if (ci.getEmployee().getEmployeeType().getName().equalsIgnoreCase(employeeType)) {
+                        cis.add(ci);
+                    }
+                } else {
+                    cis.add(ci);
+                }
+            }
+        }
+        if (cis.size() > 0) {
+            table.setEntities(cis);
+            table.setSize(Long.valueOf(cis.size()));
             return table;
         } else {
             return null;
@@ -208,12 +220,18 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
 
     @GET
     @Path("/ended-projects-report")
-    public void report(@QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate, @QueryParam("value") String value) {
+    public void report(@QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate, @QueryParam("value") String value, @QueryParam("employeeType") String employeeType) {
         ContractDto.ContractTable ctable = new ContractDto.ContractTable();
         List<ClientInformation> clients = clientInformationDao.queryForProjEndBetweenDays(0, 10000, startDate, endDate, value);
         if (clients != null && clients.size() > 0) {
             for (ClientInformation ci : clients) {
-                ctable.getEntities().add(ContractService.instance().mapClientInformation(ci));
+                if (employeeType != null) {
+                    if (ci.getEmployee().getEmployeeType().getName().equalsIgnoreCase(employeeType)) {
+                        ctable.getEntities().add(ContractService.instance().mapClientInformation(ci));
+                    }
+                } else {
+                    ctable.getEntities().add(ContractService.instance().mapClientInformation(ci));
+                }
             }
         }
         String[] columnOrder = new String[]{"employee", "recruiter", "vendor", "subContractorName", "billingRate", "startDate", "endDate"};
