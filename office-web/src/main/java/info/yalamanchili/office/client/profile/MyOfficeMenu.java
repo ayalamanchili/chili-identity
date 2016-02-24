@@ -93,7 +93,6 @@ public class MyOfficeMenu extends CMenuBar {
         TabPanel.instance().getMyOfficePanel().entityPanel.clear();
         TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
         TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmployeeOnBoardingPanel());
-        TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new OnBoardingSidePanel());
     };
     static Command prospectsMaintainenceCmd = () -> {
         TabPanel.instance().getMyOfficePanel().entityPanel.clear();
