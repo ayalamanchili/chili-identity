@@ -11,6 +11,7 @@ import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
+import info.yalamanchili.office.dao.profile.SkillSetDao;
 import info.yalamanchili.office.dao.recruiting.SkillSetTagDao;
 import info.yalamanchili.office.entity.recruiting.SkillSetTag;
 import info.yalamanchili.office.jrs.CRUDResource;
@@ -42,6 +43,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("request")
 public class SkillSetTagResource extends CRUDResource<SkillSetTag> {
 
+    @Autowired
+    public SkillSetDao skillSetDao;
+
     @PUT
     @Path("/create-add-tag/{skillSetId}/{tag}")
     @CacheEvict(value = OfficeCacheKeys.SKILL_SET_TAG, allEntries = true)
@@ -51,28 +55,23 @@ public class SkillSetTagResource extends CRUDResource<SkillSetTag> {
 
     @PUT
     @Path("/add-tag/{tag}")
-    public void addTag(@PathParam("tag") String name) {
-        skillSetTagDao.addTag(name);
-    }
+    public void addTag(@QueryParam("skillSetId") Long skillSetId, @PathParam("tag") String name) {
+        if (skillSetId == null) {
+            skillSetTagDao.addTag(null, name);
+        } else {
+            skillSetTagDao.addTag(skillSetDao.findById(skillSetId), name);
+        }
 
-    @PUT
-    @Path("/add-tag/{skillSetId}/{tag}")
-    @PreAuthorize("hasAnyRole('ROLE_RECRUITER')")
-    public void addTag(@PathParam("skillSetId") Long skillSetId, @PathParam("tag") String name) {
-        skillSetTagDao.addTag(skillSetId, name);
     }
 
     @PUT
     @Path("/remove-tag/{tag}")
-    public void removeTag(@PathParam("tag") String name) {
-        skillSetTagDao.removeTag(name);
-    }
-
-    @PUT
-    @Path("/remove-tag/{skillSetId}/{tag}")
-    @PreAuthorize("hasAnyRole('ROLE_RECRUITER')")
-    public void removeTag(@PathParam("skillSetId") Long skillSetId, @PathParam("tag") String name) {
-        skillSetTagDao.removeTag(skillSetId, name);
+    public void removeTag(@QueryParam("skillSetId") Long skillSetId, @PathParam("tag") String name) {
+        if (skillSetId == null) {
+            skillSetTagDao.removeTag(null, name);
+        } else {
+            skillSetTagDao.removeTag(skillSetDao.findById(skillSetId), name);
+        }
     }
 
     @PUT
