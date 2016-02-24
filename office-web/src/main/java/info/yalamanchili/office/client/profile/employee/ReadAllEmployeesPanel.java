@@ -23,6 +23,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.Window;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.utils.FormatUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.rpc.HttpService;
@@ -182,4 +183,19 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
         return OfficeWelcome.constants.root_url() + "employee/" + entityId;
     }
 
+    @Override
+    protected void configureCreateButton() {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_SYSTEM_AND_NETWORK_ADMIN, ROLE.ROLE_CONTRACTS_ADMIN)) {
+            createButton.setText("Create Employee");
+            createButton.setVisible(true);
+        }else{
+            createButton.setVisible(false);
+        }
+    }
+
+    @Override
+    protected void createButtonClicked() {
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new CreateEmployeePanel(CreateComposite.CreateCompositeType.CREATE));
+    }
 }
