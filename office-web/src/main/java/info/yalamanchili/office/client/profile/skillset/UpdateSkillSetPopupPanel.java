@@ -8,10 +8,8 @@
 package info.yalamanchili.office.client.profile.skillset;
 
 import com.google.gwt.http.client.URL;
-import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.profile.ProfileHome;
 
 /**
@@ -23,12 +21,12 @@ public class UpdateSkillSetPopupPanel extends UpdateSkillSetPanel {
     public UpdateSkillSetPopupPanel(String empId) {
         super(empId);
     }
-    
+
     @Override
     protected void postUpdateSuccess(String result) {
         extractResumeContent();
         new ResponseStatusWidget().show("Successfully Updated Employee Skill Information");
-        GenericPopup.instance().hide();
+        //GenericPopup.instance().hide();
         ProfileHome.instance().refreshSkillSetPanel();
     }
 
@@ -50,34 +48,34 @@ public class UpdateSkillSetPopupPanel extends UpdateSkillSetPanel {
     protected String getTagsUrl() {
         return OfficeWelcome.constants.root_url() + "skillsettag/tags";
     }
-    
+
     @Override
     protected String addSkillUrl() {
         return URL.encode(OfficeWelcome.constants.root_url() + "skillset/skills/add/" + skillSB.getValue());
     }
-    
+
     @Override
     protected String removeSkillUrl() {
         return URL.encode(OfficeWelcome.constants.root_url() + "skillset/skills/remove/" + skillSB.getValue());
     }
-    
+
     protected String getSkillsUrl() {
         return OfficeWelcome.constants.root_url() + "skillset/skills/";
     }
-    
+
     @Override
     protected String addCertUrl() {
         return URL.encode(OfficeWelcome.constants.root_url() + "skillset/certifications/add/" + certSB.getValue());
     }
-    
+
     @Override
     protected String removeCertUrl() {
         return URL.encode(OfficeWelcome.constants.root_url() + "skillset/certifications/remove/" + certSB.getValue());
     }
-    
+
     @Override
     protected String getCertificationssUrl() {
         return OfficeWelcome.constants.root_url() + "skillset/certifications/";
     }
-    
+
 }

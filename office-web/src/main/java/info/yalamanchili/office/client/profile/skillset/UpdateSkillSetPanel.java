@@ -182,7 +182,7 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
         extractResumeContent();
         new ResponseStatusWidget().show("Successfully Updated Employee Skill Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadSkillSetPanel(TreeEmployeePanel.instance().getEntityId()));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateSkillSetPanel(entity));
     }
 
     protected void extractResumeContent() {
@@ -284,7 +284,6 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
         certPanel.add(removeCert);
         certPanel.add(certTA);
         certp.setContentWidget(certPanel);
-
     }
 
     @Override
@@ -343,7 +342,7 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
     }
 
     protected String addTagUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "skillsettag/add-tag/" + getEntityId() + "/" + tagsSB.getValue());
+        return URL.encode(OfficeWelcome.constants.root_url() + "skillsettag/add-tag/" + tagsSB.getValue() + "?skillSetId=" + getEntityId());
     }
 
     protected void removeTagClicked() {
@@ -362,7 +361,7 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
     }
 
     protected String removeTagUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "skillsettag/remove-tag/" + getEntityId() + "/" + tagsSB.getValue());
+        return URL.encode(OfficeWelcome.constants.root_url() + "skillsettag/remove-tag/" + tagsSB.getValue() + "?skillSetId=" + getEntityId());
     }
 
     protected void loadTagSuggestions() {
@@ -441,7 +440,7 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
     }
 
     protected String removeSkillUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "skillset/skills/remove/" + getEntityId() + "/" + skillSB.getValue());
+        return URL.encode(OfficeWelcome.constants.root_url() + "skillset/skills/remove/" + skillSB.getValue() + "?skillSetId=" + getEntityId());
     }
 
     protected void loadSkillSuggestions() {
@@ -488,11 +487,12 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
                         new ResponseStatusWidget().show("Certification Added");
                     }
                 });
+        
         certSB.clearText();
     }
 
     protected String addCertUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "skillset/certifications/add/" + getEntityId() + "/" + certSB.getValue());
+        return URL.encode(OfficeWelcome.constants.root_url() + "skillset/certifications/add/" + certSB.getValue() + "?skillSetId=" + getEntityId());
     }
 
     protected void removeCertClicked() {
@@ -511,7 +511,7 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
     }
 
     protected String removeCertUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "skillset/certifications/remove/" + getEntityId() + "/" + certSB.getValue());
+        return URL.encode(OfficeWelcome.constants.root_url() + "skillset/certifications/remove/" + certSB.getValue() + "?skillSetId=" + getEntityId());
     }
 
     protected void loadCertSuggestions() {
