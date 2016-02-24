@@ -20,7 +20,6 @@ public class EmployeeSidePanel extends ALComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(EmployeeSidePanel.class.getName());
     public FlowPanel employeeSidePanel = new FlowPanel();
-    ClickableLink createEmployeeLink = new ClickableLink("Create Employee");
     ClickableLink createProjectLink = new ClickableLink("Create Project");
 
     public EmployeeSidePanel() {
@@ -29,7 +28,6 @@ public class EmployeeSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addListeners() {
-        createEmployeeLink.addClickHandler(this);
         createProjectLink.addClickHandler(this);
     }
 
@@ -40,9 +38,6 @@ public class EmployeeSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addWidgets() {
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_SYSTEM_AND_NETWORK_ADMIN, ROLE.ROLE_CONTRACTS_ADMIN)) {
-            employeeSidePanel.add(createEmployeeLink);
-        }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONTRACTS_ADMIN)) {
             employeeSidePanel.add(createProjectLink);
         }
@@ -51,10 +46,6 @@ public class EmployeeSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     public void onClick(ClickEvent clickEvent) {
-        if (clickEvent.getSource().equals(createEmployeeLink)) {
-            TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateEmployeePanel(CreateCompositeType.CREATE));
-        }
         if (clickEvent.getSource().equals(createProjectLink)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new CreateProjectPanel(CreateCompositeType.CREATE));
