@@ -17,7 +17,6 @@ import info.yalamanchili.office.entity.profile.SkillSet;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -60,20 +59,23 @@ public class SkillSetResource extends CRUDResource<SkillSet> {
     @PUT
     @Path("/skills/add/{skill}")
     public void addSkills(@QueryParam("skillSetId") Long skillSetId, @PathParam("skill") String name) {
-        SkillDao.instance().addSkill(skillSetDao.findById(skillSetId), name);
+        if (skillSetId == null) {
+            SkillDao.instance().addSkill(null, name);
+        } else {
+            SkillDao.instance().addSkill(skillSetDao.findById(skillSetId), name);
+        }
+
     }
 
     // to remove skills
     @PUT
     @Path("/skills/remove/{skill}")
-    public void removeSkills(@PathParam("skill") String name) {
-        SkillDao.instance().removeSkill(name);
-    }
-
-    @PUT
-    @Path("/skills/remove/{skillSetId}/{skill}")
-    public void removeSkills(@PathParam("skillSetId") Long skillSetId, @PathParam("skill") String name) {
-        SkillDao.instance().removeSkill(skillSetId, name);
+    public void removeSkills(@QueryParam("skillSetId") Long skillSetId, @PathParam("skill") String name) {
+        if (skillSetId == null) {
+            SkillDao.instance().removeSkill(null, name);
+        } else {
+            SkillDao.instance().removeSkill(skillSetDao.findById(skillSetId), name);
+        }
     }
 
     @GET
@@ -107,27 +109,23 @@ public class SkillSetResource extends CRUDResource<SkillSet> {
     //To add Certifications
     @PUT
     @Path("/certifications/add/{certification}")
-    public void addCertifications(@PathParam("certification") String name) {
-        SkillDao.instance().addCertification(name);
-    }
-
-    @PUT
-    @Path("/certifications/add/{skillSetId}/{certification}")
-    public void addCertifications(@PathParam("skillSetId") Long skillSetId, @PathParam("certification") String name) {
-        SkillDao.instance().addCertification(skillSetId, name);
+    public void addCertifications(@QueryParam("skillSetId") Long skillSetId, @PathParam("certification") String name) {
+        if (skillSetId == null) {
+            SkillDao.instance().addCertification(null, name);
+        } else {
+            SkillDao.instance().addCertification(skillSetDao.findById(skillSetId), name);
+        }
     }
 
     // to remove skills
     @PUT
     @Path("/certifications/remove/{certification}")
-    public void removeCertifications(@PathParam("certification") String name) {
-        SkillDao.instance().removeCertification(name);
-    }
-
-    @PUT
-    @Path("/certifications/remove/{skillSetId}/{certification}")
-    public void removeCertifications(@PathParam("skillSetId") Long skillSetId, @PathParam("certification") String name) {
-        SkillDao.instance().removeCertification(skillSetId, name);
+    public void removeCertifications(@QueryParam("skillSetId") Long skillSetId, @PathParam("certification") String name) {
+        if (skillSetId == null) {
+            SkillDao.instance().removeCertification(null, name);
+        } else {
+            SkillDao.instance().removeCertification(skillSetDao.findById(skillSetId), name);
+        }
     }
 
     @GET
