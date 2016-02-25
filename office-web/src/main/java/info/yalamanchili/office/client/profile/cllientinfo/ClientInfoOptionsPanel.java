@@ -20,7 +20,7 @@ import info.yalamanchili.office.client.project.offboarding.CreateProjectOffBoard
 public class ClientInfoOptionsPanel extends ALComposite implements ClickHandler {
 
     protected VerticalPanel panel = new VerticalPanel();
-    protected ClickableLink addClientInfoLink = new ClickableLink("Add Client Information");
+//   // protected ClickableLink addClientInfoLink = new ClickableLink("Add Client Information");
     protected ClickableLink submitProjectEndDetails = new ClickableLink("Submit Project End Details");
 
     public ClientInfoOptionsPanel() {
@@ -29,7 +29,7 @@ public class ClientInfoOptionsPanel extends ALComposite implements ClickHandler 
 
     @Override
     protected void addListeners() {
-        addClientInfoLink.addClickHandler(this);
+//        addClientInfoLink.addClickHandler(this);
         submitProjectEndDetails.addClickHandler(this);
     }
 
@@ -42,14 +42,15 @@ public class ClientInfoOptionsPanel extends ALComposite implements ClickHandler 
     @Override
     protected void addWidgets() {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONTRACTS_ADMIN, ROLE.ROLE_RECRUITER)) {
-            panel.add(addClientInfoLink);
+//            panel.add(addClientInfoLink);
         }
         panel.add(submitProjectEndDetails);
     }
 
     @Override
     public void onClick(ClickEvent arg0) {
-        if (arg0.getSource().equals(addClientInfoLink)) {
+//        if (arg0.getSource().equals(addClientInfoLink))
+        {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new CreateClientInfoPanel(CreateCompositeType.ADD));
         }
@@ -61,5 +62,5 @@ public class ClientInfoOptionsPanel extends ALComposite implements ClickHandler 
 
     protected String getBISInfoUrl() {
         return OfficeWelcome.constants.root_url() + "clientinformation/bis-info/" + TreeEmployeePanel.instance().getEntityId();
-    }
+    }   
 }
