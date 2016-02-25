@@ -15,8 +15,10 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CRUDReadAllComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.rpc.HttpService;
+import info.yalamanchili.office.client.Auth;
 import java.util.logging.Logger;
 
 /**
@@ -107,5 +109,21 @@ public class ReadAllAddressTypePanel extends CRUDReadAllComposite {
     public void updateClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateAddressTypePanel(getEntity(entityId)));
+    }
+
+    @Override
+    protected void configureCreateButton() {
+        if (Auth.isAdmin() || Auth.isHR()) {
+            createButton.setText("Create AddressType");
+            createButton.setVisible(true);
+        } else {
+            createButton.setVisible(false);
+        }
+    }
+
+    @Override
+    protected void createButtonClicked() {
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new CreateAddressTypePanel(CreateComposite.CreateCompositeType.CREATE));
     }
 }
