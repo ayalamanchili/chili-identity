@@ -29,7 +29,7 @@ public class ClientSidePanel extends ALComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(ClientSidePanel.class.getName());
     public FlowPanel clientsidepanel = new FlowPanel();
-    ClickableLink createclientlink = new ClickableLink("Create Client");
+//    ClickableLink createclientlink = new ClickableLink("Create Client");
     ClickableLink clientSummaryReportL = new ClickableLink("Client Summary Report");
     ClickableLink activeClientsReportL = new ClickableLink("Active Clients Report");
 
@@ -39,7 +39,7 @@ public class ClientSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addListeners() {
-        createclientlink.addClickHandler(this);
+//        createclientlink.addClickHandler(this);
         clientSummaryReportL.addClickHandler(this);
         activeClientsReportL.addClickHandler(this);
     }
@@ -52,7 +52,7 @@ public class ClientSidePanel extends ALComposite implements ClickHandler {
     @Override
     protected void addWidgets() {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS)) {
-            clientsidepanel.add(createclientlink);
+//            clientsidepanel.add(createclientlink);
         }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CEO, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN)) {
             clientsidepanel.add(clientSummaryReportL);
@@ -64,10 +64,11 @@ public class ClientSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     public void onClick(ClickEvent event) {
-        if (event.getSource().equals(createclientlink)) {
-            TabPanel.instance().adminPanel.entityPanel.clear();
-            TabPanel.instance().adminPanel.entityPanel.add(new CreateClientPanel(CreateComposite.CreateCompositeType.CREATE));
-        }
+      //  if (event.getSource().equals(createclientlink))
+//        {
+//            TabPanel.instance().adminPanel.entityPanel.clear();
+//            TabPanel.instance().adminPanel.entityPanel.add(new CreateClientPanel(CreateComposite.CreateCompositeType.CREATE));
+//        }
         if (event.getSource().equals(clientSummaryReportL)) {
             generateClientInfoReport();
         }
