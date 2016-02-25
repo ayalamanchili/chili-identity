@@ -56,18 +56,18 @@ import java.util.logging.Logger;
  * @author prasanthi.p
  */
 public class BISReportsSidePanel extends ALComposite implements ClickHandler, OpenHandler {
-    
+
     SuggestBox employeeSbf = new SuggestBox(OfficeWelcome.constants, "firstName", "Employee", false, false);
     SuggestBox employeeSbl = new SuggestBox(OfficeWelcome.constants, "lastName", "Employee", false, false);
-    
+
     MultiWordSuggestOracle data = new MultiWordSuggestOracle();
-    
+
     protected SelectCompanyWidget selectCompnayWidget = new SelectCompanyWidget(false, false);
     protected SelectVendorWidget selectVendorWidget = new SelectVendorWidget(false, false);
     protected SelectClientWidget selectClientWidget = new SelectClientWidget(false, false);
     protected SelectSubcontractorWidget selectSubWidget = new SelectSubcontractorWidget(false, false);
     protected SelectProjectWidget selectProjectWidget = new SelectProjectWidget(false, false);
-    
+
     protected DisclosurePanel masterDataReportsL = new DisclosurePanel("Consultants Master Data");
     protected DisclosurePanel myVendorL = new DisclosurePanel("Working Under Vendor");
     protected DisclosurePanel myClientL = new DisclosurePanel("Working Under Client");
@@ -80,13 +80,13 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
     protected DisclosurePanel empLocationL = new DisclosurePanel("Emp Working in a Location");
     protected DisclosurePanel projEndL = new DisclosurePanel("Emp Projects Going To Start / End");
     protected DisclosurePanel subCMonthlyCL = new DisclosurePanel("SubContractor Monthly Compliance Projects");
-    
+
     ClickableLink clearReportsL = new ClickableLink("clear");
     protected Button searchTasks = new Button("Search");
     protected Button reportTasks = new Button("Report");
     protected Button graphB = new Button("Graph");
     FlowPanel panel = new FlowPanel();
-    
+
     FlowPanel masterDataPanel = new FlowPanel();
     FlowPanel clientPanel = new FlowPanel();
     FlowPanel vendorPanel = new FlowPanel();
@@ -99,9 +99,9 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
     FlowPanel empLocPanel = new FlowPanel();
     FlowPanel projEndPanel = new FlowPanel();
     FlowPanel subCMCPanel = new FlowPanel();
-    
+
     HorizontalPanel hPanel = new HorizontalPanel();
-    
+
     SelectEmployeeWithRoleWidget selectRecruiterW = new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER, false, false);
     StringField employeeFirstNameField = new StringField(OfficeWelcome.constants, "employeeFirstName", "Contract", false, false);
     StringField employeeLatNameField = new StringField(OfficeWelcome.constants, "employeeLastName", "Contract", false, false);
@@ -119,13 +119,13 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
     ListBox li = new ListBox();
     ListBox projectEndLi = new ListBox();
     Label label = new Label(" Based");
-    
+
     private static Logger logger = Logger.getLogger(BISReportsSidePanel.class.getName());
-    
+
     public BISReportsSidePanel() {
         init(panel);
     }
-    
+
     @Override
     protected void addListeners() {
         masterDataReportsL.addOpenHandler(this);
@@ -144,7 +144,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
         reportTasks.addClickHandler(this);
         graphB.addClickHandler(this);
     }
-    
+
     @Override
     protected void configure() {
         li.addItem("Joined", "joined");
@@ -166,7 +166,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
             }
         });
     }
-    
+
     @Override
     protected void addWidgets() {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_FULL_VIEW)) {
@@ -187,23 +187,23 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
             panel.add(myVendorL);
         }
     }
-    
+
     protected String getFirstNameDropDownUrl() {
         return OfficeWelcome.constants.root_url() + "employee/dropdown/0/10000?column=id&column=firstName";
     }
-    
+
     protected String getLastNameDropDownUrl() {
         return OfficeWelcome.constants.root_url() + "employee/dropdown/0/10000?column=id&column=lastName";
     }
-    
+
     public void loadSearchSuggestions(Collection<String> inputs) {
         data.addAll(inputs);
     }
-    
+
     protected String getDropDownURL(Integer start, Integer limit, JSONObject entity) {
         return OfficeWelcome.constants.root_url() + "client/locations/dropdown/" + entity.get("id").toString().substring(1, 2) + "/" + start + "/" + limit;
     }
-    
+
     @Override
     public void onClick(ClickEvent event) {
         String url = OfficeWelcome.constants.root_url() + "contract/search/0/100";
@@ -243,24 +243,28 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
         if (event.getSource().equals(searchTasks)) {
             TabPanel.instance().getReportingPanel().entityPanel.clear();
             if (searchTasks.getParent().equals(masterDataPanel)) {
-                HttpService.HttpServiceAsync.instance().doPut(URL.encode(url), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
-                        new ALAsyncCallback<String>() {
-                            @Override
-                            public void onResponse(String result) {
-                                if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                                    new ResponseStatusWidget().show("No Results");
-                                } else {
-                                    //TODO use size and entities attributes
-                                    JSONObject resObj = JSONParser.parseLenient(result).isObject();
-                                    String key = (String) resObj.keySet().toArray()[0];
-                                    JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-                                    TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllBisContractsPanel(results));
+                if (entity.size() != 0) {
+                    HttpService.HttpServiceAsync.instance().doPut(URL.encode(url), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+                            new ALAsyncCallback<String>() {
+                                @Override
+                                public void onResponse(String result) {
+                                    if (result == null || JSONParser.parseLenient(result).isObject().size() == 0) {
+                                        new ResponseStatusWidget().show("No Results");
+                                    } else {
+                                        //TODO use size and entities attributes
+                                        JSONObject resObj = JSONParser.parseLenient(result).isObject();
+                                        String key = (String) resObj.keySet().toArray()[0];
+                                        JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
+                                        TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllBisContractsPanel(results));
+                                    }
                                 }
-                            }
-                        });
-                clearFields();
+                            });
+                    clearFields();
+                } else {
+                    employeeSbf.setMessage("Required");
+                }
             }
-            
+
             if (searchTasks.getParent().equals(clientPanel)) {
                 JSONObject obj = getClientObject();
                 if (obj.containsKey("client")) {
@@ -283,7 +287,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                     clearFields();
                 }
             }
-            
+
             if (searchTasks.getParent().equals(vendorPanel)) {
                 JSONObject obj = getVendorObject();
                 if (obj.containsKey("vendor")) {
@@ -357,7 +361,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                             new ALAsyncCallback<String>() {
                                 @Override
                                 public void onResponse(String result) {
-                                    if (result == null || JSONParser.parseLenient(result).isObject() == null) {
+                                    if (result == null || JSONParser.parseLenient(result).isObject().size() == 0) {
                                         new ResponseStatusWidget().show("No Results");
                                     } else {
                                         //TODO use size and entities attributes
@@ -385,7 +389,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                             new ALAsyncCallback<String>() {
                                 @Override
                                 public void onResponse(String result) {
-                                    if (result == null || JSONParser.parseLenient(result).isObject() == null) {
+                                    if (result == null || "0".equals(JSONParser.parseLenient(result).isObject().get("size").isString().stringValue())) {
                                         new ResponseStatusWidget().show("No Results");
                                     } else {
                                         JSONObject resObj = JSONParser.parseLenient(result).isObject();
@@ -494,7 +498,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                     cityField.setMessage("Required");
                 }
             }
-            
+
             if (searchTasks.getParent().equals(empLocPanel)) {
                 TabPanel.instance().getReportingPanel().entityPanel.clear();
                 String empUrl = OfficeWelcome.constants.root_url() + "contract/emp-location-search/0/100";
@@ -558,7 +562,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                 TabPanel.instance().getReportingPanel().entityPanel.clear();
                 JSONObject cLovation = getLocationObject();
                 String clurl = OfficeWelcome.instance().constants.root_url() + "client/report";
-                if (cLovation.size()!=0) {
+                if (cLovation.size() != 0) {
                     HttpService.HttpServiceAsync.instance().doPut(clurl, cLovation.toString(), OfficeWelcome.instance().getHeaders(), true,
                             new ALAsyncCallback<String>() {
                                 @Override
@@ -567,7 +571,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                                 }
                             });
                     clearFields();
-                }else{
+                } else {
                     cityField.setMessage("Required");
                 }
             }
@@ -575,7 +579,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                 TabPanel.instance().getReportingPanel().entityPanel.clear();
                 JSONObject cLovation = getLocationObject();
                 String vlurl = OfficeWelcome.instance().constants.root_url() + "vendor/report";
-                if (cLovation.size()!=0) {
+                if (cLovation.size() != 0) {
                     HttpService.HttpServiceAsync.instance().doPut(vlurl, cLovation.toString(), OfficeWelcome.instance().getHeaders(), true,
                             new ALAsyncCallback<String>() {
                                 @Override
@@ -584,7 +588,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                                 }
                             });
                     clearFields();
-                }else{
+                } else {
                     cityField.setMessage("Required");
                 }
             }
@@ -762,7 +766,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
             clearFields();
         }
     }
-    
+
     @Override
     public void onOpen(OpenEvent event) {
         if (event.getSource().equals(masterDataReportsL)) {
@@ -869,7 +873,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
             subCMonthlyCL.setContent(subCMCPanel);
         }
     }
-    
+
     private void clearFields() {
         employeeSbf.clearText();
         employeeSbl.clearText();
@@ -893,7 +897,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
         selectRecruiterW.clearMessage();
         stateFeild.listBox.setSelectedIndex(0);
     }
-    
+
     protected JSONObject getClientObject() {
         JSONObject client = new JSONObject();
         if (selectClientWidget.getSelectedObject() == null) {
@@ -904,7 +908,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
         }
         return client;
     }
-    
+
     protected JSONObject getVendorObject() {
         JSONObject vendor = new JSONObject();
         if (selectVendorWidget.getSelectedObject() == null) {
@@ -915,7 +919,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
         }
         return vendor;
     }
-    
+
     protected JSONObject getSubContractorObject() {
         JSONObject sub = new JSONObject();
         if (selectSubWidget.getSelectedObject() == null) {
@@ -926,7 +930,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
         }
         return sub;
     }
-    
+
     protected JSONObject getLocationObject() {
         JSONObject cLovation = new JSONObject();
         if (cityField != null && !Strings.isNullOrEmpty(cityField.getValue())) {
@@ -937,7 +941,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
         }
         return cLovation;
     }
-    
+
     protected JSONObject getRecruiterObject() {
         JSONObject recruiter = new JSONObject();
         if (selectRecruiterW.getSelectedObject() == null && projectStartDate.getDate() == null && projectEndDate.getDate() == null) {
@@ -960,7 +964,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
         }
         return recruiter;
     }
-    
+
     protected JSONObject getBWDatesObject() {
         JSONObject date = new JSONObject();
         if (projectStartDate.getDate() == null) {
