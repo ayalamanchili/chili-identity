@@ -15,6 +15,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CRUDReadAllComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.Auth;
@@ -124,5 +125,21 @@ public class ReadAllVendorsPanel extends CRUDReadAllComposite {
         TabPanel.instance().adminPanel.entityPanel.add(new UpdateVendorsPanel(getEntity(entityId)));
         TabPanel.instance().adminPanel.sidePanelTop.clear();
         TabPanel.instance().adminPanel.sidePanelTop.add(new TreeVendorsPanel(getEntity(entityId)));
+    }
+    @Override
+    protected void createButtonClicked() {
+        TabPanel.instance().getAdminPanel().entityPanel.clear();
+        TabPanel.instance().getAdminPanel().entityPanel.add(new CreateVendorPanel(CreateComposite.CreateCompositeType.CREATE));
+    }
+
+    @Override
+    protected void configureCreateButton() {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS)) {
+            createButton.setText("Create Vendor");
+            createButton.setVisible(true);
+        }
+        else {
+            createButton.setVisible(false);
+        }
     }
 }
