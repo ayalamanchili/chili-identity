@@ -25,7 +25,7 @@ public class ProjectSidePanel extends ALComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(info.yalamanchili.office.client.admin.project.ProjectSidePanel.class.getName());
     public FlowPanel projectsidepanel = new FlowPanel();
-    ClickableLink createprojectlink = new ClickableLink("Create Project");
+//    ClickableLink createprojectlink = new ClickableLink("Create Project");
 
     public ProjectSidePanel() {
         init(projectsidepanel);
@@ -33,7 +33,7 @@ public class ProjectSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addListeners() {
-        createprojectlink.addClickHandler(this);
+//        createprojectlink.addClickHandler(this);
     }
 
     @Override
@@ -43,14 +43,15 @@ public class ProjectSidePanel extends ALComposite implements ClickHandler {
     @Override
     protected void addWidgets() {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_EXPENSE, Auth.ROLE.ROLE_TIME)) {
-            projectsidepanel.add(createprojectlink);
+//            projectsidepanel.add(createprojectlink);
         }
         projectsidepanel.add(new SearchProjectsPanel());
     }
 
     @Override
     public void onClick(ClickEvent event) {
-        if (event.getSource().equals(createprojectlink)) {
+//        if (event.getSource().equals(createprojectlink)) 
+        {
             TabPanel.instance().adminPanel.entityPanel.clear();
             TabPanel.instance().adminPanel.entityPanel.add(new CreateProjectPanel(CreateComposite.CreateCompositeType.CREATE, true));
         }
