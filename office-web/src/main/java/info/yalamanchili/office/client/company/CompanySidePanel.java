@@ -26,7 +26,7 @@ public class CompanySidePanel extends ALComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(CompanySidePanel.class.getName());
     public FlowPanel companysidePanel = new FlowPanel();
-    ClickableLink createCompanyLink = new ClickableLink("Create Company");
+//    ClickableLink createCompanyLink = new ClickableLink("Create Company");
 
     public CompanySidePanel() {
         init(companysidePanel);
@@ -34,7 +34,7 @@ public class CompanySidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addListeners() {
-        createCompanyLink.addClickHandler(this);
+//        createCompanyLink.addClickHandler(this);
     }
 
     @Override
@@ -44,13 +44,14 @@ public class CompanySidePanel extends ALComposite implements ClickHandler {
     @Override
     protected void addWidgets() {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN)) {
-            companysidePanel.add(createCompanyLink);
+//            companysidePanel.add(createCompanyLink);
         }
     }
 
     @Override
     public void onClick(ClickEvent clickEvent) {
-        if (clickEvent.getSource().equals(createCompanyLink)) {
+//        if (clickEvent.getSource().equals(createCompanyLink)) 
+        {
             TabPanel.instance().adminPanel.entityPanel.clear();
             TabPanel.instance().adminPanel.entityPanel.add(new CreateCompanyPanel(CreateCompositeType.CREATE));
         }
