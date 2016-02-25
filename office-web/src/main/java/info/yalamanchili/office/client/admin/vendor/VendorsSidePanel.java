@@ -29,7 +29,7 @@ public class VendorsSidePanel extends ALComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(VendorsSidePanel.class.getName());
     public FlowPanel vendorsidepanel = new FlowPanel();
-    ClickableLink createvendorslink = new ClickableLink("Create Vendor");
+    //ClickableLink createvendorslink = new ClickableLink("Create Vendor");
     ClickableLink vendorSummaryReportL = new ClickableLink("Vendor Summary Report");
     ClickableLink activeVendorsReportL = new ClickableLink("Active Vendors Report");
 
@@ -39,7 +39,7 @@ public class VendorsSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addListeners() {
-        createvendorslink.addClickHandler(this);
+        //createvendorslink.addClickHandler(this);
         vendorSummaryReportL.addClickHandler(this);
         activeVendorsReportL.addClickHandler(this);
     }
@@ -52,7 +52,6 @@ public class VendorsSidePanel extends ALComposite implements ClickHandler {
     @Override
     protected void addWidgets() {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS)) {
-            vendorsidepanel.add(createvendorslink);
         }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CEO, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN)) {
             vendorsidepanel.add(vendorSummaryReportL);
@@ -63,10 +62,6 @@ public class VendorsSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     public void onClick(ClickEvent event) {
-        if (event.getSource().equals(createvendorslink)) {
-            TabPanel.instance().adminPanel.entityPanel.clear();
-            TabPanel.instance().adminPanel.entityPanel.add(new CreateVendorPanel(CreateComposite.CreateCompositeType.CREATE));
-        }
         if (event.getSource().equals(vendorSummaryReportL)) {
             generateVendorInfoReport();
         }
