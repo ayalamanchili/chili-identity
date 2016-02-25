@@ -30,7 +30,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
-import org.hibernate.search.annotations.ContainedIn;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
@@ -87,12 +86,14 @@ public class SkillSet extends AbstractEntity {
      */
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Practice_SkillSets")
+    @IndexedEmbedded
     private Practice practice;
     /**
      * Technology Group
      */
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_TechGrp_SkillSets")
+    @IndexedEmbedded
     private TechnologyGroup technologyGroup;
 
     /**
