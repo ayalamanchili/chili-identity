@@ -106,14 +106,14 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
     }
 
     protected void createServiceTicketForNetworkDept(EmployeeOnBoarding entity, DelegateTask dt) {
-        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
+        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findById(entity.getId());
         empOnBoarding.setStatus(OnBoardingStatus.Pending_HR_Validation);
         new GenericTaskCompleteNotification().notify(dt);
         EmployeeOnBoardingDao.instance().save(empOnBoarding);
     }
 
     protected void createFinalValidationTask(EmployeeOnBoarding entity, DelegateTask dt) {
-        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
+        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findById(entity.getId());
         empOnBoarding.setStatus(OnBoardingStatus.Pending_Payroll_Registration);
         new GenericTaskCompleteNotification().notify(dt);
         EmployeeOnBoardingDao.instance().save(empOnBoarding);
@@ -121,7 +121,7 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
     }
 
     protected void payrollRegistrationTaskCompleted(EmployeeOnBoarding entity, DelegateTask dt) {
-        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
+        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findById(entity.getId());
         empOnBoarding.setStatus(OnBoardingStatus.Pending_Employee_Orientation);
         new GenericTaskCompleteNotification().notify(dt);
         EmployeeOnBoardingDao.instance().save(empOnBoarding);
@@ -129,7 +129,7 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
     }
 
     protected void createEmployeeOrientationTask(EmployeeOnBoarding entity, DelegateTask dt) {
-        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(entity.getId());
+        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findById(entity.getId());
         empOnBoarding.setStatus(OnBoardingStatus.Complete);
         new GenericTaskCompleteNotification().notify(dt);
         EmployeeOnBoardingDao.instance().save(empOnBoarding);
