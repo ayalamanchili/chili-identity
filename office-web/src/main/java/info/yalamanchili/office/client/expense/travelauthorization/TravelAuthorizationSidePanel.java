@@ -34,7 +34,7 @@ public class TravelAuthorizationSidePanel extends ALComposite implements ClickHa
 
     private static Logger logger = Logger.getLogger(TravelAuthorizationSidePanel.class.getName());
     public FlowPanel travelAuthSidePanel = new FlowPanel();
-    ClickableLink createtravelAuthLink = new ClickableLink("Submit Travel Authorization Request");
+//    ClickableLink createtravelAuthLink = new ClickableLink("Submit Travel Authorization Request");
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false);
     Button viewB = new Button("View");
 
@@ -44,7 +44,7 @@ public class TravelAuthorizationSidePanel extends ALComposite implements ClickHa
 
     @Override
     protected void addListeners() {
-        createtravelAuthLink.addClickHandler(this);
+//        createtravelAuthLink.addClickHandler(this);
         viewB.addClickHandler(this);
     }
 
@@ -77,7 +77,7 @@ public class TravelAuthorizationSidePanel extends ALComposite implements ClickHa
 
     @Override
     protected void addWidgets() {
-        travelAuthSidePanel.add(createtravelAuthLink);
+//        travelAuthSidePanel.add(createtravelAuthLink);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ACCOUNTS_PAYABLE, Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS, Auth.ROLE.ROLE_CEO)) {
             travelAuthSidePanel.add(new SearchTravelAuthPanel());
         } else {
@@ -89,10 +89,10 @@ public class TravelAuthorizationSidePanel extends ALComposite implements ClickHa
 
     @Override
     public void onClick(ClickEvent event) {
-        if (event.getSource().equals(createtravelAuthLink)) {
-            TabPanel.instance().expensePanel.entityPanel.clear();
-            TabPanel.instance().expensePanel.entityPanel.add(new CreateTravelAuthorizationPanel());
-        }
+//        if (event.getSource().equals(createtravelAuthLink)) {
+//            TabPanel.instance().expensePanel.entityPanel.clear();
+//            TabPanel.instance().expensePanel.entityPanel.add(new CreateTravelAuthorizationPanel());
+//        }
         if (event.getSource().equals(viewB)) {
             TabPanel.instance().expensePanel.entityPanel.clear();
             TabPanel.instance().expensePanel.entityPanel.add(new ReadAllTravelAuthorizationPanel(getTravelAuthURL(0, "10")));
