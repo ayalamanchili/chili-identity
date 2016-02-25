@@ -25,7 +25,7 @@ public class NotificationGroupSidePanel extends ALComposite implements ClickHand
 
     private static Logger logger = Logger.getLogger(NotificationGroupSidePanel.class.getName());
     public FlowPanel notificationsidepanel = new FlowPanel();
-    ClickableLink createnotificationGrouplink = new ClickableLink("Create Notification Group");
+//    ClickableLink createnotificationGrouplink = new ClickableLink("Create Notification Group");
 
     public NotificationGroupSidePanel() {
         init(notificationsidepanel);
@@ -33,7 +33,7 @@ public class NotificationGroupSidePanel extends ALComposite implements ClickHand
 
     @Override
     protected void addListeners() {
-        createnotificationGrouplink.addClickHandler(this);
+//        createnotificationGrouplink.addClickHandler(this);
     }
 
     @Override
@@ -43,13 +43,14 @@ public class NotificationGroupSidePanel extends ALComposite implements ClickHand
     @Override
     protected void addWidgets() {
         if (Auth.isAdmin() || Auth.isHR()) {
-            notificationsidepanel.add(createnotificationGrouplink);
+//            notificationsidepanel.add(createnotificationGrouplink);
         }
     }
 
     @Override
     public void onClick(ClickEvent event) {
-        if (event.getSource().equals(createnotificationGrouplink)) {
+//        if (event.getSource().equals(createnotificationGrouplink))
+        {
             TabPanel.instance().getAdminPanel().entityPanel.clear();
             TabPanel.instance().getAdminPanel().entityPanel.add(new CreateNotificationGroupPanel(CreateComposite.CreateCompositeType.CREATE));
         }
