@@ -16,6 +16,7 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CRUDReadAllComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.rpc.HttpService;
 import java.util.logging.Logger;
@@ -126,5 +127,21 @@ public class ReadAllClientsPanel extends CRUDReadAllComposite {
         TabPanel.instance().adminPanel.sidePanelTop.add(new TreeClientPanel(getEntity(entityId)));
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new UpdateClientPanel(getEntity(entityId)));
+    }
+
+    @Override
+    protected void configureCreateButton() {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS)) {
+            createButton.setText("Create Client");
+            createButton.setVisible(true);
+        } else {
+            createButton.setVisible(false);
+        }
+    }
+
+    @Override
+    protected void createButtonClicked() {
+        TabPanel.instance().getAdminPanel().entityPanel.clear();
+        TabPanel.instance().getAdminPanel().entityPanel.add(new CreateClientPanel(CreateComposite.CreateCompositeType.CREATE));
     }
 }
