@@ -25,7 +25,7 @@ public class SOWSidePanel extends ALComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(info.yalamanchili.office.client.admin.sow.SOWSidePanel.class.getName());
     public FlowPanel sowsidepanel = new FlowPanel();
-    ClickableLink createsowlink = new ClickableLink("Create SOW");
+//    ClickableLink createsowlink = new ClickableLink("Create SOW");
 
     public SOWSidePanel() {
         init(sowsidepanel);
@@ -33,7 +33,7 @@ public class SOWSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addListeners() {
-        createsowlink.addClickHandler(this);
+//        createsowlink.addClickHandler(this);
     }
 
     @Override
@@ -43,13 +43,14 @@ public class SOWSidePanel extends ALComposite implements ClickHandler {
     @Override
     protected void addWidgets() {
         if (Auth.isAdmin() || Auth.isHR() || Auth.hasContractsRole()) {
-            sowsidepanel.add(createsowlink);
+//            sowsidepanel.add(createsowlink);
         }
     }
 
     @Override
     public void onClick(ClickEvent event) {
-        if (event.getSource().equals(createsowlink)) {
+       // if (event.getSource().equals(createsowlink)) 
+        {
             TabPanel.instance().adminPanel.entityPanel.clear();
             TabPanel.instance().adminPanel.entityPanel.add(new CreateSOWPanel(CreateComposite.CreateCompositeType.CREATE));
         }
