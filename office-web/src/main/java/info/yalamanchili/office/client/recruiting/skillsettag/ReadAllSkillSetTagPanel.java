@@ -111,4 +111,17 @@ public class ReadAllSkillSetTagPanel extends CRUDReadAllComposite {
     private String getReadAllSkillSetTagURL(Integer start, String limit) {
         return OfficeWelcome.constants.root_url() + "skillsettag/" + start.toString() + "/" + limit.toString();
     }
+     
+    @Override
+    protected void configureCreateButton() {
+         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_RECRUITER)) {
+            createButton.setText("Create SkillSetTag");
+            createButton.setVisible(true);
+        }
+    }
+    @Override
+    protected void createButtonClicked() {
+        TabPanel.instance().getRecruitingPanel().entityPanel.clear();
+        TabPanel.instance().getRecruitingPanel().entityPanel.add(new CreateSkillSetTagPanel());
+    }
 }
