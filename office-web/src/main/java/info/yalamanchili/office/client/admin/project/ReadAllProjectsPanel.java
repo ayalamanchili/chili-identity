@@ -17,6 +17,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CRUDReadAllComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.Auth;
@@ -139,4 +140,20 @@ public class ReadAllProjectsPanel extends CRUDReadAllComposite {
             return OfficeWelcome.constants.root_url() + "project/" + start.toString() + "/" + limit.toString();
         }
     }
-}
+    @Override
+    protected void createButtonClicked() {
+        TabPanel.instance().getAdminPanel().entityPanel.clear();
+        TabPanel.instance().getAdminPanel().entityPanel.add(new CreateProjectPanel(CreateComposite.CreateCompositeType.CREATE, true));
+    }
+
+    @Override
+    protected void configureCreateButton() {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_EXPENSE, Auth.ROLE.ROLE_TIME)) {
+            createButton.setText("Create Project");
+            createButton.setVisible(true);
+         } else {
+            createButton.setVisible(false);
+        }
+        }
+    }
+
