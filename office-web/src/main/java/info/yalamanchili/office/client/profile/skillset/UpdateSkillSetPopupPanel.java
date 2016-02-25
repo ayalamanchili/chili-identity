@@ -18,8 +18,8 @@ import info.yalamanchili.office.client.profile.ProfileHome;
  */
 public class UpdateSkillSetPopupPanel extends UpdateSkillSetPanel {
 
-    public UpdateSkillSetPopupPanel(String empId) {
-        super(empId);
+    public UpdateSkillSetPopupPanel() {
+        super();
     }
 
     @Override
@@ -45,6 +45,7 @@ public class UpdateSkillSetPopupPanel extends UpdateSkillSetPanel {
         return URL.encode(OfficeWelcome.constants.root_url() + "skillsettag/remove-tag/" + tagsSB.getValue());
     }
 
+    @Override
     protected String getTagsUrl() {
         return OfficeWelcome.constants.root_url() + "skillsettag/tags";
     }

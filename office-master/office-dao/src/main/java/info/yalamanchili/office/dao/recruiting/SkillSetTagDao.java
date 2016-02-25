@@ -9,6 +9,7 @@ package info.yalamanchili.office.dao.recruiting;
 
 import info.chili.commons.EntityQueryUtils;
 import info.chili.dao.CRUDDao;
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.profile.SkillSetDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
@@ -45,6 +46,8 @@ public class SkillSetTagDao extends CRUDDao<SkillSetTag> {
         SkillSetTag tag = EntityQueryUtils.findEntity(getEntityManager(), SkillSetTag.class, "name", name.trim());
         if (tag != null) {
             skillSet.addTag(tag);
+        } else {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "tag.not.present", "Tag does not exist. Please click Create New Tag");
         }
     }
 
@@ -55,6 +58,8 @@ public class SkillSetTagDao extends CRUDDao<SkillSetTag> {
         SkillSetTag tag = EntityQueryUtils.findEntity(getEntityManager(), SkillSetTag.class, "name", name.trim());
         if (tag != null) {
             skillSet.removeTag(tag);
+        } else {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "tag.not.present", "Tag does not exist. Please select valid Tag");
         }
     }
 
