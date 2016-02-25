@@ -12,6 +12,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
@@ -127,5 +128,21 @@ public class ReadAllSubcontractorsPanel extends CRUDReadAllComposite {
         TabPanel.instance().adminPanel.entityPanel.add(new UpdateSubcontractorPanel(getEntity(entityId)));
         TabPanel.instance().adminPanel.sidePanelTop.clear();
         TabPanel.instance().adminPanel.sidePanelTop.add(new TreeSubcontractorPanel(getEntity(entityId)));
+    }
+
+    @Override
+    protected void createButtonClicked() {
+        TabPanel.instance().getAdminPanel().entityPanel.clear();
+        TabPanel.instance().getAdminPanel().entityPanel.add(new CreateSubcontractorPanel(CreateComposite.CreateCompositeType.CREATE));
+    }
+
+    @Override
+    protected void configureCreateButton() {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS)) {
+            createButton.setText("Create Subcontractor");
+            createButton.setVisible(true);
+        } else {
+            createButton.setVisible(false);
+        }
     }
 }
