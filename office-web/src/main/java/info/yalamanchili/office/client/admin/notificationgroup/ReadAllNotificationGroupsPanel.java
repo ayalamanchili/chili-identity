@@ -15,6 +15,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CRUDReadAllComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.Auth;
@@ -108,5 +109,20 @@ public class ReadAllNotificationGroupsPanel extends CRUDReadAllComposite {
     public void updateClicked(String entityId) {
         TabPanel.instance().getAdminPanel().entityPanel.clear();
         TabPanel.instance().getAdminPanel().entityPanel.add(new UpdateNotificationGroupPanel(getEntity(entityId)));
+    }
+    @Override
+    protected void createButtonClicked() {
+        TabPanel.instance().getAdminPanel().entityPanel.clear();
+        TabPanel.instance().getAdminPanel().entityPanel.add(new CreateNotificationGroupPanel(CreateComposite.CreateCompositeType.CREATE));
+    }
+
+    @Override
+    protected void configureCreateButton() {
+        if (Auth.isAdmin() || Auth.isHR()) {
+            createButton.setText("Create Notification Group");
+            createButton.setVisible(true);
+            } else {
+            createButton.setVisible(false);
+        }
     }
 }
