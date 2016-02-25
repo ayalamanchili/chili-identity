@@ -60,7 +60,7 @@ public class StatusReportResource extends CRUDResource<StatusReport> {
     @Path("/{id}")
     @Transactional(readOnly = true)
     @Override
-    @AccessCheck(roles = {"ROLE_H1B_IMMIGRATION", "Auth.ROLE.ROLE_IT_DEVELOPER", "ROLE_RELATIONSHIP"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
+    @AccessCheck(roles = {"ROLE_H1B_IMMIGRATION", "ROLE_IT_DEVELOPER", "ROLE_RELATIONSHIP"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
     public StatusReport read(@PathParam("id") Long id) {
         return StatusReportService.instance().read(id);
     }
