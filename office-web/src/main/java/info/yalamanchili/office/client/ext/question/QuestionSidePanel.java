@@ -25,7 +25,6 @@ public class QuestionSidePanel extends ALComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(QuestionSidePanel.class.getName());
     public FlowPanel questionSidePanel = new FlowPanel();
-    ClickableLink createQuestionLink = new ClickableLink("Create Question");
 
     public QuestionSidePanel() {
         init(questionSidePanel);
@@ -33,7 +32,6 @@ public class QuestionSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addListeners() {
-        createQuestionLink.addClickHandler(this);
     }
 
     @Override
@@ -43,13 +41,12 @@ public class QuestionSidePanel extends ALComposite implements ClickHandler {
     @Override
     protected void addWidgets() {
         if (Auth.isAdmin() || Auth.isHR()) {
-            questionSidePanel.add(createQuestionLink);
         }
     }
 
     @Override
     public void onClick(ClickEvent event) {
-        if (event.getSource().equals(createQuestionLink)) {
+        {
             TabPanel.instance().getAdminPanel().entityPanel.clear();
             TabPanel.instance().getAdminPanel().entityPanel.add(new CreateQuestionPanel(CreateComposite.CreateCompositeType.CREATE));
         }

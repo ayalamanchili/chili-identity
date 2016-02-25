@@ -11,6 +11,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
@@ -116,5 +117,21 @@ public class ReadAllQuestionPanel extends CRUDReadAllComposite {
 
     private String getQuestionURL(Integer start, String limit) {
         return OfficeWelcome.constants.root_url() + "question/" + start.toString() + "/" + limit.toString();
+    }
+    @Override
+    protected void createButtonClicked() {
+        TabPanel.instance().getAdminPanel().entityPanel.clear();
+        TabPanel.instance().getAdminPanel().entityPanel.add(new CreateQuestionPanel(CreateComposite.CreateCompositeType.CREATE));
+    }
+
+    @Override
+    protected void configureCreateButton() {
+         if (Auth.isAdmin() || Auth.isHR()) {
+            createButton.setText("Create Question");
+            createButton.setVisible(true);
+        }
+         else {
+            createButton.setVisible(false);
+        }
     }
 }
