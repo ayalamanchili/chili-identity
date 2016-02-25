@@ -28,7 +28,7 @@ public class PhoneTypeSidePanel extends ALComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(PhoneTypeSidePanel.class.getName());
     public FlowPanel phonetypesidepanel = new FlowPanel();
-    ClickableLink createphonetypelink = new ClickableLink("Create PhoneType");
+//    ClickableLink createphonetypelink = new ClickableLink("Create PhoneType");
 
     public PhoneTypeSidePanel() {
         init(phonetypesidepanel);
@@ -36,7 +36,7 @@ public class PhoneTypeSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addListeners() {
-        createphonetypelink.addClickHandler(this);
+//        createphonetypelink.addClickHandler(this);
     }
 
     @Override
@@ -47,17 +47,17 @@ public class PhoneTypeSidePanel extends ALComposite implements ClickHandler {
     @Override
     protected void addWidgets() {
         if (Auth.isAdmin() || Auth.isHR()) {
-            phonetypesidepanel.add(createphonetypelink);
+//            phonetypesidepanel.add(createphonetypelink);
         }
         //certificationSidePanel.add(new SearchcertificationPanel());
     }
 
     @Override
     public void onClick(ClickEvent clickEvent) {
-        if (clickEvent.getSource().equals(createphonetypelink)) {
-            TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new CreatePhoneTypePanel(CreateComposite.CreateCompositeType.CREATE));
-        }
+//        if (clickEvent.getSource().equals(createphonetypelink)) {
+//            TabPanel.instance().myOfficePanel.entityPanel.clear();
+//            TabPanel.instance().myOfficePanel.entityPanel.add(new CreatePhoneTypePanel(CreateComposite.CreateCompositeType.CREATE));
+//        }
     }
 
 }
