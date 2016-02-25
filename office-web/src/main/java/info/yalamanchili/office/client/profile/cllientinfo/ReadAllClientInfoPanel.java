@@ -17,6 +17,7 @@ import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.utils.FormatUtils;
@@ -25,6 +26,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.contracts.ClientInformationStatus;
 import static info.yalamanchili.office.client.expense.travelauthorization.ReadAllTravelAuthorizationPanel.instance;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
+import info.yalamanchili.office.client.profile.phonetype.CreatePhoneTypePanel;
 import java.util.logging.Logger;
 
 public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements ClickHandler {
@@ -185,4 +187,20 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
     public void onClick(ClickEvent event) {
         super.onClick(event);
     }
+    
+    @Override
+    protected void configureCreateButton() {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
+            createButton.setText("Create Client Information");
+            createButton.setVisible(true);
+        } else {
+            createButton.setVisible(false);
+        }
+    }
+
+        @Override
+        protected void createButtonClicked() {
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new CreateClientInfoPanel(CreateComposite.CreateCompositeType.ADD));
+        }
 }
