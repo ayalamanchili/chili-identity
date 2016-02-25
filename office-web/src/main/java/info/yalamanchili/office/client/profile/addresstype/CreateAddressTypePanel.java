@@ -14,9 +14,6 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CreateComposite;
-import info.yalamanchili.office.client.profile.certification.CertificationSidePanel;
-import info.yalamanchili.office.client.profile.certification.CreateCertificationPanel;
-import info.yalamanchili.office.client.profile.certification.ReadAllCertificationsPanel;
 import info.chili.gwt.rpc.HttpService;
 import java.util.logging.Logger;
 
@@ -66,8 +63,6 @@ public class CreateAddressTypePanel extends CreateComposite {
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("AddressType Creation Successful");
-        TabPanel.instance().myOfficePanel.sidePanelTop.clear();
-        TabPanel.instance().myOfficePanel.sidePanelTop.add(new AddressTypeSidePanel());
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllAddressTypePanel());
     }
