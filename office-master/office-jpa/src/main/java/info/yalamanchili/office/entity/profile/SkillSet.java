@@ -30,8 +30,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
+import org.hibernate.search.annotations.ContainedIn;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 
 /**
  *
@@ -66,12 +68,14 @@ public class SkillSet extends AbstractEntity {
      */
     @ManyToMany(cascade = CascadeType.ALL)
     @ForeignKey(name = "FK_SkillSet_Skills")
+    @IndexedEmbedded
     protected List<Skill> skills;
     /**
      * Certifications
      */
     @ManyToMany(cascade = CascadeType.ALL)
     @ForeignKey(name = "FK_SkillSet_Certifications")
+    @IndexedEmbedded
     protected List<Certification> certifications;
     /**
      * Employee
@@ -96,6 +100,7 @@ public class SkillSet extends AbstractEntity {
      */
     @ManyToMany(cascade = CascadeType.ALL)
     @ForeignKey(name = "FK_SkillSet_Tag", inverseName = "FK_Tag_SkillSet")
+    @IndexedEmbedded
     protected Set<SkillSetTag> tags;
 
     public SkillSet() {

@@ -20,6 +20,7 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.SearchComposite;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
 import info.yalamanchili.office.client.profile.employee.ReadAllEmployeesPanel;
+import info.yalamanchili.office.client.profile.skillset.ReadAllSkillSetsPanel;
 import info.yalamanchili.office.client.profile.technologyGroup.SelectTechnologyGroupWidget;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -72,6 +73,7 @@ public class SkillSetSearchPanel extends SearchComposite {
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
+                        logger.info(result);
                         processSearchResult(result);
                     }
                 });
@@ -91,7 +93,7 @@ public class SkillSetSearchPanel extends SearchComposite {
     @Override
     protected void postSearchSuccess(JSONArray results) {
         TabPanel.instance().getRecruitingPanel().entityPanel.clear();
-        TabPanel.instance().getRecruitingPanel().entityPanel.add(new ReadAllEmployeesPanel(results));
+        TabPanel.instance().getRecruitingPanel().entityPanel.add(new ReadAllSkillSetsPanel(results));
     }
 
     @Override
