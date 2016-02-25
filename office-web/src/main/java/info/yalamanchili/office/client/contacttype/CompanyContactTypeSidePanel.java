@@ -25,7 +25,7 @@ public class CompanyContactTypeSidePanel extends ALComposite implements ClickHan
 
     private static Logger logger = Logger.getLogger(CompanyContactTypeSidePanel.class.getName());
     public FlowPanel companyContactTypeSidePanel = new FlowPanel();
-    ClickableLink createCompanyContactTypelink = new ClickableLink("Create Company Contact Type");
+//    ClickableLink createCompanyContactTypelink = new ClickableLink("Create Company Contact Type");
 
     public CompanyContactTypeSidePanel() {
         init(companyContactTypeSidePanel);
@@ -33,7 +33,7 @@ public class CompanyContactTypeSidePanel extends ALComposite implements ClickHan
 
     @Override
     protected void addListeners() {
-        createCompanyContactTypelink.addClickHandler(this);
+//        createCompanyContactTypelink.addClickHandler(this);
     }
 
     @Override
@@ -44,15 +44,15 @@ public class CompanyContactTypeSidePanel extends ALComposite implements ClickHan
     @Override
     protected void addWidgets() {
         if (Auth.isAdmin()) {
-            companyContactTypeSidePanel.add(createCompanyContactTypelink);
+//            companyContactTypeSidePanel.add(createCompanyContactTypelink);
         }
     }
 
     @Override
     public void onClick(ClickEvent clickEvent) {
-        if (clickEvent.getSource().equals(createCompanyContactTypelink)) {
-            TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateCompanyContactTypePanel(CreateComposite.CreateCompositeType.CREATE));
+//        if (clickEvent.getSource().equals(createCompanyContactTypelink)) {
+//            TabPanel.instance().myOfficePanel.entityPanel.clear();
+//            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateCompanyContactTypePanel(CreateComposite.CreateCompositeType.CREATE));
         }
     }
-}
+//}
