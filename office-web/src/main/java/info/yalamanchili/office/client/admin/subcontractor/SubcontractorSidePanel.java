@@ -40,7 +40,7 @@ public class SubcontractorSidePanel extends ALComposite implements ClickHandler 
 
     private static Logger logger = Logger.getLogger(SubcontractorSidePanel.class.getName());
     public FlowPanel subcontractorSidePanel = new FlowPanel();
-    ClickableLink createSubcontractorLink = new ClickableLink("Create Subcontractor");
+//    ClickableLink createSubcontractorLink = new ClickableLink("Create Subcontractor");
     ClickableLink SubcontractorSummaryReportL = new ClickableLink("Subcontractor Summary Report");
     CaptionPanel reportsCaptionPanel = new CaptionPanel();
     FlowPanel reportsPanel = new FlowPanel();
@@ -60,7 +60,6 @@ public class SubcontractorSidePanel extends ALComposite implements ClickHandler 
 
     @Override
     protected void addListeners() {
-        createSubcontractorLink.addClickHandler(this);
         SubcontractorSummaryReportL.addClickHandler(this);
         viewReportsB.addClickHandler(this);
         clearReportsL.addClickHandler(this);
@@ -76,7 +75,6 @@ public class SubcontractorSidePanel extends ALComposite implements ClickHandler 
     @Override
     protected void addWidgets() {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS)) {
-            subcontractorSidePanel.add(createSubcontractorLink);
              subcontractorSidePanel.add(SubcontractorSummaryReportL);
         }
         subcontractorSidePanel.add(new SearchSubcontractorPanel());
@@ -90,7 +88,7 @@ public class SubcontractorSidePanel extends ALComposite implements ClickHandler 
 
     @Override
     public void onClick(ClickEvent event) {
-        if (event.getSource().equals(createSubcontractorLink)) {
+        {
             TabPanel.instance().adminPanel.entityPanel.clear();
             TabPanel.instance().adminPanel.entityPanel.add(new CreateSubcontractorPanel(CreateComposite.CreateCompositeType.CREATE));
         }
