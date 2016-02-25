@@ -39,15 +39,15 @@ public class EmailGroupsService {
     public void getemailMenuReportsReport(String email, String employeeType) {
         List<EmployeeBasicInfoReportDto> res = new ArrayList<>();
         if (employeeType.equals("All Employees")) {
-            for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee", "Employee")) {
+            EmployeeDao.instance().getEmployeesByType("Corporate Employee", "Employee").stream().filter((emp) -> (emp.isActive())).forEach((emp) -> {
                 res.add(getAllEmployeeEmails(emp));
-            }
-        }else {
-            for (Employee emp : EmployeeDao.instance().getAllEmployeesByType(employeeType.trim())) {
+            });
+        } else {
+            EmployeeDao.instance().getAllEmployeesByType(employeeType.trim()).stream().filter((emp) -> (emp.isActive())).forEach((emp) -> {
                 res.add(getAllEmployeeEmails(emp));
-            }
+            });
         }
-        String[] columnOrder = new String[]{"email"};
+        String[] columnOrder = new String[]{"firstName", "lastName", "type", "email"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Email-Group-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
 
