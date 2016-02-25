@@ -58,7 +58,7 @@
                 Start Date          : #{employee.startDate}
                 
                 Please follow below instructions 
-                http://apps.sstech.us/site/office/verifyformsanddocs.html  
+                http://apps.sstech.us/site/office/forms-docs-verification.html  
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
