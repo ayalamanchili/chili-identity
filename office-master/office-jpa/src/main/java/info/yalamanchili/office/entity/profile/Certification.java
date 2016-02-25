@@ -73,7 +73,7 @@ public class Certification extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "Certification{" + "name=" + name + ", description=" + description + '}';
+        return getName();
     }
 
 }

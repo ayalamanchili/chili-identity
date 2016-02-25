@@ -11,8 +11,6 @@ import info.chili.spring.SpringContext;
 import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.SkillDao;
 import info.yalamanchili.office.dao.profile.SkillSetDao;
-import info.yalamanchili.office.entity.profile.Certification;
-import info.yalamanchili.office.entity.profile.Skill;
 import info.yalamanchili.office.entity.profile.SkillSet;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.ArrayList;
@@ -28,6 +26,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.apache.commons.lang.StringUtils;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -82,28 +81,14 @@ public class SkillSetResource extends CRUDResource<SkillSet> {
     @Path("/skills")
     @Transactional(readOnly = true)
     public String getSkills() {
-        return mapSkills(SkillDao.instance().getSkills());
+         return StringUtils.join(SkillDao.instance().getSkills(),",");
     }
 
     @GET
     @Path("/skills/{skillSetId}")
     @Transactional(readOnly = true)
     public String getSkills(@PathParam("skillSetId") Long skillSetId) {
-        return mapSkills(SkillDao.instance().getSkillS(skillSetId));
-    }
-
-    protected String mapSkills(List<Skill> skills) {
-        StringBuilder res = new StringBuilder();
-        int counts = skills.size();
-        for (Skill skill : skills) {
-            res.append(skill.getName());
-            if (counts > 1) {
-                res.append(",  ");
-                counts--;
-            }
-
-        }
-        return res.toString();
+        return StringUtils.join(SkillDao.instance().getSkills(skillSetId),",");
     }
 
     //To add Certifications
@@ -132,35 +117,21 @@ public class SkillSetResource extends CRUDResource<SkillSet> {
     @Path("/certifications")
     @Transactional(readOnly = true)
     public String getcertifications() {
-        return mapCertfications(SkillDao.instance().getCertifications());
+       return StringUtils.join(SkillDao.instance().getCertifications(),",");
     }
 
     @GET
     @Path("/certifications/{skillSetId}")
     @Transactional(readOnly = true)
     public String getcertifications(@PathParam("skillSetId") Long skillSetId) {
-        return mapCertfications(SkillDao.instance().getCertifications(skillSetId));
-    }
-
-    protected String mapCertfications(List<Certification> certs) {
-        StringBuilder res = new StringBuilder();
-        int countc = certs.size();
-        for (Certification certfic : certs) {
-            res.append(certfic.getName());
-            if (countc > 1) {
-                res.append(",  ");
-                countc--;
-            }
-
-        }
-        return res.toString();
+        return StringUtils.join(SkillDao.instance().getCertifications(skillSetId),",");
     }
 
     @GET
     @Path("/search-resumes/{start}/{limit}")
     @Transactional(readOnly = true)
     public List<SkillSetDto> searchResumes(@QueryParam("searchText") String searchText, @PathParam("start") Integer start, @PathParam("limit") Integer limit) {
-        List<SkillSetDto> res = new ArrayList<SkillSetDto>();
+        List<SkillSetDto> res = new ArrayList<>();
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         for (SkillSet entity : skillSetDao.hibernateSearch(searchText, start, limit, "resumeContent")) {
             SkillSetDto dto = mapper.map(entity, SkillSetDto.class);

@@ -15,7 +15,6 @@ import info.yalamanchili.office.entity.profile.Certification;
 import info.yalamanchili.office.entity.profile.Skill;
 import info.yalamanchili.office.entity.profile.SkillSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -62,7 +61,7 @@ public class SkillDao extends CRUDDao<Skill> {
         return SkillSetDao.instance().getCurrentUserSkillSet().getSkills();
     }
 
-    public List<Skill> getSkillS(Long skillSetId) {
+    public List<Skill> getSkills(Long skillSetId) {
         return SkillSetDao.instance().findById(skillSetId).getSkills();
     }
 
