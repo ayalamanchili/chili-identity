@@ -12,12 +12,14 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.fields.ImageField;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import java.util.logging.Logger;
@@ -113,5 +115,21 @@ public class ReadAllCompanyPanel extends CRUDReadAllComposite {
 
     private String getCompanyPanelURL(Integer start, String limit) {
         return OfficeWelcome.constants.root_url() + "company/" + start.toString() + "/" + limit.toString();
+    }
+    @Override
+    protected void createButtonClicked() {
+        TabPanel.instance().getAdminPanel().entityPanel.clear();
+        TabPanel.instance().getAdminPanel().entityPanel.add(new CreateCompanyPanel(CreateComposite.CreateCompositeType.CREATE));
+    }
+
+    @Override
+    protected void configureCreateButton() {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN)) {
+            createButton.setText("Create Company");
+            createButton.setVisible(true);
+        }
+        else {
+            createButton.setVisible(false);
+        }
     }
 }
