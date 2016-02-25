@@ -14,9 +14,9 @@ import com.google.gwt.user.client.Window;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.CRUDReadAllComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
-import info.chili.gwt.fields.FileField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.FormatUtils;
 import info.chili.gwt.utils.JSONUtils;
@@ -25,7 +25,6 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.expensereports.ReadExpenseReportPanel;
 import java.util.logging.Logger;
 
 /**
@@ -134,7 +133,7 @@ public class ReadAllAdvanceRequisitionPanel extends CRUDReadAllComposite {
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN)) {
-            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE,TableRowOptionsWidget.OptionsType.PRINT);
+            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE, TableRowOptionsWidget.OptionsType.PRINT);
         } else {
             createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.PRINT);
         }
@@ -161,7 +160,8 @@ public class ReadAllAdvanceRequisitionPanel extends CRUDReadAllComposite {
     protected boolean autoShowDocumentation() {
         return true;
     }
-     @Override
+
+    @Override
     protected boolean enableQuickView() {
         return true;
     }
@@ -170,8 +170,25 @@ public class ReadAllAdvanceRequisitionPanel extends CRUDReadAllComposite {
     protected void onQuickView(int row, String id) {
         new GenericPopup(new ReadAdvanceRequisitionPanel(JSONUtils.toString(getEntity(id), "id")), Window.getClientWidth() / 3, 0).show();
     }
+
     @Override
-    protected boolean enablePersistedQuickView(){
+    protected boolean enablePersistedQuickView() {
         return true;
+    }
+
+    @Override
+    protected void configureCreateButton() {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ACCOUNTS_PAYABLE, Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS, Auth.ROLE.ROLE_CEO)) {
+            createButton.setText("Create Advance Requisition");
+            createButton.setVisible(true);
+        } else {
+            createButton.setVisible(false);
+        }
+    }
+
+    @Override
+    protected void createButtonClicked() {
+        TabPanel.instance().expensePanel.entityPanel.clear();
+        TabPanel.instance().expensePanel.entityPanel.add(new AdvanceRequisitionRequestPanel());
     }
 }

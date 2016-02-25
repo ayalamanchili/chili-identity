@@ -38,7 +38,7 @@ public class AdvanceRequisitionSidePanel extends ALComposite implements ClickHan
 
     private static Logger logger = Logger.getLogger(AdvanceRequisitionSidePanel.class.getName());
     public FlowPanel advanceRequisitionSidePanel = new FlowPanel();
-    ClickableLink createAdvanceRequisitionLink = new ClickableLink("Submit Advance Requisition");
+   // ClickableLink createAdvanceRequisitionLink = new ClickableLink("Submit Advance Requisition");
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false);
     Button viewB = new Button("View");
 
@@ -48,7 +48,7 @@ public class AdvanceRequisitionSidePanel extends ALComposite implements ClickHan
 
     @Override
     protected void addListeners() {
-        createAdvanceRequisitionLink.addClickHandler(this);
+       // createAdvanceRequisitionLink.addClickHandler(this);
         viewB.addClickHandler(this);
         employeeSB.addDomHandler(new Handler(), KeyPressEvent.getType());
 
@@ -94,7 +94,7 @@ public class AdvanceRequisitionSidePanel extends ALComposite implements ClickHan
 
     @Override
     protected void addWidgets() {
-        advanceRequisitionSidePanel.add(createAdvanceRequisitionLink);
+       // advanceRequisitionSidePanel.add(createAdvanceRequisitionLink);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ACCOUNTS_PAYABLE, ROLE.ROLE_ADMIN, ROLE.ROLE_PAYROLL_AND_BENIFITS, ROLE.ROLE_CEO)) {
             advanceRequisitionSidePanel.add(new SearchAdvanceRequisitionPanel());
         } else {
@@ -106,10 +106,10 @@ public class AdvanceRequisitionSidePanel extends ALComposite implements ClickHan
 
     @Override
     public void onClick(ClickEvent event) {
-        if (event.getSource().equals(createAdvanceRequisitionLink)) {
-            TabPanel.instance().expensePanel.entityPanel.clear();
-            TabPanel.instance().expensePanel.entityPanel.add(new AdvanceRequisitionRequestPanel());
-        }
+//      //  if (event.getSource().equals(createAdvanceRequisitionLink)) {
+//            TabPanel.instance().expensePanel.entityPanel.clear();
+//            TabPanel.instance().expensePanel.entityPanel.add(new AdvanceRequisitionRequestPanel());
+//        }
         if (event.getSource().equals(viewB)) {
             TabPanel.instance().expensePanel.entityPanel.clear();
             TabPanel.instance().expensePanel.entityPanel.add(new ReadAllAdvanceRequisitionPanel(getadvanceURL(0, "10")));
