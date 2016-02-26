@@ -28,7 +28,6 @@ import info.yalamanchili.office.client.admin.vendor.ReadAllVendorsPanel;
 import info.yalamanchili.office.client.admin.vendor.VendorsSidePanel;
 import info.yalamanchili.office.client.analytics.event.EventsSidePanel;
 import info.yalamanchili.office.client.analytics.event.ReadAllEventsPanel;
-import info.yalamanchili.office.client.company.CompanySidePanel;
 import info.yalamanchili.office.client.company.ReadAllCompanyPanel;
 import info.yalamanchili.office.client.ext.externalReferences.ExternalSidePanel;
 import info.yalamanchili.office.client.ext.externalReferences.ReadAllExternalRefPanel;
@@ -147,8 +146,6 @@ public class AdminMenu extends CMenuBar {
     static Command companyMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getAdminPanel().entityPanel.clear();
-            TabPanel.instance().getAdminPanel().sidePanelTop.clear();
-            TabPanel.instance().getAdminPanel().sidePanelTop.add(new CompanySidePanel());
             TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllCompanyPanel());
         }
     };
