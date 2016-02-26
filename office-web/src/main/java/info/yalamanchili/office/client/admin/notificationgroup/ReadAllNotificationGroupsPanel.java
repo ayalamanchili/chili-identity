@@ -110,6 +110,7 @@ public class ReadAllNotificationGroupsPanel extends CRUDReadAllComposite {
         TabPanel.instance().getAdminPanel().entityPanel.clear();
         TabPanel.instance().getAdminPanel().entityPanel.add(new UpdateNotificationGroupPanel(getEntity(entityId)));
     }
+
     @Override
     protected void createButtonClicked() {
         TabPanel.instance().getAdminPanel().entityPanel.clear();
@@ -121,7 +122,7 @@ public class ReadAllNotificationGroupsPanel extends CRUDReadAllComposite {
         if (Auth.isAdmin() || Auth.isHR()) {
             createButton.setText("Create Notification Group");
             createButton.setVisible(true);
-            } else {
+        } else {
             createButton.setVisible(false);
         }
     }

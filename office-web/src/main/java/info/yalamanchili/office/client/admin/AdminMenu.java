@@ -14,25 +14,20 @@ import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.bulkimport.BulkImportSidePanel;
 import info.yalamanchili.office.client.admin.bulkimport.ReadAllBulkImportsPanel;
-import info.yalamanchili.office.client.admin.notificationgroup.NotificationGroupSidePanel;
 import info.yalamanchili.office.client.admin.notificationgroup.ReadAllNotificationGroupsPanel;
 import info.yalamanchili.office.client.admin.client.ClientSidePanel;
 import info.yalamanchili.office.client.admin.client.ReadAllClientsPanel;
-import info.yalamanchili.office.client.admin.project.ProjectSidePanel;
 import info.yalamanchili.office.client.admin.project.ReadAllProjectsPanel;
 import info.yalamanchili.office.client.admin.sow.ReadAllSOWPanel;
-import info.yalamanchili.office.client.admin.sow.SOWSidePanel;
 import info.yalamanchili.office.client.admin.subcontractor.ReadAllSubcontractorsPanel;
 import info.yalamanchili.office.client.admin.subcontractor.SubcontractorSidePanel;
 import info.yalamanchili.office.client.admin.vendor.ReadAllVendorsPanel;
 import info.yalamanchili.office.client.admin.vendor.VendorsSidePanel;
 import info.yalamanchili.office.client.analytics.event.EventsSidePanel;
 import info.yalamanchili.office.client.analytics.event.ReadAllEventsPanel;
-import info.yalamanchili.office.client.company.CompanySidePanel;
 import info.yalamanchili.office.client.company.ReadAllCompanyPanel;
 import info.yalamanchili.office.client.ext.externalReferences.ExternalSidePanel;
 import info.yalamanchili.office.client.ext.externalReferences.ReadAllExternalRefPanel;
-import info.yalamanchili.office.client.ext.question.QuestionSidePanel;
 import info.yalamanchili.office.client.ext.question.ReadAllQuestionPanel;
 
 /**
@@ -49,9 +44,8 @@ public class AdminMenu extends CMenuBar {
         addMenuItem("Subcontractors", "Subcontractors", subcontractorsMaintainenceCmd);
         addMenuItem("SOW's", "SOW's", sowMaintainenceCmd);
         addMenuItem("Notification Groups", "Notification Groups", notificationGroupMaintainenceCmd);
-
         addMenuItem("Question", "Question", questionMaintainenceCmd);
-
+        
         if (Auth.hasAnyOfRoles(ROLE.ROLE_BULK_IMPORT, ROLE.ROLE_ADMIN)) {
             addMenuItem("External Refs", "External Refs", externalReferencesMaintainenceCmd);
             addMenuItem("Bulk Import", "Bulk Import", bulkImportMaintainenceCmd);
@@ -67,9 +61,7 @@ public class AdminMenu extends CMenuBar {
         @Override
         public void execute() {
             TabPanel.instance().getAdminPanel().entityPanel.clear();
-            TabPanel.instance().getAdminPanel().sidePanelTop.clear();
             TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllNotificationGroupsPanel());
-            TabPanel.instance().getAdminPanel().sidePanelTop.add(new NotificationGroupSidePanel());
         }
     };
     static Command clientsMaintainenceCmd = new Command() {
@@ -93,17 +85,13 @@ public class AdminMenu extends CMenuBar {
     static Command projectsMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getAdminPanel().entityPanel.clear();
-            TabPanel.instance().getAdminPanel().sidePanelTop.clear();
             TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllProjectsPanel());
-            TabPanel.instance().getAdminPanel().sidePanelTop.add(new ProjectSidePanel());
         }
     };
     static Command sowMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getAdminPanel().entityPanel.clear();
-            TabPanel.instance().getAdminPanel().sidePanelTop.clear();
             TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllSOWPanel());
-            TabPanel.instance().getAdminPanel().sidePanelTop.add(new SOWSidePanel());
         }
     };
     static Command vendorsMaintainenceCmd = new Command() {
@@ -133,9 +121,7 @@ public class AdminMenu extends CMenuBar {
     static Command questionMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getAdminPanel().entityPanel.clear();
-            TabPanel.instance().getAdminPanel().sidePanelTop.clear();
             TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllQuestionPanel());
-            TabPanel.instance().getAdminPanel().sidePanelTop.add(new QuestionSidePanel());
         }
     };
     static Command activityMaintainenceCmd = new Command() {
@@ -150,10 +136,7 @@ public class AdminMenu extends CMenuBar {
     static Command companyMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getAdminPanel().entityPanel.clear();
-            TabPanel.instance().getAdminPanel().sidePanelTop.clear();
-            TabPanel.instance().getAdminPanel().sidePanelTop.add(new CompanySidePanel());
             TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllCompanyPanel());
-
         }
     };
 }

@@ -18,7 +18,6 @@ import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.rpc.HttpService;
-import info.yalamanchili.office.client.Auth;
 import java.util.logging.Logger;
 
 /**
@@ -115,18 +114,13 @@ public class ReadAllPhoneTypePanel extends CRUDReadAllComposite {
 
     @Override
     protected void configureCreateButton() {
-        if (Auth.isAdmin() || Auth.isHR()) {
-            createButton.setText("Create Phone Type");
-            createButton.setVisible(true);
-        } else {
-            createButton.setVisible(false);
-        }
+        createButton.setText("Create Phone Type");
+        createButton.setVisible(true);
     }
 
-        @Override
-        protected void createButtonClicked() {
+    @Override
+    protected void createButtonClicked() {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new CreatePhoneTypePanel(CreateComposite.CreateCompositeType.CREATE));
-        }
     }
-
+}

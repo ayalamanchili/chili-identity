@@ -8,7 +8,6 @@
 package info.yalamanchili.office.client.recruiting;
 
 import info.yalamanchili.office.client.recruiting.reports.SkillSetSearchPanel;
-import info.yalamanchili.office.client.recruiting.skillsettag.SkillSetTagSidePanel;
 import info.yalamanchili.office.client.recruiting.skillsettag.ReadAllSkillSetTagPanel;
 import com.google.gwt.user.client.Command;
 import info.chili.gwt.widgets.CMenuBar;
@@ -48,11 +47,7 @@ public class RecruitingMenu extends CMenuBar {
         @Override
         public void execute() {
             TabPanel.instance().getRecruitingPanel().entityPanel.clear();
-            TabPanel.instance().getRecruitingPanel().sidePanelTop.clear();
-            TabPanel.instance().getRecruitingPanel().entityTitlePanel.add(new RecruitingMenu());
             TabPanel.instance().getRecruitingPanel().entityPanel.add(new ReadAllSkillSetTagPanel());
-            TabPanel.instance().getRecruitingPanel().sidePanelTop.add(new SkillSetTagSidePanel());
-            TabPanel.instance().getRecruitingPanel().sidePanelBottom.clear();
         }
     };
     static Command practiceMaintainenceCmd = new Command() {

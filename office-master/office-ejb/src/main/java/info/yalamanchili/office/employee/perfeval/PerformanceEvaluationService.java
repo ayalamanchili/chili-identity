@@ -270,6 +270,8 @@ public class PerformanceEvaluationService {
         data.setKeyStoreName(securityConfig.getKeyStoreName());
         if (employee.getCompany() != null && employee.getCompany().getName().equals("TechPillars")) {
             data.setTemplateUrl("/templates/pdf/manger-review-techp-template.pdf");
+        } else if (employee.getCompany() != null && employee.getCompany().getName().equals("CGS INC")) {
+            data.setTemplateUrl("/templates/pdf/self-review-cgs-template.pdf");
         } else {
             data.setTemplateUrl("/templates/pdf/manger-review-template.pdf");
         }
@@ -376,6 +378,8 @@ public class PerformanceEvaluationService {
         PdfDocumentData data = new PdfDocumentData();
         if (employee.getCompany() != null && employee.getCompany().getName().equals("TechPillars")) {
             data.setTemplateUrl("/templates/pdf/self-review-techp-template.pdf");
+        } else if (employee.getCompany() != null && employee.getCompany().getName().equals("CGS INC")) {
+            data.setTemplateUrl("/templates/pdf/self-review-cgs-template.pdf");
         } else {
             data.setTemplateUrl("/templates/pdf/self-review-template.pdf");
         }

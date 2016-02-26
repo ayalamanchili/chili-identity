@@ -202,16 +202,11 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
     protected boolean enablePersistedQuickView() {
         return true;
     }
-    
+
     @Override
     protected void configureCreateButton() {
-                if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ACCOUNTS_PAYABLE, Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS, Auth.ROLE.ROLE_CEO)) {
         createButton.setText("Create Expense Report");
         createButton.setVisible(true);
-    }
-     else {
-            createButton.setVisible(false);
-        }
     }
 
     @Override
