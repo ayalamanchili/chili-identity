@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -23,10 +26,7 @@ public class ImmigrationMenu extends CMenuBar {
         }      
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_GC_IMMIGRATION)) {
              addMenuItem("Petition", "Petition", immigrationpetitionCmd);
-        }  
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_GC_IMMIGRATION)) {
-             addMenuItem("Tracker", "Tracker", immigrationtrackerCmd);
-        }  
+        }   
     }
 
     static Command immigrationlcaCmd = new Command() {
@@ -43,14 +43,6 @@ public class ImmigrationMenu extends CMenuBar {
             TabPanel.instance().getImmigrationPanel().sidePanelTop.clear();
             TabPanel.instance().getImmigrationPanel().entityPanel.add(new ReadAllPetitionsPanel());
 //            TabPanel.instance().getImmigrationPanel().sidePanelTop.add(new AdvanceRequisitionSidePanel());
-        }
-    };
-    static Command immigrationtrackerCmd = new Command() {
-        public void execute() {
-//            TabPanel.instance().getImmigrationPanel().entityPanel.clear();
-//            TabPanel.instance().getImmigrationPanel().sidePanelTop.clear();
-//            TabPanel.instance().getImmigrationPanel().entityPanel.add(new ReadAllLCAPanel());
-//            TabPanel.instance().getImmigrationPanel().sidePanelTop.add(new ImmigrationCheckRequisitionSidePanel());
         }
     };
     

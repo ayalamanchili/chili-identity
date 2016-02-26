@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -49,7 +52,6 @@ public class CreatePetitionPanel extends CreateComposite implements ClickHandler
 
     public CreatePetitionPanel(CreateComposite.CreateCompositeType type) {
         super(type);
-        logger.info("im here in create panel");
         initCreateComposite("Petition", OfficeWelcome.constants);
     }
 
@@ -145,7 +147,7 @@ public class CreatePetitionPanel extends CreateComposite implements ClickHandler
         return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_USER.name() + "/0/10000");
     }
 
-    SelectEmployeeWithRoleWidget selectRecruiterW = new SelectEmployeeWithRoleWidget("WorkedBy", Auth.ROLE.ROLE_RECRUITER, false, false, Alignment.HORIZONTAL) {
+    SelectEmployeeWithRoleWidget selectRecruiterW = new SelectEmployeeWithRoleWidget("WorkedBy", Auth.ROLE.ROLE_RECRUITER, false, true, Alignment.HORIZONTAL) {
         @Override
         public boolean enableMultiSelect() {
             return true;
@@ -154,31 +156,30 @@ public class CreatePetitionPanel extends CreateComposite implements ClickHandler
 
     @Override
     protected void addWidgets() {
-        logger.info("im here in create petiton");
         entityFieldsPanel.add(employeeSB);
         addField("receiptNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("attorneyName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("attorneyName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("visaClassification", false, true, VisaClassificationType.names(), Alignment.HORIZONTAL);
         addEnumField("visaProcessing", false, true, VisaProcessingType.names(), Alignment.HORIZONTAL);
-        addField("petitionValidFromDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("petitionValidToDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addEnumField("i140ApprovalStatus", false, true, Polar.names(), Alignment.HORIZONTAL);
+        addField("petitionValidFromDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("petitionValidToDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addEnumField("i140ApprovalStatus", false, false, Polar.names(), Alignment.HORIZONTAL);
         addDropDown("workedByEmployees", selectRecruiterW);
         entityFieldsPanel.add(linkInfo);
         addDropDown("lca", selectLCAWidgetF);
         addDropDown("passport", selectPassportWidgetF);
         entityFieldsPanel.add(prevInfo);
-        addEnumField("previousVisaStatus", false, true, VisaStatus.names(), Alignment.HORIZONTAL);
-        addField("previousStatusExpiry", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addEnumField("previousVisaStatus", false, false, VisaStatus.names(), Alignment.HORIZONTAL);
+        addField("previousStatusExpiry", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(additionalInfo);
-        addEnumField("h4Applicability", false, true, Polar.names(), Alignment.HORIZONTAL);
-        addEnumField("project", false, true, PetitionFor.names(), Alignment.HORIZONTAL);
-        addEnumField("sisterCompanyLetterUsed", false, true, Polar.names(), Alignment.HORIZONTAL);
-        addField("petitionFileDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("petitionTrackingNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("petitionFolderMailedDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("petitionFolderMailTrkNbr", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("petitionApprovalDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addEnumField("h4Applicability", false, false, Polar.names(), Alignment.HORIZONTAL);
+        addEnumField("project", false, false, PetitionFor.names(), Alignment.HORIZONTAL);
+        addEnumField("sisterCompanyLetterUsed", false, false, Polar.names(), Alignment.HORIZONTAL);
+        addField("petitionFileDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("petitionTrackingNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("petitionFolderMailedDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("petitionFolderMailTrkNbr", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("petitionApprovalDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
@@ -196,7 +197,6 @@ public class CreatePetitionPanel extends CreateComposite implements ClickHandler
     public void onBlur(BlurEvent event) {
         if (event.getSource().equals(employeeSB.getSuggestBox().getValueBox())) {
             if (employeeSB.getSelectedObject() != null) {
-                logger.info("hi htere");
                 populateLCA();
                 populatePassport();
 
@@ -209,7 +209,6 @@ public class CreatePetitionPanel extends CreateComposite implements ClickHandler
                 new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String arg0) {
-                logger.info("in populate" + arg0);
                 if (!Strings.isNullOrEmpty(arg0)) {
                     JSONObject lcas = JSONParser.parseLenient(arg0).isObject();
                     if (lcas.get("entry") instanceof JSONObject) {
@@ -233,7 +232,6 @@ public class CreatePetitionPanel extends CreateComposite implements ClickHandler
                 new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String arg0) {
-                logger.info("in populate" + arg0);
                 if (!Strings.isNullOrEmpty(arg0)) {
                     JSONObject lcas = JSONParser.parseLenient(arg0).isObject();
                     if (lcas.get("entry") instanceof JSONObject) {
@@ -250,6 +248,24 @@ public class CreatePetitionPanel extends CreateComposite implements ClickHandler
 
     private String getPassportReadUrl() {
         return URL.encode(OfficeWelcome.constants.root_url() + "passport/dropdown/" + JSONUtils.toString(employeeSB.getSelectedObject(), "id"));
+    }
+
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        boolean valid = true;
+        if (employeeSB.getSelectedObject() == null) {
+            employeeSB.setMessage("Please choose an Employee");
+            valid = false;
+        }
+        if (selectPassportWidgetF.getSelectedObject() == null) {
+            selectPassportWidgetF.setMessage("Please select Passport");
+            valid = false;
+        }
+        if (selectLCAWidgetF.getSelectedObject() == null) {
+            selectLCAWidgetF.setMessage("Please select LCA");
+            valid = false;
+        }
+        return valid;
     }
 
 }

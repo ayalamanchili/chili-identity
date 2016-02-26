@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -71,11 +74,12 @@ public class ReadAllPetitionsPanel extends CRUDReadAllComposite {
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
-        table.setText(0, 1, getKeyValue("Petition Number"));
+        table.setText(0, 1, getKeyValue("Name"));
         table.setText(0, 2, getKeyValue("Classification"));
         table.setText(0, 3, getKeyValue("Processing"));
-        table.setText(0, 4, getKeyValue("Filed Date"));
-        table.setText(0, 5, getKeyValue("Status"));
+        table.setText(0, 4, getKeyValue("Petition Number"));
+        table.setText(0, 5, getKeyValue("Filed Date"));
+        table.setText(0, 6, getKeyValue("Status"));
     }
 
     @Override
@@ -83,11 +87,15 @@ public class ReadAllPetitionsPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            table.setText(i, 1, JSONUtils.toString(entity, "receiptNumber"));
+            if (entity.get("petitionEmployee") != null) {
+                JSONObject emp = entity.get("petitionEmployee").isObject();
+                table.setText(i, 1, JSONUtils.toString(emp, "firstName"));
+            }
             setEnumColumn(i, 2, entity, VisaClassificationType.class.getSimpleName(), "visaClassification");
             setEnumColumn(i, 3, entity, VisaProcessingType.class.getSimpleName(), "visaProcessing");
-            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "petitionFileDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            setEnumColumn(i, 5, entity, PetitionStatus.class.getSimpleName(), "petitionStatus");
+            table.setText(i, 4, JSONUtils.toString(entity, "receiptNumber"));
+            table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, "petitionFileDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            setEnumColumn(i, 6, entity, PetitionStatus.class.getSimpleName(), "petitionStatus");
 
         }
     }
@@ -166,5 +174,5 @@ public class ReadAllPetitionsPanel extends CRUDReadAllComposite {
     protected boolean enablePersistedQuickView() {
         return true;
     }
-    
+
 }
