@@ -24,9 +24,7 @@ import info.chili.gwt.utils.FormatUtils;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.contracts.ClientInformationStatus;
-import static info.yalamanchili.office.client.expense.travelauthorization.ReadAllTravelAuthorizationPanel.instance;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
-import info.yalamanchili.office.client.profile.phonetype.CreatePhoneTypePanel;
 import java.util.logging.Logger;
 
 public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements ClickHandler {
@@ -44,7 +42,8 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
         this.parentId = parentId;
         initTable("Client Information", OfficeWelcome.constants);
     }
-     public ReadAllClientInfoPanel(JSONArray result) {
+
+    public ReadAllClientInfoPanel(JSONArray result) {
         instance = this;
         initTable("Client Information", result, OfficeWelcome.constants);
     }
@@ -53,11 +52,11 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
     public void preFetchTable(int start) {
         HttpServiceAsync.instance().doGet(getReadAllURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        postFetchTable(result);
+                    }
+                });
     }
 
     @Override
@@ -131,11 +130,11 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
     public void deleteClicked(String entityId) {
         HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                postDeleteSuccess();
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
     }
 
     @Override
@@ -187,10 +186,10 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
     public void onClick(ClickEvent event) {
         super.onClick(event);
     }
-    
+
     @Override
     protected void configureCreateButton() {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
             createButton.setText("Create Client Information");
             createButton.setVisible(true);
         } else {
@@ -198,9 +197,9 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
         }
     }
 
-        @Override
-        protected void createButtonClicked() {
+    @Override
+    protected void createButtonClicked() {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new CreateClientInfoPanel(CreateComposite.CreateCompositeType.ADD));
-        }
+    }
 }
