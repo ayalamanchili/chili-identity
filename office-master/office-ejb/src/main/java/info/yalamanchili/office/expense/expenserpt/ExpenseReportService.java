@@ -184,19 +184,24 @@ public class ExpenseReportService {
         data.setKeyStoreName(securityConfiguration.getKeyStoreName());
         Employee emp = entity.getEmployee();
         if ((entity.getExpenseFormType()) != null && entity.getExpenseFormType().name().equals("GENERAL_EXPENSE")) {
-            if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals("TechPillars")) {
+            if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals("CGS INC")) {
+                data.setTemplateUrl("/templates/pdf/expense-report-cgs-template.pdf");
+            }
+            else if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals("TechPillars")) {
                 data.setTemplateUrl("/templates/pdf/expense-report-tp-template.pdf");
             } else {
                 data.setTemplateUrl("/templates/pdf/expense-report-template.pdf");
             }
         }
         if ((entity.getExpenseFormType()) != null && entity.getExpenseFormType().name().equals("TRAVEL_EXPENSE")) {
-            if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals("TechPillars")) {
-                data.setTemplateUrl("/templates/pdf/travel-expenses-tp-form.pdf");
+            if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals("CGS INC")) {
+                data.setTemplateUrl("/templates/pdf/travel-expenses-cgs-template.pdf");
+            }
+            else if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals("TechPillars")) {
+                data.setTemplateUrl("/templates/pdf/travel-expenses-tp-template.pdf");
             } else {
                 data.setTemplateUrl("/templates/pdf/travel-expenses-form.pdf");
             }
-
         }
 
         data.setKeyStoreName(securityConfiguration.getKeyStoreName());

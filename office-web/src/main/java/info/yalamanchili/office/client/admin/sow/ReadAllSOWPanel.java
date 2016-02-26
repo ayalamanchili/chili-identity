@@ -131,6 +131,7 @@ public class ReadAllSOWPanel extends CRUDReadAllComposite {
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new UpdateSOWPanel(getEntity(entityId)));
     }
+
     @Override
     protected void createButtonClicked() {
         TabPanel.instance().getAdminPanel().entityPanel.clear();
@@ -142,8 +143,7 @@ public class ReadAllSOWPanel extends CRUDReadAllComposite {
         if (Auth.isAdmin() || Auth.isHR() || Auth.hasContractsRole()) {
             createButton.setText("Create SOW");
             createButton.setVisible(true);
-             createButton.setVisible(true);
-            } else {
+        } else {
             createButton.setVisible(false);
         }
     }

@@ -166,7 +166,7 @@ public class ConsultantTimeService {
         if (emp.getCompany() != null && emp.getCompany().getName().equals("TechPillars")) {
             data.setTemplateUrl("/templates/pdf/assoc-ts-template-techp.pdf");
         }
-        if (emp.getCompany() != null && emp.getCompany().getName().equals("CGS INC")) {
+        else if (emp.getCompany() != null && emp.getCompany().getName().equals("CGS INC")) {
             data.setTemplateUrl("/templates/pdf/assoc-ts-template-cgs.pdf");
         } else {
             data.setTemplateUrl("templates/pdf/assoc-ts-template.pdf");

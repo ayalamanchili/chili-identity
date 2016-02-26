@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -72,9 +75,10 @@ public class ReadAllLCAPanel extends CRUDReadAllComposite {
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("LCA Number"));
-        table.setText(0, 2, getKeyValue("LCA Filed Date"));
+        table.setText(0, 2, getKeyValue("Classification"));
         table.setText(0, 3, getKeyValue("LCA Valid From Date"));
         table.setText(0, 4, getKeyValue("LCA Valid To Date"));
+        table.setText(0, 5, getKeyValue("LCA Filed Date"));
     }
 
     @Override
@@ -83,9 +87,10 @@ public class ReadAllLCAPanel extends CRUDReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "lcaNumber"));
-            table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "lcaFiledDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "lcaValidFromDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "lcaValidToDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            setEnumColumn(i, 2, entity, VisaClassificationType.class.getSimpleName(), "visaClassification");
+            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "lcaFiledDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "lcaValidFromDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, "lcaValidToDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
         }
     }
 

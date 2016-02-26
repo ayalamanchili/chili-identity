@@ -90,10 +90,12 @@ public class LCA extends AbstractEntity {
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date lcaFiledDate;
 
+    @NotNull(message = "{lca.lcaValidFromDate.not.empty.msg}")
     @org.hibernate.annotations.Index(name = "LCA_VALID_FROM_DATE")
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date lcaValidFromDate;
 
+    @NotNull(message = "{lca.lcaValidToDate.not.empty.msg}")
     @org.hibernate.annotations.Index(name = "LCA_VALID_TO_DATE")
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date lcaValidToDate;
