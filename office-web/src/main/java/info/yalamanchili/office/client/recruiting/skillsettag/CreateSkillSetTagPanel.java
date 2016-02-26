@@ -33,7 +33,7 @@ public class CreateSkillSetTagPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateSkillSetTagPanel.class.getName());
 
-    protected List<GenericListener> listeners = new ArrayList<GenericListener>();
+    protected List<GenericListener> listeners = new ArrayList<>();
     protected Button createAndAddB = new Button("Create and Add");
     protected StringField nameF;
     protected String skillSetId;
@@ -83,10 +83,12 @@ public class CreateSkillSetTagPanel extends CreateComposite {
             GenericPopup.instance().hide();
         }
         new ResponseStatusWidget().show("Successfully Added SkillSetTag");
-        TabPanel.instance().recruitingPanel.sidePanelTop.clear();
-        TabPanel.instance().recruitingPanel.sidePanelTop.add(new SkillSetTagSidePanel());
-        TabPanel.instance().recruitingPanel.entityPanel.clear();
-        TabPanel.instance().recruitingPanel.entityPanel.add(new ReadAllSkillSetTagPanel());
+        if (TabPanel.instance().recruitingPanel.isVisible()) {
+            TabPanel.instance().recruitingPanel.sidePanelTop.clear();
+            TabPanel.instance().recruitingPanel.sidePanelTop.add(new SkillSetTagSidePanel());
+            TabPanel.instance().recruitingPanel.entityPanel.clear();
+            TabPanel.instance().recruitingPanel.entityPanel.add(new ReadAllSkillSetTagPanel());
+        }
         for (GenericListener listner : listeners) {
             listner.fireEvent();
         }

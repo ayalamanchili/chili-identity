@@ -22,11 +22,23 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType
 public class SkillSetDto implements Serializable {
 
+    protected String employeeName;
+    /**
+     *
+     */
     protected String resumeUrl;
     @NotNull(message = "{practice.not.empty.msg}")
     private Practice practice;
     @NotNull(message = "{technologyGroup.not.empty.msg}")
     private TechnologyGroup technologyGroup;
+
+    public String getEmployeeName() {
+        return employeeName;
+    }
+
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
+    }
 
     public String getResumeUrl() {
         return resumeUrl;

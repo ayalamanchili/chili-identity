@@ -8,12 +8,15 @@
  */
 package info.yalamanchili.office.reports.recruiting;
 
-import info.chili.commons.SearchUtils;
+import static com.google.common.io.ByteStreams.limit;
+import static com.mongodb.QueryBuilder.start;
 import info.chili.reporting.ReportGenerator;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.EmployeeDto;
+import info.yalamanchili.office.dao.profile.SkillSetDao;
+import info.yalamanchili.office.dto.profile.SkillSetDto;
 import info.yalamanchili.office.entity.profile.Certification;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.Skill;
@@ -24,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,10 +50,14 @@ public class RecruitingReportsService {
     @Autowired
     protected Mapper mapper;
 
-    public List<EmployeeDto> search(String text) {
-        //TODO need to pass only necessary columns that are used for searching
-        Query searchQ = em.createQuery(SearchUtils.getSearchQueryString(SkillSet.class, text, null, true));
-        return searchQ.getResultList();
+    public List<SkillSetDto> search(String text) {
+         List<SkillSetDto> res = new ArrayList<>();
+        for (SkillSet entity : SkillSetDao.instance().hibernateSearch(text, 0, 100, "resumeContent", "skills.name", "certifications.name", "tags.name")) {
+            SkillSetDto dto = mapper.map(entity, SkillSetDto.class);
+            dto.setEmployeeName(entity.getEmployee().getFirstName() + " " + entity.getEmployee().getLastName());
+            res.add(dto);
+        }
+        return res;
     }
 
     public List<EmployeeDto> searchSkillSet(SkillSetSearchDto searchDto) {

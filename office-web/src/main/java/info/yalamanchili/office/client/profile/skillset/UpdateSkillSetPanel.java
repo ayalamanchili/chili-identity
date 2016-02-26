@@ -19,7 +19,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.RichTextArea;
+import com.google.gwt.user.client.ui.TextArea;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -76,7 +76,7 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
     SuggestBox tagsSB = new SuggestBox(OfficeWelcome.constants, "search", "SkillSetTag", false, false);
     Button addTagB = new Button("Add Tag");
     Button removeTagB = new Button("Remove Tag");
-    RichTextArea tagsTA = new RichTextArea();
+    TextArea tagsTA = new TextArea();
     ClickableLink createTagL = new ClickableLink("Create New Tag");
 
     /**
@@ -88,7 +88,7 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
     SuggestBox skillSB = new SuggestBox(OfficeWelcome.constants, "Search Skill", "Skill", false, false);
     Button addSkill = new Button("Add Skill");
     Button removeSkill = new Button("Remove Skill");
-    RichTextArea skillTa = new RichTextArea();
+    TextArea skillTa = new TextArea();
     ClickableLink newSkill = new ClickableLink("Skills not present? submit request");
 
     /*
@@ -100,7 +100,7 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
     SuggestBox certSB = new SuggestBox(OfficeWelcome.constants, "Search Certifications", "Certification", false, false);
     Button addCert = new Button("Add Certification");
     Button removeCert = new Button("Remove Certification");
-    RichTextArea certTA = new RichTextArea();
+    TextArea certTA = new TextArea();
     ClickableLink newCert = new ClickableLink("Certifications not present? submit request");
 
     public UpdateSkillSetPanel(JSONObject entity) {
@@ -113,8 +113,9 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
         loadCertSuggestions();
     }
 
-    public UpdateSkillSetPanel(String empId) {
-        initUpdateComposite(empId, "SkillSet", OfficeWelcome.constants);
+    public UpdateSkillSetPanel() {
+        initUpdateComposite("", "SkillSet", OfficeWelcome.constants);
+        this.entityId = null;
         entityActionsPanel.add(tagsCP);
         entityActionsPanel.add(skillp);
         entityActionsPanel.add(certp);
@@ -251,8 +252,14 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
     @Override
     protected void configure() {
         tagsTA.setWidth("100%");
+        tagsTA.setEnabled(false);
+        tagsTA.setVisibleLines(3);
         skillTa.setWidth("100%");
+        skillTa.setEnabled(false);
+        skillTa.setVisibleLines(3);
         certTA.setWidth("100%");
+        certTA.setEnabled(false);
+        certTA.setVisibleLines(3);
     }
 
     @Override
@@ -263,7 +270,7 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
         entityFieldsPanel.add(newTGL);
         entityFieldsPanel.add(resumeUploadPanel);
         //Tags
-        tagsPanel.add(new HTML("<h5>Add Tags that will reflect your niche skills. These are used by search engine for recruiting purposes. </br> You can create new Tags as needed.</h5>"));
+        tagsPanel.add(new HTML("<p><b>Add Tags that will reflect your niche skills. These are used by search engine for find new opportunities. </br> You can create new Tags as needed.</b></p>"));
         tagsPanel.add(tagsSB);
         tagsSB.addWidgetToFieldPanel(createTagL);
         tagsPanel.add(addTagB);
@@ -382,7 +389,9 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
             @Override
             public void onResponse(String entityString) {
                 if (entityString != null && !entityString.isEmpty()) {
-                    tagsTA.setHTML(entityString);
+                    tagsTA.setText(entityString);
+                } else {
+                    tagsTA.setText("");
                 }
             }
         });
@@ -461,7 +470,9 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
             @Override
             public void onResponse(String entityString) {
                 if (entityString != null && !entityString.isEmpty()) {
-                    skillTa.setHTML(entityString);
+                    skillTa.setText(entityString);
+                } else {
+                    skillTa.setText("");
                 }
             }
         });
@@ -487,7 +498,7 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
                         new ResponseStatusWidget().show("Certification Added");
                     }
                 });
-        
+
         certSB.clearText();
     }
 
@@ -532,7 +543,9 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
             @Override
             public void onResponse(String entityString) {
                 if (entityString != null && !entityString.isEmpty()) {
-                    certTA.setHTML(entityString);
+                    certTA.setText(entityString);
+                } else {
+                    certTA.setText("");
                 }
             }
         });

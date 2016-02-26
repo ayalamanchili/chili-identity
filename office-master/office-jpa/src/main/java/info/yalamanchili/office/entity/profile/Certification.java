@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.envers.Audited;
+import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -31,9 +32,19 @@ public class Certification extends AbstractEntity {
 
     @NotEmpty(message = "{certification.not.empty.msg}")
     @org.hibernate.annotations.Index(name = "CERT_NM")
+    @Field
     protected String name;
+    /**
+     * 
+     */
     protected String description;
+    /**
+     * 
+     */
     protected String certificationVendor;
+    /**
+     * 
+     */
     protected String certificationCode;
 
     public Certification() {
@@ -73,7 +84,7 @@ public class Certification extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "Certification{" + "name=" + name + ", description=" + description + '}';
+        return getName();
     }
 
 }

@@ -15,6 +15,7 @@ import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.envers.Audited;
+import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -36,7 +37,11 @@ public class Skill extends AbstractEntity {
 
     @NotEmpty(message = "{skill.not.empty.msg}")
     @org.hibernate.annotations.Index(name = "SKL_NM")
+    @Field
     protected String name;
+    /**
+     *
+     */
     protected String description;
 
     public Skill() {
@@ -60,6 +65,6 @@ public class Skill extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "Skill{" + "name=" + name + ", description=" + description + '}';
+        return getName();
     }
 }

@@ -42,15 +42,15 @@ public class SkillSetOptionsPopupPanel extends SkillSetOptionsPanel {
                         public void onResponse(String arg0) {
                             logger.info("dddd" + arg0);
                             if (arg0 != null) {
-                                UpdateSkillSetPopupPanel updateSkillSetPanel = new UpdateSkillSetPopupPanel(OfficeWelcome.instance().employeeId);
+                                UpdateSkillSetPopupPanel updateSkillSetPanel = new UpdateSkillSetPopupPanel();
                                 new GenericPopup(updateSkillSetPanel).show();
                             }
                         }
                     });
         }
     }
-    
-     protected String getSkillSetURI() {
+
+    protected String getSkillSetURI() {
         return OfficeWelcome.constants.root_url() + "employee/skillset/" + OfficeWelcome.instance().employeeId;
     }
 }

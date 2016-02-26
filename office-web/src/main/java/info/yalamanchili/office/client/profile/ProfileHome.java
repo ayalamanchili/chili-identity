@@ -276,7 +276,7 @@ public class ProfileHome extends ALComposite {
                             @Override
                             public void onResponse(String response) {
                                 if (response != null && !response.isEmpty()) {
-                                    skillSetPanel.add(new UpdateSkillSetPopupPanel(OfficeWelcome.instance().employeeId));
+                                    skillSetPanel.add(new UpdateSkillSetPopupPanel());
                                 } else {
                                     TabPanel.instance().myOfficePanel.entityPanel.clear();
                                     skillSetPanel.add(new CreateSkillSetPanel(OfficeWelcome.instance().employeeId));
