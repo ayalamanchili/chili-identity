@@ -114,10 +114,8 @@ public class ReadAllSkillSetTagPanel extends CRUDReadAllComposite {
      
     @Override
     protected void configureCreateButton() {
-         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_RECRUITER)) {
             createButton.setText("Create SkillSetTag");
             createButton.setVisible(true);
-        }
     }
     @Override
     protected void createButtonClicked() {
