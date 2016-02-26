@@ -47,9 +47,7 @@ public class RecruitingMenu extends CMenuBar {
         @Override
         public void execute() {
             TabPanel.instance().getRecruitingPanel().entityPanel.clear();
-            TabPanel.instance().getRecruitingPanel().entityTitlePanel.add(new RecruitingMenu());
             TabPanel.instance().getRecruitingPanel().entityPanel.add(new ReadAllSkillSetTagPanel());
-            TabPanel.instance().getRecruitingPanel().sidePanelBottom.clear();
         }
     };
     static Command practiceMaintainenceCmd = new Command() {
