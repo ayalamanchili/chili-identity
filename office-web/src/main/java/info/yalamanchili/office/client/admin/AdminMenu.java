@@ -21,7 +21,6 @@ import info.yalamanchili.office.client.admin.client.ReadAllClientsPanel;
 import info.yalamanchili.office.client.admin.project.ProjectSidePanel;
 import info.yalamanchili.office.client.admin.project.ReadAllProjectsPanel;
 import info.yalamanchili.office.client.admin.sow.ReadAllSOWPanel;
-import info.yalamanchili.office.client.admin.sow.SOWSidePanel;
 import info.yalamanchili.office.client.admin.subcontractor.ReadAllSubcontractorsPanel;
 import info.yalamanchili.office.client.admin.subcontractor.SubcontractorSidePanel;
 import info.yalamanchili.office.client.admin.vendor.ReadAllVendorsPanel;
@@ -99,9 +98,7 @@ public class AdminMenu extends CMenuBar {
     static Command sowMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getAdminPanel().entityPanel.clear();
-            TabPanel.instance().getAdminPanel().sidePanelTop.clear();
             TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllSOWPanel());
-            TabPanel.instance().getAdminPanel().sidePanelTop.add(new SOWSidePanel());
         }
     };
     static Command vendorsMaintainenceCmd = new Command() {
