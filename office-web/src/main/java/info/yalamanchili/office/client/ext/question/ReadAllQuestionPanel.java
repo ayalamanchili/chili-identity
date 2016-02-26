@@ -126,7 +126,7 @@ public class ReadAllQuestionPanel extends CRUDReadAllComposite {
 
     @Override
     protected void configureCreateButton() {
-         if (Auth.isAdmin() || Auth.isHR()) {
+         if (Auth.isAdmin()) {
             createButton.setText("Create Question");
             createButton.setVisible(true);
         }
