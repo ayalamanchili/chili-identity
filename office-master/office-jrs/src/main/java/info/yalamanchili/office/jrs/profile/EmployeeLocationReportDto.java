@@ -32,6 +32,14 @@ public class EmployeeLocationReportDto implements Serializable {
     protected String country;
     protected String zip;
 
+    public String getZip() {
+        return zip;
+    }
+
+    public void setZip(String zip) {
+        this.zip = zip;
+    }
+
     public String getState() {
         return state;
     }
@@ -102,12 +110,14 @@ public class EmployeeLocationReportDto implements Serializable {
                     reportdto.setCity(address.getCity());
                     reportdto.setState(address.getState());
                     reportdto.setCountry(address.getCountry());
+                    reportdto.setZip(address.getZip());
                 } else {
                     reportdto.setStreet1(address.getStreet1());
                     reportdto.setStreet2(address.getStreet2());
                     reportdto.setCity(address.getCity());
                     reportdto.setState(address.getState());
                     reportdto.setCountry(address.getCountry());
+                    reportdto.setZip(address.getZip());
                 }
             }
         }

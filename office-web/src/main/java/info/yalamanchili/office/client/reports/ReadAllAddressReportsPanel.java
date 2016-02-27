@@ -38,7 +38,6 @@ public class ReadAllAddressReportsPanel extends CRUDReadAllComposite {
 
     @Override
     public void updateClicked(String entityId) {
-
     }
 
     @Override
@@ -60,11 +59,11 @@ public class ReadAllAddressReportsPanel extends CRUDReadAllComposite {
         table.setText(0, 5, getKeyValue("State"));
         table.setText(0, 6, getKeyValue("Branch"));
         table.setText(0, 7, getKeyValue("Country"));
+        table.setText(0, 8, getKeyValue("Zip"));
     }
 
     @Override
     public void fillData(JSONArray entities) {
-        OfficeWelcome.instance().logger.info(entities.toString());
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
@@ -76,6 +75,8 @@ public class ReadAllAddressReportsPanel extends CRUDReadAllComposite {
             table.setText(i, 5, JSONUtils.toString(entity, "state"));
             table.setText(i, 6, JSONUtils.toString(entity, "branch"));
             table.setText(i, 7, JSONUtils.toString(entity, "country"));
+            table.setText(i, 8, JSONUtils.toString(entity, "zip"));
+
         }
     }
 

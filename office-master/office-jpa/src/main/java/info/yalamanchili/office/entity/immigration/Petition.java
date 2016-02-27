@@ -23,8 +23,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Indexed;
@@ -48,12 +48,14 @@ public class Petition extends AbstractEntity {
     @ManyToMany(fetch = FetchType.EAGER)
     @ForeignKey(name = "FK_Petition_WorkedBy")
     protected Set<Employee> workedByEmployees;
-
+    
     protected String attorneyName;
 
+    @NotNull(message = "{petition.visaclassification.not.empty.msg}")
     @Enumerated(EnumType.STRING)
     protected VisaClassificationType visaClassification;
 
+    @NotNull(message = "{petition.visaProcessing.not.empty.msg}")
     @Enumerated(EnumType.STRING)
     protected VisaProcessingType visaProcessing;
 
@@ -70,6 +72,7 @@ public class Petition extends AbstractEntity {
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date petitionFileDate;
 
+    @NotNull(message = "{petition.receiptNumber.not.empty.msg}")
     @org.hibernate.annotations.Index(name = "PET_RCPT_NUM")
     protected String receiptNumber;
 

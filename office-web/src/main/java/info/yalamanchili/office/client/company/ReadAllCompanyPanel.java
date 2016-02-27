@@ -19,7 +19,6 @@ import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
-import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import java.util.logging.Logger;
@@ -124,12 +123,7 @@ public class ReadAllCompanyPanel extends CRUDReadAllComposite {
 
     @Override
     protected void configureCreateButton() {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN)) {
             createButton.setText("Create Company");
             createButton.setVisible(true);
-        }
-        else {
-            createButton.setVisible(false);
-        }
     }
 }

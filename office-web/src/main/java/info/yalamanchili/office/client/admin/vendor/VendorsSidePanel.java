@@ -14,8 +14,6 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.Auth;
-import info.yalamanchili.office.client.TabPanel;
-import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -29,7 +27,6 @@ public class VendorsSidePanel extends ALComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(VendorsSidePanel.class.getName());
     public FlowPanel vendorsidepanel = new FlowPanel();
-    //ClickableLink createvendorslink = new ClickableLink("Create Vendor");
     ClickableLink vendorSummaryReportL = new ClickableLink("Vendor Summary Report");
     ClickableLink activeVendorsReportL = new ClickableLink("Active Vendors Report");
 
@@ -39,7 +36,6 @@ public class VendorsSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addListeners() {
-        //createvendorslink.addClickHandler(this);
         vendorSummaryReportL.addClickHandler(this);
         activeVendorsReportL.addClickHandler(this);
     }
@@ -51,8 +47,6 @@ public class VendorsSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addWidgets() {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS)) {
-        }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CEO, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN)) {
             vendorsidepanel.add(vendorSummaryReportL);
             vendorsidepanel.add(activeVendorsReportL);

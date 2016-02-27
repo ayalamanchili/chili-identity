@@ -18,11 +18,9 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
-import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.utils.Utils;
-import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -38,7 +36,6 @@ public class ExpenseReportsSidePanel extends ALComposite implements ClickHandler
 
     private static Logger logger = Logger.getLogger(ExpenseReportsSidePanel.class.getName());
     public FlowPanel expenseReportsSidePanel = new FlowPanel();
-//    ClickableLink createExpenseReportsLink = new ClickableLink("Submit Expense Report");
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false);
     Button viewB = new Button("View");
 
@@ -48,7 +45,6 @@ public class ExpenseReportsSidePanel extends ALComposite implements ClickHandler
 
     @Override
     protected void addListeners() {
-//        createExpenseReportsLink.addClickHandler(this);
         viewB.addClickHandler(this);
         employeeSB.addDomHandler(new Handler(), KeyPressEvent.getType());
     }
@@ -93,7 +89,6 @@ public class ExpenseReportsSidePanel extends ALComposite implements ClickHandler
 
     @Override
     protected void addWidgets() {
-//        expenseReportsSidePanel.add(createExpenseReportsLink);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ACCOUNTS_PAYABLE, Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS, Auth.ROLE.ROLE_CEO)) {
             expenseReportsSidePanel.add(new SearchExpenseReportsPanel());
         } else {
@@ -106,7 +101,6 @@ public class ExpenseReportsSidePanel extends ALComposite implements ClickHandler
 
     @Override
     public void onClick(ClickEvent event) {
-
         if (event.getSource().equals(viewB)) {
             TabPanel.instance().expensePanel.entityPanel.clear();
             TabPanel.instance().expensePanel.entityPanel.add(new ReadAllExpenseReportsPanel(getTravelAuthURL(0, "10")));

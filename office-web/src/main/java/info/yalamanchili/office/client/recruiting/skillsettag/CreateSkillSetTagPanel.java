@@ -84,8 +84,6 @@ public class CreateSkillSetTagPanel extends CreateComposite {
         }
         new ResponseStatusWidget().show("Successfully Added SkillSetTag");
         if (TabPanel.instance().recruitingPanel.isVisible()) {
-            TabPanel.instance().recruitingPanel.sidePanelTop.clear();
-            TabPanel.instance().recruitingPanel.sidePanelTop.add(new SkillSetTagSidePanel());
             TabPanel.instance().recruitingPanel.entityPanel.clear();
             TabPanel.instance().recruitingPanel.entityPanel.add(new ReadAllSkillSetTagPanel());
         }

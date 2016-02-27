@@ -92,7 +92,14 @@ public class TravelAuthorizationService {
     @AccessCheck(employeePropertyName = "employee", companyContacts = {"Perf_Eval_Manager", "Reports_To"}, roles = {"ROLE_ADMIN"})
     public Response getReport(TravelAuthorization entity) {
         PdfDocumentData data = new PdfDocumentData();
-        data.setTemplateUrl("/templates/pdf/travel-authorization-template.pdf");
+        Employee emp = entity.getEmployee();
+        if (emp.getCompany() != null && emp.getCompany().getName().equals("CGS INC")) {
+            data.setTemplateUrl("/templates/pdf/travel-authorization-cgs-template.pdf");
+        } else if (emp.getCompany() != null && emp.getCompany().getName().equals("TechPillars")) {
+            data.setTemplateUrl("/templates/pdf/travel-authorization-tp-template.pdf");
+        } else {
+            data.setTemplateUrl("/templates/pdf/travel-authorization-template.pdf");
+        }
         EmployeeDao employeeDao = EmployeeDao.instance();
         OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
         data.setKeyStoreName(securityConfiguration.getKeyStoreName());

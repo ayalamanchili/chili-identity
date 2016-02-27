@@ -23,7 +23,6 @@ import info.yalamanchili.office.client.profile.emailtype.EmailTypeSidePanel;
 import info.yalamanchili.office.client.profile.emailtype.ReadAllEmailTypePanel;
 import info.yalamanchili.office.client.profile.employeetype.ReadAllEmployeeTypesPanel;
 import info.yalamanchili.office.client.profile.employeetype.EmployeeTypeSidePanel;
-import info.yalamanchili.office.client.profile.phonetype.PhoneTypeSidePanel;
 import info.yalamanchili.office.client.profile.phonetype.ReadAllPhoneTypePanel;
 
 public class MyOfficeMenu extends CMenuBar {
@@ -37,7 +36,7 @@ public class MyOfficeMenu extends CMenuBar {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_PROSPECTS_MANAGER)) {
             addMenuItem("Prospects", "Prospects", prospectsMaintainenceCmd);
         }
-        if (Auth.isAdmin() || Auth.isHR()) {
+        if (Auth.isAdmin()) {
             addMenuItem("PhoneType", "PhoneType", phoneTypesMaintainenceCmd);
             addMenuItem("AddressType", "AddressType", addressTypesMaintainenceCmd);
             addMenuItem("EmailType", "EmailType", emailTypesMaintainenceCmd);
@@ -59,13 +58,10 @@ public class MyOfficeMenu extends CMenuBar {
     };
     static Command phoneTypesMaintainenceCmd = () -> {
         TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-        TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
         TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllPhoneTypePanel());
-        TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new PhoneTypeSidePanel());
     };
     static Command addressTypesMaintainenceCmd = () -> {
         TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-        TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
         TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllAddressTypePanel());
     };
     static Command emailTypesMaintainenceCmd = () -> {

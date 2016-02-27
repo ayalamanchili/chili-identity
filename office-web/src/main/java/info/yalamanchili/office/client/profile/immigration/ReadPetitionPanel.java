@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -113,24 +116,24 @@ public class ReadPetitionPanel extends TReadComposite {
         addField("receiptNumber", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 2);
         addEnumField("visaClassification", true, true, VisaClassificationType.names(), Alignment.HORIZONTAL, 2, 1);
         addEnumField("visaProcessing", true, true, VisaProcessingType.names(), Alignment.HORIZONTAL, 2, 2);
-        addField("petitionValidFromDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL, 3, 1);
-        addField("petitionValidToDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL, 3, 2);
+        addField("petitionValidFromDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 3, 1);
+        addField("petitionValidToDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 3, 2);
         addDropDown("workedByEmployees", selectRecruiterW, 4, 1);
-        addField("attorneyName", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 4, 2);
+        addField("attorneyName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 4, 2);
         addDropDown("lca", selectLCAWidgetF, 5, 1);
         addDropDown("passport", selectPassportWidgetF, 5, 2);
         if (entity.containsKey("lca")) {
             lca = entity.get("lca").isObject();
             addField("lcaFiledDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 6, 1);
-            addField("jobTitle", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 6, 2);
+            addField("jobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 6, 2);
             addField("lcaValidFromDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 7, 1);
             addField("lcaValidToDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 7, 2);
-            addEnumField("lcaCurrWageLvl", true, true, LCAWageLevels.names(), Alignment.HORIZONTAL, 8, 1);
-            addField("lcaCurrMinWage", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 9, 1);
-            addField("lcaCurrMaxWage", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 10, 1);
-            addEnumField("lcaPrevWageLvl", true, true, LCAWageLevels.names(), Alignment.HORIZONTAL, 8, 2);
-            addField("lcaPrevMinWage", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 9, 2);
-            addField("lcaPrevMaxWage", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 10, 2);
+            addEnumField("lcaCurrWageLvl", true, false, LCAWageLevels.names(), Alignment.HORIZONTAL, 8, 1);
+            addField("lcaCurrMinWage", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 9, 1);
+            addField("lcaCurrMaxWage", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 10, 1);
+            addEnumField("lcaPrevWageLvl", true, false, LCAWageLevels.names(), Alignment.HORIZONTAL, 8, 2);
+            addField("lcaPrevMinWage", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 9, 2);
+            addField("lcaPrevMaxWage", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 10, 2);
             if (lca.containsKey("lcaAddress1")) {
                 readAddressWidget1 = new ReadLCAAddressWidget(lca.get("lcaAddress1").isObject(), lcaAdd1);
                 entityFieldsPanel.setWidget(12, 1, readAddressWidget1);
@@ -141,18 +144,18 @@ public class ReadPetitionPanel extends TReadComposite {
             }
             addField("withdrawnLCANumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 13, 1);
         }
-        addEnumField("previousVisaStatus", true, true, VisaStatus.names(), Alignment.HORIZONTAL, 14, 1);
-        addField("previousStatusExpiry", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL, 14, 2);
-        addEnumField("i140ApprovalStatus", true, true, Polar.names(), Alignment.HORIZONTAL, 15, 1);
-        addEnumField("h4Applicability", true, true, Polar.names(), Alignment.HORIZONTAL, 15, 2);
-        addEnumField("project", true, true, PetitionFor.names(), Alignment.HORIZONTAL, 16, 1);
-        addEnumField("sisterCompanyLetterUsed", true, true, Polar.names(), Alignment.HORIZONTAL, 16, 2);
-        addField("petitionFolderMailedDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL, 17, 1);
-        addField("petitionFolderMailTrkNbr", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 17, 2);
-        addField("petitionFileDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL, 18, 1);
-        addField("petitionTrackingNumber", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 18, 2);
-        addEnumField("petitionStatus", true, true, PetitionStatus.names(), Alignment.HORIZONTAL, 19, 1);
-        addField("petitionApprovalDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL, 19, 2);
+        addEnumField("previousVisaStatus", true, false, VisaStatus.names(), Alignment.HORIZONTAL, 14, 1);
+        addField("previousStatusExpiry", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 14, 2);
+        addEnumField("i140ApprovalStatus", true, false, Polar.names(), Alignment.HORIZONTAL, 15, 1);
+        addEnumField("h4Applicability", true, false, Polar.names(), Alignment.HORIZONTAL, 15, 2);
+        addEnumField("project", true, false, PetitionFor.names(), Alignment.HORIZONTAL, 16, 1);
+        addEnumField("sisterCompanyLetterUsed", true, false, Polar.names(), Alignment.HORIZONTAL, 16, 2);
+        addField("petitionFolderMailedDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 17, 1);
+        addField("petitionFolderMailTrkNbr", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 17, 2);
+        addField("petitionFileDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 18, 1);
+        addField("petitionTrackingNumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 18, 2);
+        addEnumField("petitionStatus", true, false, PetitionStatus.names(), Alignment.HORIZONTAL, 19, 1);
+        addField("petitionApprovalDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 19, 2);
         alignFields();
 
     }
