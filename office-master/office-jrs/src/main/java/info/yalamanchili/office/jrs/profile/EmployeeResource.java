@@ -24,6 +24,7 @@ import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.practice.PracticeDao;
+import info.yalamanchili.office.dao.profile.EmployeeDao.EmployeeTable;
 import info.yalamanchili.office.dao.profile.EmployeeDto;
 import info.yalamanchili.office.dao.profile.ext.DependentDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
@@ -31,7 +32,6 @@ import info.yalamanchili.office.dto.profile.ClientInformationDto;
 import info.yalamanchili.office.dto.profile.DependentDto;
 import info.yalamanchili.office.dto.profile.EmergencyContactDto;
 import info.yalamanchili.office.dto.profile.EmployeeSearchDto;
-import info.yalamanchili.office.dto.profile.SkillSetDto;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.privacy.PrivacyData;
 import info.yalamanchili.office.entity.profile.ext.Dependent;
@@ -42,6 +42,7 @@ import info.yalamanchili.office.jrs.profile.DependentResource.DependentTable;
 import info.yalamanchili.office.jrs.profile.EmailResource.EmailTable;
 import info.yalamanchili.office.jrs.profile.EmergencyContactResource.EmergencyContactTable;
 import info.yalamanchili.office.jrs.profile.PhoneResource.PhoneTable;
+import info.yalamanchili.office.jrs.profile.SkillSetResource.SkillSetDto;
 import info.yalamanchili.office.profile.ClientInformationService;
 import info.yalamanchili.office.profile.DependentService;
 import info.yalamanchili.office.profile.EmergencyContactService;
@@ -243,10 +244,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         SkillSet skillSetUpdated = emp.getSkillSet();
         if (skillSetUpdated == null) {
             skillSetUpdated = mapper.map(skillset, SkillSet.class);
-                }
-        if(skillset.getResumeUrl()!=null){
-            skillSetUpdated.setResumeUrl(skillset.getResumeUrl());
-            }
+        }
         if (skillset.getPractice() == null || skillset.getPractice().getId() == null) {
             skillSetUpdated.setPractice(null);
         } else {
@@ -493,31 +491,6 @@ public class EmployeeResource extends CRUDResource<Employee> {
         }
 
         public void setEntities(List<Client> entities) {
-            this.entities = entities;
-        }
-    }
-
-    @XmlRootElement
-    @XmlType
-    public static class EmployeeTable implements java.io.Serializable {
-
-        protected Long size;
-        protected List<info.yalamanchili.office.dao.profile.EmployeeDto> entities;
-
-        public Long getSize() {
-            return size;
-        }
-
-        public void setSize(Long size) {
-            this.size = size;
-        }
-
-        @XmlElement
-        public List<info.yalamanchili.office.dao.profile.EmployeeDto> getEntities() {
-            return entities;
-        }
-
-        public void setEntities(List<info.yalamanchili.office.dao.profile.EmployeeDto> entities) {
             this.entities = entities;
         }
     }
