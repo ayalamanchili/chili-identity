@@ -54,7 +54,7 @@ public class ConsultantTimeSheetResource extends CRUDResource<ConsultantTimeShee
     @Path("/{id}")
     @Transactional(readOnly = true)
     @Override
-    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_CEO", "ROLE_CONSULTANT_TIME_ADMIN"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
+    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_CEO", "ROLE_CONSULTANT_TIME_ADMIN", "ROLE_H1B_IMMIGRATION"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
     public ConsultantTimeSheet read(@PathParam("id") Long id) {
         return consultantTimeSheetDao.findById(id);
     }
@@ -112,7 +112,7 @@ public class ConsultantTimeSheetResource extends CRUDResource<ConsultantTimeShee
     @Override
     @PUT
     @Path("/delete/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_RELATIONSHIP','ROLE_PAYROLL_AND_BENIFITS')")
+    @PreAuthorize("hasAnyRole('ROLE_RELATIONSHIP','ROLE_PAYROLL_AND_BENIFITS','ROLE_CONSULTANT_TIME_ADMIN')")
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
     }
