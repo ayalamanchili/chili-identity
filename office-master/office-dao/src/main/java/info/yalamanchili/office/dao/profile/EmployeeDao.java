@@ -43,6 +43,9 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 
@@ -340,5 +343,30 @@ public class EmployeeDao extends CRUDDao<Employee> {
 
     public static EmployeeDao instance() {
         return SpringContext.getBean(EmployeeDao.class);
+    }
+    
+    @XmlRootElement
+    @XmlType
+    public static class EmployeeTable implements java.io.Serializable {
+
+        protected Long size;
+        protected List<info.yalamanchili.office.dao.profile.EmployeeDto> entities;
+
+        public Long getSize() {
+            return size;
+        }
+
+        public void setSize(Long size) {
+            this.size = size;
+        }
+
+        @XmlElement
+        public List<info.yalamanchili.office.dao.profile.EmployeeDto> getEntities() {
+            return entities;
+        }
+
+        public void setEntities(List<info.yalamanchili.office.dao.profile.EmployeeDto> entities) {
+            this.entities = entities;
+        }
     }
 }
