@@ -107,7 +107,7 @@ public class CorpEmpLeaveRequestPanel extends CreateComposite {
     @Override
     protected void configure() {
         setButtonText("Submit");
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CORPORATE_TIME_ADMIN)) {
             HttpService.HttpServiceAsync.instance().doGet(getIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
                 @Override
                 public void onResponse(String entityString) {
@@ -124,13 +124,13 @@ public class CorpEmpLeaveRequestPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CORPORATE_TIME_ADMIN)) {
             addSuggestField("employee", employeeSB);
         }
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("hours", false, true, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CORPORATE_TIME_ADMIN)) {
             addEnumField("category", false, true, LeaveRequestAdminTimeCategory.names(), Alignment.HORIZONTAL);
         } else {
             addEnumField("category", false, true, LeaveRequestTimeCategory.names(), Alignment.HORIZONTAL);
