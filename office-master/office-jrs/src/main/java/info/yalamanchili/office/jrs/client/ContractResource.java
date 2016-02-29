@@ -13,6 +13,7 @@ import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.client.ContractService;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.profile.EmployeeDao.EmployeeTable;
 import info.yalamanchili.office.dao.profile.EmployeeDto;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.client.ContractDto;
@@ -24,7 +25,6 @@ import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.jrs.profile.EmployeeLocationDto;
 import info.yalamanchili.office.jrs.profile.EmployeeLocationReportDto;
-import info.yalamanchili.office.jrs.profile.EmployeeResource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -145,45 +145,11 @@ public class ContractResource {
     @Path("/subcontractors-report")
     public void subcontractorsReport() {
         ContractDto.ContractTable table = new ContractDto.ContractTable();
-        String[] types = {"Subcontractor"};
-        List<Employee> emps = EmployeeDao.instance().getEmployeesByType(types);
-        List<ContractDto> dtos = new ArrayList();
-        for (Employee emp : emps) {
-            if (emp.getClientInformations() != null && emp.getClientInformations().size() > 0) {
-                for (ClientInformation ci : emp.getClientInformations()) {
-                    dtos.add(ContractService.instance().mapClientInformation(ci));
-                }
-            }
-        }
-        table.setEntities(dtos);
+        ContractSearchDto searchDto = new ContractSearchDto();
+        searchDto.setEmployeeType(EmployeeType.SUBCONTRACTOR);
+        table = ContractService.instance().getResultForReport(searchDto);
         String[] columnOrder = new String[]{"employee", "employeeType", "vendor", "vendorLocation", "vendorAPContact", "vendorRecruiter", "subContractorName", "subcontractorAddress", "subContractorContactName", "startDate", "endDate", "subcontractorPayRate"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(table.getEntities(), "SubContractors Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
-    }
-    
-    @PUT
-    @Path("/search-emp-between-days/{start}/{limit}")
-    @Cacheable(OfficeCacheKeys.EMPLOYEES)
-    public EmployeeResource.EmployeeTable table(@PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate, @QueryParam("value") String value) {
-        EmployeeResource.EmployeeTable table = new EmployeeResource.EmployeeTable();
-        List<EmployeeDto> dtos = new ArrayList();
-        EmployeeDao.instance().queryBetweenDays(start, limit, startDate, endDate, value).stream().forEach((empObj) -> {
-            dtos.add(info.yalamanchili.office.dao.profile.EmployeeDto.map(mapper, (Employee) empObj));
-        });
-        table.setEntities(dtos);
-        table.setSize(Long.valueOf(dtos.size()));
-        return table;
-    }
-    
-    @GET
-    @Path("/search-emp-between-days-report")
-    public void employeeJoinedOrLeftReport(@QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate, @QueryParam("value") String value) {
-        EmployeeResource.EmployeeTable table = table(0, 10000, startDate, endDate, value);
-        if (table.getSize() > 0) {
-            String[] columnOrder = new String[]{"firstName", "lastName", "startDate", "endDate", "phoneNumber"};
-            Employee emp = OfficeSecurityService.instance().getCurrentUser();
-            String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Emp Joined Or Left In a Period Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
-            MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
-        }
     }
     
     @PUT
