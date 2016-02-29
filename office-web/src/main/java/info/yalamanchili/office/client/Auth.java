@@ -43,7 +43,8 @@ public class Auth {
         ROLE_CONTRACTS_FULL_VIEW,
         ROLE_BILLING_AND_INVOICING,
         ROLE_CONTRACTS,
-        ROLE_BILLING_ADMIN
+        ROLE_BILLING_ADMIN,
+        ROLE_CORPORATE_TIME_ADMIN
     }
 
     public static boolean isAdmin() {
