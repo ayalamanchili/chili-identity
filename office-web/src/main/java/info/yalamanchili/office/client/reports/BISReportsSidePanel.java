@@ -380,7 +380,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                 JSONObject obj = getBWDatesObject();
                 if (obj.containsKey("startDate") == true && obj.containsKey("endDate") == true) {
                     DateTimeFormat sdf = DateTimeFormat.getFormat("MM/dd/yyyy");
-                    String empUrl = OfficeWelcome.constants.root_url() + "contract/search-emp-between-days/0/1000";
+                    String empUrl = OfficeWelcome.constants.root_url() + "contract-report/search-emp-between-days/0/1000";
                     empUrl = empUrl.concat("?startDate=" + sdf.format(projectStartDate.getDate()));
                     empUrl = empUrl.concat("&endDate=" + sdf.format(projectEndDate.getDate()));
                     obj.put("value", new JSONString(li.getSelectedValue()));
@@ -708,7 +708,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                 TabPanel.instance().getReportingPanel().entityPanel.clear();
                 DateTimeFormat sdf = DateTimeFormat.getFormat("MM/dd/yyyy");
                 JSONObject obj = getBWDatesObject();
-                String empUrl = OfficeWelcome.constants.root_url() + "contract/search-emp-between-days-report";
+                String empUrl = OfficeWelcome.constants.root_url() + "contract-report/search-emp-between-days-report";
                 if (obj.containsKey("startDate") == true && obj.containsKey("endDate") == true) {
                     empUrl = empUrl.concat("?startDate=" + sdf.format(projectStartDate.getDate()));
                     empUrl = empUrl.concat("&endDate=" + sdf.format(projectEndDate.getDate()));
