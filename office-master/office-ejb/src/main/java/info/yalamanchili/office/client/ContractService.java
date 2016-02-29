@@ -224,31 +224,24 @@ public class ContractService {
         if (StringUtils.isNotBlank(searchDto.getVendorCity())) {
             queryStr.append("ci.vendorLocation.city LIKE '%").append(searchDto.getVendorCity().trim()).append("%' ").append(" and ");
         }
-
         if (searchDto.getCompany() != null) {
             queryStr.append("ci.company LIKE '%").append(searchDto.getCompany().name().trim()).append("%' ").append(" and ");
         }
-
         if (StringUtils.isNotBlank(searchDto.getEmployeeType())) {
             queryStr.append("ci.employee.employeeType.name LIKE '%").append(searchDto.getEmployeeType().trim()).append("%' ").append(" and ");
         }
-
         if ((searchDto.getStartDate()) != null) {
             queryStr.append("ci.startDate between :startDateStartParam and :startDateEndParam").append(" and ");
         }
-
         if ((searchDto.getEndDate()) != null) {
             queryStr.append("ci.endDate between :endDateStartParam and :endDateEndParam").append(" and ");
         }
-
         if (searchDto.getRecruitedDateFrom() != null) {
             queryStr.append("ci.startDate between :startDateParam and  ");
         }
-
         if (searchDto.getRecruitedDateTo() != null) {
             queryStr.append(":endDateParam and  ");
         }
-
         if (!Strings.isNullOrEmpty(searchDto.getStatus())) {
             queryStr.append("ci.status = '").append(searchDto.getStatus().trim()).append("' ").append(" and ");
         }
@@ -572,10 +565,8 @@ public class ContractService {
 
     public ContractTable searchContractsForRecruiter(ContractSearchDto dto) {
         ContractTable table = search(dto, 0, 10000);
-        List<ContractDto> tabledto = new ArrayList();
         List<ContractDto> dtos = new ArrayList();
         List<ContractDto> cdtos = new ArrayList();
-        tabledto.addAll(table.getEntities());
         dtos.addAll(table.getEntities());
         ContractTable ctable = new ContractTable();
         for (ContractDto cdto : dtos) {
