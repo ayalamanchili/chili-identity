@@ -109,7 +109,7 @@ public class ReadCorporateTimeSheetPanel extends ReadComposite {
 
     @Override
     protected boolean enableViewTasks() {
-        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION,Auth.ROLE.ROLE_CORPORATE_TIME_REPORTS);
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CORPORATE_TIME_ADMIN,Auth.ROLE.ROLE_CORPORATE_TIME_REPORTS);
     }
 
     @Override
