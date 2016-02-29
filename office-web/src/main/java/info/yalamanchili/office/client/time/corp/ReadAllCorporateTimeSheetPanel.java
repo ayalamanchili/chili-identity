@@ -67,7 +67,8 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
         this.isEmployeesOnLeavePanel = isEmployeesOnLeavePanel;
         initTable(title, array, OfficeWelcome.constants);
     }
-     public ReadAllCorporateTimeSheetPanel(JSONArray result) {
+
+    public ReadAllCorporateTimeSheetPanel(JSONArray result) {
         instance = this;
         initTable("Corporate Time Sheets", result, OfficeWelcome.constants);
     }
@@ -211,7 +212,7 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_CORPORATE_TIME_ADMIN)) {
             createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE, TableRowOptionsWidget.OptionsType.PRINT), row, JSONUtils.toString(entity, "id"));
         } else {
             createOptionsWidget(new TableRowOptionsWidget(JSONUtils.toString(entity, "id"), TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.PRINT), row, JSONUtils.toString(entity, "id"));
@@ -251,7 +252,7 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
     protected String getDocumentationLink() {
         return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "timesheets/submit-leave-request.html";
     }
-    
+
     public void renderLeaveHistory(final String empId, FlowPanel entityFieldsPanel) {
         final DisclosurePanel leaveDP = new DisclosurePanel("Employee Leave History");
         leaveDP.setWidth("100%");
