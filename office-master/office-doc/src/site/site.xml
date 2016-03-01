@@ -111,6 +111,9 @@
                 <item name="Corporate Review Process" href="/office/perf-eval/corp-approval-process.html"/>
                 <item name="Probation Period Evaluation Process" href="/office/perf-eval/probation-period-evaluation-process.html"/>
             </item>
+            <item name="Email Addresses Reports" href="/office/reports/emailreports.html" collapse="true">
+                <item name="Import email Contacts" href="/office/reports/import-email-contacts-to-outlook.html"/>
+            </item>  
             <item name="Expense" href="/office/expense/advance.html" collapse="true">
                 <item name="Submit Advance Requisition" href="/office/expense/advance.html"/>
                 <item name="Advance Requisition Process" href="/office/expense/advancerequestprocess.html"/>
