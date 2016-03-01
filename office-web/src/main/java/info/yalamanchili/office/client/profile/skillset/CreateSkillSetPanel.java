@@ -7,8 +7,11 @@
  */
 package info.yalamanchili.office.client.profile.skillset;
 
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.FileUpload;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.CreateComposite;
@@ -28,7 +31,7 @@ public class CreateSkillSetPanel extends CreateComposite {
     private static Logger logger = Logger.getLogger(CreateSkillSetPanel.class.getName());
     SelectPracticeWidget practiceF = new SelectPracticeWidget(false, false);
     SelectTechnologyGroupWidget technologyGroupF = new SelectTechnologyGroupWidget(false, false);
-    FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "SkillSet", "resumeUrl", "SkillSet/resumeUrl", true) {
+    FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "SkillSet", "skillSetFile", "SkillSet/skillSetFile", false, true) {
         @Override
         public void onUploadComplete(String res) {
             postCreateSuccess(null);
@@ -81,7 +84,25 @@ public class CreateSkillSetPanel extends CreateComposite {
         assignEntityValueFromField("lastUpdated", skillSet);
         skillSet.put("practice", practiceF.getSelectedObject());
         skillSet.put("technologyGroup", technologyGroupF.getSelectedObject());
-        skillSet.put("resumeUrl", resumeUploadPanel.getFileName());
+        skillSet.put("skillSetFile", resumeUploadPanel.getFileName());
+        JSONArray resumeURL = new JSONArray();
+        if (!resumeUploadPanel.isEmpty()) {
+            int i = 0;
+            for (FileUpload upload : resumeUploadPanel.getFileUploads()) {
+                logger.info("file uploads...." + upload.getFilename());
+                if (upload.getFilename() != null && !upload.getFilename().trim().isEmpty()) {
+                    JSONObject resume = new JSONObject();
+                    resume.put("fileURL", resumeUploadPanel.getFileName(upload));
+                    resume.put("name", new JSONString("File Name"));
+                    resumeURL.set(i, resume);
+                    i++;
+                }
+            }
+        }
+        if (resumeURL.size() > 0) {
+            entity.put("skillSetFile", resumeURL);
+        }
+        logger.info("skills et after create .... " + skillSet);
         return skillSet;
     }
 

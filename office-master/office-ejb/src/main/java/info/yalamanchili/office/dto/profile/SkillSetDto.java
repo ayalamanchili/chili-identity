@@ -8,9 +8,12 @@
 package info.yalamanchili.office.dto.profile;
 
 import info.yalamanchili.office.entity.practice.Practice;
+import info.yalamanchili.office.entity.profile.SkillSetFile;
 import info.yalamanchili.office.entity.profile.TechnologyGroup;
 import java.io.Serializable;
+import java.util.Set;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -26,11 +29,20 @@ public class SkillSetDto implements Serializable {
     /**
      *
      */
-    protected String resumeUrl;
+    protected Set<SkillSetFile> skillSetFile;
     @NotNull(message = "{practice.not.empty.msg}")
     private Practice practice;
     @NotNull(message = "{technologyGroup.not.empty.msg}")
     private TechnologyGroup technologyGroup;
+
+    @XmlElement
+    public Set<SkillSetFile> getSkillSetFile() {
+        return skillSetFile;
+    }
+
+    public void setSkillSetFile(Set<SkillSetFile> skillSetFile) {
+        this.skillSetFile = skillSetFile;
+    }
 
     public String getEmployeeName() {
         return employeeName;
@@ -38,14 +50,6 @@ public class SkillSetDto implements Serializable {
 
     public void setEmployeeName(String employeeName) {
         this.employeeName = employeeName;
-    }
-
-    public String getResumeUrl() {
-        return resumeUrl;
-    }
-
-    public void setResumeUrl(String resumeUrl) {
-        this.resumeUrl = resumeUrl;
     }
 
     public Practice getPractice() {

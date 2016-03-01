@@ -49,12 +49,15 @@ import info.yalamanchili.office.entity.profile.Preferences;
 import info.yalamanchili.office.entity.profile.Sex;
 import info.yalamanchili.office.entity.profile.Skill;
 import info.yalamanchili.office.entity.profile.SkillSet;
+import info.yalamanchili.office.entity.profile.SkillSetFile;
 import info.yalamanchili.office.entity.profile.TechnologyGroup;
 import info.yalamanchili.office.entity.profile.invite.InvitationType;
 import info.yalamanchili.office.entity.profile.invite.InviteType;
 import info.yalamanchili.office.entity.social.Post;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -145,7 +148,6 @@ public class OfficeStartup {
         userAddress.setState("VA");
         userAddress.setCountry("USA");
         userAddress.setZip("123456");
-        
 
         Email userPrimaryEmail = new Email();
         userPrimaryEmail.setEmailType(getWorkEmailType());
@@ -217,7 +219,10 @@ public class OfficeStartup {
 
         SkillSet userSkillSet = new SkillSet();
         userSkillSet.setLastUpdated(new Date());
-        userSkillSet.setResumeUrl("ResumeURL");
+        SkillSetFile resume1 = new SkillSetFile();
+        Set<SkillSetFile> resume = new HashSet<>();
+        resume.add(resume1);
+        userSkillSet.setSkillSetFile(resume);
         userSkillSet.getCertifications().add(getDOTNETCertification());
         userSkillSet.getSkills().add(getJavaSkill());
         userSkillSet.getSkills().add(getDOTNETSkill());
@@ -267,7 +272,7 @@ public class OfficeStartup {
         userAddres.setCity("Herndon");
         userAddres.setState("VA");
         userAddres.setCountry("USA");
-       userAddres.setZip("123456");
+        userAddres.setZip("123456");
 
         Email userPrimaryEmails = new Email();
         userPrimaryEmails.setEmailType(getWorkEmailType());
@@ -311,7 +316,7 @@ public class OfficeStartup {
         userAddreess.setCity("Herndon");
         userAddreess.setState("VA");
         userAddreess.setCountry("USA");
-         userAddreess.setZip("123456");
+        userAddreess.setZip("123456");
 
         Email userPraimaryEmails = new Email();
         userPraimaryEmails.setEmailType(getWorkEmailType());
@@ -951,7 +956,7 @@ public class OfficeStartup {
         clientLocation.setState("AL");
         clientLocation.setCity("Herndon");
         clientLocation.setCountry("USA");
-         clientLocation.setZip("123456");
+        clientLocation.setZip("123456");
 
         techSysClient.addLocations(clientLocation);
 

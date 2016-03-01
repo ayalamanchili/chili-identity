@@ -8,8 +8,6 @@
  */
 package info.yalamanchili.office.reports.recruiting;
 
-import static com.google.common.io.ByteStreams.limit;
-import static com.mongodb.QueryBuilder.start;
 import info.chili.reporting.ReportGenerator;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
@@ -51,7 +49,7 @@ public class RecruitingReportsService {
     protected Mapper mapper;
 
     public List<SkillSetDto> search(String text) {
-         List<SkillSetDto> res = new ArrayList<>();
+        List<SkillSetDto> res = new ArrayList<>();
         for (SkillSet entity : SkillSetDao.instance().hibernateSearch(text, 0, 100, "resumeContent", "skills.name", "certifications.name", "tags.name")) {
             SkillSetDto dto = mapper.map(entity, SkillSetDto.class);
             dto.setEmployeeName(entity.getEmployee().getFirstName() + " " + entity.getEmployee().getLastName());
@@ -149,7 +147,8 @@ public class RecruitingReportsService {
                     }
                     dto.setSkillSetTags(tags.toString());
                 }
-                if (emp.getSkillSet().getResumeUrl() != null && emp.getSkillSet().getResumeUrl().contains("SkillSet")) {
+                //if (emp.getSkillSet().getResumeUrl() != null && emp.getSkillSet().getResumeUrl().contains("SkillSet")) {
+                if (emp.getSkillSet().getSkillSetFile().size() > 0) {
                     dto.setResumeUploadStatus("Yes");
                 } else {
                     dto.setResumeUploadStatus("No");

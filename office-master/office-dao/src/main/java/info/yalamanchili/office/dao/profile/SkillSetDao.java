@@ -13,6 +13,7 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.SkillSet;
+import info.yalamanchili.office.entity.profile.SkillSetFile;
 import java.io.File;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -33,7 +34,7 @@ public class SkillSetDao extends CRUDDao<SkillSet> {
     @Transactional
     public void indexAllResumes() {
         for (SkillSet skillSet : query(0, 2000)) {
-            if (skillSet.getResumeUrl() != null && !skillSet.getResumeUrl().equalsIgnoreCase("ResumeUrl")) {
+            if (skillSet.getSkillSetFile().size() > 0) {
                 extractResumeContent(skillSet.getId());
             }
         }
@@ -43,13 +44,15 @@ public class SkillSetDao extends CRUDDao<SkillSet> {
     @Transactional
     public void extractResumeContent(Long skillSetId) {
         SkillSet entity = findById(skillSetId);
-        if (entity.getResumeUrl() != null) {
-            String resumeUrl = OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + entity.getResumeUrl();
-            resumeUrl = resumeUrl.replace("entityId", entity.getId().toString());
-            File file = new File(resumeUrl);
-            String resumeContent = FileSearchUtils.extractFileContents(file);
-            entity.setResumeContent(resumeContent);
-            getEntityManager().merge(entity);
+        if (entity.getSkillSetFile().size() > 0) {
+            for (SkillSetFile sfile : entity.getSkillSetFile()) {
+                String resumeUrl = OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + sfile.getFileURL();
+                resumeUrl = resumeUrl.replace("entityId", entity.getId().toString());
+                File file = new File(resumeUrl);
+                String resumeContent = FileSearchUtils.extractFileContents(file);
+                entity.setResumeContent(resumeContent);
+                getEntityManager().merge(entity);
+            }
         }
     }
 

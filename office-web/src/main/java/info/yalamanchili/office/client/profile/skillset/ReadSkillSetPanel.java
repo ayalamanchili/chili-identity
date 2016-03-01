@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.client.profile.skillset;
 
+import com.google.gwt.json.client.JSONArray;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -17,13 +18,9 @@ import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RichTextArea;
-import info.chili.gwt.config.ChiliClientConfig;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
-import info.chili.gwt.utils.JSONUtils;
-import info.chili.gwt.fields.FileField;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
 import info.yalamanchili.office.client.profile.technologyGroup.SelectTechnologyGroupWidget;
@@ -152,6 +149,19 @@ public class ReadSkillSetPanel extends ReadComposite {
     protected void onLoadSuccess(String response) {
         if (response != null && !response.isEmpty()) {
             entity = (JSONObject) JSONParser.parseLenient(response);
+            HttpService.HttpServiceAsync.instance().doGet(getResumes(entityId), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+                @Override
+                public void onResponse(String entityString) {
+                    if (entityString != null && !entityString.isEmpty()) {
+                        JSONObject resumeURL = JSONParser.parseLenient(entityString).isObject();
+                        JSONArray array = new JSONArray();
+                        if (resumeURL != null) {
+                            array.set(0, resumeURL);
+                            populateResumes(array);
+                        }
+                    }
+                }
+            });
             populateFieldsFromEntity(entity);
 
         } else {
@@ -164,19 +174,20 @@ public class ReadSkillSetPanel extends ReadComposite {
         }
     }
 
+    protected String getResumes(String entityId) {
+        return OfficeWelcome.constants.root_url() + "skillset/resumes/" + entityId;
+    }
+
+    protected void populateResumes(JSONArray items) {
+        entityFieldsPanel.add(new ReadAllSkillSetFilesPanel(entityId, items));
+    }
+
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         logger.info("entity" + entity.toString());
         assignFieldValueFromEntity("practice", entity, null);
         assignFieldValueFromEntity("technologyGroup", entity, null);
         assignFieldValueFromEntity("lastUpdated", entity, DataType.DATE_FIELD);
-        //Resume
-        Label resumeLabel = new Label("Resume");
-        entityFieldsPanel.add(resumeLabel);
-        String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "resumeUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
-        //TODO convert to generic field
-        FileField fileField = new FileField(fileURL);
-        entityFieldsPanel.add(fileField);
         //entityFieldsPanel.add(new SkillSetOptionsPanel(empId));
         loadTags();
     }
