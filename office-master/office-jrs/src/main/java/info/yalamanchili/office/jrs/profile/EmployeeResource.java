@@ -26,12 +26,15 @@ import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.practice.PracticeDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao.EmployeeTable;
 import info.yalamanchili.office.dao.profile.EmployeeDto;
+import info.yalamanchili.office.dao.profile.SkillSetDao;
+import info.yalamanchili.office.dao.profile.SkillSetFileDao;
 import info.yalamanchili.office.dao.profile.ext.DependentDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.profile.ClientInformationDto;
 import info.yalamanchili.office.dto.profile.DependentDto;
 import info.yalamanchili.office.dto.profile.EmergencyContactDto;
 import info.yalamanchili.office.dto.profile.EmployeeSearchDto;
+import info.yalamanchili.office.dto.profile.SkillSetSaveDto;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.privacy.PrivacyData;
 import info.yalamanchili.office.entity.profile.ext.Dependent;
@@ -42,7 +45,6 @@ import info.yalamanchili.office.jrs.profile.DependentResource.DependentTable;
 import info.yalamanchili.office.jrs.profile.EmailResource.EmailTable;
 import info.yalamanchili.office.jrs.profile.EmergencyContactResource.EmergencyContactTable;
 import info.yalamanchili.office.jrs.profile.PhoneResource.PhoneTable;
-import info.yalamanchili.office.jrs.profile.SkillSetResource.SkillSetDto;
 import info.yalamanchili.office.profile.ClientInformationService;
 import info.yalamanchili.office.profile.DependentService;
 import info.yalamanchili.office.profile.EmergencyContactService;
@@ -240,27 +242,39 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @Validate
     @Path("/skillset/{empId}")
     @Produces("application/text")
-    public String addSkillSet(@PathParam("empId") Long empId, SkillSetDto skillset) {
-        Employee emp = (Employee) getDao().findById(empId);
-        SkillSet skillSetUpdated = emp.getSkillSet();
-        if (skillSetUpdated == null) {
-            skillSetUpdated = mapper.map(skillset, SkillSet.class);
+    public SkillSetSaveDto addSkillSet(@PathParam("empId") Long empId, SkillSetSaveDto skillSetSaveDto) {
+        SkillSet skillset = mapper.map(skillSetSaveDto, SkillSet.class);
+        SkillSet skillsetEntity = em.find(SkillSet.class, skillset.getId());
+        Employee emp = employeeDao.findById(empId);
+        if (skillSetSaveDto.getSkillSetFile().size() > 0) {
+            for (SkillSetFile file : skillSetSaveDto.getSkillSetFile()) {
+                if (file.getId() == null) {
+                    //file.setskillSet(skillsetEntity);
+                    skillsetEntity = SkillSetDao.instance().getEntityManager().merge(skillsetEntity);
+                    skillsetEntity.getSkillSetFile().add(file);
+                } else {
+                    SkillSetFileDao.instance().save(file);
+                }
+            }
         }
         if (skillset.getPractice() == null || skillset.getPractice().getId() == null) {
-            skillSetUpdated.setPractice(null);
+            skillsetEntity.setPractice(null);
         } else {
-            skillSetUpdated.setPractice(PracticeDao.instance().findById(skillset.getPractice().getId()));
+            skillsetEntity.setPractice(PracticeDao.instance().findById(skillset.getPractice().getId()));
         }
         if (skillset.getTechnologyGroup() == null || skillset.getTechnologyGroup().getId() == null) {
-            skillSetUpdated.setTechnologyGroup(null);
+            skillsetEntity.setTechnologyGroup(null);
         } else {
-            skillSetUpdated.setTechnologyGroup(TechnologyGroupDao.instance().findById(skillset.getTechnologyGroup().getId()));
+            skillsetEntity.setTechnologyGroup(TechnologyGroupDao.instance().findById(skillset.getTechnologyGroup().getId()));
         }
-        emp.setSkillSet(skillSetUpdated);
+        skillsetEntity = SkillSetDao.instance().save(skillsetEntity);
+        emp.setSkillSet(skillsetEntity);
         emp = em.merge(emp);
         profileNotificationservice.skillSetUpdatedNotification(emp);
-        return emp.getSkillSet().getId().toString();
+        SkillSetSaveDto dto = mapper.map(skillsetEntity, SkillSetSaveDto.class);
+        return dto;
     }
+
 
     /* Preferences*/
     @GET

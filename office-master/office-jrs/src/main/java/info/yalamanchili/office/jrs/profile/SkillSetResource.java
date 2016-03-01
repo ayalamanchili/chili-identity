@@ -11,7 +11,9 @@ import info.chili.spring.SpringContext;
 import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.SkillDao;
 import info.yalamanchili.office.dao.profile.SkillSetDao;
+import info.yalamanchili.office.dao.profile.SkillSetFileDao;
 import info.yalamanchili.office.entity.profile.SkillSet;
+import info.yalamanchili.office.entity.profile.SkillSetFile;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,14 +83,14 @@ public class SkillSetResource extends CRUDResource<SkillSet> {
     @Path("/skills")
     @Transactional(readOnly = true)
     public String getSkills() {
-         return StringUtils.join(SkillDao.instance().getSkills(),",");
+        return StringUtils.join(SkillDao.instance().getSkills(), ",");
     }
 
     @GET
     @Path("/skills/{skillSetId}")
     @Transactional(readOnly = true)
     public String getSkills(@PathParam("skillSetId") Long skillSetId) {
-        return StringUtils.join(SkillDao.instance().getSkills(skillSetId),",");
+        return StringUtils.join(SkillDao.instance().getSkills(skillSetId), ",");
     }
 
     //To add Certifications
@@ -117,14 +119,14 @@ public class SkillSetResource extends CRUDResource<SkillSet> {
     @Path("/certifications")
     @Transactional(readOnly = true)
     public String getcertifications() {
-       return StringUtils.join(SkillDao.instance().getCertifications(),",");
+        return StringUtils.join(SkillDao.instance().getCertifications(), ",");
     }
 
     @GET
     @Path("/certifications/{skillSetId}")
     @Transactional(readOnly = true)
     public String getcertifications(@PathParam("skillSetId") Long skillSetId) {
-        return StringUtils.join(SkillDao.instance().getCertifications(skillSetId),",");
+        return StringUtils.join(SkillDao.instance().getCertifications(skillSetId), ",");
     }
 
     @GET
@@ -139,6 +141,12 @@ public class SkillSetResource extends CRUDResource<SkillSet> {
             res.add(dto);
         }
         return res;
+    }
+
+    @GET
+    @Path("/resumes/{empId}")
+    public SkillSetFile getSkillSetFile(@PathParam("empId") Long empId) {
+        return SkillSetFileDao.instance().findById(empId);
     }
 
     @Override

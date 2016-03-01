@@ -12,11 +12,13 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.http.client.URL;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
+import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.TextArea;
@@ -25,6 +27,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.fields.FileuploadField;
 import info.chili.gwt.crud.UpdateComposite;
+import info.chili.gwt.fields.DataType;
 import info.chili.gwt.listeners.GenericListener;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
@@ -60,13 +63,13 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
     /**
      * resume
      */
-    FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "SkillSet", "resumeUrl", "SkillSet/resumeUrl", true) {
+    FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "SkillSet", "skillSetFile", "SkillSet/skillSetFile", false, true) {
         @Override
         public void onUploadComplete(String res) {
             postUpdateSuccess(null);
         }
     };
-
+    JSONArray skillSetResumeURL = new JSONArray();
     /**
      * Skill Set Tags
      *
@@ -145,8 +148,21 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
     protected JSONObject populateEntityFromFields() {
         entity.put("practice", practiceF.getSelectedObject());
         entity.put("technologyGroup", technoglogyGroupF.getSelectedObject());
-        if (!resumeUploadPanel.isEmpty()) {
-            entity.put("resumeUrl", resumeUploadPanel.getFileName());
+        assignEntityValueFromField("skillSetFileType", entity);
+        int j = skillSetResumeURL.size();
+        logger.info(skillSetResumeURL.toString());
+        for (FileUpload upload : resumeUploadPanel.getFileUploads()) {
+            if (upload.getFilename() != null && !upload.getFilename().trim().isEmpty()) {
+                JSONObject resume = new JSONObject();
+                resume.put("fileURL", resumeUploadPanel.getFileName(upload));
+                resume.put("name", entity.get("skillSetFileType"));
+//                resume.put("name", new JSONString("File Name"));
+                skillSetResumeURL.set(j, resume);
+                j++;
+            }
+        }
+        if (skillSetResumeURL.size() > 0) {
+            entity.put("skillSetFile", skillSetResumeURL);
         }
         return entity;
     }
@@ -172,10 +188,21 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("practice", entity, null);
         assignFieldValueFromEntity("technologyGroup", entity, null);
+        assignFieldValueFromEntity("skillSetFileType", entity, DataType.ENUM_FIELD);
+        skillSetResumeURL = JSONUtils.toJSONArray(entity.get("skillSetFile"));
+        if (skillSetResumeURL.size() > 0) {
+            populateResumes(skillSetResumeURL);
+        }
+    }
+
+    protected void populateResumes(JSONArray items) {
+        entityFieldsPanel.insert(new ReadAllSkillSetFilesPanel(entityId, items), entityFieldsPanel.getWidgetIndex(resumeUploadPanel) + 1);
     }
 
     protected void uploadResume(String entityId) {
-        resumeUploadPanel.upload(entityId.trim());
+        JSONObject post = (JSONObject) JSONParser.parseLenient(entityId);
+        JSONArray resumeURL = JSONUtils.toJSONArray(post.get("skillSetFile"));
+        resumeUploadPanel.upload(resumeURL, "fileURL");
     }
 
     @Override
@@ -268,6 +295,8 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
         entityFieldsPanel.add(newPracticeL);
         addDropDown("technologyGroup", technoglogyGroupF);
         entityFieldsPanel.add(newTGL);
+        entityFieldsPanel.add(getLineSeperatorTag("Upload Resume and Certifications"));
+        addEnumField("skillSetFileType", false, true, SkillSetFileType.names());
         entityFieldsPanel.add(resumeUploadPanel);
         //Tags
         tagsPanel.add(new HTML("<p><b>Add Tags that will reflect your niche skills. These are used by search engine for find new opportunities. </br> You can create new Tags as needed.</b></p>"));
@@ -565,4 +594,19 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
         loadCertSuggestions();
     }
 
+//    @Override
+//    protected boolean processClientSideValidations(JSONObject entity) {
+//        boolean flag = true;
+//        if (entity.get("skillSetFile") == null) {
+//            resumeUploadPanel.setMessage("Please select a file");
+//            flag = false;
+//        }
+//        EnumField skillSetFileType = (EnumField) fields.get("skillSetFileType");
+//        if (skillSetFileType.getValue() == null) {
+//            skillSetFileType.setMessage("Value is required");
+////            skillSetFileType.listBox.setSelectedIndex(0);
+//            flag = false;
+//        }
+//        return flag;
+//    }
 }
