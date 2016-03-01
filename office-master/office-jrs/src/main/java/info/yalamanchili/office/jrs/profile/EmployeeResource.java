@@ -47,6 +47,7 @@ import info.yalamanchili.office.profile.ClientInformationService;
 import info.yalamanchili.office.profile.DependentService;
 import info.yalamanchili.office.profile.EmergencyContactService;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
+import info.yalamanchili.office.security.AccessCheck;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -222,8 +223,8 @@ public class EmployeeResource extends CRUDResource<Employee> {
     /* SkillSet */
     @GET
     @Path("/skillset/{empId}")
-    @PrivacyAware(key = PrivacyData.SKILL_SET)
     @Transactional(readOnly = true)
+    @AccessCheck(roles = {"ROLE_H1B_IMMIGRATION", "ROLE_RECRUITER", "ROLE_HR", "ROLE_ADMIN", "ROLE_SALES_AND_MARKETING"})
     public SkillSet getSkillSet(@PathParam("empId") long empId) {
         Employee emp = (Employee) getDao().findById(empId);
         //If skillset not present create a empty skillset so certifications and skills can be added.

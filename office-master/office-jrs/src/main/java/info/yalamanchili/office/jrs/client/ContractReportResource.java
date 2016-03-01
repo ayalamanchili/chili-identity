@@ -49,8 +49,7 @@ public class ContractReportResource {
     
     @PUT
     @Path("/search-emp-between-days/{start}/{limit}")
-    @Cacheable(OfficeCacheKeys.EMPLOYEES)
-    public EmployeeTable table(@PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate, @QueryParam("value") String value) {
+    public EmployeeTable employeeJoinedOrLeftSearch(@PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate, @QueryParam("value") String value) {
         return ContractReportService.instance().empJoinedLeftInAPeriod(start, limit, startDate, endDate, value);
     }
     
