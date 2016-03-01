@@ -52,7 +52,7 @@ public class SkillSetPanel extends TreePanelComposite {
                         if (response != null && !response.isEmpty()) {
                             entity = (JSONObject) JSONParser.parseLenient(response);
                             TabPanel.instance().myOfficePanel.entityPanel.clear();
-                            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_SALES_AND_MARKETING)) {
+                            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_SALES_AND_MARKETING)) {
                                 TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateSkillSetPanel(entity));
                             } else {
                                 TabPanel.instance().myOfficePanel.entityPanel.add(new ReadSkillSetPanel(entity));
