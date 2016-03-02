@@ -31,6 +31,7 @@ import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.employee.PerformanceEvaluationSaveDto;
 import info.yalamanchili.office.dto.employee.QuestionComment;
 import info.yalamanchili.office.dto.ext.QuestionDto;
+import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.employee.EvaluationFrequencyType;
 import info.yalamanchili.office.entity.employee.PerformanceEvaluation;
 import info.yalamanchili.office.entity.employee.PerformanceEvaluationStage;
@@ -268,10 +269,10 @@ public class PerformanceEvaluationService {
         OfficeSecurityConfiguration securityConfig = OfficeSecurityConfiguration.instance();
         PdfDocumentData data = new PdfDocumentData();
         data.setKeyStoreName(securityConfig.getKeyStoreName());
-        if (employee.getCompany() != null && employee.getCompany().getName().equals("TechPillars")) {
+        if (employee.getCompany() != null && employee.getCompany().getName().equals(Company.TECHPILLARS)) {
             data.setTemplateUrl("/templates/pdf/manger-review-techp-template.pdf");
-        } else if (employee.getCompany() != null && employee.getCompany().getName().equals("CGS INC")) {
-            data.setTemplateUrl("/templates/pdf/self-review-cgs-template.pdf");
+        } else if (employee.getCompany() != null && employee.getCompany().getName().equals(Company.CGS_INC)) {
+            data.setTemplateUrl("/templates/pdf/manger-review-cgs-template.pdf");
         } else {
             data.setTemplateUrl("/templates/pdf/manger-review-template.pdf");
         }
@@ -376,9 +377,9 @@ public class PerformanceEvaluationService {
         Employee employee = evaluation.getEmployee();
         performanceEvaluationDao.acceccCheck(employee);
         PdfDocumentData data = new PdfDocumentData();
-        if (employee.getCompany() != null && employee.getCompany().getName().equals("TechPillars")) {
+        if (employee.getCompany() != null && employee.getCompany().getName().equals(Company.TECHPILLARS)) {
             data.setTemplateUrl("/templates/pdf/self-review-techp-template.pdf");
-        } else if (employee.getCompany() != null && employee.getCompany().getName().equals("CGS INC")) {
+        } else if (employee.getCompany() != null && employee.getCompany().getName().equals(Company.CGS_INC)) {
             data.setTemplateUrl("/templates/pdf/self-review-cgs-template.pdf");
         } else {
             data.setTemplateUrl("/templates/pdf/self-review-template.pdf");
