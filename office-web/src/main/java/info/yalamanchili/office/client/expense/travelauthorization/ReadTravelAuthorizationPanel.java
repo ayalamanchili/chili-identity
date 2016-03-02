@@ -34,13 +34,13 @@ public class ReadTravelAuthorizationPanel extends ReadComposite {
     private static Logger logger = Logger.getLogger(ReadTravelAuthorizationPanel.class.getName());
     SelectEmployeeWidget selectEmployeeWidgetF = new SelectEmployeeWidget("Employee", false, true, Alignment.HORIZONTAL);
     protected static HTML tripInfoHelpText = new HTML("\n"
-            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
+            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
             + "<strong style=\"color:#555555\">Trip Information</strong></p>\n"
             + "\n"
             + "<ul>\n"
             + "</ul>");
     protected static HTML estimatedExpensesHelpText = new HTML("\n"
-            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238)\">"
+            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222)\">"
             + "<strong style=\"color:#555555\">Estimated Expenses</strong></p>\n"
             + "\n");
     HTML tacHelpText = new HTML("<h4 style=\"color:#888\">" + "Estimate all expenses to be incurred and indicate method of payment.</h4>");

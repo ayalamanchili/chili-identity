@@ -45,19 +45,19 @@ public class ReadExpenseReportPanel extends ReadComposite {
     protected HorizontalPanel attachmentsPanel = new HorizontalPanel();
 
     protected static HTML generalInfo = new HTML("\n"
-            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
+            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
             + "<strong style=\"color:#555555\">General Expense Information</strong></p>\n"
             + "\n"
             + "<ul>\n"
             + "</ul>");
     protected static HTML expenseInfo = new HTML("\n"
-            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
+            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
             + "<strong style=\"color:#555555\">Expense Details</strong></p>\n"
             + "\n"
             + "<ul>\n"
             + "</ul>");
     protected static HTML expenseReceiptInfo = new HTML("\n"
-            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
+            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
             + "<strong style=\"color:#555555\">Expense Receipts</strong></p>\n"
             + "\n"
             + "<ul>\n"
