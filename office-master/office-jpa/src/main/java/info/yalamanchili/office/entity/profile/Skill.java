@@ -9,6 +9,7 @@ package info.yalamanchili.office.entity.profile;
 
 import info.chili.jpa.validation.Unique;
 import info.chili.jpa.AbstractEntity;
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -61,6 +62,27 @@ public class Skill extends AbstractEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Skill other = (Skill) obj;
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        return Objects.equals(this.name, other.name);
     }
 
     @Override
