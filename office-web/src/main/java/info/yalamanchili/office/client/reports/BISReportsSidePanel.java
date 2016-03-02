@@ -334,12 +334,12 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
             }
             if (searchTasks.getParent().equals(mProjectsPanel)) {
                 TabPanel.instance().getReportingPanel().entityPanel.clear();
-                String mpurl = OfficeWelcome.constants.root_url() + "clientinformation/mp/employees";
+                String mpurl = OfficeWelcome.constants.root_url() + "contract-report/multiple-cpds";
                 HttpService.HttpServiceAsync.instance().doPut(mpurl, entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
                             @Override
                             public void onResponse(String result) {
-                                if (result == null || JSONParser.parseLenient(result).isObject() == null) {
+                                if (result == null || JSONParser.parseLenient(result).isObject() == null || result.contains("entities") == false) {
                                     new ResponseStatusWidget().show("No Results");
                                 } else {
                                     //TODO use size and entities attributes
@@ -694,7 +694,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
             }
             if (reportTasks.getParent().equals(mProjectsPanel)) {
                 TabPanel.instance().getReportingPanel().entityPanel.clear();
-                String mpurl = OfficeWelcome.constants.root_url() + "clientinformation/multiple-projects-report";
+                String mpurl = OfficeWelcome.constants.root_url() + "contract-report/multiple-cpds-report";
                 HttpService.HttpServiceAsync.instance().doGet(mpurl, OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
                             @Override

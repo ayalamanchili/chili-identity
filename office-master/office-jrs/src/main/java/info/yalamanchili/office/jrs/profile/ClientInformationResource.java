@@ -163,35 +163,6 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
     }
 
     @PUT
-    @Path("/mp/employees")
-    public ClientInformationTable getMPForEmployees() {
-        ClientInformationTable list = new ClientInformationTable();
-        String[] types = {"Corporate Employee", "Employee", "Subcontractor", "W2 Contractor", "1099 Contractor"};
-        List<Employee> emps = EmployeeDao.instance().getEmployeesByType(types);
-        List<ClientInformation> clients = new ArrayList();
-        for (Employee emp : emps) {
-            if (emp.getClientInformations() != null && emp.getClientInformations().size() > 1) {
-                for (ClientInformation ci : emp.getClientInformations()) {
-                    if (ci.getEndDate() != null) {
-                        if ((ci.getEndDate().after(new Date())) || (ci.getEndDate().equals(new Date()))) {
-                            clients.add(ci);
-                        }
-                    } else {
-                        clients.add(ci);
-                    }
-                }
-            }
-        }
-        if (clients.size() > 1) {
-            list.setEntities(clients);
-            list.setSize(Long.valueOf(clients.size()));
-            return list;
-        } else {
-            return null;
-        }
-    }
-
-    @PUT
     @Path("/search-projects-between-days/{start}/{limit}")
     @Cacheable(OfficeCacheKeys.CLIENTINFORMATION)
     public ClientInformationTable table(@PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate, @QueryParam("value") String value, @QueryParam("employeeType") String employeeType) {
@@ -239,24 +210,6 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
         String start = DateUtils.formatDate(startDate, "MM-dd-yyyy");
         String end = DateUtils.formatDate(endDate, "MM-dd-yyyy");
         String fileName = ReportGenerator.generateExcelOrderedReport(ctable.getEntities(), "Emp Projects Going To Start Or End Between " + start + " and " + end, OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
-        MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
-    }
-
-    @GET
-    @Path("/multiple-projects-report")
-    public void multipleProjreport() {
-        ClientInformationTable table = getMPForEmployees();
-        List<ClientInformation> cis = new ArrayList();
-        ContractDto.ContractTable ctable = new ContractDto.ContractTable();
-        if (table.getSize() > 0) {
-            cis.addAll(table.getEntities());
-        }
-        for (ClientInformation ci : cis) {
-            ctable.getEntities().add(ContractService.instance().mapClientInformation(ci));
-        }
-        String[] columnOrder = new String[]{"employee", "client", "vendor", "billingRate", "startDate", "endDate"};
-        Employee emp = OfficeSecurityService.instance().getCurrentUser();
-        String fileName = ReportGenerator.generateExcelOrderedReport(ctable.getEntities(), "Employees On Multiple Projects Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
     }
 
