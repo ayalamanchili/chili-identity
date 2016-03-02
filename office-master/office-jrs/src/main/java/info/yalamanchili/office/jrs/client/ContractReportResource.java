@@ -8,18 +8,13 @@
  */
 package info.yalamanchili.office.jrs.client;
 
-import info.chili.reporting.ReportGenerator;
 import info.yalamanchili.office.client.ContractReportService;
-import info.yalamanchili.office.client.ContractService;
-import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao.EmployeeTable;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.client.ContractDto;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
-import info.yalamanchili.office.dto.client.ContractSearchDto;
-import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.jms.MessagingService;
-import java.util.ArrayList;
+import info.yalamanchili.office.dao.profile.EmployeeLocationDto;
+import info.yalamanchili.office.dao.profile.EmployeeLocationReportDto;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -72,6 +67,7 @@ public class ContractReportResource {
 
     @PUT
     @Path("/multiple-cpds")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CONTRACTS_FULL_VIEW')")
     public ContractTable getMultipleCpds() {
         List<ContractDto> dtos = ContractReportService.instance().getMultipleCpds();
         ContractDto.ContractTable resultTable = new ContractDto.ContractTable();
@@ -83,10 +79,40 @@ public class ContractReportResource {
 
     @GET
     @Path("/multiple-cpds-report")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CONTRACTS_FULL_VIEW')")
     public void multipleCPDsReport() {
         String email = currentEmpEmail();
-        ContractTable table = getMultipleCpds();
-        ContractReportService.instance().multipleCPDsReport(table, email);
+        ContractReportService.instance().multipleCPDsReport(email);
+    }
+
+    @PUT
+    @Path("/emp-location-search/{start}/{limit}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CONTRACTS_FULL_VIEW')")
+    public List<ContractDto> empLocationSearch(EmployeeLocationDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {
+        return ContractReportService.instance().getEmpsInLocation(dto, start, limit);
+    }
+
+    @PUT
+    @Path("/emp-location-report")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CONTRACTS_FULL_VIEW')")
+    public void empLocationReport(EmployeeLocationDto dto) {
+        String email = currentEmpEmail();
+        ContractReportService.instance().getEmpsLocationReport(dto, email);
+    }
+
+    @PUT
+    @Path("/emp-address")
+    @PreAuthorize("hasAnyRole('ROLE_HR_ADMINSTRATION')")
+    public List<EmployeeLocationReportDto> searchEmpByAddress(EmployeeLocationDto dto) {
+        return ContractReportService.instance().searchEmpsByAddress(dto);
+    }
+
+    @PUT
+    @Path("/emp-address-report")
+    @PreAuthorize("hasAnyRole('ROLE_HR_ADMINSTRATION')")
+    public void getEmpAddressReport(EmployeeLocationDto dto) {
+        String email = currentEmpEmail();
+        ContractReportService.instance().getEmpsByAddressReport(dto, email);
     }
 
     private String currentEmpEmail() {
