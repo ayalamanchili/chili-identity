@@ -69,14 +69,9 @@ public class ReadAllMultiPleProjectsPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            JSONObject emp = (JSONObject) entity.get("employee");
-            JSONObject client = (JSONObject) entity.get("client");
-            JSONObject vendor = (JSONObject) entity.get("vendor");
-            if (emp != null) {
-                table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
-            }
-            table.setText(i, 2, JSONUtils.toString(client, "name"));
-            table.setText(i, 3, JSONUtils.toString(vendor, "name"));
+            table.setText(i, 1, JSONUtils.toString(entity, "employee"));
+            table.setText(i, 2, JSONUtils.toString(entity, "client"));
+            table.setText(i, 3, JSONUtils.toString(entity, "vendor"));
             table.setText(i, 4, FormatUtils.formarCurrency(JSONUtils.toString(entity, "billingRate")));
             table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
             table.setText(i, 6, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
