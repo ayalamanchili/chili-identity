@@ -14,6 +14,11 @@ import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao.EmployeeTable;
 import info.yalamanchili.office.dao.profile.EmployeeDto;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.dto.client.ContractDto;
+import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
+import info.yalamanchili.office.dto.client.ContractSearchDto;
+import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.ArrayList;
@@ -55,7 +60,7 @@ public class ContractReportService {
         table.setSize(Long.valueOf(dtos.size()));
         return table;
     }
-    
+
     @Async
     @Transactional
     public void empJoinedLeftInAPeriodReport(int start, int limit, Date startDate, Date endDate, String value, String email) {
@@ -65,5 +70,30 @@ public class ContractReportService {
             String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Emp Joined Or Left In a Period Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
             MessagingService.instance().emailReport(fileName, email);
         }
+    }
+
+    public List<ContractDto> getMultipleCpds() {
+        ContractSearchDto searchDto = new ContractSearchDto();
+        List<ContractDto> dtos = new ArrayList();
+        List<ContractDto> activeCpds = new ArrayList();
+        String[] types = {"Corporate Employee", "Employee", "Subcontractor", "W2 Contractor", "1099 Contractor"};
+        for (String type : types) {
+            searchDto.setEmployeeType(type);
+            dtos.addAll(ContractService.instance().getResultForReport(searchDto).getEntities());
+        }
+        activeCpds = ContractService.instance().activeCPDs(dtos);
+        if (activeCpds.size() > 1) {
+            return activeCpds;
+        } else {
+            return null;
+        }
+    }
+
+    @Async
+    @Transactional
+    public void multipleCPDsReport(ContractTable table, String email) {
+        String[] columnOrder = new String[]{"employee", "client", "vendor", "billingRate", "startDate", "endDate"};
+        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Employees On Multiple Projects Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        MessagingService.instance().emailReport(fileName, email);
     }
 }
