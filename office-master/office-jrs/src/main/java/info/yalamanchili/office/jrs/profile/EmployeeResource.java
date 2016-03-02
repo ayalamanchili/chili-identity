@@ -62,6 +62,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -241,7 +242,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @PUT
     @Validate
     @Path("/skillset/{empId}")
-    @Produces("application/text")
+    @Produces(MediaType.APPLICATION_JSON)
     public SkillSetSaveDto addSkillSet(@PathParam("empId") Long empId, SkillSetSaveDto skillSetSaveDto) {
         SkillSet skillset = mapper.map(skillSetSaveDto, SkillSet.class);
         SkillSet skillsetEntity = em.find(SkillSet.class, skillset.getId());
