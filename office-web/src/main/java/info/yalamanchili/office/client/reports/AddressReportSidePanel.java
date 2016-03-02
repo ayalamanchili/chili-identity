@@ -119,11 +119,11 @@ public class AddressReportSidePanel extends ALComposite implements ClickHandler,
     }
 
     protected String getEmpAddressReportUrl() {
-        return OfficeWelcome.constants.root_url() + "contract/emp-address-report";
+        return OfficeWelcome.constants.root_url() + "contract-report/emp-address-report";
     }
 
     protected String getEmpAddressReadAllUrl() {
-        return OfficeWelcome.constants.root_url() + "contract/emp-address";
+        return OfficeWelcome.constants.root_url() + "contract-report/emp-address";
     }
 
     protected JSONObject getLocationObject() {
@@ -148,7 +148,6 @@ public class AddressReportSidePanel extends ALComposite implements ClickHandler,
         cityField.setValue("");
         countryField.listBox.setSelectedIndex(0);
         stateField.listBox.setSelectedIndex(0);
-
     }
 
     public void onChange(ChangeEvent event) {
