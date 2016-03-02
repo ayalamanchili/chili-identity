@@ -40,27 +40,27 @@ public class ReadContractsPanel extends TReadComposite {
     protected boolean isSubOr1099 = false;
 
     protected static HTML clientVendorText = new HTML("\n"
-            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 5px; background: rgb(238, 238, 238)\">"
+            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 5px; background: rgb(222, 222, 222)\">"
             + "<strong style=\"color:#555555\">Client & Vendor Information</strong></p>\n"
             + "\n");
     protected static HTML billingText = new HTML("\n"
-            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 5px; background: rgb(238, 238, 238)\">"
+            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 5px; background: rgb(222, 222, 222)\">"
             + "<strong style=\"color:#555555\">Billing Information</strong></p>\n"
             + "\n");
     protected static HTML otherText = new HTML("\n"
-            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 5px; background: rgb(238, 238, 238)\">"
+            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 5px; background: rgb(222, 222, 222)\">"
             + "<strong style=\"color:#555555\">Other Information</strong></p>\n"
             + "\n");
     protected static HTML hrText = new HTML("\n"
-            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 5px; background: rgb(238, 238, 238)\">"
+            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 5px; background: rgb(222, 222, 222)\">"
             + "<strong style=\"color:#555555\">HR and Account Department Docs</strong></p>\n"
             + "\n");
     protected static HTML subText = new HTML("\n"
-            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 5px; background: rgb(238, 238, 238)\">"
+            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 5px; background: rgb(222, 222, 222)\">"
             + "<strong style=\"color:#555555\">Subcontractor Information</strong></p>\n"
             + "\n");
     protected static HTML sub1099Text = new HTML("\n"
-            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 5px; background: rgb(238, 238, 238)\">"
+            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 5px; background: rgb(222, 222, 222)\">"
             + "<strong style=\"color:#555555\">1099 Contractor Information</strong></p>\n"
             + "\n");
 

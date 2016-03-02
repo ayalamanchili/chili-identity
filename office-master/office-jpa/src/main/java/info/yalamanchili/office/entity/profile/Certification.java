@@ -9,6 +9,7 @@ package info.yalamanchili.office.entity.profile;
 
 import info.chili.jpa.validation.Unique;
 import info.chili.jpa.AbstractEntity;
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -35,15 +36,15 @@ public class Certification extends AbstractEntity {
     @Field
     protected String name;
     /**
-     * 
+     *
      */
     protected String description;
     /**
-     * 
+     *
      */
     protected String certificationVendor;
     /**
-     * 
+     *
      */
     protected String certificationCode;
 
@@ -80,6 +81,27 @@ public class Certification extends AbstractEntity {
 
     public void setCertificationCode(String certificationCode) {
         this.certificationCode = certificationCode;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Certification other = (Certification) obj;
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        return Objects.equals(this.name, other.name);
     }
 
     @Override

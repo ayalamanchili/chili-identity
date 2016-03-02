@@ -44,8 +44,10 @@ public class SkillSetTagDao extends CRUDDao<SkillSetTag> {
             skillSet = OfficeSecurityService.instance().getCurrentUser().getSkillSet();
         }
         SkillSetTag tag = EntityQueryUtils.findEntity(getEntityManager(), SkillSetTag.class, "name", name.trim());
-        if (tag != null) {
+        if (tag != null && !skillSet.getTags().contains(tag)) {
             skillSet.addTag(tag);
+        } else if (skillSet.getTags().contains(tag)) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "tag.already.added", "Tag already added");
         } else {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "tag.not.present", "Tag does not exist. Please click Create New Tag");
         }

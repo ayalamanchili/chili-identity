@@ -54,7 +54,7 @@ public class HomeStackPanel extends ALComposite implements ClickHandler {
         panel.add(selfServStackPanel, "Self Service");
         panel.add(projectsStackPanel, "My Reports");
         panel.add(msgStackPanel, "Messages");
-        panel.add(todoStackPanel, "TODO's");
+        panel.add(todoStackPanel, "Todo");
     }
 
 //TODO this does not seem to be working

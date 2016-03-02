@@ -136,14 +136,14 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
     }
     
     protected static HTML inProgressHelpText = new HTML("\n"
-            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
-            + "<strong style=\"color:#555555\">Please change the staus of the ticket to In Progress and assign it to right dept and person with a comment and click update</strong></p>\n"
+            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 5px 10px; background: rgb(222, 222, 222);\">"
+            + "<strong style=\"color:#555555\">Please change the status of the ticket to In Progress and assign it to right dept and person with a comment and click update</strong></p>\n"
             + "\n"
             + "<ul>\n"
             + "</ul>");
     protected static HTML resolvedHelpText = new HTML("\n"
-            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
-            + "<strong style=\"color:#555555\">To resolve a ticket please cahnge the status to Resloved, add comment and click update.</strong></p>\n"
+            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 5px 10px; background: rgb(222, 222, 222);\">"
+            + "<strong style=\"color:#555555\">To resolve a ticket please change the status to Resloved, add comment and click update.</strong></p>\n"
             + "\n"
             + "<ul>\n"
             + "</ul>");

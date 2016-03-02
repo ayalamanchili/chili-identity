@@ -60,7 +60,7 @@ public class CreateImmigrationCheckRequisitionPanel extends CreateComposite impl
     }
 
     protected static HTML checkItem = new HTML("\n"
-            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
+            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
             + "<strong style=\"color:#555555\">Check Items Information</strong></p>\n"
             + "\n"
             + "<ul>\n"
