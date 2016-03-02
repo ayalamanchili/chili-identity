@@ -11,9 +11,14 @@ package info.yalamanchili.office.client;
 import info.chili.reporting.ReportGenerator;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
+import info.yalamanchili.office.dao.client.ContractReportDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao.EmployeeTable;
 import info.yalamanchili.office.dao.profile.EmployeeDto;
+import info.yalamanchili.office.dao.profile.EmployeeLocationDto;
+import info.yalamanchili.office.dao.profile.EmployeeLocationReportDto;
+import info.yalamanchili.office.dto.client.ContractDto;
+import info.yalamanchili.office.dto.client.ContractSearchDto;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.ArrayList;
@@ -55,7 +60,7 @@ public class ContractReportService {
         table.setSize(Long.valueOf(dtos.size()));
         return table;
     }
-    
+
     @Async
     @Transactional
     public void empJoinedLeftInAPeriodReport(int start, int limit, Date startDate, Date endDate, String value, String email) {
@@ -65,5 +70,81 @@ public class ContractReportService {
             String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Emp Joined Or Left In a Period Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
             MessagingService.instance().emailReport(fileName, email);
         }
+    }
+
+    public List<ContractDto> getMultipleCpds() {
+        ContractSearchDto searchDto = new ContractSearchDto();
+        List<ContractDto> dtos = new ArrayList();
+        List<ContractDto> activeCpds = new ArrayList();
+        String[] types = {"Corporate Employee", "Employee", "Subcontractor", "W2 Contractor", "1099 Contractor"};
+        for (String type : types) {
+            searchDto.setEmployeeType(type);
+            dtos.addAll(ContractService.instance().getResultForReport(searchDto).getEntities());
+        }
+        activeCpds = ContractService.instance().activeCPDs(dtos);
+        if (activeCpds.size() > 1) {
+            return activeCpds;
+        } else {
+            return null;
+        }
+    }
+
+    @Async
+    @Transactional
+    public void multipleCPDsReport(String email) {
+        List<ContractDto> dtos = getMultipleCpds();
+        String[] columnOrder = new String[]{"employee", "client", "vendor", "billingRate", "startDate", "endDate"};
+        String fileName = ReportGenerator.generateExcelOrderedReport(dtos, "Employees On Multiple Projects Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        MessagingService.instance().emailReport(fileName, email);
+    }
+
+    public List<ContractDto> getEmpsInLocation(EmployeeLocationDto dto, int start, int limit) {
+        List<Employee> emps = ContractReportDao.instance().getEmpsInLocation(dto);
+        List<ContractDto> dtos = new ArrayList();
+        if (emps != null) {
+            emps.stream().map((emp) -> emp.getClientInformations()).filter((cpds) -> (cpds.size() > 0)).forEach((cpds) -> {
+                cpds.stream().forEach((ci) -> {
+                    dtos.add(ContractService.instance().mapClientInformation(ci));
+                });
+            });
+        }
+        List<ContractDto> activeCpds = ContractService.instance().activeCPDs(dtos);
+        if (activeCpds != null && activeCpds.size() > 0) {
+            return activeCpds;
+        } else {
+            return null;
+        }
+    }
+
+    @Async
+    @Transactional
+    public void getEmpsLocationReport(EmployeeLocationDto dto, String email) {
+        List<ContractDto> dtos = getEmpsInLocation(dto, 0, 10000);
+        String[] columnOrder = new String[]{"employee", "client", "clientLocation", "vendor", "startDate", "endDate"};
+        if (dto.getCity() != null) {
+            String fileName = ReportGenerator.generateExcelOrderedReport(dtos, "Emp Working In City " + dto.getCity(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+            MessagingService.instance().emailReport(fileName, email);
+        } else if (dto.getState() != null) {
+            String fileName = ReportGenerator.generateExcelOrderedReport(dtos, "Emp Working In State " + dto.getState(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+            MessagingService.instance().emailReport(fileName, email);
+        }
+    }
+
+    public List<EmployeeLocationReportDto> searchEmpsByAddress(EmployeeLocationDto dto) {
+        List<Employee> emps = ContractReportDao.instance().getEmpsInLocation(dto);
+        List<EmployeeLocationReportDto> dtos = new ArrayList();
+        for (Employee emp : emps) {
+            dtos.add(EmployeeLocationReportDto.map(mapper, emp, dto));
+        }
+        return dtos;
+    }
+
+    @Async
+    @Transactional
+    public void getEmpsByAddressReport(EmployeeLocationDto dto, String email) {
+        List<EmployeeLocationReportDto> dtos = searchEmpsByAddress(dto);
+        String[] columnOrder = new String[]{"employee", "branch", "street1", "street2", "city", "state", "country"};
+        String fileName = ReportGenerator.generateExcelOrderedReport(dtos, "Employee In A Location report ", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        MessagingService.instance().emailReport(fileName, email);
     }
 }

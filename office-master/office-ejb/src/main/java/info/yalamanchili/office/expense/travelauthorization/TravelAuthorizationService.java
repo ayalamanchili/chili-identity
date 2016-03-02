@@ -21,6 +21,7 @@ import info.yalamanchili.office.dao.expense.travelauthorization.TravelAuthorizat
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.entity.Company;
 import static info.yalamanchili.office.entity.expense.travelauthorization.ExpensePaymentType.EMPLOYEE_EXPENSE;
 import info.yalamanchili.office.entity.expense.travelauthorization.TravelAccommodation;
 import info.yalamanchili.office.entity.expense.travelauthorization.TravelAuthorization;
@@ -93,9 +94,9 @@ public class TravelAuthorizationService {
     public Response getReport(TravelAuthorization entity) {
         PdfDocumentData data = new PdfDocumentData();
         Employee emp = entity.getEmployee();
-        if (emp.getCompany() != null && emp.getCompany().getName().equals("CGS INC")) {
+        if (emp.getCompany() != null && emp.getCompany().getName().equals(Company.CGS_INC)) {
             data.setTemplateUrl("/templates/pdf/travel-authorization-cgs-template.pdf");
-        } else if (emp.getCompany() != null && emp.getCompany().getName().equals("TechPillars")) {
+        } else if (emp.getCompany() != null && emp.getCompany().getName().equals(Company.TECHPILLARS)) {
             data.setTemplateUrl("/templates/pdf/travel-authorization-tp-template.pdf");
         } else {
             data.setTemplateUrl("/templates/pdf/travel-authorization-template.pdf");

@@ -25,6 +25,7 @@ import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
 import info.yalamanchili.office.dao.time.SearchConsultantTimeSheetDto;
 import info.yalamanchili.office.dto.time.ConsultantTimeSummary;
+import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.ConsultantTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
@@ -163,10 +164,10 @@ public class ConsultantTimeService {
     public Response getReport(ConsultantTimeSheet entity) {
         PdfDocumentData data = new PdfDocumentData();
         Employee emp = entity.getEmployee();
-        if (emp.getCompany() != null && emp.getCompany().getName().equals("TechPillars")) {
+        if (emp.getCompany() != null && emp.getCompany().getName().equals(Company.TECHPILLARS)) {
             data.setTemplateUrl("/templates/pdf/assoc-ts-template-techp.pdf");
         }
-        else if (emp.getCompany() != null && emp.getCompany().getName().equals("CGS INC")) {
+        else if (emp.getCompany() != null && emp.getCompany().getName().equals(Company.CGS_INC)) {
             data.setTemplateUrl("/templates/pdf/assoc-ts-template-cgs.pdf");
         } else {
             data.setTemplateUrl("templates/pdf/assoc-ts-template.pdf");

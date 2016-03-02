@@ -59,7 +59,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author anuyalamanchili
  */
 @Component
-@Scope("request")
+@Scope("prototype")
 public class ContractService {
 
     @PersistenceContext

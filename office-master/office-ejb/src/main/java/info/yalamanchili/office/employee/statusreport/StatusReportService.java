@@ -21,6 +21,7 @@ import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.dao.employee.statusreport.StatusReportDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.employee.statusreport.StatusReport;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.employee.statusreport.ReportDocument;
@@ -113,17 +114,17 @@ public class StatusReportService {
         Signature preparedBysignature = new Signature(preparedBy.getEmployeeId(), preparedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "preparedBySignature", DateUtils.dateToCalendar(entity.getSubmittedDate()), employeeDao.getPrimaryEmail(preparedBy), null);
         data.getSignatures().add(preparedBysignature);
         String prepareByStr = preparedBy.getLastName() + ", " + preparedBy.getFirstName();
-        if (preparedBy.getCompany() != null && preparedBy.getCompany().getName().equals("TechPillars")) {
+        if (preparedBy.getCompany() != null && preparedBy.getCompany().getName().equals(Company.TECHPILLARS)) {
             data.setTemplateUrl("/templates/pdf/status-report-techp-template.pdf");
-        } else if (preparedBy.getCompany() != null && preparedBy.getCompany().getName().equals("CGS INC")) {
+        } else if (preparedBy.getCompany() != null && preparedBy.getCompany().getName().equals(Company.CGS_INC)) {
             data.setTemplateUrl("/templates/pdf/status-report-cgs-template.pdf");
         } else {
             data.setTemplateUrl("/templates/pdf/status-report-template.pdf");
         }
-        if (preparedBy.getCompany() != null && preparedBy.getCompany().getName().equals("TechPillars")) {
+        if (preparedBy.getCompany() != null && preparedBy.getCompany().getName().equals(Company.TECHPILLARS)) {
             data.getData().put("title", "Monthly Task Report by " + prepareByStr + " (for Tech Pillars) ");
         }
-        if (preparedBy.getCompany() != null && preparedBy.getCompany().getName().equals("CGS INC")) {
+        if (preparedBy.getCompany() != null && preparedBy.getCompany().getName().equals(Company.CGS_INC)) {
             data.getData().put("title", "Monthly Task Report by " + prepareByStr + " (for CGS INC) ");
         } else {
             data.getData().put("title", "Monthly Task Report by " + prepareByStr + " (for System Soft Technologies LLC) ");
@@ -131,10 +132,10 @@ public class StatusReportService {
         data.getData().put("projectDescription", reportDocument.getProjectDescription());
         data.getData().put("projectStatus", entity.getStatus().name());
         data.getData().put("projectDuration", new SimpleDateFormat("MM-dd-yyyy").format(entity.getReportStartDate()) + " - " + new SimpleDateFormat("MM-dd-yyyy").format(entity.getReportEndDate()));
-        if (preparedBy.getCompany() != null && preparedBy.getCompany().getName().equals("TechPillars")) {
+        if (preparedBy.getCompany() != null && preparedBy.getCompany().getName().equals(Company.TECHPILLARS)) {
             data.getData().put("distribution", "Tech Pillars");
         }
-        if (preparedBy.getCompany() != null && preparedBy.getCompany().getName().equals("CGS INC")) {
+        if (preparedBy.getCompany() != null && preparedBy.getCompany().getName().equals(Company.CGS_INC)) {
             data.getData().put("distribution", "CGS INC");
         } else {
             data.getData().put("distribution", "System Soft Technologies LLC");
