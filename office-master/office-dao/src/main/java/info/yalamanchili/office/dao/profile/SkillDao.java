@@ -9,6 +9,7 @@ package info.yalamanchili.office.dao.profile;
 
 import info.chili.commons.EntityQueryUtils;
 import info.chili.dao.CRUDDao;
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.Certification;
@@ -42,8 +43,12 @@ public class SkillDao extends CRUDDao<Skill> {
             skillSet = OfficeSecurityService.instance().getCurrentUser().getSkillSet();
         }
         Skill skill = EntityQueryUtils.findEntity(getEntityManager(), Skill.class, "name", name.trim());
-        if (skill != null) {
+        if (skill != null && !skillSet.getSkills().contains(skill)) {
             skillSet.addSkill(skill);
+        } else if (skillSet.getSkills().contains(skill)) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "skill.already.added", "Skill already added");
+        } else {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "skill.not.present", "Skill does not exist. Please submit a request for new skill");
         }
     }
 
@@ -54,6 +59,8 @@ public class SkillDao extends CRUDDao<Skill> {
         Skill skill = EntityQueryUtils.findEntity(getEntityManager(), Skill.class, "name", name.trim());
         if (skill != null) {
             skillSet.removeSkill(skill);
+        } else {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "skill.not.present", "Skill does not exist. Please select valid skill");
         }
     }
 
@@ -70,8 +77,12 @@ public class SkillDao extends CRUDDao<Skill> {
             skillSet = OfficeSecurityService.instance().getCurrentUser().getSkillSet();
         }
         Certification cert = EntityQueryUtils.findEntity(getEntityManager(), Certification.class, "name", name.trim());
-        if (cert != null) {
+        if (cert != null && !skillSet.getCertifications().contains(cert)) {
             skillSet.addCertification(cert);
+        } else if (skillSet.getCertifications().contains(cert)) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "certification.already.added", "Certification already added");
+        } else {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "certification.not.present", "Certification does not exist. Please submit a request for new certification");
         }
     }
 
@@ -82,6 +93,8 @@ public class SkillDao extends CRUDDao<Skill> {
         Certification cert = EntityQueryUtils.findEntity(getEntityManager(), Certification.class, "name", name.trim());
         if (cert != null) {
             skillSet.removeCertification(cert);
+        } else {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "certification.not.present", "Certification does not exist. Please select valid certification");
         }
     }
 
