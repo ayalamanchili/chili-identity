@@ -66,7 +66,8 @@ public class Skill extends AbstractEntity {
 
     @Override
     public int hashCode() {
-        int hash = 5;
+        int hash = 7;
+        hash = 73 * hash + Objects.hashCode(this.name);
         return hash;
     }
 
@@ -82,7 +83,7 @@ public class Skill extends AbstractEntity {
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
-        return Objects.equals(this.name, other.name);
+        return true;
     }
 
     @Override
