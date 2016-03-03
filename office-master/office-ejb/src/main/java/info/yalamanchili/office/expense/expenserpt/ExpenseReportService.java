@@ -26,6 +26,7 @@ import info.yalamanchili.office.dao.expense.expenserpt.ExpenseReportsDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseCategory;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseFormType;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseItem;
@@ -184,20 +185,20 @@ public class ExpenseReportService {
         data.setKeyStoreName(securityConfiguration.getKeyStoreName());
         Employee emp = entity.getEmployee();
         if ((entity.getExpenseFormType()) != null && entity.getExpenseFormType().name().equals("GENERAL_EXPENSE")) {
-            if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals("CGS INC")) {
+            if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals(Company.CGS_INC)) {
                 data.setTemplateUrl("/templates/pdf/expense-report-cgs-template.pdf");
             }
-            else if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals("TechPillars")) {
+            else if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals(Company.TECHPILLARS)) {
                 data.setTemplateUrl("/templates/pdf/expense-report-tp-template.pdf");
             } else {
                 data.setTemplateUrl("/templates/pdf/expense-report-template.pdf");
             }
         }
         if ((entity.getExpenseFormType()) != null && entity.getExpenseFormType().name().equals("TRAVEL_EXPENSE")) {
-            if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals("CGS INC")) {
+            if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals(Company.CGS_INC)) {
                 data.setTemplateUrl("/templates/pdf/travel-expenses-cgs-template.pdf");
             }
-            else if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals("TechPillars")) {
+            else if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals(Company.TECHPILLARS)) {
                 data.setTemplateUrl("/templates/pdf/travel-expenses-tp-template.pdf");
             } else {
                 data.setTemplateUrl("/templates/pdf/travel-expenses-form.pdf");

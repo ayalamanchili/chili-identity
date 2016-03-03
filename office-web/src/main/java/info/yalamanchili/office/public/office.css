@@ -349,11 +349,9 @@ legend {
 }
 .gwt-MenuItem {
     cursor: pointer;
-    padding: 3px;
-    color: #666666;
-    /*    border-right: 1px;
-        border-right-color: blue_mid;
-        border-right-width: 1px;*/
+    padding: 0px;
+    line-height: 9px;
+    color: #666;
     width: 140px;
     text-align: center;
 
@@ -374,6 +372,11 @@ legend {
 .y-gwt-entityActionsPanel{
     padding-top: 6px;
 }
+.y-gwt-entityActionsPanel .y-gwt-ClickableLink
+{
+    color:#ef5322;
+}
+
 .baseFieldHorizontal {
     padding: 2px;
 }
@@ -610,15 +613,13 @@ height:5ex;
 
 
 .GIKSFQCDFJ {
-
-
-   border: 1px solid #cfcdcd !important;
+    border: 1px solid #cfcdcd !important;
     margin-left: 3px;
-    margin-top: 20px !important;
+    margin-top: 11px !important;
     border-radius: 3px !important;
     height: 92%;   
     color: #545454 !important;
-    line-height: 25px !important;
+    line-height: 27px !important;
     padding: 10px;
     background-color: #f9f9f9 !important;
 }
@@ -630,7 +631,7 @@ height:5ex;
     padding-bottom: 3px;
     border-bottom: 1px solid #d0d0d0;
     width: 89% !important;
-    line-height: 27px;
+
 }
 
 .GIKSFQCDFJ .y-gwt-ClickableLink:nth-child(2) {
@@ -700,6 +701,7 @@ height:5ex;
 .gwt-Button:hover {
     box-shadow: 0px 0px 5px #54B999;
 }
+
 .gwt-SuggestBox {
     border:1px solid #BDBDBD !important;
     text-align: left;
@@ -923,13 +925,13 @@ height:5ex;
 }
 
 /*.gwt-PopupPanel driveMenu{
-    
-    background-color: #000000;
+    border-color:#f9f9f9 !important;
+    background-color: #f9f9f9 !important;
 }
 
 .gwt-PopupPanel driveMenu:hover{
-    
-    background-color: blue_mid;
+    border-color:#f9f9f9 !important;
+    background-color: #f9f9f9 !important;
 }*/
 
 .popupContent{
@@ -937,13 +939,24 @@ height:5ex;
     background-color: grey_light;
     margin:2px;
     /*    padding:10px;*/
-    border-style: solid;
+/*    border-style: solid;*/
     border-width: 1px;
     border-color:none !important;
 
 
 }
-.folderMenuLabel{
+.popupContent img{
+border: none !important;
+border-width: 0px !important;
+}
+.popupContent .gwt-Label {
+    border:1px solid #f9f9f9 !important;
+}
+.popupContent .gwt-Image {
+    border:1px solid #f9f9f9 !important;
+}
+
+folderMenuLabel{
     padding:5px;
     width: 130px;
     text-align: left;
@@ -1006,7 +1019,7 @@ height:5ex;
 fieldset {
 
     border-radius: 3px;
-    margin-top: 15px;
+    margin-top:1px !important;
     border: 1px solid #cfcdcd;
 }
 fieldset.lineSeperator legend
@@ -1016,7 +1029,7 @@ fieldset.lineSeperator legend
     background: rgb(222, 222, 222);      
     color: #545454 !important;
     text-transform: none;
-    width:99%;
+    width:96%;
     text-align: center !important;
 
 }
@@ -1057,14 +1070,13 @@ select {
 .tfErrorMessage{
     color:#cf4337 !important;
     font-size:12px;
-    margin-top: -1px !important;
+    margin-top:2px !important;
     margin-left: -14px;
 }
 .gwt-Image y-gwt-ClickableImage {
     padding-left: 5px;
 
 }
-
 tr.y-gwt-ReadAllComposite-Row td {
     border-right: 1px solid #DEDEDE;
     text-align: center;   
@@ -1194,7 +1206,7 @@ div#gwt-debug-logoutCL:hover {
     background-color: #F7F7F7;
     margin: 2px;
     border-width: 1px;
-    border-color: #E7E7E7;
+    border-color: #E7E7E7 !important;
     width:202px !important;
 }
 
@@ -1244,35 +1256,17 @@ textarea.gwt-TextArea {
     margin-top: 4px;
 }
 
-/*   .y-gwt-ClickableLink {
-        color:#ef5322 !important;  
-        cursor: pointer;
-        padding-top: 5px;
-   }*/
 img.cancelLink {
     width: 15px;
     height: 15px;
     margin-top: 2px;
 }
-/*   #loading {
-    margin-left: 47%;
-    margin-top: 22%;
-    z-index: 999999;
-    position: absolute;
-   }
-   .y-gwt-ClickableLink.y-gwt-ClickableLink {
-       color:#333 !important;
-   }*/
+
 
 .y-gwt-CreateEntityDisplayWidget fieldset.lineSeperator {
     border: none;
 }
-/*#loadding img {
-    margin-left: 48% !important;
-    margin-top: 15% !important;
-    position: absolute;
-    z-index: 999;
-}*/
+
 
 .y-gwt-loadingimage {
     background: none !important;
@@ -1280,17 +1274,18 @@ img.cancelLink {
 }
 
 img{
-border-width: 0px !important;
-border:none !important;
+    border-width: 0px !important;
+    border:none !important;
 
 }
-.entityPanelHolder
-{    margin-top: 9px;
-    margin-left: 20px;   
-    color: #ef5322 ;
-    line-break: 23px !important;
 
-}
 .gwt-Image  {
     margin-top: 3px;
 }
+
+.lineSeperator {
+    border-bottom: 0;
+    border-left: 0;
+    border-right: 0;
+    border-top: 0 !important;
+} 

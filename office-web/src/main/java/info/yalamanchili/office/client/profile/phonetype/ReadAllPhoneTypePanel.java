@@ -59,7 +59,7 @@ public class ReadAllPhoneTypePanel extends CRUDReadAllComposite {
     public void createTableHeader() {
 
         table.setText(0, 0, getKeyValue("Table_Action"));
-        table.setText(0, 1, getKeyValue("phoneType"));
+        table.setText(0, 1, getKeyValue("Phone Type"));
 
     }
 

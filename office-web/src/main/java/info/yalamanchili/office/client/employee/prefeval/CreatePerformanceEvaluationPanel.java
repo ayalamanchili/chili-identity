@@ -148,7 +148,7 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
             + "	<title></title>\n"
             + "</head>\n"
             + "<body>\n"
-            + "<h3 style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\"><strong>Instructions:</strong></h3>\n"
+            + "<h3 style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\"><strong>Instructions:</strong></h3>\n"
             + "\n"
             + "<ul>\n"
             + "	<li>\n"
@@ -183,7 +183,7 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
             + "</html>");
 
     protected static HTML managerReviewEndInstructions = new HTML("<hr />\n"
-            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\"><strong>Please do not forget to complete the Manager Review Task under Home --&gt;&nbsp;My Tasks once the review is complete to notify the employee about completion.</strong></p>\n"
+            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\"><strong>Please do not forget to complete the Manager Review Task under Home --&gt;&nbsp;My Tasks once the review is complete to notify the employee about completion.</strong></p>\n"
             + "\n"
             + "<ul>\n"
             + "</ul>");

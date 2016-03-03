@@ -7,7 +7,6 @@
  */
 package info.yalamanchili.office.jrs.client;
 
-import com.google.common.base.Strings;
 import info.chili.reporting.ReportGenerator;
 import info.yalamanchili.office.client.ContractService;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
@@ -16,18 +15,14 @@ import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.client.ContractDto;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dto.client.ContractSearchDto;
-import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.jms.MessagingService;
-import info.yalamanchili.office.jrs.profile.EmployeeLocationDto;
-import info.yalamanchili.office.jrs.profile.EmployeeLocationReportDto;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -146,94 +141,6 @@ public class ContractResource {
         table = ContractService.instance().getResultForReport(searchDto);
         String[] columnOrder = new String[]{"employee", "employeeType", "vendor", "vendorLocation", "vendorAPContact", "vendorRecruiter", "subContractorName", "subcontractorAddress", "subContractorContactName", "startDate", "endDate", "subcontractorPayRate"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(table.getEntities(), "SubContractors Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
-    }
-    
-    @PUT
-    @Path("/emp-location-search/{start}/{limit}")
-    @Transactional(readOnly = true)
-    public List<ClientInformation> empLocationSearch(EmployeeLocationDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {
-        TypedQuery<Employee> q = em.createQuery(getSearchQuery(dto), Employee.class);
-        List<ClientInformation> dtos = new ArrayList();
-        q.getResultList().stream().forEach((Employee emp) -> {
-            emp.getClientInformations().stream().forEach((ClientInformation ci) -> {
-                if (ci.getEndDate() != null) {
-                    if ((ci.getEndDate().after(new Date())) || (ci.getEndDate().equals(new Date()))) {
-                        dtos.add(ci);
-                    }
-                } else {
-                    dtos.add(ci);
-                }
-            });
-        });
-        return dtos;
-    }
-    
-    @PUT
-    @Path("/location-report")
-    @Transactional(readOnly = true)
-    public void empLocationReport(EmployeeLocationDto dto) {
-        ContractDto.ContractTable table = new ContractDto.ContractTable();
-        List<ClientInformation> dtos = empLocationSearch(dto, 0, 1000);
-        List<ContractDto> contractdtos = new ArrayList();
-        dtos.stream().forEach((ci) -> {
-            contractdtos.add(ContractService.instance().mapClientInformation(ci));
-        });
-        table.setEntities(contractdtos);
-        String[] columnOrder = new String[]{"employee", "client", "clientLocation", "vendor", "startDate", "endDate"};
-        Employee emp = OfficeSecurityService.instance().getCurrentUser();
-        if (dto.getCity() != null) {
-            String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Emp Working In City " + dto.getCity(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
-            MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
-        } else if (dto.getState() != null) {
-            String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Emp Working In State " + dto.getState(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
-            MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
-        }
-    }
-
-    protected String getSearchQuery(EmployeeLocationDto dto) {
-        StringBuilder queryStr = new StringBuilder();
-        queryStr.append("SELECT emp from ").append(Employee.class.getCanonicalName()).append(" as emp");
-        if (!Strings.isNullOrEmpty(dto.getCity()) || !Strings.isNullOrEmpty(dto.getState()) || !Strings.isNullOrEmpty(dto.getCountry())) {
-            queryStr.append(" join emp.addresss as address");
-        }
-        queryStr.append("  where ");
-        if (!Strings.isNullOrEmpty(dto.getCity())) {
-            queryStr.append("lower(address.city) = '").append(dto.getCity().toLowerCase().trim()).append("' ").append(" and ");
-        }
-        if (!Strings.isNullOrEmpty(dto.getState())) {
-            queryStr.append("address.state = '").append(dto.getState().trim()).append("' ").append(" and ");
-        }
-        if (!Strings.isNullOrEmpty(dto.getCountry())) {
-            queryStr.append("address.country = '").append(dto.getCountry().trim()).append("' ").append(" and ");
-        }
-        if (!Strings.isNullOrEmpty(dto.getBranch())) {
-            queryStr.append("emp.branch = '").append(dto.getBranch().trim()).append("' ").append(" and ");
-        }
-
-        return queryStr.toString().substring(0, queryStr.toString().lastIndexOf("and"));
-    }
-
-    @PUT
-    @Path("/emp-address")
-    public List<EmployeeLocationReportDto> searchEmployeeAddress(EmployeeLocationDto dto) {
-        TypedQuery<Employee> q = em.createQuery(getSearchQuery(dto), Employee.class);
-        List<EmployeeLocationReportDto> dtos = new ArrayList();
-        q.getResultList().stream().forEach((emp) -> {
-            dtos.add(EmployeeLocationReportDto.map(mapper, emp, dto));
-        });
-        return dtos;
-    }
-
-    @PUT
-    @Path("/emp-address-report")
-    public void getEmpAddressReport(EmployeeLocationDto dto) {
-        Employee employee = OfficeSecurityService.instance().getCurrentUser();
-        List<EmployeeLocationReportDto> dtos = searchEmployeeAddress(dto);
-        if (dtos.size() > 0) {
-            String[] columnOrder = new String[]{"employee", "branch", "street1", "street2", "city", "state", "country"};
-            String fileName = ReportGenerator.generateExcelOrderedReport(dtos, "Employee In A Location report ", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
-            MessagingService.instance().emailReport(fileName, employee.getPrimaryEmail().getEmail());
-        }
     }
 
     @GET

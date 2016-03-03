@@ -68,31 +68,31 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
     protected CheckBox noDependentsCB = new CheckBox("No Dependents", false);
 
     protected static HTML formsInfo = new HTML("\n"
-            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
+            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
             + "<strong style=\"color:#555555\">Please upload W2_Form and I9_Form</strong></p>\n"
             + "\n"
             + "<ul>\n"
             + "</ul>");
     protected static HTML bankInfo = new HTML("\n"
-            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
+            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
             + "<strong style=\"color:#555555\">Bank Account Information</strong></p>\n"
             + "\n"
             + "<ul>\n"
             + "</ul>");
     protected static HTML additionalInfo = new HTML("\n"
-            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
+            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
             + "<strong style=\"color:#555555\">Additional Information</strong></p>\n"
             + "\n"
             + "<ul>\n"
             + "</ul>");
     protected static HTML depsInfo = new HTML("\n"
-            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
+            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
             + "<strong style=\"color:#555555\">Dependents Information</strong></p>\n"
             + "\n"
             + "<ul>\n"
             + "</ul>");
     protected static HTML emerInfo = new HTML("\n"
-            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\">"
+            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
             + "<strong style=\"color:#555555\">Emergency Contact Information</strong></p>\n"
             + "\n"
             + "<ul>\n"

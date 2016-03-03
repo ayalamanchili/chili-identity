@@ -501,7 +501,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
 
             if (searchTasks.getParent().equals(empLocPanel)) {
                 TabPanel.instance().getReportingPanel().entityPanel.clear();
-                String empUrl = OfficeWelcome.constants.root_url() + "contract/emp-location-search/0/100";
+                String empUrl = OfficeWelcome.constants.root_url() + "contract-report/emp-location-search/0/100";
                 if (cityField != null && !Strings.isNullOrEmpty(cityField.getValue())) {
                     entity.put("city", new JSONString(cityField.getValue()));
                     empUrl = empUrl.concat("?city=" + cityField.getValue());
@@ -654,7 +654,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
             }
             if (reportTasks.getParent().equals(empLocPanel)) {
                 TabPanel.instance().getReportingPanel().entityPanel.clear();
-                String rurl = OfficeWelcome.instance().constants.root_url() + "contract/location-report";
+                String rurl = OfficeWelcome.instance().constants.root_url() + "contract-report/emp-location-report";
                 JSONObject cLovation = getLocationObject();
                 if (cLovation.size() != 0) {
                     HttpService.HttpServiceAsync.instance().doPut(rurl, cLovation.toString(), OfficeWelcome.instance().getHeaders(), true,

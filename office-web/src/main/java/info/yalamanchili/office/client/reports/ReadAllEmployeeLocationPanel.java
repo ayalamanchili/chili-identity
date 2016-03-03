@@ -68,14 +68,10 @@ public class ReadAllEmployeeLocationPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            JSONObject emp = (JSONObject) entity.get("employee");
-            JSONObject client = (JSONObject) entity.get("client");
-            JSONObject clientLocation = (JSONObject) entity.get("clientLocation");
-            JSONObject vendor = (JSONObject) entity.get("vendor");
-            table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
-            table.setText(i, 2, JSONUtils.toString(client, "name"));
-            table.setText(i, 3, JSONUtils.toString(clientLocation, "street1") + " " + JSONUtils.toString(clientLocation, "street2") + " " + JSONUtils.toString(clientLocation, "city") + " " + JSONUtils.toString(clientLocation, "state"));
-            table.setText(i, 4, JSONUtils.toString(vendor, "name"));
+            table.setText(i, 1, JSONUtils.toString(entity, "employee"));
+            table.setText(i, 2, JSONUtils.toString(entity, "client"));
+            table.setText(i, 3, JSONUtils.toString(entity, "clientLocation"));
+            table.setText(i, 4, JSONUtils.toString(entity, "vendor"));
             table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
             table.setText(i, 6, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
         }
