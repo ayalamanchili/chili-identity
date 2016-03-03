@@ -93,9 +93,11 @@ public class ContractReportService {
     @Transactional
     public void multipleCPDsReport(String email) {
         List<ContractDto> dtos = getMultipleCpds();
-        String[] columnOrder = new String[]{"employee", "client", "vendor", "billingRate", "startDate", "endDate"};
-        String fileName = ReportGenerator.generateExcelOrderedReport(dtos, "Employees On Multiple Projects Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
-        MessagingService.instance().emailReport(fileName, email);
+        if (dtos != null) {
+            String[] columnOrder = new String[]{"employee", "client", "vendor", "billingRate", "startDate", "endDate"};
+            String fileName = ReportGenerator.generateExcelOrderedReport(dtos, "Employees On Multiple Projects Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+            MessagingService.instance().emailReport(fileName, email);
+        }
     }
 
     public List<ContractDto> getEmpsInLocation(EmployeeLocationDto dto, int start, int limit) {
@@ -120,31 +122,42 @@ public class ContractReportService {
     @Transactional
     public void getEmpsLocationReport(EmployeeLocationDto dto, String email) {
         List<ContractDto> dtos = getEmpsInLocation(dto, 0, 10000);
-        String[] columnOrder = new String[]{"employee", "client", "clientLocation", "vendor", "startDate", "endDate"};
-        if (dto.getCity() != null) {
-            String fileName = ReportGenerator.generateExcelOrderedReport(dtos, "Emp Working In City " + dto.getCity(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
-            MessagingService.instance().emailReport(fileName, email);
-        } else if (dto.getState() != null) {
-            String fileName = ReportGenerator.generateExcelOrderedReport(dtos, "Emp Working In State " + dto.getState(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
-            MessagingService.instance().emailReport(fileName, email);
+        if (dtos != null) {
+            String[] columnOrder = new String[]{"employee", "client", "clientLocation", "vendor", "startDate", "endDate"};
+            if (dto.getCity() != null) {
+                String fileName = ReportGenerator.generateExcelOrderedReport(dtos, "Emp Working In City " + dto.getCity(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+                MessagingService.instance().emailReport(fileName, email);
+            } else if (dto.getState() != null) {
+                String fileName = ReportGenerator.generateExcelOrderedReport(dtos, "Emp Working In State " + dto.getState(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+                MessagingService.instance().emailReport(fileName, email);
+            }
         }
     }
 
     public List<EmployeeLocationReportDto> searchEmpsByAddress(EmployeeLocationDto dto) {
-        List<Employee> emps = ContractReportDao.instance().getEmpsInLocation(dto);
+        List<Employee> emps = new ArrayList();
+        emps = ContractReportDao.instance().getEmpsInLocation(dto);
         List<EmployeeLocationReportDto> dtos = new ArrayList();
-        for (Employee emp : emps) {
-            dtos.add(EmployeeLocationReportDto.map(mapper, emp, dto));
+        if (emps == null) {
+            return null;
+        } else {
+            if (emps.size() > 0) {
+                for (Employee emp : emps) {
+                    dtos.add(EmployeeLocationReportDto.map(mapper, emp, dto));
+                }
+            }
+            return dtos;
         }
-        return dtos;
     }
 
     @Async
     @Transactional
     public void getEmpsByAddressReport(EmployeeLocationDto dto, String email) {
         List<EmployeeLocationReportDto> dtos = searchEmpsByAddress(dto);
-        String[] columnOrder = new String[]{"employee", "branch", "street1", "street2", "city", "state", "country"};
-        String fileName = ReportGenerator.generateExcelOrderedReport(dtos, "Employee In A Location report ", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
-        MessagingService.instance().emailReport(fileName, email);
+        if (dtos != null) {
+            String[] columnOrder = new String[]{"employee", "branch", "street1", "street2", "city", "state", "country"};
+            String fileName = ReportGenerator.generateExcelOrderedReport(dtos, "Employee In A Location report ", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+            MessagingService.instance().emailReport(fileName, email);
+        }
     }
 }
