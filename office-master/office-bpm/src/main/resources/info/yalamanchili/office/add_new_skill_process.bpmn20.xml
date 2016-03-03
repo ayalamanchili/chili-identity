@@ -55,7 +55,30 @@ and open the template in the editor.
                                        type="string" />
             </extensionElements> 
         </userTask>
-        <sequenceFlow id="flow3" sourceRef="addNewSkillTask" targetRef="addSkillEnd" />
+        <sequenceFlow id="flow3" sourceRef="addNewSkillTask" targetRef="addNewSkillWithDesc">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved' and skillDescription != 'null'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="flow4" sourceRef="addNewSkillTask" targetRef="addNewSkill">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved' and skillDescription == 'null'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="flow5" sourceRef="addNewSkillTask" targetRef="addSkillEnd">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'rejected'}
+            </conditionExpression>
+        </sequenceFlow>
+        <serviceTask
+            id="addNewSkillWithDesc"
+            name="New Skill to Add After Approval"
+            activiti:expression="#{addNewSkill.addSkillWithDesc(skillName, skillDescription)}" />
+        
+        <serviceTask
+            id="addNewSkill"
+            name="New Skill to Add After Approval"
+            activiti:expression="#{addNewSkill.addSkill(skillName)}" />
         <!-- Task escalation email after 7 days-->
         <boundaryEvent id="emailEscalationTimer"
                        cancelActivity="false" 
