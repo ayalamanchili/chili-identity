@@ -66,7 +66,7 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
     FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "SkillSet", "skillSetFile", "SkillSet/skillSetFile", false, true) {
         @Override
         public void onUploadComplete(String res) {
-            postUpdateSuccess(null);
+            postUpdateSuccess(res);
         }
     };
     JSONArray skillSetResumeURL = new JSONArray();
@@ -133,8 +133,8 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String response) {
-                        logger.info(response);
                         entity = (JSONObject) JSONParser.parseLenient(response);
+                        logger.info("populate Fields FromEntity"+entity);
                         populateFieldsFromEntity(entity);
                     }
                 });
@@ -179,6 +179,7 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
                     @Override
                     public void onSuccess(String arg0) {
                         uploadResume(arg0);
+                        entity = (JSONObject) JSONParser.parseLenient(arg0);
                     }
                 });
 
@@ -186,6 +187,7 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+        logger.info("populate Fields FromEntity 123"+entity);
         assignFieldValueFromEntity("practice", entity, null);
         assignFieldValueFromEntity("technologyGroup", entity, null);
         assignFieldValueFromEntity("skillSetFileType", entity, DataType.ENUM_FIELD);
@@ -196,7 +198,7 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
     }
 
     protected void populateResumes(JSONArray items) {
-        entityFieldsPanel.insert(new ReadAllSkillSetFilesPanel(entityId, items), entityFieldsPanel.getWidgetIndex(resumeUploadPanel) + 1);
+        entityFieldsPanel.insert(new ReadAllSkillSetFilesPanel(items), entityFieldsPanel.getWidgetIndex(resumeUploadPanel) + 1);
     }
 
     protected void uploadResume(String entityId) {

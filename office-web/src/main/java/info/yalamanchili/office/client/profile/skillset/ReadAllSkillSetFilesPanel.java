@@ -34,9 +34,8 @@ public class ReadAllSkillSetFilesPanel extends CRUDReadAllComposite {
     public static ReadAllSkillSetFilesPanel instance;
     protected String skillsetId;
 
-    public ReadAllSkillSetFilesPanel(String id, JSONArray array) {
-        this.skillsetId = id;
-        initTable("SkillSetResumes", array, OfficeWelcome.constants);
+    public ReadAllSkillSetFilesPanel(JSONArray array) {
+        initTable("SkillSetFile", array, OfficeWelcome.constants);
     }
 
     @Override
@@ -49,7 +48,6 @@ public class ReadAllSkillSetFilesPanel extends CRUDReadAllComposite {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Name"));
         table.setText(0, 2, getKeyValue("File"));
-        table.setText(0, 3, getKeyValue("UpdatedAt"));
     }
 
     @Override
@@ -63,7 +61,6 @@ public class ReadAllSkillSetFilesPanel extends CRUDReadAllComposite {
             String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "fileURL") + "&entityId=" + JSONUtils.toString(entity, "id");
             FileField fileField = new FileField(fileURL);
             table.setWidget(i, 2, fileField);
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "updatedTS"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
         }
     }
 

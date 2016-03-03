@@ -250,7 +250,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         if (skillSetSaveDto.getSkillSetFile().size() > 0) {
             for (SkillSetFile file : skillSetSaveDto.getSkillSetFile()) {
                 if (file.getId() == null) {
-                    //file.setskillSet(skillsetEntity);
+                    file.setskillSet(skillsetEntity);
                     skillsetEntity = SkillSetDao.instance().getEntityManager().merge(skillsetEntity);
                     skillsetEntity.getSkillSetFile().add(file);
                 } else {

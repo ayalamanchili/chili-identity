@@ -179,7 +179,7 @@ public class ReadSkillSetPanel extends ReadComposite {
     }
 
     protected void populateResumes(JSONArray items) {
-        entityFieldsPanel.add(new ReadAllSkillSetFilesPanel(entityId, items));
+        entityFieldsPanel.add(new ReadAllSkillSetFilesPanel(items));
     }
 
     @Override

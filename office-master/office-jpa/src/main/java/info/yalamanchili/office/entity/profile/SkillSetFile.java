@@ -49,7 +49,8 @@ public class SkillSetFile extends AbstractEntity {
 
     @Enumerated(EnumType.STRING)
     protected SkillSetFileType skillSetFileType;
-
+    
+    @XmlTransient
     public SkillSet getSkillSet() {
         return skillSet;
     }
