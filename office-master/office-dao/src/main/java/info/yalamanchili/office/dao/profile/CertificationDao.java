@@ -8,6 +8,7 @@
 package info.yalamanchili.office.dao.profile;
 
 import info.chili.dao.CRUDDao;
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.profile.Certification;
 
 import javax.persistence.EntityManager;
@@ -33,5 +34,9 @@ public class CertificationDao extends CRUDDao<Certification> {
     @Override
     public EntityManager getEntityManager() {
         return em;
+    }
+
+    public static CertificationDao instance() {
+        return SpringContext.getBean(CertificationDao.class);
     }
 }

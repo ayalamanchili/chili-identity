@@ -48,7 +48,30 @@
                                        type="string" />
             </extensionElements> 
         </userTask>
-        <sequenceFlow id="flow3" sourceRef="addNewCertificationTask" targetRef="addCertificationEnd" />
+        <sequenceFlow id="flow3" sourceRef="addNewCertificationTask" targetRef="addNewCertWithDesc">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved' and certificationDescription != 'null'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="flow4" sourceRef="addNewCertificationTask" targetRef="addNewCert">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved' and certificationDescription == 'null'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="flow5" sourceRef="addNewCertificationTask" targetRef="addCertificationEnd">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'rejected'}
+            </conditionExpression>
+        </sequenceFlow>
+        <serviceTask
+            id="addNewCertWithDesc"
+            name="New Certification to Add After Approval"
+            activiti:expression="#{addNewCertification.addCertWithDesc(certificationName, certificationDescription)}" />
+        
+        <serviceTask
+            id="addNewCert"
+            name="New Certification to Add After Approval"
+            activiti:expression="#{addNewCertification.addCertWithDesc(certificationName)}" />
         <!-- Task escalation email after 7 days-->
         <boundaryEvent id="emailEscalationTimer"
                        cancelActivity="false" 
