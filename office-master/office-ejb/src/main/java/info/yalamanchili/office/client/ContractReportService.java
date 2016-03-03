@@ -93,9 +93,11 @@ public class ContractReportService {
     @Transactional
     public void multipleCPDsReport(String email) {
         List<ContractDto> dtos = getMultipleCpds();
-        String[] columnOrder = new String[]{"employee", "client", "vendor", "billingRate", "startDate", "endDate"};
-        String fileName = ReportGenerator.generateExcelOrderedReport(dtos, "Employees On Multiple Projects Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
-        MessagingService.instance().emailReport(fileName, email);
+        if (dtos != null) {
+            String[] columnOrder = new String[]{"employee", "client", "vendor", "billingRate", "startDate", "endDate"};
+            String fileName = ReportGenerator.generateExcelOrderedReport(dtos, "Employees On Multiple Projects Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+            MessagingService.instance().emailReport(fileName, email);
+        }
     }
 
     public List<ContractDto> getEmpsInLocation(EmployeeLocationDto dto, int start, int limit) {
