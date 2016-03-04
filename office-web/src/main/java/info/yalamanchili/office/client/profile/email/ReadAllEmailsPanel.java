@@ -15,6 +15,7 @@ import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
 import java.util.logging.Logger;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import info.chili.gwt.crud.CreateComposite.CreateCompositeType;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth.ROLE;
 
@@ -98,7 +99,7 @@ public class ReadAllEmailsPanel extends CRUDReadAllComposite {
         new ResponseStatusWidget().show("Successfully Deleted Emails Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmailsPanel(TreeEmployeePanel.instance().getEntityId()));
-        TabPanel.instance().myOfficePanel.entityPanel.add(new EmailOptionsPanel());
+        //TabPanel.instance().myOfficePanel.entityPanel.add(new EmailOptionsPanel());
     }
 
     @Override
@@ -110,5 +111,21 @@ public class ReadAllEmailsPanel extends CRUDReadAllComposite {
 
     protected String getDeleteURL(String entityId) {
         return OfficeWelcome.instance().constants.root_url() + "email/delete/" + entityId;
+    }
+
+    @Override
+    protected void configureCreateButton() {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR)) {
+            createButton.setText("Add Email");
+            createButton.setVisible(true);
+        } else {
+            createButton.setVisible(false);
+        }
+    }
+
+    @Override
+    protected void createButtonClicked() {
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new CreateEmailPanel(CreateCompositeType.ADD));
     }
 }
