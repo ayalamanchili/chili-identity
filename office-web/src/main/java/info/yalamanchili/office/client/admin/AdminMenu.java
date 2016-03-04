@@ -35,7 +35,7 @@ import info.yalamanchili.office.client.ext.question.ReadAllQuestionPanel;
  * @author anuyalamanchili
  */
 public class AdminMenu extends CMenuBar {
-
+    
     @Override
     protected void configureMenu() {
         addMenuItem("Clients", "Clients", clientsMaintainenceCmd);
@@ -60,6 +60,7 @@ public class AdminMenu extends CMenuBar {
     static Command notificationGroupMaintainenceCmd = new Command() {
         @Override
         public void execute() {
+            TabPanel.instance().getAdminPanel().sidePanelTop.clear();
             TabPanel.instance().getAdminPanel().entityPanel.clear();
             TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllNotificationGroupsPanel());
         }
@@ -69,6 +70,7 @@ public class AdminMenu extends CMenuBar {
         public void execute() {
             TabPanel.instance().getAdminPanel().entityPanel.clear();
             TabPanel.instance().getAdminPanel().sidePanelTop.clear();
+            TabPanel.instance().getAdminPanel().sidePanelTop.setHeight("100%");
             TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllClientsPanel());
             TabPanel.instance().getAdminPanel().sidePanelTop.add(new ClientSidePanel());
         }
@@ -79,17 +81,19 @@ public class AdminMenu extends CMenuBar {
             TabPanel.instance().getAdminPanel().sidePanelTop.clear();
             TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllExternalRefPanel());
             TabPanel.instance().getAdminPanel().sidePanelTop.add(new ExternalSidePanel());
-
+            
         }
     };
     static Command projectsMaintainenceCmd = new Command() {
         public void execute() {
+            TabPanel.instance().getAdminPanel().sidePanelTop.clear();
             TabPanel.instance().getAdminPanel().entityPanel.clear();
             TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllProjectsPanel());
         }
     };
     static Command sowMaintainenceCmd = new Command() {
         public void execute() {
+            TabPanel.instance().getAdminPanel().sidePanelTop.clear();
             TabPanel.instance().getAdminPanel().entityPanel.clear();
             TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllSOWPanel());
         }
@@ -98,6 +102,7 @@ public class AdminMenu extends CMenuBar {
         public void execute() {
             TabPanel.instance().getAdminPanel().entityPanel.clear();
             TabPanel.instance().getAdminPanel().sidePanelTop.clear();
+            TabPanel.instance().getAdminPanel().sidePanelTop.setHeight("100%");
             TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllVendorsPanel());
             TabPanel.instance().getAdminPanel().sidePanelTop.add(new VendorsSidePanel());
         }
@@ -106,6 +111,7 @@ public class AdminMenu extends CMenuBar {
         public void execute() {
             TabPanel.instance().getAdminPanel().entityPanel.clear();
             TabPanel.instance().getAdminPanel().sidePanelTop.clear();
+            TabPanel.instance().getAdminPanel().sidePanelTop.setHeight("100%");
             TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllSubcontractorsPanel());
             TabPanel.instance().getAdminPanel().sidePanelTop.add(new SubcontractorSidePanel());
         }
@@ -120,6 +126,7 @@ public class AdminMenu extends CMenuBar {
     };
     static Command questionMaintainenceCmd = new Command() {
         public void execute() {
+            TabPanel.instance().getAdminPanel().sidePanelTop.clear();
             TabPanel.instance().getAdminPanel().entityPanel.clear();
             TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllQuestionPanel());
         }
@@ -128,13 +135,15 @@ public class AdminMenu extends CMenuBar {
         public void execute() {
             TabPanel.instance().getAdminPanel().entityPanel.clear();
             TabPanel.instance().getAdminPanel().sidePanelTop.clear();
+            TabPanel.instance().getAdminPanel().sidePanelTop.setHeight("100%");
             TabPanel.instance().getAdminPanel().sidePanelTop.add(new EventsSidePanel());
             TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllEventsPanel());
-
+            
         }
     };
     static Command companyMaintainenceCmd = new Command() {
         public void execute() {
+            TabPanel.instance().getAdminPanel().sidePanelTop.clear();
             TabPanel.instance().getAdminPanel().entityPanel.clear();
             TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllCompanyPanel());
         }
