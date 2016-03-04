@@ -112,7 +112,7 @@ public class ReadAllEmpDocsPanel extends CRUDReadAllComposite {
         new ResponseStatusWidget().show("Successfully Deleted Emp Doc Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmpDocsPanel(TreeEmployeePanel.instance().getEntityId()));
-        TabPanel.instance().myOfficePanel.entityPanel.add(new EmpDocOptionsPanel());
+        //TabPanel.instance().myOfficePanel.entityPanel.add(new EmpDocOptionsPanel());
     }
 
     @Override
@@ -128,5 +128,21 @@ public class ReadAllEmpDocsPanel extends CRUDReadAllComposite {
     @Override
     protected String getDocumentationLink() {
         return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "documetns.html";
+    }
+
+    @Override
+    protected void configureCreateButton() {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP)) {
+            createButton.setText("Add Document");
+            createButton.setVisible(true);
+        } else {
+            createButton.setVisible(false);
+        }
+    }
+
+    @Override
+    protected void createButtonClicked() {
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new CreateEmpDocPanel(TreeEmployeePanel.instance().getEntityId()));
     }
 }
