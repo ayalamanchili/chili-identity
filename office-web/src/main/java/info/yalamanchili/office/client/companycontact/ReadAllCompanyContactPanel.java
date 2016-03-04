@@ -104,7 +104,6 @@ public class ReadAllCompanyContactPanel extends CRUDReadAllComposite {
         new ResponseStatusWidget().show("Successfully Deleted Company Contact Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllCompanyContactPanel(TreeEmployeePanel.instance().getEntityId()));
-        //TabPanel.instance().myOfficePanel.entityPanel.add(new CompanyContactOptionsPanel());
     }
 
     @Override
