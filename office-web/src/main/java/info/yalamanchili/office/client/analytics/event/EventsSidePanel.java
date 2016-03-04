@@ -40,8 +40,8 @@ public class EventsSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addWidgets() {
-        eventsSidePanel.add(createactivitylink);
         eventsSidePanel.add(new SearchEventPanel());
+        eventsSidePanel.add(createactivitylink);
     }
 
     @Override
