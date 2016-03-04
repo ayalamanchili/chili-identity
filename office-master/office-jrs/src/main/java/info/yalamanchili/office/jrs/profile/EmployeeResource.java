@@ -24,11 +24,14 @@ import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.practice.PracticeDao;
+import info.yalamanchili.office.dao.profile.CertificationDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao.EmployeeTable;
 import info.yalamanchili.office.dao.profile.EmployeeDto;
+import info.yalamanchili.office.dao.profile.SkillDao;
 import info.yalamanchili.office.dao.profile.SkillSetDao;
 import info.yalamanchili.office.dao.profile.SkillSetFileDao;
 import info.yalamanchili.office.dao.profile.ext.DependentDao;
+import info.yalamanchili.office.dao.recruiting.SkillSetTagDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.profile.ClientInformationDto;
 import info.yalamanchili.office.dto.profile.DependentDto;
@@ -38,6 +41,7 @@ import info.yalamanchili.office.dto.profile.SkillSetSaveDto;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.privacy.PrivacyData;
 import info.yalamanchili.office.entity.profile.ext.Dependent;
+import info.yalamanchili.office.entity.recruiting.SkillSetTag;
 import info.yalamanchili.office.privacy.PrivacyAware;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
 import info.yalamanchili.office.jrs.profile.ClientInformationResource.ClientInformationTable;
@@ -227,16 +231,48 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @GET
     @Path("/skillset/{empId}")
     @Transactional(readOnly = true)
+    @Produces(MediaType.APPLICATION_JSON)
     @AccessCheck(roles = {"ROLE_H1B_IMMIGRATION", "ROLE_RECRUITER", "ROLE_HR", "ROLE_ADMIN", "ROLE_SALES_AND_MARKETING"})
-    public SkillSet getSkillSet(@PathParam("empId") long empId) {
+    public SkillSetSaveDto getSkillSet(@PathParam("empId") long empId) {
+        SkillSetSaveDto dto = new SkillSetSaveDto();
         Employee emp = (Employee) getDao().findById(empId);
+        SkillSet skillSet = emp.getSkillSet();
         //If skillset not present create a empty skillset so certifications and skills can be added.
-        if (emp.getSkillSet() == null) {
+        if (skillSet == null) {
             SkillSet ss = new SkillSet();
             emp.setSkillSet(ss);
+        } else {
+            dto.setCertifications(null);
+            if (skillSet.getCertifications().size() > 0) {
+                for (Certification cert : skillSet.getCertifications()) {
+                    if (cert.getId() != null) {
+                        Certification cert1 = CertificationDao.instance().findById(cert.getId());
+                        dto.addCertification(cert1);
+                    }
+                }
+            }
+            dto.setSkills(null);
+            if (skillSet.getSkills().size() > 0) {
+                for (Skill skill : skillSet.getSkills()) {
+                    if (skill.getId() != null) {
+                        Skill skill1 = SkillDao.instance().findById(skill.getId());
+                        dto.addSkill(skill1);
+                    }
+                }
+            }
+            dto.setTags(null);
+            if (skillSet.getTags().size() > 0) {
+                for (SkillSetTag skillSetTag : skillSet.getTags()) {
+                    if (skillSetTag.getId() != null) {
+                        SkillSetTag SkillSetTag1 = SkillSetTagDao.instance().findById(skillSetTag.getId());
+                        dto.addTag(SkillSetTag1);
+                    }
+                }
+            }
+            dto = mapper.map(skillSet, SkillSetSaveDto.class);
+            dto.setId(skillSet.getId());
         }
-        return emp.getSkillSet();
-
+        return dto;
     }
 
     @PUT

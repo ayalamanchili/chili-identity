@@ -54,10 +54,12 @@ public class ReadAllSkillSetsPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
+            logger.info("skillSetFile" + entity);
             table.setText(i, 1, JSONUtils.toString(entity, "employeeName"));
             table.setText(i, 2, JSONUtils.toString(entity.get("practice"), "name"));
             table.setText(i, 3, JSONUtils.toString(entity.get("technologyGroup"), "name"));
-            String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "resumeUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
+            JSONObject skillsetFile = (JSONObject) entity.get("skillSetFile");
+            String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(skillsetFile, "fileURL") + "&entityId=" + JSONUtils.toString(skillsetFile, "id");
             FileField fileField = new FileField(fileURL);
             table.setWidget(i, 4, fileField);
             table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, "lastUpdated"), DateTimeFormat.PredefinedFormat.DATE_LONG));
