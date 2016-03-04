@@ -47,11 +47,11 @@ public class VendorsSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addWidgets() {
+        vendorsidepanel.add(new SearchVendorPanel());
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CEO, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN)) {
             vendorsidepanel.add(vendorSummaryReportL);
             vendorsidepanel.add(activeVendorsReportL);
         }
-        vendorsidepanel.add(new SearchVendorPanel());
     }
 
     @Override
@@ -77,7 +77,7 @@ public class VendorsSidePanel extends ALComposite implements ClickHandler {
     protected String getVendorInfoReportUrl() {
         return OfficeWelcome.constants.root_url() + "vendor/vendorinfo-report";
     }
-    
+
     protected void generateActiveVendorInfoReport() {
         HttpService.HttpServiceAsync.instance().doGet(getActiveVendorInfoReportUrl(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
@@ -91,5 +91,4 @@ public class VendorsSidePanel extends ALComposite implements ClickHandler {
     protected String getActiveVendorInfoReportUrl() {
         return OfficeWelcome.constants.root_url() + "vendor/active-vendorinfo-report";
     }
-    
 }
