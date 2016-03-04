@@ -44,7 +44,6 @@ import info.yalamanchili.office.client.profile.selfservice.ReadAllServiceTickets
 import info.yalamanchili.office.client.profile.skill.ReadAllSkillsPanel;
 import info.yalamanchili.office.client.profile.skill.SkillSidePanel;
 import info.yalamanchili.office.client.recruiting.RecruitingMenu;
-import info.yalamanchili.office.client.recruiting.reports.SkillSetReportSidePanel;
 import info.yalamanchili.office.client.reports.ReportsMenu;
 import info.yalamanchili.office.client.time.consultant.ConsultantTimeSummaryPanel;
 import info.yalamanchili.office.client.time.consultant.ConsultantTimeSummarySidePanel;
@@ -285,7 +284,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         clearEntityPanel(immigrationPanel);
         immigrationPanel.entityTitlePanel.add(new ImmigrationMenu());
         TabPanel.instance().getImmigrationPanel().entityPanel.add(new ReadAllLCAPanel());
-  //      TabPanel.instance().getImmigrationPanel().sidePanelTop.add(new AdvanceRequisitionSidePanel());
+        //      TabPanel.instance().getImmigrationPanel().sidePanelTop.add(new AdvanceRequisitionSidePanel());
     }
 
     public void selectDriveTab() {
@@ -323,10 +322,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_RECRUITER)) {
             recruitingPanel.entityPanel.add(new ReadAllSkillsPanel());
             recruitingPanel.sidePanelTop.add(new SkillSidePanel());
-        } else if (Auth.hasAnyOfRoles(ROLE.ROLE_CEO, ROLE.ROLE_ADMIN)) {
-            recruitingPanel.sidePanelTop.add(new SkillSetReportSidePanel());
         }
-
     }
 
     public void selectChiliAdminPanel() {
