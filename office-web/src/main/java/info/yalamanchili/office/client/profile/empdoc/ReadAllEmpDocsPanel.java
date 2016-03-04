@@ -112,7 +112,6 @@ public class ReadAllEmpDocsPanel extends CRUDReadAllComposite {
         new ResponseStatusWidget().show("Successfully Deleted Emp Doc Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmpDocsPanel(TreeEmployeePanel.instance().getEntityId()));
-        //TabPanel.instance().myOfficePanel.entityPanel.add(new EmpDocOptionsPanel());
     }
 
     @Override
