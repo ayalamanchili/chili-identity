@@ -17,8 +17,10 @@ import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth.ROLE;
+import info.yalamanchili.office.client.profile.address.CreateAddressPanel.CreateAddressPanelType;
 import info.yalamanchili.office.client.profile.address.UpdateAddressPanel.UpdateAddressPanelType;
 
 public class ReadAllAddressesPanel extends CRUDReadAllComposite {
@@ -31,7 +33,8 @@ public class ReadAllAddressesPanel extends CRUDReadAllComposite {
         this.parentId = parentId;
         initTable("Address", OfficeWelcome.constants);
     }
-     public ReadAllAddressesPanel(JSONArray result) {
+
+    public ReadAllAddressesPanel(JSONArray result) {
         instance = this;
         initTable("Address", result, OfficeWelcome.constants);
     }
@@ -136,5 +139,33 @@ public class ReadAllAddressesPanel extends CRUDReadAllComposite {
 
     protected String getDeleteURL(String entityId) {
         return OfficeWelcome.instance().constants.root_url() + "address/delete/" + entityId;
+    }
+
+    @Override
+    protected void configureCreateButton() {
+        if (TabPanel.instance().myOfficePanel.isVisible()) {
+            if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR)) {
+                createButton.setText("Add Address");
+                createButton.setVisible(true);
+            } else {
+                createButton.setVisible(false);
+            }
+        } else {
+            if (TabPanel.instance().profilePanel.isVisible()) {
+                createButton.setText("Add Address");
+            } else {
+                createButton.setVisible(false);
+            }
+        }
+    }
+
+    @Override
+    protected void createButtonClicked() {
+        if (TabPanel.instance().myOfficePanel.isVisible()) {
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateAddressPanel(CreateAddressPanelType.ALL));
+        } else if (TabPanel.instance().profilePanel.isVisible()) {
+            new GenericPopup(new CreateAddressPanel(CreateAddressPanelType.ALL)).show();
+        }
     }
 }

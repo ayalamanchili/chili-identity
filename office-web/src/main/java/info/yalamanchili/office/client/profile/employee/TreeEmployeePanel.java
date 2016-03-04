@@ -137,12 +137,12 @@ public class TreeEmployeePanel extends TreePanelComposite {
         if (EMAIL_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmailsPanel(getEntityId()));
-            TabPanel.instance().myOfficePanel.entityPanel.add(new EmailOptionsPanel());
+            //TabPanel.instance().myOfficePanel.entityPanel.add(new EmailOptionsPanel());
         }
         if (PHONE_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPhonesPanel(getEntityId()));
-            TabPanel.instance().myOfficePanel.entityPanel.add(new PhoneOptionsPanel());
+            //TabPanel.instance().myOfficePanel.entityPanel.add(new PhoneOptionsPanel());
         }
         if (CLIENT_INFO_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
@@ -152,7 +152,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         if (PRIVACY_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPrivacySettngsPanel(getEntityId()));
-            TabPanel.instance().myOfficePanel.entityPanel.add(new PrivacyOptionsPanel());
+            //TabPanel.instance().myOfficePanel.entityPanel.add(new PrivacyOptionsPanel());
         }
         if (SKILL_SET_NODE.equals(entityNodeKey)) {
             //TODO mode this to comp
