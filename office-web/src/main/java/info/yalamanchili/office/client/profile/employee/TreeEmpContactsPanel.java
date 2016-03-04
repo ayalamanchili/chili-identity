@@ -54,7 +54,7 @@ public class TreeEmpContactsPanel extends TreePanelComposite {
         if (EMERGENCY_CONTACT_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmergencyContactsPanel(employeeId));
-            TabPanel.instance().myOfficePanel.entityPanel.add(new EmergencyContactOptionsPanel());
+            //TabPanel.instance().myOfficePanel.entityPanel.add(new EmergencyContactOptionsPanel());
         }
         if (DEPENDENT_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
@@ -63,7 +63,7 @@ public class TreeEmpContactsPanel extends TreePanelComposite {
         if (COMPANY_CONTACT_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllCompanyContactPanel(employeeId));
-            TabPanel.instance().myOfficePanel.entityPanel.add(new CompanyContactOptionsPanel());
+            //TabPanel.instance().myOfficePanel.entityPanel.add(new CompanyContactOptionsPanel());
         }
     }
 
