@@ -5,7 +5,6 @@ package info.yalamanchili.office.jrs.profile;
 
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
-import info.chili.reporting.ReportGenerator;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
@@ -19,16 +18,11 @@ import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.profile.ClientInformationService;
 import info.yalamanchili.office.bpm.offboarding.ProjectOffBoardingDto;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
-import info.yalamanchili.office.client.ContractService;
-import info.yalamanchili.office.config.OfficeServiceConfiguration;
-import info.yalamanchili.office.dto.client.ContractDto;
 import info.yalamanchili.office.dto.profile.ClientInformationDto;
 import info.yalamanchili.office.dto.profile.ClientInformationSaveDto;
-import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.project.offboarding.ProjectOffBoardingService;
 import info.yalamanchili.office.security.AccessCheck;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import javax.persistence.Query;
@@ -40,10 +34,8 @@ import javax.ws.rs.QueryParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.apache.http.client.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
@@ -161,58 +153,7 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
         res.setSize(Long.valueOf(ci.getBillingRates().size()));
         return res;
     }
-
-    @PUT
-    @Path("/search-projects-between-days/{start}/{limit}")
-    @Cacheable(OfficeCacheKeys.CLIENTINFORMATION)
-    public ClientInformationTable table(@PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate, @QueryParam("value") String value, @QueryParam("employeeType") String employeeType) {
-        ClientInformationTable table = new ClientInformationTable();
-        List<ClientInformation> clients = clientInformationDao.queryForProjEndBetweenDays(start, limit, startDate, endDate, value);
-        List<ClientInformation> cis = new ArrayList();
-        if (clients.size() > 0) {
-            for (ClientInformation ci : clients) {
-                if (employeeType != null) {
-                    if (ci.getEmployee().getEmployeeType().getName().equalsIgnoreCase(employeeType)) {
-                        cis.add(ci);
-                    }
-                } else {
-                    cis.add(ci);
-                }
-            }
-        }
-        if (cis.size() > 0) {
-            table.setEntities(cis);
-            table.setSize(Long.valueOf(cis.size()));
-            return table;
-        } else {
-            return null;
-        }
-    }
-
-    @GET
-    @Path("/ended-projects-report")
-    public void report(@QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate, @QueryParam("value") String value, @QueryParam("employeeType") String employeeType) {
-        ContractDto.ContractTable ctable = new ContractDto.ContractTable();
-        List<ClientInformation> clients = clientInformationDao.queryForProjEndBetweenDays(0, 10000, startDate, endDate, value);
-        if (clients != null && clients.size() > 0) {
-            for (ClientInformation ci : clients) {
-                if (employeeType != null) {
-                    if (ci.getEmployee().getEmployeeType().getName().equalsIgnoreCase(employeeType)) {
-                        ctable.getEntities().add(ContractService.instance().mapClientInformation(ci));
-                    }
-                } else {
-                    ctable.getEntities().add(ContractService.instance().mapClientInformation(ci));
-                }
-            }
-        }
-        String[] columnOrder = new String[]{"employee", "recruiter", "vendor", "subContractorName", "billingRate", "startDate", "endDate"};
-        Employee emp = OfficeSecurityService.instance().getCurrentUser();
-        String start = DateUtils.formatDate(startDate, "MM-dd-yyyy");
-        String end = DateUtils.formatDate(endDate, "MM-dd-yyyy");
-        String fileName = ReportGenerator.generateExcelOrderedReport(ctable.getEntities(), "Emp Projects Going To Start Or End Between " + start + " and " + end, OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
-        MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
-    }
-
+    
     @PUT
     @Validate
     @Path("/project-off-boarding")
