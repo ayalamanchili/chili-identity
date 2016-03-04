@@ -142,37 +142,4 @@ public class ContractResource {
         String[] columnOrder = new String[]{"employee", "employeeType", "vendor", "vendorLocation", "vendorAPContact", "vendorRecruiter", "subContractorName", "subcontractorAddress", "subContractorContactName", "startDate", "endDate", "subcontractorPayRate"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(table.getEntities(), "SubContractors Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
-
-    @GET
-    @Path("/sub-contractor-monthly-compliance")
-    public ContractTable subCMonthlyCompliance(@QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate) {
-        ContractTable table = new ContractTable();
-        List<ContractDto> dtos = new ArrayList();
-        List<Employee> emps = EmployeeDao.instance().getAllEmployeesByType(EmployeeType.SUBCONTRACTOR);
-        emps.stream().map((emp) -> emp.getClientInformations()).filter((cis) -> (cis.size() > 0)).forEach((cis) -> {
-            cis.stream().forEach((ci) -> {
-                if (ci.getEndDate() != null) {
-                    if (ci.getEndDate().after(startDate) && ci.getEndDate().before(endDate)) {
-                        dtos.add(ContractService.instance().mapClientInformation(ci));
-                    }
-                } else {
-                    dtos.add(ContractService.instance().mapClientInformation(ci));
-                }
-            });
-        });
-        table.setEntities(dtos);
-        table.setSize(Long.valueOf(dtos.size()));
-        return table;
-    }
-
-    @GET
-    @Path("/sub-contractor-monthly-compliance-report")
-    public void subCMonthlyComplianceReport(@QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate) {
-        ContractTable table = subCMonthlyCompliance(startDate, endDate);
-        if (table.getSize() > 0) {
-            String[] columnOrder = new String[]{"employee", "client", "vendor", "startDate", "endDate", "billingRate", "subcontractorPayRate", "subContractorName", "recruiter"};
-            String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "SubContractor Monthly Compliance Projects Report ", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
-            MessagingService.instance().emailReport(fileName, OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
-        }
-    }
 }
