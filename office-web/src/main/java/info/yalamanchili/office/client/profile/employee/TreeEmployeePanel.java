@@ -137,7 +137,6 @@ public class TreeEmployeePanel extends TreePanelComposite {
         if (EMAIL_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmailsPanel(getEntityId()));
-            //TabPanel.instance().myOfficePanel.entityPanel.add(new EmailOptionsPanel());
         }
         if (PHONE_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
