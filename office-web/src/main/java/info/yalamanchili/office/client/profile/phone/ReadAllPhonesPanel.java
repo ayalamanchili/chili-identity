@@ -103,8 +103,6 @@ public class ReadAllPhonesPanel extends CRUDReadAllComposite {
         new ResponseStatusWidget().show("Successfully Deleted Phone Contact Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPhonesPanel(TreeEmployeePanel.instance().getEntityId()));
-        //TabPanel.instance().myOfficePanel.entityPanel.add(new PhoneOptionsPanel());
-
     }
 
     // TODO Auto-generated method stub
@@ -112,7 +110,6 @@ public class ReadAllPhonesPanel extends CRUDReadAllComposite {
     public void updateClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new UpdatePhonePanel(getEntity(entityId)));
-
     }
 
     protected String getDeleteURL(String entityId) {
