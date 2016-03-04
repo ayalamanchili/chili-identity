@@ -93,7 +93,7 @@ public class TreeEmpFormsPanel extends TreePanelComposite {
         if (DOCUMENTS_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmpDocsPanel(employeeId));
-            TabPanel.instance().myOfficePanel.entityPanel.add(new EmpDocOptionsPanel());
+            //TabPanel.instance().myOfficePanel.entityPanel.add(new EmpDocOptionsPanel());
         }
     }
 
