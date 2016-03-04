@@ -15,8 +15,10 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.crud.CRUDReadAllComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.rpc.HttpService;
+import info.yalamanchili.office.client.Auth;
 import java.util.logging.Logger;
 
 /**
@@ -116,5 +118,21 @@ public class ReadAllSkillsPanel extends CRUDReadAllComposite {
     public void updateClicked(String entityId) {
         TabPanel.instance().recruitingPanel.entityPanel.clear();
         TabPanel.instance().recruitingPanel.entityPanel.add(new UpdateSkillPanel(getEntity(entityId)));
+    }
+
+    @Override
+    protected void configureCreateButton() {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
+            createButton.setText("Create Skill");
+            createButton.setVisible(true);
+        } else {
+            createButton.setVisible(false);
+        }
+    }
+
+    @Override
+    protected void createButtonClicked() {
+        TabPanel.instance().recruitingPanel.entityPanel.clear();
+        TabPanel.instance().recruitingPanel.entityPanel.add(new CreateSkillPanel(CreateComposite.CreateCompositeType.CREATE));
     }
 }

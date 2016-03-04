@@ -25,7 +25,7 @@ public class SkillSidePanel extends ALComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(SkillSidePanel.class.getName());
     public FlowPanel skillSidePanel = new FlowPanel();
-    ClickableLink createSkillLink = new ClickableLink("Create Skill");
+    //ClickableLink createSkillLink = new ClickableLink("Create Skill");
 
     public SkillSidePanel() {
         init(skillSidePanel);
@@ -33,7 +33,7 @@ public class SkillSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addListeners() {
-        createSkillLink.addClickHandler(this);
+        //createSkillLink.addClickHandler(this);
     }
 
     @Override
@@ -43,17 +43,17 @@ public class SkillSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addWidgets() {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
+        /*if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
             skillSidePanel.add(createSkillLink);
-        }
+        }*/
         skillSidePanel.add(new SearchSkillpanel());
     }
 
     @Override
     public void onClick(ClickEvent clickEvent) {
-        if (clickEvent.getSource().equals(createSkillLink)) {
+        /*if (clickEvent.getSource().equals(createSkillLink)) {
             TabPanel.instance().recruitingPanel.entityPanel.clear();
             TabPanel.instance().recruitingPanel.entityPanel.add(new CreateSkillPanel(CreateComposite.CreateCompositeType.CREATE));
-        }
+        }*/
     }
 }
