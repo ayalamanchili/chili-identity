@@ -9,12 +9,16 @@
 package info.yalamanchili.office.jrs.client;
 
 import info.yalamanchili.office.client.ContractReportService;
+import info.yalamanchili.office.dao.client.ContractReportDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao.EmployeeTable;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.client.ContractDto;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dao.profile.EmployeeLocationDto;
 import info.yalamanchili.office.dao.profile.EmployeeLocationReportDto;
+import info.yalamanchili.office.entity.profile.ClientInformation;
+import info.yalamanchili.office.jrs.profile.ClientInformationResource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -113,6 +117,21 @@ public class ContractReportResource {
     public void getEmpAddressReport(EmployeeLocationDto dto) {
         String email = currentEmpEmail();
         ContractReportService.instance().getEmpsByAddressReport(dto, email);
+    }
+
+    @PUT
+    @Path("/search-projects-between-days/{start}/{limit}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CONTRACTS_FULL_VIEW')")
+    public ContractTable getCpdsBWDates(@PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate, @QueryParam("value") String value, @QueryParam("employeeType") String employeeType) {
+        return ContractReportService.instance().searchProjsBWDates(start, limit, startDate, endDate, value, employeeType);
+    }
+    
+    @GET
+    @Path("/search-projects-between-days-report")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CONTRACTS_FULL_VIEW')")
+    public void getCpdsBWDatesReport(@QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate, @QueryParam("value") String value, @QueryParam("employeeType") String employeeType) {
+        String email = currentEmpEmail();
+        ContractReportService.instance().searchProjsBWDatesReport(startDate, endDate, value, employeeType, email);
     }
 
     private String currentEmpEmail() {
