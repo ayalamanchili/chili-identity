@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.client;
 
+import info.chili.commons.DateUtils;
 import info.chili.reporting.ReportGenerator;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
@@ -17,8 +18,11 @@ import info.yalamanchili.office.dao.profile.EmployeeDao.EmployeeTable;
 import info.yalamanchili.office.dao.profile.EmployeeDto;
 import info.yalamanchili.office.dao.profile.EmployeeLocationDto;
 import info.yalamanchili.office.dao.profile.EmployeeLocationReportDto;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.client.ContractDto;
+import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dto.client.ContractSearchDto;
+import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.ArrayList;
@@ -159,5 +163,32 @@ public class ContractReportService {
             String fileName = ReportGenerator.generateExcelOrderedReport(dtos, "Employee In A Location report ", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
             MessagingService.instance().emailReport(fileName, email);
         }
+    }
+
+    public ContractTable searchProjsBWDates(int start, int limit, Date startDate, Date endDate, String value, String employeeType) {
+        ContractTable table = new ContractTable();
+        List<ContractDto> dtos = new ArrayList();
+        List<ContractDto> activeCpds = new ArrayList();
+        List<ClientInformation> cpds = ContractReportDao.instance().queryForProjEndBetweenDays(startDate, endDate, value, employeeType);
+        for (ClientInformation cpd : cpds) {
+            dtos.add(ContractService.instance().mapClientInformation(cpd));
+        }
+        if (dtos.size() > 0) {
+            activeCpds = ContractService.instance().activeCPDs(dtos);
+        }
+        table.setEntities(activeCpds);
+        table.setSize((long) activeCpds.size());
+        return table;
+    }
+
+    @Async
+    @Transactional
+    public void searchProjsBWDatesReport(Date startDate, Date endDate, String value, String employeeType, String email) {
+        ContractTable table = searchProjsBWDates(0, 100000, startDate, endDate, value, employeeType);
+        String[] columnOrder = new String[]{"employee", "client", "vendor", "startDate", "endDate", "billingRate", "subcontractorPayRate", "subContractorName", "recruiter"};
+        String start = org.apache.http.client.utils.DateUtils.formatDate(startDate, "MM-dd-yyyy");
+        String end = org.apache.http.client.utils.DateUtils.formatDate(endDate, "MM-dd-yyyy");
+        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Emp Projects Going To Start Or End Between " + start + " and " + end, OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        MessagingService.instance().emailReport(fileName, email);
     }
 }
