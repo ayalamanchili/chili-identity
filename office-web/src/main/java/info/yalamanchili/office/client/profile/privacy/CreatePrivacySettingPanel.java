@@ -83,7 +83,6 @@ public class CreatePrivacySettingPanel extends CreateComposite {
         new ResponseStatusWidget().show("Successfully created privacy data");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPrivacySettngsPanel(TreeEmployeePanel.instance().getEntityId()));
-        //TabPanel.instance().myOfficePanel.entityPanel.add(new PrivacyOptionsPanel());
     }
 
     @Override

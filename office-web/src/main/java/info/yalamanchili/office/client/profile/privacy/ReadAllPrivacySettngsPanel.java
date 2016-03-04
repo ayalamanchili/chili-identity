@@ -62,8 +62,6 @@ public class ReadAllPrivacySettngsPanel extends CRUDReadAllComposite {
         new ResponseStatusWidget().show("Successfully Deleted Privacy Data");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPrivacySettngsPanel(parentId));
-        //TabPanel.instance().myOfficePanel.entityPanel.add(new PrivacyOptionsPanel());
-
     }
 
     @Override
