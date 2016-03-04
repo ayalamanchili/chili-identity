@@ -9,10 +9,8 @@ import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.companycontact.CompanyContactOptionsPanel;
 import info.yalamanchili.office.client.companycontact.ReadAllCompanyContactPanel;
 import info.yalamanchili.office.client.gwt.TreePanelComposite;
-import info.yalamanchili.office.client.profile.emergencycnt.EmergencyContactOptionsPanel;
 import info.yalamanchili.office.client.profile.emergencycnt.ReadAllDependentsPanel;
 import info.yalamanchili.office.client.profile.emergencycnt.ReadAllEmergencyContactsPanel;
 import java.util.logging.Logger;
@@ -54,7 +52,6 @@ public class TreeEmpContactsPanel extends TreePanelComposite {
         if (EMERGENCY_CONTACT_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmergencyContactsPanel(employeeId));
-            //TabPanel.instance().myOfficePanel.entityPanel.add(new EmergencyContactOptionsPanel());
         }
         if (DEPENDENT_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
@@ -63,7 +60,6 @@ public class TreeEmpContactsPanel extends TreePanelComposite {
         if (COMPANY_CONTACT_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllCompanyContactPanel(employeeId));
-            //TabPanel.instance().myOfficePanel.entityPanel.add(new CompanyContactOptionsPanel());
         }
     }
 
