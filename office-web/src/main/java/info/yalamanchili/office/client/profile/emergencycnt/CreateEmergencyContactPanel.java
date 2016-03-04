@@ -72,8 +72,6 @@ public class CreateEmergencyContactPanel extends CreateComposite {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmergencyContactsPanel(
                 TreeEmployeePanel.instance().getEntityId()));
-        //TabPanel.instance().myOfficePanel.entityPanel.add(new EmergencyContactOptionsPanel());
-
     }
 
     @Override

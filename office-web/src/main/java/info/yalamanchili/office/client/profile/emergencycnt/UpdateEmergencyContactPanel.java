@@ -13,8 +13,6 @@ import info.chili.gwt.rpc.HttpService;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import info.yalamanchili.office.client.profile.address.AddressOptionsPanel;
-import info.yalamanchili.office.client.profile.address.ReadAllAddressesPanel;
 import info.yalamanchili.office.client.profile.contact.Sex;
 
 public class UpdateEmergencyContactPanel extends UpdateComposite {
@@ -61,7 +59,6 @@ public class UpdateEmergencyContactPanel extends UpdateComposite {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmergencyContactsPanel(
                 TreeEmployeePanel.instance().getEntityId()));
-        //TabPanel.instance().myOfficePanel.entityPanel.add(new EmergencyContactOptionsPanel());
     }
 
     @Override
