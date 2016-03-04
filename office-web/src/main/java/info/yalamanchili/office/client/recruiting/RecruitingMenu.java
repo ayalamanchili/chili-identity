@@ -66,7 +66,7 @@ public class RecruitingMenu extends CMenuBar {
             TabPanel.instance().getRecruitingPanel().entityPanel.clear();
             TabPanel.instance().getRecruitingPanel().sidePanelTop.clear();
             TabPanel.instance().getRecruitingPanel().entityPanel.add(new ReadAllTechnologyGroupPanel());
-            TabPanel.instance().getRecruitingPanel().sidePanelTop.add(new TechnologyGroupSidePanel());
+            //TabPanel.instance().getRecruitingPanel().sidePanelTop.add(new TechnologyGroupSidePanel());
             TabPanel.instance().getRecruitingPanel().sidePanelBottom.clear();
         }
     };
