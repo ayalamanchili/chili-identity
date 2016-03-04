@@ -241,6 +241,10 @@ public class EmployeeResource extends CRUDResource<Employee> {
         if (skillSet == null) {
             SkillSet ss = new SkillSet();
             emp.setSkillSet(ss);
+            dto.setSkillSetFile(null);
+            dto.setSkills(null);
+            dto.setCertifications(null);
+            dto.setTags(null);
         } else {
             dto.setCertifications(null);
             if (skillSet.getCertifications().size() > 0) {
