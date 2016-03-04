@@ -18,10 +18,8 @@ import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.expense.bnkacct.ReadBankAcctWidget;
 import info.yalamanchili.office.client.gwt.TreePanelComposite;
 import info.yalamanchili.office.client.onboarding.ReadJoiningFormPanel;
-import info.yalamanchili.office.client.profile.empdoc.EmpDocOptionsPanel;
 import info.yalamanchili.office.client.profile.empdoc.ReadAllEmpDocsPanel;
 import java.util.logging.Logger;
 
@@ -93,7 +91,6 @@ public class TreeEmpFormsPanel extends TreePanelComposite {
         if (DOCUMENTS_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmpDocsPanel(employeeId));
-            //TabPanel.instance().myOfficePanel.entityPanel.add(new EmpDocOptionsPanel());
         }
     }
 
