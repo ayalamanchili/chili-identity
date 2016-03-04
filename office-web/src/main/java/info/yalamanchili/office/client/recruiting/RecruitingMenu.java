@@ -55,9 +55,9 @@ public class RecruitingMenu extends CMenuBar {
         public void execute() {
             TabPanel.instance().getRecruitingPanel().entityPanel.clear();
             TabPanel.instance().getRecruitingPanel().sidePanelTop.clear();
-            TabPanel.instance().getRecruitingPanel().entityPanel.add(new ReadAllPracticePanel());
-            TabPanel.instance().getRecruitingPanel().sidePanelTop.add(new PracticeSidePanel());
             TabPanel.instance().getRecruitingPanel().sidePanelBottom.clear();
+            TabPanel.instance().getRecruitingPanel().entityPanel.add(new ReadAllPracticePanel());
+            //TabPanel.instance().getRecruitingPanel().sidePanelTop.add(new PracticeSidePanel());
         }
     };
     static Command technologyGroupMaintainenceCmd = new Command() {
