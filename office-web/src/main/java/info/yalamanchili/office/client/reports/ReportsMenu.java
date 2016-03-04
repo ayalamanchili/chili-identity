@@ -63,6 +63,7 @@ public class ReportsMenu extends CMenuBar {
         public void execute() {
             TabPanel.instance().getReportingPanel().entityPanel.clear();
             TabPanel.instance().getReportingPanel().sidePanelTop.clear();
+            TabPanel.instance().getReportingPanel().sidePanelTop.setHeight("100%");
             TabPanel.instance().getReportingPanel().entityPanel.add(new ReadAllContractsPanel());
             TabPanel.instance().getReportingPanel().sidePanelTop.add(new ContractsSidePanel());
         }
@@ -72,6 +73,7 @@ public class ReportsMenu extends CMenuBar {
         public void execute() {
             TabPanel.instance().getReportingPanel().entityPanel.clear();
             TabPanel.instance().getReportingPanel().sidePanelTop.clear();
+            TabPanel.instance().getReportingPanel().sidePanelTop.setHeight("100%");
             if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONTRACTS_FULL_VIEW)) {
                 TabPanel.instance().getReportingPanel().entityPanel.add(new ReadAllBisContractsPanel());
             }
@@ -115,6 +117,7 @@ public class ReportsMenu extends CMenuBar {
         public void execute() {
             TabPanel.instance().getReportingPanel().entityPanel.clear();
             TabPanel.instance().getReportingPanel().sidePanelTop.clear();
+            TabPanel.instance().getReportingPanel().sidePanelTop.setHeight("100%");
             TabPanel.instance().getReportingPanel().sidePanelTop.add(new CorporateStatusReportSidePanel());
         }
     };
@@ -129,6 +132,7 @@ public class ReportsMenu extends CMenuBar {
         public void execute() {
             TabPanel.instance().getReportingPanel().entityPanel.clear();
             TabPanel.instance().getReportingPanel().sidePanelTop.clear();
+            TabPanel.instance().getReportingPanel().sidePanelTop.setHeight("100%");
             TabPanel.instance().getReportingPanel().sidePanelTop.add(new AddressReportSidePanel());
         }
     };
