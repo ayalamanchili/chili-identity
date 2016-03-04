@@ -47,6 +47,7 @@ public class RecruitingMenu extends CMenuBar {
         @Override
         public void execute() {
             TabPanel.instance().getRecruitingPanel().entityPanel.clear();
+            TabPanel.instance().getRecruitingPanel().sidePanel.clear();
             TabPanel.instance().getRecruitingPanel().entityPanel.add(new ReadAllSkillSetTagPanel());
         }
     };
@@ -54,8 +55,7 @@ public class RecruitingMenu extends CMenuBar {
         @Override
         public void execute() {
             TabPanel.instance().getRecruitingPanel().entityPanel.clear();
-            TabPanel.instance().getRecruitingPanel().sidePanelTop.clear();
-            TabPanel.instance().getRecruitingPanel().sidePanelBottom.clear();
+            TabPanel.instance().getRecruitingPanel().sidePanel.clear();
             TabPanel.instance().getRecruitingPanel().entityPanel.add(new ReadAllPracticePanel());
             //TabPanel.instance().getRecruitingPanel().sidePanelTop.add(new PracticeSidePanel());
         }
@@ -64,10 +64,9 @@ public class RecruitingMenu extends CMenuBar {
         @Override
         public void execute() {
             TabPanel.instance().getRecruitingPanel().entityPanel.clear();
-            TabPanel.instance().getRecruitingPanel().sidePanelTop.clear();
+            TabPanel.instance().getRecruitingPanel().sidePanel.clear();
             TabPanel.instance().getRecruitingPanel().entityPanel.add(new ReadAllTechnologyGroupPanel());
             //TabPanel.instance().getRecruitingPanel().sidePanelTop.add(new TechnologyGroupSidePanel());
-            TabPanel.instance().getRecruitingPanel().sidePanelBottom.clear();
         }
     };
     static Command reportsCmd = new Command() {
@@ -85,19 +84,17 @@ public class RecruitingMenu extends CMenuBar {
         public void execute() {
             TabPanel.instance().getRecruitingPanel().clear();
             TabPanel.instance().getRecruitingPanel().entityPanel.clear();
-            TabPanel.instance().getRecruitingPanel().sidePanelTop.clear();
-            TabPanel.instance().getRecruitingPanel().sidePanelBottom.clear();
+            TabPanel.instance().getRecruitingPanel().sidePanel.clear();
             TabPanel.instance().getRecruitingPanel().entityPanel.add(new ReadAllSkillsPanel());
-            TabPanel.instance().getRecruitingPanel().sidePanelTop.add(new SkillSidePanel());
+            TabPanel.instance().getRecruitingPanel().sidePanel.add(new SkillSidePanel());
         }
     };
     static Command certificationsMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getRecruitingPanel().entityPanel.clear();
-            TabPanel.instance().getRecruitingPanel().sidePanelTop.clear();
-            TabPanel.instance().getRecruitingPanel().sidePanelBottom.clear();
+            TabPanel.instance().getRecruitingPanel().sidePanel.clear();
             TabPanel.instance().getRecruitingPanel().entityPanel.add(new ReadAllCertificationsPanel());
-            TabPanel.instance().getRecruitingPanel().sidePanelTop.add(new CertificationSidePanel());
+            TabPanel.instance().getRecruitingPanel().sidePanel.add(new CertificationSidePanel());
         }
     };
 }
