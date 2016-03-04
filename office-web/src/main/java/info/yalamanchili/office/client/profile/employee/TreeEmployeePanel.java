@@ -138,7 +138,6 @@ public class TreeEmployeePanel extends TreePanelComposite {
         if (PHONE_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPhonesPanel(getEntityId()));
-            //TabPanel.instance().myOfficePanel.entityPanel.add(new PhoneOptionsPanel());
         }
         if (CLIENT_INFO_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
