@@ -147,7 +147,6 @@ public class TreeEmployeePanel extends TreePanelComposite {
         if (PRIVACY_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPrivacySettngsPanel(getEntityId()));
-            //TabPanel.instance().myOfficePanel.entityPanel.add(new PrivacyOptionsPanel());
         }
         if (SKILL_SET_NODE.equals(entityNodeKey)) {
             //TODO mode this to comp
