@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import info.chili.gwt.crud.CreateComposite.CreateCompositeType;
 import info.chili.gwt.utils.FormatUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth.ROLE;
@@ -72,7 +73,7 @@ public class ReadAllPhonesPanel extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN,ROLE.ROLE_HR)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR)) {
             createOptionsWidget(OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
         } else {
             createOptionsWidget(OptionsType.READ, row, JSONUtils.toString(entity, "id"));
@@ -102,7 +103,7 @@ public class ReadAllPhonesPanel extends CRUDReadAllComposite {
         new ResponseStatusWidget().show("Successfully Deleted Phone Contact Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPhonesPanel(TreeEmployeePanel.instance().getEntityId()));
-        TabPanel.instance().myOfficePanel.entityPanel.add(new PhoneOptionsPanel());
+        //TabPanel.instance().myOfficePanel.entityPanel.add(new PhoneOptionsPanel());
 
     }
 
@@ -116,5 +117,21 @@ public class ReadAllPhonesPanel extends CRUDReadAllComposite {
 
     protected String getDeleteURL(String entityId) {
         return OfficeWelcome.instance().constants.root_url() + "phone/delete/" + entityId;
+    }
+
+    @Override
+    protected void configureCreateButton() {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR)) {
+            createButton.setText("Add Phone");
+            createButton.setVisible(true);
+        } else {
+            createButton.setVisible(false);
+        }
+    }
+
+    @Override
+    protected void createButtonClicked() {
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new CreatePhonePanel(CreateCompositeType.ADD));
     }
 }
