@@ -8,7 +8,6 @@
  */
 package info.yalamanchili.office.client;
 
-import info.chili.commons.DateUtils;
 import info.chili.reporting.ReportGenerator;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
@@ -18,12 +17,12 @@ import info.yalamanchili.office.dao.profile.EmployeeDao.EmployeeTable;
 import info.yalamanchili.office.dao.profile.EmployeeDto;
 import info.yalamanchili.office.dao.profile.EmployeeLocationDto;
 import info.yalamanchili.office.dao.profile.EmployeeLocationReportDto;
-import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.client.ContractDto;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dto.client.ContractSearchDto;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.ArrayList;
 import java.util.Date;
@@ -190,5 +189,18 @@ public class ContractReportService {
         String end = org.apache.http.client.utils.DateUtils.formatDate(endDate, "MM-dd-yyyy");
         String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Emp Projects Going To Start Or End Between " + start + " and " + end, OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, email);
+    }
+
+    @Async
+    @Transactional
+    public void subContractorSummaryReport(String email) {
+        ContractDto.ContractTable table = new ContractDto.ContractTable();
+        ContractSearchDto searchDto = new ContractSearchDto();
+        searchDto.setEmployeeType(EmployeeType.SUBCONTRACTOR);
+        table = ContractService.instance().getResultForReport(searchDto);
+        if (table != null) {
+            String[] columnOrder = new String[]{"employee", "employeeType", "vendor", "vendorLocation", "vendorAPContact", "vendorRecruiter", "subContractorName", "subcontractorAddress", "subContractorContactName", "startDate", "endDate", "subcontractorPayRate"};
+            MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(table.getEntities(), "SubContractors Summary Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
+        }
     }
 }
