@@ -99,14 +99,12 @@ public class ReadAllEmailsPanel extends CRUDReadAllComposite {
         new ResponseStatusWidget().show("Successfully Deleted Emails Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmailsPanel(TreeEmployeePanel.instance().getEntityId()));
-        //TabPanel.instance().myOfficePanel.entityPanel.add(new EmailOptionsPanel());
     }
 
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateEmailPanel(getEntity(entityId)));
-
     }
 
     protected String getDeleteURL(String entityId) {
