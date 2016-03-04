@@ -61,7 +61,7 @@ public class UpdateEmergencyContactPanel extends UpdateComposite {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmergencyContactsPanel(
                 TreeEmployeePanel.instance().getEntityId()));
-        TabPanel.instance().myOfficePanel.entityPanel.add(new EmergencyContactOptionsPanel());
+        //TabPanel.instance().myOfficePanel.entityPanel.add(new EmergencyContactOptionsPanel());
     }
 
     @Override
