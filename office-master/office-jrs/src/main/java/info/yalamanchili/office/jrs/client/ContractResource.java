@@ -131,15 +131,4 @@ public class ContractResource {
     public ContractTable searchContractsForRecruiter(ContractSearchDto dto) {
         return ContractService.instance().searchContractsForRecruiter(dto);
     }
-
-    @GET
-    @Path("/subcontractors-report")
-    public void subcontractorsReport() {
-        ContractDto.ContractTable table = new ContractDto.ContractTable();
-        ContractSearchDto searchDto = new ContractSearchDto();
-        searchDto.setEmployeeType(EmployeeType.SUBCONTRACTOR);
-        table = ContractService.instance().getResultForReport(searchDto);
-        String[] columnOrder = new String[]{"employee", "employeeType", "vendor", "vendorLocation", "vendorAPContact", "vendorRecruiter", "subContractorName", "subcontractorAddress", "subContractorContactName", "startDate", "endDate", "subcontractorPayRate"};
-        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(table.getEntities(), "SubContractors Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
-    }
 }
