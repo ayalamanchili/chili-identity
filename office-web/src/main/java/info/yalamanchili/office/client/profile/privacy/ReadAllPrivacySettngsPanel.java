@@ -17,6 +17,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CRUDReadAllComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.yalamanchili.office.client.Auth;
 import java.util.logging.Logger;
@@ -61,7 +62,7 @@ public class ReadAllPrivacySettngsPanel extends CRUDReadAllComposite {
         new ResponseStatusWidget().show("Successfully Deleted Privacy Data");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPrivacySettngsPanel(parentId));
-        TabPanel.instance().myOfficePanel.entityPanel.add(new PrivacyOptionsPanel());
+        //TabPanel.instance().myOfficePanel.entityPanel.add(new PrivacyOptionsPanel());
 
     }
 
@@ -118,5 +119,21 @@ public class ReadAllPrivacySettngsPanel extends CRUDReadAllComposite {
     @Override
     protected String getDocumentationLink() {
         return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "profile/privacy.html";
+    }
+
+    @Override
+    protected void configureCreateButton() {
+        if (Auth.isAdmin() || Auth.isHR()) {
+            createButton.setText("Add Privacy Data");
+            createButton.setVisible(true);
+        } else {
+            createButton.setVisible(false);
+        }
+    }
+
+    @Override
+    protected void createButtonClicked() {
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new CreatePrivacySettingPanel(CreateComposite.CreateCompositeType.ADD));
     }
 }
