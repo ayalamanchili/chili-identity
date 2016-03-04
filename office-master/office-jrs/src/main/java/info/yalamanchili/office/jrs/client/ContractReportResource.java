@@ -9,16 +9,12 @@
 package info.yalamanchili.office.jrs.client;
 
 import info.yalamanchili.office.client.ContractReportService;
-import info.yalamanchili.office.dao.client.ContractReportDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao.EmployeeTable;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.client.ContractDto;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dao.profile.EmployeeLocationDto;
 import info.yalamanchili.office.dao.profile.EmployeeLocationReportDto;
-import info.yalamanchili.office.entity.profile.ClientInformation;
-import info.yalamanchili.office.jrs.profile.ClientInformationResource;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
