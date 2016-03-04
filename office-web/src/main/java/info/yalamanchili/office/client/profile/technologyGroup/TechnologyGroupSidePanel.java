@@ -25,7 +25,7 @@ public class TechnologyGroupSidePanel extends ALComposite implements ClickHandle
 
     private static Logger logger = Logger.getLogger(TechnologyGroupSidePanel.class.getName());
     public FlowPanel technologyGroupSidePanel = new FlowPanel();
-//    ClickableLink createTechnologyGroupLink = new ClickableLink("Create Technology Group");
+    ClickableLink createTechnologyGroupLink = new ClickableLink("Create Technology Group");
 
     public TechnologyGroupSidePanel() {
         init(technologyGroupSidePanel);
@@ -33,7 +33,7 @@ public class TechnologyGroupSidePanel extends ALComposite implements ClickHandle
 
     @Override
     protected void addListeners() {
-//        createTechnologyGroupLink.addClickHandler(this);
+       createTechnologyGroupLink.addClickHandler(this);
     }
 
     @Override
@@ -43,13 +43,13 @@ public class TechnologyGroupSidePanel extends ALComposite implements ClickHandle
     @Override
     protected void addWidgets() {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
-//            technologyGroupSidePanel.add(createTechnologyGroupLink);
+            technologyGroupSidePanel.add(createTechnologyGroupLink);
         }
     }
 
     @Override
     public void onClick(ClickEvent event) {
-//        if (event.getSource().equals(createTechnologyGroupLink))
+       if (event.getSource().equals(createTechnologyGroupLink))
         {
             TabPanel.instance().recruitingPanel.entityPanel.clear();
             TabPanel.instance().recruitingPanel.entityPanel.add(new CreateTechnologyGroupPanel(CreateComposite.CreateCompositeType.CREATE));
