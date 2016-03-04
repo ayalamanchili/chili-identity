@@ -14,8 +14,6 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.Auth;
-import info.yalamanchili.office.client.TabPanel;
-import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -29,7 +27,6 @@ public class ClientSidePanel extends ALComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(ClientSidePanel.class.getName());
     public FlowPanel clientsidepanel = new FlowPanel();
-//    ClickableLink createclientlink = new ClickableLink("Create Client");
     ClickableLink clientSummaryReportL = new ClickableLink("Client Summary Report");
     ClickableLink activeClientsReportL = new ClickableLink("Active Clients Report");
 
@@ -39,7 +36,6 @@ public class ClientSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addListeners() {
-//        createclientlink.addClickHandler(this);
         clientSummaryReportL.addClickHandler(this);
         activeClientsReportL.addClickHandler(this);
     }
@@ -51,24 +47,15 @@ public class ClientSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addWidgets() {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS)) {
-//            clientsidepanel.add(createclientlink);
-        }
+        clientsidepanel.add(new SearchClientpanel());
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CEO, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN)) {
             clientsidepanel.add(clientSummaryReportL);
             clientsidepanel.add(activeClientsReportL);
         }
-        clientsidepanel.add(new SearchClientpanel());
-
     }
 
     @Override
     public void onClick(ClickEvent event) {
-      //  if (event.getSource().equals(createclientlink))
-//        {
-//            TabPanel.instance().adminPanel.entityPanel.clear();
-//            TabPanel.instance().adminPanel.entityPanel.add(new CreateClientPanel(CreateComposite.CreateCompositeType.CREATE));
-//        }
         if (event.getSource().equals(clientSummaryReportL)) {
             generateClientInfoReport();
         }
@@ -104,5 +91,4 @@ public class ClientSidePanel extends ALComposite implements ClickHandler {
     protected String getActiveClientInfoReportUrl() {
         return OfficeWelcome.constants.root_url() + "client/active-clientinfo-report";
     }
-
 }
