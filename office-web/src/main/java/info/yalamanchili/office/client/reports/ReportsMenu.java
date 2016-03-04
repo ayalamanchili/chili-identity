@@ -62,22 +62,20 @@ public class ReportsMenu extends CMenuBar {
         @Override
         public void execute() {
             TabPanel.instance().getReportingPanel().entityPanel.clear();
-            TabPanel.instance().getReportingPanel().sidePanelTop.clear();
-            TabPanel.instance().getReportingPanel().sidePanelTop.setHeight("100%");
+            TabPanel.instance().getReportingPanel().sidePanel.clear();
             TabPanel.instance().getReportingPanel().entityPanel.add(new ReadAllContractsPanel());
-            TabPanel.instance().getReportingPanel().sidePanelTop.add(new ContractsSidePanel());
+            TabPanel.instance().getReportingPanel().sidePanel.add(new ContractsSidePanel());
         }
     };
     public static Command contractReportsMaintainenceCmd = new Command() {
         @Override
         public void execute() {
             TabPanel.instance().getReportingPanel().entityPanel.clear();
-            TabPanel.instance().getReportingPanel().sidePanelTop.clear();
-            TabPanel.instance().getReportingPanel().sidePanelTop.setHeight("100%");
+            TabPanel.instance().getReportingPanel().sidePanel.clear();
             if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONTRACTS_FULL_VIEW)) {
                 TabPanel.instance().getReportingPanel().entityPanel.add(new ReadAllBisContractsPanel());
             }
-            TabPanel.instance().getReportingPanel().sidePanelTop.add(new BISReportsSidePanel());
+            TabPanel.instance().getReportingPanel().sidePanel.add(new BISReportsSidePanel());
         }
     };
     static Command profileReportsMaintainenceCmd = new Command() {
@@ -116,9 +114,8 @@ public class ReportsMenu extends CMenuBar {
         @Override
         public void execute() {
             TabPanel.instance().getReportingPanel().entityPanel.clear();
-            TabPanel.instance().getReportingPanel().sidePanelTop.clear();
-            TabPanel.instance().getReportingPanel().sidePanelTop.setHeight("100%");
-            TabPanel.instance().getReportingPanel().sidePanelTop.add(new CorporateStatusReportSidePanel());
+            TabPanel.instance().getReportingPanel().sidePanel.clear();
+            TabPanel.instance().getReportingPanel().sidePanel.add(new CorporateStatusReportSidePanel());
         }
     };
     static Command emailMenuMaintainenceCmd = new Command() {
@@ -131,9 +128,8 @@ public class ReportsMenu extends CMenuBar {
     static Command addressReportMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getReportingPanel().entityPanel.clear();
-            TabPanel.instance().getReportingPanel().sidePanelTop.clear();
-            TabPanel.instance().getReportingPanel().sidePanelTop.setHeight("100%");
-            TabPanel.instance().getReportingPanel().sidePanelTop.add(new AddressReportSidePanel());
+            TabPanel.instance().getReportingPanel().sidePanel.clear();
+            TabPanel.instance().getReportingPanel().sidePanel.add(new AddressReportSidePanel());
         }
     };
 
