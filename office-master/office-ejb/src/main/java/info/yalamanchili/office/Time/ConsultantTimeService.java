@@ -121,14 +121,14 @@ public class ConsultantTimeService {
     public ConsultantTimeSummary getYearlySummary(Employee employee) {
         ConsultantTimeSummary summary = new ConsultantTimeSummary();
         //PTO
-        summary.setUsedPTOHours(String.valueOf(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.PTO_USED, TimeSheetStatus.Approved, new Date()).floatValue()));
+        summary.setUsedPTOHours(String.valueOf(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.PTO_USED, TimeSheetStatus.Approved, DateUtils.getNextYear(new Date(), -1)).floatValue()));
         summary.setAvailablePTOHours(String.valueOf(consultantTimeSheetDao.getPTOAccruedTimeSheet(employee).getHours().floatValue()));
         summary.setTotalPTOHours(summary.getAvailablePTOHours());
         //Total
-        summary.setTotalAccumulatedHours(String.valueOf(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.getEarnedCategories(), TimeSheetStatus.Approved, new Date()).floatValue()));
-        summary.setTotalUsedHours(String.valueOf(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.getLeaveSpentCheckedCategories(), TimeSheetStatus.Approved, new Date()).floatValue()));
+        summary.setTotalAccumulatedHours(String.valueOf(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.getEarnedCategories(), TimeSheetStatus.Approved, DateUtils.getNextYear(new Date(), -1)).floatValue()));
+        summary.setTotalUsedHours(String.valueOf(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.getLeaveSpentCheckedCategories(), TimeSheetStatus.Approved, DateUtils.getNextYear(new Date(), -1)).floatValue()));
 
-        summary.setUsedUnpaidHours(String.valueOf(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Unpaid, TimeSheetStatus.Approved, new Date()).floatValue()));
+        summary.setUsedUnpaidHours(String.valueOf(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Unpaid, TimeSheetStatus.Approved, DateUtils.getNextYear(new Date(), -1)).floatValue()));
         summary.setEmployee(employee.getFirstName() + " " + employee.getLastName());
         summary.setStartDate(new SimpleDateFormat("MM/dd/yyyy").format(employee.getStartDate()));
         return summary;
