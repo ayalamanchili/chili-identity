@@ -130,7 +130,7 @@ public class ConsultantTimeService {
 
         summary.setUsedUnpaidHours(String.valueOf(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Unpaid, TimeSheetStatus.Approved, DateUtils.getNextYear(new Date(), -1)).floatValue()));
         summary.setEmployee(employee.getFirstName() + " " + employee.getLastName());
-        summary.setStartDate(new SimpleDateFormat("MM/dd/yyyy").format(employee.getStartDate()));
+       // summary.setStartDate(new SimpleDateFormat("MM/dd/yyyy").format(employee.getStartDate()));
         return summary;
     }
 
