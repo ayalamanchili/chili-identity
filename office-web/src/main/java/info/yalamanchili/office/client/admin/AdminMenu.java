@@ -12,7 +12,6 @@ import info.chili.gwt.widgets.CMenuBar;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.admin.bulkimport.BulkImportSidePanel;
 import info.yalamanchili.office.client.admin.bulkimport.ReadAllBulkImportsPanel;
 import info.yalamanchili.office.client.admin.notificationgroup.ReadAllNotificationGroupsPanel;
 import info.yalamanchili.office.client.admin.client.ClientSidePanel;
@@ -121,7 +120,6 @@ public class AdminMenu extends CMenuBar {
             TabPanel.instance().getAdminPanel().entityPanel.clear();
             TabPanel.instance().getAdminPanel().sidePanelTop.clear();
             TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllBulkImportsPanel());
-            TabPanel.instance().getAdminPanel().sidePanelTop.add(new BulkImportSidePanel());
         }
     };
     static Command questionMaintainenceCmd = new Command() {
