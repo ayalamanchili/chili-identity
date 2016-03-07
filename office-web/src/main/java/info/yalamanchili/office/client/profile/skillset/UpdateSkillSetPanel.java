@@ -298,7 +298,7 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
         addDropDown("technologyGroup", technoglogyGroupF);
         entityFieldsPanel.add(newTGL);
         entityFieldsPanel.add(getLineSeperatorTag("Upload Resume and Certifications"));
-        addEnumField("skillSetFileType", false, true, SkillSetFileType.names());
+        addEnumField("skillSetFileType", false, false, SkillSetFileType.names());
         entityFieldsPanel.add(resumeUploadPanel);
         //Tags
         tagsPanel.add(new HTML("<p><b>Add Tags that will reflect your niche skills. These are used by search engine for find new opportunities. </br> You can create new Tags as needed.</b></p>"));

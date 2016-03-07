@@ -19,62 +19,63 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement
 @XmlType
 public class ConsultantTimeSummary implements Serializable {
+
     /**
      * PTO
      */
-    protected Float totalPTOHours;
-    protected Float usedPTOHours;
-    protected Float availablePTOHours;
+    protected String totalPTOHours;
+    protected String usedPTOHours;
+    protected String availablePTOHours;
     /**
      * total hours
      */
-    protected Float totalAccumulatedHours;
-    protected Float totalUsedHours;
-    protected Float totalAvailableHours;
+    protected String totalAccumulatedHours;
+    protected String totalUsedHours;
+    protected String totalAvailableHours;
     /**
      *
      *
      */
-    protected Float usedUnpaidHours;
+    protected String usedUnpaidHours;
     protected String employee;
-    protected Date startDate;
+    protected String startDate;
 
     public ConsultantTimeSummary() {
     }
 
-    public ConsultantTimeSummary( Float availablePTOHours) {
+    public ConsultantTimeSummary(String availablePTOHours) {
         this.availablePTOHours = availablePTOHours;
     }
 
-    public Float getTotalPTOHours() {
+    public String getTotalPTOHours() {
         return totalPTOHours;
     }
 
-    public void setTotalPTOHours(Float totalPTOHours) {
+    public void setTotalPTOHours(String totalPTOHours) {
         this.totalPTOHours = totalPTOHours;
     }
 
-    public Float getUsedPTOHours() {
+    public String getUsedPTOHours() {
         return usedPTOHours;
     }
 
-    public void setUsedPTOHours(Float usedPTOHours) {
+    public void setUsedPTOHours(String usedPTOHours) {
         this.usedPTOHours = usedPTOHours;
     }
 
-    public Float getAvailablePTOHours() {
+    public String getAvailablePTOHours() {
         return availablePTOHours;
     }
 
-    public void setAvailablePTOHours(Float availablePTOHours) {
+    public void setAvailablePTOHours(String availablePTOHours) {
         this.availablePTOHours = availablePTOHours;
     }
 
-    public Float getUsedUnpaidHours() {
+    public String getUsedUnpaidHours() {
         return usedUnpaidHours;
     }
 
-    public void setUsedUnpaidHours(Float usedUnpaidHours) {
+    public void setUsedUnpaidHours(String usedUnpaidHours) {
         this.usedUnpaidHours = usedUnpaidHours;
     }
 
@@ -86,35 +87,35 @@ public class ConsultantTimeSummary implements Serializable {
         this.employee = employee;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public Float getTotalAccumulatedHours() {
+    public String getTotalAccumulatedHours() {
         return totalAccumulatedHours;
     }
 
-    public void setTotalAccumulatedHours(Float totalAccumulatedHours) {
+    public void setTotalAccumulatedHours(String totalAccumulatedHours) {
         this.totalAccumulatedHours = totalAccumulatedHours;
     }
 
-    public Float getTotalUsedHours() {
+    public String getTotalUsedHours() {
         return totalUsedHours;
     }
 
-    public void setTotalUsedHours(Float totalUsedHours) {
+    public void setTotalUsedHours(String totalUsedHours) {
         this.totalUsedHours = totalUsedHours;
     }
 
-    public Float getTotalAvailableHours() {
+    public String getTotalAvailableHours() {
         return totalAvailableHours;
     }
 
-    public void setTotalAvailableHours(Float totalAvailableHours) {
+    public void setTotalAvailableHours(String totalAvailableHours) {
         this.totalAvailableHours = totalAvailableHours;
     }
 }

@@ -121,16 +121,16 @@ public class ConsultantTimeService {
     public ConsultantTimeSummary getYearlySummary(Employee employee) {
         ConsultantTimeSummary summary = new ConsultantTimeSummary();
         //PTO
-        summary.setUsedPTOHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.PTO_USED, TimeSheetStatus.Approved, new Date()).floatValue());
-        summary.setAvailablePTOHours(consultantTimeSheetDao.getPTOAccruedTimeSheet(employee).getHours().floatValue());
+        summary.setUsedPTOHours(String.valueOf(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.PTO_USED, TimeSheetStatus.Approved, new Date()).floatValue()));
+        summary.setAvailablePTOHours(String.valueOf(consultantTimeSheetDao.getPTOAccruedTimeSheet(employee).getHours().floatValue()));
         summary.setTotalPTOHours(summary.getAvailablePTOHours());
         //Total
-        summary.setTotalAccumulatedHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.getEarnedCategories(), TimeSheetStatus.Approved, new Date()).floatValue());
-        summary.setTotalUsedHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.getLeaveSpentCheckedCategories(), TimeSheetStatus.Approved, new Date()).floatValue());
+        summary.setTotalAccumulatedHours(String.valueOf(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.getEarnedCategories(), TimeSheetStatus.Approved, new Date()).floatValue()));
+        summary.setTotalUsedHours(String.valueOf(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.getLeaveSpentCheckedCategories(), TimeSheetStatus.Approved, new Date()).floatValue()));
 
-        summary.setUsedUnpaidHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Unpaid, TimeSheetStatus.Approved, new Date()).floatValue());
+        summary.setUsedUnpaidHours(String.valueOf(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Unpaid, TimeSheetStatus.Approved, new Date()).floatValue()));
         summary.setEmployee(employee.getFirstName() + " " + employee.getLastName());
-        summary.setStartDate(employee.getStartDate());
+        summary.setStartDate(new SimpleDateFormat("MM/dd/yyyy").format(employee.getStartDate()));
         return summary;
     }
 
@@ -166,8 +166,7 @@ public class ConsultantTimeService {
         Employee emp = entity.getEmployee();
         if (emp.getCompany() != null && emp.getCompany().getName().equals(Company.TECHPILLARS)) {
             data.setTemplateUrl("/templates/pdf/assoc-ts-template-techp.pdf");
-        }
-        else if (emp.getCompany() != null && emp.getCompany().getName().equals(Company.CGS_INC)) {
+        } else if (emp.getCompany() != null && emp.getCompany().getName().equals(Company.CGS_INC)) {
             data.setTemplateUrl("/templates/pdf/assoc-ts-template-cgs.pdf");
         } else {
             data.setTemplateUrl("templates/pdf/assoc-ts-template.pdf");
