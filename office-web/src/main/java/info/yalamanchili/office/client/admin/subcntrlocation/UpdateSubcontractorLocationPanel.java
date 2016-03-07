@@ -80,7 +80,6 @@ public class UpdateSubcontractorLocationPanel extends UpdateComposite implements
         new ResponseStatusWidget().show("Successfully Updated Subcontractor location");
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllSubcontractorLocationsPanel(TreeSubcontractorPanel.instance().getEntityId()));
-        TabPanel.instance().adminPanel.entityPanel.add(new SubcontractorLocationOptionsPanel());
     }
 
     @Override
@@ -138,7 +137,7 @@ public class UpdateSubcontractorLocationPanel extends UpdateComposite implements
                 break;
             case "CANADA":
                 statesF.setValues(CanadaStatesFactory.getStates().toArray(new String[0]));
-                break; 
+                break;
         }
     }
 }
