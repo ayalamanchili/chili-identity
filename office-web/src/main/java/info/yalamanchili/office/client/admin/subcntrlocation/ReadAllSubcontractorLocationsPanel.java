@@ -11,6 +11,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
@@ -124,5 +125,21 @@ public class ReadAllSubcontractorLocationsPanel extends CRUDReadAllComposite {
     public void updateClicked(String entityId) {
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new UpdateSubcontractorLocationPanel(getEntity(entityId)));
+    }
+
+    @Override
+    protected void configureCreateButton() {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
+            createButton.setText("Add Vendor Location");
+            createButton.setVisible(true);
+        } else {
+            createButton.setVisible(false);
+        }
+    }
+
+    @Override
+    protected void createButtonClicked() {
+        info.yalamanchili.office.client.TabPanel.instance().adminPanel.entityPanel.clear();
+        info.yalamanchili.office.client.TabPanel.instance().adminPanel.entityPanel.add(new CreateSubcontractorLocationPanel(CreateComposite.CreateCompositeType.ADD));
     }
 }

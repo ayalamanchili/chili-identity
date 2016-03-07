@@ -14,7 +14,6 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.subcntrcontact.ReadAllSubcontractorContactsPanel;
 import info.yalamanchili.office.client.admin.subcntrcontact.SubcontractorContactOptionsPanel;
 import info.yalamanchili.office.client.admin.subcntrlocation.ReadAllSubcontractorLocationsPanel;
-import info.yalamanchili.office.client.admin.subcntrlocation.SubcontractorLocationOptionsPanel;
 import info.yalamanchili.office.client.gwt.TreePanelComposite;
 import java.util.logging.Logger;
 
@@ -70,7 +69,6 @@ public class TreeSubcontractorPanel extends TreePanelComposite {
         if (SUBCONTRACTOR_LOCATION_NODE.equals(entityNodeKey)) {
             TabPanel.instance().adminPanel.entityPanel.clear();
             TabPanel.instance().adminPanel.entityPanel.add(new ReadAllSubcontractorLocationsPanel(entityId));
-            TabPanel.instance().adminPanel.entityPanel.add(new SubcontractorLocationOptionsPanel());
         }
         if (SUBCONTRACTOR_CONTACTS_NODE.equals(entityNodeKey)) {
             TabPanel.instance().adminPanel.entityPanel.clear();

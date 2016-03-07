@@ -57,8 +57,6 @@ public class CreateSubcontractorLocationPanel extends CreateAddressPanel impleme
         new ResponseStatusWidget().show("Successfully Added Subcontractor Locatrion");
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllSubcontractorLocationsPanel(TreeSubcontractorPanel.instance().getEntityId()));
-        TabPanel.instance().adminPanel.entityPanel.add(new SubcontractorLocationOptionsPanel());
-
     }
 
     @Override
@@ -73,14 +71,14 @@ public class CreateSubcontractorLocationPanel extends CreateAddressPanel impleme
         countriesF = (EnumField) fields.get("country");
         statesF = (EnumField) fields.get("state");
     }
-    
+
     @Override
     protected void addListeners() {
         if (countriesF != null) {
             countriesF.listBox.addChangeHandler(this);
         }
     }
-    
+
     @Override
     public void onChange(ChangeEvent event) {
         switch (countriesF.getValue()) {
@@ -94,7 +92,7 @@ public class CreateSubcontractorLocationPanel extends CreateAddressPanel impleme
                 statesF.setValues(CanadaStatesFactory.getStates().toArray(new String[0]));
                 break;
         }
-    }    
+    }
 
     @Override
     protected String getURI() {
