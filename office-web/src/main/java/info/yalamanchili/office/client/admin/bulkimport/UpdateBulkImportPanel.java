@@ -75,7 +75,6 @@ public class UpdateBulkImportPanel extends UpdateComposite {
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated BulkImport");
         TabPanel.instance().adminPanel.sidePanelTop.clear();
-        TabPanel.instance().adminPanel.sidePanelTop.add(new BulkImportSidePanel());
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllBulkImportsPanel());
     }
