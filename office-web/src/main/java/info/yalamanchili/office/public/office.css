@@ -310,13 +310,15 @@ legend {
 
 
 .treeItemLabel{
-
     padding: 5px;
+    color: #000;
 }
 
 .treeItemLabel:hover{
 
-    background-color: blue_mid;
+       background-color: #FFFFFF;
+    color: #ef5322;
+    font-weight: 600;
     -webkit-transition-property: background-color;  
     -webkit-transition-duration: 0.1s;  
     -webkit-transition-timing-function: linear, ease-in;
@@ -1292,9 +1294,48 @@ img{
 
 .GIKSFQCDHJ .gwt-Label.y-gwt-ClickableLink {
   color: #545454 !important 
-    
+   
 }
 
+
+.GIKSFQCDHJ .gwt-Label.y-gwt-ClickableLink:hover {
+  color: #ef5322  !important 
+   
+}
 .gwt-Label.y-gwt-ClickableLink {
        color: #ef5322 !important;
+}
+
+.gwt-Label.userLink {
+     width: 250px !important;
+    color: #555;
+    font-weight: bold;
+    font-size: 15px;
+    margin-right: 14px;
+}
+td.y-gwt-AbstractStatusPanel-LoginLink {
+    margin-bottom: 4px;
+    color: #ce0e0e !important;
+    margin-top: -5px;
+    margin-right: 15px;
+    font-size: 16px !important;
+    font-weight: bold;
+    cursor: pointer;
+}
+.GIKSFQCDEJ .gwt-HTML li {    
+    color: #333;
+}
+.GIKSFQCDEJ .y-gwt-ClickableLink:nth-child(2){
+   min-height:0em  !important; 
+}
+
+.GIKSFQCDEJ .y-gwt-ClickableLink{
+   padding-left: 22px;
+    padding-top: 9px;
+    padding-bottom: 3px;
+}
+
+.GIKSFQCDEJ .y-gwt-ClickableLink:hover{
+    color:#fb743a;
+    font-weight: bold;
 }
