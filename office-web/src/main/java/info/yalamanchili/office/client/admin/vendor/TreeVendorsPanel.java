@@ -17,7 +17,6 @@ import info.yalamanchili.office.client.admin.vendorcontact.ReadAllVendorContactP
 import info.yalamanchili.office.client.admin.vendorcontact.VendorAcctPayCntOptionsPanel;
 import info.yalamanchili.office.client.admin.vendorcontact.VendorContactOptionsPanel;
 import info.yalamanchili.office.client.admin.vendorlocation.ReadAllVendorLocationPanel;
-import info.yalamanchili.office.client.admin.vendorlocation.VendorLocationOptionsPanel;
 import java.util.logging.Logger;
 
 /**
@@ -74,7 +73,6 @@ public class TreeVendorsPanel extends TreePanelComposite {
         if (VENDOR_LOCATION_NODE.equals(entityNodeKey)) {
             TabPanel.instance().adminPanel.entityPanel.clear();
             TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorLocationPanel(entityId));
-            TabPanel.instance().adminPanel.entityPanel.add(new VendorLocationOptionsPanel());
         }
         if (VENDOR_CONTACTS_NODE.equals(entityNodeKey)) {
             TabPanel.instance().adminPanel.entityPanel.clear();
