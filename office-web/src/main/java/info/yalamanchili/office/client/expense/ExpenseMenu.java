@@ -17,7 +17,6 @@ import info.yalamanchili.office.client.advancerequisition.ReadAllAdvanceRequisit
 import info.yalamanchili.office.client.expense.chkreq.ImmigrationCheckRequisitionSidePanel;
 import info.yalamanchili.office.client.expense.travelauthorization.ReadAllTravelAuthorizationPanel;
 import info.yalamanchili.office.client.expense.travelauthorization.TravelAuthorizationSidePanel;
-import info.yalamanchili.office.client.expensecategory.ExpenseCategorySidePanel;
 import info.yalamanchili.office.client.expensecategory.ReadAllExpenseCategoryPanel;
 import info.yalamanchili.office.client.expensereports.ExpenseReportsSidePanel;
 import info.yalamanchili.office.client.expensereports.ReadAllExpenseReportsPanel;
@@ -47,7 +46,6 @@ public class ExpenseMenu extends CMenuBar {
             TabPanel.instance().getExpensePanel().entityPanel.clear();
             TabPanel.instance().getExpensePanel().sidePanelTop.clear();
             TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllExpenseCategoryPanel());
-            TabPanel.instance().getExpensePanel().sidePanelTop.add(new ExpenseCategorySidePanel());
         }
     };
     static Command expensadvancerequisitionCmd = new Command() {
