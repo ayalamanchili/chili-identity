@@ -48,7 +48,6 @@ public class SkillResource extends CRUDResource<Skill> {
     @PUT
     @Validate
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RECRUITER','ROLE_RELATIONSHIP')")
-    @CacheEvict(value = OfficeCacheKeys.SKILL, allEntries = true)
     @Override
     public Skill save(Skill entity) {
         return super.save(entity);
@@ -97,7 +96,7 @@ public class SkillResource extends CRUDResource<Skill> {
 
     @XmlRootElement
     @XmlType
-    public static class SkillTable implements java.io.Serializable{
+    public static class SkillTable implements java.io.Serializable {
 
         protected Long size;
         protected List<Skill> entities;

@@ -21,12 +21,9 @@ import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.data.CanadaStatesFactory;
 import info.chili.gwt.data.IndiaStatesFactory;
-import info.chili.gwt.data.JapanStatesFactory;
 import info.chili.gwt.fields.EnumField;
 
 import info.chili.gwt.rpc.HttpService;
-import info.chili.gwt.utils.Alignment;
-import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.admin.client.TreeClientPanel;
 import java.util.logging.Logger;
 
@@ -41,7 +38,7 @@ public class UpdateClientLocationPanel extends UpdateComposite implements Change
     }
     EnumField statesF;
     EnumField countriesF;
-    
+
     private Logger logger = Logger.getLogger(UpdateClientLocationPanel.class.getName());
 
     @Override
@@ -54,7 +51,7 @@ public class UpdateClientLocationPanel extends UpdateComposite implements Change
         assignEntityValueFromField("zip", entity);
         logger.info("Address1111111111:" + entity.toString());
         return entity;
-        
+
     }
 
     @Override
@@ -91,7 +88,6 @@ public class UpdateClientLocationPanel extends UpdateComposite implements Change
         new ResponseStatusWidget().show("Successfully Updated ClientLocation");
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientLocationsPanel(TreeClientPanel.instance().getEntityId()));
-        TabPanel.instance().adminPanel.entityPanel.add(new ClientLocationOptionsPanel());
     }
 
     @Override
@@ -149,8 +145,7 @@ public class UpdateClientLocationPanel extends UpdateComposite implements Change
                 break;
             case "CANADA":
                 statesF.setValues(CanadaStatesFactory.getStates().toArray(new String[0]));
-                break; 
+                break;
         }
-    }    
+    }
 }
-

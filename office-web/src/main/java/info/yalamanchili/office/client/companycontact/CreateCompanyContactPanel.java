@@ -76,7 +76,6 @@ public class CreateCompanyContactPanel extends CreateComposite {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllCompanyContactPanel(
                 TreeEmployeePanel.instance().getEntityId()));
-        TabPanel.instance().myOfficePanel.entityPanel.add(new CompanyContactOptionsPanel());
     }
 
     @Override

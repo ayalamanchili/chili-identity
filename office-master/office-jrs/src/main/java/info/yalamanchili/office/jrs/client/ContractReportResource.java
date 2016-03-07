@@ -115,6 +115,28 @@ public class ContractReportResource {
         ContractReportService.instance().getEmpsByAddressReport(dto, email);
     }
 
+    @PUT
+    @Path("/search-projects-between-days/{start}/{limit}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CONTRACTS_FULL_VIEW')")
+    public ContractTable getCpdsBWDates(@PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate, @QueryParam("value") String value, @QueryParam("employeeType") String employeeType) {
+        return ContractReportService.instance().searchProjsBWDates(start, limit, startDate, endDate, value, employeeType);
+    }
+    
+    @GET
+    @Path("/search-projects-between-days-report")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CONTRACTS_FULL_VIEW')")
+    public void getCpdsBWDatesReport(@QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate, @QueryParam("value") String value, @QueryParam("employeeType") String employeeType) {
+        String email = currentEmpEmail();
+        ContractReportService.instance().searchProjsBWDatesReport(startDate, endDate, value, employeeType, email);
+    }
+    
+    @GET
+    @Path("/subcontractors-summary-report")
+    public void subContractorSummaryReport() {
+        String email = currentEmpEmail();
+        ContractReportService.instance().subContractorSummaryReport(email);
+    }
+
     private String currentEmpEmail() {
         return OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail();
     }

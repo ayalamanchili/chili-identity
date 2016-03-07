@@ -29,6 +29,5 @@ public class UpdateClientAcctPayCntPanel extends UpdateContactPanel {
         new ResponseStatusWidget().show("Successfully Updated Client Accounts Payable contact");
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientAcctPayContacts(TreeClientPanel.instance().getEntityId()));
-        TabPanel.instance().adminPanel.entityPanel.add(new ClientAcctPayCntOptionsPanel());
     }
 }

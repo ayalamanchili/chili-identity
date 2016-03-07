@@ -62,8 +62,6 @@ public class CreateEmailPanel extends CreateComposite {
         new ResponseStatusWidget().show("Successfully Added Employee Email");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmailsPanel(TreeEmployeePanel.instance().getEntityId()));
-        TabPanel.instance().myOfficePanel.entityPanel.add(new EmailOptionsPanel());
-
     }
 
     @Override

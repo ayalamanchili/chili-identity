@@ -64,7 +64,6 @@ public class CreateExpenseCategoryPanel extends CreateComposite {
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully ExpenseCategory Created");
         TabPanel.instance().expensePanel.sidePanelTop.clear();
-        TabPanel.instance().expensePanel.sidePanelTop.add(new ExpenseCategorySidePanel());
         TabPanel.instance().expensePanel.entityPanel.clear();
         TabPanel.instance().expensePanel.entityPanel.add(new ReadAllExpenseCategoryPanel());
     }

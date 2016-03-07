@@ -16,6 +16,7 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CRUDReadAllComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.yalamanchili.office.client.profile.contact.ReadContactPanel;
 import info.chili.gwt.rpc.HttpService;
@@ -27,21 +28,21 @@ import java.util.logging.Logger;
  */
 //TODO extend from generic readall contacts
 public class ReadAllClientContactPanel extends CRUDReadAllComposite {
-    
+
     private static Logger logger = Logger.getLogger(ReadAllClientContactPanel.class.getName());
     public static ReadAllClientContactPanel instance;
-    
+
     public ReadAllClientContactPanel(String parentId) {
         instance = this;
         this.parentId = parentId;
         initTable("ClientContact", OfficeWelcome.constants);
     }
-    
+
     private ReadAllClientContactPanel() {
         instance = this;
         initTable("Clients", OfficeWelcome.constants);
     }
-    
+
     @Override
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getClientContactURL(start, OfficeWelcome.constants.tableSize()),
@@ -53,7 +54,7 @@ public class ReadAllClientContactPanel extends CRUDReadAllComposite {
                     }
                 });
     }
-    
+
     public String getClientContactURL(Integer start, String limit) {
         if (parentId != null) {
             return OfficeWelcome.constants.root_url() + "client/clientcontact/" + parentId + "/" + start.toString() + "/" + limit.toString();
@@ -61,7 +62,7 @@ public class ReadAllClientContactPanel extends CRUDReadAllComposite {
             return OfficeWelcome.constants.root_url() + "clientcontact/" + start.toString() + "/" + limit.toString();
         }
     }
-    
+
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
@@ -70,9 +71,9 @@ public class ReadAllClientContactPanel extends CRUDReadAllComposite {
         table.setText(0, 3, getKeyValue("Last Name"));
         table.setText(0, 4, getKeyValue("Email"));
         table.setText(0, 5, getKeyValue("Sex"));
-        
+
     }
-    
+
     @Override
     public void fillData(JSONArray entities) {
         for (int i = 1; i <= entities.size(); i++) {
@@ -85,7 +86,7 @@ public class ReadAllClientContactPanel extends CRUDReadAllComposite {
             table.setText(i, 5, JSONUtils.toString(entity, "sex"));
         }
     }
-    
+
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_EXPENSE, Auth.ROLE.ROLE_TIME)) {
@@ -94,13 +95,13 @@ public class ReadAllClientContactPanel extends CRUDReadAllComposite {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
         }
     }
-    
+
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadContactPanel(getEntity(entityId)));
     }
-    
+
     @Override
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
@@ -111,22 +112,37 @@ public class ReadAllClientContactPanel extends CRUDReadAllComposite {
                     }
                 });
     }
-    
+
     private String getDeleteURL(String entityId) {
         return OfficeWelcome.constants.root_url() + "client/contact/remove/" + parentId + "/" + entityId;
     }
-    
+
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Client Contact Information");
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientContactPanel(parentId));
-        TabPanel.instance().adminPanel.entityPanel.add(new ClientContactOptionsPanel());
     }
-    
+
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new UpdateClientContactPanel(getEntity(entityId)));
+    }
+
+    @Override
+    protected void configureCreateButton() {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING)) {
+            createButton.setText("Add Client Contact");
+            createButton.setVisible(true);
+        } else {
+            createButton.setVisible(false);
+        }
+    }
+
+    @Override
+    protected void createButtonClicked() {
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new CreateClientContactPanel(CreateComposite.CreateCompositeType.ADD));
     }
 }

@@ -67,7 +67,6 @@ public class CreateTechnologyGroupPanel extends CreateComposite {
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully created technology group data");
         TabPanel.instance().recruitingPanel.sidePanelTop.clear();
-        TabPanel.instance().recruitingPanel.sidePanelTop.add(new TechnologyGroupSidePanel());
         TabPanel.instance().recruitingPanel.entityPanel.clear();
         TabPanel.instance().recruitingPanel.entityPanel.add(new ReadAllTechnologyGroupPanel());
     }

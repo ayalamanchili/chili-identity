@@ -65,7 +65,6 @@ public class CreateCompanyContactTypePanel extends CreateComposite {
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully created Company Contact Type");
         TabPanel.instance().myOfficePanel.sidePanelTop.clear();
-        TabPanel.instance().myOfficePanel.sidePanelTop.add(new CompanyContactTypeSidePanel());
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllCompanyContactTypePanel());
     }

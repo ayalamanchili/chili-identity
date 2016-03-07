@@ -11,10 +11,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.composite.ALComposite;
-import info.chili.gwt.widgets.ClickableLink;
-import info.yalamanchili.office.client.Auth;
-import info.yalamanchili.office.client.TabPanel;
-import info.chili.gwt.crud.CreateComposite;
 import java.util.logging.Logger;
 
 /**
@@ -25,7 +21,6 @@ public class CertificationSidePanel extends ALComposite implements ClickHandler 
 
     private static Logger logger = Logger.getLogger(CertificationSidePanel.class.getName());
     public FlowPanel certificationSidePanel = new FlowPanel();
-    ClickableLink createCertificationLink = new ClickableLink("Create Certification");
 
     public CertificationSidePanel() {
         init(certificationSidePanel);
@@ -33,7 +28,7 @@ public class CertificationSidePanel extends ALComposite implements ClickHandler 
 
     @Override
     protected void addListeners() {
-        createCertificationLink.addClickHandler(this);
+       
     }
 
     @Override
@@ -43,17 +38,11 @@ public class CertificationSidePanel extends ALComposite implements ClickHandler 
 
     @Override
     protected void addWidgets() {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
-            certificationSidePanel.add(createCertificationLink);
-        }
         certificationSidePanel.add(new SearchCertificationspanel());
     }
 
     @Override
     public void onClick(ClickEvent clickEvent) {
-        if (clickEvent.getSource().equals(createCertificationLink)) {
-            TabPanel.instance().recruitingPanel.entityPanel.clear();
-            TabPanel.instance().recruitingPanel.entityPanel.add(new CreateCertificationPanel(CreateComposite.CreateCompositeType.CREATE));
-        }
+        
     }
 }

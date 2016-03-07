@@ -12,6 +12,7 @@ import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.SkillDao;
 import info.yalamanchili.office.dao.profile.SkillSetDao;
 import info.yalamanchili.office.dao.profile.SkillSetFileDao;
+import info.yalamanchili.office.dto.profile.SkillSetSaveDto;
 import info.yalamanchili.office.entity.profile.SkillSet;
 import info.yalamanchili.office.entity.profile.SkillSetFile;
 import info.yalamanchili.office.jrs.CRUDResource;
@@ -132,12 +133,12 @@ public class SkillSetResource extends CRUDResource<SkillSet> {
     @GET
     @Path("/search-resumes/{start}/{limit}")
     @Transactional(readOnly = true)
-    public List<SkillSetDto> searchResumes(@QueryParam("searchText") String searchText, @PathParam("start") Integer start, @PathParam("limit") Integer limit) {
-        List<SkillSetDto> res = new ArrayList<>();
+    public List<SkillSetSaveDto> searchResumes(@QueryParam("searchText") String searchText, @PathParam("start") Integer start, @PathParam("limit") Integer limit) {
+        List<SkillSetSaveDto> res = new ArrayList<>();
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         for (SkillSet entity : skillSetDao.hibernateSearch(searchText, start, limit, "resumeContent")) {
-            SkillSetDto dto = mapper.map(entity, SkillSetDto.class);
-            dto.setEmployeeName(entity.getEmployee().getFirstName() + " " + entity.getEmployee().getLastName());
+            SkillSetSaveDto dto = mapper.map(entity, SkillSetSaveDto.class);
+            dto.setEmployee(entity.getEmployee());
             res.add(dto);
         }
         return res;

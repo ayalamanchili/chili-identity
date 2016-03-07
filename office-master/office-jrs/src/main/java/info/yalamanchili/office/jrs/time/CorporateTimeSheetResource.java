@@ -71,7 +71,7 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
 
     @GET
     @Path("/summary/{empId}")
-    @AccessCheck(companyContacts = {"Reports_To"}, roles = {"ROLE_CORPORATE_TIME__ADMIN", "ROLE_CORPORATE_TIME_REPORTS"})
+    @AccessCheck(companyContacts = {"Reports_To"}, roles = {"ROLE_CORPORATE_TIME_ADMIN", "ROLE_CORPORATE_TIME_REPORTS"})
     public CorporateTimeSummary getCorporateTimeSummary(@PathParam("empId") Long empId) {
         Employee emp = EmployeeDao.instance().findById(empId);
         return CorporateTimeService.instance().getYearlySummary(emp);
@@ -99,7 +99,7 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
 
     @Override
     @Validate
-    @PreAuthorize("hasAnyRole('ROLE_CORPORATE_TIME__ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_CORPORATE_TIME_ADMIN')")
     public CorporateTimeSheet save(CorporateTimeSheet entity) {
         if (entity.getId() == null) {
             Employee emp = EmployeeDao.instance().findById(entity.getEmployee().getId());
@@ -110,7 +110,7 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
 
     @Validate
     @Path("/adjust-hours")
-    @PreAuthorize("hasAnyRole('ROLE_CORPORATE_TIME__ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_CORPORATE_TIME_ADMIN')")
     @PUT
     public void adjustPTOAccruedHours(CorporateTimeSheet entity, @QueryParam("adjustmentHours") BigDecimal adjustmentHours, @QueryParam("adjustmentReason") String adjustmentReason) {
         entity = corporateTimeSheetDao.findById(entity.getId());
@@ -120,7 +120,7 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
     @Override
     @PUT
     @Path("/delete/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_CORPORATE_TIME__ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_CORPORATE_TIME_ADMIN')")
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
     }
@@ -134,7 +134,7 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
 
     @GET
     @Path("/employee/{empId}/{start}/{limit}")
-    @AccessCheck(companyContacts = {"Reports_To"}, roles = {"ROLE_CORPORATE_TIME__ADMIN", "ROLE_CORPORATE_TIME_REPORTS"})
+    @AccessCheck(companyContacts = {"Reports_To"}, roles = {"ROLE_CORPORATE_TIME_ADMIN", "ROLE_CORPORATE_TIME_REPORTS"})
     public CorporateTimeSheetTable getCorporateTimeSheet(@PathParam("empId") Long empId, @QueryParam("status") TimeSheetStatus status, @QueryParam("category") TimeSheetCategory category, @PathParam("start") int start, @PathParam("limit") int limit) {
         Employee emp = EmployeeDao.instance().findById(empId);
         if (category != null && TimeSheetCategory.Regular.equals(category)) {
@@ -153,7 +153,7 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
 
     @PUT
     @Path("/report/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_CORPORATE_TIME__ADMIN','ROLE_CORPORATE_TIME_REPORTS')")
+    @PreAuthorize("hasAnyRole('ROLE_CORPORATE_TIME_ADMIN','ROLE_CORPORATE_TIME_REPORTS')")
     @Validate
     public List<CorporateTimeSheet> getReport(SearchCorporateTimeSheetDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {
         return corporateTimeSheetDao.getReport(dto, start, limit);
@@ -176,7 +176,7 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
 
     @GET
     @Path("/all-emp-summary-report")
-    @PreAuthorize("hasAnyRole('ROLE_CORPORATE_TIME__ADMIN','ROLE_CORPORATE_TIME_REPORTS')")
+    @PreAuthorize("hasAnyRole('ROLE_CORPORATE_TIME_ADMIN','ROLE_CORPORATE_TIME_REPORTS')")
     public void getAllEmployeesSummaryReport() {
         CorporateTimeService.instance().getAllEmployeesSummaryReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }

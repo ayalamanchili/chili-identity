@@ -95,7 +95,6 @@ public class CreateEmpDocPanel extends CreateComposite {
         new ResponseStatusWidget().show("Successfully saved document");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmpDocsPanel(employeeId));
-        TabPanel.instance().myOfficePanel.entityPanel.add(new EmpDocOptionsPanel());
     }
 
     @Override

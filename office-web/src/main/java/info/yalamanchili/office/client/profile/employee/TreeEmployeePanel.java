@@ -8,9 +8,7 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.TreePanelComposite;
 import info.yalamanchili.office.client.profile.address.AddressOptionsPanel;
 import info.yalamanchili.office.client.profile.address.ReadAllAddressesPanel;
-import info.yalamanchili.office.client.profile.email.EmailOptionsPanel;
 import info.yalamanchili.office.client.profile.email.ReadAllEmailsPanel;
-import info.yalamanchili.office.client.profile.phone.PhoneOptionsPanel;
 import info.yalamanchili.office.client.profile.phone.ReadAllPhonesPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.ReadAllClientInfoPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.ClientInfoOptionsPanel;
@@ -28,7 +26,6 @@ import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.profile.password.DeactivatationPanel;
 import info.yalamanchili.office.client.profile.preferences.PreferencesPanel;
-import info.yalamanchili.office.client.profile.privacy.PrivacyOptionsPanel;
 import info.yalamanchili.office.client.profile.privacy.ReadAllPrivacySettngsPanel;
 import info.yalamanchili.office.client.profile.selfservice.ReadAllServiceTicketsPanel;
 import java.util.logging.Logger;
@@ -137,12 +134,10 @@ public class TreeEmployeePanel extends TreePanelComposite {
         if (EMAIL_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmailsPanel(getEntityId()));
-            TabPanel.instance().myOfficePanel.entityPanel.add(new EmailOptionsPanel());
         }
         if (PHONE_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPhonesPanel(getEntityId()));
-            TabPanel.instance().myOfficePanel.entityPanel.add(new PhoneOptionsPanel());
         }
         if (CLIENT_INFO_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
@@ -152,7 +147,6 @@ public class TreeEmployeePanel extends TreePanelComposite {
         if (PRIVACY_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPrivacySettngsPanel(getEntityId()));
-            TabPanel.instance().myOfficePanel.entityPanel.add(new PrivacyOptionsPanel());
         }
         if (SKILL_SET_NODE.equals(entityNodeKey)) {
             //TODO mode this to comp

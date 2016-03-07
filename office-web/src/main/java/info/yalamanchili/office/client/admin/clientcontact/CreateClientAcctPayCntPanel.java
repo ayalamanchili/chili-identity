@@ -30,7 +30,6 @@ public class CreateClientAcctPayCntPanel extends CreateContactPanel {
         new ResponseStatusWidget().show("Successfully Added Client Account Payable Contact");
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientAcctPayContacts(TreeClientPanel.instance().getEntityId()));
-        TabPanel.instance().adminPanel.entityPanel.add(new ClientAcctPayCntOptionsPanel());
     }
 
     @Override
@@ -38,4 +37,3 @@ public class CreateClientAcctPayCntPanel extends CreateContactPanel {
         return OfficeWelcome.constants.root_url() + "client/acct-pay-contact/" + TreeClientPanel.instance().getEntityId();
     }
 }
-

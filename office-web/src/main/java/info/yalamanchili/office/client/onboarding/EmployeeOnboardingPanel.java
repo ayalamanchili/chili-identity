@@ -65,7 +65,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
     protected List<CreateDependentsPanel> dependentsPanels = new ArrayList<>();
     protected List<CreateEmergencyContactWidget> emergencyContactsPanels = new ArrayList<>();
     HTML emptyLine = new HTML("<br/>");
-    protected CheckBox noDependentsCB = new CheckBox("No Dependents", false);
+    protected CheckBox noDependentsCB = new CheckBox("I have No Dependents", false);
 
     protected static HTML formsInfo = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"

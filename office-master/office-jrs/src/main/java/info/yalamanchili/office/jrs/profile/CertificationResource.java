@@ -64,7 +64,6 @@ public class CertificationResource extends CRUDResource<Certification> {
     @PUT
     @Validate
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RECRUITER','ROLE_RELATIONSHIP')")
-    @CacheEvict(value = OfficeCacheKeys.CERTIFICATION, allEntries = true)
     @Override
     public Certification save(Certification entity) {
         return super.save(entity);
@@ -91,7 +90,7 @@ public class CertificationResource extends CRUDResource<Certification> {
 
     @XmlRootElement
     @XmlType
-    public static class CertificationTable implements java.io.Serializable{
+    public static class CertificationTable implements java.io.Serializable {
 
         protected Long size;
         protected List<Certification> entities;

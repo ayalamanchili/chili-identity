@@ -9,6 +9,7 @@
 package info.yalamanchili.office.client.admin.clientcontact;
 
 import com.google.gwt.json.client.JSONObject;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -34,7 +35,7 @@ public class ReadAllClientAcctPayContacts extends ReadAllContactsPanel {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_EXPENSE, Auth.ROLE.ROLE_TIME)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_EXPENSE, Auth.ROLE.ROLE_TIME, Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
         } else {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
@@ -59,4 +60,19 @@ public class ReadAllClientAcctPayContacts extends ReadAllContactsPanel {
         TabPanel.instance().adminPanel.entityPanel.add(new UpdateClientAcctPayCntPanel(getEntity(entityId)));
     }
 
+    @Override
+    protected void configureCreateButton() {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING)) {
+            createButton.setText("Add Client Accounts Payable Contact");
+            createButton.setVisible(true);
+        } else {
+            createButton.setVisible(false);
+        }
+    }
+
+    @Override
+    protected void createButtonClicked() {
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new CreateClientAcctPayCntPanel(CreateComposite.CreateCompositeType.ADD));
+    }
 }

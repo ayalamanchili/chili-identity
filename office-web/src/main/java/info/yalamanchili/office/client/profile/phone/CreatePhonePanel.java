@@ -65,8 +65,6 @@ public class CreatePhonePanel extends CreateComposite {
         new ResponseStatusWidget().show("Successfully Added Employee Phone");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPhonesPanel(TreeEmployeePanel.instance().getEntityId()));
-        TabPanel.instance().myOfficePanel.entityPanel.add(new PhoneOptionsPanel());
-
     }
 
     @Override

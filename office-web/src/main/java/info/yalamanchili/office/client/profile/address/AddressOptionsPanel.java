@@ -25,7 +25,7 @@ public class AddressOptionsPanel extends ALComposite implements ClickHandler {
     private static Logger logger = Logger.getLogger(AddressOptionsPanel.class.getName());
 
     protected HorizontalPanel panel = new HorizontalPanel();
-    protected ClickableLink addAddressLink = new ClickableLink("Add Address");
+    //protected ClickableLink addAddressLink = new ClickableLink("Add Address");
     protected ClickableLink manageHomeAddressL = new ClickableLink("");
     protected static HTML addressUpdateInstructions = new HTML("<ul>\n"
             + "<li><span style=\"font-size:14px;\">Please make sure your current Home/Primary Mailing Address is reflected in Portal<b>&nbsp;</b>as this will be used by all departments and systems.</span></li>\n"
@@ -45,7 +45,7 @@ public class AddressOptionsPanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addListeners() {
-        addAddressLink.addClickHandler(this);
+        //addAddressLink.addClickHandler(this);
         manageHomeAddressL.addClickHandler(this);
     }
 
@@ -87,25 +87,25 @@ public class AddressOptionsPanel extends ALComposite implements ClickHandler {
         if (TabPanel.instance().myOfficePanel.isVisible()) {
             if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR)) {
                 panel.add(manageHomeAddressL);
-                panel.add(addAddressLink);
+                //panel.add(addAddressLink);
             }
         } else if (TabPanel.instance().profilePanel.isVisible()) {
             panel.add(manageHomeAddressL);
-            panel.add(addAddressLink);
+            //panel.add(addAddressLink);
         }
         panel.add(addressUpdateInstructions);
     }
 
     @Override
     public void onClick(ClickEvent arg0) {
-        if (arg0.getSource().equals(addAddressLink)) {
+        /*if (arg0.getSource().equals(addAddressLink)) {
             if (TabPanel.instance().myOfficePanel.isVisible()) {
                 TabPanel.instance().myOfficePanel.entityPanel.clear();
                 TabPanel.instance().myOfficePanel.entityPanel.add(new CreateAddressPanel(CreateAddressPanelType.ALL));
             } else if (TabPanel.instance().profilePanel.isVisible()) {
                 new GenericPopup(new CreateAddressPanel(CreateAddressPanelType.ALL)).show();
             }
-        }
+        }*/
         if (arg0.getSource().equals(manageHomeAddressL)) {
             if (TabPanel.instance().myOfficePanel.isVisible()) {
                 TabPanel.instance().myOfficePanel.entityPanel.clear();

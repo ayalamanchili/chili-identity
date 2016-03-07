@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 
@@ -55,8 +56,6 @@ public class ReadAllEmergencyContactsPanel extends CRUDReadAllComposite {
         table.setText(0, 4, getKeyValue("Relation"));
         table.setText(0, 5, getKeyValue("Email"));
         table.setText(0, 6, getKeyValue("Phone Number"));
-//        table.setText(0, 7, getKeyValue("Country Code"));
-//        table.setText(0, 8, getKeyValue("Extension"));
     }
 
     @Override
@@ -70,8 +69,6 @@ public class ReadAllEmergencyContactsPanel extends CRUDReadAllComposite {
             table.setText(i, 4, JSONUtils.toString(entity, "relation"));
             table.setText(i, 5, JSONUtils.toString(entity, "email"));
             table.setText(i, 6, JSONUtils.toString(entity, "phoneNumber"));
-//            table.setText(i, 7, JSONUtils.toString(entity, "countryCode"));
-//            table.setText(i, 8, JSONUtils.toString(entity, "extension"));
         }
     }
 
@@ -113,7 +110,6 @@ public class ReadAllEmergencyContactsPanel extends CRUDReadAllComposite {
         new ResponseStatusWidget().show("Successfully Deleted Emergency Contact Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmergencyContactsPanel(TreeEmployeePanel.instance().getEntityId()));
-        TabPanel.instance().myOfficePanel.entityPanel.add(new EmergencyContactOptionsPanel());
     }
 
     @Override
@@ -125,5 +121,21 @@ public class ReadAllEmergencyContactsPanel extends CRUDReadAllComposite {
 
     protected String getDeleteURL(String entityId) {
         return OfficeWelcome.instance().constants.root_url() + "emergencycontact/delete/" + entityId;
+    }
+
+    @Override
+    protected void configureCreateButton() {
+        if (Auth.isAdmin() || Auth.isHR()) {
+            createButton.setText("Add Emergency Contact");
+            createButton.setVisible(true);
+        } else {
+            createButton.setVisible(false);
+        }
+    }
+
+    @Override
+    protected void createButtonClicked() {
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new CreateEmergencyContactPanel(CreateComposite.CreateCompositeType.ADD));
     }
 }

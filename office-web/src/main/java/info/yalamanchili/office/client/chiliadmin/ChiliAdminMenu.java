@@ -41,29 +41,29 @@ public class ChiliAdminMenu extends Composite {
     Command chiliAdminMenuResourceBundles = new Command() {
         public void execute() {
             TabPanel.instance().getChiliAdminPanel().entityPanel.clear();
-            TabPanel.instance().getChiliAdminPanel().sidePanelTop.clear();
+            TabPanel.instance().getChiliAdminPanel().sidePanel.clear();
             TabPanel.instance().getChiliAdminPanel().entityPanel.add(new ReadAllci18nResourceBundlesPanel());
         }
     };
     Command chiliAdminMenubpmTaskDelegate = new Command() {
         public void execute() {
             TabPanel.instance().getChiliAdminPanel().entityPanel.clear();
-            TabPanel.instance().getChiliAdminPanel().sidePanelTop.clear();
+            TabPanel.instance().getChiliAdminPanel().sidePanel.clear();
             TabPanel.instance().getChiliAdminPanel().entityPanel.add(new ReadAllBPMTaskDelegateRulePanel());
         }
     };
     Command chiliAdminMenuEmailPreferenceRule = new Command() {
         public void execute() {
             TabPanel.instance().getChiliAdminPanel().entityPanel.clear();
-            TabPanel.instance().getChiliAdminPanel().sidePanelTop.clear();
+            TabPanel.instance().getChiliAdminPanel().sidePanel.clear();
             TabPanel.instance().getChiliAdminPanel().entityPanel.add(new ReadAllEmailPreferenceRulePanel());
         }
     };
     Command chiliAdminMenuEvent = new Command() {
         public void execute() {
             TabPanel.instance().getChiliAdminPanel().entityPanel.clear();
-            TabPanel.instance().getChiliAdminPanel().sidePanelTop.clear();
-            TabPanel.instance().getChiliAdminPanel().sidePanelTop.add(new EmailEventSidePanel());
+            TabPanel.instance().getChiliAdminPanel().sidePanel.clear();
+            TabPanel.instance().getChiliAdminPanel().sidePanel.add(new EmailEventSidePanel());
             TabPanel.instance().getChiliAdminPanel().entityPanel.add(new ReadAllEmailEventsPanel());
         }
     };

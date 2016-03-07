@@ -11,6 +11,7 @@ import info.chili.commons.EntityQueryUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.Certification;
 import info.yalamanchili.office.entity.profile.Skill;
@@ -19,6 +20,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Scope;
 
 import org.springframework.stereotype.Repository;
@@ -37,6 +39,12 @@ public class SkillDao extends CRUDDao<Skill> {
 
     @PersistenceContext
     protected EntityManager em;
+
+    @CacheEvict(value = OfficeCacheKeys.SKILL, allEntries = true)
+    @Override
+    public Skill save(Skill entity) {
+        return super.save(entity);
+    }
 
     public void addSkill(SkillSet skillSet, String name) {
         if (skillSet == null) {

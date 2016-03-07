@@ -86,6 +86,7 @@ public class Certification extends AbstractEntity {
     @Override
     public int hashCode() {
         int hash = 5;
+        hash = 31 * hash + Objects.hashCode(this.name);
         return hash;
     }
 
@@ -101,7 +102,7 @@ public class Certification extends AbstractEntity {
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
-        return Objects.equals(this.name, other.name);
+        return true;
     }
 
     @Override

@@ -18,7 +18,6 @@ import info.yalamanchili.office.client.contacttype.SelectCompanyContactTypeWidge
 import info.chili.gwt.crud.UpdateComposite;
 import info.yalamanchili.office.client.profile.employee.SelectCorpEmployeeWidget;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
-import info.yalamanchili.office.client.profile.phone.PhoneOptionsPanel;
 import info.yalamanchili.office.client.profile.phone.UpdatePhonePanel;
 import java.util.logging.Logger;
 
@@ -69,7 +68,6 @@ public class UpdateCompanyContactPanel extends UpdateComposite {
         new ResponseStatusWidget().show("Successfully Updated Company Contact Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllCompanyContactPanel(TreeEmployeePanel.instance().getEntityId()));
-        TabPanel.instance().myOfficePanel.entityPanel.add(new PhoneOptionsPanel());
     }
 
     @Override

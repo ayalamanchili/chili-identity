@@ -73,9 +73,6 @@ public class SubcontractorSidePanel extends ALComposite implements ClickHandler 
 
     @Override
     protected void addWidgets() {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS)) {
-            subcontractorSidePanel.add(SubcontractorSummaryReportL);
-        }
         subcontractorSidePanel.add(new SearchSubcontractorPanel());
         reportsPanel.add(startDateF);
         reportsPanel.add(endDateF);
@@ -83,6 +80,9 @@ public class SubcontractorSidePanel extends ALComposite implements ClickHandler 
         reportsPanel.add(reportsB);
         reportsCaptionPanel.setContentWidget(reportsPanel);
         subcontractorSidePanel.add(reportsCaptionPanel);
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS)) {
+            subcontractorSidePanel.add(SubcontractorSummaryReportL);
+        }
     }
 
     @Override
@@ -175,6 +175,6 @@ public class SubcontractorSidePanel extends ALComposite implements ClickHandler 
     }
 
     protected String getSubcontractorInfoReportUrl() {
-        return OfficeWelcome.constants.root_url() + "contract/subcontractors-report";
+        return OfficeWelcome.constants.root_url() + "contract-report/subcontractors-summary-report";
     }
 }

@@ -15,11 +15,9 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.admin.hr.ProspectsSidePanel;
 import info.yalamanchili.office.client.admin.hr.ReadAllProspectsPanel;
-import info.yalamanchili.office.client.contacttype.CompanyContactTypeSidePanel;
 import info.yalamanchili.office.client.contacttype.ReadAllCompanyContactTypePanel;
 import info.yalamanchili.office.client.onboarding.ReadAllEmployeeOnBoardingPanel;
 import info.yalamanchili.office.client.profile.addresstype.ReadAllAddressTypePanel;
-import info.yalamanchili.office.client.profile.emailtype.EmailTypeSidePanel;
 import info.yalamanchili.office.client.profile.emailtype.ReadAllEmailTypePanel;
 import info.yalamanchili.office.client.profile.employeetype.ReadAllEmployeeTypesPanel;
 import info.yalamanchili.office.client.profile.employeetype.EmployeeTypeSidePanel;
@@ -58,23 +56,24 @@ public class MyOfficeMenu extends CMenuBar {
     };
     static Command phoneTypesMaintainenceCmd = () -> {
         TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+        TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
         TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllPhoneTypePanel());
+        
     };
     static Command addressTypesMaintainenceCmd = () -> {
         TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+        TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
         TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllAddressTypePanel());
     };
     static Command emailTypesMaintainenceCmd = () -> {
         TabPanel.instance().getMyOfficePanel().entityPanel.clear();
         TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
         TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmailTypePanel());
-        TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new EmailTypeSidePanel());
     };
     static Command companyContactTypeMaintainenceCmd = () -> {
         TabPanel.instance().getMyOfficePanel().entityPanel.clear();
         TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
         TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllCompanyContactTypePanel());
-        TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new CompanyContactTypeSidePanel());
     };
     static Command corpEmpInfo = () -> {
         TabPanel.instance().getMyOfficePanel().entityPanel.clear();
