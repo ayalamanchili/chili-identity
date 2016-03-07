@@ -464,7 +464,7 @@ public class ClientResource extends CRUDResource<Client> {
         return dtos;
     }
 
-    @GET
+    @PUT
     @Path("/report")
     public void report(ClientSearchDto dto) {
         ClientDtoTable table = new ClientDtoTable();
