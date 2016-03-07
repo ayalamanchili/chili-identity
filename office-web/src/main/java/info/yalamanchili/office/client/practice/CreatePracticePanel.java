@@ -66,8 +66,6 @@ public class CreatePracticePanel extends CreateComposite {
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully created practice data");
-        //TabPanel.instance().recruitingPanel.sidePanelTop.clear();
-        //TabPanel.instance().recruitingPanel.sidePanelTop.add(new PracticeSidePanel());
         TabPanel.instance().recruitingPanel.entityPanel.clear();
         TabPanel.instance().recruitingPanel.entityPanel.add(new ReadAllPracticePanel());
     }
