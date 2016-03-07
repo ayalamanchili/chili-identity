@@ -117,13 +117,13 @@ public class CorporateTimeService {
     public CorporateTimeSummary getYearlySummary(Employee employee) {
         CorporateTimeSummary summary = new CorporateTimeSummary();
         //PTO
-        summary.setUsedPTOHours(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.PTO_USED, TimeSheetStatus.Approved, new Date()));
-        summary.setAvailablePTOHours(corporateTimeSheetDao.getPTOAccruedTimeSheet(employee).getHours());
-        summary.setTotalAccumulatedPTOHours(corporateTimeSheetDao.getPTOAccruedInYear(employee));
+        summary.setUsedPTOHours(String.valueOf(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.PTO_USED, TimeSheetStatus.Approved, new Date())));
+        summary.setAvailablePTOHours(String.valueOf(corporateTimeSheetDao.getPTOAccruedTimeSheet(employee).getHours()));
+        summary.setTotalAccumulatedPTOHours(String.valueOf(corporateTimeSheetDao.getPTOAccruedInYear(employee)));
 
-        summary.setUsedUnpaidHours(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Unpaid, TimeSheetStatus.Approved, new Date()));
+        summary.setUsedUnpaidHours(String.valueOf(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Unpaid, TimeSheetStatus.Approved, new Date())));
         summary.setEmployee(employee.getFirstName() + " " + employee.getLastName());
-        summary.setStartDate(employee.getStartDate());
+        summary.setStartDate(new SimpleDateFormat("MM/dd/yyyy").format(employee.getStartDate()));
         return summary;
     }
 

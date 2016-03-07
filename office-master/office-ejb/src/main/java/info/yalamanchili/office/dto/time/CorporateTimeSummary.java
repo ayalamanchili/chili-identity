@@ -9,8 +9,6 @@
 package info.yalamanchili.office.dto.time;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -25,36 +23,36 @@ public class CorporateTimeSummary implements Serializable {
     /**
      * PTO
      */
-    protected BigDecimal totalAccumulatedPTOHours;
-    protected BigDecimal usedPTOHours;
-    protected BigDecimal availablePTOHours;
-   /**
-    * unpaid
-    */
-    protected BigDecimal usedUnpaidHours;
+    protected String totalAccumulatedPTOHours;
+    protected String usedPTOHours;
+    protected String availablePTOHours;
+    /**
+     * unpaid
+     */
+    protected String usedUnpaidHours;
     protected String employee;
-    protected Date startDate;
+    protected String startDate;
 
     public CorporateTimeSummary() {
     }
 
-    public CorporateTimeSummary(BigDecimal availablePTOHours, BigDecimal availableVacationHours) {
+    public CorporateTimeSummary(String availablePTOHours, String availableVacationHours) {
         this.availablePTOHours = availablePTOHours;
     }
 
-    public BigDecimal getAvailablePTOHours() {
+    public String getAvailablePTOHours() {
         return availablePTOHours;
     }
 
-    public void setAvailablePTOHours(BigDecimal availablePTOHours) {
+    public void setAvailablePTOHours(String availablePTOHours) {
         this.availablePTOHours = availablePTOHours;
     }
 
-    public BigDecimal getUsedUnpaidHours() {
+    public String getUsedUnpaidHours() {
         return usedUnpaidHours;
     }
 
-    public void setUsedUnpaidHours(BigDecimal usedUnpaidHours) {
+    public void setUsedUnpaidHours(String usedUnpaidHours) {
         this.usedUnpaidHours = usedUnpaidHours;
     }
 
@@ -66,39 +64,39 @@ public class CorporateTimeSummary implements Serializable {
         this.employee = employee;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
     /**
      * @return the totalPTOHours
      */
-    public BigDecimal getTotalAccumulatedPTOHours() {
+    public String getTotalAccumulatedPTOHours() {
         return totalAccumulatedPTOHours;
     }
 
     /**
      * @param totalAccumulatedPTOHours the totalPTOHours to set
      */
-    public void setTotalAccumulatedPTOHours(BigDecimal totalAccumulatedPTOHours) {
+    public void setTotalAccumulatedPTOHours(String totalAccumulatedPTOHours) {
         this.totalAccumulatedPTOHours = totalAccumulatedPTOHours;
     }
 
     /**
      * @return the usedPTOHours
      */
-    public BigDecimal getUsedPTOHours() {
+    public String getUsedPTOHours() {
         return usedPTOHours;
     }
 
     /**
      * @param usedPTOHours the usedPTOHours to set
      */
-    public void setUsedPTOHours(BigDecimal usedPTOHours) {
+    public void setUsedPTOHours(String usedPTOHours) {
         this.usedPTOHours = usedPTOHours;
     }
 }
