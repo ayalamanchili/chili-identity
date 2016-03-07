@@ -30,7 +30,6 @@ public class CreateVendorAcctPayCntPanel extends CreateContactPanel {
         new ResponseStatusWidget().show("Successfully Added Vendor Account Payable Contact");
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorAcctPayContacts(TreeVendorsPanel.instance().getEntityId()));
-        TabPanel.instance().adminPanel.entityPanel.add(new VendorAcctPayCntOptionsPanel());
     }
 
     @Override

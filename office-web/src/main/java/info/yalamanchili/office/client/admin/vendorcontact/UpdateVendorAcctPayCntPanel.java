@@ -29,6 +29,5 @@ public class UpdateVendorAcctPayCntPanel extends UpdateContactPanel {
         new ResponseStatusWidget().show("Successfully Updated Vendor Accounts Payable contact");
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorAcctPayContacts(TreeVendorsPanel.instance().getEntityId()));
-        TabPanel.instance().adminPanel.entityPanel.add(new VendorAcctPayCntOptionsPanel());
     }
 }
