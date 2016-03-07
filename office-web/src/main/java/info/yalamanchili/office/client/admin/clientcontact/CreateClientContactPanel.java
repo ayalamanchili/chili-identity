@@ -28,7 +28,6 @@ public class CreateClientContactPanel extends CreateContactPanel {
         new ResponseStatusWidget().show("Successfully Added Client Contact");
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientContactPanel(TreeClientPanel.instance().getEntityId()));
-        TabPanel.instance().adminPanel.entityPanel.add(new ClientContactOptionsPanel());
     }
 
     @Override
