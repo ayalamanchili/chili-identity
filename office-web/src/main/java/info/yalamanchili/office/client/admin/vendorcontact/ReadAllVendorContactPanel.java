@@ -8,6 +8,7 @@
 package info.yalamanchili.office.client.admin.vendorcontact;
 
 import com.google.gwt.json.client.JSONObject;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -58,13 +59,28 @@ public class ReadAllVendorContactPanel extends ReadAllContactsPanel {
         new ResponseStatusWidget().show("Successfully Deleted Vendor Contact Information");
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorContactPanel(parentId));
-                TabPanel.instance().adminPanel.entityPanel.add(new VendorContactOptionsPanel());
     }
 
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new UpdateVendorContactPanel(getEntity(entityId)));
+    }
+
+    @Override
+    protected void configureCreateButton() {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING)) {
+            createButton.setText("Add Vendor Contact");
+            createButton.setVisible(true);
+        } else {
+            createButton.setVisible(false);
+        }
+    }
+
+    @Override
+    protected void createButtonClicked() {
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new CreateVendorContactPanel(CreateComposite.CreateCompositeType.ADD));
     }
 
 }

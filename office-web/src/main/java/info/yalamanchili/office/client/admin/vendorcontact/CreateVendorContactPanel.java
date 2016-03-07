@@ -28,7 +28,6 @@ public class CreateVendorContactPanel extends CreateContactPanel {
         new ResponseStatusWidget().show("Successfully Added Vendor Contact");
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorContactPanel(TreeVendorsPanel.instance().getEntityId()));
-        TabPanel.instance().adminPanel.entityPanel.add(new VendorContactOptionsPanel());
     }
 
     @Override
