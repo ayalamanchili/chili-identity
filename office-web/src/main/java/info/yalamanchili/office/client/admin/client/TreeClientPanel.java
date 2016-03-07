@@ -16,7 +16,6 @@ import info.yalamanchili.office.client.gwt.TreePanelComposite;
 import info.yalamanchili.office.client.admin.clientcontact.ClientContactOptionsPanel;
 import info.yalamanchili.office.client.admin.clientcontact.ReadAllClientAcctPayContacts;
 import info.yalamanchili.office.client.admin.clientcontact.ReadAllClientContactPanel;
-import info.yalamanchili.office.client.admin.clientlocation.ClientLocationOptionsPanel;
 import info.yalamanchili.office.client.admin.clientlocation.ReadAllClientLocationsPanel;
 import java.util.logging.Logger;
 
@@ -75,14 +74,13 @@ public class TreeClientPanel extends TreePanelComposite {
         if (CLIENTLOCATION_NODE.equals(entityNodeKey)) {
             TabPanel.instance().adminPanel.entityPanel.clear();
             TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientLocationsPanel(entityId));
-            TabPanel.instance().adminPanel.entityPanel.add(new ClientLocationOptionsPanel());
         }
         if (CONTACTS_NODE.equals(entityNodeKey)) {
             TabPanel.instance().adminPanel.entityPanel.clear();
             TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientContactPanel(entityId));
             TabPanel.instance().adminPanel.entityPanel.add(new ClientContactOptionsPanel());
         }
-        if (CLIENT_ACCT_PAY_CONTACTS_NODE.equals(entityNodeKey)){
+        if (CLIENT_ACCT_PAY_CONTACTS_NODE.equals(entityNodeKey)) {
             TabPanel.instance().adminPanel.entityPanel.clear();
             TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientAcctPayContacts(entityId));
             TabPanel.instance().adminPanel.entityPanel.add(new ClientAcctPayCntOptionsPanel());
