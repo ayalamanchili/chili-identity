@@ -19,7 +19,6 @@ import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.data.CanadaStatesFactory;
 import info.chili.gwt.data.IndiaStatesFactory;
-import info.chili.gwt.data.JapanStatesFactory;
 import info.chili.gwt.fields.EnumField;
 import info.yalamanchili.office.client.profile.address.CreateAddressPanel;
 import info.yalamanchili.office.client.admin.vendor.TreeVendorsPanel;
@@ -58,8 +57,6 @@ public class CreateVendorLocationsPanel extends CreateAddressPanel implements Ch
         new ResponseStatusWidget().show("Successfully Added Vendor Locatrion");
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorLocationPanel(TreeVendorsPanel.instance().getEntityId()));
-        TabPanel.instance().adminPanel.entityPanel.add(new VendorLocationOptionsPanel());
-
     }
 
     @Override

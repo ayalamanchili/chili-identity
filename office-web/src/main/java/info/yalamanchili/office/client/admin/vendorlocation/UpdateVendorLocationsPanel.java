@@ -21,7 +21,6 @@ import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.data.CanadaStatesFactory;
 import info.chili.gwt.data.IndiaStatesFactory;
-import info.chili.gwt.data.JapanStatesFactory;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.admin.vendor.TreeVendorsPanel;
@@ -81,7 +80,6 @@ public class UpdateVendorLocationsPanel extends UpdateComposite implements Chang
         new ResponseStatusWidget().show("Successfully Updated Vendor location");
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorLocationPanel(TreeVendorsPanel.instance().getEntityId()));
-        TabPanel.instance().adminPanel.entityPanel.add(new VendorLocationOptionsPanel());
     }
 
     @Override
@@ -139,7 +137,7 @@ public class UpdateVendorLocationsPanel extends UpdateComposite implements Chang
                 break;
             case "CANADA":
                 statesF.setValues(CanadaStatesFactory.getStates().toArray(new String[0]));
-                break; 
+                break;
         }
     }
 }
