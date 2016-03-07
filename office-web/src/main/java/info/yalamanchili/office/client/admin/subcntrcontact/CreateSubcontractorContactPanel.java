@@ -29,7 +29,6 @@ public class CreateSubcontractorContactPanel extends CreateContactPanel {
         new ResponseStatusWidget().show("Successfully Added Subcontractor Contact");
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllSubcontractorContactsPanel(TreeSubcontractorPanel.instance().getEntityId()));
-        TabPanel.instance().adminPanel.entityPanel.add(new SubcontractorContactOptionsPanel());
     }
 
     @Override
