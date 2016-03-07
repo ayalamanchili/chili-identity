@@ -37,7 +37,7 @@ public class SocialMenu extends CMenuBar {
         public void execute() {
             IsEmployeeFeedSelected = true;
             TabPanel.instance().getSocialPanel().entityPanel.clear();
-            TabPanel.instance().getSocialPanel().sidePanelTop.clear();
+            TabPanel.instance().getSocialPanel().sidePanel.clear();
             TabPanel.instance().getSocialPanel().entityPanel.add(new EmployeeFeedHome());
         }
     };
@@ -45,7 +45,7 @@ public class SocialMenu extends CMenuBar {
         public void execute() {
             IsEmployeeFeedSelected = false;
             TabPanel.instance().getSocialPanel().entityPanel.clear();
-            TabPanel.instance().getSocialPanel().sidePanelTop.clear();
+            TabPanel.instance().getSocialPanel().sidePanel.clear();
             TabPanel.instance().getSocialPanel().entityPanel.add(new CompanyFeedHome());
         }
     };
