@@ -14,7 +14,6 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CreateComposite;
-import info.yalamanchili.office.client.profile.emailtype.EmailTypeSidePanel;
 import info.chili.gwt.rpc.HttpService;
 import java.util.logging.Logger;
 
@@ -66,8 +65,7 @@ public class CreateEmailTypePanel extends CreateComposite {
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully EmailType Created");
-        TabPanel.instance().myOfficePanel.sidePanelTop.clear();
-        TabPanel.instance().myOfficePanel.sidePanelTop.add(new EmailTypeSidePanel());
+        TabPanel.instance().myOfficePanel.sidePanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmailTypePanel());
     }
