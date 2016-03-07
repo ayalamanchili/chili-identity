@@ -13,7 +13,6 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.clientcontact.ClientAcctPayCntOptionsPanel;
 import info.yalamanchili.office.client.gwt.TreePanelComposite;
-import info.yalamanchili.office.client.admin.clientcontact.ClientContactOptionsPanel;
 import info.yalamanchili.office.client.admin.clientcontact.ReadAllClientAcctPayContacts;
 import info.yalamanchili.office.client.admin.clientcontact.ReadAllClientContactPanel;
 import info.yalamanchili.office.client.admin.clientlocation.ReadAllClientLocationsPanel;
@@ -78,7 +77,6 @@ public class TreeClientPanel extends TreePanelComposite {
         if (CONTACTS_NODE.equals(entityNodeKey)) {
             TabPanel.instance().adminPanel.entityPanel.clear();
             TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientContactPanel(entityId));
-            TabPanel.instance().adminPanel.entityPanel.add(new ClientContactOptionsPanel());
         }
         if (CLIENT_ACCT_PAY_CONTACTS_NODE.equals(entityNodeKey)) {
             TabPanel.instance().adminPanel.entityPanel.clear();
