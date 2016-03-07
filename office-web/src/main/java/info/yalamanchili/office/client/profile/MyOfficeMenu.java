@@ -69,7 +69,6 @@ public class MyOfficeMenu extends CMenuBar {
         TabPanel.instance().getMyOfficePanel().entityPanel.clear();
         TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
         TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmailTypePanel());
-        //TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new EmailTypeSidePanel());
     };
     static Command companyContactTypeMaintainenceCmd = () -> {
         TabPanel.instance().getMyOfficePanel().entityPanel.clear();
