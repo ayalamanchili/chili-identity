@@ -59,8 +59,12 @@ public class SkillSetSearchPanel extends SearchComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         entity = new JSONObject();
-        assignEntityValueFromField("practice", entity);
-        assignEntityValueFromField("technologyGroup", entity);
+        if (practiceWidget.getSelectedObject() != null) {
+            entity.put("practice", practiceWidget.getSelectedObject().get("value"));
+        }
+        if (tgWidget.getSelectedObject() != null) {
+            entity.put("technologyGroup", tgWidget.getSelectedObject().get("value"));
+        }
         assignEntityValueFromField("skills", entity);
         assignEntityValueFromField("certifications", entity);
         assignEntityValueFromField("tags", entity);
