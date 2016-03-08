@@ -16,7 +16,6 @@ import info.yalamanchili.office.entity.profile.SkillSet;
 import info.yalamanchili.office.entity.profile.SkillSetFile;
 import info.yalamanchili.office.entity.profile.TechnologyGroup;
 import info.yalamanchili.office.entity.recruiting.SkillSetTag;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
