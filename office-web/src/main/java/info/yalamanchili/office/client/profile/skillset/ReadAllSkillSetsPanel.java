@@ -52,20 +52,33 @@ public class ReadAllSkillSetsPanel extends CRUDReadAllComposite {
     public void fillData(JSONArray entities) {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
+            JSONObject skillsetFile;
+            JSONArray skillsetFiles;
             addOptionsWidget(i, entity);
             if (entity.containsKey("employee")) {
+                logger.info(" entity contains key employee");
                 JSONObject employee = entity.get("employee").isObject();
                 table.setText(i, 1, JSONUtils.toString(employee, "firstName") + " " + JSONUtils.toString(employee, "lastName"));
             } else {
+                logger.info(" entity contains key employee");
                 table.setText(i, 1, JSONUtils.toString(entity, "employeeName"));
             }
             table.setText(i, 2, JSONUtils.toString(entity.get("practice"), "name"));
             table.setText(i, 3, JSONUtils.toString(entity.get("technologyGroup"), "name"));
             if (entity.containsKey("skillSetFile")) {
-                JSONObject skillsetFile = (JSONObject) entity.get("skillSetFile");
-                String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(skillsetFile, "fileURL") + "&entityId=" + JSONUtils.toString(skillsetFile, "id");
-                FileField fileField = new FileField(fileURL);
-                table.setWidget(i, 4, fileField);
+                if (entity.get("skillSetFile") instanceof JSONObject) {
+                    skillsetFile = (JSONObject) entity.get("skillSetFile").isObject();
+                    String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(skillsetFile, "fileURL") + "&entityId=" + JSONUtils.toString(skillsetFile, "id");
+                    FileField fileField = new FileField(fileURL);
+                    table.setWidget(i, 4, fileField);
+                } else if (entity.get("skillSetFile") instanceof JSONArray) {
+                    skillsetFiles = (JSONArray) entity.get("skillSetFile").isArray();
+                    for (int j = 0; j < skillsetFiles.size(); j++) {
+                        String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(skillsetFiles.get(j), "fileURL") + "&entityId=" + JSONUtils.toString(skillsetFiles.get(j), "id");
+                        FileField fileField = new FileField(fileURL);
+                        table.setWidget(i, 4, fileField);
+                    }
+                }
             }
             table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, "lastUpdated"), DateTimeFormat.PredefinedFormat.DATE_LONG));
         }
