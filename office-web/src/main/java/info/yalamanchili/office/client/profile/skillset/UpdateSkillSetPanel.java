@@ -595,20 +595,4 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
         loadSkillSuggestions();
         loadCertSuggestions();
     }
-
-//    @Override
-//    protected boolean processClientSideValidations(JSONObject entity) {
-//        boolean flag = true;
-//        if (entity.get("skillSetFile") == null) {
-//            resumeUploadPanel.setMessage("Please select a file");
-//            flag = false;
-//        }
-//        EnumField skillSetFileType = (EnumField) fields.get("skillSetFileType");
-//        if (skillSetFileType.getValue() == null) {
-//            skillSetFileType.setMessage("Value is required");
-////            skillSetFileType.listBox.setSelectedIndex(0);
-//            flag = false;
-//        }
-//        return flag;
-//    }
 }
