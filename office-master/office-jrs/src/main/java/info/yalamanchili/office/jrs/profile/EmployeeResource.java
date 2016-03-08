@@ -230,7 +230,6 @@ public class EmployeeResource extends CRUDResource<Employee> {
     /* SkillSet */
     @GET
     @Path("/skillset/{empId}")
-    @Transactional(readOnly = true)
     @Produces(MediaType.APPLICATION_JSON)
     @AccessCheck(roles = {"ROLE_H1B_IMMIGRATION", "ROLE_RECRUITER", "ROLE_HR", "ROLE_ADMIN", "ROLE_SALES_AND_MARKETING"})
     public SkillSetSaveDto getSkillSet(@PathParam("empId") long empId) {
