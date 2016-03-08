@@ -316,7 +316,7 @@ legend {
 
 .treeItemLabel:hover{
 
-       background-color: #FFFFFF;
+    background-color: #f9f9f9;
     color: #ef5322;
     font-weight: 600;
     -webkit-transition-property: background-color;  
@@ -688,7 +688,7 @@ height:5ex;
 }
 
 .gwt-Button {
-    /*   background: #0CA975 !important;*/
+
     background: linear-gradient(to bottom, #0ca975 0%,#0c966c 49%,#0ca975 100%);   
     border: 1px solid #0d9c6e;
     border-radius: 3px;
@@ -696,6 +696,7 @@ height:5ex;
     margin-right:5px !important;
     font-size:14px !important;
     color: #fff;
+    line-height: 21px !important;
     padding:3px 7px !important;
     cursor: pointer;
     margin-bottom: 4px !important;
@@ -941,15 +942,15 @@ height:5ex;
     background-color: grey_light;
     margin:2px;
     /*    padding:10px;*/
-/*    border-style: solid;*/
+    /*    border-style: solid;*/
     border-width: 1px;
     border-color:none !important;
 
 
 }
 .popupContent img{
-border: none !important;
-border-width: 0px !important;
+    border: none !important;
+    border-width: 0px !important;
 }
 .popupContent .gwt-Label {
     border:1px solid #f9f9f9 !important;
@@ -1033,6 +1034,9 @@ fieldset.lineSeperator legend
     text-transform: none;
     width:96%;
     text-align: center !important;
+    margin-top: 4px;
+    margin-bottom: 0px;
+    float: left;
 
 }
 
@@ -1255,7 +1259,7 @@ textarea.gwt-TextArea {
 .printLink {
     width: 13px;
     height: 14px;
-    margin-top: 4px;
+    margin-top:6px !important;
 }
 
 img.cancelLink {
@@ -1293,21 +1297,21 @@ img{
 } 
 
 .GIKSFQCDHJ .gwt-Label.y-gwt-ClickableLink {
-  color: #545454 !important 
-   
+    color: #545454 !important 
+
 }
 
 
 .GIKSFQCDHJ .gwt-Label.y-gwt-ClickableLink:hover {
-  color: #ef5322  !important 
-   
+    color: #ef5322  !important 
+
 }
 .gwt-Label.y-gwt-ClickableLink {
-       color: #ef5322 !important;
+    color: #ef5322 !important;
 }
 
 .gwt-Label.userLink {
-     width: 250px !important;
+    width: 250px !important;
     color: #555;
     font-weight: bold;
     font-size: 15px;
@@ -1326,11 +1330,11 @@ td.y-gwt-AbstractStatusPanel-LoginLink {
     color: #333;
 }
 .GIKSFQCDEJ .y-gwt-ClickableLink:nth-child(2){
-   min-height:0em  !important; 
+    min-height:0em  !important; 
 }
 
 .GIKSFQCDEJ .y-gwt-ClickableLink{
-   padding-left: 22px;
+    padding-left: 22px;
     padding-top: 9px;
     padding-bottom: 3px;
 }
