@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.client.recruiting.reports;
 
+import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -19,7 +20,6 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.SearchComposite;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
-import info.yalamanchili.office.client.profile.employee.ReadAllEmployeesPanel;
 import info.yalamanchili.office.client.profile.skillset.ReadAllSkillSetsPanel;
 import info.yalamanchili.office.client.profile.technologyGroup.SelectTechnologyGroupWidget;
 import java.util.Map;
@@ -69,7 +69,7 @@ public class SkillSetSearchPanel extends SearchComposite {
 
     @Override
     protected void search(String searchText) {
-        HttpService.HttpServiceAsync.instance().doGet(getSearchURI(searchText, 0, 50),
+        HttpService.HttpServiceAsync.instance().doGet(URL.encode(getSearchURI(searchText, 0, 50)),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
