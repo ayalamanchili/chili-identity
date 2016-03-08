@@ -275,12 +275,7 @@ public class ProfileHome extends ALComposite {
                         new ALAsyncCallback<String>() {
                             @Override
                             public void onResponse(String response) {
-                                if (response != null && !response.isEmpty()) {
-                                    skillSetPanel.add(new UpdateSkillSetPopupPanel());
-                                } else {
-                                    TabPanel.instance().myOfficePanel.entityPanel.clear();
-                                    skillSetPanel.add(new CreateSkillSetPanel(OfficeWelcome.instance().employeeId));
-                                }
+                                skillSetPanel.add(new UpdateSkillSetPopupPanel(JSONParser.parseLenient(response).isObject()));
                             }
                         });
             }
