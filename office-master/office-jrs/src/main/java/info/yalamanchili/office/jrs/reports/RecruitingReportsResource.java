@@ -10,7 +10,6 @@ package info.yalamanchili.office.jrs.reports;
 
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.profile.SkillSetDto;
-import info.yalamanchili.office.dto.profile.SkillSetSaveDto;
 import info.yalamanchili.office.reports.recruiting.RecruitingReportsService;
 import info.yalamanchili.office.reports.recruiting.SkillSetSearchDto;
 import java.util.List;
