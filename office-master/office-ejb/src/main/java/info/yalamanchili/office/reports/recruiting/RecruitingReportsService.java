@@ -64,6 +64,7 @@ public class RecruitingReportsService {
             Employee emp = (Employee) empObj;
             SkillSet skillSet = emp.getSkillSet();
                 SkillSetDto dto = mapper.map(skillSet, SkillSetDto.class);
+                dto.setEmployeeName(skillSet.getEmployee().getFirstName()+" "+skillSet.getEmployee().getLastName());
                 dtos.add(dto);
             }
         return dtos;
