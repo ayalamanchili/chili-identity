@@ -8,9 +8,9 @@
  */
 package info.yalamanchili.office.jrs.reports;
 
-import info.yalamanchili.office.dao.profile.EmployeeDto;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.profile.SkillSetDto;
+import info.yalamanchili.office.dto.profile.SkillSetSaveDto;
 import info.yalamanchili.office.reports.recruiting.RecruitingReportsService;
 import info.yalamanchili.office.reports.recruiting.SkillSetSearchDto;
 import java.util.List;
@@ -49,7 +49,7 @@ public class RecruitingReportsResource {
 
     @PUT
     @Path("/search-skillset")
-    public List<EmployeeDto> searchSkillSet(SkillSetSearchDto searchDto) {
+    public List<SkillSetDto> searchSkillSet(SkillSetSearchDto searchDto) {
         return recruitingReportsService.searchSkillSet(searchDto);
     }
 
