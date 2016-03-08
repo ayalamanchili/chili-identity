@@ -42,7 +42,7 @@ public class CorporateTimeSummaryPanel extends ReadComposite {
             + "	<title></title>\n"
             + "</head>\n"
             + "<body>\n"
-            + "	<li><a href=\"\\\\\\https://apps.sstech.us/site/office/timesheets/paid-time-off-leaves.html\\\\\\\">Paid Time Off Leaves(PTO)</a>\n"
+            + "	<li><a href=\"https://apps.sstech.us/site/office/timesheets/paid-time-off-leaves.html\">Paid Time Off Leaves(PTO)</a>\n"
             + "	<hr /></li>\n"
             + "</ul>\n"
             + "</body>\n"
