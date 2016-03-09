@@ -19,6 +19,7 @@ public enum PrivacyData {
     EMERGENCY_CONTACTS,
     SKILL_SET,
     CLIENT_INFORMATION,
+    DEPENDENTS,
     ALL;
 
     public static String[] names() {
