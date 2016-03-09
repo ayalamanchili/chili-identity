@@ -6,7 +6,6 @@
 package info.yalamanchili.office.client.profile.empdoc;
 
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.FileuploadField;
@@ -23,27 +22,28 @@ import java.util.logging.Logger;
  * @author ayalamanchili
  */
 public class UpdateEmpDocPanel extends UpdateComposite {
-    
+
     private static Logger logger = Logger.getLogger(UpdateEmpDocPanel.class.getName());
+    protected String entityId;
     FileuploadField documentUploadPanel = new FileuploadField(OfficeWelcome.constants, "EmployeeDocument", "fileUrl", "EmployeeDocument/fileUrl", true) {
         @Override
         public void onUploadComplete(String res) {
             postUpdateSuccess(null);
         }
     };
-    
+
     public UpdateEmpDocPanel(JSONObject entity) {
         initUpdateComposite(entity, "EmployeeDocument", OfficeWelcome.constants);
     }
-    
+
     @Override
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("name", entity);
         entity.put("fileUrl", documentUploadPanel.getFileName());
-        entity.put("documentType", new JSONString("ON_BOARDING"));
+        assignEntityValueFromField("documentType", entity);
         return entity;
     }
-    
+
     @Override
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
@@ -52,18 +52,18 @@ public class UpdateEmpDocPanel extends UpdateComposite {
                     public void onFailure(Throwable arg0) {
                         handleErrorResponse(arg0);
                     }
-                    
+
                     @Override
                     public void onSuccess(String arg0) {
                         uploadFile(arg0);
                     }
                 });
     }
-    
+
     protected void uploadFile(String entityId) {
         documentUploadPanel.upload(getEntityId());
     }
-    
+
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated File");
@@ -72,35 +72,39 @@ public class UpdateEmpDocPanel extends UpdateComposite {
             ProfileHome.instance().refreshEmpDocs();
         }
     }
-    
+
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
     }
-    
+
     @Override
     protected void addListeners() {
     }
-    
+
     @Override
     protected void configure() {
     }
-    
+
     @Override
     protected void addWidgets() {
-        String[] docTypes = {"I9", "ON_BOARDING"};
+        String[] docTypes = {"I9", "EVERIFICATION"};
         addEnumField("documentType", false, true, docTypes);
         entityFieldsPanel.add(documentUploadPanel);
     }
-    
+
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
-    
+
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "employee-document";
+        return OfficeWelcome.constants.root_url() + "employee-document/update";
     }
-    
+
+    protected String getReadURI() {
+        return OfficeWelcome.constants.root_url() + "employee-document/" + entityId;
+    }
+
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
         if (documentUploadPanel.isEmpty()) {
