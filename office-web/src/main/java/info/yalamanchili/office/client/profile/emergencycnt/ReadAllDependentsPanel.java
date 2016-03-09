@@ -136,8 +136,12 @@ public class ReadAllDependentsPanel extends CRUDReadAllComposite {
 
     @Override
     protected void configureCreateButton() {
-        createButton.setText("Add Dependent");
-        createButton.setVisible(true);
+        if (Auth.isAdmin() || Auth.isHR()) {
+            createButton.setText("Add Dependent");
+            createButton.setVisible(true);
+        } else {
+            createButton.setVisible(false);
+        }
     }
 
     @Override
