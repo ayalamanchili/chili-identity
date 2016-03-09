@@ -240,37 +240,20 @@ public class EmployeeResource extends CRUDResource<Employee> {
         if (skillSet == null) {
             SkillSet ss = new SkillSet();
             emp.setSkillSet(ss);
+            dto.setSkills(null);
+            dto.setCertifications(null);
+            dto.setTags(null);
             dto.setSkillSetFile(null);
-            dto.setSkills(null);
-            dto.setCertifications(null);
-            dto.setTags(null);
         } else {
-            dto.setCertifications(null);
-            if (skillSet.getCertifications().size() > 0) {
-                for (Certification cert : skillSet.getCertifications()) {
-                    if (cert.getId() != null) {
-                        Certification cert1 = CertificationDao.instance().findById(cert.getId());
-                        dto.addCertification(cert1);
-                    }
-                }
+            SkillSetSaveDto saveDto = mapper.map(emp.getSkillSet(), SkillSetSaveDto.class);
+            if (saveDto.getCertifications().size() > 0) {
+                dto.setCertifications(saveDto.getCertifications());
             }
-            dto.setSkills(null);
-            if (skillSet.getSkills().size() > 0) {
-                for (Skill skill : skillSet.getSkills()) {
-                    if (skill.getId() != null) {
-                        Skill skill1 = SkillDao.instance().findById(skill.getId());
-                        dto.addSkill(skill1);
-                    }
-                }
+            if (saveDto.getSkills().size() > 0) {
+                dto.setSkills(saveDto.getSkills());
             }
-            dto.setTags(null);
-            if (skillSet.getTags().size() > 0) {
-                for (SkillSetTag skillSetTag : skillSet.getTags()) {
-                    if (skillSetTag.getId() != null) {
-                        SkillSetTag SkillSetTag1 = SkillSetTagDao.instance().findById(skillSetTag.getId());
-                        dto.addTag(SkillSetTag1);
-                    }
-                }
+            if (saveDto.getTags().size() > 0) {
+                dto.setTags(saveDto.getTags());
             }
             dto = mapper.map(skillSet, SkillSetSaveDto.class);
             dto.setId(skillSet.getId());
@@ -281,11 +264,10 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @PUT
     @Validate
     @Path("/skillset/{empId}")
-    @Produces(MediaType.APPLICATION_JSON)
     public SkillSetSaveDto addSkillSet(@PathParam("empId") Long empId, SkillSetSaveDto skillSetSaveDto) {
-        SkillSet skillset = mapper.map(skillSetSaveDto, SkillSet.class);
-        SkillSet skillsetEntity = em.find(SkillSet.class, skillset.getId());
         Employee emp = employeeDao.findById(empId);
+        SkillSet skillset = mapper.map(skillSetSaveDto, SkillSet.class);
+        SkillSet skillsetEntity = em.find(SkillSet.class, emp.getSkillSet().getId());
         if (skillSetSaveDto.getSkillSetFile().size() > 0) {
             for (SkillSetFile file : skillSetSaveDto.getSkillSetFile()) {
                 if (file.getId() == null) {
@@ -442,6 +424,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     /* Dependent */
     @GET
     @Path("/dependents/{id}/{start}/{limit}")
+    @PrivacyAware(key = PrivacyData.DEPENDENTS)
     public DependentTable getDependents(@PathParam("id") long id, @PathParam("start") int start,
             @PathParam("limit") int limit) {
         DependentTable tableObj = new DependentTable();
