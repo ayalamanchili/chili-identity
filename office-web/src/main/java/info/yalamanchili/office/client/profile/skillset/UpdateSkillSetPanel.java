@@ -108,23 +108,23 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
 
     public UpdateSkillSetPanel(JSONObject entity) {
         initUpdateComposite(entity, "SkillSet", OfficeWelcome.constants);
-        entityActionsPanel.add(tagsCP);
-        entityActionsPanel.add(skillp);
         entityActionsPanel.add(certp);
-        loadTagSuggestions();
-        loadSkillSuggestions();
+        entityActionsPanel.add(skillp);
+        entityActionsPanel.add(tagsCP);
         loadCertSuggestions();
+        loadSkillSuggestions();
+        loadTagSuggestions();
     }
 
     public UpdateSkillSetPanel() {
         initUpdateComposite("", "SkillSet", OfficeWelcome.constants);
         this.entityId = null;
-        entityActionsPanel.add(tagsCP);
-        entityActionsPanel.add(skillp);
         entityActionsPanel.add(certp);
-        loadTagSuggestions();
-        loadSkillSuggestions();
+        entityActionsPanel.add(skillp);
+        entityActionsPanel.add(tagsCP);
         loadCertSuggestions();
+        loadSkillSuggestions();
+        loadTagSuggestions();
     }
 
     @Override
@@ -134,7 +134,7 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
                     @Override
                     public void onResponse(String response) {
                         entity = (JSONObject) JSONParser.parseLenient(response);
-                        logger.info("populate Fields FromEntity"+entity);
+                        logger.info("populate Fields FromEntity" + entity);
                         populateFieldsFromEntity(entity);
                     }
                 });
@@ -187,7 +187,7 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        logger.info("populate Fields FromEntity 123"+entity);
+        logger.info("populate Fields FromEntity 123" + entity);
         assignFieldValueFromEntity("practice", entity, null);
         assignFieldValueFromEntity("technologyGroup", entity, null);
         assignFieldValueFromEntity("skillSetFileType", entity, DataType.ENUM_FIELD);
@@ -595,20 +595,4 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
         loadSkillSuggestions();
         loadCertSuggestions();
     }
-
-//    @Override
-//    protected boolean processClientSideValidations(JSONObject entity) {
-//        boolean flag = true;
-//        if (entity.get("skillSetFile") == null) {
-//            resumeUploadPanel.setMessage("Please select a file");
-//            flag = false;
-//        }
-//        EnumField skillSetFileType = (EnumField) fields.get("skillSetFileType");
-//        if (skillSetFileType.getValue() == null) {
-//            skillSetFileType.setMessage("Value is required");
-////            skillSetFileType.listBox.setSelectedIndex(0);
-//            flag = false;
-//        }
-//        return flag;
-//    }
 }

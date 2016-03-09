@@ -226,6 +226,8 @@ public class OfficeStartup {
         userSkillSet.getCertifications().add(getDOTNETCertification());
         userSkillSet.getSkills().add(getJavaSkill());
         userSkillSet.getSkills().add(getDOTNETSkill());
+        userSkillSet.setPractice(getDevelopmentPractice());
+        userSkillSet.setTechnologyGroup(getIBMTG());
         userSkillSet = em.merge(userSkillSet);
 
         userEmp.setSkillSet(userSkillSet);

@@ -14,7 +14,6 @@ import info.yalamanchili.office.entity.profile.Skill;
 import info.yalamanchili.office.entity.profile.SkillSet;
 import info.yalamanchili.office.entity.profile.SkillSetFile;
 import info.yalamanchili.office.entity.recruiting.SkillSetTag;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -64,9 +63,6 @@ public class SkillSetSaveDto extends SkillSet {
     @XmlElement
     @Override
     public List<Skill> getSkills() {
-        if (this.skills == null) {
-            this.skills = new ArrayList();
-        }
         return this.skills;
     }
 
@@ -75,12 +71,17 @@ public class SkillSetSaveDto extends SkillSet {
         this.skills = skills;
     }
 
+    @Override
+    public void addSkill(Skill skill) {
+        if (skill == null) {
+            return;
+        }
+        getSkills().add(skill);
+    }
+
     @XmlElement
     @Override
     public List<Certification> getCertifications() {
-        if (this.certifications == null) {
-            this.certifications = new ArrayList();
-        }
         return this.certifications;
     }
 
@@ -89,17 +90,30 @@ public class SkillSetSaveDto extends SkillSet {
         this.certifications = certifications;
     }
 
+    @Override
+    public void addCertification(Certification cert) {
+        if (cert == null) {
+            return;
+        }
+        getCertifications().add(cert);
+    }
+
     @XmlElement
     @Override
     public Set<SkillSetTag> getTags() {
-        if (this.tags == null) {
-            this.tags = new HashSet();
-        }
         return tags;
     }
 
     @Override
     public void setTags(Set<SkillSetTag> tags) {
         this.tags = tags;
+    }
+
+    @Override
+    public void addTag(SkillSetTag tag) {
+        if (tags == null) {
+            return;
+        }
+        getTags().add(tag);
     }
 }

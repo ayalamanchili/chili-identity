@@ -8,6 +8,7 @@
 package info.yalamanchili.office.client.profile.skillset;
 
 import com.google.gwt.http.client.URL;
+import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.profile.ProfileHome;
@@ -20,6 +21,10 @@ public class UpdateSkillSetPopupPanel extends UpdateSkillSetPanel {
 
     public UpdateSkillSetPopupPanel() {
         super();
+    }
+
+    public UpdateSkillSetPopupPanel(JSONObject object) {
+        super(object);
     }
 
     @Override

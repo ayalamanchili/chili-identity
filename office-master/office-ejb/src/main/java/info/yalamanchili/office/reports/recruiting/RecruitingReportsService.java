@@ -12,7 +12,6 @@ import info.chili.reporting.ReportGenerator;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.profile.EmployeeDto;
 import info.yalamanchili.office.dao.profile.SkillSetDao;
 import info.yalamanchili.office.dto.profile.SkillSetDto;
 import info.yalamanchili.office.entity.profile.Certification;
@@ -58,13 +57,17 @@ public class RecruitingReportsService {
         return res;
     }
 
-    public List<EmployeeDto> searchSkillSet(SkillSetSearchDto searchDto) {
-        List<info.yalamanchili.office.dao.profile.EmployeeDto> employees = new ArrayList<>();
+    public List<SkillSetDto> searchSkillSet(SkillSetSearchDto searchDto) {
+        List<SkillSetDto> dtos = new ArrayList<>();
         TypedQuery<Employee> query = em.createQuery(getSearchSkillSetQueryString(searchDto), Employee.class);
         for (Object empObj : query.getResultList()) {
-            employees.add(info.yalamanchili.office.dao.profile.EmployeeDto.map(mapper, (Employee) empObj));
-        }
-        return employees;
+            Employee emp = (Employee) empObj;
+            SkillSet skillSet = emp.getSkillSet();
+                SkillSetDto dto = mapper.map(skillSet, SkillSetDto.class);
+                dto.setEmployeeName(skillSet.getEmployee().getFirstName()+" "+skillSet.getEmployee().getLastName());
+                dtos.add(dto);
+            }
+        return dtos;
     }
 
     public String getSearchSkillSetQueryString(SkillSetSearchDto searchDto) {

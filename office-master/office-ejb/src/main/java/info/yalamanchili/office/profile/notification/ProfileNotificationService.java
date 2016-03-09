@@ -50,6 +50,7 @@ public class ProfileNotificationService {
         String[] roles = {OfficeRole.ROLE_RECRUITER.name()};
         Email email = new Email();
         email.setHtml(Boolean.TRUE);
+        email.setRichText(Boolean.TRUE);
         email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject("Employee Skillset Updated");
         String messageText = emp.getFirstName() + " " + emp.getLastName() + "'s Skillset Updated";
@@ -130,10 +131,11 @@ public class ProfileNotificationService {
     public void sendEmployeeDeactivationNotification(String deactivateBy, Employee emp) {
         String[] roles = {OfficeRole.ROLE_ADMIN.name(), OfficeRole.ROLE_HR_ADMINSTRATION.name(), OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name(), OfficeRole.ROLE_CONSULTANT_TIME_ADMIN.name()};
         Email email = new Email();
+        email.setHtml(Boolean.TRUE);
         email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject("Employee Deactivated ");
         SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
-        String messageText = "Employee  " + emp.getFirstName() + "," + emp.getLastName() + " Account Is Deactivated by:" + deactivateBy + "\n End Date: " + sdf.format(emp.getEndDate());
+        String messageText = "Employee  " + emp.getFirstName() + "," + emp.getLastName() + " Account Is Deactivated by:" + deactivateBy + "; End Date: " + sdf.format(emp.getEndDate());
         email.setBody(messageText);
         messagingService.sendEmail(email);
     }

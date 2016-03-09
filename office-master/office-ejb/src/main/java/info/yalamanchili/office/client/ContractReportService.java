@@ -158,7 +158,7 @@ public class ContractReportService {
     public void getEmpsByAddressReport(EmployeeLocationDto dto, String email) {
         List<EmployeeLocationReportDto> dtos = searchEmpsByAddress(dto);
         if (dtos != null) {
-            String[] columnOrder = new String[]{"employee", "branch", "street1", "street2", "city", "state", "country"};
+            String[] columnOrder = new String[]{"employee", "branch", "street1", "street2", "city", "state", "country","zip"};
             String fileName = ReportGenerator.generateExcelOrderedReport(dtos, "Employee In A Location report ", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
             MessagingService.instance().emailReport(fileName, email);
         }

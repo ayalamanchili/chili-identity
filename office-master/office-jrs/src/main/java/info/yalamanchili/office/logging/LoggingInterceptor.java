@@ -47,11 +47,12 @@ public class LoggingInterceptor {
             }
         }
     }
-    protected static List<String> ignoreMethods = new ArrayList<String>();
+    protected static List<String> ignoreMethods = new ArrayList<>();
 
     static {
         ignoreMethods.add("EnableLoginInterceptor");
         ignoreMethods.add("TemplateService");
+        ignoreMethods.add("EnableAnalytics");
     }
 
     protected boolean ignoreMethod(String name) {

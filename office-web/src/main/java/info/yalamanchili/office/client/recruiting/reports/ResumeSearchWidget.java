@@ -11,6 +11,7 @@ package info.yalamanchili.office.client.recruiting.reports;
 import com.google.common.base.Strings;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -94,7 +95,7 @@ public class ResumeSearchWidget extends ALComposite implements ClickHandler {
         if (Strings.isNullOrEmpty(searchTextSB.getValue())) {
             return;
         }
-        HttpService.HttpServiceAsync.instance().doGet(getResumeSearchUrl(), OfficeWelcome.instance().getHeaders(), true,
+        HttpService.HttpServiceAsync.instance().doGet(URL.encode(getResumeSearchUrl()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
