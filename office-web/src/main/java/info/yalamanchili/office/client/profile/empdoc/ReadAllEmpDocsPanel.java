@@ -131,7 +131,7 @@ public class ReadAllEmpDocsPanel extends CRUDReadAllComposite {
 
     @Override
     protected void configureCreateButton() {
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ON_BOARDING_MGR)) {
             createButton.setText("Add Document");
             createButton.setVisible(true);
         } else {
