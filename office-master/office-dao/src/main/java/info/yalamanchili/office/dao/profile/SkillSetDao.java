@@ -14,6 +14,7 @@ import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.SkillSet;
 import info.yalamanchili.office.entity.profile.SkillSetFile;
+import info.yalamanchili.office.entity.profile.SkillSetFileType;
 import java.io.File;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -46,12 +47,14 @@ public class SkillSetDao extends CRUDDao<SkillSet> {
         SkillSet entity = findById(skillSetId);
         if (entity.getSkillSetFile().size() > 0) {
             for (SkillSetFile sfile : entity.getSkillSetFile()) {
-                String resumeUrl = OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + sfile.getFileURL();
-                resumeUrl = resumeUrl.replace("entityId", sfile.getId().toString());
-                File file = new File(resumeUrl);
-                String resumeContent = FileSearchUtils.extractFileContents(file);
-                entity.setResumeContent(resumeContent);
-                getEntityManager().merge(entity);
+                if (SkillSetFileType.Resume.equals(sfile.getSkillSetFileType())) {
+                    String resumeUrl = OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + sfile.getFileURL();
+                    resumeUrl = resumeUrl.replace("entityId", sfile.getId().toString());
+                    File file = new File(resumeUrl);
+                    String resumeContent = FileSearchUtils.extractFileContents(file);
+                    entity.setResumeContent(entity.getResumeContent() + resumeContent);
+                    getEntityManager().merge(entity);
+                }
             }
         }
     }

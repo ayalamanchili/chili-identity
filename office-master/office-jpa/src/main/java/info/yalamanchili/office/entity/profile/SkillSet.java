@@ -26,6 +26,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.ForeignKey;
@@ -87,6 +88,7 @@ public class SkillSet extends AbstractEntity {
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Practice_SkillSets")
     @IndexedEmbedded
+    @NotNull
     private Practice practice;
     /**
      * Technology Group
@@ -94,6 +96,7 @@ public class SkillSet extends AbstractEntity {
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_TechGrp_SkillSets")
     @IndexedEmbedded
+    @NotNull
     private TechnologyGroup technologyGroup;
 
     /**
