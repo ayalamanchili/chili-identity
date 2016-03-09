@@ -419,6 +419,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     /* Dependent */
     @GET
     @Path("/dependents/{id}/{start}/{limit}")
+    @PrivacyAware(key = PrivacyData.DEPENDENTS)
     public DependentTable getDependents(@PathParam("id") long id, @PathParam("start") int start,
             @PathParam("limit") int limit) {
         DependentTable tableObj = new DependentTable();
