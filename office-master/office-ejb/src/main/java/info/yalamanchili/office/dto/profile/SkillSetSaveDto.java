@@ -34,6 +34,7 @@ public class SkillSetSaveDto extends SkillSet {
     protected List<Skill> skills;
     protected List<Certification> certifications;
     protected Set<SkillSetTag> tags;
+
     @XmlElement
     @Override
     public Set<SkillSetFile> getSkillSetFile() {
@@ -70,6 +71,14 @@ public class SkillSetSaveDto extends SkillSet {
         this.skills = skills;
     }
 
+    @Override
+    public void addSkill(Skill skill) {
+        if (skill == null) {
+            return;
+        }
+        getSkills().add(skill);
+    }
+
     @XmlElement
     @Override
     public List<Certification> getCertifications() {
@@ -81,6 +90,14 @@ public class SkillSetSaveDto extends SkillSet {
         this.certifications = certifications;
     }
 
+    @Override
+    public void addCertification(Certification cert) {
+        if (cert == null) {
+            return;
+        }
+        getCertifications().add(cert);
+    }
+
     @XmlElement
     @Override
     public Set<SkillSetTag> getTags() {
@@ -90,5 +107,13 @@ public class SkillSetSaveDto extends SkillSet {
     @Override
     public void setTags(Set<SkillSetTag> tags) {
         this.tags = tags;
+    }
+
+    @Override
+    public void addTag(SkillSetTag tag) {
+        if (tags == null) {
+            return;
+        }
+        getTags().add(tag);
     }
 }

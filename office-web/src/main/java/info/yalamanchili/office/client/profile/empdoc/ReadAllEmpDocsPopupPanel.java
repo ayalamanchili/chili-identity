@@ -8,6 +8,7 @@
 package info.yalamanchili.office.client.profile.empdoc;
 
 import com.google.gwt.json.client.JSONObject;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.GenericPopup;
@@ -38,10 +39,13 @@ public class ReadAllEmpDocsPopupPanel extends ReadAllEmpDocsPanel {
 
     @Override
     protected void configureCreateButton() {
-        createButton.setVisible(false);
+        createButton.setText("Add Document");
+        createButton.setVisible(true);
     }
 
     @Override
     protected void createButtonClicked() {
+        CreateEmpDocPopUpPanel createPanel = new CreateEmpDocPopUpPanel(CreateComposite.CreateCompositeType.CREATE);;
+        new GenericPopup(createPanel).show();
     }
 }

@@ -47,7 +47,7 @@ public class ReadAllDependentsPopupPanel extends ReadAllDependentsPanel {
 
     @Override
     protected void createButtonClicked() {
-        CreateDependentPopupPanel createPanel = new CreateDependentPopupPanel(CreateComposite.CreateCompositeType.ADD);;
+        CreateDependentPopupPanel createPanel = new CreateDependentPopupPanel(CreateComposite.CreateCompositeType.CREATE);;
         new GenericPopup(createPanel).show();
     }
 }

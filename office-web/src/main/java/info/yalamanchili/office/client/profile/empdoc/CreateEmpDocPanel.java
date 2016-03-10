@@ -39,6 +39,13 @@ public class CreateEmpDocPanel extends CreateComposite {
         this.employeeId = employeeId;
         initCreateComposite("EmployeeDocument", OfficeWelcome.constants);
     }
+    
+    public CreateEmpDocPanel(CreateCompositeType type) {
+        super(type);
+        this.employeeId = employeeId;
+        initCreateComposite("EmployeeDocument", OfficeWelcome.constants);
+    }
+
 
     @Override
     protected void addWidgets() {

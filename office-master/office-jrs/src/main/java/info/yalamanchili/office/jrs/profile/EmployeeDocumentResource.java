@@ -9,11 +9,17 @@ package info.yalamanchili.office.jrs.profile;
 
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
+import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.dao.profile.EmployeeDocumentDao;
+import info.yalamanchili.office.dao.profile.onboarding.EmployeeOnBoardingDao;
 import info.yalamanchili.office.entity.privacy.PrivacyData;
+import info.yalamanchili.office.entity.profile.Email;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeDocument;
+import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
+import info.yalamanchili.office.entity.profile.onboarding.OnBoardingStatus;
 import info.yalamanchili.office.privacy.PrivacyAware;
 import java.util.List;
 import javax.ws.rs.GET;
@@ -47,7 +53,7 @@ public class EmployeeDocumentResource extends CRUDResource<EmployeeDocument> {
     @Validate
     @Path("/{empId}")
     @Produces("application/text")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RELATIONSHIP')")
+//    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_HR", "ROLE_RELATIONSHIP"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
     public String createEmployeeDocument(@PathParam("empId") Long empId, EmployeeDocument doc) {
         doc.setEmployee(EmployeeDao.instance().findById(empId));
         return employeeDocumentDao.save(doc).getId().toString();
@@ -70,6 +76,33 @@ public class EmployeeDocumentResource extends CRUDResource<EmployeeDocument> {
         tableObj.setEntities(employeeDocumentDao.getDocuments(empid));
         tableObj.setSize((long) employeeDocumentDao.getDocuments(empid).size());
         return tableObj;
+    }
+
+    @PUT
+    @Path("/update")
+    public EmployeeDocument update(EmployeeDocument entity) {
+        String empId = entity.getUpdatedBy();
+        EmployeeDocument document = new EmployeeDocument();
+        Employee emp = EmployeeDao.instance().findEmployeWithEmpId(empId);
+        if (emp.getEmails().size() > 0) {
+            for (Email email : emp.getEmails()) {
+                if (EmployeeOnBoardingDao.instance().findByEmail(email.getEmail()) != null) {
+                    EmployeeOnBoarding onboarding = EmployeeOnBoardingDao.instance().findByEmail(email.getEmail());
+                    if (!onboarding.getStatus().equals(OnBoardingStatus.Complete)) {
+                        document = employeeDocumentDao.save(entity);
+                    } else {
+                        throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.update.documents", "You May Not Upload Documents: Onboarding Process Completed");
+                    }
+                } else {
+                    throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.update.documents", "You May Not Upload Documents");
+                }
+            }
+        }
+        if (document != null) {
+            return document;
+        } else {
+            return null;
+        }
     }
 
     @Override
