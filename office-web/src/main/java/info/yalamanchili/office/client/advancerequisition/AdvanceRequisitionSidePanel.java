@@ -64,7 +64,7 @@ public class AdvanceRequisitionSidePanel extends ALComposite implements ClickHan
 
     @Override
     protected void configure() {
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ACCOUNTS_PAYABLE, ROLE.ROLE_ADMIN, ROLE.ROLE_PAYROLL_AND_BENIFITS, ROLE.ROLE_CEO)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ACCOUNTS_PAYABLE, ROLE.ROLE_ADMIN, ROLE.ROLE_PAYROLL_AND_BENIFITS, ROLE.ROLE_CEO, ROLE.ROLE_GENERAL_EXPENSE_MANAGER)) {
             return;
         }
         Timer timer = new Timer() {
