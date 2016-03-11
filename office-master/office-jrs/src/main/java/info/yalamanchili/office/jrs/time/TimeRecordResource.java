@@ -74,7 +74,7 @@ public class TimeRecordResource {
     @PUT
     @Path("/report")
     @PreAuthorize("hasAnyRole('ROLE_HR_ADMINSTRATION')")
-    public void report(TimeRecordDao.TimeRecordSearchDto dto, String email) {
+    public void report(TimeRecordDao.TimeRecordSearchDto dto) {
         TimeRecordService.instance().getAllEmployeesSummaryReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail(), dto);
     }
 }
