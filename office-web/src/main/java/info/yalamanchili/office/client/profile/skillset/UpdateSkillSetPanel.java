@@ -59,7 +59,7 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
      * Technology Group
      */
     SelectTechnologyGroupWidget technoglogyGroupF = new SelectTechnologyGroupWidget(false, false);
-    ClickableLink newTGL = new ClickableLink("Technolgoy not present? submit request");
+    ClickableLink newTGL = new ClickableLink("Technology not present? submit request");
     /**
      * resume
      */
