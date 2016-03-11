@@ -47,7 +47,7 @@ public class SkillSetDao extends CRUDDao<SkillSet> {
         SkillSet entity = findById(skillSetId);
         if (entity.getSkillSetFile().size() > 0) {
             for (SkillSetFile sfile : entity.getSkillSetFile()) {
-                if (SkillSetFileType.Resume.equals(sfile.getSkillSetFileType())) {
+                if ((SkillSetFileType.Resume.name().equals(sfile.getName()) || ((sfile.getName() == null)))) {
                     String resumeUrl = OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + sfile.getFileURL();
                     resumeUrl = resumeUrl.replace("entityId", sfile.getId().toString());
                     File file = new File(resumeUrl);
