@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.client.profile.skillset;
 
+import static com.axeiya.gwtckeditor.client.CKConfig.AVAILABLE_PLUGINS.table;
 import com.google.gwt.json.client.JSONArray;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
@@ -19,9 +20,12 @@ import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RichTextArea;
+import info.chili.gwt.config.ChiliClientConfig;
+import info.chili.gwt.fields.FileField;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
 import info.yalamanchili.office.client.profile.technologyGroup.SelectTechnologyGroupWidget;
 import java.util.logging.Logger;
@@ -147,6 +151,7 @@ public class ReadSkillSetPanel extends ReadComposite {
     }
 
     protected void onLoadSuccess(String response) {
+        logger.info("resume upload of skill set " + entity);
         if (response != null && !response.isEmpty()) {
             entity = (JSONObject) JSONParser.parseLenient(response);
             HttpService.HttpServiceAsync.instance().doGet(getResumes(entityId), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
@@ -179,15 +184,24 @@ public class ReadSkillSetPanel extends ReadComposite {
     }
 
     protected void populateResumes(JSONArray items) {
+        logger.info("populate Fields From Entity" + items);
         entityFieldsPanel.add(new ReadAllSkillSetFilesPanel(items));
     }
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        logger.info("entity" + entity.toString());
+        logger.info("populate Fields From Entity" + entity);
         assignFieldValueFromEntity("practice", entity, null);
         assignFieldValueFromEntity("technologyGroup", entity, null);
         assignFieldValueFromEntity("lastUpdated", entity, DataType.DATE_FIELD);
+        if (entity.containsKey("skillSetFile")) {
+            JSONObject resumeURL = entity.get("skillSetFile").isObject();
+            JSONArray array = new JSONArray();
+            if (resumeURL != null) {
+                array.set(0, resumeURL);
+                populateResumes(array);
+            }
+        }
         //entityFieldsPanel.add(new SkillSetOptionsPanel(empId));
         loadTags();
     }
@@ -197,18 +211,18 @@ public class ReadSkillSetPanel extends ReadComposite {
         addField("lastUpdated", true, false, DataType.DATE_FIELD);
         addDropDown("practice", practiceF);
         addDropDown("technologyGroup", technologyGroupF);
-        //tags
-        tagsPanel.add(tagsTA);
-        tagsCP.setContentWidget(tagsPanel);
-        entityFieldsPanel.add(tagsCP);
-        //Skills
-        skillsPanel.add(skillsTA);
-        skillsCP.setContentWidget(skillsPanel);
-        entityFieldsPanel.add(skillsCP);
         //Certifications
         certPanel.add(certTA);
         certCP.setContentWidget(certPanel);
         entityFieldsPanel.add(certCP);
+        //Skills
+        skillsPanel.add(skillsTA);
+        skillsCP.setContentWidget(skillsPanel);
+        entityFieldsPanel.add(skillsCP);
+        //tags
+        tagsPanel.add(tagsTA);
+        tagsCP.setContentWidget(tagsPanel);
+        entityFieldsPanel.add(tagsCP);
     }
 
     @Override
