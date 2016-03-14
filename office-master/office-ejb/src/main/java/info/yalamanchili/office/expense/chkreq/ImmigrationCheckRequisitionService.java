@@ -162,11 +162,11 @@ public class ImmigrationCheckRequisitionService {
         Employee emp = entity.getEmployee();
         if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals(Company.CGS_INC)) {
             data.setTemplateUrl("/templates/pdf/check-request-cgs-template.pdf");
-        } else if (emp == null && entity.getCompanyName().equals(Company.CGS_INC)) {
+        } else if (emp == null && Company.CGS_INC.equals(entity.getCompanyName())) {
             data.setTemplateUrl("/templates/pdf/check-request-cgs-template.pdf");
         } else if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals(Company.TECHPILLARS)) {
             data.setTemplateUrl("/templates/pdf/check-request-tp-template.pdf");
-        } else if (emp == null && entity.getCompanyName().equals(Company.TECHPILLARS)) {
+        } else if (emp == null && Company.TECHPILLARS.equals(entity.getCompanyName())) {
             data.setTemplateUrl("/templates/pdf/check-request-tp-template.pdf");
         } else {
             data.setTemplateUrl("/templates/pdf/check-request-template.pdf");
