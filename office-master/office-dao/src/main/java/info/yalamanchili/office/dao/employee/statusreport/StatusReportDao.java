@@ -59,7 +59,7 @@ public class StatusReportDao extends CRUDDao<StatusReport> {
     }
 
     public List<StatusReport> getReports(Employee emp, int start, int limit) {
-        TypedQuery<StatusReport> query = em.createQuery("from " + StatusReport.class.getCanonicalName() + " where employee=:empParam", StatusReport.class);
+        TypedQuery<StatusReport> query = em.createQuery("from " + StatusReport.class.getCanonicalName() + " where employee=:empParam order by submittedDate", StatusReport.class);
         query.setParameter("empParam", emp);
         query.setFirstResult(start);
         query.setMaxResults(limit);
