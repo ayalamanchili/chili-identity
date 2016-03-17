@@ -92,6 +92,9 @@
             <property name="hibernate.ejb.event.pre-collection-update" value="org.hibernate.envers.event.AuditEventListener"/>
             <property name="hibernate.ejb.event.pre-collection-remove" value="org.hibernate.envers.event.AuditEventListener"/>
             <property name="hibernate.ejb.event.post-collection-recreate" value="org.hibernate.envers.event.AuditEventListener"/>
+            <!--monitoring-->
+            <property name="hibernate.jdbc.factory_class" value="net.bull.javamelody.HibernateBatcherFactory"/>
+            
         </properties>
     </persistence-unit>
 </persistence>

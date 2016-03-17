@@ -151,6 +151,12 @@
             <artifactId>de.flapdoodle.embed.mongo</artifactId>
             <version>1.36</version>
         </dependency>
+        <!--Monitoring-->
+        <dependency>
+            <groupId>net.bull.javamelody</groupId>
+            <artifactId>javamelody-core</artifactId>
+            <version>${java.melody.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>office</finalName>
@@ -305,5 +311,6 @@
     </distributionManagement>
     <properties>
         <jersey.version>1.19</jersey.version>
+        <java.melody.version>1.56.0</java.melody.version>
     </properties>
 </project>
