@@ -12,6 +12,7 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.RichTextArea;
@@ -69,8 +70,8 @@ public class CreateRolesAndResponsibilitiesPanel extends UpdateComposite impleme
         entityFieldsPanel.add(reportF);
     }
 
-    public void setHtml(String html) {
-        reportF.setData(html);
+    public void setSafeHtml(SafeHtml html) {
+        reportF.setData(html.asString());
     }
 
     protected String getURI() {
