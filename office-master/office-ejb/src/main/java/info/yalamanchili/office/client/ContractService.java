@@ -66,7 +66,7 @@ public class ContractService {
     protected EntityManager em;
     @Autowired
     protected Mapper mapper;
-    
+
     public ContractDto read(Long id) {
         ClientInformation ci = ClientInformationDao.instance().findById(id);
         return mapClientInformation(ci);
@@ -297,6 +297,11 @@ public class ContractService {
             dto.setEmployeeType(ci.getEmployee().getEmployeeType().getName());
             dto.setEmployeeID(ci.getEmployee().getId());
             dto.setEmployeeDetails(ci.getEmployee().details());
+            if (ci.getEmployee().getCompany() != null) {
+                dto.setEmployeeCompany(ci.getEmployee().getCompany().getName());
+            } else {
+                dto.setEmployeeCompany(null);
+            }
         }
         //TODO set client
         if (ci.getClient() != null) {
