@@ -56,8 +56,8 @@ public class HomeAddressChangeProcessBean {
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
         Email email = new Email();
         email.addTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_RELATIONSHIP.name()));
-        email.setSubject("Employee " + address.getContact().getFirstName() + " " + address.getContact().getLastName() + " Home/Primary Email Address has been updated");
-        email.setBody("Employee " + address.getContact().getFirstName() + " " + address.getContact().getLastName() + " Home/Primary Email Address has been updated");
+        email.setSubject("Employee " + address.getContact().getFirstName() + " " + address.getContact().getLastName() + " Home Address has been updated");
+        email.setBody("Employee " + address.getContact().getFirstName() + " " + address.getContact().getLastName() + " Home Address has been updated");
         //TODO add address information in the email body
         messagingService.sendEmail(email);
     }
