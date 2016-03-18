@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import info.chili.dao.CRUDDao;
 import info.chili.service.jrs.types.Entry;
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.hr.PetitionFor;
 import info.yalamanchili.office.entity.hr.PlacedBy;
 import info.yalamanchili.office.entity.hr.Prospect;
@@ -138,6 +139,10 @@ public class ProspectDao extends CRUDDao<Prospect> {
 
     public ProspectDao() {
         super(Prospect.class);
+    }
+
+    public static ProspectDao instance() {
+        return SpringContext.getBean(ProspectDao.class);
     }
 
     @Override

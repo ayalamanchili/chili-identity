@@ -55,6 +55,10 @@ public class Prospect extends AbstractEntity {
     protected String referredBy;
 
     protected Long assigned;
+    
+    protected Long manager;
+    
+    protected String bpmProcessId;
 
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date processDocSentDate;
@@ -166,6 +170,14 @@ public class Prospect extends AbstractEntity {
         this.assigned = assigned;
     }
 
+    public Long getManager() {
+        return manager;
+    }
+
+    public void setManager(Long manager) {
+        this.manager = manager;
+    }
+    
     @XmlTransient
     public Set<Resume> getResumeURL() {
         if (this.resumeURL == null) {
@@ -184,6 +196,14 @@ public class Prospect extends AbstractEntity {
         }
         getResumeURL().add(entity);
         entity.setProspect(this);
+    }
+
+    public String getBpmProcessId() {
+        return bpmProcessId;
+    }
+
+    public void setBpmProcessId(String bpmProcessId) {
+        this.bpmProcessId = bpmProcessId;
     }
 
     @Override

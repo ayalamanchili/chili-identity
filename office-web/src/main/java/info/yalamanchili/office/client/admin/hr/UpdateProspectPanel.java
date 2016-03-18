@@ -48,6 +48,7 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
 
     private Logger logger = Logger.getLogger(UpdateProspectPanel.class.getName());
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "assignedTo", "Employee", false, false, Alignment.HORIZONTAL);
+    SuggestBox caseManagerSB = new SuggestBox(OfficeWelcome.constants, "caseManager", "Employee", false, true, Alignment.HORIZONTAL);
     FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "Prospect", "resumeURL", "Prospect/resumeURL", false, true) {
         @Override
         public void onUploadComplete(String res) {
@@ -93,7 +94,8 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
                 populateFieldsFromEntity(entity);
                 populateComments();
             }
-        });
+        }
+        );
     }
 
     protected void populateComments() {
@@ -109,6 +111,9 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         JSONObject address = new JSONObject();
         if (employeeSB.getSelectedObject() != null) {
             entity.put("assignedTo", employeeSB.getSelectedObject());
+        }
+        if (caseManagerSB.getSelectedObject() != null) {
+            entity.put("caseManager", caseManagerSB.getSelectedObject());
         }
         assignEntityValueFromField("street1", address);
         assignEntityValueFromField("street2", address);
@@ -207,6 +212,10 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         if (emp != null) {
             employeeSB.setValue(emp.get("firstName").isString().stringValue());
         }
+        JSONObject employee = (JSONObject) entity.get("caseManager");
+        if (employee != null) {
+            caseManagerSB.setValue(employee.get("firstName").isString().stringValue());
+        }
         if (entity.get("address") != null) {
             JSONObject address = entity.get("address").isObject();
             assignFieldValueFromEntity("street1", address, DataType.STRING_FIELD);
@@ -274,6 +283,17 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
                 }
             }
         });
+        caseManagerSB.getLabel().getElement().getStyle().setWidth(197, Style.Unit.PX);
+        HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                logger.info(entityString);
+                Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
+                if (values != null) {
+                    caseManagerSB.loadData(values);
+                }
+            }
+        });
     }
 
     private String getEmployeeIdsDropDownUrl() {
@@ -308,6 +328,7 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         addField("zip", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
         addField("referredBy", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(employeeSB);
+        entityFieldsPanel.add(caseManagerSB);
         addField("screenedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("processDocSentDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Upload Resume"));

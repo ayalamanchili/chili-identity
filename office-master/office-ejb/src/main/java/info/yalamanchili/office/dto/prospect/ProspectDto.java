@@ -71,11 +71,15 @@ public class ProspectDto implements Serializable {
     
     private Employee assignedTo;
     
+    private Employee caseManager;
+    
     protected Set<Resume> resumeURL;
 
     protected Date dateOfBirth;
 
     protected String comment;
+    
+    protected String bpmProcessId;
 
     @Valid
     private Address address;
@@ -332,6 +336,22 @@ public class ProspectDto implements Serializable {
 
     public void setAssignedTo(Employee assignedTo) {
         this.assignedTo = assignedTo;
+    }
+
+    public Employee getCaseManager() {
+        return caseManager;
+    }
+
+    public void setCaseManager(Employee caseManager) {
+        this.caseManager = caseManager;
+    }
+
+    public String getBpmProcessId() {
+        return bpmProcessId;
+    }
+
+    public void setBpmProcessId(String bpmProcessId) {
+        this.bpmProcessId = bpmProcessId;
     }
 
     @Override

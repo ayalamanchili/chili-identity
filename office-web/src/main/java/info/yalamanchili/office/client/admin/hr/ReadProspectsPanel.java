@@ -36,6 +36,7 @@ public class ReadProspectsPanel extends ReadComposite {
 
     private static ReadProspectsPanel instance;
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "assignedTo", "Employee", true, false, Alignment.HORIZONTAL);
+    SuggestBox caseManagerSb = new SuggestBox(OfficeWelcome.constants, "caseManager", "Employee", true, true, Alignment.HORIZONTAL);
 
     public static ReadProspectsPanel instance() {
         return instance;
@@ -87,6 +88,10 @@ public class ReadProspectsPanel extends ReadComposite {
         if (emp != null) {
             employeeSB.setValue(emp.get("firstName").isString().stringValue());
         }
+        JSONObject employee = (JSONObject) entity.get("caseManager");
+        if (employee != null) {
+            caseManagerSb.setValue(employee.get("firstName").isString().stringValue());
+        }
         if (entity.get("address") != null) {
             JSONObject address = entity.get("address").isObject();
             assignFieldValueFromEntity("street1", address, DataType.STRING_FIELD);
@@ -122,6 +127,7 @@ public class ReadProspectsPanel extends ReadComposite {
     @Override
     protected void configure() {
         employeeSB.getLabel().getElement().getStyle().setWidth(193, Style.Unit.PX);
+        caseManagerSb.getLabel().getElement().getStyle().setWidth(193, Style.Unit.PX);
     }
 
     @Override
@@ -141,6 +147,7 @@ public class ReadProspectsPanel extends ReadComposite {
         addField("zip", true, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
         addField("screenedBy", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(employeeSB);
+        entityFieldsPanel.add(caseManagerSb);
         addField("processDocSentDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Status Information"));
         addEnumField("status", true, false, ProspectStatus.names(), Alignment.HORIZONTAL);

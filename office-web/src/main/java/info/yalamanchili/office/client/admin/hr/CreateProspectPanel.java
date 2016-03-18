@@ -33,7 +33,6 @@ import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.widgets.SuggestBox;
-import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import java.util.Map;
@@ -47,6 +46,7 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
 
     private static Logger logger = Logger.getLogger(CreateProspectPanel.class.getName());
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "assignedTo", "Employee", false, false, Alignment.HORIZONTAL);
+    SuggestBox caseManagerSB = new SuggestBox(OfficeWelcome.constants, "caseManager", "Employee", false, true, Alignment.HORIZONTAL);
     FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "Prospect", "resumeURL", "Prospect/resumeURL", false, true) {
         @Override
         public void onUploadComplete(String res) {
@@ -102,6 +102,9 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         if (employeeSB.getSelectedObject() != null) {
             entity.put("assignedTo", employeeSB.getSelectedObject());
         }
+        if (caseManagerSB.getSelectedObject() != null) {
+            entity.put("caseManager", caseManagerSB.getSelectedObject());
+        }
         assignEntityValueFromField("screenedBy", entity);
         assignEntityValueFromField("processDocSentDate", entity);
         assignEntityValueFromField("comment", entity);
@@ -121,6 +124,7 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         if (resumeURL.size() > 0) {
             entity.put("resumeURL", resumeURL);
         }
+        logger.info("entity" + entity);
         return entity;
     }
 
@@ -129,16 +133,16 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         logger.info(getURI());
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                uploadResume(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        uploadResume(arg0);
+                    }
+                });
     }
 
     protected void uploadResume(String entityStr) {
@@ -186,6 +190,16 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
                 }
             }
         });
+        caseManagerSB.getLabel().getElement().getStyle().setWidth(193, Style.Unit.PX);
+        HttpService.HttpServiceAsync.instance().doGet(getcaseManagnerIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
+                if (values != null) {
+                    caseManagerSB.loadData(values);
+                }
+            }
+        });
     }
 
     protected void formatTextAreaFields() {
@@ -196,6 +210,10 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
                 textAreaField.getTextbox().setVisibleLines(4);
             }
         }
+    }
+
+    private String getcaseManagnerIdsDropDownUrl() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Corporate Employee");
     }
 
     private String getEmployeeIdsDropDownUrl() {
@@ -220,6 +238,7 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         addField("zip", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
         addField("screenedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(employeeSB);
+        entityFieldsPanel.add(caseManagerSB);
         addField("processDocSentDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("comment", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Upload Resume"));
@@ -248,5 +267,14 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
                 statesF.setValues(IndiaStatesFactory.getStates().toArray(new String[0]));
                 break;
         }
+    }
+
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        if (entity.get("caseManager") == null) {
+            caseManagerSB.setMessage("Case Manager Can not be null");
+            return false;
+        }
+        return true;
     }
 }

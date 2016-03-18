@@ -13,7 +13,7 @@ package info.yalamanchili.office.client.admin.hr;
  * @author radhika.mukkala
  */
 public enum ProspectStatus {
-    NEW, IN_PROGRESS, CLOSED_WON, CLOSED_LOST;
+    IN_PROGRESS, RECRUITING, BENCH, ONHOLD, CLOSED_WON, CLOSED_LOST;
     public static String[] names() {
         ProspectStatus[] values = values();
         String[] names = new String[values.length];

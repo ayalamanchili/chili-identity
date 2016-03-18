@@ -11,20 +11,26 @@ package info.yalamanchili.office.prospect;
 import com.google.common.base.Strings;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
+import static info.yalamanchili.office.bpm.prospect.ProspectEmailEscalation.PROSPECT_ESCALATION_NOTIFICATION_GROUP;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.hr.ProspectDao;
 import info.yalamanchili.office.dao.hr.ResumeDao;
+import info.yalamanchili.office.dao.message.NotificationGroupDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.prospect.ProspectDto;
 import info.yalamanchili.office.entity.hr.Prospect;
 import info.yalamanchili.office.entity.hr.ProspectStatus;
 import info.yalamanchili.office.entity.hr.Resume;
+import info.yalamanchili.office.entity.message.NotificationGroup;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.Phone;
+import info.yalamanchili.office.jms.MessagingService;
 import java.util.Calendar;
 import java.util.Date;
 import javax.persistence.EntityManager;
@@ -52,13 +58,16 @@ public class ProspectService {
 
     public ProspectDto save(ProspectDto dto) {
         if (ContactDao.instance().findByEmail(dto.getEmail()) != null) {
-            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "email.alreday.exist", "Contact Already Exist With The Same Email");
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "email.already.exist", "Contact Already Exist With The Same Email");
         }
         Prospect entity = mapper.map(dto, Prospect.class);
         if (dto.getAssignedTo() != null) {
             entity.setAssigned(dto.getAssignedTo().getId());
         }
-            
+        if (dto.getCaseManager() != null) {
+            entity.setManager(dto.getCaseManager().getId());
+        }
+
         entity.setStartDate(new Date());
         entity.setStatus(ProspectStatus.IN_PROGRESS);
         Contact contact = new Contact();
@@ -126,6 +135,7 @@ public class ProspectService {
         entity = em.merge(entity);
         CommentDao.instance().addComment(dto.getComment(), entity);
         dto.setId(entity.getId());
+        entity.setBpmProcessId(ProspectProcessBean.instance().startNewProspectProcess(entity, OfficeSecurityService.instance().getCurrentUser()));
         return mapper.map(entity, ProspectDto.class);
         // return dto;
     }
@@ -135,6 +145,9 @@ public class ProspectService {
         ProspectDto dto = ProspectDto.map(mapper, ec);
         if (ec.getAssigned() != null) {
             dto.setAssignedTo(EmployeeDao.instance().findById(ec.getAssigned()));
+        }
+        if (ec.getManager() != null) {
+            dto.setCaseManager(EmployeeDao.instance().findById(ec.getManager()));
         }
         if (ec.getStatus().equals(ProspectStatus.CLOSED_WON)) {
             if (ec.getDateOfJoining() != null) {
@@ -175,8 +188,14 @@ public class ProspectService {
         if (dto.getAssignedTo() != null) {
             entity.setAssigned(dto.getAssignedTo().getId());
         }
+        if (dto.getCaseManager() != null) {
+            entity.setManager(dto.getCaseManager().getId());
+        }
         if (dto.getStatus() != null) {
-            entity.setStatus(dto.getStatus());
+            if (entity.getStatus() != dto.getStatus()) {
+                entity.setStatus(dto.getStatus());
+                sendProspectStatusNotification(entity);
+            }
         } else {
             entity.setStatus(ProspectStatus.IN_PROGRESS);
         }
@@ -291,5 +310,28 @@ public class ProspectService {
         prospectDao.getEntityManager().flush();
         entity = prospectDao.findById(entity.getId());
         return mapper.map(entity, ProspectDto.class);
+    }
+    
+    public void sendProspectStatusNotification(Prospect prospect) {
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
+        info.chili.email.Email email = new info.chili.email.Email();
+        email.addTo(EmployeeDao.instance().findById(prospect.getManager()).getPrimaryEmail().getEmail());
+        email.addTo(EmployeeDao.instance().findById(prospect.getAssigned()).getPrimaryEmail().getEmail());
+        NotificationGroup ng = NotificationGroupDao.instance().findByName(PROSPECT_ESCALATION_NOTIFICATION_GROUP);
+        if (ng != null) {
+            for (Employee employee : ng.getEmployees()) {
+                email.addTo(employee.getPrimaryEmail().getEmail());
+            }
+        }
+        email.setHtml(Boolean.TRUE);
+        email.setSubject("Prospect Status change for : " + prospect.getContact().getFirstName() + " " + prospect.getContact().getLastName() + "; " + "Status: " + prospect.getStatus());
+        String messageText = " Prospect Information :: ";
+        messageText = messageText.concat("\n Prospect     : " + prospect.getContact().getFirstName() + " " + prospect.getContact().getLastName());
+        messageText = messageText.concat("\n Status       : " + prospect.getStatus());
+        messageText = messageText.concat("\n Case Manager : " + EmployeeDao.instance().findById(prospect.getManager()).getFirstName());
+        messageText = messageText.concat("\n Assigned To  : " + EmployeeDao.instance().findById(prospect.getAssigned()).getFirstName());
+        messageText = messageText.concat("\n Updated_By   : " + emp.getFirstName() + " " + emp.getLastName());
+        email.setBody(messageText);
+        MessagingService.instance().sendEmail(email);
     }
 }
