@@ -2,7 +2,16 @@
  * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
  */
 /* defining main colors in the applciation */
-@def orange_light #F09974;
+@def orange_light #f09974;  
+
+@def orange_semilight #ef5322;   
+
+@def orange_hover #d05b37;
+@def lineSeparator #dedede;
+@def input_border #c3c3c3;
+@def table_sub_color #e4e4e4;
+
+@def legend_color #349B49;
 
 @def orange_dark #E16802;
 
@@ -17,6 +26,11 @@
 @def white #FFFFFF;
 
 @def grey_light #F7F7F7;
+
+
+
+
+
 
 /* an individual tab*/
 /* Footer */
@@ -271,7 +285,7 @@ select[disabled]
     height: 19px;
     padding: 1px 3px;
     border-bottom: none;
-    color:#349B49;
+    color:legend_color;
     border-radius: 3px;
 }
 
@@ -765,7 +779,7 @@ height:5ex;
 .entityTitlePanel {
     border-bottom-color: #bc033d;
     border-bottom-width: 1px;
-    background-color:#DEDEDE;
+    background-color:lineSeparator;
     height: 35px;
     box-shadow: 0px 0px 6px #333 !important;
     /*    background: url("../images/menubar_bg.png");*/
@@ -1031,7 +1045,7 @@ fieldset.lineSeperator legend
 {
     border: 1px solid rgb(191, 191, 191);
     padding: 0px 20px;
-    background: rgb(222, 222, 222);      
+    background:lineSeparator;      
     color: #545454 !important;
     text-transform: none;
     width:96%;
@@ -1044,7 +1058,7 @@ fieldset.lineSeperator legend
 
 input {
     background: #fff;
-    border: 1px solid #C3C3C3;   
+    border: 1px solid input_border;   
     padding:2px 6px !important;
     border-radius: 0px;
     font-size: 14px;
@@ -1052,7 +1066,7 @@ input {
 }
 select {
     background: #fff;
-    border: 1px solid #C3C3C3;   
+    border: 1px solid input_border;   
     padding:1px 3px !important;
     border-radius: 0px;
     font-size: 14px;
@@ -1137,18 +1151,19 @@ button#gwt-debug-loginB {
 a.gwt-Anchor {
     list-style-type:none;
     font-size: 14px;
-    color:#EF5322 !important;
+    color:orange_semilight !important;
     text-decoration: blink;
     line-height: 29px; 
 }
 a.gwt-Anchor:hover{
-    color:#D05B37 !important;
+    color:orange_hover !important;
     font-weight:bold !important;
 }
 
 .gwt-HTML li a:hover{
-    color:#D05B37 !important;
+    color:orange_hover !important;
     font-weight:bold !important;
+    
 }
 
 .gwt-DisclosurePanel .header {
@@ -1176,7 +1191,7 @@ a.gwt-Anchor:hover{
     color:#000000 !important;
 }
 .y-gwt-Table .y-gwt-TableHeader {
-    background: #e4e4e4 !important;
+    background: table_sub_color !important;
 }
 
 #gwt-debug-Status ReportsCL {
