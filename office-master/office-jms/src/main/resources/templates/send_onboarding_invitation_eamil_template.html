@@ -7,31 +7,77 @@
     <head>
         <title>System Soft Portal</title>
         <style type="text/css">
+		h4 {
+	font-size: 22px;
+    color:#585858;
+    font-weight: bold;
+    font-family: arial;
+		}
+		
+		.sections-title-h4 {
+    position: relative;
+	padding-top:15px;
+	
+}
+		.sections-title-h4:before {
+    content: "";
+    height: 1px;
+    width: 311px;
+    background-color: #545454;
+    display: inline-block;
+    position: absolute;
+    bottom: -7px;
+    left: 47%;
+    margin-left: -135px;
+}
+	.sections-title-h4:after {
+       content: "";
+    height: 4px;
+    width: 30px;
+    background-color: #060606;
+    display: inline-block;
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    margin-left: -15px;
+}	
+p {
+	padding-bottom:3px; font-family:Tahoma, Geneva, sans-serif; font-size:13px; color:#464646; line-height:22px;
+}
+.container {
+		background:#f5f5f5;
+		width:780px;
+		margin:auto;
+	}
         </style>
     </head>
 
     <body>
-        <div class="wrapper" style="width:700px;height:500px;margin-left:auto;margin-right:auto;border-style:solid;border-width:1px;border-color:#000000;border-radius:10px;">
-            <div class="header" style="width:700px;height:100px;background-color:#c3d7ff;border-top-right-radius:10px;border-top-left-radius:10px;">
-                <div class="logo" style="width:200px;height:75px;float:left;padding-top:25px;padding-left:30px;" ><img src="https://apps.sstech.us/sst-logo.png" /></div>
+     <div class="container">
+        <div class="wrapper" style="width:720px; margin-left:auto;margin-right:auto; background:#fff; border-radius: 2px;margin-top: 23px; padding: 10px;
+          border: 1px solid #dddddd; float: left;margin-left: 4%;padding: 1px;">
+            <div class="header" style="width: 693px;height:40px;padding: 1px 8px 0px 19px;/* background-color:#fff; */border-top-right-radius:10px;border-top-left-radius:10px;">
+                <div class="logo" style="width:200px;height:41px; text-align:center;  padding-top:25px;" ><img src="https://apps.sstech.us/sst-logo.png" /></div>
             </div>
 
             <div class="content" style="width:700px;background-color:#FFFFFF;float:left;font-family:Tahoma, Geneva, sans-serif;text-align:center;"><div>
+                    <div class="sections-title-h4">
                     <h4>System Soft Portal Notification</h4>
+                </div>
                 </div>
                 <div>
                     <div>
-                        <div  style="text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;border:2px ridge; border-radius:5px;" >
-                            <h4 align="center">Welcome To System Soft Technologies - On Boarding Invitation</h4>
-                            <h4> We&#39;re glad to have you! &#9786; </h4>
+                        <div  style="text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt; padding:2px 10px;" >
+                           <h3 align="center" style="margin:0px; color:#636262">Welcome To System Soft Technologies - On Boarding Invitation</h3>
+                            <h5 style="color:#4CAF50; font-weight:700"> We&#39;re glad to have you! &#9786; </h5>
                             
                             <p> Fill the attached I9 and W4 forms and upload them while filling the onboarding form </p>
                             
                             <span>  Please use the below invitation link to start the on-boarding process. </span>    
                             <div th:utext="${invitationCode}" ></div>
                             
-                            <h3> This link will be valid upto 7 days </h3>
-                            <h3> Please follow the below steps to complete the onboarding form </h3>
+                         <h3 style="font-weight:700; font-size:13px; color:#d54937;"> This link will be valid upto 7 days </h3>
+                          <h3 style="font-weight:700; font-size:13px;"> Please follow the below steps to complete the onboarding form </h3>
                             <p>&nbsp;</p> 
                             <b> https://apps.sstech.us/site/office/onboarding/submit-onboarding-details.html  </b>
                             
@@ -39,7 +85,7 @@
                             <p>Please review the example I-9 form before filling out the I-9 form. If you have<u> any </u>questions about completing this document accurately, please contact me at 727 723 0801 x312.</p>
                             <p>&nbsp;</p> 
 
-                            <p><u>The I-9 form is a very important document...</u> SST requests that you either use the fields to populate the information or use a <u>black pen</u> when completing and/or signing it.<strong style="color:#A52A2A"> We do require the ORIGINAL signed document for your employee file.</strong> Please mail it to us after signing and dating. <u>The date you sign it MUST BE on or before your start date with SST.</u> </p>
+                            <p><u>The I-9 form is a very important document...</u> SST requests that you either use the fields to populate the information or use a <u>black pen</u> when completing and/or signing it.<strong style="color:#d54937"> We do require the ORIGINAL signed document for your employee file.</strong> Please mail it to us after signing and dating. <u>The date you sign it MUST BE on or before your start date with SST.</u> </p>
                             <p>&nbsp;</p>                         
 
                             <p>The <u>W4 form</u> must have line 5 filled in and marital status checked&#33; Please do not choose &#34;married but withhold at higher single rate&#34; ... To process our payroll, which is set up through ADP, we only have &#34;single&#34; or &#34;married&#34; as choices. If you&#39;d like additional monies withheld, please choose &#34;married&#34; then indicate on line 6 a specific dollar amount to be withheld. </p>
@@ -50,6 +96,7 @@
 
                             <p><strong>Please <u>send copies of all identity/work authorization documents you choose to list on your I-9. Depending on your status, commonly used documents include</u></strong></p>
 
+
                             <table border="0" cellpadding="0" cellspacing="0" style="line-height:normal;" width="100%">
                                 <tbody>
                                     <tr>
@@ -57,7 +104,7 @@
                                             <p><strong>H-1-</strong></p>									
                                         </td>
                                         <td style="padding:3px">
-                                            <p><strong style="color:#A52A2A">copies of the first and last pages of your passport and your current I-94</strong></p>
+                                            <p><strong style="color:#d54937">copies of the first and last pages of your passport and your current I-94</strong></p>
                                         </td>
                                     </tr>
                                     <tr>
@@ -66,7 +113,7 @@
                                         </td>
                                         <td style="padding:3px">
                                             <p>
-                                                <strong style="color:#A52A2A">copies of the front and back of that card. </strong>
+                                                <strong style="color:#d54937">copies of the front and back of that card. </strong>
                                             </p>
                                         </td>
                                     </tr>
@@ -76,7 +123,7 @@
                                         </td>
                                         <td style="padding:3px">
                                             <p>
-                                                <strong style="color:#A52A2A">a valid copy of the first page of your passport; OR a Photo ID, such as your Driver&#39;s license along with SSN card.</strong>
+                                                <strong style="color:#d54937">a valid copy of the first page of your passport; OR a Photo ID, such as your Driver&#39;s license along with SSN card.</strong>
                                             </p>
                                         </td>
                                     </tr>
@@ -92,6 +139,7 @@
             </div>
 
         </div>
-        <div class="footer"  style="width:700px;margin:0px; padding: 0px;height:50px;background-color:#ebebe4;margin-left:auto;margin-right:auto;text-align:center;font-family:Tahoma, Geneva, sans-serif;font-size:10px;line-height:75px;clear:both;border-bottom-right-radius:10px;border-bottom-left-radius:10px;"><p>COPYRIGHT � 2014 sstech.us - All Rights Reserved</p></div>
+        <div class="footer"  style="width:700px;margin:0px; padding: 0px;height:50px; margin-left:auto;margin-right:auto;text-align:center;font-family:Tahoma, Geneva, sans-serif;font-size:11px; padding-top:5px; clear:both;border-bottom-right-radius:10px;border-bottom-left-radius:10px;"><p>COPYRIGHT � 2014 sstech.us - All Rights Reserved</p></div>
+        </div>
     </body>
 </html>
