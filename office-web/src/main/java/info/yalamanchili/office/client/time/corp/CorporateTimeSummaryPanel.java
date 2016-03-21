@@ -78,7 +78,7 @@ public class CorporateTimeSummaryPanel extends ReadComposite {
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("employee", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("startDate", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("availablePTOHours", entity, DataType.FLOAT_FIELD);
         ChartLoader chartLoader = new ChartLoader(ChartPackage.CORECHART);
         chartLoader.loadApi(new Runnable() {
@@ -102,7 +102,7 @@ public class CorporateTimeSummaryPanel extends ReadComposite {
     @Override
     protected void addWidgets() {
         addField("employee", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("startDate", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("availablePTOHours", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(leaveRequestPolicy);
         alignFields();
