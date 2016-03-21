@@ -149,7 +149,7 @@
         <dependency>
             <groupId>de.flapdoodle.embed</groupId>
             <artifactId>de.flapdoodle.embed.mongo</artifactId>
-            <version>1.36</version>
+            <version>1.50.2</version>
         </dependency>
         <!--Monitoring-->
         <dependency>
