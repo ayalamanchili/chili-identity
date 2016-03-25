@@ -69,17 +69,16 @@ public class RatingWidget extends Composite implements ClickHandler {
         getElement().getStyle().setCursor(Cursor.POINTER);
         getElement().getStyle().setPadding(2, Unit.PX);
         naCB.addClickHandler(this);
+        for (int index = 0; index < starCount; index++) {
+            Image starImage = new Image();
+            container.add(starImage);
+        }
         if (!required) {
             panel.add(naLabel);
             naLabel.getElement().getStyle().setFloat(Style.Float.LEFT);
             panel.add(naCB);
             container.add(panel);
         }
-        for (int index = 0; index < starCount; index++) {
-            Image starImage = new Image();
-            container.add(starImage);
-        }
-
         setRating(0);
         sinkEvents(Event.ONMOUSEMOVE | Event.ONMOUSEOUT | Event.ONMOUSEDOWN);
         addDomHandler(new MouseMoveHandler() {
