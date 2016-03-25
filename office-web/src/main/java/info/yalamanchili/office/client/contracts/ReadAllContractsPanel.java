@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.client.contracts;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
@@ -14,6 +15,7 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
+import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.GenericPopup;
@@ -95,9 +97,9 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
 //        table.setText(0, 5, getKeyValue("BillRate"));
 //        table.setText(0, 6, getKeyValue("O.T.BillRate"));
         table.setText(0, 6, getKeyValue("Frequency"));
-//        table.setText(0, 8, getKeyValue("StartDate"));
+        table.setText(0, 7, getKeyValue("StartDate"));
 //        table.setText(0, 9, getKeyValue("EndDate"));
-        table.setText(0, 7, getKeyValue("Status"));
+        table.setText(0, 8, getKeyValue("Status"));
     }
 
     @Override
@@ -126,9 +128,9 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
             setEnumColumn(i, 6, entity, InvoiceFrequency.class.getSimpleName(), "invoiceFrequency");
 //            table.setText(i, 5, FormatUtils.formarCurrency(JSONUtils.toString(entity, "billingRate")));
 //            table.setText(i, 6, FormatUtils.formarCurrency(JSONUtils.toString(entity, "overTimeBillingRate")));
-//            table.setText(i, 8, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
+           table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
 //            table.setText(i, 9, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
-            setEnumColumn(i, 7, entity, ClientInformationStatus.class.getSimpleName(), "status");
+            setEnumColumn(i, 8, entity, ClientInformationStatus.class.getSimpleName(), "status");
 
         }
     }
