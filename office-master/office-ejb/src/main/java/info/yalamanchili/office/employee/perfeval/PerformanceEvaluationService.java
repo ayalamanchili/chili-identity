@@ -313,6 +313,9 @@ public class PerformanceEvaluationService {
             data.getData().put("m-q" + i + "-questionInfo", qc.getQuestionInfo());
             if (qc.getRating() != null) {
                 data.getData().put("m-q" + i + "-rating", qc.getRating().toString());
+            } else {
+                data.getData().put("m-q" + i + "-rating", "Not Applicable");
+
             }
             if (!Strings.isNullOrEmpty(qc.getComment())) {
                 data.getData().put("m-q" + i + "-comment", "Comments: " + qc.getComment());
