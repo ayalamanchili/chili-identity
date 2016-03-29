@@ -144,7 +144,7 @@ public class ReadAllProjectsPanel extends CRUDReadAllComposite {
 
     @Override
     protected void configureCreateButton() {
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_SYSTEM_AND_NETWORK_ADMIN, ROLE.ROLE_CONTRACTS_ADMIN)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONTRACTS_ADMIN)) {
             createButton.setText("Create Project");
             createButton.setVisible(true);
         } else {
@@ -154,7 +154,7 @@ public class ReadAllProjectsPanel extends CRUDReadAllComposite {
 
     @Override
     protected void createButtonClicked() {
-            TabPanel.instance().adminPanel.entityPanel.clear();
-            TabPanel.instance().adminPanel.entityPanel.add(new info.yalamanchili.office.client.profile.employee.CreateProjectPanel(CreateComposite.CreateCompositeType.CREATE));
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new info.yalamanchili.office.client.profile.employee.CreateProjectPanel(CreateComposite.CreateCompositeType.CREATE));
     }
 }
