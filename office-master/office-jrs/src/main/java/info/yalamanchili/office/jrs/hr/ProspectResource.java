@@ -18,7 +18,6 @@ import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.drive.FileDao;
 import info.yalamanchili.office.dao.hr.ProspectDao;
-import info.yalamanchili.office.dao.hr.ProspectGraphDto;
 import info.yalamanchili.office.dao.hr.ProspectReportDto;
 import info.yalamanchili.office.dao.invite.InviteCodeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
@@ -29,13 +28,11 @@ import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.prospect.ProspectService;
-import info.yalamanchili.office.security.AccessCheck;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import javax.persistence.Query;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -112,7 +109,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     @PUT
     @Path("/update")
     @Validate
-    @PreAuthorize("hasAnyRole('ROLE_PROSPECTS_MANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_PROSPECTS_MANAGER', 'ROLE_RECRUITER', 'ROLE_H1B_IMMIGRATION', 'ROLE_GC_IMMIGRATION')")
     @CacheEvict(value = OfficeCacheKeys.PROSPECT, allEntries = true)
     public ProspectDto update(ProspectDto prospect) {
         return prospectService.update(prospect);
@@ -149,7 +146,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     @GET
     @Override
     @Path("/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_PROSPECTS_MANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_PROSPECTS_MANAGER', 'ROLE_RECRUITER', 'ROLE_H1B_IMMIGRATION', 'ROLE_GC_IMMIGRATION')")
     public ProspectDto read(@PathParam("id") Long id) {
         return prospectService.read(id);
     }

@@ -15,6 +15,7 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.admin.hr.ProspectsSidePanel;
 import info.yalamanchili.office.client.admin.hr.ReadAllProspectsPanel;
+import info.yalamanchili.office.client.admin.hr.SearchProspectsPanel;
 import info.yalamanchili.office.client.contacttype.ReadAllCompanyContactTypePanel;
 import info.yalamanchili.office.client.onboarding.ReadAllEmployeeOnBoardingPanel;
 import info.yalamanchili.office.client.profile.addresstype.ReadAllAddressTypePanel;
@@ -31,7 +32,7 @@ public class MyOfficeMenu extends CMenuBar {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ON_BOARDING_MGR, ROLE.ROLE_HR_ADMINSTRATION)) {
             addMenuItem("OnBoarding", "OnBoarding", onBoardingInfo);
         }
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_PROSPECTS_MANAGER)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_PROSPECTS_MANAGER, ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_GC_IMMIGRATION, ROLE.ROLE_RECRUITER)) {
             addMenuItem("Prospects", "Prospects", prospectsMaintainenceCmd);
         }
         if (Auth.isAdmin()) {
@@ -58,7 +59,7 @@ public class MyOfficeMenu extends CMenuBar {
         TabPanel.instance().getMyOfficePanel().entityPanel.clear();
         TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
         TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllPhoneTypePanel());
-        
+
     };
     static Command addressTypesMaintainenceCmd = () -> {
         TabPanel.instance().getMyOfficePanel().entityPanel.clear();
@@ -89,7 +90,11 @@ public class MyOfficeMenu extends CMenuBar {
     static Command prospectsMaintainenceCmd = () -> {
         TabPanel.instance().getMyOfficePanel().entityPanel.clear();
         TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
-        TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllProspectsPanel());
-        TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new ProspectsSidePanel());
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_PROSPECTS_MANAGER)) {
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllProspectsPanel());
+            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new ProspectsSidePanel());
+        } else if (Auth.hasAnyOfRoles(ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_GC_IMMIGRATION, ROLE.ROLE_RECRUITER)) {
+            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new SearchProspectsPanel());
+        }
     };
 }

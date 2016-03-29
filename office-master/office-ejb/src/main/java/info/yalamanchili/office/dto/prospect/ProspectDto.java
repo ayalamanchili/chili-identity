@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.dto.prospect;
 
+import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.hr.PetitionFor;
 import info.yalamanchili.office.entity.hr.PlacedBy;
 import info.yalamanchili.office.entity.hr.ProspectStatus;
@@ -25,6 +26,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Temporal;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.dozer.Mapper;
@@ -47,6 +49,8 @@ public class ProspectDto implements Serializable {
     @NotEmpty(message = "{lastName.not.empty.msg}")
     protected String lastName;
 
+    protected String middleInitial;
+
     @Email(message = "Enter a valid email address")
     @NotEmpty(message = "{prospect.email.not.empty.msg}")
     protected String email;
@@ -68,17 +72,17 @@ public class ProspectDto implements Serializable {
     protected String screenedBy;
     @NotEmpty(message = "{referredBy.not.empty.msg}")
     protected String referredBy;
-    
+
     private Employee assignedTo;
-    
+
     private Employee caseManager;
-    
+
     protected Set<Resume> resumeURL;
 
     protected Date dateOfBirth;
 
     protected String comment;
-    
+
     protected String bpmProcessId;
 
     @Valid
@@ -108,6 +112,7 @@ public class ProspectDto implements Serializable {
     protected String placedby;
     protected String petitionFor;
     protected String trfEmptype;
+    protected Company company;
 
     public String getPlacedby() {
         return placedby;
@@ -258,7 +263,7 @@ public class ProspectDto implements Serializable {
     public void setResumeURL(Set<Resume> resumeURL) {
         this.resumeURL = resumeURL;
     }
-    
+
     public void addResume(Resume entity) {
         if (entity == null) {
             return;
@@ -354,6 +359,23 @@ public class ProspectDto implements Serializable {
         this.bpmProcessId = bpmProcessId;
     }
 
+    public String getMiddleInitial() {
+        return middleInitial;
+    }
+
+    public void setMiddleInitial(String middleInitial) {
+        this.middleInitial = middleInitial;
+    }
+
+    @XmlElement
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
     @Override
     public String toString() {
         return "ProspectDto{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", phoneNumber=" + phoneNumber + ", sex=" + sex + ", startDate=" + startDate + ", screenedBy=" + screenedBy + ", referredBy=" + referredBy + ", dateOfBirth=" + dateOfBirth + ", address=" + address + ", status=" + status + ", processDocSentDate=" + processDocSentDate + '}';
@@ -394,6 +416,9 @@ public class ProspectDto implements Serializable {
         if (entity.getPetitionFiledFor() != null) {
             prospectContact.setPetitionFiledFor(entity.getPetitionFiledFor());
             prospectContact.setPetitionFor(entity.getPetitionFiledFor().name());
+        }
+        if (entity.getCompany() != null) {
+            prospectContact.setCompany(entity.getCompany());
         }
         prospectContact.setId(entity.getId());
         return prospectContact;

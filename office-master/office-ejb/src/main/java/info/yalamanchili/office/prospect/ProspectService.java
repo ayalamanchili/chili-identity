@@ -9,6 +9,7 @@
 package info.yalamanchili.office.prospect;
 
 import com.google.common.base.Strings;
+import info.chili.commons.DateUtils;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import static info.yalamanchili.office.bpm.prospect.ProspectEmailEscalation.PROSPECT_ESCALATION_NOTIFICATION_GROUP;
@@ -31,8 +32,10 @@ import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.jms.MessagingService;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.dozer.Mapper;
@@ -73,6 +76,11 @@ public class ProspectService {
         Contact contact = new Contact();
         contact.setFirstName(dto.getFirstName());
         contact.setLastName(dto.getLastName());
+        if (dto.getMiddleInitial() != null) {
+            contact.setMiddleInitial(dto.getMiddleInitial());
+        } else {
+            contact.setMiddleInitial(null);
+        }
         contact.setDateOfBirth(dto.getDateOfBirth());
         contact.setSex(dto.getSex());
 
@@ -120,11 +128,15 @@ public class ProspectService {
             if (dto.getPetitionFiledFor() != null) {
                 entity.setPetitionFiledFor(dto.getPetitionFiledFor());
             }
+            if (dto.getCompany() != null) {
+                entity.setCompany(dto.getCompany());
+            }
         } else {
             entity.setDateOfJoining(null);
             entity.setPlacedBy(null);
             entity.setTrfEmpType(null);
             entity.setPetitionFiledFor(null);
+            entity.setCompany(null);
         }
         for (Resume resume : entity.getResumeURL()) {
             if (!Strings.isNullOrEmpty(resume.getFileURL())) {
@@ -135,9 +147,8 @@ public class ProspectService {
         entity = em.merge(entity);
         CommentDao.instance().addComment(dto.getComment(), entity);
         dto.setId(entity.getId());
-        entity.setBpmProcessId(ProspectProcessBean.instance().startNewProspectProcess(entity, OfficeSecurityService.instance().getCurrentUser()));
+        ProspectProcessBean.instance().notifyCaseManager(entity);
         return mapper.map(entity, ProspectDto.class);
-        // return dto;
     }
 
     public ProspectDto read(Long id) {
@@ -194,6 +205,7 @@ public class ProspectService {
         if (dto.getStatus() != null) {
             if (entity.getStatus() != dto.getStatus()) {
                 entity.setStatus(dto.getStatus());
+                ProspectProcessBean.instance().notifyCaseManager(entity);
                 sendProspectStatusNotification(entity);
             }
         } else {
@@ -203,6 +215,11 @@ public class ProspectService {
         Contact contact = entity.getContact();
         contact.setFirstName(dto.getFirstName());
         contact.setLastName(dto.getLastName());
+        if (dto.getMiddleInitial() != null) {
+            contact.setMiddleInitial(dto.getMiddleInitial());
+        } else {
+            contact.setMiddleInitial(null);
+        }
         contact.setDateOfBirth(dto.getDateOfBirth());
         contact.setSex(dto.getSex());
         entity.setReferredBy(dto.getReferredBy());
@@ -228,15 +245,22 @@ public class ProspectService {
             } else {
                 entity.setPetitionFiledFor(null);
             }
+            if (dto.getCompany() != null) {
+                entity.setCompany(dto.getCompany());
+            } else {
+                entity.setCompany(null);
+            }
         } else {
             dto.setDateOfJoining(null);
             dto.setTrfEmpType(null);
             dto.setPlacedBy(null);
             dto.setPetitionFiledFor(null);
+            dto.setCompany(null);
             entity.setDateOfJoining(null);
             entity.setTrfEmpType(null);
             entity.setPlacedBy(null);
             entity.setPetitionFiledFor(null);
+            entity.setCompany(null);
         }
         if (dto.getComment() != null) {
             CommentDao.instance().addComment(dto.getComment(), entity);
@@ -311,12 +335,14 @@ public class ProspectService {
         entity = prospectDao.findById(entity.getId());
         return mapper.map(entity, ProspectDto.class);
     }
-    
+
     public void sendProspectStatusNotification(Prospect prospect) {
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
         info.chili.email.Email email = new info.chili.email.Email();
         email.addTo(EmployeeDao.instance().findById(prospect.getManager()).getPrimaryEmail().getEmail());
-        email.addTo(EmployeeDao.instance().findById(prospect.getAssigned()).getPrimaryEmail().getEmail());
+        if (prospect.getAssigned() != null) {
+            email.addTo(EmployeeDao.instance().findById(prospect.getAssigned()).getPrimaryEmail().getEmail());
+        }
         NotificationGroup ng = NotificationGroupDao.instance().findByName(PROSPECT_ESCALATION_NOTIFICATION_GROUP);
         if (ng != null) {
             for (Employee employee : ng.getEmployees()) {
@@ -329,9 +355,25 @@ public class ProspectService {
         messageText = messageText.concat("\n Prospect     : " + prospect.getContact().getFirstName() + " " + prospect.getContact().getLastName());
         messageText = messageText.concat("\n Status       : " + prospect.getStatus());
         messageText = messageText.concat("\n Case Manager : " + EmployeeDao.instance().findById(prospect.getManager()).getFirstName());
-        messageText = messageText.concat("\n Assigned To  : " + EmployeeDao.instance().findById(prospect.getAssigned()).getFirstName());
+        if (prospect.getAssigned() != null) {
+            messageText = messageText.concat("\n Assigned To  : " + EmployeeDao.instance().findById(prospect.getAssigned()).getFirstName());
+        }
         messageText = messageText.concat("\n Updated_By   : " + emp.getFirstName() + " " + emp.getLastName());
         email.setBody(messageText);
         MessagingService.instance().sendEmail(email);
+    }
+
+    public void sendProspectStatusNotChangeNotification() {
+        List<Prospect> prospects = new ArrayList();
+        prospects = prospectDao.instance().query(0, 100000);
+        if (prospects.size() > 0) {
+            for (Prospect prospect : prospects) {
+                if (DateUtils.differenceInDays(prospect.getStartDate(), new Date()) == 2) {
+
+                } else if (DateUtils.differenceInDays(prospect.getStartDate(), new Date()) == 3) {
+
+                }
+            }
+        }
     }
 }

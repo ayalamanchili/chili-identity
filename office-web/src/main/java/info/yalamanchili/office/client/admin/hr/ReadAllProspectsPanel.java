@@ -9,7 +9,6 @@
 package info.yalamanchili.office.client.admin.hr;
 
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -21,6 +20,8 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.onboarding.InitiateOnBoardingPanel;
@@ -161,8 +162,12 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
 
     @Override
     protected void configureCreateButton() {
-        createButton.setText("Create Prospect");
-        createButton.setVisible(true);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_PROSPECTS_MANAGER)) {
+            createButton.setText("Create Prospect");
+            createButton.setVisible(true);
+        } else {
+            createButton.setVisible(false);
+        }
     }
 
     @Override
@@ -173,7 +178,16 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE);
+        String status = JSONUtils.toString(entity, "status");
+        if ((ProspectStatus.IN_PROGRESS.name().equals(status)) && Auth.hasAnyOfRoles(ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_GC_IMMIGRATION)) {
+            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE);
+        } else if ((ProspectStatus.RECRUITING.name().equals(status) || ProspectStatus.BENCH.name().equals(status)) && Auth.hasAnyOfRoles(ROLE.ROLE_RECRUITER)) {
+            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE);
+        } else if (Auth.hasAnyOfRoles(ROLE.ROLE_PROSPECTS_MANAGER)) {
+            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE);
+        } else if (Auth.hasAnyOfRoles(ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_GC_IMMIGRATION, ROLE.ROLE_RECRUITER)) {
+            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ);
+        }
     }
 
     @Override
@@ -190,7 +204,6 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
 
     @Override
     protected boolean enablePersistedQuickView() {
-        return true;
+        return false;
     }
-
 }

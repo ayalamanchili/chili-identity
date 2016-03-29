@@ -16,7 +16,7 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
-import info.chili.gwt.date.DateUtils;
+import static info.chili.gwt.date.DateUtils.toDate;
 import info.chili.gwt.fields.FileField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
@@ -35,7 +35,7 @@ public class ReadAllResumePanel extends CRUDReadAllComposite {
 
     private static Logger logger = Logger.getLogger(ReadAllResumePanel.class.getName());
     public static ReadAllResumePanel instance;
-    
+
     public ReadAllResumePanel(JSONArray array) {
         initTable("Resume", array, OfficeWelcome.constants);
     }
@@ -64,7 +64,7 @@ public class ReadAllResumePanel extends CRUDReadAllComposite {
             String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "fileURL") + "&entityId=" + JSONUtils.toString(entity, "id");
             FileField fileField = new FileField(fileURL);
             table.setWidget(i, 2, fileField);
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "updatedTS"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 3, DateTimeFormat.getFormat("MM/dd/yyyy").format(toDate(entity.get("updatedTS").isString().stringValue()), ChiliClientConfig.instance().getTimeZone()));
         }
     }
 
@@ -82,11 +82,11 @@ public class ReadAllResumePanel extends CRUDReadAllComposite {
         if (Window.confirm("Are you sure? All Files details will be deleted")) {
             HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
-                @Override
-                public void onResponse(String arg0) {
-                    postDeleteSuccess();
-                }
-            });
+                        @Override
+                        public void onResponse(String arg0) {
+                            postDeleteSuccess();
+                        }
+                    });
         }
     }
 
@@ -105,5 +105,4 @@ public class ReadAllResumePanel extends CRUDReadAllComposite {
     private String getDeleteURL(String entityId) {
         return OfficeWelcome.instance().constants.root_url() + "resume/delete/" + entityId;
     }
-    
 }

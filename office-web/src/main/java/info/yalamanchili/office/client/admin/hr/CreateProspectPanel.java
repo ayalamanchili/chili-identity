@@ -64,6 +64,7 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         JSONObject entity = new JSONObject();
         JSONObject address = new JSONObject();
         assignEntityValueFromField("firstName", entity);
+        assignEntityValueFromField("middleInitial", entity);
         assignEntityValueFromField("lastName", entity);
         assignEntityValueFromField("referredBy", entity);
         assignEntityValueFromField("email", entity);
@@ -223,6 +224,7 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
     @Override
     protected void addWidgets() {
         addField("firstName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("middleInitial", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("lastName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("referredBy", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("email", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -273,6 +275,10 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
     protected boolean processClientSideValidations(JSONObject entity) {
         if (entity.get("caseManager") == null) {
             caseManagerSB.setMessage("Case Manager Can not be null");
+            return false;
+        }
+        if (entity.get("comment") == null) {
+            fields.get("comment").setMessage("Comments Can not be null");
             return false;
         }
         return true;

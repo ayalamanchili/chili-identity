@@ -9,6 +9,7 @@
 package info.yalamanchili.office.entity.hr;
 
 import info.chili.jpa.AbstractEntity;
+import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.profile.Contact;
 import java.util.Date;
 import java.util.HashSet;
@@ -55,9 +56,9 @@ public class Prospect extends AbstractEntity {
     protected String referredBy;
 
     protected Long assigned;
-    
+
     protected Long manager;
-    
+
     protected String bpmProcessId;
 
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -80,6 +81,10 @@ public class Prospect extends AbstractEntity {
 
     @OneToMany(mappedBy = "prospect", cascade = CascadeType.ALL)
     protected Set<Resume> resumeURL;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @ForeignKey(name = "FK_Company_Prospect")
+    protected Company company;
 
     public void setContact(Contact contact) {
         this.contact = contact;
@@ -177,7 +182,7 @@ public class Prospect extends AbstractEntity {
     public void setManager(Long manager) {
         this.manager = manager;
     }
-    
+
     @XmlTransient
     public Set<Resume> getResumeURL() {
         if (this.resumeURL == null) {
@@ -204,6 +209,15 @@ public class Prospect extends AbstractEntity {
 
     public void setBpmProcessId(String bpmProcessId) {
         this.bpmProcessId = bpmProcessId;
+    }
+
+    @XmlElement
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
     @Override
