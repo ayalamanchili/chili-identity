@@ -1,8 +1,11 @@
 /**
  * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
  */
-package info.yalamanchili.office.config;
+package info.yalamanchili.office.server;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class OfficeWebConfiguration {
 
     protected String officeServicesRootURL = "http://localhost:9080/";

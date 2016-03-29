@@ -8,28 +8,18 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
     
-    <!-- this is to support getting access to session scoped httpservice in file service -->
     <listener>
-        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
-
+    
     <!-- Reroute google rpc calls through a spring dispatcherservlet -->
     <servlet>
         <servlet-name>dispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-
-        <!-- We're using an annotation based web application context -->
-        <init-param>
-            <param-name>contextClass</param-name>
-            <param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
-        </init-param>
-        <!-- The spring @Configuration can be found here -->
-        <!-- TODO chage this to class path file -->
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>info.yalamanchili.office.server.config.OfficeSpringConfiguration</param-value>
+            <param-value>/WEB-INF/applicationContext.xml</param-value>
         </init-param>
-
     </servlet>
 
     <servlet-mapping>
