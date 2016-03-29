@@ -50,7 +50,7 @@ public class ProjectResource extends CRUDResource<Project> {
     public CRUDDao getDao() {
         return projectDao;
     }
-    
+
     @GET
     @Path("/dropdown/{start}/{limit}")
     @Transactional(propagation = Propagation.NEVER)
@@ -59,7 +59,7 @@ public class ProjectResource extends CRUDResource<Project> {
             @QueryParam("column") List<String> columns) {
         return super.getDropDown(start, limit, columns);
     }
-    
+
     @GET
     @Path("/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RELATIONSHIP')")
@@ -94,6 +94,15 @@ public class ProjectResource extends CRUDResource<Project> {
         super.delete(id);
     }
 
+    @GET
+    @Path("/search/{searchText}/{start}/{limit}")
+    @Transactional(propagation = Propagation.NEVER)
+    @Override
+    public List<Project> search(@PathParam("searchText") String searchText, @PathParam("start") int start,
+            @PathParam("limit") int limit, @QueryParam("column") List<String> columns) {
+        return getDao().sqlSearch(searchText, start, limit, columns, false);
+    }
+
     @PUT
     @Path("/search-project/{start}/{limit}")
     @Transactional(readOnly = true)
@@ -107,10 +116,10 @@ public class ProjectResource extends CRUDResource<Project> {
         }
         return res;
     }
-    
+
     @XmlRootElement
     @XmlType
-    public static class ProjectTable implements java.io.Serializable{
+    public static class ProjectTable implements java.io.Serializable {
 
         protected Long size;
         protected List<Project> entities;
