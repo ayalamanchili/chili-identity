@@ -16,7 +16,6 @@ import info.yalamanchili.office.client.admin.bulkimport.ReadAllBulkImportsPanel;
 import info.yalamanchili.office.client.admin.notificationgroup.ReadAllNotificationGroupsPanel;
 import info.yalamanchili.office.client.admin.client.ClientSidePanel;
 import info.yalamanchili.office.client.admin.client.ReadAllClientsPanel;
-import info.yalamanchili.office.client.admin.invoice.ReadAllInvoicePanel;
 import info.yalamanchili.office.client.admin.project.ReadAllProjectsPanel;
 import info.yalamanchili.office.client.admin.project.SearchProjectsPanel;
 import info.yalamanchili.office.client.admin.sow.ReadAllSOWPanel;
@@ -81,7 +80,6 @@ public class AdminMenu extends CMenuBar {
             TabPanel.instance().getAdminPanel().sidePanelTop.clear();
             TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllExternalRefPanel());
             TabPanel.instance().getAdminPanel().sidePanelTop.add(new ExternalSidePanel());
-
         }
     };
     static Command projectsMaintainenceCmd = new Command() {
