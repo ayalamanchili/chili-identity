@@ -13,6 +13,7 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.admin.project.ReadAllProjectsPanel;
 import java.util.logging.Logger;
 
 /**
@@ -60,8 +61,8 @@ public class CreateProjectPanel extends CreateComposite {
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Added Project");
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmployeesPanel());
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllProjectsPanel());
     }
 
     @Override
@@ -89,5 +90,4 @@ public class CreateProjectPanel extends CreateComposite {
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "admin/project/";
     }
-
 }
