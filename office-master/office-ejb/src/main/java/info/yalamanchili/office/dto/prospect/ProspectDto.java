@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.dto.prospect;
 
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.hr.PetitionFor;
 import info.yalamanchili.office.entity.hr.PlacedBy;
@@ -113,6 +114,7 @@ public class ProspectDto implements Serializable {
     protected String petitionFor;
     protected String trfEmptype;
     protected Company company;
+    protected String manager;
 
     public String getPlacedby() {
         return placedby;
@@ -376,6 +378,14 @@ public class ProspectDto implements Serializable {
         this.company = company;
     }
 
+    public String getManager() {
+        return manager;
+    }
+
+    public void setManager(String manager) {
+        this.manager = manager;
+    }
+
     @Override
     public String toString() {
         return "ProspectDto{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", phoneNumber=" + phoneNumber + ", sex=" + sex + ", startDate=" + startDate + ", screenedBy=" + screenedBy + ", referredBy=" + referredBy + ", dateOfBirth=" + dateOfBirth + ", address=" + address + ", status=" + status + ", processDocSentDate=" + processDocSentDate + '}';
@@ -384,6 +394,8 @@ public class ProspectDto implements Serializable {
     public static ProspectDto map(Mapper mapper, info.yalamanchili.office.entity.hr.Prospect entity) {
         ProspectDto prospectContact = mapper.map(entity, ProspectDto.class);
         prospectContact.setEmployee(entity.getContact().getFirstName() + " " + entity.getContact().getLastName());
+        Employee manager = EmployeeDao.instance().findById(entity.getManager());
+        prospectContact.setManager(manager.getFirstName()+" "+manager.getLastName());
         mapper.map(entity.getContact(), prospectContact);
         if (entity.getContact().getPhones().size() > 0) {
             prospectContact.setPhoneNumber(entity.getContact().getPhones().get(0).getPhoneNumber());
