@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
-    
+
     @Override
     public void processTask(DelegateTask task) {
         super.processTask(task);
@@ -37,7 +37,7 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
             clientInforamtionTaskCompleted(task);
         }
     }
-    
+
     protected void clientInforamtionTaskCompleted(DelegateTask task) {
         ClientInformation entity = getRequestFromTask(task);
         if (entity == null) {
@@ -53,7 +53,7 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
         if (task.getTaskDefinitionKey().equals("newClientInfoInvoicingAndBillingTask")) {
             if (status.equalsIgnoreCase("approved")) {
                 entity.setStatus(ClientInformationStatus.PENDING_HR_VERIFICATION);
-                sendNewClieniInformationNotification(entity, itemno);
+                sendNewClieniInformationNotification(entity, itemno, task);
             } else {
                 entity.setStatus(ClientInformationStatus.CANCELED);
             }
@@ -67,15 +67,15 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
         }
         ClientInformationDao.instance().save(entity);
     }
-    
+
     @Async
     @Transactional
-    public void sendNewClieniInformationNotification(ClientInformation ci, String itemNo) {
+    public void sendNewClieniInformationNotification(ClientInformation ci, String itemNo, DelegateTask task) {
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
         Email email = new Email();
         email.setTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_BILLING_AND_INVOICING.name()));
         email.setHtml(Boolean.TRUE);
-        email.setSubject("New File/ project   : " + ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
+        email.setSubject("New File/Project   : " + ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
         String messageText = " Client Information : ";
         messageText = messageText.concat(" \n  Client :  " + ci.getClient().getName());
         messageText = messageText.concat("\n  Item_No : " + itemNo);
@@ -90,10 +90,16 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
         }
         messageText = messageText.concat("\n Project Start Date :" + ci.getStartDate());
         messageText = messageText.concat("\n  Updated_By :" + emp.getFirstName() + " " + emp.getLastName());
+        if (task.getExecution().getVariable("specialInvoiceInstructions") != null) {
+            messageText = messageText.concat("\n Special Invoice Instructions :" + task.getExecution().getVariable("specialInvoiceInstructions"));
+        }
+        if (task.getExecution().getVariable("accountNotes") != null) {
+            messageText = messageText.concat("\n Account Notes :" + task.getExecution().getVariable("accountNotes"));
+        }
         email.setBody(messageText);
         MessagingService.instance().sendEmail(email);
     }
-    
+
     protected ClientInformation getRequestFromTask(DelegateTask task) {
         Long entityId = (Long) task.getExecution().getVariable("entityId");
         if (entityId != null) {
@@ -101,5 +107,5 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
         }
         return null;
     }
-    
+
 }
