@@ -82,7 +82,7 @@ public class Prospect extends AbstractEntity {
     @OneToMany(mappedBy = "prospect", cascade = CascadeType.ALL)
     protected Set<Resume> resumeURL;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @ForeignKey(name = "FK_Company_Prospect")
     protected Company company;
 

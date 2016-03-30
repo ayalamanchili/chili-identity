@@ -268,7 +268,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
             dtos.add(pdto);
         }
         table.setEntities(dtos);
-        String[] columnOrder = new String[]{"employee", "screenedBy", "petitionFor", "placedby", "trfEmptype", "dateOfJoining", "referredBy"};
+        String[] columnOrder = new String[]{"employee", "email", "phoneNumber", "screenedBy", "manager", "petitionFor", "placedby", "trfEmptype", "dateOfJoining", "referredBy", "startDate"};
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
         String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Prospects Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());

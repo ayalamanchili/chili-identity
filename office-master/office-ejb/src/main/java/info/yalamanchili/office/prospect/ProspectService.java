@@ -12,16 +12,20 @@ import com.google.common.base.Strings;
 import info.chili.commons.DateUtils;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.OfficeRoles;
 import static info.yalamanchili.office.bpm.prospect.ProspectEmailEscalation.PROSPECT_ESCALATION_NOTIFICATION_GROUP;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.hr.ProspectDao;
 import info.yalamanchili.office.dao.hr.ResumeDao;
 import info.yalamanchili.office.dao.message.NotificationGroupDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
+import info.yalamanchili.office.dao.profile.CompanyDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.prospect.ProspectDto;
+import info.yalamanchili.office.email.MailUtils;
+import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.hr.Prospect;
 import info.yalamanchili.office.entity.hr.ProspectStatus;
 import info.yalamanchili.office.entity.hr.Resume;
@@ -245,8 +249,9 @@ public class ProspectService {
             } else {
                 entity.setPetitionFiledFor(null);
             }
+            Company company = CompanyDao.instance().findById(dto.getCompany().getId());
             if (dto.getCompany() != null) {
-                entity.setCompany(dto.getCompany());
+                entity.setCompany(company);
             } else {
                 entity.setCompany(null);
             }
@@ -348,6 +353,9 @@ public class ProspectService {
             for (Employee employee : ng.getEmployees()) {
                 email.addTo(employee.getPrimaryEmail().getEmail());
             }
+        }
+        if(prospect.getStatus().equals(ProspectStatus.CLOSED_WON)){
+            email.addTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_HR.name()));
         }
         email.setHtml(Boolean.TRUE);
         email.setSubject("Prospect Status change for : " + prospect.getContact().getFirstName() + " " + prospect.getContact().getLastName() + "; " + "Status: " + prospect.getStatus());
