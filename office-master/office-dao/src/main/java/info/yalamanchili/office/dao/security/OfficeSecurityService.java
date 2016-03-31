@@ -28,7 +28,6 @@ import java.util.logging.Logger;
 import javax.persistence.*;
 import org.activiti.engine.RuntimeService;
 import org.bouncycastle.jce.X509Principal;
-import org.dozer.Mapper;
 import org.jasypt.digest.StandardStringDigester;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -48,11 +47,6 @@ public class OfficeSecurityService {
     private final static Logger logger = Logger.getLogger(OfficeSecurityService.class.getName());
     @PersistenceContext
     protected EntityManager em;
-
-//TODO move to chili-security OfficeSecurityService
-    public CUser createCuser(CUser user) {
-        return em.merge(user);
-    }
 
     @Autowired
     protected RuntimeService bpmRuntimeService;

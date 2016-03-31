@@ -12,6 +12,7 @@ import info.chili.commons.EntityQueryUtils;
 import static info.chili.docs.ExcelUtils.getCellNumericValue;
 import static info.chili.docs.ExcelUtils.getCellStringOrNumericValue;
 import static info.chili.docs.ExcelUtils.getCellStringValue;
+import info.chili.identity.jrsc.IdentityServiceClient;
 import info.chili.security.domain.CRole;
 import info.chili.security.domain.CUser;
 import info.chili.spring.SpringContext;
@@ -245,7 +246,7 @@ public class OnBoardingDataTool {
                     user.setPasswordHash(generatepassword());
                     user.setEnabled(true);
                     user.addRole((CRole) EntityQueryUtils.findEntity(em, CRole.class, "rolename", OfficeRoles.OfficeRole.ROLE_USER.name()));
-                    user = OfficeSecurityService.instance().createCuser(user);
+                    user = IdentityServiceClient.instance().createUser(user);
                     emp.setUser(user);
                 }
             }
@@ -264,8 +265,6 @@ public class OnBoardingDataTool {
         }
         System.out.println("Total Consultants Records Written :::<<<>>>>::: " + i);
     }
-
-    
 
     protected String getDataFileUrl() {
         return OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "BIS_ConsultantsData.xlsx";

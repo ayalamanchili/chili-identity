@@ -8,6 +8,7 @@
 package info.yalamanchili.office.profile;
 
 import info.chili.commons.EntityQueryUtils;
+import info.chili.identity.jrsc.IdentityServiceClient;
 import info.chili.security.SecurityUtils;
 import info.chili.security.dao.CRoleDao;
 import info.chili.security.domain.CRole;
@@ -123,11 +124,11 @@ public class EmployeeService {
             startNewCorporateEmployeeProcess(employee);
         }
     }
-    
-    protected void startNewCorporateEmployeeProcess(Employee employee){
-         Map<String, Object> obj = new HashMap<>();
-            obj.put("employee", employee);
-            OfficeBPMService.instance().startProcess("new_corp_employee_process", obj);
+
+    protected void startNewCorporateEmployeeProcess(Employee employee) {
+        Map<String, Object> obj = new HashMap<>();
+        obj.put("employee", employee);
+        OfficeBPMService.instance().startProcess("new_corp_employee_process", obj);
     }
 
     public Employee createCUser(Employee employee) {
@@ -144,7 +145,7 @@ public class EmployeeService {
                 user.addRole(CRoleDao.instance().findRoleByName(OfficeRole.ROLE_CORPORATE_EMPLOYEE.name()));
             }
             user.addRole((CRole) EntityQueryUtils.findEntity(em, CRole.class, "rolename", OfficeRole.ROLE_USER.name()));
-            user = OfficeSecurityService.instance().createCuser(user);
+            user = IdentityServiceClient.instance().createUser(user);
             employee.setUser(user);
         }
         employee.setEmployeeId(username);
