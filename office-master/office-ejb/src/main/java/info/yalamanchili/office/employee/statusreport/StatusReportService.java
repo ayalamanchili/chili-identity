@@ -123,8 +123,7 @@ public class StatusReportService {
         }
         if (preparedBy.getCompany() != null && preparedBy.getCompany().getName().equals(Company.TECHPILLARS)) {
             data.getData().put("title", "Monthly Task Report by " + prepareByStr + " (for Tech Pillars) ");
-        }
-        if (preparedBy.getCompany() != null && preparedBy.getCompany().getName().equals(Company.CGS_INC)) {
+        } else if (preparedBy.getCompany() != null && preparedBy.getCompany().getName().equals(Company.CGS_INC)) {
             data.getData().put("title", "Monthly Task Report by " + prepareByStr + " (for CGS INC) ");
         } else {
             data.getData().put("title", "Monthly Task Report by " + prepareByStr + " (for System Soft Technologies LLC) ");
@@ -134,8 +133,7 @@ public class StatusReportService {
         data.getData().put("projectDuration", new SimpleDateFormat("MM-dd-yyyy").format(entity.getReportStartDate()) + " - " + new SimpleDateFormat("MM-dd-yyyy").format(entity.getReportEndDate()));
         if (preparedBy.getCompany() != null && preparedBy.getCompany().getName().equals(Company.TECHPILLARS)) {
             data.getData().put("distribution", "Tech Pillars");
-        }
-        if (preparedBy.getCompany() != null && preparedBy.getCompany().getName().equals(Company.CGS_INC)) {
+        } else if (preparedBy.getCompany() != null && preparedBy.getCompany().getName().equals(Company.CGS_INC)) {
             data.getData().put("distribution", "CGS INC");
         } else {
             data.getData().put("distribution", "System Soft Technologies LLC");
