@@ -55,7 +55,7 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
     private static Logger logger = Logger.getLogger(CreateProspectPanel.class.getName());
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "assignedTo", "Employee", false, false, Alignment.HORIZONTAL);
     SuggestBox caseManagerSB = new SuggestBox(OfficeWelcome.constants, "caseManager", "Employee", false, true, Alignment.HORIZONTAL);
-    DisclosurePanel notifyOtherL = new DisclosurePanel("Notity Employees");
+    DisclosurePanel notifyOtherL = new DisclosurePanel("Notify Employees");
     FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "Prospect", "resumeURL", "Prospect/resumeURL", false, true) {
         @Override
         public void onUploadComplete(String res) {
