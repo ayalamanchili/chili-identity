@@ -309,9 +309,12 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
 
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
-        if (entity.get("caseManager") == null) {
-            caseManagerSB.setMessage("Case Manager Can not be null");
-            return false;
+        if (entity.get("caseManager") != null) {
+            JSONObject caseManager = entity.get("caseManager").isObject();
+            if (caseManager.containsKey("firstName") && (caseManager.get("firstName") == null)) {
+                caseManagerSB.setMessage("Case Manager Can not be null");
+                return false;
+            }
         }
         if (entity.get("comment") == null) {
             fields.get("comment").setMessage("Comments Can not be null");
