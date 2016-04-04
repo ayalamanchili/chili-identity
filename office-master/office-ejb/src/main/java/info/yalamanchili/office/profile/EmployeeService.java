@@ -145,7 +145,7 @@ public class EmployeeService {
                 user.addRole(CRoleDao.instance().findRoleByName(OfficeRole.ROLE_CORPORATE_EMPLOYEE.name()));
             }
             user.addRole((CRole) EntityQueryUtils.findEntity(em, CRole.class, "rolename", OfficeRole.ROLE_USER.name()));
-            user = IdentityServiceClient.instance().createUser(user);
+            user = OfficeSecurityService.instance().createCuser(user);
             employee.setUser(user);
         }
         employee.setEmployeeId(username);

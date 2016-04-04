@@ -51,6 +51,11 @@ public class OfficeSecurityService {
     @Autowired
     protected RuntimeService bpmRuntimeService;
 
+    //TODO move to chili-security OfficeSecurityServic	 
+    public CUser createCuser(CUser user) {
+        return em.merge(user);
+    }
+
     public EmployeeLoginDto login(CUser user, String ipAddress) {
         if (!Strings.isNullOrEmpty(ipAddress) && hasAnyRole(OfficeRole.ROLE_CORPORATE_EMPLOYEE.name()) && !CIPAddressDao.instance().isValidIP(ipAddress)) {
             RemoteAccessRequestDto dto = new RemoteAccessRequestDto();
