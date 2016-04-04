@@ -9,7 +9,6 @@
 package info.yalamanchili.office.prospect;
 
 import com.google.common.base.Strings;
-import info.chili.commons.DateUtils;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
@@ -36,10 +35,9 @@ import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.jms.MessagingService;
-import java.util.ArrayList;
+import info.yalamanchili.office.ejb.hr.ProspectProcessBean;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.dozer.Mapper;
@@ -52,7 +50,7 @@ import org.springframework.stereotype.Component;
  * @author radhika.mukkala
  */
 @Component
-@Scope("request")
+@Scope("prototype")
 public class ProspectService {
 
     @PersistenceContext
@@ -151,7 +149,7 @@ public class ProspectService {
         entity = em.merge(entity);
         CommentDao.instance().addComment(dto.getComment(), entity);
         dto.setId(entity.getId());
-        ProspectProcessBean.instance().notifyCaseManager(entity);
+        ProspectProcessBean.instance().notifyCaseManager(entity, dto.getEmployees());
         return mapper.map(entity, ProspectDto.class);
     }
 
@@ -209,7 +207,7 @@ public class ProspectService {
         if (dto.getStatus() != null) {
             if (entity.getStatus() != dto.getStatus()) {
                 entity.setStatus(dto.getStatus());
-                ProspectProcessBean.instance().notifyCaseManager(entity);
+                ProspectProcessBean.instance().notifyCaseManager(entity, dto.getEmployees());
                 sendProspectStatusNotification(entity);
             }
         } else {
@@ -354,7 +352,7 @@ public class ProspectService {
                 email.addTo(employee.getPrimaryEmail().getEmail());
             }
         }
-        if(prospect.getStatus().equals(ProspectStatus.CLOSED_WON)){
+        if (prospect.getStatus().equals(ProspectStatus.CLOSED_WON)) {
             email.addTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_HR.name()));
         }
         email.setHtml(Boolean.TRUE);
@@ -369,19 +367,5 @@ public class ProspectService {
         messageText = messageText.concat("\n Updated_By   : " + emp.getFirstName() + " " + emp.getLastName());
         email.setBody(messageText);
         MessagingService.instance().sendEmail(email);
-    }
-
-    public void sendProspectStatusNotChangeNotification() {
-        List<Prospect> prospects = new ArrayList();
-        prospects = prospectDao.instance().query(0, 100000);
-        if (prospects.size() > 0) {
-            for (Prospect prospect : prospects) {
-                if (DateUtils.differenceInDays(prospect.getStartDate(), new Date()) == 2) {
-
-                } else if (DateUtils.differenceInDays(prospect.getStartDate(), new Date()) == 3) {
-
-                }
-            }
-        }
     }
 }
