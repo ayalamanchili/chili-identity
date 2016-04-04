@@ -11,13 +11,17 @@ package info.yalamanchili.office.client.admin.hr;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.logical.shared.OpenEvent;
+import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FileUpload;
+import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.data.CountryFactory;
@@ -33,8 +37,12 @@ import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.widgets.SuggestBox;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.gwt.MultiSelectSuggestBox;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -42,11 +50,12 @@ import java.util.logging.Logger;
  *
  * @author radhika.mukkala
  */
-public class CreateProspectPanel extends CreateComposite implements ChangeHandler {
+public class CreateProspectPanel extends CreateComposite implements ChangeHandler, OpenHandler {
 
     private static Logger logger = Logger.getLogger(CreateProspectPanel.class.getName());
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "assignedTo", "Employee", false, false, Alignment.HORIZONTAL);
     SuggestBox caseManagerSB = new SuggestBox(OfficeWelcome.constants, "caseManager", "Employee", false, true, Alignment.HORIZONTAL);
+    DisclosurePanel notifyOtherL = new DisclosurePanel("Notity Employees");
     FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "Prospect", "resumeURL", "Prospect/resumeURL", false, true) {
         @Override
         public void onUploadComplete(String res) {
@@ -109,6 +118,19 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         assignEntityValueFromField("screenedBy", entity);
         assignEntityValueFromField("processDocSentDate", entity);
         assignEntityValueFromField("comment", entity);
+        if (employeesSB.getValues().size() > 0) {
+            List<String> emps = new ArrayList();
+            JSONArray employees = employeesSB.getValues();
+            for (int i = 0; i < employees.size(); i++) {
+                JSONObject obj = employees.get(i).isObject();
+                emps.add(obj.get("id").isString().stringValue());
+            }
+            JSONArray finalemps = new JSONArray();
+            for(int i=0; i<emps.size(); i++){
+                finalemps.set(i, new JSONString(emps.get(i)));
+            }
+            entity.put("employees", finalemps);
+        }
         JSONArray resumeURL = new JSONArray();
         if (!resumeUploadPanel.isEmpty()) {
             int i = 0;
@@ -125,7 +147,6 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         if (resumeURL.size() > 0) {
             entity.put("resumeURL", resumeURL);
         }
-        logger.info("entity" + entity);
         return entity;
     }
 
@@ -176,6 +197,7 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         if (countriesF != null) {
             countriesF.listBox.addChangeHandler(this);
         }
+        notifyOtherL.addOpenHandler(this);
     }
 
     @Override
@@ -192,7 +214,16 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
             }
         });
         caseManagerSB.getLabel().getElement().getStyle().setWidth(193, Style.Unit.PX);
-        HttpService.HttpServiceAsync.instance().doGet(getcaseManagnerIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+        HttpService.HttpServiceAsync.instance().doGet(getcaseManagnerIdsDropDownUrl1(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
+                if (values != null) {
+                    caseManagerSB.loadData(values);
+                }
+            }
+        });
+        HttpService.HttpServiceAsync.instance().doGet(getcaseManagnerIdsDropDownUrl2(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
                 Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
@@ -213,12 +244,16 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         }
     }
 
-    private String getcaseManagnerIdsDropDownUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Corporate Employee");
+    private String getcaseManagnerIdsDropDownUrl1() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/"+Auth.ROLE.ROLE_H1B_IMMIGRATION+"/0/10000");
+    }
+    
+    private String getcaseManagnerIdsDropDownUrl2() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/"+Auth.ROLE.ROLE_GC_IMMIGRATION+"/0/10000");
     }
 
     private String getEmployeeIdsDropDownUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Corporate Employee");
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/"+Auth.ROLE.ROLE_RECRUITER+"/0/10000");
     }
 
     @Override
@@ -240,6 +275,7 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         addField("zip", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
         addField("screenedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(employeeSB);
+        entityFieldsPanel.add(notifyOtherL);
         entityFieldsPanel.add(caseManagerSB);
         addField("processDocSentDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("comment", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
@@ -282,5 +318,29 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
             return false;
         }
         return true;
+    }
+
+    MultiSelectSuggestBox employeesSB = new MultiSelectSuggestBox() {
+        @Override
+        public void initTosSuggesBox() {
+            HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+                @Override
+                public void onResponse(String entityString) {
+                    Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
+                    if (values != null) {
+                        suggestionsBox.loadData(values);
+                    }
+                }
+            });
+        }
+    };
+
+    @Override
+    public void onOpen(OpenEvent event) {
+        if (event.getSource().equals(notifyOtherL)) {
+            FlowPanel panel = new FlowPanel();
+            panel.add(employeesSB);
+            entityFieldsPanel.insert(panel, entityFieldsPanel.getWidgetIndex(caseManagerSB));
+        }
     }
 }
