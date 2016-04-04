@@ -180,7 +180,6 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
             entity.put("company", company);
         }
         int j = resumeURL.size();
-        logger.info(resumeURL.toString());
         for (FileUpload upload : resumeUploadPanel.getFileUploads()) {
             if (upload.getFilename() != null && !upload.getFilename().trim().isEmpty()) {
                 JSONObject resume = new JSONObject();
@@ -193,7 +192,6 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         if (resumeURL.size() > 0) {
             entity.put("resumeURL", resumeURL);
         }
-        logger.info("entity " + entity);
         return entity;
     }
 
@@ -440,6 +438,17 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
             }
         } else if (employeeSB.getSelectedObject() == null) {
             employeeSB.setMessage("Assigned To Can not be null");
+            return false;
+        }
+        
+        if (entity.get("caseManager") != null) {
+            JSONObject caseManager = entity.get("caseManager").isObject();
+            if (caseManager.containsKey("firstName") && (caseManager.get("firstName") == null)) {
+                caseManagerSB.setMessage("Case Manager Can not be null");
+                return false;
+            }
+        } else if (caseManagerSB.getSelectedObject() == null) {
+            caseManagerSB.setMessage("Case Manager Can not be null");
             return false;
         }
 
