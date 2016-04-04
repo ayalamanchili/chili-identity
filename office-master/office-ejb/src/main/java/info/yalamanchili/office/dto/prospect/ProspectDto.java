@@ -394,8 +394,10 @@ public class ProspectDto implements Serializable {
     public static ProspectDto map(Mapper mapper, info.yalamanchili.office.entity.hr.Prospect entity) {
         ProspectDto prospectContact = mapper.map(entity, ProspectDto.class);
         prospectContact.setEmployee(entity.getContact().getFirstName() + " " + entity.getContact().getLastName());
-        Employee manager = EmployeeDao.instance().findById(entity.getManager());
-        prospectContact.setManager(manager.getFirstName()+" "+manager.getLastName());
+        if (entity.getManager() != null) {
+            Employee manager = EmployeeDao.instance().findById(entity.getManager());
+            prospectContact.setManager(manager.getFirstName() + " " + manager.getLastName());
+        }
         mapper.map(entity.getContact(), prospectContact);
         if (entity.getContact().getPhones().size() > 0) {
             prospectContact.setPhoneNumber(entity.getContact().getPhones().get(0).getPhoneNumber());
