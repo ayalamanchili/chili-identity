@@ -59,7 +59,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Path("secured/prospect")
 @Component
-@Scope("request")
+@Scope("prototype")
 @Transactional
 public class ProspectResource extends CRUDResource<ProspectDto> {
 
