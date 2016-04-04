@@ -21,6 +21,7 @@ import info.yalamanchili.office.entity.profile.Sex;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -115,6 +116,8 @@ public class ProspectDto implements Serializable {
     protected String trfEmptype;
     protected Company company;
     protected String manager;
+
+    protected List<Long> employees;
 
     public String getPlacedby() {
         return placedby;
@@ -384,6 +387,14 @@ public class ProspectDto implements Serializable {
 
     public void setManager(String manager) {
         this.manager = manager;
+    }
+
+    public List<Long> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<Long> employees) {
+        this.employees = employees;
     }
 
     @Override
