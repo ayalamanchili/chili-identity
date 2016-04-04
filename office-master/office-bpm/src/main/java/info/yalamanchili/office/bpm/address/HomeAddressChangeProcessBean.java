@@ -55,9 +55,11 @@ public class HomeAddressChangeProcessBean {
         //TODO send only for associate employee
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
         Email email = new Email();
+        email.setHtml(Boolean.TRUE);
+        email.setRichText(Boolean.TRUE);
         email.addTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_RELATIONSHIP.name()));
         email.setSubject("Employee " + address.getContact().getFirstName() + " " + address.getContact().getLastName() + " Home Address has been updated");
-        email.setBody("Employee " + address.getContact().getFirstName() + " " + address.getContact().getLastName() + " Home Address has been updated");
+        email.setBody("<b>Employee   : </b>" + address.getContact().getFirstName() + " " + address.getContact().getLastName() + "<br/> <br/> <b>Description : </b> Home / Primary Address has been updated");
         //TODO add address information in the email body
         messagingService.sendEmail(email);
     }
