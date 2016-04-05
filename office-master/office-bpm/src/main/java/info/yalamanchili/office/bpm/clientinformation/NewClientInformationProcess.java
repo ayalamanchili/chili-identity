@@ -58,6 +58,14 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
                 entity.setStatus(ClientInformationStatus.CANCELED);
             }
         }
+        if (task.getTaskDefinitionKey().equals("newClientInfoSubmitToContractsAdminTask")) {
+            task.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_CONTRACTS_ADMIN.name());
+            if (status.equalsIgnoreCase("approved")) {
+                entity.setStatus(ClientInformationStatus.COMPLETED);
+            } else {
+                entity.setStatus(ClientInformationStatus.CANCELED);
+            }
+        }
         if (task.getTaskDefinitionKey().equals("newClientInfoHRTask")) {
             if (status.equalsIgnoreCase("approved")) {
                 entity.setStatus(ClientInformationStatus.COMPLETED);
