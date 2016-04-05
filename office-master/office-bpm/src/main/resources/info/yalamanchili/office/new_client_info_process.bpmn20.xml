@@ -86,7 +86,7 @@
             </extensionElements> 
         </userTask>
         <sequenceFlow id="newClientInfoAccountTaskToSubmit" sourceRef="newClientInfoInvoicingAndBillingTask" targetRef="newClientInfoInvoicingAndBillingSubmit" />
-        <!--BulkImport Submit Service Task-->
+        <!--Submit Service Task-->
         <serviceTask
             id="newClientInfoInvoicingAndBillingSubmit"
             name="New Client Information Account Department Submit" 
@@ -94,7 +94,12 @@
         </serviceTask>
         <sequenceFlow id="newClientInfoAccountSubmitToHRTask" sourceRef="newClientInfoInvoicingAndBillingSubmit" targetRef="newClientInfoHRTask">
             <conditionExpression xsi:type="tFormalExpression">
-                ${status == 'approved'}
+                ${status == 'approved' and clientInfo.employee.employeeType.name != 'Subcontractor'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="newClientInfoSubmitToContractsAdminTask" sourceRef="newClientInfoInvoicingAndBillingSubmit" targetRef="newClientInfoSUBCTask">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved' and clientInfo.employee.employeeType.name == 'Subcontractor'}
             </conditionExpression>
         </sequenceFlow>
         <sequenceFlow id="newClientInfoAccountSubmitToEnd" sourceRef="newClientInfoInvoicingAndBillingSubmit" targetRef="newClientInfoProcessEnd">
@@ -166,13 +171,86 @@
             </extensionElements> 
         </userTask>
         <sequenceFlow id="newClientInfoHRTaskToSubmit" sourceRef="newClientInfoHRTask" targetRef="newClientInfoHRSubmit" />
-        <!--BulkImport Submit Service Task-->
+        <!--Submit Service Task-->
         <serviceTask
             id="newClientInfoHRSubmit"
             name="New Client Information HR Department Submit"
             activiti:class="info.yalamanchili.office.client.NewClientInfoHRSubmit">
         </serviceTask>
         <sequenceFlow id="newClientInfoHRSubmitToEnd" sourceRef="newClientInfoHRSubmit" targetRef="newClientInfoProcessEnd"/> 
+        
+        <!-- SUB submit User task-->
+        <userTask id="newClientInfoSUBCTask" 
+                  name="New Client Info Contracts Admin Task for ${clientInfo.employee.firstName} ${clientInfo.employee.lastName}"
+                  activiti:candidateGroups="ROLE_CONTRACTS_ADMIN">
+            <documentation>
+                New Client Information has been created with following details. Please fill the fields below to complete the task.
+                Employee                    : #{clientInfo.employee.firstName} #{clientInfo.employee.lastName} 
+                Employee Type               : #{clientInfo.employee.employeeType.name}
+                Consultant Job Title        : #{clientInfo.consultantJobTitle}
+                Client                      : #{clientInfo.client.name}
+                Client AP Contact           : #{clientAP}
+                Vendor                      : #{clientInfo.vendor.name}
+                Vendor AP Contact           : #{vendorAP}
+                Vendor Payment Terms        : #{clientInfo.vendorPaymentTerms}
+                Project Start Date          : #{clientInfo.startDate}
+                Project End Date            : #{clientInfo.endDate}
+                Billing Rate                : #{clientInfo.billingRate}
+                Overtime Billing Rate       : #{clientInfo.overTimeBillingRate}
+                Billing Rate Duration       : #{clientInfo.billingRateDuration}
+                Overtime Rate Duration      : #{clientInfo.overTimeRateDuration}
+                Invoice Frequency           : #{clientInfo.invoiceFrequency}
+                Invoice Delivery Method     : #{clientInfo.invoiceDeliveryMethod}
+                Notes                       : #{clientInfo.notes}    
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.clientinformation.NewClientInformationProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.clientinformation.NewClientInformationProcess" />
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="joiningReport" 
+                                       name="Joining Report Details"
+                                       required="false"
+                                       type="string"/>
+                <activiti:formProperty id="hrOrientation" 
+                                       name="HR Orientation"
+                                       required="true"
+                                       type="boolean"/>
+                <activiti:formProperty id="accountVerificationDocs" 
+                                       name="Account verification Docs"
+                                       required="false"
+                                       type="boolean"/> 
+                <activiti:formProperty id="i9Filled" 
+                                       name="I9 Filled"
+                                       required="true"
+                                       type="boolean"/>
+                <activiti:formProperty id="w4Filled" 
+                                       name="W4 Filled"
+                                       required="true"
+                                       type="boolean"/>
+                <activiti:formProperty id="logisticsPreparation" 
+                                       name="Logistics Preparation"
+                                       required="false"
+                                       type="boolean"/>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false"
+                                       type="string"/>
+            </extensionElements> 
+        </userTask>
+        <sequenceFlow id="newClientInfoSubmitToContractsAdmin" sourceRef="newClientInfoSUBCTask" targetRef="newClientInfoSUBCSubmit" />
+        <!--Submit Service Task-->
+        <serviceTask
+            id="newClientInfoSUBCSubmit"
+            name="New Client Information Contracts Admin Submit"
+            activiti:class="info.yalamanchili.office.client.NewClientInfoHRSubmit">
+        </serviceTask>
+        <sequenceFlow id="newClientInfoSubmitToEnd" sourceRef="newClientInfoSUBCSubmit" targetRef="newClientInfoProcessEnd"/> 
         <endEvent id="newClientInfoProcessEnd" />
     </process>
 </definitions>
