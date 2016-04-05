@@ -167,16 +167,12 @@ public class ContractReportService {
     public ContractTable searchProjsBWDates(int start, int limit, Date startDate, Date endDate, String value, String employeeType) {
         ContractTable table = new ContractTable();
         List<ContractDto> dtos = new ArrayList();
-        List<ContractDto> activeCpds = new ArrayList();
         List<ClientInformation> cpds = ContractReportDao.instance().queryForProjEndBetweenDays(startDate, endDate, value, employeeType);
         for (ClientInformation cpd : cpds) {
             dtos.add(ContractService.instance().mapClientInformation(cpd));
         }
-        if (dtos.size() > 0) {
-            activeCpds = ContractService.instance().activeCPDs(dtos);
-        }
-        table.setEntities(activeCpds);
-        table.setSize((long) activeCpds.size());
+        table.setEntities(dtos);
+        table.setSize((long) dtos.size());
         return table;
     }
 
