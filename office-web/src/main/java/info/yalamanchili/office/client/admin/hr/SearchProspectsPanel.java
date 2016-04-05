@@ -8,23 +8,16 @@
  */
 package info.yalamanchili.office.client.admin.hr;
 
-/**
- *
- * @author radhika.mukkala
- */
-/**
- * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
- */
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.Timer;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.EnumField;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.SearchComposite;
@@ -40,14 +33,16 @@ import java.util.logging.Logger;
  *
  * @author raghu
  */
-public class SearchProspectsPanel extends SearchComposite {
+public class SearchProspectsPanel extends SearchComposite implements ChangeHandler {
 
     private static Logger logger = Logger.getLogger(SearchProspectsPanel.class.getName());
     SelectCorpEmployeeWidget employeeF = new SelectCorpEmployeeWidget("AssignedTo", false, false);
     SelectCorpEmployeeWidget caseManagerF = new SelectCorpEmployeeWidget("CaseManager", false, false);
+    EnumField statusF = new EnumField(OfficeWelcome.constants, "status", "Prospect", false, false, ProspectStatus.names());
 
     public SearchProspectsPanel() {
         init("Prospect Search", "Prospect", OfficeWelcome.constants);
+        advancedSearchDP.setOpen(true);
     }
 
     @Override
@@ -104,7 +99,7 @@ public class SearchProspectsPanel extends SearchComposite {
         addEnumField("trfEmpType", false, false, TransferEmployeeType.names());
         addEnumField("placedBy", false, false, PlacedBy.names());
         addField("dateOfJoining", DataType.DATE_FIELD);
-        addEnumField("status", false, false, ProspectStatus.names());
+        mainPanel.insert(statusF, mainPanel.getWidgetIndex(searchButton));
     }
 
     @Override
@@ -125,7 +120,10 @@ public class SearchProspectsPanel extends SearchComposite {
         assignEntityValueFromField("trfEmpType", entity);
         assignEntityValueFromField("dateOfJoining", entity);
         assignEntityValueFromField("processDocSentDate", entity);
-        assignEntityValueFromField("status", entity);
+        if (statusF.getValue() != null) {
+            entity.put("status", new JSONString(statusF.getValue()));
+            statusF.listBox.addChangeHandler(this);
+        }
         entity.put("contact", contact);
         return entity;
     }
@@ -198,5 +196,11 @@ public class SearchProspectsPanel extends SearchComposite {
 
     protected String getnameDropDownUrl() {
         return OfficeWelcome.constants.root_url() + "prospect/search-suggestions";
+    }
+
+    @Override
+    public void onChange(ChangeEvent event) {
+        entity.put("status", new JSONString(statusF.getValue()));
+        search(entity);
     }
 }
