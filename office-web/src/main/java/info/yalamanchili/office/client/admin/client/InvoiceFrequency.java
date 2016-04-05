@@ -28,8 +28,7 @@ public enum InvoiceFrequency {
     MONTHLY_FIRST_SUNDAY,
     WEEKLY_TO_BE_UPLOADED,
     SEMI_MONTHLY,
-    NOT_REQUIRED,
-    DO_NOT_SEND;
+    NOT_REQUIRED;
 
     public static String[] names() {
         InvoiceFrequency[] values = values();
