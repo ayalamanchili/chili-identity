@@ -252,7 +252,7 @@ public class ReadContractsPanel extends TReadComposite {
                         if (!response.trim().toString().equals("null")) {
                             JSONArray docs = JSONUtils.toJSONArray(JSONParser.parseLenient(response).isObject().get("ciDocument"));
                             entityFieldsPanel.setWidget(22, 1, new ReadAllCiDocumentPanel(getEntityId(), docs));
-                            entityFieldsPanel.getFlexCellFormatter().setColSpan(22, 1, 2);
+                            entityFieldsPanel.getFlexCellFormatter().setColSpan(23, 1, 2);
                         }
                     }
                 });
