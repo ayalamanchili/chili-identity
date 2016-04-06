@@ -126,7 +126,7 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
                 emps.add(obj.get("id").isString().stringValue());
             }
             JSONArray finalemps = new JSONArray();
-            for(int i=0; i<emps.size(); i++){
+            for (int i = 0; i < emps.size(); i++) {
                 finalemps.set(i, new JSONString(emps.get(i)));
             }
             entity.put("employees", finalemps);
@@ -245,15 +245,15 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
     }
 
     private String getcaseManagnerIdsDropDownUrl1() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/"+Auth.ROLE.ROLE_H1B_IMMIGRATION+"/0/10000");
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_H1B_IMMIGRATION + "/0/10000");
     }
-    
+
     private String getcaseManagnerIdsDropDownUrl2() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/"+Auth.ROLE.ROLE_GC_IMMIGRATION+"/0/10000");
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_GC_IMMIGRATION + "/0/10000");
     }
 
     private String getEmployeeIdsDropDownUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/"+Auth.ROLE.ROLE_RECRUITER+"/0/10000");
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_RECRUITER + "/0/10000");
     }
 
     @Override
@@ -309,13 +309,11 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
 
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
-        if (entity.get("caseManager") != null) {
-            JSONObject caseManager = entity.get("caseManager").isObject();
-            if (caseManager.containsKey("firstName") && (caseManager.get("firstName") == null)) {
-                caseManagerSB.setMessage("Case Manager Can not be null");
-                return false;
-            }
+        if (entity.containsKey("caseManager") == false) {
+            caseManagerSB.setMessage("Case Manager Can not be null");
+            return false;
         }
+        
         if (entity.get("comment") == null) {
             fields.get("comment").setMessage("Comments Can not be null");
             return false;
