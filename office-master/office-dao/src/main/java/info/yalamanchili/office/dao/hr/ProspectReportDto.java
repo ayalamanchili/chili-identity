@@ -21,31 +21,43 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType
 public class ProspectReportDto {
 
-    /**
-     *
-     */
     protected ProspectStatus status;
-    /**
-     *
-     */
     protected Date createdDateTo;
-    /**
-     *
-     */
     protected Date createdDateFrom;
-    /**
-     *
-     */
     protected Date joiningDateTo;
-    /**
-     *
-     */
     protected Date joiningDateFrom;
-
+    protected String caseManager;
+    protected String assignedTo;
+    protected String company;
+    
     public ProspectStatus getStatus() {
         return status;
     }
 
+    public String getCaseManager() {
+        return caseManager;
+    }
+
+    public void setCaseManager(String caseManager) {
+        this.caseManager = caseManager;
+    }
+
+    public String getAssignedTo() {
+        return assignedTo;
+    }
+
+    public void setAssignedTo(String assignedTo) {
+        this.assignedTo = assignedTo;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+    
     public void setStatus(ProspectStatus status) {
         this.status = status;
     }
@@ -81,5 +93,4 @@ public class ProspectReportDto {
     public void setJoiningDateFrom(Date joiningDateFrom) {
         this.joiningDateFrom = joiningDateFrom;
     }
-
 }
