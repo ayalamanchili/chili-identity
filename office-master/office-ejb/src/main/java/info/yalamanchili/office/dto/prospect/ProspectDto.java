@@ -106,18 +106,21 @@ public class ProspectDto implements Serializable {
 
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date processDocSentDate;
-
-    protected String employee;
-
+    
+    protected Company company;
+    
+    protected List<Long> employees;
+    
+    //for report purpose only
+    protected String manager;
     protected String gender;
-
+    protected String employee;
     protected String placedby;
     protected String petitionFor;
     protected String trfEmptype;
-    protected Company company;
-    protected String manager;
-
-    protected List<Long> employees;
+    protected String companyName;
+    protected String assignedto;
+    protected String stage;
 
     public String getPlacedby() {
         return placedby;
@@ -397,6 +400,30 @@ public class ProspectDto implements Serializable {
         this.employees = employees;
     }
 
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getAssignedto() {
+        return assignedto;
+    }
+
+    public void setAssignedto(String assignedto) {
+        this.assignedto = assignedto;
+    }
+
+    public String getStage() {
+        return stage;
+    }
+
+    public void setStage(String stage) {
+        this.stage = stage;
+    }
+    
     @Override
     public String toString() {
         return "ProspectDto{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", phoneNumber=" + phoneNumber + ", sex=" + sex + ", startDate=" + startDate + ", screenedBy=" + screenedBy + ", referredBy=" + referredBy + ", dateOfBirth=" + dateOfBirth + ", address=" + address + ", status=" + status + ", processDocSentDate=" + processDocSentDate + '}';
@@ -408,6 +435,10 @@ public class ProspectDto implements Serializable {
         if (entity.getManager() != null) {
             Employee manager = EmployeeDao.instance().findById(entity.getManager());
             prospectContact.setManager(manager.getFirstName() + " " + manager.getLastName());
+        }
+        if (entity.getAssigned()!= null) {
+            Employee assignedEmp = EmployeeDao.instance().findById(entity.getAssigned());
+            prospectContact.setAssignedto(assignedEmp.getFirstName() + " " + assignedEmp.getLastName());
         }
         mapper.map(entity.getContact(), prospectContact);
         if (entity.getContact().getPhones().size() > 0) {
@@ -444,7 +475,9 @@ public class ProspectDto implements Serializable {
         }
         if (entity.getCompany() != null) {
             prospectContact.setCompany(entity.getCompany());
+            prospectContact.setCompanyName(entity.getCompany().getName());
         }
+        prospectContact.setStage(entity.getStatus().name());
         prospectContact.setId(entity.getId());
         return prospectContact;
     }
