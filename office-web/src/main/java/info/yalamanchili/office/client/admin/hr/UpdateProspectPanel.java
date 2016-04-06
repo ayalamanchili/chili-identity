@@ -430,17 +430,20 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
             return false;
         }
 
-        if (entity.get("assignedTo") != null) {
+        if (entity.get("status").isString().stringValue().equals(ProspectStatus.IN_PROGRESS.name()) && entity.get("assignedTo") != null) {
             JSONObject assignedTo = entity.get("assignedTo").isObject();
             if (ProspectStatus.RECRUITING.name().equals(entity.get("status").isString().stringValue()) && (assignedTo.containsKey("firstName") && (assignedTo.get("firstName") == null))) {
                 employeeSB.setMessage("Assigned To Can not be null");
                 return false;
             }
-        } else if (employeeSB.getSelectedObject() == null) {
+        } else if (entity.get("status").isString().stringValue().equals(ProspectStatus.IN_PROGRESS.name()) && employeeSB.getSelectedObject() == null) {
+            return true;
+        } else if ((!entity.get("status").isString().stringValue().equals(ProspectStatus.IN_PROGRESS.name())) && entity.containsKey("assignedTo") == false) {
+            logger.info("no assigned to");
             employeeSB.setMessage("Assigned To Can not be null");
             return false;
         }
-        
+
         if (entity.get("caseManager") != null) {
             JSONObject caseManager = entity.get("caseManager").isObject();
             if (caseManager.containsKey("firstName") && (caseManager.get("firstName") == null)) {
