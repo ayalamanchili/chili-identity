@@ -8,8 +8,11 @@
  */
 package info.yalamanchili.office.client.admin.hr;
 
+import com.google.common.base.Strings;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
@@ -22,10 +25,15 @@ import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.utils.Utils;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.chili.gwt.widgets.SuggestBox;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.company.SelectCompanyWidget;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -36,6 +44,9 @@ public class ProspectsSidePanel extends ALComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(ProspectsSidePanel.class.getName());
     public FlowPanel sidepanel = new FlowPanel();
+    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "assignedTo", "Employee", false, false);
+    SuggestBox caseManagerSB = new SuggestBox(OfficeWelcome.constants, "caseManager", "Employee", false, false);
+    protected SelectCompanyWidget selectCompanyWidget = new SelectCompanyWidget(false, false);
     Button reportB = new Button("Reports");
     Button graphsB = new Button("Graphs");
     EnumField statusF = new EnumField(OfficeWelcome.constants, "status", "Prospect", false, false, ProspectStatus.names(), Alignment.VERTICAL);
@@ -54,6 +65,47 @@ public class ProspectsSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void configure() {
+        employeeSB.getLabel().getElement().getStyle().setWidth(193, Style.Unit.PX);
+        HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
+                if (values != null) {
+                    employeeSB.loadData(values);
+                }
+            }
+        });
+        caseManagerSB.getLabel().getElement().getStyle().setWidth(193, Style.Unit.PX);
+        HttpService.HttpServiceAsync.instance().doGet(getcaseManagnerIdsDropDownUrl1(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
+                if (values != null) {
+                    caseManagerSB.loadData(values);
+                }
+            }
+        });
+        HttpService.HttpServiceAsync.instance().doGet(getcaseManagnerIdsDropDownUrl2(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
+                if (values != null) {
+                    caseManagerSB.loadData(values);
+                }
+            }
+        });
+    }
+
+    private String getcaseManagnerIdsDropDownUrl1() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_H1B_IMMIGRATION + "/0/10000");
+    }
+
+    private String getcaseManagnerIdsDropDownUrl2() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_GC_IMMIGRATION + "/0/10000");
+    }
+
+    private String getEmployeeIdsDropDownUrl() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_RECRUITER + "/0/10000");
     }
 
     @Override
@@ -61,6 +113,9 @@ public class ProspectsSidePanel extends ALComposite implements ClickHandler {
         sidepanel.add(new SearchProspectsPanel());
         sidepanel.add(Utils.getLineSeperatorTag("Reports and Graphs"));
         sidepanel.add(statusF);
+        sidepanel.add(employeeSB);
+        sidepanel.add(caseManagerSB);
+        sidepanel.add(selectCompanyWidget);
         sidepanel.add(startDateF);
         sidepanel.add(endDateF);
         sidepanel.add(reportB);
@@ -69,7 +124,7 @@ public class ProspectsSidePanel extends ALComposite implements ClickHandler {
 
     public JSONObject getObject() {
         JSONObject obj = new JSONObject();
-        if ((statusF.getValue() == null) && (startDateF.getDate() == null) && (endDateF.getDate() == null)) {
+        if ((statusF.getValue() == null) && (startDateF.getDate() == null) && (endDateF.getDate() == null) && (employeeSB.getValue() == null) && (caseManagerSB.getValue() == null) && (selectCompanyWidget.getSelectedObject() == null)) {
             statusF.setMessage("Required");
             startDateF.clearMessage();
             endDateF.clearMessage();
@@ -89,6 +144,15 @@ public class ProspectsSidePanel extends ALComposite implements ClickHandler {
         if (endDateF.getDate() != null) {
             obj.put("joiningDateTo", new JSONString(DateUtils.toDateString(endDateF.getDate())));
         }
+        if (employeeSB != null && !Strings.isNullOrEmpty(employeeSB.getValue())) {
+            obj.put("assignedTo", employeeSB.getSelectedObject().get("id").isString());
+        }
+        if (caseManagerSB != null && !Strings.isNullOrEmpty(caseManagerSB.getValue())) {
+            obj.put("caseManager", caseManagerSB.getSelectedObject().get("id").isString());
+        }
+        if (selectCompanyWidget.getSelectedObject() != null && !Strings.isNullOrEmpty(selectCompanyWidget.getSelectedObject().get("id").isString().stringValue())) {
+            obj.put("company", new JSONString(selectCompanyWidget.getSelectedObject().get("value").isString().stringValue()));
+        }
         return obj;
     }
 
@@ -96,7 +160,7 @@ public class ProspectsSidePanel extends ALComposite implements ClickHandler {
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(reportB)) {
             JSONObject obj = getObject();
-            if ((obj.containsKey("status") == true) || (obj.containsKey("joiningDateFrom") == true && obj.containsKey("joiningDateTo") == true)) {
+            if ((obj.containsKey("status") == true) || (obj.containsKey("joiningDateFrom") == true && obj.containsKey("joiningDateTo") == true) || (obj.containsKey("assignedTo") == true) || obj.containsKey("caseManager") == true || obj.containsKey("company") == true) {
                 String reportUrl = OfficeWelcome.instance().constants.root_url() + "prospect/report";
                 HttpService.HttpServiceAsync.instance().doPut(reportUrl, obj.toString(), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
@@ -108,6 +172,8 @@ public class ProspectsSidePanel extends ALComposite implements ClickHandler {
                 statusF.clearMessage();
                 startDateF.clearMessage();
                 endDateF.clearMessage();
+                caseManagerSB.clearMessage();
+                employeeSB.clearMessage();
             }
         }
         if (event.getSource().equals(graphsB)) {
