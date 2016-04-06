@@ -92,7 +92,7 @@ public class ReadAllResumePanel extends CRUDReadAllComposite {
 
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("Successfully Deleted Receipt Information");
+        new ResponseStatusWidget().show("Successfully Deleted Resume Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateProspectPanel(UpdateProspectPanel.instance().getEntityId()));
     }
