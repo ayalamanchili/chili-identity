@@ -82,6 +82,17 @@ public class ProspectDao extends CRUDDao<Prospect> {
         if (searchDto.getStatus() != null) {
             queryStr.append("p.status = '").append(searchDto.getStatus().name().trim()).append("' ").append(" and ");
         }
+        if ((searchDto.getCaseManager()) != null) {
+            Long manager = Long.valueOf(searchDto.getCaseManager());
+            queryStr.append("p.manager = '").append(manager).append("' ").append(" and ");
+        }
+        if ((searchDto.getAssignedTo()) != null) {
+            Long assignedTo = Long.valueOf(searchDto.getAssignedTo());
+            queryStr.append("p.assigned = '").append(assignedTo).append("' ").append(" and ");
+        }
+        if ((searchDto.getCompany()) != null) {
+            queryStr.append("p.company.name = '").append(searchDto.getCompany().trim()).append("' ").append(" and ");
+        }
         if ((searchDto.getJoiningDateFrom()) != null) {
             queryStr.append("p.dateOfJoining BETWEEN :startDateParam and ");
         }
