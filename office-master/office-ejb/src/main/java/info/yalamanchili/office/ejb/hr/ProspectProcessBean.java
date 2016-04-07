@@ -59,6 +59,9 @@ public class ProspectProcessBean {
     }
 
     public void notifyCaseManager(Prospect entity, List<Long> employees) {
+        if (entity.getManager() == null) {
+            return;
+        }
         info.chili.email.Email email = new info.chili.email.Email();
         if (entity.getStatus().equals(ProspectStatus.IN_PROGRESS)) {
             email.addTo(EmployeeDao.instance().findById(entity.getManager()).getPrimaryEmail().getEmail());
