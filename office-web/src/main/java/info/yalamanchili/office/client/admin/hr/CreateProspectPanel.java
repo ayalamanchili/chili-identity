@@ -43,6 +43,7 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.MultiSelectSuggestBox;
+import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -262,8 +263,9 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
     private String getEmployeeIdsDropDownUrl() {
         return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_RECRUITER + "/0/10000");
     }
+
     protected String getNotifyEmployeesDropDownUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=employeeId&column=firstName&column=lastName&employee-type=Corporate Employee");
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Corporate Employee");
     }
 
     @Override
@@ -319,11 +321,10 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
 
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
-        if (entity.containsKey("caseManager") == false) {
-            caseManagerSB.setMessage("Case Manager Can not be null");
-            return false;
-        }
-
+//        if (entity.containsKey("caseManager") == false) {
+//            caseManagerSB.setMessage("Case Manager Can not be null");
+//            return false;
+//        }
         if (entity.get("comment") == null) {
             fields.get("comment").setMessage("Comments Can not be null");
             return false;
