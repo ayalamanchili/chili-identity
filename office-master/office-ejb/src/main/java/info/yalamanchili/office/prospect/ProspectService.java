@@ -157,8 +157,9 @@ public class ProspectService {
                 emails.add(email);
             }
             for (String email : emails) {
-                emaillist = emaillist.concat(email) + " , " + EmployeeDao.instance().findById(dto.getCaseManager().getId()).getPrimaryEmail().getEmail();
+                emaillist = emaillist.concat(email) + " , ";
             }
+            emaillist = emaillist.concat(EmployeeDao.instance().findById(dto.getCaseManager().getId()).getPrimaryEmail().getEmail());
             CommentDao.instance().addComment(emaillist, entity);
         }
         CommentDao.instance().addComment(dto.getComment(), entity);
@@ -212,160 +213,165 @@ public class ProspectService {
 
     public ProspectDto update(ProspectDto dto) {
         Prospect entity = prospectDao.findById(dto.getId());
-        if (dto.getAssignedTo() != null) {
-            entity.setAssigned(dto.getAssignedTo().getId());
-        }
-        if (dto.getCaseManager() != null) {
-            entity.setManager(dto.getCaseManager().getId());
-        }
-        if (dto.getStatus() != null) {
-            if (entity.getStatus() != dto.getStatus()) {
-                entity.setStatus(dto.getStatus());
-                ProspectProcessBean.instance().notifyCaseManager(entity, dto.getEmployees());
-                sendProspectStatusNotification(entity);
+        if (ProspectStatus.IN_PROGRESS.equals(entity.getStatus()) && !OfficeSecurityService.instance().getCurrentUser().equals(EmployeeDao.instance().findById(dto.getCaseManager().getId()))) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "you.cannot.update", "You may not have access to update prospect");
+        } else {
+            if (dto.getAssignedTo() != null) {
+                entity.setAssigned(dto.getAssignedTo().getId());
             }
-        } else {
-            entity.setStatus(ProspectStatus.IN_PROGRESS);
-        }
-        //entity = prospectDao.save(entity);
-        Contact contact = entity.getContact();
-        contact.setFirstName(dto.getFirstName());
-        contact.setLastName(dto.getLastName());
-        if (dto.getMiddleInitial() != null) {
-            contact.setMiddleInitial(dto.getMiddleInitial());
-        } else {
-            contact.setMiddleInitial(null);
-        }
-        contact.setDateOfBirth(dto.getDateOfBirth());
-        contact.setSex(dto.getSex());
-        entity.setReferredBy(dto.getReferredBy());
-        //       entity.setResumeURL(dto.getResumeURL());
-        if (entity.getStatus().equals(ProspectStatus.CLOSED_WON)) {
-            if (dto.getDateOfJoining() != null) {
-                entity.setDateOfJoining(dto.getDateOfJoining());
+            if (dto.getCaseManager() != null) {
+                entity.setManager(dto.getCaseManager().getId());
+            }
+            if (dto.getStatus() != null) {
+                if (entity.getStatus() != dto.getStatus()) {
+                    entity.setStatus(dto.getStatus());
+                    ProspectProcessBean.instance().notifyCaseManager(entity, dto.getEmployees());
+                    sendProspectStatusNotification(entity);
+                }
             } else {
+                entity.setStatus(ProspectStatus.IN_PROGRESS);
+            }
+            //entity = prospectDao.save(entity);
+            Contact contact = entity.getContact();
+            contact.setFirstName(dto.getFirstName());
+            contact.setLastName(dto.getLastName());
+            if (dto.getMiddleInitial() != null) {
+                contact.setMiddleInitial(dto.getMiddleInitial());
+            } else {
+                contact.setMiddleInitial(null);
+            }
+            contact.setDateOfBirth(dto.getDateOfBirth());
+            contact.setSex(dto.getSex());
+            entity.setReferredBy(dto.getReferredBy());
+            //       entity.setResumeURL(dto.getResumeURL());
+            if (entity.getStatus().equals(ProspectStatus.CLOSED_WON)) {
+                if (dto.getDateOfJoining() != null) {
+                    entity.setDateOfJoining(dto.getDateOfJoining());
+                } else {
+                    entity.setDateOfJoining(null);
+                }
+                if (dto.getPlacedBy() != null) {
+                    entity.setPlacedBy(dto.getPlacedBy());
+                } else {
+                    entity.setPlacedBy(null);
+                }
+                if (dto.getTrfEmpType() != null) {
+                    entity.setTrfEmpType(dto.getTrfEmpType());
+                } else {
+                    entity.setTrfEmpType(null);
+                }
+                if (dto.getPetitionFiledFor() != null) {
+                    entity.setPetitionFiledFor(dto.getPetitionFiledFor());
+                } else {
+                    entity.setPetitionFiledFor(null);
+                }
+                Company company = CompanyDao.instance().findById(dto.getCompany().getId());
+                if (dto.getCompany() != null) {
+                    entity.setCompany(company);
+                } else {
+                    entity.setCompany(null);
+                }
+            } else {
+                dto.setDateOfJoining(null);
+                dto.setTrfEmpType(null);
+                dto.setPlacedBy(null);
+                dto.setPetitionFiledFor(null);
+                dto.setCompany(null);
                 entity.setDateOfJoining(null);
-            }
-            if (dto.getPlacedBy() != null) {
-                entity.setPlacedBy(dto.getPlacedBy());
-            } else {
-                entity.setPlacedBy(null);
-            }
-            if (dto.getTrfEmpType() != null) {
-                entity.setTrfEmpType(dto.getTrfEmpType());
-            } else {
                 entity.setTrfEmpType(null);
-            }
-            if (dto.getPetitionFiledFor() != null) {
-                entity.setPetitionFiledFor(dto.getPetitionFiledFor());
-            } else {
+                entity.setPlacedBy(null);
                 entity.setPetitionFiledFor(null);
-            }
-            Company company = CompanyDao.instance().findById(dto.getCompany().getId());
-            if (dto.getCompany() != null) {
-                entity.setCompany(company);
-            } else {
                 entity.setCompany(null);
             }
-        } else {
-            dto.setDateOfJoining(null);
-            dto.setTrfEmpType(null);
-            dto.setPlacedBy(null);
-            dto.setPetitionFiledFor(null);
-            dto.setCompany(null);
-            entity.setDateOfJoining(null);
-            entity.setTrfEmpType(null);
-            entity.setPlacedBy(null);
-            entity.setPetitionFiledFor(null);
-            entity.setCompany(null);
-        }
-        if (dto.getComment() != null) {
-            CommentDao.instance().addComment(dto.getComment(), entity);
-        }
-        if (dto.getEmployees() != null && dto.getEmployees().size() > 0) {
-            List<String> emails = new ArrayList();
-            String emaillist = "Email has been sent to : ";
-            for (Long id : dto.getEmployees()) {
-                String email = EmployeeDao.instance().findById(id).getPrimaryEmail().getEmail();
-                emails.add(email);
+            if (dto.getComment() != null) {
+                CommentDao.instance().addComment(dto.getComment(), entity);
             }
-            for (String email : emails) {
-                emaillist = emaillist.concat(email) + " , " + EmployeeDao.instance().findById(dto.getCaseManager().getId()).getPrimaryEmail().getEmail();
+            if (dto.getEmployees() != null && dto.getEmployees().size() > 0) {
+                List<String> emails = new ArrayList();
+                String emaillist = "Email has been sent to : ";
+                for (Long id : dto.getEmployees()) {
+                    String email = EmployeeDao.instance().findById(id).getPrimaryEmail().getEmail();
+                    emails.add(email);
+                }
+                for (String email : emails) {
+                    emaillist = emaillist.concat(email) + " , ";
+                }
+                emaillist = emaillist.concat(EmployeeDao.instance().findById(dto.getCaseManager().getId()).getPrimaryEmail().getEmail());
+                if (!dto.getStatus().equals(ProspectStatus.IN_PROGRESS)) {
+                    emaillist = emaillist.concat(" , " + EmployeeDao.instance().findById(dto.getAssignedTo().getId()).getPrimaryEmail().getEmail());
+                }
+                CommentDao.instance().addComment(emaillist, entity);
             }
-            if (!dto.getStatus().equals(ProspectStatus.IN_PROGRESS)) {
-                emaillist = emaillist.concat(" , " + EmployeeDao.instance().findById(dto.getAssignedTo().getId()).getPrimaryEmail().getEmail());
-            }
-            CommentDao.instance().addComment(emaillist, entity);
-        }
-        if (!Strings.isNullOrEmpty(dto.getScreenedBy())) {
-            entity.setScreenedBy(dto.getScreenedBy());
-        } else {
-            entity.setScreenedBy(null);
-        }
-        if (dto.getProcessDocSentDate() != null) {
-            entity.setProcessDocSentDate(dto.getProcessDocSentDate());
-        } else {
-            entity.setProcessDocSentDate(null);
-        }
-        if (contact.getEmails().size() <= 0) {
-            if (!Strings.isNullOrEmpty(dto.getEmail())) {
-                Email email = new Email();
-                email.setEmail(dto.getEmail());
-                email.setPrimaryEmail(Boolean.TRUE);
-                contact.addEmail(email);
-            }
-        } else {
-            //TODO update existing email
-            contact.getEmails().get(0).setEmail(dto.getEmail());
-        }
-        //phone
-        if (contact.getPhones().size() <= 0) {
-            if (!Strings.isNullOrEmpty(dto.getPhoneNumber())) {
-                Phone phone = new Phone();
-                phone.setPhoneNumber(dto.getPhoneNumber());
-                phone.setCountryCode(dto.getCountryCode());
-                phone.setExtension(dto.getExtension());
-                contact.addPhone(phone);
-            }
-        } else {
-            //TODO update existing phone
-            contact.getPhones().get(0).setPhoneNumber(dto.getPhoneNumber());
-            contact.getPhones().get(0).setCountryCode(dto.getCountryCode());
-            contact.getPhones().get(0).setExtension(dto.getExtension());
-        }
-        //address
-        if (contact.getAddresss().size() <= 0) {
-            if (dto.getAddress() != null) {
-                Address address = new Address();
-                address = dto.getAddress();
-                address = AddressDao.instance().save(address);
-                contact.addAddress(address);
-            }
-        } else {
-            //TODO update existing address
-            contact.getAddresss().get(0).setStreet1(dto.getAddress().getStreet1());
-            contact.getAddresss().get(0).setStreet2(dto.getAddress().getStreet2());
-            contact.getAddresss().get(0).setCity(dto.getAddress().getCity());
-            contact.getAddresss().get(0).setState(dto.getAddress().getState());
-            contact.getAddresss().get(0).setCountry(dto.getAddress().getCountry());
-            contact.getAddresss().get(0).setZip(dto.getAddress().getZip());
-        }
-        //contact
-        for (Resume resume : dto.getResumeURL()) {
-            if (resume.getId() == null) {
-                resume.setProspect(entity);
-                resume.setUpdatedTS(Calendar.getInstance().getTime());
-                entity = prospectDao.getEntityManager().merge(entity);
-                entity.getResumeURL().add(resume);
+            if (!Strings.isNullOrEmpty(dto.getScreenedBy())) {
+                entity.setScreenedBy(dto.getScreenedBy());
             } else {
-                ResumeDao.instance().save(resume);
+                entity.setScreenedBy(null);
             }
+            if (dto.getProcessDocSentDate() != null) {
+                entity.setProcessDocSentDate(dto.getProcessDocSentDate());
+            } else {
+                entity.setProcessDocSentDate(null);
+            }
+            if (contact.getEmails().size() <= 0) {
+                if (!Strings.isNullOrEmpty(dto.getEmail())) {
+                    Email email = new Email();
+                    email.setEmail(dto.getEmail());
+                    email.setPrimaryEmail(Boolean.TRUE);
+                    contact.addEmail(email);
+                }
+            } else {
+                //TODO update existing email
+                contact.getEmails().get(0).setEmail(dto.getEmail());
+            }
+            //phone
+            if (contact.getPhones().size() <= 0) {
+                if (!Strings.isNullOrEmpty(dto.getPhoneNumber())) {
+                    Phone phone = new Phone();
+                    phone.setPhoneNumber(dto.getPhoneNumber());
+                    phone.setCountryCode(dto.getCountryCode());
+                    phone.setExtension(dto.getExtension());
+                    contact.addPhone(phone);
+                }
+            } else {
+                //TODO update existing phone
+                contact.getPhones().get(0).setPhoneNumber(dto.getPhoneNumber());
+                contact.getPhones().get(0).setCountryCode(dto.getCountryCode());
+                contact.getPhones().get(0).setExtension(dto.getExtension());
+            }
+            //address
+            if (contact.getAddresss().size() <= 0) {
+                if (dto.getAddress() != null) {
+                    Address address = new Address();
+                    address = dto.getAddress();
+                    address = AddressDao.instance().save(address);
+                    contact.addAddress(address);
+                }
+            } else {
+                //TODO update existing address
+                contact.getAddresss().get(0).setStreet1(dto.getAddress().getStreet1());
+                contact.getAddresss().get(0).setStreet2(dto.getAddress().getStreet2());
+                contact.getAddresss().get(0).setCity(dto.getAddress().getCity());
+                contact.getAddresss().get(0).setState(dto.getAddress().getState());
+                contact.getAddresss().get(0).setCountry(dto.getAddress().getCountry());
+                contact.getAddresss().get(0).setZip(dto.getAddress().getZip());
+            }
+            //contact
+            for (Resume resume : dto.getResumeURL()) {
+                if (resume.getId() == null) {
+                    resume.setProspect(entity);
+                    resume.setUpdatedTS(Calendar.getInstance().getTime());
+                    entity = prospectDao.getEntityManager().merge(entity);
+                    entity.getResumeURL().add(resume);
+                } else {
+                    ResumeDao.instance().save(resume);
+                }
+            }
+            contact = em.merge(contact);
+            entity.setContact(contact);
+            prospectDao.getEntityManager().flush();
+            entity = prospectDao.findById(entity.getId());
+            return mapper.map(entity, ProspectDto.class);
         }
-        contact = em.merge(contact);
-        entity.setContact(contact);
-        prospectDao.getEntityManager().flush();
-        entity = prospectDao.findById(entity.getId());
-        return mapper.map(entity, ProspectDto.class);
     }
 
     public void sendProspectStatusNotification(Prospect prospect) {
