@@ -11,6 +11,8 @@ package info.yalamanchili.office.client.admin.hr;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.http.client.URL;
@@ -50,12 +52,13 @@ import java.util.logging.Logger;
  *
  * @author radhika.mukkala
  */
-public class CreateProspectPanel extends CreateComposite implements ChangeHandler, OpenHandler {
+public class CreateProspectPanel extends CreateComposite implements ChangeHandler, OpenHandler, CloseHandler {
 
     private static Logger logger = Logger.getLogger(CreateProspectPanel.class.getName());
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "assignedTo", "Employee", false, false, Alignment.HORIZONTAL);
     SuggestBox caseManagerSB = new SuggestBox(OfficeWelcome.constants, "caseManager", "Employee", false, true, Alignment.HORIZONTAL);
     DisclosurePanel notifyOtherL = new DisclosurePanel("Notify Employees");
+    FlowPanel panel = new FlowPanel();
     FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "Prospect", "resumeURL", "Prospect/resumeURL", false, true) {
         @Override
         public void onUploadComplete(String res) {
@@ -198,11 +201,15 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
             countriesF.listBox.addChangeHandler(this);
         }
         notifyOtherL.addOpenHandler(this);
+        notifyOtherL.addCloseHandler(this);
     }
 
     @Override
     protected void configure() {
         formatTextAreaFields();
+        notifyOtherL.setOpen(true);
+        panel.add(employeesSB);
+        entityFieldsPanel.insert(panel, entityFieldsPanel.getWidgetIndex(caseManagerSB));
         employeeSB.getLabel().getElement().getStyle().setWidth(193, Style.Unit.PX);
         HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
@@ -309,7 +316,15 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
 
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
-       
+        if (entity.containsKey("caseManager") == false) {
+            caseManagerSB.setMessage("Case Manager Can not be null");
+            return false;
+        }
+
+        if (entity.get("comment") == null) {
+            fields.get("comment").setMessage("Comments Can not be null");
+            return false;
+        }
         return true;
     }
 
@@ -331,9 +346,15 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
     @Override
     public void onOpen(OpenEvent event) {
         if (event.getSource().equals(notifyOtherL)) {
-            FlowPanel panel = new FlowPanel();
             panel.add(employeesSB);
             entityFieldsPanel.insert(panel, entityFieldsPanel.getWidgetIndex(caseManagerSB));
+        }
+    }
+
+    @Override
+    public void onClose(CloseEvent event) {
+        if (event.getSource().equals(notifyOtherL)) {
+            panel.clear();
         }
     }
 }
