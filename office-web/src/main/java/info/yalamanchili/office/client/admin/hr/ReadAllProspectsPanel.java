@@ -84,8 +84,8 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             String status = JSONUtils.toString(entity, "status");
-//            table.setText(i, 1, JSONUtils.toString(entity, "firstName"));
-//            table.setText(i, 2, JSONUtils.toString(entity, "lastName"));
+            table.setText(i, 1, JSONUtils.toString(entity, "firstName"));
+            table.setText(i, 2, JSONUtils.toString(entity, "lastName"));
             table.setText(i, 3, JSONUtils.toString(entity, "screenedBy"));
             table.setText(i, 4, JSONUtils.toString(entity, "referredBy"));
             setEnumColumn(i, 5, entity, ProspectStatus.class.getSimpleName(), "status");
@@ -99,18 +99,6 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
                     table.setWidget(i, 6, invitationLink);
                 }
             }
-            ClickableLink firstName = new ClickableLink(JSONUtils.toString(entity, "firstName"));
-            firstName.setTitle(JSONUtils.toString(entity, "id"));
-            firstName.addClickHandler((ClickEvent event) -> {
-                getProspect(((ClickableLink) event.getSource()).getTitle());
-            });
-            table.setWidget(i, 1, firstName);
-            ClickableLink lastName = new ClickableLink(JSONUtils.toString(entity, "lastName"));
-            lastName.setTitle(JSONUtils.toString(entity, "id"));
-            lastName.addClickHandler((ClickEvent event) -> {
-                getProspect(((ClickableLink) event.getSource()).getTitle());
-            });
-            table.setWidget(i, 2, lastName);
         }
     }
 
@@ -130,13 +118,6 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
     protected void getOnBoardInviteCode(String entityId) {
         if (!entityId.isEmpty()) {
             new GenericPopup(new InitiateOnBoardingPanel(getEntity(entityId))).show();
-        }
-    }
-
-    protected void getProspect(String entityId) {
-        if (!entityId.isEmpty()) {
-            TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadProspectsPanel(entityId));
         }
     }
 
