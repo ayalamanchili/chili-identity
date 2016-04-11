@@ -27,6 +27,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Temporal;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -77,6 +78,7 @@ public class ProspectDto implements Serializable {
 
     private Employee assignedTo;
 
+    @NotNull(message = "{caseManager.not.empty.msg}")
     private Employee caseManager;
 
     protected Set<Resume> resumeURL;
@@ -106,11 +108,11 @@ public class ProspectDto implements Serializable {
 
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date processDocSentDate;
-    
+
     protected Company company;
-    
+
     protected List<Long> employees;
-    
+
     //for report purpose only
     protected String manager;
     protected String gender;
@@ -423,7 +425,7 @@ public class ProspectDto implements Serializable {
     public void setStage(String stage) {
         this.stage = stage;
     }
-    
+
     @Override
     public String toString() {
         return "ProspectDto{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", phoneNumber=" + phoneNumber + ", sex=" + sex + ", startDate=" + startDate + ", screenedBy=" + screenedBy + ", referredBy=" + referredBy + ", dateOfBirth=" + dateOfBirth + ", address=" + address + ", status=" + status + ", processDocSentDate=" + processDocSentDate + '}';
@@ -436,7 +438,7 @@ public class ProspectDto implements Serializable {
             Employee manager = EmployeeDao.instance().findById(entity.getManager());
             prospectContact.setManager(manager.getFirstName() + " " + manager.getLastName());
         }
-        if (entity.getAssigned()!= null) {
+        if (entity.getAssigned() != null) {
             Employee assignedEmp = EmployeeDao.instance().findById(entity.getAssigned());
             prospectContact.setAssignedto(assignedEmp.getFirstName() + " " + assignedEmp.getLastName());
         }
