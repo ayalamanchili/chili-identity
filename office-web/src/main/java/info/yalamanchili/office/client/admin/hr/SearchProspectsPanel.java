@@ -25,7 +25,8 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.widgets.SuggestBox;
-import info.yalamanchili.office.client.profile.employee.SelectCorpEmployeeWidget;
+import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -36,8 +37,9 @@ import java.util.logging.Logger;
 public class SearchProspectsPanel extends SearchComposite implements ChangeHandler {
 
     private static Logger logger = Logger.getLogger(SearchProspectsPanel.class.getName());
-    SelectCorpEmployeeWidget employeeF = new SelectCorpEmployeeWidget("AssignedTo", false, false);
-    SelectCorpEmployeeWidget caseManagerF = new SelectCorpEmployeeWidget("CaseManager", false, false);
+    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "assignedTo", "Employee", false, false);
+    SuggestBox caseManagerSB = new SuggestBox(OfficeWelcome.constants, "caseManager", "Employee", false, false);
+    protected SelectCompanyWidget selectCompnayWidget = new SelectCompanyWidget(false, false);
     EnumField statusF = new EnumField(OfficeWelcome.constants, "status", "Prospect", false, false, ProspectStatus.names());
 
     public SearchProspectsPanel() {
@@ -69,6 +71,45 @@ public class SearchProspectsPanel extends SearchComposite implements ChangeHandl
                 sb.loadData(values.values());
             }
         });
+        HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
+                if (values != null) {
+                    employeeSB.loadData(values);
+                }
+            }
+        });
+        HttpService.HttpServiceAsync.instance().doGet(getcaseManagnerIdsDropDownUrl1(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
+                if (values != null) {
+                    caseManagerSB.loadData(values);
+                }
+            }
+        });
+        HttpService.HttpServiceAsync.instance().doGet(getcaseManagnerIdsDropDownUrl2(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
+                if (values != null) {
+                    caseManagerSB.loadData(values);
+                }
+            }
+        });
+    }
+
+    private String getcaseManagnerIdsDropDownUrl1() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_H1B_IMMIGRATION + "/0/10000");
+    }
+
+    private String getcaseManagnerIdsDropDownUrl2() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_GC_IMMIGRATION + "/0/10000");
+    }
+
+    private String getEmployeeIdsDropDownUrl() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_RECRUITER + "/0/10000");
     }
 
     protected String getFirstNameDropDownUrl() {
@@ -92,8 +133,9 @@ public class SearchProspectsPanel extends SearchComposite implements ChangeHandl
         addField("firstName", DataType.STRING_FIELD);
         addField("lastName", DataType.STRING_FIELD);
         addField("referredBy", DataType.STRING_FIELD);
-        addDropDown("assignedTo", employeeF);
-        addDropDown("caseManager", caseManagerF);
+        advancedSearchPanel.add(employeeSB);
+        advancedSearchPanel.add(caseManagerSB);
+        addDropDown("company", selectCompnayWidget);
         addField("processDocSentDate", DataType.DATE_FIELD);
         addEnumField("petitionFiledFor", false, false, PetitionFor.names());
         addEnumField("trfEmpType", false, false, TransferEmployeeType.names());
@@ -109,11 +151,14 @@ public class SearchProspectsPanel extends SearchComposite implements ChangeHandl
         assignEntityValueFromField("firstName", contact);
         assignEntityValueFromField("lastName", contact);
         assignEntityValueFromField("referredBy", entity);
-        if (employeeF.getSelectedObject() != null) {
-            entity.put("assigned", employeeF.getSelectedObject().get("id"));
+        if (employeeSB.getSelectedObject() != null) {
+            entity.put("assigned", employeeSB.getSelectedObject().get("id"));
         }
-        if (caseManagerF.getSelectedObject() != null) {
-            entity.put("manager", caseManagerF.getSelectedObject().get("id"));
+        if (caseManagerSB.getSelectedObject() != null) {
+            entity.put("manager", caseManagerSB.getSelectedObject().get("id"));
+        }
+        if (selectCompnayWidget.getSelectedObject() != null) {
+            entity.put("company", selectCompnayWidget.getSelectedObject().get("id"));
         }
         assignEntityValueFromField("petitionFiledFor", entity);
         assignEntityValueFromField("placedBy", entity);
