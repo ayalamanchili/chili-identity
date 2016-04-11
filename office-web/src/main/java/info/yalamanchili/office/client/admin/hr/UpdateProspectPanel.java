@@ -12,13 +12,19 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
+import com.google.gwt.event.logical.shared.OpenEvent;
+import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FileUpload;
+import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.data.CountryFactory;
@@ -40,6 +46,9 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
+import info.yalamanchili.office.client.gwt.MultiSelectSuggestBox;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -47,12 +56,14 @@ import java.util.logging.Logger;
  *
  * @author radhika.mukkala
  */
-public class UpdateProspectPanel extends UpdateComposite implements ClickHandler, ChangeHandler {
+public class UpdateProspectPanel extends UpdateComposite implements ClickHandler, ChangeHandler, OpenHandler, CloseHandler {
 
     private Logger logger = Logger.getLogger(UpdateProspectPanel.class.getName());
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "assignedTo", "Employee", false, false, Alignment.HORIZONTAL);
     SuggestBox caseManagerSB = new SuggestBox(OfficeWelcome.constants, "caseManager", "Employee", false, true, Alignment.HORIZONTAL);
     protected SelectCompanyWidget selectCompnayWidget = new SelectCompanyWidget(false, true, Alignment.HORIZONTAL);
+    DisclosurePanel notifyOtherL = new DisclosurePanel("Notify Employees");
+    FlowPanel panel = new FlowPanel();
     FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "Prospect", "resumeURL", "Prospect/resumeURL", false, true) {
         @Override
         public void onUploadComplete(String res) {
@@ -179,6 +190,19 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
             company.put("name", company.get("value"));
             entity.put("company", company);
         }
+        if (employeesSB.getValues().size() > 0) {
+            List<String> emps = new ArrayList();
+            JSONArray employees = employeesSB.getValues();
+            for (int i = 0; i < employees.size(); i++) {
+                JSONObject obj = employees.get(i).isObject();
+                emps.add(obj.get("id").isString().stringValue());
+            }
+            JSONArray finalemps = new JSONArray();
+            for (int i = 0; i < emps.size(); i++) {
+                finalemps.set(i, new JSONString(emps.get(i)));
+            }
+            entity.put("employees", finalemps);
+        }
         int j = resumeURL.size();
         for (FileUpload upload : resumeUploadPanel.getFileUploads()) {
             if (upload.getFilename() != null && !upload.getFilename().trim().isEmpty()) {
@@ -282,12 +306,17 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
     @Override
     protected void addListeners() {
         statesF.listBox.addChangeHandler(this);
+        notifyOtherL.addOpenHandler(this);
+        notifyOtherL.addCloseHandler(this);
     }
 
     @Override
     protected void configure() {
         countriesF.listBox.addChangeHandler(this);
         formatTextAreaFields();
+        notifyOtherL.setOpen(true);
+        panel.add(employeesSB);
+        entityFieldsPanel.insert(panel, entityFieldsPanel.getWidgetIndex(caseManagerSB));
         employeeSB.getLabel().getElement().getStyle().setWidth(197, Style.Unit.PX);
         HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
@@ -345,6 +374,7 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         addField("zip", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
         addField("referredBy", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(employeeSB);
+        entityFieldsPanel.add(notifyOtherL);
         entityFieldsPanel.add(caseManagerSB);
         addField("screenedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("processDocSentDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
@@ -460,5 +490,35 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
             return false;
         }
         return true;
+    }
+    
+    MultiSelectSuggestBox employeesSB = new MultiSelectSuggestBox() {
+        @Override
+        public void initTosSuggesBox() {
+            HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+                @Override
+                public void onResponse(String entityString) {
+                    Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
+                    if (values != null) {
+                        suggestionsBox.loadData(values);
+                    }
+                }
+            });
+        }
+    };
+
+    @Override
+    public void onOpen(OpenEvent event) {
+        if (event.getSource().equals(notifyOtherL)) {
+            panel.add(employeesSB);
+            entityFieldsPanel.insert(panel, entityFieldsPanel.getWidgetIndex(caseManagerSB));
+        }
+    }
+
+    @Override
+    public void onClose(CloseEvent event) {
+        if (event.getSource().equals(notifyOtherL)) {
+            panel.clear();
+        }
     }
 }
