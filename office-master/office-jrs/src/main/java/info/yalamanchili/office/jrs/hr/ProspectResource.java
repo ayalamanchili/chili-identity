@@ -13,6 +13,7 @@ import info.chili.dao.CRUDDao;
 import info.chili.email.Email;
 import info.chili.jpa.validation.Validate;
 import info.chili.reporting.ReportGenerator;
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
@@ -267,10 +268,14 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
             }
             dtos.add(pdto);
         }
-        table.setEntities(dtos);
-        String[] columnOrder = new String[]{"employee", "email", "phoneNumber", "screenedBy", "manager", "assignedto", "petitionFor", "placedby", "trfEmptype", "dateOfJoining", "referredBy", "companyName", "startDate", "stage"};
-        Employee emp = OfficeSecurityService.instance().getCurrentUser();
-        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Prospects Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
-        MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
+        if (dtos.size() > 0) {
+            table.setEntities(dtos);
+            String[] columnOrder = new String[]{"employee", "email", "phoneNumber", "screenedBy", "manager", "assignedto", "petitionFor", "placedby", "trfEmptype", "dateOfJoining", "referredBy", "companyName", "startDate", "stage"};
+            Employee emp = OfficeSecurityService.instance().getCurrentUser();
+            String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Prospects Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+            MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
+        } else {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "no.results", "No Results");
+        }
     }
 }
