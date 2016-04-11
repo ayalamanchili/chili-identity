@@ -42,6 +42,7 @@ import info.chili.gwt.utils.FormatUtils;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.widgets.SuggestBox;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
@@ -318,10 +319,9 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         panel.add(employeesSB);
         entityFieldsPanel.insert(panel, entityFieldsPanel.getWidgetIndex(caseManagerSB));
         employeeSB.getLabel().getElement().getStyle().setWidth(197, Style.Unit.PX);
-        HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+         HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
-                logger.info(entityString);
                 Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
                 if (values != null) {
                     employeeSB.loadData(values);
@@ -329,10 +329,18 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
             }
         });
         caseManagerSB.getLabel().getElement().getStyle().setWidth(197, Style.Unit.PX);
-        HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+        HttpService.HttpServiceAsync.instance().doGet(getcaseManagnerIdsDropDownUrl1(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
-                logger.info(entityString);
+                Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
+                if (values != null) {
+                    caseManagerSB.loadData(values);
+                }
+            }
+        });
+        HttpService.HttpServiceAsync.instance().doGet(getcaseManagnerIdsDropDownUrl2(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
                 Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
                 if (values != null) {
                     caseManagerSB.loadData(values);
@@ -341,7 +349,19 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         });
     }
 
+    private String getcaseManagnerIdsDropDownUrl1() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_H1B_IMMIGRATION + "/0/10000");
+    }
+
+    private String getcaseManagnerIdsDropDownUrl2() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_GC_IMMIGRATION + "/0/10000");
+    }
+
     private String getEmployeeIdsDropDownUrl() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_RECRUITER + "/0/10000");
+    }
+
+    protected String getNotifyEmployeesDropDownUrl() {
         return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Corporate Employee");
     }
 
@@ -495,7 +515,7 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
     MultiSelectSuggestBox employeesSB = new MultiSelectSuggestBox() {
         @Override
         public void initTosSuggesBox() {
-            HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            HttpService.HttpServiceAsync.instance().doGet(getNotifyEmployeesDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
                 @Override
                 public void onResponse(String entityString) {
                     Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
