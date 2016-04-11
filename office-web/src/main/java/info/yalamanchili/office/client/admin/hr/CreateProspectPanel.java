@@ -262,6 +262,9 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
     private String getEmployeeIdsDropDownUrl() {
         return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_RECRUITER + "/0/10000");
     }
+    protected String getNotifyEmployeesDropDownUrl() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=employeeId&column=firstName&column=lastName&employee-type=Corporate Employee");
+    }
 
     @Override
     protected void addWidgets() {
@@ -331,7 +334,7 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
     MultiSelectSuggestBox employeesSB = new MultiSelectSuggestBox() {
         @Override
         public void initTosSuggesBox() {
-            HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            HttpService.HttpServiceAsync.instance().doGet(getNotifyEmployeesDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
                 @Override
                 public void onResponse(String entityString) {
                     Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
