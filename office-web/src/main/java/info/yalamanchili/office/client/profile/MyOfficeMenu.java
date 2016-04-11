@@ -13,6 +13,7 @@ import info.chili.gwt.fields.FileField;
 import info.chili.gwt.widgets.CMenuBar;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
+import info.yalamanchili.office.client.admin.hr.ProspectMenu;
 import info.yalamanchili.office.client.admin.hr.ProspectsSidePanel;
 import info.yalamanchili.office.client.admin.hr.ReadAllProspectsPanel;
 import info.yalamanchili.office.client.admin.hr.SearchProspectsPanel;
@@ -90,7 +91,8 @@ public class MyOfficeMenu extends CMenuBar {
     static Command prospectsMaintainenceCmd = () -> {
         TabPanel.instance().getMyOfficePanel().entityPanel.clear();
         TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_PROSPECTS_MANAGER)) {
+        TabPanel.instance().getMyOfficePanel().entityPanel.add(new ProspectMenu());
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER)) {
             TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllProspectsPanel());
             TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new ProspectsSidePanel());
         } else if (Auth.hasAnyOfRoles(ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_GC_IMMIGRATION, ROLE.ROLE_RECRUITER)) {

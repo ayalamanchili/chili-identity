@@ -159,6 +159,7 @@ public class SearchProspectsPanel extends SearchComposite implements ChangeHandl
     @Override
     protected void postSearchSuccess(JSONArray result) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().getMyOfficePanel().entityPanel.add(new ProspectMenu());
         TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllProspectsPanel(result));
     }
 
