@@ -36,8 +36,10 @@ import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.ejb.hr.ProspectProcessBean;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.dozer.Mapper;
@@ -147,6 +149,18 @@ public class ProspectService {
             }
         }
         entity = em.merge(entity);
+        if (dto.getEmployees() != null && dto.getEmployees().size() > 0) {
+            List<String> emails = new ArrayList();
+            String emaillist = "Email has been sent to : ";
+            for (Long id : dto.getEmployees()) {
+                String email = EmployeeDao.instance().findById(id).getPrimaryEmail().getEmail();
+                emails.add(email);
+            }
+            for (String email : emails) {
+                emaillist = emaillist.concat(email) + " , " + EmployeeDao.instance().findById(dto.getCaseManager().getId()).getPrimaryEmail().getEmail();
+            }
+            CommentDao.instance().addComment(emaillist, entity);
+        }
         CommentDao.instance().addComment(dto.getComment(), entity);
         dto.setId(entity.getId());
         ProspectProcessBean.instance().notifyCaseManager(entity, dto.getEmployees());
@@ -267,6 +281,21 @@ public class ProspectService {
         }
         if (dto.getComment() != null) {
             CommentDao.instance().addComment(dto.getComment(), entity);
+        }
+        if (dto.getEmployees() != null && dto.getEmployees().size() > 0) {
+            List<String> emails = new ArrayList();
+            String emaillist = "Email has been sent to : ";
+            for (Long id : dto.getEmployees()) {
+                String email = EmployeeDao.instance().findById(id).getPrimaryEmail().getEmail();
+                emails.add(email);
+            }
+            for (String email : emails) {
+                emaillist = emaillist.concat(email) + " , " + EmployeeDao.instance().findById(dto.getCaseManager().getId()).getPrimaryEmail().getEmail();
+            }
+            if (!dto.getStatus().equals(ProspectStatus.IN_PROGRESS)) {
+                emaillist = emaillist.concat(" , " + EmployeeDao.instance().findById(dto.getAssignedTo().getId()).getPrimaryEmail().getEmail());
+            }
+            CommentDao.instance().addComment(emaillist, entity);
         }
         if (!Strings.isNullOrEmpty(dto.getScreenedBy())) {
             entity.setScreenedBy(dto.getScreenedBy());
