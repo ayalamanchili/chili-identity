@@ -263,18 +263,18 @@ public class Address extends AbstractEntity {
     /**
      * needed for adderss read access check
      */
-    @Transient
-    protected Employee employee;
-
-    /**
-     *
-     * @return
-     */
-    public Employee getEmployee() {
-        Employee emp = new Employee();
-        emp.setId(getContact().getId());
-        return emp;
-    }
+//    @Transient
+//    protected Employee employee;
+//
+//    /**
+//     *
+//     * @return
+//     */
+//    public Employee getEmployee() {
+//        Employee emp = new Employee();
+//        emp.setId(getContact().getId());
+//        return emp;
+//    }
 
     @Override
     public String toString() {
