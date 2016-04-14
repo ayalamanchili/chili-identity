@@ -20,7 +20,6 @@ import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
-import info.yalamanchili.office.security.AccessCheck;
 import java.util.HashMap;
 
 import java.util.List;
@@ -39,6 +38,7 @@ import org.activiti.engine.task.Task;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,7 +67,8 @@ public class AddressResource extends CRUDResource<Address> {
     @Path("/{id}")
     @Transactional(readOnly = true)
     @Override
-    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_HR_ADMIN", "ROLE_HR", "ROLE_RELATIONSHIP", "ROLE_PAYROLL_AND_BENIFITS", "ROLE_HEALTH_INSURANCE_MANAGER", "ROLE_H1B_IMMIGRATION"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
+//    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_HR_ADMIN", "ROLE_HR", "ROLE_RELATIONSHIP", "ROLE_PAYROLL_AND_BENIFITS", "ROLE_HEALTH_INSURANCE_MANAGER", "ROLE_H1B_IMMIGRATION"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR_ADMIN','ROLE_HR','ROLE_RELATIONSHIP','ROLE_PAYROLL_AND_BENIFITS','ROLE_HEALTH_INSURANCE_MANAGER','ROLE_H1B_IMMIGRATION','ROLE_USER')")
     public Address read(@PathParam("id") Long id) {
         return addressDao.findById(id);
     }
