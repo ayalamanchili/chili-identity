@@ -16,6 +16,7 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.hr.PetitionFor;
 import info.yalamanchili.office.entity.hr.PlacedBy;
 import info.yalamanchili.office.entity.hr.Prospect;
+import info.yalamanchili.office.entity.hr.ProspectStatus;
 import info.yalamanchili.office.entity.hr.TransferEmployeeType;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -71,6 +72,12 @@ public class ProspectDao extends CRUDDao<Prospect> {
         if (dto.getJoiningDateTo() != null) {
             query.setParameter("endDateParam", dto.getJoiningDateTo(), TemporalType.DATE);
         }
+        if (dto.getCreatedDateFrom() != null) {
+            query.setParameter("startDateParam", dto.getCreatedDateFrom(), TemporalType.DATE);
+        }
+        if (dto.getCreatedDateTo() != null) {
+            query.setParameter("endDateParam", dto.getCreatedDateTo(), TemporalType.DATE);
+        }
         return query.getResultList();
     }
 
@@ -99,6 +106,12 @@ public class ProspectDao extends CRUDDao<Prospect> {
         if ((searchDto.getJoiningDateTo()) != null) {
             queryStr.append(":endDateParam and ");
         }
+        if ((searchDto.getCreatedDateFrom()) != null) {
+            queryStr.append("p.startDate BETWEEN :startDateParam and ");
+        }
+        if ((searchDto.getCreatedDateTo()) != null) {
+            queryStr.append(":endDateParam and ");
+        }
         return queryStr.toString().substring(0, queryStr.toString().lastIndexOf("and"));
     }
 
@@ -110,6 +123,12 @@ public class ProspectDao extends CRUDDao<Prospect> {
         int placedByRecruiterCount = 0;
         int placedByOwnCount = 0;
         int placedBySolutionsTeamCount = 0;
+        int inProgressCount = 0;
+        int recruitingCount = 0;
+        int benchCount = 0;
+        int onHoldCount = 0;
+        int closedWonCount = 0;
+        int closedlostCount = 0;
         for (Prospect p : report(dto)) {
             if (PetitionFor.In_House.equals(p.getPetitionFiledFor())) {
                 petetionforInHouseCount++;
@@ -132,6 +151,24 @@ public class ProspectDao extends CRUDDao<Prospect> {
             if (PlacedBy.Corporate_Solutions_Team.equals(p.getPlacedBy())) {
                 placedBySolutionsTeamCount++;
             }
+            if (ProspectStatus.IN_PROGRESS.equals(p.getStatus())) {
+                inProgressCount++;
+            }
+            if (ProspectStatus.RECRUITING.equals(p.getStatus())) {
+                recruitingCount++;
+            }
+            if (ProspectStatus.BENCH.equals(p.getStatus())) {
+                benchCount++;
+            }
+            if (ProspectStatus.ONHOLD.equals(p.getStatus())) {
+                onHoldCount++;
+            }
+            if (ProspectStatus.CLOSED_WON.equals(p.getStatus())) {
+                closedWonCount++;
+            }
+            if (ProspectStatus.CLOSED_LOST.equals(p.getStatus())) {
+                closedlostCount++;
+            }
         }
         JsonObject json = new JsonObject();
         //petetion type
@@ -144,6 +181,12 @@ public class ProspectDao extends CRUDDao<Prospect> {
         json.addProperty(PlacedBy.By_Recruiter.name(), placedByRecruiterCount);
         json.addProperty(PlacedBy.Own_Placement.name(), placedByOwnCount);
         json.addProperty(PlacedBy.Corporate_Solutions_Team.name(), placedBySolutionsTeamCount);
+        json.addProperty(ProspectStatus.IN_PROGRESS.name(), inProgressCount);
+        json.addProperty(ProspectStatus.RECRUITING.name(), recruitingCount);
+        json.addProperty(ProspectStatus.BENCH.name(), benchCount);
+        json.addProperty(ProspectStatus.ONHOLD.name(), onHoldCount);
+        json.addProperty(ProspectStatus.CLOSED_WON.name(), closedWonCount);
+        json.addProperty(ProspectStatus.CLOSED_LOST.name(), closedlostCount);
         Gson gson = new Gson();
         return gson.toJson(json);
     }
