@@ -8,6 +8,7 @@ package info.yalamanchili.office.client.admin.hr;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.gwt.charts.client.ChartLoader;
 import com.googlecode.gwt.charts.client.ChartPackage;
@@ -23,6 +24,10 @@ import com.googlecode.gwt.charts.client.corechart.PieChart;
 public class ProspectsGraphsPanel extends Composite {
 
     protected FlowPanel panel = new FlowPanel();
+    protected Label petitionForL = new Label("Petition For Chart");
+    protected Label employeerL = new Label("Transfer Employee Chart");
+    protected Label placedByL = new Label("Placed By Chart");
+    protected Label noOfReqReceivedL = new Label("No Of Requests Received");
 
     public ProspectsGraphsPanel(JSONObject graphDto) {
         initWidget(panel);
@@ -32,8 +37,13 @@ public class ProspectsGraphsPanel extends Composite {
     protected void displayCharts(final JSONObject graphsDto) {
         ChartLoader chartLoader = new ChartLoader(ChartPackage.CORECHART);
         chartLoader.loadApi(() -> {
+            panel.add(noOfReqReceivedL);
+            panel.add(getReqReceivedChart());
+            panel.add(petitionForL);
             panel.add(getPetetionForChart());
+            panel.add(employeerL);
             panel.add(getEmployeerChart());
+            panel.add(placedByL);
             panel.add(getPlacedByChart());
             showProspectsGraphs(graphsDto);
         });
@@ -43,6 +53,7 @@ public class ProspectsGraphsPanel extends Composite {
         drawPetetionForChart(graphsDto);
         drawEmployeeTypeChart(graphsDto);
         drawPlacedByChart(graphsDto);
+        drawNoOfReqChart(graphsDto);
     }
 
     /**
@@ -53,9 +64,9 @@ public class ProspectsGraphsPanel extends Composite {
         dataTable.addColumn(ColumnType.STRING, "PlacedBy");
         dataTable.addColumn(ColumnType.NUMBER, "Number");
         dataTable.addRows(3);
-        dataTable.setValue(0, 0, PlacedBy.By_Recruiter.name());
-        dataTable.setValue(1, 0, PlacedBy.Corporate_Solutions_Team.name());
-        dataTable.setValue(2, 0, PlacedBy.Own_Placement.name());
+        dataTable.setValue(0, 0, PlacedBy.By_Recruiter.name() + "(" + Integer.valueOf(graphsDto.get(PlacedBy.By_Recruiter.name()).isNumber().toString()) + ")");
+        dataTable.setValue(1, 0, PlacedBy.Corporate_Solutions_Team.name() + "(" + Integer.valueOf(graphsDto.get(PlacedBy.Corporate_Solutions_Team.name()).isNumber().toString()) + ")");
+        dataTable.setValue(2, 0, PlacedBy.Own_Placement.name() + "(" + Integer.valueOf(graphsDto.get(PlacedBy.Own_Placement.name()).isNumber().toString()) + ")");
         dataTable.setValue(0, 1, Integer.valueOf(graphsDto.get(PlacedBy.By_Recruiter.name()).isNumber().toString()));
         dataTable.setValue(1, 1, Integer.valueOf(graphsDto.get(PlacedBy.Corporate_Solutions_Team.name()).isNumber().toString()));
         dataTable.setValue(2, 1, Integer.valueOf(graphsDto.get(PlacedBy.Own_Placement.name()).isNumber().toString()));
@@ -79,8 +90,8 @@ public class ProspectsGraphsPanel extends Composite {
         dataTable.addColumn(ColumnType.STRING, "EmployeeType");
         dataTable.addColumn(ColumnType.NUMBER, "Number");
         dataTable.addRows(2);
-        dataTable.setValue(0, 0, TransferEmployeeType.Corporate_Employee.name());
-        dataTable.setValue(1, 0, TransferEmployeeType.Field_Employee.name());
+        dataTable.setValue(0, 0, TransferEmployeeType.Corporate_Employee.name() + "(" + Integer.valueOf(graphsDto.get(TransferEmployeeType.Corporate_Employee.name()).isNumber().toString()) + ")");
+        dataTable.setValue(1, 0, TransferEmployeeType.Field_Employee.name() + "(" + Integer.valueOf(graphsDto.get(TransferEmployeeType.Field_Employee.name()).isNumber().toString()) + ")");
         dataTable.setValue(0, 1, Integer.valueOf(graphsDto.get(TransferEmployeeType.Corporate_Employee.name()).isNumber().toString()));
         dataTable.setValue(1, 1, Integer.valueOf(graphsDto.get(TransferEmployeeType.Field_Employee.name()).isNumber().toString()));
         // Draw the chart
@@ -103,8 +114,8 @@ public class ProspectsGraphsPanel extends Composite {
         dataTable.addColumn(ColumnType.STRING, "PetitionFor");
         dataTable.addColumn(ColumnType.NUMBER, "Number");
         dataTable.addRows(2);
-        dataTable.setValue(0, 0, PetitionFor.Client_Project.name());
-        dataTable.setValue(1, 0, PetitionFor.In_House.name());
+        dataTable.setValue(0, 0, PetitionFor.Client_Project.name() + "(" + Integer.valueOf(graphsDto.get(PetitionFor.Client_Project.name()).isNumber().toString()) + ")");
+        dataTable.setValue(1, 0, PetitionFor.In_House.name() + "(" + Integer.valueOf(graphsDto.get(PetitionFor.In_House.name()).isNumber().toString()) + ")");
         dataTable.setValue(0, 1, Integer.valueOf(graphsDto.get(PetitionFor.Client_Project.name()).isNumber().toString()));
         dataTable.setValue(1, 1, Integer.valueOf(graphsDto.get(PetitionFor.In_House.name()).isNumber().toString()));
         // Draw the chart
@@ -117,5 +128,39 @@ public class ProspectsGraphsPanel extends Composite {
             petetionForChart = new PieChart();
         }
         return petetionForChart;
+    }
+
+    /**
+     * No Of Req Received Chart
+     */
+    protected void drawNoOfReqChart(JSONObject graphsDto) {
+        DataTable dataTable = DataTable.create();
+        dataTable.addColumn(ColumnType.STRING, "NoOfReqReceived");
+        dataTable.addColumn(ColumnType.NUMBER, "Number");
+        dataTable.addRows(6);
+        dataTable.setValue(0, 0, ProspectStatus.IN_PROGRESS.name() + "(" + Integer.valueOf(graphsDto.get(ProspectStatus.IN_PROGRESS.name()).isNumber().toString()) + ")");
+        dataTable.setValue(1, 0, ProspectStatus.RECRUITING.name() + "(" + Integer.valueOf(graphsDto.get(ProspectStatus.RECRUITING.name()).isNumber().toString()) + ")");
+        dataTable.setValue(2, 0, ProspectStatus.BENCH.name() + "(" + Integer.valueOf(graphsDto.get(ProspectStatus.BENCH.name()).isNumber().toString()) + ")");
+        dataTable.setValue(3, 0, ProspectStatus.ONHOLD.name() + "(" + Integer.valueOf(graphsDto.get(ProspectStatus.ONHOLD.name()).isNumber().toString()) + ")");
+        dataTable.setValue(4, 0, ProspectStatus.CLOSED_WON.name() + "(" + Integer.valueOf(graphsDto.get(ProspectStatus.CLOSED_WON.name()).isNumber().toString()) + ")");
+        dataTable.setValue(5, 0, ProspectStatus.CLOSED_LOST.name() + "(" + Integer.valueOf(graphsDto.get(ProspectStatus.CLOSED_LOST.name()).isNumber().toString()) + ")");
+
+        dataTable.setValue(0, 1, Integer.valueOf(graphsDto.get(ProspectStatus.IN_PROGRESS.name()).isNumber().toString()));
+        dataTable.setValue(1, 1, Integer.valueOf(graphsDto.get(ProspectStatus.RECRUITING.name()).isNumber().toString()));
+        dataTable.setValue(2, 1, Integer.valueOf(graphsDto.get(ProspectStatus.BENCH.name()).isNumber().toString()));
+        dataTable.setValue(3, 1, Integer.valueOf(graphsDto.get(ProspectStatus.ONHOLD.name()).isNumber().toString()));
+        dataTable.setValue(4, 1, Integer.valueOf(graphsDto.get(ProspectStatus.CLOSED_WON.name()).isNumber().toString()));
+        dataTable.setValue(5, 1, Integer.valueOf(graphsDto.get(ProspectStatus.CLOSED_LOST.name()).isNumber().toString()));
+
+        // Draw the chart
+        noOfReqChart.draw(dataTable);
+    }
+    private PieChart noOfReqChart;
+
+    private Widget getReqReceivedChart() {
+        if (noOfReqChart == null) {
+            noOfReqChart = new PieChart();
+        }
+        return noOfReqChart;
     }
 }
