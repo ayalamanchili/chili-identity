@@ -213,9 +213,11 @@ public class ProspectService {
 
     public ProspectDto update(ProspectDto dto) {
         Prospect entity = prospectDao.findById(dto.getId());
-        if (ProspectStatus.IN_PROGRESS.equals(entity.getStatus()) && !OfficeSecurityService.instance().getCurrentUser().equals(EmployeeDao.instance().findById(dto.getCaseManager().getId()))) {
+        if (ProspectStatus.IN_PROGRESS.equals(entity.getStatus()) && (!OfficeSecurityService.instance().getCurrentUser().equals(EmployeeDao.instance().findById(dto.getCaseManager().getId())) && !OfficeSecurityService.instance().hasRole(OfficeRoles.OfficeRole.ROLE_PROSPECTS_MANAGER.name()))) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "you.cannot.update", "You may not have access to update prospect");
-        } else {
+        } else if ((ProspectStatus.RECRUITING.equals(entity.getStatus()) || ProspectStatus.BENCH.equals(entity.getStatus())) && (!OfficeSecurityService.instance().getCurrentUser().equals(EmployeeDao.instance().findById(dto.getAssignedTo().getId())) && !OfficeSecurityService.instance().hasRole(OfficeRoles.OfficeRole.ROLE_PROSPECTS_MANAGER.name()))) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "you.cannot.update", "You may not have access to update prospect");
+        }else {
             if (dto.getAssignedTo() != null) {
                 entity.setAssigned(dto.getAssignedTo().getId());
             }
