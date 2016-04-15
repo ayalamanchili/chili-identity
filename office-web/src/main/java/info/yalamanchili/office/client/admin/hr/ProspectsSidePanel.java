@@ -13,6 +13,7 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.URL;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
@@ -32,6 +33,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -52,6 +54,8 @@ public class ProspectsSidePanel extends ALComposite implements ClickHandler {
     EnumField statusF = new EnumField(OfficeWelcome.constants, "status", "Prospect", false, false, ProspectStatus.names(), Alignment.VERTICAL);
     DateField startDateF = new DateField(OfficeWelcome.constants, "joiningDateTo", "Prospect", false, false, Alignment.VERTICAL);
     DateField endDateF = new DateField(OfficeWelcome.constants, "joiningDateFrom", "Prospect", false, false, Alignment.VERTICAL);
+    DateField createDateFromF = new DateField(OfficeWelcome.constants, "createdDateFrom", "Prospect", false, false, Alignment.VERTICAL);
+    DateField createDateToF = new DateField(OfficeWelcome.constants, "createdDateTo", "Prospect", false, false, Alignment.VERTICAL);
 
     public ProspectsSidePanel() {
         init(sidepanel);
@@ -116,6 +120,8 @@ public class ProspectsSidePanel extends ALComposite implements ClickHandler {
         sidepanel.add(employeeSB);
         sidepanel.add(caseManagerSB);
         sidepanel.add(selectCompanyWidget);
+        sidepanel.add(createDateFromF);
+        sidepanel.add(createDateToF);
         sidepanel.add(startDateF);
         sidepanel.add(endDateF);
         sidepanel.add(reportB);
@@ -144,6 +150,12 @@ public class ProspectsSidePanel extends ALComposite implements ClickHandler {
         if (endDateF.getDate() != null) {
             obj.put("joiningDateTo", new JSONString(DateUtils.toDateString(endDateF.getDate())));
         }
+        if (createDateFromF.getDate() != null) {
+            obj.put("createdDateFrom", new JSONString(DateUtils.toDateString(createDateFromF.getDate())));
+        }
+        if (createDateToF.getDate() != null) {
+            obj.put("createdDateTo", new JSONString(DateUtils.toDateString(createDateToF.getDate())));
+        }
         if (employeeSB != null && !Strings.isNullOrEmpty(employeeSB.getValue())) {
             obj.put("assignedTo", employeeSB.getSelectedObject().get("id").isString());
         }
@@ -167,6 +179,11 @@ public class ProspectsSidePanel extends ALComposite implements ClickHandler {
                             @Override
                             public void onResponse(String result) {
                                 new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
+                                JSONObject resObj = JSONParser.parseLenient(result).isObject();
+                                String key = (String) resObj.keySet().toArray()[0];
+                                JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
+                                TabPanel.instance().myOfficePanel.entityPanel.clear();
+                                TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProspectsReportPanel(results));
                             }
                         });
                 statusF.clearMessage();
@@ -178,7 +195,7 @@ public class ProspectsSidePanel extends ALComposite implements ClickHandler {
         }
         if (event.getSource().equals(graphsB)) {
             JSONObject obj = getObject();
-            if (obj.containsKey("status")) {
+            if (obj.containsKey("status") || (obj.containsKey("createdDateFrom") == true && obj.containsKey("createdDateTo") == true)) {
                 String graphUrl = OfficeWelcome.instance().constants.root_url() + "prospect/graph";
                 HttpService.HttpServiceAsync.instance().doPut(graphUrl, obj.toString(), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
@@ -187,7 +204,7 @@ public class ProspectsSidePanel extends ALComposite implements ClickHandler {
                                 logger.info(result);
                                 JSONObject graphObj = JSONParser.parseLenient(result).isObject();
                                 GenericPopup popup = new GenericPopup(new ProspectsGraphsPanel(graphObj));
-                                popup.setPixelSize(510, 600);
+                                popup.setPixelSize(600, 900);
                                 popup.show();
                             }
                         });
