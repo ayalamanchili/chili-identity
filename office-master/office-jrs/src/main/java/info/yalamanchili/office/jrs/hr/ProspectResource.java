@@ -21,6 +21,7 @@ import info.yalamanchili.office.dao.drive.FileDao;
 import info.yalamanchili.office.dao.hr.ProspectDao;
 import info.yalamanchili.office.dao.hr.ProspectReportDto;
 import info.yalamanchili.office.dao.invite.InviteCodeDao;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.prospect.ProspectDto;
 import info.yalamanchili.office.entity.hr.Prospect;
@@ -29,6 +30,7 @@ import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.prospect.ProspectService;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -253,11 +255,12 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
 
     @PUT
     @Path("/report")
-    public void generateReport(ProspectReportDto dto) {
+    public List<ProspectDto> generateReport(ProspectReportDto dto) {
         List<Prospect> prospects = prospectDao.report(dto);
         List<ProspectDto> dtos = new ArrayList();
         ProspectTable table = new ProspectTable();
         ProspectDto pdto = null;
+        String name = "";
         for (Prospect prospect : prospects) {
             pdto = ProspectDto.map(mapper, prospect);
             if (!prospect.getStatus().equals(ProspectStatus.CLOSED_WON)) {
@@ -268,12 +271,27 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
             }
             dtos.add(pdto);
         }
+        if (dto.getStatus() != null) {
+            name = name.concat("Prospect  " + dto.getStatus().name().toLowerCase() + "  Report");
+        } else if (dto.getAssignedTo() != null) {
+            Employee emp = EmployeeDao.instance().findById(Long.valueOf(dto.getAssignedTo()));
+            name = name.concat("Prospect Assigned To : " + emp.getFirstName() + " " + emp.getLastName() + " Report");
+        } else if (dto.getCaseManager() != null) {
+            Employee emp = EmployeeDao.instance().findById(Long.valueOf(dto.getCaseManager()));
+            name = name.concat("Prospect Case manager : " + emp.getFirstName() + " " + emp.getLastName() + " Report");
+        } else if (dto.getCompany() != null) {
+            name = name.concat("Prospect Company : " + dto.getCompany() + " Report");
+        } else if (dto.getJoiningDateFrom() != null && dto.getJoiningDateTo() != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("MM:dd:yyyy");
+            name = name.concat("Prospects Joined Between  " + sdf.format(dto.getJoiningDateFrom()) + " - " + sdf.format(dto.getJoiningDateTo()) + "  Report");
+        }
         if (dtos.size() > 0) {
             table.setEntities(dtos);
             String[] columnOrder = new String[]{"employee", "email", "phoneNumber", "screenedBy", "manager", "assignedto", "petitionFor", "placedby", "trfEmptype", "dateOfJoining", "referredBy", "companyName", "startDate", "stage"};
             Employee emp = OfficeSecurityService.instance().getCurrentUser();
-            String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Prospects Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+            String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), name, OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
             MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
+            return dtos;
         } else {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "no.results", "No Results");
         }
