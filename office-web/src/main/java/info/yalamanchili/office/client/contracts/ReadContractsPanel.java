@@ -20,6 +20,7 @@ import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
@@ -250,9 +251,11 @@ public class ReadContractsPanel extends TReadComposite {
                     @Override
                     public void onResponse(String response) {
                         if (!response.trim().toString().equals("null")) {
-                            JSONArray docs = JSONUtils.toJSONArray(JSONParser.parseLenient(response).isObject().get("ciDocument"));
-                            entityFieldsPanel.setWidget(23, 1, new ReadAllCiDocumentPanel(getEntityId(), docs));
-                            entityFieldsPanel.getFlexCellFormatter().setColSpan(23, 1, 2);
+                            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_BILLING_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
+                                JSONArray docs = JSONUtils.toJSONArray(JSONParser.parseLenient(response).isObject().get("ciDocument"));
+                                entityFieldsPanel.setWidget(23, 1, new ReadAllCiDocumentPanel(getEntityId(), docs));
+                                entityFieldsPanel.getFlexCellFormatter().setColSpan(23, 1, 2);
+                            }
                         }
                     }
                 });
