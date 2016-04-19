@@ -61,7 +61,9 @@ public class ProbationPeriodEvaluationService {
         entity.setAdditionalComments((dto.getEvaluation().getAdditionalComments()));
         entity.setHrNotes(dto.getEvaluation().getHrNotes());
         entity = probationPeriodEvaluationDao.save(entity);
-        createQuestionComments(entity, dto.getComments());
+        if (dto.getComments() != null) {
+            createQuestionComments(entity, dto.getComments());
+        }
     }
 
     public void delete(Long id) {
@@ -180,8 +182,8 @@ public class ProbationPeriodEvaluationService {
             dto.setEmployee(emp.getFirstName() + " " + emp.getLastName());
             dto.setEmail(EmployeeDao.instance().getPrimaryEmail(emp));
             dto.setStartDate(emp.getStartDate());
-            if(evaluation.size() > 0){
-            dto.setStage(evaluation.get(0).getStage().name());
+            if (evaluation.size() > 0) {
+                dto.setStage(evaluation.get(0).getStage().name());
             }
             res.add(dto);
         }
@@ -193,5 +195,4 @@ public class ProbationPeriodEvaluationService {
         return SpringContext.getBean(ProbationPeriodEvaluationService.class);
     }
 
-  
 }
