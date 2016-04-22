@@ -24,20 +24,20 @@ import org.testng.annotations.Test;
  */
 public class ClientInformationProcess extends AbstractOfficeTest {
 
-    @Test(description="test employee search",groups="empsearch",dependsOnGroups = "login")
+    @Test(description="test employee search",groups="empsearch",dependsOnGroups = "expense")
     public void testSearchEmployee() throws InterruptedException {
         System.out.println("Enter Employee Search: " + new Date());
 
         //wait for search box to appear
-        WebElement searchTextBox = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='gwt-SuggestBox searchComposite']")));
+//        WebElement searchTextBox = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='gwt-SuggestBox searchComposite']")));
 
         //wait for remaining screen loading to complete
         WebElement rowElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='y-gwt-ReadAllComposite-Row y-gwt-ReadAllComposite-OddRow']")));
 
         //enter search string
-        searchTextBox.clear();
-        searchTextBox.sendKeys("First1");
-        searchTextBox.sendKeys(Keys.RETURN);
+//        searchTextBox.clear();
+//        searchTextBox.sendKeys("First1");
+//        searchTextBox.sendKeys(Keys.RETURN);
 
         //wait for rowElement to disappear because there are now rowelements in positive search results
         waitForStaleness(rowElement);

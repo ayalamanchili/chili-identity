@@ -19,6 +19,14 @@
                     <class name="info.yalamanchili.office.qa.myoffice.EmployeesTest"/>
                 </classes>
             </package>
+            <package name="info.yalamanchili.office.qa.expense">
+                <classes>
+                    <class name="info.yalamanchili.office.qa.expense.AdvanceRequisition"/>
+                    <class name="info.yalamanchili.office.qa.expense.CheckRequisition"/>
+                    <class name="info.yalamanchili.office.qa.expense.ExpenseReport"/>
+                    <class name="info.yalamanchili.office.qa.expense.TravelAuthorization"/>
+                </classes>
+            </package>
             <package name="info.yalamanchili.office.qa.profile">
                 <classes>
                     <class name="info.yalamanchili.office.qa.profile.AddressesTest"/>                    
