@@ -24,9 +24,11 @@ public class ReadAllProspectsReportPanel extends CRUDReadAllComposite {
     private static Logger logger = Logger.getLogger(ReadAllProspectsReportPanel.class.getName());
     public static ReadAllProspectsReportPanel instance;
     protected String url;
+    protected boolean isClosedWon;
 
-    public ReadAllProspectsReportPanel(JSONArray array) {
+    public ReadAllProspectsReportPanel(JSONArray array, boolean isClosedWon) {
         instance = this;
+        this.isClosedWon = isClosedWon;
         initTable("Prospect", array, OfficeWelcome.constants);
     }
 
@@ -43,13 +45,18 @@ public class ReadAllProspectsReportPanel extends CRUDReadAllComposite {
         table.setText(0, 4, getKeyValue("Screened By"));
         table.setText(0, 5, getKeyValue("Manager"));
         table.setText(0, 6, getKeyValue("AssignedTo"));
-        table.setText(0, 7, getKeyValue("Petition For"));
-        table.setText(0, 8, getKeyValue("Trf Emp Type"));
-        table.setText(0, 9, getKeyValue("Placed By"));
-        table.setText(0, 10, getKeyValue("Date Of Joining"));
-        table.setText(0, 11, getKeyValue("Company"));
-        table.setText(0, 12, getKeyValue("Start Date"));
-        table.setText(0, 13, getKeyValue("Status"));
+        if (isClosedWon == true) {
+            table.setText(0, 7, getKeyValue("Petition For"));
+            table.setText(0, 8, getKeyValue("Trf Emp Type"));
+            table.setText(0, 9, getKeyValue("Placed By"));
+            table.setText(0, 10, getKeyValue("Date Of Joining"));
+            table.setText(0, 11, getKeyValue("Company"));
+            table.setText(0, 12, getKeyValue("Start Date"));
+            table.setText(0, 13, getKeyValue("Status"));
+        } else {
+            table.setText(0, 7, getKeyValue("Start Date"));
+            table.setText(0, 8, getKeyValue("Status"));
+        }
     }
 
     @Override
@@ -63,13 +70,18 @@ public class ReadAllProspectsReportPanel extends CRUDReadAllComposite {
             table.setText(i, 4, JSONUtils.toString(entity, "screenedBy"));
             table.setText(i, 5, JSONUtils.toString(entity, "manager"));
             table.setText(i, 6, JSONUtils.toString(entity, "assignedto"));
-            table.setText(i, 7, JSONUtils.toString(entity, "petitionFor"));
-            table.setText(i, 8, JSONUtils.toString(entity, "trfEmptype"));
-            table.setText(i, 9, JSONUtils.toString(entity, "placedby"));
-            table.setText(i, 10, info.chili.gwt.date.DateUtils.getFormatedDate(JSONUtils.toString(entity, "dateOfJoining"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
-            table.setText(i, 11, JSONUtils.toString(entity, "companyName"));
-            table.setText(i, 12, info.chili.gwt.date.DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
-            setEnumColumn(i, 13, entity, ProspectStatus.class.getSimpleName(), "status");
+            if (isClosedWon == true) {
+                table.setText(i, 7, JSONUtils.toString(entity, "petitionFor"));
+                table.setText(i, 8, JSONUtils.toString(entity, "trfEmptype"));
+                table.setText(i, 9, JSONUtils.toString(entity, "placedby"));
+                table.setText(i, 10, info.chili.gwt.date.DateUtils.getFormatedDate(JSONUtils.toString(entity, "dateOfJoining"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
+                table.setText(i, 11, JSONUtils.toString(entity, "companyName"));
+                table.setText(i, 12, info.chili.gwt.date.DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
+                setEnumColumn(i, 13, entity, ProspectStatus.class.getSimpleName(), "status");
+            } else {
+                table.setText(i, 7, info.chili.gwt.date.DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
+                setEnumColumn(i, 8, entity, ProspectStatus.class.getSimpleName(), "status");
+            }
         }
     }
 
