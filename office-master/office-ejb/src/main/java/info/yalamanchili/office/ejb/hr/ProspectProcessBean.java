@@ -69,7 +69,7 @@ public class ProspectProcessBean {
         }
         email.setHtml(Boolean.TRUE);
         email.setSubject("New Prospect " + entity.getContact().getFirstName() + " " + entity.getContact().getLastName() + " Has Created");
-        String messageText = "Navigate To MyOffice --> Prospect --> Search -> Click on update to change the status with appropriate comments";
+        String messageText = entity.describe()+"\n Navigate To MyOffice --> Prospect --> Search -> Click on update to change the status with appropriate comments";
         email.setBody(messageText);
         MessagingService.instance().sendEmail(email);
     }
