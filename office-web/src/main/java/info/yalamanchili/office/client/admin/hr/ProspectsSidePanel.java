@@ -52,8 +52,8 @@ public class ProspectsSidePanel extends ALComposite implements ClickHandler {
     Button reportB = new Button("Reports");
     Button graphsB = new Button("Graphs");
     EnumField statusF = new EnumField(OfficeWelcome.constants, "status", "Prospect", false, false, ProspectStatus.names(), Alignment.VERTICAL);
-    DateField startDateF = new DateField(OfficeWelcome.constants, "joiningDateTo", "Prospect", false, false, Alignment.VERTICAL);
-    DateField endDateF = new DateField(OfficeWelcome.constants, "joiningDateFrom", "Prospect", false, false, Alignment.VERTICAL);
+    DateField startDateF = new DateField(OfficeWelcome.constants, "joiningDateFrom", "Prospect", false, false, Alignment.VERTICAL);
+    DateField endDateF = new DateField(OfficeWelcome.constants, "joiningDateTo", "Prospect", false, false, Alignment.VERTICAL);
     DateField createDateFromF = new DateField(OfficeWelcome.constants, "createdDateFrom", "Prospect", false, false, Alignment.VERTICAL);
     DateField createDateToF = new DateField(OfficeWelcome.constants, "createdDateTo", "Prospect", false, false, Alignment.VERTICAL);
 
@@ -178,12 +178,16 @@ public class ProspectsSidePanel extends ALComposite implements ClickHandler {
                         new ALAsyncCallback<String>() {
                             @Override
                             public void onResponse(String result) {
+                                boolean isClosedWon =false;
+                                if((obj.containsKey("status")==true && obj.get("status").isString().stringValue().equals(ProspectStatus.CLOSED_WON.name())) || (obj.containsKey("joiningDateFrom")) || (obj.containsKey("joiningDateFrom"))){
+                                    isClosedWon = true;
+                                }
                                 new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
                                 JSONObject resObj = JSONParser.parseLenient(result).isObject();
                                 String key = (String) resObj.keySet().toArray()[0];
                                 JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
                                 TabPanel.instance().myOfficePanel.entityPanel.clear();
-                                TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProspectsReportPanel(results));
+                                TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProspectsReportPanel(results, isClosedWon));
                             }
                         });
                 statusF.clearMessage();
