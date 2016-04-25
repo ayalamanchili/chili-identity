@@ -16,7 +16,7 @@
             </package>
             <package name="info.yalamanchili.office.qa.myoffice">
                 <classes>
-                    <class name="info.yalamanchili.office.qa.myoffice.EmployeesTest"/>
+                    <class name="info.yalamanchili.office.qa.myoffice.ClientInformationProcess"/>
                 </classes>
             </package>
             <package name="info.yalamanchili.office.qa.expense">
@@ -27,9 +27,17 @@
                     <class name="info.yalamanchili.office.qa.expense.TravelAuthorization"/>
                 </classes>
             </package>
-            <package name="info.yalamanchili.office.qa.profile">
+            <package name="info.yalamanchili.office.qa.home.myreports">
                 <classes>
-                    <class name="info.yalamanchili.office.qa.profile.AddressesTest"/>                    
+                    <class name="info.yalamanchili.office.qa.home.myreports.PerfomanceEvaluation"/>                    
+                </classes>
+            </package>
+            <package name="info.yalamanchili.office.qa.time">
+                <classes>
+                    <class name="info.yalamanchili.office.qa.time.SubmitLeaveRequest"/>
+                    <class name="info.yalamanchili.office.qa.time.CorporateTime"/>
+                    <class name="info.yalamanchili.office.qa.time.EmployeeTime"/>
+                    <class name="info.yalamanchili.office.qa.time.Attendance"/>
                 </classes>
             </package>
         </packages>

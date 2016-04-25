@@ -25,10 +25,11 @@ import org.testng.annotations.Test;
 public class ExpenseReport extends AbstractOfficeTest {
      private boolean acceptNextAlert = true;
 
-    @Test(description = "test ExpenseReport", groups = "expense", dependsOnGroups = "login")
+    @Test(description = "test ExpenseReport", groups = "expense", dependsOnGroups = "citest")
     public void expenseReport() throws InterruptedException {
+        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
         driver.findElement(By.xpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[5]/div/div[2]/div/table/tbody/tr/td[4]/div")).click();
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
         driver.findElement(By.xpath("html/body/div[4]/div/div/fieldset/div/span/input")).click();
         driver.findElement(By.xpath("(//button[@type='button'])[5]")).click();
         WebElement formType = driver.findElement(By.id("gwt-debug-ExpenseReport_expenseFormType_LB"));

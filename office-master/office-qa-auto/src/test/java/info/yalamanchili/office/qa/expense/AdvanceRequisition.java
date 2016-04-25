@@ -21,17 +21,11 @@ import org.testng.annotations.Test;
  */
 public class AdvanceRequisition extends AbstractOfficeTest {
 
-    @Test(description = "test AdvanceRequisition search", groups = "expense", dependsOnGroups = "login")
+    @Test(description = "test AdvanceRequisition search", groups = "expense", dependsOnGroups = "citest")
     public void advanceRequisition() throws InterruptedException {
-
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);// Wait 
-
-        driver.manage().window().maximize();
-
         driver.findElement(By.xpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[2]/div/div[4]/div/div")).click();
-
+        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);// Wait 
         driver.findElement(By.id("Advance Requisition")).click();
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
         driver.findElement(By.xpath("html/body/div[4]/div/div/fieldset/div/span/input")).click();
         WebElement create = driver.findElement(By.xpath("(//button[@type='button'])[5]"));
         create.click();

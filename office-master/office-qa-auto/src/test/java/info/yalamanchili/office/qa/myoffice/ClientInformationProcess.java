@@ -24,35 +24,17 @@ import org.testng.annotations.Test;
  */
 public class ClientInformationProcess extends AbstractOfficeTest {
 
-    @Test(description="test employee search",groups="empsearch",dependsOnGroups = "expense")
+   @Test(description="test employee search",groups="citest", dependsOnGroups = "login")
     public void testSearchEmployee() throws InterruptedException {
-        System.out.println("Enter Employee Search: " + new Date());
-
-        //wait for search box to appear
-//        WebElement searchTextBox = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='gwt-SuggestBox searchComposite']")));
-
-        //wait for remaining screen loading to complete
-        WebElement rowElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='y-gwt-ReadAllComposite-Row y-gwt-ReadAllComposite-OddRow']")));
-
-        //enter search string
-//        searchTextBox.clear();
-//        searchTextBox.sendKeys("First1");
-//        searchTextBox.sendKeys(Keys.RETURN);
-
-        //wait for rowElement to disappear because there are now rowelements in positive search results
-        waitForStaleness(rowElement);
-
-        System.out.println("Exit Employee Search: " + new Date());
-    }
-
-    @Test(description="client information",groups="citest",dependsOnGroups="empsearch")
-    public void clientInformationTest() throws InterruptedException {
-
-        driver.findElement(By.xpath("(//img[@title='View'])[11]")).click();
-
+        driver.findElement(By.xpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[2]/div/div[2]/div/div"));
+        WebElement searchTextBox = driver.findElement(By.xpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[3]/div/div[3]/div/div[1]/div/div/fieldset/div/input"));
+        searchTextBox.sendKeys("pavan");
+        searchTextBox.sendKeys(Keys.RETURN);
+        driver.findElement(By.xpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[3]/div/div[4]/div/div/div/div/fieldset/div/div/table/tbody/tr[2]/td[1]/table/tbody/tr/td[2]/img")).click();
+        waitForTime(20);
         driver.findElement(By.xpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[3]/div/div[3]/div/div[1]/div/div/div/div[2]/div/div[4]/div/div")).click();
 
-        driver.findElement(By.id("gwt-debug-Add Client InformationCL")).click();
+        driver.findElement(By.xpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[3]/div/div[4]/div/div/div/div/fieldset/div/button")).click();
 
         driver.findElement(By.id("gwt-debug-ClientInfo_consultantJobTitle_TB")).clear();
 
@@ -68,19 +50,29 @@ public class ClientInformationProcess extends AbstractOfficeTest {
 
         Select clientName = new Select(client);
 
-        clientName.selectByValue("1297");
+        clientName.selectByValue("1");
 
         WebElement clientLocation = driver.findElement(By.id("gwt-debug-ClientLocation_clientLocation_LB"));
 
         Select clName = new Select(clientLocation);
 
-        clName.selectByValue("2418");
+        clName.selectByValue("7");
+        
+        WebElement vendor = driver.findElement(By.id("gwt-debug-Vendor_vendor_LB"));
+
+        Select vName = new Select(vendor);
+
+        vName.selectByValue("1");
+        
+        WebElement vendorLocation = driver.findElement(By.id("gwt-debug-VendorLocation_vendorLocation_LB"));
+
+        Select vLocation = new Select(vendorLocation);
+
+        vLocation.selectByValue("6");
 
         driver.findElement(By.id("gwt-debug-ClientInfo_startDate_TB")).sendKeys("01/01/2016");
 
         driver.findElement(By.id("gwt-debug-ClientInfo_endDate_TB")).sendKeys("01/30/2016");
-
-        driver.findElement(By.id("gwt-debug-ClientInfo_billingRate_TB")).sendKeys("1234");
 
         driver.findElement(By.id("gwt-debug-ClientInfo_billingRate_TB")).sendKeys("1234");
 
@@ -94,63 +86,38 @@ public class ClientInformationProcess extends AbstractOfficeTest {
 
         Select practiceValue = new Select(practice);
 
-        practiceValue.selectByValue("11");
+        practiceValue.selectByValue("1");
 
         WebElement sBus = driver.findElement(By.id("gwt-debug-ClientInfo_sectorsAndBUs_LB"));
 
         Select sBusValue = new Select(sBus);
 
-        sBusValue.selectByValue("4320-BANKING SECTOR");
+        sBusValue.selectByValue("NA");
 
-        WebElement submitForApproval = driver.findElement(By.id("gwt-debug-ClientInfo_Submit For Approval_CB"));
-        submitForApproval.click();
+        //WebElement submitForApproval = driver.findElement(By.id("gwt-debug-ClientInfo_Submit For Approval_CB"));
+        //submitForApproval.click();
 
-        driver.findElement(By.cssSelector("button.gwt-Button")).click();
-
-        System.out.println("Client information Saved and Status is: Pending Contracts Submit");
-
-        driver.findElement(By.xpath(".//*[@id='gwt-uid-21']/div")).click();
-
-        driver.findElement(By.xpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[3]/div/div[4]/div/div/div/div/fieldset/div/div/table/tbody/tr[2]/td[1]/table/tbody/tr/td[3]/img")).click();
-        WebElement clientLocation1 = driver.findElement(By.id("gwt-debug-ClientLocation_clientLocation_LB"));
-
-        Select clName1 = new Select(clientLocation1);
-
-        clName1.selectByValue("7");
-
-        driver.findElement(By.id("gwt-debug-ClientInfo_visaStatus_TB")).sendKeys("approved");
-
-        driver.findElement(By.xpath("//button[@type='button']")).click();
+        driver.findElement(By.xpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[3]/div/div[4]/div/div/div/div/fieldset/div/div[2]/button")).click();
 
         System.out.println("Client information Submitted and Status is: Pending Billing Invoicing approval");
 
-        driver.findElement(By.xpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[3]/div/div[4]/div/div/div/div/fieldset/div/div/table/tbody/tr[2]/td[1]/table/tbody/tr/td[3]/img")).click();
-
-        driver.findElement(By.xpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[3]/div/div[4]/div/div/div/div/fieldset/div/div[1]/table[19]/tbody/tr/td[2]/table/tbody/tr/td[5]/img")).click();
-
-        driver.findElement(By.id("gwt-debug-UpdateBillingRate_effectiveDate_TB")).sendKeys("01/06/2016");
-
-        driver.findElement(By.id("gwt-debug-UpdateBillingRate_billingRate_TB")).sendKeys("5555");
-
-        driver.findElement(By.id("gwt-debug-UpdateBillingRate_overTimeBillingRate_TB")).sendKeys("6666");
-
-        new Select(driver.findElement(By.id("gwt-debug-UpdateBillingRate_billingInvoiceFrequency_LB"))).selectByValue("BI_WEEKLY");
-
-        driver.findElement(By.xpath("html/body/div[4]/div/div/div/fieldset/div/div[2]/button")).click();
-
-        Thread.sleep(3000);
-
-        System.out.println("billing rate updated successfully");
-
-        driver.findElement(By.xpath("//a/table/tbody/tr/td[2]")).click();
-
-        Thread.sleep(7000);// Wait 
-
         driver.findElement(By.xpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[2]/div/div[1]/div/div")).click();
 
-        driver.findElement(By.xpath("//img[@title='View']")).click();
+        Thread.sleep(7000);// Wait 
+        
+        driver.findElement(By.id("gwt-debug-My TasksCL")).click();
 
-        new Select(driver.findElement(By.id("gwt-debug-Fill_the_form_and_complete_the_task_status_LB"))).selectByValue("approved");
+        driver.findElement(By.xpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[2]/div/div[4]/div/div/div/div/fieldset/div/div/table/tbody/tr[2]/td[1]/table/tbody/tr/td[2]/img")).click();
+        
+        Thread.sleep(5000);
+        
+        driver.findElement(By.xpath("//div[6]/fieldset")).click();
+        
+        WebElement status = driver.findElement(By.id("gwt-debug-Fill_the_form_and_complete_the_task_status_LB"));
+        
+        Select value = new Select(status);
+        
+        value.selectByValue("approved");
 
         driver.findElement(By.id("gwt-debug-Fill_the_form_and_complete_the_task_itemNumber_TB")).sendKeys("1234");
 
@@ -158,9 +125,18 @@ public class ClientInformationProcess extends AbstractOfficeTest {
 
         System.out.println("Client information First level Billing task is completed");
 
-        driver.findElement(By.xpath("//img[@title='View']")).click();
+        /*driver.findElement(By.xpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[2]/div/div[4]/div/div/div/div/fieldset/div/div/table/tbody/tr[2]/td[1]/table/tbody/tr/td[2]/img")).click();
+        
+        Thread.sleep(5000);
+        
+        driver.findElement(By.xpath("//div[6]/fieldset")).click();
 
-        new Select(driver.findElement(By.id("gwt-debug-Fill_the_form_and_complete_the_task_status_LB"))).selectByValue("approved");
+        WebElement status1 = driver.findElement(By.id("gwt-debug-Fill_the_form_and_complete_the_task_status_LB"));
+        
+        Select value1 = new Select(status1);
+        
+        value1.selectByValue("approved");
+        
         driver.findElement(By.id("gwt-debug-Fill_the_form_and_complete_the_task_joiningReport_TB")).sendKeys("he is joined earlier");
 
         driver.findElement(By.id("gwt-debug-Fill_the_form_and_complete_the_task_hrOrientation_CB-input")).click();
@@ -181,7 +157,7 @@ public class ClientInformationProcess extends AbstractOfficeTest {
 
         driver.findElement(By.xpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[3]/div/div[4]/div/div/div/div/fieldset/div/div/table/tbody/tr[2]/td[1]/table/tbody/tr/td[2]/img")).click();
 
-        driver.findElement(By.xpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[3]/div/div[3]/div/div[1]/div/div/div/div[2]/div/div[4]/div/div")).click();
+        driver.findElement(By.xpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[3]/div/div[3]/div/div[1]/div/div/div/div[2]/div/div[4]/div/div")).click();*/
 
     }
 }

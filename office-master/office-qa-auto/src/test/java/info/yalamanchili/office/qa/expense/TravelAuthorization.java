@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.qa.expense;
 
+import info.yalamanchili.office.qa.AbstractOfficeTest;
 import static info.yalamanchili.office.qa.AbstractOfficeTest.driver;
 import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
@@ -19,9 +20,9 @@ import org.testng.annotations.Test;
  *
  * @author Ramana.Lukalapu
  */
-public class TravelAuthorization {
+public class TravelAuthorization extends AbstractOfficeTest {
 
-    @Test(description = "test TravelAuthrization", groups = "expense", dependsOnGroups = "login")
+    @Test(description = "test TravelAuthrization", groups = "expense1", dependsOnGroups = "citest")
     public void travelAuthorize() throws InterruptedException {
         driver.findElement(By.id("Travel Authorization")).click();
         driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
@@ -52,6 +53,7 @@ public class TravelAuthorization {
         Select modeFoodName = new Select(paymentFood);
         modeFoodName.selectByValue("PURCHASING_CARD");
         driver.findElement(By.cssSelector("button.gwt-Button.y-gwt-createB")).click();
+        waitForTime(30);
     }
 
 }

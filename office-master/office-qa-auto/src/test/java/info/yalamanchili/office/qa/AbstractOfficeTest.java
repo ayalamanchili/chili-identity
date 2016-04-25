@@ -98,6 +98,8 @@ public abstract class AbstractOfficeTest {
         WebElement loginB = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("gwt-debug-loginB")));
         loginB.click();
         
+        driver.manage().window().maximize();
+        
         try {    
             waitForElement("gwt-debug-welcomeL");            
         } catch (Exception e) {

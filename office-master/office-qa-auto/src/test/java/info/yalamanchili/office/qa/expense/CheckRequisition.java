@@ -24,7 +24,7 @@ import org.testng.annotations.Test;
  */
 public class CheckRequisition extends AbstractOfficeTest {
 
-    @Test(description = "test CheckRequisition", groups = "expense", dependsOnGroups = "login")
+    @Test(description = "test CheckRequisition", groups = "expense", dependsOnGroups = "citest")
     public void checkRequisition() throws InterruptedException {
         driver.findElement(By.id("Check Requisition")).click();
         driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
@@ -45,5 +45,6 @@ public class CheckRequisition extends AbstractOfficeTest {
         driver.findElement(By.id("gwt-debug-CheckRequisitionItem_amount_TB")).sendKeys("15000");
         driver.findElement(By.xpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[5]/div/div[4]/div/div/div/div/fieldset/div/div[2]/button")).click();
         System.out.println("Successfully submitted");
+        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
     }
 }
