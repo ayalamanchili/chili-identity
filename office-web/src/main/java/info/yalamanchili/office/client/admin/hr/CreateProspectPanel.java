@@ -55,8 +55,8 @@ import java.util.logging.Logger;
 public class CreateProspectPanel extends CreateComposite implements ChangeHandler, OpenHandler, CloseHandler {
 
     private static Logger logger = Logger.getLogger(CreateProspectPanel.class.getName());
-    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "assignedTo", "Employee", false, false, Alignment.HORIZONTAL);
-    SuggestBox caseManagerSB = new SuggestBox(OfficeWelcome.constants, "caseManager", "Employee", false, true, Alignment.HORIZONTAL);
+    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "assignedTo", "Employee", false, true, Alignment.HORIZONTAL);
+    SuggestBox caseManagerSB = new SuggestBox(OfficeWelcome.constants, "caseManager", "Employee", false, false, Alignment.HORIZONTAL);
     DisclosurePanel notifyOtherL = new DisclosurePanel("Notify Employees");
     FlowPanel panel = new FlowPanel();
     FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "Prospect", "resumeURL", "Prospect/resumeURL", false, true) {
