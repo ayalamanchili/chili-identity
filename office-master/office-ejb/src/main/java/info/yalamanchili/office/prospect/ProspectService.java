@@ -156,10 +156,12 @@ public class ProspectService {
                 String email = EmployeeDao.instance().findById(id).getPrimaryEmail().getEmail();
                 emails.add(email);
             }
-            for (String email : emails) {
-                emaillist = emaillist.concat(email) + " , ";
+            if (dto.getCaseManager() != null) {
+                for (String email : emails) {
+                    emaillist = emaillist.concat(email) + " , ";
+                }
+                emaillist = emaillist.concat(EmployeeDao.instance().findById(dto.getCaseManager().getId()).getPrimaryEmail().getEmail());
             }
-            emaillist = emaillist.concat(EmployeeDao.instance().findById(dto.getCaseManager().getId()).getPrimaryEmail().getEmail());
             CommentDao.instance().addComment(emaillist, entity);
         }
         CommentDao.instance().addComment(dto.getComment(), entity);
@@ -213,11 +215,13 @@ public class ProspectService {
 
     public ProspectDto update(ProspectDto dto) {
         Prospect entity = prospectDao.findById(dto.getId());
-        if (ProspectStatus.IN_PROGRESS.equals(entity.getStatus()) && (!OfficeSecurityService.instance().getCurrentUser().equals(EmployeeDao.instance().findById(dto.getCaseManager().getId())) && !OfficeSecurityService.instance().hasRole(OfficeRoles.OfficeRole.ROLE_PROSPECTS_MANAGER.name()))) {
+        if (dto.getCaseManager() != null && ProspectStatus.IN_PROGRESS.equals(entity.getStatus()) && (!OfficeSecurityService.instance().getCurrentUser().equals(EmployeeDao.instance().findById(dto.getCaseManager().getId())) && !OfficeSecurityService.instance().hasRole(OfficeRoles.OfficeRole.ROLE_PROSPECTS_MANAGER.name()))) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "you.cannot.update", "You may not have access to update prospect");
+        } else if (dto.getCaseManager() == null && ProspectStatus.IN_PROGRESS.equals(entity.getStatus()) && (!OfficeSecurityService.instance().getCurrentUser().equals(EmployeeDao.instance().findById(dto.getAssignedTo().getId())) && !OfficeSecurityService.instance().hasRole(OfficeRoles.OfficeRole.ROLE_PROSPECTS_MANAGER.name()))) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "you.cannot.update", "You may not have access to update prospect");
         } else if ((ProspectStatus.RECRUITING.equals(entity.getStatus()) || ProspectStatus.BENCH.equals(entity.getStatus())) && (!OfficeSecurityService.instance().getCurrentUser().equals(EmployeeDao.instance().findById(dto.getAssignedTo().getId())) && !OfficeSecurityService.instance().hasRole(OfficeRoles.OfficeRole.ROLE_PROSPECTS_MANAGER.name()))) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "you.cannot.update", "You may not have access to update prospect");
-        }else {
+        } else {
             if (dto.getAssignedTo() != null) {
                 entity.setAssigned(dto.getAssignedTo().getId());
             }
@@ -379,7 +383,9 @@ public class ProspectService {
     public void sendProspectStatusNotification(Prospect prospect) {
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
         info.chili.email.Email email = new info.chili.email.Email();
-        email.addTo(EmployeeDao.instance().findById(prospect.getManager()).getPrimaryEmail().getEmail());
+        if (prospect.getManager() != null) {
+            email.addTo(EmployeeDao.instance().findById(prospect.getManager()).getPrimaryEmail().getEmail());
+        }
         if (prospect.getAssigned() != null) {
             email.addTo(EmployeeDao.instance().findById(prospect.getAssigned()).getPrimaryEmail().getEmail());
         }
@@ -397,7 +403,9 @@ public class ProspectService {
         String messageText = " Prospect Information :: ";
         messageText = messageText.concat("\n Prospect     : " + prospect.getContact().getFirstName() + " " + prospect.getContact().getLastName());
         messageText = messageText.concat("\n Status       : " + prospect.getStatus());
-        messageText = messageText.concat("\n Case Manager : " + EmployeeDao.instance().findById(prospect.getManager()).getFirstName());
+        if (prospect.getManager() != null) {
+            messageText = messageText.concat("\n Case Manager : " + EmployeeDao.instance().findById(prospect.getManager()).getFirstName());
+        }
         if (prospect.getAssigned() != null) {
             messageText = messageText.concat("\n Assigned To  : " + EmployeeDao.instance().findById(prospect.getAssigned()).getFirstName());
         }
