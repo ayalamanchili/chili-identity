@@ -8,16 +8,12 @@
  */
 package info.yalamanchili.office.client.admin.hr;
 
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.Timer;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
-import info.chili.gwt.fields.EnumField;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.SearchComposite;
@@ -34,13 +30,13 @@ import java.util.logging.Logger;
  *
  * @author raghu
  */
-public class SearchProspectsPanel extends SearchComposite implements ChangeHandler {
+public class SearchProspectsPanel extends SearchComposite {
 
     private static Logger logger = Logger.getLogger(SearchProspectsPanel.class.getName());
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "assignedTo", "Employee", false, false);
     SuggestBox caseManagerSB = new SuggestBox(OfficeWelcome.constants, "caseManager", "Employee", false, false);
     protected SelectCompanyWidget selectCompnayWidget = new SelectCompanyWidget(false, false);
-    EnumField statusF = new EnumField(OfficeWelcome.constants, "status", "Prospect", false, false, ProspectStatus.names());
+    //EnumField statusF = new EnumField(OfficeWelcome.constants, "status", "Prospect", false, false, ProspectStatus.names());
 
     public SearchProspectsPanel() {
         init("Prospect Search", "Prospect", OfficeWelcome.constants);
@@ -141,7 +137,7 @@ public class SearchProspectsPanel extends SearchComposite implements ChangeHandl
         addEnumField("trfEmpType", false, false, TransferEmployeeType.names());
         addEnumField("placedBy", false, false, PlacedBy.names());
         addField("dateOfJoining", DataType.DATE_FIELD);
-        mainPanel.insert(statusF, mainPanel.getWidgetIndex(searchButton));
+        //mainPanel.insert(statusF, mainPanel.getWidgetIndex(searchButton));
     }
 
     @Override
@@ -165,10 +161,10 @@ public class SearchProspectsPanel extends SearchComposite implements ChangeHandl
         assignEntityValueFromField("trfEmpType", entity);
         assignEntityValueFromField("dateOfJoining", entity);
         assignEntityValueFromField("processDocSentDate", entity);
-        if (statusF.getValue() != null) {
-            entity.put("status", new JSONString(statusF.getValue()));
-            statusF.listBox.addChangeHandler(this);
-        }
+//        if (statusF.getValue() != null) {
+//            entity.put("status", new JSONString(statusF.getValue()));
+//            statusF.listBox.addChangeHandler(this);
+//        }
         entity.put("contact", contact);
         return entity;
     }
@@ -205,7 +201,7 @@ public class SearchProspectsPanel extends SearchComposite implements ChangeHandl
     protected void postSearchSuccess(JSONArray result) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().getMyOfficePanel().entityPanel.add(new ProspectMenu());
-        TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllProspectsPanel(result));
+        TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllProspectsPanel(result, false, true));
     }
 
     @Override
@@ -244,9 +240,9 @@ public class SearchProspectsPanel extends SearchComposite implements ChangeHandl
         return OfficeWelcome.constants.root_url() + "prospect/search-suggestions";
     }
 
-    @Override
-    public void onChange(ChangeEvent event) {
-        entity.put("status", new JSONString(statusF.getValue()));
-        search(entity);
-    }
+//    @Override
+//    public void onChange(ChangeEvent event) {
+//        entity.put("status", new JSONString(statusF.getValue()));
+//        search(entity);
+//    }
 }

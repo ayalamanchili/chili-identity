@@ -16,6 +16,7 @@ import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.FormatUtils;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.GenericPopup;
@@ -36,14 +37,24 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
     private static Logger logger = Logger.getLogger(ReadAllProspectsPanel.class.getName());
     public static ReadAllProspectsPanel instance;
     protected String url;
+    boolean isClosedWon = false;
+    boolean isOnAllTab = false;
 
     public ReadAllProspectsPanel() {
         instance = this;
+        isOnAllTab = true;
         initTable("Prospect", OfficeWelcome.constants);
     }
 
     public ReadAllProspectsPanel(JSONArray array) {
         instance = this;
+        initTable("Prospect", array, OfficeWelcome.constants);
+    }
+
+    public ReadAllProspectsPanel(JSONArray array, boolean isClosedWon, boolean isOnAllTab) {
+        instance = this;
+        this.isClosedWon = isClosedWon;
+        this.isOnAllTab = isOnAllTab;
         initTable("Prospect", array, OfficeWelcome.constants);
     }
 
@@ -74,8 +85,12 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
         table.setText(0, 2, getKeyValue("Last Name"));
         table.setText(0, 3, getKeyValue("Screened By"));
         table.setText(0, 4, getKeyValue("Referred By"));
-        table.setText(0, 5, getKeyValue("Status"));
-        table.setText(0, 6, getKeyValue("OnBoarding Invitation"));
+        table.setText(0, 5, getKeyValue("Phone Number"));
+        if (isClosedWon == true && isOnAllTab == false) {
+            table.setText(0, 6, getKeyValue("OnBoarding Invitation"));
+        } else if (isClosedWon == false && isOnAllTab == true) {
+            table.setText(0, 6, getKeyValue("Status"));
+        }
     }
 
     @Override
@@ -88,16 +103,20 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
             table.setText(i, 2, JSONUtils.toString(entity, "lastName"));
             table.setText(i, 3, JSONUtils.toString(entity, "screenedBy"));
             table.setText(i, 4, JSONUtils.toString(entity, "referredBy"));
-            setEnumColumn(i, 5, entity, ProspectStatus.class.getSimpleName(), "status");
-            if (TabPanel.instance().myOfficePanel.isVisible()) {
-                if (ProspectStatus.CLOSED_WON.name().equals(status)) {
-                    ClickableLink invitationLink = new ClickableLink("OnBoarding invitecode");
-                    invitationLink.setTitle(JSONUtils.toString(entity, "id"));
-                    invitationLink.addClickHandler((ClickEvent event) -> {
-                        getOnBoardInviteCode(((ClickableLink) event.getSource()).getTitle());
-                    });
-                    table.setWidget(i, 6, invitationLink);
+            table.setText(i, 5, FormatUtils.formatPhoneNumber(JSONUtils.toString(entity, "phoneNumber")));
+            if (isClosedWon == true && isOnAllTab == false) {
+                if (TabPanel.instance().myOfficePanel.isVisible()) {
+                    if (ProspectStatus.CLOSED_WON.name().equals(status)) {
+                        ClickableLink invitationLink = new ClickableLink("OnBoarding invitecode");
+                        invitationLink.setTitle(JSONUtils.toString(entity, "id"));
+                        invitationLink.addClickHandler((ClickEvent event) -> {
+                            getOnBoardInviteCode(((ClickableLink) event.getSource()).getTitle());
+                        });
+                        table.setWidget(i, 6, invitationLink);
+                    }
                 }
+            } else if (isClosedWon == false && isOnAllTab == true) {
+                setEnumColumn(i, 6, entity, ProspectStatus.class.getSimpleName(), "status");
             }
         }
     }

@@ -319,7 +319,7 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         panel.add(employeesSB);
         entityFieldsPanel.insert(panel, entityFieldsPanel.getWidgetIndex(caseManagerSB));
         employeeSB.getLabel().getElement().getStyle().setWidth(197, Style.Unit.PX);
-         HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+        HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
                 Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
@@ -511,7 +511,7 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         }
         return true;
     }
-    
+
     MultiSelectSuggestBox employeesSB = new MultiSelectSuggestBox() {
         @Override
         public void initTosSuggesBox() {
