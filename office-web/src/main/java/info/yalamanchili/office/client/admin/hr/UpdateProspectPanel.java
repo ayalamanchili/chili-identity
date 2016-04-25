@@ -493,17 +493,17 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
             employeeSB.setMessage("Assigned To Can not be null");
             return false;
         }
-
-        if (entity.get("caseManager") != null) {
-            JSONObject caseManager = entity.get("caseManager").isObject();
-            if (caseManager.containsKey("firstName") && (caseManager.get("firstName") == null)) {
-                caseManagerSB.setMessage("Case Manager Can not be null");
-                return false;
-            }
-        } else if (caseManagerSB.getSelectedObject() == null) {
-            caseManagerSB.setMessage("Case Manager Can not be null");
-            return false;
-        }
+//
+//        if (entity.get("caseManager") != null) {
+//            JSONObject caseManager = entity.get("caseManager").isObject();
+//            if (caseManager.containsKey("firstName") && (caseManager.get("firstName") == null)) {
+//                caseManagerSB.setMessage("Case Manager Can not be null");
+//                return false;
+//            }
+//        } else if (caseManagerSB.getSelectedObject() == null) {
+//            caseManagerSB.setMessage("Case Manager Can not be null");
+//            return false;
+//        }
 
         if (ProspectStatus.CLOSED_WON.name().equals(entity.get("status").isString().stringValue()) && selectCompnayWidget.getSelectedObject() == null) {
             selectCompnayWidget.setMessage("Company Can not be null");
