@@ -178,8 +178,8 @@ public class ProspectsSidePanel extends ALComposite implements ClickHandler {
                         new ALAsyncCallback<String>() {
                             @Override
                             public void onResponse(String result) {
-                                boolean isClosedWon =false;
-                                if((obj.containsKey("status")==true && obj.get("status").isString().stringValue().equals(ProspectStatus.CLOSED_WON.name())) || (obj.containsKey("joiningDateFrom")) || (obj.containsKey("joiningDateFrom"))){
+                                boolean isClosedWon = false;
+                                if ((obj.containsKey("status") == true && obj.get("status").isString().stringValue().equals(ProspectStatus.CLOSED_WON.name())) || (obj.containsKey("joiningDateFrom")) || (obj.containsKey("joiningDateFrom"))) {
                                     isClosedWon = true;
                                 }
                                 new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
