@@ -9,17 +9,22 @@
 package info.yalamanchili.office.ejb.hr;
 
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dto.prospect.ProspectDto;
+import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.hr.Prospect;
 import info.yalamanchili.office.entity.hr.ProspectStatus;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.dozer.Mapper;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
@@ -57,8 +62,10 @@ public class ProspectProcessBean {
 
     public void notifyCaseManager(Prospect entity, List<Long> employees) {
         info.chili.email.Email email = new info.chili.email.Email();
-        if (entity.getStatus().equals(ProspectStatus.IN_PROGRESS)) {
+        if (entity.getStatus().equals(ProspectStatus.IN_PROGRESS) && entity.getManager() != null) {
             email.addTo(EmployeeDao.instance().findById(entity.getManager()).getPrimaryEmail().getEmail());
+        } else if (entity.getStatus().equals(ProspectStatus.IN_PROGRESS) && entity.getManager() == null) {
+            email.addTo(EmployeeDao.instance().findById(entity.getAssigned()).getPrimaryEmail().getEmail());
         } else if (entity.getStatus().equals(ProspectStatus.RECRUITING) || entity.getStatus().equals(ProspectStatus.BENCH)) {
             email.addTo(EmployeeDao.instance().findById(entity.getAssigned()).getPrimaryEmail().getEmail());
         }
@@ -69,7 +76,7 @@ public class ProspectProcessBean {
         }
         email.setHtml(Boolean.TRUE);
         email.setSubject("New Prospect " + entity.getContact().getFirstName() + " " + entity.getContact().getLastName() + " Has Created");
-        String messageText = entity.describe()+"\n Navigate To MyOffice --> Prospect --> Search -> Click on update to change the status with appropriate comments";
+        String messageText = entity.describe() + "\n Navigate To MyOffice --> Prospect --> Search -> Click on update to change the status with appropriate comments";
         email.setBody(messageText);
         MessagingService.instance().sendEmail(email);
     }
