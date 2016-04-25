@@ -11,8 +11,6 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.rpc.HttpService;
@@ -22,7 +20,6 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import java.util.LinkedHashMap;
 import java.util.logging.Logger;
 
 /**
@@ -46,9 +43,10 @@ public class ProspectMenu extends CMenuBar {
     }
     static Command allMaintainenceCmd = new Command() {
         public void execute() {
-            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
             TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
-            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ProspectMenu());
+            if (TabPanel.instance().getMyOfficePanel().entityPanel.getWidgetCount() > 0) {
+                TabPanel.instance().getMyOfficePanel().entityPanel.remove(1);
+            }
             if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER)) {
                 TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllProspectsPanel());
                 TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new ProspectsSidePanel());
@@ -56,9 +54,10 @@ public class ProspectMenu extends CMenuBar {
         }
     };
     static Command inProgressMaintainenceCmd = () -> {
-        TabPanel.instance().getMyOfficePanel().entityPanel.clear();
         TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
-        TabPanel.instance().getMyOfficePanel().entityPanel.add(new ProspectMenu());
+        if (TabPanel.instance().getMyOfficePanel().entityPanel.getWidgetCount() > 0) {
+            TabPanel.instance().getMyOfficePanel().entityPanel.remove(1);
+        }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER)) {
             JSONObject entity = new JSONObject();
             entity.put("status", new JSONString("IN_PROGRESS"));
@@ -68,9 +67,10 @@ public class ProspectMenu extends CMenuBar {
         }
     };
     static Command recruitingMaintainenceCmd = () -> {
-        TabPanel.instance().getMyOfficePanel().entityPanel.clear();
         TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
-        TabPanel.instance().getMyOfficePanel().entityPanel.add(new ProspectMenu());
+        if (TabPanel.instance().getMyOfficePanel().entityPanel.getWidgetCount() > 0) {
+            TabPanel.instance().getMyOfficePanel().entityPanel.remove(1);
+        }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER)) {
             JSONObject entity = new JSONObject();
             entity.put("status", new JSONString("RECRUITING"));
@@ -80,9 +80,10 @@ public class ProspectMenu extends CMenuBar {
         }
     };
     static Command benchMaintainenceCmd = () -> {
-        TabPanel.instance().getMyOfficePanel().entityPanel.clear();
         TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
-        TabPanel.instance().getMyOfficePanel().entityPanel.add(new ProspectMenu());
+        if (TabPanel.instance().getMyOfficePanel().entityPanel.getWidgetCount() > 0) {
+            TabPanel.instance().getMyOfficePanel().entityPanel.remove(1);
+        }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER)) {
             JSONObject entity = new JSONObject();
             entity.put("status", new JSONString("BENCH"));
@@ -92,9 +93,10 @@ public class ProspectMenu extends CMenuBar {
         }
     };
     static Command onHoldMaintainenceCmd = () -> {
-        TabPanel.instance().getMyOfficePanel().entityPanel.clear();
         TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
-        TabPanel.instance().getMyOfficePanel().entityPanel.add(new ProspectMenu());
+        if (TabPanel.instance().getMyOfficePanel().entityPanel.getWidgetCount() > 0) {
+            TabPanel.instance().getMyOfficePanel().entityPanel.remove(1);
+        }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER)) {
             JSONObject entity = new JSONObject();
             entity.put("status", new JSONString("ONHOLD"));
@@ -104,9 +106,10 @@ public class ProspectMenu extends CMenuBar {
         }
     };
     static Command closedWonMaintainenceCmd = () -> {
-        TabPanel.instance().getMyOfficePanel().entityPanel.clear();
         TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
-        TabPanel.instance().getMyOfficePanel().entityPanel.add(new ProspectMenu());
+        if (TabPanel.instance().getMyOfficePanel().entityPanel.getWidgetCount() > 0) {
+            TabPanel.instance().getMyOfficePanel().entityPanel.remove(1);
+        }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER)) {
             JSONObject entity = new JSONObject();
             entity.put("status", new JSONString("CLOSED_WON"));
@@ -116,9 +119,10 @@ public class ProspectMenu extends CMenuBar {
         }
     };
     static Command closedLastMaintainenceCmd = () -> {
-        TabPanel.instance().getMyOfficePanel().entityPanel.clear();
         TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
-        TabPanel.instance().getMyOfficePanel().entityPanel.add(new ProspectMenu());
+        if (TabPanel.instance().getMyOfficePanel().entityPanel.getWidgetCount() > 0) {
+            TabPanel.instance().getMyOfficePanel().entityPanel.remove(1);
+        }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER)) {
             JSONObject entity = new JSONObject();
             entity.put("status", new JSONString("CLOSED_LOST"));
@@ -136,13 +140,21 @@ public class ProspectMenu extends CMenuBar {
                         if (result == null || JSONParser.parseLenient(result).isObject() == null) {
                             new ResponseStatusWidget().show("No Results");
                             TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new ProspectsSidePanel());
+                            JSONArray results = new JSONArray();
+                            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProspectsPanel(results, false, false));
                         } else {
                             //TODO use size and entities attributes
                             JSONObject resObj = JSONParser.parseLenient(result).isObject();
                             String key = (String) resObj.keySet().toArray()[0];
                             JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-                            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProspectsPanel(results));
-                            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new ProspectsSidePanel());
+                            JSONObject result1 = results.get(0).isObject();
+                            if (result1.get("status").isString().stringValue().equals(ProspectStatus.CLOSED_WON.name())) {
+                                TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProspectsPanel(results, true, false));
+                                TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new ProspectsSidePanel());
+                            } else {
+                                TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProspectsPanel(results, false, false));
+                                TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new ProspectsSidePanel());
+                            }
                         }
                     }
                 });
@@ -152,5 +164,4 @@ public class ProspectMenu extends CMenuBar {
         return URL.encode(OfficeWelcome.constants.root_url() + "prospect/search-prospect/" + start.toString() + "/"
                 + limit.toString());
     }
-
 }

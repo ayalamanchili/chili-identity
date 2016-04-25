@@ -75,10 +75,10 @@ public class ProspectDto implements Serializable {
     protected String screenedBy;
     @NotEmpty(message = "{referredBy.not.empty.msg}")
     protected String referredBy;
-
+    
+    @NotNull(message = "{assignedTo.not.empty.msg}")
     private Employee assignedTo;
 
-    @NotNull(message = "{caseManager.not.empty.msg}")
     private Employee caseManager;
 
     protected Set<Resume> resumeURL;
@@ -123,7 +123,7 @@ public class ProspectDto implements Serializable {
     protected String companyName;
     protected String assignedto;
     protected String stage;
-
+    
     public String getPlacedby() {
         return placedby;
     }

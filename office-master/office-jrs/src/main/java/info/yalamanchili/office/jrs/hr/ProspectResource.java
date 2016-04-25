@@ -221,6 +221,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
         dto.setFirstName(p.getContact().getFirstName());
         dto.setLastName(p.getContact().getLastName());
         dto.setScreenedBy(p.getScreenedBy());
+        dto.setPhoneNumber(p.getContact().getPhones().get(0).getPhoneNumber());
         dto.setReferredBy(p.getReferredBy());
         dto.setStatus(p.getStatus());
         return dto;
