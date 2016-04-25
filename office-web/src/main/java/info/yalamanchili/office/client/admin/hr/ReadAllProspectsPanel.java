@@ -199,7 +199,7 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
         String status = JSONUtils.toString(entity, "status");
         if (Auth.hasAnyOfRoles(ROLE.ROLE_PROSPECTS_MANAGER)) {
             createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE);
-        } else if ((ProspectStatus.IN_PROGRESS.name().equals(status)) && Auth.hasAnyOfRoles(ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_GC_IMMIGRATION)) {
+        } else if ((ProspectStatus.IN_PROGRESS.name().equals(status)) && Auth.hasAnyOfRoles(ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_GC_IMMIGRATION, ROLE.ROLE_RECRUITER)) {
             createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE);
         } else if ((ProspectStatus.RECRUITING.name().equals(status) || ProspectStatus.BENCH.name().equals(status)) && Auth.hasAnyOfRoles(ROLE.ROLE_RECRUITER)) {
             createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE);
