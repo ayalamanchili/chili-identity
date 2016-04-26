@@ -24,6 +24,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
+import org.hibernate.Hibernate;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -189,6 +190,14 @@ public class ProspectDao extends CRUDDao<Prospect> {
         json.addProperty(ProspectStatus.CLOSED_LOST.name(), closedlostCount);
         Gson gson = new Gson();
         return gson.toJson(json);
+    }
+    
+    @Transactional
+    @Override
+    public Prospect findById(Long id) {
+        Prospect find = (Prospect) getEntityManager().find(entityCls, id);
+        Hibernate.initialize(find.getContact().getPhones());
+        return find;
     }
 
     public ProspectDao() {
