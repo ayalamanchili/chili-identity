@@ -1362,3 +1362,11 @@ td.y-gwt-AbstractStatusPanel-LoginLink {
     color:#fb743a;
     font-weight: bold;
 }
+.mainPanel {
+    bottom:20px !important; line-height: 20px !important;
+    
+}
+.info-yalamanchili-office-client-resources-OfficeCss-footerPanel a.gwt-Anchor {
+    line-height: 20px !important;
+    cursor: pointer;
+}
