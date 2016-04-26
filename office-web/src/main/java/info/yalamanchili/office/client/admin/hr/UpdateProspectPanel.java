@@ -329,7 +329,7 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
             }
         });
         caseManagerSB.getLabel().getElement().getStyle().setWidth(197, Style.Unit.PX);
-        HttpService.HttpServiceAsync.instance().doGet(getcaseManagnerIdsDropDownUrl1(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+        HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
                 Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
@@ -338,27 +338,10 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
                 }
             }
         });
-        HttpService.HttpServiceAsync.instance().doGet(getcaseManagnerIdsDropDownUrl2(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String entityString) {
-                Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
-                if (values != null) {
-                    caseManagerSB.loadData(values);
-                }
-            }
-        });
-    }
-
-    private String getcaseManagnerIdsDropDownUrl1() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_H1B_IMMIGRATION + "/0/10000");
-    }
-
-    private String getcaseManagnerIdsDropDownUrl2() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_GC_IMMIGRATION + "/0/10000");
     }
 
     private String getEmployeeIdsDropDownUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_RECRUITER + "/0/10000");
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_CORPORATE_EMPLOYEE + "/0/10000");
     }
 
     protected String getNotifyEmployeesDropDownUrl() {
