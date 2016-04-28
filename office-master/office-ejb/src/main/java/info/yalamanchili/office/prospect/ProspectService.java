@@ -228,6 +228,11 @@ public class ProspectService {
             if (dto.getCaseManager() != null) {
                 entity.setManager(dto.getCaseManager().getId());
             }
+            if (dto.getScreenedBy() != null) {
+                entity.setScreenedBy(dto.getScreenedBy());
+            } else {
+                entity.setScreenedBy(null);
+            }
             if (dto.getStatus() != null) {
                 if (entity.getStatus() != dto.getStatus()) {
                     entity.setStatus(dto.getStatus());
