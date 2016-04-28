@@ -60,8 +60,9 @@ import java.util.logging.Logger;
 public class UpdateProspectPanel extends UpdateComposite implements ClickHandler, ChangeHandler, OpenHandler, CloseHandler {
 
     private Logger logger = Logger.getLogger(UpdateProspectPanel.class.getName());
-    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "assignedTo", "Employee", false, false, Alignment.HORIZONTAL);
-    SuggestBox caseManagerSB = new SuggestBox(OfficeWelcome.constants, "caseManager", "Employee", false, true, Alignment.HORIZONTAL);
+    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "assignedTo", "Employee", false, true, Alignment.HORIZONTAL);
+    SuggestBox caseManagerSB = new SuggestBox(OfficeWelcome.constants, "caseManager", "Employee", false, false, Alignment.HORIZONTAL);
+    SuggestBox screenedBySB = new SuggestBox(OfficeWelcome.constants, "screenedBy", "Prospect", false, false, Alignment.HORIZONTAL);
     protected SelectCompanyWidget selectCompnayWidget = new SelectCompanyWidget(false, true, Alignment.HORIZONTAL);
     DisclosurePanel notifyOtherL = new DisclosurePanel("Notify Employees");
     FlowPanel panel = new FlowPanel();
@@ -170,7 +171,11 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         entity.put("phoneNumber", new JSONString(phoneNumber));
         assignEntityValueFromField("dateOfBirth", entity);
         assignEntityValueFromField("referredBy", entity);
-        assignEntityValueFromField("screenedBy", entity);
+        if (screenedBySB.getSelectedObject() != null) {
+            entity.put("screenedBy", new JSONString(screenedBySB.getSuggestBox().getValue()));
+        } else {
+            entity.put("screenedBy", null);
+        }
         assignEntityValueFromField("processDocSentDate", entity);
         assignEntityValueFromField("status", entity);
         assignEntityValueFromField("comment", entity);
@@ -244,6 +249,7 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+        logger.info("43567890456u" + entity);
         JSONObject emp = (JSONObject) entity.get("assignedTo");
         if (emp != null) {
             employeeSB.setValue(emp.get("firstName").isString().stringValue());
@@ -252,6 +258,7 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         if (employee != null) {
             caseManagerSB.setValue(employee.get("firstName").isString().stringValue());
         }
+
         if (entity.get("address") != null) {
             JSONObject address = entity.get("address").isObject();
             assignFieldValueFromEntity("street1", address, DataType.STRING_FIELD);
@@ -271,7 +278,9 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         assignFieldValueFromEntity("countryCode", entity, DataType.LONG_FIELD);
         assignFieldValueFromEntity("dateOfBirth", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("referredBy", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("screenedBy", entity, DataType.STRING_FIELD);
+        if (entity.get("screenedBy") != null) {
+            screenedBySB.setValue(entity.get("screenedBy").isString().stringValue());
+        }
         assignFieldValueFromEntity("processDocSentDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("comment", entity, DataType.TEXT_AREA_FIELD);
         if (entity.get("id") != null) {
@@ -318,6 +327,7 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         notifyOtherL.setOpen(true);
         panel.add(employeesSB);
         entityFieldsPanel.insert(panel, entityFieldsPanel.getWidgetIndex(caseManagerSB));
+        entityFieldsPanel.insert(panel, entityFieldsPanel.getWidgetIndex(screenedBySB));
         employeeSB.getLabel().getElement().getStyle().setWidth(197, Style.Unit.PX);
         HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
@@ -335,6 +345,16 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
                 Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
                 if (values != null) {
                     caseManagerSB.loadData(values);
+                }
+            }
+        });
+        screenedBySB.getLabel().getElement().getStyle().setWidth(197, Style.Unit.PX);
+        HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
+                if (values != null) {
+                    screenedBySB.loadData(values);
                 }
             }
         });
@@ -379,7 +399,7 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         entityFieldsPanel.add(employeeSB);
         entityFieldsPanel.add(notifyOtherL);
         entityFieldsPanel.add(caseManagerSB);
-        addField("screenedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(screenedBySB);
         addField("processDocSentDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("comment", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Upload Resume"));
