@@ -57,6 +57,7 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
     private static Logger logger = Logger.getLogger(CreateProspectPanel.class.getName());
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "assignedTo", "Employee", false, true, Alignment.HORIZONTAL);
     SuggestBox caseManagerSB = new SuggestBox(OfficeWelcome.constants, "caseManager", "Employee", false, false, Alignment.HORIZONTAL);
+    SuggestBox screenedBySB = new SuggestBox(OfficeWelcome.constants, "screenedBy", "Prospect", false, false, Alignment.HORIZONTAL);
     DisclosurePanel notifyOtherL = new DisclosurePanel("Notify Employees");
     FlowPanel panel = new FlowPanel();
     FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "Prospect", "resumeURL", "Prospect/resumeURL", false, true) {
@@ -118,7 +119,9 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         if (caseManagerSB.getSelectedObject() != null) {
             entity.put("caseManager", caseManagerSB.getSelectedObject());
         }
-        assignEntityValueFromField("screenedBy", entity);
+        if (screenedBySB.getSelectedObject() != null) {
+            entity.put("screenedBy", new JSONString(screenedBySB.getSuggestBox().getValue()));
+        }
         assignEntityValueFromField("processDocSentDate", entity);
         assignEntityValueFromField("comment", entity);
         if (employeesSB.getValues().size() > 0) {
@@ -218,10 +221,12 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
                 if (values != null) {
                     employeeSB.loadData(values);
                     caseManagerSB.loadData(values);
+                    screenedBySB.loadData(values);
                 }
             }
         });
         caseManagerSB.getLabel().getElement().getStyle().setWidth(193, Style.Unit.PX);
+        screenedBySB.getLabel().getElement().getStyle().setWidth(193, Style.Unit.PX);
     }
 
     protected void formatTextAreaFields() {
@@ -263,7 +268,7 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         addEnumField("country", false, false, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
         addEnumField("state", false, false, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
         addField("zip", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
-        addField("screenedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(screenedBySB);
         entityFieldsPanel.add(employeeSB);
         entityFieldsPanel.add(notifyOtherL);
         entityFieldsPanel.add(caseManagerSB);
