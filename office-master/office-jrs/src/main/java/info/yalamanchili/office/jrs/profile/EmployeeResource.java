@@ -454,7 +454,12 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @Transactional(readOnly = true)
     public List<info.yalamanchili.office.dao.profile.EmployeeDto> searchEmployee(@PathParam("start") int start,
             @PathParam("limit") int limit, @QueryParam("text") String text, @QueryParam("column") List<String> columns, @QueryParam("includeDeactivated") boolean includeDeactivated) {
-        return employeeDao.searchEmployee(text, start, limit, columns, includeDeactivated);
+        List<Employee> emps = employeeDao.searchEmployee(text, start, limit, columns, includeDeactivated);
+        List<EmployeeDto> dtos = new ArrayList();
+        for(Employee emp : emps){
+            dtos.add(EmployeeDto.map(mapper, emp));
+        }
+        return dtos;
     }
 
     @PUT
