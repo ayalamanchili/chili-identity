@@ -16,6 +16,7 @@ import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.profile.Address;
+import info.yalamanchili.office.entity.profile.Branch;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.jrs.CRUDResource;
@@ -105,8 +106,10 @@ public class AddressResource extends CRUDResource<Address> {
         if (entity.getAddressType() != null && entity.getAddressType().getAddressType().equals("W2 Mailing")) {
             sendAddressChangeRequestSubmittedEmail(entity);
         }
-        if (notifyChange) {
-            processAddressUpdateNotification(entity, null, notifyHealthInsurance);
+        if (notifyChange == true) {
+            if (!EmployeeDao.instance().findById(entity.getContact().getId()).getBranch().equals(Branch.Hyderabad)) {
+                processAddressUpdateNotification(entity, null, notifyHealthInsurance);
+            }
         }
         return entity;
     }
