@@ -9,6 +9,8 @@
 package info.yalamanchili.office.client.admin.hr;
 
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -57,7 +59,7 @@ import java.util.logging.Logger;
  *
  * @author radhika.mukkala
  */
-public class UpdateProspectPanel extends UpdateComposite implements ClickHandler, ChangeHandler, OpenHandler, CloseHandler {
+public class UpdateProspectPanel extends UpdateComposite implements ClickHandler, ChangeHandler, OpenHandler, CloseHandler, BlurHandler {
 
     private Logger logger = Logger.getLogger(UpdateProspectPanel.class.getName());
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "assignedTo", "Employee", false, true, Alignment.HORIZONTAL);
@@ -66,6 +68,7 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
     protected SelectCompanyWidget selectCompnayWidget = new SelectCompanyWidget(false, true, Alignment.HORIZONTAL);
     DisclosurePanel notifyOtherL = new DisclosurePanel("Notify Employees");
     FlowPanel panel = new FlowPanel();
+    LongField phoneField = new LongField(OfficeWelcome.constants, "phoneNumber", "Prospect", false, true, Alignment.HORIZONTAL);
     FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "Prospect", "resumeURL", "Prospect/resumeURL", false, true) {
         @Override
         public void onUploadComplete(String res) {
@@ -166,9 +169,10 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         assignEntityValueFromField("lastName", entity);
         assignEntityValueFromField("email", entity);
         assignEntityValueFromField("countryCode", entity);
-        LongField phoneNumber1 = (LongField) fields.get("phoneNumber");
-        String phoneNumber = phoneNumber1.getValue().replaceAll("-", "");
-        entity.put("phoneNumber", new JSONString(phoneNumber));
+        String phoneNumber1 = phoneField.getValue();
+        String phoneNumber = phoneNumber1.replaceAll("-", "");
+        phoneField.setValue(phoneNumber);
+        entity.put("phoneNumber", new JSONString(phoneField.getValue()));
         assignEntityValueFromField("dateOfBirth", entity);
         assignEntityValueFromField("referredBy", entity);
         if (screenedBySB.getSelectedObject() != null) {
@@ -249,7 +253,6 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        logger.info("43567890456u" + entity);
         JSONObject emp = (JSONObject) entity.get("assignedTo");
         if (emp != null) {
             employeeSB.setValue(emp.get("firstName").isString().stringValue());
@@ -274,7 +277,7 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         assignFieldValueFromEntity("email", entity, DataType.STRING_FIELD);
         String phoneNumber = FormatUtils.formatPhoneNumber(entity.get("phoneNumber").isString().stringValue());
         entity.put("phoneNumber", new JSONString(phoneNumber));
-        assignFieldValueFromEntity("phoneNumber", entity, DataType.LONG_FIELD);
+        phoneField.setValue(phoneNumber);
         assignFieldValueFromEntity("countryCode", entity, DataType.LONG_FIELD);
         assignFieldValueFromEntity("dateOfBirth", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("referredBy", entity, DataType.STRING_FIELD);
@@ -297,6 +300,7 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         if (resumeURL.size() > 0) {
             populateResumes(resumeURL);
         }
+        phoneField.setValue(entity.get("phoneNumber").isString().stringValue());
     }
 
     protected void populateResumes(JSONArray items) {
@@ -315,6 +319,7 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
 
     @Override
     protected void addListeners() {
+        phoneField.getTextbox().addBlurHandler(this);
         statesF.listBox.addChangeHandler(this);
         notifyOtherL.addOpenHandler(this);
         notifyOtherL.addCloseHandler(this);
@@ -387,7 +392,7 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         addField("lastName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("email", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("countryCode", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
-        addField("phoneNumber", false, true, DataType.LONG_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(phoneField);
         addField("dateOfBirth", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("street1", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("street2", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -542,6 +547,17 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
     public void onClose(CloseEvent event) {
         if (event.getSource().equals(notifyOtherL)) {
             panel.clear();
+        }
+    }
+
+    @Override
+    public void onBlur(BlurEvent event) {
+        String input = phoneField.getValue();
+        String newPhone = input.replaceAll("-", "");
+        if (newPhone.length() != 10 && input.matches("[0-9\\-]*")) {
+            phoneField.setMessage("Phone Number Length Should be 10");
+        } else if (!input.matches("[0-9\\-]*")) {
+            phoneField.setMessage("Invalid Value");
         }
     }
 }
