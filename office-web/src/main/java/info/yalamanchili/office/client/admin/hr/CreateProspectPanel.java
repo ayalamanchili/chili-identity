@@ -9,12 +9,16 @@
 package info.yalamanchili.office.client.admin.hr;
 
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.logical.shared.OpenHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
@@ -32,6 +36,8 @@ import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.FileuploadField;
+import info.chili.gwt.fields.ListBoxField;
+import info.chili.gwt.fields.LongField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
@@ -52,7 +58,7 @@ import java.util.logging.Logger;
  *
  * @author radhika.mukkala
  */
-public class CreateProspectPanel extends CreateComposite implements ChangeHandler, OpenHandler, CloseHandler {
+public class CreateProspectPanel extends CreateComposite implements ChangeHandler, OpenHandler, CloseHandler, BlurHandler {
 
     private static Logger logger = Logger.getLogger(CreateProspectPanel.class.getName());
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "assignedTo", "Employee", false, true, Alignment.HORIZONTAL);
@@ -60,6 +66,7 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
     SuggestBox screenedBySB = new SuggestBox(OfficeWelcome.constants, "screenedBy", "Prospect", false, false, Alignment.HORIZONTAL);
     DisclosurePanel notifyOtherL = new DisclosurePanel("Notify Employees");
     FlowPanel panel = new FlowPanel();
+    LongField phoneField = new LongField(OfficeWelcome.constants, "phoneNumber", "Prospect", false, true, Alignment.HORIZONTAL);
     FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "Prospect", "resumeURL", "Prospect/resumeURL", false, true) {
         @Override
         public void onUploadComplete(String res) {
@@ -82,7 +89,7 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         assignEntityValueFromField("referredBy", entity);
         assignEntityValueFromField("email", entity);
         assignEntityValueFromField("countryCode", entity);
-        assignEntityValueFromField("phoneNumber", entity);
+        entity.put("phoneNumber", new JSONString(phoneField.getValue()));
         assignEntityValueFromField("dateOfBirth", entity);
         assignEntityValueFromField("street1", address);
         assignEntityValueFromField("street2", address);
@@ -200,6 +207,7 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
 
     @Override
     protected void addListeners() {
+        phoneField.getTextbox().addBlurHandler(this);
         if (countriesF != null) {
             countriesF.listBox.addChangeHandler(this);
         }
@@ -259,7 +267,7 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         addField("referredBy", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("email", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("countryCode", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
-        addField("phoneNumber", false, true, DataType.LONG_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(phoneField);
         addField("dateOfBirth", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("street1", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("street2", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -342,6 +350,16 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
     public void onClose(CloseEvent event) {
         if (event.getSource().equals(notifyOtherL)) {
             panel.clear();
+        }
+    }
+
+    @Override
+    public void onBlur(BlurEvent event) {
+        String input = phoneField.getValue();
+        if (phoneField.getTextbox().getValue().length() != 10 && input.matches("[0-9]*")) {
+            phoneField.setMessage("Phone Number Length Should be 10");
+        } else if (!input.matches("[0-9]*")) {
+            phoneField.setMessage("Invalid Value");
         }
     }
 }
