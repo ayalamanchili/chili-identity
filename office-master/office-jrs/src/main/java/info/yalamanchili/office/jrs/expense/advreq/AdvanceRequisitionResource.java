@@ -66,7 +66,7 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
     @Path("/{id}")
     @Transactional(readOnly = true)
     @Override
-    @AccessCheck(companyContacts = {"Perf_Eval_Manager", "Reports_To"}, roles = {"ROLE_ADMIN", "ROLE_CEO", "ROLE_PAYROLL_AND_BENIFITS", "ROLE_ACCOUNTS_PAYABLE"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
+    @AccessCheck(companyContacts = {"Perf_Eval_Manager", "Reports_To"}, roles = {"ROLE_ADMIN", "ROLE_CEO", "ROLE_PAYROLL_AND_BENIFITS", "ROLE_ACCOUNTS_PAYABLE", "ROLE_GENERAL_EXPENSE_MANAGER"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
     public AdvanceRequisition read(@PathParam("id") Long id) {
         return advanceRequisitionDao.findById(id);
     }
@@ -82,14 +82,14 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
 
     @PUT
     @Validate
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PAYROLL_AND_BENIFITS','ROLE_ACCOUNTS_PAYABLE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PAYROLL_AND_BENIFITS','ROLE_ACCOUNTS_PAYABLE','ROLE_GENERAL_EXPENSE_MANAGER')")
     @Path("/transaction/{id}")
     public void addTransaction(@PathParam("id") Long id, Transaction transaction) {
         advanceRequisitionDao.addTransaction(id, transaction);
     }
 
     @GET
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PAYROLL_AND_BENIFITS','ROLE_ACCOUNTS_PAYABLE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PAYROLL_AND_BENIFITS','ROLE_ACCOUNTS_PAYABLE','ROLE_GENERAL_EXPENSE_MANAGER')")
     @Path("/transactions/{id}/{start}/{limit}")
     public TransactionTable getTransactions(@PathParam("id") Long id, @PathParam("start") int start, @PathParam("limit") int limit) {
         TransactionTable table = new TransactionTable();
@@ -116,7 +116,7 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
 
     @PUT
     @Path("/search-advancerequisition/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CEO','ROLE_PAYROLL_AND_BENIFITS','ROLE_ACCOUNTS_PAYABLE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CEO','ROLE_PAYROLL_AND_BENIFITS','ROLE_ACCOUNTS_PAYABLE','ROLE_GENERAL_EXPENSE_MANAGER')")
     @Transactional(readOnly = true)
     @Override
     public List<AdvanceRequisition> search(AdvanceRequisition entity, @PathParam("start") int start, @PathParam("limit") int limit) {
@@ -141,7 +141,7 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
 
     @GET
     @Path("/{employeeId}/{start}/{limit}")
-    @AccessCheck(companyContacts = {"Perf_Eval_Manager", "Reports_To"}, roles = {"ROLE_ADMIN", "ROLE_CEO", "ROLE_PAYROLL_AND_BENIFITS", "ROLE_ACCOUNTS_PAYABLE"}, strictOrderCheck = false)
+    @AccessCheck(companyContacts = {"Perf_Eval_Manager", "Reports_To"}, roles = {"ROLE_ADMIN", "ROLE_CEO", "ROLE_PAYROLL_AND_BENIFITS", "ROLE_ACCOUNTS_PAYABLE", "ROLE_GENERAL_EXPENSE_MANAGER"}, strictOrderCheck = false)
     public AdvanceRequisitionTable getAdvanceRequisitionsForEmployee(@PathParam("employeeId") Long employeeId, @PathParam("start") int start, @PathParam("limit") int limit) {
         AdvanceRequisitionTable tableObj = new AdvanceRequisitionTable();
         tableObj.setEntities(advanceRequisitionDao.queryForEmployee(employeeId, start, limit));
