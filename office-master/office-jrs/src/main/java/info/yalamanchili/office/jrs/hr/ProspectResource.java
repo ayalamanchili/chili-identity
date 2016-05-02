@@ -218,6 +218,10 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     protected ProspectDto map(Prospect p) {
         ProspectDto dto = new ProspectDto();
         dto.setId(p.getId());
+        if (p.getAssigned() != null) {
+            Employee emp = EmployeeDao.instance().findById(p.getAssigned());
+            dto.setAssignedto(emp.getFirstName() + " " + emp.getLastName());
+        }
         dto.setFirstName(p.getContact().getFirstName());
         dto.setLastName(p.getContact().getLastName());
         dto.setScreenedBy(p.getScreenedBy());
