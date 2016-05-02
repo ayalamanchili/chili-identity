@@ -17,8 +17,6 @@ import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.logical.shared.OpenHandler;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
@@ -36,7 +34,6 @@ import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.FileuploadField;
-import info.chili.gwt.fields.ListBoxField;
 import info.chili.gwt.fields.LongField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.fields.TextAreaField;
@@ -89,7 +86,8 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         assignEntityValueFromField("referredBy", entity);
         assignEntityValueFromField("email", entity);
         assignEntityValueFromField("countryCode", entity);
-        entity.put("phoneNumber", new JSONString(phoneField.getValue()));
+        String newPhone = phoneField.getValue().replaceAll("-", "");
+        entity.put("phoneNumber", new JSONString(newPhone));
         assignEntityValueFromField("dateOfBirth", entity);
         assignEntityValueFromField("street1", address);
         assignEntityValueFromField("street2", address);
@@ -160,6 +158,7 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         if (resumeURL.size() > 0) {
             entity.put("resumeURL", resumeURL);
         }
+        logger.info("entity values are .... "+entity);
         return entity;
     }
 
@@ -245,10 +244,6 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
                 textAreaField.getTextbox().setVisibleLines(4);
             }
         }
-    }
-
-    private String getcaseManagnerIdsDropDownUrl1() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_CORPORATE_EMPLOYEE + "/0/10000");
     }
 
     private String getEmployeeIdsDropDownUrl() {
@@ -356,9 +351,12 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
     @Override
     public void onBlur(BlurEvent event) {
         String input = phoneField.getValue();
-        if (phoneField.getTextbox().getValue().length() != 10 && input.matches("[0-9]*")) {
+        String output = input.replaceAll("(\\d{3})(\\d{3})(\\d{4})", "$1-$2-$3");
+        phoneField.setValue(output);
+        String newPhone = output.replaceAll("-", "");
+        if (newPhone.length() != 10 && output.matches("[0-9\\-]*")) {
             phoneField.setMessage("Phone Number Length Should be 10");
-        } else if (!input.matches("[0-9]*")) {
+        } else if (!output.matches("[0-9\\-]*")) {
             phoneField.setMessage("Invalid Value");
         }
     }
