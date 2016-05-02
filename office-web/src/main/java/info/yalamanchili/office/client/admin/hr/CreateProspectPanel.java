@@ -158,7 +158,6 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         if (resumeURL.size() > 0) {
             entity.put("resumeURL", resumeURL);
         }
-        logger.info("entity values are .... "+entity);
         return entity;
     }
 
