@@ -58,7 +58,7 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
                 entity.setStatus(ClientInformationStatus.CANCELED);
             }
         }
-        if (task.getTaskDefinitionKey().equals("newClientInfoSUBCTask")) {
+        if (task.getTaskDefinitionKey().equals("newClientInfoSubmitToContractsAdminTask")) {
             if (status.equalsIgnoreCase("approved")) {
                 entity.setStatus(ClientInformationStatus.COMPLETED);
             } else {
