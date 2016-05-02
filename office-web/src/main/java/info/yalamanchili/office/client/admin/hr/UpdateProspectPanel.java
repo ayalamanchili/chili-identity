@@ -340,25 +340,7 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
                 Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
                 if (values != null) {
                     employeeSB.loadData(values);
-                }
-            }
-        });
-        caseManagerSB.getLabel().getElement().getStyle().setWidth(197, Style.Unit.PX);
-        HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String entityString) {
-                Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
-                if (values != null) {
                     caseManagerSB.loadData(values);
-                }
-            }
-        });
-        screenedBySB.getLabel().getElement().getStyle().setWidth(197, Style.Unit.PX);
-        HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String entityString) {
-                Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
-                if (values != null) {
                     screenedBySB.loadData(values);
                 }
             }
@@ -553,6 +535,8 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
     @Override
     public void onBlur(BlurEvent event) {
         String input = phoneField.getValue();
+        String output = input.replaceAll("(\\d{3})(\\d{3})(\\d{4})", "$1-$2-$3");
+        phoneField.setValue(output);
         String newPhone = input.replaceAll("-", "");
         if (newPhone.length() != 10 && input.matches("[0-9\\-]*")) {
             phoneField.setMessage("Phone Number Length Should be 10");
