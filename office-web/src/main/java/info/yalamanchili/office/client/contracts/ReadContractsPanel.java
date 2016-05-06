@@ -23,6 +23,7 @@ import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
+import info.yalamanchili.office.client.profile.cllientinfo.InvoiceDeliveryMethod;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
 import info.yalamanchili.office.client.profile.cllientinfo.ReadAllCiDocumentPanel;
 import info.yalamanchili.office.client.profile.updateBillingRate.ReadAllUpdateBillingRatePanel;
@@ -188,8 +189,7 @@ public class ReadContractsPanel extends TReadComposite {
         addEnumField("billingRateDuration", true, false, billingDuration, Alignment.HORIZONTAL, 4, 1);
         addEnumField("overTimeRateDuration", true, false, billingDuration, Alignment.HORIZONTAL, 4, 2);
         addEnumField("invoiceFrequency", true, false, InvoiceFrequency.names(), Alignment.HORIZONTAL, 5, 1);
-        String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX", "UPLOAD"};
-        addEnumField("invoiceDeliveryMethod", true, false, invoiceDeliveryMethods, Alignment.HORIZONTAL, 5, 2);
+        addEnumField("invoiceDeliveryMethod", true, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL, 5, 2);
         addField("specialInvoiceInstructions", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL, 6, 1);
         addField("timeSheetRequirement", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 6, 2);
         if ((isSubContractor(entity)) || (is1099(entity))) {
