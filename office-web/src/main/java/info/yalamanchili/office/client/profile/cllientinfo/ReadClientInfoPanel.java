@@ -229,8 +229,7 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
             addField("overTimeBillingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addEnumField("overTimeRateDuration", true, false, billingDuration, Alignment.HORIZONTAL);
             addEnumField("invoiceFrequency", true, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
-            String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX", "UPLOAD"};
-            addEnumField("invoiceDeliveryMethod", true, false, invoiceDeliveryMethods, Alignment.HORIZONTAL);
+            addEnumField("invoiceDeliveryMethod", true, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
             if (Auth.isSubContractor(getEmployee())) {
                 entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
                 addDropDown("subcontractor", new SelectSubcontractorWidget(true, false, Alignment.HORIZONTAL));
@@ -295,14 +294,14 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
     protected void populateCIDocuments() {
         HttpService.HttpServiceAsync.instance().doGet(getDocumentUrl(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                if (!response.trim().toString().equals("null")) { 
-                    JSONArray docs = JSONUtils.toJSONArray(JSONParser.parseLenient(response).isObject().get("ciDocument"));
-                    entityFieldsPanel.add(new ReadAllCiDocumentPanel(getEntityId(), docs));
-                }
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        if (!response.trim().toString().equals("null")) {
+                            JSONArray docs = JSONUtils.toJSONArray(JSONParser.parseLenient(response).isObject().get("ciDocument"));
+                            entityFieldsPanel.add(new ReadAllCiDocumentPanel(getEntityId(), docs));
+                        }
+                    }
+                });
     }
 
     protected String getDocumentUrl() {
