@@ -75,7 +75,7 @@ public class ProspectDto implements Serializable {
     protected String screenedBy;
     @NotEmpty(message = "{referredBy.not.empty.msg}")
     protected String referredBy;
-    
+
     @NotNull(message = "{assignedTo.not.empty.msg}")
     private Employee assignedTo;
 
@@ -124,6 +124,8 @@ public class ProspectDto implements Serializable {
     protected String assignedto;
     protected String stage;
     
+    protected String benchDate;
+
     public String getPlacedby() {
         return placedby;
     }
@@ -426,6 +428,14 @@ public class ProspectDto implements Serializable {
         this.stage = stage;
     }
 
+    public String getBenchDate() {
+        return benchDate;
+    }
+
+    public void setBenchDate(String benchDate) {
+        this.benchDate = benchDate;
+    }
+    
     @Override
     public String toString() {
         return "ProspectDto{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", phoneNumber=" + phoneNumber + ", sex=" + sex + ", startDate=" + startDate + ", screenedBy=" + screenedBy + ", referredBy=" + referredBy + ", dateOfBirth=" + dateOfBirth + ", address=" + address + ", status=" + status + ", processDocSentDate=" + processDocSentDate + '}';
