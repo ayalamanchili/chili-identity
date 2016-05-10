@@ -301,4 +301,17 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "no.results", "No Results");
         }
     }
+
+    @GET
+    @Path("/stageProgressReport")
+    public void stageProgressReport() {
+        List<ProspectDto> prospectDtos = new ArrayList();
+        List<Prospect> prospects = new ArrayList();
+        ProspectTable table = table(0, 100000);
+        prospectDtos.addAll(table.getEntities());
+        for(ProspectDto dto : prospectDtos){
+            prospects.add(prospectDao.findById(dto.getId()));
+        }
+        prospectService.getProspectsStageProgressReport(prospects);
+    }
 }
