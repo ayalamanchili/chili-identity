@@ -330,9 +330,9 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
         countriesF.listBox.addChangeHandler(this);
         formatTextAreaFields();
         notifyOtherL.setOpen(true);
+        panel.clear();
         panel.add(employeesSB);
         entityFieldsPanel.insert(panel, entityFieldsPanel.getWidgetIndex(caseManagerSB));
-        entityFieldsPanel.insert(panel, entityFieldsPanel.getWidgetIndex(screenedBySB));
         employeeSB.getLabel().getElement().getStyle().setWidth(197, Style.Unit.PX);
         HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
