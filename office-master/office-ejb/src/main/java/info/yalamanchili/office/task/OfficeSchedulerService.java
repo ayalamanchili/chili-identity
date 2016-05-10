@@ -19,6 +19,7 @@ import info.yalamanchili.office.employee.probeval.ProbationPeriodEvaluationIniti
 import info.yalamanchili.office.entity.message.NotificationGroup;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
+import info.yalamanchili.office.prospect.ProspectService;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -164,5 +166,21 @@ public class OfficeSchedulerService {
             years = date2.get(Calendar.YEAR) - date1.get(Calendar.YEAR);
         }
         return years;
+    }
+    
+    /**
+     * runs every night at 1.15 AM
+     */
+    @Scheduled(cron = "0 15 1 * * ?")
+    public void sendProspectStatusNotChangeNotification() {
+       ProspectService.instance().sendProspectStatusNotChangeNotification();
+    }
+    
+    /**
+     * runs 2 15 PM every Monday
+     */
+    @Scheduled(cron = "0 15 2 ? * MON")
+    public void sendBenchProspectsWeeklyNotification() {
+       ProspectService.instance().sendBenchProspectsWeeklyNotification();
     }
 }
