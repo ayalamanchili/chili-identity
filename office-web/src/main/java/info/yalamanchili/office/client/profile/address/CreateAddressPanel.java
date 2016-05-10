@@ -89,16 +89,16 @@ public class CreateAddressPanel extends CreateComposite implements ChangeHandler
     protected void addButtonClicked() {
         HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -173,7 +173,7 @@ public class CreateAddressPanel extends CreateComposite implements ChangeHandler
         addField("state", false, true, DataType.ENUM_FIELD, Alignment.HORIZONTAL);
         addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
         addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
-        
+
         if (CreateAddressPanelType.ALL.equals(type)) {
             addDropDown("addressType", new SelectAddressTypeWidget(false, false));
         }
@@ -219,9 +219,9 @@ public class CreateAddressPanel extends CreateComposite implements ChangeHandler
                 break;
         }
 
-        if (event.getSource().equals(zipField.getTextbox())) {
-            getZipInformationService(zipField.getValue());
-        }
+//        if (event.getSource().equals(zipField.getTextbox())) {
+//            getZipInformationService(zipField.getValue());
+//        }
     }
 
     protected void getZipInformationService(String zipCode) {
