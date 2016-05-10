@@ -60,6 +60,8 @@ public class ProspectsGraphsPanel extends Composite {
      * EmployeeType for chart
      */
     protected void drawPlacedByChart(JSONObject graphsDto) {
+        double number = graphsDto.get(PlacedBy.By_Recruiter.name()).isNumber().doubleValue() + graphsDto.get(PlacedBy.Corporate_Solutions_Team.name()).isNumber().doubleValue() + graphsDto.get(PlacedBy.Own_Placement.name()).isNumber().doubleValue();
+        placedByL.setText("Placed By Chart : (" + number + ")");
         DataTable dataTable = DataTable.create();
         dataTable.addColumn(ColumnType.STRING, "PlacedBy");
         dataTable.addColumn(ColumnType.NUMBER, "Number");
@@ -86,6 +88,8 @@ public class ProspectsGraphsPanel extends Composite {
      * EmployeeType for chart
      */
     protected void drawEmployeeTypeChart(JSONObject graphsDto) {
+        double number = graphsDto.get(TransferEmployeeType.Corporate_Employee.name()).isNumber().doubleValue() + graphsDto.get(TransferEmployeeType.Field_Employee.name()).isNumber().doubleValue();
+        employeerL.setText("Transfer Employee Chart : (" + number + ")");
         DataTable dataTable = DataTable.create();
         dataTable.addColumn(ColumnType.STRING, "EmployeeType");
         dataTable.addColumn(ColumnType.NUMBER, "Number");
@@ -110,6 +114,8 @@ public class ProspectsGraphsPanel extends Composite {
      * Petetion for chart
      */
     protected void drawPetetionForChart(JSONObject graphsDto) {
+        double number = graphsDto.get(PetitionFor.Client_Project.name()).isNumber().doubleValue() + graphsDto.get(PetitionFor.In_House.name()).isNumber().doubleValue();
+        petitionForL.setText("Petition For Chart : (" + number + ")");
         DataTable dataTable = DataTable.create();
         dataTable.addColumn(ColumnType.STRING, "PetitionFor");
         dataTable.addColumn(ColumnType.NUMBER, "Number");
@@ -134,6 +140,8 @@ public class ProspectsGraphsPanel extends Composite {
      * No Of Req Received Chart
      */
     protected void drawNoOfReqChart(JSONObject graphsDto) {
+        double number = graphsDto.get(ProspectStatus.IN_PROGRESS.name()).isNumber().doubleValue() + graphsDto.get(ProspectStatus.RECRUITING.name()).isNumber().doubleValue() + graphsDto.get(ProspectStatus.BENCH.name()).isNumber().doubleValue() + graphsDto.get(ProspectStatus.ONHOLD.name()).isNumber().doubleValue() + graphsDto.get(ProspectStatus.CLOSED_WON.name()).isNumber().doubleValue() + graphsDto.get(ProspectStatus.CLOSED_LOST.name()).isNumber().doubleValue();
+        noOfReqReceivedL.setText("No Of Req. Received : (" + number + ")");
         DataTable dataTable = DataTable.create();
         dataTable.addColumn(ColumnType.STRING, "NoOfReqReceived");
         dataTable.addColumn(ColumnType.NUMBER, "Number");
