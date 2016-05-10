@@ -9,12 +9,19 @@
 package info.yalamanchili.office.prospect;
 
 import com.google.common.base.Strings;
+import info.chili.audit.AuditService;
+import info.chili.commons.DateUtils;
+import info.chili.hibernate.envers.AuditRevisionEntity;
 import info.chili.service.jrs.exception.ServiceException;
+import info.chili.service.jrs.types.EntityAuditDataTbl;
+import info.chili.service.jrs.types.Entries;
+import info.chili.service.jrs.types.Entry;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
 import static info.yalamanchili.office.bpm.prospect.ProspectEmailEscalation.PROSPECT_ESCALATION_NOTIFICATION_GROUP;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.hr.ProspectDao;
+import info.yalamanchili.office.dao.hr.ProspectReportDto;
 import info.yalamanchili.office.dao.hr.ResumeDao;
 import info.yalamanchili.office.dao.message.NotificationGroupDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
@@ -36,16 +43,27 @@ import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.ejb.hr.ProspectProcessBean;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.dozer.Mapper;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -417,5 +435,202 @@ public class ProspectService {
         messageText = messageText.concat("\n Updated_By   : " + emp.getFirstName() + " " + emp.getLastName());
         email.setBody(messageText);
         MessagingService.instance().sendEmail(email);
+    }
+
+    @Transactional
+    public void sendProspectStatusNotChangeNotification() {
+        List<Prospect> prospects = new ArrayList();
+        AuditReader auditReader = AuditReaderFactory.get(em);
+        List<Prospect> inProgressProspects = new ArrayList();
+        List<Prospect> recruitingProspects2 = new ArrayList();
+        List<Prospect> recruitingProspects3 = new ArrayList();
+
+        prospects = prospectDao.query(0, 10000);
+        if (prospects.size() > 0) {
+            for (Prospect prospect : prospects) {
+                Date updatedTimeStamp = null;
+                for (Number revNumber : auditReader.getRevisions(Prospect.class, prospect.getId())) {
+                    AuditRevisionEntity revEntity = auditReader.findRevision(AuditRevisionEntity.class, revNumber);
+                    updatedTimeStamp = revEntity.getUpdatedTimeStamp();
+                }
+                if (prospect.getStatus().equals(ProspectStatus.IN_PROGRESS) && DateUtils.differenceInDays(updatedTimeStamp, new Date()) >= 2) {
+                    inProgressProspects.add(prospect);
+                }
+                if (prospect.getStatus().equals(ProspectStatus.RECRUITING) && DateUtils.differenceInDays(updatedTimeStamp, new Date()) >= 2) {
+                    recruitingProspects2.add(prospect);
+                }
+                if (prospect.getStatus().equals(ProspectStatus.RECRUITING) && DateUtils.differenceInDays(updatedTimeStamp, new Date()) >= 3) {
+                    recruitingProspects3.add(prospect);
+                }
+
+            }
+        }
+        if (inProgressProspects.size() > 0) {
+            ProspectProcessBean.instance().sendIPProspectsNotification(inProgressProspects, inProgressProspects.size(), true);
+        }
+        if (recruitingProspects2.size() > 0) {
+            ProspectProcessBean.instance().sendIPProspectsNotification(recruitingProspects2, recruitingProspects2.size(), false);
+        }
+        if (recruitingProspects3.size() > 0) {
+            ProspectProcessBean.instance().sendIPProspectsNotification(recruitingProspects3, recruitingProspects3.size(), true);
+        }
+    }
+
+    @Transactional
+    public void sendBenchProspectsWeeklyNotification() {
+        ProspectReportDto dto = new ProspectReportDto();
+        dto.setStatus(ProspectStatus.BENCH);
+        List<Prospect> prospects = new ArrayList();
+        Map<Prospect, String> benchProspects = new HashMap();
+        prospects = ProspectDao.instance().report(dto);
+        for (Prospect prospect : prospects) {
+            Map<String, String> changesmap = new HashMap();
+            changesmap = getChangesMap(prospect);
+            TreeSet<Date> dates = new TreeSet();
+            for (String key : changesmap.keySet()) {
+                if (key.contains("BENCH")) {
+                    String parse = changesmap.get(key).substring(0, 11);
+                    Date date;
+                    try {
+                        date = new SimpleDateFormat("yyyy-MM-dd").parse(parse);
+                        dates.add(date);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ProspectService.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+            }
+            if (dates.size() > 0) {
+                benchProspects.put(prospect, new SimpleDateFormat("MM-dd-yyyy").format(dates.first()));
+            }
+        }
+        if (benchProspects.size() > 0) {
+            ProspectProcessBean.instance().benchProspectsWeeklyNotification(benchProspects);
+        }
+    }
+
+    public void getProspectsStageProgressReport(List<Prospect> prospects) {
+        for (Prospect prospect : prospects) {
+            Map<String, String> changesmap = new LinkedHashMap();
+            changesmap = getChangesMap(prospect);
+            for (String key : changesmap.keySet()) {
+                System.out.println("changes map key is ...." + key + " values is... " + changesmap.get(key));
+            }
+            TreeSet<Date> ipdates = new TreeSet();
+            TreeSet<Date> recrdates = new TreeSet();
+            TreeSet<Date> benchdates = new TreeSet();
+            TreeSet<Date> closedwondates = new TreeSet();
+            TreeSet<Date> closedlostdates = new TreeSet();
+            TreeSet<Date> onholddates = new TreeSet();
+
+            for (String key : changesmap.keySet()) {
+                if (key.contains("IN_PROGRESS")) {
+                    String parse = changesmap.get(key).substring(0, 11);
+                    Date date;
+                    try {
+                        date = new SimpleDateFormat("yyyy-MM-dd").parse(parse);
+                        ipdates.add(date);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ProspectService.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                if (key.contains("RECRUITING")) {
+                    String parse = changesmap.get(key).substring(0, 11);
+                    Date date;
+                    try {
+                        date = new SimpleDateFormat("yyyy-MM-dd").parse(parse);
+                        recrdates.add(date);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ProspectService.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                if (key.contains("BENCH")) {
+                    String parse = changesmap.get(key).substring(0, 11);
+                    Date date;
+                    try {
+                        date = new SimpleDateFormat("yyyy-MM-dd").parse(parse);
+                        benchdates.add(date);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ProspectService.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                if (key.contains("ON_HOLD")) {
+                    String parse = changesmap.get(key).substring(0, 11);
+                    Date date;
+                    try {
+                        date = new SimpleDateFormat("yyyy-MM-dd").parse(parse);
+                        onholddates.add(date);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ProspectService.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                if (key.contains("CLOSED_WON")) {
+                    String parse = changesmap.get(key).substring(0, 11);
+                    Date date;
+                    try {
+                        date = new SimpleDateFormat("yyyy-MM-dd").parse(parse);
+                        closedwondates.add(date);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ProspectService.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                if (key.contains("CLOSED_LOST")) {
+                    String parse = changesmap.get(key).substring(0, 11);
+                    Date date;
+                    try {
+                        date = new SimpleDateFormat("yyyy-MM-dd").parse(parse);
+                        closedlostdates.add(date);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ProspectService.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+            }
+            String associateName = prospect.getContact().getFirstName() + " " + prospect.getContact().getLastName();
+            ProspectStageProgressDto dto = new ProspectStageProgressDto();
+            dto.setAssociateName(associateName);
+            if (ipdates.size() > 0) {
+//                System.out.println("ip dates first ...." + ipdates.first());
+//                System.out.println("ip fdates last ....." + ipdates.last());
+//                System.out.println("In progress count days :" + DateUtils.differenceInDays(ipdates.first(), recrdates.first()));
+                //dto.setInprogress(DateUtils.differenceInDays(ipdates.first(), recrdates.first()));
+            } else {
+                dto.setInprogress(0);
+            }
+            if (recrdates.size() > 0) {
+                //dto.setRecruiting(DateUtils.differenceInDays(recrdates.first(), recrdates.last()));
+            } else {
+                dto.setRecruiting(0);
+            }
+            System.out.println("assoc name : " + dto.getAssociateName() + " ip count :" + dto.getInprogress() + " recr count :" + dto.getRecruiting());
+        }
+    }
+
+    private Map<String, String> getChangesMap(Prospect prospect) {
+        List ignorelist = new ArrayList();
+        ignorelist.add(prospect.getReferredBy());
+        Map<String, String> changesmap = new HashMap();
+        String status = null;
+        String updatedDate = null;
+        EntityAuditDataTbl recentChanges = AuditService.instance().getRecentChanges(Prospect.class.getCanonicalName(), prospect.getId(), ignorelist);
+        List<Entries> entityAuditData = recentChanges.getEntityAuditData();
+        for (Entries entry : entityAuditData) {
+            List<Entry> entries = entry.getEntries();
+            for (Entry entry1 : entries) {
+                if (entry1.getId().equals("UPDATED-AT")) {
+                    updatedDate = entry1.getValue().substring(0);
+                }
+                if (entry1.getId().equals("status")) {
+                    status = entry1.getValue();
+                }
+                if (status != null && updatedDate != null) {
+                    System.out.println("status :" + status + " Date: " + updatedDate);
+                    changesmap.put(status, updatedDate);
+                    status = null;
+                    updatedDate = null;
+                }
+            }
+        }
+        return changesmap;
     }
 }
