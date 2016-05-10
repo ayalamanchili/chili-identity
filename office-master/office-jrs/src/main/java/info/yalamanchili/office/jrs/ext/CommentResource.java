@@ -18,9 +18,12 @@ import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.chili.email.Email;
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
+import info.yalamanchili.office.dao.hr.ProspectDao;
 import info.yalamanchili.office.entity.ext.Comment;
+import info.yalamanchili.office.entity.hr.Prospect;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -93,6 +96,11 @@ public class CommentResource {
         if (comment.getUpdatedTS() == null) {
             comment.setUpdatedTS(new Date());
         }
+        if (Prospect.class.getCanonicalName().equals(targetClassName)) {
+            if (comment.getStage() == null) {
+                comment.setStage(ProspectDao.instance().findById(id).getStatus().name());
+            }
+        }
         comment = commentDao.save(comment, id, targetClassName);
         try {
             sendCommentNotification(notifyEmployees, comment, (AbstractEntity) commentDao.getEntityManager().find(Class.forName(targetClassName), id));
@@ -112,19 +120,22 @@ public class CommentResource {
                 email.addTo(EmployeeDao.instance().getPrimaryEmail(emp));
             }
         }
+        HashMap<String, Object> emailContext = new HashMap();
         Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
         email.setSubject("Comment added by:" + currentUser.getFirstName() + "" + currentUser.getLastName() + " on " + entity.getClass().getSimpleName());
-        HashMap<String, Object> emailContext = new HashMap();
         emailContext.put("createdBy", currentUser.getFirstName() + "" + currentUser.getLastName());
         emailContext.put("comment", comment.getComment());
         emailContext.put("reference", entity.getClass().getSimpleName());
         emailContext.put("description", ((AbstractEntity) (entity)).describe());
         emailContext.put("comments", commentDao.findAll(entity.getId(), entity.getClass().getCanonicalName()));
         emailContext.put("commentReferenceURL", OfficeServiceConfiguration.instance().getPortalWebUrl() + "#?entity=" + comment.getTargetEntityName() + "&id=" + comment.getTargetEntityId());
-
+        if (entity.getClass().equals(Prospect.class)) {
+            email.setTemplateName("prospects_comment_added_template.html");
+        } else {
+            email.setTemplateName("comment_added_template.html");
+        }
         email.setContext(emailContext);
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
-        email.setTemplateName("comment_added_template.html");
         email.setHtml(Boolean.TRUE);
         messagingService.sendEmail(email);
     }
