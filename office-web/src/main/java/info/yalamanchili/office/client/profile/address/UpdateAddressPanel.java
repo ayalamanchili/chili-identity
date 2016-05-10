@@ -107,7 +107,7 @@ public class UpdateAddressPanel extends UpdateComposite implements ChangeHandler
         assignFieldValueFromEntity("city", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("state", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("country", entity, DataType.ENUM_FIELD);
-    
+
         if (UpdateAddressPanelType.ALL.equals(type)) {
             assignFieldValueFromEntity("addressType", entity, null);
         }
@@ -116,7 +116,7 @@ public class UpdateAddressPanel extends UpdateComposite implements ChangeHandler
     EnumField statesF;
     EnumField countriesF;
     StringField zipField;
-    StringField cityField;    
+    StringField cityField;
 
     @Override
     protected void addListeners() {
@@ -135,7 +135,7 @@ public class UpdateAddressPanel extends UpdateComposite implements ChangeHandler
         addField("street2", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("zip", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("city", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        
+
         JSONValue service = entity.get("country");
         addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
         switch (service.isString().stringValue()) {
@@ -162,7 +162,7 @@ public class UpdateAddressPanel extends UpdateComposite implements ChangeHandler
         countriesF = (EnumField) fields.get("country");
         statesF = (EnumField) fields.get("state");
         zipField = (StringField) fields.get("zip");
-        cityField = (StringField) fields.get("city");        
+        cityField = (StringField) fields.get("city");
         alignFields();
     }
 
@@ -179,13 +179,12 @@ public class UpdateAddressPanel extends UpdateComposite implements ChangeHandler
                 statesF.setValues(CanadaStatesFactory.getStates().toArray(new String[0]));
                 break;
         }
-        
-      
-        if (event.getSource().equals(zipField.getTextbox())) {
-            getZipInformationService(zipField.getValue());
-        }
+
+//        if (event.getSource().equals(zipField.getTextbox())) {
+//            getZipInformationService(zipField.getValue());
+//        }
     }
-    
+
     protected void getZipInformationService(String zipCode) {
         String zipCodeServiceUrl = "https://api.zippopotam.us/us/" + zipCode;
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, zipCodeServiceUrl);
