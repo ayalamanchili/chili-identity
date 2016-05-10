@@ -107,7 +107,7 @@ public class AddressResource extends CRUDResource<Address> {
             sendAddressChangeRequestSubmittedEmail(entity);
         }
         if (notifyChange == true) {
-            if (!EmployeeDao.instance().findById(entity.getContact().getId()).getBranch().equals(Branch.Hyderabad)) {
+            if (!Branch.Hyderabad.equals(EmployeeDao.instance().findById(entity.getContact().getId()).getBranch())) {
                 processAddressUpdateNotification(entity, null, notifyHealthInsurance);
             }
         }
