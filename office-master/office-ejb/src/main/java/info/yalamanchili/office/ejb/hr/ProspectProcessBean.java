@@ -80,4 +80,49 @@ public class ProspectProcessBean {
         email.setBody(messageText);
         MessagingService.instance().sendEmail(email);
     }
+
+    public void sendIPProspectsNotification(List<Prospect> inProgressProspects, int inprogressCount, boolean moreThanThreeDays) {
+        info.chili.email.Email email = new info.chili.email.Email();
+        Mapper mapper = SpringContext.getBean(Mapper.class);
+        List<ProspectDto> prospectDtos = new ArrayList();
+        email.addTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_PROSPECTS_MANAGER.name()));
+        email.setHtml(Boolean.TRUE);
+        String status = inProgressProspects.get(0).getStatus().name();
+        for (Prospect prospect : inProgressProspects) {
+            if (prospect.getStatus().equals(ProspectStatus.RECRUITING)) {
+                email.addTo(EmployeeDao.instance().findById(prospect.getAssigned()).getPrimaryEmail().getEmail());
+            }
+            prospectDtos.add(ProspectDto.map(mapper, prospect));
+        }
+        if (moreThanThreeDays == true) {
+            email.setSubject(inprogressCount + " " + status + " Prospects status not changed from more than 3 days\n");
+        } else {
+            email.setSubject(inprogressCount + " " + status + " Prospects status not changed from more than 2 days\n");
+        }
+        email.setBody("Prospect Status : " + status + " \n Count: " + inprogressCount);
+        HashMap<String, Object> emailContext = new HashMap();
+        emailContext.put("prospects", prospectDtos);
+        email.setContext(emailContext);
+        email.setTemplateName("prospects_template.html");
+        MessagingService.instance().sendEmail(email);
+    }
+
+    public void benchProspectsWeeklyNotification(Map<Prospect, String> benchProspects) {
+        info.chili.email.Email email = new info.chili.email.Email();
+        Mapper mapper = SpringContext.getBean(Mapper.class);
+        List<ProspectDto> prospectDtos = new ArrayList();
+        email.addTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_PROSPECTS_MANAGER.name()));
+        email.setHtml(Boolean.TRUE);
+        for (Prospect prospect : benchProspects.keySet()) {
+            ProspectDto dto = ProspectDto.map(mapper, prospect);
+            dto.setBenchDate(benchProspects.get(prospect));
+            prospectDtos.add(dto);
+        }
+        email.setSubject(benchProspects.size() + " Bench Prospects Weekly Notification\n");
+        HashMap<String, Object> emailContext = new HashMap();
+        emailContext.put("prospects", prospectDtos);
+        email.setContext(emailContext);
+        email.setTemplateName("prospects_template.html");
+        MessagingService.instance().sendEmail(email);
+    }
 }
