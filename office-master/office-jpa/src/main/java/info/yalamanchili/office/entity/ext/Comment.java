@@ -61,6 +61,8 @@ public class Comment extends AbstractHandleEntity {
     @Transient
     protected List<Entry> notifyEmployees;
 
+    protected String stage;
+
     public Comment() {
     }
 
@@ -104,10 +106,18 @@ public class Comment extends AbstractHandleEntity {
         this.notifyEmployees = notifyEmployees;
     }
 
+    public String getStage() {
+        return stage;
+    }
+
+    public void setStage(String stage) {
+        this.stage = stage;
+    }
+
     @PrePersist
     @PreUpdate
     public void clean() {
-        if (comment !=null && (!comment.isEmpty())) {
+        if (comment != null && (!comment.isEmpty())) {
             this.comment = StringUtils.convertToUTF8(comment);
         }
     }

@@ -8,10 +8,17 @@
 package info.yalamanchili.office.qa;
 
 import info.chili.commons.PropertyFileLoader;
+import java.io.File;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Properties;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -38,6 +45,7 @@ public abstract class AbstractOfficeTest {
     public static WebDriverWait wait;
     static String browser;
     boolean loginPassed;
+    public File srcFile;
     
     @BeforeSuite (description="load property files")
     public void loadEnvironmentVariables(){
@@ -134,6 +142,15 @@ public abstract class AbstractOfficeTest {
         });        
     }
     
+    public void waitForElementXpath(String elementXpath) {
+        (new WebDriverWait(driver, 10)).until(new ExpectedCondition<WebElement>() {
+            @Override
+            public WebElement apply(WebDriver d) {
+                return d.findElement(By.xpath(elementXpath));
+            }
+        });        
+    }
+    
     public void waitForStaleness(WebElement ele) {
         try {
             wait.until(ExpectedConditions.stalenessOf(ele));
@@ -141,6 +158,23 @@ public abstract class AbstractOfficeTest {
             System.out.println("Staleness Error: " + e.getMessage());
         }
     }
+
+    public void waitForLoader() {
+            By loader = By.cssSelector("div.raDiv");
+            wait = new WebDriverWait(driver, 10);
+            wait.until(ExpectedConditions.invisibilityOfElementLocated(loader));
+    }
+    
+    
+    public void takeScreenshot(String screenshot) throws IOException {
+		DateFormat df = new SimpleDateFormat("yyyy_MMM_dd hh_mm_ss");
+		Date d = new Date();
+		String time = df.format(d);
+
+		srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+		FileUtils.copyFile(srcFile,
+				new File("C:\\codebase\\Screenshots\\" + screenshot + time + ".png"));
+	}
     
     @AfterTest(description="Closes the Portal Page")
     public void endSession(){

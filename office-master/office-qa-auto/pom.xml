@@ -86,6 +86,39 @@
                     </execution>
                 </executions>
             </plugin>    
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.0</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+                <executions>
+        <!-- At pre-integration-test phase, run the war in an embedded Tomcat server. -->
+                    <execution>
+                        <id>start-tomcat</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>run-war-only</goal>
+                        </goals>
+                        <configuration>
+                            <port>9090</port>
+                            <fork>true</fork>
+                        </configuration>
+                    </execution>
+        <!-- At post-integration-test phase, stop the embedded Tomcat server. -->
+                    <execution>
+                        <id>stop-tomcat</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>shutdown</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                
+        <!-- Used to allow embedded Tomcat to connect to a MySQL database -->
+    
+            </plugin>
         </plugins>
     </build>
 </project>
