@@ -12,8 +12,10 @@ import com.google.common.base.Strings;
 import info.chili.dao.AbstractHandleEntityDao;
 import info.chili.jpa.AbstractEntity;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.dao.hr.ProspectDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.ext.Comment;
+import info.yalamanchili.office.entity.hr.Prospect;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.Date;
 import java.util.List;
@@ -41,6 +43,11 @@ public class CommentDao extends AbstractHandleEntityDao<Comment> {
         } else {
             Comment cmnt = new Comment();
             cmnt.setComment(comment);
+            if (Prospect.class.getCanonicalName().equals(target.getClass().getCanonicalName())) {
+                if (target.getId() != null) {
+                    cmnt.setStage(ProspectDao.instance().findById(target.getId()).getStatus().name());
+                }
+            }
             return save(cmnt, target);
         }
     }
