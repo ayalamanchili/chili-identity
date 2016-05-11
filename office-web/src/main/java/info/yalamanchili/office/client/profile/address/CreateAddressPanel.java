@@ -122,7 +122,7 @@ public class CreateAddressPanel extends CreateComposite implements ChangeHandler
         if (countriesF != null) {
             countriesF.listBox.addChangeHandler(this);
         }
-
+        zipField.getTextbox().addChangeHandler(this);
     }
 
     @Override
@@ -246,9 +246,6 @@ public class CreateAddressPanel extends CreateComposite implements ChangeHandler
                         }
                         statesF.selectValue(state);
                         cityField.setValue(city);
-                    }
-                    else {
-                        logger.info("Invalid Zip Code");
                     }
                 }
 
