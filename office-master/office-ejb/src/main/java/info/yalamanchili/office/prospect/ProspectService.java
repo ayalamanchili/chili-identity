@@ -325,7 +325,9 @@ public class ProspectService {
                 for (String email : emails) {
                     emaillist = emaillist.concat(email) + " , ";
                 }
-                emaillist = emaillist.concat(EmployeeDao.instance().findById(dto.getCaseManager().getId()).getPrimaryEmail().getEmail());
+                if (dto.getCaseManager() != null) {
+                    emaillist = emaillist.concat(EmployeeDao.instance().findById(dto.getCaseManager().getId()).getPrimaryEmail().getEmail());
+                }
                 if (!dto.getStatus().equals(ProspectStatus.IN_PROGRESS)) {
                     emaillist = emaillist.concat(" , " + EmployeeDao.instance().findById(dto.getAssignedTo().getId()).getPrimaryEmail().getEmail());
                 }

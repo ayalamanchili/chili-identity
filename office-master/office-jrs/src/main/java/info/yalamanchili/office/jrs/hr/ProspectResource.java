@@ -302,6 +302,26 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
         }
     }
 
+    @PUT
+    @Path("/report/exportReport/{format}")
+    public void exportReport(ProspectList dto, @PathParam("format") String format) {
+        List<ProspectDto> dtos = new ArrayList();
+        String home = "C://Users//" + System.getProperty("user.name") + "//Downloads/";
+        String[] split = dto.getListids().split(",");
+        for (String id : split) {
+            Prospect findById = ProspectDao.instance().findById(Long.valueOf(id));
+            dtos.add(ProspectDto.map(mapper, findById));
+        }
+        String reportFormat = "";
+        if (format.equals("Excel")) {
+            reportFormat = reportFormat.concat("xls").trim();
+        } else if (format.equals("Pdf")) {
+            reportFormat = reportFormat.concat("pdf").trim();
+        }
+        String[] columnOrder = new String[]{"employee", "email", "phoneNumber", "screenedBy", "manager", "assignedto", "petitionFor", "placedby", "trfEmptype", "dateOfJoining", "referredBy", "companyName", "startDate", "stage"};
+        ReportGenerator.generateReport(dtos, "Prospect Report", reportFormat, home, columnOrder);
+    }
+
     @GET
     @Path("/stageProgressReport")
     public void stageProgressReport() {
@@ -309,7 +329,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
         List<Prospect> prospects = new ArrayList();
         ProspectTable table = table(0, 100000);
         prospectDtos.addAll(table.getEntities());
-        for(ProspectDto dto : prospectDtos){
+        for (ProspectDto dto : prospectDtos) {
             prospects.add(prospectDao.findById(dto.getId()));
         }
         prospectService.getProspectsStageProgressReport(prospects);
