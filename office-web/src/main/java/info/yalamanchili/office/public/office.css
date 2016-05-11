@@ -606,7 +606,7 @@ body{
 
 tr.y-gwt-TableHeader td:first-child {
     width: 125px !important;
-    
+
 }
 
 
@@ -1138,7 +1138,7 @@ button#gwt-debug-loginB {
     margin-top: 1px;
 }
 .y-gwt-ReadAllPanel .y-gwt-PagingBar .gwt-ListBox {
-    width: 50px !important;
+    width: 71px !important;
     height: 23px !important;
 }
 .gwt-HTML li, .gwt-HTML li a {
@@ -1163,7 +1163,7 @@ a.gwt-Anchor:hover{
 .gwt-HTML li a:hover{
     color:orange_hover !important;
     font-weight:bold !important;
-    
+
 }
 
 .gwt-DisclosurePanel .header {
@@ -1364,7 +1364,7 @@ td.y-gwt-AbstractStatusPanel-LoginLink {
 }
 .mainPanel {
     bottom:20px !important; line-height: 20px !important;
-    
+
 }
 .info-yalamanchili-office-client-resources-OfficeCss-footerPanel a.gwt-Anchor {
     line-height: 20px !important;
