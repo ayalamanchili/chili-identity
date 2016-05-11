@@ -122,7 +122,7 @@ public class CreateAddressPanel extends CreateComposite implements ChangeHandler
         if (countriesF != null) {
             countriesF.listBox.addChangeHandler(this);
         }
-        zipField.getTextbox().addChangeHandler(this);
+
     }
 
     @Override
@@ -219,9 +219,9 @@ public class CreateAddressPanel extends CreateComposite implements ChangeHandler
                 break;
         }
 
-//        if (event.getSource().equals(zipField.getTextbox())) {
-//            getZipInformationService(zipField.getValue());
-//        }
+        if (event.getSource().equals(zipField.getTextbox())) {
+            getZipInformationService(zipField.getValue());
+        }
     }
 
     protected void getZipInformationService(String zipCode) {
@@ -232,19 +232,24 @@ public class CreateAddressPanel extends CreateComposite implements ChangeHandler
 
                 @Override
                 public void onResponseReceived(com.google.gwt.http.client.Request request, com.google.gwt.http.client.Response response) {
-                    JSONObject resObj = (JSONObject) JSONParser.parse(response.getText());
-                    String country = resObj.get("country abbreviation").isString().stringValue();
+                    if(response.getText().length() > 2) {
+                        JSONObject resObj = (JSONObject) JSONParser.parse(response.getText());
+                        String country = resObj.get("country abbreviation").isString().stringValue();
 
-                    JSONObject placeObj = resObj.get("places").isArray().get(0).isObject();
-                    String state = placeObj.get("state abbreviation").isString().stringValue();
+                        JSONObject placeObj = resObj.get("places").isArray().get(0).isObject();
+                        String state = placeObj.get("state abbreviation").isString().stringValue();
 
-                    //String state=resObj.get("places").isArray().get(3).isObject().get("state abbreviation").isString().stringValue();
-                    String city = placeObj.get("place name").isString().stringValue();
-                    if (country.equals("US")) {
-                        countriesF.setValue("USA");
+                        //String state=resObj.get("places").isArray().get(3).isObject().get("state abbreviation").isString().stringValue();
+                        String city = placeObj.get("place name").isString().stringValue();
+                        if (country.equals("US")) {
+                            countriesF.selectValue("USA");
+                        }
+                        statesF.selectValue(state);
+                        cityField.setValue(city);
                     }
-                    statesF.setValue(state);
-                    cityField.setValue(city);
+                    else {
+                        logger.info("Invalid Zip Code");
+                    }
                 }
 
                 @Override
