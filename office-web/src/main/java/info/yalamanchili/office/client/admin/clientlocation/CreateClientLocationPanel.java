@@ -17,12 +17,10 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CreateComposite;
-import info.chili.gwt.data.CanadaStatesFactory;
-import info.chili.gwt.data.IndiaStatesFactory;
 import info.chili.gwt.fields.EnumField;
+import info.chili.gwt.fields.StringField;
 import info.yalamanchili.office.client.profile.address.CreateAddressPanel;
 import info.yalamanchili.office.client.admin.client.TreeClientPanel;
-import java.util.logging.Logger;
 
 /**
  *
@@ -30,14 +28,9 @@ import java.util.logging.Logger;
  */
 public class CreateClientLocationPanel extends CreateAddressPanel implements ChangeHandler {
 
-    private static Logger logger = Logger.getLogger(CreateClientLocationPanel.class.getName());
-
     public CreateClientLocationPanel(CreateComposite.CreateCompositeType type) {
         super(CreateAddressPanelType.ALL);
     }
-
-    EnumField statesF;
-    EnumField countriesF;
 
     @Override
     protected JSONObject populateEntityFromFields() {
@@ -49,7 +42,6 @@ public class CreateClientLocationPanel extends CreateAddressPanel implements Cha
         assignEntityValueFromField("state", entity);
         assignEntityValueFromField("country", entity);
         assignEntityValueFromField("zip", entity);
-        logger.info(entity.toString());
         return entity;
     }
 
@@ -64,13 +56,16 @@ public class CreateClientLocationPanel extends CreateAddressPanel implements Cha
     protected void addWidgets() {
         addField("street1", false, true, DataType.STRING_FIELD);
         addField("street2", false, false, DataType.STRING_FIELD);
+        addField("zip", false, false, DataType.STRING_FIELD);        
         addField("city", false, true, DataType.STRING_FIELD);
         addField("state", false, true, DataType.ENUM_FIELD);
         addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]));
         addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]));
-        addField("zip", false, false, DataType.STRING_FIELD);
-        countriesF = (EnumField) fields.get("country");
-        statesF = (EnumField) fields.get("state");
+        super.countriesF = (EnumField) fields.get("country");
+        super.statesF = (EnumField) fields.get("state");
+        super.zipField = (StringField) fields.get("zip");
+        super.cityField = (StringField) fields.get("city");        
+ 
     }
 
     @Override
@@ -80,23 +75,14 @@ public class CreateClientLocationPanel extends CreateAddressPanel implements Cha
 
     @Override
     protected void addListeners() {
-        if (countriesF != null) {
-            countriesF.listBox.addChangeHandler(this);
-        }
+        super.addListeners();
+       
     }
 
     @Override
-    public void onChange(ChangeEvent event) {
-        switch (countriesF.getValue()) {
-            case "USA":
-                statesF.setValues(USAStatesFactory.getStates().toArray(new String[0]));
-                break;
-            case "INDIA":
-                statesF.setValues(IndiaStatesFactory.getStates().toArray(new String[0]));
-                break;
-            case "CANADA":
-                statesF.setValues(CanadaStatesFactory.getStates().toArray(new String[0]));
-                break;
-        }
+    public void onChange(ChangeEvent event) {     
+       super.onChange(event);
     }
+    
+    
 }

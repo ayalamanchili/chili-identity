@@ -57,6 +57,10 @@ public class CreateAddressPanel extends CreateComposite implements ChangeHandler
     BooleanField notifyChangeF;
     BooleanField notifyHealthInsuranceF;
     TextAreaField changeNotesF;
+    protected EnumField statesF;
+    protected EnumField countriesF;
+    protected StringField zipField;
+    protected StringField cityField;
 
     @Override
     protected JSONObject populateEntityFromFields() {
@@ -89,16 +93,16 @@ public class CreateAddressPanel extends CreateComposite implements ChangeHandler
     protected void addButtonClicked() {
         HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postCreateSuccess(arg0);
+            }
+        });
     }
 
     @Override
@@ -159,10 +163,6 @@ public class CreateAddressPanel extends CreateComposite implements ChangeHandler
             notifyChangeInstructions2.setVisible(true);
         }
     }
-    EnumField statesF;
-    EnumField countriesF;
-    StringField zipField;
-    StringField cityField;
 
     @Override
     protected void addWidgets() {
@@ -207,6 +207,7 @@ public class CreateAddressPanel extends CreateComposite implements ChangeHandler
 
     @Override
     public void onChange(ChangeEvent event) {
+
         switch (countriesF.getValue()) {
             case "USA":
                 statesF.setValues(USAStatesFactory.getStates().toArray(new String[0]));
@@ -218,7 +219,7 @@ public class CreateAddressPanel extends CreateComposite implements ChangeHandler
                 statesF.setValues(CanadaStatesFactory.getStates().toArray(new String[0]));
                 break;
         }
-
+      
         if (event.getSource().equals(zipField.getTextbox())) {
             getZipInformationService(zipField.getValue());
         }
@@ -226,20 +227,20 @@ public class CreateAddressPanel extends CreateComposite implements ChangeHandler
 
     protected void getZipInformationService(String zipCode) {
         String zipCodeServiceUrl = "https://api.zippopotam.us/us/" + zipCode;
+        logger.info("Inside Super Onchange getZipInformationService:::::" + zipCodeServiceUrl);
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, zipCodeServiceUrl);
         try {
             builder.sendRequest(null, new RequestCallback() {
 
                 @Override
                 public void onResponseReceived(com.google.gwt.http.client.Request request, com.google.gwt.http.client.Response response) {
-                    if(response.getText().length() > 2) {
+                    if (response.getText().length() > 2) {
                         JSONObject resObj = (JSONObject) JSONParser.parse(response.getText());
                         String country = resObj.get("country abbreviation").isString().stringValue();
 
                         JSONObject placeObj = resObj.get("places").isArray().get(0).isObject();
                         String state = placeObj.get("state abbreviation").isString().stringValue();
 
-                        //String state=resObj.get("places").isArray().get(3).isObject().get("state abbreviation").isString().stringValue();
                         String city = placeObj.get("place name").isString().stringValue();
                         if (country.equals("US")) {
                             countriesF.selectValue("USA");
