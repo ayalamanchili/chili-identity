@@ -93,6 +93,11 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>
         </dependency>
@@ -538,7 +543,7 @@
         <activiti-version>5.10</activiti-version>
         <guava.version>17.0</guava.version>
         <jersey.version>1.19</jersey.version>
-        <spring.version>4.0.5.RELEASE</spring.version>
+        <spring.version>4.1.5.RELEASE</spring.version>
         <spring.security.version>4.0.0.RELEASE</spring.security.version>
         <jasypt.version>1.7</jasypt.version>
         <aspectj.version>1.8.5</aspectj.version>
