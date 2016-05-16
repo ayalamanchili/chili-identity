@@ -22,6 +22,7 @@ import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.admin.invoice.ReadAllInvoicePanel;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceDeliveryMethod;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
@@ -81,7 +82,8 @@ public class ReadContractsPanel extends TReadComposite {
     }
 
     protected final void populateComments() {
-        entityActionsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.profile.ClientInformation"));
+        entityFieldsPanel.setWidget(23, 1, new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.profile.ClientInformation"));
+        entityFieldsPanel.getFlexCellFormatter().setColSpan(23, 1, 2);
     }
 
     @Override
@@ -100,6 +102,7 @@ public class ReadContractsPanel extends TReadComposite {
                             alignFields();
                         }
                         populateFieldsFromEntity(entity);
+
                     }
                 });
     }
@@ -233,6 +236,8 @@ public class ReadContractsPanel extends TReadComposite {
         addField("employeeCompany", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 21, 1);
         entityFieldsPanel.setWidget(22, 1, ReadAllConsultantTimeSheetsPanel.renderLeaveHistory(getEmployeeId()));
         entityFieldsPanel.getFlexCellFormatter().setColSpan(22, 1, 2);
+        entityFieldsPanel.setWidget(25, 1, ReadAllInvoicePanel.renderInvoiceHistory(entity, entityId));
+        entityFieldsPanel.getFlexCellFormatter().setColSpan(25, 1, 2);
         alignFields();
     }
 
@@ -253,8 +258,8 @@ public class ReadContractsPanel extends TReadComposite {
                         if (!response.trim().toString().equals("null")) {
                             if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_BILLING_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
                                 JSONArray docs = JSONUtils.toJSONArray(JSONParser.parseLenient(response).isObject().get("ciDocument"));
-                                entityFieldsPanel.setWidget(23, 1, new ReadAllCiDocumentPanel(getEntityId(), docs));
-                                entityFieldsPanel.getFlexCellFormatter().setColSpan(23, 1, 2);
+                                entityFieldsPanel.setWidget(24, 1, new ReadAllCiDocumentPanel(getEntityId(), docs));
+                                entityFieldsPanel.getFlexCellFormatter().setColSpan(24, 1, 2);
                             }
                         }
                     }
