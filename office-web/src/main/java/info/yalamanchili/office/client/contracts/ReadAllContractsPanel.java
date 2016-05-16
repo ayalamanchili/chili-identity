@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.client.contracts;
 
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
@@ -18,10 +19,12 @@ import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.admin.invoice.UpdateInvoicePanel;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
 import java.util.logging.Logger;
 
@@ -33,6 +36,7 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
 
     private static Logger logger = Logger.getLogger(ReadAllContractsPanel.class.getName());
     public static ReadAllContractsPanel instance;
+    String emp = null;
 
     public ReadAllContractsPanel() {
         instance = this;
@@ -100,6 +104,7 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
         table.setText(0, 7, getKeyValue("StartDate"));
 //        table.setText(0, 9, getKeyValue("EndDate"));
         table.setText(0, 8, getKeyValue("Status"));
+        table.setText(0, 9, getKeyValue("Invoice"));
     }
 
     @Override
@@ -128,10 +133,22 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
             setEnumColumn(i, 6, entity, InvoiceFrequency.class.getSimpleName(), "invoiceFrequency");
 //            table.setText(i, 5, FormatUtils.formarCurrency(JSONUtils.toString(entity, "billingRate")));
 //            table.setText(i, 6, FormatUtils.formarCurrency(JSONUtils.toString(entity, "overTimeBillingRate")));
-           table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
+            table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
 //            table.setText(i, 9, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
             setEnumColumn(i, 8, entity, ClientInformationStatus.class.getSimpleName(), "status");
+            ClickableLink invoiceLink = new ClickableLink("Create Invoice");
+            invoiceLink.setTitle(JSONUtils.toString(entity, "id"));
+            emp = JSONUtils.toString(entity, "employee");
+            invoiceLink.addClickHandler((ClickEvent event) -> {
+                getInvoice(((ClickableLink) event.getSource()).getTitle());
+            });
+            table.setWidget(i, 9, invoiceLink);
+        }
+    }
 
+    protected void getInvoice(String entityId) {
+        if (!entityId.isEmpty()) {
+            new GenericPopup(new UpdateInvoicePanel(entityId, false)).show();
         }
     }
 
@@ -162,5 +179,4 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
     protected boolean enablePersistedQuickView() {
         return true;
     }
-
 }
