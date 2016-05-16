@@ -29,6 +29,7 @@ import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.admin.vendor.TreeVendorsPanel;
+import info.yalamanchili.office.client.profile.address.AddressByZipService;
 import java.util.logging.Logger;
 
 /**
@@ -155,42 +156,9 @@ public class UpdateVendorLocationsPanel extends UpdateComposite implements Chang
                 break;
         }
         if (event.getSource().equals(zipField.getTextbox())) {
-            getZipInformationService(zipField.getValue());
+            AddressByZipService.getZipInformationService(zipField.getValue(), cityField, statesF, countriesF);                        
         }    
     }
-     protected void getZipInformationService(String zipCode) {
-        String zipCodeServiceUrl = "https://api.zippopotam.us/us/" + zipCode;
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, zipCodeServiceUrl);
-        try {
-            builder.sendRequest(null, new RequestCallback() {
-
-                @Override
-                public void onResponseReceived(com.google.gwt.http.client.Request request, com.google.gwt.http.client.Response response) {
-                    if(response.getText().length() > 2) {
-                        JSONObject resObj = (JSONObject) JSONParser.parse(response.getText());
-                        String country = resObj.get("country abbreviation").isString().stringValue();
-
-                        JSONObject placeObj = resObj.get("places").isArray().get(0).isObject();
-                        String state = placeObj.get("state abbreviation").isString().stringValue();
-                        String city = placeObj.get("place name").isString().stringValue();
-                        if (country.equals("US")) {
-                            countriesF.selectValue("USA");
-                        }
-                        statesF.selectValue(state);
-                        cityField.setValue(city);
-                    }
-                }
-
-                @Override
-                public void onError(com.google.gwt.http.client.Request request, Throwable exception) {
-                    logger.info(exception.getLocalizedMessage());
-                }
-            });
-        } catch (RequestException e) {
-            logger.info(e.getLocalizedMessage());
-        }
-    }
-    
 }
 
 

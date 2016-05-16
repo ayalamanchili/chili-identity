@@ -33,7 +33,7 @@ public class CreateClientLocationPanel extends CreateAddressPanel implements Cha
     }
 
     @Override
-    protected JSONObject populateEntityFromFields() {
+    protected JSONObject populateEntityFromFields() { 
         //TODO is thid needed
         JSONObject entity = new JSONObject();
         assignEntityValueFromField("street1", entity);
