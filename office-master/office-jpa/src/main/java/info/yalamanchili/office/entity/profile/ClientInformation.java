@@ -6,6 +6,7 @@ package info.yalamanchili.office.entity.profile;
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.ClientInfoComment;
+import info.yalamanchili.office.entity.client.Invoice;
 import info.yalamanchili.office.entity.client.InvoiceDeliveryMethod;
 import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import info.yalamanchili.office.entity.client.Project;
@@ -32,6 +33,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.ForeignKey;
@@ -335,7 +337,7 @@ public class ClientInformation extends AbstractEntity {
     protected String timeSheetRequirement;
 
     protected String vendorPaymentTerms;
-    
+
     protected String clientPaymentTerms;
 
     protected String specialInvoiceInstructions;
@@ -357,6 +359,9 @@ public class ClientInformation extends AbstractEntity {
      *
      */
     protected String bpmProcessId;
+
+    @OneToMany(mappedBy = "clientInformation", fetch = FetchType.EAGER)
+    protected List<Invoice> invoice;
 
     public Boolean isIsEndDateConfirmed() {
         return isEndDateConfirmed;
@@ -933,7 +938,7 @@ public class ClientInformation extends AbstractEntity {
     public void setInvoiceFrequency1099(InvoiceFrequency invoiceFrequency1099) {
         this.invoiceFrequency1099 = invoiceFrequency1099;
     }
-    
+
     @OneToMany(mappedBy = "clientInformation", cascade = CascadeType.ALL)
     protected Set<CIDocument> cidocument;
 
@@ -956,7 +961,27 @@ public class ClientInformation extends AbstractEntity {
         getCidocument().add(entity);
         entity.setClientInformation(this);
     }
-    
+
+    @XmlTransient
+    public List<Invoice> getInvoice() {
+        if (this.invoice == null) {
+            this.invoice = new ArrayList();
+        }
+        return invoice;
+    }
+
+    public void setInvoice(List<Invoice> invoice) {
+        this.invoice = invoice;
+    }
+
+    public void addInvoice(Invoice entity) {
+        if (entity == null) {
+            return;
+        }
+        getInvoice().add(entity);
+        entity.setClientInformation(this);
+    }
+
     @Override
     public String describe() {
         StringBuilder description = new StringBuilder("\n");
