@@ -58,7 +58,7 @@ public class ReadInvoicePanel extends ReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-       assignFieldValueFromEntity("employee", entity, null);
+       //assignFieldValueFromEntity("employee", entity, DataType.SUGGEST_FIELD);
         assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("invoiceNumber", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
@@ -81,7 +81,7 @@ public class ReadInvoicePanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addDropDown("employee", employeeSb);
+        //addDropDown("employee", employeeSb);
         addField("itemNumber", true, false, DataType.STRING_FIELD);
         addField("invoiceNumber", true, false, DataType.STRING_FIELD);
         addField("startDate", true, false, DataType.DATE_FIELD);
