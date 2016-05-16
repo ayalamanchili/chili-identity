@@ -46,7 +46,7 @@ public class BillingRateResource extends CRUDResource<BillingRate> {
     @PUT
     @Path("/delete/{id}")
     @Override
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_RECRUITER','ROLE_CONTRACTS_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN')")
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
     }
