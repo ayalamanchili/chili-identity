@@ -48,7 +48,7 @@ public class Invoice extends AbstractEntity {
     private static final long serialVersionUID = 11L;
 
     @NotNull(message = "{invoiceNumber.not.empty.msg}")
-    protected Integer invoiceNumber;
+    protected String invoiceNumber;
 
     @NotNull(message = "{startDate.not.empty.msg}")
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -74,13 +74,13 @@ public class Invoice extends AbstractEntity {
     protected String itemNumber;
 
     @NotNull(message = "{invoiceFrequency.not.empty.msg}")
+    @Enumerated(EnumType.STRING)
     protected InvoiceFrequency invoiceFrequency;
 
     @NotNull(message = "{hours.not.empty.msg}")
     protected BigDecimal hours;
 
     @Lob
-    @NotEmpty(message = "{notes.not.empty.msg}")
     protected String notes;
 
     @Enumerated(EnumType.STRING)
@@ -92,10 +92,12 @@ public class Invoice extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     @NotNull(message = "{timeSheetStatus.not.empty.msg}")
     protected TimeSheetStatus timeSheetStatus;
-
+    /**
+     *
+     */
+    @Transient
     protected String employee;
 
-    @Transient
     public String getEmployee() {
         return employee;
     }
@@ -120,11 +122,11 @@ public class Invoice extends AbstractEntity {
         this.timeSheetStatus = timeSheetStatus;
     }
 
-    public Integer getInvoiceNumber() {
+    public String getInvoiceNumber() {
         return invoiceNumber;
     }
 
-    public void setInvoiceNumber(Integer invoiceNumber) {
+    public void setInvoiceNumber(String invoiceNumber) {
         this.invoiceNumber = invoiceNumber;
     }
 
