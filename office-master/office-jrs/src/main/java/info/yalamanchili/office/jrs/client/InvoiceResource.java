@@ -78,7 +78,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
         inv.setInvoiceFrequency(invoice.getInvoiceFrequency());
         inv.setInvoiceDate(invoice.getInvoiceDate());
         inv.setHours(invoice.getHours());
-        inv.setStatus(invoice.getStatus());
+        inv.setInvoiceStatus(invoice.getInvoiceStatus());
         inv.setTimeSheetStatus(invoice.getTimeSheetStatus());
         inv.setInvoiceNumber(invoice.getInvoiceNumber());
         inv.setNotes(invoice.getNotes());
@@ -102,7 +102,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
         inv.setInvoiceFrequency(invoice.getInvoiceFrequency());
         inv.setInvoiceDate(invoice.getInvoiceDate());
         inv.setHours(invoice.getHours());
-        inv.setStatus(invoice.getStatus());
+        inv.setInvoiceStatus(invoice.getInvoiceStatus());
         inv.setTimeSheetStatus(invoice.getTimeSheetStatus());
         inv.setInvoiceNumber(invoice.getInvoiceNumber());
         inv.setNotes(invoice.getNotes());

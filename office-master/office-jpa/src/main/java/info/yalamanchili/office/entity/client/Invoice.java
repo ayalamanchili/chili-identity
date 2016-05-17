@@ -11,7 +11,6 @@ package info.yalamanchili.office.entity.client;
 import info.chili.jpa.AbstractEntity;
 import info.chili.jpa.validation.Unique;
 import info.yalamanchili.office.entity.profile.ClientInformation;
-import info.yalamanchili.office.entity.profile.Employee;
 import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.CascadeType;
@@ -21,12 +20,12 @@ import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
@@ -52,12 +51,15 @@ public class Invoice extends AbstractEntity {
     protected Integer invoiceNumber;
 
     @NotNull(message = "{startDate.not.empty.msg}")
+    @Temporal(javax.persistence.TemporalType.DATE)
     protected Date startDate;
 
     @NotNull(message = "{endDate.not.empty.msg}")
+    @Temporal(javax.persistence.TemporalType.DATE)
     protected Date endDate;
 
     @NotNull(message = "{invoiceDate.not.empty.msg}")
+    @Temporal(javax.persistence.TemporalType.DATE)
     protected Date invoiceDate;
 
     protected BigDecimal billingRate;
@@ -83,15 +85,17 @@ public class Invoice extends AbstractEntity {
 
     @Enumerated(EnumType.STRING)
     @NotNull(message = "{invoice.status.not.empty.msg}")
-    protected InvoiceStatus status;
-
+    protected InvoiceStatus invoiceStatus;
+    /**
+     *
+     */
     @Enumerated(EnumType.STRING)
     @NotNull(message = "{timeSheetStatus.not.empty.msg}")
-    protected TimeStatus timeSheetStatus;
+    protected TimeSheetStatus timeSheetStatus;
 
-    //@ManyToOne(cascade = CascadeType.ALL)
     protected String employee;
 
+    @Transient
     public String getEmployee() {
         return employee;
     }
@@ -100,19 +104,19 @@ public class Invoice extends AbstractEntity {
         this.employee = employee;
     }
 
-    public InvoiceStatus getStatus() {
-        return status;
+    public InvoiceStatus getInvoiceStatus() {
+        return invoiceStatus;
     }
 
-    public void setStatus(InvoiceStatus status) {
-        this.status = status;
+    public void setInvoiceStatus(InvoiceStatus invoiceStatus) {
+        this.invoiceStatus = invoiceStatus;
     }
 
-    public TimeStatus getTimeSheetStatus() {
+    public TimeSheetStatus getTimeSheetStatus() {
         return timeSheetStatus;
     }
 
-    public void setTimeSheetStatus(TimeStatus timeSheetStatus) {
+    public void setTimeSheetStatus(TimeSheetStatus timeSheetStatus) {
         this.timeSheetStatus = timeSheetStatus;
     }
 
@@ -207,6 +211,6 @@ public class Invoice extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "Invoice{" + "invoiceNumber=" + invoiceNumber + ", startDate=" + startDate + ", endDate=" + endDate + ", invoiceDate=" + invoiceDate + ", billingRate=" + billingRate + ", overTimeBillingRate=" + overTimeBillingRate + ", clientinformation=" + clientInformation + ", itemNumber=" + itemNumber + ", invoiceFrequency=" + invoiceFrequency + ", hours=" + hours + ", notes=" + notes + ", status=" + status + ", timeSheetStatus=" + timeSheetStatus + '}';
+        return "Invoice{" + "invoiceNumber=" + invoiceNumber + ", startDate=" + startDate + ", endDate=" + endDate + ", invoiceDate=" + invoiceDate + ", billingRate=" + billingRate + ", overTimeBillingRate=" + overTimeBillingRate + ", clientinformation=" + clientInformation + ", itemNumber=" + itemNumber + ", invoiceFrequency=" + invoiceFrequency + ", hours=" + hours + ", notes=" + notes + ", status=" + invoiceStatus + ", timeSheetStatus=" + timeSheetStatus + '}';
     }
 }

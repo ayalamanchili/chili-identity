@@ -12,7 +12,7 @@ package info.yalamanchili.office.entity.client;
  *
  * @author prasanthi.p
  */
-public enum TimeStatus {
+public enum TimeSheetStatus {
     Pending,
     Approved
 }
