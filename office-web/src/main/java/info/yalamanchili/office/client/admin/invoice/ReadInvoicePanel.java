@@ -13,11 +13,12 @@ import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
-import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import java.util.logging.Logger;
 
 /**
@@ -27,7 +28,6 @@ import java.util.logging.Logger;
 public class ReadInvoicePanel extends ReadComposite {
 
     private static Logger logger = Logger.getLogger(ReadInvoicePanel.class.getName());
-    SelectEmployeeWidget employeeSb = new SelectEmployeeWidget("employee", true, false);
     private static ReadInvoicePanel instance;
 
     public static ReadInvoicePanel instance() {
@@ -58,17 +58,26 @@ public class ReadInvoicePanel extends ReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-       //assignFieldValueFromEntity("employee", entity, DataType.SUGGEST_FIELD);
+        if (entity.get("employee") instanceof JSONObject) {
+            JSONObject employee = entity.get("employee").isObject();
+            String name = employee.get("firstName").isString().stringValue() + " " + employee.get("lastName").isString().stringValue();
+            StringField field = (StringField) fields.get("employee");
+            field.setValue(name);
+        } else {
+            assignFieldValueFromEntity("employee", entity, DataType.STRING_FIELD);
+        }
         assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("invoiceNumber", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("invoiceDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
+        assignFieldValueFromEntity("hours", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("notes", entity, DataType.TEXT_AREA_FIELD);
-
+        assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("timeSheetStatus", entity, DataType.ENUM_FIELD);
     }
 
     @Override
@@ -81,17 +90,20 @@ public class ReadInvoicePanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        //addDropDown("employee", employeeSb);
-        addField("itemNumber", true, false, DataType.STRING_FIELD);
-        addField("invoiceNumber", true, false, DataType.STRING_FIELD);
-        addField("startDate", true, false, DataType.DATE_FIELD);
-        addField("endDate", true, false, DataType.DATE_FIELD);
-        addField("invoiceDate", true, false, DataType.DATE_FIELD);
-        addField("billingRate", true, false, DataType.CURRENCY_FIELD);
-        addField("overTimeBillingRate", true, false, DataType.CURRENCY_FIELD);
-        addEnumField("invoiceFrequency", true, false, InvoiceFrequency.names());
-        addField("notes", true, false, DataType.TEXT_AREA_FIELD);
-
+        addField("employee", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("itemNumber", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("invoiceNumber", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("startDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("endDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("invoiceDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("billingRate", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        addField("overTimeBillingRate", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        addField("hours", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        addEnumField("invoiceFrequency", true, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+        addEnumField("status", true, true, InvoiceStatus.names(), Alignment.HORIZONTAL);
+        addEnumField("timeSheetStatus", true, true, TimeStatus.names(), Alignment.HORIZONTAL);
+        addField("notes", true, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        alignFields();
     }
 
     @Override
