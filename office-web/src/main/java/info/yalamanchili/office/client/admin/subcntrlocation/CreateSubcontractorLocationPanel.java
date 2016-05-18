@@ -47,7 +47,7 @@ public class CreateSubcontractorLocationPanel extends CreateAddressPanel impleme
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully Added Subcontractor Locatrion");
+        new ResponseStatusWidget().show("Successfully Added Subcontractor Location");
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllSubcontractorLocationsPanel(TreeSubcontractorPanel.instance().getEntityId()));
     }
