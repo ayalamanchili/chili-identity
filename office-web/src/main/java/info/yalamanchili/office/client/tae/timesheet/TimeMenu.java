@@ -27,6 +27,8 @@ import info.yalamanchili.office.client.time.consultant.ReadCurrentConsultantLeav
 import info.yalamanchili.office.client.time.corp.CorporateTimeSidePanel;
 import info.yalamanchili.office.client.time.corp.ReadAllCorporateTimeSheetPanel;
 import info.yalamanchili.office.client.time.corp.ReadCurrentCorpLeavesPanel;
+import info.yalamanchili.office.client.time.OutOfOfficeSidePanel;
+import info.yalamanchili.office.client.time.ReadAllOutOfOfficePanel;
 
 /**
  *
@@ -46,6 +48,7 @@ public class TimeMenu extends CMenuBar {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_CORPORATE_TIME_REPORTS, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_PAYROLL_AND_BENIFITS, ROLE.ROLE_BULK_IMPORT)) {
             addMenuItem("Attendance", "Attendance", attendenceCmd);
         }
+        addMenuItem("Out Of Office", "OutOf Office", outOfOfficeMaintainenceCmd);
     }
     static Command summaryMaintainenceCmd = new Command() {
         @Override
@@ -123,6 +126,15 @@ public class TimeMenu extends CMenuBar {
             TabPanel.instance().getTimePanel().sidePanelTop.clear();
             TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllAdjustmentHoursPanel());
             TabPanel.instance().getTimePanel().sidePanelTop.add(new AdjustmentHoursSidePanel());
+        }
+    };
+    static Command outOfOfficeMaintainenceCmd = new Command() {
+        @Override
+        public void execute() {
+            TabPanel.instance().getTimePanel().entityPanel.clear();
+            TabPanel.instance().getTimePanel().sidePanelTop.clear();
+            TabPanel.instance().getTimePanel().sidePanelTop.add(new OutOfOfficeSidePanel());
+            TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllOutOfOfficePanel());
         }
     };
 }
