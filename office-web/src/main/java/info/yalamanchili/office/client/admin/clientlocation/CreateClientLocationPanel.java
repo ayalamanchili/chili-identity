@@ -33,7 +33,7 @@ public class CreateClientLocationPanel extends CreateAddressPanel implements Cha
     }
 
     @Override
-    protected JSONObject populateEntityFromFields() { 
+     protected JSONObject populateEntityFromFields() { 
         //TODO is thid needed
         JSONObject entity = new JSONObject();
         assignEntityValueFromField("street1", entity);
@@ -47,7 +47,7 @@ public class CreateClientLocationPanel extends CreateAddressPanel implements Cha
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully Added Client Locatrion");
+        new ResponseStatusWidget().show("Successfully Added Client Location");
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientLocationsPanel(TreeClientPanel.instance().getEntityId()));
     }
