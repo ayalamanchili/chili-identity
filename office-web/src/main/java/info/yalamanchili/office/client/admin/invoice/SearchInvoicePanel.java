@@ -34,7 +34,6 @@ public class SearchInvoicePanel extends SearchComposite {
         init("Invoice Search", "Invoice", OfficeWelcome.constants);
     }
 
-
     @Override
     protected void addListeners() {
     }
@@ -50,7 +49,7 @@ public class SearchInvoicePanel extends SearchComposite {
         addField("startDate", DataType.DATE_FIELD);
         addField("endDate", DataType.DATE_FIELD);
         addEnumField("timeSheetStatus", false, false, TimeStatus.names());
-        addEnumField("status", false, false, InvoiceStatus.names());
+        addEnumField("invoiceStatus", false, false, InvoiceStatus.names());
     }
 
     @Override
@@ -61,7 +60,7 @@ public class SearchInvoicePanel extends SearchComposite {
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
         assignEntityValueFromField("timeSheetStatus", entity);
-        assignEntityValueFromField("status", entity);
+        assignEntityValueFromField("invoiceStatus", entity);
         return entity;
     }
 
@@ -80,7 +79,6 @@ public class SearchInvoicePanel extends SearchComposite {
 
     @Override
     protected void search(JSONObject entity) {
-        logger.info("sending to server:" + entity.toString());
         HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 1000), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
@@ -92,29 +90,22 @@ public class SearchInvoicePanel extends SearchComposite {
 
     @Override
     protected void postSearchSuccess(JSONArray result) {
-        logger.info("resposnse from server"+result);
         TabPanel.instance().getReportingPanel().entityPanel.clear();
         TabPanel.instance().getReportingPanel().entityPanel.add(new ReadAllInvoicePanel(result));
     }
 
-    
     @Override
     protected String getSearchURI(String searchText, Integer start, Integer limit) {
-        if (getKey() != null) {
-            return URL.encode(OfficeWelcome.constants.root_url() + "invoice/search/" + start.toString() + "/"
-                    + limit.toString() + "?empId=" + getKey());
-        } else {
-            return URL.encode(OfficeWelcome.constants.root_url() + "invoice/search/" + start.toString() + "/"
-                    + limit.toString() + "?itemNum=" + searchText);
-        }
-    }    
+        return URL.encode(OfficeWelcome.constants.root_url() + "invoice/search/" + searchText + "/" + start.toString() + "/"
+                + limit.toString());
+    }
 
     @Override
     protected String getSearchURI(Integer start, Integer limit) {
         return URL.encode(OfficeWelcome.constants.root_url() + "invoice/search/" + start.toString() + "/"
                 + limit.toString());
     }
-    
+
     @Override
     protected void populateSearchSuggestBox() {
         HttpService.HttpServiceAsync.instance().doGet(getNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
@@ -162,5 +153,5 @@ public class SearchInvoicePanel extends SearchComposite {
     protected void onOpenAdvancedSearch() {
         super.onOpenAdvancedSearch();
         TabPanel.instance().reportingPanel.sidePanelTop.setHeight("100%");
-    }    
+    }
 }

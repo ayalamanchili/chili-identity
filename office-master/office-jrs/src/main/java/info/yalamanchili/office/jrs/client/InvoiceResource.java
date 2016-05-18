@@ -15,6 +15,7 @@ import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.entity.client.Invoice;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.jrs.CRUDResource;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -22,6 +23,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -29,6 +31,8 @@ import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -60,6 +64,15 @@ public class InvoiceResource extends CRUDResource<Invoice> {
         ClientInformation ci = ClientInformationDao.instance().findById(id);
         tableObj.setEntities(ci.getInvoice());
         tableObj.setSize(Long.valueOf(ci.getInvoice().size()));
+        return tableObj;
+    }
+
+    @GET
+    @Path("/{start}/{limit}")
+    public InvoiceResource.InvoiceTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
+        InvoiceResource.InvoiceTable tableObj = new InvoiceResource.InvoiceTable();
+        tableObj.setEntities(getDao().query(start, limit));
+        tableObj.setSize(getDao().size());
         return tableObj;
     }
 
@@ -130,6 +143,19 @@ public class InvoiceResource extends CRUDResource<Invoice> {
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
 
+    }
+
+    @GET
+    @Path("/search/{searchText}/{start}/{limit}")
+    @Transactional(propagation = Propagation.NEVER)
+    @Override
+    public List<Invoice> search(@PathParam("searchText") String searchText, @PathParam("start") int start,
+            @PathParam("limit") int limit, @QueryParam("column") List<String> columns) {
+        columns = new ArrayList<String>();
+        columns.add("itemNumber");
+        columns.add("invoiceNumber");
+        //TODO add remaining columns
+        return getDao().sqlSearch(searchText, start, limit, columns, false);
     }
 
     @XmlRootElement

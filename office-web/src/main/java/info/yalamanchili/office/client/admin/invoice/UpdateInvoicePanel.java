@@ -77,7 +77,7 @@ public class UpdateInvoicePanel extends UpdateComposite {
         assignEntityValueFromField("overTimeBillingRate", entity);
         assignEntityValueFromField("hours", entity);
         assignEntityValueFromField("invoiceFrequency", entity);
-        assignEntityValueFromField("status", entity);
+        assignEntityValueFromField("invoiceStatus", entity);
         assignEntityValueFromField("timeSheetStatus", entity);
         assignEntityValueFromField("notes", entity);
         return entity;
@@ -118,7 +118,7 @@ public class UpdateInvoicePanel extends UpdateComposite {
         assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("hours", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("invoiceStatus", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("timeSheetStatus", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("notes", entity, DataType.TEXT_AREA_FIELD);
     }
@@ -152,7 +152,7 @@ public class UpdateInvoicePanel extends UpdateComposite {
         addField("overTimeBillingRate", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("hours", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addEnumField("invoiceFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
-        addEnumField("status", false, true, InvoiceStatus.names(), Alignment.HORIZONTAL);
+        addEnumField("invoiceStatus", false, true, InvoiceStatus.names(), Alignment.HORIZONTAL);
         addEnumField("timeSheetStatus", false, true, TimeStatus.names(), Alignment.HORIZONTAL);
         addField("notes", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         alignFields();
