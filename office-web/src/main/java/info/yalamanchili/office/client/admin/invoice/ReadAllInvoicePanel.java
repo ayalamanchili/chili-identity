@@ -41,6 +41,7 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
     private static Logger logger = Logger.getLogger(ReadAllInvoicePanel.class.getName());
     public static ReadAllInvoicePanel instance;
     protected String clientInfoId;
+    protected boolean displayALL;
 
     public ReadAllInvoicePanel(String parentId) {
         instance = this;
@@ -48,8 +49,9 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
         initTable("Invoice", OfficeWelcome.constants);
     }
 
-    public ReadAllInvoicePanel() {
+    public ReadAllInvoicePanel(boolean displayAll) {
         instance = this;
+        this.displayALL = displayAll;
         initTable("Invoice", OfficeWelcome.constants);
     }
     static JSONObject invoice;
@@ -82,11 +84,11 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        postDeleteSuccess();
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                postDeleteSuccess();
+            }
+        });
     }
 
     private String getDeleteURL(String entityId) {
@@ -95,7 +97,7 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
 
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("Successfully Deleted Invocie Information");
+        new ResponseStatusWidget().show("Successfully Deleted Invoice Information");
         TabPanel.instance().reportingPanel.entityPanel.clear();
         TabPanel.instance().reportingPanel.entityPanel.add(new ReadContractsPanel(clientInfoId));
     }
@@ -109,15 +111,20 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getInvocieURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        postFetchTable(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                postFetchTable(result);
+            }
+        });
     }
 
     private String getInvocieURL(Integer start, String limit) {
-        return OfficeWelcome.constants.root_url() + "invoice/" + clientInfoId + "/" + start.toString() + "/" + limit.toString();
+        if (displayALL == false) {
+            return OfficeWelcome.constants.root_url() + "invoice/" + clientInfoId + "/" + start.toString() + "/" + limit.toString();
+        } else {
+            return OfficeWelcome.constants.root_url() + "invoice/" + start.toString() + "/" + limit.toString();
+        }
+
     }
 
     @Override
@@ -165,13 +172,13 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
     public void copyClicked(final String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(OfficeWelcome.constants.root_url() + "invoice/clone/" + entityId, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        new ResponseStatusWidget().show("Copy created. Please update and save.");
-                        TabPanel.instance().reportingPanel.entityPanel.clear();
-                        TabPanel.instance().reportingPanel.entityPanel.add(new UpdateInvoicePanel(JSONParser.parseLenient(arg0).isObject()));
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                new ResponseStatusWidget().show("Copy created. Please update and save.");
+                TabPanel.instance().reportingPanel.entityPanel.clear();
+                TabPanel.instance().reportingPanel.entityPanel.add(new UpdateInvoicePanel(JSONParser.parseLenient(arg0).isObject()));
+            }
+        });
     }
 
     @Override
@@ -198,12 +205,6 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
             }
         });
         return invoiceDP;
-    }
-
-    @Override
-    protected void configureCreateButton() {
-        createButton.setText("Create Invoice");
-        createButton.setVisible(true);
     }
 
     @Override

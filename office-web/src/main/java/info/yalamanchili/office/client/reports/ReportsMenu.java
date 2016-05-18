@@ -12,7 +12,9 @@ import info.chili.gwt.widgets.CMenuBar;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.admin.invoice.InvoiceSidePanel;
 import info.yalamanchili.office.client.admin.groupemails.EmailGroupsSidePanel;
+import info.yalamanchili.office.client.admin.invoice.ReadAllInvoicePanel;
 import info.yalamanchili.office.client.contracts.ContractsSidePanel;
 import info.yalamanchili.office.client.contracts.ReadAllContractsPanel;
 import info.yalamanchili.office.client.employee.prbprdeval.ProbatioPeriodPerfEvaluationReportsSidePanel;
@@ -32,6 +34,9 @@ public class ReportsMenu extends CMenuBar {
     protected void configureMenu() {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONTRACTS_FULL_VIEW)) {
             addMenuItem("Contracts", "Contracts", contractingMaintainenceCmd);
+        }
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONTRACTS_FULL_VIEW)) {
+            addMenuItem("Invoices", "Invoices", invoicereportsCmd);
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP)) {
             addMenuItem("Profile Reports", "Profile Reports", profileReportsMaintainenceCmd);
@@ -67,6 +72,16 @@ public class ReportsMenu extends CMenuBar {
             TabPanel.instance().getReportingPanel().sidePanelTop.add(new ContractsSidePanel());
         }
     };
+    public static Command invoicereportsCmd = new Command() {
+        @Override
+        public void execute() {
+            TabPanel.instance().getReportingPanel().entityPanel.clear();
+            TabPanel.instance().getReportingPanel().sidePanelTop.clear();
+            TabPanel.instance().getReportingPanel().entityPanel.add(new ReadAllInvoicePanel(true));
+            TabPanel.instance().getReportingPanel().sidePanelTop.add(new InvoiceSidePanel());
+        }
+    };
+    
     public static Command contractReportsMaintainenceCmd = new Command() {
         @Override
         public void execute() {
