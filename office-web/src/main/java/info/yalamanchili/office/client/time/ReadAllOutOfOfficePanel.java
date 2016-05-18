@@ -93,7 +93,7 @@ public class ReadAllOutOfOfficePanel extends CRUDReadAllComposite {
             table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 4, JSONUtils.toString(entity, "contactNo"));
-            setEnumColumn(i, 7, entity, OutOfOfficeRequestStatus.class.getSimpleName(), "status");
+            setEnumColumn(i, 5, entity, OutOfOfficeRequestStatus.class.getSimpleName(), "status");
         }
     }
 
