@@ -9,7 +9,6 @@
 package info.yalamanchili.office.jrs.ext;
 
 import com.google.common.base.Strings;
-import info.chili.security.SecurityUtils;
 import info.chili.service.jrs.types.Entry;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.ext.CommentDao;
@@ -23,7 +22,6 @@ import info.yalamanchili.office.entity.ext.Comment;
 import info.yalamanchili.office.entity.hr.Prospect;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -91,11 +89,12 @@ public class CommentResource {
     public void save(@PathParam("targetClassName") String targetClassName, @PathParam("id") Long id, Comment comment) {
         List<Entry> notifyEmployees = comment.getNotifyEmployees();
         if (Strings.isNullOrEmpty(comment.getUpdatedBy())) {
-            comment.setUpdatedBy(SecurityUtils.getCurrentUser());
+            Employee emp = OfficeSecurityService.instance().getCurrentUser();
+            comment.setUpdatedBy(emp.getFirstName()+" "+emp.getLastName());
         }
         if (comment.getUpdatedTS() == null) {
             comment.setUpdatedTS(new Date());
-        }
+            }
         if (Prospect.class.getCanonicalName().equals(targetClassName)) {
             if (comment.getStage() == null) {
                 comment.setStage(ProspectDao.instance().findById(id).getStatus().name());
