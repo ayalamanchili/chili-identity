@@ -12,8 +12,10 @@ import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.dao.client.InvoiceDao;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.client.Invoice;
 import info.yalamanchili.office.entity.profile.ClientInformation;
+import info.yalamanchili.office.invoice.InvoiceService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +84,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
     public Invoice saveInvoice(@PathParam("id") Long id, Invoice invoice) {
         Invoice inv = new Invoice();
         ClientInformation ci = ClientInformationDao.instance().findById(id);
-        inv.setEmployee(ci.getEmployee().getFirstName());
+        inv.setEmployee(ci.getEmployee().getFirstName()+" "+ci.getEmployee().getLastName());
         inv.setStartDate(invoice.getStartDate());
         inv.setEndDate(invoice.getEndDate());
         inv.setBillingRate(invoice.getBillingRate());
@@ -98,6 +100,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
         inv.setClientInformation(ci);
         ClientInformationDao.instance().save(ci);
         InvoiceDao.instance().save(inv);
+        //sendInvoiceCreatedNotification(inv);
         return invoice;
     }
 
@@ -152,10 +155,23 @@ public class InvoiceResource extends CRUDResource<Invoice> {
     public List<Invoice> search(@PathParam("searchText") String searchText, @PathParam("start") int start,
             @PathParam("limit") int limit, @QueryParam("column") List<String> columns) {
         columns = new ArrayList<String>();
+        columns.add("employee");
         columns.add("itemNumber");
         columns.add("invoiceNumber");
         //TODO add remaining columns
         return getDao().sqlSearch(searchText, start, limit, columns, false);
+    }
+    
+    @GET
+    @Path("/invoice-summary-report")
+    public void generateInvoiceSummaryReport() {
+        InvoiceService.instance().generateInvoiceSummaryReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
+    }
+    
+    @GET
+    @Path("/active-clientinfo-report")
+    public void generateActiveInvoicesReport() {
+        InvoiceService.instance().generateActiveInvoicesReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
 
     @XmlRootElement
