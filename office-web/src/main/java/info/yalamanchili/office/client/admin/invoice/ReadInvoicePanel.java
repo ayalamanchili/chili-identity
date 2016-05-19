@@ -58,14 +58,14 @@ public class ReadInvoicePanel extends ReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        if (entity.get("employee") instanceof JSONObject) {
-            JSONObject employee = entity.get("employee").isObject();
-            String name = employee.get("firstName").isString().stringValue() + " " + employee.get("lastName").isString().stringValue();
-            StringField field = (StringField) fields.get("employee");
-            field.setValue(name);
-        } else {
-            assignFieldValueFromEntity("employee", entity, DataType.STRING_FIELD);
-        }
+        JSONObject clientInformation = entity.get("clientInformation").isObject();
+        JSONObject vendor = clientInformation.get("vendor").isObject();
+        JSONObject employee = clientInformation.get("employee").isObject();
+        String empName = employee.get("firstName").isString().stringValue() + " " + employee.get("lastName").isString().stringValue();
+        StringField empF = (StringField) fields.get("employee");
+        empF.setValue(empName);
+        StringField vendorF = (StringField) fields.get("vendor");
+        vendorF.setValue(vendor.get("name").isString().stringValue());
         assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("invoiceNumber", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
@@ -76,7 +76,7 @@ public class ReadInvoicePanel extends ReadComposite {
         assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("notes", entity, DataType.TEXT_AREA_FIELD);
-        assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("invoiceStatus", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("timeSheetStatus", entity, DataType.ENUM_FIELD);
     }
 
@@ -91,6 +91,7 @@ public class ReadInvoicePanel extends ReadComposite {
     @Override
     protected void addWidgets() {
         addField("employee", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("vendor", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("itemNumber", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("invoiceNumber", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("startDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
@@ -100,7 +101,7 @@ public class ReadInvoicePanel extends ReadComposite {
         addField("overTimeBillingRate", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("hours", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addEnumField("invoiceFrequency", true, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
-        addEnumField("status", true, true, InvoiceStatus.names(), Alignment.HORIZONTAL);
+        addEnumField("invoiceStatus", true, true, InvoiceStatus.names(), Alignment.HORIZONTAL);
         addEnumField("timeSheetStatus", true, true, TimeStatus.names(), Alignment.HORIZONTAL);
         addField("notes", true, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         alignFields();
