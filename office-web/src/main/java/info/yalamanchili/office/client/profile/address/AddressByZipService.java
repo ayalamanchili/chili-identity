@@ -45,6 +45,11 @@ public class AddressByZipService {
                         statesF.selectValue(state);
                         cityField.setValue(city);
                     }
+                    else {
+                        cityField.setValue(null);
+                        countriesF.setSelectedIndex(0);
+                        statesF.setSelectedIndex(0);
+                    }
                 }
 
                 @Override
