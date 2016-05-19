@@ -17,6 +17,7 @@ import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.subcontractor.TreeSubcontractorPanel;
 import info.yalamanchili.office.client.profile.address.CreateAddressPanel;
@@ -33,7 +34,6 @@ public class CreateSubcontractorLocationPanel extends CreateAddressPanel impleme
 
     @Override
     protected JSONObject populateEntityFromFields() {
-      
         JSONObject entity = new JSONObject();
         assignEntityValueFromField("street1", entity);
         assignEntityValueFromField("street2", entity);
@@ -41,7 +41,6 @@ public class CreateSubcontractorLocationPanel extends CreateAddressPanel impleme
         assignEntityValueFromField("city", entity);
         assignEntityValueFromField("state", entity);
         assignEntityValueFromField("country", entity);
-       
         return entity;
     }
 
@@ -64,17 +63,21 @@ public class CreateSubcontractorLocationPanel extends CreateAddressPanel impleme
         super.countriesF = (EnumField) fields.get("country");
         super.statesF = (EnumField) fields.get("state");
         super.zipField = (StringField) fields.get("zip");
-        super.cityField = (StringField) fields.get("city"); 
+        super.cityField = (StringField) fields.get("city");
     }
 
     @Override
     protected void addListeners() {
         super.addListeners();
-        
+    }
+
+    @Override
+    protected String getURI() {
+        return OfficeWelcome.constants.root_url() + "subcontractor/location/add/" + TreeSubcontractorPanel.instance().getEntityId();
     }
 
     @Override
     public void onChange(ChangeEvent event) {
-          super.onChange(event);
-}
+        super.onChange(event);
+    }
 }
