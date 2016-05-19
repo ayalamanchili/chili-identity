@@ -8,9 +8,9 @@ package info.yalamanchili.office.client.profile.employee;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.TreePanelComposite;
-import info.yalamanchili.office.client.profile.immigration.ReadAllLCAPanel;
 import info.yalamanchili.office.client.profile.immigration.ReadAllPassportsPanel;
-import info.yalamanchili.office.client.profile.immigration.ReadAllEmployeePetitionsPanel;
+import info.yalamanchili.office.client.profile.immigration.i94Record.ReadAllI94RecordPanel;
+import info.yalamanchili.office.client.profile.immigration.travelhistroy.ReadAllTravelHistoryPanel;
 import java.util.logging.Logger;
 
 /**
@@ -21,8 +21,10 @@ public class TreeEmployeeImmigrationPanel extends TreePanelComposite {
 
     private static Logger logger = Logger.getLogger(TreeEmployeeImmigrationPanel.class.getName());
     protected static final String PASSPORT_NODE = "passport-immigration";
-  //  protected static final String LCA_NODE = "lca-immigration";
-  //  protected static final String PETITION_NODE = "petition-immigration";
+    protected static final String TRAVALHISTORY_NODE = "travelhistory-immigration";
+    protected static final String I94Record_NODE = "i94Rirecord-immigration";
+    //  protected static final String LCA_NODE = "lca-immigration";
+    //  protected static final String PETITION_NODE = "petition-immigration";
     protected String employeeId;
 
     public TreeEmployeeImmigrationPanel(String empId) {
@@ -41,8 +43,10 @@ public class TreeEmployeeImmigrationPanel extends TreePanelComposite {
     @Override
     protected void addWidgets() {
         addFirstChildLink("Passport", PASSPORT_NODE);
-   //     addFirstChildLink("LCA", LCA_NODE);
-    //    addFirstChildLink("Petition", PETITION_NODE);
+        addFirstChildLink("TravelHistory", TRAVALHISTORY_NODE);
+        addFirstChildLink("I94Record", I94Record_NODE);
+        //     addFirstChildLink("LCA", LCA_NODE);
+        //    addFirstChildLink("Petition", PETITION_NODE);
     }
 
     @Override
@@ -50,6 +54,14 @@ public class TreeEmployeeImmigrationPanel extends TreePanelComposite {
         if (PASSPORT_NODE.equals(entityNodeKey)) {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
             TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllPassportsPanel(employeeId));
+        }
+        if (TRAVALHISTORY_NODE.equals(entityNodeKey)) {
+            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllTravelHistoryPanel(employeeId));
+        }
+        if (I94Record_NODE.equals(entityNodeKey)) {
+            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllI94RecordPanel(employeeId));
         }
 //        if (LCA_NODE.equals(entityNodeKey)) {
 //            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
@@ -68,5 +80,5 @@ public class TreeEmployeeImmigrationPanel extends TreePanelComposite {
     @Override
     public void showEntity() {
     }
-    
+
 }

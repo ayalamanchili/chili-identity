@@ -66,7 +66,7 @@ public class ProspectDao extends CRUDDao<Prospect> {
 
     public List<Prospect> report(ProspectReportDto dto) {
         String searchQuery = getSearchQuery(dto);
-        TypedQuery<Prospect> query = em.createQuery(searchQuery, Prospect.class);
+        TypedQuery<Prospect> query = em.createQuery(searchQuery+" order by startDate DESC", Prospect.class);
         if (dto.getJoiningDateFrom() != null) {
             query.setParameter("startDateParam", dto.getJoiningDateFrom(), TemporalType.DATE);
         }

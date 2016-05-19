@@ -36,7 +36,7 @@ public class ReportsMenu extends CMenuBar {
             addMenuItem("Contracts", "Contracts", contractingMaintainenceCmd);
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONTRACTS_FULL_VIEW)) {
-            addMenuItem("Invoices", "Invoices", invoicereportsCmd);
+            addMenuItem("Invoice Reports", "Invoice Reports", invoicereportsMaintainenceCmd);
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP)) {
             addMenuItem("Profile Reports", "Profile Reports", profileReportsMaintainenceCmd);
@@ -72,7 +72,7 @@ public class ReportsMenu extends CMenuBar {
             TabPanel.instance().getReportingPanel().sidePanelTop.add(new ContractsSidePanel());
         }
     };
-    public static Command invoicereportsCmd = new Command() {
+    public static Command invoicereportsMaintainenceCmd = new Command() {
         @Override
         public void execute() {
             TabPanel.instance().getReportingPanel().entityPanel.clear();

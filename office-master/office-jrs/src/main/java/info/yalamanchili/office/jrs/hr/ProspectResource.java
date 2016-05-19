@@ -43,6 +43,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -215,6 +216,18 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
         return res;
     }
 
+    @PUT
+    @Path("/prospect-status-search")
+    @Transactional(readOnly = true)
+    public List<ProspectDto> prospectStatusSearch(ProspectReportDto entity) {
+        List<ProspectDto> res = new ArrayList();
+        List<Prospect> prospects = prospectDao.report(entity);
+        for(Prospect p: prospects){
+            res.add(map(p));
+        }
+        return res;
+    }
+
     protected ProspectDto map(Prospect p) {
         ProspectDto dto = new ProspectDto();
         dto.setId(p.getId());
@@ -304,7 +317,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
 
     @PUT
     @Path("/report/exportReport/{format}")
-    public void exportReport(ProspectList dto, @PathParam("format") String format) {
+    public Response exportReport(ProspectList dto, @PathParam("format") String format) {
         List<ProspectDto> dtos = new ArrayList();
         String home = "C://Users//" + System.getProperty("user.name") + "//Downloads/";
         String[] split = dto.getListids().split(",");
@@ -319,7 +332,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
             reportFormat = reportFormat.concat("pdf").trim();
         }
         String[] columnOrder = new String[]{"employee", "email", "phoneNumber", "screenedBy", "manager", "assignedto", "petitionFor", "placedby", "trfEmptype", "dateOfJoining", "referredBy", "companyName", "startDate", "stage"};
-        ReportGenerator.generateReport(dtos, "Prospect Report", reportFormat, home, columnOrder);
+        return ReportGenerator.generateReport(dtos, "Prospect Report", reportFormat, home, columnOrder);
     }
 
     @GET

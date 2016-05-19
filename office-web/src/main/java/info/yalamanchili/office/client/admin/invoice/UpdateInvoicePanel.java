@@ -36,7 +36,7 @@ public class UpdateInvoicePanel extends UpdateComposite {
     protected static UpdateInvoicePanel instance;
     protected String id;
     protected boolean isUpdate;
-    protected JSONObject invoice;
+    protected JSONObject invoice; 
     protected String clientInfoId;
 
     public static UpdateInvoicePanel instance() {
@@ -101,7 +101,13 @@ public class UpdateInvoicePanel extends UpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        if (entity.get("employee") instanceof JSONObject) {
+        if (entity.containsKey("clientInformation")) {
+            JSONObject clientInformation = entity.get("clientInformation").isObject();
+            JSONObject employee = clientInformation.get("employee").isObject();
+            String empName = employee.get("firstName").isString().stringValue() + " " + employee.get("lastName").isString().stringValue();
+            StringField empF = (StringField) fields.get("employee");
+            empF.setValue(empName);
+        }else if (entity.get("employee") instanceof JSONObject) {
             JSONObject employee = entity.get("employee").isObject();
             String name = employee.get("firstName").isString().stringValue() + " " + employee.get("lastName").isString().stringValue();
             StringField field = (StringField) fields.get("employee");
@@ -191,5 +197,4 @@ public class UpdateInvoicePanel extends UpdateComposite {
             return OfficeWelcome.constants.root_url() + "invoice/read/" + invoice.get("id").isString().stringValue();
         }
     }
-
 }

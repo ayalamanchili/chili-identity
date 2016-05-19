@@ -41,7 +41,7 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
     private static Logger logger = Logger.getLogger(ReadAllInvoicePanel.class.getName());
     public static ReadAllInvoicePanel instance;
     protected String clientInfoId;
-    protected boolean displayALL;
+    protected boolean displayALL = false;
 
     public ReadAllInvoicePanel(String parentId) {
         instance = this;
@@ -71,6 +71,7 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
 
     public ReadAllInvoicePanel(JSONArray array) {
         instance = this;
+        displayALL = true;
         initTable("Invoice", array, OfficeWelcome.constants);
     }
 
@@ -84,11 +85,11 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                postDeleteSuccess();
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
     }
 
     private String getDeleteURL(String entityId) {
@@ -111,11 +112,11 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getInvocieURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        postFetchTable(result);
+                    }
+                });
     }
 
     private String getInvocieURL(Integer start, String limit) {
@@ -124,7 +125,6 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
         } else {
             return OfficeWelcome.constants.root_url() + "invoice/" + start.toString() + "/" + limit.toString();
         }
-
     }
 
     @Override
@@ -145,7 +145,9 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            table.setText(i, 1, JSONUtils.toString(entity, "employee"));
+            JSONObject clientInformation = entity.get("clientInformation").isObject();
+            JSONObject employee = clientInformation.get("employee").isObject();
+            table.setText(i, 1, JSONUtils.toString(employee, "firstName")+" "+JSONUtils.toString(employee, "lastName"));
             table.setText(i, 2, JSONUtils.toString(entity, "itemNumber"));
             table.setText(i, 3, JSONUtils.toString(entity, "invoiceNumber"));
             table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
@@ -158,13 +160,16 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
-            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE);
-
-        } else if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS_FULL_VIEW)) {
-            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE);
+        if (displayALL == false) {
+            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
+                createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE);
+            } else if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS_FULL_VIEW)) {
+                createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE);
+            } else {
+                createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE);
+            }
         } else {
-            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE);
+            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ);
         }
     }
 
@@ -172,13 +177,13 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
     public void copyClicked(final String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(OfficeWelcome.constants.root_url() + "invoice/clone/" + entityId, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                new ResponseStatusWidget().show("Copy created. Please update and save.");
-                TabPanel.instance().reportingPanel.entityPanel.clear();
-                TabPanel.instance().reportingPanel.entityPanel.add(new UpdateInvoicePanel(JSONParser.parseLenient(arg0).isObject()));
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        new ResponseStatusWidget().show("Copy created. Please update and save.");
+                        TabPanel.instance().reportingPanel.entityPanel.clear();
+                        TabPanel.instance().reportingPanel.entityPanel.add(new UpdateInvoicePanel(JSONParser.parseLenient(arg0).isObject()));
+                    }
+                });
     }
 
     @Override
@@ -193,6 +198,7 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
 
     public static Widget renderInvoiceHistory(final JSONObject invoice, final String clientInfoId) {
         final DisclosurePanel invoiceDP = new DisclosurePanel("Invoices History");
+        logger.info("invoice obj is.... "+invoice);
         invoiceDP.setWidth("100%");
         invoiceDP.setOpen(true);
         invoiceDP.setContent(
@@ -205,6 +211,16 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
             }
         });
         return invoiceDP;
+    }
+
+    @Override
+    protected void configureCreateButton() {
+        if (displayALL == false) {
+            createButton.setText("Create Invoice");
+            createButton.setVisible(true);
+        } else {
+            createButton.setVisible(false);
+        }
     }
 
     @Override

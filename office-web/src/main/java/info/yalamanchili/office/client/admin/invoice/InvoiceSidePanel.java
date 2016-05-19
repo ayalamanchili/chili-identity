@@ -69,13 +69,13 @@ public class InvoiceSidePanel extends ALComposite implements ClickHandler {
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
-                        new ResponseStatusWidget().show("Invoice will be emailed to your primary email");
+                        new ResponseStatusWidget().show("Invoice Summary Report will be emailed to your primary email");
                     }
                 });
     }
 
     protected String getInvoiceInfoReportUrl() {
-        return OfficeWelcome.constants.root_url() + "client/invoiceinfo-report";
+        return OfficeWelcome.constants.root_url() + "invoice/invoice-summary-report";
     }
 
     protected void generateActiveInvoiceInfoReport() {
@@ -83,12 +83,12 @@ public class InvoiceSidePanel extends ALComposite implements ClickHandler {
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
-                        new ResponseStatusWidget().show("Invoice will be emailed to your primary email");
+                        new ResponseStatusWidget().show("Active Invoice Report will be emailed to your primary email");
                     }
                 });
     }
 
     protected String getActiveInvoiceInfoReportUrl() {
-        return OfficeWelcome.constants.root_url() + "client/active-invoiceinfo-report";
+        return OfficeWelcome.constants.root_url() + "invoice/active-invoice-report";
     }
 }
