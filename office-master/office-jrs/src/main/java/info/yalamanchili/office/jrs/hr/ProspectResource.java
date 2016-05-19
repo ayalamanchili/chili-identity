@@ -218,7 +218,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
 
     @PUT
     @Path("/prospect-status-search")
-    @Transactional(propagation = Propagation.NEVER)
+    @Transactional(readOnly = true)
     public List<ProspectDto> prospectStatusSearch(ProspectReportDto entity) {
         List<ProspectDto> res = new ArrayList();
         List<Prospect> prospects = prospectDao.report(entity);
