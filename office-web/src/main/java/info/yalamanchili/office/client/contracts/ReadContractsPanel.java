@@ -236,8 +236,10 @@ public class ReadContractsPanel extends TReadComposite {
         addField("employeeCompany", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 21, 1);
         entityFieldsPanel.setWidget(22, 1, ReadAllConsultantTimeSheetsPanel.renderLeaveHistory(getEmployeeId()));
         entityFieldsPanel.getFlexCellFormatter().setColSpan(22, 1, 2);
+        if(Auth.hasAnyOfRoles(Auth.ROLE.ROLE_INVOICE_MANAGER)){
         entityFieldsPanel.setWidget(25, 1, ReadAllInvoicePanel.renderInvoiceHistory(entity, entityId));
         entityFieldsPanel.getFlexCellFormatter().setColSpan(25, 1, 2);
+        }
         alignFields();
     }
 

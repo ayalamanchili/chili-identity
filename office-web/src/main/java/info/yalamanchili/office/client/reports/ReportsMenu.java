@@ -34,9 +34,10 @@ public class ReportsMenu extends CMenuBar {
     protected void configureMenu() {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONTRACTS_FULL_VIEW)) {
             addMenuItem("Contracts", "Contracts", contractingMaintainenceCmd);
-        }
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONTRACTS_FULL_VIEW)) {
-            addMenuItem("Invoice Reports", "Invoice Reports", invoicereportsMaintainenceCmd);
+        
+        }       
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_INVOICE_MANAGER)) {
+            addMenuItem("Invoices", "Invoices", invoicereportsMaintainenceCmd);
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP)) {
             addMenuItem("Profile Reports", "Profile Reports", profileReportsMaintainenceCmd);
