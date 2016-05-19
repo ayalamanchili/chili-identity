@@ -5,7 +5,6 @@
  */
 package info.yalamanchili.office.client.admin.hr;
 
-import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -133,7 +132,7 @@ public class ProspectMenu extends CMenuBar {
     };
 
     public static void getProspects(JSONObject entity) {
-        HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 1000), entity.toString(),
+        HttpService.HttpServiceAsync.instance().doPut(getStatusSearchURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
@@ -160,8 +159,7 @@ public class ProspectMenu extends CMenuBar {
                 });
     }
 
-    protected static String getSearchURI(Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "prospect/search-prospect/" + start.toString() + "/"
-                + limit.toString());
+    protected static String getStatusSearchURI() {
+        return OfficeWelcome.constants.root_url() + "prospect/prospect-status-search";
     }
 }
