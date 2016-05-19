@@ -14,18 +14,18 @@ import info.yalamanchili.office.client.profile.email.ReadAllEmailsPopupPanel;
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
-import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.address.ReadAllAddressesPopupPanel;
 import info.yalamanchili.office.client.profile.emergencycnt.ReadAllEmergencyContactsPopupPanel;
 import info.yalamanchili.office.client.profile.phone.ReadAllPhonesPopupPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.ReadAllClientInfoPopupPanel;
-import info.yalamanchili.office.client.profile.skillset.CreateSkillSetPanel;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.companycontact.ReadAllCompanyContactPanel;
 import info.yalamanchili.office.client.profile.benefits.RetirementPlanReadPanel;
 import info.yalamanchili.office.client.profile.emergencycnt.ReadAllDependentsPopupPanel;
 import info.yalamanchili.office.client.profile.empdoc.ReadAllEmpDocsPopupPanel;
 import info.yalamanchili.office.client.profile.employee.ReadEmployeePopupPanel;
+import info.yalamanchili.office.client.profile.immigration.i94Record.ReadAllI94RecordPopupPanel;
+import info.yalamanchili.office.client.profile.immigration.travelhistroy.ReadAllTravelHistoryPopupPanel;
 import info.yalamanchili.office.client.profile.preferences.PreferencesPanel;
 import info.yalamanchili.office.client.profile.privacy.ReadAllPrivacySettingPopupPanel;
 import info.yalamanchili.office.client.profile.skillset.UpdateSkillSetPopupPanel;
@@ -54,6 +54,8 @@ public class ProfileHome extends ALComposite {
     protected DisclosurePanel documentsPanel;
     protected DisclosurePanel benefitsDP;
     protected DisclosurePanel bankAccountPanel;
+    protected DisclosurePanel i94RecordPanel;
+    protected DisclosurePanel travelHistroyPanel;
 
     public ProfileHome() {
         instance = this;
@@ -82,6 +84,8 @@ public class ProfileHome extends ALComposite {
         addCompanyContactsPanel();
         addSkillSetPanel();
         addEmpDocsPanel();
+        addi94RecordPanel();
+        addTravelHistroyPanel();
         addBenefitsPanel();
         addPreferencesPanel();
         addPrivacyPanel();
@@ -393,8 +397,53 @@ public class ProfileHome extends ALComposite {
     }
 
     /*
+     * I94Record();
+     */
+    protected void addi94RecordPanel() {
+        if (panel.getWidgetIndex(i94RecordPanel) < 0) {
+            i94RecordPanel = new DisclosurePanel("I94Record");
+            panel.add(i94RecordPanel);
+            i94RecordPanel.addStyleName("profileHome");
+            i94RecordPanel.addOpenHandler(new OpenHandler<DisclosurePanel>() {
+                @Override
+                public void onOpen(OpenEvent<DisclosurePanel> event) {
+                    i94RecordPanel.setContent(
+                            new ReadAllI94RecordPopupPanel(OfficeWelcome.instance().employeeId));
+                }
+            });
+        }
+    }
+
+    public void refreshI94Record() {
+        i94RecordPanel.setOpen(false);
+        i94RecordPanel.setOpen(true);
+    }
+
+    /*
+     * addTravelHistroyPanel();
+     */
+    protected void addTravelHistroyPanel() {
+        if (panel.getWidgetIndex(travelHistroyPanel) < 0) {
+            travelHistroyPanel = new DisclosurePanel("Travel History");
+            panel.add(travelHistroyPanel);
+            travelHistroyPanel.addStyleName("profileHome");
+            travelHistroyPanel.addOpenHandler(new OpenHandler<DisclosurePanel>() {
+                @Override
+                public void onOpen(OpenEvent<DisclosurePanel> event) {
+                    travelHistroyPanel.setContent(new ReadAllTravelHistoryPopupPanel(OfficeWelcome.instance().employeeId));
+                }
+            });
+        }
+    }
+
+    public void refreshTravelHistroy() {
+        travelHistroyPanel.setOpen(false);
+        travelHistroyPanel.setOpen(true);
+    }
+    /*
      * bankaccountpanel
      */
+
     protected void addBankAccountPanel() {
         bankAccountPanel = new DisclosurePanel("Bank Account");
         panel.add(bankAccountPanel);
