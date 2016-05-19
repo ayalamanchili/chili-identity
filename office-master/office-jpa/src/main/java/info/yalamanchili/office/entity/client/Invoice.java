@@ -95,7 +95,7 @@ public class Invoice extends AbstractEntity {
     /**
      *
      */
-    @Transient
+    //@Transient
     protected String employee;
 
     public String getEmployee() {
