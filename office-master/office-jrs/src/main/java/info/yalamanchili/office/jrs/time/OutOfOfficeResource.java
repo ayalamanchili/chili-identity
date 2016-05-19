@@ -9,12 +9,10 @@
 package info.yalamanchili.office.jrs.time;
 
 import info.chili.dao.CRUDDao;
-import info.yalamanchili.office.Time.OutOfOfficeDto;
 import info.yalamanchili.office.Time.OutOfOfficeService;
 import info.yalamanchili.office.dao.time.OutOfOfficeDao;
 import info.yalamanchili.office.entity.time.OutOfOfficeRequest;
 import info.yalamanchili.office.jrs.CRUDResource;
-import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -38,7 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 @Scope("request")
-public class OutOfOfficeResource extends CRUDResource<OutOfOfficeDto> {
+public class OutOfOfficeResource extends CRUDResource<OutOfOfficeRequest> {
 
     @Autowired
     protected Mapper mapper;
@@ -50,23 +48,27 @@ public class OutOfOfficeResource extends CRUDResource<OutOfOfficeDto> {
     public CRUDDao getDao() {
         return outOfOfficeDao;
     }
+    
+    @GET
+    @Path("/{id}")
+    @Transactional(readOnly = true)
+    @Override
+    public OutOfOfficeRequest read(@PathParam("id") Long id) {
+        return outOfOfficeDao.findById(id);
+    }
 
     @PUT
-    @Path("/submit-request")
-    public OutOfOfficeDto submitLeaveRequest(OutOfOfficeDto workhome) {
-        return OutOfOfficeService.instance().submitRequest(workhome);
+    @Path("/submit-request/")
+    public OutOfOfficeRequest submitLeaveRequest(OutOfOfficeRequest outOfOfficeRequest) {
+       return OutOfOfficeService.instance().submitRequest(outOfOfficeRequest);
     }
 
     @GET
     @Path("/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public OutOfOfficeResource.OutOfOfficeTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
-        List<OutOfOfficeDto> res = new ArrayList<>();
-        for (OutOfOfficeRequest entity : outOfOfficeDao.query(start, limit)) {
-            res.add(OutOfOfficeDto.map(mapper, entity));
-        }
-        OutOfOfficeResource.OutOfOfficeTable tableObj = new OutOfOfficeResource.OutOfOfficeTable();
-        tableObj.setEntities(res);
+    public OutOfOfficeTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
+        OutOfOfficeTable tableObj = new OutOfOfficeTable();
+        tableObj.setEntities(getDao().query(start, limit));
         tableObj.setSize(getDao().size());
         return tableObj;
     }
@@ -76,7 +78,7 @@ public class OutOfOfficeResource extends CRUDResource<OutOfOfficeDto> {
     public static class OutOfOfficeTable implements java.io.Serializable {
 
         protected Long size;
-        protected List<OutOfOfficeDto> entities;
+        protected List<OutOfOfficeRequest> entities;
 
         public Long getSize() {
             return size;
@@ -87,11 +89,11 @@ public class OutOfOfficeResource extends CRUDResource<OutOfOfficeDto> {
         }
 
         @XmlElement
-        public List<OutOfOfficeDto> getEntities() {
+        public List<OutOfOfficeRequest> getEntities() {
             return entities;
         }
 
-        public void setEntities(List<OutOfOfficeDto> entities) {
+        public void setEntities(List<OutOfOfficeRequest> entities) {
             this.entities = entities;
         }
     }
