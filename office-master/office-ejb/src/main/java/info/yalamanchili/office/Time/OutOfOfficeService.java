@@ -9,11 +9,15 @@
 package info.yalamanchili.office.Time;
 
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.OutOfOfficeDao;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.OutOfOfficeRequest;
 import info.yalamanchili.office.entity.time.OutOfOfficeRequestStatus;
+import java.util.HashMap;
+import java.util.Map;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -26,37 +30,32 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("prototype")
 public class OutOfOfficeService {
-    
+
     @Autowired
     protected Mapper mapper;
-    
-    public OutOfOfficeDto submitRequest(OutOfOfficeDto dto) {
-        OutOfOfficeRequest entity = mapper.map(dto, OutOfOfficeRequest.class);
-        if (entity.getEmployee() != null) {
-            Employee emp = EmployeeDao.instance().findById(entity.getEmployee().getId());
-            entity.setEmployee(emp);
+
+    public OutOfOfficeRequest submitRequest(OutOfOfficeRequest entity) {
+        Employee emp;
+        Map<String, Object> vars = new HashMap<>();
+        if (entity.getEmployee().getId() != null) {
+            emp = EmployeeDao.instance().findById(entity.getEmployee().getId());
+        } else {
+            emp = OfficeSecurityService.instance().getCurrentUser();
         }
-        entity.setOutOfOffice(dto.getOutOfOffice());
-        entity.setRecuuringNotes(dto.getRecurringNotes());
-        entity.setStartDate(dto.getStartDate());
-        entity.setEndDate(dto.getEndDate());
-        if (dto.getTime() != null) {
-            entity.setTime(dto.getTime());
-        }
-        entity.setNotes(dto.getNotes());
-        if (dto.getContactNo() != null) {
-            entity.setContactNo(dto.getContactNo());
-        }
-        
+        entity.setEmployee(emp);
         entity.setStatus(OutOfOfficeRequestStatus.PENDING_MANAGER_APPROVAL);
-        
-        OutOfOfficeDao.instance().save(entity);
-        
-        return mapper.map(entity, OutOfOfficeDto.class);
+        OutOfOfficeRequest officeRequest = OutOfOfficeDao.instance().save(entity);
+        vars.put("entity", entity);
+        vars.put("currentEmployee", emp);
+        vars.put("notifyEmployees", entity.getNotifyEmployees());
+        vars.put("entityId", officeRequest.getId());
+        String process = OfficeBPMService.instance().startProcess("outof_office_process", vars);
+        entity.setBpmProcessId(process);
+        return entity;
     }
-    
+
     public static OutOfOfficeService instance() {
         return SpringContext.getBean(OutOfOfficeService.class);
     }
-    
+
 }

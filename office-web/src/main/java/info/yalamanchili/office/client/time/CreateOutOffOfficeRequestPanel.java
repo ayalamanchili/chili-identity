@@ -8,18 +8,14 @@
  */
 package info.yalamanchili.office.client.time;
 
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
-import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DataType;
-import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
@@ -29,8 +25,6 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.MultiSelectSuggestBox;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -44,10 +38,8 @@ public class CreateOutOffOfficeRequestPanel extends CreateComposite {
     protected FlowPanel panel = new FlowPanel();
 
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false, Alignment.HORIZONTAL);
-    BooleanField forTime = new BooleanField(OfficeWelcome.constants, "doYouNeedtoWorkForPartial", "OutOfOffice", false, false, Alignment.HORIZONTAL);
-    TextAreaField time = new TextAreaField(OfficeWelcome.constants, "time", "WorkFromHome", false, false, Alignment.HORIZONTAL);
-    BooleanField recurring = new BooleanField(OfficeWelcome.constants, "doYouNeedRecurring", "OutOfOffice", false, false, Alignment.HORIZONTAL);
-    TextAreaField recurringNotes = new TextAreaField(OfficeWelcome.constants, "recurringNotes", "WorkFromHome", false, false, Alignment.HORIZONTAL);
+    //BooleanField forTime = new BooleanField(OfficeWelcome.constants, "doYouNeedtoWorkForPartial", "OutOfOffice", false, false, Alignment.HORIZONTAL);
+    //BooleanField recurring = new BooleanField(OfficeWelcome.constants, "doYouNeedRecurring", "OutOfOffice", false, false, Alignment.HORIZONTAL);
 
     public CreateOutOffOfficeRequestPanel(CreateComposite.CreateCompositeType type) {
         super(type);
@@ -63,27 +55,13 @@ public class CreateOutOffOfficeRequestPanel extends CreateComposite {
         }
         assignEntityValueFromField("startDate", outOfOffice);
         assignEntityValueFromField("endDate", outOfOffice);
-        if (forTime.getBox().getValue() == true) {
-            logger.info("the value issssssssssssssssssss:" + forTime.getBox().getValue());
-            assignEntityValueFromField("time", outOfOffice);
-        }
-        if (recurring.getBox().getValue() == true) {
-            assignEntityValueFromField("recurringNotes", outOfOffice);
-        }
-        assignEntityValueFromField("notes", outOfOffice);
+        assignEntityValueFromField("time", outOfOffice);
+        assignEntityValueFromField("recurring", outOfOffice);
+        assignEntityValueFromField("reason", outOfOffice);
         assignEntityValueFromField("contactNo", outOfOffice);
-        if (employeesMSB.getValues().size() > 0) {
-            List<String> emps = new ArrayList();
-            JSONArray employees = employeesMSB.getValues();
-            for (int i = 0; i < employees.size(); i++) {
-                JSONObject obj = employees.get(i).isObject();
-                emps.add(obj.get("id").isString().stringValue());
-            }
-            JSONArray finalemps = new JSONArray();
-            for (int i = 0; i < emps.size(); i++) {
-                finalemps.set(i, new JSONString(emps.get(i)));
-            }
-            outOfOffice.put("employees", finalemps);
+        JSONArray notifyEmployeesList = employeesMSB.getValues();
+        if (notifyEmployeesList.size() > 0) {
+            outOfOffice.put("notifyEmployees", notifyEmployeesList);
         }
         logger.info(outOfOffice.toString());
         return outOfOffice;
@@ -119,8 +97,8 @@ public class CreateOutOffOfficeRequestPanel extends CreateComposite {
 
     @Override
     protected void addListeners() {
-        forTime.getBox().addClickHandler(this);
-        recurring.getBox().addClickHandler(this);
+        //forTime.getBox().addClickHandler(this);
+        //recurring.getBox().addClickHandler(this);
     }
 
     @Override
@@ -147,10 +125,12 @@ public class CreateOutOffOfficeRequestPanel extends CreateComposite {
         addEnumField("workType", false, true, OutOfOfficeType.names(), Alignment.HORIZONTAL);
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        entityFieldsPanel.add(forTime);
-        entityFieldsPanel.add(recurring);
-        addField("notes", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("workForPartiatl", false, true, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        addField("recurring", false, true, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        addField("reason", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("contactNo", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(getLineSeperatorTag("If you work for partital or if you want recurring please mention timings in the below time field"));
+        addField("time", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Add members to be notified"));
         entityFieldsPanel.add(employeesMSB);
         alignFields();
@@ -178,26 +158,6 @@ public class CreateOutOffOfficeRequestPanel extends CreateComposite {
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-    }
-
-    @Override
-    public void onClick(ClickEvent event) {
-        if (event.getSource().equals(forTime.getBox())) {
-            if (forTime.getValue() == true) {
-                entityFieldsPanel.insert(time, 5);
-            } else {
-                entityFieldsPanel.remove(time);
-            }
-        }
-        if (event.getSource().equals(recurring.getBox())) {
-            if (recurring.getValue() == true) {
-                entityFieldsPanel.insert(recurringNotes, 6);
-            } else {
-                entityFieldsPanel.remove(recurringNotes);
-            }
-        } else {
-            super.onClick(event);
-        }
     }
 
     @Override

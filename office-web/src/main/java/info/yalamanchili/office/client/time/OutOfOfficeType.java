@@ -11,7 +11,7 @@ package info.yalamanchili.office.client.time;
  */
 public enum OutOfOfficeType {
 
-    OUTOF_OFFICE,
+    OUT_OF_OFFICE,
     WORK_FROM_HOME;
 
     public static String[] names() {
