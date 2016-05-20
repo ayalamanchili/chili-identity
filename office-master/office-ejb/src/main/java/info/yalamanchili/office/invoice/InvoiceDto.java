@@ -9,6 +9,7 @@
 package info.yalamanchili.office.invoice;
 
 import info.yalamanchili.office.entity.client.Invoice;
+import info.yalamanchili.office.entity.profile.Employee;
 import java.io.Serializable;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -20,10 +21,12 @@ import org.dozer.Mapper;
  */
 @XmlRootElement
 @XmlType
-public class InvoiceDto extends Invoice implements Serializable{
+public class InvoiceDto extends Invoice implements Serializable {
+
     protected String invoicestatus;
     protected String timeSheetstatus;
     protected String invoicefrequency;
+    protected String employeeName;
 
     public String getInvoicestatus() {
         return invoicestatus;
@@ -49,12 +52,22 @@ public class InvoiceDto extends Invoice implements Serializable{
         this.invoicefrequency = invoicefrequency;
     }
 
-   public static InvoiceDto map(Mapper mapper, Invoice invoice){
-       InvoiceDto mapDto = new InvoiceDto();
-       mapDto = mapper.map(invoice, InvoiceDto.class);
-       mapDto.setInvoicestatus(invoice.getInvoiceStatus().name().toLowerCase());
-       mapDto.setInvoicefrequency(invoice.getInvoiceFrequency().name().toLowerCase());
-       mapDto.setTimeSheetstatus(invoice.getTimeSheetStatus().name().toLowerCase());
-       return mapDto;
-   }
+    public String getEmployeeName() {
+        return employeeName;
+    }
+
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
+    }
+
+    public static InvoiceDto map(Mapper mapper, Invoice invoice) {
+        InvoiceDto mapDto = new InvoiceDto();
+        mapDto = mapper.map(invoice, InvoiceDto.class);
+        Employee employee1 = invoice.getClientInformation().getEmployee();
+        mapDto.setEmployee(employee1.getFirstName() + " " + employee1.getLastName());
+        mapDto.setInvoicestatus(invoice.getInvoiceStatus().name().toLowerCase());
+        mapDto.setInvoicefrequency(invoice.getInvoiceFrequency().name().toLowerCase());
+        mapDto.setTimeSheetstatus(invoice.getTimeSheetStatus().name().toLowerCase());
+        return mapDto;
+    }
 }
