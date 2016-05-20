@@ -69,11 +69,11 @@ public class SearchInvoicePanel extends SearchComposite {
         if (getSearchText() != null) {
             HttpService.HttpServiceAsync.instance().doGet(getSearchURI(getSearchText(), 0, 1000),
                     OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                @Override
-                public void onResponse(String result) {
-                    processSearchResult(result);
-                }
-            });
+                        @Override
+                        public void onResponse(String result) {
+                            processSearchResult(result);
+                        }
+                    });
         }
     }
 
@@ -81,11 +81,11 @@ public class SearchInvoicePanel extends SearchComposite {
     protected void search(JSONObject entity) {
         HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 1000), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                processSearchResult(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        processSearchResult(result);
+                    }
+                });
     }
 
     @Override
@@ -96,8 +96,13 @@ public class SearchInvoicePanel extends SearchComposite {
 
     @Override
     protected String getSearchURI(String searchText, Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "invoice/search/" + searchText + "/" + start.toString() + "/"
-                + limit.toString());
+        if (getKey() != null) {
+            return URL.encode(OfficeWelcome.constants.root_url() + "invoice/search-invoice-by-emp" + "/" + start.toString() + "/"
+                    + limit.toString()) + "?empId=" + getKey();
+        } else {
+            return URL.encode(OfficeWelcome.constants.root_url() + "invoice/search/" + searchText + "/" + start.toString() + "/"
+                    + limit.toString());
+        }
     }
 
     @Override
