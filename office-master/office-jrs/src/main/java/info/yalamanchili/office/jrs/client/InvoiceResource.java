@@ -84,7 +84,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
     public Invoice saveInvoice(@PathParam("id") Long id, Invoice invoice) {
         Invoice inv = new Invoice();
         ClientInformation ci = ClientInformationDao.instance().findById(id);
-        inv.setEmployee(ci.getEmployee().getFirstName()+" "+ci.getEmployee().getLastName());
+        inv.setEmployee(ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
         inv.setStartDate(invoice.getStartDate());
         inv.setEndDate(invoice.getEndDate());
         inv.setBillingRate(invoice.getBillingRate());
@@ -155,19 +155,27 @@ public class InvoiceResource extends CRUDResource<Invoice> {
     public List<Invoice> search(@PathParam("searchText") String searchText, @PathParam("start") int start,
             @PathParam("limit") int limit, @QueryParam("column") List<String> columns) {
         columns = new ArrayList<String>();
-        columns.add("employee");
         columns.add("itemNumber");
         columns.add("invoiceNumber");
         //TODO add remaining columns
         return getDao().sqlSearch(searchText, start, limit, columns, false);
     }
-    
+
+    @GET
+    @Path("/search-invoice-by-emp/{start}/{limit}")
+    @Transactional(readOnly = true)
+    public List<Invoice> searchInvoiceByEmp(@PathParam("start") int start,
+            @PathParam("limit") int limit, @QueryParam("empId") Long empId) {
+        //call getSearchQuery in dao see the contract service for ex
+        return null;
+    }
+
     @GET
     @Path("/invoice-summary-report")
     public void generateInvoiceSummaryReport() {
         InvoiceService.instance().generateInvoiceSummaryReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
-    
+
     @GET
     @Path("/active-clientinfo-report")
     public void generateActiveInvoicesReport() {
