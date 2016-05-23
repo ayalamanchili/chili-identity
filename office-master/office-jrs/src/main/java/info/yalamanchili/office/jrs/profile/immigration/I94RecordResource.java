@@ -16,6 +16,7 @@ import info.yalamanchili.office.entity.immigration.i94Record;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.profile.immigration.I94RecordService;
+import info.yalamanchili.office.security.AccessCheck;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -47,12 +48,14 @@ public class I94RecordResource extends CRUDResource<i94Record> {
     @PUT
     @Path("/save/{empId}")
     @Validate
+    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_H1B_IMMIGRATION", "ROLE_GC_IMMIGRATION"})        
     public i94Record save(@PathParam("empId") Long empId, i94Record i94Reco) {
         return i94RecordService.save(empId, i94Reco);
     }
 
     @PUT
     @Path("/delete/{id}")
+    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_H1B_IMMIGRATION", "ROLE_GC_IMMIGRATION"})        
     public void delete(@PathParam("id") Long id) {
         i94Record i94Rec = i94RecordDao.find(id);
         if (i94Rec.getId() != null) {
@@ -63,6 +66,7 @@ public class I94RecordResource extends CRUDResource<i94Record> {
     @GET
     @Path("/{id}/{start}/{limit}")
     @Transactional(readOnly = true)
+    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_H1B_IMMIGRATION", "ROLE_GC_IMMIGRATION"})        
     public I94RecordResource.i94RecordTable table(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
         I94RecordResource.i94RecordTable tableObj = new I94RecordResource.i94RecordTable();
         Employee emp = EmployeeDao.instance().findById(id);
