@@ -8,11 +8,13 @@
  */
 package info.yalamanchili.office.jrs.profile.immigration;
 
+import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.immigration.I94RecordDao;
 import info.yalamanchili.office.entity.immigration.i94Record;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.profile.immigration.I94RecordService;
 import java.util.List;
 import javax.ws.rs.GET;
@@ -35,7 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 @Scope("request")
-public class I94RecordResource {
+public class I94RecordResource extends CRUDResource<i94Record> {
 
     @Autowired
     protected I94RecordDao i94RecordDao;
@@ -60,12 +62,18 @@ public class I94RecordResource {
 
     @GET
     @Path("/{id}/{start}/{limit}")
+    @Transactional(readOnly = true)
     public I94RecordResource.i94RecordTable table(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
         I94RecordResource.i94RecordTable tableObj = new I94RecordResource.i94RecordTable();
         Employee emp = EmployeeDao.instance().findById(id);
         tableObj.setEntities(i94RecordDao.findAll(emp));
         tableObj.setSize(i94RecordDao.size());
         return tableObj;
+    }
+
+    @Override
+    public CRUDDao getDao() {
+        return null;
     }
 
     @XmlRootElement
