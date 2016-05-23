@@ -19,6 +19,7 @@ import info.yalamanchili.office.dao.profile.immigration.PassportDao;
 import info.yalamanchili.office.entity.immigration.Passport;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.profile.immigration.PassportService;
+import info.yalamanchili.office.security.AccessCheck;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -53,12 +54,14 @@ public class PassportResource {
     @PUT
     @Path("/save/{empId}")
     @Validate
+    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_H1B_IMMIGRATION", "ROLE_GC_IMMIGRATION"})    
     public Passport save(@PathParam("empId") Long empId, Passport passport) {
         return passportService.savePassport(empId, passport);
     }
 
     @PUT
     @Path("/delete/{id}")
+    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_H1B_IMMIGRATION", "ROLE_GC_IMMIGRATION"})    
     public void delete(@PathParam("id") Long id) {
         Passport passport = passportDao.find(id);
         if (passport.getId() != null) {
@@ -68,6 +71,8 @@ public class PassportResource {
 
     @GET
     @Path("/{id}/{start}/{limit}")
+    @Transactional(readOnly = true)
+    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_H1B_IMMIGRATION", "ROLE_GC_IMMIGRATION"})    
     public PassportResource.PassportTable table(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
         PassportResource.PassportTable tableObj = new PassportResource.PassportTable();
         Employee emp = EmployeeDao.instance().findById(id);
@@ -78,6 +83,7 @@ public class PassportResource {
 
     @GET
     @Path("/dropdown/{start}/{limit}")
+    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_H1B_IMMIGRATION", "ROLE_GC_IMMIGRATION"})    
     public List<Entry> getPassportDropDown(@PathParam("start") int start, @PathParam("limit") int limit) {
         List<Entry> result = new ArrayList<>();
         for (Passport passport : passportDao.query(start, limit)) {
@@ -92,6 +98,7 @@ public class PassportResource {
     
     @GET
     @Path("/dropdown/{id}")
+    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_H1B_IMMIGRATION", "ROLE_GC_IMMIGRATION"})    
     public List<Entry> getLCAEmployeeDown(@PathParam("id") long id) {
         Employee emp = EmployeeDao.instance().findById(id);    
         Date todayDate = new Date();
