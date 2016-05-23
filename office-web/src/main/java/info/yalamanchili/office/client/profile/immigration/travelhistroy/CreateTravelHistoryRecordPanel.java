@@ -6,8 +6,9 @@
 package info.yalamanchili.office.client.profile.immigration.travelhistroy;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import info.chili.gwt.crud.UpdateComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
@@ -21,26 +22,30 @@ import java.util.logging.Logger;
  *
  * @author prasanthi.p
  */
-public class UpdateTravelHistoryPanel extends UpdateComposite {
+public class CreateTravelHistoryRecordPanel extends CreateComposite {
 
-    private static Logger logger = Logger.getLogger(UpdateTravelHistoryPanel.class.getName());
+    private static Logger logger = Logger.getLogger(CreateTravelHistoryRecordPanel.class.getName());
 
-    public UpdateTravelHistoryPanel(JSONObject entity) {
-        initUpdateComposite(entity, "TravelHistoryFrom", OfficeWelcome.constants);
+    public CreateTravelHistoryRecordPanel(CreateComposite.CreateCompositeType type) {
+        super(type);
+        initCreateComposite("TravelHistoryRecord", OfficeWelcome.constants);
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        assignEntityValueFromField("typeOfVisa", entity);
-        assignEntityValueFromField("arrivalDate", entity);
-        assignEntityValueFromField("departureDate", entity);
-        return entity;
+        JSONObject travelHistroy = new JSONObject();
+        assignEntityValueFromField("typeOfVisa", travelHistroy);
+        assignEntityValueFromField("arrivalDate", travelHistroy);
+        assignEntityValueFromField("departureDate", travelHistroy);
+        travelHistroy.put("targetEntityName", new JSONString("targetEntityName"));
+        travelHistroy.put("targetEntityId", new JSONString("0"));
+        return travelHistroy;
     }
 
     @Override
-    protected void updateButtonClicked() {
-        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
-                OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
+    protected void createButtonClicked() {
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+                new AsyncCallback<String>() {
                     @Override
                     public void onFailure(Throwable arg0) {
                         handleErrorResponse(arg0);
@@ -48,31 +53,31 @@ public class UpdateTravelHistoryPanel extends UpdateComposite {
 
                     @Override
                     public void onSuccess(String arg0) {
-                        postUpdateSuccess(arg0);
+                        postCreateSuccess(arg0);
                     }
                 });
     }
 
     @Override
-    public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("typeOfVisa", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("arrivalDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("departureDate", entity, DataType.DATE_FIELD);
+    protected void addButtonClicked() {
+
     }
 
     @Override
-    protected void postUpdateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully Updated Travel History");
+    protected void postCreateSuccess(String result) {
+        new ResponseStatusWidget().show("Successfully Added TravelHistory");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllTravelHistoryPanel(TreeEmployeePanel.instance().getEntityId()));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllTravelHistoryRecordPanel(TreeEmployeePanel.instance().getEntityId()));
     }
 
     @Override
     protected void addListeners() {
+
     }
 
     @Override
     protected void configure() {
+
     }
 
     @Override
@@ -85,6 +90,7 @@ public class UpdateTravelHistoryPanel extends UpdateComposite {
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
+
     }
 
     @Override

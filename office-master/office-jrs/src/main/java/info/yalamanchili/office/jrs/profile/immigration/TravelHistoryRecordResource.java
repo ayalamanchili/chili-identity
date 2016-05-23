@@ -10,10 +10,11 @@ package info.yalamanchili.office.jrs.profile.immigration;
 
 import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.profile.immigration.TravelHistoryFromDao;
-import info.yalamanchili.office.entity.immigration.TravelHistoryFrom;
+import info.yalamanchili.office.dao.profile.immigration.TravelHistoryRecordDao;
+import info.yalamanchili.office.entity.immigration.TravelHistoryRecord;
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.profile.immigration.TravelHistoryFromService;
+import info.yalamanchili.office.profile.immigration.TravelHistoryRecordService;
+import info.yalamanchili.office.security.AccessCheck;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -35,24 +36,26 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 @Scope("request")
-public class TravelHistoryFromResource {
+public class TravelHistoryRecordResource {
 
     @Autowired
-    protected TravelHistoryFromDao travelHistoryFromDao;
+    protected TravelHistoryRecordDao travelHistoryFromDao;
     @Autowired
-    protected TravelHistoryFromService travelHistoryFromService;
+    protected TravelHistoryRecordService travelHistoryFromService;
 
     @PUT
     @Path("/save/{empId}")
     @Validate
-    public TravelHistoryFrom save(@PathParam("empId") Long empId, TravelHistoryFrom travelHistoryFrom) {
+//    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_H1B_IMMIGRATION", "ROLE_GC_IMMIGRATION"})
+    public TravelHistoryRecord save(@PathParam("empId") Long empId, TravelHistoryRecord travelHistoryFrom) {
         return travelHistoryFromService.save(empId, travelHistoryFrom);
     }
 
     @PUT
     @Path("/delete/{id}")
+//    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_H1B_IMMIGRATION", "ROLE_GC_IMMIGRATION"})
     public void delete(@PathParam("id") Long id) {
-        TravelHistoryFrom travelHistory = travelHistoryFromDao.find(id);
+        TravelHistoryRecord travelHistory = travelHistoryFromDao.find(id);
         if (travelHistory.getId() != null) {
             travelHistoryFromDao.delete(id);
         }
@@ -60,8 +63,8 @@ public class TravelHistoryFromResource {
 
     @GET
     @Path("/{id}/{start}/{limit}")
-    public TravelHistoryFromResource.TavelHistoryFromTable table(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
-        TravelHistoryFromResource.TavelHistoryFromTable tableObj = new TravelHistoryFromResource.TavelHistoryFromTable();
+    public TravelHistoryRecordResource.TavelHistoryFromTable table(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
+        TravelHistoryRecordResource.TavelHistoryFromTable tableObj = new TravelHistoryRecordResource.TavelHistoryFromTable();
         Employee emp = EmployeeDao.instance().findById(id);
         tableObj.setEntities(travelHistoryFromDao.findAll(emp));
         tableObj.setSize(travelHistoryFromDao.size());
@@ -73,7 +76,7 @@ public class TravelHistoryFromResource {
     public static class TavelHistoryFromTable implements java.io.Serializable {
 
         protected Long size;
-        protected List<TravelHistoryFrom> entities;
+        protected List<TravelHistoryRecord> entities;
 
         public Long getSize() {
             return size;
@@ -84,11 +87,11 @@ public class TravelHistoryFromResource {
         }
 
         @XmlElement
-        public List<TravelHistoryFrom> getEntities() {
+        public List<TravelHistoryRecord> getEntities() {
             return entities;
         }
 
-        public void setEntities(List<TravelHistoryFrom> entities) {
+        public void setEntities(List<TravelHistoryRecord> entities) {
             this.entities = entities;
         }
     }

@@ -10,7 +10,7 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.TreePanelComposite;
 import info.yalamanchili.office.client.profile.immigration.ReadAllPassportsPanel;
 import info.yalamanchili.office.client.profile.immigration.i94Record.ReadAllI94RecordPanel;
-import info.yalamanchili.office.client.profile.immigration.travelhistroy.ReadAllTravelHistoryPanel;
+import info.yalamanchili.office.client.profile.immigration.travelhistroy.ReadAllTravelHistoryRecordPanel;
 import java.util.logging.Logger;
 
 /**
@@ -57,7 +57,7 @@ public class TreeEmployeeImmigrationPanel extends TreePanelComposite {
         }
         if (TRAVALHISTORY_NODE.equals(entityNodeKey)) {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllTravelHistoryPanel(employeeId));
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllTravelHistoryRecordPanel(employeeId));
         }
         if (I94Record_NODE.equals(entityNodeKey)) {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();

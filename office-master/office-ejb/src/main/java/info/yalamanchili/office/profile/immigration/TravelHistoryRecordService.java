@@ -9,8 +9,8 @@
 package info.yalamanchili.office.profile.immigration;
 
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.profile.immigration.TravelHistoryFromDao;
-import info.yalamanchili.office.entity.immigration.TravelHistoryFrom;
+import info.yalamanchili.office.dao.profile.immigration.TravelHistoryRecordDao;
+import info.yalamanchili.office.entity.immigration.TravelHistoryRecord;
 import info.yalamanchili.office.entity.profile.Employee;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -25,19 +25,19 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-public class TravelHistoryFromService {
+public class TravelHistoryRecordService {
 
     @PersistenceContext
     protected EntityManager em;
     @Autowired
     protected Mapper mapper;
     @Autowired
-    protected TravelHistoryFromDao travelHistroyFromDao;
+    protected TravelHistoryRecordDao travelHistroyFromDao;
     @Autowired
     protected EmployeeDao employeeDao;
 
-    public TravelHistoryFrom save(Long empId, TravelHistoryFrom dto) {
-        TravelHistoryFrom travelHistroyFrom = mapper.map(dto, TravelHistoryFrom.class);
+    public TravelHistoryRecord save(Long empId, TravelHistoryRecord dto) {
+        TravelHistoryRecord travelHistroyFrom = mapper.map(dto, TravelHistoryRecord.class);
         Employee emp = employeeDao.findById(empId);
         travelHistroyFromDao.save(travelHistroyFrom, emp.getId(), emp.getClass().getCanonicalName());
         return travelHistroyFrom;

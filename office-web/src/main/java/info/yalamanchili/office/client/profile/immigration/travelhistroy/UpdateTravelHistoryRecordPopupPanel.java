@@ -15,15 +15,15 @@ import info.yalamanchili.office.client.profile.ProfileHome;
  *
  * @author prasanthi.p
  */
-public class UpdateTravelHistoryPopupPanel extends UpdateTravelHistoryPanel {
+public class UpdateTravelHistoryRecordPopupPanel extends UpdateTravelHistoryRecordPanel {
 
-    public UpdateTravelHistoryPopupPanel(JSONObject entity) {
+    public UpdateTravelHistoryRecordPopupPanel(JSONObject entity) {
         super(entity);
     }
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "travelhistroy/save/" + OfficeWelcome.instance().employeeId;
+        return OfficeWelcome.constants.root_url() + "travelhistory/save/" + OfficeWelcome.instance().employeeId;
     }
 
     @Override

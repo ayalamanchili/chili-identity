@@ -15,9 +15,9 @@ import info.yalamanchili.office.client.profile.ProfileHome;
  *
  * @author prasanthi.p
  */
-public class CreateTraveHistoryPopUpPanel extends CreateTravelHistoryPanel {
+public class CreateTravelHistoryRecordPopUpPanel extends CreateTravelHistoryRecordPanel {
 
-    public CreateTraveHistoryPopUpPanel(CreateComposite.CreateCompositeType type) {
+    public CreateTravelHistoryRecordPopUpPanel(CreateComposite.CreateCompositeType type) {
         super(type);
     }
 

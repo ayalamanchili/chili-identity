@@ -17,9 +17,9 @@ import info.yalamanchili.office.client.profile.ProfileHome;
  *
  * @author prasanthi.p
  */
-public class ReadAllTravelHistoryPopupPanel extends ReadAllTravelHistoryPanel {
+public class ReadAllTravelHistoryRecordPopupPanel extends ReadAllTravelHistoryRecordPanel {
 
-    public ReadAllTravelHistoryPopupPanel(String parentId) {
+    public ReadAllTravelHistoryRecordPopupPanel(String parentId) {
         super(parentId);
     }
 
@@ -30,7 +30,7 @@ public class ReadAllTravelHistoryPopupPanel extends ReadAllTravelHistoryPanel {
 
     @Override
     public void updateClicked(String entityId) {
-        UpdateTravelHistoryPopupPanel i94Record = new UpdateTravelHistoryPopupPanel(getEntity(entityId));
+        UpdateTravelHistoryRecordPopupPanel i94Record = new UpdateTravelHistoryRecordPopupPanel(getEntity(entityId));
         new GenericPopup(i94Record).show();
     }
 
@@ -48,7 +48,7 @@ public class ReadAllTravelHistoryPopupPanel extends ReadAllTravelHistoryPanel {
 
     @Override
     protected void createButtonClicked() {
-        CreateTraveHistoryPopUpPanel createPanel = new CreateTraveHistoryPopUpPanel(CreateComposite.CreateCompositeType.CREATE);;
+        CreateTravelHistoryRecordPopUpPanel createPanel = new CreateTravelHistoryRecordPopUpPanel(CreateComposite.CreateCompositeType.CREATE);;
         new GenericPopup(createPanel).show();
     }
 }

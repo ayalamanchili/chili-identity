@@ -25,7 +25,7 @@ import info.yalamanchili.office.client.profile.emergencycnt.ReadAllDependentsPop
 import info.yalamanchili.office.client.profile.empdoc.ReadAllEmpDocsPopupPanel;
 import info.yalamanchili.office.client.profile.employee.ReadEmployeePopupPanel;
 import info.yalamanchili.office.client.profile.immigration.i94Record.ReadAllI94RecordPopupPanel;
-import info.yalamanchili.office.client.profile.immigration.travelhistroy.ReadAllTravelHistoryPopupPanel;
+import info.yalamanchili.office.client.profile.immigration.travelhistroy.ReadAllTravelHistoryRecordPopupPanel;
 import info.yalamanchili.office.client.profile.preferences.PreferencesPanel;
 import info.yalamanchili.office.client.profile.privacy.ReadAllPrivacySettingPopupPanel;
 import info.yalamanchili.office.client.profile.skillset.UpdateSkillSetPopupPanel;
@@ -430,7 +430,7 @@ public class ProfileHome extends ALComposite {
             travelHistroyPanel.addOpenHandler(new OpenHandler<DisclosurePanel>() {
                 @Override
                 public void onOpen(OpenEvent<DisclosurePanel> event) {
-                    travelHistroyPanel.setContent(new ReadAllTravelHistoryPopupPanel(OfficeWelcome.instance().employeeId));
+                    travelHistroyPanel.setContent(new ReadAllTravelHistoryRecordPopupPanel(OfficeWelcome.instance().employeeId));
                 }
             });
         }

@@ -25,8 +25,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlRootElement
 @Entity
 @Audited
-public class TravelHistoryFrom extends AbstractHandleEntity {
+public class TravelHistoryRecord extends AbstractHandleEntity {
 
+    private static final long serialVersionUID = 11L;
     @NotEmpty(message = "{typeOfVisa.not.empty.msg}")
     protected String typeOfVisa;
 

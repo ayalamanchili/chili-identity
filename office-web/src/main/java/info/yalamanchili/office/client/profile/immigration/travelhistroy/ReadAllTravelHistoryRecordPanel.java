@@ -27,26 +27,26 @@ import java.util.logging.Logger;
  *
  * @author prasanthi.p
  */
-public class ReadAllTravelHistoryPanel extends CRUDReadAllComposite {
+public class ReadAllTravelHistoryRecordPanel extends CRUDReadAllComposite {
 
-    private static Logger logger = Logger.getLogger(ReadAllTravelHistoryPanel.class.getName());
-    public static ReadAllTravelHistoryPanel instance;
+    private static Logger logger = Logger.getLogger(ReadAllTravelHistoryRecordPanel.class.getName());
+    public static ReadAllTravelHistoryRecordPanel instance;
     protected String url;
 
-    public ReadAllTravelHistoryPanel() {
+    public ReadAllTravelHistoryRecordPanel() {
         instance = this;
-        initTable("TravelHistoryFrom", OfficeWelcome.constants);
+        initTable("TravelHistoryRecord", OfficeWelcome.constants);
     }
 
-    public ReadAllTravelHistoryPanel(JSONArray array) {
+    public ReadAllTravelHistoryRecordPanel(JSONArray array) {
         instance = this;
-        initTable("TravelHistoryFrom", array, OfficeWelcome.constants);
+        initTable("TravelHistoryRecord", array, OfficeWelcome.constants);
     }
 
-    public ReadAllTravelHistoryPanel(String parentId) {
+    public ReadAllTravelHistoryRecordPanel(String parentId) {
         instance = this;
         this.parentId = parentId;
-        initTable("TravelHistoryFrom", OfficeWelcome.constants);
+        initTable("TravelHistoryRecord", OfficeWelcome.constants);
     }
 
     @Override
@@ -91,7 +91,7 @@ public class ReadAllTravelHistoryPanel extends CRUDReadAllComposite {
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadTravelHistoryPanel(getEntity(entityId)));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadTravelHistoryRecordPanel(getEntity(entityId)));
     }
 
     @Override
@@ -113,13 +113,13 @@ public class ReadAllTravelHistoryPanel extends CRUDReadAllComposite {
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Travel History Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllTravelHistoryPanel(TreeEmployeePanel.instance().getEntityId()));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllTravelHistoryRecordPanel(TreeEmployeePanel.instance().getEntityId()));
     }
 
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateTravelHistoryPanel(getEntity(entityId)));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateTravelHistoryRecordPanel(getEntity(entityId)));
     }
 
     @Override
@@ -131,7 +131,7 @@ public class ReadAllTravelHistoryPanel extends CRUDReadAllComposite {
     @Override
     protected void createButtonClicked() {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new CreateTravelHistoryPanel(CreateComposite.CreateCompositeType.CREATE));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new CreateTravelHistoryRecordPanel(CreateComposite.CreateCompositeType.CREATE));
     }
 
     @Override
@@ -152,7 +152,7 @@ public class ReadAllTravelHistoryPanel extends CRUDReadAllComposite {
     @Override
     protected void onQuickView(int row, String id) {
         if (!id.isEmpty()) {
-            new GenericPopup(new ReadTravelHistoryPanel(getEntity(id))).show();
+            new GenericPopup(new ReadTravelHistoryRecordPanel(getEntity(id))).show();
         }
     }
 

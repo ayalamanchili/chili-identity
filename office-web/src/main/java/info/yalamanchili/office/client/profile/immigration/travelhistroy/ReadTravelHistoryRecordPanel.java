@@ -16,12 +16,12 @@ import java.util.logging.Logger;
  *
  * @author prasanthi.p
  */
-public class ReadTravelHistoryPanel extends ReadComposite {
+public class ReadTravelHistoryRecordPanel extends ReadComposite {
 
-    private static Logger logger = Logger.getLogger(ReadTravelHistoryPanel.class.getName());
+    private static Logger logger = Logger.getLogger(ReadTravelHistoryRecordPanel.class.getName());
 
-    public ReadTravelHistoryPanel(JSONObject entity) {
-        initReadComposite(entity, "TravelHistoryFrom", OfficeWelcome.constants);
+    public ReadTravelHistoryRecordPanel(JSONObject entity) {
+        initReadComposite(entity, "TravelHistoryRecord", OfficeWelcome.constants);
     }
 
     @Override

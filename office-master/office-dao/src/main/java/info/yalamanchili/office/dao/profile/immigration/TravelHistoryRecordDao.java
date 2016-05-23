@@ -10,7 +10,7 @@ package info.yalamanchili.office.dao.profile.immigration;
 
 import info.chili.dao.AbstractHandleEntityDao;
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.entity.immigration.TravelHistoryFrom;
+import info.yalamanchili.office.entity.immigration.TravelHistoryRecord;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.context.annotation.Scope;
@@ -22,17 +22,17 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 @Scope("prototype")
-public class TravelHistoryFromDao extends AbstractHandleEntityDao<TravelHistoryFrom> {
+public class TravelHistoryRecordDao extends AbstractHandleEntityDao<TravelHistoryRecord> {
 
     @PersistenceContext
     protected EntityManager em;
 
-    public TravelHistoryFromDao() {
-        super(TravelHistoryFrom.class);
+    public TravelHistoryRecordDao() {
+        super(TravelHistoryRecord.class);
     }
 
-    public static TravelHistoryFromDao instance() {
-        return SpringContext.getBean(TravelHistoryFromDao.class);
+    public static TravelHistoryRecordDao instance() {
+        return SpringContext.getBean(TravelHistoryRecordDao.class);
     }
 
     @Override
