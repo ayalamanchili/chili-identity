@@ -19,6 +19,7 @@ import info.yalamanchili.office.client.gwt.SearchComposite;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.SuggestBox;
+import info.yalamanchili.office.client.profile.cllientinfo.ClientInformationCompany;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -44,23 +45,31 @@ public class SearchInvoicePanel extends SearchComposite {
 
     @Override
     protected void addWidgets() {
+        addField("employee", DataType.STRING_FIELD);
+        addField("vendor", DataType.STRING_FIELD);
+        addEnumField("clientInformationCompany", false, false, ClientInformationCompany.names());
         addField("invoiceNumber", DataType.STRING_FIELD);
         addField("itemNumber", DataType.STRING_FIELD);
         addField("startDate", DataType.DATE_FIELD);
         addField("endDate", DataType.DATE_FIELD);
         addEnumField("timeSheetStatus", false, false, TimeStatus.names());
         addEnumField("invoiceStatus", false, false, InvoiceStatus.names());
+
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
+        assignEntityValueFromField("employee", entity);
+        assignEntityValueFromField("vendor", entity);
+        assignEntityValueFromField("clientInformationCompany", entity);
         assignEntityValueFromField("invoiceNumber", entity);
         assignEntityValueFromField("itemNumber", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
         assignEntityValueFromField("timeSheetStatus", entity);
         assignEntityValueFromField("invoiceStatus", entity);
+
         return entity;
     }
 
@@ -69,11 +78,11 @@ public class SearchInvoicePanel extends SearchComposite {
         if (getSearchText() != null) {
             HttpService.HttpServiceAsync.instance().doGet(getSearchURI(getSearchText(), 0, 1000),
                     OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                        @Override
-                        public void onResponse(String result) {
-                            processSearchResult(result);
-                        }
-                    });
+                @Override
+                public void onResponse(String result) {
+                    processSearchResult(result);
+                }
+            });
         }
     }
 
@@ -81,11 +90,11 @@ public class SearchInvoicePanel extends SearchComposite {
     protected void search(JSONObject entity) {
         HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 1000), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        processSearchResult(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                processSearchResult(result);
+            }
+        });
     }
 
     @Override
@@ -96,57 +105,42 @@ public class SearchInvoicePanel extends SearchComposite {
 
     @Override
     protected String getSearchURI(String searchText, Integer start, Integer limit) {
-        if (getKey() != null) {
-            return URL.encode(OfficeWelcome.constants.root_url() + "invoice/search-invoice-by-emp" + "/" + start.toString() + "/"
-                    + limit.toString()) + "?empId=" + getKey();
-        } else {
-            return URL.encode(OfficeWelcome.constants.root_url() + "invoice/search/" + searchText + "/" + start.toString() + "/"
-                    + limit.toString());
-        }
+        return URL.encode(OfficeWelcome.constants.root_url() + "invoice/search/" + searchText + "/" + start.toString() + "/"
+                + limit.toString());
     }
 
     @Override
     protected String getSearchURI(Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "invoice/search/" + start.toString() + "/"
+        return URL.encode(OfficeWelcome.constants.root_url() + "invoice/adv-search/" + start.toString() + "/"
                 + limit.toString());
     }
 
     @Override
     protected void populateSearchSuggestBox() {
-        HttpService.HttpServiceAsync.instance().doGet(getNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String entityString) {
-                suggestionsMap = JSONUtils.convertKeyValueStringPairs(entityString);
-                loadSearchSuggestions(suggestionsMap.values());
-            }
-        });
+
     }
 
     @Override
     protected void populateAdvancedSuggestBoxes() {
-        HttpService.HttpServiceAsync.instance().doGet(getInvoiceNumberDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+        HttpService.HttpServiceAsync.instance().doGet(getVendorDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
                 Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
-                SuggestBox sb = (SuggestBox) fields.get("invoiceNumber");
+                SuggestBox sb = (SuggestBox) fields.get("vendor");
                 sb.loadData(values.values());
             }
         });
-        HttpService.HttpServiceAsync.instance().doGet(getItemNumberDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+        HttpService.HttpServiceAsync.instance().doGet(getNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
                 Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
-                SuggestBox sb = (SuggestBox) fields.get("itemNumber");
+                SuggestBox sb = (SuggestBox) fields.get("employee");
                 sb.loadData(values.values());
             }
         });
     }
 
-    protected String getInvoiceNumberDropDownUrl() {
-        return OfficeWelcome.constants.root_url() + "subcontractor/dropdown/0/10000?column=id&column=name";
-    }
-
-    protected String getItemNumberDropDownUrl() {
+    protected String getVendorDropDownUrl() {
         return OfficeWelcome.constants.root_url() + "vendor/dropdown/0/10000?column=id&column=name";
     }
 

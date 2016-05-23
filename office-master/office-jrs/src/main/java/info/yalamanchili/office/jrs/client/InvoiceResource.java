@@ -15,7 +15,9 @@ import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.client.Invoice;
 import info.yalamanchili.office.entity.profile.ClientInformation;
+import info.yalamanchili.office.invoice.InvoiceSearchDto;
 import info.yalamanchili.office.invoice.InvoiceService;
+import info.yalamanchili.office.invoice.InvoiceService.InvoiceTable;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +28,10 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,8 +61,9 @@ public class InvoiceResource extends CRUDResource<Invoice> {
 
     @GET
     @Path("/{id}/{start}/{limit}")
-    public InvoiceResource.InvoiceTable table(@PathParam("id") Long id, @PathParam("start") int start, @PathParam("limit") int limit) {
-        InvoiceResource.InvoiceTable tableObj = new InvoiceResource.InvoiceTable();
+    @PreAuthorize("hasAnyRole('ROLE_INVOICE_MANAGER')")
+    public InvoiceTable table(@PathParam("id") Long id, @PathParam("start") int start, @PathParam("limit") int limit) {
+        InvoiceTable tableObj = new InvoiceTable();
         ClientInformation ci = ClientInformationDao.instance().findById(id);
         tableObj.setEntities(ci.getInvoice());
         tableObj.setSize(Long.valueOf(ci.getInvoice().size()));
@@ -71,8 +72,10 @@ public class InvoiceResource extends CRUDResource<Invoice> {
 
     @GET
     @Path("/{start}/{limit}")
-    public InvoiceResource.InvoiceTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
-        InvoiceResource.InvoiceTable tableObj = new InvoiceResource.InvoiceTable();
+    //TODO add invoice mgr role check using pre auth
+    //TODO caching?
+    public InvoiceTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
+        InvoiceTable tableObj = new InvoiceTable();
         tableObj.setEntities(getDao().query(start, limit));
         tableObj.setSize(getDao().size());
         return tableObj;
@@ -81,6 +84,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
     @PUT
     @Validate
     @Path("/save/{id}")
+    //TODO add invoice mgr role check using pre auth
     public Invoice saveInvoice(@PathParam("id") Long id, Invoice invoice) {
         Invoice inv = new Invoice();
         ClientInformation ci = ClientInformationDao.instance().findById(id);
@@ -107,6 +111,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
     @PUT
     @Validate
     @Path("/update-Invoice/{id}")
+    //TODO add invoice mgr role check using pre auth
     public Invoice update(@PathParam("id") Long id, Invoice invoice) {
         Invoice inv = invoiceDao.findById(id);
         inv.setEmployee(invoice.getEmployee());
@@ -136,6 +141,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
 
     @GET
     @Path("/read/{id}")
+    //TODO add invoice mgr role check using pre auth
     public Invoice readInvoice(@PathParam("id") Long id) {
         return invoiceDao.findById(id);
     }
@@ -143,6 +149,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
     @PUT
     @Path("/delete/{id}")
     @Override
+    //TODO add invoice mgr role check using pre auth
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
 
@@ -150,8 +157,9 @@ public class InvoiceResource extends CRUDResource<Invoice> {
 
     @GET
     @Path("/search/{searchText}/{start}/{limit}")
-    @Transactional(propagation = Propagation.NEVER)
+    @Transactional(readOnly = true)
     @Override
+    //TODO add invoice mgr role check using pre auth
     public List<Invoice> search(@PathParam("searchText") String searchText, @PathParam("start") int start,
             @PathParam("limit") int limit, @QueryParam("column") List<String> columns) {
         columns = new ArrayList<String>();
@@ -161,49 +169,26 @@ public class InvoiceResource extends CRUDResource<Invoice> {
         return getDao().sqlSearch(searchText, start, limit, columns, false);
     }
 
-    @GET
-    @Path("/search-invoice-by-emp/{start}/{limit}")
+    @PUT
+    @Path("/adv-search/{start}/{limit}")
     @Transactional(readOnly = true)
-    public List<Invoice> searchInvoiceByEmp(@PathParam("start") int start,
-            @PathParam("limit") int limit, @QueryParam("empId") Long empId) {
-        //call getSearchQuery in dao see the contract service for ex
-        return null;
+    //TODO add invoice mgr role check using pre auth
+    public List<Invoice> search(InvoiceSearchDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {
+        return InvoiceService.instance().search(dto, start, limit);
     }
 
     @GET
     @Path("/invoice-summary-report")
+    //TODO add invoice mgr role check using pre auth
     public void generateInvoiceSummaryReport() {
         InvoiceService.instance().generateInvoiceSummaryReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
 
     @GET
     @Path("/active-clientinfo-report")
+    //TODO add invoice mgr role check using pre auth
     public void generateActiveInvoicesReport() {
         InvoiceService.instance().generateActiveInvoicesReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
 
-    @XmlRootElement
-    @XmlType
-    public static class InvoiceTable implements java.io.Serializable {
-
-        protected Long size;
-        protected List<Invoice> entities;
-
-        public Long getSize() {
-            return size;
-        }
-
-        public void setSize(Long size) {
-            this.size = size;
-        }
-
-        @XmlElement
-        public List<Invoice> getEntities() {
-            return entities;
-        }
-
-        public void setEntities(List<Invoice> entities) {
-            this.entities = entities;
-        }
-    }
 }
