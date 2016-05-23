@@ -16,6 +16,7 @@ import info.yalamanchili.office.entity.immigration.TravelHistoryRecord;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.profile.immigration.TravelHistoryRecordService;
+import info.yalamanchili.office.security.AccessCheck;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -47,14 +48,15 @@ public class TravelHistoryRecordResource extends CRUDResource<TravelHistoryRecor
     @PUT
     @Path("/save/{empId}")
     @Validate
-//    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_H1B_IMMIGRATION", "ROLE_GC_IMMIGRATION"})
+    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_H1B_IMMIGRATION", "ROLE_GC_IMMIGRATION"})
     public TravelHistoryRecord save(@PathParam("empId") Long empId, TravelHistoryRecord travelHistoryFrom) {
         return travelHistoryFromService.save(empId, travelHistoryFrom);
     }
 
     @PUT
     @Path("/delete/{id}")
-//    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_H1B_IMMIGRATION", "ROLE_GC_IMMIGRATION"})
+    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_H1B_IMMIGRATION", "ROLE_GC_IMMIGRATION"})
+    @Override
     public void delete(@PathParam("id") Long id) {
         TravelHistoryRecord travelHistory = travelHistoryFromDao.find(id);
         if (travelHistory.getId() != null) {
@@ -65,6 +67,7 @@ public class TravelHistoryRecordResource extends CRUDResource<TravelHistoryRecor
     @GET
     @Path("/{id}/{start}/{limit}")
     @Transactional(readOnly = true)
+    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_H1B_IMMIGRATION", "ROLE_GC_IMMIGRATION"})
     public TravelHistoryRecordResource.TavelHistoryFromTable table(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
         TravelHistoryRecordResource.TavelHistoryFromTable tableObj = new TravelHistoryRecordResource.TavelHistoryFromTable();
         Employee emp = EmployeeDao.instance().findById(id);
