@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -13,6 +16,7 @@ import info.yalamanchili.office.entity.immigration.EducationRecord;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.profile.immigration.EducationRecordService;
+import info.yalamanchili.office.security.AccessCheck;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -44,12 +48,14 @@ public class EducationRecordResource extends CRUDResource<EducationRecord> {
     @PUT
     @Path("/save/{empId}")
     @Validate
+    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_H1B_IMMIGRATION", "ROLE_GC_IMMIGRATION"})
     public EducationRecord save(@PathParam("empId") Long empId, EducationRecord educationRecord) {
         return educationRecordService.save(empId, educationRecord);
     }
 
     @PUT
     @Path("/delete/{id}")
+    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_H1B_IMMIGRATION", "ROLE_GC_IMMIGRATION"})
     public void delete(@PathParam("id") Long id) {
         EducationRecord educationalRecord = educationRecordDao.find(id);
         if (educationalRecord.getId() != null) {
@@ -59,6 +65,8 @@ public class EducationRecordResource extends CRUDResource<EducationRecord> {
 
     @GET
     @Path("/{id}/{start}/{limit}")
+    @Transactional(readOnly = true)
+    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_H1B_IMMIGRATION", "ROLE_GC_IMMIGRATION"})
     public EducationRecordResource.EducationRecordTable table(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
         EducationRecordResource.EducationRecordTable tableObj = new EducationRecordResource.EducationRecordTable();
         Employee emp = EmployeeDao.instance().findById(id);
@@ -75,7 +83,7 @@ public class EducationRecordResource extends CRUDResource<EducationRecord> {
     @XmlRootElement
     @XmlType
     public static class EducationRecordTable implements java.io.Serializable {
-
+ 
         protected Long size;
         protected List<EducationRecord> entities;
 
