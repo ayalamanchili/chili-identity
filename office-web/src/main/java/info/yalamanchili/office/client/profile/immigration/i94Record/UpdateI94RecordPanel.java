@@ -34,6 +34,8 @@ public class UpdateI94RecordPanel extends UpdateComposite {
         assignEntityValueFromField("i94RecordNumber", entity);
         assignEntityValueFromField("dateofEntry", entity);
         assignEntityValueFromField("admitUntilDate", entity);
+        assignEntityValueFromField("portOfEntry", entity);
+        assignEntityValueFromField("classOfAdmission", entity);
         return entity;
     }
 
@@ -58,6 +60,8 @@ public class UpdateI94RecordPanel extends UpdateComposite {
         assignFieldValueFromEntity("i94RecordNumber", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("dateofEntry", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("admitUntilDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("portOfEntry", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("classOfAdmission", entity, DataType.STRING_FIELD);
     }
 
     @Override
@@ -80,6 +84,8 @@ public class UpdateI94RecordPanel extends UpdateComposite {
         addField("i94RecordNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("dateofEntry", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("admitUntilDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("portOfEntry", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("classOfAdmission", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 

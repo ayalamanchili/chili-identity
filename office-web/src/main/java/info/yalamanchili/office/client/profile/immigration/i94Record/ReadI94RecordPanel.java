@@ -29,6 +29,8 @@ public class ReadI94RecordPanel extends ReadComposite {
         assignFieldValueFromEntity("i94RecordNumber", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("dateofEntry", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("admitUntilDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("portOfEntry", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("classOfAdmission", entity, DataType.STRING_FIELD);
     }
 
     @Override
@@ -46,6 +48,8 @@ public class ReadI94RecordPanel extends ReadComposite {
         addField("i94RecordNumber", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("dateofEntry", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("admitUntilDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("portOfEntry", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("classOfAdmission", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         alignFields();
 
     }

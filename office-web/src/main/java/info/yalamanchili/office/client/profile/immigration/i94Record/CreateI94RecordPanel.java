@@ -10,6 +10,7 @@ import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.FileuploadField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -26,6 +27,13 @@ public class CreateI94RecordPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateI94RecordPanel.class.getName());
 
+    FileuploadField empImageUploadPanel = new FileuploadField(OfficeWelcome.constants, "Employee", "imageUrl", "i94Record/imageURL", false) {
+        @Override
+        public void onUploadComplete(String res) {
+            postCreateSuccess(null);
+        }
+    };
+
     public CreateI94RecordPanel(CreateComposite.CreateCompositeType type) {
         super(type);
         initCreateComposite("i94Record", OfficeWelcome.constants);
@@ -38,13 +46,16 @@ public class CreateI94RecordPanel extends CreateComposite {
         assignEntityValueFromField("i94RecordNumber", I94Record);
         assignEntityValueFromField("dateofEntry", I94Record);
         assignEntityValueFromField("admitUntilDate", I94Record);
+        assignEntityValueFromField("portOfEntry", I94Record);
+        assignEntityValueFromField("classOfAdmission", I94Record);
+        I94Record.put("imageURL", empImageUploadPanel.getFileName());
         I94Record.put("targetEntityName", new JSONString("targetEntityName"));
         I94Record.put("targetEntityId", new JSONString("0"));
         return I94Record;
     }
 
     @Override
-    protected void createButtonClicked() {
+    public void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
                     @Override
@@ -54,9 +65,10 @@ public class CreateI94RecordPanel extends CreateComposite {
 
                     @Override
                     public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
+                        uploadImage(arg0);
                     }
                 });
+
     }
 
     @Override
@@ -86,7 +98,14 @@ public class CreateI94RecordPanel extends CreateComposite {
         addField("i94RecordNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("dateofEntry", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("admitUntilDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("portOfEntry", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("classOfAdmission", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(empImageUploadPanel);
         alignFields();
+    }
+
+    protected void uploadImage(String entityId) {
+        empImageUploadPanel.upload(entityId.trim());
     }
 
     @Override
