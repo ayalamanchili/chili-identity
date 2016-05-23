@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -7,6 +10,7 @@ package info.yalamanchili.office.entity.immigration;
 
 import info.chili.jpa.AbstractHandleEntity;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Indexed;
@@ -23,6 +27,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 public class EducationRecord  extends AbstractHandleEntity {
     
+    @Transient
+    private static final long serialVersionUID = 4L;
+        
     @NotEmpty(message = "{degreeOfStudy.not.empty.msg}")
     protected String degreeOfStudy;
 
