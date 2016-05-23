@@ -8,13 +8,14 @@
  */
 package info.yalamanchili.office.jrs.profile.immigration;
 
+import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.immigration.TravelHistoryRecordDao;
 import info.yalamanchili.office.entity.immigration.TravelHistoryRecord;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.profile.immigration.TravelHistoryRecordService;
-import info.yalamanchili.office.security.AccessCheck;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -36,7 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 @Scope("request")
-public class TravelHistoryRecordResource {
+public class TravelHistoryRecordResource extends CRUDResource<TravelHistoryRecord> {
 
     @Autowired
     protected TravelHistoryRecordDao travelHistoryFromDao;
@@ -63,12 +64,18 @@ public class TravelHistoryRecordResource {
 
     @GET
     @Path("/{id}/{start}/{limit}")
+    @Transactional(readOnly = true)
     public TravelHistoryRecordResource.TavelHistoryFromTable table(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
         TravelHistoryRecordResource.TavelHistoryFromTable tableObj = new TravelHistoryRecordResource.TavelHistoryFromTable();
         Employee emp = EmployeeDao.instance().findById(id);
         tableObj.setEntities(travelHistoryFromDao.findAll(emp));
         tableObj.setSize(travelHistoryFromDao.size());
         return tableObj;
+    }
+
+    @Override
+    public CRUDDao getDao() {
+        return null;
     }
 
     @XmlRootElement
