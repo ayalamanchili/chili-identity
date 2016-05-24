@@ -63,7 +63,7 @@ public class Invoice extends AbstractEntity {
     protected Date invoiceDate;
     
     @Temporal(javax.persistence.TemporalType.DATE)
-    protected Date invoiceToVendorDate;
+    protected Date invoiceSentDate;
 
     protected BigDecimal billingRate;
 
@@ -173,12 +173,12 @@ public class Invoice extends AbstractEntity {
         this.invoiceDate = invoiceDate;
     }
 
-    public Date getInvoiceToVendorDate() {
-        return invoiceToVendorDate;
+    public Date getInvoiceSentDate() {
+        return invoiceSentDate;
     }
 
-    public void setInvoiceToVendorDate(Date invoiceToVendorDate) {
-        this.invoiceToVendorDate = invoiceToVendorDate;
+    public void setInvoiceSentDate(Date invoiceSentDate ) {
+        this.invoiceSentDate = invoiceSentDate;
     }
     
     public BigDecimal getBillingRate() {
@@ -224,6 +224,6 @@ public class Invoice extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "Invoice{" + "invoiceNumber=" + invoiceNumber + ", startDate=" + startDate + ", endDate=" + endDate + ", invoiceDate=" + invoiceDate + ", invoiceToVendorDate=" + invoiceToVendorDate + ", billingRate=" + billingRate + ", overTimeBillingRate=" + overTimeBillingRate + ", clientinformation=" + clientInformation + ", itemNumber=" + itemNumber + ", invoiceFrequency=" + invoiceFrequency + ", hours=" + hours + ", notes=" + notes + ", status=" + invoiceStatus + ", timeSheetStatus=" + timeSheetStatus + '}';
+        return "Invoice{" + "invoiceNumber=" + invoiceNumber + ", startDate=" + startDate + ", endDate=" + endDate + ", invoiceDate=" + invoiceDate + ", invoiceSentDate=" + invoiceSentDate + ", billingRate=" + billingRate + ", overTimeBillingRate=" + overTimeBillingRate + ", clientinformation=" + clientInformation + ", itemNumber=" + itemNumber + ", invoiceFrequency=" + invoiceFrequency + ", hours=" + hours + ", notes=" + notes + ", status=" + invoiceStatus + ", timeSheetStatus=" + timeSheetStatus + '}';
     }
 }
