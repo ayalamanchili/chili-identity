@@ -10,7 +10,7 @@ package info.yalamanchili.office.Time;
 
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
-import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.OutOfOfficeDao;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -34,24 +34,25 @@ public class OutOfOfficeService {
     @Autowired
     protected Mapper mapper;
 
-    public OutOfOfficeRequest submitRequest(OutOfOfficeRequest entity) {
+    public void submitRequest(OutOfOfficeRequest entity) {
         Employee emp;
         Map<String, Object> vars = new HashMap<>();
-        if (entity.getEmployee().getId() != null) {
-            emp = EmployeeDao.instance().findById(entity.getEmployee().getId());
-        } else {
-            emp = OfficeSecurityService.instance().getCurrentUser();
-        }
+        emp = OfficeSecurityService.instance().getCurrentUser();
         entity.setEmployee(emp);
         entity.setStatus(OutOfOfficeRequestStatus.PENDING_MANAGER_APPROVAL);
-        OutOfOfficeRequest officeRequest = OutOfOfficeDao.instance().save(entity);
+        entity = OutOfOfficeDao.instance().save(entity);
         vars.put("entity", entity);
         vars.put("currentEmployee", emp);
         vars.put("notifyEmployees", entity.getNotifyEmployees());
-        vars.put("entityId", officeRequest.getId());
-        String process = OfficeBPMService.instance().startProcess("outof_office_process", vars);
-        entity.setBpmProcessId(process);
-        return entity;
+        vars.put("entityId", entity.getId());
+        entity.setBpmProcessId(OfficeBPMService.instance().startProcess("outof_office_process", vars));
+        OutOfOfficeDao.instance().getEntityManager().merge(entity);
+    }
+
+    public void updateRequest(OutOfOfficeRequest entity) {
+        OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
+        taskService.deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
+        submitRequest(entity);
     }
 
     public static OutOfOfficeService instance() {
