@@ -83,7 +83,6 @@ public class PassportResource {
 
     @GET
     @Path("/dropdown/{start}/{limit}")
-    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_H1B_IMMIGRATION", "ROLE_GC_IMMIGRATION"})    
     public List<Entry> getPassportDropDown(@PathParam("start") int start, @PathParam("limit") int limit) {
         List<Entry> result = new ArrayList<>();
         for (Passport passport : passportDao.query(start, limit)) {
@@ -98,7 +97,6 @@ public class PassportResource {
     
     @GET
     @Path("/dropdown/{id}")
-    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_H1B_IMMIGRATION", "ROLE_GC_IMMIGRATION"})    
     public List<Entry> getLCAEmployeeDown(@PathParam("id") long id) {
         Employee emp = EmployeeDao.instance().findById(id);    
         Date todayDate = new Date();
