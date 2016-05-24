@@ -10,6 +10,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
@@ -32,12 +33,12 @@ public class ReadAllOutOfOfficePanel extends CRUDReadAllComposite {
 
     public ReadAllOutOfOfficePanel() {
         instance = this;
-        initTable("OutOfOffice", OfficeWelcome.constants);
+        initTable("OutOfOfficeRequest", OfficeWelcome.constants);
     }
 
     public ReadAllOutOfOfficePanel(JSONArray result) {
         instance = this;
-        initTable("OutOfOffice", result, OfficeWelcome.constants);
+        initTable("OutOfOfficeRequest", result, OfficeWelcome.constants);
     }
 
     @Override
@@ -56,6 +57,8 @@ public class ReadAllOutOfOfficePanel extends CRUDReadAllComposite {
 
     @Override
     public void updateClicked(String entityId) {
+        TabPanel.instance().timePanel.entityPanel.clear();
+        TabPanel.instance().timePanel.entityPanel.add(new UpdateOutOfOfficePanel(entityId));
     }
 
     @Override
@@ -64,7 +67,6 @@ public class ReadAllOutOfOfficePanel extends CRUDReadAllComposite {
                 false, new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
-                        logger.info("the resulttttttttttttttt isssssssss:"+result);
                         postFetchTable(result);
                     }
                 });
@@ -75,28 +77,25 @@ public class ReadAllOutOfOfficePanel extends CRUDReadAllComposite {
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Employee"));
-        table.setText(0, 2, getKeyValue("StratDate"));
-        table.setText(0, 3, getKeyValue("EndDate"));
-        table.setText(0, 4, getKeyValue("PhoneNumber"));
-        table.setText(0, 5, getKeyValue("Status"));
+        table.setText(0, 2, getKeyValue("Strat Date"));
+        table.setText(0, 3, getKeyValue("End Date"));
+        //table.setText(0, 4, getKeyValue("PhoneNumber"));
+        table.setText(0, 4, getKeyValue("Status"));
     }
 
     @Override
     public void fillData(JSONArray entities) {
-        logger.info("hai helooooooo");
-        array = null;
-        this.array = entities;
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             JSONObject emp = (JSONObject) entity.get("employee");
-            if(emp != null){
+            if (emp != null) {
                 table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
             }
             table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 4, JSONUtils.toString(entity, "contactNo"));
-            setEnumColumn(i, 5, entity, OutOfOfficeRequestStatus.class.getSimpleName(), "status");
+            //table.setText(i, 4, JSONUtils.toString(entity, "contactNo"));
+            setEnumColumn(i, 4, entity, OutOfOfficeRequestStatus.class.getSimpleName(), "status");
         }
     }
 
@@ -104,7 +103,7 @@ public class ReadAllOutOfOfficePanel extends CRUDReadAllComposite {
     protected void addOptionsWidget(int row, JSONObject entity) {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION, Auth.ROLE.ROLE_ADMIN)) {
             createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE);
-        } 
+        }
         createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE);
     }
 
@@ -115,4 +114,14 @@ public class ReadAllOutOfOfficePanel extends CRUDReadAllComposite {
         return OfficeWelcome.constants.root_url() + "out-of-office/" + start.toString() + "/" + tableSize.toString();
     }
 
+    @Override
+    protected void configureCreateButton() {
+        createButton.setText("Create OutOf Office Request");
+    }
+
+    @Override
+    protected void createButtonClicked() {
+        TabPanel.instance().getTimePanel().entityPanel.clear();
+        TabPanel.instance().getTimePanel().entityPanel.add(new CreateOutOffOfficeRequestPanel(CreateComposite.CreateCompositeType.CREATE));
+    }
 }
