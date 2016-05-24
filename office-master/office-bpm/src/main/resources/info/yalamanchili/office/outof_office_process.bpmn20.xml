@@ -22,7 +22,9 @@
                 Employee Name       : #{currentEmployee.firstName} #{currentEmployee.lastName}
                 Start Date          : #{entity.startDate}
                 End Date            : #{entity.endDate}
-                Reason Notes         : #{entity.reason}
+                Reason Notes        : #{entity.reason}
+                Recurring           : #{entity.recurring}
+                time                : #{entity.time}
                 
                 Navigate to view Expense Report:
                 Time > OutOf Office > Search > Click View > Table Action column > Click View Icon (or)
@@ -46,6 +48,17 @@
                                        type="string" />
             </extensionElements> 
         </userTask>
-         <endEvent id="expenseReportEnd" />
+        <!-- Task escalation email after 48 hours-->
+        <boundaryEvent id="outOfOfficeApprovalTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="outOfOfficeMgrApprovalTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="outOfOfficeApprovalTaskEscalationTimer" 
+                      targetRef="outOfOfficeApprovalTaskEscalation" />
+        <serviceTask id="outOfOfficeApprovalTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <endEvent id="outOfOfficeEnd" />
     </process>
 </definitions>
