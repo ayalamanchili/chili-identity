@@ -73,7 +73,7 @@ public class UpdateInvoicePanel extends UpdateComposite {
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
         assignEntityValueFromField("invoiceDate", entity);
-        assignEntityValueFromField("invoiceToVendorDate", entity);
+        assignEntityValueFromField("invoiceSentDate", entity);
         assignEntityValueFromField("billingRate", entity);
         assignEntityValueFromField("overTimeBillingRate", entity);
         assignEntityValueFromField("hours", entity);
@@ -121,7 +121,7 @@ public class UpdateInvoicePanel extends UpdateComposite {
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("invoiceDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("invoiceToVendorDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("invoiceSentDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("hours", entity, DataType.CURRENCY_FIELD);
@@ -156,7 +156,7 @@ public class UpdateInvoicePanel extends UpdateComposite {
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("invoiceDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("invoiceToVendorDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("invoiceSentDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("billingRate", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("overTimeBillingRate", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("hours", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
