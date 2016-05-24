@@ -17,10 +17,14 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.hibernate.annotations.ForeignKey;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -33,39 +37,47 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Entity
 @XmlRootElement
 public class OutOfOfficeRequest extends AbstractEntity {
-    
-    private static long serialVersionUID = 1L;
-    
+
+    private static final long serialVersionUID = 1L;
+
+    @ManyToOne
+    @ForeignKey(name = "FK_Emp_OutOfOfficeReqs")
     protected Employee employee;
-   
-    @NotNull
+
+    @NotNull(message = "{startDate.not.empty.msg}")
+    @Temporal(TemporalType.DATE)
     protected Date startDate;
-    
-    @NotNull
+
+    @NotNull(message = "{endDate.not.empty.msg}")
+    @Temporal(TemporalType.DATE)
     protected Date endDate;
-    
+
     @Lob
-    @NotEmpty
+    @NotEmpty(message = "{reason.not.empty.msg}")
     protected String reason;
-    
+
     protected String time;
-    
-    protected String contactNo;
-    
+
+    protected String notes;
+
     @Enumerated(EnumType.STRING)
+    @Field
+    //@NotNull(message = "{type.not.empty.msg}")
     protected OutOfOfficeType outOfOfficeType;
-    
+
     protected Boolean recurring;
     
+    protected Boolean workForPartial;
+
     protected String bpmProcessId;
-    
+
     @Enumerated(EnumType.STRING)
     @Field
     private OutOfOfficeRequestStatus status;
-    
+
     @Transient
     protected List<Entry> notifyEmployees;
-    
+
     @XmlElement
     public Employee getEmployee() {
         return employee;
@@ -107,12 +119,12 @@ public class OutOfOfficeRequest extends AbstractEntity {
         this.time = time;
     }
 
-    public String getContactNo() {
-        return contactNo;
+    public String getNotes() {
+        return notes;
     }
 
-    public void setContactNo(String contactNo) {
-        this.contactNo = contactNo;
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     public OutOfOfficeType getOutOfOfficeType() {
@@ -156,11 +168,17 @@ public class OutOfOfficeRequest extends AbstractEntity {
         this.notifyEmployees = notifyEmployees;
     }
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
+    public Boolean getWorkForPartial() {
+        return workForPartial;
     }
 
-    public static void setSerialVersionUID(long serialVersionUID) {
-        OutOfOfficeRequest.serialVersionUID = serialVersionUID;
+    public void setWorkForPartial(Boolean workForPartial) {
+        this.workForPartial = workForPartial;
     }
+
+    @Override
+    public String toString() {
+        return "OutOfOfficeRequest{" + "employee=" + employee + ", startDate=" + startDate + ", endDate=" + endDate + ", reason=" + reason + ", time=" + time + ", notes=" + notes + ", outOfOfficeType=" + outOfOfficeType + ", recurring=" + recurring + ", workForPartial=" + workForPartial + ", bpmProcessId=" + bpmProcessId + ", status=" + status + ", notifyEmployees=" + notifyEmployees + '}';
+    }
+
 }
