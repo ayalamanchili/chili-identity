@@ -9,6 +9,7 @@
 package info.yalamanchili.office.jrs.time;
 
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.Time.OutOfOfficeService;
 import info.yalamanchili.office.dao.time.OutOfOfficeDao;
 import info.yalamanchili.office.entity.time.OutOfOfficeRequest;
@@ -48,7 +49,7 @@ public class OutOfOfficeResource extends CRUDResource<OutOfOfficeRequest> {
     public CRUDDao getDao() {
         return outOfOfficeDao;
     }
-    
+
     @GET
     @Path("/{id}")
     @Transactional(readOnly = true)
@@ -59,8 +60,15 @@ public class OutOfOfficeResource extends CRUDResource<OutOfOfficeRequest> {
 
     @PUT
     @Path("/submit-request/")
-    public OutOfOfficeRequest submitLeaveRequest(OutOfOfficeRequest outOfOfficeRequest) {
-       return OutOfOfficeService.instance().submitRequest(outOfOfficeRequest);
+    public void submitLeaveRequest(OutOfOfficeRequest outOfOfficeRequest) {
+        OutOfOfficeService.instance().submitRequest(outOfOfficeRequest);
+    }
+    
+    @PUT
+    @Validate
+    @Path("/update-request")
+    public void updateLeaveRequest(OutOfOfficeRequest entity) {
+        OutOfOfficeService.instance().updateRequest(entity);
     }
 
     @GET
