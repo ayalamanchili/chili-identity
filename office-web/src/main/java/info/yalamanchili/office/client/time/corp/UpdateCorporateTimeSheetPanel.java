@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.time.corp;
 import info.yalamanchili.office.client.time.TimeSheetStatus;
 import info.yalamanchili.office.client.time.TimeSheetCategory;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
@@ -19,6 +20,7 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
@@ -33,8 +35,14 @@ public class UpdateCorporateTimeSheetPanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateCorporateTimeSheetPanel.class.getName());
     SelectCorpEmployeeWidget employeeF = new SelectCorpEmployeeWidget(true, true);
+    protected String status = null;
+    protected String newCategory = null;
+    protected String oldCategory = null;
 
     public UpdateCorporateTimeSheetPanel(JSONObject entity) {
+        logger.info("entity is .... " + entity);
+        JSONValue get = entity.get("status");
+        this.oldCategory = entity.get("category").isString().stringValue();
         initUpdateComposite(entity, "CorporateTimeSheet", OfficeWelcome.constants);
     }
 
@@ -52,18 +60,19 @@ public class UpdateCorporateTimeSheetPanel extends UpdateComposite {
 
     @Override
     protected void updateButtonClicked() {
+        this.newCategory = entity.get("category").isString().stringValue();
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postUpdateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postUpdateSuccess(arg0);
+            }
+        });
     }
 
     @Override
@@ -98,7 +107,11 @@ public class UpdateCorporateTimeSheetPanel extends UpdateComposite {
     @Override
     protected void addWidgets() {
         addDropDown("employee", employeeF);
-        addEnumField("category", true, true, TimeSheetCategory.names());
+        if ((Auth.hasAnyOfRoles(ROLE.ROLE_BULK_IMPORT)) && (entity.get("status").isString().stringValue().equals("Pending"))) {
+            addEnumField("category", false, true, TimeSheetCategory.names());
+        } else {
+            addEnumField("category", true, true, TimeSheetCategory.names());
+        }
         addEnumField("status", false, true, TimeSheetStatus.names());
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
@@ -139,6 +152,10 @@ public class UpdateCorporateTimeSheetPanel extends UpdateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "corporate-timesheet";
+        if (newCategory.equals(oldCategory)) {
+            return OfficeWelcome.constants.root_url() + "corporate-timesheet";
+        } else {
+            return OfficeWelcome.constants.root_url() + "corporate-timesheet/category-leave-update-request";
+        }
     }
 }
