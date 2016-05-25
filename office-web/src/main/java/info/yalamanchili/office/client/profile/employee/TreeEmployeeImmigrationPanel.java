@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -11,6 +14,7 @@ import info.yalamanchili.office.client.gwt.TreePanelComposite;
 import info.yalamanchili.office.client.profile.immigration.ReadAllPassportsPanel;
 import info.yalamanchili.office.client.profile.immigration.i94Record.ReadAllI94RecordPanel;
 import info.yalamanchili.office.client.profile.immigration.travelhistroy.ReadAllTravelHistoryRecordPanel;
+import info.yalamanchili.office.client.profile.immigration.educationrecord.ReadAllEducationRecordPanel;
 import java.util.logging.Logger;
 
 /**
@@ -23,6 +27,7 @@ public class TreeEmployeeImmigrationPanel extends TreePanelComposite {
     protected static final String PASSPORT_NODE = "passport-immigration";
     protected static final String TRAVALHISTORY_NODE = "travelhistory-immigration";
     protected static final String I94Record_NODE = "i94Rirecord-immigration";
+    protected static final String EducationRecord_NODE = "educationrecord-immigration";
     //  protected static final String LCA_NODE = "lca-immigration";
     //  protected static final String PETITION_NODE = "petition-immigration";
     protected String employeeId;
@@ -45,6 +50,7 @@ public class TreeEmployeeImmigrationPanel extends TreePanelComposite {
         addFirstChildLink("Passport", PASSPORT_NODE);
         addFirstChildLink("TravelHistory", TRAVALHISTORY_NODE);
         addFirstChildLink("I94Record", I94Record_NODE);
+        addFirstChildLink("EducationRecord", EducationRecord_NODE);        
         //     addFirstChildLink("LCA", LCA_NODE);
         //    addFirstChildLink("Petition", PETITION_NODE);
     }
@@ -63,6 +69,10 @@ public class TreeEmployeeImmigrationPanel extends TreePanelComposite {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
             TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllI94RecordPanel(employeeId));
         }
+        if (EducationRecord_NODE.equals(entityNodeKey)) {
+            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEducationRecordPanel(employeeId));
+        }        
 //        if (LCA_NODE.equals(entityNodeKey)) {
 //            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
 //            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllLCAPanel(employeeId));

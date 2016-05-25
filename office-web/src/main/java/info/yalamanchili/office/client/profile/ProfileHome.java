@@ -26,6 +26,7 @@ import info.yalamanchili.office.client.profile.empdoc.ReadAllEmpDocsPopupPanel;
 import info.yalamanchili.office.client.profile.employee.ReadEmployeePopupPanel;
 import info.yalamanchili.office.client.profile.immigration.i94Record.ReadAllI94RecordPopupPanel;
 import info.yalamanchili.office.client.profile.immigration.travelhistroy.ReadAllTravelHistoryRecordPopupPanel;
+import info.yalamanchili.office.client.profile.immigration.educationrecord.ReadAllEducationRecordPopupPanel;
 import info.yalamanchili.office.client.profile.preferences.PreferencesPanel;
 import info.yalamanchili.office.client.profile.privacy.ReadAllPrivacySettingPopupPanel;
 import info.yalamanchili.office.client.profile.skillset.UpdateSkillSetPopupPanel;
@@ -56,6 +57,7 @@ public class ProfileHome extends ALComposite {
     protected DisclosurePanel bankAccountPanel;
     protected DisclosurePanel i94RecordPanel;
     protected DisclosurePanel travelHistroyPanel;
+    protected DisclosurePanel educationRecordPanel;    
 
     public ProfileHome() {
         instance = this;
@@ -86,6 +88,7 @@ public class ProfileHome extends ALComposite {
         addEmpDocsPanel();
         addi94RecordPanel();
         addTravelHistroyPanel();
+        addEducationRecordPanel();
         addBenefitsPanel();
         addPreferencesPanel();
         addPrivacyPanel();
@@ -440,6 +443,30 @@ public class ProfileHome extends ALComposite {
         travelHistroyPanel.setOpen(false);
         travelHistroyPanel.setOpen(true);
     }
+    
+    /*
+     * I94Record();
+     */
+    protected void addEducationRecordPanel() {
+        if (panel.getWidgetIndex(educationRecordPanel) < 0) {
+            educationRecordPanel = new DisclosurePanel("EducationRecord");
+            panel.add(educationRecordPanel);
+            educationRecordPanel.addStyleName("profileHome");
+            educationRecordPanel.addOpenHandler(new OpenHandler<DisclosurePanel>() {
+                @Override
+                public void onOpen(OpenEvent<DisclosurePanel> event) {
+                    educationRecordPanel.setContent(new ReadAllEducationRecordPopupPanel(OfficeWelcome.instance().employeeId));
+                }
+            });
+        }
+    }
+
+    public void refreshEducationRecord() {
+        educationRecordPanel.setOpen(false);
+        educationRecordPanel.setOpen(true);
+    }
+
+    
     /*
      * bankaccountpanel
      */
