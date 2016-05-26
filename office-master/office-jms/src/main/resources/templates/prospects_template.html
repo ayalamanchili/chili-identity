@@ -68,15 +68,15 @@
                     </div>
                     <div>
                         <div  style="text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt; padding:1px 8px" >
-                            <table border='1' >
+                            <table border='1' cellspacing="0">
                                 <thead>
                                     <tr>
                                         <th>Prospect Associate Name</th>
                                         <th>Email</th>
                                         <th>Phone Number</th>
-                                        <th>Case Manager</th>
+                                        <th>Screened By</th>
                                         <th>Assigned To</th>
-                                        <th>Bench Date</th>
+                                        <th th:if="${isBenchDateRequired} == 'true'">Bench Date</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -84,9 +84,9 @@
                                         <td th:text="${prospectDto.employee}"></td>
                                         <td th:text="${prospectDto.email}"></td>
                                         <td th:text="${prospectDto.phoneNumber}"></td>
-                                        <td th:text="${prospectDto.manager}"></td>
+                                        <td th:text="${prospectDto.screenedBy}"></td>
                                         <td th:text="${prospectDto.assignedto}"></td>
-                                        <td  th:if="${prospectDto.benchDate} != 'null'" th:text="${prospectDto.benchDate}"></td>
+                                        <td th:if="${isBenchDateRequired} == 'true'" th:text="${prospectDto.benchDate}"></td>
                                     </tr>
                                 </tbody>
                             </table>
