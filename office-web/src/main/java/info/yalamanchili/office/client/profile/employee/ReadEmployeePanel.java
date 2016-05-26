@@ -11,7 +11,12 @@ import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import info.chili.gwt.fields.ImageField;
+import info.chili.gwt.fields.StringField;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
@@ -27,6 +32,8 @@ public class ReadEmployeePanel extends ReadComposite {
     private static ReadEmployeePanel instance;
     protected SelectCompanyWidget selectCompnayWidget = new SelectCompanyWidget(true, false, Alignment.HORIZONTAL);
     protected SelectEmployeeTypeWidget employeeSelectWidget = new SelectEmployeeTypeWidget(true, false);
+    HorizontalPanel hpanel = new HorizontalPanel();
+    VerticalPanel vPanel = new VerticalPanel();
 
     public static ReadEmployeePanel instance() {
         return instance;
@@ -96,10 +103,26 @@ public class ReadEmployeePanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addDropDown("employeeType", employeeSelectWidget);
-        addField("firstName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("middleInitial", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("lastName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        fields.put("employeeType", employeeSelectWidget);
+        StringField stringField = new StringField(OfficeWelcome.constants,
+                "firstName", "Employee", true, true, Alignment.HORIZONTAL);
+        stringField.addEnterKeyPressesListener(this);
+        fields.put("firstName", stringField);
+        StringField mistringField = new StringField(OfficeWelcome.constants,
+                "middleInitial", "Employee", true, true, Alignment.HORIZONTAL);
+        stringField.addEnterKeyPressesListener(this);
+        fields.put("middleInitial", mistringField);
+        StringField lnstringField = new StringField(OfficeWelcome.constants,
+                "lastName", "Employee", true, true, Alignment.HORIZONTAL);
+        stringField.addEnterKeyPressesListener(this);
+        fields.put("lastName", lnstringField);
+        vPanel.add(employeeSelectWidget);
+        vPanel.add(stringField);
+        vPanel.add(mistringField);
+        vPanel.add(lnstringField);
+        hpanel.add(vPanel);
+        hpanel.add(new ImageField("Picture", JSONUtils.toString(entity, "imageURL"), JSONUtils.toString(entity, "id"), 100, 100, false));
+        entityFieldsPanel.add(hpanel);
         addField("employeeId", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         if (canViewDOBField()) {
             addField("dateOfBirth", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
