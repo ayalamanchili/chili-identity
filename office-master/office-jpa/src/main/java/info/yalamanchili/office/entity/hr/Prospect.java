@@ -222,11 +222,11 @@ public class Prospect extends AbstractEntity {
 
     @Override
     public String describe() {
-        StringBuilder description = new StringBuilder("\n");
-        description.append("First Name    : ").append(this.getContact().getFirstName()).append("\n");
-        description.append("Last Name     : ").append(this.getContact().getLastName()).append("\n");
-        description.append("Referred By   : ").append(this.getReferredBy()).append("\n");
-        description.append("Status        : ").append(this.getStatus()).append("\n");
+        StringBuilder description = new StringBuilder("</br>");
+        description.append("<b>First Name    &nbsp;&nbsp;:</b> ").append(this.getContact().getFirstName()).append("</br>");
+        description.append("<b>Last Name     &nbsp;&nbsp;:</b> ").append(this.getContact().getLastName()).append("</br>");
+        description.append("<b>Referred By   :</b> ").append(this.getReferredBy()).append("</br>");
+        description.append("<b>Status        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;:</b> ").append(this.getStatus()).append("</br>");
         return description.toString();
     }
 
