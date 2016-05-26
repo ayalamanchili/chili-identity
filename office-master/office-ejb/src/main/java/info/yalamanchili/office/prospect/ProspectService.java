@@ -184,7 +184,7 @@ public class ProspectService {
         }
         CommentDao.instance().addComment(dto.getComment(), entity);
         dto.setId(entity.getId());
-        ProspectProcessBean.instance().notifyCaseManager(entity, dto.getEmployees());
+        ProspectProcessBean.instance().notifyCaseManager(entity, dto.getEmployees(), dto.getComment());
         return mapper.map(entity, ProspectDto.class);
     }
 
@@ -254,8 +254,8 @@ public class ProspectService {
             if (dto.getStatus() != null) {
                 if (entity.getStatus() != dto.getStatus()) {
                     entity.setStatus(dto.getStatus());
-                    ProspectProcessBean.instance().notifyCaseManager(entity, dto.getEmployees());
-                    sendProspectStatusNotification(entity);
+                    ProspectProcessBean.instance().notifyCaseManager(entity, dto.getEmployees(), dto.getComment());
+                    sendProspectStatusNotification(entity, dto.getComment());
                 }
             } else {
                 entity.setStatus(ProspectStatus.IN_PROGRESS);
@@ -405,7 +405,7 @@ public class ProspectService {
         }
     }
 
-    public void sendProspectStatusNotification(Prospect prospect) {
+    public void sendProspectStatusNotification(Prospect prospect, String comment) {
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
         info.chili.email.Email email = new info.chili.email.Email();
         if (prospect.getManager() != null) {
@@ -424,17 +424,19 @@ public class ProspectService {
             email.addTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_HR.name()));
         }
         email.setHtml(Boolean.TRUE);
+        email.setRichText(Boolean.TRUE);
         email.setSubject("Prospect Status change for : " + prospect.getContact().getFirstName() + " " + prospect.getContact().getLastName() + "; " + "Status: " + prospect.getStatus());
-        String messageText = " Prospect Information :: ";
-        messageText = messageText.concat("\n Prospect     : " + prospect.getContact().getFirstName() + " " + prospect.getContact().getLastName());
-        messageText = messageText.concat("\n Status       : " + prospect.getStatus());
+        String messageText = " <b><u>Prospect Information :</b></u> </br> ";
+        messageText = messageText.concat("</br> <b>Prospect &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;:</b> " + prospect.getContact().getFirstName() + " " + prospect.getContact().getLastName());
+        messageText = messageText.concat("</br> <b>Status &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;:</b> " + prospect.getStatus());
         if (prospect.getManager() != null) {
-            messageText = messageText.concat("\n Case Manager : " + EmployeeDao.instance().findById(prospect.getManager()).getFirstName());
+            messageText = messageText.concat("</br> <b>Case Manager &nbsp; &nbsp;:</b> " + EmployeeDao.instance().findById(prospect.getManager()).getFirstName());
         }
         if (prospect.getAssigned() != null) {
-            messageText = messageText.concat("\n Assigned To  : " + EmployeeDao.instance().findById(prospect.getAssigned()).getFirstName());
+            messageText = messageText.concat("</br> <b>Assigned To  &nbsp; &nbsp;:</b> " + EmployeeDao.instance().findById(prospect.getAssigned()).getFirstName());
         }
-        messageText = messageText.concat("\n Updated_By   : " + emp.getFirstName() + " " + emp.getLastName());
+        messageText = messageText.concat("</br> <b>Updated_By  &nbsp; &nbsp;:</b> " + emp.getFirstName() + " " + emp.getLastName());
+        messageText = messageText.concat("</br> <b>Comment &nbsp; &nbsp; &nbsp; &nbsp;:</b> " + comment);
         email.setBody(messageText);
         MessagingService.instance().sendEmail(email);
     }

@@ -10,13 +10,11 @@ package info.yalamanchili.office.ejb.hr;
 
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
-import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dto.prospect.ProspectDto;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.hr.Prospect;
 import info.yalamanchili.office.entity.hr.ProspectStatus;
-import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,29 +36,12 @@ public class ProspectProcessBean {
 
     @PersistenceContext
     protected EntityManager em;
-
-    public String startNewProspectProcess(Prospect prospect, Employee currentUser) {
-        Map<String, Object> vars = new HashMap<>();
-        String assigned = "";
-        vars.put("prospect", prospect);
-        vars.put("entityId", prospect.getId());
-        if (prospect.getManager() != null) {
-            vars.put("approvalManager", EmployeeDao.instance().findById(prospect.getManager()).getEmployeeId());
-            vars.put("caseManager", EmployeeDao.instance().findById(prospect.getManager()).getFirstName());
-        }
-        if (prospect.getAssigned() != null) {
-            assigned = EmployeeDao.instance().findById(prospect.getAssigned()).getFirstName();
-        }
-        vars.put("assignedTo", assigned);
-        vars.put("currentEmployee", currentUser);
-        return OfficeBPMService.instance().startProcess("prospect_process", vars);
-    }
-
+    
     public static ProspectProcessBean instance() {
         return SpringContext.getBean(ProspectProcessBean.class);
     }
 
-    public void notifyCaseManager(Prospect entity, List<Long> employees) {
+    public void notifyCaseManager(Prospect entity, List<Long> employees, String comment) {
         info.chili.email.Email email = new info.chili.email.Email();
         if (entity.getStatus().equals(ProspectStatus.IN_PROGRESS) && entity.getManager() != null) {
             email.addTo(EmployeeDao.instance().findById(entity.getManager()).getPrimaryEmail().getEmail());
@@ -75,8 +56,9 @@ public class ProspectProcessBean {
             }
         }
         email.setHtml(Boolean.TRUE);
+        email.setRichText(Boolean.TRUE);
         email.setSubject("New Prospect " + entity.getContact().getFirstName() + " " + entity.getContact().getLastName() + " Has Created");
-        String messageText = entity.describe() + "\n Navigate To MyOffice --> Prospect --> Search -> Click on update to change the status with appropriate comments";
+        String messageText = entity.describe() +"<b> Comment &nbsp; &nbsp;:</b>"+comment+ "</br> <b>Navigate To MyOffice --> Prospect --> Search -> Click on update to change the status with appropriate comments</b>";
         email.setBody(messageText);
         MessagingService.instance().sendEmail(email);
     }
@@ -92,7 +74,9 @@ public class ProspectProcessBean {
             if (prospect.getStatus().equals(ProspectStatus.RECRUITING)) {
                 email.addTo(EmployeeDao.instance().findById(prospect.getAssigned()).getPrimaryEmail().getEmail());
             }
-            prospectDtos.add(ProspectDto.map(mapper, prospect));
+            ProspectDto dto = ProspectDto.map(mapper, prospect);
+            dto.setPhoneNumber(prospect.getContact().getPhones().get(0).getPhoneNumber().replaceAll("(\\d{3})(\\d{3})(\\d{4})", "$1-$2-$3"));
+            prospectDtos.add(dto);
         }
         if (moreThanThreeDays == true) {
             email.setSubject(inprogressCount + " " + status + " Prospects status not changed from more than 3 days\n");
@@ -102,6 +86,7 @@ public class ProspectProcessBean {
         email.setBody("Prospect Status : " + status + " \n Count: " + inprogressCount);
         HashMap<String, Object> emailContext = new HashMap();
         emailContext.put("prospects", prospectDtos);
+        emailContext.put("isBenchDateRequired", "false");
         email.setContext(emailContext);
         email.setTemplateName("prospects_template.html");
         MessagingService.instance().sendEmail(email);
@@ -115,12 +100,14 @@ public class ProspectProcessBean {
         email.setHtml(Boolean.TRUE);
         for (Prospect prospect : benchProspects.keySet()) {
             ProspectDto dto = ProspectDto.map(mapper, prospect);
+            dto.setPhoneNumber(prospect.getContact().getPhones().get(0).getPhoneNumber().replaceAll("(\\d{3})(\\d{3})(\\d{4})", "$1-$2-$3"));
             dto.setBenchDate(benchProspects.get(prospect));
             prospectDtos.add(dto);
         }
         email.setSubject(benchProspects.size() + " Bench Prospects Weekly Notification\n");
         HashMap<String, Object> emailContext = new HashMap();
         emailContext.put("prospects", prospectDtos);
+        emailContext.put("isBenchDateRequired", "true");
         email.setContext(emailContext);
         email.setTemplateName("prospects_template.html");
         MessagingService.instance().sendEmail(email);
