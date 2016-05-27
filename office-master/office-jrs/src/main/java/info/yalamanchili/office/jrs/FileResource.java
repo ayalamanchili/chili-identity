@@ -140,7 +140,7 @@ public class FileResource {
         }
         response.header("Content-Type", contentType);
         //Content disposition with attachement forces the browser to download as attachment(avod inconsistent file type handles by browser)
-        response.header("Content-Length", fileName);
+        response.header("Content-Length", file.length());
     }
 
     protected Response validateFileUpload(FileItem item) {
