@@ -219,6 +219,9 @@
                     <i18nConstantsWithLookupBundle>
                         info.yalamanchili.office.client.internalization.OfficeConstants
                     </i18nConstantsWithLookupBundle>
+                    <i18nConstantsWithLookupBundle>
+                        info.yalamanchili.office.client.internalization.OfficeConstants2
+                    </i18nConstantsWithLookupBundle>
                     <i18nMessagesBundle>
                         info.yalamanchili.office.client.internalization.OfficeMessages
                     </i18nMessagesBundle>
@@ -349,6 +352,9 @@
                             <i18nConstantsWithLookupBundle>
                                 info.yalamanchili.office.client.internalization.OfficeConstants
                             </i18nConstantsWithLookupBundle>
+                            <i18nConstantsWithLookupBundle>
+                                info.yalamanchili.office.client.internalization.OfficeConstants2
+                            </i18nConstantsWithLookupBundle>
                             <i18nMessagesBundle>
                                 info.yalamanchili.office.client.internalization.OfficeMessages
                             </i18nMessagesBundle>
@@ -398,6 +404,9 @@
                             <generateDirectory>src/main/java</generateDirectory>
                             <i18nConstantsWithLookupBundle>
                                 info.yalamanchili.office.client.internalization.OfficeConstants
+                            </i18nConstantsWithLookupBundle>
+                            <i18nConstantsWithLookupBundle>
+                                info.yalamanchili.office.client.internalization.OfficeConstants2
                             </i18nConstantsWithLookupBundle>
                             <i18nMessagesBundle>
                                 info.yalamanchili.office.client.internalization.OfficeMessages

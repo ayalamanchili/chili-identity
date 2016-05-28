@@ -26,6 +26,7 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.LocalStorage;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.config.OfficeClientConfig;
+import info.yalamanchili.office.client.internalization.OfficeConstants2;
 import info.yalamanchili.office.client.login.LoginPage;
 import info.yalamanchili.office.client.resources.OfficeImages;
 
@@ -36,6 +37,7 @@ public class OfficeWelcome implements EntryPoint {
     public String employeeId;
     public List<String> roles = new ArrayList<>();
     public static OfficeConstants constants = (OfficeConstants) GWT.create(OfficeConstants.class);
+    public static OfficeConstants2 constants2 = (OfficeConstants2) GWT.create(OfficeConstants2.class);
     public static OfficeMessages messages = (OfficeMessages) GWT.create(OfficeMessages.class);
     public static EventBus EVENT_BUS = GWT.create(SimpleEventBus.class);
     public OfficeClientConfig officeClientConfig;
