@@ -19,12 +19,12 @@ import java.util.logging.Logger;
  *
  * @author Sudha
  */
-public class ReadEducationRecordPanel  extends ReadComposite {
-    
+public class ReadEducationRecordPanel extends ReadComposite {
+
     private static Logger logger = Logger.getLogger(ReadEducationRecordPanel.class.getName());
 
     public ReadEducationRecordPanel(JSONObject entity) {
-        initReadComposite(entity, "educationrecord", OfficeWelcome.constants);
+        initReadComposite(entity, "educationrecord", OfficeWelcome.constants2);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class ReadEducationRecordPanel  extends ReadComposite {
         assignFieldValueFromEntity("nameOfSchool", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("address", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("graduationYear", entity, DataType.STRING_FIELD);
-        
+
     }
 
     @Override
@@ -71,5 +71,5 @@ public class ReadEducationRecordPanel  extends ReadComposite {
     @Override
     public void loadEntity(String entityId) {
 
-    }    
+    }
 }
