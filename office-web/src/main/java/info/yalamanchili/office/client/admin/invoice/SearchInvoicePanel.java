@@ -32,7 +32,7 @@ public class SearchInvoicePanel extends SearchComposite {
     private static Logger logger = Logger.getLogger(SearchInvoicePanel.class.getName());
 
     public SearchInvoicePanel() {
-        init("Invoice Search", "Invoice", OfficeWelcome.constants);
+        init("Invoice Search", "Invoice", OfficeWelcome.constants2);
     }
 
     @Override
@@ -45,31 +45,31 @@ public class SearchInvoicePanel extends SearchComposite {
 
     @Override
     protected void addWidgets() {
-        addField("employee", DataType.STRING_FIELD);
         addField("vendor", DataType.STRING_FIELD);
         addEnumField("clientInformationCompany", false, false, ClientInformationCompany.names());
         addField("invoiceNumber", DataType.STRING_FIELD);
         addField("itemNumber", DataType.STRING_FIELD);
         addField("startDate", DataType.DATE_FIELD);
         addField("endDate", DataType.DATE_FIELD);
+        addField("invoiceDate", DataType.DATE_FIELD);
+        addField("invoiceSentDate", DataType.DATE_FIELD);
         addEnumField("timeSheetStatus", false, false, TimeStatus.names());
         addEnumField("invoiceStatus", false, false, InvoiceStatus.names());
-
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
-        assignEntityValueFromField("employee", entity);
         assignEntityValueFromField("vendor", entity);
         assignEntityValueFromField("clientInformationCompany", entity);
         assignEntityValueFromField("invoiceNumber", entity);
         assignEntityValueFromField("itemNumber", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
+        assignEntityValueFromField("invoiceDate", entity);
+        assignEntityValueFromField("invoiceSentDate", entity);
         assignEntityValueFromField("timeSheetStatus", entity);
         assignEntityValueFromField("invoiceStatus", entity);
-
         return entity;
     }
 
@@ -78,11 +78,11 @@ public class SearchInvoicePanel extends SearchComposite {
         if (getSearchText() != null) {
             HttpService.HttpServiceAsync.instance().doGet(getSearchURI(getSearchText(), 0, 1000),
                     OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                @Override
-                public void onResponse(String result) {
-                    processSearchResult(result);
-                }
-            });
+                        @Override
+                        public void onResponse(String result) {
+                            processSearchResult(result);
+                        }
+                    });
         }
     }
 
@@ -90,11 +90,11 @@ public class SearchInvoicePanel extends SearchComposite {
     protected void search(JSONObject entity) {
         HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 1000), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                processSearchResult(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        processSearchResult(result);
+                    }
+                });
     }
 
     @Override
@@ -105,8 +105,13 @@ public class SearchInvoicePanel extends SearchComposite {
 
     @Override
     protected String getSearchURI(String searchText, Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "invoice/search/" + searchText + "/" + start.toString() + "/"
-                + limit.toString());
+        if (getKey() != null) {
+            return URL.encode(OfficeWelcome.constants.root_url() + "invoice/search-invoice-by-emp" + "/" + start.toString() + "/"
+                    + limit.toString()) + "?empId=" + getKey();
+        } else {
+            return URL.encode(OfficeWelcome.constants.root_url() + "invoice/search/" + searchText + "/" + start.toString() + "/"
+                    + limit.toString());
+        }
     }
 
     @Override
@@ -117,7 +122,13 @@ public class SearchInvoicePanel extends SearchComposite {
 
     @Override
     protected void populateSearchSuggestBox() {
-
+        HttpService.HttpServiceAsync.instance().doGet(getNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                suggestionsMap = JSONUtils.convertKeyValueStringPairs(entityString);
+                loadSearchSuggestions(suggestionsMap.values());
+            }
+        });
     }
 
     @Override
@@ -130,14 +141,6 @@ public class SearchInvoicePanel extends SearchComposite {
                 sb.loadData(values.values());
             }
         });
-        HttpService.HttpServiceAsync.instance().doGet(getNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String entityString) {
-                Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
-                SuggestBox sb = (SuggestBox) fields.get("employee");
-                sb.loadData(values.values());
-            }
-        });
     }
 
     protected String getVendorDropDownUrl() {
@@ -147,7 +150,6 @@ public class SearchInvoicePanel extends SearchComposite {
     protected String getNameDropDownUrl() {
         return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Corporate Employee&employee-type=Employee&employee-type=Subcontractor&employee-type=1099 Contractor&employee-type=W2 Contractor&includeAll=true");
     }
-
     @Override
     protected void onOpenAdvancedSearch() {
         super.onOpenAdvancedSearch();
