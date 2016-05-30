@@ -53,10 +53,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Scope("prototype")
 public class CorporateTimeService {
-    
+
     @Autowired
     protected CorporateTimeSheetDao corporateTimeSheetDao;
-    
+
     public void submitLeaveRequest(CorporateTimeSheet entity) {
         Employee emp = null;
         Map<String, Object> vars = new HashMap<>();
@@ -67,9 +67,11 @@ public class CorporateTimeService {
             emp = OfficeSecurityService.instance().getCurrentUser();
         }
         entity.setEmployee(emp);
-        BigDecimal ptoAvailable = CorporateTimeSheetDao.instance().getPTOAccruedTimeSheet(emp).getHours();
-        if (entity.getHours().doubleValue() > ptoAvailable.doubleValue()) {
-            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "insufficient.PTO.hours", "You may not have sufficient PTO");
+        if (TimeSheetCategory.PTO_USED.equals(entity.getCategory())) {
+            BigDecimal ptoAvailable = CorporateTimeSheetDao.instance().getPTOAccruedTimeSheet(emp).getHours();
+            if (entity.getHours().doubleValue() > ptoAvailable.doubleValue()) {
+                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "insufficient.PTO.hours", "You may not have sufficient PTO");
+            }
         }
         vars.put("entity", entity);
         vars.put("currentEmployee", emp);
@@ -80,7 +82,7 @@ public class CorporateTimeService {
         vars.put("notifyEmployees", entity.getNotifyEmployees());
         OfficeBPMService.instance().startProcess("corp_emp_leave_request_process", vars);
     }
-    
+
     public void categoryLeaveUpdateRequest(CorporateTimeSheet entity) {
         Employee emp = null;
         if (entity.getEmployee().getId() != null) {
@@ -88,14 +90,17 @@ public class CorporateTimeService {
         } else {
             emp = OfficeSecurityService.instance().getCurrentUser();
         }
-        if(Branch.Hyderabad.equals(emp.getBranch())){
-        OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
-        submitLeaveRequest(entity);
-        }
-        else{
+        if (Branch.Hyderabad.equals(emp.getBranch())) {
+            if (TimeSheetCategory.PTO_ACCRUED.equals(entity.getCategory())) {
+                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "not.change.to.accrued", "You may not change category to Pto_Accrued");
+            }
+            OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
+            submitLeaveRequest(entity);
+        } else {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "You don't have Access", "You don't have access");
+        }
     }
-    }
+
     protected void validateRequest(CorporateTimeSheet entity) {
         if (entity.getStartDate().after(DateUtils.getNextMonth(new Date(), 11)) || entity.getStartDate().before(DateUtils.getNextMonth(new Date(), -11))) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.startdate", "Start Date Invalid");
@@ -104,7 +109,7 @@ public class CorporateTimeService {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.enddate", "End Date Invalid ");
         }
     }
-    
+
     public void updateLeaveRequest(CorporateTimeSheet entity) {
         OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
         taskService.deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
@@ -112,7 +117,7 @@ public class CorporateTimeService {
         taskService.deleteTasksWithVariable("entityId", entity.getId(), "corpEmpLeaveRequestCancelTask", true);
         submitLeaveRequest(entity);
     }
-    
+
     public void cancelLeaveRequest(Long timesheetId, String cancelReason) {
         CorporateTimeSheet ts = corporateTimeSheetDao.findById(timesheetId);
         validateExistingCanelRequests(timesheetId);
@@ -124,9 +129,9 @@ public class CorporateTimeService {
         vars.put("currentEmployee", emp);
         vars.put("summary", getYearlySummary(emp));
         OfficeBPMService.instance().startProcess("corp_emp_leave_cancel_request", vars);
-        
+
     }
-    
+
     protected void validateExistingCanelRequests(Long tsId) {
         List<Task> tasks = OfficeBPMTaskService.instance().findTasksWithVariable("entityId", tsId);
         for (Task task : tasks) {
@@ -135,20 +140,20 @@ public class CorporateTimeService {
             }
         }
     }
-    
+
     public CorporateTimeSummary getYearlySummary(Employee employee) {
         CorporateTimeSummary summary = new CorporateTimeSummary();
         //PTO
         summary.setUsedPTOHours(String.valueOf(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.PTO_USED, TimeSheetStatus.Approved, new Date())));
         summary.setAvailablePTOHours(String.valueOf(corporateTimeSheetDao.getPTOAccruedTimeSheet(employee).getHours()));
         summary.setTotalAccumulatedPTOHours(String.valueOf(corporateTimeSheetDao.getPTOAccruedInYear(employee)));
-        
+
         summary.setUsedUnpaidHours(String.valueOf(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Unpaid, TimeSheetStatus.Approved, new Date())));
         summary.setEmployee(employee.getFirstName() + " " + employee.getLastName());
         summary.setStartDate(new SimpleDateFormat("MM/dd/yyyy").format(employee.getStartDate()));
         return summary;
     }
-    
+
     @AccessCheck(employeePropertyName = "employee", companyContacts = {"Reports_To"}, roles = {"ROLE_HR_ADMINSTRATION", "ROLE_CORPORATE_TIME_REPORTS"})
     public Response getReport(CorporateTimeSheet entity) {
         CorporateTimeSummary summary = getYearlySummary(entity.getEmployee());
@@ -197,9 +202,9 @@ public class CorporateTimeService {
                 .header("content-disposition", "filename = leave-request.pdf")
                 .header("Content-Length", pdf)
                 .build();
-        
+
     }
-    
+
     @Async
     @Transactional(readOnly = true)
     public void getAllEmployeesSummaryReport(String email) {
@@ -209,7 +214,7 @@ public class CorporateTimeService {
         }
         MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(summary, "corporate-time-summary", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
     }
-    
+
     public static CorporateTimeService instance() {
         return SpringContext.getBean(CorporateTimeService.class);
     }
