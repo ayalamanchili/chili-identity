@@ -36,11 +36,11 @@ public class ReadInvoicePanel extends ReadComposite {
 
     public ReadInvoicePanel(JSONObject entity) {
         instance = this;
-        initReadComposite(entity, "Invoice", OfficeWelcome.constants);
+        initReadComposite(entity, "Invoice", OfficeWelcome.constants2);
     }
 
     public ReadInvoicePanel(String id) {
-        initReadComposite(id, "Invoice", OfficeWelcome.constants);
+        initReadComposite(id, "Invoice", OfficeWelcome.constants2);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class ReadInvoicePanel extends ReadComposite {
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("invoiceDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("invoiceSentDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
+        assignFieldValueFromEntity("billingRate", clientInformation, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("hours", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
