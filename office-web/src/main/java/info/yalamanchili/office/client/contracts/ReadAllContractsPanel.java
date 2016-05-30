@@ -22,6 +22,7 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.invoice.UpdateInvoicePanel;
@@ -104,7 +105,9 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
         table.setText(0, 7, getKeyValue("StartDate"));
 //        table.setText(0, 9, getKeyValue("EndDate"));
         table.setText(0, 8, getKeyValue("Status"));
-        table.setText(0, 9, getKeyValue("Invoice"));
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_INVOICE_MANAGER)) {
+            table.setText(0, 9, getKeyValue("Invoice"));
+        }
     }
 
     @Override
@@ -113,6 +116,7 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             OfficeWelcome.instance().logger.info(entity.toString());
+
             if (JSONUtils.toString(entity, "isActive").equalsIgnoreCase("true")) {
                 table.getRowFormatter().setStyleName(i, "contractActive");
             }
@@ -136,13 +140,15 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
             table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
 //            table.setText(i, 9, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
             setEnumColumn(i, 8, entity, ClientInformationStatus.class.getSimpleName(), "status");
-            ClickableLink invoiceLink = new ClickableLink("Create Invoice");
-            invoiceLink.setTitle(JSONUtils.toString(entity, "id"));
-            emp = JSONUtils.toString(entity, "employee");
-            invoiceLink.addClickHandler((ClickEvent event) -> {
-                getInvoice(((ClickableLink) event.getSource()).getTitle());
-            });
-            table.setWidget(i, 9, invoiceLink);
+            if (Auth.hasAnyOfRoles(ROLE.ROLE_INVOICE_MANAGER) && entity.get("status").isString().stringValue().equalsIgnoreCase("Completed")) {
+                ClickableLink invoiceLink = new ClickableLink("Create Invoice");
+                invoiceLink.setTitle(JSONUtils.toString(entity, "id"));
+                emp = JSONUtils.toString(entity, "employee");
+                invoiceLink.addClickHandler((ClickEvent event) -> {
+                    getInvoice(((ClickableLink) event.getSource()).getTitle());
+                });
+                table.setWidget(i, 9, invoiceLink);
+            }
         }
     }
 
