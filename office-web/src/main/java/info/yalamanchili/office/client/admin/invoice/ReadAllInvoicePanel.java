@@ -27,6 +27,7 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.contracts.ReadContractsPanel;
@@ -46,34 +47,33 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
     public ReadAllInvoicePanel(String parentId) {
         instance = this;
         this.parentId = parentId;
-        initTable("Invoice", OfficeWelcome.constants);
+        initTable("Invoice", OfficeWelcome.constants2);
     }
     
     public ReadAllInvoicePanel(boolean displayAll) {
         instance = this;
         this.displayALL = displayAll;
-        initTable("Invoice", OfficeWelcome.constants);
+        initTable("Invoice", OfficeWelcome.constants2);
     }
     static JSONObject invoice;
     
     public ReadAllInvoicePanel(JSONObject invoice) {
         instance = this;
         this.invoice = invoice;
-        initTable("Invoice", OfficeWelcome.constants);
+        initTable("Invoice", OfficeWelcome.constants2);
     }
     
     public ReadAllInvoicePanel(JSONObject invoice, String clientInfoId) {
         instance = this;
         this.clientInfoId = clientInfoId;
         this.invoice = invoice;
-        initTable("Invoice", OfficeWelcome.constants);
+        initTable("Invoice", OfficeWelcome.constants2);
     }
     
     public ReadAllInvoicePanel(JSONArray array) {
         instance = this;
         displayALL = true;
-        logger.info("ddddddd" + array.toString());
-        initTable("Invoice", array, OfficeWelcome.constants);
+        initTable("Invoice", array, OfficeWelcome.constants2);
     }
     
     @Override
@@ -154,7 +154,7 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
             table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 6, DateUtils.getFormatedDate(JSONUtils.toString(entity, "invoiceDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 7, FormatUtils.formarCurrency(JSONUtils.toString(entity, "billingRate")));
+            table.setText(i, 7, FormatUtils.formarCurrency(JSONUtils.toString(clientInformation, "billingRate")));
             table.setText(i, 8, FormatUtils.formarCurrency(JSONUtils.toString(entity, "overTimeBillingRate")));
         }
     }
@@ -199,7 +199,6 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
     
     public static Widget renderInvoiceHistory(final JSONObject invoice, final String clientInfoId) {
         final DisclosurePanel invoiceDP = new DisclosurePanel("Invoices History");
-        logger.info("invoice obj is.... " + invoice);
         invoiceDP.setWidth("100%");
         invoiceDP.setOpen(true);
         invoiceDP.setContent(
@@ -216,7 +215,7 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
     
     @Override
     protected void configureCreateButton() {
-        if (displayALL == false) {
+        if (displayALL == false && Auth.hasAnyOfRoles(ROLE.ROLE_INVOICE_MANAGER)) {
             createButton.setText("Create Invoice");
             createButton.setVisible(true);
         } else {
