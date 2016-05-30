@@ -36,7 +36,7 @@ public class UpdateInvoicePanel extends UpdateComposite {
     protected static UpdateInvoicePanel instance;
     protected String id;
     protected boolean isUpdate;
-    protected JSONObject invoice; 
+    protected JSONObject invoice;
     protected String clientInfoId;
 
     public static UpdateInvoicePanel instance() {
@@ -46,7 +46,7 @@ public class UpdateInvoicePanel extends UpdateComposite {
     public UpdateInvoicePanel(JSONObject entity) {
         instance = this;
         this.invoice = entity;
-        initUpdateComposite(entity, "Invoice", OfficeWelcome.constants);
+        initUpdateComposite(entity, "Invoice", OfficeWelcome.constants2);
     }
 
     public UpdateInvoicePanel(String id, JSONObject entity, boolean isUpdate) {
@@ -54,14 +54,14 @@ public class UpdateInvoicePanel extends UpdateComposite {
         this.id = id;
         this.isUpdate = isUpdate;
         this.invoice = entity;
-        initUpdateComposite(entity, "Invoice", OfficeWelcome.constants);
+        initUpdateComposite(entity, "Invoice", OfficeWelcome.constants2);
     }
 
     public UpdateInvoicePanel(String id, boolean isUpdate) {
         this.id = id;
         instance = this;
         this.isUpdate = isUpdate;
-        initUpdateComposite(id, "Invoice", OfficeWelcome.constants);
+        initUpdateComposite(id, "Invoice", OfficeWelcome.constants2);
     }
 
     @Override
@@ -108,11 +108,13 @@ public class UpdateInvoicePanel extends UpdateComposite {
             String empName = employee.get("firstName").isString().stringValue() + " " + employee.get("lastName").isString().stringValue();
             StringField empF = (StringField) fields.get("employee");
             empF.setValue(empName);
-        }else if (entity.get("employee") instanceof JSONObject) {
+            assignFieldValueFromEntity("billingRate", clientInformation, DataType.CURRENCY_FIELD);
+        } else if (entity.get("employee") instanceof JSONObject) {
             JSONObject employee = entity.get("employee").isObject();
             String name = employee.get("firstName").isString().stringValue() + " " + employee.get("lastName").isString().stringValue();
             StringField field = (StringField) fields.get("employee");
             field.setValue(name);
+            assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
         } else {
             assignFieldValueFromEntity("employee", entity, DataType.STRING_FIELD);
         }
@@ -122,7 +124,6 @@ public class UpdateInvoicePanel extends UpdateComposite {
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("invoiceDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("invoiceSentDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("hours", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
@@ -145,7 +146,6 @@ public class UpdateInvoicePanel extends UpdateComposite {
 
     @Override
     protected void configure() {
-
     }
 
     @Override
@@ -153,14 +153,14 @@ public class UpdateInvoicePanel extends UpdateComposite {
         addField("employee", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("itemNumber", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("invoiceNumber", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
-        addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("endDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("startDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("endDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("invoiceDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("invoiceSentDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("billingRate", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        addField("billingRate", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("overTimeBillingRate", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("hours", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-        addEnumField("invoiceFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+        addEnumField("invoiceFrequency", true, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         addEnumField("invoiceStatus", false, true, InvoiceStatus.names(), Alignment.HORIZONTAL);
         addEnumField("timeSheetStatus", false, true, TimeStatus.names(), Alignment.HORIZONTAL);
         addField("notes", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
@@ -190,7 +190,6 @@ public class UpdateInvoicePanel extends UpdateComposite {
                         populateFieldsFromEntity(entity1);
                     }
                 });
-
     }
 
     protected String getReadURI() {
