@@ -28,7 +28,7 @@ public class CreateTravelHistoryRecordPanel extends CreateComposite {
 
     public CreateTravelHistoryRecordPanel(CreateComposite.CreateCompositeType type) {
         super(type);
-        initCreateComposite("TravelHistoryRecord", OfficeWelcome.constants);
+        initCreateComposite("TravelHistoryRecord", OfficeWelcome.constants2);
     }
 
     @Override

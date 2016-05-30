@@ -21,7 +21,7 @@ public class ReadI94RecordPanel extends ReadComposite {
     private static Logger logger = Logger.getLogger(ReadI94RecordPanel.class.getName());
 
     public ReadI94RecordPanel(JSONObject entity) {
-        initReadComposite(entity, "i94Record", OfficeWelcome.constants);
+        initReadComposite(entity, "i94Record", OfficeWelcome.constants2);
     }
 
     @Override

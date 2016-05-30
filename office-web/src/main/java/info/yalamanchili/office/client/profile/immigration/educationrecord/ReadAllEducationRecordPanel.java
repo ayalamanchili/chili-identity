@@ -8,14 +8,12 @@
  */
 package info.yalamanchili.office.client.profile.immigration.educationrecord;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
-import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.GenericPopup;
@@ -38,28 +36,26 @@ public class ReadAllEducationRecordPanel extends CRUDReadAllComposite {
 
     public ReadAllEducationRecordPanel() {
         instance = this;
-        initTable("EducationRecord", OfficeWelcome.constants);
+        initTable("EducationRecord", OfficeWelcome.constants2);
     }
 
     public ReadAllEducationRecordPanel(JSONArray array) {
         instance = this;
-        initTable("EducationRecord", array, OfficeWelcome.constants);
+        initTable("EducationRecord", array, OfficeWelcome.constants2);
     }
 
     public ReadAllEducationRecordPanel(String parentId) {
         instance = this;
         this.parentId = parentId;
-        initTable("EducationRecord", OfficeWelcome.constants);
+        initTable("EducationRecord", OfficeWelcome.constants2);
     }
 
     @Override
     public void preFetchTable(int start) {
-        logger.info(getReadAllEducationRecordURL(start, OfficeWelcome.constants.tableSize()));
         HttpService.HttpServiceAsync.instance().doGet(getReadAllEducationRecordURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), false,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
-                        logger.info(result);
                         postFetchTable(result);
                     }
                 });
@@ -90,7 +86,6 @@ public class ReadAllEducationRecordPanel extends CRUDReadAllComposite {
             table.setText(i, 2, JSONUtils.toString(entity, "fieldOfStudy"));
             table.setText(i, 3, JSONUtils.toString(entity, "nameOfSchool"));
             table.setText(i, 4, JSONUtils.toString(entity, "graduationYear"));            
-            
         }
     }
 
@@ -166,6 +161,4 @@ public class ReadAllEducationRecordPanel extends CRUDReadAllComposite {
     protected boolean enablePersistedQuickView() {
         return true;
     }
-
-    
 }

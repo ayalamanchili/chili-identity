@@ -26,7 +26,7 @@ public class UpdateTravelHistoryRecordPanel extends UpdateComposite {
     private static Logger logger = Logger.getLogger(UpdateTravelHistoryRecordPanel.class.getName());
 
     public UpdateTravelHistoryRecordPanel(JSONObject entity) {
-        initUpdateComposite(entity, "TravelHistoryRecord", OfficeWelcome.constants);
+        initUpdateComposite(entity, "TravelHistoryRecord", OfficeWelcome.constants2);
     }
 
     @Override

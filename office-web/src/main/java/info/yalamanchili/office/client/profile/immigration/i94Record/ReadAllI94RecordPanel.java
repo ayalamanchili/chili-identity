@@ -36,23 +36,22 @@ public class ReadAllI94RecordPanel extends CRUDReadAllComposite {
 
     public ReadAllI94RecordPanel() {
         instance = this;
-        initTable("I94Record", OfficeWelcome.constants);
+        initTable("I94Record", OfficeWelcome.constants2);
     }
 
     public ReadAllI94RecordPanel(JSONArray array) {
         instance = this;
-        initTable("I94Record", array, OfficeWelcome.constants);
+        initTable("I94Record", array, OfficeWelcome.constants2);
     }
 
     public ReadAllI94RecordPanel(String parentId) {
         instance = this;
         this.parentId = parentId;
-        initTable("I94Record", OfficeWelcome.constants);
+        initTable("I94Record", OfficeWelcome.constants2);
     }
 
     @Override
     public void preFetchTable(int start) {
-        logger.info(getReadAllI94RecordURL(start, OfficeWelcome.constants.tableSize()));
         HttpService.HttpServiceAsync.instance().doGet(getReadAllI94RecordURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), false,
                 new ALAsyncCallback<String>() {
                     @Override

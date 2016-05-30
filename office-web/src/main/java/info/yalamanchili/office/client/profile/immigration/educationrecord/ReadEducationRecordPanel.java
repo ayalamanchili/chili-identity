@@ -24,7 +24,7 @@ public class ReadEducationRecordPanel extends ReadComposite {
     private static Logger logger = Logger.getLogger(ReadEducationRecordPanel.class.getName());
 
     public ReadEducationRecordPanel(JSONObject entity) {
-        initReadComposite(entity, "educationrecord", OfficeWelcome.constants2);
+        initReadComposite(entity, "EducationRecord", OfficeWelcome.constants2);
     }
 
     @Override
@@ -34,17 +34,14 @@ public class ReadEducationRecordPanel extends ReadComposite {
         assignFieldValueFromEntity("nameOfSchool", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("address", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("graduationYear", entity, DataType.STRING_FIELD);
-
     }
 
     @Override
     protected void addListeners() {
-
     }
 
     @Override
     protected void configure() {
-
     }
 
     @Override
@@ -55,12 +52,10 @@ public class ReadEducationRecordPanel extends ReadComposite {
         addField("address", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("graduationYear", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         alignFields();
-
     }
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-
     }
 
     @Override
@@ -70,6 +65,5 @@ public class ReadEducationRecordPanel extends ReadComposite {
 
     @Override
     public void loadEntity(String entityId) {
-
     }
 }

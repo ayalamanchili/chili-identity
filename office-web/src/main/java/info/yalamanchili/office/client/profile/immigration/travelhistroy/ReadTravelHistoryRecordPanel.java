@@ -21,7 +21,7 @@ public class ReadTravelHistoryRecordPanel extends ReadComposite {
     private static Logger logger = Logger.getLogger(ReadTravelHistoryRecordPanel.class.getName());
 
     public ReadTravelHistoryRecordPanel(JSONObject entity) {
-        initReadComposite(entity, "TravelHistoryRecord", OfficeWelcome.constants);
+        initReadComposite(entity, "TravelHistoryRecord", OfficeWelcome.constants2);
     }
 
     @Override

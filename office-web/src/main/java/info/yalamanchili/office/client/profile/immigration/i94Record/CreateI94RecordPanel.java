@@ -36,13 +36,12 @@ public class CreateI94RecordPanel extends CreateComposite {
 
     public CreateI94RecordPanel(CreateComposite.CreateCompositeType type) {
         super(type);
-        initCreateComposite("i94Record", OfficeWelcome.constants);
+        initCreateComposite("i94Record", OfficeWelcome.constants2);
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject I94Record = new JSONObject();
-        logger.info("I94Record" + I94Record);
         assignEntityValueFromField("i94RecordNumber", I94Record);
         assignEntityValueFromField("dateofEntry", I94Record);
         assignEntityValueFromField("admitUntilDate", I94Record);

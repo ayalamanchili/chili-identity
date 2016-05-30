@@ -29,7 +29,7 @@ public class UpdateEducationRecordPanel extends UpdateComposite {
     private static Logger logger = Logger.getLogger(UpdateEducationRecordPanel.class.getName());
 
     public UpdateEducationRecordPanel(JSONObject entity) {
-        initUpdateComposite(entity, "educationrecord", OfficeWelcome.constants);
+        initUpdateComposite(entity, "EducationRecord", OfficeWelcome.constants2);
     }
 
     @Override
@@ -100,7 +100,4 @@ public class UpdateEducationRecordPanel extends UpdateComposite {
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "educationrecord/save/" + TreeEmployeePanel.instance().getEntityId();
     }
-
-    
-    
 }

@@ -35,18 +35,18 @@ public class ReadAllTravelHistoryRecordPanel extends CRUDReadAllComposite {
 
     public ReadAllTravelHistoryRecordPanel() {
         instance = this;
-        initTable("TravelHistoryRecord", OfficeWelcome.constants);
+        initTable("TravelHistoryRecord", OfficeWelcome.constants2);
     }
 
     public ReadAllTravelHistoryRecordPanel(JSONArray array) {
         instance = this;
-        initTable("TravelHistoryRecord", array, OfficeWelcome.constants);
+        initTable("TravelHistoryRecord", array, OfficeWelcome.constants2);
     }
 
     public ReadAllTravelHistoryRecordPanel(String parentId) {
         instance = this;
         this.parentId = parentId;
-        initTable("TravelHistoryRecord", OfficeWelcome.constants);
+        initTable("TravelHistoryRecord", OfficeWelcome.constants2);
     }
 
     @Override

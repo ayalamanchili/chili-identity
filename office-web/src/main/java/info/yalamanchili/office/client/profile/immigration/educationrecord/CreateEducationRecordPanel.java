@@ -8,13 +8,11 @@
  */
 package info.yalamanchili.office.client.profile.immigration.educationrecord;
 
-
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
-import info.chili.gwt.fields.FileuploadField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -28,35 +26,24 @@ import java.util.logging.Logger;
  * @author Sudha
  */
 public class CreateEducationRecordPanel extends CreateComposite {
-    
-        private static Logger logger = Logger.getLogger(CreateEducationRecordPanel.class.getName());
 
-    FileuploadField empImageUploadPanel = new FileuploadField(OfficeWelcome.constants, "Employee", "imageUrl", "educationrecord/imageURL", false) {
-        @Override
-        public void onUploadComplete(String res) {
-            postCreateSuccess(null);
-        }
-    };
-
+    private static Logger logger = Logger.getLogger(CreateEducationRecordPanel.class.getName());
     public CreateEducationRecordPanel(CreateComposite.CreateCompositeType type) {
         super(type);
-        initCreateComposite("edducationrecord", OfficeWelcome.constants);
+        initCreateComposite("EducationRecord", OfficeWelcome.constants2);
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject EducationRecord = new JSONObject();
-        logger.info("EducationRecord" + EducationRecord);
-        assignEntityValueFromField("degreeOfStudy", EducationRecord);
-        assignEntityValueFromField("fieldOfStudy", EducationRecord);
-        assignEntityValueFromField("nameOfSchool", EducationRecord);
-        assignEntityValueFromField("address", EducationRecord);
-        assignEntityValueFromField("graduationYear", EducationRecord);
-        
-        EducationRecord.put("imageURL", empImageUploadPanel.getFileName());
-        EducationRecord.put("targetEntityName", new JSONString("targetEntityName"));
-        EducationRecord.put("targetEntityId", new JSONString("0"));
-        return EducationRecord;
+        JSONObject educationRecord = new JSONObject();
+        assignEntityValueFromField("degreeOfStudy", educationRecord);
+        assignEntityValueFromField("fieldOfStudy", educationRecord);
+        assignEntityValueFromField("nameOfSchool", educationRecord);
+        assignEntityValueFromField("address", educationRecord);
+        assignEntityValueFromField("graduationYear", educationRecord);
+        educationRecord.put("targetEntityName", new JSONString("targetEntityName"));
+        educationRecord.put("targetEntityId", new JSONString("0"));
+        return educationRecord;
     }
 
     @Override
@@ -70,15 +57,13 @@ public class CreateEducationRecordPanel extends CreateComposite {
 
                     @Override
                     public void onSuccess(String arg0) {
-                        uploadImage(arg0);
+                        postCreateSuccess(arg0);
                     }
                 });
-
     }
 
     @Override
     protected void addButtonClicked() {
-
     }
 
     @Override
@@ -90,39 +75,28 @@ public class CreateEducationRecordPanel extends CreateComposite {
 
     @Override
     protected void addListeners() {
-
     }
 
     @Override
     protected void configure() {
-
     }
 
     @Override
     protected void addWidgets() {
-        
         addField("degreeOfStudy", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("fieldOfStudy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("nameOfSchool", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("address", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("graduationYear", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        entityFieldsPanel.add(empImageUploadPanel);
         alignFields();
-    }
-
-    protected void uploadImage(String entityId) {
-        empImageUploadPanel.upload(entityId.trim());
     }
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-
     }
 
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "educationrecord/save/" + TreeEmployeePanel.instance().getEntityId();
     }
-
-    
 }

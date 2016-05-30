@@ -26,7 +26,7 @@ public class UpdateI94RecordPanel extends UpdateComposite {
     private static Logger logger = Logger.getLogger(UpdateI94RecordPanel.class.getName());
 
     public UpdateI94RecordPanel(JSONObject entity) {
-        initUpdateComposite(entity, "i94Record", OfficeWelcome.constants);
+        initUpdateComposite(entity, "i94Record", OfficeWelcome.constants2);
     }
 
     @Override
