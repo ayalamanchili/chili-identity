@@ -71,7 +71,11 @@ public class EducationRecordResource extends CRUDResource<EducationRecord> {
         EducationRecordResource.EducationRecordTable tableObj = new EducationRecordResource.EducationRecordTable();
         Employee emp = EmployeeDao.instance().findById(id);
         tableObj.setEntities(educationRecordDao.findAll(emp));
-        tableObj.setSize(educationRecordDao.size());
+        if (tableObj.getEntities() != null  &&  tableObj.getEntities().size() > 0) {
+            tableObj.setSize(Long.valueOf(tableObj.getEntities().size()));
+        } else {
+            tableObj.setSize(Long.valueOf(0));
+        }
         return tableObj;
     }
 
