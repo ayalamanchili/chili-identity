@@ -90,12 +90,12 @@ public class InvoiceResource extends CRUDResource<Invoice> {
         Invoice inv = new Invoice();
         ClientInformation ci = ClientInformationDao.instance().findById(id);
         inv.setEmployee(ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
-        inv.setStartDate(invoice.getStartDate());
-        inv.setEndDate(invoice.getEndDate());
-        inv.setBillingRate(invoice.getBillingRate());
+        inv.setStartDate(ci.getStartDate());
+        inv.setEndDate(ci.getEndDate());
+        inv.setBillingRate(ci.getBillingRate());
         inv.setOverTimeBillingRate(invoice.getOverTimeBillingRate());
-        inv.setItemNumber(invoice.getItemNumber());
-        inv.setInvoiceFrequency(invoice.getInvoiceFrequency());
+        inv.setItemNumber(ci.getItemNumber());
+        inv.setInvoiceFrequency(ci.getInvoiceFrequency());
         inv.setInvoiceDate(invoice.getInvoiceDate());
         inv.setHours(invoice.getHours());
         inv.setInvoiceStatus(invoice.getInvoiceStatus());
@@ -117,12 +117,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
     public Invoice update(@PathParam("id") Long id, Invoice invoice) {
         Invoice inv = invoiceDao.findById(id);
         inv.setEmployee(invoice.getEmployee());
-        inv.setStartDate(invoice.getStartDate());
-        inv.setEndDate(invoice.getEndDate());
-        inv.setBillingRate(invoice.getBillingRate());
         inv.setOverTimeBillingRate(invoice.getOverTimeBillingRate());
-        inv.setItemNumber(invoice.getItemNumber());
-        inv.setInvoiceFrequency(invoice.getInvoiceFrequency());
         inv.setInvoiceDate(invoice.getInvoiceDate());
         inv.setHours(invoice.getHours());
         inv.setInvoiceStatus(invoice.getInvoiceStatus());
