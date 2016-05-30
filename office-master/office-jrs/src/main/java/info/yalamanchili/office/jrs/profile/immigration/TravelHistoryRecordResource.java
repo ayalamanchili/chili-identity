@@ -72,7 +72,11 @@ public class TravelHistoryRecordResource extends CRUDResource<TravelHistoryRecor
         TravelHistoryRecordResource.TavelHistoryFromTable tableObj = new TravelHistoryRecordResource.TavelHistoryFromTable();
         Employee emp = EmployeeDao.instance().findById(id);
         tableObj.setEntities(travelHistoryFromDao.findAll(emp));
-        tableObj.setSize(travelHistoryFromDao.size());
+        if (tableObj.getEntities() != null && tableObj.getEntities().size() > 0) {
+            tableObj.setSize(Long.valueOf(tableObj.getEntities().size()));
+        } else {
+            tableObj.setSize(Long.valueOf(0));
+        }
         return tableObj;
     }
 
