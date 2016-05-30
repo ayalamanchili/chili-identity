@@ -43,8 +43,12 @@ public class InvoiceDao extends CRUDDao<Invoice> {
     }
 
     protected String getSearchQuery(String empFirstName, String empLastName) {
-        // write sql query to search the employee in invocie table through clieinfo 
-        return null;
+        StringBuilder queryStr = new StringBuilder();
+        queryStr.append("SELECT inv from ").append(Invoice.class.getCanonicalName());
+        queryStr.append(" inv where ");
+        queryStr.append("inv.clientInformation.employee.firstName LIKE '%").append(empFirstName.trim()).append("%' AND ");
+        queryStr.append("inv.clientInformation.employee.lastName LIKE '%").append(empLastName.trim()).append("%'");
+        return queryStr.toString();
     }
 
     public List<Invoice> search(String empFirstName, String empLastName, int start, int limit) {
