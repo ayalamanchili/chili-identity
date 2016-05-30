@@ -21,6 +21,7 @@ public class InvoiceSearchDto extends Invoice {
 
     protected ClientInformationCompany clientInformationCompany;
     protected String vendor;
+    protected String employeeName;
 
     public ClientInformationCompany getClientInformationCompany() {
         return clientInformationCompany;
@@ -38,4 +39,11 @@ public class InvoiceSearchDto extends Invoice {
         this.vendor = vendor;
     }
 
+    public String getEmployeeName() {
+        return employeeName;
+    }
+
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
+    }
 }
