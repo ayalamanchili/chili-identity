@@ -13,7 +13,7 @@
 
     <changeSet author="ayalamanchili" id="educationrecord">
         <sqlFile dbms="mysql"
-                 path="sql/aadd_education_record_scripts.sql"
+                 path="sql/add_education_record_scripts.sql"
                  relativeToChangelogFile="true"
                  splitStatements="true"
                  stripComments="true"/>
