@@ -12,9 +12,11 @@ import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.dao.client.InvoiceDao;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.client.Invoice;
 import info.yalamanchili.office.entity.profile.ClientInformation;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.invoice.InvoiceSearchDto;
 import info.yalamanchili.office.invoice.InvoiceService;
 import info.yalamanchili.office.invoice.InvoiceService.InvoiceTable;
@@ -33,7 +35,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -101,6 +102,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
         inv.setTimeSheetStatus(invoice.getTimeSheetStatus());
         inv.setInvoiceNumber(invoice.getInvoiceNumber());
         inv.setNotes(invoice.getNotes());
+        inv.setInvoiceSentDate(invoice.getInvoiceSentDate());
         inv.setClientInformation(ci);
         ClientInformationDao.instance().save(ci);
         InvoiceDao.instance().save(inv);
@@ -126,6 +128,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
         inv.setInvoiceStatus(invoice.getInvoiceStatus());
         inv.setTimeSheetStatus(invoice.getTimeSheetStatus());
         inv.setInvoiceNumber(invoice.getInvoiceNumber());
+        inv.setInvoiceSentDate(invoice.getInvoiceSentDate());
         inv.setNotes(invoice.getNotes());
         inv.setId(id);
         em.merge(inv);
@@ -167,6 +170,16 @@ public class InvoiceResource extends CRUDResource<Invoice> {
         columns.add("invoiceNumber");
         //TODO add remaining columns
         return getDao().sqlSearch(searchText, start, limit, columns, false);
+    }
+    
+     @GET
+    @Path("/search-invoice-by-emp/{start}/{limit}")
+    @Transactional(readOnly = true)
+    public List<Invoice> searchInvoiceByEmp(@PathParam("start") int start,
+            @PathParam("limit") int limit, @QueryParam("empId") Long empId) {
+        Employee emp = EmployeeDao.instance().findById(empId);
+        List<Invoice> search = invoiceDao.search(emp.getFirstName(), emp.getLastName(), start, limit);
+        return search;
     }
 
     @PUT
