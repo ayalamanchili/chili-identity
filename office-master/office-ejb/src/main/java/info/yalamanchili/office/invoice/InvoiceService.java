@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -50,17 +51,37 @@ public class InvoiceService {
     }
 
     public List<Invoice> search(InvoiceSearchDto searchDto, int start, int limit) {
-        InvoiceTable table = new InvoiceTable();
         String queryStr = getSearchQuery(searchDto);
         TypedQuery<Invoice> query = em.createQuery(queryStr, Invoice.class);
         if (!Strings.isNullOrEmpty(searchDto.getInvoiceNumber())) {
             query.setParameter("invoiceNumberParam", searchDto.getInvoiceNumber().trim());
         }
+        if (searchDto.getItemNumber() != null) {
+            query.setParameter("itemNumberParam", searchDto.getItemNumber().trim());
+        }
+        if (searchDto.getStartDate() != null) {
+            query.setParameter("startDateParam", searchDto.getStartDate(), TemporalType.DATE);
+        }
+        if (searchDto.getEndDate() != null) {
+            query.setParameter("endDateParam", searchDto.getEndDate(), TemporalType.DATE);
+        }
+        if (searchDto.getInvoiceDate()!= null) {
+            query.setParameter("invoiceDateParam", searchDto.getInvoiceDate(), TemporalType.DATE);
+        }
+        if (searchDto.getInvoiceSentDate()!= null) {
+            query.setParameter("invoiceSentDateParam", searchDto.getInvoiceSentDate(), TemporalType.DATE);
+        }
         if (!Strings.isNullOrEmpty(searchDto.getVendor())) {
             query.setParameter("vendorParam", searchDto.getVendor().trim());
         }
-        if (!Strings.isNullOrEmpty(searchDto.getEmployee())) {
-            query.setParameter("employeeParam", searchDto.getEmployee().trim());
+        if (searchDto.getClientInformationCompany() != null) {
+            query.setParameter("companyParam", searchDto.getClientInformationCompany());
+        }
+        if (searchDto.getTimeSheetStatus() != null) {
+            query.setParameter("timeSheetStatusParam", searchDto.getTimeSheetStatus());
+        }
+        if (searchDto.getInvoiceStatus()!= null) {
+            query.setParameter("invoiceStatusParam", searchDto.getInvoiceStatus());
         }
         return query.getResultList();
     }
@@ -72,11 +93,32 @@ public class InvoiceService {
         if (!Strings.isNullOrEmpty(searchDto.getInvoiceNumber())) {
             queryStr.append("inv.invoiceNumber =:invoiceNumberParam").append(" and ");
         }
+        if (!Strings.isNullOrEmpty(searchDto.getItemNumber())) {
+            queryStr.append("inv.itemNumber =:itemNumberParam").append(" and ");
+        }
+        if (searchDto.getStartDate() != null) {
+            queryStr.append("inv.clientInformation.startDate =:startDateParam").append(" and ");
+        }
+        if (searchDto.getEndDate() != null) {
+            queryStr.append("inv.clientInformation.endDate =:endDateParam").append(" and ");
+        }
+        if (searchDto.getInvoiceDate()!= null) {
+            queryStr.append("inv.invoiceDate =:invoiceDateParam").append(" and ");
+        }
+        if (searchDto.getInvoiceSentDate()!= null) {
+            queryStr.append("inv.invoiceSentDate =:invoiceSentDateParam").append(" and ");
+        }
         if (!Strings.isNullOrEmpty(searchDto.getVendor())) {
             queryStr.append("inv.clientInformation.vendor.name =:vendorParam").append(" and ");
         }
-        if (!Strings.isNullOrEmpty(searchDto.getEmployee())) {
-            queryStr.append("inv.clientInformation.employee.lastName =:employeeParam").append(" and ");
+        if (searchDto.getClientInformationCompany() != null) {
+            queryStr.append("inv.clientInformation.company =:companyParam").append(" and ");
+        }
+        if (searchDto.getTimeSheetStatus()!= null) {
+            queryStr.append("inv.timeSheetStatus =:timeSheetStatusParam").append(" and ");
+        }
+        if (searchDto.getInvoiceStatus()!= null) {
+            queryStr.append("inv.invoiceStatus =:invoiceStatusParam").append(" and ");
         }
         return queryStr.toString().substring(0, queryStr.toString().lastIndexOf("and"));
     }
