@@ -101,10 +101,10 @@ public class VendorResource extends CRUDResource<Vendor> {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
     @Validate
     @CacheEvict(value = OfficeCacheKeys.VENDOR, allEntries = true)
-    public Vendor update(Vendor vendor, @QueryParam("submitForUpdateF") Boolean submitForUpdateF, @QueryParam("submitForUpdateP") Boolean submitForUpdateP) {
+    public Vendor update(Vendor vendor, @QueryParam("submitForUpdateF") Boolean submitForUpdateF, @QueryParam("submitForUpdateP") Boolean submitForUpdateP, @QueryParam("submitForUpdateD") Boolean submitForUpdateD) {
         vendor = super.save(vendor);
-        if (submitForUpdateP || submitForUpdateF) {
-            vendorDao.updateExistingClientInformations(vendor, submitForUpdateF, submitForUpdateP, OfficeSecurityService.instance().getCurrentUserName());
+        if (submitForUpdateP || submitForUpdateF || submitForUpdateD) {
+            vendorDao.updateExistingClientInformations(vendor, submitForUpdateF, submitForUpdateP, submitForUpdateD, OfficeSecurityService.instance().getCurrentUserName());
         }
         return vendor;
     }
