@@ -8,13 +8,20 @@
  */
 package info.yalamanchili.office.jrs.time;
 
+import info.chili.commons.SearchUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
+import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.Time.OutOfOfficeService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.OutOfOfficeDao;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.OutOfOfficeRequest;
 import info.yalamanchili.office.jrs.CRUDResource;
+import info.yalamanchili.office.security.AccessCheck;
+import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Query;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -60,25 +67,77 @@ public class OutOfOfficeResource extends CRUDResource<OutOfOfficeRequest> {
 
     @PUT
     @Path("/submit-request/")
-    public void submitLeaveRequest(OutOfOfficeRequest outOfOfficeRequest) {
+    //@CacheEvict(value = OfficeCacheKeys.OUTOFOFFICEREQUEST, allEntries = true)
+    public void submitRequest(OutOfOfficeRequest outOfOfficeRequest) {
         OutOfOfficeService.instance().submitRequest(outOfOfficeRequest);
     }
-    
+
     @PUT
     @Validate
     @Path("/update-request")
-    public void updateLeaveRequest(OutOfOfficeRequest entity) {
+    //@CacheEvict(value = OfficeCacheKeys.OUTOFOFFICEREQUEST, allEntries = true)
+    public void updateRequest(OutOfOfficeRequest entity) {
         OutOfOfficeService.instance().updateRequest(entity);
     }
 
     @GET
     @Path("/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public OutOfOfficeTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         OutOfOfficeTable tableObj = new OutOfOfficeTable();
-        tableObj.setEntities(getDao().query(start, limit));
+        if (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_HR_ADMINSTRATION.name(), OfficeRoles.OfficeRole.ROLE_ADMIN.name())) {
+            tableObj.setEntities(outOfOfficeDao.query(start, limit));
+            tableObj.setSize(outOfOfficeDao.size());
+        } else {
+            Employee currentEmp = OfficeSecurityService.instance().getCurrentUser();
+            tableObj.setEntities(outOfOfficeDao.queryForEmployee(currentEmp.getId(), start, limit));
+            tableObj.setSize(outOfOfficeDao.size(currentEmp.getId()));
+        }
         tableObj.setSize(getDao().size());
         return tableObj;
+    }
+
+    @GET
+    @Path("/{employeeId}/{start}/{limit}")
+    @AccessCheck(companyContacts = {"Reports_To"}, roles = {"ROLE_HR_ADMINSTRATION", "ROLE_HR"}, strictOrderCheck = false)
+    public OutOfOfficeResource.OutOfOfficeTable getOutOfOfficeRequestForEmployee(@PathParam("employeeId") Long employeeId, @PathParam("start") int start, @PathParam("limit") int limit) {
+        OutOfOfficeResource.OutOfOfficeTable tableObj = new OutOfOfficeResource.OutOfOfficeTable();
+        tableObj.setEntities(outOfOfficeDao.queryForEmployee(employeeId, start, limit));
+        tableObj.setSize(outOfOfficeDao.size(employeeId));
+        return tableObj;
+    }
+
+    @GET
+    @Path("/current-week/{start}/{limit}")
+    @PreAuthorize("hasAnyRole('ROLE_HR_ADMINSTRATION','ROLE_HR')")
+    public OutOfOfficeResource.OutOfOfficeTable getCurrentWeekRequests(@PathParam("start") int start, @PathParam("limit") int limit) {
+        OutOfOfficeResource.OutOfOfficeTable tableObj = new OutOfOfficeResource.OutOfOfficeTable();
+        tableObj.setEntities(outOfOfficeDao.queryForCurrentWeekRequests(start, limit));
+        tableObj.setSize(outOfOfficeDao.size());
+        return tableObj;
+    }
+
+    @PUT
+    @Path("/search-request/{start}/{limit}")
+    @Transactional(readOnly = true)
+    @PreAuthorize("hasAnyRole('ROLE_HR_ADMINSTRATION','ROLE_HR')")
+    public List<OutOfOfficeRequest> search(OutOfOfficeRequest entity, @PathParam("start") int start, @PathParam("limit") int limit) {
+        List<OutOfOfficeRequest> res = new ArrayList();
+        Query searchQuery = SearchUtils.getSearchQuery(OutOfOfficeDao.instance().getEntityManager(), entity, new SearchUtils.SearchCriteria());
+        searchQuery.setFirstResult(start);
+        searchQuery.setMaxResults(limit);
+        for (Object p : searchQuery.getResultList()) {
+            res.add((OutOfOfficeRequest) p);
+        }
+        return res;
+    }
+
+    @PUT
+    @Path("/delete/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_HR_ADMINSTRATION','ROLE_HR')")
+    //@CacheEvict(value = OfficeCacheKeys.OUTOFOFFICEREQUEST, allEntries = true)
+    @Override
+    public void delete(@PathParam("id") Long id) {
+        OutOfOfficeService.instance().delete(id);
     }
 
     @XmlRootElement
