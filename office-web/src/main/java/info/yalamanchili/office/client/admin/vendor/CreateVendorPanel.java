@@ -19,6 +19,7 @@ import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.GenericPopup;
+import info.yalamanchili.office.client.profile.cllientinfo.InvoiceDeliveryMethod;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
 import java.util.logging.Logger;
 
@@ -45,6 +46,7 @@ public class CreateVendorPanel extends CreateComposite {
         assignEntityValueFromField("paymentTerms", vendor);
         assignEntityValueFromField("vendorinvFrequency", vendor);
         assignEntityValueFromField("vendorFees", vendor);
+        assignEntityValueFromField("vendorinvDeliveryMethod", vendor);
         logger.info(vendor.toString());
         return vendor;
     }
@@ -100,6 +102,7 @@ public class CreateVendorPanel extends CreateComposite {
         addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("vendorinvFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+        addEnumField("vendorinvDeliveryMethod", false, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
         alignFields();
     }
 
