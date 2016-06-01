@@ -89,6 +89,9 @@ public class Vendor extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     protected InvoiceFrequency vendorinvFrequency;
     
+    @Enumerated(EnumType.STRING)
+    protected InvoiceDeliveryMethod vendorinvDeliveryMethod;
+    
     protected Float vendorFees;
 
     public String getName() {
@@ -214,6 +217,14 @@ public class Vendor extends AbstractEntity {
 
     public void setVendorFees(Float vendorFees) {
         this.vendorFees = vendorFees;
+    }
+
+    public InvoiceDeliveryMethod getVendorinvDeliveryMethod() {
+        return vendorinvDeliveryMethod;
+    }
+
+    public void setVendorinvDeliveryMethod(InvoiceDeliveryMethod vendorinvDeliveryMethod) {
+        this.vendorinvDeliveryMethod = vendorinvDeliveryMethod;
     }
 
     @Override
