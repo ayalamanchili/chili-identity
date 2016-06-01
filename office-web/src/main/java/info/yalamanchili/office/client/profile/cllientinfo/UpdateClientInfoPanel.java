@@ -540,6 +540,12 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
                         JSONObject vendor = (JSONObject) JSONParser.parseLenient(response);
                         TextAreaField payTermF = (TextAreaField) fields.get("vendorPaymentTerms");
                         payTermF.setValue(JSONUtils.toString(vendor, "paymentTerms"));
+                        EnumField invDelv = (EnumField) fields.get("invoiceDeliveryMethod");
+                        if (vendor.get("vendorinvDeliveryMethod") != null) {
+                            invDelv.selectValue(JSONUtils.toString(vendor, "vendorinvDeliveryMethod"));
+                        } else {
+                            invDelv.setSelectedIndex(0);
+                        }
                     }
                 });
     }
