@@ -55,6 +55,12 @@ public class OutOfOfficeService {
         submitRequest(entity);
     }
 
+    public void delete(Long id) {
+        OutOfOfficeRequest ticket = OutOfOfficeDao.instance().findById(id);
+        OfficeBPMTaskService.instance().deleteAllTasksForProcessId(ticket.getBpmProcessId(), true);
+        OutOfOfficeDao.instance().findById(id);
+    }
+
     public static OutOfOfficeService instance() {
         return SpringContext.getBean(OutOfOfficeService.class);
     }
