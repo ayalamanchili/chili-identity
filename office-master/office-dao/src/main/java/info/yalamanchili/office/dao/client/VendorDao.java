@@ -48,7 +48,7 @@ public class VendorDao extends CRUDDao<Vendor> {
 
     @Async
     @Transactional
-    public void updateExistingClientInformations(Vendor vendor, Boolean submitForUpdateF, Boolean submitForUpdateP, String updatedBy) {
+    public void updateExistingClientInformations(Vendor vendor, Boolean submitForUpdateF, Boolean submitForUpdateP, Boolean submitForUpdateD, String updatedBy) {
         TypedQuery<ClientInformation> q = em.createQuery("from " + ClientInformation.class.getCanonicalName() + " WHERE vendor_id=:vendorIdParam)", ClientInformation.class);
         q.setParameter("vendorIdParam", vendor.getId());
         for (ClientInformation ci : q.getResultList()) {
@@ -88,6 +88,9 @@ public class VendorDao extends CRUDDao<Vendor> {
                         em.merge(br);
                     }
                 }
+            }
+            if (submitForUpdateD) {
+                ci.setInvoiceDeliveryMethod(vendor.getVendorinvDeliveryMethod());
             }
             em.merge(ci);
         }
