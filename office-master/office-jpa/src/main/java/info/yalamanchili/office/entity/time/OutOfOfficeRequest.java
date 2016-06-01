@@ -59,10 +59,9 @@ public class OutOfOfficeRequest extends AbstractEntity {
     protected String time;
 
     protected String notes;
-
+    
+    @NotNull(message = "{type.not.empty.msg}")
     @Enumerated(EnumType.STRING)
-    @Field
-    //@NotNull(message = "{type.not.empty.msg}")
     protected OutOfOfficeType outOfOfficeType;
 
     protected Boolean recurring;
