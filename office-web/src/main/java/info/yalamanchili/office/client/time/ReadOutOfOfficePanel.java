@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -24,7 +27,7 @@ public class ReadOutOfOfficePanel extends ReadComposite {
 
     private static Logger logger = Logger.getLogger(ReadOutOfOfficePanel.class.getName());
     private static ReadOutOfOfficePanel instance;
-    SelectEmployeeWidget selectEmployeeWidgetF = new SelectEmployeeWidget("Employee", false, true, Alignment.HORIZONTAL);
+    SelectEmployeeWidget selectEmployeeWidgetF = new SelectEmployeeWidget("Employee", true, false, Alignment.HORIZONTAL);
 
     public static ReadOutOfOfficePanel instance() {
         return instance;
@@ -70,12 +73,12 @@ public class ReadOutOfOfficePanel extends ReadComposite {
     @Override
     protected void addWidgets() {
         addDropDown("employee", selectEmployeeWidgetF);
-        addEnumField("outOfOfficeType", true, true, OutOfOfficeType.names(), Alignment.HORIZONTAL);
-        addField("startDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("endDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("reason", true, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        addField("notes", true, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        addField("time", true, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addEnumField("outOfOfficeType", true, false, OutOfOfficeType.names(), Alignment.HORIZONTAL);
+        addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("endDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("reason", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("notes", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("time", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 

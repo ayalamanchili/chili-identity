@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.DateField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
@@ -153,6 +154,17 @@ public class CreateOutOffOfficeRequestPanel extends CreateComposite {
 
     protected String getEmployeeIdsDropDownUrl() {
         return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_USER.name() + "/0/10000");
+    }
+
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        DateField startDateF = (DateField) fields.get("startDate");
+        DateField endDateF = (DateField) fields.get("endDate");
+        if (startDateF.getDate() != null && endDateF.getDate() != null && startDateF.getDate().after(endDateF.getDate())) {
+            endDateF.setMessage("End Date must be equal to or after Start Date");
+            return false;
+        }
+        return true;
     }
 
     @Override

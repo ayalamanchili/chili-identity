@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -15,6 +18,7 @@ import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -36,6 +40,12 @@ public class ReadAllOutOfOfficePanel extends CRUDReadAllComposite {
         initTable("OutOfOfficeRequest", OfficeWelcome.constants);
     }
 
+    public ReadAllOutOfOfficePanel(String url) {
+        instance = this;
+        this.url = url;
+        initTable("OutOfOfficeRequest", OfficeWelcome.constants);
+    }
+
     public ReadAllOutOfOfficePanel(JSONArray result) {
         instance = this;
         initTable("OutOfOfficeRequest", result, OfficeWelcome.constants);
@@ -49,10 +59,20 @@ public class ReadAllOutOfOfficePanel extends CRUDReadAllComposite {
 
     @Override
     public void deleteClicked(String entityId) {
+        HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
     }
 
     @Override
     public void postDeleteSuccess() {
+        new ResponseStatusWidget().show("Successfully Deleted OutOf Office Request Information");
+        TabPanel.instance().timePanel.entityPanel.clear();
+        TabPanel.instance().timePanel.entityPanel.add(new ReadAllOutOfOfficePanel());
     }
 
     @Override
@@ -101,10 +121,14 @@ public class ReadAllOutOfOfficePanel extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION, Auth.ROLE.ROLE_ADMIN)) {
+        String status = JSONUtils.toString(entity, "status");
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION, Auth.ROLE.ROLE_HR)) {
             createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE);
+        } else if (OutOfOfficeRequestStatus.PENDING_MANAGER_APPROVAL.name().equals(status)) {
+            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE);
+        } else {
+            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ);
         }
-        createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE);
     }
 
     private String getWorkFromCheckURL(Integer start, String tableSize) {
@@ -112,6 +136,10 @@ public class ReadAllOutOfOfficePanel extends CRUDReadAllComposite {
             return url;
         }
         return OfficeWelcome.constants.root_url() + "out-of-office/" + start.toString() + "/" + tableSize.toString();
+    }
+
+    private String getDeleteURL(String entityId) {
+        return OfficeWelcome.instance().constants.root_url() + "out-of-office/delete/" + entityId;
     }
 
     @Override
