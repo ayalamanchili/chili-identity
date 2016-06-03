@@ -94,12 +94,17 @@
         </serviceTask>
         <sequenceFlow id="newClientInfoAccountSubmitToHRTask" sourceRef="newClientInfoInvoicingAndBillingSubmit" targetRef="newClientInfoHRTask">
             <conditionExpression xsi:type="tFormalExpression">
-                ${status == 'approved' and clientInfo.employee.employeeType.name != 'Subcontractor'}
+                ${status == 'approved' and clientInfo.employee.employeeType.name != 'Subcontractor' and clientInfo.employee.employeeType.name != '1099 Contractor'}
             </conditionExpression>
         </sequenceFlow>
-        <sequenceFlow id="newClientInfoSubmitToContractsAdminTask" sourceRef="newClientInfoInvoicingAndBillingSubmit" targetRef="newClientInfoSUBCTask">
+        <sequenceFlow id="newClientInfoSubmitToContractsAdminTaskForSubC" sourceRef="newClientInfoInvoicingAndBillingSubmit" targetRef="newClientInfoSUBCTask">
             <conditionExpression xsi:type="tFormalExpression">
                 ${status == 'approved' and clientInfo.employee.employeeType.name == 'Subcontractor'}
+            </conditionExpression>
+        </sequenceFlow>
+         <sequenceFlow id="newClientInfoSubmitToContractsAdminTaskFor1099" sourceRef="newClientInfoInvoicingAndBillingSubmit" targetRef="newClientInfoSUBCTask">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved' and clientInfo.employee.employeeType.name == '1099 Contractor'}
             </conditionExpression>
         </sequenceFlow>
         <sequenceFlow id="newClientInfoAccountSubmitToEnd" sourceRef="newClientInfoInvoicingAndBillingSubmit" targetRef="newClientInfoProcessEnd">
