@@ -57,7 +57,6 @@ public class NewClientInfoHRSubmit implements JavaDelegate {
             if (logisticsPrep != null) {
                 ci.setLogisticsPreparation(Boolean.parseBoolean(logisticsPrep.toString()));
             }
-            //ci.setIsCPDFilled(Boolean.TRUE);
             dao.save(ci);
         }
     }
