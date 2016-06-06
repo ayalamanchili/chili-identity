@@ -95,7 +95,6 @@ public class ReadBISClientInformationPanel extends ReadComposite {
         assignFieldValueFromEntity("Invoice_DeliveryMethod", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("Invoice_Frequency_ID", entity, DataType.INTEGER_FIELD);
         assignFieldValueFromEntity("IsActive", entity, DataType.BOOLEAN_FIELD);
-        //assignFieldValueFromEntity("IsCPDFilled", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("ItemNo", entity, DataType.INTEGER_FIELD);
         assignFieldValueFromEntity("JobTitle_Name", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("Job_Title_ID", entity, DataType.INTEGER_FIELD);
@@ -214,7 +213,6 @@ public class ReadBISClientInformationPanel extends ReadComposite {
         addField("Invoice_DeliveryMethod", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("Invoice_Frequency_ID", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
         addField("IsActive", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-        //addField("IsCPDFilled", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("ItemNo", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
         addField("JobTitle_Name", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("Job_Title_ID", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
