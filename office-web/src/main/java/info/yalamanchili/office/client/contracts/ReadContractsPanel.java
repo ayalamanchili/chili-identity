@@ -56,8 +56,12 @@ public class ReadContractsPanel extends TReadComposite {
             + "\n");
     protected static HTML hrText = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 5px; background: rgb(222, 222, 222)\">"
-            + "<strong style=\"color:#555555\">HR and Account Department Docs</strong></p>\n"
+            + "<strong style=\"color:#555555\">HR Department Docs</strong></p>\n"
             + "\n");
+    protected static HTML accountText = new HTML("\n"
+            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 5px; background: rgb(222, 222, 222)\">"
+            + "<strong style=\"color:#555555\">Account Department Docs</strong></p>\n"
+            + "\n");    
     protected static HTML subText = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 5px; background: rgb(222, 222, 222)\">"
             + "<strong style=\"color:#555555\">Subcontractor Information</strong></p>\n"
@@ -173,6 +177,7 @@ public class ReadContractsPanel extends TReadComposite {
         billingText.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         otherText.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         hrText.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        accountText.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         subText.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         sub1099Text.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         for (Map.Entry<String, BaseField> e : fields.entrySet()) {

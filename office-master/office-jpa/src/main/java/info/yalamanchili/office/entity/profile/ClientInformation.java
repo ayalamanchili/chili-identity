@@ -144,6 +144,7 @@ public class ClientInformation extends AbstractEntity {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "clientinformation_vendor_apcontacts")
     @ForeignKey(name = "FK_VendorAPContacts_ClientInformations")
+    @NotNull
     protected Set<Contact> vendorAPContacts;
     /**
      * Vendor Location
@@ -331,8 +332,6 @@ public class ClientInformation extends AbstractEntity {
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_MiddleVendor_ClientInformations")
     protected Vendor middleVendor;
-
-    protected Boolean isCPDFilled;
 
     protected String timeSheetRequirement;
 
@@ -824,14 +823,6 @@ public class ClientInformation extends AbstractEntity {
 
     public void setMiddleVendor(Vendor middleVendor) {
         this.middleVendor = middleVendor;
-    }
-
-    public Boolean getIsCPDFilled() {
-        return isCPDFilled;
-    }
-
-    public void setIsCPDFilled(Boolean isCPDFilled) {
-        this.isCPDFilled = isCPDFilled;
     }
 
     public String getTimeSheetRequirement() {

@@ -156,9 +156,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
                 assignEntityValueFromField("invoiceFrequency1099", entity);
             }
         }
-        if (fields.containsKey("isCPDFilled")) {
-            assignEntityValueFromField("isCPDFilled", entity);
-        }
+
         assignEntityValueFromField("terminationNotice", entity);
         assignEntityValueFromField("visaStatus", entity);
         assignEntityValueFromField("notes", entity);
@@ -269,9 +267,6 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             assignFieldValueFromEntity("specialInvoiceInstructions", entity, DataType.TEXT_AREA_FIELD);
         }
         assignFieldValueFromEntity("notes", entity, DataType.TEXT_AREA_FIELD);
-        if (fields.containsKey("isCPDFilled")) {
-            assignFieldValueFromEntity("isCPDFilled", entity, DataType.BOOLEAN_FIELD);
-        }
         assignFieldValueFromEntity("terminationNotice", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("visaStatus", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("practice", entity, null);
@@ -334,7 +329,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         addField("clientPaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addDropDown("vendor", selectVendorWidgetF);
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, true, Alignment.HORIZONTAL));
-        selectVendorAPContactsW = new SelectVendorAcctPayContact(false, false, Alignment.HORIZONTAL) {
+        selectVendorAPContactsW = new SelectVendorAcctPayContact(false, true, Alignment.HORIZONTAL) {
             @Override
             public boolean enableMultiSelect() {
                 return true;
@@ -387,17 +382,18 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
                 addEnumField("invoiceFrequency", true, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
             }
             addEnumField("invoiceDeliveryMethod", false, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
-            entityFieldsPanel.add(getLineSeperatorTag("HR and Account Department Docs"));
-            addField("accountVerificationDocs", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-            addField("signedCopyOfWorkOrder", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+            entityFieldsPanel.add(getLineSeperatorTag("HR Department Docs"));
             addField("i9Filled", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("w4Filled", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-            addField("logisticsPreparation", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("hrOrientation", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("timeSheetRequirement", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("specialInvoiceInstructions", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
             addField("joiningReport", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-            addField("isCPDFilled", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+            entityFieldsPanel.add(getLineSeperatorTag("Account Department Docs"));
+            addField("accountVerificationDocs", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+            addField("signedCopyOfWorkOrder", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+            addField("logisticsPreparation", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+            
             if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
                 entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
                 addDropDown("subcontractor", new SelectSubcontractorWidget(false, false, Alignment.HORIZONTAL));

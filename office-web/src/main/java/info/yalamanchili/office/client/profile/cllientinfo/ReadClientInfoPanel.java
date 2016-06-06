@@ -126,7 +126,6 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
             assignFieldValueFromEntity("terminationNotice", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("timeSheetRequirement", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("specialInvoiceInstructions", entity, DataType.TEXT_AREA_FIELD);
-            assignFieldValueFromEntity("isCPDFilled", entity, DataType.BOOLEAN_FIELD);
         }
         assignFieldValueFromEntity("visaStatus", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("notes", entity, DataType.TEXT_AREA_FIELD);
@@ -191,7 +190,7 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
         addField("clientPaymentTerms", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addDropDown("vendor", new SelectVendorWidget(true, true, Alignment.HORIZONTAL));
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(true, true, Alignment.HORIZONTAL));
-        selectVendorAPContactsW = new SelectVendorAcctPayContact(false, false, Alignment.HORIZONTAL) {
+        selectVendorAPContactsW = new SelectVendorAcctPayContact(false, true, Alignment.HORIZONTAL) {
             @Override
             public boolean enableMultiSelect() {
                 return true;
@@ -249,17 +248,18 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
                 addField("paymentTerms1099", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
                 addEnumField("invoiceFrequency1099", true, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
             }
-            entityFieldsPanel.add(getLineSeperatorTag("HR and Account Department Docs"));
-            addField("accountVerificationDocs", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-            addField("signedCopyOfWorkOrder", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+            entityFieldsPanel.add(getLineSeperatorTag("HR Department Docs"));
             addField("i9Filled", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("w4Filled", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-            addField("logisticsPreparation", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("hrOrientation", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("timeSheetRequirement", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("specialInvoiceInstructions", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
             addField("joiningReport", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-            addField("isCPDFilled", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+            
+            entityFieldsPanel.add(getLineSeperatorTag("Account Department Docs"));
+            addField("accountVerificationDocs", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+            addField("signedCopyOfWorkOrder", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);            
+            addField("logisticsPreparation", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         }
         entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
         addField("visaStatus", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);

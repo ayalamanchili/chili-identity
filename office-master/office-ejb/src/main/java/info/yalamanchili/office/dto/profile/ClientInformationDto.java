@@ -124,6 +124,7 @@ public class ClientInformationDto implements Serializable {
     /**
      * Vendor AP Contact
      */
+    @NotNull
     protected Set<Contact> vendorAPContacts;
     /**
      * Vendor Location
@@ -303,8 +304,6 @@ public class ClientInformationDto implements Serializable {
      *
      */
     protected Vendor middleVendor;
-
-    protected Boolean isCPDFilled;
 
     protected String timeSheetRequirement;
 
@@ -775,14 +774,6 @@ public class ClientInformationDto implements Serializable {
 
     public void setMiddleVendor(Vendor middleVendor) {
         this.middleVendor = middleVendor;
-    }
-
-    public Boolean getIsCPDFilled() {
-        return isCPDFilled;
-    }
-
-    public void setIsCPDFilled(Boolean isCPDFilled) {
-        this.isCPDFilled = isCPDFilled;
     }
 
     public String getTimeSheetRequirement() {

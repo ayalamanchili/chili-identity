@@ -267,7 +267,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         entityFieldsPanel.add(addVendorL);
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, true, Alignment.HORIZONTAL));
         //addDropDown("vendorContact", new SelectVendorContactWidget(false, false, Alignment.HORIZONTAL));
-        selectVendorAPContactsW = new SelectVendorAcctPayContact(false, false, Alignment.HORIZONTAL) {
+        selectVendorAPContactsW = new SelectVendorAcctPayContact(false, true, Alignment.HORIZONTAL) {
             @Override
             public boolean enableMultiSelect() {
                 return true;
@@ -327,6 +327,14 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         addField("visaStatus", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("terminationNotice", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("notes", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        
+        /* Start - Added Code on 06/05/2016 by Sudharani for autopopulating Visa Status*/
+        if (TreeEmployeePanel.instance().getEntity().get("workStatus") != null) {
+            StringField employeeVisaStatusF = (StringField) fields.get("visaStatus");
+            employeeVisaStatusF.setValue(TreeEmployeePanel.instance().getEntity().get("workStatus").isString().stringValue());
+        }
+        /* End - Added Code on 06/05/2016 by Sudharani for autopopulating Visa Status*/
+        
         if (TreeEmployeePanel.instance().getEntity().get("jobTitle") != null) {
             StringField jobTitleF = (StringField) fields.get("consultantJobTitle");
             jobTitleF.setValue(TreeEmployeePanel.instance().getEntity().get("jobTitle").isString().stringValue());
@@ -413,6 +421,14 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                         } else {
                             invDelv.setSelectedIndex(0);
                         }
+                        /* Start - Added Code on 06/05/2016 by Sudharani for autopopulating Visa Status*/                        
+                        EnumField invFrequencyv = (EnumField) fields.get("invoiceFrequency");
+                        if (vendor.get("vendorinvFrequency") != null) {
+                            invFrequencyv.selectValue(JSONUtils.toString(vendor, "vendorinvFrequency"));
+                        } else {
+                            invFrequencyv.setSelectedIndex(0);
+                        }
+                        /* End - Added Code on 06/05/2016 by Sudharani for autopopulating Visa Status*/                        
                     }
                 });
     }
