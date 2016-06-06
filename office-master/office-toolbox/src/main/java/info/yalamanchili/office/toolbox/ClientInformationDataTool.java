@@ -323,16 +323,6 @@ public class ClientInformationDataTool {
                 clientInfo.setClientLocation(AddressDao.instance().findById(cpd.getClientLocationID()));
             }
 
-            /*cpd.setIsCPDFilled(getCellStringValue(record, 42));
-            if (cpd.getIsCPDFilled() != null) {
-                if (cpd.getIsCPDFilled().equals("TRUE")) {
-                    clientInfo.setIsCPDFilled(Boolean.TRUE);
-                    clientInfo.setStatus(ClientInformationStatus.COMPLETED);
-                } else {
-                    clientInfo.setIsCPDFilled(Boolean.FALSE);
-                }
-            }*/
-
             cpd.setTimeSheetRequirement(getCellStringValue(record, 43));
             if (cpd.getTimeSheetRequirement() != null) {
                 clientInfo.setTimeSheetRequirement(cpd.getTimeSheetRequirement());
