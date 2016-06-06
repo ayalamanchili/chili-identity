@@ -47,7 +47,6 @@ public class CPDRecord {
     protected Long venAPID3;
     protected String vacationDetails;
     protected ClientInformationCompany company;
-    //protected String isCPDFilled;
     protected String timeSheetRequirement;
     protected String specialInvoiceInstructions;
     protected String projectEndingForSure;
@@ -257,14 +256,6 @@ public class CPDRecord {
         this.company = company;
     }
 
-/*    public String getIsCPDFilled() {
-        return isCPDFilled;
-    }
-
-    public void setIsCPDFilled(String isCPDFilled) {
-        this.isCPDFilled = isCPDFilled;
-    }
-*/
     public String getTimeSheetRequirement() {
         return timeSheetRequirement;
     }
