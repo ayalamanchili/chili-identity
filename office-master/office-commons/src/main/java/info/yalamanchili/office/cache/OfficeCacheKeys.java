@@ -40,6 +40,7 @@ public interface OfficeCacheKeys {
     String TIME = "time";
     String PROSPECT = "prospect";
     String CLIENTINFORMATION = "clientinformation";
+    String OUTOFOFFICEREQUEST = "outofreq";
     /**
      * holds key values for email messaging with address
      */
