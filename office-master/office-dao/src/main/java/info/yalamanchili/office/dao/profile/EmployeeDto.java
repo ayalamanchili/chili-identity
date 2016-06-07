@@ -323,6 +323,7 @@ public class EmployeeDto implements Serializable {
             dto.setPhoneNumber(phone.getPhoneNumber());
             dto.setPhoneNumberExt(phone.getExtension());
         }
+        dto.setEmployeeType(entity.getEmployeeType());
         dto.setId(entity.getId());
         return dto;
     }
