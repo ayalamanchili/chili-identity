@@ -8,13 +8,19 @@
  */
 package info.yalamanchili.office.bpm.time;
 
+import info.chili.email.Email;
 import info.chili.service.jrs.exception.ServiceException;
+import info.chili.service.jrs.types.Entry;
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.OutOfOfficeDao;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.OutOfOfficeRequest;
 import info.yalamanchili.office.entity.time.OutOfOfficeRequestStatus;
+import info.yalamanchili.office.jms.MessagingService;
+import java.util.List;
 import org.activiti.engine.delegate.DelegateTask;
 
 /**
@@ -26,6 +32,7 @@ public class OutOfOfficeRequestProcess extends RuleBasedTaskDelegateListner {
     @Override
     public void processTask(DelegateTask task) {
         super.processTask(task);
+        sendNotifyEmplyeeNotification(task);
         if ("complete".equals(task.getEventName())) {
             outOfOfficeTaskCompleted(task);
         }
@@ -38,7 +45,7 @@ public class OutOfOfficeRequestProcess extends RuleBasedTaskDelegateListner {
         }
         Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
         if (currentUser.getEmployeeId().equals(entity.getEmployee().getEmployeeId())) {
-            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.self.approve.corp.travelauthorization", "You cannot approve your travel authorization task");
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.self.approve.outofoffice", "You cannot approve your outof office task");
         }
         if (task.getTaskDefinitionKey().equals("outOfOfficeMgrApprovalTask")) {
             managerApprovalTaskComplete(entity, task);
@@ -54,6 +61,25 @@ public class OutOfOfficeRequestProcess extends RuleBasedTaskDelegateListner {
         }
         OutOfOfficeDao.instance().save(entity);
         task.getExecution().setVariable("entity", entity);
+    }
+
+    protected void sendNotifyEmplyeeNotification(DelegateTask task) {
+        List<Entry> notifyEmployees = (List<Entry>) task.getExecution().getVariable("notifyEmployees");
+        Email email = new Email();
+
+        if (notifyEmployees != null) {
+            for (Entry e : notifyEmployees) {
+                email.addTo(EmployeeDao.instance().getPrimaryEmail(e.getId()));
+            }
+        }
+        Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
+        OutOfOfficeRequest ts = getRequestFromTask(task);
+        email.setSubject("OutOfOffice Request " + ts.getStatus().name() + " For: " + emp.getFirstName() + " " + emp.getLastName());
+        String summary = "OutOfOffice Request " + ts.getStatus().name() + " For: " + emp.getFirstName() + " " + emp.getLastName() + " : Start Date " + ts.getStartDate() + " End Date " + ts.getEndDate();
+        MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
+        email.setBody(summary);
+        email.setHtml(Boolean.TRUE);
+        messagingService.sendEmail(email);
     }
 
     protected OutOfOfficeRequest getRequestFromTask(DelegateTask task) {
