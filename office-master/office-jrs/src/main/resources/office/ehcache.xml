@@ -39,4 +39,5 @@
     <cache name="user-email-pref-rules" maxElementsInMemory="10000" eternal="true" overflowToDisk="true" />
     <cache name="prospect" maxElementsInMemory="10000" eternal="true" overflowToDisk="true" />
     <cache name="clientinformation" maxElementsInMemory="10000" eternal="true" overflowToDisk="true" />
+    <cache name="outofreq" maxElementsInMemory="10000" eternal="true" overflowToDisk="true" />
 </ehcache>
