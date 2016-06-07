@@ -56,7 +56,6 @@ public class CreateOutOffOfficeRequestPanel extends CreateComposite {
         assignEntityValueFromField("startDate", outOfOffice);
         assignEntityValueFromField("endDate", outOfOffice);
         assignEntityValueFromField("time", outOfOffice);
-        assignEntityValueFromField("workForPartial", outOfOffice);
         assignEntityValueFromField("recurring", outOfOffice);
         assignEntityValueFromField("reason", outOfOffice);
         assignEntityValueFromField("notes", outOfOffice);
@@ -64,6 +63,7 @@ public class CreateOutOffOfficeRequestPanel extends CreateComposite {
         if (notifyEmployeesList.size() > 0) {
             outOfOffice.put("notifyEmployees", notifyEmployeesList);
         }
+        logger.info("entityyyyyy:" + outOfOffice);
         return outOfOffice;
     }
 
@@ -125,7 +125,6 @@ public class CreateOutOffOfficeRequestPanel extends CreateComposite {
         addEnumField("outOfOfficeType", false, true, OutOfOfficeType.names(), Alignment.HORIZONTAL);
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("workForPartial", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("recurring", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(tacHelpText);
         addField("time", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
@@ -153,7 +152,7 @@ public class CreateOutOffOfficeRequestPanel extends CreateComposite {
     };
 
     protected String getEmployeeIdsDropDownUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_USER.name() + "/0/10000");
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=employeeId&column=firstName&column=lastName&employee-type=Corporate Employee&employee-type=Employee&employee-type=Subcontractor&employee-type=1099 Contractor&employee-type=W2 Contractor");
     }
 
     @Override

@@ -18,11 +18,11 @@ import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.DateField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
-import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.MultiSelectSuggestBox;
@@ -63,7 +63,6 @@ public class UpdateOutOfOfficePanel extends UpdateComposite {
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
         assignEntityValueFromField("time", entity);
-        assignEntityValueFromField("workForPartial", entity);
         assignEntityValueFromField("recurring", entity);
         assignEntityValueFromField("reason", entity);
         assignEntityValueFromField("notes", entity);
@@ -96,7 +95,6 @@ public class UpdateOutOfOfficePanel extends UpdateComposite {
         assignFieldValueFromEntity("outOfOfficeType", outOfOffice, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("startDate", outOfOffice, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", outOfOffice, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("workForPartial", outOfOffice, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("recurring", outOfOffice, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("reason", outOfOffice, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("notes", outOfOffice, DataType.TEXT_AREA_FIELD);
@@ -123,7 +121,6 @@ public class UpdateOutOfOfficePanel extends UpdateComposite {
         addEnumField("outOfOfficeType", false, true, OutOfOfficeType.names(), Alignment.HORIZONTAL);
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("workForPartial", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("recurring", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(tacHelpText);
         addField("time", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
@@ -151,11 +148,22 @@ public class UpdateOutOfOfficePanel extends UpdateComposite {
     };
 
     protected String getEmployeeIdsDropDownUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_USER.name() + "/0/10000");
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=employeeId&column=firstName&column=lastName&employee-type=Corporate Employee&employee-type=Employee&employee-type=Subcontractor&employee-type=1099 Contractor&employee-type=W2 Contractor");
     }
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
+    }
+
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        DateField startDateF = (DateField) fields.get("startDate");
+        DateField endDateF = (DateField) fields.get("endDate");
+        if (startDateF.getDate() != null && endDateF.getDate() != null && startDateF.getDate().after(endDateF.getDate())) {
+            endDateF.setMessage("End Date must be equal to or after Start Date");
+            return false;
+        }
+        return true;
     }
 
     @Override
