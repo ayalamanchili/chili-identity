@@ -39,11 +39,11 @@ public class OutOfOfficeService {
         Map<String, Object> vars = new HashMap<>();
         emp = OfficeSecurityService.instance().getCurrentUser();
         entity.setEmployee(emp);
+        vars.put("notifyEmployees", entity.getNotifyEmployees());
         entity.setStatus(OutOfOfficeRequestStatus.PENDING_MANAGER_APPROVAL);
         entity = OutOfOfficeDao.instance().save(entity);
         vars.put("entity", entity);
         vars.put("currentEmployee", emp);
-        vars.put("notifyEmployees", entity.getNotifyEmployees());
         vars.put("entityId", entity.getId());
         entity.setBpmProcessId(OfficeBPMService.instance().startProcess("outof_office_process", vars));
         OutOfOfficeDao.instance().getEntityManager().merge(entity);
@@ -58,7 +58,7 @@ public class OutOfOfficeService {
     public void delete(Long id) {
         OutOfOfficeRequest ticket = OutOfOfficeDao.instance().findById(id);
         OfficeBPMTaskService.instance().deleteAllTasksForProcessId(ticket.getBpmProcessId(), true);
-        OutOfOfficeDao.instance().findById(id);
+        OutOfOfficeDao.instance().delete(id);
     }
 
     public static OutOfOfficeService instance() {
