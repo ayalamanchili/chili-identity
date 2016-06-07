@@ -15,19 +15,23 @@ import info.yalamanchili.office.dao.message.NotificationGroupDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.time.TimePeriodDao;
 import info.chili.email.Email;
+import info.yalamanchili.office.dao.profile.EmployeeDto;
 import info.yalamanchili.office.employee.probeval.ProbationPeriodEvaluationInitiator;
 import info.yalamanchili.office.entity.message.NotificationGroup;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.prospect.ProspectService;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import org.springframework.jmx.export.annotation.ManagedOperation;
+import org.dozer.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +47,9 @@ public class OfficeSchedulerService {
 
     @PersistenceContext
     public EntityManager em;
+
+    @Autowired
+    public Mapper mapper;
 
     /**
      * runs every night at 1.07 AM
@@ -88,18 +95,31 @@ public class OfficeSchedulerService {
         findUserQuery.setParameter("date1", Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
         findUserQuery.setParameter("month1", monthb);
         List lstResult = findUserQuery.getResultList();
+        List<EmployeeDto> dtos = new ArrayList();
+        for (Object emp : lstResult) {
+            dtos.add(EmployeeDto.map(mapper, (Employee) emp));
+        }
+        NotificationGroup ng = NotificationGroupDao.instance().findByName(BIRTHDAY_ANNUAL_NOTIFICATION_GROUP);
+        if (ng != null) {
+            Email email1 = new Email();
+            Set<String> emailto1 = new HashSet<String>();
+            for (Employee emp : ng.getEmployees()) {
+                emailto1.add(emp.getPrimaryEmail().getEmail());
+            }
+            email1.setTos(emailto1);
+            email1.setSubject("Birthday Wishes To");
+            HashMap<String, Object> emailContext = new HashMap();
+            emailContext.put("employees", dtos);
+            email1.setContext(emailContext);
+            email1.setTemplateName("birthday_annual_notification_template.html");
+            MessagingService.instance().sendEmail(email1);
+        }
         Iterator itr = lstResult.iterator();
         while (itr.hasNext()) {
             Employee empres = null;
             empres = ((Employee) itr.next());
             //TODO enhance it to collect all emails and send once
             Set<String> emailto = new HashSet<String>();
-            NotificationGroup ng = NotificationGroupDao.instance().findByName(BIRTHDAY_ANNUAL_NOTIFICATION_GROUP);
-            if (ng != null) {
-                for (Employee emp : ng.getEmployees()) {
-                    emailto.add(emp.getPrimaryEmail().getEmail());
-                }
-            }
             Email email = new Email();
             emailto.add(EmployeeDao.instance().getPrimaryEmail(empres));
             email.setTos(emailto);
@@ -127,6 +147,25 @@ public class OfficeSchedulerService {
         findUserQuery.setParameter("date1", Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
         findUserQuery.setParameter("month1", monthb);
         List lstResult = findUserQuery.getResultList();
+        List<EmployeeDto> dtos = new ArrayList();
+        for (Object emp : lstResult) {
+            dtos.add(EmployeeDto.map(mapper, (Employee) emp));
+        }
+        NotificationGroup ng = NotificationGroupDao.instance().findByName(BIRTHDAY_ANNUAL_NOTIFICATION_GROUP);
+        if (ng != null) {
+            Email email1 = new Email();
+            Set<String> emailto1 = new HashSet<String>();
+            for (Employee emp : ng.getEmployees()) {
+                emailto1.add(emp.getPrimaryEmail().getEmail());
+            }
+            email1.setTos(emailto1);
+            email1.setSubject("Anniversary Wishes");
+            HashMap<String, Object> emailContext = new HashMap();
+            emailContext.put("employees", dtos);
+            email1.setContext(emailContext);
+            email1.setTemplateName("birthday_annual_notification_template.html");
+            MessagingService.instance().sendEmail(email1);
+        }
         Iterator itr = lstResult.iterator();
         while (itr.hasNext()) {
             Employee empres = null;
@@ -140,12 +179,6 @@ public class OfficeSchedulerService {
 
             if (years > 0 && empres.isActive()) {
                 Set<String> emailto = new HashSet<String>();
-                NotificationGroup ng = NotificationGroupDao.instance().findByName(BIRTHDAY_ANNUAL_NOTIFICATION_GROUP);
-                if (ng != null) {
-                    for (Employee emp : ng.getEmployees()) {
-                        emailto.add(emp.getPrimaryEmail().getEmail());
-                    }
-                }
                 Email email = new Email();
                 email.setHtml(Boolean.TRUE);
                 emailto.add(EmployeeDao.instance().getPrimaryEmail(empres));
@@ -167,20 +200,20 @@ public class OfficeSchedulerService {
         }
         return years;
     }
-    
+
     /**
      * runs every night at 1.15 AM
      */
     @Scheduled(cron = "0 15 1 * * ?")
     public void sendProspectStatusNotChangeNotification() {
-       ProspectService.instance().sendProspectStatusNotChangeNotification();
+        ProspectService.instance().sendProspectStatusNotChangeNotification();
     }
-    
+
     /**
      * runs 2 15 PM every Monday
      */
     @Scheduled(cron = "0 15 2 ? * MON")
     public void sendBenchProspectsWeeklyNotification() {
-       ProspectService.instance().sendBenchProspectsWeeklyNotification();
+        ProspectService.instance().sendBenchProspectsWeeklyNotification();
     }
 }
