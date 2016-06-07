@@ -20,6 +20,7 @@
             <documentation>
                 Employee Out Of Office Request Manager Approval Task
                 Employee Name       : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                OutOf Office Type   : #{entity.outOfOfficeType}
                 Start Date          : #{entity.startDate}
                 End Date            : #{entity.endDate}
                 Reason Notes        : #{entity.reason}
