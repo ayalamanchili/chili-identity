@@ -44,29 +44,27 @@ public class OutOfOfficeRequest extends AbstractEntity {
     @ForeignKey(name = "FK_Emp_OutOfOfficeReqs")
     protected Employee employee;
 
-    @NotNull(message = "{startDate.not.empty.msg}")
+    @NotNull(message = "{outofoffice.startDate.not.empty.msg}")
     @Temporal(TemporalType.DATE)
     protected Date startDate;
 
-    @NotNull(message = "{endDate.not.empty.msg}")
+    @NotNull(message = "{outofoffice.endDate.not.empty.msg}")
     @Temporal(TemporalType.DATE)
     protected Date endDate;
 
     @Lob
-    @NotEmpty(message = "{reason.not.empty.msg}")
+    @NotEmpty(message = "{outofoffice.reason.not.empty.msg}")
     protected String reason;
 
     protected String time;
 
     protected String notes;
-    
-    @NotNull(message = "{type.not.empty.msg}")
+
+    @NotNull(message = "{outofoffice.type.not.empty.msg}")
     @Enumerated(EnumType.STRING)
     protected OutOfOfficeType outOfOfficeType;
 
     protected Boolean recurring;
-    
-    protected Boolean workForPartial;
 
     protected String bpmProcessId;
 
@@ -167,17 +165,8 @@ public class OutOfOfficeRequest extends AbstractEntity {
         this.notifyEmployees = notifyEmployees;
     }
 
-    public Boolean getWorkForPartial() {
-        return workForPartial;
-    }
-
-    public void setWorkForPartial(Boolean workForPartial) {
-        this.workForPartial = workForPartial;
-    }
-
     @Override
     public String toString() {
-        return "OutOfOfficeRequest{" + "employee=" + employee + ", startDate=" + startDate + ", endDate=" + endDate + ", reason=" + reason + ", time=" + time + ", notes=" + notes + ", outOfOfficeType=" + outOfOfficeType + ", recurring=" + recurring + ", workForPartial=" + workForPartial + ", bpmProcessId=" + bpmProcessId + ", status=" + status + ", notifyEmployees=" + notifyEmployees + '}';
+        return "OutOfOfficeRequest{" + "employee=" + employee + ", startDate=" + startDate + ", endDate=" + endDate + ", reason=" + reason + ", time=" + time + ", notes=" + notes + ", outOfOfficeType=" + outOfOfficeType + ", recurring=" + recurring + ", bpmProcessId=" + bpmProcessId + ", status=" + status + '}';
     }
-
 }
