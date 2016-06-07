@@ -27,9 +27,9 @@
                 Recurring           : #{entity.recurring}
                 time                : #{entity.time}
                 
-                Navigate to view Expense Report:
+                Navigate to view OutOf Office Request:
                 Time > OutOf Office > Search > Click View > Table Action column > Click View Icon (or)
-                Expense > OutOf Office > Table Action column > Click View Icon
+                Time > OutOf Office > Table Action column > Click View Icon
                 
             </documentation>
             <extensionElements>
