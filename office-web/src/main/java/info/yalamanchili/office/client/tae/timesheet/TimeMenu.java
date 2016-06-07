@@ -19,6 +19,7 @@ import info.yalamanchili.office.client.tae.bonuspayment.ReadAllAdjustmentHoursPa
 import info.yalamanchili.office.client.tae.Attendence.AttendenceSidePanel;
 import info.yalamanchili.office.client.tae.timesheetperiod.TimeSheetPeriodSidePanel;
 import info.yalamanchili.office.client.tae.timesheetperiod.ReadAllTimeSheetPeriodsPanel;
+import info.yalamanchili.office.client.time.CurrentWeekOutOfOfficeRequestsPanel;
 import info.yalamanchili.office.client.time.OutOfOfficeSidePanel;
 import info.yalamanchili.office.client.time.consultant.ConsultantTimeSidePanel;
 import info.yalamanchili.office.client.time.consultant.ConsultantTimeSummaryPanel;
@@ -136,7 +137,7 @@ public class TimeMenu extends CMenuBar {
             TabPanel.instance().getTimePanel().sidePanelBottom.clear();
             TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllOutOfOfficePanel());
             TabPanel.instance().getTimePanel().sidePanelTop.add(new OutOfOfficeSidePanel());
-            
+            TabPanel.instance().getTimePanel().entityPanel.add(new CurrentWeekOutOfOfficeRequestsPanel());
         }
     };
 }
