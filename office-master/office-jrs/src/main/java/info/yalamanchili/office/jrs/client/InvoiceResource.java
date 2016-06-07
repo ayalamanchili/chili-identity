@@ -10,6 +10,7 @@ package info.yalamanchili.office.jrs.client;
 
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
+import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.office.dao.client.InvoiceDao;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
@@ -87,6 +88,9 @@ public class InvoiceResource extends CRUDResource<Invoice> {
     @Path("/save/{id}")
     //TODO add invoice mgr role check using pre auth
     public Invoice saveInvoice(@PathParam("id") Long id, Invoice invoice) {
+        if(invoice.getInvoiceSentDate().before(invoice.getInvoiceDate())){
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invoiceSentDate.not.before.invoiceDate", "InvoiceSentDate should not be prior to InvoiceDate");
+        }
         Invoice inv = new Invoice();
         ClientInformation ci = ClientInformationDao.instance().findById(id);
         inv.setEmployee(ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
