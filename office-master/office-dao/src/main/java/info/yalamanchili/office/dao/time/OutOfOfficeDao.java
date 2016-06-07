@@ -10,12 +10,14 @@ package info.yalamanchili.office.dao.time;
 
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.entity.time.OutOfOfficeRequest;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +35,7 @@ public class OutOfOfficeDao extends CRUDDao<OutOfOfficeRequest> {
 
     @Transactional(readOnly = true)
     @Override
-    //@Cacheable(value = OfficeCacheKeys.OUTOFOFFICEREQUEST, key = "{#root.methodName,#start,#limit}")
+    @Cacheable(value = OfficeCacheKeys.OUTOFOFFICEREQUEST, key = "{#root.methodName,#start,#limit}")
     public List<OutOfOfficeRequest> query(int start, int limit) {
         TypedQuery<OutOfOfficeRequest> findAllQuery = getEntityManager().createQuery("from " + OutOfOfficeRequest.class.getCanonicalName(), OutOfOfficeRequest.class);
         findAllQuery.setFirstResult(start);
@@ -41,7 +43,7 @@ public class OutOfOfficeDao extends CRUDDao<OutOfOfficeRequest> {
         return findAllQuery.getResultList();
     }
 
-    //@Cacheable(value = OfficeCacheKeys.OUTOFOFFICEREQUEST, key = "{#root.methodName,#employeeId,#start,#limit}")
+    @Cacheable(value = OfficeCacheKeys.OUTOFOFFICEREQUEST, key = "{#root.methodName,#employeeId,#start,#limit}")
     public List<OutOfOfficeRequest> queryForEmployee(Long employeeId, Integer start, Integer limit) {
         Query findAllQuery = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " where employee.id=:employeeIdParam ", entityCls);
         findAllQuery.setParameter("employeeIdParam", employeeId);
@@ -50,7 +52,7 @@ public class OutOfOfficeDao extends CRUDDao<OutOfOfficeRequest> {
         return findAllQuery.getResultList();
     }
 
-    //@Cacheable(value = OfficeCacheKeys.OUTOFOFFICEREQUEST, key = "{#root.methodName,#start,#limit}")
+    @Cacheable(value = OfficeCacheKeys.OUTOFOFFICEREQUEST, key = "{#root.methodName,#start,#limit}")
     public List<OutOfOfficeRequest> queryForCurrentWeekRequests(Integer start, Integer limit) {
         Query findAllQuery = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " where YEARWEEK(date)=YEARWEEK(NOW()) ", entityCls);
         findAllQuery.setFirstResult(start);
@@ -58,7 +60,7 @@ public class OutOfOfficeDao extends CRUDDao<OutOfOfficeRequest> {
         return findAllQuery.getResultList();
     }
 
-    //@Cacheable(value = OfficeCacheKeys.OUTOFOFFICEREQUEST, key = "{#root.methodName,#employeeId}")
+    @Cacheable(value = OfficeCacheKeys.OUTOFOFFICEREQUEST, key = "{#root.methodName,#employeeId}")
     public Long size(Long employeeId) {
         TypedQuery<Long> findAllQuery = getEntityManager().createQuery("select count(*) from " + entityCls.getCanonicalName() + " where employee.id=:employeeIdParam", Long.class);
         findAllQuery.setParameter("employeeIdParam", employeeId);
