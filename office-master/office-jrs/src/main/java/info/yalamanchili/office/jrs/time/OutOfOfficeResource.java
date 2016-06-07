@@ -30,7 +30,6 @@ import javax.ws.rs.PathParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Scope;
@@ -49,9 +48,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class OutOfOfficeResource extends CRUDResource<OutOfOfficeRequest> {
 
     @Autowired
-    protected Mapper mapper;
-
-    @Autowired
     public OutOfOfficeDao outOfOfficeDao;
 
     @Override
@@ -63,6 +59,7 @@ public class OutOfOfficeResource extends CRUDResource<OutOfOfficeRequest> {
     @Path("/{id}")
     @Transactional(readOnly = true)
     @Override
+    @CacheEvict(value = OfficeCacheKeys.OUTOFOFFICEREQUEST)
     public OutOfOfficeRequest read(@PathParam("id") Long id) {
         return outOfOfficeDao.findById(id);
     }
@@ -84,7 +81,6 @@ public class OutOfOfficeResource extends CRUDResource<OutOfOfficeRequest> {
 
     @GET
     @Path("/{start}/{limit}")
-    @CacheEvict(value = OfficeCacheKeys.OUTOFOFFICEREQUEST, allEntries = true)
     public OutOfOfficeTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         OutOfOfficeTable tableObj = new OutOfOfficeTable();
         if (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_HR_ADMINSTRATION.name())) {
@@ -94,14 +90,13 @@ public class OutOfOfficeResource extends CRUDResource<OutOfOfficeRequest> {
             Employee currentEmp = OfficeSecurityService.instance().getCurrentUser();
             tableObj.setEntities(outOfOfficeDao.queryForEmployee(currentEmp.getId(), start, limit));
             tableObj.setSize(outOfOfficeDao.size(currentEmp.getId()));
+            tableObj.setSize(getDao().size());
         }
-        tableObj.setSize(getDao().size());
         return tableObj;
     }
 
     @GET
     @Path("/{employeeId}/{start}/{limit}")
-    @CacheEvict(value = OfficeCacheKeys.OUTOFOFFICEREQUEST, allEntries = true)
     @AccessCheck(companyContacts = {"Reports_To"}, roles = {"ROLE_HR_ADMINSTRATION"}, strictOrderCheck = false)
     public OutOfOfficeResource.OutOfOfficeTable getOutOfOfficeRequestForEmployee(@PathParam("employeeId") Long employeeId, @PathParam("start") int start, @PathParam("limit") int limit) {
         OutOfOfficeResource.OutOfOfficeTable tableObj = new OutOfOfficeResource.OutOfOfficeTable();
@@ -112,8 +107,6 @@ public class OutOfOfficeResource extends CRUDResource<OutOfOfficeRequest> {
 
     @GET
     @Path("/current-week/{start}/{limit}")
-    @CacheEvict(value = OfficeCacheKeys.OUTOFOFFICEREQUEST, allEntries = true)
-    @PreAuthorize("hasAnyRole('ROLE_HR_ADMINSTRATION')")
     public OutOfOfficeResource.OutOfOfficeTable getCurrentWeekRequests(@PathParam("start") int start, @PathParam("limit") int limit) {
         OutOfOfficeResource.OutOfOfficeTable tableObj = new OutOfOfficeResource.OutOfOfficeTable();
         tableObj.setEntities(outOfOfficeDao.queryForCurrentWeekRequests(start, limit));
