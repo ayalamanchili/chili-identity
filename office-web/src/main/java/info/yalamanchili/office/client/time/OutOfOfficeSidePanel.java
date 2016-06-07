@@ -19,7 +19,6 @@ import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.utils.Utils;
-import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -37,7 +36,6 @@ public class OutOfOfficeSidePanel extends ALComposite implements ClickHandler {
     public FlowPanel outOfOfficeSidePanel = new FlowPanel();
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false);
     Button viewB = new Button("View");
-    ClickableLink currentWeek = new ClickableLink("Current Week Requests");
 
     public OutOfOfficeSidePanel() {
         init(outOfOfficeSidePanel);
@@ -46,7 +44,6 @@ public class OutOfOfficeSidePanel extends ALComposite implements ClickHandler {
     @Override
     protected void addListeners() {
         viewB.addClickHandler(this);
-        currentWeek.addClickHandler(this);
     }
 
     @Override
@@ -80,7 +77,6 @@ public class OutOfOfficeSidePanel extends ALComposite implements ClickHandler {
     protected void addWidgets() {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ACCOUNTS_PAYABLE, Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS, Auth.ROLE.ROLE_CEO)) {
             outOfOfficeSidePanel.add(new SearchOutOfOfficePanel());
-            outOfOfficeSidePanel.add(currentWeek);
         } else {
             outOfOfficeSidePanel.add(Utils.getLineSeperatorTag("Search"));
             outOfOfficeSidePanel.add(employeeSB);
@@ -94,19 +90,10 @@ public class OutOfOfficeSidePanel extends ALComposite implements ClickHandler {
             TabPanel.instance().timePanel.entityPanel.clear();
             TabPanel.instance().timePanel.entityPanel.add(new ReadAllOutOfOfficePanel(getOfficeURL(0, "10")));
         }
-        if (event.getSource().equals(currentWeek)) {
-            TabPanel.instance().timePanel.entityPanel.clear();
-            TabPanel.instance().timePanel.entityPanel.add(new ReadAllOutOfOfficePanel(getCurrentWeekURL(0, "10")));
-        }
     }
 
     private String getOfficeURL(Integer start, String limit) {
         return OfficeWelcome.constants.root_url() + "out-of-office/" + employeeSB.getKey() + "/" + start.toString() + "/"
-                + limit.toString();
-    }
-
-    private String getCurrentWeekURL(Integer start, String limit) {
-        return OfficeWelcome.constants.root_url() + "out-of-office/current-week/" + start.toString() + "/"
                 + limit.toString();
     }
 

@@ -46,7 +46,7 @@ public class CreateOutOffOfficeRequestPanel extends CreateComposite {
 
     public CreateOutOffOfficeRequestPanel(CreateComposite.CreateCompositeType type) {
         super(type);
-        initCreateComposite("OutOfOfficeRequest", OfficeWelcome.constants);
+        initCreateComposite("OutOfOfficeRequest", OfficeWelcome.constants2);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class CreateOutOffOfficeRequestPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Request Submitted Successfully");
+        new ResponseStatusWidget().show("OutOf Office Request Submitted Successfully");
         TabPanel.instance().timePanel.entityPanel.clear();
         TabPanel.instance().timePanel.entityPanel.add(new ReadAllOutOfOfficePanel());
     }
@@ -152,7 +152,7 @@ public class CreateOutOffOfficeRequestPanel extends CreateComposite {
     };
 
     protected String getEmployeeIdsDropDownUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=employeeId&column=firstName&column=lastName&employee-type=Corporate Employee&employee-type=Employee&employee-type=Subcontractor&employee-type=1099 Contractor&employee-type=W2 Contractor");
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=employeeId&column=firstName&column=lastName&employee-type=Corporate Employee");
     }
 
     @Override

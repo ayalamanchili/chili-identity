@@ -34,21 +34,36 @@ public class ReadAllOutOfOfficePanel extends CRUDReadAllComposite {
     public static ReadAllOutOfOfficePanel instance;
     protected String url;
     JSONArray array = new JSONArray();
+    boolean isOnCurrent = false;
 
     public ReadAllOutOfOfficePanel() {
         instance = this;
-        initTable("OutOfOfficeRequest", OfficeWelcome.constants);
+        initTable("OutOfOfficeRequest", OfficeWelcome.constants2);
     }
 
     public ReadAllOutOfOfficePanel(String url) {
         instance = this;
         this.url = url;
-        initTable("OutOfOfficeRequest", OfficeWelcome.constants);
+        initTable("OutOfOfficeRequest", OfficeWelcome.constants2);
     }
 
     public ReadAllOutOfOfficePanel(JSONArray result) {
         instance = this;
-        initTable("OutOfOfficeRequest", result, OfficeWelcome.constants);
+        initTable("OutOfOfficeRequest", result, OfficeWelcome.constants2);
+    }
+
+    public ReadAllOutOfOfficePanel(String title, JSONArray array) {
+        instance = this;
+        isOnCurrent = true;
+        initTable(title, array, OfficeWelcome.constants2);
+    }
+    protected boolean isEmployeesOnCurrentWeekPanel = false;
+
+    public ReadAllOutOfOfficePanel(String title, JSONArray array, boolean isEmployeesOnCurrentWeekPanel) {
+        instance = this;
+        isOnCurrent = true;
+        this.isEmployeesOnCurrentWeekPanel = isEmployeesOnCurrentWeekPanel;
+        initTable(title, array, OfficeWelcome.constants2);
     }
 
     @Override
@@ -144,7 +159,11 @@ public class ReadAllOutOfOfficePanel extends CRUDReadAllComposite {
 
     @Override
     protected void configureCreateButton() {
-        createButton.setText("Create OutOf Office Request");
+        if (isOnCurrent != true) {
+            createButton.setText("Create OutOf Office Request");
+        } else {
+            createButton.removeFromParent();
+        }
     }
 
     @Override

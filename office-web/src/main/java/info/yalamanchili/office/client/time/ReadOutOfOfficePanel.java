@@ -35,7 +35,7 @@ public class ReadOutOfOfficePanel extends ReadComposite {
 
     public ReadOutOfOfficePanel(String id) {
         instance = this;
-        initReadComposite(id, "OutOfOfficeRequest", OfficeWelcome.constants);
+        initReadComposite(id, "OutOfOfficeRequest", OfficeWelcome.constants2);
     }
 
     @Override

@@ -32,7 +32,7 @@ public class SearchOutOfOfficePanel extends SearchComposite {
     private static Logger logger = Logger.getLogger(SearchOutOfOfficePanel.class.getName());
 
     public SearchOutOfOfficePanel() {
-        init("Search", "OutOfOfficeRequest", OfficeWelcome.constants);
+        init("Search", "OutOfOfficeRequest", OfficeWelcome.constants2);
         advancedSearchDP.setOpen(true);
     }
 

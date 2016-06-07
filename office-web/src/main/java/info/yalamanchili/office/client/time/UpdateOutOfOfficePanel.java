@@ -41,7 +41,7 @@ public class UpdateOutOfOfficePanel extends UpdateComposite {
     HTML tacHelpText = new HTML("<h4 style=\"color:#888\">" + "If You Work For Partital or If you need recurring please enter the details in below field.. for Eg: for partial work you have to enter something like 05/08/2016 10 am to 1 pm.. for Recurring you have to mention like every wed,tue 9am to 4pm</h4>");
 
     public UpdateOutOfOfficePanel(String entityId) {
-        initUpdateComposite(entityId, "OutOfOfficeRequest", OfficeWelcome.constants);
+        initUpdateComposite(entityId, "OutOfOfficeRequest", OfficeWelcome.constants2);
     }
 
     @Override
@@ -103,7 +103,7 @@ public class UpdateOutOfOfficePanel extends UpdateComposite {
 
     @Override
     protected void postUpdateSuccess(String result) {
-        new ResponseStatusWidget().show("Request Updated Successfully");
+        new ResponseStatusWidget().show("OutOf Office Request Updated Successfully");
         TabPanel.instance().timePanel.entityPanel.clear();
         TabPanel.instance().timePanel.entityPanel.add(new ReadAllOutOfOfficePanel());
     }
@@ -148,7 +148,7 @@ public class UpdateOutOfOfficePanel extends UpdateComposite {
     };
 
     protected String getEmployeeIdsDropDownUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=employeeId&column=firstName&column=lastName&employee-type=Corporate Employee&employee-type=Employee&employee-type=Subcontractor&employee-type=1099 Contractor&employee-type=W2 Contractor");
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=employeeId&column=firstName&column=lastName&employee-type=Corporate Employee");
     }
 
     @Override
