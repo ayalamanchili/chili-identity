@@ -15,10 +15,10 @@
         <preConditions onFail="WARN"> 
         </preConditions>
         <dropColumn tableName="clientinformation" columnName="isCPDFilled" catalogName="office"
-                   schemaName="public">
+                    schemaName="public">
         </dropColumn>
         <dropColumn tableName="clientinformation_aud" columnName="isCPDFilled" catalogName="office"
-                   schemaName="public">
-        </deleteColumn>
+                    schemaName="public">
+        </dropColumn>
     </changeSet>        
 </databaseChangeLog>
