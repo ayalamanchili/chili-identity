@@ -87,7 +87,7 @@ public class CreateEducationRecordPanel extends CreateComposite {
         addField("fieldOfStudy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("nameOfSchool", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("address", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("graduationYear", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("graduationYear", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
