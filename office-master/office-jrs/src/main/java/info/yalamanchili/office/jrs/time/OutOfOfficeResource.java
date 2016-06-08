@@ -65,6 +65,7 @@ public class OutOfOfficeResource extends CRUDResource<OutOfOfficeRequest> {
     }
 
     @PUT
+    @Validate
     @Path("/submit-request/")
     @CacheEvict(value = OfficeCacheKeys.OUTOFOFFICEREQUEST, allEntries = true)
     public void submitRequest(OutOfOfficeRequest outOfOfficeRequest) {
@@ -107,11 +108,8 @@ public class OutOfOfficeResource extends CRUDResource<OutOfOfficeRequest> {
 
     @GET
     @Path("/current-week/{start}/{limit}")
-    public OutOfOfficeResource.OutOfOfficeTable getCurrentWeekRequests(@PathParam("start") int start, @PathParam("limit") int limit) {
-        OutOfOfficeResource.OutOfOfficeTable tableObj = new OutOfOfficeResource.OutOfOfficeTable();
-        tableObj.setEntities(outOfOfficeDao.queryForCurrentWeekRequests(start, limit));
-        tableObj.setSize(outOfOfficeDao.size());
-        return tableObj;
+    public List<OutOfOfficeRequest> getCurrentWeekRequests(@PathParam("start") int start, @PathParam("limit") int limit) {
+        return outOfOfficeDao.queryForCurrentWeekRequests(start, limit);
     }
 
     @PUT
