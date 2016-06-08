@@ -17,12 +17,10 @@
         <dropColumn catalogName="office"
                     columnName="isCPDFilled"
                     schemaName="public"
-                    tableName="clientinformation">
-        </dropColumn>
+                    tableName="clientinformation"/>
         <dropColumn catalogName="office"
                     columnName="isCPDFilled"
                     schemaName="public"
-                    tableName="clientinformation_aud">
-        </dropColumn>
+                    tableName="clientinformation_aud"/>
     </changeSet>        
 </databaseChangeLog>
