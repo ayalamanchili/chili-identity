@@ -12,6 +12,7 @@ import info.chili.jpa.AbstractHandleEntity;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Temporal;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Indexed;
@@ -32,9 +33,11 @@ public class TravelHistoryRecord extends AbstractHandleEntity {
     protected String typeOfVisa;
 
     @Temporal(javax.persistence.TemporalType.DATE)
+    @NotNull(message = "{arrivalDate.not.empty.msg}")
     protected Date arrivalDate;
 
     @Temporal(javax.persistence.TemporalType.DATE)
+    @NotNull(message = "{departureDate.not.empty.msg}")
     protected Date departureDate;
 
     public String getTypeOfVisa() {

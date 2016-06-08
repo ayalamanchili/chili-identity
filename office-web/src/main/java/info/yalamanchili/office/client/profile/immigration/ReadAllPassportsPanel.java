@@ -74,7 +74,7 @@ public class ReadAllPassportsPanel extends CRUDReadAllComposite {
 
     @Override
     public void createTableHeader() {
-        table.setText(0, 0, getKeyValue("Table_Action"));
+        table.setText(0, 0, getKeyValue("Table Action"));
         table.setText(0, 1, getKeyValue("Passport Number"));
         table.setText(0, 2, getKeyValue("Issued Date"));
         table.setText(0, 3, getKeyValue("Expiry Date"));

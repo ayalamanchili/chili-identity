@@ -71,7 +71,7 @@ public class ReadAllTravelHistoryRecordPanel extends CRUDReadAllComposite {
 
     @Override
     public void createTableHeader() {
-        table.setText(0, 0, getKeyValue("Table_Action"));
+        table.setText(0, 0, getKeyValue("Table Action"));
         table.setText(0, 1, getKeyValue("TypeOfVisa"));
         table.setText(0, 2, getKeyValue("Arrival Date"));
         table.setText(0, 3, getKeyValue("Departure Date"));

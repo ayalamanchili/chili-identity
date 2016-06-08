@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -29,7 +30,7 @@ public class i94Record extends AbstractHandleEntity {
 
     private static final long serialVersionUID = 11L;
 
-//    @NotEmpty(message = "{i94RecordNumber.not.empty.msg}")
+    @NotEmpty(message = "{i94RecordNumber.not.empty.msg}")
     @org.hibernate.annotations.Index(name = "i94_RECORD_NBR")
     protected String i94RecordNumber;
 

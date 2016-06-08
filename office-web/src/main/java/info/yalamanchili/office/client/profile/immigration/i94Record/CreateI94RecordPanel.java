@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -27,13 +30,6 @@ public class CreateI94RecordPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateI94RecordPanel.class.getName());
 
-    FileuploadField empImageUploadPanel = new FileuploadField(OfficeWelcome.constants, "Employee", "imageUrl", "i94Record/imageURL", false) {
-        @Override
-        public void onUploadComplete(String res) {
-            postCreateSuccess(null);
-        }
-    };
-
     public CreateI94RecordPanel(CreateComposite.CreateCompositeType type) {
         super(type);
         initCreateComposite("i94Record", OfficeWelcome.constants2);
@@ -47,7 +43,6 @@ public class CreateI94RecordPanel extends CreateComposite {
         assignEntityValueFromField("admitUntilDate", I94Record);
         assignEntityValueFromField("portOfEntry", I94Record);
         assignEntityValueFromField("classOfAdmission", I94Record);
-        I94Record.put("imageURL", empImageUploadPanel.getFileName());
         I94Record.put("targetEntityName", new JSONString("targetEntityName"));
         I94Record.put("targetEntityId", new JSONString("0"));
         return I94Record;
@@ -64,7 +59,7 @@ public class CreateI94RecordPanel extends CreateComposite {
 
                     @Override
                     public void onSuccess(String arg0) {
-                        uploadImage(arg0);
+                        postCreateSuccess(arg0);
                     }
                 });
 
@@ -99,12 +94,7 @@ public class CreateI94RecordPanel extends CreateComposite {
         addField("admitUntilDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("portOfEntry", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("classOfAdmission", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        entityFieldsPanel.add(empImageUploadPanel);
         alignFields();
-    }
-
-    protected void uploadImage(String entityId) {
-        empImageUploadPanel.upload(entityId.trim());
     }
 
     @Override

@@ -29,7 +29,7 @@ import java.util.logging.Logger;
  * @author Sudha
  */
 public class ReadAllEducationRecordPanel extends CRUDReadAllComposite {
- 
+
     private static Logger logger = Logger.getLogger(ReadAllEducationRecordPanel.class.getName());
     public static ReadAllEducationRecordPanel instance;
     protected String url;
@@ -70,7 +70,7 @@ public class ReadAllEducationRecordPanel extends CRUDReadAllComposite {
 
     @Override
     public void createTableHeader() {
-        table.setText(0, 0, getKeyValue("Table_Action"));
+        table.setText(0, 0, getKeyValue("Table Action"));
         table.setText(0, 1, getKeyValue("Degree Of Study"));
         table.setText(0, 2, getKeyValue("Field Of Study"));
         table.setText(0, 3, getKeyValue("Name Of School"));
@@ -85,7 +85,7 @@ public class ReadAllEducationRecordPanel extends CRUDReadAllComposite {
             table.setText(i, 1, JSONUtils.toString(entity, "degreeOfStudy"));
             table.setText(i, 2, JSONUtils.toString(entity, "fieldOfStudy"));
             table.setText(i, 3, JSONUtils.toString(entity, "nameOfSchool"));
-            table.setText(i, 4, JSONUtils.toString(entity, "graduationYear"));            
+            table.setText(i, 4, JSONUtils.toString(entity, "graduationYear"));
         }
     }
 
