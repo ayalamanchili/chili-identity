@@ -64,7 +64,7 @@ public class UpdateEducationRecordPanel extends UpdateComposite {
         assignFieldValueFromEntity("fieldOfStudy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("nameOfSchool", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("address", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("graduationYear", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("graduationYear", entity, DataType.INTEGER_FIELD);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class UpdateEducationRecordPanel extends UpdateComposite {
         addField("fieldOfStudy", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("nameOfSchool", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("address", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("graduationYear", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("graduationYear", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
