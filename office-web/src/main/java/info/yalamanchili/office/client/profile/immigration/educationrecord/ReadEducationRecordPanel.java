@@ -33,7 +33,7 @@ public class ReadEducationRecordPanel extends ReadComposite {
         assignFieldValueFromEntity("fieldOfStudy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("nameOfSchool", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("address", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("graduationYear", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("graduationYear", entity, DataType.INTEGER_FIELD);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class ReadEducationRecordPanel extends ReadComposite {
         addField("fieldOfStudy", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("nameOfSchool", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("address", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("graduationYear", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("graduationYear", true, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
