@@ -144,7 +144,7 @@ public class ClientInformation extends AbstractEntity {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "clientinformation_vendor_apcontacts")
     @ForeignKey(name = "FK_VendorAPContacts_ClientInformations")
-    @NotNull
+    @NotNull(groups = SubmitChecks.class)
     protected Set<Contact> vendorAPContacts;
     /**
      * Vendor Location
