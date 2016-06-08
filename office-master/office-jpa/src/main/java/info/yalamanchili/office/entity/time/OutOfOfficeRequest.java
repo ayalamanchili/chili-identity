@@ -24,7 +24,9 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
+import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -33,8 +35,10 @@ import org.hibernate.validator.constraints.NotEmpty;
  *
  * @author Ramana.Lukalapu
  */
+@XmlType
 @Indexed
 @Entity
+@Audited
 @XmlRootElement
 public class OutOfOfficeRequest extends AbstractEntity {
 
