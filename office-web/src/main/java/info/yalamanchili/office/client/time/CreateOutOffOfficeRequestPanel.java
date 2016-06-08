@@ -93,6 +93,7 @@ public class CreateOutOffOfficeRequestPanel extends CreateComposite {
         new ResponseStatusWidget().show("OutOf Office Request Submitted Successfully");
         TabPanel.instance().timePanel.entityPanel.clear();
         TabPanel.instance().timePanel.entityPanel.add(new ReadAllOutOfOfficePanel());
+        TabPanel.instance().timePanel.entityPanel.add(new CurrentWeekOutOfOfficeRequestsPanel());
     }
 
     @Override

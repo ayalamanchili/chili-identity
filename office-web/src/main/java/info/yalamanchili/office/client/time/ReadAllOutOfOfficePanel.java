@@ -139,7 +139,7 @@ public class ReadAllOutOfOfficePanel extends CRUDReadAllComposite {
         String status = JSONUtils.toString(entity, "status");
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
             createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE);
-        } else if (OutOfOfficeRequestStatus.PENDING_MANAGER_APPROVAL.name().equals(status)) {
+        } else if (status.equalsIgnoreCase(OutOfOfficeRequestStatus.Pending_Manager_Approval.name())) {
             createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE);
         } else {
             createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ);

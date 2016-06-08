@@ -46,18 +46,29 @@ public class SearchOutOfOfficePanel extends SearchComposite {
     protected void populateSearchSuggestBox() {
     }
 
-    protected String getnameDropDownUrl() {
-        //TODO think about the limit
+    protected String getFirstNameDropDownUrl() {
         return OfficeWelcome.constants.root_url() + "employee/dropdown/0/10000?column=id&column=firstName";
+    }
+
+    protected String getLastNameDropDownUrl() {
+        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/10000?column=id&column=lastName";
     }
 
     @Override
     protected void populateAdvancedSuggestBoxes() {
-        HttpService.HttpServiceAsync.instance().doGet(getnameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+        HttpService.HttpServiceAsync.instance().doGet(getFirstNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
                 Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
-                SuggestBox sb = (SuggestBox) fields.get("employee");
+                SuggestBox sb = (SuggestBox) fields.get("firstName");
+                sb.loadData(values.values());
+            }
+        });
+        HttpService.HttpServiceAsync.instance().doGet(getLastNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
+                SuggestBox sb = (SuggestBox) fields.get("lastName");
                 sb.loadData(values.values());
             }
         });
@@ -76,7 +87,8 @@ public class SearchOutOfOfficePanel extends SearchComposite {
 
     @Override
     protected void addWidgets() {
-        addField("employee", DataType.STRING_FIELD);
+        addField("firstName", DataType.STRING_FIELD);
+        addField("lastName", DataType.STRING_FIELD);
         addField("startDate", DataType.DATE_FIELD);
         addField("endDate", DataType.DATE_FIELD);
         addEnumField("status", false, false, OutOfOfficeRequestStatus.names());
@@ -86,7 +98,8 @@ public class SearchOutOfOfficePanel extends SearchComposite {
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
         JSONObject employee = new JSONObject();
-        assignEntityValueFromField("employee", employee, "firstName");
+        assignEntityValueFromField("firstName", employee, "firstName");
+        assignEntityValueFromField("lastName", employee, "lastName");
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
         assignEntityValueFromField("status", entity);

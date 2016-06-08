@@ -27,18 +27,18 @@ public class CurrentWeekOutOfOfficeRequestsPanel extends Composite {
         initWidget(panel);
         HttpService.HttpServiceAsync.instance().doGet(getCurrentEmpRequestsUrl(0, "10"), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                    panel.add(new ReadAllOutOfOfficePanel("Current Week Employees", new JSONArray()));
-                } else {
-                    JSONObject resObj = JSONParser.parseLenient(result).isObject();
-                    String key = (String) resObj.keySet().toArray()[0];
-                    JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-                    panel.add(new ReadAllOutOfOfficePanel("Current Week Employees", results, true));
-                }
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        if (result == null || JSONParser.parseLenient(result).isObject() == null) {
+                            panel.add(new ReadAllOutOfOfficePanel("Current Week Employees", new JSONArray()));
+                        } else {
+                            JSONObject resObj = JSONParser.parseLenient(result).isObject();
+                            String key = (String) resObj.keySet().toArray()[0];
+                            JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
+                            panel.add(new ReadAllOutOfOfficePanel("Current Week Employees", results, true));
+                        }
+                    }
+                });
     }
 
     protected String getCurrentEmpRequestsUrl(Integer start, String limit) {

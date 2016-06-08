@@ -14,9 +14,9 @@ package info.yalamanchili.office.client.time;
  */
 public enum OutOfOfficeRequestStatus {
 
-    PENDING_MANAGER_APPROVAL,
-    REJECTED,
-    APPROVED;
+    Pending_Manager_Approval,
+    Rejected,
+    Approved;
 
     public static String[] names() {
         OutOfOfficeRequestStatus[] values = values();

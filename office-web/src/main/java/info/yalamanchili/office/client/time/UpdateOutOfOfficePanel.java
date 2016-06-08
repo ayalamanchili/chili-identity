@@ -106,6 +106,7 @@ public class UpdateOutOfOfficePanel extends UpdateComposite {
         new ResponseStatusWidget().show("OutOf Office Request Updated Successfully");
         TabPanel.instance().timePanel.entityPanel.clear();
         TabPanel.instance().timePanel.entityPanel.add(new ReadAllOutOfOfficePanel());
+        TabPanel.instance().timePanel.entityPanel.add(new CurrentWeekOutOfOfficeRequestsPanel());
     }
 
     @Override
