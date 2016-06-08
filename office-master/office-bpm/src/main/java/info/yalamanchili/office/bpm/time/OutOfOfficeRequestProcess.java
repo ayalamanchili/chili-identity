@@ -8,19 +8,13 @@
  */
 package info.yalamanchili.office.bpm.time;
 
-import info.chili.email.Email;
 import info.chili.service.jrs.exception.ServiceException;
-import info.chili.service.jrs.types.Entry;
-import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
-import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.OutOfOfficeDao;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.OutOfOfficeRequest;
 import info.yalamanchili.office.entity.time.OutOfOfficeRequestStatus;
-import info.yalamanchili.office.jms.MessagingService;
-import java.util.List;
 import org.activiti.engine.delegate.DelegateTask;
 
 /**
@@ -32,7 +26,6 @@ public class OutOfOfficeRequestProcess extends RuleBasedTaskDelegateListner {
     @Override
     public void processTask(DelegateTask task) {
         super.processTask(task);
-        sendNotifyEmplyeeNotification(task);
         if ("complete".equals(task.getEventName())) {
             outOfOfficeTaskCompleted(task);
         }
@@ -55,31 +48,12 @@ public class OutOfOfficeRequestProcess extends RuleBasedTaskDelegateListner {
     protected void managerApprovalTaskComplete(OutOfOfficeRequest entity, DelegateTask task) {
         String status = (String) task.getExecution().getVariable("status");
         if (status.equalsIgnoreCase("approved")) {
-            entity.setStatus(OutOfOfficeRequestStatus.APPROVED);
+            entity.setStatus(OutOfOfficeRequestStatus.Approved);
         } else {
-            entity.setStatus(OutOfOfficeRequestStatus.REJECTED);
+            entity.setStatus(OutOfOfficeRequestStatus.Rejected);
         }
         OutOfOfficeDao.instance().save(entity);
         task.getExecution().setVariable("entity", entity);
-    }
-
-    protected void sendNotifyEmplyeeNotification(DelegateTask task) {
-        List<Entry> notifyEmployees = (List<Entry>) task.getExecution().getVariable("notifyEmployees");
-        Email email = new Email();
-
-        if (notifyEmployees != null) {
-            for (Entry e : notifyEmployees) {
-                email.addTo(EmployeeDao.instance().getPrimaryEmail(e.getId()));
-            }
-        }
-        Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
-        OutOfOfficeRequest ts = getRequestFromTask(task);
-        email.setSubject("OutOfOffice Request " + ts.getStatus().name() + " For: " + emp.getFirstName() + " " + emp.getLastName());
-        String summary = "OutOfOffice Request " + ts.getStatus().name() + " For: " + emp.getFirstName() + " " + emp.getLastName() + " : Start Date " + ts.getStartDate() + " End Date " + ts.getEndDate();
-        MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
-        email.setBody(summary);
-        email.setHtml(Boolean.TRUE);
-        messagingService.sendEmail(email);
     }
 
     protected OutOfOfficeRequest getRequestFromTask(DelegateTask task) {
