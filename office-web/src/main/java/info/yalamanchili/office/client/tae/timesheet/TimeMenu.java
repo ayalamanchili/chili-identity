@@ -136,8 +136,8 @@ public class TimeMenu extends CMenuBar {
             TabPanel.instance().getTimePanel().sidePanelTop.clear();
             TabPanel.instance().getTimePanel().sidePanelBottom.clear();
             TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllOutOfOfficePanel());
-            TabPanel.instance().getTimePanel().sidePanelTop.add(new OutOfOfficeSidePanel());
             TabPanel.instance().getTimePanel().entityPanel.add(new CurrentWeekOutOfOfficeRequestsPanel());
+            TabPanel.instance().getTimePanel().sidePanelTop.add(new OutOfOfficeSidePanel());
         }
     };
 }
