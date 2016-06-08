@@ -14,7 +14,7 @@ package info.yalamanchili.office.entity.time;
  */
 public enum OutOfOfficeRequestStatus {
 
-    PENDING_MANAGER_APPROVAL,
-    REJECTED,
-    APPROVED;
+    Pending_Manager_Approval,
+    Rejected,
+    Approved;
 }
