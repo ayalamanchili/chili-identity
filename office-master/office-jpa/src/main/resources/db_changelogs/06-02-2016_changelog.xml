@@ -14,11 +14,15 @@
     <changeSet author="sbandaru" id="delete-iscpdfilled">
         <preConditions onFail="WARN"> 
         </preConditions>
-        <dropColumn tableName="clientinformation" columnName="isCPDFilled" catalogName="office"
-                    schemaName="public">
+        <dropColumn catalogName="office"
+                    columnName="isCPDFilled"
+                    schemaName="public"
+                    tableName="clientinformation">
         </dropColumn>
-        <dropColumn tableName="clientinformation_aud" columnName="isCPDFilled" catalogName="office"
-                    schemaName="public">
+        <dropColumn catalogName="office"
+                    columnName="isCPDFilled"
+                    schemaName="public"
+                    tableName="clientinformation_aud">
         </dropColumn>
     </changeSet>        
 </databaseChangeLog>
