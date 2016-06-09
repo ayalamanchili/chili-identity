@@ -28,7 +28,7 @@
                 time                : #{entity.time}
                 
                 Navigate to view OutOf Office Request:
-                Time > OutOf Office > Search > Click View > Table Action column > Click View Icon (or)
+                Time > OutOf Office > Search > Click View Icon (or)
                 Time > OutOf Office > Table Action column > Click View Icon
                 
             </documentation>
