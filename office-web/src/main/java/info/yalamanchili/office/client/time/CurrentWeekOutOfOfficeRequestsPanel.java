@@ -25,7 +25,7 @@ public class CurrentWeekOutOfOfficeRequestsPanel extends Composite {
 
     public CurrentWeekOutOfOfficeRequestsPanel() {
         initWidget(panel);
-        HttpService.HttpServiceAsync.instance().doGet(getCurrentEmpRequestsUrl(0, "10"), OfficeWelcome.instance().getHeaders(), true,
+        HttpService.HttpServiceAsync.instance().doGet(getCurrentEmpRequestsUrl(0, "5"), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {

@@ -75,7 +75,7 @@ public class OutOfOfficeSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addWidgets() {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ACCOUNTS_PAYABLE, Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS, Auth.ROLE.ROLE_CEO)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
             outOfOfficeSidePanel.add(new SearchOutOfOfficePanel());
         } else {
             outOfOfficeSidePanel.add(Utils.getLineSeperatorTag("Search"));
@@ -89,6 +89,7 @@ public class OutOfOfficeSidePanel extends ALComposite implements ClickHandler {
         if (event.getSource().equals(viewB)) {
             TabPanel.instance().timePanel.entityPanel.clear();
             TabPanel.instance().timePanel.entityPanel.add(new ReadAllOutOfOfficePanel(getOfficeURL(0, "10")));
+            employeeSB.clearText();
         }
     }
 

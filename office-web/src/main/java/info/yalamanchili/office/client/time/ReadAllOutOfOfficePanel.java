@@ -88,12 +88,20 @@ public class ReadAllOutOfOfficePanel extends CRUDReadAllComposite {
         new ResponseStatusWidget().show("Successfully Deleted OutOf Office Request Information");
         TabPanel.instance().timePanel.entityPanel.clear();
         TabPanel.instance().timePanel.entityPanel.add(new ReadAllOutOfOfficePanel());
+        TabPanel.instance().timePanel.entityPanel.add(new CurrentWeekOutOfOfficeRequestsPanel());
     }
 
     @Override
     public void updateClicked(String entityId) {
-        TabPanel.instance().timePanel.entityPanel.clear();
-        TabPanel.instance().timePanel.entityPanel.add(new UpdateOutOfOfficePanel(entityId));
+        HttpService.HttpServiceAsync.instance().doGet(OfficeWelcome.constants.root_url() + "out-of-office/update-valid/" + entityId, OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String arg0) {
+                        TabPanel.instance().timePanel.entityPanel.clear();
+                        TabPanel.instance().timePanel.entityPanel.add(new UpdateOutOfOfficePanel(entityId));
+                    }
+                });
+
     }
 
     @Override
