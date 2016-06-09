@@ -8,7 +8,9 @@
  */
 package info.yalamanchili.office.Time;
 
+import info.chili.commons.DateUtils;
 import info.chili.email.Email;
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.types.Entry;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
@@ -41,6 +43,7 @@ public class OutOfOfficeService {
     public void submitRequest(OutOfOfficeRequest entity) {
         Employee emp;
         Map<String, Object> vars = new HashMap<>();
+        validateRequest(entity);
         emp = OfficeSecurityService.instance().getCurrentUser();
         entity.setEmployee(emp);
         entity.setStatus(OutOfOfficeRequestStatus.Pending_Manager_Approval);
@@ -49,8 +52,8 @@ public class OutOfOfficeService {
             for (Entry e : entity.getNotifyEmployees()) {
                 email.addTo(EmployeeDao.instance().getPrimaryEmail(e.getId()));
             }
-            email.setSubject("OutOfOffice Request " + entity.getStatus().name() + " For: " + emp.getFirstName() + " " + emp.getLastName());
-            String summary = "OutOfOffice Request " + entity.getStatus().name() + " For: " + emp.getFirstName() + " " + emp.getLastName() + " : Start Date " + entity.getStartDate() + " End Date " + entity.getEndDate();
+            email.setSubject("OutOfOffice Request " + entity.getStatus().name() + "\n" + emp.getFirstName() + " " + emp.getLastName());
+            String summary = "OutOfOffice Request " + entity.getStatus().name() + "\n" + "Employee: " + emp.getFirstName() + " " + emp.getLastName() + "\n" + " Start Date: " + entity.getStartDate() + "\n" + " End Date: " + entity.getEndDate();
             MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
             email.setBody(summary);
             email.setHtml(Boolean.TRUE);
@@ -74,6 +77,12 @@ public class OutOfOfficeService {
         OutOfOfficeRequest ticket = OutOfOfficeDao.instance().findById(id);
         OfficeBPMTaskService.instance().deleteAllTasksForProcessId(ticket.getBpmProcessId(), true);
         OutOfOfficeDao.instance().delete(id);
+    }
+
+    protected void validateRequest(OutOfOfficeRequest entity) {
+        if (entity.getEndDate().after(DateUtils.getNextMonth(entity.getStartDate(), 7))) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.startdate", "You are applying more than 6 months");
+        }
     }
 
     public static OutOfOfficeService instance() {
