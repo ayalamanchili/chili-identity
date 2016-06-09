@@ -49,7 +49,9 @@ public class TimeMenu extends CMenuBar {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_CORPORATE_TIME_REPORTS, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_PAYROLL_AND_BENIFITS, ROLE.ROLE_BULK_IMPORT)) {
             addMenuItem("Attendance", "Attendance", attendenceCmd);
         }
-        addMenuItem("Out Of Office", "Out Of Office", outOfOfficeMaintainenceCmd);
+        if (Auth.isCorporateEmployee()) {
+            addMenuItem("Out Of Office", "Out Of Office", outOfOfficeMaintainenceCmd);
+        }
     }
     static Command summaryMaintainenceCmd = new Command() {
         @Override
