@@ -11,6 +11,7 @@ package info.yalamanchili.office.jrs.time;
 import info.chili.commons.SearchUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
+import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.Time.OutOfOfficeService;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
@@ -81,6 +82,17 @@ public class OutOfOfficeResource extends CRUDResource<OutOfOfficeRequest> {
     }
 
     @GET
+    @Transactional(readOnly = true)
+    @Path("/update-valid/{id}")
+    public void updateValid(@PathParam("id") Long id) {
+        OutOfOfficeRequest entity = outOfOfficeDao.findById(id);
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
+        if (entity.getEmployee() != emp) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "UPDATE", "updateInvalid", "You may not have access to update");
+        }
+    }
+
+    @GET
     @Path("/{start}/{limit}")
     public OutOfOfficeTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         OutOfOfficeTable tableObj = new OutOfOfficeTable();
@@ -91,7 +103,6 @@ public class OutOfOfficeResource extends CRUDResource<OutOfOfficeRequest> {
             Employee currentEmp = OfficeSecurityService.instance().getCurrentUser();
             tableObj.setEntities(outOfOfficeDao.queryForEmployee(currentEmp.getId(), start, limit));
             tableObj.setSize(outOfOfficeDao.size(currentEmp.getId()));
-            tableObj.setSize(getDao().size());
         }
         return tableObj;
     }
