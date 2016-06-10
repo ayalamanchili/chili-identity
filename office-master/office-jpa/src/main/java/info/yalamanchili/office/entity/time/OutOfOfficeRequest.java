@@ -173,4 +173,8 @@ public class OutOfOfficeRequest extends AbstractEntity {
     public String toString() {
         return "OutOfOfficeRequest{" + "employee=" + employee + ", startDate=" + startDate + ", endDate=" + endDate + ", reason=" + reason + ", time=" + time + ", notes=" + notes + ", outOfOfficeType=" + outOfOfficeType + ", recurring=" + recurring + ", bpmProcessId=" + bpmProcessId + ", status=" + status + '}';
     }
+    
+    public String describe() {
+        return "Employee=" + employee.getFirstName() + " " + employee.getLastName() + ", startDate=" + startDate + ", endDate=" + endDate + ", status=" + status + ", time=" + time;
+    }
 }
