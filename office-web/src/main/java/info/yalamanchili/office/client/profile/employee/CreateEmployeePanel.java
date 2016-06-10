@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.Auth;
@@ -36,6 +37,12 @@ public class CreateEmployeePanel extends CreateComposite {
             postCreateSuccess(null);
         }
     };
+    protected static HTML generalInfo = new HTML("\n"
+            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
+            + "<strong style=\"color:#555555\"> Image should not exceed than 20mb </strong></p>\n"
+            + "\n"
+            + "<ul>\n"
+            + "</ul>");
 
     public CreateEmployeePanel(CreateCompositeType type) {
         super(type);
@@ -105,6 +112,7 @@ public class CreateEmployeePanel extends CreateComposite {
         if (Auth.isAdmin()) {
             addField("ssn", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         }
+        entityFieldsPanel.add(generalInfo);
         entityFieldsPanel.add(empImageUploadPanel);
         alignFields();
     }
