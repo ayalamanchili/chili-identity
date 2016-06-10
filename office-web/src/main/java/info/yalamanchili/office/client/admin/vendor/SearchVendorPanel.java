@@ -31,7 +31,7 @@ public class SearchVendorPanel extends SearchComposite {
     private static Logger logger = Logger.getLogger(SearchVendorPanel.class.getName());
 
     public SearchVendorPanel() {
-        init("Vendor Search", "Vendors", OfficeWelcome.constants);
+        init("Vendor Search", "Vendors", OfficeWelcome.constants2);
     }
 
     @Override

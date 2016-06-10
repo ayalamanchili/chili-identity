@@ -33,7 +33,7 @@ public class UpdateVendorsPanel extends UpdateComposite {
     protected BooleanField submitForUpdateD = new BooleanField(OfficeWelcome.constants, "Select To Update CPD's Invoice Delivery Method", "Vendors", false, false, Alignment.HORIZONTAL);
 
     public UpdateVendorsPanel(JSONObject entity) {
-        initUpdateComposite(entity, "Vendors", OfficeWelcome.constants);
+        initUpdateComposite(entity, "Vendors", OfficeWelcome.constants2);
     }
 
     @Override
@@ -108,10 +108,10 @@ public class UpdateVendorsPanel extends UpdateComposite {
         addField("vendorFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addEnumField("vendorinvFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
-        addEnumField("vendorinvDeliveryMethod", false, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(submitForUpdateP);
+        addEnumField("vendorinvFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(submitForUpdateF);
+        addEnumField("vendorinvDeliveryMethod", false, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(submitForUpdateD);
         alignFields();
     }

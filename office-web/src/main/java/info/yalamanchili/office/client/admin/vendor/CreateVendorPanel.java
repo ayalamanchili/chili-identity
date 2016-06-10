@@ -33,7 +33,7 @@ public class CreateVendorPanel extends CreateComposite {
 
     public CreateVendorPanel(CreateComposite.CreateCompositeType type) {
         super(type);
-        initCreateComposite("Vendors", OfficeWelcome.constants);
+        initCreateComposite("Vendors", OfficeWelcome.constants2);
     }
 
     @Override
