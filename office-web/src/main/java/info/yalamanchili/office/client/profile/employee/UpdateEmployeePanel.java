@@ -8,6 +8,7 @@ import info.chili.gwt.crud.UpdateComposite;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -22,10 +23,11 @@ import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.profile.contact.Branch;
 import info.yalamanchili.office.client.profile.contact.Sex;
 import info.yalamanchili.office.client.profile.contact.WorkStatus;
+import static info.yalamanchili.office.client.profile.employee.CreateEmployeePanel.generalInfo;
 import java.util.logging.Logger;
 
 public class UpdateEmployeePanel extends UpdateComposite {
-    
+
     private static Logger logger = Logger.getLogger(UpdateEmployeePanel.class.getName());
     protected SelectEmployeeTypeWidget employeeSelectWidget = new SelectEmployeeTypeWidget(false, false);
     protected SelectCompanyWidget selectCompnayWidget = new SelectCompanyWidget(false, true, Alignment.HORIZONTAL);
@@ -35,11 +37,17 @@ public class UpdateEmployeePanel extends UpdateComposite {
             postUpdateSuccess(null);
         }
     };
-    
+    protected static HTML generalInfo = new HTML("\n"
+            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
+            + "<strong style=\"color:#555555\">Image should not exceed than 20mb </strong></p>\n"
+            + "\n"
+            + "<ul>\n"
+            + "</ul>");
+
     public UpdateEmployeePanel(JSONObject entity) {
         initUpdateComposite(entity, "Employee", OfficeWelcome.constants);
     }
-    
+
     @Override
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("firstName", entity);
@@ -80,7 +88,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         }
         return entity;
     }
-    
+
     @Override
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
@@ -89,15 +97,15 @@ public class UpdateEmployeePanel extends UpdateComposite {
                     public void onFailure(Throwable arg0) {
                         handleErrorResponse(arg0);
                     }
-                    
+
                     @Override
                     public void onSuccess(String arg0) {
                         uploadImage(JSONUtils.toString(entity, "id"));
                     }
                 });
-        
+
     }
-    
+
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
@@ -130,17 +138,17 @@ public class UpdateEmployeePanel extends UpdateComposite {
         }
         //TODO add image panel for employee image
     }
-    
+
     @Override
     protected void addListeners() {
         // TODO Auto-generated method stub
     }
-    
+
     @Override
     protected void configure() {
         // TODO Auto-generated method stub
     }
-    
+
     @Override
     protected void addWidgets() {
         // same here update them
@@ -169,27 +177,28 @@ public class UpdateEmployeePanel extends UpdateComposite {
         if (Auth.isAdmin()) {
             addField("ssn", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         }
+        entityFieldsPanel.add(generalInfo);
         entityFieldsPanel.add(empImageUploadPanel);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN)) {
             addField("status", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         }
         alignFields();
     }
-    
+
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
         // TODO Auto-generated method stub
     }
-    
+
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "employee/save";
     }
-    
+
     protected void uploadImage(String entityId) {
         empImageUploadPanel.upload(entityId.trim());
     }
-    
+
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated Employee Information");
