@@ -9,6 +9,7 @@ package info.yalamanchili.office.client.company;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.FileuploadField;
@@ -33,6 +34,12 @@ public class UpdateCompanyPanel extends UpdateComposite {
             postUpdateSuccess(null);
         }
     };
+    protected static HTML generalInfo = new HTML("\n"
+            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
+            + "<strong style=\"color:#555555\">Image should not exceed than 20mb </strong></p>\n"
+            + "\n"
+            + "<ul>\n"
+            + "</ul>");
 
     public UpdateCompanyPanel(JSONObject entity) {
         initUpdateComposite(entity, "Company", OfficeWelcome.constants);
@@ -97,6 +104,7 @@ public class UpdateCompanyPanel extends UpdateComposite {
         addField("name", false, true, DataType.STRING_FIELD);
         addField("establishedDate", false, true, DataType.DATE_FIELD);
         addField("abbreviation", false, false, DataType.STRING_FIELD);
+        entityFieldsPanel.add(generalInfo);
         entityFieldsPanel.add(logoURLUploadPanel);
     }
 
