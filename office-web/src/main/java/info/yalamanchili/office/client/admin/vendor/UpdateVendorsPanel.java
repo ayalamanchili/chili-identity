@@ -28,9 +28,9 @@ import java.util.logging.Logger;
 public class UpdateVendorsPanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateVendorsPanel.class.getName());
-    protected BooleanField submitForUpdateP = new BooleanField(OfficeWelcome.constants, "Select To Update CPD's Payment Terms", "Vendors", false, false, Alignment.HORIZONTAL);
-    protected BooleanField submitForUpdateF = new BooleanField(OfficeWelcome.constants, "Select To Update CPD's Frequency", "Vendors", false, false, Alignment.HORIZONTAL);
-    protected BooleanField submitForUpdateD = new BooleanField(OfficeWelcome.constants, "Select To Update CPD's Invoice Delivery Method", "Vendors", false, false, Alignment.HORIZONTAL);
+    protected BooleanField submitForUpdateP = new BooleanField(OfficeWelcome.constants2, "Select To Update CPD's Payment Terms", "Vendors", false, false, Alignment.HORIZONTAL);
+    protected BooleanField submitForUpdateF = new BooleanField(OfficeWelcome.constants2, "Select To Update CPD's Frequency", "Vendors", false, false, Alignment.HORIZONTAL);
+    protected BooleanField submitForUpdateD = new BooleanField(OfficeWelcome.constants2, "Select To Update CPD's Invoice Delivery Method", "Vendors", false, false, Alignment.HORIZONTAL);
 
     public UpdateVendorsPanel(JSONObject entity) {
         initUpdateComposite(entity, "Vendors", OfficeWelcome.constants2);

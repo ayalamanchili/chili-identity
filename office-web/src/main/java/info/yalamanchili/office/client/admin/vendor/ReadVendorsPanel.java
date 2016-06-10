@@ -33,11 +33,11 @@ public class ReadVendorsPanel extends ReadComposite {
 
     public ReadVendorsPanel(JSONObject entity) {
         instance = this;
-        initReadComposite(entity, "Vendors", OfficeWelcome.constants);
+        initReadComposite(entity, "Vendors", OfficeWelcome.constants2);
     }
 
     public ReadVendorsPanel(String id) {
-        initReadComposite(id, "Vendors", OfficeWelcome.constants);
+        initReadComposite(id, "Vendors", OfficeWelcome.constants2);
     }
 
     @Override
