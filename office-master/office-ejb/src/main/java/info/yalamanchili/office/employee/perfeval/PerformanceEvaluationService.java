@@ -368,7 +368,7 @@ public class PerformanceEvaluationService {
         byte[] pdf = PDFUtils.generatePdf(data);
         return Response.ok(pdf)
                 .header("content-disposition", "filename = manager-review.pdf")
-                .header("Content-Length", pdf)
+                .header("Content-Length", pdf.length)
                 .build();
     }
 
@@ -404,7 +404,7 @@ public class PerformanceEvaluationService {
         byte[] pdf = PDFUtils.generatePdf(data);
         return Response.ok(pdf)
                 .header("content-disposition", "filename = self-review.pdf")
-                .header("Content-Length", pdf)
+                .header("Content-Length", pdf.length)
                 .build();
     }
 

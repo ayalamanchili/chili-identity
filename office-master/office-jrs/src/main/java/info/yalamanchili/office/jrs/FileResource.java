@@ -131,7 +131,6 @@ public class FileResource {
 //TODO move to utils
 
     protected void setContentHeaders(ResponseBuilder response, File file) {
-        String fileName = file.getName();
         String contentType = FileUtils.getFileContentType(file);
         if (contentType == null) {
             response.header("Content-Disposition", "attachment;");

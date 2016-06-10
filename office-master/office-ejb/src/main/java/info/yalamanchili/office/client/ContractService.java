@@ -561,7 +561,7 @@ public class ContractService {
             byte[] pdf = PDFUtils.convertToPDF(str);
             return Response.ok(pdf)
                     .header("content-disposition", "filename = Contract_Report.pdf")
-                    .header("Content-Length", pdf)
+                    .header("Content-Length", pdf.length)
                     .build();
         } else {
             return null;

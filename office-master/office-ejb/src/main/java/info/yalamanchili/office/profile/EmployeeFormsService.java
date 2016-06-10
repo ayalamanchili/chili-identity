@@ -129,13 +129,15 @@ public class EmployeeFormsService {
         emp.getPhones().stream().filter((phone) -> (phone.getPhoneType() != null)).forEach(new Consumer<Phone>() {
 
             public void accept(Phone phone) {
-                if (null != phone.getPhoneType().getPhoneType()) switch (phone.getPhoneType().getPhoneType()) {
-                    case "Cell":
-                        data.getData().put("cellPhone", phone.getPhoneNumber());
-                        break;
-                    case "Home":
-                        data.getData().put("homePhone", phone.getPhoneNumber());
-                        break;
+                if (null != phone.getPhoneType().getPhoneType()) {
+                    switch (phone.getPhoneType().getPhoneType()) {
+                        case "Cell":
+                            data.getData().put("cellPhone", phone.getPhoneNumber());
+                            break;
+                        case "Home":
+                            data.getData().put("homePhone", phone.getPhoneNumber());
+                            break;
+                    }
                 }
             }
         });
@@ -225,8 +227,8 @@ public class EmployeeFormsService {
         //section 5 :Emergency Contact Information - Other
         emp.getEmergencyContacts().stream().filter((emergencyContact) -> ((emergencyContact.getContact() != null)
                 && (emergencyContact.getRelation() != null))).map((emergencyContact) -> {
-                    data.getData().put("ecName2", emergencyContact.getContact().getFirstName());
-                    return emergencyContact;
+            data.getData().put("ecName2", emergencyContact.getContact().getFirstName());
+            return emergencyContact;
         }).map((emergencyContact) -> {
             data.getData().put("ecRelation2", emergencyContact.getRelation());
             return emergencyContact;
@@ -278,7 +280,7 @@ public class EmployeeFormsService {
         byte[] pdf = PDFUtils.generatePdf(data);
         return Response.ok(pdf)
                 .header("content-disposition", "filename = Joining-form-fillable.pdf")
-                .header("Content-Length", pdf)
+                .header("Content-Length", pdf.length)
                 .build();
     }
 
@@ -349,7 +351,7 @@ public class EmployeeFormsService {
 
         return Response.ok(pdf)
                 .header("content-disposition", "filename = ach-direct-deposit-form.pdf")
-                .header("Content-Length", pdf)
+                .header("Content-Length", pdf.length)
                 .build();
     }
 

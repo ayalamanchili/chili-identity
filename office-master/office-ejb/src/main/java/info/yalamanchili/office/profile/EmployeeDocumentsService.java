@@ -36,7 +36,7 @@ public class EmployeeDocumentsService {
         byte[] pdf = PDFUtils.generatePdf(data);
         return Response.ok(pdf)
                 .header("content-disposition", "filename = Joining-form-fillable.pdf")
-                .header("Content-Length", pdf)
+                .header("Content-Length", pdf.length)
                 .build();
     }
 
@@ -48,7 +48,7 @@ public class EmployeeDocumentsService {
         byte[] pdf = PDFUtils.generatePdf(data);
         return Response.ok(pdf)
                 .header("content-disposition", "filename = ach-direct-deposit-form.pdf")
-                .header("Content-Length", pdf)
+                .header("Content-Length", pdf.length)
                 .build();
     }
 

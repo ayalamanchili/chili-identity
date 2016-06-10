@@ -198,7 +198,7 @@ public class ConsultantTimeService {
         byte[] pdf = PDFUtils.generatePdf(data);
         return Response.ok(pdf)
                 .header("content-disposition", "filename = leave-request.pdf")
-                .header("Content-Length", pdf)
+                .header("Content-Length", pdf.length)
                 .build();
     }
 

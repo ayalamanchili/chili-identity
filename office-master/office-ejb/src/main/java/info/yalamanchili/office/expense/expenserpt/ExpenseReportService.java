@@ -187,8 +187,7 @@ public class ExpenseReportService {
         if ((entity.getExpenseFormType()) != null && entity.getExpenseFormType().name().equals("GENERAL_EXPENSE")) {
             if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals(Company.CGS_INC)) {
                 data.setTemplateUrl("/templates/pdf/expense-report-cgs-template.pdf");
-            }
-            else if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals(Company.TECHPILLARS)) {
+            } else if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals(Company.TECHPILLARS)) {
                 data.setTemplateUrl("/templates/pdf/expense-report-tp-template.pdf");
             } else {
                 data.setTemplateUrl("/templates/pdf/expense-report-template.pdf");
@@ -197,8 +196,7 @@ public class ExpenseReportService {
         if ((entity.getExpenseFormType()) != null && entity.getExpenseFormType().name().equals("TRAVEL_EXPENSE")) {
             if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals(Company.CGS_INC)) {
                 data.setTemplateUrl("/templates/pdf/travel-expenses-cgs-template.pdf");
-            }
-            else if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals(Company.TECHPILLARS)) {
+            } else if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals(Company.TECHPILLARS)) {
                 data.setTemplateUrl("/templates/pdf/travel-expenses-tp-template.pdf");
             } else {
                 data.setTemplateUrl("/templates/pdf/travel-expenses-form.pdf");
@@ -247,71 +245,69 @@ public class ExpenseReportService {
                 data.getData().put("amount" + i, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
                 itemTotal = itemTotal.add(item.getAmount());
                 i++;
-            } else {
-                // Expanse Item Personal 
-                if (item.getExpensePaymentMode() != null && item.getExpensePaymentMode().name().equals("PERSONAL_CARD")) {
-                    if (item.getCategory() != null) {
-                        if (item.getCategory().getName().equals("AirFare")) {
-                            data.getData().put("Air Fare", "true");
-                            data.getData().put("air-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
-                        }
-                        if (item.getCategory().getName().equals("Hotel")) {
-                            data.getData().put("Hotel", "true");
-                            data.getData().put("hotel-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
-                        }
-                        if (item.getCategory().getName().equals("Auto")) {
-                            data.getData().put("Auto", "true");
-                            data.getData().put("auto-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
-                        }
-                        if (item.getCategory().getName().equals("ClientEntertainment")) {
-                            data.getData().put("ClientEntertainment", "true");
-                            data.getData().put("client-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
-                        }
-                        if (item.getCategory().getName().equals("Miscellaneous")) {
-                            data.getData().put("Miscellaneous", "true");
-                            data.getData().put("mis-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
-                        }
-                        if (item.getCategory().getName().equals("Personal Auto")) {
-                            data.getData().put("Personal Auto", "true");
-                            if (item.getExpenseMiles() != null && item.getAmount() != null) {
-                                data.getData().put("miles" + p, item.getExpenseMiles().setScale(2, BigDecimal.ROUND_UP).toString());
-                                data.getData().put("miles-amount" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
-                            }
-                        }
-                    }
-                    data.getData().put("p-purpose" + p, item.getPurpose());
-                    data.getData().put("p-itemStartDate" + p, new SimpleDateFormat("MM-dd-yyyy").format(item.getExpenseDate()));
-                    data.getData().put("p-amount" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
-                    itemPersonal = itemPersonal.add(item.getAmount());
-                    p++;
-                } else {
-                    //Expanse Item Amex
+            } else // Expanse Item Personal 
+            if (item.getExpensePaymentMode() != null && item.getExpensePaymentMode().name().equals("PERSONAL_CARD")) {
+                if (item.getCategory() != null) {
                     if (item.getCategory().getName().equals("AirFare")) {
                         data.getData().put("Air Fare", "true");
-                        data.getData().put("aair-category" + a, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                        data.getData().put("air-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
                     }
                     if (item.getCategory().getName().equals("Hotel")) {
                         data.getData().put("Hotel", "true");
-                        data.getData().put("ahotel-category" + a, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                        data.getData().put("hotel-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
                     }
                     if (item.getCategory().getName().equals("Auto")) {
                         data.getData().put("Auto", "true");
-                        data.getData().put("aauto-category" + a, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                        data.getData().put("auto-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
                     }
                     if (item.getCategory().getName().equals("ClientEntertainment")) {
                         data.getData().put("ClientEntertainment", "true");
-                        data.getData().put("aclient-category" + a, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                        data.getData().put("client-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
                     }
                     if (item.getCategory().getName().equals("Miscellaneous")) {
                         data.getData().put("Miscellaneous", "true");
-                        data.getData().put("amis-category" + a, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                        data.getData().put("mis-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
                     }
-                    data.getData().put("a-purpose" + a, item.getPurpose());
-                    data.getData().put("a-itemStartDate" + a, new SimpleDateFormat("MM-dd-yyyy").format(item.getExpenseDate()));
-                    data.getData().put("a-amount" + a, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
-                    itemAmex = itemAmex.add(item.getAmount());
-                    a++;
+                    if (item.getCategory().getName().equals("Personal Auto")) {
+                        data.getData().put("Personal Auto", "true");
+                        if (item.getExpenseMiles() != null && item.getAmount() != null) {
+                            data.getData().put("miles" + p, item.getExpenseMiles().setScale(2, BigDecimal.ROUND_UP).toString());
+                            data.getData().put("miles-amount" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                        }
+                    }
                 }
+                data.getData().put("p-purpose" + p, item.getPurpose());
+                data.getData().put("p-itemStartDate" + p, new SimpleDateFormat("MM-dd-yyyy").format(item.getExpenseDate()));
+                data.getData().put("p-amount" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                itemPersonal = itemPersonal.add(item.getAmount());
+                p++;
+            } else {
+                //Expanse Item Amex
+                if (item.getCategory().getName().equals("AirFare")) {
+                    data.getData().put("Air Fare", "true");
+                    data.getData().put("aair-category" + a, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                }
+                if (item.getCategory().getName().equals("Hotel")) {
+                    data.getData().put("Hotel", "true");
+                    data.getData().put("ahotel-category" + a, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                }
+                if (item.getCategory().getName().equals("Auto")) {
+                    data.getData().put("Auto", "true");
+                    data.getData().put("aauto-category" + a, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                }
+                if (item.getCategory().getName().equals("ClientEntertainment")) {
+                    data.getData().put("ClientEntertainment", "true");
+                    data.getData().put("aclient-category" + a, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                }
+                if (item.getCategory().getName().equals("Miscellaneous")) {
+                    data.getData().put("Miscellaneous", "true");
+                    data.getData().put("amis-category" + a, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                }
+                data.getData().put("a-purpose" + a, item.getPurpose());
+                data.getData().put("a-itemStartDate" + a, new SimpleDateFormat("MM-dd-yyyy").format(item.getExpenseDate()));
+                data.getData().put("a-amount" + a, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                itemAmex = itemAmex.add(item.getAmount());
+                a++;
             }
         }
 
@@ -361,7 +357,7 @@ public class ExpenseReportService {
         byte[] pdf = PDFUtils.generatePdf(data);
         return Response.ok(pdf)
                 .header("content-disposition", "filename = Expense-Report.pdf")
-                .header("Content-Length", pdf)
+                .header("Content-Length", pdf.length)
                 .build();
     }
 
