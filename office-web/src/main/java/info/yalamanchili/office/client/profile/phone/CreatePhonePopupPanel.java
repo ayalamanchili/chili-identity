@@ -11,8 +11,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.widgets.GenericPopup;
-import info.yalamanchili.office.client.profile.ProfileHome;
-import info.yalamanchili.office.client.profile.address.CreateAddressPanel;
+import info.yalamanchili.office.client.TabPanel;
 
 /**
  *
@@ -33,6 +32,7 @@ public class CreatePhonePopupPanel extends CreatePhonePanel {
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Added Employee Phone Information");
         GenericPopup.instance().hide();
-        ProfileHome.instance().refreshPhones();
+        TabPanel.instance().profilePanel.entityPanel.clear();
+        TabPanel.instance().profilePanel.entityPanel.add(new ReadAllPhonesPopupPanel(OfficeWelcome.instance().employeeId));
     }
 }

@@ -12,14 +12,14 @@ import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.profile.ProfileHome;
+import info.yalamanchili.office.client.TabPanel;
 
 /**
  *
  * @author Sudha
  */
 public class UpdateEducationRecordPopupPanel extends UpdateEducationRecordPanel {
-    
+
     public UpdateEducationRecordPopupPanel(JSONObject entity) {
         super(entity);
     }
@@ -31,8 +31,9 @@ public class UpdateEducationRecordPopupPanel extends UpdateEducationRecordPanel 
 
     @Override
     protected void postUpdateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully Updated I94Record Information");
+        new ResponseStatusWidget().show("Successfully Updated Education Record Information");
         GenericPopup.instance().hide();
-        ProfileHome.instance().refreshEducationRecord();
-    }    
+        TabPanel.instance().profilePanel.entityPanel.clear();
+        TabPanel.instance().profilePanel.entityPanel.add(new ReadAllEducationRecordPopupPanel(OfficeWelcome.instance().employeeId));
+    }
 }

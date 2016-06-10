@@ -4,7 +4,6 @@
 package info.yalamanchili.office.client;
 
 import com.google.gwt.core.client.GWT;
-import info.yalamanchili.office.client.profile.ProfileHome;
 import info.yalamanchili.office.client.profile.MyOfficeMenu;
 import info.yalamanchili.office.client.profile.ProfileSidePanel;
 import info.yalamanchili.office.client.profile.employee.EmployeeSidePanel;
@@ -37,6 +36,8 @@ import info.yalamanchili.office.client.drive.SearchDrivePanel;
 import info.yalamanchili.office.client.expense.ExpenseMenu;
 import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
 import info.yalamanchili.office.client.i18n.ReadAllci18nResourceBundlesPanel;
+import info.yalamanchili.office.client.profile.ProfileHomeStackPanel;
+import info.yalamanchili.office.client.profile.employee.ReadEmployeePopupPanel;
 import info.yalamanchili.office.client.profile.immigration.ImmigrationMenu;
 import info.yalamanchili.office.client.profile.immigration.ReadAllLCAPanel;
 import info.yalamanchili.office.client.profile.reports.ProfileReportsSidePanel;
@@ -294,8 +295,11 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     }
 
     public void selectProfileTab() {
+        tabPanel.selectTab(profilePanel);
         clearEntityPanel(profilePanel);
-        profilePanel.entityPanel.add(new ProfileHome());
+        profilePanel.sidePanelTop.add(new ProfileHomeStackPanel());
+        profilePanel.entityPanel.add(new ReadEmployeePopupPanel(OfficeWelcome.instance().employee));
+        profilePanel.sidePanelTop.setHeight("100%");
         profilePanel.sidePanelTop.add(new ProfileSidePanel());
     }
 

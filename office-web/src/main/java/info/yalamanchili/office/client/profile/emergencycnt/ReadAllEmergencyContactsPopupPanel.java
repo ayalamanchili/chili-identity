@@ -13,7 +13,8 @@ import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.crud.TableRowOptionsWidget;
-import info.yalamanchili.office.client.profile.ProfileHome;
+import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 
 /**
  *
@@ -39,7 +40,8 @@ public class ReadAllEmergencyContactsPopupPanel extends ReadAllEmergencyContacts
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Emergency Contact Information");
-        ProfileHome.instance().refreshEmergencyContactsPanel();
+        TabPanel.instance().profilePanel.entityPanel.clear();
+        TabPanel.instance().profilePanel.entityPanel.add(new ReadAllEmergencyContactsPopupPanel(OfficeWelcome.instance().employeeId));
     }
 
     @Override

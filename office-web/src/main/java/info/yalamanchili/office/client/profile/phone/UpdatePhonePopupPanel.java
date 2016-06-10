@@ -10,7 +10,8 @@ package info.yalamanchili.office.client.profile.phone;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.widgets.GenericPopup;
-import info.yalamanchili.office.client.profile.ProfileHome;
+import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 
 /**
  *
@@ -26,6 +27,7 @@ public class UpdatePhonePopupPanel extends UpdatePhonePanel {
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Update Phones Information");
         GenericPopup.instance().hide();
-        ProfileHome.instance().refreshPhones();
+        TabPanel.instance().profilePanel.entityPanel.clear();
+        TabPanel.instance().profilePanel.entityPanel.add(new ReadAllPhonesPopupPanel(OfficeWelcome.instance().employeeId));
     }
 }

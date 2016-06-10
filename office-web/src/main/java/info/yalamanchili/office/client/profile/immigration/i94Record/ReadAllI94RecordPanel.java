@@ -16,7 +16,6 @@ import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
-import info.chili.gwt.fields.ImageField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.GenericPopup;
@@ -80,7 +79,6 @@ public class ReadAllI94RecordPanel extends CRUDReadAllComposite {
         table.setText(0, 3, getKeyValue("AdmitUntil Date"));
         table.setText(0, 4, getKeyValue("Port of Entry"));
         table.setText(0, 5, getKeyValue("Class Of Admission"));
-        table.setText(0, 6, getKeyValue("Image"));
     }
 
     @Override
@@ -93,7 +91,6 @@ public class ReadAllI94RecordPanel extends CRUDReadAllComposite {
             table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "admitUntilDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 4, JSONUtils.toString(entity, "portOfEntry"));
             table.setText(i, 5, JSONUtils.toString(entity, "classOfAdmission"));
-            table.setWidget(i, 6, new ImageField("Picture", JSONUtils.toString(entity, "imageURL"), JSONUtils.toString(entity, "id"), 50, 50, false));
         }
     }
 

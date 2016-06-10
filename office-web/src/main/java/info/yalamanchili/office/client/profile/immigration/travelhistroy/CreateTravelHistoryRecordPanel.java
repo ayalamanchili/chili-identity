@@ -10,6 +10,7 @@ import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.DateField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -86,6 +87,17 @@ public class CreateTravelHistoryRecordPanel extends CreateComposite {
         addField("arrivalDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("departureDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         alignFields();
+    }
+
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        DateField arrivalDateF = (DateField) fields.get("arrivalDate");
+        DateField departureDateF = (DateField) fields.get("departureDate");
+        if (arrivalDateF.getDate() != null && departureDateF.getDate() != null && arrivalDateF.getDate().after(departureDateF.getDate())) {
+            departureDateF.setMessage("Departure date should be after Arrival date");
+            return false;
+        }
+        return true;
     }
 
     @Override

@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -202,7 +205,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
 
     @Override
     public void onClick(ClickEvent event) {
-        String url = OfficeWelcome.constants.root_url() + "contract/search/0/100";
+        String url = OfficeWelcome.constants.root_url() + "contract/search/0/10000";
         JSONObject entity = new JSONObject();
         if (employeeSbf != null && !Strings.isNullOrEmpty(employeeSbf.getValue())) {
             entity.put("employeeFirstName", new JSONString(employeeSbf.getValue()));

@@ -8,12 +8,14 @@
 package info.yalamanchili.office.client.profile.employee;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.chili.gwt.widgets.GenericPopup;
-import info.yalamanchili.office.client.profile.ProfileHome;
+import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.contact.Branch;
 import info.yalamanchili.office.client.profile.contact.Sex;
 import info.yalamanchili.office.client.profile.contact.WorkStatus;
@@ -32,8 +34,15 @@ public class UpdateEmployeePopupPanel extends UpdateEmployeePanel {
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated Employee Information");
         GenericPopup.instance().hide();
-        ProfileHome.instance().refreshEmployeePanel();
+        TabPanel.instance().profilePanel.entityPanel.clear();
+        TabPanel.instance().profilePanel.entityPanel.add(new ReadEmployeePopupPanel(OfficeWelcome.instance().employeeId));
     }
+    protected static HTML generalInfo = new HTML("\n"
+            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
+            + "<strong style=\"color:#555555\">Image should not exceed more than 20mb </strong></p>\n"
+            + "\n"
+            + "<ul>\n"
+            + "</ul>");
 
     @Override
     protected void addWidgets() {
@@ -52,6 +61,7 @@ public class UpdateEmployeePopupPanel extends UpdateEmployeePanel {
         if (Auth.isAdmin()) {
             addField("ssn", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         }
+        entityFieldsPanel.add(generalInfo);
         entityFieldsPanel.add(empImageUploadPanel);
         alignFields();
     }

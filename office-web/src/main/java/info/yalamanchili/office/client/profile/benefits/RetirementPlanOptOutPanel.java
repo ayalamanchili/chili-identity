@@ -22,6 +22,7 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.ProfileHome;
 
 /**
@@ -29,7 +30,7 @@ import info.yalamanchili.office.client.profile.ProfileHome;
  * @author ayalamanchili
  */
 public class RetirementPlanOptOutPanel extends ALComposite implements ClickHandler {
-    
+
     protected FlowPanel panel = new FlowPanel();
     HTML futureHTML = new HTML("<html>\n"
             + "<head>\n"
@@ -47,25 +48,25 @@ public class RetirementPlanOptOutPanel extends ALComposite implements ClickHandl
             + "<p>&nbsp;</p>\n"
             + "</body>\n"
             + "</html>");
-    
+
     HTML optOutHTML = new HTML("<h4>I am not interested 401k </h4>");
     TextAreaField optOutCommentsF = new TextAreaField(OfficeWelcome.constants, "optOutComment", "RetirementPlan", false, false, Alignment.VERTICAL);
     Button optOutB = new Button("Opt Me Out");
-    
+
     public RetirementPlanOptOutPanel() {
         init(panel);
     }
-    
+
     @Override
     protected void addListeners() {
         optOutB.addClickHandler(this);
     }
-    
+
     @Override
     protected void configure() {
-        
+
     }
-    
+
     @Override
     protected void addWidgets() {
         panel.add(futureHTML);
@@ -73,14 +74,14 @@ public class RetirementPlanOptOutPanel extends ALComposite implements ClickHandl
         panel.add(optOutCommentsF);
         panel.add(optOutB);
     }
-    
+
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(optOutB)) {
             processOptOut();
         }
     }
-    
+
     protected void processOptOut() {
         JSONObject entity = new JSONObject();
         if (optOutCommentsF.getValue() != null && !optOutCommentsF.getValue().isEmpty()) {
@@ -88,15 +89,18 @@ public class RetirementPlanOptOutPanel extends ALComposite implements ClickHandl
         }
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    
+
                     @Override
                     public void onResponse(String arg0) {
                         new ResponseStatusWidget().show("Thank you. You are now Opted Out of Retirement Plan");
-                        ProfileHome.instance().refreshBenifitsPanel();
+                        // ProfileHome.instance().refreshBenifitsPanel();
+                        TabPanel.instance().profilePanel.entityPanel.clear();
+                        TabPanel.instance().profilePanel.entityPanel.add(new RetirementPlanReadPanel());
+
                     }
                 });
     }
-    
+
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "retirement-plan/opt-out";
     }

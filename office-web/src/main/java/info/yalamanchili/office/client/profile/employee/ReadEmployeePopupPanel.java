@@ -30,6 +30,10 @@ public class ReadEmployeePopupPanel extends ReadEmployeePanel implements ClickHa
         super(entity);
     }
 
+    public ReadEmployeePopupPanel(String parentId) {
+        super(parentId);
+    }
+
     @Override
     protected void addListeners() {
         super.addListeners();

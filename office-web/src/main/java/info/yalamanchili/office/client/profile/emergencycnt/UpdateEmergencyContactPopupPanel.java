@@ -10,7 +10,8 @@ package info.yalamanchili.office.client.profile.emergencycnt;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.widgets.GenericPopup;
-import info.yalamanchili.office.client.profile.ProfileHome;
+import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 
 /**
  *
@@ -26,6 +27,7 @@ public class UpdateEmergencyContactPopupPanel extends UpdateEmergencyContactPane
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated Emergency Contact Information");
         GenericPopup.instance().hide();
-        ProfileHome.instance().refreshEmergencyContactsPanel();
+        TabPanel.instance().profilePanel.entityPanel.clear();
+        TabPanel.instance().profilePanel.entityPanel.add(new ReadAllEmergencyContactsPopupPanel(OfficeWelcome.instance().employeeId));
     }
 }

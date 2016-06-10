@@ -6,9 +6,6 @@ package info.yalamanchili.office.client.profile.address;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
-import com.google.gwt.http.client.RequestException;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -21,7 +18,6 @@ import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
 import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.data.CanadaStatesFactory;
@@ -34,7 +30,6 @@ import info.chili.gwt.fields.StringField;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.GenericPopup;
-import info.yalamanchili.office.client.profile.ProfileHome;
 
 public class CreateAddressPanel extends CreateComposite implements ChangeHandler {
 
@@ -93,16 +88,16 @@ public class CreateAddressPanel extends CreateComposite implements ChangeHandler
     protected void addButtonClicked() {
         HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -113,8 +108,10 @@ public class CreateAddressPanel extends CreateComposite implements ChangeHandler
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllAddressesPanel(TreeEmployeePanel.instance().getEntityId()));
             TabPanel.instance().myOfficePanel.entityPanel.add(new AddressOptionsPanel());
         } else if (TabPanel.instance().profilePanel.isVisible()) {
-            ProfileHome.instance().refreshAddresses();
+            //ProfileHome.instance().refreshAddresses();
             GenericPopup.instance().hide();
+            TabPanel.instance().profilePanel.entityPanel.clear();
+            TabPanel.instance().profilePanel.entityPanel.add(new ReadAllAddressesPopupPanel((OfficeWelcome.instance().employeeId)));
         }
     }
 

@@ -13,6 +13,8 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.crud.TableRowOptionsWidget;
+import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.ProfileHome;
 
 /**
@@ -39,7 +41,8 @@ public class ReadAllPrivacySettingPopupPanel extends ReadAllPrivacySettngsPanel 
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Privacy Data");
         ProfileHome.instance();
-        ProfileHome.instance().refreshPrivacy();
+        TabPanel.instance().profilePanel.entityPanel.clear();
+        TabPanel.instance().profilePanel.entityPanel.add(new ReadAllPrivacySettingPopupPanel(OfficeWelcome.instance().employeeId));
     }
 
     @Override

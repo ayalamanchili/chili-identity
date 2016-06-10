@@ -22,6 +22,7 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.ProfileHome;
 
 /**
@@ -75,7 +76,9 @@ public class RetirementPlanOptInPanel extends ALComposite implements ClickHandle
                     @Override
                     public void onResponse(String arg0) {
                         new ResponseStatusWidget().show("Thank you. You will soon be notified via email on the next steps.");
-                        ProfileHome.instance().refreshBenifitsPanel();
+                        //ProfileHome.instance().refreshBenifitsPanel();
+                        TabPanel.instance().profilePanel.entityPanel.clear();
+                        TabPanel.instance().profilePanel.entityPanel.add(new RetirementPlanReadPanel());
                     }
                 });
     }

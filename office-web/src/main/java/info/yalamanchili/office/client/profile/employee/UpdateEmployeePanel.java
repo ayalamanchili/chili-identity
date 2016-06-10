@@ -39,7 +39,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
     };
     protected static HTML generalInfo = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
-            + "<strong style=\"color:#555555\">Image should not exceed than 20mb </strong></p>\n"
+            + "<strong style=\"color:#555555\">Image should not exceed more than 20mb </strong></p>\n"
             + "\n"
             + "<ul>\n"
             + "</ul>");

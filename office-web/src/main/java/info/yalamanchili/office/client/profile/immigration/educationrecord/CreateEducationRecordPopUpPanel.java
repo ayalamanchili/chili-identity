@@ -12,14 +12,14 @@ import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.profile.ProfileHome;
+import info.yalamanchili.office.client.TabPanel;
 
 /**
  *
  * @author Sudha
  */
 public class CreateEducationRecordPopUpPanel extends CreateEducationRecordPanel {
-    
+
     public CreateEducationRecordPopUpPanel(CreateComposite.CreateCompositeType type) {
         super(type);
     }
@@ -32,8 +32,9 @@ public class CreateEducationRecordPopUpPanel extends CreateEducationRecordPanel 
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Added Employee Education Record");
+        TabPanel.instance().profilePanel.entityPanel.clear();
+        TabPanel.instance().profilePanel.entityPanel.add(new ReadAllEducationRecordPopupPanel(OfficeWelcome.instance().employeeId));
         GenericPopup.instance().hide();
-        ProfileHome.instance().refreshEducationRecord();
-    }    
-    
+    }
+
 }

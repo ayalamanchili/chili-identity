@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -8,7 +11,8 @@ package info.yalamanchili.office.client.profile.emergencycnt;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
-import info.yalamanchili.office.client.profile.ProfileHome;
+import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 
 /**
  *
@@ -24,6 +28,7 @@ public class UpdateDependentPopupPanel extends UpdateDependentPanel {
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated Dependent Information");
         GenericPopup.instance().hide();
-        ProfileHome.instance().refreshDependentsPanel();
+        TabPanel.instance().profilePanel.entityPanel.clear();
+        TabPanel.instance().profilePanel.entityPanel.add(new ReadAllDependentsPopupPanel(OfficeWelcome.instance().employeeId));
     }
 }

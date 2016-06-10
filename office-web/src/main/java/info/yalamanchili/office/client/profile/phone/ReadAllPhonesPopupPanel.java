@@ -13,8 +13,9 @@ import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.crud.TableRowOptionsWidget;
+import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.ProfileHome;
-import info.yalamanchili.office.client.profile.address.CreateAddressPopupPanel;
 
 /**
  *
@@ -41,7 +42,8 @@ public class ReadAllPhonesPopupPanel extends ReadAllPhonesPanel {
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Delete Phone Contact Information");
         ProfileHome.instance();
-        ProfileHome.instance().refreshPhones();
+        TabPanel.instance().profilePanel.entityPanel.clear();
+        TabPanel.instance().profilePanel.entityPanel.add(new ReadAllPhonesPopupPanel(OfficeWelcome.instance().employeeId));
     }
 
     @Override

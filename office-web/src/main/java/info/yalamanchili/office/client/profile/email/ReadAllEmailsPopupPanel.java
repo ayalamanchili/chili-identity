@@ -12,6 +12,8 @@ import info.yalamanchili.office.client.profile.ProfileHome;
 
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 
 public class ReadAllEmailsPopupPanel extends ReadAllEmailsPanel {
 
@@ -34,7 +36,8 @@ public class ReadAllEmailsPopupPanel extends ReadAllEmailsPanel {
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Emails Information");
         ProfileHome.instance();
-        ProfileHome.instance().refreshEmails();
+        TabPanel.instance().profilePanel.entityPanel.clear();
+        TabPanel.instance().profilePanel.entityPanel.add(new ReadAllEmailsPopupPanel(OfficeWelcome.instance().employeeId));
     }
 
     @Override

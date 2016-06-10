@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -9,7 +12,7 @@ import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.profile.ProfileHome;
+import info.yalamanchili.office.client.TabPanel;
 
 /**
  *
@@ -30,6 +33,7 @@ public class UpdateTravelHistoryRecordPopupPanel extends UpdateTravelHistoryReco
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated Travel History Information");
         GenericPopup.instance().hide();
-        ProfileHome.instance().refreshTravelHistroy();
+        TabPanel.instance().profilePanel.entityPanel.clear();
+        TabPanel.instance().profilePanel.entityPanel.add(new ReadAllTravelHistoryRecordPopupPanel(OfficeWelcome.instance().employeeId));
     }
 }
