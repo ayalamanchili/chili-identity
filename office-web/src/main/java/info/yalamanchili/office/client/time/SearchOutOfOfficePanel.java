@@ -91,6 +91,7 @@ public class SearchOutOfOfficePanel extends SearchComposite {
         addField("lastName", DataType.STRING_FIELD);
         addField("startDate", DataType.DATE_FIELD);
         addField("endDate", DataType.DATE_FIELD);
+        addEnumField("outOfOfficeType", false, false, OutOfOfficeType.names());
         addEnumField("status", false, false, OutOfOfficeRequestStatus.names());
     }
 
@@ -102,6 +103,7 @@ public class SearchOutOfOfficePanel extends SearchComposite {
         assignEntityValueFromField("lastName", employee, "lastName");
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
+        assignEntityValueFromField("outOfOfficeType", entity);
         assignEntityValueFromField("status", entity);
         entity.put("employee", employee);
         return entity;

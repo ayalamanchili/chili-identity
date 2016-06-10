@@ -122,8 +122,8 @@ public class ReadAllOutOfOfficePanel extends CRUDReadAllComposite {
         table.setText(0, 1, getKeyValue("Employee"));
         table.setText(0, 2, getKeyValue("Strat Date"));
         table.setText(0, 3, getKeyValue("End Date"));
-        //table.setText(0, 4, getKeyValue("PhoneNumber"));
-        table.setText(0, 4, getKeyValue("Status"));
+        table.setText(0, 4, getKeyValue("Type"));
+        table.setText(0, 5, getKeyValue("Status"));
     }
 
     @Override
@@ -137,8 +137,8 @@ public class ReadAllOutOfOfficePanel extends CRUDReadAllComposite {
             }
             table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            //table.setText(i, 4, JSONUtils.toString(entity, "contactNo"));
-            setEnumColumn(i, 4, entity, OutOfOfficeRequestStatus.class.getSimpleName(), "status");
+            setEnumColumn(i, 4, entity, OutOfOfficeType.class.getSimpleName(), "outOfOfficeType");
+            setEnumColumn(i, 5, entity, OutOfOfficeRequestStatus.class.getSimpleName(), "status");
         }
     }
 

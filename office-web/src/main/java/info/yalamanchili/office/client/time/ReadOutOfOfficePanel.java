@@ -18,6 +18,7 @@ import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import java.util.logging.Logger;
@@ -49,8 +50,13 @@ public class ReadOutOfOfficePanel extends ReadComposite {
                     public void onResponse(String response) {
                         entity = (JSONObject) JSONParser.parseLenient(response);
                         populateFieldsFromEntity(entity);
+                        populateComments();
                     }
                 });
+    }
+    
+    protected void populateComments() {
+        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.time.OutOfOfficeRequest"));
     }
 
     @Override
@@ -62,6 +68,7 @@ public class ReadOutOfOfficePanel extends ReadComposite {
         assignFieldValueFromEntity("reason", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("notes", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("time", entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("recurring", entity, DataType.BOOLEAN_FIELD);
     }
 
     @Override
@@ -80,8 +87,9 @@ public class ReadOutOfOfficePanel extends ReadComposite {
         addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("reason", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        addField("notes", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("recurring", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("time", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("notes", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
