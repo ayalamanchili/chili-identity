@@ -27,7 +27,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.QueryParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -54,14 +53,14 @@ public class PassportResource {
     @PUT
     @Path("/save/{empId}")
     @Validate
-    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_H1B_IMMIGRATION", "ROLE_GC_IMMIGRATION"})    
+    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_H1B_IMMIGRATION", "ROLE_GC_IMMIGRATION"})
     public Passport save(@PathParam("empId") Long empId, Passport passport) {
         return passportService.savePassport(empId, passport);
     }
 
     @PUT
     @Path("/delete/{id}")
-    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_H1B_IMMIGRATION", "ROLE_GC_IMMIGRATION"})    
+    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_H1B_IMMIGRATION", "ROLE_GC_IMMIGRATION"})
     public void delete(@PathParam("id") Long id) {
         Passport passport = passportDao.find(id);
         if (passport.getId() != null) {
@@ -72,12 +71,16 @@ public class PassportResource {
     @GET
     @Path("/{id}/{start}/{limit}")
     @Transactional(readOnly = true)
-    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_H1B_IMMIGRATION", "ROLE_GC_IMMIGRATION"})    
+    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_H1B_IMMIGRATION", "ROLE_GC_IMMIGRATION"})
     public PassportResource.PassportTable table(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
         PassportResource.PassportTable tableObj = new PassportResource.PassportTable();
         Employee emp = EmployeeDao.instance().findById(id);
         tableObj.setEntities(passportDao.findAll(emp));
-        tableObj.setSize(passportDao.size());
+        if (tableObj.getEntities() != null && tableObj.getEntities().size() > 0) {
+            tableObj.setSize(Long.valueOf(tableObj.getEntities().size()));
+        } else {
+            tableObj.setSize(Long.valueOf(0));
+        }
         return tableObj;
     }
 
@@ -86,31 +89,30 @@ public class PassportResource {
     public List<Entry> getPassportDropDown(@PathParam("start") int start, @PathParam("limit") int limit) {
         List<Entry> result = new ArrayList<>();
         for (Passport passport : passportDao.query(start, limit)) {
-             Entry entry = new Entry();
-            entry.setId(passport.getId().toString());
-            entry.setValue(passport.getPassportNumber());
-            result.add(entry);
-        }
-        return result;       
-    }
-
-    
-    @GET
-    @Path("/dropdown/{id}")
-    public List<Entry> getLCAEmployeeDown(@PathParam("id") long id) {
-        Employee emp = EmployeeDao.instance().findById(id);    
-        Date todayDate = new Date();
-        List<Entry> result = new ArrayList<>();
-        for (Passport passport : passportDao.findAll(emp)) {
-            if (todayDate.compareTo(passport.getPassportExpiryDate()) <= 0) {
             Entry entry = new Entry();
             entry.setId(passport.getId().toString());
             entry.setValue(passport.getPassportNumber());
             result.add(entry);
-            }           
         }
         return result;
-    }   
+    }
+
+    @GET
+    @Path("/dropdown/{id}")
+    public List<Entry> getLCAEmployeeDown(@PathParam("id") long id) {
+        Employee emp = EmployeeDao.instance().findById(id);
+        Date todayDate = new Date();
+        List<Entry> result = new ArrayList<>();
+        for (Passport passport : passportDao.findAll(emp)) {
+            if (todayDate.compareTo(passport.getPassportExpiryDate()) <= 0) {
+                Entry entry = new Entry();
+                entry.setId(passport.getId().toString());
+                entry.setValue(passport.getPassportNumber());
+                result.add(entry);
+            }
+        }
+        return result;
+    }
 
     @XmlRootElement
     @XmlType
