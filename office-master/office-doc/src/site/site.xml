@@ -46,10 +46,9 @@
                 </item>
             </item>
             <item name="Employee OnBoarding" href="/office/onboarding/employee-onboarding.html" collapse="true">
-                <item name="Verify Employee Forms And Data" href="/office/onboarding/verifyformsanddocs.html"/>
-                <item name="How To Fill Onboarding Form" href="/office/onboarding/howtosubmitonboardingform.html"/>
+                <item name="Verify Employee Forms And Data" href="/office/onboarding/forms-docs-verification.html"/>
+                <item name="How To Fill Onboarding Form" href="/office/onboarding/submit-onboarding-details.html"/>
             </item>
-
             <item name="Profile" href="office/profile/profile.html" collapse="true">
                 <item name="Manage Profle" href="office/profile/profile.html"/>
                 <item name="Manage Address" href="office/profile/manage-address.html"/>
