@@ -12,12 +12,14 @@ package info.yalamanchili.office.jrs.profile.immigration;
  *
  * @author Madhu.Badiginchala
  */
+import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.immigration.PassportDao;
 import info.yalamanchili.office.entity.immigration.Passport;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.profile.immigration.PassportService;
 import info.yalamanchili.office.security.AccessCheck;
 import java.util.ArrayList;
@@ -43,7 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 @Scope("request")
-public class PassportResource {
+public class PassportResource extends CRUDResource<Passport> {
 
     @Autowired
     protected PassportDao passportDao;
@@ -114,6 +116,11 @@ public class PassportResource {
         return result;
     }
 
+    @Override
+    public CRUDDao getDao() {
+        return null;
+    }
+
     @XmlRootElement
     @XmlType
     public static class PassportTable implements java.io.Serializable {
@@ -138,5 +145,4 @@ public class PassportResource {
             this.entities = entities;
         }
     }
-
 }
