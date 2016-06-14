@@ -87,7 +87,7 @@ public class PassportResource extends CRUDResource<Passport> {
     }
 
     @GET
-    @Path("/dropdown/{start}/{limit}")
+    @Path("/passport-dropdown/{start}/{limit}")
     public List<Entry> getPassportDropDown(@PathParam("start") int start, @PathParam("limit") int limit) {
         List<Entry> result = new ArrayList<>();
         for (Passport passport : passportDao.query(start, limit)) {
