@@ -12,14 +12,17 @@ Out Of Office request Process
 
 Out Of Office Process Task
 ----
-![alt text](../../../images/timesheets/outofoffice/ooo-process.png "Time")
+![alt text](../../../images/timesheets/outofoffice/ooo-process.png "Out Of Office")
 
 Out Of Search Process
 ----
 - **HR Admin able to search the requests based on employee name, Start date and End dates, OutOf Office type, and Status**.
-![alt text](../../../images/timesheets/outofoffice/search-requests.png "Time")
+![alt text](../../../images/timesheets/outofoffice/search-requests.png "Out Of Office")
 
 Comments
 ----
-- **Every employee Can able to enter his comments in Comments Section and also he/she can notify other employee**.
-![alt text](../../../images/timesheets/outofoffice/comments.png "Time")
+- **Every employee Can able to enter his comments in Comments Section and also he/she can notify other employee and the notify employee receives an email regarding comments **.
+![alt text](../../../images/timesheets/outofoffice/comments.png "Out Of Office")
+- **Employee Can able to view/reply to the comment for the received email**.
+![alt text](../../../images/timesheets/outofoffice/comments1.png "Out Of Office")
+![alt text](../../../images/timesheets/outofoffice/comments2.png "Out Of Office")
