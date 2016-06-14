@@ -1,8 +1,8 @@
 OutOf Office
 ------------
 ### Submitting OutOf Office Request.
-
-- In Time tab, click on 'Out Of Office' Tab and then click on 'Create OutOf Office Request'. Fill the details and submit.
+- [Login to Portal](../../../office/forgot-password.html "Login")
+- **Navigate to Time --> Out Of Office --> Click On Create OutOf Office Request**. Fill the details and submit.
    - Please follow the below points while Submit OutOf Office Request.
        - Only Corporate employees can submit the request.
        - OutOf Office Type is : OutOf Office (or) Work From Home

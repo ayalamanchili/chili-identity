@@ -1,7 +1,7 @@
 Out Of Office request Process
 -----
 
-- When employee submits a request and creates a Task for Employee's Reports_To Manager.
+- When employee submits a request and it creates a Task for Employee's Reports_To Manager.
 - Email has been sent to Reports_To Manager about the new task and also notification sent to if employee notified any employee while creating.
 - The Request will be created with **Pending Manager Approval** status.
 - The Reports_To Manager approve or reject the task with in 48 hours.
@@ -16,10 +16,10 @@ Out Of Office Process Task
 
 Out Of Search Process
 ----
--HR Admin able to search the requests based on employee name, Start date and End dates, OutOf Office type, and Status.
+- **HR Admin able to search the requests based on employee name, Start date and End dates, OutOf Office type, and Status**.
 ![alt text](../../../images/timesheets/outofoffice/search-requests.png "Time")
 
 Comments
 ----
-- Every employee Can able to enter his comments in Comments Section and also he/she can notify other employee.
+- **Every employee Can able to enter his comments in Comments Section and also he/she can notify other employee**.
 ![alt text](../../../images/timesheets/outofoffice/comments.png "Time")

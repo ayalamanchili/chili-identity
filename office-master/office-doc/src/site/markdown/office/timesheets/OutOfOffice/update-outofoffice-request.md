@@ -6,5 +6,6 @@ Update Out Of Office Request
 
 Update Request
 -----
+**Navigate to Time --> Out Of Office --> click on Update button**
 ![alt text](../../../images/timesheets/outofoffice/update-ooo-request.png "Out Of Office")
 ![alt text](../../../images/timesheets/outofoffice/update-ooo-request2.png "Out Of Office")
