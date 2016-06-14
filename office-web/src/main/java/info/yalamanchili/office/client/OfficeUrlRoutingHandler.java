@@ -28,6 +28,7 @@ import info.yalamanchili.office.client.onboarding.ReadAllEmployeeOnBoardingPanel
 import info.yalamanchili.office.client.profile.address.ReadAllAddressesPanel;
 import info.yalamanchili.office.client.profile.selfservice.ReadAllServiceTicketsPanel;
 import info.yalamanchili.office.client.profile.statusreport.ReadStatusReportPanel;
+import info.yalamanchili.office.client.time.ReadAllOutOfOfficePanel;
 import info.yalamanchili.office.client.time.consultant.ReadAllConsultantTimeSheetsPanel;
 import info.yalamanchili.office.client.time.corp.ReadAllCorporateTimeSheetPanel;
 import java.util.Map;
@@ -88,6 +89,8 @@ public class OfficeUrlRoutingHandler implements ValueChangeHandler<String> {
                 case "info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding":
                     onboardingTimeNavigation(params);
                     break;
+                case "info.yalamanchili.office.entity.time.OutOfOfficeRequest":
+                    outOfOfficeNavigation(params);
                 //TODO add navigation to add entities that have comment
             }
         }
@@ -168,6 +171,12 @@ public class OfficeUrlRoutingHandler implements ValueChangeHandler<String> {
         ReadAllEmployeeOnBoardingPanel readallonboarding = new ReadAllEmployeeOnBoardingPanel(new JSONArray());
         readallonboarding.viewClicked(params.get("id"));
     }
+    
+    protected void outOfOfficeNavigation(Map<String, String> params) {
+        TabPanel.instance().tabPanel.selectTab(TabPanel.instance().timePanel, false);
+        ReadAllOutOfOfficePanel readAllOutOfOffice = new ReadAllOutOfOfficePanel(new JSONArray());
+        readAllOutOfOffice.viewClicked(params.get("id"));
+    }
 
     protected void taskNavigation(Map<String, String> params) {
         TabPanel.instance().homePanel.entityPanel.clear();
@@ -189,7 +198,7 @@ public class OfficeUrlRoutingHandler implements ValueChangeHandler<String> {
                     });
         }
     }
-
+    
 //TODO move to commons
     public static Map<String, String> splitQuery(String url) {
         return Splitter.on('&').trimResults().withKeyValueSeparator("=").split(url.split("\\?")[1]);
