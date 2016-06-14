@@ -45,6 +45,10 @@
                     <item name="Submit Project End Details" href="/office/project-offboarding.html"/>
                 </item>
             </item>
+            <item name="Prospects" href="/office/prospects/prospects.html" collapse="true">
+                <item name="Prospect Reports" href="/office/prospects/prospect-reports.html"/>
+                <item name="Prospect Graphs" href="/office/prospects/prospect-graphs.html"/>
+            </item>
             <item name="Employee OnBoarding" href="/office/onboarding/employee-onboarding.html" collapse="true">
                 <item name="Verify Employee Forms And Data" href="/office/onboarding/forms-docs-verification.html"/>
                 <item name="How To Fill Onboarding Form" href="/office/onboarding/submit-onboarding-details.html"/>
