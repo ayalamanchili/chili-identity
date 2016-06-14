@@ -1,4 +1,4 @@
-Update Out Of Office Request
+Update Work From Home Request
 -----
 
  - If there is **any change** in the start/end dates or time etc.. you can update the details by clicking on **Update** option. 
