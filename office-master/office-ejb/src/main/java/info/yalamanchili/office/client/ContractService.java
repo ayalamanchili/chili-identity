@@ -95,7 +95,7 @@ public class ContractService {
         String searchQuery = getSearchQuery(searchDto);
         Date startDate = searchDto.getStartDate();
         Date endD = searchDto.getEndDate();
-        TypedQuery<ClientInformation> query = em.createQuery(searchQuery, ClientInformation.class);
+        TypedQuery<ClientInformation> query = em.createQuery(searchQuery + " order by ci.employee.firstName ASC group by ci.employee ", ClientInformation.class);
         if (searchDto.getStartDate() != null) {
             query.setParameter("startDateStartParam", startDate, TemporalType.DATE);
             query.setParameter("startDateEndParam", DateUtils.addDays(startDate, 31), TemporalType.DATE);
