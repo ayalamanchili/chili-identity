@@ -1,4 +1,4 @@
-Out Of Office request Process
+Work From Home request Process
 -----
 
 - When employee submits a request and it creates a Task for Employee's Reports_To Manager.
@@ -10,11 +10,11 @@ Out Of Office request Process
 - HR Admin able to view all out of office requests submitted by the employees.
 - Reports_To Manager able to search the employees those who are related to under his/her.
 
-Out Of Office Process Task
+Work From Home Process Task
 ----
 ![alt text](../../../images/timesheets/outofoffice/ooo-process.png "Out Of Office")
 
-Out Of Search Process
+Work From Home Search Process
 ----
 - **HR Admin able to search the requests based on employee name, Start date and End dates, OutOf Office type, and Status**.
 ![alt text](../../../images/timesheets/outofoffice/search-requests.png "Out Of Office")
