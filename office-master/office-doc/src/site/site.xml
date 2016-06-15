@@ -44,6 +44,12 @@
                     <item name="Client information Reports" href="/office/contracts-reports.html"/>
                     <item name="Submit Project End Details" href="/office/project-offboarding.html"/>
                 </item>
+                <item name="Invoice" href="/office/invoice/create-invoice.html" collapse="true">
+                    <item name="Update Invoice" href="/office/invoice/update-invoice.html" collapse="true"/>
+                    <item name="Search Invoice" href="/office/invoice/search-invoice.html" collapse="true"/>
+
+                </item>
+
             </item>
             <item name="Prospects" href="/office/prospects/prospects.html" collapse="true">
                 <item name="Prospect Reports" href="/office/prospects/prospect-reports.html"/>
