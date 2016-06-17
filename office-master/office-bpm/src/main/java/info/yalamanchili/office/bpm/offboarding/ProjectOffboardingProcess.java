@@ -18,6 +18,7 @@ import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
+import java.text.SimpleDateFormat;
 import org.activiti.engine.delegate.DelegateTask;
 
 /**
@@ -43,15 +44,19 @@ public class ProjectOffboardingProcess extends RuleBasedTaskDelegateListner {
 
     public void notifyEmployeeAndTeams(DelegateTask dt) {
         ProjectOffBoardingDto dto = (ProjectOffBoardingDto) dt.getExecution().getVariable("entity");
+        
         if (dto == null) {
             return;
         }
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
         Employee associateEmployee = EmployeeDao.instance().findById(dto.getEmployeeId());
         Email email1 = new Email();
+        email1.setHtml(Boolean.TRUE);
+        email1.setRichText(Boolean.TRUE);
+         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYY");
         email1.addTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_HR.name(), OfficeRoles.OfficeRole.ROLE_GC_IMMIGRATION.name(), OfficeRoles.OfficeRole.ROLE_H1B_IMMIGRATION.name(), OfficeRoles.OfficeRole.ROLE_RECRUITER.name()));
-        email1.setSubject("Project Offboarding Submitted for Employee" + associateEmployee.getFirstName() + " " + associateEmployee.getLastName());
-        email1.setBody("Project Offboarding request has been submitted for Employee" + associateEmployee.getFirstName() + " " + associateEmployee.getLastName() + "\n Client : " + dto.getClientName() + "\n Vendor : " + dto.getVendorName() + "\n End Date of the project: " + dto.getEndDate() + "\n This employee project has been offboarded:" + associateEmployee.getFirstName() + " " + associateEmployee.getLastName() + " Please Proceed your actions!!!!!");
+        email1.setSubject("Project Offboarding Submitted for Employee - " + associateEmployee.getFirstName() + " " + associateEmployee.getLastName());
+        email1.setBody("Project Offboarding request has been submitted for Employee - " + " <b> " + associateEmployee.getFirstName() + " </b> " + "  " + " <b> " + associateEmployee.getLastName() +  " </b>" + " </br> " + " <b> \n Client &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:" + " </b> " + dto.getClientName() + " </br> " + " <b> \n Vendor &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:" + " </b> " + dto.getVendorName() + " </br> " + " <b> " + "\n End Date of the project: " + " </b> "+ sdf.format(dto.getEndDate()) + " </br> " + " <i> " + "\n This employee project has been offboarded:" + " </i> " + " <b> " + associateEmployee.getFirstName() + " </b> " + " " + " <b> " + associateEmployee.getLastName() + " </b> " + " </br> " + " Please Proceed your actions!!!!!");
         messagingService.sendEmail(email1);
     }
 }
