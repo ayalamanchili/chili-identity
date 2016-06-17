@@ -22,6 +22,7 @@ import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.OutOfOfficeRequest;
 import info.yalamanchili.office.entity.time.OutOfOfficeRequestStatus;
 import info.yalamanchili.office.jms.MessagingService;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 import org.dozer.Mapper;
@@ -49,14 +50,16 @@ public class OutOfOfficeService {
         entity.setStatus(OutOfOfficeRequestStatus.Pending_Manager_Approval);
         if (entity.getNotifyEmployees() != null && entity.getNotifyEmployees().size() > 0) {
             Email email = new Email();
+            email.setHtml(Boolean.TRUE);
+            email.setRichText(Boolean.TRUE);
             for (Entry e : entity.getNotifyEmployees()) {
                 email.addTo(EmployeeDao.instance().getPrimaryEmail(e.getId()));
             }
-            email.setSubject("OutOfOffice Request " + entity.getStatus().name() + "\n" + emp.getFirstName() + " " + emp.getLastName());
-            String summary = "OutOfOffice Request " + entity.getStatus().name() + "\n" + "Employee: " + emp.getFirstName() + " " + emp.getLastName() + "\n" + " Start Date: " + entity.getStartDate() + "\n" + " End Date: " + entity.getEndDate();
+            email.setSubject("OutOfOffice Request - " + entity.getStatus().name() + " for " + emp.getFirstName() + " " + emp.getLastName()  );
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYY");
+            String summary = " <b> OutOfOffice Request - </b>  " + "<b>" + entity.getStatus().name() + "</b>" + "</br></br>" + " <b> Employee : </b> &nbsp;" + emp.getFirstName() + "&nbsp;" + " "  + "&nbsp;" + emp.getLastName() + "&nbsp;" + "</br>"  + " <b> Start Date : </b> " + "&nbsp;" + sdf.format(entity.getStartDate()) + "&nbsp;" + "</br>" + " <b> End Date  : </b> " + "&nbsp;"  + sdf.format(entity.getEndDate()) + "&nbsp;";
             MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
             email.setBody(summary);
-            email.setHtml(Boolean.TRUE);
             messagingService.sendEmail(email);
         }
         entity = OutOfOfficeDao.instance().save(entity);
