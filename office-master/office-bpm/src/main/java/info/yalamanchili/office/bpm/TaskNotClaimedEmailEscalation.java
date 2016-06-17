@@ -39,8 +39,9 @@ public class TaskNotClaimedEmailEscalation implements JavaDelegate {
                 Email email = new Email();
                 email.setTos(BPMUtils.getCandidateEmails(task));
                 email.setHtml(Boolean.TRUE);
+                email.setRichText(Boolean.TRUE);
                 email.setSubject("Task not claimed escalation email");
-                String messageText = "Task is not claimed. Please claim.\n Details: \n Name" + task.getName() + " \n Description:" + task.getDescription();
+                String messageText = "<b>Task is not claimed. Please claim.</br></br><i> Task Details: </br></br> Name</i></b>: " + task.getName() + " </br><b><i> Description:</i></b>" + task.getDescription();
                 email.setBody(messageText);
                 messagingService.sendEmail(email);
             }
