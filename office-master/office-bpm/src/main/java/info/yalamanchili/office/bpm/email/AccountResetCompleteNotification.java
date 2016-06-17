@@ -31,23 +31,24 @@ public class AccountResetCompleteNotification implements TaskListener {
         String status = (String) delegateTask.getExecution().getVariable("status");
         email.setSubject("Account Reset Task Completed: Status:" + status);
         StringBuilder message = new StringBuilder();
-        message.append(" Status:").append(status.toUpperCase()).append("\n");;
         //username
         String username = (String) delegateTask.getExecution().getVariable("username");
-        if(EmployeeDao.instance().findEmployeWithEmpId(username)==null){
+        if (EmployeeDao.instance().findEmployeWithEmpId(username) == null) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.employeeid", "employee id does not exist. Please enter correct employeeId for the user to complete.");
         }
         if (username != null) {
-            message.append(" Username / EmployeeId:").append(username).append("\n");;
+            message.append("&nbsp;<b><i>Username / EmployeeId&nbsp;</i></b>:&nbsp;").append(username).append("</br>");
         }
+        message.append("<b><i>&nbsp;&nbsp;Status&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i></b>:&nbsp;").append(status.toUpperCase()).append("</br>");
         //task notes
         String notes = (String) delegateTask.getExecution().getVariable("notes");
         if (notes != null) {
-            message.append(" Notes:").append(notes).append("\n");
+            message.append("&nbsp;<b><i>Notes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i></b>:&nbsp;").append(notes).append("</br>");
         }
-        message.append("Account was reset. Please submit forgot password request with the Username / EmployeeId above to get a temporary password \n");
-        message.append("https://apps.sstech.us/site/office/forgot-password.html");
+        message.append("&nbsp;Account was reset. Please submit forgot password request with the Username / EmployeeId above to get a temporary password </br>");
+        message.append("&nbsp;https://apps.sstech.us/site/office/forgot-password.html");
         email.setHtml(Boolean.TRUE);
+        email.setRichText(Boolean.TRUE);
         email.setBody(message.toString());
         messagingService.sendEmail(email);
     }
