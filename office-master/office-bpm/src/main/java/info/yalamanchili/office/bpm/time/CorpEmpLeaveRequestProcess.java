@@ -19,7 +19,6 @@ import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.chili.email.Email;
-import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
 import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -27,6 +26,7 @@ import info.yalamanchili.office.entity.time.CorporateTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import info.yalamanchili.office.jms.MessagingService;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import org.activiti.engine.delegate.DelegateExecution;
@@ -178,26 +178,28 @@ public class CorpEmpLeaveRequestProcess extends RuleBasedTaskDelegateListner imp
             email.setTos(BPMUtils.getCandidateEmails(task));
         }
         email.addTo(EmployeeDao.instance().getPrimaryEmail(emp));
-        String summary = "Leave Request " + status + " For: " + emp.getFirstName() + " " + emp.getLastName();
-        email.setSubject(summary);
+        String summary1 = "Leave Request " + status + " For: " + emp.getFirstName() + " " + emp.getLastName();
+        String summary = "<b>Leave Request</b>" + "<b>" + status + "</b>" + " <b>For Employee</b></br></br>" + "&nbsp;&nbsp;<b><i>Employee Name&nbsp;&nbsp;</i></b>:&nbsp;" + emp.getFirstName() + " " + emp.getLastName();
+        email.setSubject(summary1);
         StringBuilder messageBuilder = new StringBuilder();
-        messageBuilder.append("Summary: ").append(summary).append("\n");
+        messageBuilder.append("<b>Summary:</b> ").append(summary);
         String taskNotes = (String) task.getVariable("leaveRequestApprovalTaskNotes");
         if (taskNotes != null && !taskNotes.isEmpty()) {
-            messageBuilder.append("Notes: ").append(taskNotes).append("\n");
+            messageBuilder.append("</br>&nbsp;&nbsp;<b><i>Notes</i></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: ").append(taskNotes);
         }
         Employee taskActionUser = (Employee) task.getExecution().getVariable("taskActionUser");
         if (taskActionUser != null) {
-            messageBuilder.append("Task Updated By : ").append(taskActionUser.getFirstName()).append(" ").append(taskActionUser.getLastName()).append("\n");
+            messageBuilder.append("</br>&nbsp;&nbsp;<b><i>Task Updated By</i></b>&nbsp; : ").append(taskActionUser.getFirstName()).append(" ").append(taskActionUser.getLastName());
         }
-        messageBuilder.append("Task  Details: \n Name: ").append(task.getName()).append("\n");
-        messageBuilder.append("Description: ").append(task.getDescription()).append("\n");
+        messageBuilder.append("</br></br><b>Task  Details:</br></br><i>Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i></b>: ").append(task.getName()).append("</br>");
+        messageBuilder.append("<b><i>Description</i></b>: ").append(task.getDescription()).append("</br>");
         if (!email.getTos().equals(emp)) {
-            messageBuilder.append("\n\n\t Please click on the below link to complete the task: \n\t " + getTaskLink(task));
+            messageBuilder.append("Please click on the below link to complete the task</br>" + getTaskLink(task));
             email.getHeaders().put("task-id", task.getId());
         }
         email.setBody(messageBuilder.toString());
         email.setHtml(Boolean.TRUE);
+        email.setRichText(Boolean.TRUE);
         messagingService.sendEmail(email);
     }
 
@@ -210,7 +212,7 @@ public class CorpEmpLeaveRequestProcess extends RuleBasedTaskDelegateListner imp
     protected void sendNotifyEmplyeeNotification(String status, DelegateTask task) {
         List<Entry> notifyEmployees = (List<Entry>) task.getExecution().getVariable("notifyEmployees");
         Email email = new Email();
-
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         if (notifyEmployees != null) {
             for (Entry e : notifyEmployees) {
                 email.addTo(EmployeeDao.instance().getPrimaryEmail(e.getId()));
@@ -219,10 +221,11 @@ public class CorpEmpLeaveRequestProcess extends RuleBasedTaskDelegateListner imp
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         CorporateTimeSheet ts = getTimeSheetFromTask(task);
         email.setSubject("Leave Request " + status + " For: " + emp.getFirstName() + " " + emp.getLastName());
-        String summary = "Leave Request " + status + " For: " + emp.getFirstName() + " " + emp.getLastName() + " : Start Date " + ts.getStartDate() + " End Date " + ts.getEndDate();
+        String summary = "<b>Leave Request " + status + " For Employee</b></br></br>" + "&nbsp;&nbsp;<b><i>Employee Name</i></b>&nbsp;:&nbsp;" + emp.getFirstName() + " " + emp.getLastName() + "</br>" + "&nbsp;&nbsp;<b><i>Start Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i></b>:&nbsp;" + sdf.format(ts.getStartDate()) + "</br>" + "&nbsp;&nbsp;<b><i>End Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i></b>:&nbsp;" + sdf.format(ts.getEndDate());
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
         email.setBody(summary);
         email.setHtml(Boolean.TRUE);
+        email.setRichText(Boolean.TRUE);
         messagingService.sendEmail(email);
     }
 
