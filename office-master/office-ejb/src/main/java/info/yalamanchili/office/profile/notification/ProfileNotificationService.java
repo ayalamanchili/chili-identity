@@ -94,8 +94,9 @@ public class ProfileNotificationService {
         }
         email.addTo(primaryEmail);
         email.setHtml(Boolean.TRUE);
+        email.setRichText(Boolean.TRUE);
         email.setSubject("Employee Password Reset");
-        email.setBody(" Your password has been reset \n Username: " + emp.getEmployeeId() + " \n Password: " + resetPassword + "\n please change your password after you login from your profile \n Portal URL: https://apps.sstech.us/portal");
+        email.setBody("<b>Your password has been reset</br></br><i>Username</i></b>: " + emp.getEmployeeId() + "</br><b><i>Password</i></b>: " + resetPassword + "</br> please change your password after you login from your profile </br> Portal URL: https://apps.sstech.us/portal");
         messagingService.sendEmail(email);
     }
 
@@ -132,10 +133,11 @@ public class ProfileNotificationService {
         String[] roles = {OfficeRole.ROLE_ADMIN.name(), OfficeRole.ROLE_HR_ADMINSTRATION.name(), OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name(), OfficeRole.ROLE_CONSULTANT_TIME_ADMIN.name()};
         Email email = new Email();
         email.setHtml(Boolean.TRUE);
+        email.setRichText(Boolean.TRUE);
         email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject("Employee Deactivated ");
-        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
-        String messageText = "Employee  " + emp.getFirstName() + "," + emp.getLastName() + " Account Is Deactivated by:" + deactivateBy + "; End Date: " + sdf.format(emp.getEndDate());
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        String messageText = "<b>Employee Account Is Deactivated</b></br></br> " + "<b><i>Employee Name:</i></b> " + emp.getFirstName() + " " + emp.getLastName() + "</br><b><i>Deactivated by&nbsp;&nbsp;:</i></b>" + deactivateBy + "</br><b><i>End Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :</i></b>" + sdf.format(emp.getEndDate());
         email.setBody(messageText);
         messagingService.sendEmail(email);
     }
