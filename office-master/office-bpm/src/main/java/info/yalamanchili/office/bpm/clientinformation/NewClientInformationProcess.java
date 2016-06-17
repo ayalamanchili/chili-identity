@@ -82,26 +82,27 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
         Email email = new Email();
         email.setTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_BILLING_AND_INVOICING.name()));
         email.setHtml(Boolean.TRUE);
+        email.setRichText(Boolean.TRUE);
         email.setSubject("New File/Project   : " + ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
-        String messageText = " Client Information : ";
-        messageText = messageText.concat(" \n  Client :  " + ci.getClient().getName());
-        messageText = messageText.concat("\n  Item_No : " + itemNo);
+        String messageText = "<h3> <b> Client Information : </b> </h3> </br> " ;
+        messageText = messageText.concat("\n  <b> Client &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp : </b>  " + ci.getClient().getName() + "</br>");
+        messageText = messageText.concat("\n  <b> Item_No  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp : </b> " + itemNo + "</br>");
         if (ci.getVendor() != null) {
-            messageText = messageText.concat("\n Vendor  : " + ci.getVendor().getName());
+            messageText = messageText.concat(" \n <b> Vendor  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp : </b> " + ci.getVendor().getName() + "</br>");
         }
         if (ci.getSubcontractor() != null) {
-            messageText = messageText.concat("\n Subcontractor :" + ci.getSubcontractor().getName());
+            messageText = messageText.concat("\n <b> Subcontractor &nbsp;&nbsp;&nbsp;&nbsp : </b>" + ci.getSubcontractor().getName() +"</br>");
         }
         if (ci.getCompany() != null) {
-            messageText = messageText.concat("\n Company :" + ci.getCompany().name());
+            messageText = messageText.concat("\n <b> Company  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp : </b> " + ci.getCompany().name() +"</br>");
         }
-        messageText = messageText.concat("\n Project Start Date :" + ci.getStartDate());
-        messageText = messageText.concat("\n  Updated_By :" + emp.getFirstName() + " " + emp.getLastName());
+        messageText = messageText.concat("\n <b> Project Start Date  &nbsp :  </b> " + ci.getStartDate() +"</br>");
+        messageText = messageText.concat("\n  <b> Updated_By &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp : </b> " + emp.getFirstName() + " " + emp.getLastName() +"</br>");
         if (task.getExecution().getVariable("specialInvoiceInstructions") != null) {
-            messageText = messageText.concat("\n Special Invoice Instructions :" + task.getExecution().getVariable("specialInvoiceInstructions"));
+            messageText = messageText.concat("\n <b> Special Invoice Instructions : </b> " + task.getExecution().getVariable("specialInvoiceInstructions") +"</br>");
         }
         if (task.getExecution().getVariable("accountNotes") != null) {
-            messageText = messageText.concat("\n Account Notes :" + task.getExecution().getVariable("accountNotes"));
+            messageText = messageText.concat("\n <b> Account Notes : </b>" + task.getExecution().getVariable("accountNotes"));
         }
         email.setBody(messageText);
         MessagingService.instance().sendEmail(email);
