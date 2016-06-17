@@ -39,10 +39,11 @@ public class OnBoardingEmployeeProcessBean {
     public void sendEmployeeOnBoardingProcessStartEmail(Employee emp) {
         Email email = new Email();
         email.setHtml(Boolean.TRUE);
+        email.setRichText(Boolean.TRUE);
         email.addTo(emp.getPrimaryEmail().getEmail());
         email.setSubject("Welcome to System Soft Portal");
-        String messageTextforuser = "Hai " + emp.getFirstName() + " " + emp.getLastName() + " \n";
-        messageTextforuser = messageTextforuser.concat("Thank you For Completing the onboarding form. \n Our Onboarding Manager Will get in touch with you once the process complete");
+        String messageTextforuser = "Hai " + "<b>" + emp.getFirstName() + "</b>" + " " + "<b>" + emp.getLastName() + "</b>" + " \n";
+        messageTextforuser = messageTextforuser.concat(" <br> Thank you for Completing the onboarding form. </br> \n Our <b> Onboarding Manager </b> Will get in touch with you once the process complete");
         email.setBody(messageTextforuser);
         MessagingService.instance().sendEmail(email);
     }
