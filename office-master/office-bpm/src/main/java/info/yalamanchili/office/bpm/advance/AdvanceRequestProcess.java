@@ -180,7 +180,10 @@ public class AdvanceRequestProcess extends RuleBasedTaskDelegateListner implemen
         Email email = new Email();
         email.addTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_ACCOUNTS_PAYABLE.name()));
         email.setSubject("Advance Requisition Approved For Employee" + entity.getEmployee().getFirstName() + " " + entity.getEmployee().getLastName());
-        email.setBody("Advance Requisition Approved For Employee" + entity.getEmployee().getFirstName() + " " + entity.getEmployee().getLastName() + " Please Print and Process it");
+        String body = "<b>Advance Requisition Approved For Employee</b></br></br>" + "<b><i>Employee Name:</i></b>" + " " + entity.getEmployee().getFirstName() + " " + entity.getEmployee().getLastName() + "</br></br>&nbsp;&nbsp;&nbsp;&nbsp;" + "<i> Please Print and Process it</i>";
+        email.setBody(body);
+        email.setHtml(Boolean.TRUE);
+        email.setRichText(Boolean.TRUE);
         messagingService.sendEmail(email);
 
     }
