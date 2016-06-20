@@ -90,7 +90,6 @@ public class TravelAuthorizationResource extends CRUDResource<TravelAuthorizatio
             Employee currentEmp = OfficeSecurityService.instance().getCurrentUser();
             tableObj.setEntities(travelAuthorizationDao.queryForEmployee(currentEmp.getId(), start, limit));
             tableObj.setSize(travelAuthorizationDao.size(currentEmp.getId()));
-            tableObj.setSize(getDao().size());
         }
         return tableObj;
     }
