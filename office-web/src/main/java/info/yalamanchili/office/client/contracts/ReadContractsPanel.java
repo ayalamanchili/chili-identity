@@ -61,7 +61,7 @@ public class ReadContractsPanel extends TReadComposite {
     protected static HTML accountText = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 5px; background: rgb(222, 222, 222)\">"
             + "<strong style=\"color:#555555\">Account Department Docs</strong></p>\n"
-            + "\n");    
+            + "\n");
     protected static HTML subText = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 5px; background: rgb(222, 222, 222)\">"
             + "<strong style=\"color:#555555\">Subcontractor Information</strong></p>\n"
@@ -241,9 +241,8 @@ public class ReadContractsPanel extends TReadComposite {
         addField("employeeCompany", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 21, 1);
         entityFieldsPanel.setWidget(22, 1, ReadAllConsultantTimeSheetsPanel.renderLeaveHistory(getEmployeeId()));
         entityFieldsPanel.getFlexCellFormatter().setColSpan(22, 1, 2);
-        if(Auth.hasAnyOfRoles(Auth.ROLE.ROLE_INVOICE_MANAGER)){
-        entityFieldsPanel.setWidget(25, 1, ReadAllInvoicePanel.renderInvoiceHistory(entity, entityId));
-        entityFieldsPanel.getFlexCellFormatter().setColSpan(25, 1, 2);
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_INVOICE_MANAGER)) {
+            populateInvoices();
         }
         alignFields();
     }
@@ -280,4 +279,25 @@ public class ReadContractsPanel extends TReadComposite {
     public String getEmployeeId() {
         return JSONUtils.toString(entity, "employeeID");
     }
+
+    protected void populateInvoices() {
+        HttpService.HttpServiceAsync.instance().doGet(getInvoiceUrl(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (!response.trim().toString().equals("null")) {
+                            JSONObject resObj = JSONParser.parseLenient(response).isObject();
+                            String key = (String) resObj.keySet().toArray()[0];
+                            JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
+                            entityFieldsPanel.setWidget(25, 1, ReadAllInvoicePanel.renderInvoices(results, entityId));
+                            entityFieldsPanel.getFlexCellFormatter().setColSpan(25, 1, 2);
+                        }
+                    }
+                });
+    }
+
+    private String getInvoiceUrl() {
+        return OfficeWelcome.constants.root_url() + "invoice/" + getEntityId() + "/0/1000";
+    }
+
 }
