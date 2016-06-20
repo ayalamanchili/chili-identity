@@ -10,6 +10,7 @@ package info.yalamanchili.office.jrs.expense.advreq;
 import info.chili.commons.SearchUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
+import info.chili.security.domain.CRole;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.expense.advreq.AdvanceRequisitionDao;
@@ -23,6 +24,7 @@ import info.yalamanchili.office.jrs.expense.advreq.TransactionResource.Transacti
 import info.yalamanchili.office.security.AccessCheck;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.Query;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -110,7 +112,6 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
             tableObj.setEntities(advanceRequisitionDao.queryForEmployee(currentEmp.getId(), start, limit));
             tableObj.setSize(advanceRequisitionDao.size(currentEmp.getId()));
         }
-        tableObj.setSize(getDao().size());
         return tableObj;
     }
 
