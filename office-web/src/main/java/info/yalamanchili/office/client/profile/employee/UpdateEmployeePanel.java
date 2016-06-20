@@ -23,7 +23,6 @@ import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.profile.contact.Branch;
 import info.yalamanchili.office.client.profile.contact.Sex;
 import info.yalamanchili.office.client.profile.contact.WorkStatus;
-import static info.yalamanchili.office.client.profile.employee.CreateEmployeePanel.generalInfo;
 import java.util.logging.Logger;
 
 public class UpdateEmployeePanel extends UpdateComposite {
@@ -39,7 +38,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
     };
     protected static HTML generalInfo = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
-            + "<strong style=\"color:#555555\">Image should not exceed more than 20mb </strong></p>\n"
+            + "<strong style=\"color:#555555\">Image should not exceed more than 2mb </strong></p>\n"
             + "\n"
             + "<ul>\n"
             + "</ul>");
