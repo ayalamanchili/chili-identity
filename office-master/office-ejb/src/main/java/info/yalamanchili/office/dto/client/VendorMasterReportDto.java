@@ -27,6 +27,7 @@ public class VendorMasterReportDto implements Serializable {
     protected String acctPayContact;
     protected String employeeName;
     protected String employeeType;
+    protected String vendorPaymentTerms;
 
     public String getVendorName() {
         return vendorName;
@@ -98,6 +99,14 @@ public class VendorMasterReportDto implements Serializable {
 
     public void setEmployeeType(String employeeType) {
         this.employeeType = employeeType;
+    }
+
+    public String getVendorPaymentTerms() {
+        return vendorPaymentTerms;
+    }
+
+    public void setVendorPaymentTerms(String vendorPaymentTerms) {
+        this.vendorPaymentTerms = vendorPaymentTerms;
     }
 
 }

@@ -44,11 +44,10 @@ public class VendorService {
         for (Vendor vn : VendorDao.instance().query(0, 2000)) {
             res.add(populateVendorInfo(vn));
         }
-        String[] columnOrder = new String[]{"vendorName", "webSite", "vendorType", "vendorFees", "vendorLocations", "recruiterContact", "acctPayContact"};
+        String[] columnOrder = new String[]{"vendorName", "webSite", "vendorType", "vendorFees", "vendorPaymentTerms", "vendorLocations", "recruiterContact", "acctPayContact"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Vendor Summary Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
-    
-     
+
     @Async
     @Transactional
     public void generateActiveVendorsInfoReport(String email) {
@@ -94,6 +93,9 @@ public class VendorService {
         }
         if (vn.getVendorFees() != null) {
             dto.setVendorFees(vn.getVendorFees().toString());
+        }
+        if (vn.getPaymentTerms() != null) {
+            dto.setVendorPaymentTerms(vn.getPaymentTerms());
         }
         // for getting vendor locations
         if (vn.getLocations().size() > 0) {
