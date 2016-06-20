@@ -78,36 +78,36 @@ h5 {
                         <span style="font-weight: bold;" th:text="${currentComment.createdBy}"></span>
                         <span style="font-size:13px; font-family:Tahoma, Geneva, sans-serif; font-weight:600; color:#4CAF50;"> Updated the ticket with following comment: </span>
                         <div th:utext="${currentComment.comment}" style="text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;" ></div>
-                        <h5> Ticket Summary </h5>
+                        <h5> <b> Ticket Summary: </b> </h5>
                         <table>
                             <tr>
-                                <td><p>Subject</p></td>
+                                <td><p> <b> Subject: </b> </p></td>
                                 <td th:text="${ticket.subject}" />
                             </tr>
                             <tr>
-                                <td><p>Description</p></td>
+                                <td><p> <b> Description: </b> </p></td>
                                 <td><div th:utext="${ticket.description}" 
                                 style="text-align:left; font-family: Arial,Helvetica,sans-serif;
                                 font-size:13px; font-size:10pt;" ></div></td>
                             </tr>
                             <tr>
-                                <td><p>Type</p></td>
+                                <td><p> <b> Type: </b> </p></td>
                                 <td th:text="${ticket.type}" />
                             </tr>
                             <tr>
-                                <td><p>Status</p></td>
+                                <td><p> <b> Status: </b> </p></td>
                                 <td th:text="${ticket.status}" />
                             </tr>
                             <tr>
-                                <td><p>Date Created</p></td>
+                                <td><p> <b> Date Created: </b> </p></td>
                                 <td th:text="${ticket.createdTimeStamp}" />
                             </tr>
                             <tr>
-                                <td><p>Department</p></td>
+                                <td><p> <b> Department: </b> </p></td>
                                 <td th:text="${ticketDepartment}" />
                             </tr>
                             <tr  th:if="${ticket.assignedTo != null}" >
-                                <td><p>Assigned To</p></td>
+                                <td><p> <b> Assigned To: </b> </p></td>
                                 <td th:text="${ticket.assignedTo.firstName}" />
                             </tr>                            
                         </table>
