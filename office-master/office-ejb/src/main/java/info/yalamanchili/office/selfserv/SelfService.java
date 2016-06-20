@@ -174,6 +174,8 @@ public class SelfService {
     protected void sendTicketUpdatedNotification(TicketComment comment) {
         Employee commentAuthor = OfficeSecurityService.instance().getCurrentUser();
         Email email = new Email();
+        email.setHtml(Boolean.TRUE);
+        email.setRichText(Boolean.TRUE);
         email.setTos(getTicketNotificationGroup(comment));
         StringBuilder subject = new StringBuilder();
         subject.append(commentAuthor.getFirstName()).append(" ").append(commentAuthor.getLastName()).append(" updated ticket:").append(comment.getTicket().getSubject());
