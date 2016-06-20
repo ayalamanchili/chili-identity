@@ -118,7 +118,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
     @Validate
     @Path("/update-Invoice/{id}")
     //TODO add invoice mgr role check using pre auth
-    public Invoice update(@PathParam("id") Long id, Invoice invoice) {
+    public Invoice update(@PathParam("id") Long id, InvoiceUpdateDto invoice) {
         Invoice inv = invoiceDao.findById(id);
         inv.setEmployee(invoice.getEmployee());
         inv.setOverTimeBillingRate(invoice.getOverTimeBillingRate());
