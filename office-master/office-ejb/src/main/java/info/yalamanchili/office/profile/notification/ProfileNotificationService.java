@@ -12,17 +12,21 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.chili.email.Email;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.Feedback.Feedback;
 import info.yalamanchili.office.entity.message.Message;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
+import static org.activiti.engine.impl.util.json.XMLTokener.entity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.Async;
@@ -75,11 +79,27 @@ public class ProfileNotificationService {
 
         // Email Intimation for User
         Email newUserEmailObj = new Email();
+        newUserEmailObj.setRichText(Boolean.TRUE);
         newUserEmailObj.setHtml(Boolean.TRUE);
         newUserEmailObj.addTo(EmployeeDao.instance().getPrimaryEmail(employee));
         newUserEmailObj.setSubject("Welcome to System Soft Portal");
-        String messageTextforuser = "Your Username and Employee Id is:" + employee.getEmployeeId() + "  \n Please follow the instructions to login https://apps.sstech.us/site/office/forgot-password.html";
-        newUserEmailObj.setBody(messageTextforuser);
+        Map<String, Object> emailCtx = new HashMap<>();
+        emailCtx.put("employeeId", employee.getEmployeeId());
+        newUserEmailObj.setContext(emailCtx);
+        //System.out.println("Employee"+ employee.getEmployeeId());
+        newUserEmailObj.setTemplateName("new_employee_notification_template.html");
+         
+//        String messageTextforuser = "Your Username and Employee Id is: " + employee.getEmployeeId()
+//                + " \n "
+//                + " \n Please follow 'Forget Password' procedure in order to create your password for the first time "
+//                + " \n "
+//                + " \n When you login for the first time, Make sure you fill the following: "
+//                + " \n 1. Your Personal Deatails(includes address, phone, mail id) https://apps.sstech.us/site/office/profile/profile.html "
+//                + " \n 2. Update your Skills set https://apps.sstech.us/site/office/profile/skillset.html "
+//                + " \n 3. Update your Profile Picture "
+//                + " \n "
+//                + " \n Please follow the instructions to login https://apps.sstech.us/site/office/forgot-password.html";
+//        newUserEmailObj.setBody(messageTextforuser);
         messagingService.sendEmail(newUserEmailObj);
     }
 
@@ -94,9 +114,8 @@ public class ProfileNotificationService {
         }
         email.addTo(primaryEmail);
         email.setHtml(Boolean.TRUE);
-        email.setRichText(Boolean.TRUE);
         email.setSubject("Employee Password Reset");
-        email.setBody("<b>Your password has been reset</br></br><i>Username</i></b>: " + emp.getEmployeeId() + "</br><b><i>Password</i></b>: " + resetPassword + "</br> please change your password after you login from your profile </br> Portal URL: https://apps.sstech.us/portal");
+        email.setBody(" Your password has been reset \n Username: " + emp.getEmployeeId() + " \n Password: " + resetPassword + "\n please change your password after you login from your profile \n Portal URL: https://apps.sstech.us/portal");
         messagingService.sendEmail(email);
     }
 
@@ -133,11 +152,10 @@ public class ProfileNotificationService {
         String[] roles = {OfficeRole.ROLE_ADMIN.name(), OfficeRole.ROLE_HR_ADMINSTRATION.name(), OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name(), OfficeRole.ROLE_CONSULTANT_TIME_ADMIN.name()};
         Email email = new Email();
         email.setHtml(Boolean.TRUE);
-        email.setRichText(Boolean.TRUE);
         email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject("Employee Deactivated ");
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-        String messageText = "<b>Employee Account Is Deactivated</b></br></br> " + "<b><i>Employee Name:</i></b> " + emp.getFirstName() + " " + emp.getLastName() + "</br><b><i>Deactivated by&nbsp;&nbsp;:</i></b>" + deactivateBy + "</br><b><i>End Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :</i></b>" + sdf.format(emp.getEndDate());
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+        String messageText = "Employee  " + emp.getFirstName() + "," + emp.getLastName() + " Account Is Deactivated by:" + deactivateBy + "; End Date: " + sdf.format(emp.getEndDate());
         email.setBody(messageText);
         messagingService.sendEmail(email);
     }
