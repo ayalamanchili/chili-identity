@@ -222,7 +222,7 @@ public class ProfileReportsService {
                 email.setRichText(Boolean.TRUE);
                 email.setSubject("Please review and complete your profile information");
                 StringBuilder emailBodyTitle = new StringBuilder();
-                emailBodyTitle.insert(0, "Your profile information is not complete. </br> Its very criticle to have the up-to date information since all departments rely on this information for Correspondance, Immigration, Projects, etc... </br> Please take a couple of minutes to review and update your information. </br>");
+                emailBodyTitle.insert(0, "Your profile information is not complete. </br> Its very critical to have the up-to date information since all departments rely on this information for Correspondance, Immigration, Projects, etc... </br> Please take a couple of minutes to review and update your information. </br>");
                 emailBodyTitle.append("<a href=\"https://apps.sstech.us/site/office/forgot-password.html\">How can i login:</a>").append("</br>");
                 emailBodyTitle.append("<a href=\"https://apps.sstech.us/site/office/profile/profile.html\">How can i update my profile:</a>").append("</br> </br>");
                 emailBodyTitle.append("<h5> <b> <u> Missing information:</h5> </b> </u>").append("</br>");
