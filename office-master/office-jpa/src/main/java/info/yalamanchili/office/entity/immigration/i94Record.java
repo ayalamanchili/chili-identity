@@ -33,16 +33,36 @@ public class i94Record extends AbstractHandleEntity {
     @NotEmpty(message = "{i94RecordNumber.not.empty.msg}")
     @org.hibernate.annotations.Index(name = "i94_RECORD_NBR")
     protected String i94RecordNumber;
-
+    //Added new fields for I-94 by Sudha #SSTO-3063 and added getter setter methods
+    protected String fullName;
+    
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date dateofEntry;
 
+    protected String portOfEntry;
+    
+    protected String arrivalMethod;
+    
+    protected String modeOfTravel;
+
+    @Temporal(javax.persistence.TemporalType.DATE)
+    protected Date i94ValidFromDate;
+        
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date admitUntilDate;
 
-    protected String portOfEntry;
+    protected Boolean durationValidityInd;
+    
+    protected Boolean expirationAlertInd;
+    
+    @Temporal(javax.persistence.TemporalType.DATE)
+    protected Date reentryExpiryDate;
 
+    protected String coApplicantTravel;
+       
     protected String classOfAdmission;
+    
+    protected String comments;
 
     @Field
     protected String imageURL;
@@ -94,6 +114,80 @@ public class i94Record extends AbstractHandleEntity {
     public void setAdmitUntilDate(Date admitUntilDate) {
         this.admitUntilDate = admitUntilDate;
     }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getArrivalMethod() {
+        return arrivalMethod;
+    }
+
+    public void setArrivalMethod(String arrivalMethod) {
+        this.arrivalMethod = arrivalMethod;
+    }
+
+    public String getModeOfTravel() {
+        return modeOfTravel;
+    }
+
+    public void setModeOfTravel(String modeOfTravel) {
+        this.modeOfTravel = modeOfTravel;
+    }
+
+    public Date getI94ValidFromDate() {
+        return i94ValidFromDate;
+    }
+
+    public void setI94ValidFromDate(Date i94ValidFromDate) {
+        this.i94ValidFromDate = i94ValidFromDate;
+    }
+
+    public Boolean getDurationValidityInd() {
+        return durationValidityInd;
+    }
+
+    public void setDurationValidityInd(Boolean durationValidityInd) {
+        this.durationValidityInd = durationValidityInd;
+    }
+
+    public Boolean getExpirationAlertInd() {
+        return expirationAlertInd;
+    }
+
+    public void setExpirationAlertInd(Boolean expirationAlertInd) {
+        this.expirationAlertInd = expirationAlertInd;
+    }
+
+    public Date getReentryExpiryDate() {
+        return reentryExpiryDate;
+    }
+
+    public void setReentryExpiryDate(Date reentryExpiryDate) {
+        this.reentryExpiryDate = reentryExpiryDate;
+    }
+
+    public String getCoApplicantTravel() {
+        return coApplicantTravel;
+    }
+
+    public void setCoApplicantTravel(String coApplicantTravel) {
+        this.coApplicantTravel = coApplicantTravel;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+    
+    
 
     @Override
     public String toString() {
