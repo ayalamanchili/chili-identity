@@ -279,11 +279,11 @@ public class ContractService {
             email.setRichText(Boolean.TRUE);
             email.setSubject("Billing Rate Has Updated For : " + ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
             String messageText = " <b>Updated Bill Rate:</b> " + " ".concat("</br>").concat("</br>");         
-            messageText = messageText.concat("<b>Client                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b>" + ci.getClient().getName()) + " ; ".concat("</br>");
-            messageText = messageText.concat("<b>Item_No                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b>" + ci.getItemNumber()) + " ; ".concat("</br>");
-            messageText = messageText.concat("<b>Project             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b>" + ci.getClientProject().getName()) + " ; ".concat("</br>");
-            messageText = messageText.concat("<b>Updated_By   &nbsp;&nbsp;&nbsp;:</b>" + updatedBy) + " ; ".concat("</br>");
-            messageText = messageText.concat("<b>Effective_Date :</b>" + new SimpleDateFormat("MM-dd-yyyy").format(effectiveDate)).concat("</br>").concat("</br>");
+            messageText = messageText.concat("<b>Client &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp</b>" + ci.getClient().getName()) + "</br>" ;
+            messageText = messageText.concat("<b>Item_No &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp</b>" + ci.getItemNumber()) + "</br>";
+            messageText = messageText.concat("<b>Project &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp</b>" + ci.getClientProject().getName()) + "</br>";
+            messageText = messageText.concat("<b>Updated_By &nbsp;&nbsp;&nbsp;:&nbsp</b>" + updatedBy) +"</br>";
+            messageText = messageText.concat("<b>Effective_Date :&nbsp</b>" + new SimpleDateFormat("MM-dd-yyyy").format(effectiveDate)).concat("</br>").concat("</br>");
             AuditService auditService = AuditService.instance();
             messageText = messageText + auditService.buildChangesTable(auditService.compare(auditService.mostRecentVersion(ci.getClass(), ci.getId()), ci));
             email.setBody(messageText);
