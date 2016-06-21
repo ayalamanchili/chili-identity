@@ -32,16 +32,29 @@ public class CreatePassportPanel extends CreateComposite {
 
     public CreatePassportPanel(CreateComposite.CreateCompositeType type) {
         super(type);
-        initCreateComposite("Passport", OfficeWelcome.constants);
+        initCreateComposite("Passport", OfficeWelcome.constants2);
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject passport = new JSONObject();
         assignEntityValueFromField("passportNumber", passport);
+        assignEntityValueFromField("doYouHoldAValidPassport", passport);
         assignEntityValueFromField("passportIssuedDate", passport);
         assignEntityValueFromField("passportExpiryDate", passport);
+        assignEntityValueFromField("passportExpirationAlertIndicator", passport);
         assignEntityValueFromField("passportCountryOfIssuance", passport);
+        assignEntityValueFromField("dateOfBirth", passport);
+        assignEntityValueFromField("stateOfBirth", passport);
+        assignEntityValueFromField("placeOfBirth", passport);
+        assignEntityValueFromField("countryOfBirth", passport);
+        assignEntityValueFromField("nationalityIs", passport);
+        assignEntityValueFromField("countryOfNationality", passport);
+        assignEntityValueFromField("passportStateOfIssuance", passport);
+        assignEntityValueFromField("identificationMarks", passport);
+        assignEntityValueFromField("haveYouEverLostPassport", passport);
+        assignEntityValueFromField("travelDocumentNumber", passport);
+        assignEntityValueFromField("commentS", passport);
         passport.put("targetEntityName", new JSONString("targetEntityName"));
         passport.put("targetEntityId", new JSONString("0"));
         return passport;
@@ -88,9 +101,22 @@ public class CreatePassportPanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         addField("passportNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("doYouHoldAValidPassport", false, true, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("passportIssuedDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("passportExpiryDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("passportExpirationAlertIndicator", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addEnumField("passportCountryOfIssuance", false, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
+        addField("dateOfBirth", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("stateOfBirth", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("placeOfBirth", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("countryOfBirth", false, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
+        addField("nationalityIs", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("countryOfNationality", false, false, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
+        addField("passportStateOfIssuance", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("identificationMarks", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("haveYouEverLostPassport", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("travelDocumentNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("commentS", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
