@@ -14,6 +14,7 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Timer;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.SuggestBox;
@@ -30,6 +31,8 @@ import java.util.logging.Logger;
 public class SearchOutOfOfficePanel extends SearchComposite {
 
     private static Logger logger = Logger.getLogger(SearchOutOfOfficePanel.class.getName());
+    EnumField officeType = new EnumField(OfficeWelcome.constants2, "outOfOfficeType", "OutOfOfficeRequest",
+                false, false, OutOfOfficeType.names());
 
     public SearchOutOfOfficePanel() {
         init("Search", "OutOfOfficeRequest", OfficeWelcome.constants2);
@@ -91,7 +94,8 @@ public class SearchOutOfOfficePanel extends SearchComposite {
         addField("lastName", DataType.STRING_FIELD);
         addField("startDate", DataType.DATE_FIELD);
         addField("endDate", DataType.DATE_FIELD);
-        addEnumField("outOfOfficeType", false, false, OutOfOfficeType.names());
+        fields.put("outOfOfficeType", officeType);
+        advancedSearchPanel.add(officeType);
         addEnumField("status", false, false, OutOfOfficeRequestStatus.names());
     }
 
