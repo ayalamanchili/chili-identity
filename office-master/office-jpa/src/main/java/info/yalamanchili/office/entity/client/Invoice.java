@@ -61,6 +61,9 @@ public class Invoice extends AbstractEntity {
     @NotNull(message = "{invoiceDate.not.empty.msg}")
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date invoiceDate;
+
+    @Temporal(javax.persistence.TemporalType.DATE)
+    protected Date invoicePeriodEndDate;    
     
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date invoiceSentDate;
@@ -173,6 +176,16 @@ public class Invoice extends AbstractEntity {
         this.invoiceDate = invoiceDate;
     }
 
+    public Date getInvoicePeriodEndDate() {
+        return invoicePeriodEndDate;
+    }
+
+    public void setInvoicePeriodEndDate(Date invoicePeriodEndDate) {
+        this.invoicePeriodEndDate = invoicePeriodEndDate;
+    }
+
+    
+    
     public Date getInvoiceSentDate() {
         return invoiceSentDate;
     }
@@ -224,6 +237,6 @@ public class Invoice extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "Invoice{" + "invoiceNumber=" + invoiceNumber + ", startDate=" + startDate + ", endDate=" + endDate + ", invoiceDate=" + invoiceDate + ", invoiceSentDate=" + invoiceSentDate + ", billingRate=" + billingRate + ", overTimeBillingRate=" + overTimeBillingRate + ", clientinformation=" + clientInformation + ", itemNumber=" + itemNumber + ", invoiceFrequency=" + invoiceFrequency + ", hours=" + hours + ", notes=" + notes + ", status=" + invoiceStatus + ", timeSheetStatus=" + timeSheetStatus + '}';
+        return "Invoice{" + "invoiceNumber=" + invoiceNumber + ", startDate=" + startDate + ", endDate=" + endDate + ", invoiceDate=" + invoiceDate + ", invoicePeriodEndDate=" + invoicePeriodEndDate + ", invoiceSentDate=" + invoiceSentDate + ", billingRate=" + billingRate + ", overTimeBillingRate=" + overTimeBillingRate + ", clientinformation=" + clientInformation + ", itemNumber=" + itemNumber + ", invoiceFrequency=" + invoiceFrequency + ", hours=" + hours + ", notes=" + notes + ", status=" + invoiceStatus + ", timeSheetStatus=" + timeSheetStatus + '}';
     }
 }
