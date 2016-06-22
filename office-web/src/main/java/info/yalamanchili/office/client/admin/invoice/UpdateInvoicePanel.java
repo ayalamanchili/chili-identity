@@ -73,6 +73,7 @@ public class UpdateInvoicePanel extends UpdateComposite {
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
         assignEntityValueFromField("invoiceDate", entity);
+        assignEntityValueFromField("invoicePeriodEndDate", entity);        
         assignEntityValueFromField("invoiceSentDate", entity);
         assignEntityValueFromField("billingRate", entity);
         assignEntityValueFromField("overTimeBillingRate", entity);
@@ -123,6 +124,7 @@ public class UpdateInvoicePanel extends UpdateComposite {
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("invoiceDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("invoicePeriodEndDate", entity, DataType.DATE_FIELD);        
         assignFieldValueFromEntity("invoiceSentDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("hours", entity, DataType.CURRENCY_FIELD);
@@ -156,6 +158,7 @@ public class UpdateInvoicePanel extends UpdateComposite {
         addField("startDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("invoiceDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("invoicePeriodEndDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);                
         addField("invoiceSentDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("billingRate", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("overTimeBillingRate", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
