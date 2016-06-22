@@ -312,6 +312,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
 
     @Override
     protected void addWidgets() {
+        cistatus = JSONUtils.toString(entity, "status");        
         addField("consultantJobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("employeeType", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("company", false, true, ClientInformationCompany.names(), Alignment.HORIZONTAL);
@@ -327,31 +328,55 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         addDropDown("clientAPContacts", selectClientAcctPayContact);
         addDropDown("clientContact", new SelectClientContactWidget(false, false, Alignment.HORIZONTAL));
         addField("clientPaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        addDropDown("vendor", selectVendorWidgetF);
-        addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, true, Alignment.HORIZONTAL));
-        selectVendorAPContactsW = new SelectVendorAcctPayContact(false, true, Alignment.HORIZONTAL) {
-            @Override
-            public boolean enableMultiSelect() {
-                return true;
-            }
-        };
-        addDropDown("vendorAPContacts", selectVendorAPContactsW);
-        selectVendorRecruiterContactsWidget = new SelectVendorRecruiterContactWidget(false, false, Alignment.HORIZONTAL) {
-            @Override
-            public boolean enableMultiSelect() {
-                return true;
-            }
-        };
-        addDropDown("vendorRecruiters", selectVendorRecruiterContactsWidget);
-        addField("vendorPaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        addDropDown("middleVendor", new SelectMiddleVendorWidget(false, false, Alignment.HORIZONTAL));
+
+        //if condition added by Sudha for SSTO-3060 on 06/15        
+        if(!Auth.isAdmin() && cistatus.equals("COMPLETED")) {
+            selectVendorWidgetF.setReadOnly(true);
+            addDropDown("vendor", selectVendorWidgetF);
+            addDropDown("vendorLocation", new SelectVendorLocationsWidget(true, true, Alignment.HORIZONTAL));
+            selectVendorAPContactsW = new SelectVendorAcctPayContact(true, true, Alignment.HORIZONTAL) {
+                @Override
+                public boolean enableMultiSelect() {
+                    return true;
+                }
+            };
+            addDropDown("vendorAPContacts", selectVendorAPContactsW);
+            selectVendorRecruiterContactsWidget = new SelectVendorRecruiterContactWidget(true, false, Alignment.HORIZONTAL) {
+                @Override
+                public boolean enableMultiSelect() {
+                    return true;
+                }
+            };
+            addDropDown("vendorRecruiters", selectVendorRecruiterContactsWidget);
+            addField("vendorPaymentTerms", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+            addDropDown("middleVendor", new SelectMiddleVendorWidget(true, false, Alignment.HORIZONTAL));
+        } else {
+            selectVendorWidgetF.setReadOnly(false);
+            addDropDown("vendor", selectVendorWidgetF);        
+            addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, true, Alignment.HORIZONTAL));
+            selectVendorAPContactsW = new SelectVendorAcctPayContact(false, true, Alignment.HORIZONTAL) {
+                @Override
+                public boolean enableMultiSelect() {
+                    return true;
+                }
+            };
+            addDropDown("vendorAPContacts", selectVendorAPContactsW);
+            selectVendorRecruiterContactsWidget = new SelectVendorRecruiterContactWidget(false, false, Alignment.HORIZONTAL) {
+                @Override
+                public boolean enableMultiSelect() {
+                    return true;
+                }
+            };
+            addDropDown("vendorRecruiters", selectVendorRecruiterContactsWidget);
+            addField("vendorPaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+            addDropDown("middleVendor", new SelectMiddleVendorWidget(false, false, Alignment.HORIZONTAL));            
+        }
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("isEndDateConfirmed", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addDropDown("recruiters", selectRecruiterW);
         addField("name", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("purchaseOrderNo", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        cistatus = JSONUtils.toString(entity, "status");
         entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
         addField("itemNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN)) {
@@ -376,23 +401,27 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
                 addField("overTimeBillingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             }
             addEnumField("overTimeRateDuration", false, false, billingDuration, Alignment.HORIZONTAL);
-            if (cistatus.equals("PENDING_CONTRACTS_SUBMIT")) {
-                addEnumField("invoiceFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
-            } else {
+            //if condition modified by Sudha for SSTO-3060 on 06/15            
+            if ((cistatus.equals("COMPLETED")) && !Auth.isAdmin()) {
                 addEnumField("invoiceFrequency", true, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+                addEnumField("invoiceDeliveryMethod", true, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);                            
+            } else {
+                addEnumField("invoiceFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+                addEnumField("invoiceDeliveryMethod", false, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);                            
             }
-            addEnumField("invoiceDeliveryMethod", false, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
+
             entityFieldsPanel.add(getLineSeperatorTag("HR Department Docs"));
             addField("i9Filled", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("w4Filled", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("hrOrientation", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-            addField("timeSheetRequirement", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-            addField("specialInvoiceInstructions", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
             addField("joiningReport", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+            addField("logisticsPreparation", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+            
             entityFieldsPanel.add(getLineSeperatorTag("Account Department Docs"));
             addField("accountVerificationDocs", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("signedCopyOfWorkOrder", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-            addField("logisticsPreparation", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+            addField("timeSheetRequirement", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField("specialInvoiceInstructions", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);            
             
             if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
                 entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));

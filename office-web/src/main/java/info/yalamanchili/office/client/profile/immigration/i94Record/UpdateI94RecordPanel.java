@@ -35,10 +35,19 @@ public class UpdateI94RecordPanel extends UpdateComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("i94RecordNumber", entity);
+        assignEntityValueFromField("fullName", entity);
+        assignEntityValueFromField("portOfEntry", entity);        
         assignEntityValueFromField("dateofEntry", entity);
+        assignEntityValueFromField("arrivalMethod", entity);
+        assignEntityValueFromField("modeOfTravel", entity); 
+        assignEntityValueFromField("i94ValidFromDate", entity); 
         assignEntityValueFromField("admitUntilDate", entity);
-        assignEntityValueFromField("portOfEntry", entity);
+        assignEntityValueFromField("durationValidityInd", entity);
+        assignEntityValueFromField("expirationAlertInd", entity);
+        assignEntityValueFromField("reentryExpiryDate", entity);
+        assignEntityValueFromField("coApplicantTravel", entity);
         assignEntityValueFromField("classOfAdmission", entity);
+        assignEntityValueFromField("comments", entity);       
         return entity;
     }
 
@@ -61,10 +70,19 @@ public class UpdateI94RecordPanel extends UpdateComposite {
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("i94RecordNumber", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("fullName", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("portOfEntry", entity, DataType.STRING_FIELD);        
         assignFieldValueFromEntity("dateofEntry", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("arrivalMethod", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("modeOfTravel", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("i94ValidFromDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("admitUntilDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("portOfEntry", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("durationValidityInd", entity, DataType.BOOLEAN_FIELD);        
+        assignFieldValueFromEntity("expirationAlertInd", entity, DataType.BOOLEAN_FIELD);
+        assignFieldValueFromEntity("reentryExpiryDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("coApplicantTravel", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("classOfAdmission", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("comments", entity, DataType.STRING_FIELD);       
     }
 
     @Override
@@ -85,10 +103,19 @@ public class UpdateI94RecordPanel extends UpdateComposite {
     @Override
     protected void addWidgets() {
         addField("i94RecordNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("dateofEntry", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("admitUntilDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("fullName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("portOfEntry", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("classOfAdmission", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("dateofEntry", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);        
+        addField("arrivalMethod", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("modeOfTravel", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("i94ValidFromDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("admitUntilDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("durationValidityInd", false, true, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        addField("expirationAlertInd", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        addField("reentryExpiryDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("coApplicantTravel", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("classOfAdmission", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);        
+        addField("comments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);      
         alignFields();
     }
 
