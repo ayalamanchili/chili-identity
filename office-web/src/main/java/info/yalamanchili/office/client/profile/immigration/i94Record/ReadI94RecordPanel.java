@@ -72,7 +72,7 @@ public class ReadI94RecordPanel extends ReadComposite {
         addField("reentryExpiryDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("coApplicantTravel", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("classOfAdmission", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);        
-        addField("comments", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);                
+        addField("comments", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);                
         alignFields();
 
     }
