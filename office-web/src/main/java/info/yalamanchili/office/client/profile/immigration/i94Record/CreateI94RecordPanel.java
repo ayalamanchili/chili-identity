@@ -113,7 +113,7 @@ public class CreateI94RecordPanel extends CreateComposite {
         addField("reentryExpiryDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("coApplicantTravel", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("classOfAdmission", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);        
-        addField("comments", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);        
+        addField("comments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);        
         alignFields();
     }
 
