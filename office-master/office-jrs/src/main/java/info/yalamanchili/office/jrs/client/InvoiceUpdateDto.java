@@ -89,6 +89,10 @@ class InvoiceUpdateDto implements Serializable {
      */
     @Transient
     protected String employee;
+    
+    @NotNull(message = "{invoicePeriodEndDate.not.empty.msg}")
+    @Temporal(javax.persistence.TemporalType.DATE)
+    protected Date invoicePeriodEndDate;
 
     public String getInvoiceNumber() {
         return invoiceNumber;
@@ -208,6 +212,14 @@ class InvoiceUpdateDto implements Serializable {
 
     public void setEmployee(String employee) {
         this.employee = employee;
+    }
+
+    public Date getInvoicePeriodEndDate() {
+        return invoicePeriodEndDate;
+    }
+
+    public void setInvoicePeriodEndDate(Date invoicePeriodEndDate) {
+        this.invoicePeriodEndDate = invoicePeriodEndDate;
     }
 
 }
