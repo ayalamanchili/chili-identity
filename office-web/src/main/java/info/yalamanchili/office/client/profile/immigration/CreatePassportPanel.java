@@ -48,13 +48,13 @@ public class CreatePassportPanel extends CreateComposite {
         assignEntityValueFromField("stateOfBirth", passport);
         assignEntityValueFromField("placeOfBirth", passport);
         assignEntityValueFromField("countryOfBirth", passport);
-        assignEntityValueFromField("nationalityIs", passport);
+        assignEntityValueFromField("nationality", passport);
         assignEntityValueFromField("countryOfNationality", passport);
         assignEntityValueFromField("passportStateOfIssuance", passport);
         assignEntityValueFromField("identificationMarks", passport);
         assignEntityValueFromField("haveYouEverLostPassport", passport);
         assignEntityValueFromField("travelDocumentNumber", passport);
-        assignEntityValueFromField("commentS", passport);
+        assignEntityValueFromField("comments", passport);
         passport.put("targetEntityName", new JSONString("targetEntityName"));
         passport.put("targetEntityId", new JSONString("0"));
         return passport;
@@ -110,13 +110,13 @@ public class CreatePassportPanel extends CreateComposite {
         addField("stateOfBirth", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("placeOfBirth", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("countryOfBirth", false, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
-        addField("nationalityIs", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("nationality", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("countryOfNationality", false, false, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
         addField("passportStateOfIssuance", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("identificationMarks", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("haveYouEverLostPassport", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("travelDocumentNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("commentS", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("comments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
