@@ -46,13 +46,13 @@ public class UpdatePassportPanel extends UpdateComposite {
         assignEntityValueFromField("stateOfBirth", entity);
         assignEntityValueFromField("placeOfBirth", entity);
         assignEntityValueFromField("countryOfBirth", entity);
-        assignEntityValueFromField("nationalityIs", entity);
+        assignEntityValueFromField("nationality", entity);
         assignEntityValueFromField("countryOfNationality", entity);
         assignEntityValueFromField("passportStateOfIssuance", entity);
         assignEntityValueFromField("identificationMarks", entity);
         assignEntityValueFromField("haveYouEverLostPassport", entity);
         assignEntityValueFromField("travelDocumentNumber", entity);
-        assignEntityValueFromField("commentS", entity);
+        assignEntityValueFromField("comments", entity);
         return entity;
     }
 
@@ -84,13 +84,13 @@ public class UpdatePassportPanel extends UpdateComposite {
         assignFieldValueFromEntity("stateOfBirth", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("placeOfBirth", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("countryOfBirth", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("nationalityIs", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("nationality", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("countryOfNationality", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("passportStateOfIssuance", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("identificationMarks", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("haveYouEverLostPassport", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("travelDocumentNumber", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("commentS", entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("comments", entity, DataType.TEXT_AREA_FIELD);
     }
 
     @Override
@@ -120,13 +120,13 @@ public class UpdatePassportPanel extends UpdateComposite {
         addField("stateOfBirth", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("placeOfBirth", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("countryOfBirth", false, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
-        addField("nationalityIs", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("nationality", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("countryOfNationality", false, false, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
         addField("passportStateOfIssuance", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("identificationMarks", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("haveYouEverLostPassport", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("travelDocumentNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("commentS", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("comments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
