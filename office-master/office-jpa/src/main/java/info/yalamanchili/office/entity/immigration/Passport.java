@@ -11,6 +11,7 @@ package info.yalamanchili.office.entity.immigration;
 import info.chili.jpa.AbstractHandleEntity;
 import java.util.Date;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.Type;
@@ -60,7 +61,7 @@ public class Passport extends AbstractHandleEntity {
     protected String countryOfBirth;
     
     @Type(type = "encryptedString")
-    protected String nationalityIs;
+    protected String nationality;
     
     @Type(type = "encryptedString")
     protected String countryOfNationality;
@@ -80,8 +81,8 @@ public class Passport extends AbstractHandleEntity {
     @Type(type = "encryptedString")
     protected String travelDocumentNumber;
     
-    @Type(type = "encryptedString")
-    protected String commentS;
+    @Lob
+    protected String comments;
 
     public String getPassportNumber() {
         return passportNumber;
@@ -163,12 +164,12 @@ public class Passport extends AbstractHandleEntity {
         this.countryOfBirth = countryOfBirth;
     }
     
-    public String getNationalityIs() {
-        return nationalityIs;
+    public String getNationality() {
+        return nationality;
     }
     
-    public void setNationalityIs(String nationalityIs) {
-        this.nationalityIs = nationalityIs;
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
     }
     
     public String getCountryOfNationality() {
@@ -211,17 +212,17 @@ public class Passport extends AbstractHandleEntity {
         this.travelDocumentNumber = travelDocumentNumber;
     }
     
-    public String getCommentS() {
-        return commentS;
+    public String getComments() {
+        return comments;
     }
 
-    public void setCommentS(String commentS) {
-        this.commentS = commentS;
+    public void setComments(String comments) {
+        this.comments = comments;
     }
     
     @Override
     public String toString() {
-        return "Passport{" + "passportNumber=" + passportNumber + ", doYouHoldAValidPassport=" + doYouHoldAValidPassport + ", passportIssuedDate=" + passportIssuedDate + ", passportExpiryDate=" + passportExpiryDate + ", passportExpirationAlertIndicator=" + passportExpirationAlertIndicator + ", passportCountryOfIssuance=" + passportCountryOfIssuance + ", dateOfBirth=" + dateOfBirth + ",stateOfBirth=" + stateOfBirth + ", placeOfBirth=" + placeOfBirth + ", countryOfBirth=" + countryOfBirth + ", nationalityIs=" + nationalityIs + ", countryOfNationality=" + countryOfNationality + ", passportStateOfIssuance=" + passportStateOfIssuance + ", identificationMarks=" + identificationMarks + ", haveYouEverLostPassport=" + haveYouEverLostPassport + ", travelDocumentNumber=" + travelDocumentNumber + ", commentS=" + commentS + '}';
+        return "Passport{" + "passportNumber=" + passportNumber + ", doYouHoldAValidPassport=" + doYouHoldAValidPassport + ", passportIssuedDate=" + passportIssuedDate + ", passportExpiryDate=" + passportExpiryDate + ", passportExpirationAlertIndicator=" + passportExpirationAlertIndicator + ", passportCountryOfIssuance=" + passportCountryOfIssuance + ", dateOfBirth=" + dateOfBirth + ",stateOfBirth=" + stateOfBirth + ", placeOfBirth=" + placeOfBirth + ", countryOfBirth=" + countryOfBirth + ", nationality=" + nationality + ", countryOfNationality=" + countryOfNationality + ", passportStateOfIssuance=" + passportStateOfIssuance + ", identificationMarks=" + identificationMarks + ", haveYouEverLostPassport=" + haveYouEverLostPassport + ", travelDocumentNumber=" + travelDocumentNumber + ", comments=" + comments + '}';
     }
 
 }
