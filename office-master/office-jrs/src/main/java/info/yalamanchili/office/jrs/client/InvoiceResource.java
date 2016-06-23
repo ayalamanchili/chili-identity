@@ -88,7 +88,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
     @Path("/save/{id}")
     //TODO add invoice mgr role check using pre auth
     public Invoice saveInvoice(@PathParam("id") Long id, Invoice invoice) {
-        if(invoice.getInvoiceSentDate().before(invoice.getInvoiceDate())){
+        if (invoice.getInvoiceSentDate().before(invoice.getInvoiceDate())) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invoiceSentDate.not.before.invoiceDate", "InvoiceSentDate should not be prior to InvoiceDate");
         }
         Invoice inv = new Invoice();
@@ -101,6 +101,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
         inv.setItemNumber(ci.getItemNumber());
         inv.setInvoiceFrequency(ci.getInvoiceFrequency());
         inv.setInvoiceDate(invoice.getInvoiceDate());
+        inv.setInvoicePeriodEndDate(invoice.getInvoicePeriodEndDate());
         inv.setHours(invoice.getHours());
         inv.setInvoiceStatus(invoice.getInvoiceStatus());
         inv.setTimeSheetStatus(invoice.getTimeSheetStatus());
@@ -123,6 +124,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
         inv.setEmployee(invoice.getEmployee());
         inv.setOverTimeBillingRate(invoice.getOverTimeBillingRate());
         inv.setInvoiceDate(invoice.getInvoiceDate());
+        inv.setInvoicePeriodEndDate(invoice.getInvoicePeriodEndDate());
         inv.setHours(invoice.getHours());
         inv.setInvoiceStatus(invoice.getInvoiceStatus());
         inv.setTimeSheetStatus(invoice.getTimeSheetStatus());
@@ -170,8 +172,8 @@ public class InvoiceResource extends CRUDResource<Invoice> {
         //TODO add remaining columns
         return getDao().sqlSearch(searchText, start, limit, columns, false);
     }
-    
-     @GET
+
+    @GET
     @Path("/search-invoice-by-emp/{start}/{limit}")
     @Transactional(readOnly = true)
     public List<Invoice> searchInvoiceByEmp(@PathParam("start") int start,
