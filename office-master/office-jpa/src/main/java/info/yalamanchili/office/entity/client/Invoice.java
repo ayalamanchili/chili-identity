@@ -62,9 +62,10 @@ public class Invoice extends AbstractEntity {
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date invoiceDate;
 
+    @NotNull(message = "{invoicePeriodEndDate.not.empty.msg}")
     @Temporal(javax.persistence.TemporalType.DATE)
-    protected Date invoicePeriodEndDate;    
-    
+    protected Date invoicePeriodEndDate;
+
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date invoiceSentDate;
 
@@ -184,16 +185,14 @@ public class Invoice extends AbstractEntity {
         this.invoicePeriodEndDate = invoicePeriodEndDate;
     }
 
-    
-    
     public Date getInvoiceSentDate() {
         return invoiceSentDate;
     }
 
-    public void setInvoiceSentDate(Date invoiceSentDate ) {
+    public void setInvoiceSentDate(Date invoiceSentDate) {
         this.invoiceSentDate = invoiceSentDate;
     }
-    
+
     public BigDecimal getBillingRate() {
         return billingRate;
     }
