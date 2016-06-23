@@ -40,13 +40,13 @@ public class ReadPassportPanel extends ReadComposite {
         assignFieldValueFromEntity("stateOfBirth", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("placeOfBirth", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("countryOfBirth", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("nationalityIs", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("nationality", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("countryOfNationality", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("passportStateOfIssuance", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("identificationMarks", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("haveYouEverLostPassport", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("travelDocumentNumber", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("commentS", entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("comments", entity, DataType.TEXT_AREA_FIELD);
     }
     
 
@@ -72,13 +72,13 @@ public class ReadPassportPanel extends ReadComposite {
         addField("stateOfBirth", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("placeOfBirth", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("countryOfBirth", true, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
-        addField("nationalityIs", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("nationality", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("countryOfNationality", true, false, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
         addField("passportStateOfIssuance", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("identificationMarks", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("haveYouEverLostPassport", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("travelDocumentNumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("commentS", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("comments", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         alignFields();
 
     }
