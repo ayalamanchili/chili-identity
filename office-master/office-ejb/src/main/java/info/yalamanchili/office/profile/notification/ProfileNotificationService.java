@@ -86,20 +86,7 @@ public class ProfileNotificationService {
         Map<String, Object> emailCtx = new HashMap<>();
         emailCtx.put("employeeId", employee.getEmployeeId());
         newUserEmailObj.setContext(emailCtx);
-        //System.out.println("Employee"+ employee.getEmployeeId());
         newUserEmailObj.setTemplateName("new_employee_notification_template.html");
-         
-//        String messageTextforuser = "Your Username and Employee Id is: " + employee.getEmployeeId()
-//                + " \n "
-//                + " \n Please follow 'Forget Password' procedure in order to create your password for the first time "
-//                + " \n "
-//                + " \n When you login for the first time, Make sure you fill the following: "
-//                + " \n 1. Your Personal Deatails(includes address, phone, mail id) https://apps.sstech.us/site/office/profile/profile.html "
-//                + " \n 2. Update your Skills set https://apps.sstech.us/site/office/profile/skillset.html "
-//                + " \n 3. Update your Profile Picture "
-//                + " \n "
-//                + " \n Please follow the instructions to login https://apps.sstech.us/site/office/forgot-password.html";
-//        newUserEmailObj.setBody(messageTextforuser);
         messagingService.sendEmail(newUserEmailObj);
     }
 
