@@ -141,12 +141,12 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Employee"));
         table.setText(0, 2, getKeyValue("ItemNumber"));
-        table.setText(0, 3, getKeyValue("InvoiceNumber"));
-        table.setText(0, 4, getKeyValue("StartDate"));
-        table.setText(0, 5, getKeyValue("EndDate"));
-        table.setText(0, 6, getKeyValue("InvoiceDate"));
+        table.setText(0, 3, getKeyValue("Inv. Number"));
+        table.setText(0, 4, getKeyValue("Project StartDate"));
+        table.setText(0, 5, getKeyValue("Project EndDate"));
+        table.setText(0, 6, getKeyValue("Invoice Period"));
         table.setText(0, 7, getKeyValue("BillingRate"));
-        table.setText(0, 8, getKeyValue("overTimeBillingRate"));
+        table.setText(0, 8, getKeyValue("O.T. BillingRate"));
     }
 
     @Override
@@ -154,14 +154,16 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
+            String invoicePeriodStart = getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "invoiceDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
+            String invoicePeriodEnd = getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "invoicePeriodEndDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
             JSONObject clientInformation = entity.get("clientInformation").isObject();
             JSONObject employee = clientInformation.get("employee").isObject();
             table.setText(i, 1, JSONUtils.toString(employee, "firstName") + " " + JSONUtils.toString(employee, "lastName"));
             table.setText(i, 2, JSONUtils.toString(entity, "itemNumber"));
             table.setText(i, 3, JSONUtils.toString(entity, "invoiceNumber"));
-            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 6, DateUtils.getFormatedDate(JSONUtils.toString(entity, "invoiceDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 4, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
+            table.setText(i, 5, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
+            table.setText(i, 6, invoicePeriodStart+" - "+invoicePeriodEnd);
             table.setText(i, 7, FormatUtils.formarCurrency(JSONUtils.toString(clientInformation, "billingRate")));
             table.setText(i, 8, FormatUtils.formarCurrency(JSONUtils.toString(entity, "overTimeBillingRate")));
         }
@@ -250,5 +252,14 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
     @Override
     protected void createButtonClicked() {
         new GenericPopup(new UpdateInvoicePanel(clientInfoId, false)).show();
+    }
+    
+    private String getFormattedDate(String date) {
+        String[] dates = date.split("-");
+        String formatteddate = "";
+        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
+        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
+        formatteddate = formatteddate.concat(dates[0]);
+        return formatteddate;
     }
 }
