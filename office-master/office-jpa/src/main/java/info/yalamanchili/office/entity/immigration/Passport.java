@@ -13,6 +13,7 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Temporal;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
@@ -38,47 +39,48 @@ public class Passport extends AbstractHandleEntity {
 
     
     protected Boolean doYouHoldAValidPassport;
-    
+   
     @Temporal(javax.persistence.TemporalType.DATE)
+    @NotNull(message = "{passportIssuedDate.not.empty.msg}")
     protected Date passportIssuedDate;
 
     @Temporal(javax.persistence.TemporalType.DATE)
+    @NotNull(message = "{passportExpiryDate.not.empty.msg}")
     protected Date passportExpiryDate;
-    
    
     protected Boolean passportExpirationAlertIndicator;
     
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date dateOfBirth;
     
-    @Type(type = "encryptedString")
+   
     protected String stateOfBirth;
     
-    @Type(type = "encryptedString")
+   
     protected String placeOfBirth;
     
-    @Type(type = "encryptedString")
+    
     protected String countryOfBirth;
     
-    @Type(type = "encryptedString")
+    
     protected String nationality;
     
-    @Type(type = "encryptedString")
+    
     protected String countryOfNationality;
     
-    @Type(type = "encryptedString")
+   
     protected String passportCountryOfIssuance;
     
-    @Type(type = "encryptedString")
+    
     protected String passportStateOfIssuance;
     
-    @Type(type = "encryptedString")
+    
     protected String identificationMarks;
             
-    @Type(type = "encryptedString")
+    
     protected String haveYouEverLostPassport; 
     
-    @Type(type = "encryptedString")
+    
     protected String travelDocumentNumber;
     
     @Lob
