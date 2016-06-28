@@ -13,6 +13,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.data.CountryFactory;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.DateField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -111,15 +112,15 @@ public class UpdatePassportPanel extends UpdateComposite {
     @Override
     protected void addWidgets() {
         addField("passportNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("doYouHoldAValidPassport", false, true, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        addField("doYouHoldAValidPassport", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("passportIssuedDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("passportExpiryDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("passportExpirationAlertIndicator", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-        addEnumField("passportCountryOfIssuance", false, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
-        addField("dateOfBirth", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addEnumField("passportCountryOfIssuance", false, false, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
+        addField("dateOfBirth", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("stateOfBirth", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("placeOfBirth", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addEnumField("countryOfBirth", false, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
+        addEnumField("countryOfBirth", false, false, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
         addField("nationality", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("countryOfNationality", false, false, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
         addField("passportStateOfIssuance", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -139,4 +140,14 @@ public class UpdatePassportPanel extends UpdateComposite {
         return OfficeWelcome.constants.root_url() + "passport/save/" + TreeEmployeePanel.instance().getEntityId();
     }
 
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        DateField passportIssuedDate = (DateField) fields.get("passportIssuedDate");
+        DateField passportExpiryDate = (DateField) fields.get("passportExpiryDate");
+        if (passportIssuedDate.getDate() != null && passportExpiryDate.getDate() != null && passportIssuedDate.getDate().after(passportExpiryDate.getDate())) {
+            passportExpiryDate.setMessage("Passport Expiry date should be after Passport Issued date");
+            return false;
+        }
+        return true;
+    }
 }
