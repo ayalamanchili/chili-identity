@@ -67,7 +67,7 @@ public class ReadI94RecordPanel extends ReadComposite {
         addField("modeOfTravel", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("i94ValidFromDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("admitUntilDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("durationValidityInd", true, true, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        addField("durationValidityInd", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("expirationAlertInd", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("reentryExpiryDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("coApplicantTravel", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
