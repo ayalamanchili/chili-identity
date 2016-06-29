@@ -108,7 +108,7 @@ public class CreateI94RecordPanel extends CreateComposite {
         addField("modeOfTravel", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("i94ValidFromDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("admitUntilDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("durationValidityInd", false, true, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        addField("durationValidityInd", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("expirationAlertInd", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("reentryExpiryDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("coApplicantTravel", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
