@@ -57,7 +57,6 @@ public class OutOfOfficeDao extends CRUDDao<OutOfOfficeRequest> {
         return findAllQuery.getResultList();
     }
 
-    @Cacheable(value = OfficeCacheKeys.OUTOFOFFICEREQUEST, key = "{#root.methodName,#start,#limit}")
     public List<OutOfOfficeRequest> queryForCurrentWeekRequests(Integer start, Integer limit) {
         TypedQuery<OutOfOfficeRequest> query = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " where status=:statusParam and (startDate <=:dateRangeEndParam ) and (endDate >=:dateRangeStartParam))", entityCls);
         query.setParameter("statusParam", OutOfOfficeRequestStatus.Approved);
