@@ -57,8 +57,7 @@ public class Invoice extends AbstractEntity {
     @NotNull(message = "{endDate.not.empty.msg}")
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date endDate;
-
-    @NotNull(message = "{invoiceDate.not.empty.msg}")
+    
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date invoiceDate;
 

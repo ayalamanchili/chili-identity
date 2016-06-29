@@ -154,8 +154,8 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            String invoicePeriodStart = getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "invoiceDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
-            String invoicePeriodEnd = getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "invoicePeriodEndDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
+            String invoicePeriodStart = getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
+            String invoicePeriodEnd = getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
             JSONObject clientInformation = entity.get("clientInformation").isObject();
             JSONObject employee = clientInformation.get("employee").isObject();
             table.setText(i, 1, JSONUtils.toString(employee, "firstName") + " " + JSONUtils.toString(employee, "lastName"));

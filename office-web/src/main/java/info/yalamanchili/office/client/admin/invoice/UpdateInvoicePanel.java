@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.admin.invoice;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
@@ -23,6 +24,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.contracts.ReadContractsPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
+import java.util.Date;
 import java.util.logging.Logger;
 
 /**
@@ -72,7 +74,6 @@ public class UpdateInvoicePanel extends UpdateComposite {
         assignEntityValueFromField("invoiceNumber", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
-        assignEntityValueFromField("invoiceDate", entity);     
         assignEntityValueFromField("billingRate", entity);
         assignEntityValueFromField("overTimeBillingRate", entity);
         assignEntityValueFromField("hours", entity);
@@ -80,6 +81,7 @@ public class UpdateInvoicePanel extends UpdateComposite {
         assignEntityValueFromField("invoiceStatus", entity);
         assignEntityValueFromField("timeSheetStatus", entity);
         assignEntityValueFromField("notes", entity);
+        entity.put("invoiceDate", new JSONString(new Date().toString()));
         return entity;
     }
 
@@ -87,16 +89,16 @@ public class UpdateInvoicePanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postUpdateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postUpdateSuccess(arg0);
+            }
+        });
     }
 
     @Override
@@ -119,9 +121,8 @@ public class UpdateInvoicePanel extends UpdateComposite {
         }
         assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("invoiceNumber", entity, DataType.INTEGER_FIELD);
-        assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("invoiceDate", entity, DataType.DATE_FIELD);       
+//        assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
+//        assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("hours", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
@@ -151,9 +152,8 @@ public class UpdateInvoicePanel extends UpdateComposite {
         addField("employee", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("itemNumber", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("invoiceNumber", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
-        addField("startDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("endDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("invoiceDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);               
+        addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("endDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("billingRate", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("overTimeBillingRate", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("hours", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
@@ -181,12 +181,12 @@ public class UpdateInvoicePanel extends UpdateComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        JSONObject entity1 = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity1);
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                JSONObject entity1 = (JSONObject) JSONParser.parseLenient(response);
+                populateFieldsFromEntity(entity1);
+            }
+        });
     }
 
     protected String getReadURI() {
