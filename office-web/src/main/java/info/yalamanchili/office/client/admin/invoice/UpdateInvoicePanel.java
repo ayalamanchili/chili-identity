@@ -72,9 +72,7 @@ public class UpdateInvoicePanel extends UpdateComposite {
         assignEntityValueFromField("invoiceNumber", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
-        assignEntityValueFromField("invoiceDate", entity);
-        assignEntityValueFromField("invoicePeriodEndDate", entity);        
-        assignEntityValueFromField("invoiceSentDate", entity);
+        assignEntityValueFromField("invoiceDate", entity);     
         assignEntityValueFromField("billingRate", entity);
         assignEntityValueFromField("overTimeBillingRate", entity);
         assignEntityValueFromField("hours", entity);
@@ -123,9 +121,7 @@ public class UpdateInvoicePanel extends UpdateComposite {
         assignFieldValueFromEntity("invoiceNumber", entity, DataType.INTEGER_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("invoiceDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("invoicePeriodEndDate", entity, DataType.DATE_FIELD);        
-        assignFieldValueFromEntity("invoiceSentDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("invoiceDate", entity, DataType.DATE_FIELD);       
         assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("hours", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
@@ -157,9 +153,7 @@ public class UpdateInvoicePanel extends UpdateComposite {
         addField("invoiceNumber", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
         addField("startDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("invoiceDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("invoicePeriodEndDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);                
-        addField("invoiceSentDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("invoiceDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);               
         addField("billingRate", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("overTimeBillingRate", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("hours", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
