@@ -21,8 +21,10 @@ import info.yalamanchili.office.entity.message.NotificationGroup;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.prospect.ProspectService;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -113,9 +115,10 @@ public class OfficeSchedulerService {
                     }
                 }
                 email1.setTos(emailto1);
-                email1.setSubject("Birthday Wishes To");
+                email1.setSubject("Birthday Wishes on :" + new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
                 HashMap<String, Object> emailContext = new HashMap();
                 emailContext.put("employees", dtos);
+                emailContext.put("isAnniversary", "false");
                 email1.setContext(emailContext);
                 email1.setTemplateName("birthday_annual_notification_template.html");
                 MessagingService.instance().sendEmail(email1);
@@ -161,7 +164,12 @@ public class OfficeSchedulerService {
             for (Object emp : lstResult) {
                 Employee employee = (Employee) emp;
                 if (employee.isActive() == true) {
-                    dtos.add(EmployeeDto.map(mapper, employee));
+                    EmployeeDto dto = EmployeeDto.map(mapper, employee);
+                    Calendar date1 = Calendar.getInstance();
+                    date1.setTime(employee.getStartDate());
+                    Calendar date2 = Calendar.getInstance();
+                    dto.setNoOfYears(yearsBetween(date1, date2));
+                    dtos.add(dto);
                 }
             }
             NotificationGroup ng = NotificationGroupDao.instance().findByName(BIRTHDAY_ANNUAL_NOTIFICATION_GROUP);
@@ -174,9 +182,10 @@ public class OfficeSchedulerService {
                     }
                 }
                 email1.setTos(emailto1);
-                email1.setSubject("Anniversary Wishes");
+                email1.setSubject("Anniversary Wishes on :" + new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
                 HashMap<String, Object> emailContext = new HashMap();
                 emailContext.put("employees", dtos);
+                emailContext.put("isAnniversary", "true");
                 email1.setContext(emailContext);
                 email1.setTemplateName("birthday_annual_notification_template.html");
                 MessagingService.instance().sendEmail(email1);
