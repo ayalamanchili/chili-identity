@@ -148,7 +148,7 @@ public class PerDiemRequestPanel extends CreateComposite implements ClickHandler
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Perdiem Submitted Successfully");
         TabPanel.instance().expensePanel.entityPanel.clear();
-        TabPanel.instance().expensePanel.entityPanel.add(new ReadAllPerdiemPanel());
+//        TabPanel.instance().expensePanel.entityPanel.add(new ReadAllPerdiemPanel());
     }
 
     @Override
@@ -311,28 +311,28 @@ public class PerDiemRequestPanel extends CreateComposite implements ClickHandler
         if (get.get("addressType").isObject() != null) {
             JSONObject addressType = get.get("addressType").isObject();
             if (live50MilesAway == true) {
-                UpdateAddressWidget widget1 = new UpdateAddressWidget(get, UpdateAddressPanel.UpdateAddressPanelType.MIN, false);
-                UpdateAddressWidget widget2 = new UpdateAddressWidget(get, UpdateAddressPanel.UpdateAddressPanelType.MIN, false);
+//                UpdateAddressWidget widget1 = new UpdateAddressWidget(get, UpdateAddressPanel.UpdateAddressPanelType.MIN, false);
+//                UpdateAddressWidget widget2 = new UpdateAddressWidget(get, UpdateAddressPanel.UpdateAddressPanelType.MIN, false);
                 if (addressType.get("addressType").isString().stringValue().equals("Office")) {
                     entityFieldsPanel.add(tac3);
-                    entityFieldsPanel.add(widget1);
-                    widget1.populateFieldsFromEntity(get);
+//                    entityFieldsPanel.add(widget1);
+//                    widget1.populateFieldsFromEntity(get);
                 } else if (addressType.get("addressType").isString().stringValue().equals("Other")) {
                     entityFieldsPanel.add(tac4);
-                    entityFieldsPanel.add(widget2);
-                    widget2.populateFieldsFromEntity(get);
+//                    entityFieldsPanel.add(widget2);
+//                    widget2.populateFieldsFromEntity(get);
                 }
             } else {
-                UpdateAddressWidget widget1 = new UpdateAddressWidget(get, UpdateAddressPanel.UpdateAddressPanelType.MIN, false);
-                UpdateAddressWidget widget2 = new UpdateAddressWidget(get, UpdateAddressPanel.UpdateAddressPanelType.MIN, false);
+//                UpdateAddressWidget widget1 = new UpdateAddressWidget(get, UpdateAddressPanel.UpdateAddressPanelType.MIN, false);
+//                UpdateAddressWidget widget2 = new UpdateAddressWidget(get, UpdateAddressPanel.UpdateAddressPanelType.MIN, false);
                 if (addressType.get("addressType").isString().stringValue().equals("Home")) {
                     entityFieldsPanel.add(tac1);
-                    entityFieldsPanel.add(widget1);
-                    widget1.populateFieldsFromEntity(get);
+//                    entityFieldsPanel.add(widget1);
+//                    widget1.populateFieldsFromEntity(get);
                 } else if (addressType.get("addressType").isString().stringValue().equals("Other")) {
                     entityFieldsPanel.add(tac2);
-                    entityFieldsPanel.add(widget2);
-                    widget2.populateFieldsFromEntity(get);
+//                    entityFieldsPanel.add(widget2);
+//                    widget2.populateFieldsFromEntity(get);
                 }
             }
             entityFieldsPanel.add(tac);
