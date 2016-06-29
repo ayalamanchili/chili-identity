@@ -289,7 +289,11 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "prospect/save";
+        if (screenedBySB.getKey() != null) {
+            return OfficeWelcome.constants.root_url() + "prospect/save?screenedById=" + screenedBySB.getKey();
+        } else {
+            return OfficeWelcome.constants.root_url() + "prospect/save";
+        }
     }
 
     @Override
