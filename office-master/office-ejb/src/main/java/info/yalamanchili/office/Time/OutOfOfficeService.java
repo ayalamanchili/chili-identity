@@ -47,17 +47,28 @@ public class OutOfOfficeService {
         validateRequest(entity);
         emp = OfficeSecurityService.instance().getCurrentUser();
         entity.setEmployee(emp);
+
+        if (entity.getStatus() != null && entity.getStatus().name().equalsIgnoreCase("Pending_Manager_Approval")) {
+            vars.put("status1", "update");
+        }
         entity.setStatus(OutOfOfficeRequestStatus.Pending_Manager_Approval);
         if (entity.getNotifyEmployees() != null && entity.getNotifyEmployees().size() > 0) {
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYY");
             Email email = new Email();
             email.setHtml(Boolean.TRUE);
             email.setRichText(Boolean.TRUE);
             for (Entry e : entity.getNotifyEmployees()) {
                 email.addTo(EmployeeDao.instance().getPrimaryEmail(e.getId()));
             }
-            email.setSubject("OutOfOffice Request - " + entity.getStatus().name() + " for " + emp.getFirstName() + " " + emp.getLastName()  );
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYY");
-            String summary = " <b> OutOfOffice Request - </b>  " + "<b>" + entity.getStatus().name() + "</b>" + "</br></br>" + " <b> Employee : </b> &nbsp;" + emp.getFirstName() + "&nbsp;" + " "  + "&nbsp;" + emp.getLastName() + "&nbsp;" + "</br>"  + " <b> Start Date : </b> " + "&nbsp;" + sdf.format(entity.getStartDate()) + "&nbsp;" + "</br>" + " <b> End Date  : </b> " + "&nbsp;"  + sdf.format(entity.getEndDate()) + "&nbsp;";
+            String summary = "";
+            if (vars.containsKey("status1")) {
+                email.setSubject("Out Of Office Request was updated by  " + emp.getFirstName() + " " + emp.getLastName());
+                summary = summary.concat(" <b> Out Of Office Request was updated </b>" + "</br></br>" + " <b> Employee  : </b> &nbsp;" + emp.getFirstName() + "&nbsp;" + emp.getLastName() + "&nbsp;" + "</br>" + " <b>Start Date  : </b> " + "&nbsp;" + sdf.format(entity.getStartDate()) + "&nbsp;" + "</br>" + " <b> End Date   &nbsp;: </b> " + "&nbsp;" + sdf.format(entity.getEndDate()) + "&nbsp;" + "</br>" + " <b> Status    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </b> &nbsp;" + entity.getStatus().name().replace("_", " "));
+
+            } else {
+                email.setSubject("Out Of Office Request - " + entity.getStatus().name().replace("_", " ") + " for " + emp.getFirstName() + " " + emp.getLastName());
+                summary = summary.concat(" <b> Out Of Office Request - </b>  " + "<b>" + entity.getStatus().name().replace("_", " ") + "</b>" + "</br></br>" + " <b> Employee : </b> &nbsp;" + emp.getFirstName() + "&nbsp;" + emp.getLastName() + "&nbsp;" + "</br>" + " <b>Start Date  : </b> " + "&nbsp;" + sdf.format(entity.getStartDate()) + "&nbsp;" + "</br>" + " <b> End Date    &nbsp;: </b> " + "&nbsp;" + sdf.format(entity.getEndDate()) + "&nbsp;");
+            }
             MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
             email.setBody(summary);
             messagingService.sendEmail(email);
