@@ -22,9 +22,12 @@ import info.yalamanchili.office.entity.ext.Comment;
 import info.yalamanchili.office.entity.hr.Prospect;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -87,18 +90,31 @@ public class CommentResource {
     @PUT
     @Path("{targetClassName}/{id}")
     public void save(@PathParam("targetClassName") String targetClassName, @PathParam("id") Long id, Comment comment) {
-        List<Entry> notifyEmployees = comment.getNotifyEmployees();
         if (Strings.isNullOrEmpty(comment.getUpdatedBy())) {
             Employee emp = OfficeSecurityService.instance().getCurrentUser();
-            comment.setUpdatedBy(emp.getFirstName()+" "+emp.getLastName());
+            comment.setUpdatedBy(emp.getFirstName() + " " + emp.getLastName());
         }
         if (comment.getUpdatedTS() == null) {
             comment.setUpdatedTS(new Date());
-            }
+        }
         if (Prospect.class.getCanonicalName().equals(targetClassName)) {
             if (comment.getStage() == null) {
                 comment.setStage(ProspectDao.instance().findById(id).getStatus().name());
             }
+        }
+        String emaillist = "Comment : " + comment.getComment() + " - Comment Notification Email sent to :";
+        Set<String> tos = new HashSet();
+        List<Entry> notifyEmployees = new ArrayList();
+        if (comment.getNotifyEmployees() != null) {
+            notifyEmployees = comment.getNotifyEmployees();
+                for (Entry entry : notifyEmployees) {
+                    Employee emp = EmployeeDao.instance().findEmployeWithEmpId(entry.getId());
+                    tos.add(emp.getPrimaryEmail().getEmail());
+                }
+                for (String to : tos) {
+                    emaillist = emaillist.concat(to + " , ");
+                }
+                comment.setComment(emaillist);
         }
         comment = commentDao.save(comment, id, targetClassName);
         try {
