@@ -16,12 +16,12 @@ import java.io.Serializable;
  */
 public class ProspectStageProgressDto implements Serializable{
     protected String associateName;
-    protected long inprogress;
-    protected long recruiting;
-    protected long bench;
-    protected long onhold;
-    protected long closedwon;
-    protected long closedlost;
+    protected String inprogress;
+    protected String recruiting;
+    protected String bench;
+    protected String onhold;
+    protected String closedwon;
+    protected String closedlost;
 
     public String getAssociateName() {
         return associateName;
@@ -31,51 +31,51 @@ public class ProspectStageProgressDto implements Serializable{
         this.associateName = associateName;
     }
 
-    public long getInprogress() {
+    public String getInprogress() {
         return inprogress;
     }
 
-    public void setInprogress(long inprogress) {
+    public void setInprogress(String inprogress) {
         this.inprogress = inprogress;
     }
 
-    public long getRecruiting() {
+    public String getRecruiting() {
         return recruiting;
     }
 
-    public void setRecruiting(long recruiting) {
+    public void setRecruiting(String recruiting) {
         this.recruiting = recruiting;
     }
 
-    public long getBench() {
+    public String getBench() {
         return bench;
     }
 
-    public void setBench(long bench) {
+    public void setBench(String bench) {
         this.bench = bench;
     }
 
-    public long getOnhold() {
+    public String getOnhold() {
         return onhold;
     }
 
-    public void setOnhold(long onhold) {
+    public void setOnhold(String onhold) {
         this.onhold = onhold;
     }
 
-    public long getClosedwon() {
+    public String getClosedwon() {
         return closedwon;
     }
 
-    public void setClosedwon(long closedwon) {
+    public void setClosedwon(String closedwon) {
         this.closedwon = closedwon;
     }
 
-    public long getClosedlost() {
+    public String getClosedlost() {
         return closedlost;
     }
 
-    public void setClosedlost(long closedlost) {
+    public void setClosedlost(String closedlost) {
         this.closedlost = closedlost;
     }
     
