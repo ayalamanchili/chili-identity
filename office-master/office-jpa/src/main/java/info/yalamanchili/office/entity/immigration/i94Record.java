@@ -12,6 +12,7 @@ import info.chili.jpa.AbstractHandleEntity;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Temporal;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
@@ -36,18 +37,21 @@ public class i94Record extends AbstractHandleEntity {
     //Added new fields for I-94 by Sudha #SSTO-3063 and added getter setter methods
     protected String fullName;
     
+    @NotNull(message = "{dateofEntry.not.empty.msg}")    
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date dateofEntry;
-
+    
+    @NotEmpty(message = "{portOfEntry.not.empty.msg}")    
     protected String portOfEntry;
     
     protected String arrivalMethod;
-    
     protected String modeOfTravel;
 
+    @NotNull(message = "{i94ValidFromDate.not.empty.msg}")        
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date i94ValidFromDate;
         
+    @NotNull(message = "{admitUntilDate.not.empty.msg}")            
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date admitUntilDate;
 
@@ -59,7 +63,8 @@ public class i94Record extends AbstractHandleEntity {
     protected Date reentryExpiryDate;
 
     protected String coApplicantTravel;
-       
+    
+    @NotEmpty(message = "{classOfAdmission.not.empty.msg}")                 
     protected String classOfAdmission;
     
     protected String comments;
