@@ -66,7 +66,7 @@ public class ProspectDao extends CRUDDao<Prospect> {
 
     public List<Prospect> report(ProspectReportDto dto) {
         String searchQuery = getSearchQuery(dto);
-        TypedQuery<Prospect> query = em.createQuery(searchQuery+" order by startDate DESC", Prospect.class);
+        TypedQuery<Prospect> query = em.createQuery(searchQuery + " order by startDate DESC", Prospect.class);
         if (dto.getJoiningDateFrom() != null) {
             query.setParameter("startDateParam", dto.getJoiningDateFrom(), TemporalType.DATE);
         }
@@ -74,10 +74,10 @@ public class ProspectDao extends CRUDDao<Prospect> {
             query.setParameter("endDateParam", dto.getJoiningDateTo(), TemporalType.DATE);
         }
         if (dto.getCreatedDateFrom() != null) {
-            query.setParameter("startDateParam", dto.getCreatedDateFrom(), TemporalType.DATE);
+            query.setParameter("createdDateFromParam", dto.getCreatedDateFrom(), TemporalType.DATE);
         }
         if (dto.getCreatedDateTo() != null) {
-            query.setParameter("endDateParam", dto.getCreatedDateTo(), TemporalType.DATE);
+            query.setParameter("createdDateToParam", dto.getCreatedDateTo(), TemporalType.DATE);
         }
         return query.getResultList();
     }
@@ -108,10 +108,10 @@ public class ProspectDao extends CRUDDao<Prospect> {
             queryStr.append(":endDateParam and ");
         }
         if ((searchDto.getCreatedDateFrom()) != null) {
-            queryStr.append("p.startDate BETWEEN :startDateParam and ");
+            queryStr.append("p.startDate BETWEEN :createdDateFromParam and ");
         }
         if ((searchDto.getCreatedDateTo()) != null) {
-            queryStr.append(":endDateParam and ");
+            queryStr.append(":createdDateToParam and ");
         }
         return queryStr.toString().substring(0, queryStr.toString().lastIndexOf("and"));
     }
@@ -130,6 +130,7 @@ public class ProspectDao extends CRUDDao<Prospect> {
         int onHoldCount = 0;
         int closedWonCount = 0;
         int closedlostCount = 0;
+        int totalCount = 0;
         for (Prospect p : report(dto)) {
             if (PetitionFor.In_House.equals(p.getPetitionFiledFor())) {
                 petetionforInHouseCount++;
@@ -171,17 +172,34 @@ public class ProspectDao extends CRUDDao<Prospect> {
                 closedlostCount++;
             }
         }
+        if (dto.getStatus() != null && dto.getStatus().equals(ProspectStatus.CLOSED_WON) && report(dto) != null) {
+            totalCount = report(dto).size();
+        }
+
         JsonObject json = new JsonObject();
+
         //petetion type
         json.addProperty(PetitionFor.In_House.name(), petetionforInHouseCount);
         json.addProperty(PetitionFor.Client_Project.name(), petetionforClientProjectCount);
+        int petitionCount = petetionforInHouseCount + petetionforClientProjectCount;
+        if (totalCount != petitionCount) {
+            json.addProperty("PetitionUnknown", totalCount - (petitionCount));
+        }
         //transfer employee 
         json.addProperty(TransferEmployeeType.Corporate_Employee.name(), transferEmployeeTypeCorporateEmployeeCount);
         json.addProperty(TransferEmployeeType.Field_Employee.name(), transferEmployeeTypeAssociateEmployeeCount);
+        int trfCount = transferEmployeeTypeCorporateEmployeeCount + transferEmployeeTypeAssociateEmployeeCount;
+        if (totalCount != trfCount) {
+            json.addProperty("TrfEmpUnknown", totalCount - (trfCount));
+        }
         // placed by
         json.addProperty(PlacedBy.By_Recruiter.name(), placedByRecruiterCount);
         json.addProperty(PlacedBy.Own_Placement.name(), placedByOwnCount);
         json.addProperty(PlacedBy.Corporate_Solutions_Team.name(), placedBySolutionsTeamCount);
+        int placedByCount = placedByRecruiterCount + placedByOwnCount+placedBySolutionsTeamCount;
+        if (totalCount !=  placedByCount) {
+            json.addProperty("PlacedByUnknown", totalCount - (placedByCount));
+        }
         json.addProperty(ProspectStatus.IN_PROGRESS.name(), inProgressCount);
         json.addProperty(ProspectStatus.RECRUITING.name(), recruitingCount);
         json.addProperty(ProspectStatus.BENCH.name(), benchCount);
@@ -191,7 +209,7 @@ public class ProspectDao extends CRUDDao<Prospect> {
         Gson gson = new Gson();
         return gson.toJson(json);
     }
-    
+
     @Transactional
     @Override
     public Prospect findById(Long id) {
