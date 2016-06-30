@@ -11,6 +11,7 @@ package info.yalamanchili.office.entity.immigration;
 import info.chili.jpa.AbstractHandleEntity;
 import java.util.Date;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -73,7 +74,7 @@ public class Passport extends AbstractHandleEntity {
     
     protected String passportStateOfIssuance;
     
-    
+    @Lob
     protected String identificationMarks;
             
     
