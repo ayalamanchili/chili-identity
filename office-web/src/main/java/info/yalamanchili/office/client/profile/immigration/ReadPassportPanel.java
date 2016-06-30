@@ -9,11 +9,18 @@
 package info.yalamanchili.office.client.profile.immigration;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.data.CountryFactory;
+import info.chili.gwt.data.CanadaStatesFactory;
+import info.chili.gwt.data.USAStatesFactory;
+import info.chili.gwt.data.IndiaStatesFactory;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import java.util.logging.Logger;
 
 /**
@@ -23,10 +30,13 @@ import java.util.logging.Logger;
 public class ReadPassportPanel extends ReadComposite {
 
     private static Logger logger = Logger.getLogger(ReadPassportPanel.class.getName());
+    
+   
 
     public ReadPassportPanel(JSONObject entity) {
         initReadComposite(entity, "Passport", OfficeWelcome.constants2);
     }
+    
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
@@ -36,19 +46,19 @@ public class ReadPassportPanel extends ReadComposite {
         assignFieldValueFromEntity("passportExpiryDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("passportExpirationAlertIndicator", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("passportCountryOfIssuance", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("passportStateOfIssuance", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("dateOfBirth", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("stateOfBirth", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("placeOfBirth", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("countryOfBirth", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("stateOfBirth", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("placeOfBirth", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("nationality", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("countryOfNationality", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("passportStateOfIssuance", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("identificationMarks", entity, DataType.TEXT_AREA_FIELD);
-        assignFieldValueFromEntity("haveYouEverLostPassport", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("haveYouEverLostPassport", entity, DataType.BOOLEAN_FIELD);
+        assignFieldValueFromEntity("reason", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("travelDocumentNumber", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("comments", entity, DataType.TEXT_AREA_FIELD);
+        populateComments();
     }
-    
 
     @Override
     protected void addListeners() {
@@ -63,22 +73,24 @@ public class ReadPassportPanel extends ReadComposite {
     @Override
     protected void addWidgets() {
         addField("passportNumber", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("doYouHoldAValidPassport", true, true, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        addField("doYouHoldAValidPassport", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("passportIssuedDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("passportExpiryDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("passportExpirationAlertIndicator", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addEnumField("passportCountryOfIssuance", true, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
-        addField("dateOfBirth", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("stateOfBirth", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("passportStateOfIssuance", true, false, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+        addField("dateOfBirth", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addEnumField("countryOfBirth", true, false, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
+        addEnumField("stateOfBirth", true, false, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+        addEnumField("stateOfBirth", false, false, IndiaStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+        addEnumField("stateOfBirth", false, false, CanadaStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
         addField("placeOfBirth", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addEnumField("countryOfBirth", true, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
         addField("nationality", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("countryOfNationality", true, false, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
-        addField("passportStateOfIssuance", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("identificationMarks", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        addField("haveYouEverLostPassport", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("haveYouEverLostPassport", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        addField("reason", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("travelDocumentNumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("comments", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         alignFields();
 
     }
@@ -90,11 +102,24 @@ public class ReadPassportPanel extends ReadComposite {
 
     @Override
     protected String getURI() {
-        return null;
+        return OfficeWelcome.constants.root_url() + "passport/" + entityId;
     }
 
     @Override
     public void loadEntity(String entityId) {
-
+        HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                        
+                    }
+                });
     }
+
+    protected void populateComments() {
+        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.immigration.Passport"));
+    }
+
 }
