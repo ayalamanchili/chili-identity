@@ -62,7 +62,7 @@
             <item name="Profile" href="office/profile/profile.html" collapse="true">
                 <item name="Change Password" href="office/profile/change_password.html"/>
                 <item name="Update Profile Picture" href="office/profile/update_profile_picture.html"/>
-                <item name="Addresses" href="office/profile/addresses.html"/>
+                <item name="Addresses" href="office/profile/manage-address.html"/>
                 <item name="Phones" href="office/profile/phones.html"/>
                 <item name="Emails" href="office/profile/emails.html"/>
                 <item name="Emergency Contacts" href="office/profile/emergency_contacts.html"/>
