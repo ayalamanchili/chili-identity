@@ -1,4 +1,4 @@
-Address Management
+Addresses
 ===========
 
 **Please make sure your current Home (Primary Mailing Adderess) is reflected in Portal.**

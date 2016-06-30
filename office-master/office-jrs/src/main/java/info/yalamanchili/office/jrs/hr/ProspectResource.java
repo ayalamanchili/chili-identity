@@ -306,7 +306,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
             table.setEntities(dtos);
             String[] columnOrder;
             Employee emp = OfficeSecurityService.instance().getCurrentUser();
-            if (ProspectStatus.CLOSED_WON.equals(dto.getStatus()) || (dto.getJoiningDateFrom()!=null && dto.getJoiningDateTo()!=null)) {
+            if (ProspectStatus.CLOSED_WON.equals(dto.getStatus()) || (dto.getJoiningDateFrom() != null && dto.getJoiningDateTo() != null)) {
                 columnOrder = new String[]{"employee", "email", "phoneNumber", "screenedBy", "manager", "assignedto", "petitionFor", "placedby", "trfEmptype", "dateOfJoining", "referredBy", "companyName", "startDate", "stage"};
             } else {
                 columnOrder = new String[]{"employee", "email", "phoneNumber", "screenedBy", "manager", "assignedto", "referredBy", "startDate", "stage"};

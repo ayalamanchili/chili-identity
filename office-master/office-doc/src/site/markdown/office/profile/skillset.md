@@ -1,11 +1,6 @@
-Manage Skill Set
+Skill Set
 =======
- - Technology Group
- - Practice
- - skills
- - certifications
- - resume 
- - search tags
+You can update and manage your skill set details here.   
 
 Please make sure you have this section information upto date since there are a lot of backend recruiting process that uses this information for marketing job opportunities.
 
@@ -32,7 +27,7 @@ Add and remove certifications that pertain to your profile. If any of the certif
 
 Tags
 ----
-you can add various search tags that pertain to your skill set eg: xml, css, Power point etc. these tags are used by the recruiting dept to search for right candidates for any open positions.
+You can add various search tags that pertain to your skill set eg: xml, css, Power point etc. these tags are used by the recruiting dept to search for right candidates for any open positions.
 It is very important to make sure your tags are populated with all necessary information.
 
 ![alt text](../../images/skill-set-tag-user-profile.png "Tags")

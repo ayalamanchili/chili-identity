@@ -1,6 +1,8 @@
 Profile
 =========
-View and manage following information
+You can view and manage your profile details here.
+
+![Profile Page](../../images/profile/profile_landing_page.png)
 
 - Profile
     - view basic profile information
