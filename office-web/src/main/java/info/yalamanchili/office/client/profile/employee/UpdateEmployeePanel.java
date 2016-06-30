@@ -7,8 +7,10 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.UpdateComposite;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -20,6 +22,7 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
+import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.profile.contact.Branch;
 import info.yalamanchili.office.client.profile.contact.Sex;
 import info.yalamanchili.office.client.profile.contact.WorkStatus;
@@ -104,6 +107,23 @@ public class UpdateEmployeePanel extends UpdateComposite {
                 });
 
     }
+    
+    @Override
+    public void loadEntity(String entityId) {
+        HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                    }
+                });
+
+    }
+    
+    protected void populateComments() {
+        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.profile.Employee"));
+    }
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
@@ -136,6 +156,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
             assignFieldValueFromEntity("status", entity, DataType.BOOLEAN_FIELD);
         }
         //TODO add image panel for employee image
+        populateComments();
     }
 
     @Override
