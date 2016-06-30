@@ -5,6 +5,7 @@ package info.yalamanchili.office.client.profile.employee;
 
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
@@ -20,6 +21,7 @@ import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
+import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.profile.contact.Branch;
 import info.yalamanchili.office.client.profile.contact.Sex;
 import info.yalamanchili.office.client.profile.contact.WorkStatus;
@@ -61,6 +63,10 @@ public class ReadEmployeePanel extends ReadComposite {
                 });
 
     }
+    
+    protected void populateComments() {
+        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.profile.Employee"));
+    }
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
@@ -89,6 +95,7 @@ public class ReadEmployeePanel extends ReadComposite {
             assignFieldValueFromEntity("status", entity, DataType.BOOLEAN_FIELD);
         }
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
+        populateComments();
     }
 
     @Override
