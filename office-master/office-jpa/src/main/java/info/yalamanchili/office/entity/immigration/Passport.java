@@ -11,7 +11,6 @@ package info.yalamanchili.office.entity.immigration;
 import info.chili.jpa.AbstractHandleEntity;
 import java.util.Date;
 import javax.persistence.Entity;
-import javax.persistence.Lob;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -53,14 +52,14 @@ public class Passport extends AbstractHandleEntity {
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date dateOfBirth;
     
-   
+    
+    protected String countryOfBirth;
+    
+    
     protected String stateOfBirth;
     
    
     protected String placeOfBirth;
-    
-    
-    protected String countryOfBirth;
     
     
     protected String nationality;
@@ -68,7 +67,7 @@ public class Passport extends AbstractHandleEntity {
     
     protected String countryOfNationality;
     
-   
+    @NotEmpty(message = "{passportCountryOfIssuance.not.empty.msg}")
     protected String passportCountryOfIssuance;
     
     
@@ -78,13 +77,12 @@ public class Passport extends AbstractHandleEntity {
     protected String identificationMarks;
             
     
-    protected String haveYouEverLostPassport; 
+    protected Boolean haveYouEverLostPassport; 
     
+    protected String reason;
     
     protected String travelDocumentNumber;
     
-    @Lob
-    protected String comments;
 
     public String getPassportNumber() {
         return passportNumber;
@@ -134,12 +132,28 @@ public class Passport extends AbstractHandleEntity {
         this.passportCountryOfIssuance = passportCountryOfIssuance;
     }
     
+    public String getPassportStateOfIssuance() {
+        return passportStateOfIssuance;
+    }
+
+    public void setPassportStateOfIssuance(String passportStateOfIssuance) {
+        this.passportStateOfIssuance = passportStateOfIssuance;
+    }
+
     public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+    
+    public String getCountryOfBirth() {
+        return countryOfBirth;
+    }
+    
+    public void setCountryOfBirth(String countryOfBirth) {
+        this.countryOfBirth = countryOfBirth;
     }
     
     public String getStateOfBirth() {
@@ -157,15 +171,7 @@ public class Passport extends AbstractHandleEntity {
     public void setPlaceOfBirth(String placeOfBirth) {
         this.placeOfBirth = placeOfBirth;
     } 
-    
-    public String getCountryOfBirth() {
-        return countryOfBirth;
-    }
-    
-    public void setCountryOfBirth(String countryOfBirth) {
-        this.countryOfBirth = countryOfBirth;
-    }
-    
+        
     public String getNationality() {
         return nationality;
     }
@@ -182,14 +188,6 @@ public class Passport extends AbstractHandleEntity {
         this.countryOfNationality = countryOfNationality;
     }
     
-    public String getPassportStateOfIssuance() {
-        return passportStateOfIssuance;
-    }
-
-    public void setPassportStateOfIssuance(String passportStateOfIssuance) {
-        this.passportStateOfIssuance = passportStateOfIssuance;
-    }
-
     public String getIdentificationMarks() {
         return identificationMarks;
     }
@@ -198,33 +196,33 @@ public class Passport extends AbstractHandleEntity {
         this.identificationMarks = identificationMarks;
     }
     
-    public String getHaveYouEverLostPassport() {
+    public Boolean getHaveYouEverLostPassport() {
         return haveYouEverLostPassport;
     }
 
-    public void setHaveYouEverLostPassport(String haveYouEverLostPassport) {
+    public void setHaveYouEverLostPassport(Boolean haveYouEverLostPassport) {
         this.haveYouEverLostPassport = haveYouEverLostPassport;
+    }
+    
+    public String getReason() {
+        return reason;
+    }
+    
+    public void setReason(String reason) {
+        this.reason = reason;
     }
     
     public String getTravelDocumentNumber() {
         return travelDocumentNumber;
     }
-
+    
     public void setTravelDocumentNumber(String travelDocumentNumber) {
         this.travelDocumentNumber = travelDocumentNumber;
     }
     
-    public String getComments() {
-        return comments;
-    }
-
-    public void setComments(String comments) {
-        this.comments = comments;
-    }
-    
     @Override
     public String toString() {
-        return "Passport{" + "passportNumber=" + passportNumber + ", doYouHoldAValidPassport=" + doYouHoldAValidPassport + ", passportIssuedDate=" + passportIssuedDate + ", passportExpiryDate=" + passportExpiryDate + ", passportExpirationAlertIndicator=" + passportExpirationAlertIndicator + ", passportCountryOfIssuance=" + passportCountryOfIssuance + ", dateOfBirth=" + dateOfBirth + ",stateOfBirth=" + stateOfBirth + ", placeOfBirth=" + placeOfBirth + ", countryOfBirth=" + countryOfBirth + ", nationality=" + nationality + ", countryOfNationality=" + countryOfNationality + ", passportStateOfIssuance=" + passportStateOfIssuance + ", identificationMarks=" + identificationMarks + ", haveYouEverLostPassport=" + haveYouEverLostPassport + ", travelDocumentNumber=" + travelDocumentNumber + ", comments=" + comments + '}';
+        return "Passport{" + "passportNumber=" + passportNumber + ", doYouHoldAValidPassport=" + doYouHoldAValidPassport + ", passportIssuedDate=" + passportIssuedDate + ", passportExpiryDate=" + passportExpiryDate + ", passportExpirationAlertIndicator=" + passportExpirationAlertIndicator + ", passportCountryOfIssuance=" + passportCountryOfIssuance + ", passportStateOfIssuance=" + passportStateOfIssuance + ", dateOfBirth=" + dateOfBirth + ", countryOfBirth=" + countryOfBirth + ",stateOfBirth=" + stateOfBirth + ", placeOfBirth=" + placeOfBirth  + ", nationality=" + nationality + ", countryOfNationality=" + countryOfNationality +  ", identificationMarks=" + identificationMarks + ", haveYouEverLostPassport=" + haveYouEverLostPassport + ", reason=" + reason + ", travelDocumentNumber=" + travelDocumentNumber + '}';
     }
 
 }
