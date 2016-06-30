@@ -8,13 +8,24 @@
  */
 package info.yalamanchili.office.client.profile.immigration;
 
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
+import info.chili.gwt.data.CanadaStatesFactory;
 import info.chili.gwt.data.CountryFactory;
+import info.chili.gwt.data.IndiaStatesFactory;
+import info.chili.gwt.data.USAStatesFactory;
+import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
+import info.chili.gwt.fields.EnumField;
+import info.chili.gwt.fields.StringField;
+import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -27,7 +38,7 @@ import java.util.logging.Logger;
  *
  * @author Madhu.Badiginchala
  */
-public class CreatePassportPanel extends CreateComposite {
+public class CreatePassportPanel extends CreateComposite implements ChangeHandler, ClickHandler {
 
     private static Logger logger = Logger.getLogger(CreatePassportPanel.class.getName());
 
@@ -35,6 +46,14 @@ public class CreatePassportPanel extends CreateComposite {
         super(type);
         initCreateComposite("Passport", OfficeWelcome.constants2);
     }
+
+    protected EnumField countriesF;
+    protected EnumField statesF;
+
+    protected EnumField countriesS;
+    protected EnumField stateF;
+
+    protected BooleanField haveYouEverLostPassport;
 
     @Override
     protected JSONObject populateEntityFromFields() {
@@ -45,17 +64,17 @@ public class CreatePassportPanel extends CreateComposite {
         assignEntityValueFromField("passportExpiryDate", passport);
         assignEntityValueFromField("passportExpirationAlertIndicator", passport);
         assignEntityValueFromField("passportCountryOfIssuance", passport);
+        assignEntityValueFromField("passportStateOfIssuance", passport);
         assignEntityValueFromField("dateOfBirth", passport);
+        assignEntityValueFromField("countryOfBirth", passport);
         assignEntityValueFromField("stateOfBirth", passport);
         assignEntityValueFromField("placeOfBirth", passport);
-        assignEntityValueFromField("countryOfBirth", passport);
         assignEntityValueFromField("nationality", passport);
         assignEntityValueFromField("countryOfNationality", passport);
-        assignEntityValueFromField("passportStateOfIssuance", passport);
         assignEntityValueFromField("identificationMarks", passport);
         assignEntityValueFromField("haveYouEverLostPassport", passport);
+        assignEntityValueFromField("reason", passport);
         assignEntityValueFromField("travelDocumentNumber", passport);
-        assignEntityValueFromField("comments", passport);
         passport.put("targetEntityName", new JSONString("targetEntityName"));
         passport.put("targetEntityId", new JSONString("0"));
         return passport;
@@ -65,21 +84,21 @@ public class CreatePassportPanel extends CreateComposite {
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
     protected void addButtonClicked() {
-        
+
     }
 
     @Override
@@ -91,13 +110,21 @@ public class CreatePassportPanel extends CreateComposite {
 
     @Override
     protected void addListeners() {
-        
+        if (countriesF != null) {
+            countriesF.listBox.addChangeHandler(this);
+        }
+        if (countriesS != null) {
+            countriesS.listBox.addChangeHandler(this);
+        }
+
+        haveYouEverLostPassport.getBox().addClickHandler(this);
     }
 
     @Override
     protected void configure() {
-       
+
     }
+    TextAreaField reasonF;
 
     @Override
     protected void addWidgets() {
@@ -106,24 +133,33 @@ public class CreatePassportPanel extends CreateComposite {
         addField("passportIssuedDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("passportExpiryDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("passportExpirationAlertIndicator", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-        addEnumField("passportCountryOfIssuance", false, false, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
+        addEnumField("passportCountryOfIssuance", false, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
+        addEnumField("passportStateOfIssuance", false, false, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
         addField("dateOfBirth", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("stateOfBirth", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("placeOfBirth", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("countryOfBirth", false, false, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
+        addEnumField("stateOfBirth", false, false, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+        addEnumField("stateOfBirth", false, false, IndiaStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+        addEnumField("stateOfBirth", false, false, CanadaStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+        addField("placeOfBirth", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("nationality", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("countryOfNationality", false, false, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
-        addField("passportStateOfIssuance", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("identificationMarks", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        addField("haveYouEverLostPassport", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("haveYouEverLostPassport", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        addField("reason", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("travelDocumentNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("comments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        countriesF = (EnumField) fields.get("passportCountryOfIssuance");
+        statesF = (EnumField) fields.get("passportStateOfIssuance");
+        countriesS = (EnumField) fields.get("countryOfBirth");
+        stateF = (EnumField) fields.get("stateOfBirth");
+        reasonF = (TextAreaField) fields.get("reason");
+        reasonF.setVisible(false);
+        haveYouEverLostPassport = (BooleanField) fields.get("haveYouEverLostPassport");
         alignFields();
     }
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-        
+
     }
 
     @Override
@@ -141,4 +177,42 @@ public class CreatePassportPanel extends CreateComposite {
         }
         return true;
     }
+
+    @Override
+    public void onClick(ClickEvent event) {
+        if (event.getSource().equals(haveYouEverLostPassport.getBox()) && haveYouEverLostPassport.getValue()) {
+            logger.info("dddddddddddddddd");
+            reasonF.setVisible(true);
+        } else {
+            reasonF.setVisible(false);
+        }
+        super.onClick(event);
+    }
+
+    @Override
+    public void onChange(ChangeEvent event) {
+        switch (countriesF.getValue()) {
+            case "USA":
+                statesF.setValues(USAStatesFactory.getStates().toArray(new String[0]));
+                break;
+            case "INDIA":
+                statesF.setValues(IndiaStatesFactory.getStates().toArray(new String[0]));
+                break;
+            case "CANADA":
+                statesF.setValues(CanadaStatesFactory.getStates().toArray(new String[0]));
+                break;
+        }
+        switch (countriesS.getValue()) {
+            case "USA":
+                stateF.setValues(USAStatesFactory.getStates().toArray(new String[0]));
+                break;
+            case "INDIA":
+                stateF.setValues(IndiaStatesFactory.getStates().toArray(new String[0]));
+                break;
+            case "CANADA":
+                stateF.setValues(CanadaStatesFactory.getStates().toArray(new String[0]));
+                break;
+        }
+    }
+
 }
