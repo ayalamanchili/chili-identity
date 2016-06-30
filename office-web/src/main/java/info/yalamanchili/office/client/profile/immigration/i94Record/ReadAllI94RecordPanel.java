@@ -74,11 +74,11 @@ public class ReadAllI94RecordPanel extends CRUDReadAllComposite {
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table Action"));
-        table.setText(0, 1, getKeyValue("I94Record Number"));
-        table.setText(0, 2, getKeyValue("Date of Entry"));
-        table.setText(0, 3, getKeyValue("AdmitUntil Date"));
-        table.setText(0, 4, getKeyValue("Port of Entry"));
-        table.setText(0, 5, getKeyValue("Class Of Admission"));
+        table.setText(0, 1, getKeyValue("I-94 Number"));
+        table.setText(0, 2, getKeyValue("Date Of Arrival"));
+        table.setText(0, 3, getKeyValue("Date Of Expiration"));
+        table.setText(0, 4, getKeyValue("Place Of Arrival"));
+        table.setText(0, 5, getKeyValue("Immigration Status on I-94"));
     }
 
     @Override

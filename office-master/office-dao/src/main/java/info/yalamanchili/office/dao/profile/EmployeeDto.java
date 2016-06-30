@@ -74,6 +74,8 @@ public class EmployeeDto implements Serializable {
     protected String branchName;
     protected String compny;
     
+    protected int noOfYears;
+    
     public EmployeeDto(Long id, String firstName, String lastName, String middleInitial, String employeeId, Date dateOfBirth, Sex sex, Branch branch, WorkStatus workStatus, String imageURL, Date startDate, Date endDate, String email, String phoneNumber, String phoneNumberExt, String jobTitle, EmployeeType employeeType, Company company, String ssn) {
         this.id = id;
         this.firstName = firstName;
@@ -291,6 +293,14 @@ public class EmployeeDto implements Serializable {
     
     public void setCompny(String compny) {
         this.compny = compny;
+    }
+
+    public int getNoOfYears() {
+        return noOfYears;
+    }
+
+    public void setNoOfYears(int noOfYears) {
+        this.noOfYears = noOfYears;
     }
     
     @Override

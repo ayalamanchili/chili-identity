@@ -209,7 +209,11 @@ public class EmployeeDao extends CRUDDao<Employee> {
         getEmailQ.setParameter("emailAddressParam", SecurityUtils.hash(emailAddress));
         if (getEmailQ.getResultList().size() > 0) {
             info.yalamanchili.office.entity.profile.Email email = (info.yalamanchili.office.entity.profile.Email) getEmailQ.getResultList().get(0);
-            return (Employee) email.getContact();
+            if (email.getContact() instanceof Employee) {
+                return (Employee) email.getContact();
+            } else {
+                return null;
+            }
         } else {
             return null;
         }
@@ -344,7 +348,7 @@ public class EmployeeDao extends CRUDDao<Employee> {
     public static EmployeeDao instance() {
         return SpringContext.getBean(EmployeeDao.class);
     }
-    
+
     @XmlRootElement
     @XmlType
     public static class EmployeeTable implements java.io.Serializable {

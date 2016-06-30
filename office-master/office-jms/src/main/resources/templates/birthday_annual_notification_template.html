@@ -77,6 +77,7 @@
                                     <th>Last Name</th>
                                     <th>Employee Type</th>
                                     <th>Email</th>
+                                    <th th:if="${isAnniversary} == 'true'">Years</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -85,6 +86,7 @@
                                     <td th:text="${employeeDto.lastName}"></td>
                                     <td th:text="${employeeDto.employeeType.name}"></td>
                                     <td th:text="${employeeDto.email}"></td>
+                                    <td th:if="${isAnniversary} == 'true'" th:text="${employeeDto.noOfYears}"></td>
                                 </tr>
                             </tbody>
                         </table>

@@ -36,18 +36,17 @@ public class ProspectProcessBean {
 
     @PersistenceContext
     protected EntityManager em;
-    
+
     public static ProspectProcessBean instance() {
         return SpringContext.getBean(ProspectProcessBean.class);
     }
 
-    public void notifyCaseManager(Prospect entity, List<Long> employees, String comment) {
+    public void notifyCaseManager(Prospect entity, List<Long> employees, String comment, Long screenedById) {
         info.chili.email.Email email = new info.chili.email.Email();
-        if (entity.getStatus().equals(ProspectStatus.IN_PROGRESS) && entity.getManager() != null) {
+        if (entity.getManager() != null) {
             email.addTo(EmployeeDao.instance().findById(entity.getManager()).getPrimaryEmail().getEmail());
-        } else if (entity.getStatus().equals(ProspectStatus.IN_PROGRESS) && entity.getManager() == null) {
-            email.addTo(EmployeeDao.instance().findById(entity.getAssigned()).getPrimaryEmail().getEmail());
-        } else if (entity.getStatus().equals(ProspectStatus.RECRUITING) || entity.getStatus().equals(ProspectStatus.BENCH)) {
+        }
+        if (entity.getAssigned() != null) {
             email.addTo(EmployeeDao.instance().findById(entity.getAssigned()).getPrimaryEmail().getEmail());
         }
         if (employees != null && employees.size() > 0) {
@@ -55,10 +54,13 @@ public class ProspectProcessBean {
                 email.addTo(EmployeeDao.instance().findById(empId).getPrimaryEmail().getEmail());
             }
         }
+        if (screenedById != null) {
+            email.addTo(EmployeeDao.instance().findById(screenedById).getPrimaryEmail().getEmail());
+        }
         email.setHtml(Boolean.TRUE);
         email.setRichText(Boolean.TRUE);
         email.setSubject("New Prospect " + entity.getContact().getFirstName() + " " + entity.getContact().getLastName() + " Has Created");
-        String messageText = entity.describe() +"<b> Comment &nbsp; &nbsp;:</b>"+comment+ "</br> <b>Navigate To MyOffice --> Prospect --> Search -> Click on update to change the status with appropriate comments</b>";
+        String messageText = entity.describe() + "<b> Comment &nbsp; &nbsp;:</b>" + comment + "</br> <b>Navigate To MyOffice --> Prospect --> Search -> Click on update to change the status with appropriate comments</b>";
         email.setBody(messageText);
         MessagingService.instance().sendEmail(email);
     }

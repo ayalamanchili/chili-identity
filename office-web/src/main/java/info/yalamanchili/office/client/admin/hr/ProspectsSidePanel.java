@@ -28,6 +28,7 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.utils.Utils;
+import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.widgets.SuggestBox;
@@ -56,6 +57,7 @@ public class ProspectsSidePanel extends ALComposite implements ClickHandler {
     DateField endDateF = new DateField(OfficeWelcome.constants, "joiningDateTo", "Prospect", false, false, Alignment.VERTICAL);
     DateField createDateFromF = new DateField(OfficeWelcome.constants, "createdDateFrom", "Prospect", false, false, Alignment.VERTICAL);
     DateField createDateToF = new DateField(OfficeWelcome.constants, "createdDateTo", "Prospect", false, false, Alignment.VERTICAL);
+    ClickableLink stageProgressL = new ClickableLink("Stage Progress Report");
 
     public ProspectsSidePanel() {
         init(sidepanel);
@@ -65,6 +67,7 @@ public class ProspectsSidePanel extends ALComposite implements ClickHandler {
     protected void addListeners() {
         reportB.addClickHandler(this);
         graphsB.addClickHandler(this);
+        stageProgressL.addClickHandler(this);
     }
 
     @Override
@@ -100,6 +103,7 @@ public class ProspectsSidePanel extends ALComposite implements ClickHandler {
         sidepanel.add(endDateF);
         sidepanel.add(reportB);
         sidepanel.add(graphsB);
+        sidepanel.add(stageProgressL);
     }
 
     public JSONObject getObject() {
@@ -188,5 +192,19 @@ public class ProspectsSidePanel extends ALComposite implements ClickHandler {
                         });
             }
         }
+        if (event.getSource().equals(stageProgressL)) {
+            HttpService.HttpServiceAsync.instance().doGet(getStageProgressReportUrl(), OfficeWelcome.instance().getHeaders(), true,
+                    new ALAsyncCallback<String>() {
+                        @Override
+                        public void onResponse(String result) {
+                            logger.info(result);
+                            new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
+                        }
+                    });
+        }
+    }
+
+    private String getStageProgressReportUrl() {
+        return OfficeWelcome.constants.root_url() + "prospect/stageProgressReport";
     }
 }

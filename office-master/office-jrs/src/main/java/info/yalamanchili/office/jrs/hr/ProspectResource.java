@@ -103,11 +103,10 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     @PUT
     @Path("/save")
     @Validate
-    @Override
     @PreAuthorize("hasAnyRole('ROLE_PROSPECTS_MANAGER')")
     @CacheEvict(value = OfficeCacheKeys.PROSPECT, allEntries = true)
-    public ProspectDto save(ProspectDto prospect) {
-        return prospectService.save(prospect);
+    public ProspectDto save(ProspectDto prospect, @QueryParam("screenedById") Long screenedById) {
+        return prospectService.save(prospect, screenedById);
     }
 
     @PUT
@@ -115,8 +114,8 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     @Validate
     @PreAuthorize("hasAnyRole('ROLE_PROSPECTS_MANAGER', 'ROLE_RECRUITER', 'ROLE_H1B_IMMIGRATION', 'ROLE_GC_IMMIGRATION')")
     @CacheEvict(value = OfficeCacheKeys.PROSPECT, allEntries = true)
-    public ProspectDto update(ProspectDto prospect) {
-        return prospectService.update(prospect);
+    public ProspectDto update(ProspectDto prospect, @QueryParam("screenedById") Long screenedById) {
+        return prospectService.update(prospect, screenedById);
     }
 
     @GET
@@ -222,7 +221,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     public List<ProspectDto> prospectStatusSearch(ProspectReportDto entity) {
         List<ProspectDto> res = new ArrayList();
         List<Prospect> prospects = prospectDao.report(entity);
-        for(Prospect p: prospects){
+        for (Prospect p : prospects) {
             res.add(map(p));
         }
         return res;
@@ -305,8 +304,13 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
         }
         if (dtos.size() > 0) {
             table.setEntities(dtos);
-            String[] columnOrder = new String[]{"employee", "email", "phoneNumber", "screenedBy", "manager", "assignedto", "petitionFor", "placedby", "trfEmptype", "dateOfJoining", "referredBy", "companyName", "startDate", "stage"};
+            String[] columnOrder;
             Employee emp = OfficeSecurityService.instance().getCurrentUser();
+            if (ProspectStatus.CLOSED_WON.equals(dto.getStatus()) || (dto.getJoiningDateFrom()!=null && dto.getJoiningDateTo()!=null)) {
+                columnOrder = new String[]{"employee", "email", "phoneNumber", "screenedBy", "manager", "assignedto", "petitionFor", "placedby", "trfEmptype", "dateOfJoining", "referredBy", "companyName", "startDate", "stage"};
+            } else {
+                columnOrder = new String[]{"employee", "email", "phoneNumber", "screenedBy", "manager", "assignedto", "referredBy", "startDate", "stage"};
+            }
             String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), name, OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
             MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
             return dtos;

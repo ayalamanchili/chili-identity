@@ -60,18 +60,21 @@ public class ProspectsGraphsPanel extends Composite {
      * EmployeeType for chart
      */
     protected void drawPlacedByChart(JSONObject graphsDto) {
-        double number = graphsDto.get(PlacedBy.By_Recruiter.name()).isNumber().doubleValue() + graphsDto.get(PlacedBy.Corporate_Solutions_Team.name()).isNumber().doubleValue() + graphsDto.get(PlacedBy.Own_Placement.name()).isNumber().doubleValue();
+        double number = graphsDto.get(PlacedBy.By_Recruiter.name()).isNumber().doubleValue() + graphsDto.get(PlacedBy.Corporate_Solutions_Team.name()).isNumber().doubleValue() + graphsDto.get(PlacedBy.Own_Placement.name()).isNumber().doubleValue() + graphsDto.get("PlacedByUnknown").isNumber().doubleValue();
         placedByL.setText("Placed By Chart : (" + number + ")");
         DataTable dataTable = DataTable.create();
         dataTable.addColumn(ColumnType.STRING, "PlacedBy");
         dataTable.addColumn(ColumnType.NUMBER, "Number");
-        dataTable.addRows(3);
+        dataTable.addRows(4);
         dataTable.setValue(0, 0, PlacedBy.By_Recruiter.name() + "(" + Integer.valueOf(graphsDto.get(PlacedBy.By_Recruiter.name()).isNumber().toString()) + ")");
         dataTable.setValue(1, 0, PlacedBy.Corporate_Solutions_Team.name() + "(" + Integer.valueOf(graphsDto.get(PlacedBy.Corporate_Solutions_Team.name()).isNumber().toString()) + ")");
         dataTable.setValue(2, 0, PlacedBy.Own_Placement.name() + "(" + Integer.valueOf(graphsDto.get(PlacedBy.Own_Placement.name()).isNumber().toString()) + ")");
+        dataTable.setValue(3, 0, "Unknown" + "(" + Integer.valueOf(graphsDto.get("PlacedByUnknown").isNumber().toString()) + ")");
         dataTable.setValue(0, 1, Integer.valueOf(graphsDto.get(PlacedBy.By_Recruiter.name()).isNumber().toString()));
         dataTable.setValue(1, 1, Integer.valueOf(graphsDto.get(PlacedBy.Corporate_Solutions_Team.name()).isNumber().toString()));
         dataTable.setValue(2, 1, Integer.valueOf(graphsDto.get(PlacedBy.Own_Placement.name()).isNumber().toString()));
+        dataTable.setValue(3, 1, Integer.valueOf(graphsDto.get("PlacedByUnknown").isNumber().toString()));
+
         // Draw the chart
         placedByChart.draw(dataTable);
     }
@@ -88,16 +91,18 @@ public class ProspectsGraphsPanel extends Composite {
      * EmployeeType for chart
      */
     protected void drawEmployeeTypeChart(JSONObject graphsDto) {
-        double number = graphsDto.get(TransferEmployeeType.Corporate_Employee.name()).isNumber().doubleValue() + graphsDto.get(TransferEmployeeType.Field_Employee.name()).isNumber().doubleValue();
+        double number = graphsDto.get(TransferEmployeeType.Corporate_Employee.name()).isNumber().doubleValue() + graphsDto.get(TransferEmployeeType.Field_Employee.name()).isNumber().doubleValue() + graphsDto.get("TrfEmpUnknown").isNumber().doubleValue();
         employeerL.setText("Transfer Employee Chart : (" + number + ")");
         DataTable dataTable = DataTable.create();
         dataTable.addColumn(ColumnType.STRING, "EmployeeType");
         dataTable.addColumn(ColumnType.NUMBER, "Number");
-        dataTable.addRows(2);
+        dataTable.addRows(3);
         dataTable.setValue(0, 0, TransferEmployeeType.Corporate_Employee.name() + "(" + Integer.valueOf(graphsDto.get(TransferEmployeeType.Corporate_Employee.name()).isNumber().toString()) + ")");
         dataTable.setValue(1, 0, TransferEmployeeType.Field_Employee.name() + "(" + Integer.valueOf(graphsDto.get(TransferEmployeeType.Field_Employee.name()).isNumber().toString()) + ")");
+        dataTable.setValue(2, 0, "Unknown" + "(" + Integer.valueOf(graphsDto.get("TrfEmpUnknown").isNumber().toString()) + ")");
         dataTable.setValue(0, 1, Integer.valueOf(graphsDto.get(TransferEmployeeType.Corporate_Employee.name()).isNumber().toString()));
         dataTable.setValue(1, 1, Integer.valueOf(graphsDto.get(TransferEmployeeType.Field_Employee.name()).isNumber().toString()));
+        dataTable.setValue(2, 1, Integer.valueOf(graphsDto.get("TrfEmpUnknown").isNumber().toString()));
         // Draw the chart
         employeeTypeChart.draw(dataTable);
     }
@@ -114,16 +119,18 @@ public class ProspectsGraphsPanel extends Composite {
      * Petetion for chart
      */
     protected void drawPetetionForChart(JSONObject graphsDto) {
-        double number = graphsDto.get(PetitionFor.Client_Project.name()).isNumber().doubleValue() + graphsDto.get(PetitionFor.In_House.name()).isNumber().doubleValue();
+        double number = graphsDto.get(PetitionFor.Client_Project.name()).isNumber().doubleValue() + graphsDto.get(PetitionFor.In_House.name()).isNumber().doubleValue() + graphsDto.get("PetitionUnknown").isNumber().doubleValue();
         petitionForL.setText("Petition For Chart : (" + number + ")");
         DataTable dataTable = DataTable.create();
         dataTable.addColumn(ColumnType.STRING, "PetitionFor");
         dataTable.addColumn(ColumnType.NUMBER, "Number");
-        dataTable.addRows(2);
+        dataTable.addRows(3);
         dataTable.setValue(0, 0, PetitionFor.Client_Project.name() + "(" + Integer.valueOf(graphsDto.get(PetitionFor.Client_Project.name()).isNumber().toString()) + ")");
         dataTable.setValue(1, 0, PetitionFor.In_House.name() + "(" + Integer.valueOf(graphsDto.get(PetitionFor.In_House.name()).isNumber().toString()) + ")");
+        dataTable.setValue(2, 0, "Unknown" + "(" + Integer.valueOf(graphsDto.get("PetitionUnknown").isNumber().toString()) + ")");
         dataTable.setValue(0, 1, Integer.valueOf(graphsDto.get(PetitionFor.Client_Project.name()).isNumber().toString()));
         dataTable.setValue(1, 1, Integer.valueOf(graphsDto.get(PetitionFor.In_House.name()).isNumber().toString()));
+        dataTable.setValue(2, 1, Integer.valueOf(graphsDto.get("PetitionUnknown").isNumber().toString()));
         // Draw the chart
         petetionForChart.draw(dataTable);
     }
