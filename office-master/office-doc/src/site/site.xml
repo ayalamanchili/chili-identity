@@ -60,16 +60,19 @@
                 <item name="How To Fill Onboarding Form" href="/office/onboarding/submit-onboarding-details.html"/>
             </item>
             <item name="Profile" href="office/profile/profile.html" collapse="true">
-                <item name="Manage Profle" href="office/profile/profile.html"/>
-                <item name="Manage Address" href="office/profile/manage-address.html"/>
-                <item name="Privacy" href="office/profile/privacy.html"/>
-                <item name="Client Information" href="office/profile/client-information.html" collapse="true">
-                    <item name="Client Information Correction Details" href="/office/clientcorrectiondetails.html"/>
-                </item>
+                <item name="Change Password" href="office/profile/change_password.html"/>
+                <item name="Update Profile Picture" href="office/profile/update_profile_picture.html"/>
+                <item name="Addresses" href="office/profile/addresses.html"/>
+                <item name="Phones" href="office/profile/phones.html"/>
+                <item name="Emails" href="office/profile/emails.html"/>
+                <item name="Emergency Contacts" href="office/profile/emergency_contacts.html"/>
+                <item name="Dependents" href="office/profile/dependents.html"/>
                 <item name="SkillSet" href="office/profile/skillset.html" />
-                <item name="Preferences" href="office/profile/preferences.html"/>
                 <item name="Benefits" href="office/profile/benefits.html"/>
+                <item name="Preferences" href="office/profile/preferences.html"/>
+                <item name="Privacy" href="office/profile/privacy.html"/>
             </item>
+
             <item name="Drive" href="/office/drive.html"/>
             <item name="Recruiting" href="/office/recruiting/find-candidates.html" collapse="true">
                 <item name="Manage Practice" href="/office/recruiting/practice.html"/>

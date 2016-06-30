@@ -81,7 +81,7 @@ public class UpdateInvoicePanel extends UpdateComposite {
         assignEntityValueFromField("invoiceStatus", entity);
         assignEntityValueFromField("timeSheetStatus", entity);
         assignEntityValueFromField("notes", entity);
-        entity.put("invoiceDate", new JSONString(new Date().toString()));
+        //entity.put("invoiceDate", new JSONString(new Date().toString()));
         return entity;
     }
 
@@ -120,9 +120,7 @@ public class UpdateInvoicePanel extends UpdateComposite {
             assignFieldValueFromEntity("employee", entity, DataType.STRING_FIELD);
         }
         assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("invoiceNumber", entity, DataType.INTEGER_FIELD);
-//        assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
-//        assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("invoiceNumber", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("hours", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
@@ -151,16 +149,16 @@ public class UpdateInvoicePanel extends UpdateComposite {
     protected void addWidgets() {
         addField("employee", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("itemNumber", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("invoiceNumber", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        addField("invoiceNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("billingRate", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-        addField("overTimeBillingRate", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("hours", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addEnumField("invoiceFrequency", true, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         addEnumField("invoiceStatus", false, true, InvoiceStatus.names(), Alignment.HORIZONTAL);
         addEnumField("timeSheetStatus", false, true, TimeStatus.names(), Alignment.HORIZONTAL);
-        addField("notes", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("notes", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 

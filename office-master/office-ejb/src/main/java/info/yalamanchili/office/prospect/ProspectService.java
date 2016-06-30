@@ -56,6 +56,7 @@ import java.util.Map;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.dozer.Mapper;
@@ -464,6 +465,7 @@ public class ProspectService {
         List<Prospect> inProgressProspects = new ArrayList();
         List<Prospect> recruitingProspects2 = new ArrayList();
         List<Prospect> recruitingProspects3 = new ArrayList();
+        List<Prospect> recruitingProspects4 = new ArrayList();
 
         prospects = prospectDao.query(0, 10000);
         if (prospects.size() > 0) {
@@ -482,10 +484,27 @@ public class ProspectService {
                 if (prospect.getStatus().equals(ProspectStatus.RECRUITING) && DateUtils.differenceInDays(updatedTimeStamp, new Date()) >= 3) {
                     recruitingProspects3.add(prospect);
                 }
-
+                if (prospect.getStatus().equals(ProspectStatus.RECRUITING) && DateUtils.differenceInDays(updatedTimeStamp, new Date()) >= 1) {
+                    recruitingProspects4.add(prospect);
+                }
             }
         }
         if (inProgressProspects.size() > 0) {
+            Map<Long, List<Prospect>> inProgressProsCaseManagerList
+                    = inProgressProspects.stream().filter(w -> w.getManager() != null).collect(Collectors.groupingBy(w -> w.getManager()));
+
+            Map<Long, List<Prospect>> inProgressProsCaseManagerList1 = inProgressProspects.stream().filter(w -> w.getManager() == null && w.getAssigned() != null).collect(Collectors.groupingBy(w -> w.getAssigned()));
+            if (inProgressProsCaseManagerList1.size() > 0) {
+                for (Long id : inProgressProsCaseManagerList1.keySet()) {
+                    inProgressProsCaseManagerList.put(id, inProgressProsCaseManagerList1.get(id));
+                }
+            }
+            if (inProgressProsCaseManagerList.size() > 0) {
+                for (Long id : inProgressProsCaseManagerList.keySet()) {
+                    List<Prospect> caseManagerProspects = inProgressProsCaseManagerList.get(id);
+                    ProspectProcessBean.instance().sendIPProspectMailToCaseManager(caseManagerProspects, id);
+                }
+            }
             ProspectProcessBean.instance().sendIPProspectsNotification(inProgressProspects, inProgressProspects.size(), true);
         }
         if (recruitingProspects2.size() > 0) {
@@ -493,6 +512,14 @@ public class ProspectService {
         }
         if (recruitingProspects3.size() > 0) {
             ProspectProcessBean.instance().sendIPProspectsNotification(recruitingProspects3, recruitingProspects3.size(), true);
+        }
+        if (recruitingProspects4.size() > 0) {
+            Map<Long, List<Prospect>> recruitingProsRecruiterList
+                    = recruitingProspects4.stream().collect(Collectors.groupingBy(w -> w.getAssigned()));
+            for (Long id : recruitingProsRecruiterList.keySet()) {
+                List<Prospect> recruitingProspects = recruitingProsRecruiterList.get(id);
+                ProspectProcessBean.instance().sendIPProspectMailToCaseManager(recruitingProspects, id);
+            }
         }
     }
 

@@ -90,7 +90,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
     //TODO add invoice mgr role check using pre auth
     public Invoice saveInvoice(@PathParam("id") Long id, Invoice invoice) {
         
-        if (invoice.getInvoiceSentDate() != null && !invoice.getInvoiceSentDate().equals("")) {
+        if (invoice.getInvoiceSentDate() != null && invoice.getInvoiceDate() != null) {
             if (invoice.getInvoiceSentDate().before(invoice.getInvoiceDate())) {
                 throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invoiceSentDate.not.before.invoiceDate", "InvoiceSentDate should not be prior to InvoiceDate");
             }
