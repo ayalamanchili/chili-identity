@@ -15,6 +15,7 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.advancerequisition.AdvanceRequisitionSidePanel;
 import info.yalamanchili.office.client.advancerequisition.ReadAllAdvanceRequisitionPanel;
 import info.yalamanchili.office.client.expense.chkreq.ImmigrationCheckRequisitionSidePanel;
+import info.yalamanchili.office.client.expense.perdiem.ReadAllPerdiemPanel;
 import info.yalamanchili.office.client.expense.travelauthorization.ReadAllTravelAuthorizationPanel;
 import info.yalamanchili.office.client.expense.travelauthorization.TravelAuthorizationSidePanel;
 import info.yalamanchili.office.client.expensecategory.ReadAllExpenseCategoryPanel;
@@ -38,7 +39,7 @@ public class ExpenseMenu extends CMenuBar {
         }
         addMenuItem("Expense Reports", "Expense Reports", expenseReportsMaintainenceCmd);
         addMenuItem("Travel Authorization", "Travel Authorization", travelEcpenseMaintainenceCmd);
-
+        addMenuItem("Per Diem", "Per Diem", perDiemRequestMaintainenceCmd);
     }
 
     static Command expenseCategoriesMaintainenceCmd = new Command() {
@@ -48,6 +49,14 @@ public class ExpenseMenu extends CMenuBar {
             TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllExpenseCategoryPanel());
         }
     };
+    static Command perDiemRequestMaintainenceCmd = new Command() {
+        public void execute() {
+            TabPanel.instance().getExpensePanel().entityPanel.clear();
+            TabPanel.instance().getExpensePanel().sidePanelTop.clear();
+            TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllPerdiemPanel());
+        }
+    };
+    
     static Command expensadvancerequisitionCmd = new Command() {
         public void execute() {
             TabPanel.instance().getExpensePanel().entityPanel.clear();
