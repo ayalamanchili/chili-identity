@@ -1002,6 +1002,11 @@ public class OfficeStartup {
         vendorContact.setLastName("Vendor Contact");
         techSysVendor.addContact(vendorContact);
 
+        Contact accountPayContact = new Contact();
+        accountPayContact.setFirstName("Vendor AccPay Contact");
+        accountPayContact.setLastName("Vendor AccPay Contact");
+        techSysVendor.addAcctPayContact(accountPayContact);
+        
         return em.merge(techSysVendor);
     }
 
