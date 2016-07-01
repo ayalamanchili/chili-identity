@@ -2,7 +2,7 @@ Work From Home request Process
 -----
 
 - When employee submits a request and it creates a Task for Employee's Reports_To Manager.
-- Email has been sent to Reports_To Manager about the new task and also notification sent to if employee notified any employee while creating.
+- Email has been sent to Reports_To Manager about the new task and also notification sent to notified employee while creating.
 - The Request will be created with **Pending Manager Approval** status.
 - The Reports_To Manager approve or reject the task with in 48 hours.
 - Based on the action approved or rejection email is sent to employee and the status also changed **Approved/Rejected**.
