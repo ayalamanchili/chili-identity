@@ -12,7 +12,8 @@ package info.yalamanchili.office.client.admin.invoice;
 public enum InvoiceStatus {
 
     Estimated,
-    Confirmed;
+    Confirmed,
+    Submitted;
 
     public static String[] names() {
         InvoiceStatus[] values = values();
