@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.client.admin.invoice;
 
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -19,11 +20,13 @@ import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.Widget;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
+import info.chili.gwt.crud.CreateComposite.CreateCompositeType;		
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.FormatUtils;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
@@ -146,6 +149,7 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
         table.setText(0, 5, getKeyValue("EndDate"));
         table.setText(0, 6, getKeyValue("BillingRate"));
         table.setText(0, 7, getKeyValue("O.T. BillingRate"));
+        table.setText(0, 8, getKeyValue("Invoice Status"));
     }
 
     @Override
@@ -162,6 +166,23 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
             table.setText(i, 5, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
             table.setText(i, 6, FormatUtils.formarCurrency(JSONUtils.toString(clientInformation, "billingRate")));
             table.setText(i, 7, FormatUtils.formarCurrency(JSONUtils.toString(entity, "overTimeBillingRate")));
+            if (Auth.hasAnyOfRoles(ROLE.ROLE_INVOICE_MANAGER) && !(JSONUtils.toString(entity, "invoiceStatus").equalsIgnoreCase("Submitted"))) {
+                ClickableLink invoiceLink = new ClickableLink("Submit Invoice");
+                invoiceLink.setTitle(JSONUtils.toString(entity, "id"));
+                invoiceLink.addClickHandler((ClickEvent event) -> {
+                    submitInvoice(((ClickableLink) event.getSource()).getTitle());
+                });
+                table.setWidget(i, 8, invoiceLink);
+            }
+            else{
+                table.setText(i, 8, JSONUtils.toString(entity, "invoiceStatus"));
+            }
+        }
+    }
+    
+    protected void submitInvoice(String entityId) {
+        if (!entityId.isEmpty()) {
+            new GenericPopup(new SubmitInvoicePanel(entityId, CreateCompositeType.ADD)).show();
         }
     }
 
