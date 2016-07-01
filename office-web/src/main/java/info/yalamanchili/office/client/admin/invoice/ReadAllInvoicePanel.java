@@ -20,7 +20,7 @@ import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.Widget;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
-import info.chili.gwt.crud.CreateComposite.CreateCompositeType;		
+import info.chili.gwt.crud.CreateComposite.CreateCompositeType;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
@@ -97,11 +97,11 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        postDeleteSuccess();
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                postDeleteSuccess();
+            }
+        });
     }
 
     private String getDeleteURL(String entityId) {
@@ -124,11 +124,11 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getInvocieURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        postFetchTable(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                postFetchTable(result);
+            }
+        });
     }
 
     private String getInvocieURL(Integer start, String limit) {
@@ -170,19 +170,18 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
                 ClickableLink invoiceLink = new ClickableLink("Submit Invoice");
                 invoiceLink.setTitle(JSONUtils.toString(entity, "id"));
                 invoiceLink.addClickHandler((ClickEvent event) -> {
-                    submitInvoice(((ClickableLink) event.getSource()).getTitle());
+                    submitInvoice(((ClickableLink) event.getSource()).getTitle(), clientInfoId);
                 });
                 table.setWidget(i, 8, invoiceLink);
-            }
-            else{
+            } else {
                 table.setText(i, 8, JSONUtils.toString(entity, "invoiceStatus"));
             }
         }
     }
-    
-    protected void submitInvoice(String entityId) {
+
+    protected void submitInvoice(String entityId, String clientInfoId) {
         if (!entityId.isEmpty()) {
-            new GenericPopup(new SubmitInvoicePanel(entityId, CreateCompositeType.ADD)).show();
+            new GenericPopup(new SubmitInvoicePanel(entityId, clientInfoId, CreateCompositeType.ADD)).show();
         }
     }
 
@@ -205,13 +204,13 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
     public void copyClicked(final String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(OfficeWelcome.constants.root_url() + "invoice/clone/" + entityId, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        new ResponseStatusWidget().show("Copy created. Please update and save.");
-                        TabPanel.instance().reportingPanel.entityPanel.clear();
-                        TabPanel.instance().reportingPanel.entityPanel.add(new UpdateInvoicePanel(JSONParser.parseLenient(arg0).isObject()));
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                new ResponseStatusWidget().show("Copy created. Please update and save.");
+                TabPanel.instance().reportingPanel.entityPanel.clear();
+                TabPanel.instance().reportingPanel.entityPanel.add(new UpdateInvoicePanel(JSONParser.parseLenient(arg0).isObject()));
+            }
+        });
     }
 
     @Override
@@ -270,7 +269,7 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
     protected void createButtonClicked() {
         new GenericPopup(new UpdateInvoicePanel(clientInfoId, false)).show();
     }
-    
+
     private String getFormattedDate(String date) {
         String[] dates = date.split("-");
         String formatteddate = "";

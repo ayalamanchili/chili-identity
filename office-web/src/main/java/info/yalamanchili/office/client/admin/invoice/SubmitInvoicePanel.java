@@ -5,25 +5,19 @@
  */
 package info.yalamanchili.office.client.admin.invoice;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
-import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
-import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import java.util.logging.Logger;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.contracts.ReadContractsPanel;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  *
@@ -35,10 +29,12 @@ public class SubmitInvoicePanel extends CreateComposite {
 
     protected static SubmitInvoicePanel instance;
     protected String id;
+    protected String clientInfoId;
 
-    public SubmitInvoicePanel(String id, CreateCompositeType type) {
+    public SubmitInvoicePanel(String id, String clientInfoId, CreateCompositeType type) {
         super(type); // to add Invoice Sent date field
         this.id = id;
+        this.clientInfoId = clientInfoId;
         instance = this;
         initCreateComposite("Invoice", OfficeWelcome.constants2);
     }
@@ -78,7 +74,7 @@ public class SubmitInvoicePanel extends CreateComposite {
         new ResponseStatusWidget().show("Successfully Submitted Invoice Information");
         TabPanel.instance().reportingPanel.entityPanel.clear();
         GenericPopup.instance().hide();
-        TabPanel.instance().reportingPanel.entityPanel.add(new ReadContractsPanel(id));
+        TabPanel.instance().reportingPanel.entityPanel.add(new ReadContractsPanel(clientInfoId));
     }
 
     @Override
