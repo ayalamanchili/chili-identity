@@ -10,7 +10,6 @@ package info.yalamanchili.office.client.admin.invoice;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
-import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
@@ -24,7 +23,6 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.contracts.ReadContractsPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
-import java.util.Date;
 import java.util.logging.Logger;
 
 /**
@@ -81,7 +79,6 @@ public class UpdateInvoicePanel extends UpdateComposite {
         assignEntityValueFromField("invoiceStatus", entity);
         assignEntityValueFromField("timeSheetStatus", entity);
         assignEntityValueFromField("notes", entity);
-        //entity.put("invoiceDate", new JSONString(new Date().toString()));
         return entity;
     }
 
@@ -118,6 +115,10 @@ public class UpdateInvoicePanel extends UpdateComposite {
             assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
         } else {
             assignFieldValueFromEntity("employee", entity, DataType.STRING_FIELD);
+        }
+        if (isUpdate) {
+            assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
+            assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         }
         assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("invoiceNumber", entity, DataType.STRING_FIELD);

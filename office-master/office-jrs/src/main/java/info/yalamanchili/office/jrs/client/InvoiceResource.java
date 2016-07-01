@@ -128,6 +128,8 @@ public class InvoiceResource extends CRUDResource<Invoice> {
         inv.setOverTimeBillingRate(invoice.getOverTimeBillingRate());
         inv.setInvoiceDate(invoice.getInvoiceDate());
         inv.setHours(invoice.getHours());
+        inv.setStartDate(invoice.getStartDate());
+        inv.setEndDate(invoice.getEndDate());
         inv.setInvoiceStatus(invoice.getInvoiceStatus());
         inv.setTimeSheetStatus(invoice.getTimeSheetStatus());
         inv.setInvoiceNumber(invoice.getInvoiceNumber());
@@ -138,7 +140,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
         return inv;
     }
     
-        @PUT
+    @PUT
     @Path("/submit-invoice/{id}")
     //TODO add invoice mgr role check using pre auth
     public Invoice submit(@PathParam("id") Long id, Invoice invoice) {
