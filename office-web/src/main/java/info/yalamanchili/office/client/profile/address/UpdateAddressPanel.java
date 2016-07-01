@@ -41,11 +41,18 @@ public class UpdateAddressPanel extends UpdateComposite implements ChangeHandler
         ALL, MIN, CHANGE_WITH_TYPE_NOTIFY
     }
     UpdateAddressPanelType type;
+    protected boolean populateComments = true;
 
     public UpdateAddressPanel(JSONObject entity, UpdateAddressPanelType type) {
         this.type = type;
         initUpdateComposite(entity, "Address", OfficeWelcome.constants);
 
+    }
+
+    public UpdateAddressPanel(JSONObject entity, UpdateAddressPanelType type, boolean populateComments) {
+        this.type = type;
+        this.populateComments = populateComments;
+        initUpdateComposite(entity, "Address", OfficeWelcome.constants);
     }
 
     @Override
@@ -111,7 +118,9 @@ public class UpdateAddressPanel extends UpdateComposite implements ChangeHandler
         if (UpdateAddressPanelType.ALL.equals(type)) {
             assignFieldValueFromEntity("addressType", entity, null);
         }
-        populateComments();
+        if (populateComments == true) {
+            populateComments();
+        }
     }
     EnumField statesF;
     EnumField countriesF;
