@@ -101,11 +101,11 @@ public class ReadInvoicePanel extends ReadComposite {
         addField("invoiceSentDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);  
         addField("billingRate", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("overTimeBillingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-        addField("hours", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        addField("hours", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addEnumField("invoiceFrequency", true, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         addEnumField("invoiceStatus", true, true, InvoiceStatus.names(), Alignment.HORIZONTAL);
         addEnumField("timeSheetStatus", true, true, TimeStatus.names(), Alignment.HORIZONTAL);
-        addField("notes", true, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("notes", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
