@@ -14,5 +14,6 @@ package info.yalamanchili.office.entity.client;
  */
 public enum InvoiceStatus {
     Estimated,
-    Confirmed   
+    Confirmed,
+    Submitted;
 }
