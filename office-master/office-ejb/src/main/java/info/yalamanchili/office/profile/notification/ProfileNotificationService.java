@@ -12,7 +12,6 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.chili.email.Email;
-import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.Feedback.Feedback;
 import info.yalamanchili.office.entity.message.Message;
@@ -26,7 +25,6 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
-import static org.activiti.engine.impl.util.json.XMLTokener.entity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.Async;
@@ -101,8 +99,9 @@ public class ProfileNotificationService {
         }
         email.addTo(primaryEmail);
         email.setHtml(Boolean.TRUE);
+        email.setRichText(Boolean.TRUE);
         email.setSubject("Employee Password Reset");
-        email.setBody(" Your password has been reset \n Username: " + emp.getEmployeeId() + " \n Password: " + resetPassword + "\n please change your password after you login from your profile \n Portal URL: https://apps.sstech.us/portal");
+        email.setBody("<b>Your password has been reset</br></br><i>Username</i></b>: " + emp.getEmployeeId() + "</br><b><i>Password</i></b>: " + resetPassword + "</br> please change your password after you login from your profile </br> Portal URL: https://apps.sstech.us/portal");
         messagingService.sendEmail(email);
     }
 
