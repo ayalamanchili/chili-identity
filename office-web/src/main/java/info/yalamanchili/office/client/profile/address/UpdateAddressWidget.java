@@ -20,6 +20,11 @@ public class UpdateAddressWidget extends UpdateAddressPanel {
         super(entity, type);
         update.setVisible(false);
     }
+    
+    public UpdateAddressWidget(JSONObject entity, UpdateAddressPanelType type, boolean populateComments) {
+        super(entity, type, populateComments);
+        update.setVisible(false);
+    }
 
     @Override
     public JSONObject populateEntityFromFields() {
