@@ -287,7 +287,6 @@ public class PerDiemRequestPanel extends CreateComposite implements ClickHandler
                                 }
                             }
                         } else {
-                            logger.info("else");
                             if (live50MilesAway == true) {
                                 entityFieldsPanel.add(tac3);
                                 entityFieldsPanel.add(WorkAddr);
