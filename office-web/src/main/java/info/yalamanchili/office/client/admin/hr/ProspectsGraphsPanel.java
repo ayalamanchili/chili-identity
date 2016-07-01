@@ -15,6 +15,7 @@ import com.googlecode.gwt.charts.client.ChartPackage;
 import com.googlecode.gwt.charts.client.ColumnType;
 import com.googlecode.gwt.charts.client.DataTable;
 import com.googlecode.gwt.charts.client.corechart.PieChart;
+import info.yalamanchili.office.client.OfficeWelcome;
 
 /**
  *
@@ -39,20 +40,24 @@ public class ProspectsGraphsPanel extends Composite {
         chartLoader.loadApi(() -> {
             panel.add(noOfReqReceivedL);
             panel.add(getReqReceivedChart());
-            panel.add(petitionForL);
-            panel.add(getPetetionForChart());
-            panel.add(employeerL);
-            panel.add(getEmployeerChart());
-            panel.add(placedByL);
-            panel.add(getPlacedByChart());
+            if (graphsDto.containsKey("PetitionUnknown")) {
+                panel.add(petitionForL);
+                panel.add(getPetetionForChart());
+                panel.add(employeerL);
+                panel.add(getEmployeerChart());
+                panel.add(placedByL);
+                panel.add(getPlacedByChart());
+            }
             showProspectsGraphs(graphsDto);
         });
     }
 
     protected void showProspectsGraphs(JSONObject graphsDto) {
-        drawPetetionForChart(graphsDto);
-        drawEmployeeTypeChart(graphsDto);
-        drawPlacedByChart(graphsDto);
+        if (graphsDto.containsKey("PetitionUnknown")) {
+            drawPetetionForChart(graphsDto);
+            drawEmployeeTypeChart(graphsDto);
+            drawPlacedByChart(graphsDto);
+        }
         drawNoOfReqChart(graphsDto);
     }
 
@@ -60,7 +65,12 @@ public class ProspectsGraphsPanel extends Composite {
      * EmployeeType for chart
      */
     protected void drawPlacedByChart(JSONObject graphsDto) {
-        double number = graphsDto.get(PlacedBy.By_Recruiter.name()).isNumber().doubleValue() + graphsDto.get(PlacedBy.Corporate_Solutions_Team.name()).isNumber().doubleValue() + graphsDto.get(PlacedBy.Own_Placement.name()).isNumber().doubleValue() + graphsDto.get("PlacedByUnknown").isNumber().doubleValue();
+        double number = 0;
+        if (graphsDto.containsKey("PlacedByUnknown") == true) {
+            number = graphsDto.get(PlacedBy.By_Recruiter.name()).isNumber().doubleValue() + graphsDto.get(PlacedBy.Corporate_Solutions_Team.name()).isNumber().doubleValue() + graphsDto.get(PlacedBy.Own_Placement.name()).isNumber().doubleValue() + graphsDto.get("PlacedByUnknown").isNumber().doubleValue();
+        } else {
+            number = graphsDto.get(PlacedBy.By_Recruiter.name()).isNumber().doubleValue() + graphsDto.get(PlacedBy.Corporate_Solutions_Team.name()).isNumber().doubleValue() + graphsDto.get(PlacedBy.Own_Placement.name()).isNumber().doubleValue();
+        }
         placedByL.setText("Placed By Chart : (" + number + ")");
         DataTable dataTable = DataTable.create();
         dataTable.addColumn(ColumnType.STRING, "PlacedBy");
@@ -91,7 +101,12 @@ public class ProspectsGraphsPanel extends Composite {
      * EmployeeType for chart
      */
     protected void drawEmployeeTypeChart(JSONObject graphsDto) {
-        double number = graphsDto.get(TransferEmployeeType.Corporate_Employee.name()).isNumber().doubleValue() + graphsDto.get(TransferEmployeeType.Field_Employee.name()).isNumber().doubleValue() + graphsDto.get("TrfEmpUnknown").isNumber().doubleValue();
+        double number = 0;
+        if (graphsDto.containsKey("TrfEmpUnknown") == true) {
+            number = graphsDto.get(TransferEmployeeType.Corporate_Employee.name()).isNumber().doubleValue() + graphsDto.get(TransferEmployeeType.Field_Employee.name()).isNumber().doubleValue() + graphsDto.get("TrfEmpUnknown").isNumber().doubleValue();
+        } else {
+            number = graphsDto.get(TransferEmployeeType.Corporate_Employee.name()).isNumber().doubleValue() + graphsDto.get(TransferEmployeeType.Field_Employee.name()).isNumber().doubleValue();
+        }
         employeerL.setText("Transfer Employee Chart : (" + number + ")");
         DataTable dataTable = DataTable.create();
         dataTable.addColumn(ColumnType.STRING, "EmployeeType");
@@ -119,7 +134,13 @@ public class ProspectsGraphsPanel extends Composite {
      * Petetion for chart
      */
     protected void drawPetetionForChart(JSONObject graphsDto) {
-        double number = graphsDto.get(PetitionFor.Client_Project.name()).isNumber().doubleValue() + graphsDto.get(PetitionFor.In_House.name()).isNumber().doubleValue() + graphsDto.get("PetitionUnknown").isNumber().doubleValue();
+        double number = 0;
+        if (graphsDto.containsKey("PetitionUnknown") == true) {
+            OfficeWelcome.logger.info("petition chart");
+            number = graphsDto.get(PetitionFor.Client_Project.name()).isNumber().doubleValue() + graphsDto.get(PetitionFor.In_House.name()).isNumber().doubleValue() + graphsDto.get("PetitionUnknown").isNumber().doubleValue();
+        } else {
+            number = graphsDto.get(PetitionFor.Client_Project.name()).isNumber().doubleValue() + graphsDto.get(PetitionFor.In_House.name()).isNumber().doubleValue();
+        }
         petitionForL.setText("Petition For Chart : (" + number + ")");
         DataTable dataTable = DataTable.create();
         dataTable.addColumn(ColumnType.STRING, "PetitionFor");
