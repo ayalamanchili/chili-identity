@@ -36,6 +36,8 @@ public enum ProspectStatus {
             case IN_PROGRESS:
                 roles.add(ProspectStatus.RECRUITING.name());
                 roles.add(ProspectStatus.ONHOLD.name());
+                roles.add(ProspectStatus.CLOSED_WON.name());
+                roles.add(ProspectStatus.CLOSED_LOST.name());
                 break;
             case RECRUITING:
                 roles.add(ProspectStatus.BENCH.name());
