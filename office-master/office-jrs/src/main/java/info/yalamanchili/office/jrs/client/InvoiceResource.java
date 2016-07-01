@@ -16,6 +16,7 @@ import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.client.Invoice;
+import info.yalamanchili.office.entity.client.InvoiceStatus;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.invoice.InvoiceSearchDto;
@@ -135,6 +136,17 @@ public class InvoiceResource extends CRUDResource<Invoice> {
         inv.setInvoiceSentDate(invoice.getInvoiceSentDate());
         inv.setNotes(invoice.getNotes());
         inv.setId(id);
+        em.merge(inv);
+        return inv;
+    }
+    
+        @PUT
+    @Path("/submit-invoice/{id}")
+    //TODO add invoice mgr role check using pre auth
+    public Invoice submit(@PathParam("id") Long id, Invoice invoice) {
+        Invoice inv = invoiceDao.findById(id);
+        inv.setInvoiceStatus(InvoiceStatus.Submitted);
+        inv.setInvoiceSentDate(invoice.getInvoiceSentDate());
         em.merge(inv);
         return inv;
     }
