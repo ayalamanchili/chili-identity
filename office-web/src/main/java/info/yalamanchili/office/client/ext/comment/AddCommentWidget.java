@@ -136,4 +136,13 @@ public class AddCommentWidget extends CreateComposite {
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "comment/" + targetClassName + "/" + parentId;
     }
+    
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        if (entity.get("comment") == null) {
+            fields.get("comment").setMessage("Comments Can not be null");
+            return false;
+        }
+        return true;
+    }
 }
