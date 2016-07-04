@@ -48,21 +48,21 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Scope("prototype")
 public class InvoiceResource extends CRUDResource<Invoice> {
-    
+
     @Autowired
     public InvoiceDao invoiceDao;
-    
+
     @PersistenceContext
     protected EntityManager em;
-    
+
     @Autowired
     protected Mapper mapper;
-    
+
     @Override
     public CRUDDao getDao() {
         return invoiceDao;
     }
-    
+
     @GET
     @Path("/{id}/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_INVOICE_MANAGER')")
@@ -73,7 +73,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
         tableObj.setSize(Long.valueOf(ci.getInvoice().size()));
         return tableObj;
     }
-    
+
     @GET
     @Path("/{start}/{limit}")
     //TODO add invoice mgr role check using pre auth
@@ -84,13 +84,13 @@ public class InvoiceResource extends CRUDResource<Invoice> {
         tableObj.setSize(getDao().size());
         return tableObj;
     }
-    
+
     @PUT
     @Validate
     @Path("/save/{id}")
     //TODO add invoice mgr role check using pre auth
     public Invoice saveInvoice(@PathParam("id") Long id, Invoice invoice) {
-        
+
         if (invoice.getInvoiceSentDate() != null && invoice.getInvoiceDate() != null) {
             if (invoice.getInvoiceSentDate().before(invoice.getInvoiceDate())) {
                 throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invoiceSentDate.not.before.invoiceDate", "InvoiceSentDate should not be prior to InvoiceDate");
@@ -114,10 +114,9 @@ public class InvoiceResource extends CRUDResource<Invoice> {
         inv.setClientInformation(ci);
         ClientInformationDao.instance().save(ci);
         InvoiceDao.instance().save(inv);
-        //sendInvoiceCreatedNotification(inv);
         return invoice;
     }
-    
+
     @PUT
     @Validate
     @Path("/update-Invoice/{id}")
@@ -126,20 +125,18 @@ public class InvoiceResource extends CRUDResource<Invoice> {
         Invoice inv = invoiceDao.findById(id);
         inv.setEmployee(invoice.getEmployee());
         inv.setOverTimeBillingRate(invoice.getOverTimeBillingRate());
-        inv.setInvoiceDate(invoice.getInvoiceDate());
         inv.setHours(invoice.getHours());
         inv.setStartDate(invoice.getStartDate());
         inv.setEndDate(invoice.getEndDate());
         inv.setInvoiceStatus(invoice.getInvoiceStatus());
         inv.setTimeSheetStatus(invoice.getTimeSheetStatus());
         inv.setInvoiceNumber(invoice.getInvoiceNumber());
-        inv.setInvoiceSentDate(invoice.getInvoiceSentDate());
         inv.setNotes(invoice.getNotes());
         inv.setId(id);
         em.merge(inv);
         return inv;
     }
-    
+
     @PUT
     @Path("/submit-invoice/{id}")
     //TODO add invoice mgr role check using pre auth
@@ -150,30 +147,30 @@ public class InvoiceResource extends CRUDResource<Invoice> {
         em.merge(inv);
         return inv;
     }
-    
+
     @GET
     @Path("/clone/{id}")
     @Override
     public Invoice clone(@PathParam("id") Long id) {
         return invoiceDao.clone(id);
     }
-    
+
     @GET
     @Path("/read/{id}")
     //TODO add invoice mgr role check using pre auth
     public Invoice readInvoice(@PathParam("id") Long id) {
         return invoiceDao.findById(id);
     }
-    
+
     @PUT
     @Path("/delete/{id}")
     @Override
     //TODO add invoice mgr role check using pre auth
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
-        
+
     }
-    
+
     @GET
     @Path("/search/{searchText}/{start}/{limit}")
     @Transactional(readOnly = true)
@@ -187,7 +184,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
         //TODO add remaining columns
         return getDao().sqlSearch(searchText, start, limit, columns, false);
     }
-    
+
     @GET
     @Path("/search-invoice-by-emp/{start}/{limit}")
     @Transactional(readOnly = true)
@@ -197,7 +194,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
         List<Invoice> search = invoiceDao.search(emp.getFirstName(), emp.getLastName(), start, limit);
         return search;
     }
-    
+
     @PUT
     @Path("/adv-search/{start}/{limit}")
     @Transactional(readOnly = true)
@@ -205,19 +202,11 @@ public class InvoiceResource extends CRUDResource<Invoice> {
     public List<Invoice> search(InvoiceSearchDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {
         return InvoiceService.instance().search(dto, start, limit);
     }
-    
+
     @GET
     @Path("/invoice-summary-report")
     //TODO add invoice mgr role check using pre auth
     public void generateInvoiceSummaryReport() {
         InvoiceService.instance().generateInvoiceSummaryReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
-    
-    @GET
-    @Path("/active-clientinfo-report")
-    //TODO add invoice mgr role check using pre auth
-    public void generateActiveInvoicesReport() {
-        InvoiceService.instance().generateActiveInvoicesReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
-    }
-    
 }

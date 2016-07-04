@@ -65,10 +65,10 @@ public class InvoiceService {
         if (searchDto.getEndDate() != null) {
             query.setParameter("endDateParam", searchDto.getEndDate(), TemporalType.DATE);
         }
-        if (searchDto.getInvoiceDate()!= null) {
+        if (searchDto.getInvoiceDate() != null) {
             query.setParameter("invoiceDateParam", searchDto.getInvoiceDate(), TemporalType.DATE);
         }
-        if (searchDto.getInvoiceSentDate()!= null) {
+        if (searchDto.getInvoiceSentDate() != null) {
             query.setParameter("invoiceSentDateParam", searchDto.getInvoiceSentDate(), TemporalType.DATE);
         }
         if (!Strings.isNullOrEmpty(searchDto.getVendor())) {
@@ -80,7 +80,7 @@ public class InvoiceService {
         if (searchDto.getTimeSheetStatus() != null) {
             query.setParameter("timeSheetStatusParam", searchDto.getTimeSheetStatus());
         }
-        if (searchDto.getInvoiceStatus()!= null) {
+        if (searchDto.getInvoiceStatus() != null) {
             query.setParameter("invoiceStatusParam", searchDto.getInvoiceStatus());
         }
         return query.getResultList();
@@ -102,10 +102,10 @@ public class InvoiceService {
         if (searchDto.getEndDate() != null) {
             queryStr.append("inv.clientInformation.endDate =:endDateParam").append(" and ");
         }
-        if (searchDto.getInvoiceDate()!= null) {
+        if (searchDto.getInvoiceDate() != null) {
             queryStr.append("inv.invoiceDate =:invoiceDateParam").append(" and ");
         }
-        if (searchDto.getInvoiceSentDate()!= null) {
+        if (searchDto.getInvoiceSentDate() != null) {
             queryStr.append("inv.invoiceSentDate =:invoiceSentDateParam").append(" and ");
         }
         if (!Strings.isNullOrEmpty(searchDto.getVendor())) {
@@ -114,10 +114,10 @@ public class InvoiceService {
         if (searchDto.getClientInformationCompany() != null) {
             queryStr.append("inv.clientInformation.company =:companyParam").append(" and ");
         }
-        if (searchDto.getTimeSheetStatus()!= null) {
+        if (searchDto.getTimeSheetStatus() != null) {
             queryStr.append("inv.timeSheetStatus =:timeSheetStatusParam").append(" and ");
         }
-        if (searchDto.getInvoiceStatus()!= null) {
+        if (searchDto.getInvoiceStatus() != null) {
             queryStr.append("inv.invoiceStatus =:invoiceStatusParam").append(" and ");
         }
         return queryStr.toString().substring(0, queryStr.toString().lastIndexOf("and"));
@@ -130,13 +130,8 @@ public class InvoiceService {
         for (Invoice invoice : invoiceDao.query(0, 100000)) {
             res.add(InvoiceDto.map(mapper, invoice));
         }
-        String[] columnOrder = new String[]{"employee", "itemNumber", "invoiceNumber", "startDate", "endDate", "invoiceDate", "billingRate", "overTimeBillingRate", "hours", "invoicestatus", "invoicefrequency", "timeSheetstatus"};
+        String[] columnOrder = new String[]{"employee", "itemNumber", "invoiceNumber", "startDate", "endDate", "invoiceDate", "invoiceSentDate", "billingRate", "overTimeBillingRate", "hours", "invoicestatus", "invoicefrequency", "timeSheetstatus"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Invoice Summary Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
-    }
-
-    @Async
-    @Transactional
-    public void generateActiveInvoicesReport(String email) {
     }
 
     @XmlRootElement
@@ -163,5 +158,4 @@ public class InvoiceService {
             this.entities = entities;
         }
     }
-
 }

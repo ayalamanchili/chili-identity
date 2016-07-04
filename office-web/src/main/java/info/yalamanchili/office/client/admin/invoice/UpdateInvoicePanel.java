@@ -86,16 +86,16 @@ public class UpdateInvoicePanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postUpdateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postUpdateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -157,7 +157,11 @@ public class UpdateInvoicePanel extends UpdateComposite {
         addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("hours", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addEnumField("invoiceFrequency", true, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
-        addEnumField("invoiceStatus", false, true, InvoiceStatus.names(), Alignment.HORIZONTAL);
+        if (isUpdate) {
+            addEnumField("invoiceStatus", false, true, InvoiceStatus.names(), Alignment.HORIZONTAL);
+        } else {
+            addEnumField("invoiceStatus", false, true, InvoiceStatus.getValues(), Alignment.HORIZONTAL);
+        }
         addEnumField("timeSheetStatus", false, true, TimeStatus.names(), Alignment.HORIZONTAL);
         addField("notes", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         alignFields();
@@ -180,12 +184,12 @@ public class UpdateInvoicePanel extends UpdateComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                JSONObject entity1 = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity1);
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject entity1 = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity1);
+                    }
+                });
     }
 
     protected String getReadURI() {

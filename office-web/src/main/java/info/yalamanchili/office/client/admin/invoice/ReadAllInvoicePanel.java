@@ -166,7 +166,7 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
             table.setText(i, 5, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
             table.setText(i, 6, FormatUtils.formarCurrency(JSONUtils.toString(clientInformation, "billingRate")));
             table.setText(i, 7, FormatUtils.formarCurrency(JSONUtils.toString(entity, "overTimeBillingRate")));
-            if (Auth.hasAnyOfRoles(ROLE.ROLE_INVOICE_MANAGER) && !(JSONUtils.toString(entity, "invoiceStatus").equalsIgnoreCase("Submitted"))) {
+            if (Auth.hasAnyOfRoles(ROLE.ROLE_INVOICE_MANAGER) && !(JSONUtils.toString(entity, "invoiceStatus").equalsIgnoreCase("Submitted")) && (displayALL==false)) {
                 ClickableLink invoiceLink = new ClickableLink("Submit Invoice");
                 invoiceLink.setTitle(JSONUtils.toString(entity, "id"));
                 invoiceLink.addClickHandler((ClickEvent event) -> {
@@ -189,7 +189,7 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
     protected void addOptionsWidget(int row, JSONObject entity) {
         if (displayALL == false) {
             if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
-                createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE);
+                createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE);
             } else if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS_FULL_VIEW)) {
                 createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE);
             } else {
