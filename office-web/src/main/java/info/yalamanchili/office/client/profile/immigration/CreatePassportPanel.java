@@ -24,7 +24,6 @@ import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
-import info.chili.gwt.fields.StringField;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
@@ -138,8 +137,6 @@ public class CreatePassportPanel extends CreateComposite implements ChangeHandle
         addField("dateOfBirth", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("countryOfBirth", false, false, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
         addEnumField("stateOfBirth", false, false, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
-        addEnumField("stateOfBirth", false, false, IndiaStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
-        addEnumField("stateOfBirth", false, false, CanadaStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
         addField("placeOfBirth", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("nationality", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("countryOfNationality", false, false, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
@@ -181,7 +178,6 @@ public class CreatePassportPanel extends CreateComposite implements ChangeHandle
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(haveYouEverLostPassport.getBox()) && haveYouEverLostPassport.getValue()) {
-            logger.info("dddddddddddddddd");
             reasonF.setVisible(true);
         } else {
             reasonF.setVisible(false);
@@ -191,27 +187,30 @@ public class CreatePassportPanel extends CreateComposite implements ChangeHandle
 
     @Override
     public void onChange(ChangeEvent event) {
-        switch (countriesF.getValue()) {
-            case "USA":
-                statesF.setValues(USAStatesFactory.getStates().toArray(new String[0]));
-                break;
-            case "INDIA":
-                statesF.setValues(IndiaStatesFactory.getStates().toArray(new String[0]));
-                break;
-            case "CANADA":
-                statesF.setValues(CanadaStatesFactory.getStates().toArray(new String[0]));
-                break;
-        }
-        switch (countriesS.getValue()) {
-            case "USA":
-                stateF.setValues(USAStatesFactory.getStates().toArray(new String[0]));
-                break;
-            case "INDIA":
-                stateF.setValues(IndiaStatesFactory.getStates().toArray(new String[0]));
-                break;
-            case "CANADA":
-                stateF.setValues(CanadaStatesFactory.getStates().toArray(new String[0]));
-                break;
+        if (event.getSource().equals(countriesF.listBox)) {
+            switch (countriesF.getValue()) {
+                case "USA":
+                    statesF.setValues(USAStatesFactory.getStates().toArray(new String[0]));
+                    break;
+                case "INDIA":
+                    statesF.setValues(IndiaStatesFactory.getStates().toArray(new String[0]));
+                    break;
+                case "CANADA":
+                    statesF.setValues(CanadaStatesFactory.getStates().toArray(new String[0]));
+                    break;
+            }
+        } else if (event.getSource().equals(countriesS.listBox)) {
+            switch (countriesS.getValue()) {
+                case "USA":
+                    stateF.setValues(USAStatesFactory.getStates().toArray(new String[0]));
+                    break;
+                case "INDIA":
+                    stateF.setValues(IndiaStatesFactory.getStates().toArray(new String[0]));
+                    break;
+                case "CANADA":
+                    stateF.setValues(CanadaStatesFactory.getStates().toArray(new String[0]));
+                    break;
+            }
         }
     }
 

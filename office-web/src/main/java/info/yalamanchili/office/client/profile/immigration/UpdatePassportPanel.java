@@ -14,6 +14,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
@@ -25,7 +26,6 @@ import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
-import info.chili.gwt.fields.StringField;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
@@ -41,22 +41,22 @@ import java.util.logging.Logger;
  * @author Madhu.Badiginchala
  */
 public class UpdatePassportPanel extends UpdateComposite implements ChangeHandler, ClickHandler {
-    
+
     private static Logger logger = Logger.getLogger(UpdatePassportPanel.class.getName());
 
     public UpdatePassportPanel(JSONObject entity) {
-        
+
         initUpdateComposite(entity, "Passport", OfficeWelcome.constants2);
     }
 
     protected EnumField countriesF;
     protected EnumField statesF;
-    
+
     protected EnumField countriesS;
-    protected EnumField stateF;        
-    
+    protected EnumField stateF;
+
     protected BooleanField haveYouEverLostPassport;
-    
+
     @Override
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("passportNumber", entity);
@@ -83,16 +83,16 @@ public class UpdatePassportPanel extends UpdateComposite implements ChangeHandle
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postUpdateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postUpdateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -128,10 +128,10 @@ public class UpdatePassportPanel extends UpdateComposite implements ChangeHandle
     protected void addListeners() {
         if (countriesF != null) {
             countriesF.listBox.addChangeHandler(this);
-        } 
+        }
         if (countriesS != null) {
             countriesS.listBox.addChangeHandler(this);
-        } 
+        }
         haveYouEverLostPassport.getBox().addClickHandler(this);
     }
 
@@ -140,7 +140,7 @@ public class UpdatePassportPanel extends UpdateComposite implements ChangeHandle
     }
 
     TextAreaField reasonF;
-    
+
     @Override
     protected void addWidgets() {
         addField("passportNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -148,13 +148,15 @@ public class UpdatePassportPanel extends UpdateComposite implements ChangeHandle
         addField("passportIssuedDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("passportExpiryDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("passportExpirationAlertIndicator", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        JSONValue service = entity.get("passportCountryOfIssuance");
         addEnumField("passportCountryOfIssuance", false, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
-        addEnumField("passportStateOfIssuance", false, false, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+        populateValues(service);
+        addField("passportStateOfIssuance", false, true, DataType.ENUM_FIELD);
         addField("dateOfBirth", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        JSONValue service1 = entity.get("countryOfBirth");
         addEnumField("countryOfBirth", false, false, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
-        addEnumField("stateOfBirth", false, false, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
-        addEnumField("stateOfBirth", false, false, IndiaStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
-        addEnumField("stateOfBirth", false, false, CanadaStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+        populateValues1(service1);
+        addField("stateOfBirth", false, true, DataType.ENUM_FIELD);
         addField("placeOfBirth", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("nationality", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("countryOfNationality", false, false, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
@@ -163,9 +165,9 @@ public class UpdatePassportPanel extends UpdateComposite implements ChangeHandle
         addField("reason", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("travelDocumentNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         countriesF = (EnumField) fields.get("passportCountryOfIssuance");
-        statesF = (EnumField) fields.get("passportStateOfIssuance");        
+        statesF = (EnumField) fields.get("passportStateOfIssuance");
         countriesS = (EnumField) fields.get("countryOfBirth");
-        stateF = (EnumField) fields.get("stateOfBirth");   
+        stateF = (EnumField) fields.get("stateOfBirth");
         reasonF = (TextAreaField) fields.get("reason");
         reasonF.setVisible(false);
         haveYouEverLostPassport = (BooleanField) fields.get("haveYouEverLostPassport");
@@ -176,11 +178,39 @@ public class UpdatePassportPanel extends UpdateComposite implements ChangeHandle
     protected void addWidgetsBeforeCaptionPanel() {
     }
 
+    protected void populateValues(JSONValue value) {
+        switch (value.isString().stringValue()) {
+            case "USA":
+                addEnumField("passportStateOfIssuance", false, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+                break;
+            case "INDIA":
+                addEnumField("passportStateOfIssuance", false, true, IndiaStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+                break;
+            case "CANADA":
+                addEnumField("passportStateOfIssuance", false, true, CanadaStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+                break;
+        }
+    }
+
+    protected void populateValues1(JSONValue value) {
+        switch (value.isString().stringValue()) {
+            case "USA":
+                addEnumField("stateOfBirth", false, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+                break;
+            case "INDIA":
+                addEnumField("stateOfBirth", false, true, IndiaStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+                break;
+            case "CANADA":
+                addEnumField("stateOfBirth", false, true, CanadaStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+                break;
+        }
+    }
+
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "passport/save/" + TreeEmployeePanel.instance().getEntityId();
     }
-    
+
     @Override
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
@@ -189,7 +219,7 @@ public class UpdatePassportPanel extends UpdateComposite implements ChangeHandle
                     public void onResponse(String response) {
                         entity = (JSONObject) JSONParser.parseLenient(response);
                         populateFieldsFromEntity(entity);
-                        
+
                     }
                 });
     }
@@ -208,7 +238,7 @@ public class UpdatePassportPanel extends UpdateComposite implements ChangeHandle
         }
         return true;
     }
-    
+
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(haveYouEverLostPassport.getBox()) && haveYouEverLostPassport.getValue()) {
@@ -219,30 +249,33 @@ public class UpdatePassportPanel extends UpdateComposite implements ChangeHandle
         }
         super.onClick(event);
     }
-    
+
     @Override
     public void onChange(ChangeEvent event) {
-        switch (countriesF.getValue()) {
-            case "USA":
-                statesF.setValues(USAStatesFactory.getStates().toArray(new String[0]));
-                break;
-            case "INDIA":
-                statesF.setValues(IndiaStatesFactory.getStates().toArray(new String[0]));
-                break;
-            case "CANADA":
-                statesF.setValues(CanadaStatesFactory.getStates().toArray(new String[0]));
-                break;
-        }
-        switch (countriesS.getValue()) {
-            case "USA":
-                stateF.setValues(USAStatesFactory.getStates().toArray(new String[0]));                
-                break;
-            case "INDIA":
-                stateF.setValues(IndiaStatesFactory.getStates().toArray(new String[0]));              
-                break;
-            case "CANADA":
-                stateF.setValues(CanadaStatesFactory.getStates().toArray(new String[0]));
-                break;
+        if (event.getSource().equals(countriesF.listBox)) {
+            switch (countriesF.getValue()) {
+                case "USA":
+                    statesF.setValues(USAStatesFactory.getStates().toArray(new String[0]));
+                    break;
+                case "INDIA":
+                    statesF.setValues(IndiaStatesFactory.getStates().toArray(new String[0]));
+                    break;
+                case "CANADA":
+                    statesF.setValues(CanadaStatesFactory.getStates().toArray(new String[0]));
+                    break;
+            }
+        } else if (event.getSource().equals(countriesS.listBox)) {
+            switch (countriesS.getValue()) {
+                case "USA":
+                    stateF.setValues(USAStatesFactory.getStates().toArray(new String[0]));
+                    break;
+                case "INDIA":
+                    stateF.setValues(IndiaStatesFactory.getStates().toArray(new String[0]));
+                    break;
+                case "CANADA":
+                    stateF.setValues(CanadaStatesFactory.getStates().toArray(new String[0]));
+                    break;
+            }
         }
     }
 }
