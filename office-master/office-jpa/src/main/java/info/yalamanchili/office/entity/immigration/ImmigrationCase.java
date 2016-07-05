@@ -32,7 +32,7 @@ import org.hibernate.search.annotations.Indexed;
 @XmlRootElement
 @Indexed
 public class ImmigrationCase extends AbstractEntity {
-    @Transient
+    
     private static final long serialVersionUID = 9993L;
     
     /**
@@ -40,7 +40,7 @@ public class ImmigrationCase extends AbstractEntity {
     */
     @Enumerated(EnumType.STRING)
     @NotNull(message = "{immigrationcase.type.not.empty.msg}")
-    protected ImmigrationCaseType type;
+    protected ImmigrationCaseType immigrationCaseType;
     
     /**
      * employee
@@ -52,10 +52,10 @@ public class ImmigrationCase extends AbstractEntity {
     /**
      *The Date the Immigration case is created on
      */
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    @org.hibernate.annotations.Index(name = "IMM_CASE_CRT_TM_STMP")
+    @Temporal(javax.persistence.TemporalType.DATE)
+    @org.hibernate.annotations.Index(name = "IMM_CASE_CRT_DATE")
     @NotNull(message = "{immigrationcase.createddate.not.empty.msg}")
-    protected Date createdTimeStamp;
+    protected Date createdDate;
     
     /**
      * The employee who created the immigration case
@@ -70,11 +70,11 @@ public class ImmigrationCase extends AbstractEntity {
     protected ImmigrationCaseStatus immigrationCaseStatus;
     
     public ImmigrationCaseType getType() {
-        return type;
+        return immigrationCaseType;
     }
 
-    public void setType(ImmigrationCaseType type) {
-        this.type = type;
+    public void setType(ImmigrationCaseType immigrationCaseType) {
+        this.immigrationCaseType = immigrationCaseType;
     }
     
     public Employee getEmployee() {
@@ -86,11 +86,11 @@ public class ImmigrationCase extends AbstractEntity {
     }
     
     public Date getCreatedTimeStamp() {
-        return createdTimeStamp;
+        return createdDate;
     }
 
     public void setCreatedTimeStamp(Date createdTimeStamp) {
-        this.createdTimeStamp = createdTimeStamp;
+        this.createdDate = createdTimeStamp;
     }
     
     public String getCreateBy() {
@@ -107,5 +107,10 @@ public class ImmigrationCase extends AbstractEntity {
 
     public void setImmigrationCaseStatus(ImmigrationCaseStatus immigrationCaseStatus) {
         this.immigrationCaseStatus = immigrationCaseStatus;
+    }
+    
+    @Override
+    public String toString() {
+        return "Immegratio Case{" + "immigrationCaseType=" + immigrationCaseType + ", employee=" + employee + ", createdDate=" + createdDate + ", createdBy=" + createdBy + ", immigrationCaseStatus=" + immigrationCaseStatus + '}';
     }
 }
