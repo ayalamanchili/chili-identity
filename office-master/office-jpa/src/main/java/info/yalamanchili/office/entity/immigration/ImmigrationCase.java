@@ -111,6 +111,6 @@ public class ImmigrationCase extends AbstractEntity {
     
     @Override
     public String toString() {
-        return "Immegratio Case{" + "immigrationCaseType=" + immigrationCaseType + ", employee=" + employee + ", createdDate=" + createdDate + ", createdBy=" + createdBy + ", immigrationCaseStatus=" + immigrationCaseStatus + '}';
+        return "ImmigrationCase{" + "immigrationCaseType=" + immigrationCaseType + ", createdDate=" + createdDate + ", createdBy=" + createdBy + ", immigrationCaseStatus=" + immigrationCaseStatus + '}';
     }
 }
