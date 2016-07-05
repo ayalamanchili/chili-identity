@@ -141,7 +141,12 @@
                 <item name="Create Expense Report" href="/office/expense/submitexpensereport.html">
                 </item>
                 <item name="Expense Report Process" href="/office/expense/expensereportprocess.html">
-                </item>                
+                </item> 
+                <item name="Create PerDiem Request" href="/office/expense/Perdiem.html">
+                </item>  
+                <item name="PerDiem Process" href="/office/expense/PerdiemProcess.html">
+                </item>  
+                              
             </item>
             <item name="Trouble Accessing Portal" href="/office/accountresettask.html" collapse="true">
                 <item name="Account Reset" href="/office/accountresettask.html"/>
