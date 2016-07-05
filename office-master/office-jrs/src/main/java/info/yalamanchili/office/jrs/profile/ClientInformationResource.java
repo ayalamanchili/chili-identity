@@ -75,7 +75,7 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
     @GET
     @Path("/read/{id}")
     @Transactional(readOnly = true)
-    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_CONTRACTS_ADMIN", "ROLE_BILLING_ADMIN"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
+    @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_CONTRACTS_ADMIN", "ROLE_BILLING_ADMIN", "ROLE_INVOICE_MANAGER", "ROLE_CONTRACTS_FULL_VIEW"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
     public ClientInformationDto readCIDto(@PathParam("id") Long id) {
         return clientInformationService.read(id);
     }
@@ -153,7 +153,7 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
         res.setSize(Long.valueOf(ci.getBillingRates().size()));
         return res;
     }
-    
+
     @PUT
     @Validate
     @Path("/project-off-boarding")
