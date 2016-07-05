@@ -14,7 +14,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
-import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.GenericPopup;
@@ -67,7 +66,6 @@ public class UpdateInvoicePanel extends UpdateComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
-        assignEntityValueFromField("employee", entity);
         assignEntityValueFromField("itemNumber", entity);
         assignEntityValueFromField("invoiceNumber", entity);
         assignEntityValueFromField("startDate", entity);
@@ -86,35 +84,26 @@ public class UpdateInvoicePanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postUpdateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postUpdateSuccess(arg0);
+            }
+        });
     }
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+        logger.info("ddddddddddddddddddddddd" + entity.toString());
         if (entity.containsKey("clientInformation")) {
             JSONObject clientInformation = entity.get("clientInformation").isObject();
-            JSONObject employee = clientInformation.get("employee").isObject();
-            String empName = employee.get("firstName").isString().stringValue() + " " + employee.get("lastName").isString().stringValue();
-            StringField empF = (StringField) fields.get("employee");
-            empF.setValue(empName);
             assignFieldValueFromEntity("billingRate", clientInformation, DataType.CURRENCY_FIELD);
-        } else if (entity.get("employee") instanceof JSONObject) {
-            JSONObject employee = entity.get("employee").isObject();
-            String name = employee.get("firstName").isString().stringValue() + " " + employee.get("lastName").isString().stringValue();
-            StringField field = (StringField) fields.get("employee");
-            field.setValue(name);
-            assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
         } else {
-            assignFieldValueFromEntity("employee", entity, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
         }
         if (isUpdate) {
             assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
@@ -148,7 +137,6 @@ public class UpdateInvoicePanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("employee", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("itemNumber", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("invoiceNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
@@ -184,17 +172,17 @@ public class UpdateInvoicePanel extends UpdateComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        JSONObject entity1 = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity1);
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                JSONObject entity1 = (JSONObject) JSONParser.parseLenient(response);
+                populateFieldsFromEntity(entity1);
+            }
+        });
     }
 
     protected String getReadURI() {
         if (isUpdate == false) {
-            return OfficeWelcome.constants.root_url() + "clientinformation/read/" + id;
+            return OfficeWelcome.constants.root_url() + "clientinformation/invoice/read/" + id;
         } else {
             return OfficeWelcome.constants.root_url() + "invoice/read/" + invoice.get("id").isString().stringValue();
         }

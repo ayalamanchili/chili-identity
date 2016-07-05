@@ -323,6 +323,17 @@ public class ClientInformationDto implements Serializable {
     protected String sectorsAndBUs;
     protected String bpmProcessId;
 
+    public ClientInformationDto() {
+    }
+
+    public ClientInformationDto(Long id, String itemNumber, BigDecimal billingRate, BigDecimal overTimeBillingRate, InvoiceFrequency invoiceFrequency) {
+        this.id = id;
+        this.itemNumber = itemNumber;
+        this.billingRate = billingRate;
+        this.overTimeBillingRate = overTimeBillingRate;
+        this.invoiceFrequency = invoiceFrequency;
+    }
+
     public String getConsultantJobTitle() {
         return consultantJobTitle;
     }

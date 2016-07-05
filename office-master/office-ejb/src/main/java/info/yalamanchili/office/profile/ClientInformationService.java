@@ -51,6 +51,7 @@ import java.util.Set;
 import javax.persistence.Query;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -239,6 +240,13 @@ public class ClientInformationService {
 
     public ClientInformationDto read(Long id) {
         return mapper.map(clientInformationDao.findById(id), ClientInformationDto.class);
+    }
+
+    public ClientInformationDto readCIForInvoice(Long id) {
+        String queryStr = "SELECT NEW " + ClientInformationDto.class.getCanonicalName() + "(ci.id,ci.itemNumber,ci.billingRate,ci.overTimeBillingRate,ci.invoiceFrequency) from " + ClientInformation.class.getCanonicalName() + " ci where ci.id=:idParam";
+        TypedQuery<ClientInformationDto> query = em.createQuery(queryStr, ClientInformationDto.class);
+        query.setParameter("idParam", id);
+        return query.getSingleResult();
     }
 
     protected void updatePreviousProjectEndDate(Employee emp, ClientInformation ci) {

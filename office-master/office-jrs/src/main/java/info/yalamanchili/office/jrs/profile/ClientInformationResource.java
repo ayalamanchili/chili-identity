@@ -80,6 +80,14 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
         return clientInformationService.read(id);
     }
 
+    @GET
+    @Path("/invoice/read/{id}")
+    @Transactional(readOnly = true)
+    @PreAuthorize("hasAnyRole('ROLE_INVOICE_MANAGER')")
+    public ClientInformationDto readCIForInvoice(@PathParam("id") Long id) {
+        return clientInformationService.readCIForInvoice(id);
+    }
+
     @PUT
     @Path("/delete/{id}")
     @CacheEvict(value = OfficeCacheKeys.CLIENTINFORMATION, allEntries = true)
