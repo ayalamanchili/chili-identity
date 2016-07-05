@@ -38,10 +38,8 @@ public class ReadPassportPanel extends ReadComposite {
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("passportNumber", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("doYouHoldAValidPassport", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("passportIssuedDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("passportExpiryDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("passportExpirationAlertIndicator", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("passportCountryOfIssuance", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("passportStateOfIssuance", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("dateOfBirth", entity, DataType.DATE_FIELD);
@@ -70,10 +68,8 @@ public class ReadPassportPanel extends ReadComposite {
     @Override
     protected void addWidgets() {
         addField("passportNumber", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("doYouHoldAValidPassport", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("passportIssuedDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("passportExpiryDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("passportExpirationAlertIndicator", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addEnumField("passportCountryOfIssuance", true, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
         addField("passportStateOfIssuance", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("dateOfBirth", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
