@@ -57,22 +57,6 @@ public class SearchProspectsPanel extends SearchComposite {
 
     @Override
     protected void populateAdvancedSuggestBoxes() {
-        HttpService.HttpServiceAsync.instance().doGet(getFirstNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String entityString) {
-                Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
-                SuggestBox sb = (SuggestBox) fields.get("firstName");
-                sb.loadData(values.values());
-            }
-        });
-        HttpService.HttpServiceAsync.instance().doGet(getLastNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String entityString) {
-                Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
-                SuggestBox sb = (SuggestBox) fields.get("lastName");
-                sb.loadData(values.values());
-            }
-        });
         HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
@@ -89,14 +73,6 @@ public class SearchProspectsPanel extends SearchComposite {
         return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_CORPORATE_EMPLOYEE + "/0/10000");
     }
 
-    protected String getFirstNameDropDownUrl() {
-        return OfficeWelcome.constants.root_url() + "prospect/search-firstname";
-    }
-
-    protected String getLastNameDropDownUrl() {
-        return OfficeWelcome.constants.root_url() + "prospect/search-lastname";
-    }
-
     @Override
     protected void addListeners() {
     }
@@ -107,8 +83,6 @@ public class SearchProspectsPanel extends SearchComposite {
 
     @Override
     protected void addWidgets() {
-        addField("firstName", DataType.STRING_FIELD);
-        addField("lastName", DataType.STRING_FIELD);
         addField("referredBy", DataType.STRING_FIELD);
         advancedSearchPanel.add(employeeSB);
         advancedSearchPanel.add(caseManagerSB);
@@ -125,8 +99,6 @@ public class SearchProspectsPanel extends SearchComposite {
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
         JSONObject contact = new JSONObject();
-        assignEntityValueFromField("firstName", contact);
-        assignEntityValueFromField("lastName", contact);
         assignEntityValueFromField("referredBy", entity);
         if (employeeSB.getSelectedObject() != null) {
             entity.put("assigned", employeeSB.getSelectedObject().get("id"));
