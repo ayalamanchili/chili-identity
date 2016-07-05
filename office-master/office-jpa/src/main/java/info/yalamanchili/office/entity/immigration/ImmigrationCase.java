@@ -50,6 +50,13 @@ public class ImmigrationCase extends AbstractEntity {
     protected Employee employee;
     
     /**
+     *Sponsor type
+     */
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "{immigrationcase.sponsertype.not.empty.msg}")
+    protected SponsorType sponsorType;
+    
+    /**
      *The Date the Immigration case is created on
      */
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -69,11 +76,11 @@ public class ImmigrationCase extends AbstractEntity {
     @NotNull(message = "{immigrationcase.status.not.empty.msg}")
     protected ImmigrationCaseStatus immigrationCaseStatus;
     
-    public ImmigrationCaseType getType() {
+    public ImmigrationCaseType getImmigrationCaseType() {
         return immigrationCaseType;
     }
 
-    public void setType(ImmigrationCaseType immigrationCaseType) {
+    public void setImmigrationCaseType(ImmigrationCaseType immigrationCaseType) {
         this.immigrationCaseType = immigrationCaseType;
     }
     
@@ -85,12 +92,20 @@ public class ImmigrationCase extends AbstractEntity {
         this.employee = employee;
     }
     
-    public Date getCreatedTimeStamp() {
+    public SponsorType getSponsorType() {
+        return sponsorType;
+    }
+
+    public void setSponsorType(SponsorType sponsorType) {
+        this.sponsorType = sponsorType;
+    }
+    
+    public Date getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedTimeStamp(Date createdTimeStamp) {
-        this.createdDate = createdTimeStamp;
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
     
     public String getCreateBy() {
@@ -111,6 +126,6 @@ public class ImmigrationCase extends AbstractEntity {
     
     @Override
     public String toString() {
-        return "ImmigrationCase{" + "immigrationCaseType=" + immigrationCaseType + ", createdDate=" + createdDate + ", createdBy=" + createdBy + ", immigrationCaseStatus=" + immigrationCaseStatus + '}';
+        return "ImmigrationCase{" + "immigrationCaseType=" + immigrationCaseType +", sponsorType=" + sponsorType +", createdDate=" + createdDate + ", createdBy=" + createdBy + ", immigrationCaseStatus=" + immigrationCaseStatus + '}';
     }
 }
