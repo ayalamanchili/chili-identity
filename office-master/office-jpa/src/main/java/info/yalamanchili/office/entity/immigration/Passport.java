@@ -37,8 +37,6 @@ public class Passport extends AbstractHandleEntity {
     @Type(type = "encryptedString")
     protected String passportNumber;
 
-    
-    protected Boolean doYouHoldAValidPassport;
    
     @Temporal(javax.persistence.TemporalType.DATE)
     @NotNull(message = "{passportIssuedDate.not.empty.msg}")
@@ -48,7 +46,6 @@ public class Passport extends AbstractHandleEntity {
     @NotNull(message = "{passportExpiryDate.not.empty.msg}")
     protected Date passportExpiryDate;
    
-    protected Boolean passportExpirationAlertIndicator;
     
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date dateOfBirth;
@@ -93,14 +90,6 @@ public class Passport extends AbstractHandleEntity {
         this.passportNumber = passportNumber;
     }
     
-    public Boolean getDoYouHoldAValidPassport() {
-        return doYouHoldAValidPassport;
-    }
-
-    public void setDoYouHoldAValidPassport(Boolean doYouHoldAValidPassport) {
-        this.doYouHoldAValidPassport = doYouHoldAValidPassport;
-    }
-    
     public Date getPassportIssuedDate() {
         return passportIssuedDate;
     }
@@ -116,15 +105,7 @@ public class Passport extends AbstractHandleEntity {
     public void setPassportExpiryDate(Date passportExpiryDate) {
         this.passportExpiryDate = passportExpiryDate;
     }
-    
-    public Boolean getPassportExpirationAlertIndicator() {
-        return passportExpirationAlertIndicator;
-    }
-
-    public void setPassportExpirationAlertIndicator(Boolean passportExpirationAlertIndicator) {
-        this.passportExpirationAlertIndicator = passportExpirationAlertIndicator;
-    }
-    
+   
     public String getPassportCountryOfIssuance() {
         return passportCountryOfIssuance;
     }
@@ -223,7 +204,7 @@ public class Passport extends AbstractHandleEntity {
     
     @Override
     public String toString() {
-        return "Passport{" + "passportNumber=" + passportNumber + ", doYouHoldAValidPassport=" + doYouHoldAValidPassport + ", passportIssuedDate=" + passportIssuedDate + ", passportExpiryDate=" + passportExpiryDate + ", passportExpirationAlertIndicator=" + passportExpirationAlertIndicator + ", passportCountryOfIssuance=" + passportCountryOfIssuance + ", passportStateOfIssuance=" + passportStateOfIssuance + ", dateOfBirth=" + dateOfBirth + ", countryOfBirth=" + countryOfBirth + ",stateOfBirth=" + stateOfBirth + ", placeOfBirth=" + placeOfBirth  + ", nationality=" + nationality + ", countryOfNationality=" + countryOfNationality +  ", identificationMarks=" + identificationMarks + ", haveYouEverLostPassport=" + haveYouEverLostPassport + ", reason=" + reason + ", travelDocumentNumber=" + travelDocumentNumber + '}';
+        return "Passport{" + "passportNumber=" + passportNumber + ", passportIssuedDate=" + passportIssuedDate + ", passportExpiryDate=" + passportExpiryDate + ", passportCountryOfIssuance=" + passportCountryOfIssuance + ", passportStateOfIssuance=" + passportStateOfIssuance + ", dateOfBirth=" + dateOfBirth + ", countryOfBirth=" + countryOfBirth + ",stateOfBirth=" + stateOfBirth + ", placeOfBirth=" + placeOfBirth  + ", nationality=" + nationality + ", countryOfNationality=" + countryOfNationality +  ", identificationMarks=" + identificationMarks + ", haveYouEverLostPassport=" + haveYouEverLostPassport + ", reason=" + reason + ", travelDocumentNumber=" + travelDocumentNumber + '}';
     }
 
 }
