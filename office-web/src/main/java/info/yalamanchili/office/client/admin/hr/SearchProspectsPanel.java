@@ -45,7 +45,13 @@ public class SearchProspectsPanel extends SearchComposite {
 
     @Override
     protected void onOpenAdvancedSearch() {
-        super.onOpenAdvancedSearch();
+        Timer timer = new Timer() {
+            @Override
+            public void run() {
+                SearchProspectsPanel.super.onOpenAdvancedSearch();
+            }
+        };
+        timer.schedule(2000);
         TabPanel.instance().myOfficePanel.sidePanelTop.setHeight("100%");
     }
 
@@ -136,10 +142,6 @@ public class SearchProspectsPanel extends SearchComposite {
         assignEntityValueFromField("trfEmpType", entity);
         assignEntityValueFromField("dateOfJoining", entity);
         assignEntityValueFromField("processDocSentDate", entity);
-//        if (statusF.getValue() != null) {
-//            entity.put("status", new JSONString(statusF.getValue()));
-//            statusF.listBox.addChangeHandler(this);
-//        }
         entity.put("contact", contact);
         return entity;
     }
@@ -153,11 +155,11 @@ public class SearchProspectsPanel extends SearchComposite {
         } else {
             HttpService.HttpServiceAsync.instance().doGet(getSearchURI(getSearchText(), 0, 1000),
                     OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                        @Override
-                        public void onResponse(String result) {
-                            processSearchResult(result);
-                        }
-                    });
+                @Override
+                public void onResponse(String result) {
+                    processSearchResult(result);
+                }
+            });
         }
     }
 
@@ -165,11 +167,11 @@ public class SearchProspectsPanel extends SearchComposite {
     protected void search(JSONObject entity) {
         HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 1000), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        processSearchResult(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                processSearchResult(result);
+            }
+        });
     }
 
     @Override
@@ -215,9 +217,4 @@ public class SearchProspectsPanel extends SearchComposite {
         return OfficeWelcome.constants.root_url() + "prospect/search-suggestions";
     }
 
-//    @Override
-//    public void onChange(ChangeEvent event) {
-//        entity.put("status", new JSONString(statusF.getValue()));
-//        search(entity);
-//    }
 }
