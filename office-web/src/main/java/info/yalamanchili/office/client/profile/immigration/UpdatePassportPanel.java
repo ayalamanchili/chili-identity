@@ -60,10 +60,8 @@ public class UpdatePassportPanel extends UpdateComposite implements ChangeHandle
     @Override
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("passportNumber", entity);
-        assignEntityValueFromField("doYouHoldAValidPassport", entity);
         assignEntityValueFromField("passportIssuedDate", entity);
         assignEntityValueFromField("passportExpiryDate", entity);
-        assignEntityValueFromField("passportExpirationAlertIndicator", entity);
         assignEntityValueFromField("passportCountryOfIssuance", entity);
         assignEntityValueFromField("passportStateOfIssuance", entity);
         assignEntityValueFromField("dateOfBirth", entity);
@@ -98,10 +96,8 @@ public class UpdatePassportPanel extends UpdateComposite implements ChangeHandle
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("passportNumber", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("doYouHoldAValidPassport", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("passportIssuedDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("passportExpiryDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("passportExpirationAlertIndicator", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("passportCountryOfIssuance", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("passportStateOfIssuance", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("dateOfBirth", entity, DataType.DATE_FIELD);
@@ -144,10 +140,8 @@ public class UpdatePassportPanel extends UpdateComposite implements ChangeHandle
     @Override
     protected void addWidgets() {
         addField("passportNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("doYouHoldAValidPassport", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("passportIssuedDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("passportExpiryDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("passportExpirationAlertIndicator", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         JSONValue service = entity.get("passportCountryOfIssuance");
         addEnumField("passportCountryOfIssuance", false, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
         populateValues(service);
