@@ -46,6 +46,13 @@ public class I94RecordResource extends CRUDResource<i94Record> {
     @Autowired
     protected I94RecordService i94RecordService;
 
+    @GET
+    @Path("/{id}")
+    @Override
+    public i94Record read(@PathParam("id") Long id) {
+        return i94RecordDao.findById(id);
+    }
+
     @PUT
     @Path("/save/{empId}")
     @Validate
@@ -72,7 +79,7 @@ public class I94RecordResource extends CRUDResource<i94Record> {
         I94RecordResource.i94RecordTable tableObj = new I94RecordResource.i94RecordTable();
         Employee emp = EmployeeDao.instance().findById(id);
         tableObj.setEntities(i94RecordDao.findAll(emp));
-        if (tableObj.getEntities() != null  &&  tableObj.getEntities().size() > 0) {
+        if (tableObj.getEntities() != null && tableObj.getEntities().size() > 0) {
             tableObj.setSize(Long.valueOf(tableObj.getEntities().size()));
         } else {
             tableObj.setSize(Long.valueOf(0));
