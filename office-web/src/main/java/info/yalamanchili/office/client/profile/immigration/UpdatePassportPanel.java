@@ -155,8 +155,12 @@ public class UpdatePassportPanel extends UpdateComposite implements ChangeHandle
         addField("dateOfBirth", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         JSONValue service1 = entity.get("countryOfBirth");
         addEnumField("countryOfBirth", false, false, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
-        populateValues1(service1);
-        addField("stateOfBirth", false, true, DataType.ENUM_FIELD);
+        if (service1 != null) {
+            populateValues1(service1);
+            addField("stateOfBirth", false, true, DataType.ENUM_FIELD);
+        } else {
+            addEnumField("stateOfBirth", false, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+        }
         addField("placeOfBirth", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("nationality", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("countryOfNationality", false, false, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
