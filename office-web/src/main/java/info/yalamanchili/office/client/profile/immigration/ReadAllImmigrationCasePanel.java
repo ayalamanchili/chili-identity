@@ -72,9 +72,10 @@ public class ReadAllImmigrationCasePanel extends CRUDReadAllComposite {
         table.setText(0, 0, getKeyValue("Table Action"));
         table.setText(0, 1, getKeyValue("Immigration Case Type"));
         table.setText(0, 2, getKeyValue("Employee"));
-        table.setText(0, 3, getKeyValue("Created Date"));
-        table.setText(0, 4, getKeyValue("Created By"));
-        table.setText(0, 4, getKeyValue("Immigration Case Status"));
+        table.setText(0, 3, getKeyValue("Sponsor Type"));
+        table.setText(0, 4, getKeyValue("Created Date"));
+        table.setText(0, 5, getKeyValue("Created By"));
+        table.setText(0, 6, getKeyValue("Immigration Case Status"));
     }
     
     @Override
@@ -84,9 +85,10 @@ public class ReadAllImmigrationCasePanel extends CRUDReadAllComposite {
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "immigrationCaseType"));
             table.setText(i, 2, JSONUtils.toString(entity, "employee"));
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "createdDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM)); 
-            table.setText(i, 4, JSONUtils.toString(entity, "createdBy"));
-            table.setText(i, 5, JSONUtils.toString(entity, "immigrationCaseStatus"));
+            table.setText(i, 3, JSONUtils.toString(entity, "sponsorType"));
+            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "createdDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM)); 
+            table.setText(i, 5, JSONUtils.toString(entity, "createdBy"));
+            table.setText(i, 6, JSONUtils.toString(entity, "immigrationCaseStatus"));
         }
     }
 
