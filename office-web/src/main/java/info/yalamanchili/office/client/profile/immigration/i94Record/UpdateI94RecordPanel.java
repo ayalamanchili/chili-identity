@@ -9,7 +9,9 @@
 package info.yalamanchili.office.client.profile.immigration.i94Record;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
@@ -32,22 +34,26 @@ public class UpdateI94RecordPanel extends UpdateComposite {
         initUpdateComposite(entity, "i94Record", OfficeWelcome.constants2);
     }
 
+    public UpdateI94RecordPanel(String id) {
+        initUpdateComposite(id, "i94Record", OfficeWelcome.constants2);
+    }
+
     @Override
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("i94RecordNumber", entity);
         assignEntityValueFromField("fullName", entity);
-        assignEntityValueFromField("portOfEntry", entity);        
+        assignEntityValueFromField("portOfEntry", entity);
         assignEntityValueFromField("dateofEntry", entity);
         assignEntityValueFromField("arrivalMethod", entity);
-        assignEntityValueFromField("modeOfTravel", entity); 
-        assignEntityValueFromField("i94ValidFromDate", entity); 
+        assignEntityValueFromField("modeOfTravel", entity);
+        assignEntityValueFromField("i94ValidFromDate", entity);
         assignEntityValueFromField("admitUntilDate", entity);
         assignEntityValueFromField("durationValidityInd", entity);
         assignEntityValueFromField("expirationAlertInd", entity);
         assignEntityValueFromField("reentryExpiryDate", entity);
         assignEntityValueFromField("coApplicantTravel", entity);
         assignEntityValueFromField("classOfAdmission", entity);
-        assignEntityValueFromField("comments", entity);       
+        assignEntityValueFromField("comments", entity);
         return entity;
     }
 
@@ -71,18 +77,18 @@ public class UpdateI94RecordPanel extends UpdateComposite {
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("i94RecordNumber", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("fullName", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("portOfEntry", entity, DataType.STRING_FIELD);        
+        assignFieldValueFromEntity("portOfEntry", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("dateofEntry", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("arrivalMethod", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("modeOfTravel", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("i94ValidFromDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("admitUntilDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("durationValidityInd", entity, DataType.BOOLEAN_FIELD);        
+        assignFieldValueFromEntity("durationValidityInd", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("expirationAlertInd", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("reentryExpiryDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("coApplicantTravel", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("classOfAdmission", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("comments", entity, DataType.STRING_FIELD);       
+        assignFieldValueFromEntity("comments", entity, DataType.TEXT_AREA_FIELD);
     }
 
     @Override
@@ -105,7 +111,7 @@ public class UpdateI94RecordPanel extends UpdateComposite {
         addField("i94RecordNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("fullName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("portOfEntry", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("dateofEntry", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);        
+        addField("dateofEntry", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("arrivalMethod", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("modeOfTravel", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("i94ValidFromDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
@@ -114,13 +120,30 @@ public class UpdateI94RecordPanel extends UpdateComposite {
         addField("expirationAlertInd", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("reentryExpiryDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("coApplicantTravel", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("classOfAdmission", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);        
-        addField("comments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);      
+        addField("classOfAdmission", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("comments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
+    }
+
+    @Override
+    public void loadEntity(String entityId) {
+        HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                    }
+                });
+
+    }
+
+    protected String getReadURI() {
+        return OfficeWelcome.constants.root_url() + "i94record/" + getEntityId();
     }
 
     @Override

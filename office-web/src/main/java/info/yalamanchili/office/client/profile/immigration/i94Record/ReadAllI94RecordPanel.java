@@ -97,7 +97,7 @@ public class ReadAllI94RecordPanel extends CRUDReadAllComposite {
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadI94RecordPanel(getEntity(entityId)));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadI94RecordPanel(entityId));
     }
 
     @Override
@@ -125,7 +125,7 @@ public class ReadAllI94RecordPanel extends CRUDReadAllComposite {
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateI94RecordPanel(getEntity(entityId)));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateI94RecordPanel(entityId));
     }
 
     @Override
