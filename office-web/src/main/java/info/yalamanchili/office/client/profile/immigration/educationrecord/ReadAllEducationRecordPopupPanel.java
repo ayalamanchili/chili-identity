@@ -28,7 +28,7 @@ public class ReadAllEducationRecordPopupPanel extends ReadAllEducationRecordPane
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE, row, JSONUtils.toString(entity, "id"));
+        createOptionsWidget(TableRowOptionsWidget.OptionsType.UPDATE, row, JSONUtils.toString(entity, "id"));
     }
 
     @Override
