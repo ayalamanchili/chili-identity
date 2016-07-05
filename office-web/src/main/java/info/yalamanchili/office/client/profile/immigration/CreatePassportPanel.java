@@ -58,10 +58,8 @@ public class CreatePassportPanel extends CreateComposite implements ChangeHandle
     protected JSONObject populateEntityFromFields() {
         JSONObject passport = new JSONObject();
         assignEntityValueFromField("passportNumber", passport);
-        assignEntityValueFromField("doYouHoldAValidPassport", passport);
         assignEntityValueFromField("passportIssuedDate", passport);
         assignEntityValueFromField("passportExpiryDate", passport);
-        assignEntityValueFromField("passportExpirationAlertIndicator", passport);
         assignEntityValueFromField("passportCountryOfIssuance", passport);
         assignEntityValueFromField("passportStateOfIssuance", passport);
         assignEntityValueFromField("dateOfBirth", passport);
@@ -128,15 +126,13 @@ public class CreatePassportPanel extends CreateComposite implements ChangeHandle
     @Override
     protected void addWidgets() {
         addField("passportNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("doYouHoldAValidPassport", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("passportIssuedDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("passportExpiryDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("passportExpirationAlertIndicator", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addEnumField("passportCountryOfIssuance", false, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
         addEnumField("passportStateOfIssuance", false, false, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
         addField("dateOfBirth", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("countryOfBirth", false, false, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
-        addEnumField("stateOfBirth", false, false, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+        addEnumField("stateOfBirth", false, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
         addField("placeOfBirth", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("nationality", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("countryOfNationality", false, false, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
