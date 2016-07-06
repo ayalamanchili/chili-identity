@@ -105,13 +105,13 @@ public class ImmigrationCase extends AbstractEntity {
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
-    
-    public String getCreateBy() {
-        return createdBy;
-    }
 
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
     }
     
     public ImmigrationCaseStatus getImmigrationCaseStatus() {
