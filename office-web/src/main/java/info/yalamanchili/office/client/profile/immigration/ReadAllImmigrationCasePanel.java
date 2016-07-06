@@ -64,7 +64,7 @@ public class ReadAllImmigrationCasePanel extends CRUDReadAllComposite {
         if (url != null) {
             return url;
         }
-        return OfficeWelcome.constants.root_url() + "ImmigrationCase/" + parentId + "/" + start.toString() + "/" + tableSize.toString();
+        return OfficeWelcome.constants.root_url() + "immigrationcase/" + parentId + "/" + start.toString() + "/" + tableSize.toString();
     }
     
     @Override
@@ -110,7 +110,7 @@ public class ReadAllImmigrationCasePanel extends CRUDReadAllComposite {
     }
     
     private String getDeleteURL(String entityId) {
-        return OfficeWelcome.instance().constants.root_url() + "ImmigrationCase/delete/" + entityId;
+        return OfficeWelcome.instance().constants.root_url() + "immigrationcase/delete/" + entityId;
     }
 
     @Override
