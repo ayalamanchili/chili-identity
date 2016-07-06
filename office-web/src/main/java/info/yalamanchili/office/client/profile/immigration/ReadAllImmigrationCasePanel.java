@@ -21,6 +21,9 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
+import info.yalamanchili.office.client.profile.immigration.immigrationcase.CreateImmigrationCasePanel;
+import info.yalamanchili.office.client.profile.immigration.immigrationcase.ReadImmigrationCasePanel;
+import info.yalamanchili.office.client.profile.immigration.immigrationcase.UpdateImmigrationCasePanel;
 import java.util.logging.Logger;
 
 /**
@@ -95,7 +98,7 @@ public class ReadAllImmigrationCasePanel extends CRUDReadAllComposite {
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-//        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadImmigrationCasePanel(getEntity(entityId)));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadImmigrationCasePanel(getEntity(entityId)));
     }
 
     @Override
@@ -123,7 +126,7 @@ public class ReadAllImmigrationCasePanel extends CRUDReadAllComposite {
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-//        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateImmigrationCasePanel(getEntity(entityId)));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateImmigrationCasePanel(getEntity(entityId)));
     }
     
     @Override
@@ -135,7 +138,7 @@ public class ReadAllImmigrationCasePanel extends CRUDReadAllComposite {
     @Override
     protected void createButtonClicked() {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-//        TabPanel.instance().myOfficePanel.entityPanel.add(new CreateImmigrationCasePanel(CreateComposite.CreateCompositeType.CREATE));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new CreateImmigrationCasePanel(CreateComposite.CreateCompositeType.CREATE));
     }
     
     @Override
@@ -156,7 +159,7 @@ public class ReadAllImmigrationCasePanel extends CRUDReadAllComposite {
     @Override
     protected void onQuickView(int row, String id) {
         if (!id.isEmpty()) {
-//            new GenericPopup(new ReadImmigrationCasePanel(getEntity(id))).show();
+            new GenericPopup(new ReadImmigrationCasePanel(getEntity(id))).show();
         }
     }
 

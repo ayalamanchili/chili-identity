@@ -49,11 +49,11 @@ public class TreeEmployeeImmigrationPanel extends TreePanelComposite {
 
     @Override
     protected void addWidgets() {
+        addFirstChildLink("Immigration Case", IMMIGRATION_CASE_NODE);
         addFirstChildLink("Passport", PASSPORT_NODE);
         addFirstChildLink("TravelHistory", TRAVALHISTORY_NODE);
         addFirstChildLink("I94Record", I94Record_NODE);
         addFirstChildLink("EducationRecord", EducationRecord_NODE);  
-        addFirstChildLink("Immigration Case", IMMIGRATION_CASE_NODE);
         //     addFirstChildLink("LCA", LCA_NODE);
         //    addFirstChildLink("Petition", PETITION_NODE);
     }
