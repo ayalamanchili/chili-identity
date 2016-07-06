@@ -12,6 +12,7 @@ import info.chili.reporting.ReportGenerator;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.reports.profile.EmployeeBasicInfoReportDto;
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class EmailGroupsService {
     public void getemailMenuReportsReport(String email, String employeeType) {
         List<EmployeeBasicInfoReportDto> res = new ArrayList<>();
         if (employeeType.equals("All Employees")) {
-            for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee", "Employee")) {
+            for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee", "Employee", EmployeeType.INTERN_SEASONAL_EMPLOYEE)) {
                 res.add(getAllEmployeeEmails(emp));
             }
         } else {
