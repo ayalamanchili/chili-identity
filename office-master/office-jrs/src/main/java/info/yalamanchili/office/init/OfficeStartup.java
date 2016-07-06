@@ -481,6 +481,7 @@ public class OfficeStartup {
         getHomePhoneType();
         //Employee Type
         getCorporateEmployeeType();
+        getInternEmployeeType();
         getEmployeeType();
         getSubContractorEmployeeType();
         get1099EmployeeType();
@@ -728,7 +729,21 @@ public class OfficeStartup {
         }
     }
 
-    protected EmployeeType getCorporateEmployeeType() {
+    protected EmployeeType getInternEmployeeType() {
+        Query getEmployeeTypeQuery = em.createQuery("from " + EmployeeType.class.getCanonicalName()
+                + " where name=:nameParam");
+        getEmployeeTypeQuery.setParameter("nameParam", EmployeeType.INTERN_SEASONAL_EMPLOYEE);
+        if (getEmployeeTypeQuery.getResultList().size() > 0) {
+            return (EmployeeType) getEmployeeTypeQuery.getResultList().get(0);
+        } else {
+            EmployeeType employeetype = new EmployeeType();
+            employeetype.setName(EmployeeType.INTERN_SEASONAL_EMPLOYEE);
+            employeetype.setDescription("SSTECH Internal Employee");
+            return em.merge(employeetype);
+        }
+    }
+    
+        protected EmployeeType getCorporateEmployeeType() {
         Query getEmployeeTypeQuery = em.createQuery("from " + EmployeeType.class.getCanonicalName()
                 + " where name=:nameParam");
         getEmployeeTypeQuery.setParameter("nameParam", "Corporate Employee");
@@ -741,6 +756,7 @@ public class OfficeStartup {
             return em.merge(employeetype);
         }
     }
+    
 
     protected EmployeeType getSubContractorEmployeeType() {
         Query getEmployeeTypeQuery = em.createQuery("from " + EmployeeType.class.getCanonicalName()

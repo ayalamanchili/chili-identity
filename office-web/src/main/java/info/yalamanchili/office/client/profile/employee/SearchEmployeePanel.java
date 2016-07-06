@@ -68,7 +68,7 @@ public class SearchEmployeePanel extends SearchComposite {
         addField("clientName", DataType.STRING_FIELD);
         addField("vendorName", DataType.STRING_FIELD);
         if (Auth.isCorporateEmployee()) {
-            String[] employeeTypeStrs = {"Corporate Employee", "Employee", "Subcontractor", "1099 Contractor", "W2 Contractor"};
+            String[] employeeTypeStrs = {"Corporate Employee", "Employee", "Subcontractor", "1099 Contractor", "W2 Contractor", "Internal-Seasonal Employee"};
             addEnumField("employeeType", false, false, employeeTypeStrs);
             addEnumField("role", false, false, Auth.getAllRoles());
             addEnumField("branch", false, false, Branch.names());

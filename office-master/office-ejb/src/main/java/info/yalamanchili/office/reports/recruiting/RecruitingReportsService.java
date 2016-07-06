@@ -16,6 +16,7 @@ import info.yalamanchili.office.dao.profile.SkillSetDao;
 import info.yalamanchili.office.dto.profile.SkillSetDto;
 import info.yalamanchili.office.entity.profile.Certification;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.Skill;
 import info.yalamanchili.office.entity.profile.SkillSet;
 import info.yalamanchili.office.entity.recruiting.SkillSetTag;
@@ -110,7 +111,7 @@ public class RecruitingReportsService {
     @Transactional
     public void generateEmployeeSkillSetReport(String email) {
         List<EmployeeSkillSetReportDto> res = new ArrayList<>();
-        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee", "Employee")) {
+        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee", "Employee", EmployeeType.INTERN_SEASONAL_EMPLOYEE)) {
             if (emp.getSkillSet() != null) {
                 EmployeeSkillSetReportDto dto = new EmployeeSkillSetReportDto();
                 dto.setEmployee(emp.getFirstName() + emp.getLastName());

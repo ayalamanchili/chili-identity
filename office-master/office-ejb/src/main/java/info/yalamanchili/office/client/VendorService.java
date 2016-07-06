@@ -19,6 +19,7 @@ import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ public class VendorService {
     @Transactional
     public void generateActiveVendorsInfoReport(String email) {
 
-        String[] types = {"Corporate Employee", "Employee", "Subcontractor", "W2 Contractor", "1099 Contractor"};
+        String[] types = {"Corporate Employee", "Employee", "Subcontractor", "W2 Contractor", "1099 Contractor", EmployeeType.INTERN_SEASONAL_EMPLOYEE};
         List<Employee> emps = EmployeeDao.instance().getEmployeesByType(types);
         List<ClientInformation> clientInfos = new ArrayList();
         for (Employee emp : emps) {
