@@ -35,18 +35,18 @@ public class ReadAllImmigrationCasePanel extends CRUDReadAllComposite {
     
     public ReadAllImmigrationCasePanel() {
         instance = this;
-        initTable("ImmigrationCase", OfficeWelcome.constants);
+        initTable("ImmigrationCase", OfficeWelcome.constants2);
     }
     
     public ReadAllImmigrationCasePanel(JSONArray array) {
         instance = this;
-        initTable("ImmigrationCase", array, OfficeWelcome.constants);
+        initTable("ImmigrationCase", array, OfficeWelcome.constants2);
     }
 
     public ReadAllImmigrationCasePanel(String parentId) {
         instance = this;
         this.parentId = parentId;
-        initTable("ImmigrationCase", OfficeWelcome.constants);
+        initTable("ImmigrationCase", OfficeWelcome.constants2);
     }
     
     @Override
