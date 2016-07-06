@@ -18,6 +18,7 @@ import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.EmployeeType;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -202,6 +203,7 @@ public class OfficeSecurityService {
         List<String> empTypes = new ArrayList<String>();
         empTypes.add("Employee");
         empTypes.add("Corporate Employee");
+        empTypes.add(EmployeeType.INTERN_SEASONAL_EMPLOYEE);        
         TypedQuery<Employee> empQuery = em.createQuery("from " + Employee.class.getCanonicalName() + " where employeeType.name in (:empTypeParam) and user.enabled=true", Employee.class);
         empQuery.setParameter("empTypeParam", empTypes);
         OfficeSecurityConfiguration securityconfig = OfficeSecurityConfiguration.instance();
