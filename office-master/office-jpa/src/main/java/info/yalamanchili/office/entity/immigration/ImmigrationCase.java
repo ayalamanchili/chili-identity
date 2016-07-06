@@ -61,7 +61,6 @@ public class ImmigrationCase extends AbstractEntity {
      */
     @Temporal(javax.persistence.TemporalType.DATE)
     @org.hibernate.annotations.Index(name = "IMM_CASE_CRT_DATE")
-    @NotNull(message = "{immigrationcase.createddate.not.empty.msg}")
     protected Date createdDate;
     
     /**
@@ -73,7 +72,6 @@ public class ImmigrationCase extends AbstractEntity {
      * Immigration Case status
      */
     @Enumerated(EnumType.STRING)
-    @NotNull(message = "{immigrationcase.status.not.empty.msg}")
     protected ImmigrationCaseStatus immigrationCaseStatus;
     
     public ImmigrationCaseType getImmigrationCaseType() {
