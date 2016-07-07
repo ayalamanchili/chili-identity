@@ -746,12 +746,12 @@ public class OfficeStartup {
         protected EmployeeType getCorporateEmployeeType() {
         Query getEmployeeTypeQuery = em.createQuery("from " + EmployeeType.class.getCanonicalName()
                 + " where name=:nameParam");
-        getEmployeeTypeQuery.setParameter("nameParam", "Corporate Employee");
+        getEmployeeTypeQuery.setParameter("nameParam", EmployeeType.CORPORATE_EMPLOYEE);
         if (getEmployeeTypeQuery.getResultList().size() > 0) {
             return (EmployeeType) getEmployeeTypeQuery.getResultList().get(0);
         } else {
             EmployeeType employeetype = new EmployeeType();
-            employeetype.setName("Corporate Employee");
+            employeetype.setName(EmployeeType.CORPORATE_EMPLOYEE);
             employeetype.setDescription("SSTECH Internal Employee");
             return em.merge(employeetype);
         }
@@ -761,12 +761,12 @@ public class OfficeStartup {
     protected EmployeeType getSubContractorEmployeeType() {
         Query getEmployeeTypeQuery = em.createQuery("from " + EmployeeType.class.getCanonicalName()
                 + " where name=:nameParam");
-        getEmployeeTypeQuery.setParameter("nameParam", "Subcontractor");
+        getEmployeeTypeQuery.setParameter("nameParam", EmployeeType.SUBCONTRACTOR);
         if (getEmployeeTypeQuery.getResultList().size() > 0) {
             return (EmployeeType) getEmployeeTypeQuery.getResultList().get(0);
         } else {
             EmployeeType employeetype = new EmployeeType();
-            employeetype.setName("Subcontractor");
+            employeetype.setName(EmployeeType.SUBCONTRACTOR);
             employeetype.setDescription("SSTECH Subcontractor");
             return em.merge(employeetype);
         }
@@ -775,12 +775,12 @@ public class OfficeStartup {
     protected EmployeeType get1099EmployeeType() {
         Query getEmployeeTypeQuery = em.createQuery("from " + EmployeeType.class.getCanonicalName()
                 + " where name=:nameParam");
-        getEmployeeTypeQuery.setParameter("nameParam", "1099 Contractor");
+        getEmployeeTypeQuery.setParameter("nameParam", EmployeeType._1099_CONTRACTOR);
         if (getEmployeeTypeQuery.getResultList().size() > 0) {
             return (EmployeeType) getEmployeeTypeQuery.getResultList().get(0);
         } else {
             EmployeeType employeetype = new EmployeeType();
-            employeetype.setName("1099 Contractor");
+            employeetype.setName(EmployeeType._1099_CONTRACTOR);
             employeetype.setDescription("SSTECH 1099");
             return em.merge(employeetype);
         }
@@ -789,12 +789,12 @@ public class OfficeStartup {
     protected EmployeeType getW2EmployeeType() {
         Query getEmployeeTypeQuery = em.createQuery("from " + EmployeeType.class.getCanonicalName()
                 + " where name=:nameParam");
-        getEmployeeTypeQuery.setParameter("nameParam", "W2 Contractor");
+        getEmployeeTypeQuery.setParameter("nameParam", EmployeeType.W2_CONTRACTOR);
         if (getEmployeeTypeQuery.getResultList().size() > 0) {
             return (EmployeeType) getEmployeeTypeQuery.getResultList().get(0);
         } else {
             EmployeeType employeetype = new EmployeeType();
-            employeetype.setName("W2 Contractor");
+            employeetype.setName(EmployeeType.W2_CONTRACTOR);
             employeetype.setDescription("SSTECH W2");
             return em.merge(employeetype);
         }
@@ -803,12 +803,12 @@ public class OfficeStartup {
     protected EmployeeType getEmployeeType() {
         Query getEmployeeTypeQuery = em.createQuery("from " + EmployeeType.class.getCanonicalName()
                 + " where name=:nameParam");
-        getEmployeeTypeQuery.setParameter("nameParam", "Employee");
+        getEmployeeTypeQuery.setParameter("nameParam", EmployeeType.EMPLOYEE);
         if (getEmployeeTypeQuery.getResultList().size() > 0) {
             return (EmployeeType) getEmployeeTypeQuery.getResultList().get(0);
         } else {
             EmployeeType employeetype = new EmployeeType();
-            employeetype.setName("Employee");
+            employeetype.setName(EmployeeType.EMPLOYEE);
             employeetype.setDescription("SSTECH Consultant Employee");
             return em.merge(employeetype);
         }
