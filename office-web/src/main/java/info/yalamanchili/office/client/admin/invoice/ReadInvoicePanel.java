@@ -73,7 +73,7 @@ public class ReadInvoicePanel extends ReadComposite {
         assignFieldValueFromEntity("invoiceDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("invoiceSentDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("billingRate", clientInformation, DataType.CURRENCY_FIELD);
-        assignFieldValueFromEntity("hours", entity, DataType.CURRENCY_FIELD);
+        assignFieldValueFromEntity("hours", entity, DataType.INTEGER_FIELD);
         assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("notes", entity, DataType.TEXT_AREA_FIELD);
@@ -101,7 +101,7 @@ public class ReadInvoicePanel extends ReadComposite {
         addField("invoiceSentDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);  
         addField("billingRate", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("overTimeBillingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-        addField("hours", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        addField("hours", true, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
         addEnumField("invoiceFrequency", true, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         addEnumField("invoiceStatus", true, true, InvoiceStatus.names(), Alignment.HORIZONTAL);
         addEnumField("timeSheetStatus", true, true, TimeStatus.names(), Alignment.HORIZONTAL);
