@@ -29,6 +29,7 @@ import info.yalamanchili.office.entity.ext.Question;
 import info.yalamanchili.office.entity.ext.QuestionCategory;
 import info.yalamanchili.office.entity.ext.QuestionContext;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.ext.QuestionService;
 import info.yalamanchili.office.jms.MessagingService;
 import java.text.SimpleDateFormat;
@@ -176,7 +177,7 @@ public class ProbationPeriodEvaluationService {
     @Transactional
     public void getgenerateEmployeProbationPeriodEvalInfoReport(String email, String year) {
         List<ProbationPeriodEvaluationReportDto> res = new ArrayList<ProbationPeriodEvaluationReportDto>();
-        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
+        for (Employee emp : EmployeeDao.instance().getEmployeesByType(EmployeeType.CORPORATE_EMPLOYEE)) {
             ProbationPeriodEvaluationReportDto dto = mapper.map(emp, ProbationPeriodEvaluationReportDto.class);
             List<ProbationPeriodEvaluation> evaluation = probationPeriodEvaluationDao.getEvaluations(emp);
             dto.setEmployee(emp.getFirstName() + " " + emp.getLastName());
