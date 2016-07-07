@@ -24,6 +24,7 @@ import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.expense.AdvanceRequisition;
 import info.yalamanchili.office.entity.expense.AdvanceRequisitionStatus;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.jms.MessagingService;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -168,7 +169,7 @@ public class AdvanceRequestProcess extends RuleBasedTaskDelegateListner implemen
     protected void assignAdvanceRequisitionTask(DelegateTask task) {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         Employee reportsToEmp = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Reports_To");
-        if (emp.getEmployeeType().getName().equals("Corporate Employee") && reportsToEmp != null) {
+        if (emp.getEmployeeType().getName().equals(EmployeeType.CORPORATE_EMPLOYEE) && reportsToEmp != null) {
             task.addCandidateUser(reportsToEmp.getEmployeeId());
         } else {
             task.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name());
