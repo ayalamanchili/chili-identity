@@ -101,10 +101,10 @@ public class InvoiceService {
             queryStr.append("inv.itemNumber =:itemNumberParam").append(" and ");
         }
         if (searchDto.getStartDate() != null) {
-            queryStr.append("inv.clientInformation.startDate =:startDateParam").append(" and ");
+            queryStr.append("inv.startDate>=:startDateParam").append(" and ");
         }
         if (searchDto.getEndDate() != null) {
-            queryStr.append("inv.clientInformation.endDate =:endDateParam").append(" and ");
+            queryStr.append("inv.endDate<=:endDateParam").append(" and ");
         }
         if (searchDto.getInvoiceDate() != null) {
             queryStr.append("inv.invoiceDate =:invoiceDateParam").append(" and ");
