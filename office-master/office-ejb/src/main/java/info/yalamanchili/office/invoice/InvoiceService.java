@@ -13,9 +13,13 @@ import info.chili.reporting.ReportGenerator;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.client.InvoiceDao;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.client.Invoice;
+import info.yalamanchili.office.entity.profile.ClientInformation;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -133,6 +137,35 @@ public class InvoiceService {
         String[] columnOrder = new String[]{"employee", "itemNumber", "invoiceNumber", "startDate", "endDate", "invoiceDate", "invoiceSentDate", "billingRate", "overTimeBillingRate", "hours", "invoicestatus", "invoicefrequency", "timeSheetstatus"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Invoice Summary Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
+    
+    @Async
+    @Transactional
+    public void generateActiveInvoicesReport(String email) {
+        String[] types = {"Corporate Employee", "Employee", "Subcontractor", "W2 Contractor", "1099 Contractor"};
+        List<Employee> emps = EmployeeDao.instance().getEmployeesByType(types);
+        List<Invoice> invoices = new ArrayList();
+        for (Employee emp : emps) {
+            if (emp.getClientInformations() != null) {
+                for (ClientInformation ci : emp.getClientInformations()) {
+                    if (ci.getEndDate() != null) {
+                        if ((ci.getEndDate().after(new Date())) || (ci.getEndDate().equals(new Date()))) {
+                            invoices.addAll(ci.getInvoice());
+                        }
+                    } else {
+                        invoices.addAll(ci.getInvoice());
+                    }
+                }
+            }
+        }
+        List<InvoiceDto> res = new ArrayList();
+        for (Invoice invoice : invoices) {
+            res.add(InvoiceDto.map(mapper, invoice));
+        }
+        String[] columnOrder = new String[]{"employee", "itemNumber", "invoiceNumber", "startDate", "endDate", "invoiceDate", "billingRate", "overTimeBillingRate", "hours", "invoicestatus", "invoicefrequency", "timeSheetstatus"};
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Active Summary Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
+        
+    }
+    
 
     @XmlRootElement
     @XmlType
