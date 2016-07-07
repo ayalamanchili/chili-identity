@@ -45,7 +45,7 @@ public class ProfileReportsService {
     @Transactional
     public void generateEmployeBasicInfoReport(String email) {
         List<EmployeeBasicInfoReportDto> res = new ArrayList<>();
-        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee", "Employee", EmployeeType.INTERN_SEASONAL_EMPLOYEE)) {
+        for (Employee emp : EmployeeDao.instance().getEmployeesByType(EmployeeType.CORPORATE_EMPLOYEE, EmployeeType.EMPLOYEE, EmployeeType.INTERN_SEASONAL_EMPLOYEE)) {
             EmployeeBasicInfoReportDto dto = mapper.map(emp, EmployeeBasicInfoReportDto.class);
             dto.setEmail(EmployeeDao.instance().getPrimaryEmail(emp));
             dto.setType(emp.getEmployeeType().getName());
@@ -67,7 +67,7 @@ public class ProfileReportsService {
     @Transactional
     public void generateProfileReport(String email) {
         List<EmployeProfileDto> res = new ArrayList();
-        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee", "Employee", EmployeeType.INTERN_SEASONAL_EMPLOYEE)) {
+        for (Employee emp : EmployeeDao.instance().getEmployeesByType(EmployeeType.CORPORATE_EMPLOYEE, EmployeeType.EMPLOYEE, EmployeeType.INTERN_SEASONAL_EMPLOYEE)) {
             EmployeProfileDto dto = new EmployeProfileDto();
             dto.setFirstName(emp.getFirstName());
             dto.setLastName(emp.getLastName());
@@ -133,7 +133,7 @@ public class ProfileReportsService {
     public void generateEmployeClientInfoReport(String email) {
         List<EmployeeClientInfoReportDto> res = new ArrayList<>();
         //TODO using paging
-        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Employee", "1099 Contractor", "Subcontractor")) {
+        for (Employee emp : EmployeeDao.instance().getEmployeesByType(EmployeeType.EMPLOYEE, EmployeeType._1099_CONTRACTOR, EmployeeType.SUBCONTRACTOR)) {
             for (ClientInformation ci : emp.getClientInformations()) {
                 EmployeeClientInfoReportDto dto = new EmployeeClientInfoReportDto();
                 dto.setEmployeeName(emp.getFirstName() + " " + emp.getLastName());
@@ -187,13 +187,13 @@ public class ProfileReportsService {
     public void sendMissingProfileInfoEmail() {
         List<EmployeProfileDto> report = new ArrayList();
         AddressDao addressDao = AddressDao.instance();
-        EmployeeDao.instance().getEmployeesByType("Employee", "Corporate Employee", EmployeeType.INTERN_SEASONAL_EMPLOYEE).stream().forEach((emp) -> {
+        EmployeeDao.instance().getEmployeesByType(EmployeeType.EMPLOYEE, EmployeeType.CORPORATE_EMPLOYEE, EmployeeType.INTERN_SEASONAL_EMPLOYEE).stream().forEach((emp) -> {
             StringBuilder emailBody = new StringBuilder();
             EmployeProfileDto dto = new EmployeProfileDto();
             int profileCompleteCounter = 10;
             dto.setFirstName(emp.getFirstName());
             dto.setLastName(emp.getLastName());
-            boolean isCorporateEmployee = emp.getEmployeeType().getName().equals("Corporate Employee");
+            boolean isCorporateEmployee = emp.getEmployeeType().getName().equals(EmployeeType.CORPORATE_EMPLOYEE);
             if (addressDao.getAddressByType(emp, "Home").size() <= 0) {
                 emailBody.append("<li>Primary Mailing/Home address is missing </li>").append("</br>");
                 profileCompleteCounter--;
@@ -240,7 +240,7 @@ public class ProfileReportsService {
     public void generateEmployeCompanyContactsReport(String email) {
         List<EmployeeBasicInfoReportDto> report = new ArrayList<>();
 
-        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
+        for (Employee emp : EmployeeDao.instance().getEmployeesByType(EmployeeType.CORPORATE_EMPLOYEE)) {
             for (CompanyContact contact : CompanyContactDao.instance().getEmployeeCompanyContacts(emp.getId())) {
                 EmployeeBasicInfoReportDto dto = new EmployeeBasicInfoReportDto();
                 dto.setFirstName(emp.getFirstName());
