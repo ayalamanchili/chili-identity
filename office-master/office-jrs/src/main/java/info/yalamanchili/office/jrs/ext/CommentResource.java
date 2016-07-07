@@ -16,6 +16,7 @@ import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.chili.email.Email;
 import info.chili.jpa.AbstractEntity;
+import info.chili.jpa.AbstractHandleEntity;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.hr.ProspectDao;
 import info.yalamanchili.office.entity.ext.Comment;
@@ -117,8 +118,16 @@ public class CommentResource {
                 comment.setComment(emaillist);
         }
         comment = commentDao.save(comment, id, targetClassName);
+        
         try {
-            sendCommentNotification(notifyEmployees, comment, (AbstractEntity) commentDao.getEntityManager().find(Class.forName(targetClassName), id));
+            Object targetClassObject = commentDao.getEntityManager().find(Class.forName(targetClassName), id);
+            if(targetClassObject instanceof AbstractHandleEntity){
+               sendCommentNotification(notifyEmployees, comment,(AbstractHandleEntity) commentDao.getEntityManager().find(Class.forName(targetClassName), id) );
+            }else
+            {
+               sendCommentNotification(notifyEmployees, comment,(AbstractEntity) commentDao.getEntityManager().find(Class.forName(targetClassName), id) );
+            }
+            
         } catch (ClassNotFoundException ex) {
             throw new RuntimeException(ex);
         }
@@ -154,7 +163,37 @@ public class CommentResource {
         email.setHtml(Boolean.TRUE);
         messagingService.sendEmail(email);
     }
-
+    protected void sendCommentNotification(List<Entry> notifyEmployees, Comment comment, AbstractHandleEntity entity) {
+        if (notifyEmployees == null) {
+            return;
+        }
+        Email email = new Email();
+        for (Entry e : notifyEmployees) {
+            Employee emp = EmployeeDao.instance().findEmployeWithEmpId(e.getId());
+            if (emp != null) {
+                email.addTo(EmployeeDao.instance().getPrimaryEmail(emp));
+            }
+        }
+        HashMap<String, Object> emailContext = new HashMap();
+        Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
+        email.setSubject("Comment added by:" + currentUser.getFirstName() + "" + currentUser.getLastName() + " on " + entity.getClass().getSimpleName());
+        emailContext.put("createdBy", currentUser.getFirstName() + "" + currentUser.getLastName());
+        emailContext.put("comment", comment.getComment());
+        emailContext.put("reference", entity.getClass().getSimpleName());
+        emailContext.put("description", "");
+        emailContext.put("comments", commentDao.findAll(entity.getId(), entity.getClass().getCanonicalName()));
+        emailContext.put("commentReferenceURL", OfficeServiceConfiguration.instance().getPortalWebUrl() + "#?entity=" + comment.getTargetEntityName() + "&id=" + comment.getTargetEntityId());
+        if (entity.getClass().equals(Prospect.class)) {
+            email.setTemplateName("prospects_comment_added_template.html");
+        } else {
+            email.setTemplateName("comment_added_template.html");
+        }
+        email.setContext(emailContext);
+        MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
+        email.setHtml(Boolean.TRUE);
+        messagingService.sendEmail(email);
+    }
+    
     @XmlRootElement
     @XmlType
     public static class CommentTable implements java.io.Serializable {
