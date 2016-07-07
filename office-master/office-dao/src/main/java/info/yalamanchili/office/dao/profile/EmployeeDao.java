@@ -116,7 +116,7 @@ public class EmployeeDao extends CRUDDao<Employee> {
     @Transactional
     public void syncCorpEmployeeRoles() {
         CRole role = CRoleDao.instance().findRoleByName(OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name());
-        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
+        for (Employee emp : EmployeeDao.instance().getEmployeesByType(EmployeeType.CORPORATE_EMPLOYEE)) {
             if (!OfficeSecurityService.instance().hasRole(OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
                 emp.getUser().addRole(role);
                 em.merge(emp);
