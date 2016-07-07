@@ -53,7 +53,7 @@ public class ClientService {
     @Transactional
     public void generateActiveClientsInfoReport(String email) {
 
-        String[] types = {"Corporate Employee", "Employee", "Subcontractor", "W2 Contractor", "1099 Contractor", EmployeeType.INTERN_SEASONAL_EMPLOYEE};
+        String[] types = {EmployeeType.CORPORATE_EMPLOYEE, EmployeeType.EMPLOYEE, EmployeeType.SUBCONTRACTOR, EmployeeType.W2_CONTRACTOR, EmployeeType._1099_CONTRACTOR, EmployeeType.INTERN_SEASONAL_EMPLOYEE};
         List<Employee> emps = EmployeeDao.instance().getEmployeesByType(types);
         List<ClientInformation> clientInfos = new ArrayList();
         for (Employee emp : emps) {
