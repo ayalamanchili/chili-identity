@@ -114,4 +114,29 @@ public class ProspectProcessBean {
         email.setTemplateName("prospects_template.html");
         MessagingService.instance().sendEmail(email);
     }
+
+    public void sendIPProspectMailToCaseManager(List<Prospect> caseManagerProspects, Long id) {
+        info.chili.email.Email email = new info.chili.email.Email();
+        Mapper mapper = SpringContext.getBean(Mapper.class);
+        List<ProspectDto> prospectDtos = new ArrayList();
+        email.addTo(EmployeeDao.instance().findById(id).getPrimaryEmail().getEmail());
+        email.setHtml(Boolean.TRUE);
+        for (Prospect prospect : caseManagerProspects) {
+            ProspectDto dto = ProspectDto.map(mapper, prospect);
+            dto.setPhoneNumber(prospect.getContact().getPhones().get(0).getPhoneNumber().replaceAll("(\\d{3})(\\d{3})(\\d{4})", "$1-$2-$3"));
+            prospectDtos.add(dto);
+        }
+        if (ProspectStatus.IN_PROGRESS.equals(caseManagerProspects.get(0).getStatus())) {
+            System.out.println("in progress case manager email");
+            email.setSubject(prospectDtos.size() + " " + caseManagerProspects.get(0).getStatus().name() + " Prospects status not changed from more than 2 days\n");
+        } else if (ProspectStatus.RECRUITING.equals(caseManagerProspects.get(0).getStatus())) {
+            email.setSubject(prospectDtos.size() + " " + caseManagerProspects.get(0).getStatus().name() + " Prospects status not changed from more than 1 day\n");
+        }
+        HashMap<String, Object> emailContext = new HashMap();
+        emailContext.put("prospects", prospectDtos);
+        emailContext.put("isBenchDateRequired", "false");
+        email.setContext(emailContext);
+        email.setTemplateName("prospects_template.html");
+        MessagingService.instance().sendEmail(email);
+    }
 }
