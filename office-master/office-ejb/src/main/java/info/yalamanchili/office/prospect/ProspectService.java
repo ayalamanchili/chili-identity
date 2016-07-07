@@ -240,7 +240,7 @@ public class ProspectService {
     }
 
     public ProspectDto update(ProspectDto dto, Long screenedById) {
-        if (ContactDao.instance().findByEmail(dto.getEmail()) != null || EmployeeDao.instance().findByEmail(dto.getEmail()) != null) {
+        if (EmployeeDao.instance().findByEmail(dto.getEmail()) != null) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "email.already.exist", "Contact Already Exist With The Same Email");
         }
         Prospect entity = prospectDao.findById(dto.getId());
