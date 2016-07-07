@@ -111,7 +111,7 @@ public class RecruitingReportsService {
     @Transactional
     public void generateEmployeeSkillSetReport(String email) {
         List<EmployeeSkillSetReportDto> res = new ArrayList<>();
-        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee", "Employee", EmployeeType.INTERN_SEASONAL_EMPLOYEE)) {
+        for (Employee emp : EmployeeDao.instance().getEmployeesByType(EmployeeType.CORPORATE_EMPLOYEE, EmployeeType.EMPLOYEE, EmployeeType.INTERN_SEASONAL_EMPLOYEE)) {
             if (emp.getSkillSet() != null) {
                 EmployeeSkillSetReportDto dto = new EmployeeSkillSetReportDto();
                 dto.setEmployee(emp.getFirstName() + emp.getLastName());
