@@ -19,6 +19,7 @@ import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.entity.company.CompanyContact;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +45,7 @@ public class ProfileReportsService {
     @Transactional
     public void generateEmployeBasicInfoReport(String email) {
         List<EmployeeBasicInfoReportDto> res = new ArrayList<>();
-        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee", "Employee")) {
+        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee", "Employee", EmployeeType.INTERN_SEASONAL_EMPLOYEE)) {
             EmployeeBasicInfoReportDto dto = mapper.map(emp, EmployeeBasicInfoReportDto.class);
             dto.setEmail(EmployeeDao.instance().getPrimaryEmail(emp));
             dto.setType(emp.getEmployeeType().getName());
@@ -66,7 +67,7 @@ public class ProfileReportsService {
     @Transactional
     public void generateProfileReport(String email) {
         List<EmployeProfileDto> res = new ArrayList();
-        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee", "Employee")) {
+        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee", "Employee", EmployeeType.INTERN_SEASONAL_EMPLOYEE)) {
             EmployeProfileDto dto = new EmployeProfileDto();
             dto.setFirstName(emp.getFirstName());
             dto.setLastName(emp.getLastName());
@@ -186,7 +187,7 @@ public class ProfileReportsService {
     public void sendMissingProfileInfoEmail() {
         List<EmployeProfileDto> report = new ArrayList();
         AddressDao addressDao = AddressDao.instance();
-        EmployeeDao.instance().getEmployeesByType("Employee", "Corporate Employee").stream().forEach((emp) -> {
+        EmployeeDao.instance().getEmployeesByType("Employee", "Corporate Employee", EmployeeType.INTERN_SEASONAL_EMPLOYEE).stream().forEach((emp) -> {
             StringBuilder emailBody = new StringBuilder();
             EmployeProfileDto dto = new EmployeProfileDto();
             int profileCompleteCounter = 10;
