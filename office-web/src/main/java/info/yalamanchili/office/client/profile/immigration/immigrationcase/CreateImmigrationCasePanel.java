@@ -17,7 +17,6 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.expense.chkreq.ImmigrationCaseType;
 import info.yalamanchili.office.client.expense.chkreq.SponsorType;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
-import info.yalamanchili.office.client.profile.immigration.ReadAllImmigrationCasePanel;
 import java.util.logging.Logger;
 
 /**
