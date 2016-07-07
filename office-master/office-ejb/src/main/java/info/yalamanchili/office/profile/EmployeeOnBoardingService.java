@@ -145,7 +145,7 @@ public class EmployeeOnBoardingService {
         //Create employee with basic information
         emp = employeeService.createEmailAndOtherDefaults(emp, initiateDto.getEmail());
         //Create BPM User
-        if (emp.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
+        if (emp.getEmployeeType().getName().equalsIgnoreCase(EmployeeType.CORPORATE_EMPLOYEE)) {
             employeeService.createBPMUser(emp, false);
         }
         //Update Address for Employee
@@ -207,7 +207,7 @@ public class EmployeeOnBoardingService {
         onboarding = em.merge(onboarding);
 
         //Create BPM User
-        if (emp.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee") || emp.getEmployeeType().getName().equalsIgnoreCase("Employee")) {
+        if (emp.getEmployeeType().getName().equalsIgnoreCase(EmployeeType.CORPORATE_EMPLOYEE) || emp.getEmployeeType().getName().equalsIgnoreCase(EmployeeType.EMPLOYEE)) {
             OfficeBPMIdentityService.instance().createUser(emp.getEmployeeId());
             Map<String, Object> obj = new HashMap<>();
             obj.put("entity", onboarding);

@@ -26,6 +26,7 @@ import info.yalamanchili.office.dto.time.CorporateTimeSummary;
 import info.yalamanchili.office.entity.profile.Branch;
 import static info.yalamanchili.office.entity.profile.Branch.Hyderabad;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.time.CorporateTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
@@ -209,7 +210,7 @@ public class CorporateTimeService {
     @Transactional(readOnly = true)
     public void getAllEmployeesSummaryReport(String email) {
         List<CorporateTimeSummary> summary = new ArrayList<>();
-        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
+        for (Employee emp : EmployeeDao.instance().getEmployeesByType(EmployeeType.CORPORATE_EMPLOYEE)) {
             summary.add(getYearlySummary(emp));
         }
         MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(summary, "corporate-time-summary", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);

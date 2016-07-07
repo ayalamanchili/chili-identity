@@ -79,7 +79,7 @@ public class ContractReportService {
         ContractSearchDto searchDto = new ContractSearchDto();
         List<ContractDto> dtos = new ArrayList();
         List<ContractDto> activeCpds = new ArrayList();
-        String[] types = {"Corporate Employee", "Employee", "Subcontractor", "W2 Contractor", "1099 Contractor"};
+        String[] types = {EmployeeType.CORPORATE_EMPLOYEE, EmployeeType.EMPLOYEE, EmployeeType.SUBCONTRACTOR, EmployeeType.W2_CONTRACTOR, EmployeeType._1099_CONTRACTOR};
         for (String type : types) {
             searchDto.setEmployeeType(type);
             dtos.addAll(ContractService.instance().getResultForReport(searchDto).getEntities());
