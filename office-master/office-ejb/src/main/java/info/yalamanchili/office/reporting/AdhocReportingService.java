@@ -10,6 +10,7 @@ package info.yalamanchili.office.reporting;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.EmployeeType;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -33,7 +34,7 @@ public class AdhocReportingService {
         while (EmployeeDao.instance().query(start, 50).size() > 0) {
             emps = EmployeeDao.instance().query(start, 50);
             for (Employee emp : emps) {
-                if (emp.getEmployeeType().getName().equals("Corporate Employee")) {
+                if (emp.getEmployeeType().getName().equals(EmployeeType.CORPORATE_EMPLOYEE)) {
                     emp = em.find(Employee.class, emp.getId());
                     if (emp.getPrimaryEmail() == null || emp.getAddresss().size() < 1 || emp.getEmergencyContacts().size() < 1 || emp.getPhones().size() < 1) {
                         report.append("\n");

@@ -73,7 +73,7 @@ public class EmployeeService {
         //Create employee with basic information
         emp = createEmailAndOtherDefaults(emp, employee.getEmail());
         //Create BPM User
-        if (emp.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
+        if (emp.getEmployeeType().getName().equalsIgnoreCase(EmployeeType.CORPORATE_EMPLOYEE)) {
             createBPMUser(emp, true);
         }
         //create cert
@@ -112,7 +112,7 @@ public class EmployeeService {
     }
 
     public void sendNewEmployeeNotifiaction(Employee emp) {
-        if (emp.getEmployeeType().getName().equals("Corporate Employee") || emp.getEmployeeType().getName().equals("Employee") || emp.getEmployeeType().getName().equals("W2 Contractor")) {
+        if (emp.getEmployeeType().getName().equals(EmployeeType.CORPORATE_EMPLOYEE) || emp.getEmployeeType().getName().equals(EmployeeType.EMPLOYEE) || emp.getEmployeeType().getName().equals(EmployeeType.W2_CONTRACTOR)) {
             Employee currentEmp = OfficeSecurityService.instance().getCurrentUser();
             profileNotificationService.sendNewUserCreatedNotification(currentEmp, emp);
         }
@@ -134,14 +134,14 @@ public class EmployeeService {
     public Employee createCUser(Employee employee) {
         String empType = employee.getEmployeeType().getName();
         String username = generateEmployeeId(employee.getFirstName(), employee.getLastName(), employee.getDateOfBirth());
-        if (empType.equals("Corporate Employee") || empType.equals("Employee") || empType.equals("W2 Contractor")) {
+        if (empType.equals(EmployeeType.CORPORATE_EMPLOYEE) || empType.equals(EmployeeType.EMPLOYEE) || empType.equals(EmployeeType.W2_CONTRACTOR)) {
             //Create CUser
             CUser user = mapper.map(employee, CUser.class);
             user.setPasswordHash(generatepassword());
             //TODO fix dup user name ussue
             user.setUsername(username);
             user.setEnabled(true);
-            if (empType.equals("Corporate Employee")) {
+            if (empType.equals(EmployeeType.CORPORATE_EMPLOYEE)) {
                 user.addRole(CRoleDao.instance().findRoleByName(OfficeRole.ROLE_CORPORATE_EMPLOYEE.name()));
             }
             user.addRole((CRole) EntityQueryUtils.findEntity(em, CRole.class, "rolename", OfficeRole.ROLE_USER.name()));
@@ -198,8 +198,8 @@ public class EmployeeService {
         if (dto.getEndDate() == null) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.request", "End Date is required to deactivate the employee");
         }
-        if (emp.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
-            for (Employee employee : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
+        if (emp.getEmployeeType().getName().equalsIgnoreCase(EmployeeType.CORPORATE_EMPLOYEE)) {
+            for (Employee employee : EmployeeDao.instance().getEmployeesByType(EmployeeType.CORPORATE_EMPLOYEE)) {
                 for (CompanyContact contact : CompanyContactDao.instance().getEmployeeCompanyContacts(employee.getId())) {
                     if (contact.getContact().getEmployeeId().equals(emp.getEmployeeId())) {
                         throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.deactivate", "This employee is listed as a company contact for other employees. Please verify and remove");

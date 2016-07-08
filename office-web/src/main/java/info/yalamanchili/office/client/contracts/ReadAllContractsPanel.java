@@ -34,63 +34,63 @@ import java.util.logging.Logger;
  * @author anuyalamanchili
  */
 public class ReadAllContractsPanel extends CRUDReadAllComposite {
-
+    
     private static Logger logger = Logger.getLogger(ReadAllContractsPanel.class.getName());
     public static ReadAllContractsPanel instance;
     String emp = null;
-
+    
     public ReadAllContractsPanel() {
         instance = this;
         initTable("Contract", OfficeWelcome.constants);
     }
-
+    
     public ReadAllContractsPanel(JSONArray array) {
         instance = this;
         initTable("Contract", array, OfficeWelcome.constants);
     }
-
+    
     public ReadAllContractsPanel(String parentId) {
         instance = this;
         this.parentId = parentId;
         initTable("Contract", OfficeWelcome.constants);
     }
-
+    
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().reportingPanel.entityPanel.clear();
         TabPanel.instance().reportingPanel.entityPanel.add(new ReadContractsPanel(entityId));
     }
-
+    
     @Override
     protected void onQuickView(int row, String id) {
         new GenericPopup(new ReadContractsPanel(getEntity(id)), Window.getClientWidth() / 4, 0).show();
     }
-
+    
     @Override
     public void deleteClicked(String entityId) {
     }
-
+    
     @Override
     public void postDeleteSuccess() {
     }
-
+    
     @Override
     public void updateClicked(String entityId) {
     }
-
+    
     @Override
     public void preFetchTable(int start) {
         // TODO externalize the limit size for read all
         HttpService.HttpServiceAsync.instance().doGet(getReadAllContractsURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        logger.info(result);
-                        postFetchTable(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                logger.info(result);
+                postFetchTable(result);
+            }
+        });
     }
-
+    
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
@@ -109,14 +109,14 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
             table.setText(0, 9, getKeyValue("Invoice"));
         }
     }
-
+    
     @Override
     public void fillData(JSONArray entities) {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             OfficeWelcome.instance().logger.info(entity.toString());
-
+            
             if (JSONUtils.toString(entity, "isActive").equalsIgnoreCase("true")) {
                 table.getRowFormatter().setStyleName(i, "contractActive");
             }
@@ -140,7 +140,7 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
             table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
 //            table.setText(i, 9, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
             setEnumColumn(i, 8, entity, ClientInformationStatus.class.getSimpleName(), "status");
-            if (Auth.hasAnyOfRoles(ROLE.ROLE_INVOICE_MANAGER) && entity.get("status").isString().stringValue().equalsIgnoreCase("Completed")) {
+            if (Auth.hasAnyOfRoles(ROLE.ROLE_INVOICE_MANAGER) && entity.containsKey("status") && entity.get("status").isString().stringValue().equalsIgnoreCase("Completed")) {
                 ClickableLink invoiceLink = new ClickableLink("Create Invoice");
                 invoiceLink.setTitle(JSONUtils.toString(entity, "id"));
                 emp = JSONUtils.toString(entity, "employee");
@@ -151,13 +151,13 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
             }
         }
     }
-
+    
     protected void getInvoice(String entityId) {
         if (!entityId.isEmpty()) {
             new GenericPopup(new UpdateInvoicePanel(entityId, false)).show();
         }
     }
-
+    
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_FULL_VIEW, Auth.ROLE.ROLE_RECRUITER)) {
@@ -166,21 +166,21 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
             createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ);
         }
     }
-
+    
     @Override
     public void printClicked(String entityId) {
         Window.open(ChiliClientConfig.instance().getFileDownloadUrl() + "contract/reports" + "&passthrough=true" + "&id=" + entityId, "_blank", "");
     }
-
+    
     private String getReadAllContractsURL(Integer start, String limit) {
         return OfficeWelcome.constants.root_url() + "contract/" + start.toString() + "/" + limit.toString();
     }
-
+    
     @Override
     protected boolean enableQuickView() {
         return true;
     }
-
+    
     @Override
     protected boolean enablePersistedQuickView() {
         return true;

@@ -29,7 +29,6 @@ public class EmailGroupsSidePanel extends ALComposite implements ClickHandler {
 
     protected FlowPanel panel = new FlowPanel();
     protected Button generateRepB = new Button("Generate");
-    //SelectEmployeeTypeWidget selectEmployeeTypeWidgetF = new SelectEmployeeTypeWidget(false, true, Alignment.VERTICAL);
     protected Label employeeType = new Label("Employee Type");
     protected ListBox employeeTypeList = new ListBox();
     
@@ -50,6 +49,7 @@ public class EmailGroupsSidePanel extends ALComposite implements ClickHandler {
         employeeTypeList.addItem("W2 Contractor", "W2 Contractor");
         employeeTypeList.addItem("1099 Contractor", "1099 Contractor");
         employeeTypeList.addItem("Subcontractor", "Subcontractor");
+        employeeTypeList.addItem("Deactivated", "Deactivated");
     }
 
     @Override

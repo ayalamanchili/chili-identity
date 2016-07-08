@@ -19,6 +19,7 @@ import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ public class ClientService {
     @Transactional
     public void generateActiveClientsInfoReport(String email) {
 
-        String[] types = {"Corporate Employee", "Employee", "Subcontractor", "W2 Contractor", "1099 Contractor"};
+        String[] types = {EmployeeType.CORPORATE_EMPLOYEE, EmployeeType.EMPLOYEE, EmployeeType.SUBCONTRACTOR, EmployeeType.W2_CONTRACTOR, EmployeeType._1099_CONTRACTOR, EmployeeType.INTERN_SEASONAL_EMPLOYEE};
         List<Employee> emps = EmployeeDao.instance().getEmployeesByType(types);
         List<ClientInformation> clientInfos = new ArrayList();
         for (Employee emp : emps) {

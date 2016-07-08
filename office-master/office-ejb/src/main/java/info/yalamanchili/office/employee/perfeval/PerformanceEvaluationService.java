@@ -40,6 +40,7 @@ import info.yalamanchili.office.entity.ext.Question;
 import info.yalamanchili.office.entity.ext.QuestionCategory;
 import info.yalamanchili.office.entity.ext.QuestionContext;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.ext.QuestionService;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -430,7 +431,7 @@ public class PerformanceEvaluationService {
 
     public List<PerformanceEvaluationReportDto> getPerformanceEvaluationReport(String year) {
         List<PerformanceEvaluationReportDto> report = new ArrayList<>();
-        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
+        for (Employee emp : EmployeeDao.instance().getEmployeesByType(EmployeeType.CORPORATE_EMPLOYEE)) {
             PerformanceEvaluationReportDto dto = new PerformanceEvaluationReportDto();
             dto.setEmployee(emp.getFirstName() + " " + emp.getLastName());
             dto.setStartDate(emp.getStartDate());

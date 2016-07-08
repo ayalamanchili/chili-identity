@@ -29,6 +29,7 @@ public class InvoiceSidePanel extends ALComposite implements ClickHandler {
     private static Logger logger = Logger.getLogger(InvoiceSidePanel.class.getName());
     public FlowPanel invoicesidepanel = new FlowPanel();
     ClickableLink invoiceSummaryReportL = new ClickableLink("Invoice Summary Report");
+    ClickableLink activeSummaryReportL = new ClickableLink(" Active Invoices Report");
 
     public InvoiceSidePanel() {
         init(invoicesidepanel);
@@ -37,11 +38,13 @@ public class InvoiceSidePanel extends ALComposite implements ClickHandler {
     @Override
     protected void addListeners() {
         invoiceSummaryReportL.addClickHandler(this);
+        activeSummaryReportL.addClickHandler(this);
     }
 
     @Override
     protected void configure() {
         invoiceSummaryReportL.setTitle("report with full information of invoices");
+        activeSummaryReportL.setTitle("report with full information of invoices");
     }
 
     @Override
@@ -49,6 +52,7 @@ public class InvoiceSidePanel extends ALComposite implements ClickHandler {
         invoicesidepanel.add(new SearchInvoicePanel());
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CEO, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN)) {
             invoicesidepanel.add(invoiceSummaryReportL);
+            invoicesidepanel.add(activeSummaryReportL);
         }
     }
 
@@ -57,19 +61,37 @@ public class InvoiceSidePanel extends ALComposite implements ClickHandler {
         if (event.getSource().equals(invoiceSummaryReportL)) {
             generateInvoiceInfoReport();
         }
+        if (event.getSource().equals(activeSummaryReportL)) {
+            generateActiveInvoiceInfoReport();
+        }
     }
 
     protected void generateInvoiceInfoReport() {
         HttpService.HttpServiceAsync.instance().doGet(getInvoiceInfoReportUrl(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        new ResponseStatusWidget().show("Invoice Summary Report will be emailed to your primary email");
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                new ResponseStatusWidget().show("Invoice Summary Report will be emailed to your primary email");
+            }
+        });
+    }
+
+    protected void generateActiveInvoiceInfoReport() {
+        HttpService.HttpServiceAsync.instance().doGet(getActiveInvoiceInfoReportUrl(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String result) {
+                new ResponseStatusWidget().show("Active Invoice Summary Report will be emailed to your primary email");
+            }
+        });
     }
 
     protected String getInvoiceInfoReportUrl() {
         return OfficeWelcome.constants.root_url() + "invoice/invoice-summary-report";
     }
+
+    protected String getActiveInvoiceInfoReportUrl() {
+        return OfficeWelcome.constants.root_url() + "invoice/active-clientinfo-report";
+    }
+
 }

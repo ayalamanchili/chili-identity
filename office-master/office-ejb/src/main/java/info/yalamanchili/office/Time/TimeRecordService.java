@@ -17,6 +17,7 @@ import info.yalamanchili.office.dao.time.TimeRecordDao;
 import info.yalamanchili.office.dto.time.AvantelTimeSummaryDto;
 import info.yalamanchili.office.entity.profile.Branch;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.model.time.TimeRecord;
 import java.math.BigDecimal;
@@ -54,7 +55,7 @@ public class TimeRecordService {
         
         List<AvantelTimeSummaryDto> res = new ArrayList();
         
-        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
+        for (Employee emp : EmployeeDao.instance().getEmployeesByType(EmployeeType.CORPORATE_EMPLOYEE)) {
 
             if (Branch.Hyderabad.equals(emp.getBranch())) {
 

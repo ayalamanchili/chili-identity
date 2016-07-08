@@ -30,6 +30,7 @@ public class EmployeeBasicInfoReportDto implements Serializable {
     protected String jobTitle;
     protected Date dateOfBirth;
     protected Date startDate;
+    protected Date endDate;
     protected String type;
     protected String branchName;
     protected String manager;
@@ -122,5 +123,13 @@ public class EmployeeBasicInfoReportDto implements Serializable {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 }

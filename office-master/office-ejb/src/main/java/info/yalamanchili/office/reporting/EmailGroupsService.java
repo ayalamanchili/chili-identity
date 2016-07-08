@@ -12,6 +12,7 @@ import info.chili.reporting.ReportGenerator;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.reports.profile.EmployeeBasicInfoReportDto;
 import java.util.ArrayList;
@@ -39,24 +40,38 @@ public class EmailGroupsService {
     public void getemailMenuReportsReport(String email, String employeeType) {
         List<EmployeeBasicInfoReportDto> res = new ArrayList<>();
         if (employeeType.equals("All Employees")) {
-            for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee", "Employee")) {
-                res.add(getAllEmployeeEmails(emp));
+            for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee", "Employee", EmployeeType.INTERN_SEASONAL_EMPLOYEE)) {
+                res.add(getAllEmployeeEmails(emp, false));
+            }
+        } else if (employeeType.equals("Deactivated")) {
+            for (Employee emp : EmployeeDao.instance().queryAll(0, 10000)) {
+                if (emp.isActive() == false) {
+                    res.add(getAllEmployeeEmails(emp, true));
+                }
             }
         } else {
             for (Employee emp : EmployeeDao.instance().getEmployeesByType(employeeType.trim())) {
-                res.add(getAllEmployeeEmails(emp));
+                res.add(getAllEmployeeEmails(emp, false));
             }
         }
-        String[] columnOrder = new String[]{"firstName", "lastName", "type", "email"};
+        String[] columnOrder;
+        if (employeeType.equals("Deactivated"))  {
+            columnOrder = new String[]{"firstName", "lastName", "type", "email", "endDate"};
+        } else {
+            columnOrder = new String[]{"firstName", "lastName", "type", "email"};
+        }
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Email-Group-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
 
-    public EmployeeBasicInfoReportDto getAllEmployeeEmails(Employee emp) {
+    public EmployeeBasicInfoReportDto getAllEmployeeEmails(Employee emp, boolean isDeactivatedList) {
         EmployeeBasicInfoReportDto dto = mapper.map(emp, EmployeeBasicInfoReportDto.class);
         dto.setFirstName(emp.getFirstName());
         dto.setLastName(emp.getLastName());
         dto.setEmail(EmployeeDao.instance().getPrimaryEmail(emp));
         dto.setType(emp.getEmployeeType().getName());
+        if (isDeactivatedList == true) {
+            dto.setEndDate(emp.getEndDate());
+        }
         return dto;
     }
 }

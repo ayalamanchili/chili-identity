@@ -84,7 +84,7 @@ public class ProspectService {
     protected ProspectDao prospectDao;
 
     public ProspectDto save(ProspectDto dto, Long screenedById) {
-        if (ContactDao.instance().findByEmail(dto.getEmail()) != null && EmployeeDao.instance().findByEmail(dto.getEmail()) != null) {
+        if (ContactDao.instance().findByEmail(dto.getEmail()) != null || EmployeeDao.instance().findByEmail(dto.getEmail()) != null) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "email.already.exist", "Contact Already Exist With The Same Email");
         }
         Prospect entity = mapper.map(dto, Prospect.class);

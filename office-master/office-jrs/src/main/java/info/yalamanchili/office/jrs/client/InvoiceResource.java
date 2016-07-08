@@ -209,4 +209,12 @@ public class InvoiceResource extends CRUDResource<Invoice> {
     public void generateInvoiceSummaryReport() {
         InvoiceService.instance().generateInvoiceSummaryReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
+
+   
+    @GET
+    @Path("/active-clientinfo-report")
+    //TODO add invoice mgr role check using pre auth
+    public void generateActiveInvoicesReport() {
+        InvoiceService.instance().generateActiveInvoicesReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
+    }
 }
