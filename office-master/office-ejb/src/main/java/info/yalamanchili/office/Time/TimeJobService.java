@@ -55,7 +55,7 @@ public class TimeJobService {
             Employee emp = CompanyContactDao.instance().getCompanyContactForEmployee(ts.getEmployee(), "Reports_To");
             Email email = new Email();
             email.addTo(EmployeeDao.instance().getPrimaryEmail(emp));
-            email.setSubject("Leave Remainder: " + ts.getEmployee().getFirstName() + " is on leave");
+            email.setSubject("Leave Reminder: " + ts.getEmployee().getFirstName() + " is on leave");
 //            String messageText = "TODO add timesheet details here";
             String messageText = "Time Sheet Hours" + ts.getHours() + ", Category" + ts.getCategory() + ", StartDate" + ts.getStartDate() + ", EndDate" + ts.getEndDate() + " details ";
             email.setBody(messageText);
