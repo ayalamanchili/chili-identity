@@ -47,7 +47,7 @@
                 <item name="Invoice" href="/office/invoice/create-invoice.html" collapse="true">
                     <item name="Update Invoice" href="/office/invoice/update-invoice.html" collapse="true"/>
                     <item name="Search Invoice" href="/office/invoice/search-invoice.html" collapse="true"/>
-
+                    <item name="Submit Invoice" href="/office/invoice/submit-invoice.html" collapse="true"/>
                 </item>
 
             </item>
