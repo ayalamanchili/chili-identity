@@ -16,8 +16,6 @@ import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import java.util.logging.Logger;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.contracts.ReadContractsPanel;
 
 /**
  *
@@ -53,8 +51,6 @@ public class SubmitInvoicePanel extends CreateComposite {
 
     @Override
     protected void addButtonClicked() {
-        logger.info("entity details:" + entity.toString());
-
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
             @Override
