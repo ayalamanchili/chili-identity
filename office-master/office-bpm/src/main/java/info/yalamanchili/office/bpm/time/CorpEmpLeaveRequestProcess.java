@@ -178,28 +178,26 @@ public class CorpEmpLeaveRequestProcess extends RuleBasedTaskDelegateListner imp
             email.setTos(BPMUtils.getCandidateEmails(task));
         }
         email.addTo(EmployeeDao.instance().getPrimaryEmail(emp));
-        String summary1 = "Leave Request " + status + " For: " + emp.getFirstName() + " " + emp.getLastName();
-        String summary = "<b>Leave Request</b>" + "<b>" + status + "</b>" + " <b>For Employee</b></br></br>" + "&nbsp;&nbsp;<b><i>Employee Name&nbsp;&nbsp;</i></b>:&nbsp;" + emp.getFirstName() + " " + emp.getLastName();
-        email.setSubject(summary1);
+        String summary = "Leave Request " + status + " For: " + emp.getFirstName() + " " + emp.getLastName();
+        email.setSubject(summary);
         StringBuilder messageBuilder = new StringBuilder();
-        messageBuilder.append("<b>Summary:</b> ").append(summary);
+        messageBuilder.append("Summary: ").append(summary).append("\n");
         String taskNotes = (String) task.getVariable("leaveRequestApprovalTaskNotes");
         if (taskNotes != null && !taskNotes.isEmpty()) {
-            messageBuilder.append("</br>&nbsp;&nbsp;<b><i>Notes</i></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: ").append(taskNotes);
+            messageBuilder.append("Notes: ").append(taskNotes).append("\n");
         }
         Employee taskActionUser = (Employee) task.getExecution().getVariable("taskActionUser");
         if (taskActionUser != null) {
-            messageBuilder.append("</br>&nbsp;&nbsp;<b><i>Task Updated By</i></b>&nbsp; : ").append(taskActionUser.getFirstName()).append(" ").append(taskActionUser.getLastName());
+            messageBuilder.append("Task Updated By : ").append(taskActionUser.getFirstName()).append(" ").append(taskActionUser.getLastName()).append("\n");
         }
-        messageBuilder.append("</br></br><b>Task  Details:</br></br><i>Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i></b>: ").append(task.getName()).append("</br>");
-        messageBuilder.append("<b><i>Description</i></b>: ").append(task.getDescription()).append("</br>");
+        messageBuilder.append("Task  Details: \n Name: ").append(task.getName()).append("\n");
+        messageBuilder.append("Description: ").append(task.getDescription()).append("\n");
         if (!email.getTos().equals(emp)) {
-            messageBuilder.append("Please click on the below link to complete the task</br>" + getTaskLink(task));
+            messageBuilder.append("\n\n\t Please click on the below link to complete the task: \n\t " + getTaskLink(task));
             email.getHeaders().put("task-id", task.getId());
         }
         email.setBody(messageBuilder.toString());
         email.setHtml(Boolean.TRUE);
-        email.setRichText(Boolean.TRUE);
         messagingService.sendEmail(email);
     }
 
