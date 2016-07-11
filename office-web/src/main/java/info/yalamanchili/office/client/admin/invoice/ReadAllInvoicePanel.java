@@ -147,9 +147,10 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
         table.setText(0, 3, getKeyValue("Inv. Number"));
         table.setText(0, 4, getKeyValue("StartDate"));
         table.setText(0, 5, getKeyValue("EndDate"));
-        table.setText(0, 6, getKeyValue("BillingRate"));
-        table.setText(0, 7, getKeyValue("O.T. BillingRate"));
-        table.setText(0, 8, getKeyValue("Invoice Status"));
+        table.setText(0, 6, getKeyValue("Hours"));
+        table.setText(0, 7, getKeyValue("BillingRate"));
+        table.setText(0, 8, getKeyValue("O.T. BillingRate"));
+        table.setText(0, 9, getKeyValue("Invoice Status"));
     }
 
     @Override
@@ -164,17 +165,18 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
             table.setText(i, 3, JSONUtils.toString(entity, "invoiceNumber"));
             table.setText(i, 4, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
             table.setText(i, 5, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
-            table.setText(i, 6, FormatUtils.formarCurrency(JSONUtils.toString(clientInformation, "billingRate")));
-            table.setText(i, 7, FormatUtils.formarCurrency(JSONUtils.toString(entity, "overTimeBillingRate")));
+            table.setText(i, 6, JSONUtils.toString(entity, "hours"));
+            table.setText(i, 7, FormatUtils.formarCurrency(JSONUtils.toString(clientInformation, "billingRate")));
+            table.setText(i, 8, FormatUtils.formarCurrency(JSONUtils.toString(entity, "overTimeBillingRate")));
             if (Auth.hasAnyOfRoles(ROLE.ROLE_INVOICE_MANAGER) && (JSONUtils.toString(entity, "invoiceStatus").equalsIgnoreCase(InvoiceStatus.Confirmed.name()))) {
                 ClickableLink invoiceLink = new ClickableLink("Submit Invoice");
                 invoiceLink.setTitle(JSONUtils.toString(entity, "id"));
                 invoiceLink.addClickHandler((ClickEvent event) -> {
                     submitInvoice(((ClickableLink) event.getSource()).getTitle(), clientInfoId);
                 });
-                table.setWidget(i, 8, invoiceLink);
+                table.setWidget(i, 9, invoiceLink);
             } else {
-                table.setText(i, 8, JSONUtils.toString(entity, "invoiceStatus"));
+                table.setText(i, 9, JSONUtils.toString(entity, "invoiceStatus"));
             }
         }
     }
