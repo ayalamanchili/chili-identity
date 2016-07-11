@@ -10,7 +10,8 @@
     
     <bannerLeft>
         <name>Project Name</name>
-        <src>https://yalamanchili.googlecode.com/files/sst-logo.png</src>
+        <!-- <src>https://yalamanchili.googlecode.com/files/sstlogo.png</src>-->
+        <src>/images/sstlogo.png</src>
         <href>https://apps.sstech.us/portal</href>
     </bannerLeft>
     <bannerRight>
