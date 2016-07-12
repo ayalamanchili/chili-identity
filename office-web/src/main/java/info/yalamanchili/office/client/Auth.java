@@ -54,7 +54,7 @@ public class Auth {
 
     public static boolean isEmployee(JSONObject emp) {
         String employeeType = JSONUtils.toString(emp.get("employeeType"), "name");
-        return employeeType.equals("Employee") || employeeType.equals("Corporate Employee");
+        return employeeType.equals("Employee") || employeeType.equals("Corporate Employee") || employeeType.equals("Internal-Seasonal Employee");
     }
 
     public static boolean isHR() {
@@ -96,6 +96,10 @@ public class Auth {
     public static boolean isCorporateEmployee(JSONObject employee) {
         return JSONUtils.toString(employee.get("employeeType"), "name").trim().equals("Corporate Employee");
     }
+    
+    public static boolean isInternEmployee(JSONObject employee) {
+        return JSONUtils.toString(employee.get("employeeType"), "name").trim().equals("Internal-Seasonal Employee");
+    }    
 
     public static boolean isCorporateEmployee() {
         return OfficeWelcome.instance().roles.contains(ROLE.ROLE_CORPORATE_EMPLOYEE.name());
