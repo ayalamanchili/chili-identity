@@ -16,6 +16,7 @@ import info.yalamanchili.office.dao.client.ClientDao;
 import info.yalamanchili.office.dao.client.ProjectDao;
 import info.yalamanchili.office.dao.client.SubcontractorDao;
 import info.yalamanchili.office.dao.client.VendorDao;
+import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.practice.PracticeDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.BillingRateDao;
@@ -204,6 +205,9 @@ public class ClientInformationService {
         }
         ci = clientInformationDao.save(ci);
         emp.addClientInformation(ci);
+        if(ciDto.getReason()!=null){
+            CommentDao.instance().addComment("End Previous Project Reason: "+ciDto.getReason(), ci);
+        }
         if (submitForApproval) {
             ci.setStatus(ClientInformationStatus.PENDING_INVOICING_BILLING_APPROVAL);
             ci.setBpmProcessId(ClientInformationProcessBean.instance().startNewClientInfoProcess(ci, OfficeSecurityService.instance().getCurrentUser()));
@@ -211,6 +215,7 @@ public class ClientInformationService {
             ci.setStatus(ClientInformationStatus.PENDING_CONTRACTS_SUBMIT);
         }
         ciDto.setId(ci.getId());
+        ci.setActive(Boolean.TRUE);
         return mapper.map(ci, ClientInformationDto.class);
     }
 //TODO set these values
@@ -255,6 +260,7 @@ public class ClientInformationService {
         query.setParameter("emp", emp);
         if (query.getResultList().size() > 0) {
             previousClientInformation = (ClientInformation) query.getResultList().get(0);
+            previousClientInformation.setActive(Boolean.FALSE);
             previousClientInformation.setEndDate(ci.getPreviousProjectEndDate());
             em.merge(previousClientInformation);
         }
@@ -493,6 +499,7 @@ public class ClientInformationService {
         clientDao.save(client);
         project = ProjectDao.instance().save(project);
         ciEntity.setClientProject(project);
+        ciEntity.setActive(dto.getActive());
         ciEntity = clientInformationDao.save(ciEntity);
         if (ClientInformationStatus.PENDING_CONTRACTS_SUBMIT.equals(ci.getStatus()) && submitForApproval) {
             ciEntity.setStatus(ClientInformationStatus.PENDING_INVOICING_BILLING_APPROVAL);
