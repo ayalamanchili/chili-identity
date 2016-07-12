@@ -17,7 +17,6 @@ import info.chili.gwt.config.ChiliClientConfig;
 
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
-import info.chili.gwt.fields.FileField;
 import info.chili.gwt.rpc.HttpService;
 
 import info.chili.gwt.utils.JSONUtils;
@@ -44,13 +43,13 @@ public class ReadAllProbationPeriodEvaluationsPanel extends CRUDReadAllComposite
 
     public ReadAllProbationPeriodEvaluationsPanel() {
         instance = this;
-        initTable("ProbationPeriodEvaluations", OfficeWelcome.constants);
+        initTable("ProbationPeriodEvaluations", OfficeWelcome.constants2);
     }
 
     public ReadAllProbationPeriodEvaluationsPanel(String employeeId) {
         instance = this;
         this.parentId = employeeId;
-        initTable("ProbationPeriodEvaluations", OfficeWelcome.constants);
+        initTable("ProbationPeriodEvaluations", OfficeWelcome.constants2);
     }
 
     @Override
@@ -108,7 +107,6 @@ public class ReadAllProbationPeriodEvaluationsPanel extends CRUDReadAllComposite
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
-                        logger.info("ddddddddddd" + result);
                         postFetchTable(result);
                     }
                 });
@@ -120,6 +118,7 @@ public class ReadAllProbationPeriodEvaluationsPanel extends CRUDReadAllComposite
         table.setText(0, 1, "Options");
         table.setText(0, 2, getKeyValue("Stage"));
         table.setText(0, 3, getKeyValue("Preview"));
+        table.setText(0, 4, getKeyValue("Probation Status"));
     }
 
     @Override
@@ -133,12 +132,17 @@ public class ReadAllProbationPeriodEvaluationsPanel extends CRUDReadAllComposite
                 managerReviewL.setTitle(JSONUtils.toString(entity, "id"));
                 table.setWidget(i, 1, managerReviewL);
             }
-            table.setText(i, 2, JSONUtils.toString(entity, "stage"));
+            table.setText(i, 2, JSONUtils.toString(entity, "stage").replaceAll("_", " "));
             //Preview
             ClickableLink previewL = new ClickableLink("Preview");
             previewL.addClickHandler(this);
             previewL.setTitle(JSONUtils.toString(entity, "id"));
             table.setWidget(i, 3, previewL);
+            if (entity.get("active").isString().stringValue().equalsIgnoreCase("true")) {
+                table.setText(i, 4, "Active");
+            } else {
+                table.setText(i, 4, "In-Active");
+            }
         }
     }
 
@@ -203,6 +207,8 @@ public class ReadAllProbationPeriodEvaluationsPanel extends CRUDReadAllComposite
                     @Override
                     public void onResponse(String result) {
                         new ResponseStatusWidget().show("Review Initiated and manager is notified.");
+                        TabPanel.instance().myOfficePanel.entityPanel.clear();
+                        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProbationPeriodEvaluationsPanel(TreeEmployeePanel.instance().getEntityId()));
                     }
                 });
     }

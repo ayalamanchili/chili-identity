@@ -40,7 +40,7 @@ public class ReadProbationPeriodEvaluation extends ReadComposite {
     }
 
     public ReadProbationPeriodEvaluation(String id) {
-        initReadComposite(id, "ProbationPeriodEvaluation", OfficeWelcome.constants);
+        initReadComposite(id, "ProbationPeriodEvaluation", OfficeWelcome.constants2);
     }
 
     @Override
@@ -58,7 +58,6 @@ public class ReadProbationPeriodEvaluation extends ReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        logger.info("eeee" + entity);
         assignFieldValueFromEntity("stage", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("evaluationDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("approvedBy", entity, DataType.STRING_FIELD);
@@ -69,6 +68,7 @@ public class ReadProbationPeriodEvaluation extends ReadComposite {
         assignFieldValueFromEntity("trainingRequirments", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("additionalComments", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("hrNotes", entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("active", entity, DataType.BOOLEAN_FIELD);
     }
 
     @Override
@@ -102,6 +102,7 @@ public class ReadProbationPeriodEvaluation extends ReadComposite {
         addField("trainingRequirments", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("additionalComments", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("hrNotes", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("active", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         alignFields();
         entityFieldsPanel.add(new ReadAllQuestionCommentsPanel(QuestionCategory.PROBATION_PERIOD_EVALUATION_MANAGER.name(), getQuestionCommentsUrl(QuestionCategory.PROBATION_PERIOD_EVALUATION_MANAGER.name(), QuestionContext.PROBATION_PERIOD_EVALUATION.name())));
     }
@@ -126,7 +127,7 @@ public class ReadProbationPeriodEvaluation extends ReadComposite {
 
     @Override
     protected boolean enableViewTasks() {
-        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION,Auth.ROLE.ROLE_PRB_EVALUATIONS_MANAGER);
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION, Auth.ROLE.ROLE_PRB_EVALUATIONS_MANAGER);
     }
 
     @Override

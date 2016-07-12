@@ -40,7 +40,7 @@ public class UpdateProbationPeriodEvaluation extends UpdateComposite {
     protected UpdateAllQuestionCommentsPanel updateQuestionsPanel;
 
     public UpdateProbationPeriodEvaluation(String id) {
-        initUpdateComposite(id, "ProbationPeriodEvaluation", OfficeWelcome.constants);
+        initUpdateComposite(id, "ProbationPeriodEvaluation", OfficeWelcome.constants2);
     }
 
     @Override
@@ -73,9 +73,9 @@ public class UpdateProbationPeriodEvaluation extends UpdateComposite {
         assignEntityValueFromField("trainingRequirments", entity);
         assignEntityValueFromField("additionalComments", entity);
         assignEntityValueFromField("hrNotes", entity);
+        assignEntityValueFromField("active", entity);
         eval.put("evaluation", entity);
         eval.put("comments", updateQuestionsPanel.getQuestions());
-        logger.info("Dddddd" + eval);
         return eval;
     }
 
@@ -97,7 +97,6 @@ public class UpdateProbationPeriodEvaluation extends UpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        logger.info("eeee" + entity);
         assignFieldValueFromEntity("stage", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("evaluationDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("approvedBy", entity, DataType.STRING_FIELD);
@@ -108,6 +107,7 @@ public class UpdateProbationPeriodEvaluation extends UpdateComposite {
         assignFieldValueFromEntity("trainingRequirments", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("additionalComments", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("hrNotes", entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("active", entity, DataType.BOOLEAN_FIELD);
     }
 
     @Override
@@ -143,6 +143,7 @@ public class UpdateProbationPeriodEvaluation extends UpdateComposite {
         addField("trainingRequirments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("additionalComments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("hrNotes", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("active", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         alignFields();
         updateQuestionsPanel = new UpdateAllQuestionCommentsPanel(QuestionCategory.PROBATION_PERIOD_EVALUATION_MANAGER.name(), getQuestionCommentsUrl(QuestionCategory.PROBATION_PERIOD_EVALUATION_MANAGER.name(), QuestionContext.PROBATION_PERIOD_EVALUATION.name()));
         entityFieldsPanel.add(updateQuestionsPanel);

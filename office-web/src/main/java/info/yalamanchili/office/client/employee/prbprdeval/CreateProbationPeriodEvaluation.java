@@ -27,6 +27,7 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.employee.prefeval.CreateQuestionCommentsWidget;
 import info.yalamanchili.office.client.ext.question.QuestionCategory;
 import info.yalamanchili.office.client.ext.question.QuestionContext;
+import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
 /**
@@ -45,8 +46,8 @@ public class CreateProbationPeriodEvaluation extends ALComposite implements Clic
             + "	<li><b>After completing navigate to Home--&gt; My Tasks --&gt; view the Probation Period Evaluation Task for the Employee and click Complete so the employee is notified to about the review.</b></li>\n"
             + "</ul>");
     protected CreateQuestionCommentsWidget probationPrdEvaluationQuestionsPanel = new CreateQuestionCommentsWidget(QuestionCategory.PROBATION_PERIOD_EVALUATION_MANAGER, QuestionContext.PROBATION_PERIOD_EVALUATION, true, false, false);
-    TextAreaField trainingRequirmentsF = new TextAreaField(OfficeWelcome.constants, "trainingRequirments", "ProbationPeriodEvaluation", false, false, Alignment.VERTICAL);
-    TextAreaField additionalCommentsF = new TextAreaField(OfficeWelcome.constants, "additionalComments", "ProbationPeriodEvaluation", false, true, Alignment.VERTICAL);
+    TextAreaField trainingRequirmentsF = new TextAreaField(OfficeWelcome.constants2, "trainingRequirments", "ProbationPeriodEvaluation", false, false, Alignment.VERTICAL);
+    TextAreaField additionalCommentsF = new TextAreaField(OfficeWelcome.constants2, "additionalComments", "ProbationPeriodEvaluation", false, true, Alignment.VERTICAL);
     protected Button create = new Button("Complete Evaluation");
     protected String entityId;
 
@@ -96,8 +97,8 @@ public class CreateProbationPeriodEvaluation extends ALComposite implements Clic
                         @Override
                         public void onResponse(String result) {
                             new ResponseStatusWidget().show("Successfully Created Probation Period Evaluation");
-                            TabPanel.instance().homePanel.entityPanel.clear();
-                            TabPanel.instance().homePanel.entityPanel.add(new ReadAllProbationPeriodEvaluationsPanel());
+                            TabPanel.instance().myOfficePanel.entityPanel.clear();
+                            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProbationPeriodEvaluationsPanel(TreeEmployeePanel.instance().getEntityId()));
                         }
                     });
         }
@@ -122,6 +123,6 @@ public class CreateProbationPeriodEvaluation extends ALComposite implements Clic
     }
 
     protected String getUrl() {
-        return OfficeWelcome.constants.root_url() + "probation-period-evaluation/save?submitForApproval=true";
+        return OfficeWelcome.constants.root_url() + "probation-period-evaluation/save";
     }
 }
