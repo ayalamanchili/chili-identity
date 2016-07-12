@@ -61,7 +61,7 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
 
     public ReadClientInfoPanel(JSONObject entity) {
         instance = this;
-        initReadComposite(entity, "ClientInfo", OfficeWelcome.constants);
+        initReadComposite(entity, "ClientInfo", OfficeWelcome.constants2);
     }
 
     @Override
@@ -131,6 +131,7 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
         assignFieldValueFromEntity("notes", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("practice", entity, null);
         assignFieldValueFromEntity("sectorsAndBUs", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("active", entity, DataType.BOOLEAN_FIELD);
         populateComments();
     }
 
@@ -255,10 +256,10 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
             addField("timeSheetRequirement", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("specialInvoiceInstructions", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
             addField("joiningReport", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-            
+
             entityFieldsPanel.add(getLineSeperatorTag("Account Department Docs"));
             addField("accountVerificationDocs", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-            addField("signedCopyOfWorkOrder", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);            
+            addField("signedCopyOfWorkOrder", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("logisticsPreparation", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         }
         entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
@@ -271,6 +272,7 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
         }
         addDropDown("practice", selectPractiseWidgetF);
         addField("sectorsAndBUs", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("active", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         populateCIDocuments();
         alignFields();
     }
