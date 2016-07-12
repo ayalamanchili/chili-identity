@@ -95,6 +95,8 @@ public class ProbationPeriodEvaluation extends AbstractEntity {
     protected ProbationPeriodEvaluationStage stage;
     private String bpmProcessId;
 
+    protected Boolean active;
+
     /**
      * @return the evalutionDate
      */
@@ -285,7 +287,7 @@ public class ProbationPeriodEvaluation extends AbstractEntity {
     public void setBpmProcessId(String bpmProcessId) {
         this.bpmProcessId = bpmProcessId;
     }
-    
+
     @Transient
     protected boolean enableManagerReview;
 
@@ -297,9 +299,17 @@ public class ProbationPeriodEvaluation extends AbstractEntity {
         this.enableManagerReview = enableManagerReview;
     }
 
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
     @Override
     public String toString() {
-        return "ProbationPeriodEvaluation{" + "evaluationDate=" + evaluationDate + ", trainingRequirments=" + trainingRequirments + ", additionalComments=" + additionalComments + ", hrNotes=" + hrNotes + ", approvedBy=" + approvedBy + ", approvedDate=" + approvedDate + ", hrApprovalBy=" + hrApprovalBy + ", hrApprovalDate=" + hrApprovalDate + ", acceptDate=" + acceptDate + ", stage=" + stage + ", bpmProcessId=" + bpmProcessId + '}';
+        return "ProbationPeriodEvaluation{" + "evaluationDate=" + evaluationDate + ", trainingRequirments=" + trainingRequirments + ", additionalComments=" + additionalComments + ", hrNotes=" + hrNotes + ", approvedBy=" + approvedBy + ", approvedDate=" + approvedDate + ", hrApprovalBy=" + hrApprovalBy + ", hrApprovalDate=" + hrApprovalDate + ", acceptDate=" + acceptDate + ", stage=" + stage + ", active=" + active + ", bpmProcessId=" + bpmProcessId + '}';
     }
 
 }
