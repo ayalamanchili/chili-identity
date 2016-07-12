@@ -23,7 +23,9 @@ import info.yalamanchili.office.entity.profile.*;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
+import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.practice.PracticeDao;
+import info.yalamanchili.office.dao.profile.CompanyDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao.EmployeeTable;
 import info.yalamanchili.office.dao.profile.EmployeeDto;
 import info.yalamanchili.office.dao.profile.SkillSetDao;
@@ -35,6 +37,7 @@ import info.yalamanchili.office.dto.profile.DependentDto;
 import info.yalamanchili.office.dto.profile.EmergencyContactDto;
 import info.yalamanchili.office.dto.profile.EmployeeSearchDto;
 import info.yalamanchili.office.dto.profile.SkillSetSaveDto;
+import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.privacy.PrivacyData;
 import info.yalamanchili.office.entity.profile.ext.Dependent;
@@ -50,7 +53,9 @@ import info.yalamanchili.office.profile.DependentService;
 import info.yalamanchili.office.profile.EmergencyContactService;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import info.yalamanchili.office.security.AccessCheck;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.EntityManager;
@@ -103,6 +108,16 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @Transactional(readOnly = true)
     public EmployeeReadDto read(@PathParam("id") Long id) {
         return employeeDao.read(id);
+    }
+
+    @GET
+    @Path("/internalTransfer")
+    public void internalCompanyTransfer(@QueryParam("employeeId") Long id, @QueryParam("companyId") Long companyId, @QueryParam("transferDate") Date transferDate) {
+        Employee emp = EmployeeDao.instance().findById(id);
+        Company company = CompanyDao.instance().findById(companyId);
+        emp.setCompany(company);
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        CommentDao.instance().addComment("Transfer to "+ emp.getCompany().getName()+ " on " + sdf.format(transferDate), emp);
     }
 
     @PUT
@@ -456,7 +471,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
             @PathParam("limit") int limit, @QueryParam("text") String text, @QueryParam("column") List<String> columns, @QueryParam("includeDeactivated") boolean includeDeactivated) {
         List<Employee> emps = employeeDao.searchEmployee(text, start, limit, columns, includeDeactivated);
         List<EmployeeDto> dtos = new ArrayList();
-        for(Employee emp : emps){
+        for (Employee emp : emps) {
             dtos.add(EmployeeDto.map(mapper, emp));
         }
         return dtos;
