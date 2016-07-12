@@ -1,4 +1,3 @@
-
 /**
  * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
  */
@@ -47,6 +46,7 @@ import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.FileUpload;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.fields.FileuploadField;
 import info.chili.gwt.fields.TextAreaField;
@@ -81,9 +81,9 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         initCreateComposite("ClientInfo", OfficeWelcome.constants2);
     }
 
-    BooleanField endPreviousProjectFlagField;
-    DateField previousProjectEndDate;
-    TextAreaField reason;
+    BooleanField endPreviousProjectFlagField = new BooleanField(OfficeWelcome.constants2, "endPreviousProject", "ClientInfo", false, false, Alignment.HORIZONTAL);
+    DateField previousProjectEndDate = new DateField(OfficeWelcome.constants2, "previousProjectEndDate", "ClientInfo", false, false, Alignment.HORIZONTAL);
+    TextAreaField reason = new TextAreaField(OfficeWelcome.constants2, "reason", "ClientInfo", false, false, Alignment.HORIZONTAL);
     EnumField servicesF;
     EnumField sectorsF;
     DateField endDateF;
@@ -112,9 +112,9 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             clientInfo.put("isEndDateConfirmed", new JSONString(isEndDateConfirmedF.getValue().toString()));
         }
         if (ReadAllClientInfoPanel.instance().numberOfRecords > 0) {
-            assignEntityValueFromField("endPreviousProject", clientInfo);
-            assignEntityValueFromField("previousProjectEndDate", clientInfo);
-            assignEntityValueFromField("reason", clientInfo);
+            clientInfo.put("endPreviousProject", new JSONString(endPreviousProjectFlagField.getValue().toString()));
+            clientInfo.put("previousProjectEndDate", new JSONString(DateUtils.toDateString(previousProjectEndDate.getDate())));
+            clientInfo.put("reason", new JSONString(reason.getValue()));
         }
         clientInfo.put("recruiters", selectRecruiterW.getSelectedObjects());
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
@@ -222,12 +222,13 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
 
     @Override
     protected void configure() {
-        endPreviousProjectFlagField = (BooleanField) fields.get("endPreviousProject");
-        previousProjectEndDate = (DateField) fields.get("previousProjectEndDate");
-        reason = (TextAreaField) fields.get("reason");
-        if (previousProjectEndDate != null) {
-            previousProjectEndDate.setVisible(false);
-            reason.setVisible(false);
+        if (ReadAllClientInfoPanel.instance().numberOfRecords > 0) {
+            endPreviousProjectFlagField.setValue(Boolean.TRUE);
+            entityFieldsPanel.insert(previousProjectEndDate, 21);
+            entityFieldsPanel.insert(reason, 22);
+            previousProjectEndDate.setVisible(Boolean.TRUE);
+            reason.setVisible(Boolean.TRUE);
+            populateEndDate();
         }
         setButtonText("Submit");
     }
@@ -284,9 +285,9 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         addField("endDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("isEndDateConfirmed", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         if (ReadAllClientInfoPanel.instance().numberOfRecords > 0) {
-            addField("endPreviousProject", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-            addField("previousProjectEndDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-            addField("reason", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+            entityFieldsPanel.add(endPreviousProjectFlagField);
+            entityFieldsPanel.add(previousProjectEndDate);
+            entityFieldsPanel.add(reason);
         }
         addDropDown("recruiter", selectRecruiterW);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
@@ -523,7 +524,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         }
         if ((ReadAllClientInfoPanel.instance().numberOfRecords > 0) && endPreviousProjectFlagField.isVisible() == true && endPreviousProjectFlagField.getValue() == true) {
             if (reason.getValue() == null || "".equals(reason.getValue())) {
-                fields.get("reason").setMessage("Reason Required");
+                reason.setMessage("Reason Required");
                 valid = false;
             }
         }
