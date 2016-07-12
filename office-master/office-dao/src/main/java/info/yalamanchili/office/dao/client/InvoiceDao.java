@@ -14,6 +14,7 @@ import info.yalamanchili.office.entity.client.Invoice;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
@@ -54,6 +55,14 @@ public class InvoiceDao extends CRUDDao<Invoice> {
     public List<Invoice> search(String empFirstName, String empLastName, int start, int limit) {
         String searchQuery = getSearchQuery(empFirstName, empLastName);
         TypedQuery<Invoice> query = em.createQuery(searchQuery, Invoice.class);
+        query.setFirstResult(start);
+        query.setMaxResults(limit);
+        return query.getResultList();
+    }
+    
+    public List<Invoice> getInvoices(Long clientInfoId,int start,int limit){
+        TypedQuery<Invoice> query = getEntityManager().createQuery("from " + Invoice.class.getCanonicalName() + " where clientInformation.id=:clientInfoIdParam order by invoiceDate DESC", Invoice.class);
+        query.setParameter("clientInfoIdParam", clientInfoId);
         query.setFirstResult(start);
         query.setMaxResults(limit);
         return query.getResultList();

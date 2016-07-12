@@ -68,9 +68,8 @@ public class InvoiceResource extends CRUDResource<Invoice> {
     @PreAuthorize("hasAnyRole('ROLE_INVOICE_MANAGER')")
     public InvoiceTable table(@PathParam("id") Long id, @PathParam("start") int start, @PathParam("limit") int limit) {
         InvoiceTable tableObj = new InvoiceTable();
-        ClientInformation ci = ClientInformationDao.instance().findById(id);
-        tableObj.setEntities(ci.getInvoice());
-        tableObj.setSize(Long.valueOf(ci.getInvoice().size()));
+        tableObj.setEntities(invoiceDao.getInvoices(id, 0, 10));
+        tableObj.setSize(10l);
         return tableObj;
     }
 
