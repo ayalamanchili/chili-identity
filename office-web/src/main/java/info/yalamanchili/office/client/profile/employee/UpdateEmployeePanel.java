@@ -3,14 +3,17 @@
  */
 package info.yalamanchili.office.client.profile.employee;
 
+import com.google.gwt.event.dom.client.ClickEvent;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.UpdateComposite;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.CreateComposite.CreateCompositeType;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -20,6 +23,7 @@ import info.chili.gwt.fields.FileuploadField;
 import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWidget;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
@@ -39,6 +43,8 @@ public class UpdateEmployeePanel extends UpdateComposite {
             postUpdateSuccess(null);
         }
     };
+    JSONObject employee = new JSONObject();
+    protected Anchor internalTransfer = new Anchor("Do Internal Company Transfer?");
     protected static HTML generalInfo = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
             + "<strong style=\"color:#555555\">Image should not exceed more than 2mb </strong></p>\n"
@@ -47,6 +53,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
             + "</ul>");
 
     public UpdateEmployeePanel(JSONObject entity) {
+        this.employee = entity;
         initUpdateComposite(entity, "Employee", OfficeWelcome.constants);
     }
 
@@ -107,7 +114,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
                 });
 
     }
-    
+
     @Override
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
@@ -120,7 +127,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
                 });
 
     }
-    
+
     protected void populateComments() {
         entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.profile.Employee"));
     }
@@ -161,6 +168,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
 
     @Override
     protected void addListeners() {
+        internalTransfer.addClickHandler(this);
         // TODO Auto-generated method stub
     }
 
@@ -197,6 +205,9 @@ public class UpdateEmployeePanel extends UpdateComposite {
         if (Auth.isAdmin()) {
             addField("ssn", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         }
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION, Auth.ROLE.ROLE_HR)) {
+            entityFieldsPanel.add(internalTransfer);
+        }
         entityFieldsPanel.add(generalInfo);
         entityFieldsPanel.add(empImageUploadPanel);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN)) {
@@ -226,5 +237,15 @@ public class UpdateEmployeePanel extends UpdateComposite {
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmployeesPanel());
         TabPanel.instance().myOfficePanel.sidePanelTop.clear();
         TabPanel.instance().myOfficePanel.sidePanelTop.add(new TreeEmployeePanel(entity));
+    }
+
+    @Override
+    public void onClick(ClickEvent event) {
+        if (event.getSource().equals(internalTransfer)) {
+            if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN)) {
+                new GenericPopup(new InternalTransferPopUpPanel(CreateCompositeType.CREATE, entity.get("id").isString().stringValue())).show();
+            }
+        }
+        super.onClick(event);
     }
 }
