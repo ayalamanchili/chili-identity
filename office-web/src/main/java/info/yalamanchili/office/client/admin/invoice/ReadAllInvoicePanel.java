@@ -245,14 +245,13 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
         final DisclosurePanel invoiceDP = new DisclosurePanel("Invoices History");
         invoiceDP.setWidth("100%");
         invoiceDP.setOpen(true);
-        ReadAllInvoicePanel panel = new ReadAllInvoicePanel(invoices, clientInfoId);
-        invoiceDP.setContent(panel);
+        invoiceDP.setContent(
+                new ReadAllInvoicePanel(invoices, clientInfoId));
         invoiceDP.addOpenHandler(new OpenHandler<DisclosurePanel>() {
             @Override
             public void onOpen(OpenEvent<DisclosurePanel> event) {
-                invoiceDP.clear();
                 invoiceDP.setContent(
-                        panel);
+                        new ReadAllInvoicePanel(invoices, clientInfoId));
             }
         });
         return invoiceDP;

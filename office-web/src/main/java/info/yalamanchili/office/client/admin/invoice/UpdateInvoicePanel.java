@@ -123,6 +123,7 @@ public class UpdateInvoicePanel extends UpdateComposite {
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated Invoice Information");
         TabPanel.instance().reportingPanel.entityPanel.clear();
+        GenericPopup.instance().hide();
         TabPanel.instance().reportingPanel.entityPanel.add(new ReadContractsPanel(id));
     }
 
