@@ -361,6 +361,8 @@ public class ClientInformation extends AbstractEntity {
 
     @OneToMany(mappedBy = "clientInformation", fetch = FetchType.EAGER)
     protected List<Invoice> invoice;
+    
+    protected Boolean active;
 
     public Boolean isIsEndDateConfirmed() {
         return isEndDateConfirmed;
@@ -973,6 +975,14 @@ public class ClientInformation extends AbstractEntity {
         entity.setClientInformation(this);
     }
 
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+    
     @Override
     public String describe() {
         StringBuilder description = new StringBuilder("\n");
