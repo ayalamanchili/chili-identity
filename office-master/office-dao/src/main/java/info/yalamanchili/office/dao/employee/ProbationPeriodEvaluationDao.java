@@ -60,6 +60,13 @@ public class ProbationPeriodEvaluationDao extends CRUDDao<ProbationPeriodEvaluat
         return evals;
     }
 
+    public List<ProbationPeriodEvaluation> getActiveEvaluations(Employee emp) {
+        TypedQuery<ProbationPeriodEvaluation> query = em.createQuery("from " + ProbationPeriodEvaluation.class.getCanonicalName() + "  where employee=:employeeParam and active=:activeParam", ProbationPeriodEvaluation.class);
+        query.setParameter("employeeParam", emp);
+        query.setParameter("activeParam", true);
+        return query.getResultList();
+    }
+
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public Long size(Employee emp) {
         TypedQuery<Long> sizeQuery = em.createQuery("select count (*) from " + ProbationPeriodEvaluation.class.getCanonicalName() + "  where employee=:employeeParam", Long.class);
@@ -81,7 +88,7 @@ public class ProbationPeriodEvaluationDao extends CRUDDao<ProbationPeriodEvaluat
             flag = true;
         }
         Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
-        if(currentUser==null){
+        if (currentUser == null) {
             return false;
         }
         Employee perfEvalMgr = CompanyContactDao.instance().getCompanyContactForEmployee(employee, "Perf_Eval_Manager");
