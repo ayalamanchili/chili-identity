@@ -82,7 +82,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
 
     public UpdateClientInfoPanel(JSONObject entity) {
         instance = this;
-        initUpdateComposite(entity, "ClientInfo", OfficeWelcome.constants);
+        initUpdateComposite(entity, "ClientInfo", OfficeWelcome.constants2);
     }
 
     protected void populateCIDocuments() {
@@ -90,7 +90,6 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String response) {
-                        logger.info("Response: " + response);
                         if (!response.trim().toString().equals("null")) {
                             JSONArray docs = JSONUtils.toJSONArray(JSONParser.parseLenient(response).isObject().get("ciDocument"));
                             entityFieldsPanel.add(new ReadAllCiDocumentPanel(getEntityId(), docs));
@@ -162,6 +161,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignEntityValueFromField("notes", entity);
         assignEntityValueFromField("practice", entity);
         assignEntityValueFromField("sectorsAndBUs", entity);
+        assignEntityValueFromField("active", entity);
         int j = cidocument.size();
         for (FileUpload upload : fileUploadPanel.getFileUploads()) {
             if (upload.getFilename() != null && !upload.getFilename().trim().isEmpty()) {
@@ -271,6 +271,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignFieldValueFromEntity("visaStatus", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("practice", entity, null);
         assignFieldValueFromEntity("sectorsAndBUs", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("active", entity, DataType.BOOLEAN_FIELD);
         populateCIDocuments();
     }
 
@@ -312,7 +313,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
 
     @Override
     protected void addWidgets() {
-        cistatus = JSONUtils.toString(entity, "status");        
+        cistatus = JSONUtils.toString(entity, "status");
         addField("consultantJobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("employeeType", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("company", false, true, ClientInformationCompany.names(), Alignment.HORIZONTAL);
@@ -328,9 +329,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         addDropDown("clientAPContacts", selectClientAcctPayContact);
         addDropDown("clientContact", new SelectClientContactWidget(false, false, Alignment.HORIZONTAL));
         addField("clientPaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-
-        //if condition added by Sudha for SSTO-3060 on 06/15        
-        if(!Auth.isAdmin() && cistatus.equals("COMPLETED")) {
+        if (!Auth.isAdmin() && cistatus.equals("COMPLETED")) {
             selectVendorWidgetF.setReadOnly(true);
             addDropDown("vendor", selectVendorWidgetF);
             addDropDown("vendorLocation", new SelectVendorLocationsWidget(true, true, Alignment.HORIZONTAL));
@@ -352,7 +351,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             addDropDown("middleVendor", new SelectMiddleVendorWidget(true, false, Alignment.HORIZONTAL));
         } else {
             selectVendorWidgetF.setReadOnly(false);
-            addDropDown("vendor", selectVendorWidgetF);        
+            addDropDown("vendor", selectVendorWidgetF);
             addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, true, Alignment.HORIZONTAL));
             selectVendorAPContactsW = new SelectVendorAcctPayContact(false, true, Alignment.HORIZONTAL) {
                 @Override
@@ -369,7 +368,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             };
             addDropDown("vendorRecruiters", selectVendorRecruiterContactsWidget);
             addField("vendorPaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-            addDropDown("middleVendor", new SelectMiddleVendorWidget(false, false, Alignment.HORIZONTAL));            
+            addDropDown("middleVendor", new SelectMiddleVendorWidget(false, false, Alignment.HORIZONTAL));
         }
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
@@ -401,28 +400,26 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
                 addField("overTimeBillingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             }
             addEnumField("overTimeRateDuration", false, false, billingDuration, Alignment.HORIZONTAL);
-            //if condition modified by Sudha for SSTO-3060 on 06/15            
             if ((cistatus.equals("COMPLETED")) && !Auth.isAdmin()) {
                 addEnumField("invoiceFrequency", true, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
-                addEnumField("invoiceDeliveryMethod", true, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);                            
+                addEnumField("invoiceDeliveryMethod", true, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
             } else {
                 addEnumField("invoiceFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
-                addEnumField("invoiceDeliveryMethod", false, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);                            
+                addEnumField("invoiceDeliveryMethod", false, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
             }
-
             entityFieldsPanel.add(getLineSeperatorTag("HR Department Docs"));
             addField("i9Filled", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("w4Filled", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("hrOrientation", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("joiningReport", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
             addField("logisticsPreparation", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-            
+
             entityFieldsPanel.add(getLineSeperatorTag("Account Department Docs"));
             addField("accountVerificationDocs", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("signedCopyOfWorkOrder", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("timeSheetRequirement", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-            addField("specialInvoiceInstructions", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);            
-            
+            addField("specialInvoiceInstructions", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+
             if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
                 entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
                 addDropDown("subcontractor", new SelectSubcontractorWidget(false, false, Alignment.HORIZONTAL));
@@ -494,6 +491,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
                 break;
         }
         addField("sectorsAndBUs", false, true, DataType.ENUM_FIELD);
+        addField("active", false, true, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         sectorsF = (EnumField) fields.get("sectorsAndBUs");
         entityFieldsPanel.add(fileUploadPanel);
         entityFieldsPanel.add(submitForApprovalF);

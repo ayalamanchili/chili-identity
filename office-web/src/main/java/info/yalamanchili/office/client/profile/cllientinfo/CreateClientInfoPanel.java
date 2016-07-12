@@ -1,3 +1,4 @@
+
 /**
  * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
  */
@@ -77,11 +78,12 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
 
     public CreateClientInfoPanel(CreateCompositeType type) {
         super(type);
-        initCreateComposite("ClientInfo", OfficeWelcome.constants);
+        initCreateComposite("ClientInfo", OfficeWelcome.constants2);
     }
 
     BooleanField endPreviousProjectFlagField;
     DateField previousProjectEndDate;
+    TextAreaField reason;
     EnumField servicesF;
     EnumField sectorsF;
     DateField endDateF;
@@ -98,7 +100,6 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         assignEntityValueFromField("clientLocation", clientInfo);
         assignEntityValueFromField("clientPaymentTerms", clientInfo);
         assignEntityValueFromField("vendor", clientInfo);
-        //assignEntityValueFromField("vendorContact", clientInfo);
         assignEntityValueFromField("vendorAPContacts", clientInfo);
         assignEntityValueFromField("vendorLocation", clientInfo);
         assignEntityValueFromField("vendorRecruiters", clientInfo);
@@ -113,6 +114,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         if (ReadAllClientInfoPanel.instance().numberOfRecords > 0) {
             assignEntityValueFromField("endPreviousProject", clientInfo);
             assignEntityValueFromField("previousProjectEndDate", clientInfo);
+            assignEntityValueFromField("reason", clientInfo);
         }
         clientInfo.put("recruiters", selectRecruiterW.getSelectedObjects());
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
@@ -125,7 +127,6 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
                 assignEntityValueFromField("subcontractor", clientInfo);
                 assignEntityValueFromField("subcontractorContact", clientInfo);
-                //assignEntityValueFromField("subcontractorAddress", clientInfo);
                 assignEntityValueFromField("subcontractorPayRate", clientInfo);
                 assignEntityValueFromField("subcontractorOvertimePayRate", clientInfo);
                 assignEntityValueFromField("subcontractorinvoiceFrequency", clientInfo);
@@ -134,7 +135,6 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             if (Auth.is1099(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
                 assignEntityValueFromField("payRate1099", clientInfo);
                 assignEntityValueFromField("overTimePayrate1099", clientInfo);
-                //assignEntityValueFromField("payTimeDuration1099", clientInfo);
                 assignEntityValueFromField("paymentTerms1099", clientInfo);
                 assignEntityValueFromField("invoiceFrequency1099", clientInfo);
             }
@@ -176,7 +176,6 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
 
     @Override
     protected void createButtonClicked() {
-        // TODO Auto-generated method stub
     }
 
     @Override
@@ -225,8 +224,10 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     protected void configure() {
         endPreviousProjectFlagField = (BooleanField) fields.get("endPreviousProject");
         previousProjectEndDate = (DateField) fields.get("previousProjectEndDate");
+        reason = (TextAreaField) fields.get("reason");
         if (previousProjectEndDate != null) {
             previousProjectEndDate.setVisible(false);
+            reason.setVisible(false);
         }
         setButtonText("Submit");
     }
@@ -244,11 +245,9 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
 
     @Override
     protected void addWidgets() {
-        //Basic
         addField("consultantJobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("employeeType", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("company", false, true, ClientInformationCompany.names(), Alignment.HORIZONTAL);
-        //client
         entityFieldsPanel.add(getLineSeperatorTag("Client & Vendor Information"));
         addDropDown("client", selectClientWidgetF);
         entityFieldsPanel.add(addClientL);
@@ -262,11 +261,9 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         addDropDown("clientAPContacts", selectClientAcctPayContact);
         addDropDown("clientContact", new SelectClientContactWidget(false, false, Alignment.HORIZONTAL));
         addField("clientPaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        //Vendor
         addDropDown("vendor", selectVendorWidgetF);
         entityFieldsPanel.add(addVendorL);
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, true, Alignment.HORIZONTAL));
-        //addDropDown("vendorContact", new SelectVendorContactWidget(false, false, Alignment.HORIZONTAL));
         selectVendorAPContactsW = new SelectVendorAcctPayContact(false, true, Alignment.HORIZONTAL) {
             @Override
             public boolean enableMultiSelect() {
@@ -283,17 +280,16 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         addDropDown("vendorRecruiters", selectVendorRecruiterContactsWidget);
         addField("vendorPaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addDropDown("middleVendor", new SelectMiddleVendorWidget(false, false, Alignment.HORIZONTAL));
-        //Contract basic
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("isEndDateConfirmed", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         if (ReadAllClientInfoPanel.instance().numberOfRecords > 0) {
             addField("endPreviousProject", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("previousProjectEndDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+            addField("reason", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         }
         addDropDown("recruiter", selectRecruiterW);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
-            //Billing Information
             entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
             addField("billingRate", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             String[] billingDuration = {"HOUR", "DAY", "MONTH", "WEEK"};
@@ -306,7 +302,6 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                 entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
                 addDropDown("subcontractor", new SelectSubcontractorWidget(false, false, Alignment.HORIZONTAL));
                 addDropDown("subcontractorContact", new SelectSubcontractorContactWidget(false, false, Alignment.HORIZONTAL));
-                //addDropDown("subcontractorAddress", new SelectSubcontractorLocationWidget(false, false, Alignment.HORIZONTAL));
                 addField("subcontractorPayRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
                 addField("subcontractorOvertimePayRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
                 addEnumField("subcontractorinvoiceFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
@@ -318,7 +313,6 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                 addField("payRate1099", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
                 addField("overTimePayrate1099", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
                 addField("paymentTerms1099", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-                //addEnumField("payTimeDuration1099", false, false, billingDuration, Alignment.HORIZONTAL);
                 addEnumField("invoiceFrequency1099", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
                 is1099 = true;
             }
@@ -327,19 +321,14 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         addField("visaStatus", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("terminationNotice", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("notes", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        
-        /* Start - Added Code on 06/05/2016 by Sudharani for autopopulating Visa Status*/
         if (TreeEmployeePanel.instance().getEntity().get("workStatus") != null) {
             StringField employeeVisaStatusF = (StringField) fields.get("visaStatus");
             employeeVisaStatusF.setValue(TreeEmployeePanel.instance().getEntity().get("workStatus").isString().stringValue());
         }
-        /* End - Added Code on 06/05/2016 by Sudharani for autopopulating Visa Status*/
-        
         if (TreeEmployeePanel.instance().getEntity().get("jobTitle") != null) {
             StringField jobTitleF = (StringField) fields.get("consultantJobTitle");
             jobTitleF.setValue(TreeEmployeePanel.instance().getEntity().get("jobTitle").isString().stringValue());
         }
-
         if (TreeEmployeePanel.instance().getEntity().get("employeeType") != null) {
             StringField employeeTypeF = (StringField) fields.get("employeeType");
             employeeTypeF.setValue(TreeEmployeePanel.instance().getEntity().get("employeeType").isObject().get("name").isString().stringValue());
@@ -382,6 +371,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
 
         if ((ReadAllClientInfoPanel.instance().numberOfRecords > 0) && (event.getSource().equals(endPreviousProjectFlagField.getBox()))) {
             previousProjectEndDate.setVisible(endPreviousProjectFlagField.getValue());
+            reason.setVisible(endPreviousProjectFlagField.getValue());
             populateEndDate();
         }
         if (submitForApprovalF.getValue()) {
@@ -421,14 +411,12 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                         } else {
                             invDelv.setSelectedIndex(0);
                         }
-                        /* Start - Added Code on 06/05/2016 by Sudharani for autopopulating Visa Status*/                        
                         EnumField invFrequencyv = (EnumField) fields.get("invoiceFrequency");
                         if (vendor.get("vendorinvFrequency") != null) {
                             invFrequencyv.selectValue(JSONUtils.toString(vendor, "vendorinvFrequency"));
                         } else {
                             invFrequencyv.setSelectedIndex(0);
                         }
-                        /* End - Added Code on 06/05/2016 by Sudharani for autopopulating Visa Status*/                        
                     }
                 });
     }
@@ -531,6 +519,12 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                     pay1099.setMessage("PayRate may not be null");
                     valid = false;
                 }
+            }
+        }
+        if ((ReadAllClientInfoPanel.instance().numberOfRecords > 0) && endPreviousProjectFlagField.isVisible() == true && endPreviousProjectFlagField.getValue() == true) {
+            if (reason.getValue() == null || "".equals(reason.getValue())) {
+                fields.get("reason").setMessage("Reason Required");
+                valid = false;
             }
         }
         return valid;

@@ -32,6 +32,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.persistence.Lob;
 import javax.persistence.Temporal;
 
 import javax.persistence.Transient;
@@ -241,6 +242,9 @@ public class ClientInformationDto implements Serializable {
     protected List<ClientInfoComment> comments;
 
     protected Set<CIDocument> cidocument;
+    
+    @Lob
+    protected String reason;
 
     @XmlElement
     public Set<CIDocument> getCidocument() {
@@ -903,5 +907,13 @@ public class ClientInformationDto implements Serializable {
 
     public void setBpmProcessId(String bpmProcessId) {
         this.bpmProcessId = bpmProcessId;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }
