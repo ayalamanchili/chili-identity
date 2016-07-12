@@ -112,7 +112,7 @@ public class EmployeeService {
     }
 
     public void sendNewEmployeeNotifiaction(Employee emp) {
-        if (emp.getEmployeeType().getName().equals(EmployeeType.CORPORATE_EMPLOYEE) || emp.getEmployeeType().getName().equals(EmployeeType.EMPLOYEE) || emp.getEmployeeType().getName().equals(EmployeeType.W2_CONTRACTOR)) {
+        if (emp.getEmployeeType().getName().equals(EmployeeType.CORPORATE_EMPLOYEE) || emp.getEmployeeType().getName().equals(EmployeeType.EMPLOYEE) || emp.getEmployeeType().getName().equals(EmployeeType.W2_CONTRACTOR) || emp.getEmployeeType().getName().equals(EmployeeType.INTERN_SEASONAL_EMPLOYEE)) {
             Employee currentEmp = OfficeSecurityService.instance().getCurrentUser();
             profileNotificationService.sendNewUserCreatedNotification(currentEmp, emp);
         }
@@ -134,7 +134,7 @@ public class EmployeeService {
     public Employee createCUser(Employee employee) {
         String empType = employee.getEmployeeType().getName();
         String username = generateEmployeeId(employee.getFirstName(), employee.getLastName(), employee.getDateOfBirth());
-        if (empType.equals(EmployeeType.CORPORATE_EMPLOYEE) || empType.equals(EmployeeType.EMPLOYEE) || empType.equals(EmployeeType.W2_CONTRACTOR)) {
+        if (empType.equals(EmployeeType.CORPORATE_EMPLOYEE) || empType.equals(EmployeeType.EMPLOYEE) || empType.equals(EmployeeType.W2_CONTRACTOR) || empType.equals(EmployeeType.INTERN_SEASONAL_EMPLOYEE)) {
             //Create CUser
             CUser user = mapper.map(employee, CUser.class);
             user.setPasswordHash(generatepassword());
