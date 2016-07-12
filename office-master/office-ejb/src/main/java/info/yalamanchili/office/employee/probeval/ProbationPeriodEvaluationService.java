@@ -61,6 +61,9 @@ public class ProbationPeriodEvaluationService {
         entity.setTrainingRequirments(dto.getEvaluation().getTrainingRequirments());
         entity.setAdditionalComments((dto.getEvaluation().getAdditionalComments()));
         entity.setHrNotes(dto.getEvaluation().getHrNotes());
+        if (dto.getEvaluation().getActive() != null) {
+            entity.setActive(dto.getEvaluation().getActive());
+        }
         entity = probationPeriodEvaluationDao.save(entity);
         if (dto.getComments() != null) {
             createQuestionComments(entity, dto.getComments());
@@ -180,16 +183,32 @@ public class ProbationPeriodEvaluationService {
         for (Employee emp : EmployeeDao.instance().getEmployeesByType(EmployeeType.CORPORATE_EMPLOYEE)) {
             ProbationPeriodEvaluationReportDto dto = mapper.map(emp, ProbationPeriodEvaluationReportDto.class);
             List<ProbationPeriodEvaluation> evaluation = probationPeriodEvaluationDao.getEvaluations(emp);
-            dto.setEmployee(emp.getFirstName() + " " + emp.getLastName());
-            dto.setEmail(EmployeeDao.instance().getPrimaryEmail(emp));
-            dto.setStartDate(emp.getStartDate());
             if (evaluation.size() > 0) {
-                dto.setStage(evaluation.get(0).getStage().name());
+                for (ProbationPeriodEvaluation eval : evaluation) {
+                    setEmployee(emp, dto);
+                    dto.setStage(eval.getStage().name());
+                    if (eval.getActive()) {
+                        dto.setActive("Yes");
+                    } else {
+                        dto.setActive("No");
+                    }
+                }
+                res.add(dto);
+            } else {
+                setEmployee(emp, dto);
+                dto.setStage("Probation is not initiated");
+                dto.setActive("Probation is not initiated");
+                res.add(dto);
             }
-            res.add(dto);
         }
-        String[] columnOrder = new String[]{"employee", "startDate", "email", "stage"};
+        String[] columnOrder = new String[]{"employee", "startDate", "email", "stage", "active"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Probation-Period-Evaluation-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
+    }
+
+    protected void setEmployee(Employee emp, ProbationPeriodEvaluationReportDto dto) {
+        dto.setEmployee(emp.getFirstName() + " " + emp.getLastName());
+        dto.setEmail(EmployeeDao.instance().getPrimaryEmail(emp));
+        dto.setStartDate(emp.getStartDate());
     }
 
     public static ProbationPeriodEvaluationService instance() {

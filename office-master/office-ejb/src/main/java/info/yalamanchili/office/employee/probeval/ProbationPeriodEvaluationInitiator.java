@@ -43,13 +43,14 @@ public class ProbationPeriodEvaluationInitiator {
 
     public void initiateProbationPeriodEvaluationReview(Long employeeId) {
         Employee emp = EmployeeDao.instance().findById(employeeId);
-        if (probationPeriodEvaluationDao.getEvaluations(emp).size() > 0) {
+        if ((probationPeriodEvaluationDao.getEvaluations(emp).size() > 0) && (probationPeriodEvaluationDao.getActiveEvaluations(emp).size() > 0)) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "probation.evaluation.already.exists", "Probation Period Evaluation already Exists");
         } else if (!OfficeSecurityService.instance().getUserRoles(emp).contains(OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "probation.evaluation.associate.not.supported", "Probation Period Evaluation for associates not supported yet.");
         } else {
             ProbationPeriodEvaluation evaluation = new ProbationPeriodEvaluation();
             evaluation.setEmployee(emp);
+            evaluation.setActive(Boolean.TRUE);
             evaluation = probationPeriodEvaluationDao.save(evaluation);
             probationPeriodEvaluationDao.getEntityManager().flush();
             Map<String, Object> obj = new HashMap<String, Object>();

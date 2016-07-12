@@ -15,11 +15,12 @@ import java.util.Date;
  * @author benerji.v
  */
 public class ProbationPeriodEvaluationReportDto implements Serializable {
-    
+
     private String employee;
     private Date startDate;
     private String stage;
     protected String email;
+    protected String Active;
 
     /**
      * @return the employee
@@ -76,4 +77,13 @@ public class ProbationPeriodEvaluationReportDto implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getActive() {
+        return Active;
+    }
+
+    public void setActive(String Active) {
+        this.Active = Active;
+    }
+
 }
