@@ -154,7 +154,7 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
 
     protected void getInvoice(String entityId) {
         if (!entityId.isEmpty()) {
-            new GenericPopup(new UpdateInvoicePanel(entityId, false), Window.getClientWidth() / 5, Window.getClientHeight() / 5).show();
+            new GenericPopup(new UpdateInvoicePanel(entityId, false), 0, Window.getClientHeight() / 5).show();
         }
     }
 
