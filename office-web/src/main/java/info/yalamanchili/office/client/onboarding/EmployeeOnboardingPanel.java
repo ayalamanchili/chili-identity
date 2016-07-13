@@ -19,13 +19,11 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.thirdparty.streamhtmlparser.util.HtmlUtils;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDComposite;
@@ -42,7 +40,6 @@ import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
-import info.chili.gwt.utils.Utils;
 import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -65,6 +62,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
     protected List<CreateDependentsPanel> dependentsPanels = new ArrayList<>();
     protected List<CreateEmergencyContactWidget> emergencyContactsPanels = new ArrayList<>();
     HTML emptyLine = new HTML("<br/>");
+    HTML fileUploadNotes = new HTML("<b> Note: </b> Original copy of I-9 Form should be sent to Tampa office by Mail.");
     protected CheckBox noDependentsCB = new CheckBox("I have No Dependents", false);
 
     protected static HTML formsInfo = new HTML("\n"
@@ -91,12 +89,21 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
             + "\n"
             + "<ul>\n"
             + "</ul>");
+    protected static HTML noDepsInfo = new HTML("\n"
+            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
+            + "<strong style=\"color:#555555\">If You Have No Dependents, Please Select This CheckBox</strong></p>\n"
+            + "\n"
+            + "<ul>\n"
+            + "</ul>");
     protected static HTML emerInfo = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
             + "<strong style=\"color:#555555\">Emergency Contact Information</strong></p>\n"
             + "\n"
             + "<ul>\n"
             + "</ul>");
+
+    StringField countryCodeF = new StringField(OfficeWelcome.constants, "countryCode", "Phone", false, false, Alignment.HORIZONTAL);
+    StringField phoneNumberF = new StringField(OfficeWelcome.constants, "phoneNumber", "Phone", false, false, Alignment.HORIZONTAL);
 
     FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "EmployeeDocument", "", "EmployeeDocument/fileURL", false, true) {
         @Override
@@ -155,8 +162,12 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_GC_IMMIGRATION)) {
             assignEntityValueFromField("workStatus", employee);
         }
-        if (Auth.isAdmin()) {
-            assignEntityValueFromField("ssn", employee);
+        assignEntityValueFromField("ssn", employee);
+        if (countryCodeF.getValue() != null && !countryCodeF.getValue().trim().isEmpty()) {
+            employee.put("countryCode", new JSONString(countryCodeF.getValue()));
+        }
+        if (phoneNumberF.getValue() != null && !phoneNumberF.getValue().trim().isEmpty()) {
+            employee.put("phoneNumber", new JSONString(phoneNumberF.getValue()));
         }
         // Address Information
         assignEntityValueFromField("street1", address);
@@ -206,7 +217,6 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         employeeAdditionalDetails.put("targetEntityName", new JSONString("targetEntityName"));
         employeeAdditionalDetails.put("targetEntityId", new JSONString("0"));
         employee.put("employeeAdditionalDetails", employeeAdditionalDetails);
-        // 
         employee.put("inviteCode", new JSONString(invitationCode));
 
         JSONArray onBoardingDocs = new JSONArray();
@@ -223,6 +233,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
             }
         }
         employee.put("documents", onBoardingDocs);
+        logger.info("employee entity is ,,,, "+employee);
         return employee;
     }
 
@@ -242,6 +253,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         additionalInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         formsInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         depsInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        noDepsInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         emerInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         update.setText("Submit");
     }
@@ -261,9 +273,9 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_GC_IMMIGRATION)) {
             addEnumField("workStatus", false, true, WorkStatus.names(), Alignment.HORIZONTAL);
         }
-        if (Auth.isAdmin()) {
-            addField("ssn", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        }
+        addField("ssn", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(countryCodeF);
+        entityFieldsPanel.add(phoneNumberF);
         addField("street1", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("street2", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("city", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -286,8 +298,9 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         addEnumField("ethnicity", false, false, Ethnicity.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(formsInfo);
         entityFieldsPanel.add(fileUploadPanel);
+        entityFieldsPanel.add(fileUploadNotes);
         entityFieldsPanel.add(depsInfo);
-        entityFieldsPanel.add(Utils.getLineSeperatorTag("If You Have No Dependents, Please Select This CheckBox"));
+        entityFieldsPanel.add(noDepsInfo);
         entityFieldsPanel.add(noDependentsCB);
         entityFieldsPanel.add(addDependentsL);
         entityFieldsPanel.add(emerInfo);
@@ -391,6 +404,12 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
             assignFieldValueFromEntity("accountFirstName", account, DataType.STRING_FIELD);
             assignFieldValueFromEntity("accountLastName", account, DataType.STRING_FIELD);
         }
+        if (entity.containsKey("countryCode")) {
+            countryCodeF.setValue(entity.get("countryCode").isString().stringValue());
+        }
+        if (entity.containsKey("phoneNumber")) {
+            phoneNumberF.setValue(entity.get("phoneNumber").isString().stringValue());
+        }
         JSONObject address = (JSONObject) entity.get("address");
         if (address != null) {
             JSONObject contact = (JSONObject) address.get("contact");
@@ -453,4 +472,16 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
             baLastNameF.setValue(lastNameF.getValue());
         }
     }
+
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        boolean valid = true;
+        StringField zipF = (StringField) fields.get("zip");
+        if (zipF.getValue() == null || "".equals(zipF.getValue())) {
+            fields.get("zip").setMessage("Zip can not be empty");
+            valid = false;
+        }
+        return valid;
+    }
+
 }
