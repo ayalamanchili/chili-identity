@@ -141,7 +141,7 @@ public class InvoiceService {
     @Async
     @Transactional
     public void generateActiveInvoicesReport(String email) {
-        String[] types = {"Corporate Employee", "Employee", "Subcontractor", "W2 Contractor", "1099 Contractor"};
+        String[] types = {"Corporate Employee", "Employee", "Subcontractor", "W2 Contractor", "1099 Contractor", "Internal-Seasonal Employee"};
         List<Employee> emps = EmployeeDao.instance().getEmployeesByType(types);
         List<Invoice> invoices = new ArrayList();
         for (Employee emp : emps) {
