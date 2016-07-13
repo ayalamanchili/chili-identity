@@ -48,6 +48,10 @@ public class ContractDto implements Serializable {
      */
     protected String contractSignedEntity;
     /**
+     *
+     */
+    protected ClientInformationCompany company;
+    /**
      * Client
      */
     protected String client;
@@ -705,6 +709,14 @@ public class ContractDto implements Serializable {
     
     public void setContractSignedEntity(String contractSignedEntity) {
         this.contractSignedEntity = contractSignedEntity;
+    }
+    
+    public ClientInformationCompany getCompany() {
+        return company;
+    }
+
+    public void setCompany(ClientInformationCompany company) {
+        this.company = company;
     }
 
     public String getClientAPContact() {
