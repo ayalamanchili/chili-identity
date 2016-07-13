@@ -104,11 +104,19 @@ public class EmployeeOnBoardingService {
         OnBoardingEmployeeDto res = new OnBoardingEmployeeDto();
         BankAccount account = new BankAccount();
         Address address;
+        Phone phone;
         if (ContactDao.instance().findByEmail(code.getEmail()) != null) {
             cnt = ContactDao.instance().findByEmail(code.getEmail());
             if (cnt.getAddresss().size() > 0 && cnt.getAddresss().get(0) != null) {
                 address = cnt.getAddresss().get(0);
                 res.setAddress(address);
+            }
+            if (cnt.getPhones().size() > 0 && cnt.getPhones().get(0) != null) {
+                phone = cnt.getPhones().get(0);
+                res.setPhoneNumber(phone.getPhoneNumber());
+                if (phone.getCountryCode() != null) {
+                    res.setCountryCode(phone.getCountryCode());
+                }
             }
             res.setFirstName(cnt.getFirstName());
             res.setLastName(cnt.getLastName());
@@ -141,6 +149,15 @@ public class EmployeeOnBoardingService {
         emp.setWorkStatus(dto.getWorkStatus());
         emp.setSsn(dto.getSsn());
         emp.setBranch(initiateDto.getBranch());
+        if (dto.getPhoneNumber() != null) {
+            Phone empPhone = new Phone();
+            empPhone.setPhoneNumber(dto.getPhoneNumber());
+            if (dto.getCountryCode() != null) {
+                empPhone.setCountryCode(dto.getCountryCode());
+            }
+            emp.getPhones().add(empPhone);
+            empPhone.setContact(emp);
+        }
         emp = employeeService.createCUser(emp);
         //Create employee with basic information
         emp = employeeService.createEmailAndOtherDefaults(emp, initiateDto.getEmail());
