@@ -192,8 +192,9 @@ public class ProbationPeriodEvaluationService {
                     } else {
                         dto.setActive("No");
                     }
+                    res.add(dto);
                 }
-                res.add(dto);
+
             } else {
                 setEmployee(emp, dto);
                 dto.setStage("Probation is not initiated");
