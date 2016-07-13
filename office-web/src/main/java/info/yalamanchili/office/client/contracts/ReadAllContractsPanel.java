@@ -11,6 +11,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.Window;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.config.ChiliClientConfig;
@@ -63,7 +64,7 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
 
     @Override
     protected void onQuickView(int row, String id) {
-        new GenericPopup(new ReadContractsPanel(JSONUtils.toString(getEntity(id), "id")), Window.getClientWidth() / 4, 0).show();
+        new GenericPopup(new ReadContractsPanel(id), Window.getClientWidth() / 4, 0).show();
     }
 
     @Override
