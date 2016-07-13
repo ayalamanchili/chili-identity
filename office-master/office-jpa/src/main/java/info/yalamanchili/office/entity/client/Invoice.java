@@ -8,11 +8,11 @@
  */
 package info.yalamanchili.office.entity.client;
 
-//import info.chili.jpa.AbstractEntity;
-//import info.chili.jpa.validation.Unique;
-//import info.yalamanchili.office.entity.profile.ClientInformation;
-//import java.math.BigDecimal;
-//import java.util.Date;
+import info.chili.jpa.AbstractEntity;
+import info.chili.jpa.validation.Unique;
+import info.yalamanchili.office.entity.profile.ClientInformation;
+import java.math.BigDecimal;
+import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
