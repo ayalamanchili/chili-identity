@@ -7,20 +7,12 @@
  */
 package info.yalamanchili.office.jrs.client;
 
-import info.chili.reporting.ReportGenerator;
 import info.yalamanchili.office.client.ContractService;
-import info.yalamanchili.office.config.OfficeServiceConfiguration;
-import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.client.ContractDto;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dto.client.ContractSearchDto;
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.entity.profile.EmployeeType;
-import info.yalamanchili.office.jms.MessagingService;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;

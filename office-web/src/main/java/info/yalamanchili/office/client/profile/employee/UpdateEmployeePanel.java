@@ -205,8 +205,8 @@ public class UpdateEmployeePanel extends UpdateComposite {
         if (Auth.isAdmin()) {
             addField("ssn", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         }
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION, Auth.ROLE.ROLE_HR)) {
-            entityFieldsPanel.add(internalTransfer);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
+               entityFieldsPanel.add(internalTransfer);
         }
         entityFieldsPanel.add(generalInfo);
         entityFieldsPanel.add(empImageUploadPanel);
@@ -242,9 +242,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(internalTransfer)) {
-            if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN)) {
                 new GenericPopup(new InternalTransferPopUpPanel(CreateCompositeType.CREATE, entity.get("id").isString().stringValue())).show();
-            }
         }
         super.onClick(event);
     }
