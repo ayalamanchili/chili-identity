@@ -65,10 +65,13 @@ public class OnBoardingEmployeeDto implements Serializable {
      *
      */
     protected String imageURL;
-    /**
-     *
-     */
+   
+    @Size(min = 10, max = 10, message = "{phone.phoneNumber.length.invalid.msg}")
+    @Pattern(regexp = "(^$|[0-9]{10})", message = "{invalid.phonenumber.format}")
     protected String phoneNumber;
+
+    @Size(min = 0, max = 4, message = "{phone.countryCode.length.invalid.msg}")
+    protected String countryCode;
     /**
      *
      */
@@ -234,4 +237,11 @@ public class OnBoardingEmployeeDto implements Serializable {
         this.emergencyContact = emergencyContact;
     }
 
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
+    }
 }

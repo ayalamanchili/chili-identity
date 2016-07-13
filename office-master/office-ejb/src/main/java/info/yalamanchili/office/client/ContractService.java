@@ -295,6 +295,7 @@ public class ContractService {
         ContractDto dto = mapper.map(ci, ContractDto.class);
         Vendor vi = new Vendor();
         if (ci.getEmployee() != null) {
+            dto.setContractSignedEntity(ci.getCompany().name());
             dto.setEmployee(ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
             dto.setEmployeeType(ci.getEmployee().getEmployeeType().getName());
             dto.setEmployeeID(ci.getEmployee().getId());

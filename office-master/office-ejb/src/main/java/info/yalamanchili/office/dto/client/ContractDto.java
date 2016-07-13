@@ -46,6 +46,10 @@ public class ContractDto implements Serializable {
     /**
      *
      */
+    protected String contractSignedEntity;
+    /**
+     *
+     */
     protected ClientInformationCompany company;
     /**
      * Client
@@ -699,6 +703,14 @@ public class ContractDto implements Serializable {
         this.employeeID = employeeID;
     }
 
+    public String getContractSignedEntity() {
+        return contractSignedEntity;
+    }
+    
+    public void setContractSignedEntity(String contractSignedEntity) {
+        this.contractSignedEntity = contractSignedEntity;
+    }
+    
     public ClientInformationCompany getCompany() {
         return company;
     }
