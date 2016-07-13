@@ -295,6 +295,8 @@ public class ContractService {
         ContractDto dto = mapper.map(ci, ContractDto.class);
         Vendor vi = new Vendor();
         if (ci.getEmployee() != null) {
+            dto.setContractSignedEntity(ci.getCompany().name());
+            dto.setCompany(ci.getCompany());
             dto.setEmployee(ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
             dto.setEmployeeType(ci.getEmployee().getEmployeeType().getName());
             dto.setEmployeeID(ci.getEmployee().getId());
@@ -429,7 +431,7 @@ public class ContractService {
     @Transactional
     public void generateSubCReport(ContractSearchDto dto, String email) {
         ContractTable table = getResultForReport(dto);
-        String[] columnOrder = new String[]{"employee", "client", "vendor", "clientProject", "billingRate", "overTimeBillingRate", "startDate", "endDate"};
+        String[] columnOrder = new String[]{"employee", "client", "vendor", "clientProject", "billingRate", "overTimeBillingRate", "startDate", "endDate", "company", "contractSignedEntity"};
         String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Employees From SubContractor " + dto.getSubContractorName(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, email);
     }
