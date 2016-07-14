@@ -107,7 +107,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
     StringField employeeFirstNameField = new StringField(OfficeWelcome.constants, "employeeFirstName", "Contract", false, false);
     StringField employeeLatNameField = new StringField(OfficeWelcome.constants, "employeeLastName", "Contract", false, false);
     StringField itemNumberField = new StringField(OfficeWelcome.constants, "itemNumber", "Contract", false, false);
-    String[] employeeTypeStrs = {"Corporate Employee", "Employee", "Subcontractor", "1099 Contractor", "W2 Contractor","Internal-Seasonal Employee"};
+    String[] employeeTypeStrs = {"Corporate Employee", "Employee", "Subcontractor", "1099 Contractor", "W2 Contractor","Intern-Seasonal Employee"};
     EnumField employeeTypeField = new EnumField(OfficeWelcome.constants, "employeeType", "Contract", false, false, employeeTypeStrs);
     EnumField projectStatusField = new EnumField(OfficeWelcome.constants, "status", "Contract", false, false, ClientInformationStatus.names());
     DateField projectStartDate = new DateField(OfficeWelcome.constants, "FromDate", "", false, false);
