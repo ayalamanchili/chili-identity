@@ -185,16 +185,16 @@ public class ProbationPeriodEvaluationService {
             List<ProbationPeriodEvaluation> evaluation = probationPeriodEvaluationDao.getEvaluations(emp);
             if (evaluation.size() > 0) {
                 for (ProbationPeriodEvaluation eval : evaluation) {
-                    setEmployee(emp, dto);
-                    dto.setStage(eval.getStage().name());
+                    ProbationPeriodEvaluationReportDto dtos = new ProbationPeriodEvaluationReportDto();
+                    setEmployee(emp, dtos);
+                    dtos.setStage(eval.getStage().name());
                     if (eval.getActive()) {
-                        dto.setActive("Yes");
+                        dtos.setActive("Yes");
                     } else {
-                        dto.setActive("No");
+                        dtos.setActive("No");
                     }
-                    res.add(dto);
+                    res.add(dtos);
                 }
-
             } else {
                 setEmployee(emp, dto);
                 dto.setStage("Probation is not initiated");
