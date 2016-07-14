@@ -67,14 +67,12 @@ public class Dependent extends AbstractHandleEntity {
      *Gender
      */
     @Enumerated(EnumType.STRING)
-    @NotNull(message = "{gender.not.empty.msg}")
     protected Sex gender;
 
     /**
      *Email
      */
     @Email(message = "Enter a valid email address ")
-    @NotEmpty(message = "{email.not.empty.msg}")
     protected String email;
     
     /**
