@@ -33,7 +33,7 @@ public class EmployeeType extends AbstractEntity {
     public final static String W2_CONTRACTOR = "W2 Contractor";
     public final static String _1099_CONTRACTOR = "1099 Contractor";
     public final static String SUBCONTRACTOR = "Subcontractor";
-    public final static String INTERN_SEASONAL_EMPLOYEE = "Internal-Seasonal Employee";
+    public final static String INTERN_SEASONAL_EMPLOYEE = "Intern-Seasonal Employee";
     
     @Transient
     private static final long serialVersionUID = 1L;
