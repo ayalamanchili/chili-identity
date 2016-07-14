@@ -60,7 +60,7 @@ public class SearchContractsPanel extends SearchComposite {
         addField("startDate", DataType.DATE_FIELD);
         addField("endDate", DataType.DATE_FIELD);
         addEnumField("invoiceFrequency", false, false, InvoiceFrequency.names());
-        String[] employeeTypeStrs = {"Corporate Employee", "Employee", "Subcontractor", "1099 Contractor", "W2 Contractor", "Internal-Seasonal Employee"};
+        String[] employeeTypeStrs = {"Corporate Employee", "Employee", "Subcontractor", "1099 Contractor", "W2 Contractor", "Intern-Seasonal Employee"};
         addEnumField("employeeType", false, false, employeeTypeStrs);
         addEnumField("company", false, false, ClientInformationCompany.names());
         addField("recruiter", DataType.STRING_FIELD);
