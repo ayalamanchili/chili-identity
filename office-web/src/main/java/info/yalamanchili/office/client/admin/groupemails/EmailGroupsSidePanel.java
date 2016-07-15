@@ -49,7 +49,7 @@ public class EmailGroupsSidePanel extends ALComposite implements ClickHandler {
         employeeTypeList.addItem("W2 Contractor", "W2 Contractor");
         employeeTypeList.addItem("1099 Contractor", "1099 Contractor");
         employeeTypeList.addItem("Subcontractor", "Subcontractor");
-        employeeTypeList.addItem("Internal-Seasonal Employee", "Internal-Seasonal Employee");        
+        employeeTypeList.addItem("Intern-Seasonal Employee", "Intern-Seasonal Employee");        
         employeeTypeList.addItem("Deactivated", "Deactivated");
     }
 
