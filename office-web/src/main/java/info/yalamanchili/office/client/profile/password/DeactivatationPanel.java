@@ -26,7 +26,7 @@ public class DeactivatationPanel extends CreateComposite {
 
     public DeactivatationPanel(CreateCompositeType type) {
         super(type);
-        initCreateComposite("Deactivatation", OfficeWelcome.constants);
+        initCreateComposite("Deactivation", OfficeWelcome.constants);
         create.setText("Deactivate");
     }
 
