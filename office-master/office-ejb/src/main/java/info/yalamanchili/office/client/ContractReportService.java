@@ -204,7 +204,7 @@ public class ContractReportService {
     }
 
     public List<ContractDto> getActiveCPDs() {
-        TypedQuery<ContractDto> q = em.createQuery("SELECT NEW " + ContractDto.class.getCanonicalName() + "(ci.id, ci.employee.firstName,ci.employee.lastName, ci.client.name, ci.vendor.name,ci.billingRate, ci.startDate, ci.endDate) from " + ClientInformation.class.getCanonicalName() + " ci where ci.endDate > Now()", ContractDto.class);
+        TypedQuery<ContractDto> q = em.createQuery("SELECT NEW " + ContractDto.class.getCanonicalName() + "(ci.id, ci.employee.firstName,ci.employee.lastName, ci.client.name, ci.vendor.name,ci.billingRate, ci.startDate, ci.endDate, ci.employee.employeeType.name) from " + ClientInformation.class.getCanonicalName() + " ci where ci.endDate > Now()", ContractDto.class);
         return q.getResultList();
     }
 
@@ -213,9 +213,9 @@ public class ContractReportService {
     public void generateActiveCPDSReport(String email) {
         List<ActiveCPDReportDto> res = new ArrayList<>();
         getActiveCPDs().stream().forEach((dto) -> {
-            res.add(new ActiveCPDReportDto(dto.getEmployee(), dto.getClient(), dto.getVendor(), dto.getBillingRate().toString(), Integer.toString(DateUtils.differenceInMonths(dto.getStartDate(), dto.getEndDate()))));
+            res.add(new ActiveCPDReportDto(dto.getEmployee(), dto.getClient(), dto.getVendor(), dto.getBillingRate().toString(), Integer.toString(DateUtils.differenceInMonths(dto.getStartDate(), dto.getEndDate())), dto.getEmployeeType()));
         });
-        String[] columnOrder = new String[]{"employee", "client", "vendor", "billingRate", "duration",};
+        String[] columnOrder = new String[]{"employee", "client", "vendor", "billingRate", "duration","employeeType"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Active CPDS Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
 }

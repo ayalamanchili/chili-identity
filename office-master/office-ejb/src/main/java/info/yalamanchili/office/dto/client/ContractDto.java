@@ -228,7 +228,7 @@ public class ContractDto implements Serializable {
     public ContractDto() {
     }
 
-    public ContractDto(Long id, String firstName, String lastName, String client, String vendor,BigDecimal billingRate, Date startDate, Date endDate) {
+    public ContractDto(Long id, String firstName, String lastName, String client, String vendor,BigDecimal billingRate, Date startDate, Date endDate,String employeeType) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -236,6 +236,7 @@ public class ContractDto implements Serializable {
         this.vendor = vendor;
         this.billingRate = billingRate;
         this.employee = firstName +" "+ lastName;
+        this.employeeType=employeeType;
     }
 
     public void setPaymentTerms1099(String paymentTerms1099) {

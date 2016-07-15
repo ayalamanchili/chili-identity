@@ -13,18 +13,21 @@ package info.yalamanchili.office.dto.client;
  * @author phani
  */
 public class ActiveCPDReportDto {
+
     String employee;
     String client;
     String vendor;
     String billingRate;
     String duration;
+    String employeeType;
 
-    public ActiveCPDReportDto(String employee, String client, String vendor, String billingRate, String duration) {
+    public ActiveCPDReportDto(String employee, String client, String vendor, String billingRate, String duration, String employeeType) {
         this.employee = employee;
         this.client = client;
         this.vendor = vendor;
         this.billingRate = billingRate;
         this.duration = duration;
+        this.employeeType = employeeType;
     }
 
     public String getEmployee() {
@@ -66,5 +69,13 @@ public class ActiveCPDReportDto {
     public void setDuration(String duration) {
         this.duration = duration;
     }
-    
+
+    public String getEmployeeType() {
+        return employeeType;
+    }
+
+    public void setEmployeeType(String employeeType) {
+        this.employeeType = employeeType;
+    }
+
 }
