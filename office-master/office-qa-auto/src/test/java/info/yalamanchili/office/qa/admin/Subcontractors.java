@@ -42,7 +42,8 @@ public class Subcontractors extends AbstractOfficeTest {
         waitForTime(10);
         driver.findElement(By.id("Subcontractors")).click();
 
-        waitForElementXpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[10]/div/div[4]/div/div/div/div/fieldset/div/div/table/tbody/tr[1]/td[1]");
+        waitForLoader();
+        Thread.sleep(3000);
         takeScreenshot("Subcontractors_Section");
         System.out.println("Exit Subcontractors Section: " + new Date());
 
@@ -157,7 +158,8 @@ public class Subcontractors extends AbstractOfficeTest {
                     driver.findElement(By.id("gwt-debug-Address_zip_TB")).sendKeys(e[6]);
                     
                     driver.findElement(By.cssSelector("button.gwt-Button.y-gwt-createB")).click();
-                    waitForElementXpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[10]/div/div[4]/div/div/div/div/fieldset/div/div/table/tbody/tr[1]/td[1]");
+                    waitForLoader();
+                    Thread.sleep(3000);
                     takeScreenshot("Subcontractors_LocationUpdate");
                     
                     driver.findElement(By.xpath("//div/div[3]/div/div/div/div/div/div[2]/div/div[2]/div/div")).click();
@@ -177,7 +179,8 @@ public class Subcontractors extends AbstractOfficeTest {
                     phoneRecruiter.selectByValue(e[15]);
                     
                     driver.findElement(By.xpath("//div/div/div/div/fieldset/div/div[2]/button")).click();
-                    waitForElementXpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[10]/div/div[4]/div/div/div/div/fieldset/div/div/table/tbody/tr[1]/td[1]");
+                    waitForLoader();
+                    Thread.sleep(3000);
                     takeScreenshot("Subcontractors_ContactUpdate");
                     
                     j = 2;

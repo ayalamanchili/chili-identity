@@ -37,7 +37,7 @@ public class LoginTest extends AbstractOfficeTest {
         System.out.println("Exit loginFailure: " + new Date());
     }
 
-    @Test(description="test logout",groups="logout",dependsOnGroups="company")
+    @Test(description="test logout",groups="logout",dependsOnGroups="tasks")
     public void testLogout(){
         System.out.println("Enter logout: " + new Date());
         assertTrue(logout(),"Error:Could not logout - ");

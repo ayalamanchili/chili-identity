@@ -34,7 +34,7 @@ import org.testng.annotations.Test;
  */
 public class Clients extends AbstractOfficeTest {
 
-    @Test(description = "testClientsSection", groups = "clients", dependsOnGroups = "login", priority = 1)
+    @Test(description = "testClientsSection", groups = "clients", dependsOnGroups = "skillSetTags", priority = 1)
     public void testClientsSection() throws InterruptedException, IOException {
         System.out.println("Enter Clients Section: " + new Date());
 
@@ -42,13 +42,13 @@ public class Clients extends AbstractOfficeTest {
         waitForTime(10);
         driver.findElement(By.id("Clients")).click();
 
-        waitForElementXpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[10]/div/div[4]/div/div/div/div/fieldset/div/div/table/tbody/tr[1]/td[1]");
+        Thread.sleep(3000);
         takeScreenshot("Clients_Section");
         System.out.println("Exit Clients Section: " + new Date());
 
     }
 
-    @Test(description = "testClientsCreate", dataProvider = "clientsCreateData", groups = "clients", dependsOnGroups = "login", priority = 2)
+    @Test(description = "testClientsCreate", dataProvider = "clientsCreateData", groups = "clients", dependsOnGroups = "skillSetTags", priority = 2)
     public void testClientsCreate(String[][] ClientsData) throws InterruptedException, IOException {
         System.out.println("Enter Clients Create: " + new Date());
 
@@ -70,13 +70,13 @@ public class Clients extends AbstractOfficeTest {
             waitForTime(10);
         }
 
-        waitForElementXpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[10]/div/div[4]/div/div/div/div/fieldset/div/div/table/tbody/tr[2]/td[1]");
+        Thread.sleep(3000);
         takeScreenshot("Clients_Create");
 
         System.out.println("Exit Clients Create: " + new Date());
     }
 
-    @Test(dataProvider = "clientsUpdateData", description = "testClientsUpdate", groups = "clients", dependsOnGroups = "login", priority = 3)
+    @Test(dataProvider = "clientsUpdateData", description = "testClientsUpdate", groups = "clients", dependsOnGroups = "skillSetTags", priority = 3)
     public void testClientsUpdate(String[][] ClientsData) throws InterruptedException, IOException {
         System.out.println("Enter Clients Update: " + new Date());
 
@@ -122,12 +122,12 @@ public class Clients extends AbstractOfficeTest {
             }
         }
 
-        waitForElementXpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[10]/div/div[4]/div/div/div/div/fieldset/div/div/table/tbody/tr[1]/td[1]");
+        Thread.sleep(3000);
         takeScreenshot("Clients_Update");
         System.out.println("Exit Clients Update: " + new Date());
     }
 
-    @Test(description = "testClientsOtherUpdate", dataProvider = "clientsOtherData", groups = "clients", dependsOnGroups = "login", priority = 4)
+    @Test(description = "testClientsOtherUpdate", dataProvider = "clientsOtherData", groups = "clients", dependsOnGroups = "skillSetTags", priority = 4)
     public void testClientsOtherUpdate(String[][] ClientsOtherData) throws InterruptedException, IOException {    
         System.out.println("Enter Clients Other Update: " + new Date());
         
@@ -162,7 +162,8 @@ public class Clients extends AbstractOfficeTest {
                     driver.findElement(By.id("gwt-debug-Address_zip_TB")).sendKeys(e[6]);
                     
                     driver.findElement(By.cssSelector("button.gwt-Button.y-gwt-createB")).click();
-                    waitForElementXpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[10]/div/div[4]/div/div/div/div/fieldset/div/div/table/tbody/tr[1]/td[1]");
+                    waitForLoader();
+                    Thread.sleep(3000);
                     takeScreenshot("Clients_LocationUpdate");
                     
                     driver.findElement(By.xpath("//div/div[3]/div/div/div/div/div/div[2]/div/div[2]/div/div")).click();
@@ -182,7 +183,7 @@ public class Clients extends AbstractOfficeTest {
                     phoneRecruiter.selectByValue(e[15]);
                     
                     driver.findElement(By.xpath("//div/div/div/div/fieldset/div/div[2]/button")).click();
-                    waitForElementXpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[10]/div/div[4]/div/div/div/div/fieldset/div/div/table/tbody/tr[1]/td[1]");
+                    Thread.sleep(3000);
                     takeScreenshot("Clients_RecruiterUpdate");
                     
                     driver.findElement(By.xpath("//div/div[3]/div/div/div/div/div/div[2]/div/div[3]/div/div")).click();
@@ -202,7 +203,7 @@ public class Clients extends AbstractOfficeTest {
                     phoneAcctPay.selectByValue(e[24]);
                     
                     driver.findElement(By.xpath("//div/div/div/div/fieldset/div/div[2]/button")).click();
-                    waitForElementXpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[10]/div/div[4]/div/div/div/div/fieldset/div/div/table/tbody/tr[1]/td[1]");
+                    Thread.sleep(3000);
                     takeScreenshot("Clients_AcctPayUpdate");
                     
                     j = 2;
@@ -218,7 +219,7 @@ public class Clients extends AbstractOfficeTest {
         
     }
 
-    @Test(description = "testClientsView", dataProvider = "clientsViewData", groups = "clients", dependsOnGroups = "login", priority = 5)
+    @Test(description = "testClientsView", dataProvider = "clientsViewData", groups = "clients", dependsOnGroups = "skillSetTags", priority = 5)
     public void testClientsView(String[][] ClientsData) throws InterruptedException, IOException {
         System.out.println("Enter Clients View: " + new Date());
 
@@ -254,7 +255,7 @@ public class Clients extends AbstractOfficeTest {
         System.out.println("Exit Clients View: " + new Date());
     }
 
-    @Test(description = "testClientsSearch", groups = "clients", dependsOnGroups = "login", priority = 6)
+    @Test(description = "testClientsSearch", groups = "clients", dependsOnGroups = "skillSetTags", priority = 6)
     public void testClientsSearch() throws InterruptedException, IOException {
         System.out.println("Enter Clients Search: " + new Date());    
         
@@ -282,7 +283,7 @@ public class Clients extends AbstractOfficeTest {
         System.out.println("Exit Clients Search: " + new Date());    
     }
     
-    @Test(description = "testClientsDelete", dataProvider = "clientsDeleteData", groups = "clients", dependsOnGroups = "login", priority = 7)
+    @Test(description = "testClientsDelete", dataProvider = "clientsDeleteData", groups = "clients", dependsOnGroups = "skillSetTags", priority = 7)
     public void testClientsDelete(String[][] ClientsData) throws InterruptedException, IOException {
         System.out.println("Enter Clients Delete: " + new Date());
         
@@ -315,7 +316,7 @@ public class Clients extends AbstractOfficeTest {
             }
         }
 
-        waitForElementXpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[10]/div/div[4]/div/div/div/div/fieldset/div/div/table/tbody/tr[2]/td[1]");
+        Thread.sleep(3000);
         takeScreenshot("Clients_Delete");
         System.out.println("Exit Clients Delete: " + new Date());
     }

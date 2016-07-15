@@ -42,7 +42,8 @@ public class Vendors extends AbstractOfficeTest {
         waitForTime(10);
         driver.findElement(By.id("Vendors")).click();
 
-        waitForElementXpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[10]/div/div[4]/div/div/div/div/fieldset/div/div/table/tbody/tr[1]/td[1]");
+        waitForLoader();
+        Thread.sleep(3000);
         takeScreenshot("Vendors_Section");
         System.out.println("Exit Vendors Section: " + new Date());
 
@@ -68,12 +69,13 @@ public class Vendors extends AbstractOfficeTest {
             element = driver.findElement(By.id("gwt-debug-Vendors_vendorinvFrequency_LB"));
             Select frequency = new Select(element);
             frequency.selectByValue(e[6]);
-            
+
             driver.findElement(By.cssSelector("button.gwt-Button.y-gwt-createB")).click();
             waitForTime(10);
         }
 
-        waitForElementXpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[10]/div/div[4]/div/div/div/div/fieldset/div/div/table/tbody/tr[2]/td[1]");
+        waitForLoader();
+        Thread.sleep(3000);
         takeScreenshot("Vendors_Create");
 
         System.out.println("Exit Vendors Create: " + new Date());
@@ -99,13 +101,13 @@ public class Vendors extends AbstractOfficeTest {
 
                     j = 1;
                     driver.findElement(By.xpath(xpathstart + i + xpathbetween + j + xpathend + "/table/tbody/tr/td[2]/img")).click();
-                    
+
                     driver.findElement(By.id("gwt-debug-Vendors_name_TB")).clear();
                     driver.findElement(By.id("gwt-debug-Vendors_description_TB")).clear();
                     driver.findElement(By.id("gwt-debug-Vendors_vendorFees_TB")).clear();
                     driver.findElement(By.id("gwt-debug-Vendors_website_TB")).clear();
                     driver.findElement(By.id("gwt-debug-Vendors_paymentTerms_TB")).clear();
-                    
+
                     driver.findElement(By.id("gwt-debug-Vendors_name_TB")).sendKeys(e[0]);
                     driver.findElement(By.id("gwt-debug-Vendors_description_TB")).sendKeys(e[1]);
                     WebElement element = driver.findElement(By.xpath("//td[2]/table/tbody/tr/td/select"));
@@ -129,15 +131,16 @@ public class Vendors extends AbstractOfficeTest {
             }
         }
 
-        waitForElementXpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[10]/div/div[4]/div/div/div/div/fieldset/div/div/table/tbody/tr[1]/td[1]");
+        waitForLoader();
+        Thread.sleep(3000);
         takeScreenshot("Vendors_Update");
         System.out.println("Exit Vendors Update: " + new Date());
     }
 
     @Test(description = "testVendorsOtherUpdate", dataProvider = "vendorsOtherData", groups = "vendors", dependsOnGroups = "clients", priority = 4)
-    public void testVendorsOtherUpdate(String[][] VendorsOtherData) throws InterruptedException, IOException {    
+    public void testVendorsOtherUpdate(String[][] VendorsOtherData) throws InterruptedException, IOException {
         System.out.println("Enter Vendors Other Update: " + new Date());
-        
+
         String xpathstart = "html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[10]/div/div[4]/div/div/div/div/fieldset/div/div/table/tbody/tr[";
         String xpathbetween = "]/td[";
         String xpathend = "]";
@@ -154,7 +157,7 @@ public class Vendors extends AbstractOfficeTest {
 
                     j = 1;
                     driver.findElement(By.xpath(xpathstart + i + xpathbetween + j + xpathend + "/table/tbody/tr/td[2]/img")).click();
-                    
+
                     driver.findElement(By.xpath("//div/div[3]/div/div/div/div/div/div[2]/div/div/div/div")).click();
                     driver.findElement(By.xpath("//div[10]/div/div[4]/div/div/div/div/fieldset/div/button")).click();
                     driver.findElement(By.id("gwt-debug-Address_street1_TB")).sendKeys(e[1]);
@@ -167,11 +170,12 @@ public class Vendors extends AbstractOfficeTest {
                     Select state = new Select(element);
                     state.selectByValue(e[5]);
                     driver.findElement(By.id("gwt-debug-Address_zip_TB")).sendKeys(e[6]);
-                    
+
                     driver.findElement(By.cssSelector("button.gwt-Button.y-gwt-createB")).click();
-                    waitForElementXpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[10]/div/div[4]/div/div/div/div/fieldset/div/div/table/tbody/tr[1]/td[1]");
+                    waitForLoader();
+                    Thread.sleep(3000);
                     takeScreenshot("Vendors_LocationUpdate");
-                    
+
                     driver.findElement(By.xpath("//div/div[3]/div/div/div/div/div/div[2]/div/div[2]/div/div")).click();
                     driver.findElement(By.xpath("//div[10]/div/div[4]/div/div/div/div/fieldset/div/button")).click();
                     driver.findElement(By.id("gwt-debug-Contact_firstName_TB")).sendKeys(e[7]);
@@ -187,11 +191,12 @@ public class Vendors extends AbstractOfficeTest {
                     element = driver.findElement(By.id("gwt-debug-PhoneType_phoneType_LB"));
                     Select phoneRecruiter = new Select(element);
                     phoneRecruiter.selectByValue(e[15]);
-                    
+
                     driver.findElement(By.xpath("//div/div/div/div/fieldset/div/div[2]/button")).click();
-                    waitForElementXpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[10]/div/div[4]/div/div/div/div/fieldset/div/div/table/tbody/tr[1]/td[1]");
+                    waitForLoader();
+                    Thread.sleep(3000);
                     takeScreenshot("Vendors_RecruiterUpdate");
-                    
+
                     driver.findElement(By.xpath("//div/div[3]/div/div/div/div/div/div[2]/div/div[3]/div/div")).click();
                     driver.findElement(By.xpath("//div[10]/div/div[4]/div/div/div/div/fieldset/div/button")).click();
                     driver.findElement(By.id("gwt-debug-Contact_firstName_TB")).sendKeys(e[16]);
@@ -207,11 +212,12 @@ public class Vendors extends AbstractOfficeTest {
                     element = driver.findElement(By.id("gwt-debug-PhoneType_phoneType_LB"));
                     Select phoneAcctPay = new Select(element);
                     phoneAcctPay.selectByValue(e[24]);
-                    
+
                     driver.findElement(By.xpath("//div/div/div/div/fieldset/div/div[2]/button")).click();
-                    waitForElementXpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[10]/div/div[4]/div/div/div/div/fieldset/div/div/table/tbody/tr[1]/td[1]");
+                    waitForLoader();
+                    Thread.sleep(3000);
                     takeScreenshot("Vendors_AcctPayUpdate");
-                    
+
                     j = 2;
                     matchFound = true;
                 } else {
@@ -220,9 +226,9 @@ public class Vendors extends AbstractOfficeTest {
                 driver.findElement(By.id("Vendors")).click();
             }
         }
-        
+
         System.out.println("Exit Vendors Other Update: " + new Date());
-        
+
     }
 
     @Test(description = "testVendorsView", dataProvider = "vendorsViewData", groups = "vendors", dependsOnGroups = "clients", priority = 5)
@@ -263,16 +269,16 @@ public class Vendors extends AbstractOfficeTest {
 
     @Test(description = "testVendorsSearch", groups = "vendors", dependsOnGroups = "clients", priority = 6)
     public void testVendorsSearch() throws InterruptedException, IOException {
-        System.out.println("Enter Vendors Search: " + new Date());    
-        
+        System.out.println("Enter Vendors Search: " + new Date());
+
         driver.findElement(By.xpath("//div[10]/div/div[3]/div/div/div/div/fieldset/div/input")).sendKeys("private");
         driver.findElement(By.xpath("//div[10]/div/div[3]/div/div/div/div/fieldset/div/button")).click();
-                                  
+
         waitForLoader();
         takeScreenshot("Vendors_Search");
         driver.findElement(By.id("Vendors")).click();
         waitForLoader();
-        
+
         driver.findElement(By.xpath("//div[10]/div/div[3]/div/div/div/div/fieldset/div/table/tbody/tr/td/a/table/tbody/tr/td[2]")).click();
         driver.findElement(By.id("gwt-debug-Vendors_vendorName_TB")).sendKeys("company");
         WebElement element = driver.findElement(By.id("gwt-debug-Vendors_vendorType_LB"));
@@ -283,17 +289,17 @@ public class Vendors extends AbstractOfficeTest {
         Select state = new Select(element);
         state.selectByValue("FL");
         driver.findElement(By.xpath("//div[10]/div/div[3]/div/div/div/div/fieldset/div/button")).click();
-        
+
         waitForLoader();
         takeScreenshot("Vendors_AdvancedSearch");
-     
-        System.out.println("Exit Vendors Search: " + new Date());    
+
+        System.out.println("Exit Vendors Search: " + new Date());
     }
-    
+
     @Test(description = "testVendorsDelete", dataProvider = "vendorsDeleteData", groups = "vendors", dependsOnGroups = "clients", priority = 7)
     public void testVendorsDelete(String[][] VendorsData) throws InterruptedException, IOException {
         System.out.println("Enter Vendors Delete: " + new Date());
-        
+
         driver.findElement(By.id("Vendors")).click();
         String xpathstart = "html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[10]/div/div[4]/div/div/div/div/fieldset/div/div/table/tbody/tr[";
         String xpathbetween = "]/td[";
@@ -341,10 +347,10 @@ public class Vendors extends AbstractOfficeTest {
         return fetchData("UpdateVendors");
 
     }
-    
-    @DataProvider(name="vendorsOtherData")
-    private Object[][] vendorsOtherData () throws EncryptedDocumentException, IOException, FileNotFoundException, InvalidFormatException {
-        
+
+    @DataProvider(name = "vendorsOtherData")
+    private Object[][] vendorsOtherData() throws EncryptedDocumentException, IOException, FileNotFoundException, InvalidFormatException {
+
         return fetchOtherData("UpdateVendorsOther");
     }
 
@@ -427,7 +433,7 @@ public class Vendors extends AbstractOfficeTest {
             VendorsOtherData[i][21] = row.getCell(21).getStringCellValue();
             VendorsOtherData[i][22] = row.getCell(22).getStringCellValue();
             VendorsOtherData[i][23] = row.getCell(23).getStringCellValue();
-            VendorsOtherData[i][24] = row.getCell(24).getStringCellValue();    
+            VendorsOtherData[i][24] = row.getCell(24).getStringCellValue();
         }
         return new Object[][]{{VendorsOtherData}};
     }

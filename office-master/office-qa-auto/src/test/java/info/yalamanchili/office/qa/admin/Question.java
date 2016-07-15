@@ -42,7 +42,8 @@ public class Question extends AbstractOfficeTest {
         waitForTime(10);
         driver.findElement(By.id("Question")).click();
 
-        waitForElementXpath("html/body/div[3]/div[2]/div/div[4]/div/div/div[3]/div/div[10]/div/div[4]/div/div/div/div/fieldset/div/div/table/tbody/tr[1]/td[1]");
+        waitForLoader();
+        Thread.sleep(3000);
         takeScreenshot("Question_Section");
         System.out.println("Exit Question Section: " + new Date());
 
