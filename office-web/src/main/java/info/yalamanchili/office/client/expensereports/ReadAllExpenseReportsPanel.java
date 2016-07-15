@@ -202,12 +202,12 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
     protected boolean enablePersistedQuickView() {
         return true;
     }
-//
-//    @Override
-//    protected void configureCreateButton() {
-//        createButton.setText("Create Expense Report");
-//        createButton.setVisible(true);
-//    }
+
+    @Override
+    protected void configureCreateButton() {
+        createButton.setText("Create Expense Report");
+        createButton.setVisible(true);
+    }
 
     @Override
     protected void createButtonClicked() {

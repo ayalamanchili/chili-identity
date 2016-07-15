@@ -22,6 +22,7 @@ import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.composite.BaseField;
 import info.chili.gwt.crud.CRUDComposite;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
@@ -251,8 +252,8 @@ public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite impl
     }
 
     @Override
-    protected CRUDComposite getChildWidget(int childIndexWidget) {
-        return updateItemPanels.get(childIndexWidget);
+    protected Map<String, BaseField> getChildWidget(int childIndexWidget) {
+        return ((CRUDComposite) updateItemPanels.get(childIndexWidget)).fields;
     }
 
     @Override

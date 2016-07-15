@@ -24,8 +24,9 @@ import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import info.chili.gwt.callback.ALAsyncCallback;
-import info.chili.gwt.crud.CRUDComposite;
+import info.chili.gwt.composite.BaseField;
 import info.chili.gwt.crud.CreateComposite;
+import info.chili.gwt.crud.TCRUDComposite;
 import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
@@ -35,6 +36,7 @@ import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.utils.Utils;
 import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.widgets.SuggestBox;
@@ -64,12 +66,12 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
             postCreateSuccess(null);
         }
     };
-    protected static HTML generalInfo = new HTML("\n"
-            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
-            + "<strong style=\"color:#555555\">General Expense Information</strong></p>\n"
-            + "\n"
-            + "<ul>\n"
-            + "</ul>");
+//    protected static HTML generalInfo = new HTML("\n"
+//            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
+//            + "<strong style=\"color:#555555\">General Expense Information</strong></p>\n"
+//            + "\n"
+//            + "<ul>\n"
+//            + "</ul>");
     protected static HTML expenseItemsInfo = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
             + "<strong style=\"color:#555555\">Expense Items Information</strong></p>\n"
@@ -129,7 +131,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         entityFieldsPanel.add(approver);
         entityFieldsPanel.add(approvalManager);
         expenseFormType = (EnumField) fields.get(EXPENSE_FORM_TYPE);
-        entityFieldsPanel.add(generalInfo);
+//        entityFieldsPanel.add(generalInfo);
         addField(LOCATION, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         location = (StringField) fields.get(LOCATION);
         addField(START_DATE, false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
@@ -163,7 +165,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         endDate.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
         projectName.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         projectNumber.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
-        generalInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+//        generalInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         expenseItemsInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         receiptsInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         notes.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
@@ -239,17 +241,17 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        logger.info(arg0.getMessage());
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                logger.info(arg0.getMessage());
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        uploadReceipts(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                uploadReceipts(arg0);
+            }
+        });
     }
 
     @Override
@@ -306,8 +308,8 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     }
 
     @Override
-    protected CRUDComposite getChildWidget(int childIndexWidget) {
-        return expenseItemPanels.get(childIndexWidget);
+    protected Map<String, BaseField> getChildWidget(int childIndexWidget) {
+        return ((TCRUDComposite) expenseItemPanels.get(childIndexWidget)).fields;
     }
 
     @Override
@@ -331,11 +333,13 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
                 isGeneralExpenseItem = true;
                 approvalManager.setVisible(true);
                 approver.setVisible(true);
+                entityCaptionPanel.setCaptionHTML("General Expense form");
             } else if (expenseFormType.getValue().equals(ExpenseFormType.TRAVEL_EXPENSE.name())) {
                 renderproject(true);
                 isGeneralExpenseItem = false;
+                entityCaptionPanel.setCaptionHTML("Travel Expense form");
             }
-            expenseFormType.setReadOnly(true);
+            expenseFormType.setVisible(false);
         }
     }
 

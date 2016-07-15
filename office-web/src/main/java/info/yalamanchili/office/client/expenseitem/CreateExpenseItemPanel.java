@@ -7,7 +7,6 @@
  */
 package info.yalamanchili.office.client.expenseitem;
 
-import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -17,9 +16,11 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.Label;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDComposite;
-import info.chili.gwt.crud.CreateComposite;
+import info.chili.gwt.crud.TCreateComposite;
 import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
@@ -43,7 +44,7 @@ import java.util.logging.Logger;
  *
  * @author Prasanthi.p
  */
-public class CreateExpenseItemPanel extends CreateComposite implements ChangeHandler, BlurHandler, ClickHandler {
+public class CreateExpenseItemPanel extends TCreateComposite implements ChangeHandler, BlurHandler, ClickHandler {
 
     private Logger logger = Logger.getLogger(CreateExpenseItemPanel.class.getName());
     SelectExpenseCategoryWidget selectCategoryWidgetF = new SelectExpenseCategoryWidget(false, true);
@@ -52,14 +53,13 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
     StringField purpose;
     StringField description;
     CurrencyField amount;
-// TextAreaField remark;
     boolean isGeneralExpenseItem = false;
     CurrencyField expenseMiles;
     ClickableLink deleteB = new ClickableLink("Remove Item");
     CRUDComposite parent;
 
     public CreateExpenseItemPanel(CRUDComposite parent, boolean isGeneralExpenseItem) {
-        super(CreateComposite.CreateCompositeType.CREATE);
+        super(TCreateComposite.CreateCompositeType.CREATE);
         this.parent = parent;
         this.isGeneralExpenseItem = isGeneralExpenseItem;
         initCreateComposite("ExpenseItem", OfficeWelcome.constants);
@@ -71,46 +71,48 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
 
     @Override
     protected void addWidgets() {
-        addField(EXPENSE_DATE, false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField(EXPENSE_DATE, false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL, 1, 1);
         expenseDate = (DateField) fields.get(EXPENSE_DATE);
-        addField(PURPOSE, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField(PURPOSE, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 2);
         purpose = (StringField) fields.get(PURPOSE);
         if (!isGeneralExpenseItem) {
-            addDropDown(CATEGORY, selectCategoryWidgetF);
+            addDropDown(CATEGORY, selectCategoryWidgetF, 1, 3);
         }
-        addEnumField(EXPENSE_PAYMENT_MODE, false, true, ExpensePaymentMode.names(), Alignment.HORIZONTAL);
+        addEnumField(EXPENSE_PAYMENT_MODE, false, true, ExpensePaymentMode.names(), Alignment.HORIZONTAL, 1, 4);
         expensePaymentMode = (EnumField) fields.get(EXPENSE_PAYMENT_MODE);
-        addField(EXPENSE_MILES, false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        addField(EXPENSE_MILES, false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 1, 5);
         expenseMiles = (CurrencyField) fields.get(EXPENSE_MILES);
-        addField(AMOUNT, false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        addField(AMOUNT, false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 1, 6);
         amount = (CurrencyField) fields.get(AMOUNT);
         if (isGeneralExpenseItem) {
-            addField(DESCRIPTION, false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField(DESCRIPTION, false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 7);
             description = (StringField) fields.get(DESCRIPTION);
         }
-// addField(REMARK, false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-// remark = (TextAreaField) fields.get(REMARK);
-        alignFields();
-        entityActionsPanel.add(deleteB);
+        entityFieldsPanel.setWidget(1,8, deleteB);
+        entityActionsPanel.setVisible(false);
     }
 
     @Override
     protected void configure() {
         create.setVisible(false);
         if (!isGeneralExpenseItem) {
-            selectCategoryWidgetF.getLabel().getElement().getStyle().setWidth(DEFAULT_CAT_FIELD_WIDTH, Style.Unit.PX);
+            configureLabel(selectCategoryWidgetF.getLabel());
         }
         if (isGeneralExpenseItem) {
-            description.getLabel().getElement().getStyle().setWidth(DEFAULT_CAT_FIELD_WIDTH, Style.Unit.PX);
+            configureLabel(description.getLabel());
         }
-        expensePaymentMode.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
-        expenseDate.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
-        purpose.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
-//description.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
-// remark.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
-        expenseMiles.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
-        amount.getLabel().getElement().getStyle().setWidth(DEFAULT_ITEM_FIELD_WIDTH, Style.Unit.PX);
+        configureLabel(expensePaymentMode.getLabel());
+        configureLabel(expenseDate.getLabel());
+        configureLabel(purpose.getLabel());
+        configureLabel(expenseMiles.getLabel());
+        configureLabel(amount.getLabel());
         expenseMiles.setVisible(false);
+        setBackgroundText();
+    }
+
+    protected void configureLabel(Label l) {
+        l.removeStyleName("tfFieldHeader");
+        l.setVisible(false);
     }
 
     @Override
@@ -128,7 +130,6 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
         entity = new JSONObject();
         if (isGeneralExpenseItem) {
             entity.put(CATEGORY, new JSONString("General"));
-// entity.put(EXPENSE_PAYMENT_MODE, new JSONString(ExpensePaymentMode.PERSONAL_CARD.name()));
         } else {
             entity.put(CATEGORY, selectCategoryWidgetF.getSelectedObject());
             assignEntityValueFromField(EXPENSE_PAYMENT_MODE, entity);
@@ -139,7 +140,6 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
         if (isGeneralExpenseItem) {
             assignEntityValueFromField(DESCRIPTION, entity);
         }
-// assignEntityValueFromField(REMARK, entity);
         assignEntityValueFromField(EXPENSE_MILES, entity);
         assignEntityValueFromField(AMOUNT, entity);
         return entity;
@@ -149,17 +149,17 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        logger.info(arg0.getMessage());
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                logger.info(arg0.getMessage());
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postCreateSuccess(arg0);
+            }
+        });
     }
 
     @Override
@@ -216,11 +216,11 @@ public class CreateExpenseItemPanel extends CreateComposite implements ChangeHan
                 HttpService.HttpServiceAsync.instance().doPut(getDeleteURI(), entity.toString(),
                         OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
 
-                            @Override
-                            public void onResponse(String arg0) {
-                                new ResponseStatusWidget().show("Successfully Deleted Employee ExpenseItem Information");
-                            }
-                        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        new ResponseStatusWidget().show("Successfully Deleted Employee ExpenseItem Information");
+                    }
+                });
             }
 
         }

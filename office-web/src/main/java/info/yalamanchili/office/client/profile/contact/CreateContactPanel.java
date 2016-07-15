@@ -11,6 +11,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.chili.gwt.composite.BaseField;
 import info.chili.gwt.crud.CRUDComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.widgets.ClickableLink;
@@ -20,6 +21,7 @@ import info.yalamanchili.office.client.profile.phone.CreatePhonePanel;
 import info.chili.gwt.rpc.HttpService;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -38,8 +40,8 @@ public abstract class CreateContactPanel extends CreateComposite {
     }
 
     @Override
-    protected CRUDComposite getChildWidget(int childIndexWidget) {
-        return createPhoneWidgets.get(childIndexWidget);
+    protected Map<String, BaseField> getChildWidget(int childIndexWidget) {
+        return ((CRUDComposite) createPhoneWidgets.get(childIndexWidget)).fields;
     }
 
     @Override
@@ -74,16 +76,16 @@ public abstract class CreateContactPanel extends CreateComposite {
     protected void addButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postCreateSuccess(arg0);
+            }
+        });
     }
 
     @Override

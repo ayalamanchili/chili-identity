@@ -11,6 +11,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.chili.gwt.composite.BaseField;
 import info.chili.gwt.crud.CRUDComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.JSONUtils;
@@ -21,6 +22,7 @@ import info.yalamanchili.office.client.profile.phone.UpdatePhonePanel;
 import info.chili.gwt.rpc.HttpService;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -35,8 +37,8 @@ public abstract class UpdateContactPanel extends UpdateComposite {
     protected JSONArray phones = new JSONArray();
 
     @Override
-    protected CRUDComposite getChildWidget(int childIndexWidget) {
-        return updatePhoneWidgets.get(childIndexWidget);
+    protected Map<String, BaseField> getChildWidget(int childIndexWidget) {
+        return ((CRUDComposite) updatePhoneWidgets.get(childIndexWidget)).fields;
     }
 
     public UpdateContactPanel(JSONObject entity) {
@@ -73,16 +75,16 @@ public abstract class UpdateContactPanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postUpdateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postUpdateSuccess(arg0);
+            }
+        });
     }
 
     @Override
