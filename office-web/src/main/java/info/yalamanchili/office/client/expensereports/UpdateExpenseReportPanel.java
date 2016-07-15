@@ -18,7 +18,8 @@ import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import info.chili.gwt.callback.ALAsyncCallback;
-import info.chili.gwt.crud.CRUDComposite;
+import info.chili.gwt.composite.BaseField;
+import info.chili.gwt.crud.TCRUDComposite;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DataType;
@@ -40,6 +41,7 @@ import static info.yalamanchili.office.client.expensereports.ExpenseFormConstant
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -49,7 +51,7 @@ import java.util.logging.Logger;
 public class UpdateExpenseReportPanel extends UpdateComposite {
 
     private Logger logger = Logger.getLogger(UpdateExpenseReportPanel.class.getName());
-    public List<CRUDComposite> updateItemPanels = new ArrayList<>();
+    public List<TCRUDComposite> updateItemPanels = new ArrayList<>();
     protected ClickableLink addItemL = new ClickableLink("Add Expense Item");
     FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "ExpenseReceipt", "", "ExpenseReceipt/fileURL", false, true) {
         @Override
@@ -116,14 +118,14 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        logger.info(response);
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity);
+            @Override
+            public void onResponse(String response) {
+                logger.info(response);
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                populateFieldsFromEntity(entity);
 
-                    }
-                });
+            }
+        });
     }
 
     protected String getReadURI() {
@@ -140,7 +142,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
         assignEntityValueFromField(PROJECT_NUMBER, entity);
         JSONArray items = new JSONArray();
         int i = 0;
-        for (CRUDComposite panel : updateItemPanels) {
+        for (TCRUDComposite panel : updateItemPanels) {
             if (panel instanceof UpdateExpenseItemPanel) {
                 UpdateExpenseItemPanel updatePanel = (UpdateExpenseItemPanel) panel;
                 items.set(i, updatePanel.populateEntityFromFields());
@@ -181,16 +183,16 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        uploadReceipts(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                uploadReceipts(arg0);
+            }
+        });
     }
 
     protected void uploadReceipts(String postString) {
@@ -199,8 +201,8 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
     }
 
     @Override
-    protected CRUDComposite getChildWidget(int childIndexWidget) {
-        return updateItemPanels.get(childIndexWidget);
+    protected Map<String, BaseField> getChildWidget(int childIndexWidget) {
+        return updateItemPanels.get(childIndexWidget).fields;
     }
 
     @Override
