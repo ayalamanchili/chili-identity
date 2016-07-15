@@ -213,7 +213,7 @@ public class ContractReportService {
     public void generateActiveCPDSReport(String email) {
         List<ActiveCPDReportDto> res = new ArrayList<>();
         getActiveCPDs().stream().forEach((dto) -> {
-            res.add(new ActiveCPDReportDto(dto.getEmployee(), dto.getClient(), dto.getVendor(), dto.getBillingRate().toString(), Integer.toString(DateUtils.differenceInMonths(dto.getEndDate(), dto.getStartDate()))));
+            res.add(new ActiveCPDReportDto(dto.getEmployee(), dto.getClient(), dto.getVendor(), dto.getBillingRate().toString(), Integer.toString(DateUtils.differenceInMonths(dto.getStartDate(), dto.getEndDate()))));
         });
         String[] columnOrder = new String[]{"employee", "client", "vendor", "billingRate", "duration",};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Active CPDS Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
