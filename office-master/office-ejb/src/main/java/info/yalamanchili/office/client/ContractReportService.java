@@ -26,6 +26,7 @@ import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.jms.MessagingService;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -213,9 +214,10 @@ public class ContractReportService {
     public void generateActiveCPDSReport(String email) {
         List<ActiveCPDReportDto> res = new ArrayList<>();
         getActiveCPDs().stream().forEach((dto) -> {
-            res.add(new ActiveCPDReportDto(dto.getEmployee(), dto.getClient(), dto.getVendor(), dto.getBillingRate().toString(), dto.getStartDate(), dto.getEndDate(), Integer.toString(DateUtils.differenceInMonths(dto.getStartDate(), dto.getEndDate())), dto.getEmployeeType()));
+            res.add(new ActiveCPDReportDto(dto.getEmployee(), dto.getClient(), dto.getVendor(), dto.getBillingRate(), dto.getStartDate(), dto.getEndDate(), dto.getEmployeeType()));
         });
-        String[] columnOrder = new String[]{"employee", "client", "vendor", "billingRate", "startDate", "endDate", "duration", "employeeType"};
-        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Active CPDS Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
+        String[] columnOrder = new String[]{"employee", "client", "vendor", "billingRate", "startDate", "endDate", "totalDuration", "remainingDuration", "monthlyIncome", "remainingIncome", "employeeType"};
+        MessagingService.instance()
+                .emailReport(ReportGenerator.generateExcelOrderedReport(res, "Active CPDS Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
 }

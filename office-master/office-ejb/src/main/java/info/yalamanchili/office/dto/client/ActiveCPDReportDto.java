@@ -8,6 +8,8 @@
  */
 package info.yalamanchili.office.dto.client;
 
+import info.chili.commons.DateUtils;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -19,21 +21,27 @@ public class ActiveCPDReportDto {
     String employee;
     String client;
     String vendor;
-    String billingRate;
+    BigDecimal billingRate;
     Date startDate;
     Date endDate;
-    String duration;
+    String totalDuration;
+    Integer remainingDuration;
+    BigDecimal monthlyIncome;
+    BigDecimal remainingIncome;
     String employeeType;
 
-    public ActiveCPDReportDto(String employee, String client, String vendor, String billingRate, Date startDate, Date endDate, String duration, String employeeType) {
+    public ActiveCPDReportDto(String employee, String client, String vendor, BigDecimal billingRate, Date startDate, Date endDate, String employeeType) {
         this.employee = employee;
         this.client = client;
         this.vendor = vendor;
         this.billingRate = billingRate;
-        this.duration = duration;
-        this.startDate=startDate;
-        this.endDate=endDate;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.employeeType = employeeType;
+        this.totalDuration = Integer.toString(DateUtils.differenceInMonths(startDate, endDate));
+        this.remainingDuration = DateUtils.differenceInMonths(new Date(), endDate);
+        this.monthlyIncome = new BigDecimal("168.00").multiply(billingRate);
+        this.remainingIncome = new BigDecimal("168.00").multiply(new BigDecimal(this.remainingDuration)).multiply(billingRate);
     }
 
     public String getEmployee() {
@@ -60,11 +68,11 @@ public class ActiveCPDReportDto {
         this.vendor = vendor;
     }
 
-    public String getBillingRate() {
+    public BigDecimal getBillingRate() {
         return billingRate;
     }
 
-    public void setBillingRate(String billingRate) {
+    public void setBillingRate(BigDecimal billingRate) {
         this.billingRate = billingRate;
     }
 
@@ -84,12 +92,12 @@ public class ActiveCPDReportDto {
         this.endDate = endDate;
     }
 
-    public String getDuration() {
-        return duration;
+    public String getTotalDuration() {
+        return totalDuration;
     }
 
-    public void setDuration(String duration) {
-        this.duration = duration;
+    public void setTotalDuration(String totalDuration) {
+        this.totalDuration = totalDuration;
     }
 
     public String getEmployeeType() {
@@ -98,6 +106,30 @@ public class ActiveCPDReportDto {
 
     public void setEmployeeType(String employeeType) {
         this.employeeType = employeeType;
+    }
+
+    public Integer getRemainingDuration() {
+        return remainingDuration;
+    }
+
+    public void setRemainingDuration(Integer remainingDuration) {
+        this.remainingDuration = remainingDuration;
+    }
+
+    public BigDecimal getMonthlyIncome() {
+        return monthlyIncome;
+    }
+
+    public void setMonthlyIncome(BigDecimal monthlyIncome) {
+        this.monthlyIncome = monthlyIncome;
+    }
+
+    public BigDecimal getRemainingIncome() {
+        return remainingIncome;
+    }
+
+    public void setRemainingIncome(BigDecimal remainingIncome) {
+        this.remainingIncome = remainingIncome;
     }
 
 }
