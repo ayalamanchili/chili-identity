@@ -18,6 +18,7 @@ import info.yalamanchili.office.client.Auth;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import java.util.logging.Logger;
 
 /**
@@ -43,6 +44,7 @@ public class InvoiceSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void configure() {
+         TabPanel.instance().reportingPanel.sidePanelTop.setHeight("100%");
         invoiceSummaryReportL.setTitle("report with full information of invoices");
         activeSummaryReportL.setTitle("report with full information of invoices");
     }
@@ -59,10 +61,10 @@ public class InvoiceSidePanel extends ALComposite implements ClickHandler {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(invoiceSummaryReportL)) {
-            generateInvoiceInfoReport();
+//            generateInvoiceInfoReport();
         }
         if (event.getSource().equals(activeSummaryReportL)) {
-            generateActiveInvoiceInfoReport();
+//            generateActiveInvoiceInfoReport();
         }
     }
 
