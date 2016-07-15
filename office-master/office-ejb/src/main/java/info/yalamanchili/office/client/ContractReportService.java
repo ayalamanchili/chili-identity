@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.client;
 
+import info.chili.commons.DateUtils;
 import info.chili.reporting.ReportGenerator;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
@@ -17,6 +18,7 @@ import info.yalamanchili.office.dao.profile.EmployeeDao.EmployeeTable;
 import info.yalamanchili.office.dao.profile.EmployeeDto;
 import info.yalamanchili.office.dao.profile.EmployeeLocationDto;
 import info.yalamanchili.office.dao.profile.EmployeeLocationReportDto;
+import info.yalamanchili.office.dto.client.ActiveCPDReportDto;
 import info.yalamanchili.office.dto.client.ContractDto;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dto.client.ContractSearchDto;
@@ -29,6 +31,7 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -41,7 +44,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author radhika.mukkala
  */
 @Component
-@Scope("request")
+@Scope("prototype")
 public class ContractReportService {
 
     @PersistenceContext
@@ -158,7 +161,7 @@ public class ContractReportService {
     public void getEmpsByAddressReport(EmployeeLocationDto dto, String email) {
         List<EmployeeLocationReportDto> dtos = searchEmpsByAddress(dto);
         if (dtos != null) {
-            String[] columnOrder = new String[]{"employee", "branch", "street1", "street2", "city", "state", "country","zip"};
+            String[] columnOrder = new String[]{"employee", "branch", "street1", "street2", "city", "state", "country", "zip"};
             String fileName = ReportGenerator.generateExcelOrderedReport(dtos, "Employee In A Location report ", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
             MessagingService.instance().emailReport(fileName, email);
         }
@@ -198,5 +201,21 @@ public class ContractReportService {
             String[] columnOrder = new String[]{"employee", "employeeType", "vendor", "vendorLocation", "vendorAPContact", "vendorRecruiter", "subContractorName", "subcontractorAddress", "subContractorContactName", "startDate", "endDate", "subcontractorPayRate", "contractSignedEntity"};
             MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(table.getEntities(), "SubContractors Summary Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
         }
+    }
+
+    public List<ContractDto> getActiveCPDs() {
+        TypedQuery<ContractDto> q = em.createQuery("SELECT NEW " + ContractDto.class.getCanonicalName() + "(ci.id, ci.employee.firstName,ci.employee.lastName, ci.client.name, ci.vendor.name,ci.billingRate, ci.startDate, ci.endDate) from " + ClientInformation.class.getCanonicalName() + " ci where ci.endDate > Now()", ContractDto.class);
+        return q.getResultList();
+    }
+
+    @Async
+    @Transactional
+    public void generateActiveCPDSReport(String email) {
+        List<ActiveCPDReportDto> res = new ArrayList<>();
+        getActiveCPDs().stream().forEach((dto) -> {
+            res.add(new ActiveCPDReportDto(dto.getEmployee(), dto.getClient(), dto.getVendor(), dto.getBillingRate().toString(), Integer.toString(DateUtils.differenceInMonths(dto.getEndDate(), dto.getStartDate()))));
+        });
+        String[] columnOrder = new String[]{"employee", "client", "vendor", "billingRate", "duration",};
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Active CPDS Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
 }

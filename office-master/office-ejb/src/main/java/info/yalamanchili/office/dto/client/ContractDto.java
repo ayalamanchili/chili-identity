@@ -16,8 +16,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -175,7 +173,6 @@ public class ContractDto implements Serializable {
      */
     protected BigDecimal payRate1099;
     protected BigDecimal overTimePayrate1099;
-    @Enumerated(EnumType.STRING)
     protected BillingDuration payTimeDuration1099;
     protected String paymentTerms1099;
     protected InvoiceFrequency invoiceFrequency1099;
@@ -223,10 +220,23 @@ public class ContractDto implements Serializable {
     protected String employeeCompany;
 
     protected long employeeID;
-    
+
     protected Float vendorFees;
-    
+
     protected BigDecimal finalBillingRate;
+
+    public ContractDto() {
+    }
+
+    public ContractDto(Long id, String firstName, String lastName, String client, String vendor,BigDecimal billingRate, Date startDate, Date endDate) {
+        this.id = id;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.client = client;
+        this.vendor = vendor;
+        this.billingRate = billingRate;
+        this.employee = firstName +" "+ lastName;
+    }
 
     public void setPaymentTerms1099(String paymentTerms1099) {
         this.paymentTerms1099 = paymentTerms1099;
@@ -706,11 +716,11 @@ public class ContractDto implements Serializable {
     public String getContractSignedEntity() {
         return contractSignedEntity;
     }
-    
+
     public void setContractSignedEntity(String contractSignedEntity) {
         this.contractSignedEntity = contractSignedEntity;
     }
-    
+
     public ClientInformationCompany getCompany() {
         return company;
     }
