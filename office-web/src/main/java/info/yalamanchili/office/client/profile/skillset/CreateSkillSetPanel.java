@@ -11,7 +11,6 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.FileUpload;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.CreateComposite;
@@ -65,17 +64,17 @@ public class CreateSkillSetPanel extends CreateComposite {
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        logger.info(arg0.getMessage());
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                logger.info(arg0.getMessage());
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        uploadResume(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                uploadResume(arg0);
+            }
+        });
     }
 
     @Override
@@ -88,11 +87,10 @@ public class CreateSkillSetPanel extends CreateComposite {
         JSONArray resumeURL = new JSONArray();
         if (!resumeUploadPanel.isEmpty()) {
             int i = 0;
-            for (FileUpload upload : resumeUploadPanel.getFileUploads()) {
-                logger.info("file uploads...." + upload.getFilename());
-                if (upload.getFilename() != null && !upload.getFilename().trim().isEmpty()) {
+            for (JSONString fileName : resumeUploadPanel.getFileNames()) {
+                if (fileName != null && !fileName.stringValue().trim().isEmpty()) {
                     JSONObject resume = new JSONObject();
-                    resume.put("fileURL", resumeUploadPanel.getFileName(upload));
+                    resume.put("fileURL", fileName);
                     resume.put("name", new JSONString("File Name"));
                     resumeURL.set(i, resume);
                     i++;
@@ -102,7 +100,6 @@ public class CreateSkillSetPanel extends CreateComposite {
         if (resumeURL.size() > 0) {
             entity.put("skillSetFile", resumeURL);
         }
-        logger.info("skills et after create .... " + skillSet);
         return skillSet;
     }
 

@@ -20,7 +20,6 @@ import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -36,7 +35,6 @@ import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
-import info.chili.gwt.utils.Utils;
 import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.widgets.SuggestBox;
@@ -222,10 +220,10 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         JSONArray expenseReceipts = new JSONArray();
         if (!fileUploadPanel.isEmpty()) {
             int i = 0;
-            for (FileUpload upload : fileUploadPanel.getFileUploads()) {
-                if (upload.getFilename() != null && !upload.getFilename().trim().isEmpty()) {
+            for (JSONString fileName : fileUploadPanel.getFileNames()) {
+                if (fileName != null && !fileName.stringValue().trim().isEmpty()) {
                     JSONObject expenseReceipt = new JSONObject();
-                    expenseReceipt.put("fileURL", fileUploadPanel.getFileName(upload));
+                    expenseReceipt.put("fileURL", fileName);
                     expenseReceipt.put("name", new JSONString("File Name"));
                     expenseReceipts.set(i, expenseReceipt);
                     i++;
@@ -301,7 +299,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
 
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
-        if (expenseItemPanels.size() > 0 && (fileUploadPanel.getFileUploads() == null || fileUploadPanel.getFileUploads().size() <= 0 || fileUploadPanel.getFileUploads().get(0).getFilename().isEmpty())) {
+        if (expenseItemPanels.size() > 0 && (fileUploadPanel.getFileNames().size() <= 0 || fileUploadPanel.getFileNames().get(0).stringValue().isEmpty())) {
             return Window.confirm("You expense report does not have any receipts attached so will not be processed. Are you sure you still want to submit?");
         }
         return true;

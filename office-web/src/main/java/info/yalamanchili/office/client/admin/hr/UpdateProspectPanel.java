@@ -97,24 +97,24 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        logger.info(response);
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        if (entity.get("id") != null) {
-                            entityFieldsPanel.add(getLineSeperatorTag("Status Information"));
-                            addEnumField("status", false, false, ProspectStatus.validStatusFor(ProspectStatus.valueOf(entity.get("status").isString().stringValue())), Alignment.HORIZONTAL);
-                            statusField = (EnumField) fields.get("status");
-                            statusField.listBox.addChangeHandler(instance);
-                            alignFields();
-                            if (ProspectStatus.CLOSED_WON.name().equals(JSONUtils.toString(getEntity(), "status"))) {
-                                addProspectWonFields();
-                            }
-                        }
-                        populateFieldsFromEntity(entity);
-                        populateComments();
+            @Override
+            public void onResponse(String response) {
+                logger.info(response);
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                if (entity.get("id") != null) {
+                    entityFieldsPanel.add(getLineSeperatorTag("Status Information"));
+                    addEnumField("status", false, false, ProspectStatus.validStatusFor(ProspectStatus.valueOf(entity.get("status").isString().stringValue())), Alignment.HORIZONTAL);
+                    statusField = (EnumField) fields.get("status");
+                    statusField.listBox.addChangeHandler(instance);
+                    alignFields();
+                    if (ProspectStatus.CLOSED_WON.name().equals(JSONUtils.toString(getEntity(), "status"))) {
+                        addProspectWonFields();
                     }
                 }
+                populateFieldsFromEntity(entity);
+                populateComments();
+            }
+        }
         );
     }
 
@@ -214,10 +214,10 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
             entity.put("employees", finalemps);
         }
         int j = resumeURL.size();
-        for (FileUpload upload : resumeUploadPanel.getFileUploads()) {
-            if (upload.getFilename() != null && !upload.getFilename().trim().isEmpty()) {
+        for (JSONString fileName : resumeUploadPanel.getFileNames()) {
+            if (fileName != null && !fileName.stringValue().trim().isEmpty()) {
                 JSONObject resume = new JSONObject();
-                resume.put("fileURL", resumeUploadPanel.getFileName(upload));
+                resume.put("fileURL", fileName);
                 resume.put("name", new JSONString("File Name"));
                 resumeURL.set(j, resume);
                 j++;
@@ -233,16 +233,16 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        uploadResume(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                uploadResume(arg0);
+            }
+        });
     }
 
     protected void uploadResume(String entityStr) {

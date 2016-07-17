@@ -224,10 +224,10 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         JSONArray onBoardingDocs = new JSONArray();
         if (!fileUploadPanel.isEmpty()) {
             int i = 0;
-            for (FileUpload upload : fileUploadPanel.getFileUploads()) {
-                if (upload.getFilename() != null && !upload.getFilename().trim().isEmpty()) {
+            for (JSONString fileName : fileUploadPanel.getFileNames()) {
+                if (fileName != null && !fileName.stringValue().trim().isEmpty()) {
                     JSONObject docs = new JSONObject();
-                    docs.put("fileUrl", fileUploadPanel.getFileName(upload));
+                    docs.put("fileUrl", fileName);
                     docs.put("name", new JSONString("File Name"));
                     onBoardingDocs.set(i, docs);
                     i++;
@@ -235,7 +235,6 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
             }
         }
         employee.put("documents", onBoardingDocs);
-        logger.info("employee entity is ,,,, " + employee);
         return employee;
     }
 

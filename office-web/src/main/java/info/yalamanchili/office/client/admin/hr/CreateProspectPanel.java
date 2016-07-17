@@ -145,10 +145,10 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         JSONArray resumeURL = new JSONArray();
         if (!resumeUploadPanel.isEmpty()) {
             int i = 0;
-            for (FileUpload upload : resumeUploadPanel.getFileUploads()) {
-                if (upload.getFilename() != null && !upload.getFilename().trim().isEmpty()) {
+            for (JSONString fileName : resumeUploadPanel.getFileNames()) {
+                if (fileName != null && !fileName.stringValue().trim().isEmpty()) {
                     JSONObject resume = new JSONObject();
-                    resume.put("fileURL", resumeUploadPanel.getFileName(upload));
+                    resume.put("fileURL", fileName);
                     resume.put("name", new JSONString("File Name"));
                     resumeURL.set(i, resume);
                     i++;
@@ -166,16 +166,16 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         logger.info(getURI());
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        uploadResume(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                uploadResume(arg0);
+            }
+        });
     }
 
     protected void uploadResume(String entityStr) {

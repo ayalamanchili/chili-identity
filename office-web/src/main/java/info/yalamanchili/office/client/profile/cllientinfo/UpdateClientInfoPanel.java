@@ -38,7 +38,6 @@ import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.user.client.ui.FileUpload;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.BaseFieldWithTextBox;
 import info.chili.gwt.fields.BooleanField;
@@ -88,14 +87,14 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     protected void populateCIDocuments() {
         HttpService.HttpServiceAsync.instance().doGet(getDocumentUrl(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        if (!response.trim().toString().equals("null")) {
-                            JSONArray docs = JSONUtils.toJSONArray(JSONParser.parseLenient(response).isObject().get("ciDocument"));
-                            entityFieldsPanel.add(new ReadAllCiDocumentPanel(getEntityId(), docs));
-                        }
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                if (!response.trim().toString().equals("null")) {
+                    JSONArray docs = JSONUtils.toJSONArray(JSONParser.parseLenient(response).isObject().get("ciDocument"));
+                    entityFieldsPanel.add(new ReadAllCiDocumentPanel(getEntityId(), docs));
+                }
+            }
+        });
     }
 
     protected String getDocumentUrl() {
@@ -163,10 +162,10 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignEntityValueFromField("sectorsAndBUs", entity);
         assignEntityValueFromField("active", entity);
         int j = cidocument.size();
-        for (FileUpload upload : fileUploadPanel.getFileUploads()) {
-            if (upload.getFilename() != null && !upload.getFilename().trim().isEmpty()) {
+        for (JSONString fileName : fileUploadPanel.getFileNames()) {
+            if (fileName != null && !fileName.stringValue().trim().isEmpty()) {
                 JSONObject docs = new JSONObject();
-                docs.put("fileURL", fileUploadPanel.getFileName(upload));
+                docs.put("fileURL", fileName);
                 docs.put("name", new JSONString("File Name"));
                 cidocument.set(j, docs);
                 j++;
@@ -182,16 +181,16 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        uploadDocuments(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                uploadDocuments(arg0);
+            }
+        });
 
     }
 
@@ -558,19 +557,19 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     public void loadVendor(String vendorEntityId) {
         HttpService.HttpServiceAsync.instance().doGet(getVendor(vendorEntityId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        JSONObject vendor = (JSONObject) JSONParser.parseLenient(response);
-                        TextAreaField payTermF = (TextAreaField) fields.get("vendorPaymentTerms");
-                        payTermF.setValue(JSONUtils.toString(vendor, "paymentTerms"));
-                        EnumField invDelv = (EnumField) fields.get("invoiceDeliveryMethod");
-                        if (vendor.get("vendorinvDeliveryMethod") != null) {
-                            invDelv.selectValue(JSONUtils.toString(vendor, "vendorinvDeliveryMethod"));
-                        } else {
-                            invDelv.setSelectedIndex(0);
-                        }
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                JSONObject vendor = (JSONObject) JSONParser.parseLenient(response);
+                TextAreaField payTermF = (TextAreaField) fields.get("vendorPaymentTerms");
+                payTermF.setValue(JSONUtils.toString(vendor, "paymentTerms"));
+                EnumField invDelv = (EnumField) fields.get("invoiceDeliveryMethod");
+                if (vendor.get("vendorinvDeliveryMethod") != null) {
+                    invDelv.selectValue(JSONUtils.toString(vendor, "vendorinvDeliveryMethod"));
+                } else {
+                    invDelv.setSelectedIndex(0);
+                }
+            }
+        });
     }
 
     protected String getVendor(String vendorEntityId) {

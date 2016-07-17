@@ -22,14 +22,12 @@ import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
-import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RichTextArea;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
-import info.chili.gwt.utils.FileUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.fields.FileuploadField;
@@ -37,6 +35,7 @@ import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.resources.OfficeImages;
 import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
+import info.chili.gwt.utils.FileUtils;
 import java.util.logging.Logger;
 
 public class CreateEmployeePostWidget extends ALComposite implements ClickHandler, FocusHandler, BlurHandler, KeyUpHandler {
@@ -93,15 +92,14 @@ public class CreateEmployeePostWidget extends ALComposite implements ClickHandle
         post.put("postContent", new JSONString(createPostTextArea.getHTML()));
         JSONArray postAttachments = new JSONArray();
         int i = 0;
-        for (FileUpload upload : fileUploadPanel.getFileUploads()) {
-            if (upload.getFilename() != null && !"".equals(upload.getFilename().trim())) {
-
+        for (JSONString fileName : fileUploadPanel.getFileNames()) {
+            if (fileName != null && !fileName.stringValue().trim().isEmpty()) {
                 JSONObject postAttachment = new JSONObject();
-                postAttachment.put("fileURL", fileUploadPanel.getFileName(upload));
+                postAttachment.put("fileURL", fileName);
                 postAttachment.put("fileType", new JSONString("IMAGE"));
-                if (FileUtils.isImage(fileUploadPanel.getFileName(upload).stringValue())) {
+                if (FileUtils.isImage(fileName.stringValue())) {
                     postAttachment.put("fileType", new JSONString("IMAGE"));
-                } else if (FileUtils.isDocument(fileUploadPanel.getFileName(upload).stringValue())) {
+                } else if (FileUtils.isDocument(fileName.stringValue())) {
                     postAttachment.put("fileType", new JSONString("FILE"));
                 } else {
                     Window.alert("Unsupported file extension");
@@ -111,7 +109,6 @@ public class CreateEmployeePostWidget extends ALComposite implements ClickHandle
                 i++;
             }
             post.put("postFiles", postAttachments);
-            logger.info(post.toString());
         }
         return post;
     }
@@ -119,12 +116,12 @@ public class CreateEmployeePostWidget extends ALComposite implements ClickHandle
     protected void createPostClicked(JSONObject post) {
         HttpServiceAsync.instance().doPut(getURI(), post.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        createPostTextArea.setText("");
-                        uploadImage(arg0);
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                createPostTextArea.setText("");
+                uploadImage(arg0);
+            }
+        });
     }
 
     protected void uploadImage(String postString) {

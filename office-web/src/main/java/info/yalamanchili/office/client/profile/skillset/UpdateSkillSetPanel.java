@@ -15,6 +15,7 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
@@ -131,13 +132,13 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        logger.info("populate Fields FromEntity" + entity);
-                        populateFieldsFromEntity(entity);
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                logger.info("populate Fields FromEntity" + entity);
+                populateFieldsFromEntity(entity);
+            }
+        });
     }
 
     public String getReadURI() {
@@ -151,10 +152,10 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
         assignEntityValueFromField("skillSetFileType", entity);
         int j = skillSetResumeURL.size();
         logger.info(skillSetResumeURL.toString());
-        for (FileUpload upload : resumeUploadPanel.getFileUploads()) {
-            if (upload.getFilename() != null && !upload.getFilename().trim().isEmpty()) {
+        for (JSONString fileName : resumeUploadPanel.getFileNames()) {
+            if (fileName != null && !fileName.stringValue().trim().isEmpty()) {
                 JSONObject resume = new JSONObject();
-                resume.put("fileURL", resumeUploadPanel.getFileName(upload));
+                resume.put("fileURL", fileName);
                 resume.put("name", entity.get("skillSetFileType"));
 //                resume.put("name", new JSONString("File Name"));
                 skillSetResumeURL.set(j, resume);
@@ -171,17 +172,17 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        uploadResume(arg0);
-                        entity = (JSONObject) JSONParser.parseLenient(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                uploadResume(arg0);
+                entity = (JSONObject) JSONParser.parseLenient(arg0);
+            }
+        });
 
     }
 
@@ -218,10 +219,10 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
     protected void extractResumeContent() {
         HttpService.HttpServiceAsync.instance().doGet(getExtractResumeUrl(),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+            }
+        });
     }
 
     protected String getExtractResumeUrl() {
@@ -370,12 +371,12 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
         }
         HttpService.HttpServiceAsync.instance().doPut(addTagUrl(), null,
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        loadTags();
-                        new ResponseStatusWidget().show("Tag Added");
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                loadTags();
+                new ResponseStatusWidget().show("Tag Added");
+            }
+        });
         tagsSB.clearText();
     }
 
@@ -389,12 +390,12 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
         }
         HttpService.HttpServiceAsync.instance().doPut(removeTagUrl(), null,
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        loadTags();
-                        new ResponseStatusWidget().show("Tag Removed");
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                loadTags();
+                new ResponseStatusWidget().show("Tag Removed");
+            }
+        });
         tagsSB.clearText();
     }
 
@@ -451,12 +452,12 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
         }
         HttpService.HttpServiceAsync.instance().doPut(addSkillUrl(), null,
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        loadSkills();
-                        new ResponseStatusWidget().show("Skill Added");
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                loadSkills();
+                new ResponseStatusWidget().show("Skill Added");
+            }
+        });
         skillSB.clearText();
     }
 
@@ -470,12 +471,12 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
         }
         HttpService.HttpServiceAsync.instance().doPut(removeSkillUrl(), null,
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        loadSkills();
-                        new ResponseStatusWidget().show("Skill Removed");
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                loadSkills();
+                new ResponseStatusWidget().show("Skill Removed");
+            }
+        });
         skillSB.clearText();
     }
 
@@ -523,12 +524,12 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
         }
         HttpService.HttpServiceAsync.instance().doPut(addCertUrl(), null,
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        loadCertfications();
-                        new ResponseStatusWidget().show("Certification Added");
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                loadCertfications();
+                new ResponseStatusWidget().show("Certification Added");
+            }
+        });
 
         certSB.clearText();
     }
@@ -543,12 +544,12 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
         }
         HttpService.HttpServiceAsync.instance().doPut(removeCertUrl(), null,
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        loadCertfications();
-                        new ResponseStatusWidget().show("Certification Removed");
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                loadCertfications();
+                new ResponseStatusWidget().show("Certification Removed");
+            }
+        });
         certSB.clearText();
     }
 
