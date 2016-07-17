@@ -3,6 +3,7 @@
  */
 package info.yalamanchili.office.jrs;
 
+import com.google.common.base.Splitter;
 import com.google.common.io.ByteStreams;
 import info.chili.commons.FileUtils;
 import info.chili.spring.SpringContext;
@@ -142,10 +143,10 @@ public class FileResource {
         response.header("Content-Length", file.length());
     }
 
-    protected Response validateFileUpload(FileItem item) {
+    protected Response validateFileUpload(FileItem item, int index) {
         try {
             Validator validator = (Validator) SpringContext.getBean("securityValidator");
-            File file = new File(officeServiceConfiguration.getContentManagementLocationRoot() + item.getFieldName() + item.getName());
+            File file = new File(officeServiceConfiguration.getContentManagementLocationRoot() + getFileName(item, index) + item.getName());
             validator.assertValidFileUpload(file.getName(), file.getParentFile().getCanonicalPath(), file.getName(), file.getParentFile(), ByteStreams.toByteArray(item.getInputStream()), getFileUploadSize(item), OfficeServiceConfiguration.instance().getAllowedFileExtensionsAsList(), true);
             //TODO provide more detail
         } catch (IntrusionException ex) {
@@ -168,25 +169,35 @@ public class FileResource {
             MailUtils.logExceptionDetials(e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error Uploading File").build();
         }
+        int i = 0;
         for (FileItem item : items) {
             if (item.isFormField() || item.getName() == null || item.getName().trim().equals("")) {
                 continue;
             }
-            Response res = validateFileUpload(item);
+            Response res = validateFileUpload(item, i);
             if (res != null) {
                 return res;
             }
             String fileName = item.getName().replaceAll("[^a-zA-Z0-9\\._]+", "_");
-            File file = new File(officeServiceConfiguration.getContentManagementLocationRoot() + item.getFieldName()
+            File file = new File(officeServiceConfiguration.getContentManagementLocationRoot() + getFileName(item, i)
                     + fileName);
             try {
                 log.info("----------writing image to-----------:" + file.getAbsolutePath());
                 item.write(file);
+                i++;
             } catch (Exception e) {
                 return buildResponse(Response.Status.INTERNAL_SERVER_ERROR, "Error Uploading File", e);
             }
         }
         return Response.ok().build();
+    }
+
+    protected String getFileName(FileItem item, int index) {
+        if (item.getFieldName().contains(";")) {
+            return item.getFieldName().split(";")[index];
+        } else {
+            return item.getFieldName();
+        }
     }
 
     protected Response buildResponse(Response.Status status, String errorMsg, Exception e) {
