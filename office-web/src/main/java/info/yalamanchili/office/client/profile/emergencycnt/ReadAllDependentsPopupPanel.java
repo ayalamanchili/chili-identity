@@ -39,6 +39,12 @@ public class ReadAllDependentsPopupPanel extends ReadAllDependentsPanel {
     }
 
     @Override
+    public void viewClicked(String entityId) {
+        ReadDependentPanel readPanel = new ReadDependentPanel(entityId);
+        new GenericPopup(readPanel).show();
+    }
+    
+    @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Dependent Information");
         TabPanel.instance().profilePanel.entityPanel.clear();
