@@ -9,18 +9,20 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
+import info.chili.gwt.crud.TReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.expense.chkreq.ImmigrationCaseType;
 import info.yalamanchili.office.client.expense.chkreq.SponsorType;
+import info.yalamanchili.office.client.profile.emergencycnt.ReadAllDependentsPanel;
 
 /**
  *
  * @author Sandeep Sunchu <sandeep.sunchu@sstech.us>
  */
-public class ReadImmigrationCasePanel extends ReadComposite {
+public class ReadImmigrationCasePanel extends TReadComposite {
     
     private static ReadImmigrationCasePanel instance;
     
@@ -31,8 +33,13 @@ public class ReadImmigrationCasePanel extends ReadComposite {
     public ReadImmigrationCasePanel(JSONObject entity) {
         instance = this;
         initReadComposite(entity, "ImmigrationCase", OfficeWelcome.constants2);
+        populateDependents();
     }
     
+    protected final void populateDependents() {
+        entityFieldsPanel.setWidget(4, 1, new ReadAllDependentsPanel(getEntityId(), "ImmigrationCase"));
+        entityFieldsPanel.getFlexCellFormatter().setColSpan(4, 1, 2);
+    }
 
     @Override
     public void loadEntity(String entityId) {
@@ -62,8 +69,8 @@ public class ReadImmigrationCasePanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addEnumField("sponsorType", true, true, SponsorType.names(), Alignment.HORIZONTAL);
-        addEnumField("immigrationCaseType", true, true, ImmigrationCaseType.names(), Alignment.HORIZONTAL);
+        addEnumField("sponsorType", true, true, SponsorType.names(), Alignment.HORIZONTAL,1,1);
+        addEnumField("immigrationCaseType", true, true, ImmigrationCaseType.names(), Alignment.HORIZONTAL,2,1);
     }
 
     @Override
