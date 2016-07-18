@@ -45,6 +45,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
     };
     JSONObject employee = new JSONObject();
     protected Anchor internalTransfer = new Anchor("Do Internal Company Transfer?");
+    protected Anchor departmentTransfer = new Anchor(" Department Transfer");
     protected static HTML generalInfo = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
             + "<strong style=\"color:#555555\">Image should not exceed more than 2mb </strong></p>\n"
@@ -169,6 +170,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
     @Override
     protected void addListeners() {
         internalTransfer.addClickHandler(this);
+        departmentTransfer.addClickHandler(this);
         // TODO Auto-generated method stub
     }
 
@@ -207,7 +209,8 @@ public class UpdateEmployeePanel extends UpdateComposite {
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
                entityFieldsPanel.add(internalTransfer);
-        }
+               entityFieldsPanel.add(departmentTransfer);
+        }       
         entityFieldsPanel.add(generalInfo);
         entityFieldsPanel.add(empImageUploadPanel);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN)) {
@@ -243,6 +246,9 @@ public class UpdateEmployeePanel extends UpdateComposite {
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(internalTransfer)) {
                 new GenericPopup(new InternalTransferPopUpPanel(CreateCompositeType.CREATE, entity.get("id").isString().stringValue())).show();
+        }
+        if (event.getSource().equals(departmentTransfer)) {
+                new GenericPopup(new DepartmentTransferPopUpPanel(CreateCompositeType.CREATE, entity.get("id").isString().stringValue())).show();
         }
         super.onClick(event);
     }

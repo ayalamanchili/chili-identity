@@ -78,6 +78,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.context.annotation.Scope;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -101,7 +102,8 @@ public class EmployeeResource extends CRUDResource<Employee> {
     protected Mapper mapper;
     @Autowired
     protected ProfileNotificationService profileNotificationservice;
-
+    
+    
     @GET
     @Path("/{id}")
     @Override
@@ -121,6 +123,15 @@ public class EmployeeResource extends CRUDResource<Employee> {
     }
 
     @PUT
+    @Path("/departmentTransfer/{employeeId}")
+    @Validate
+    public void getDepartmentTransfer(@PathParam("employeeId") Long employeeId, EmployeeDeptTransferDto dto) {
+            Employee emp = EmployeeDao.instance().findById(employeeId);
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+            CommentDao.instance().addComment("Transfer from "+ dto.getExistingDepartment()+" to "+ dto.getNewDepartment()+" on "+ sdf.format(dto.getTransferDate()), emp);
+    }
+
+    @PUT 
     @Override
     public Employee save(Employee entity) {
         throw new UnsupportedOperationException();
