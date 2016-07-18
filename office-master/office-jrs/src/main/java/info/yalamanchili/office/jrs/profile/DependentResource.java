@@ -10,11 +10,13 @@ package info.yalamanchili.office.jrs.profile;
 
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.profile.ext.DependentDao;
 import info.yalamanchili.office.dto.profile.DependentDto;
 import info.yalamanchili.office.entity.profile.ext.Dependent;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.profile.DependentService;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -25,6 +27,7 @@ import javax.ws.rs.Produces;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -47,6 +50,29 @@ public class DependentResource extends CRUDResource<Dependent> {
 
     @Autowired
     public DependentService dependentService;
+    @Autowired
+    protected Mapper mapper;
+    
+    @GET
+    @Path("/{targetClassName}/{targetId}/{start}/{limit}")
+    public DependentTable getDependents(@PathParam("targetClassName") String targetClassName, @PathParam("targetId") Long targetId, @PathParam("start") int start, @PathParam("limit") int limit) {
+        DependentTable tableObj = new DependentTable();
+        List<DependentDto> dependents = new ArrayList<DependentDto>();
+        for (Object ec : DependentDao.instance().findAll(targetId, targetClassName)) {
+            dependents.add(DependentDto.map(mapper, (Dependent) ec));
+        }
+        tableObj.setEntities(dependents);
+        tableObj.setSize((long) dependents.size());
+        return tableObj;
+    }
+    
+    @PUT
+    @Path("/add/{targetClassName}/{targetId}")
+    @Validate
+    public void addDependent(@PathParam("targetClassName") String targetClassName, @PathParam("targetId") Long targetId, DependentDto depDto) {
+        DependentService dependentService = (DependentService) SpringContext.getBean("dependentService");
+        dependentService.addImmigrationCaseDependent(targetId,targetClassName,depDto);
+    }
 
     @PUT
     @Path("/update")
@@ -67,7 +93,7 @@ public class DependentResource extends CRUDResource<Dependent> {
     public Dependent read(@PathParam("id") Long id) {
         return dependentService.read(id);
     }
-
+    
     @Override
     public CRUDDao getDao() {
         return null;
