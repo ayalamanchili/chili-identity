@@ -794,7 +794,8 @@ height:5ex;
 .gwt-DisclosurePanel-open .header TD {
     color: #FB743A !important;
 
-}
+}pleSelectWidget-availabelLabel{
+    font-we
 
 .loginB{
     color:#fff;
@@ -802,8 +803,7 @@ height:5ex;
 
 
 /* Multiselect box */
-.y-gwt-multipleSelectWidget-availabelLabel{
-    font-weight: bold;
+.y-gwt-multiight: bold;
     font-size: 10pt;
 }
 .y-gwt-multipleSelectWidget-selectedLabel{
@@ -1369,4 +1369,7 @@ td.y-gwt-AbstractStatusPanel-LoginLink {
 .info-yalamanchili-office-client-resources-OfficeCss-footerPanel a.gwt-Anchor {
     line-height: 20px !important;
     cursor: pointer;
+}
+.horizontalAlignment {
+    display: inherit;
 }
