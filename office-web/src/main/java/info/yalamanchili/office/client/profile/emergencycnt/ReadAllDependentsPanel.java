@@ -11,6 +11,7 @@ package info.yalamanchili.office.client.profile.emergencycnt;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.Window;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.CreateComposite;
@@ -18,10 +19,12 @@ import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.ext.comment.AddCommentWidget;
 import info.yalamanchili.office.client.onboarding.CreateDependentsPanel;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
@@ -44,13 +47,13 @@ public class ReadAllDependentsPanel extends CRUDReadAllComposite {
         instance = this;
         this.parentId = parentId;
         this.targetClassName = targetClassName;
-        initTable("Dependent", OfficeWelcome.constants);
+        initTable("Dependent", OfficeWelcome.constants2);
     }
 
     public ReadAllDependentsPanel(String parentId) {
         instance = this;
         this.parentId = parentId;
-        initTable("Dependent", OfficeWelcome.constants);
+        initTable("Dependent", OfficeWelcome.constants2);
     }
 
     @Override
@@ -68,21 +71,25 @@ public class ReadAllDependentsPanel extends CRUDReadAllComposite {
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
-        table.setText(0, 1, getKeyValue("First Name"));
-        table.setText(0, 2, getKeyValue("Last Name"));
-        table.setText(0, 3, getKeyValue("Date Of Birth"));
-        table.setText(0, 4, getKeyValue("Relation"));
+        table.setText(0, 1, getKeyValue("Salutation"));
+        table.setText(0, 2, getKeyValue("First Name"));
+        table.setText(0, 3, getKeyValue("Middle Name"));
+        table.setText(0, 4, getKeyValue("Last Name"));
+        table.setText(0, 5, getKeyValue("Date Of Birth"));
+        table.setText(0, 6, getKeyValue("Relation"));
     }
-
+    
     @Override
     public void fillData(JSONArray entities) {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            table.setText(i, 1, JSONUtils.toString(entity, "dfirstName"));
-            table.setText(i, 2, JSONUtils.toString(entity, "dlastName"));
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "ddateOfBirth"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 4, JSONUtils.toString(entity, "relationship"));
+            table.setText(i, 1, JSONUtils.toString(entity, "salutation"));
+            table.setText(i, 2, JSONUtils.toString(entity, "dfirstName"));
+            table.setText(i, 3, JSONUtils.toString(entity, "dmiddleName"));
+            table.setText(i, 4, JSONUtils.toString(entity, "dlastName"));
+            table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, "ddateOfBirth"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 6, JSONUtils.toString(entity, "relationship"));
         }
     }
 
@@ -97,15 +104,24 @@ public class ReadAllDependentsPanel extends CRUDReadAllComposite {
 
     // TODO move to composite
     public String getReadAllURL(Integer start, String limit) {
+        if(targetClassName != null){
+            return OfficeWelcome.constants.root_url() + "dependent/" + targetClassName + "/" + parentId + "/" + start.toString()
+                + "/" + limit.toString();
+        }
         return OfficeWelcome.constants.root_url() + "employee/dependents/" + parentId + "/" + start.toString()
                 + "/" + limit.toString();
     }
 
     @Override
     public void viewClicked(String entityId) {
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadDependentPanel(entityId));
-
+        if(targetClassName != null){
+            ReadDependentPanel readPanel = new ReadDependentPanel(entityId);
+            new GenericPopup(readPanel).show();
+        }
+        else{
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadDependentPanel(entityId));
+        }
     }
 
     @Override
@@ -122,15 +138,27 @@ public class ReadAllDependentsPanel extends CRUDReadAllComposite {
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Dependent Information");
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllDependentsPanel(TreeEmployeePanel.instance().getEntityId()));
+        if(targetClassName != null){
+            refresh();
+            return;
+        }
+        else{
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllDependentsPanel(TreeEmployeePanel.instance().getEntityId()));
+        }
+        
     }
 
     @Override
     public void updateClicked(String entityId) {
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateDependentPanel(getEntity(entityId)));
-
+        if(targetClassName != null){
+            UpdateDependentPanel updateDependentPanel = new UpdateDependentPanel(getEntity(entityId),targetClassName);
+            new GenericPopup(updateDependentPanel).show();
+        }
+        else{
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateDependentPanel(getEntity(entityId)));
+        }
     }
 
     protected String getDeleteURL(String entityId) {
@@ -149,7 +177,13 @@ public class ReadAllDependentsPanel extends CRUDReadAllComposite {
 
     @Override
     protected void createButtonClicked() {
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new CreateDependentsPanel(CreateComposite.CreateCompositeType.CREATE));
+        if(targetClassName != null){
+            CreateDependentPopupPanel createPanel = new CreateDependentPopupPanel(CreateComposite.CreateCompositeType.CREATE,parentId,targetClassName);
+            new GenericPopup(createPanel).show();
+        }
+        else{
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateDependentsPanel(CreateComposite.CreateCompositeType.CREATE));
+        }
     }
 }
