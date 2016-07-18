@@ -32,9 +32,10 @@ public class ReadAllSkillSetFilesPanel extends CRUDReadAllComposite {
 
     private static Logger logger = Logger.getLogger(ReadAllSkillSetFilesPanel.class.getName());
     public static ReadAllSkillSetFilesPanel instance;
-    protected String skillsetId;
+    protected String employeeId;
 
-    public ReadAllSkillSetFilesPanel(JSONArray array) {
+    public ReadAllSkillSetFilesPanel(String employeeId, JSONArray array) {
+        this.employeeId = employeeId;
         initTable("SkillSetFile", array, OfficeWelcome.constants);
     }
 
@@ -78,11 +79,11 @@ public class ReadAllSkillSetFilesPanel extends CRUDReadAllComposite {
         if (Window.confirm("Are you sure? All Files details will be deleted")) {
             HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
-                        @Override
-                        public void onResponse(String arg0) {
-                            postDeleteSuccess();
-                        }
-                    });
+                @Override
+                public void onResponse(String arg0) {
+                    postDeleteSuccess();
+                }
+            });
         }
     }
 
@@ -92,17 +93,23 @@ public class ReadAllSkillSetFilesPanel extends CRUDReadAllComposite {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        JSONObject skillSet = (JSONObject) JSONParser.parseLenient(response);
-                        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadSkillSetPanel(skillSet));
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                JSONObject skillSet = (JSONObject) JSONParser.parseLenient(response);
+                if (TabPanel.instance().profilePanel.isVisible()) {
+                    TabPanel.instance().profilePanel.clear();
+                    TabPanel.instance().profilePanel.entityPanel.add(new UpdateSkillSetPanel(skillSet));
+                } else {
+                    TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateSkillSetPanel(skillSet));
+                }
+
+            }
+        });
 
     }
 
     protected String getReadURI() {
-        return OfficeWelcome.constants.root_url() + "skillset/read/" + skillsetId;
+        return OfficeWelcome.constants.root_url() + "employee/skillset/" + employeeId;
     }
 
     @Override
