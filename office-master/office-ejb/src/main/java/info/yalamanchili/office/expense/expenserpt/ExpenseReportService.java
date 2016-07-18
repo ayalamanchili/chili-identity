@@ -9,6 +9,7 @@
 package info.yalamanchili.office.expense.expenserpt;
 
 import com.google.common.base.Strings;
+import info.chili.commons.BeanMapper;
 import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
 import info.chili.commons.pdf.PdfDocumentData;
@@ -57,13 +58,13 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("prototype")
 public class ExpenseReportService {
-
+    
     @Autowired
     protected ExpenseReportsDao expenseReportsDao;
-
+    
     @Autowired
     protected ExpenseItemDao expenseItemDao;
-
+    
     public ExpenseReportSaveDto create(ExpenseReportSaveDto dto, boolean submitForApproval) {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         ExpenseReport entity = mapper.map(dto, ExpenseReport.class);
@@ -97,7 +98,7 @@ public class ExpenseReportService {
         entity = expenseReportsDao.save(entity);
         return mapper.map(entity, ExpenseReportSaveDto.class);
     }
-
+    
     protected String startExpenseReportProcess(Long approvalManagerId, ExpenseReport entity) {
         if (entity.getBpmProcessId() != null) {
             OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
@@ -115,7 +116,7 @@ public class ExpenseReportService {
         vars.put("entityId", entity.getId());
         return OfficeBPMService.instance().startProcess("expense_report_process", vars);
     }
-
+    
     public ExpenseReportSaveDto update(ExpenseReportSaveDto dto, boolean submitForApproval) {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         ExpenseReport entity = expenseReportsDao.save(dto);
@@ -153,14 +154,18 @@ public class ExpenseReportService {
         }
         return mapper.map(entity, ExpenseReportSaveDto.class);
     }
-
+    
     public ExpenseReportSaveDto read(Long id) {
-        Mapper mapper = (Mapper) SpringContext.getBean("mapper");
-        return mapper.map(expenseReportsDao.findById(id), ExpenseReportSaveDto.class);
+        ExpenseReport entity = expenseReportsDao.findById(id);
+        ExpenseReportSaveDto res = (ExpenseReportSaveDto) BeanMapper.clone(entity, ExpenseReportSaveDto.class);
+        res.setExpenseItems(entity.getExpenseItems());
+        res.setExpenseReceipts(entity.getExpenseReceipts());
+        res.setEmployee(entity.getEmployee());
+        return res;
     }
-
+    
     private static final Log log = LogFactory.getLog(ExpenseReportService.class);
-
+    
     public ExpenseReportSaveDto clone(Long id) {
         ExpenseReport entity = expenseReportsDao.clone(id, "submittedDate", "approvedByManager", "approvedByManagerDate", "approvedByAccountsDept", "approvedByAccountsDeptDate", "approvedByCEO", "approvedByCEODate", "bpmProcessId", "status", "totalExpenses", "expenseReceipts");
         if (!entity.getEmployee().getEmployeeId().equals(OfficeSecurityService.instance().getCurrentUserName())) {
@@ -169,14 +174,14 @@ public class ExpenseReportService {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         return mapper.map(entity, ExpenseReportSaveDto.class);
     }
-
+    
     public void delete(Long id) {
         ExpenseReport entity = expenseReportsDao.findById(id);
         //TODO use processid
         OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
         expenseReportsDao.delete(id);
     }
-
+    
     public Response getReport(Long id) {
         ExpenseReport entity = expenseReportsDao.findById(id);
         EmployeeDao employeeDao = EmployeeDao.instance();
@@ -202,13 +207,13 @@ public class ExpenseReportService {
                 data.setTemplateUrl("/templates/pdf/travel-expenses-form.pdf");
             }
         }
-
+        
         data.setKeyStoreName(securityConfiguration.getKeyStoreName());
         Employee preparedBy = entity.getEmployee();
         Signature preparedBysignature = new Signature(preparedBy.getEmployeeId(), preparedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(entity.getSubmittedDate()), employeeDao.getPrimaryEmail(preparedBy), null);
         data.getData().put("submittedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getSubmittedDate()));
         data.getSignatures().add(preparedBysignature);
-
+        
         String prepareByStr = preparedBy.getLastName() + ", " + preparedBy.getFirstName();
         data.getData().put("name", prepareByStr);
         if (preparedBy.getCompany() == null || preparedBy.getCompany().getName().equals("System Soft Technologies LLC")) {
@@ -246,71 +251,71 @@ public class ExpenseReportService {
                 itemTotal = itemTotal.add(item.getAmount());
                 i++;
             } else // Expanse Item Personal 
-            if (item.getExpensePaymentMode() != null && item.getExpensePaymentMode().name().equals("PERSONAL_CARD")) {
-                if (item.getCategory() != null) {
+             if (item.getExpensePaymentMode() != null && item.getExpensePaymentMode().name().equals("PERSONAL_CARD")) {
+                    if (item.getCategory() != null) {
+                        if (item.getCategory().getName().equals("AirFare")) {
+                            data.getData().put("Air Fare", "true");
+                            data.getData().put("air-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                        }
+                        if (item.getCategory().getName().equals("Hotel")) {
+                            data.getData().put("Hotel", "true");
+                            data.getData().put("hotel-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                        }
+                        if (item.getCategory().getName().equals("Auto")) {
+                            data.getData().put("Auto", "true");
+                            data.getData().put("auto-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                        }
+                        if (item.getCategory().getName().equals("ClientEntertainment")) {
+                            data.getData().put("ClientEntertainment", "true");
+                            data.getData().put("client-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                        }
+                        if (item.getCategory().getName().equals("Miscellaneous")) {
+                            data.getData().put("Miscellaneous", "true");
+                            data.getData().put("mis-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                        }
+                        if (item.getCategory().getName().equals("Personal Auto")) {
+                            data.getData().put("Personal Auto", "true");
+                            if (item.getExpenseMiles() != null && item.getAmount() != null) {
+                                data.getData().put("miles" + p, item.getExpenseMiles().setScale(2, BigDecimal.ROUND_UP).toString());
+                                data.getData().put("miles-amount" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                            }
+                        }
+                    }
+                    data.getData().put("p-purpose" + p, item.getPurpose());
+                    data.getData().put("p-itemStartDate" + p, new SimpleDateFormat("MM-dd-yyyy").format(item.getExpenseDate()));
+                    data.getData().put("p-amount" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                    itemPersonal = itemPersonal.add(item.getAmount());
+                    p++;
+                } else {
+                    //Expanse Item Amex
                     if (item.getCategory().getName().equals("AirFare")) {
                         data.getData().put("Air Fare", "true");
-                        data.getData().put("air-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                        data.getData().put("aair-category" + a, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
                     }
                     if (item.getCategory().getName().equals("Hotel")) {
                         data.getData().put("Hotel", "true");
-                        data.getData().put("hotel-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                        data.getData().put("ahotel-category" + a, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
                     }
                     if (item.getCategory().getName().equals("Auto")) {
                         data.getData().put("Auto", "true");
-                        data.getData().put("auto-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                        data.getData().put("aauto-category" + a, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
                     }
                     if (item.getCategory().getName().equals("ClientEntertainment")) {
                         data.getData().put("ClientEntertainment", "true");
-                        data.getData().put("client-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                        data.getData().put("aclient-category" + a, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
                     }
                     if (item.getCategory().getName().equals("Miscellaneous")) {
                         data.getData().put("Miscellaneous", "true");
-                        data.getData().put("mis-category" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                        data.getData().put("amis-category" + a, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
                     }
-                    if (item.getCategory().getName().equals("Personal Auto")) {
-                        data.getData().put("Personal Auto", "true");
-                        if (item.getExpenseMiles() != null && item.getAmount() != null) {
-                            data.getData().put("miles" + p, item.getExpenseMiles().setScale(2, BigDecimal.ROUND_UP).toString());
-                            data.getData().put("miles-amount" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
-                        }
-                    }
+                    data.getData().put("a-purpose" + a, item.getPurpose());
+                    data.getData().put("a-itemStartDate" + a, new SimpleDateFormat("MM-dd-yyyy").format(item.getExpenseDate()));
+                    data.getData().put("a-amount" + a, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
+                    itemAmex = itemAmex.add(item.getAmount());
+                    a++;
                 }
-                data.getData().put("p-purpose" + p, item.getPurpose());
-                data.getData().put("p-itemStartDate" + p, new SimpleDateFormat("MM-dd-yyyy").format(item.getExpenseDate()));
-                data.getData().put("p-amount" + p, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
-                itemPersonal = itemPersonal.add(item.getAmount());
-                p++;
-            } else {
-                //Expanse Item Amex
-                if (item.getCategory().getName().equals("AirFare")) {
-                    data.getData().put("Air Fare", "true");
-                    data.getData().put("aair-category" + a, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
-                }
-                if (item.getCategory().getName().equals("Hotel")) {
-                    data.getData().put("Hotel", "true");
-                    data.getData().put("ahotel-category" + a, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
-                }
-                if (item.getCategory().getName().equals("Auto")) {
-                    data.getData().put("Auto", "true");
-                    data.getData().put("aauto-category" + a, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
-                }
-                if (item.getCategory().getName().equals("ClientEntertainment")) {
-                    data.getData().put("ClientEntertainment", "true");
-                    data.getData().put("aclient-category" + a, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
-                }
-                if (item.getCategory().getName().equals("Miscellaneous")) {
-                    data.getData().put("Miscellaneous", "true");
-                    data.getData().put("amis-category" + a, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
-                }
-                data.getData().put("a-purpose" + a, item.getPurpose());
-                data.getData().put("a-itemStartDate" + a, new SimpleDateFormat("MM-dd-yyyy").format(item.getExpenseDate()));
-                data.getData().put("a-amount" + a, item.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
-                itemAmex = itemAmex.add(item.getAmount());
-                a++;
-            }
         }
-
+        
         data.getData().put("p-itemTotal", itemPersonal.setScale(2, BigDecimal.ROUND_UP).toString());
         data.getData().put("a-itemTotal", itemAmex.setScale(2, BigDecimal.ROUND_UP).toString());
         data.getData().put("itemTotal", itemTotal.setScale(2, BigDecimal.ROUND_UP).toString());
@@ -322,7 +327,7 @@ public class ExpenseReportService {
         for (Comment comment : cmnts) {
             allComment = allComment + ". " + comment.getComment();
         }
-
+        
         if (entity.getApprovedByCEO() != null) {
             Employee ceo = employeeDao.findEmployeWithEmpId(entity.getApprovedByCEO());
             if (ceo != null) {
@@ -331,7 +336,7 @@ public class ExpenseReportService {
                 data.getData().put("approvedByCEODate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getApprovedByCEODate()));
             }
         }
-
+        
         if ((entity.getExpenseFormType()) != null && entity.getExpenseFormType().name().equals("TRAVEL_EXPENSE")) {
             if (entity.getApprovedByManager() != null) {
                 Employee manager = employeeDao.findEmployeWithEmpId(entity.getApprovedByManager());
@@ -351,7 +356,7 @@ public class ExpenseReportService {
                     data.getData().put("PayrollDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getApprovedByAccountsDeptDate()));
                 }
             }
-
+            
         }
         data.getData().put("comment", allComment);
         byte[] pdf = PDFUtils.generatePdf(data);
@@ -360,7 +365,7 @@ public class ExpenseReportService {
                 .header("Content-Length", pdf.length)
                 .build();
     }
-
+    
     public static ExpenseReportService instance() {
         return SpringContext.getBean(ExpenseReportService.class);
     }
