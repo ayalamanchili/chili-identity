@@ -41,15 +41,38 @@ public class DependentService {
         Employee emp = (Employee) em.find(Employee.class, empId);
         //dependent
         Dependent dependent = new Dependent();
+        dependent.setSalutation(dto.getSalutation());
         dependent.setDfirstName(dto.getDfirstName());
+        dependent.setDmiddleName(dto.getDmiddleName());
         dependent.setDlastName(dto.getDlastName());
         dependent.setDdateOfBirth(dto.getDdateOfBirth());
         dependent.setRelationship(dto.getRelationship());
+        dependent.setGender(dto.getGender());
+        dependent.setEmail(dto.getEmail());
+        dependent.setPhoneNumber(dto.getPhoneNumber());
         dependent.setTargetEntityId(empId);
         dependent.setTargetEntityName(emp.getClass().getCanonicalName());
         em.merge(dependent);
     }
 
+    public void addImmigrationCaseDependent(Long targetId, String targetClassName, DependentDto dto) {
+        
+        //dependent
+        Dependent dependent = new Dependent();
+        dependent.setSalutation(dto.getSalutation());
+        dependent.setDmiddleName(dto.getDmiddleName());
+        dependent.setDfirstName(dto.getDfirstName());
+        dependent.setDlastName(dto.getDlastName());
+        dependent.setDdateOfBirth(dto.getDdateOfBirth());
+        dependent.setRelationship(dto.getRelationship());
+        dependent.setGender(dto.getGender());
+        dependent.setEmail(dto.getEmail());
+        dependent.setPhoneNumber(dto.getPhoneNumber());
+        dependent.setTargetEntityId(targetId);
+        dependent.setTargetEntityName(targetClassName);
+        em.merge(dependent);
+    }
+    
     public Dependent update(DependentDto dependentDto) {
         //TODO user dozer mapping?
         Dependent ecEntity = em.find(Dependent.class, dependentDto.getId());
