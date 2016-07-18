@@ -199,7 +199,11 @@ public class UpdateSkillSetPanel extends UpdateComposite implements GenericListe
     }
 
     protected void populateResumes(JSONArray items) {
-        entityFieldsPanel.insert(new ReadAllSkillSetFilesPanel(items), entityFieldsPanel.getWidgetIndex(resumeUploadPanel) + 1);
+        if (TabPanel.instance().profilePanel.isVisible()) {
+            entityFieldsPanel.insert(new ReadAllSkillSetFilesPanel(OfficeWelcome.instance().employeeId, items), entityFieldsPanel.getWidgetIndex(resumeUploadPanel) + 1);
+        } else {
+            entityFieldsPanel.insert(new ReadAllSkillSetFilesPanel(TreeEmployeePanel.instance().getEntityId(), items), entityFieldsPanel.getWidgetIndex(resumeUploadPanel) + 1);
+        }
     }
 
     protected void uploadResume(String entityId) {

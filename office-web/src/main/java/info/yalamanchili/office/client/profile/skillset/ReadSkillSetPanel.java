@@ -96,11 +96,11 @@ public class ReadSkillSetPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        onLoadSuccess(response);
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                onLoadSuccess(response);
+            }
+        });
     }
 
     protected void loadTags() {
@@ -185,7 +185,7 @@ public class ReadSkillSetPanel extends ReadComposite {
 
     protected void populateResumes(JSONArray items) {
         logger.info("populate Fields From Entity" + items);
-        entityFieldsPanel.add(new ReadAllSkillSetFilesPanel(items));
+        entityFieldsPanel.add(new ReadAllSkillSetFilesPanel(getEntityId(), items));
     }
 
     @Override

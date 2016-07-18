@@ -71,7 +71,7 @@ public class DependentResource extends CRUDResource<Dependent> {
     @Validate
     public void addDependent(@PathParam("targetClassName") String targetClassName, @PathParam("targetId") Long targetId, DependentDto depDto) {
         DependentService dependentService = (DependentService) SpringContext.getBean("dependentService");
-        dependentService.addImmigrationCaseDependent(targetId,targetClassName,depDto);
+        dependentService.addDependent(targetId,targetClassName,depDto);
     }
 
     @PUT

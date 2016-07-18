@@ -55,7 +55,7 @@ public class DependentService {
         em.merge(dependent);
     }
 
-    public void addImmigrationCaseDependent(Long targetId, String targetClassName, DependentDto dto) {
+    public void addDependent(Long targetId, String targetClassName, DependentDto dto) {
         
         //dependent
         Dependent dependent = new Dependent();

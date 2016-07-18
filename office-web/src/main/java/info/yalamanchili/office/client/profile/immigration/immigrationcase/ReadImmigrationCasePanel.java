@@ -22,7 +22,7 @@ import info.yalamanchili.office.client.profile.emergencycnt.ReadAllDependentsPan
  *
  * @author Sandeep Sunchu <sandeep.sunchu@sstech.us>
  */
-public class ReadImmigrationCasePanel extends TReadComposite {
+public class ReadImmigrationCasePanel extends ReadComposite {
     
     private static ReadImmigrationCasePanel instance;
     
@@ -37,8 +37,7 @@ public class ReadImmigrationCasePanel extends TReadComposite {
     }
     
     protected final void populateDependents() {
-        entityFieldsPanel.setWidget(4, 1, new ReadAllDependentsPanel(getEntityId(), "ImmigrationCase"));
-        entityFieldsPanel.getFlexCellFormatter().setColSpan(4, 1, 2);
+        entityFieldsPanel.add(new ReadAllDependentsPanel(getEntityId(), "ImmigrationCase"));
     }
 
     @Override
@@ -69,8 +68,8 @@ public class ReadImmigrationCasePanel extends TReadComposite {
 
     @Override
     protected void addWidgets() {
-        addEnumField("sponsorType", true, true, SponsorType.names(), Alignment.HORIZONTAL,1,1);
-        addEnumField("immigrationCaseType", true, true, ImmigrationCaseType.names(), Alignment.HORIZONTAL,2,1);
+        addEnumField("sponsorType", true, true, SponsorType.names(), Alignment.HORIZONTAL);
+        addEnumField("immigrationCaseType", true, true, ImmigrationCaseType.names(), Alignment.HORIZONTAL);
     }
 
     @Override
