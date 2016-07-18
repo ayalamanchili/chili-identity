@@ -31,6 +31,7 @@ import info.yalamanchili.office.client.profile.contact.Branch;
 import info.yalamanchili.office.client.profile.contact.Sex;
 import info.yalamanchili.office.client.profile.contact.WorkStatus;
 import java.util.logging.Logger;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 
 public class UpdateEmployeePanel extends UpdateComposite {
 
@@ -176,6 +177,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
 
     @Override
     protected void configure() {
+        departmentTransfer.addStyleName("horizontalAlignment");
         // TODO Auto-generated method stub
     }
 
@@ -210,7 +212,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
                entityFieldsPanel.add(internalTransfer);
                entityFieldsPanel.add(departmentTransfer);
-        }       
+        }    
         entityFieldsPanel.add(generalInfo);
         entityFieldsPanel.add(empImageUploadPanel);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN)) {
