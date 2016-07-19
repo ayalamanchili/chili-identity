@@ -12,7 +12,9 @@ import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.ProfileHome;
+import info.yalamanchili.office.client.profile.phone.ReadAllPhonesPopupPanel;
 
 /**
  *
@@ -33,6 +35,7 @@ class CreateEmpDocPopUpPanel extends CreateEmpDocPanel {
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Added Employee Document");
         GenericPopup.instance().hide();
-        ProfileHome.instance().refreshEmpDocs();
+        TabPanel.instance().profilePanel.entityPanel.clear();
+        TabPanel.instance().profilePanel.entityPanel.add(new ReadAllEmpDocsPopupPanel(OfficeWelcome.instance().employeeId));
     }
 }
