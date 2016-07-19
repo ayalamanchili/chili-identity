@@ -244,11 +244,7 @@ public class ClientInformationService {
     }
 
     public ClientInformationDto read(Long id) {
-        ClientInformation entity = clientInformationDao.findById(id);
-        ClientInformationDto res = (ClientInformationDto) BeanMapper.clone(entity, ClientInformationDto.class);
-        res.setCidocument(entity.getCidocument());
-        res.setEmployee(entity.getEmployee());
-        return res;
+        return mapper.map(clientInformationDao.findById(id), ClientInformationDto.class);
     }
 
     public ClientInformationDto readCIForInvoice(Long id) {
