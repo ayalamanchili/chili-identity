@@ -82,6 +82,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
     protected DisclosurePanel myClocationL = new DisclosurePanel("Clients in a Location");
     protected DisclosurePanel empLocationL = new DisclosurePanel("Emp Working in a Location");
     protected DisclosurePanel projEndL = new DisclosurePanel("Emp Projects Going To Start / End");
+    protected ClickableLink activeCPDL = new ClickableLink("Active CPD's Report");
 
     ClickableLink clearReportsL = new ClickableLink("clear");
     protected Button searchTasks = new Button("Search");
@@ -107,7 +108,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
     StringField employeeFirstNameField = new StringField(OfficeWelcome.constants, "employeeFirstName", "Contract", false, false);
     StringField employeeLatNameField = new StringField(OfficeWelcome.constants, "employeeLastName", "Contract", false, false);
     StringField itemNumberField = new StringField(OfficeWelcome.constants, "itemNumber", "Contract", false, false);
-    String[] employeeTypeStrs = {"Corporate Employee", "Employee", "Subcontractor", "1099 Contractor", "W2 Contractor","Intern-Seasonal Employee"};
+    String[] employeeTypeStrs = {"Corporate Employee", "Employee", "Subcontractor", "1099 Contractor", "W2 Contractor", "Intern-Seasonal Employee"};
     EnumField employeeTypeField = new EnumField(OfficeWelcome.constants, "employeeType", "Contract", false, false, employeeTypeStrs);
     EnumField projectStatusField = new EnumField(OfficeWelcome.constants, "status", "Contract", false, false, ClientInformationStatus.names());
     DateField projectStartDate = new DateField(OfficeWelcome.constants, "FromDate", "", false, false);
@@ -143,6 +144,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
         searchTasks.addClickHandler(this);
         reportTasks.addClickHandler(this);
         graphB.addClickHandler(this);
+        activeCPDL.addClickHandler(this);
     }
 
     @Override
@@ -181,6 +183,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
             panel.add(myVlocationL);
             panel.add(myClocationL);
             panel.add(empLocationL);
+            panel.add(activeCPDL);
         } else if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_RECRUITER)) {
             panel.add(myClientL);
             panel.add(myVendorL);
@@ -720,6 +723,18 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                         }
                     });
             clearFields();
+        }
+        if (event.getSource().equals(activeCPDL)) {
+            String activeCPDUrl = OfficeWelcome.constants.root_url() + "contract-report/active-cpds";
+            HttpService.HttpServiceAsync.instance().doGet(activeCPDUrl, OfficeWelcome.instance().getHeaders(), true,
+                    new ALAsyncCallback<String>() {
+                        @Override
+                        public void onResponse(String result) {
+                            if (result == null || JSONParser.parseLenient(result).isObject() == null) {
+                                new ResponseStatusWidget().show("Report Will be Emailed to your Primary Email");
+                            }
+                        }
+                    });
         }
     }
 

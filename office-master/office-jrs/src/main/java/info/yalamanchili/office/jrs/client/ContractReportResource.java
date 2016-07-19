@@ -136,6 +136,13 @@ public class ContractReportResource {
         String email = currentEmpEmail();
         ContractReportService.instance().subContractorSummaryReport(email);
     }
+    
+    @GET
+    @Path("/active-cpds")
+    public void getActiveCPDsReport() {
+        String email = currentEmpEmail();
+        ContractReportService.instance().generateActiveCPDSReport(email);
+    }
 
     private String currentEmpEmail() {
         return OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail();

@@ -283,7 +283,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         addField("city", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
         addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
-        addField("zip", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("zip", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(bankInfo);
         addField("accountFirstName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("accountLastName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);

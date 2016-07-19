@@ -8,9 +8,12 @@
  */
 package info.yalamanchili.office.jrs.profile.onboarding;
 
+import info.chili.commons.FileUtils;
 import info.chili.jpa.validation.Validate;
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dto.onboarding.OnBoardingEmployeeDto;
+import info.yalamanchili.office.entity.profile.EmployeeDocument;
 import info.yalamanchili.office.profile.EmployeeOnBoardingService;
 import info.yalamanchili.office.profile.invite.InviteCodeValidationService;
 import javax.ws.rs.Consumes;
@@ -50,6 +53,13 @@ public class PublicOnBoardingResource {
     public OnBoardingEmployeeDto onBoardEmployee(OnBoardingEmployeeDto employee) {
         InviteCodeValidationService.instance().validate(employee.getInviteCode());
         EmployeeOnBoardingService employeeOnBoardingService = (EmployeeOnBoardingService) SpringContext.getBean("employeeOnBoardingService");
+        if(employee.getDocuments()!=null && employee.getDocuments().size()>0){
+            for(EmployeeDocument doc : employee.getDocuments()){
+                if(!FileUtils.getFileExtension(doc.getFileUrl()).contains("pdf")){
+                    throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "only.pdf.docs.allowed", "Only PDF Documents Are Allowed");
+                }
+            }
+        }
         return employeeOnBoardingService.onBoardEmployee(employee);
     }
 }
