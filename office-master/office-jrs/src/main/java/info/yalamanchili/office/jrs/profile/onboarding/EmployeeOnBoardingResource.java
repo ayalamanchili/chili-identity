@@ -51,7 +51,7 @@ public class EmployeeOnBoardingResource {
     @PreAuthorize("hasAnyRole('ROLE_ON_BOARDING_MGR','ROLE_HR_ADMINSTRATION')")
     public EmployeeOnBoardingResource.EmployeeOnBoardingTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         EmployeeOnBoardingResource.EmployeeOnBoardingTable tableObj = new EmployeeOnBoardingResource.EmployeeOnBoardingTable();
-        tableObj.setEntities(employeeOnBoardingDao.query(start, limit));
+        tableObj.setEntities(employeeOnBoardingDao.getEmployees(start, limit));
         tableObj.setSize(employeeOnBoardingDao.size());
         return tableObj;
     }
