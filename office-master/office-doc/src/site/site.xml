@@ -89,9 +89,10 @@
                 <item name="Bulkupload" href="/office/admin/bulkimport.html"/>
             </item>
             <item name="Time" href="/office/timesheets/submit-leave-request.html" collapse="true">
-                <item name="Work From Home Process" href="/office/timesheets/OutOfOffice/out-of-office-process.html"/>
-                <item name="Submit Work From Home Request" href="/office/timesheets/OutOfOffice/submit-out-of-office-request.html"/>
-                <item name="Update Work From Home Request" href="/office/timesheets/OutOfOffice/update-outofoffice-request.html"/>
+                <item name="Work From Home Process" href="/office/timesheets/OutOfOffice/out-of-office-process.html" collapse="true">
+                    <item name="Submit Work From Home Request" href="/office/timesheets/OutOfOffice/submit-out-of-office-request.html"/>
+                    <item name="Update Work From Home Request" href="/office/timesheets/OutOfOffice/update-outofoffice-request.html"/>
+                </item>
                 <item name="Submit Leave Request" href="/office/timesheets/submit-leave-request.html"/>
                 <item name="Update-Cancel Leave Request" href="/office/timesheets/update-cancel-leave-request.html"/>
                 <item name="Approving Time Sheets" href="/office/timesheets/approving-timesheets.html"/>
