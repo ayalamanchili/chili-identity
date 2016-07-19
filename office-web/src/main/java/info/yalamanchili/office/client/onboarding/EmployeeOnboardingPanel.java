@@ -64,7 +64,8 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
     protected List<CreateDependentsPanel> dependentsPanels = new ArrayList<>();
     protected List<CreateEmergencyContactWidget> emergencyContactsPanels = new ArrayList<>();
     HTML emptyLine = new HTML("<br/>");
-    HTML fileUploadNotes = new HTML("<b> Note: </b> Original copy of I-9 Form should be sent to Tampa office by Mail.");
+    HTML fileUploadNotes1 = new HTML("<b> Note: </b> Please upload pdf formats only");
+    HTML fileUploadNotes2 = new HTML("<b> Note: </b> Original copy of I-9 Form should be sent to Tampa office by Mail.");
     protected CheckBox noDependentsCB = new CheckBox("I have No Dependents", false);
 
     protected static HTML formsInfo = new HTML("\n"
@@ -299,7 +300,8 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         addEnumField("ethnicity", false, false, Ethnicity.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(formsInfo);
         entityFieldsPanel.add(fileUploadPanel);
-        entityFieldsPanel.add(fileUploadNotes);
+        entityFieldsPanel.add(fileUploadNotes1);
+        entityFieldsPanel.add(fileUploadNotes2);
         entityFieldsPanel.add(depsInfo);
         entityFieldsPanel.add(noDepsInfo);
         entityFieldsPanel.add(noDependentsCB);
