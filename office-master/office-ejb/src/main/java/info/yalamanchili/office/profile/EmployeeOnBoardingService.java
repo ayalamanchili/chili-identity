@@ -85,7 +85,7 @@ public class EmployeeOnBoardingService {
             EmployeeOnBoarding onboarding = new EmployeeOnBoarding();
             onboarding.setEmail(dto.getEmail());
             onboarding.setStartedBy(OfficeSecurityService.instance().getCurrentUserName());
-            onboarding.setStartedDate(new Date());
+            onboarding.setStartedDate(dto.getStartDate());
             onboarding.setStatus(OnBoardingStatus.Pending_Initial_Document_Submission);
             //to save onboarding only once
             onboarding = em.merge(onboarding);
