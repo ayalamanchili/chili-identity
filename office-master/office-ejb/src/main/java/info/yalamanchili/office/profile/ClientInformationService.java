@@ -205,8 +205,8 @@ public class ClientInformationService {
         }
         ci = clientInformationDao.save(ci);
         emp.addClientInformation(ci);
-        if(ciDto.getReason()!=null){
-            CommentDao.instance().addComment("End Previous Project Reason: "+ciDto.getReason(), ci);
+        if (ciDto.getReason() != null) {
+            CommentDao.instance().addComment("End Previous Project Reason: " + ciDto.getReason(), ci);
         }
         if (submitForApproval) {
             ci.setStatus(ClientInformationStatus.PENDING_INVOICING_BILLING_APPROVAL);
@@ -244,7 +244,11 @@ public class ClientInformationService {
     }
 
     public ClientInformationDto read(Long id) {
-        return mapper.map(clientInformationDao.findById(id), ClientInformationDto.class);
+        ClientInformation entity = clientInformationDao.findById(id);
+        ClientInformationDto res = (ClientInformationDto) BeanMapper.clone(entity, ClientInformationDto.class);
+        res.setCidocument(entity.getCidocument());
+        res.setEmployee(entity.getEmployee());
+        return res;
     }
 
     public ClientInformationDto readCIForInvoice(Long id) {

@@ -10,6 +10,7 @@ package info.yalamanchili.office.prospect;
 
 import com.google.common.base.Strings;
 import info.chili.audit.AuditService;
+import info.chili.commons.BeanMapper;
 import info.chili.commons.DateUtils;
 import info.chili.hibernate.envers.AuditRevisionEntity;
 import info.chili.reporting.ReportGenerator;
@@ -198,7 +199,8 @@ public class ProspectService {
 
     public ProspectDto read(Long id) {
         Prospect ec = prospectDao.findById(id);
-        ProspectDto dto = ProspectDto.map(mapper, ec);
+        ProspectDto dto = (ProspectDto) BeanMapper.clone(ec, ProspectDto.class);
+        dto.setResumeURL(ec.getResumeURL());
         if (ec.getAssigned() != null) {
             dto.setAssignedTo(EmployeeDao.instance().findById(ec.getAssigned()));
         }
