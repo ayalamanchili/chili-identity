@@ -67,6 +67,13 @@ public class EmployeeOnBoardingDao extends CRUDDao<EmployeeOnBoarding> {
         return findQuery.getSingleResult();
     }
 
+    public List<EmployeeOnBoarding> getEmployees(int start,int limit){
+        TypedQuery<EmployeeOnBoarding> query = getEntityManager().createQuery("from " + EmployeeOnBoarding.class.getCanonicalName() + " order by startedDate DESC", EmployeeOnBoarding.class);
+        query.setFirstResult(start);
+        query.setMaxResults(limit);
+        return query.getResultList();
+    }
+    
     public static EmployeeOnBoardingDao instance() {
         return SpringContext.getBean(EmployeeOnBoardingDao.class);
     }
