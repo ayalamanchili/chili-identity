@@ -1,14 +1,14 @@
 Work From Home request Process
 -----
 
-- When employee submits a request and it creates a Task for Employee's Reports_To Manager.
-- Email has been sent to Reports_To Manager about the new task and also notification sent to notified employee while creating.
+- When an employee submits a request, it creates a task for that employee’s Reports_To manager.
+- Email is sent to Reports_To manager about the new task, and notification is sent to the employee.
 - The Request will be created with **Pending Manager Approval** status.
-- The Reports_To Manager approve or reject the task with in 48 hours.
-- Based on the action approved or rejection email is sent to employee and the status also changed **Approved/Rejected**.
-- If the Reports_To Manager didn't take any action within 48 hours then he will receive a Escalation email notification regarding the request.
-- HR Admin able to view all out of office requests submitted by the employees.
-- Reports_To Manager able to search the employees those who are related to under his/her.
+- The Reports_To manager task will be approved or rejected within 48 hours.
+- The employee receives email regarding the status, and the entry in the Status box is changed to Approved or Rejected.
+- If the approval or rejection action does not occur within the 48 hours, the manager will receive an email notification regarding the request.
+- HR Admin has search capability to view all Out of Office requests.
+- The Reports_To manager has search capability for only those employees who are direct reports or otherwise under that manager.
 
 Work From Home Process Task
 ----
@@ -21,8 +21,8 @@ Work From Home Search Process
 
 Comments
 ----
-- **Every employee Can able to enter his comments in Comments Section and also he/she can notify other employee and the notify employee receives an email regarding comments **.
+- Every employee can enter comments in the Comments Section and then notify other employees of those comments via email.  
 ![alt text](../../../images/timesheets/outofoffice/comments.png "Out Of Office")
-- **Employee Can able to view/reply to the comment for the received email**.
+- The notified employee(s) can view or reply to the comments entered in this section.  
 ![alt text](../../../images/timesheets/outofoffice/comments1.png "Out Of Office")
 ![alt text](../../../images/timesheets/outofoffice/comments2.png "Out Of Office")
