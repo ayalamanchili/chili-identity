@@ -236,6 +236,9 @@ public class EmployeeOnBoardingService {
         //Update BankAccount Information for Employee
         BankAccount bankAccount;
         bankAccount = dto.getBankAccount();
+        if(bankAccount.getAchBlocked()==null){
+            bankAccount.setAchBlocked(Boolean.FALSE);
+        }
         BankAccountDao.instance().save(bankAccount, emp.getId(), emp.getClass().getCanonicalName());
         List<EmployeeDocument> docs = new ArrayList();
         for (EmployeeDocument empDoc : dto.getDocuments()) {

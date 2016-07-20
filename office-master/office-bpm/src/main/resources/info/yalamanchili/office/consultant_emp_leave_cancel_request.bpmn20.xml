@@ -21,6 +21,8 @@
                 End Date      : #{entity.endDate} 
                 Category      : #{entity.category} 
                 Hours         : #{entity.hours} 
+                Follow instructions from below:
+                https://apps.sstech.us/site/office/timesheets/update-cancel-leave-request.html
             </documentation>
             <extensionElements>
                 <activiti:taskListener class="info.yalamanchili.office.bpm.time.ConsultantEmpLeaveRequestCancelProcess" event="create"/>

@@ -14,6 +14,7 @@ import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.dao.profile.EmployeeDocumentDao;
 import info.yalamanchili.office.dao.profile.onboarding.EmployeeOnBoardingDao;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.privacy.PrivacyData;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -82,6 +83,9 @@ public class EmployeeDocumentResource extends CRUDResource<EmployeeDocument> {
     @Path("/update")
     public EmployeeDocument update(EmployeeDocument entity) {
         String empId = entity.getUpdatedBy();
+        if (empId == null || empId.equals("anonymousUser")) {
+            empId = OfficeSecurityService.instance().getCurrentUserName();
+        }
         EmployeeDocument document = new EmployeeDocument();
         Employee emp = EmployeeDao.instance().findEmployeWithEmpId(empId);
         if (emp.getEmails().size() > 0) {
@@ -112,7 +116,7 @@ public class EmployeeDocumentResource extends CRUDResource<EmployeeDocument> {
 
     @XmlRootElement
     @XmlType
-    public static class EmployeeDocumentTable implements java.io.Serializable{
+    public static class EmployeeDocumentTable implements java.io.Serializable {
 
         protected Long size;
         protected List<EmployeeDocument> entities;

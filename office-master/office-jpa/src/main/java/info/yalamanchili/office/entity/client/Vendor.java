@@ -22,7 +22,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
@@ -89,11 +88,14 @@ public class Vendor extends AbstractEntity {
     protected String paymentTerms;
     @Enumerated(EnumType.STRING)
     protected InvoiceFrequency vendorinvFrequency;
-    
+
     @Enumerated(EnumType.STRING)
     protected InvoiceDeliveryMethod vendorinvDeliveryMethod;
-    
+
     protected Float vendorFees;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    protected List<InvoiceSchedule> invoiceSchedules;
 
     public String getName() {
         return name;
@@ -186,6 +188,25 @@ public class Vendor extends AbstractEntity {
             return;
         }
         getContacts().add(contact);
+    }
+
+    @XmlTransient
+    public List<InvoiceSchedule> getInvoiceSchedules() {
+        if (this.invoiceSchedules == null) {
+            this.invoiceSchedules = new ArrayList<InvoiceSchedule>();
+        }
+        return this.invoiceSchedules;
+    }
+
+    public void setInvoiceSchedules(List<InvoiceSchedule> invoiceSchedules) {
+        this.invoiceSchedules = invoiceSchedules;
+    }
+
+    public void addInvoiceSchedules(InvoiceSchedule invoiceSchedule) {
+        if (invoiceSchedule == null) {
+            return;
+        }
+        getInvoiceSchedules().add(invoiceSchedule);
     }
 
     public String getWebsite() {

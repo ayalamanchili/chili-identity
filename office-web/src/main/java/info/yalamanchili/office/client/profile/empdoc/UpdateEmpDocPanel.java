@@ -11,6 +11,7 @@ package info.yalamanchili.office.client.profile.empdoc;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
+import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.FileuploadField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.GenericPopup;
@@ -51,16 +52,16 @@ public class UpdateEmpDocPanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        uploadFile(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                uploadFile(arg0);
+            }
+        });
     }
 
     protected void uploadFile(String entityId) {
@@ -88,11 +89,13 @@ public class UpdateEmpDocPanel extends UpdateComposite {
     protected void configure() {
     }
 
+    EnumField docType;
+
     @Override
     protected void addWidgets() {
-        String[] docTypes = {"I9", "EVERIFICATION"};
-        addEnumField("documentType", false, true, docTypes);
+        addEnumField("documentType", false, true, DocumentType.names());
         entityFieldsPanel.add(documentUploadPanel);
+        docType = (EnumField) fields.get("documentType");
     }
 
     @Override
@@ -112,6 +115,10 @@ public class UpdateEmpDocPanel extends UpdateComposite {
     protected boolean processClientSideValidations(JSONObject entity) {
         if (documentUploadPanel.isEmpty()) {
             documentUploadPanel.setMessage("Please select a file");
+            return false;
+        }
+        if (docType.getValue() == null) {
+            docType.setMessage("Please select type");
             return false;
         }
         return true;

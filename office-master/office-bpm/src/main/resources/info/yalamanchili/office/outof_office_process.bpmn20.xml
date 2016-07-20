@@ -30,7 +30,8 @@
                 Navigate to view OutOf Office Request:
                 Time > OutOf Office > Search > Click View Icon (or)
                 Time > OutOf Office > Table Action column > Click View Icon
-                
+                Follow instructions from below:
+                https://apps.sstech.us/site/office/timesheets/OutOfOffice/submit-out-of-office-request.html
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.time.OutOfOfficeRequestProcess" />

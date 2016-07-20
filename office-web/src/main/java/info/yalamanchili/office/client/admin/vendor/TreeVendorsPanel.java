@@ -9,8 +9,10 @@ package info.yalamanchili.office.client.admin.vendor;
 
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.utils.JSONUtils;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.admin.vendorcontact.ReadAllVendorInvoiceSchedulePanel;
 import info.yalamanchili.office.client.admin.vendorcontact.ReadAllVendorAcctPayContacts;
 import info.yalamanchili.office.client.gwt.TreePanelComposite;
 import info.yalamanchili.office.client.admin.vendorcontact.ReadAllVendorContactPanel;
@@ -32,6 +34,7 @@ public class TreeVendorsPanel extends TreePanelComposite {
     protected static final String VENDOR_LOCATION_NODE = "vendorlocation";
     protected static final String VENDOR_CONTACTS_NODE = "vendorcontacts";
     protected static final String VENDOR_ACCT_PAY_CONTACTS_NODE = "vendoracctpaycontacts";
+    protected static final String VENDOR_INVOICE_SCHEDULE_NODE = "invoiceSchedules";
 
     public TreeVendorsPanel(String entityId) {
         super(entityId);
@@ -64,6 +67,9 @@ public class TreeVendorsPanel extends TreePanelComposite {
         addFirstChildLink("Locations", VENDOR_LOCATION_NODE);
         addFirstChildLink("Recruiter Contacts", VENDOR_CONTACTS_NODE);
         addFirstChildLink("Acct Pay Contacts", VENDOR_ACCT_PAY_CONTACTS_NODE);
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_BILLING_AND_INVOICING)) {
+            addFirstChildLink("Invoice Schedules", VENDOR_INVOICE_SCHEDULE_NODE);
+        }
     }
 
     @Override
@@ -79,6 +85,10 @@ public class TreeVendorsPanel extends TreePanelComposite {
         if (VENDOR_ACCT_PAY_CONTACTS_NODE.equals(entityNodeKey)) {
             TabPanel.instance().adminPanel.entityPanel.clear();
             TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorAcctPayContacts(entityId));
+        }
+        if (VENDOR_INVOICE_SCHEDULE_NODE.equals(entityNodeKey)) {
+            TabPanel.instance().adminPanel.entityPanel.clear();
+            TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorInvoiceSchedulePanel(entityId));
         }
     }
 

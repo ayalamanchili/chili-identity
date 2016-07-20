@@ -65,9 +65,7 @@ public class OnBoardingEmployeeDto implements Serializable {
      *
      */
     protected String imageURL;
-   
-    @Size(min = 10, max = 10, message = "{phone.phoneNumber.length.invalid.msg}")
-    @Pattern(regexp = "(^$|[0-9]{10})", message = "{invalid.phonenumber.format}")
+
     protected String phoneNumber;
 
     @Size(min = 0, max = 4, message = "{phone.countryCode.length.invalid.msg}")
@@ -78,6 +76,7 @@ public class OnBoardingEmployeeDto implements Serializable {
     protected WorkStatus workStatus;
 
     @Pattern(regexp = "(^(\\d{9})$)", message = "{invalid.ssn.format}")
+    @NotEmpty(message = "{ssn.not.empty.msg}")
     protected String ssn;
 
     @Valid

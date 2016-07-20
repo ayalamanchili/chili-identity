@@ -12,7 +12,6 @@ import info.chili.jpa.validation.Validate;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.profile.onboarding.EmployeeOnBoardingDao;
 import info.yalamanchili.office.dto.onboarding.InitiateOnBoardingDto;
-import info.yalamanchili.office.dto.onboarding.OnBoardingEmployeeDto;
 import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
 import info.yalamanchili.office.profile.EmployeeOnBoardingService;
 import java.util.List;
@@ -48,7 +47,7 @@ public class EmployeeOnBoardingResource {
 
     @GET
     @Path("{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ON_BOARDING_MGR','ROLE_HR_ADMINSTRATION')")
+    @PreAuthorize("hasAnyRole('ROLE_ON_BOARDING_MGR','ROLE_HR_ADMINSTRATION','ROLE_E_VERIFY_MGR','ROLE_BACKGROUND_SCREENING_MGR','ROLE_SYSTEM_AND_NETWORK_ADMIN','ROLE_PAYROLL_AND_BENIFITS')")
     public EmployeeOnBoardingResource.EmployeeOnBoardingTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         EmployeeOnBoardingResource.EmployeeOnBoardingTable tableObj = new EmployeeOnBoardingResource.EmployeeOnBoardingTable();
         tableObj.setEntities(employeeOnBoardingDao.getEmployees(start, limit));

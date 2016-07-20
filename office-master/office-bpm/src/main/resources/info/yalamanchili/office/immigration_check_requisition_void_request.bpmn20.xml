@@ -22,6 +22,8 @@
                 caseType        : #{entity.caseType}
                 attorney        : #{entity.attorneyName}
                 status          : #{entity.status}
+                 Follow instructions from below:
+                https://apps.sstech.us/site/office/expense/checkrequisitionvoidprocess.html
             </documentation>
             <extensionElements>
                 <activiti:taskListener class="info.yalamanchili.office.bpm.immigration.ImmigrationCheckRequisitionVoidProcess" event="create"/>

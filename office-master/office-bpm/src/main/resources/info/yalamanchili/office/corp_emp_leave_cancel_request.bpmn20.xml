@@ -22,6 +22,8 @@
                 Hours         : #{entity.hours} 
                 Notes         : #{entity.notes}
                 PTO Available when request submitted : #{summary.availablePTOHours}
+                Follow instructions from below:
+                https://apps.sstech.us/site/office/timesheets/submit-leave-request.html
             </documentation>
             <extensionElements>
                 <activiti:taskListener class="info.yalamanchili.office.bpm.time.CorpEmpLeaveRequestCancelProcess" event="create"/>
