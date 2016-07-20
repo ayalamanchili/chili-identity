@@ -165,7 +165,7 @@ public class ReadExpenseReportPanel extends ReadComposite {
     }
 
     protected void populateExpenseReceipt(JSONArray items) {
-        entityFieldsPanel.add(new ReadAllExpenseReceiptsPanel(items));
+        entityFieldsPanel.add(new ReadAllExpenseReceiptsPanel(getEntityId(),items));
     }
 
     @Override

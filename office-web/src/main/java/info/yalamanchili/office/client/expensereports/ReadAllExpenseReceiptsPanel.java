@@ -35,7 +35,8 @@ public class ReadAllExpenseReceiptsPanel extends CRUDReadAllComposite {
     private static Logger logger = Logger.getLogger(ReadAllFiles.class.getName());
     public static ReadAllFiles instance;
 
-    public ReadAllExpenseReceiptsPanel(JSONArray array) {
+    public ReadAllExpenseReceiptsPanel(String parentId, JSONArray array) {
+        this.parentId = parentId;
         initTable("ExpenseReceipt", array, OfficeWelcome.constants);
     }
 
@@ -91,7 +92,7 @@ public class ReadAllExpenseReceiptsPanel extends CRUDReadAllComposite {
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Receipt Information");
         TabPanel.instance().expensePanel.entityPanel.clear();
-        TabPanel.instance().expensePanel.entityPanel.add(new UpdateExpenseReportPanel(UpdateExpenseReportPanel.instance().getEntityId()));
+        TabPanel.instance().expensePanel.entityPanel.add(new UpdateExpenseReportPanel(parentId));
     }
 
     @Override
