@@ -38,18 +38,18 @@ public class ReadAllOutOfOfficePanel extends CRUDReadAllComposite {
 
     public ReadAllOutOfOfficePanel() {
         instance = this;
-        initTable("OutOfOfficeRequest", OfficeWelcome.constants2);
+        initTable("Work From Home Requests", OfficeWelcome.constants2);
     }
 
     public ReadAllOutOfOfficePanel(String url) {
         instance = this;
         this.url = url;
-        initTable("OutOfOfficeRequest", OfficeWelcome.constants2);
+        initTable("Work From Home Requests", OfficeWelcome.constants2);
     }
 
     public ReadAllOutOfOfficePanel(JSONArray result) {
         instance = this;
-        initTable("OutOfOfficeRequest", result, OfficeWelcome.constants2);
+        initTable("Work From Home Requests", result, OfficeWelcome.constants2);
     }
 
     public ReadAllOutOfOfficePanel(String title, JSONArray array) {
