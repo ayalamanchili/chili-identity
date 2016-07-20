@@ -233,7 +233,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
     }
 
     protected void populateExpenseReceipt(JSONArray items) {
-        entityFieldsPanel.insert(new ReadAllExpenseReceiptsPanel(items), entityFieldsPanel.getWidgetIndex(receiptsInfo) + 1);
+        entityFieldsPanel.insert(new ReadAllExpenseReceiptsPanel(getEntityId(),items), entityFieldsPanel.getWidgetIndex(receiptsInfo) + 1);
     }
 
     @Override
