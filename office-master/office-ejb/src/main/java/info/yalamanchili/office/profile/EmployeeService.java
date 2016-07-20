@@ -193,7 +193,9 @@ public class EmployeeService {
     public void deactivateUser(Long empId, EmployeeCreateDto dto) {
         Employee emp = getEmployee(empId);
         if (!emp.isActive()) {
-            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.request", "Employee already deactivated");
+            emp.setEndDate(dto.getEndDate());
+            em.merge(emp);
+            return;
         }
         if (dto.getEndDate() == null) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.request", "End Date is required to deactivate the employee");

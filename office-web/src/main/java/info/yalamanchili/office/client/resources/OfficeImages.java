@@ -28,6 +28,15 @@ public interface OfficeImages extends ClientBundle {
 
     @Source("images/nav-logo.png")
     ImageResource logo();
+    
+    @Source("images/logo.png")
+    ImageResource logoTest();
+    
+    @Source("images/cgs-logo.png")
+    ImageResource cgsLogo();
+    
+    @Source("images/techPillars-logo.png")
+    ImageResource techPillarsLogo();
 
     @Source("images/loginFeaturesImage.png")
     ImageResource loginFeatures();

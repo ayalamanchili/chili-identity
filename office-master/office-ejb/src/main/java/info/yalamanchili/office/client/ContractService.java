@@ -300,6 +300,7 @@ public class ContractService {
             dto.setEmployeeType(ci.getEmployee().getEmployeeType().getName());
             dto.setEmployeeID(ci.getEmployee().getId());
             dto.setEmployeeDetails(ci.getEmployee().details());
+            dto.setBpmProcessId(ci.getBpmProcessId());
             if (ci.getEmployee().getCompany() != null) {
                 dto.setEmployeeCompany(ci.getEmployee().getCompany().getName());
             } else {

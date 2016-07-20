@@ -53,6 +53,8 @@ public class ContractDto implements Serializable {
      * Client
      */
     protected String client;
+    
+    protected String bpmProcessId;
     /**
      * Client Contact
      */
@@ -808,6 +810,20 @@ public class ContractDto implements Serializable {
 
     public void setVendorFees(Float vendorFees) {
         this.vendorFees = vendorFees;
+    }
+
+    /**
+     * @return the bpmProcessId
+     */
+    public String getBpmProcessId() {
+        return bpmProcessId;
+    }
+
+    /**
+     * @param bpmProcessId the bpmProcessId to set
+     */
+    public void setBpmProcessId(String bpmProcessId) {
+        this.bpmProcessId = bpmProcessId;
     }
 
     @XmlRootElement
