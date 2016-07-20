@@ -65,6 +65,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
     HTML emptyLine = new HTML("<br/>");
     HTML fileUploadNotes1 = new HTML("<b> Note: </b> Please upload pdf formats only");
     HTML fileUploadNotes2 = new HTML("<b> Note: </b> Original copy of I-9 Form should be sent to Tampa office by Mail.");
+    HTML emerContactNotes = new HTML("<b> Note: </b> Primary Emergency Contact should be local and Secondary Emergency Contact can be non local.");
     protected CheckBox noDependentsCB = new CheckBox("I have No Dependents", false);
 
     protected static HTML formsInfo = new HTML("\n"
@@ -308,6 +309,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         entityFieldsPanel.add(addDependentsL);
         entityFieldsPanel.add(emerInfo);
         entityFieldsPanel.add(addEmerContact);
+        entityFieldsPanel.add(emerContactNotes);
         CreateEmergencyContactWidget panel = new CreateEmergencyContactWidget(CreateComposite.CreateCompositeType.ADD, this, 0) {
             @Override
             protected void setFocus() {
