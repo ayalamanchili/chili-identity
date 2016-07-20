@@ -31,7 +31,6 @@ import info.yalamanchili.office.client.profile.contact.Branch;
 import info.yalamanchili.office.client.profile.contact.Sex;
 import info.yalamanchili.office.client.profile.contact.WorkStatus;
 import java.util.logging.Logger;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
 
 public class UpdateEmployeePanel extends UpdateComposite {
 
@@ -77,7 +76,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         if (fields.containsKey("hoursPerWeek") && Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
             assignEntityValueFromField("hoursPerWeek", entity);
         }
-        if (Auth.isAdmin()) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
             assignEntityValueFromField("ssn", entity);
         }
         if (!empImageUploadPanel.isEmpty()) {
@@ -158,7 +157,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         if (fields.containsKey("company")) {
             assignFieldValueFromEntity("company", entity, null);
         }
-        if (Auth.isAdmin()) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
             assignFieldValueFromEntity("ssn", entity, DataType.STRING_FIELD);
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN) && TabPanel.instance().myOfficePanel.isVisible()) {
@@ -206,13 +205,13 @@ public class UpdateEmployeePanel extends UpdateComposite {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION, Auth.ROLE.ROLE_HR)) {
             addDropDown("company", selectCompnayWidget);
         }
-        if (Auth.isAdmin()) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
             addField("ssn", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
-               entityFieldsPanel.add(internalTransfer);
-               entityFieldsPanel.add(departmentTransfer);
-        }    
+            entityFieldsPanel.add(internalTransfer);
+            entityFieldsPanel.add(departmentTransfer);
+        }
         entityFieldsPanel.add(generalInfo);
         entityFieldsPanel.add(empImageUploadPanel);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN)) {
@@ -247,10 +246,10 @@ public class UpdateEmployeePanel extends UpdateComposite {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(internalTransfer)) {
-                new GenericPopup(new InternalTransferPopUpPanel(CreateCompositeType.CREATE, entity.get("id").isString().stringValue())).show();
+            new GenericPopup(new InternalTransferPopUpPanel(CreateCompositeType.CREATE, entity.get("id").isString().stringValue())).show();
         }
         if (event.getSource().equals(departmentTransfer)) {
-                new GenericPopup(new DepartmentTransferPopUpPanel(CreateCompositeType.CREATE, entity.get("id").isString().stringValue())).show();
+            new GenericPopup(new DepartmentTransferPopUpPanel(CreateCompositeType.CREATE, entity.get("id").isString().stringValue())).show();
         }
         super.onClick(event);
     }
