@@ -21,7 +21,6 @@ import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -106,7 +105,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
             + "</ul>");
 
     StringField countryCodeF = new StringField(OfficeWelcome.constants, "countryCode", "Phone", false, false, Alignment.HORIZONTAL);
-    StringField phoneNumberF = new StringField(OfficeWelcome.constants, "phoneNumber", "Phone", false, false, Alignment.HORIZONTAL);
+    StringField phoneNumberF = new StringField(OfficeWelcome.constants, "phoneNumber", "Phone", false, true, Alignment.HORIZONTAL);
 
     FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "EmployeeDocument", "", "EmployeeDocument/fileURL", false, true) {
         @Override
@@ -136,15 +135,15 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
     public void loadEntity(String invitationCode) {
         HttpService.HttpServiceAsync.instance().doGet(getReadURI(invitationCode), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                logger.info(response);
-                if (!response.trim().equals("null")) {
-                    entity = (JSONObject) JSONParser.parseLenient(response);
-                    populateFieldsFromEntity(entity);
-                }
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        logger.info(response);
+                        if (!response.trim().equals("null")) {
+                            entity = (JSONObject) JSONParser.parseLenient(response);
+                            populateFieldsFromEntity(entity);
+                        }
+                    }
+                });
     }
 
     protected String getReadURI(String invitationCode) {
@@ -189,7 +188,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         assignEntityValueFromField("bankAddress1", bankAccount);
         assignEntityValueFromField("bankAddress2", bankAccount);
         assignEntityValueFromField("accountType", bankAccount);
-        assignEntityValueFromField("achBlocked", bankAccount);
+        //assignEntityValueFromField("achBlocked", bankAccount);
         bankAccount.put("targetEntityName", new JSONString("targetEntityName"));
         bankAccount.put("targetEntityId", new JSONString("0"));
         employee.put("bankAccount", bankAccount);
@@ -251,6 +250,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
 
     @Override
     protected void configure() {
+        phoneNumberF.getTextbox().setMaxLength(10);
         bankInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         additionalInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         formsInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
@@ -275,7 +275,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_GC_IMMIGRATION)) {
             addEnumField("workStatus", false, true, WorkStatus.names(), Alignment.HORIZONTAL);
         }
-        addField("ssn", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("ssn", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(countryCodeF);
         entityFieldsPanel.add(phoneNumberF);
         addField("street1", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -293,9 +293,9 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         addField("bankAddress1", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("bankAddress2", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("accountType", false, true, AccountType.names(), Alignment.HORIZONTAL);
-        addField("achBlocked", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        //addField("achBlocked", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(additionalInfo);
-        addField("referredBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("referredBy", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("maritalStatus", false, true, MaritalStatus.names(), Alignment.HORIZONTAL);
         addEnumField("ethnicity", false, false, Ethnicity.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(formsInfo);
@@ -334,16 +334,16 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                uploadDocs(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        uploadDocs(arg0);
+                    }
+                });
     }
 
     @Override
@@ -480,11 +480,25 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
     protected boolean processClientSideValidations(JSONObject entity) {
         boolean valid = true;
         StringField zipF = (StringField) fields.get("zip");
+        StringField referredByF = (StringField) fields.get("referredBy");
         if (zipF.getValue() == null || "".equals(zipF.getValue())) {
             fields.get("zip").setMessage("Zip can not be empty");
             valid = false;
         }
+        if (referredByF.getValue() == null || "".equals(referredByF.getValue())) {
+            fields.get("referredBy").setMessage("ReferredBy can not be empty");
+            valid = false;
+        }
+        if (phoneNumberF.getValue() == null || "".equals(phoneNumberF.getValue())) {
+            phoneNumberF.setMessage("Phone Number can not be empty");
+            valid = false;
+        } else if (phoneNumberF.getValue() != null) {
+            String number = phoneNumberF.getValue();
+            if (!number.matches("[0-9]*")) {
+                phoneNumberF.setMessage("Invalid Phone Number");
+                valid = false;
+            }
+        }
         return valid;
     }
-
 }
