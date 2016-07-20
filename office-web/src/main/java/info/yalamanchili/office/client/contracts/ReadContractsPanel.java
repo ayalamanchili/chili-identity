@@ -24,6 +24,7 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.admin.invoice.ReadAllInvoicePanel;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
+import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceDeliveryMethod;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
 import info.yalamanchili.office.client.profile.cllientinfo.ReadAllCiDocumentPanel;
@@ -294,6 +295,17 @@ public class ReadContractsPanel extends TReadComposite {
                         }
                     }
                 });
+    }
+    
+    @Override
+    protected boolean enableViewTasks() {
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN);
+    }
+
+    @Override
+    protected void displayTasks() {
+        String tasksUrl = OfficeWelcome.constants.root_url() + "bpm/tasks/process/";
+        tasksDP.setContent(new ReadAllTasks(tasksUrl + JSONUtils.toString(getEntity(), "bpmProcessId") + "/", true));
     }
 
     private String getInvoiceUrl() {
