@@ -73,7 +73,7 @@ public class CreateEmployeePanel extends CreateComposite {
             company.put("name", company.get("value"));
             employee.put("company", company);
         }
-        if (Auth.isAdmin()) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
             assignEntityValueFromField("ssn", employee);
         }
         employee.put("imageURL", empImageUploadPanel.getFileName());
@@ -109,7 +109,7 @@ public class CreateEmployeePanel extends CreateComposite {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION, Auth.ROLE.ROLE_RELATIONSHIP, Auth.ROLE.ROLE_HR)) {
             addDropDown("company", selectCompnayWidget);
         }
-        if (Auth.isAdmin()) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
             addField("ssn", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         }
         entityFieldsPanel.add(generalInfo);
