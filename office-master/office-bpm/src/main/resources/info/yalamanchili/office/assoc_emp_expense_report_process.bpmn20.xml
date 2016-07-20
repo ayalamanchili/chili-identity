@@ -25,7 +25,8 @@
                 Location/Purpose    : #{entity.location}
                 Start Date          : #{entity.startDate}
                 End Date            : #{entity.endDate}
-
+                Follow instructions from below:
+                https://apps.sstech.us/site/office/expense/submitexpensereport.html
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.expensereport.AssocEmpExpenseReportProcess" />
@@ -81,6 +82,8 @@
                 Location/Purpose    : #{entity.location}
                 Start Date          : #{entity.startDate}
                 End Date            : #{entity.endDate}
+                Follow instructions from below:
+                https://apps.sstech.us/site/office/expense/submitexpensereport.html
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.expensereport.AssocEmpExpenseReportProcess" />

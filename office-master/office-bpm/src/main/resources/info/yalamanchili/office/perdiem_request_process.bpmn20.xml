@@ -26,6 +26,9 @@
                 End Date            : #{entity.perDiemEndDate}
                 Amount              : #{entity.amount}
                 Percentage          : #{entity.percentage}
+                
+                Follow instructions from below:
+                https://apps.sstech.us/site/office/expense/PerdiemProcess.html
               
             </documentation>
             <extensionElements>

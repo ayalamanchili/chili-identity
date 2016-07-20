@@ -29,6 +29,9 @@
                 if exists reject the task by entering the Username/ EmployeeId 
                 if it does not exist please create the account and approve the task by entering the Username/EmployeeId 
                 A email with will be sent to employee with username and forgotpassword instructions so they can login
+                
+                Follow instructions from below:
+                https://apps.sstech.us/site/office/accountresettask.html
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />

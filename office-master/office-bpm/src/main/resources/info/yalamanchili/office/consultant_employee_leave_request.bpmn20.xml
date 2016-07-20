@@ -55,6 +55,8 @@
                 Submited By   : #{submittedBy}
                 PTO Available when request submitted : #{summary.availablePTOHours}
                 Hours         : #{leaveRequest.hours}
+                Follow instructions from below:
+                https://apps.sstech.us/site/office/timesheets/employee-leave-request.html                
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.time.ConsultantEmpLeaveRequestProcess" />

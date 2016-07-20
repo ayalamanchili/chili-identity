@@ -38,7 +38,10 @@
                 Overtime Rate Duration      : #{clientInfo.overTimeRateDuration}
                 Invoice Frequency           : #{clientInfo.invoiceFrequency}
                 Invoice Delivery Method     : #{clientInfo.invoiceDeliveryMethod}
-                Notes                       : #{clientInfo.notes}    
+                Notes                       : #{clientInfo.notes}
+                Follow instructions from below:
+                https://apps.sstech.us/site/office/bpm/new-client-info-process.html
+                    
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.clientinformation.NewClientInformationProcess" />
@@ -133,7 +136,9 @@
                 Overtime Rate Duration      : #{clientInfo.overTimeRateDuration}
                 Invoice Frequency           : #{clientInfo.invoiceFrequency}
                 Invoice Delivery Method     : #{clientInfo.invoiceDeliveryMethod}
-                Notes                       : #{clientInfo.notes}    
+                Notes                       : #{clientInfo.notes}   
+                Follow instructions from below:
+                https://apps.sstech.us/site/office/bpm/new-client-info-process.html
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.clientinformation.NewClientInformationProcess" />
@@ -206,7 +211,9 @@
                 Overtime Rate Duration      : #{clientInfo.overTimeRateDuration}
                 Invoice Frequency           : #{clientInfo.invoiceFrequency}
                 Invoice Delivery Method     : #{clientInfo.invoiceDeliveryMethod}
-                Notes                       : #{clientInfo.notes}    
+                Notes                       : #{clientInfo.notes}  
+                Follow instructions from below:
+                https://apps.sstech.us/site/office/bpm/new-client-info-process.html  
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.clientinformation.NewClientInformationProcess" />
