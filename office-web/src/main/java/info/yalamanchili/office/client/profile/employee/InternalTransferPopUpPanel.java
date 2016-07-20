@@ -5,14 +5,12 @@
  */
 package info.yalamanchili.office.client.profile.employee;
 
-import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
-import info.chili.gwt.fields.DateField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.GenericPopup;
@@ -50,7 +48,7 @@ public class InternalTransferPopUpPanel extends CreateComposite {
 
     @Override
     protected void createButtonClicked() {
-        HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
                     @Override
                     public void onFailure(Throwable arg0) {
@@ -115,16 +113,6 @@ public class InternalTransferPopUpPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-        if (selectCompanyWidget.getListBox().getSelectedValue() != null && fields.get("transferDate") != null) {
-            DateField transferDate = (DateField) fields.get("transferDate");
-            DateTimeFormat dtf = DateTimeFormat.getFormat("MM/dd/yyyy");
-            JSONObject selectedObject = selectCompanyWidget.getSelectedObject();
-            return OfficeWelcome.constants.root_url() + "employee/internalTransfer?employeeId=" + entityId +
-                    "&companyId=" + selectedObject.get("id").isString().stringValue() +
-                    "&transferDate=" + dtf.format(transferDate.getDate());
-        } else {
-            return OfficeWelcome.constants.root_url() + "employee/" + entityId;
-        }
+        return OfficeWelcome.constants.root_url() + "employee/internalTransfer/" + entityId;
     }
-
 }
