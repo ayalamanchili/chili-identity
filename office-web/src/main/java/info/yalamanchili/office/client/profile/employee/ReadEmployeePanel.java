@@ -90,7 +90,7 @@ public class ReadEmployeePanel extends ReadComposite {
             assignFieldValueFromEntity("ssn", entity, DataType.STRING_FIELD);
         }
         assignFieldValueFromEntity("employeeType", entity, null);
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONSULTANT_TIME_ADMIN, ROLE.ROLE_RELATIONSHIP)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONSULTANT_TIME_ADMIN, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_HR_ADMINSTRATION)) {
             assignFieldValueFromEntity("status", entity, DataType.BOOLEAN_FIELD);
         }
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
@@ -145,7 +145,7 @@ public class ReadEmployeePanel extends ReadComposite {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
             addField("ssn", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         }
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONSULTANT_TIME_ADMIN, ROLE.ROLE_RELATIONSHIP)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONSULTANT_TIME_ADMIN, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_HR_ADMINSTRATION)) {
             addField("status", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         }
         addField("endDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
