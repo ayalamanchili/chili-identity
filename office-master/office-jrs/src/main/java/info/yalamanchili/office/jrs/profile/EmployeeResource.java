@@ -113,14 +113,16 @@ public class EmployeeResource extends CRUDResource<Employee> {
         return employeeDao.read(id);
     }
     
-    @GET
-    @Path("/internalTransfer")
-    public void internalCompanyTransfer(@QueryParam("employeeId") Long id, @QueryParam("companyId") Long companyId, @QueryParam("transferDate") Date transferDate) {
+    @PUT
+    @Path("/internalTransfer/{employeeId}")
+    @Validate
+    public void internalCompanyTransfer(@PathParam("employeeId") Long id, EmployeeCompanyTransferDto dto) {
         Employee emp = EmployeeDao.instance().findById(id);
-        Company company = CompanyDao.instance().findById(companyId);
+        Company company = CompanyDao.instance().findById(dto.getCompany().getId());
         emp.setCompany(company);
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-        CommentDao.instance().addComment("Transfer to " + emp.getCompany().getName() + " on " + sdf.format(transferDate), emp);
+        CommentDao.instance().addComment("Transfer to "+ emp.getCompany().getName()+
+                " on " + sdf.format(dto.getTransferDate()), emp);
     }
     
     @PUT
