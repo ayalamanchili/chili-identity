@@ -25,6 +25,7 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.LocalStorage;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.config.OfficeClientConfig;
 import info.yalamanchili.office.client.internalization.OfficeConstants2;
 import info.yalamanchili.office.client.login.LoginPage;
@@ -106,6 +107,7 @@ public class OfficeWelcome implements EntryPoint {
                 RootLayout rootLayout = new RootLayout();
                 RootLayoutPanel.get().add(rootLayout);
                 History.addValueChangeHandler(new OfficeUrlRoutingHandler());
+                setLogo(employee);
                 if (History.getToken() != null) {
                     History.fireCurrentHistoryState();
                 }
@@ -114,6 +116,17 @@ public class OfficeWelcome implements EntryPoint {
 
         SessionTimeoutMonitor.get().initialize();
 
+    }
+    
+    protected void setLogo(JSONObject employee) {
+        if (employee.get("company") != null) {
+            if (employee.get("company").isObject().get("name").isString().stringValue().equalsIgnoreCase(Company.CGS_INC)) {
+                StatusPanel.instance().setLogo(OfficeImages.INSTANCE.cgsLogo());
+            }
+            else if(employee.get("company").isObject().get("name").isString().stringValue().equalsIgnoreCase(Company.TECHPILLARS)){
+                StatusPanel.instance().setLogo(OfficeImages.INSTANCE.techPillarsLogo());
+            }
+        }
     }
 
     public String getCurrentUserName() {
