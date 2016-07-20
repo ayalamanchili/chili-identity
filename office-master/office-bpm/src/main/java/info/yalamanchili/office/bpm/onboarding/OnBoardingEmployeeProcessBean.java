@@ -43,7 +43,7 @@ public class OnBoardingEmployeeProcessBean {
         email.addTo(emp.getPrimaryEmail().getEmail());
         email.setSubject("Welcome to System Soft Portal");
         String messageTextforuser = "Hai " + "<b>" + emp.getFirstName() + "</b>" + " " + "<b>" + emp.getLastName() + "</b>" + " \n";
-        messageTextforuser = messageTextforuser.concat(" <br> Thank you for Completing the onboarding form. </br> \n Our <b> Onboarding Manager </b> Will get in touch with you once the process complete");
+        messageTextforuser = messageTextforuser.concat(" <br> Thank you for completing the onboarding form. </br> \n <br> Our <b> Onboarding Manager </b> will get in touch with you once the process is completed or for any additional information. </br> \n <br> Please login to portal and update it in profile tab</br> \n <br> Instruction: https://apps.sstech.us/site/office/profile/profile.html </br>");
         email.setBody(messageTextforuser);
         MessagingService.instance().sendEmail(email);
     }
