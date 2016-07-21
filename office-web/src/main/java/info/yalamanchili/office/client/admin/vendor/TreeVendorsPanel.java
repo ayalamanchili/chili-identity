@@ -37,8 +37,9 @@ public class TreeVendorsPanel extends TreePanelComposite {
     protected static final String VENDOR_ACCT_PAY_CONTACTS_NODE = "vendoracctpaycontacts";
     protected static final String VENDOR_INVOICE_SCHEDULE_NODE = "invoiceSchedules";
 
-    public TreeVendorsPanel(String entityId) {
+    public TreeVendorsPanel(String entityId, JSONObject vendor) {
         super(entityId);
+        this.vendorId = JSONUtils.toString(vendor, "id");
         instance = this;
         init("Vendors", OfficeWelcome.constants);
     }
