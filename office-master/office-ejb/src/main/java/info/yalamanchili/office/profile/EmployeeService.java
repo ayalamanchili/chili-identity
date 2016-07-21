@@ -192,6 +192,9 @@ public class EmployeeService {
 
     public void deactivateUser(Long empId, EmployeeCreateDto dto) {
         Employee emp = getEmployee(empId);
+        if(emp.getEmployeeType().getName().equalsIgnoreCase(EmployeeType.SUBCONTRACTOR) || emp.getEmployeeType().getName().equalsIgnoreCase(EmployeeType._1099_CONTRACTOR)){
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.deactivate", "Subcontractors and 1099 contractors can not be deactivated");
+        }
         if (!emp.isActive()) {
             emp.setEndDate(dto.getEndDate());
             em.merge(emp);

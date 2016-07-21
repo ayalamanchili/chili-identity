@@ -264,6 +264,12 @@ select[disabled]
 .y-gwt-ReadAllComposite-EvenRow{
     background-color: #F1F1F1;
 }
+
+.y-gwt-ReadAllComposite-DeactiveRow{
+    background-color: #f3beb5;
+
+}
+
 /*Text insiise the tabel START*/
 .readAllCompositeCaptionPanel {
     border: 1px solid #CFCDCD !important;

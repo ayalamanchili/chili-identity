@@ -73,10 +73,11 @@ public class EmployeeDto implements Serializable {
     protected String gender;
     protected String branchName;
     protected String compny;
+    protected Boolean status;
     
     protected int noOfYears;
     
-    public EmployeeDto(Long id, String firstName, String lastName, String middleInitial, String employeeId, Date dateOfBirth, Sex sex, Branch branch, WorkStatus workStatus, String imageURL, Date startDate, Date endDate, String email, String phoneNumber, String phoneNumberExt, String jobTitle, EmployeeType employeeType, Company company, String ssn) {
+    public EmployeeDto(Long id, String firstName, String lastName, String middleInitial, String employeeId, Date dateOfBirth, Sex sex, Branch branch, WorkStatus workStatus, String imageURL, Date startDate, Date endDate, String email, String phoneNumber, String phoneNumberExt, String jobTitle, EmployeeType employeeType, Company company, String ssn, Boolean status) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -96,6 +97,7 @@ public class EmployeeDto implements Serializable {
         this.company = company;
         this.ssn = ssn;
         this.endDate = endDate;
+        this.status = status;
     }
     
     public EmployeeDto() {
@@ -113,6 +115,14 @@ public class EmployeeDto implements Serializable {
     
     public Long getId() {
         return id;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
     
     public void setId(Long id) {
@@ -305,7 +315,7 @@ public class EmployeeDto implements Serializable {
     
     @Override
     public String toString() {
-        return "EmployeeDto{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", middleInitial=" + middleInitial + ", employeeId=" + employeeId + ", dateOfBirth=" + dateOfBirth + ", sex=" + sex + ", imageURL=" + imageURL + ", startDate=" + startDate + ", email=" + email + ", phoneNumber=" + phoneNumber + ", jobTitle=" + jobTitle + ", employeeType=" + employeeType + ", workStatus=" + workStatus + '}';
+        return "EmployeeDto{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", middleInitial=" + middleInitial + ", employeeId=" + employeeId + ", dateOfBirth=" + dateOfBirth + ", sex=" + sex + ", imageURL=" + imageURL + ", startDate=" + startDate + ", email=" + email + ", phoneNumber=" + phoneNumber + ", jobTitle=" + jobTitle + ", employeeType=" + employeeType + ", workStatus=" + workStatus + ", staus=" + status +'}';
     }
     
     public static EmployeeDto map(Mapper mapper, info.yalamanchili.office.entity.profile.Employee entity) {
@@ -335,6 +345,7 @@ public class EmployeeDto implements Serializable {
         }
         dto.setEmployeeType(entity.getEmployeeType());
         dto.setId(entity.getId());
+        dto.setStatus(entity.isActive());
         return dto;
     }
 }

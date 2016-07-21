@@ -147,6 +147,9 @@ public class ImmigrationCheckRequisitionService {
         if (res.getEmployee() == null && res.getCompanyName() != null) {
             res.setCompany(CompanyDao.instance().findByCompanyName(res.getCompanyName()));
         }
+        res.setEmployee(entity.getEmployee());
+        res.setCaseType(entity.getCaseType());
+        res.setStatus(entity.getStatus());
         return res;
     }
 

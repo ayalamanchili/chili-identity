@@ -77,7 +77,7 @@ public class EmployeeOnBoardingService {
 
     public void initiateOnBoarding(InitiateOnBoardingDto dto) {
         EmployeeOnBoarding eo = EmployeeOnBoardingDao.instance().findByEmail(dto.getEmail());
-        if (eo != null) {
+        if (eo != null&& !eo.getStatus().equals(OnBoardingStatus.Rejected)) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invitation.already.sent", "Onboarding Invitation Already Sent To This Email");
         } else {
             InviteCode code = InviteCodeGeneratorService.instance().generate(InvitationType.CLIENT_ONBOARDING, dto.getEmail(), new Date(), DateUtils.addDays(new Date(), 7), false);
