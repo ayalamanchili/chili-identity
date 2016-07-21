@@ -278,11 +278,11 @@ public class ContractService {
             email.setHtml(Boolean.TRUE);
             email.setRichText(Boolean.TRUE);
             email.setSubject("Billing Rate Has Updated For : " + ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
-            String messageText = " <b>Updated Bill Rate:</b> " + " ".concat("</br>").concat("</br>");         
-            messageText = messageText.concat("<b>Client &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp</b>" + ci.getClient().getName()) + "</br>" ;
+            String messageText = " <b>Updated Bill Rate:</b> " + " ".concat("</br>").concat("</br>");
+            messageText = messageText.concat("<b>Client &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp</b>" + ci.getClient().getName()) + "</br>";
             messageText = messageText.concat("<b>Item No &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp</b>" + ci.getItemNumber()) + "</br>";
             messageText = messageText.concat("<b>Project &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp</b>" + ci.getClientProject().getName()) + "</br>";
-            messageText = messageText.concat("<b>Updated By &nbsp;&nbsp;&nbsp;:&nbsp</b>" + updatedBy) +"</br>";
+            messageText = messageText.concat("<b>Updated By &nbsp;&nbsp;&nbsp;:&nbsp</b>" + updatedBy) + "</br>";
             messageText = messageText.concat("<b>Effective Date :&nbsp</b>" + new SimpleDateFormat("MM-dd-yyyy").format(effectiveDate)).concat("</br>").concat("</br>");
             AuditService auditService = AuditService.instance();
             messageText = messageText + auditService.buildChangesTable(auditService.compare(auditService.mostRecentVersion(ci.getClass(), ci.getId()), ci));
@@ -490,6 +490,14 @@ public class ContractService {
                 dto.setFinalBillingRate(dto.getBillingRate().subtract(value.divide(new BigDecimal(100)).multiply(dto.getBillingRate())));
             }
         }
+    }
+
+    public BigDecimal getEffectiveBillingRate(Long id) {
+        Query query = em.createNativeQuery("Select billingRate from BILLINGRATE where clientInformation_id=" + id + " and billingRate is not null and effectiveDate <= NOW() order by effectiveDate desc,updatedTs desc LIMIT 1");
+        for (Object obj : query.getResultList()) {
+            return (BigDecimal) obj;
+        }
+        return null;
     }
 
     public void getEffectiveOvertimeBillingRate(ClientInformation ci, ContractDto dto) {
