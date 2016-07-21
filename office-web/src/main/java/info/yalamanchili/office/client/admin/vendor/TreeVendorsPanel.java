@@ -45,6 +45,7 @@ public class TreeVendorsPanel extends TreePanelComposite {
 
     public TreeVendorsPanel(JSONObject vendor) {
         super(vendor);
+        this.vendorId = JSONUtils.toString(vendor, "id");
         instance = this;
         String name = JSONUtils.toString(vendor, "name");
         init(name, OfficeWelcome.constants);
@@ -89,7 +90,8 @@ public class TreeVendorsPanel extends TreePanelComposite {
         }
         if (VENDOR_INVOICE_SCHEDULE_NODE.equals(entityNodeKey)) {
             TabPanel.instance().adminPanel.entityPanel.clear();
-            TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorInvoiceSchedulePanel(entityId));
+            logger.info("helooooooooooooo:" + vendorId.getClass().getCanonicalName());
+            TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorInvoiceSchedulePanel(entityId, vendorId.getClass().getCanonicalName()));
         }
     }
 

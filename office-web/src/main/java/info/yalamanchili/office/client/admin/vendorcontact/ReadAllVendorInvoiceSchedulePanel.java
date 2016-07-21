@@ -30,11 +30,8 @@ public class ReadAllVendorInvoiceSchedulePanel extends ReadAllInvoiceSchedulePan
 
     @Override
     protected String getSchedulesURL(Integer start, String limit) {
-        if (targetClassName != null) {
-            return OfficeWelcome.constants.root_url() + "invoice-schedule/" + targetClassName + "/" + parentId + "/" + start.toString()
-                    + "/" + limit.toString();
-        }
-        return OfficeWelcome.constants.root_url() + "vendor/invoice-schedules/" + parentId + "/" + start.toString() + "/" + limit.toString();
+        return OfficeWelcome.constants.root_url() + "invoice-schedule/" + targetClassName + "/" + parentId + "/" + start.toString()
+                + "/" + limit.toString();
     }
 
     @Override
@@ -51,13 +48,13 @@ public class ReadAllVendorInvoiceSchedulePanel extends ReadAllInvoiceSchedulePan
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Vendor Invoice Schedule");
         TabPanel.instance().adminPanel.entityPanel.clear();
-        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorInvoiceSchedulePanel(TreeVendorsPanel.instance().getEntityId()));
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorInvoiceSchedulePanel(TreeVendorsPanel.instance().getEntityId(), targetClassName));
     }
 
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().adminPanel.entityPanel.clear();
-        TabPanel.instance().adminPanel.entityPanel.add(new UpdateVendorInvoiceSchedulePanel(getEntity(entityId)));
+        TabPanel.instance().adminPanel.entityPanel.add(new UpdateVendorInvoiceSchedulePanel(getEntity(entityId), targetClassName));
     }
 
     @Override
@@ -69,7 +66,7 @@ public class ReadAllVendorInvoiceSchedulePanel extends ReadAllInvoiceSchedulePan
     @Override
     protected void createButtonClicked() {
         TabPanel.instance().adminPanel.entityPanel.clear();
-        TabPanel.instance().adminPanel.entityPanel.add(new CreateVendorInvoiceSchedulePanel(CreateComposite.CreateCompositeType.ADD));
+        TabPanel.instance().adminPanel.entityPanel.add(new CreateVendorInvoiceSchedulePanel(CreateComposite.CreateCompositeType.ADD, parentId, targetClassName));
     }
 
     @Override
