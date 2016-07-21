@@ -14,6 +14,7 @@ import info.yalamanchili.office.client.InvoiceScheduleService;
 import info.yalamanchili.office.dao.client.InvoiceScheduleDao;
 import info.yalamanchili.office.entity.client.InvoiceSchedule;
 import info.yalamanchili.office.jrs.CRUDResource;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -25,6 +26,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -33,16 +35,18 @@ import org.springframework.stereotype.Component;
 @Path("secured/invoice-schedule")
 @Component
 @Scope("request")
+@Transactional
 public class InvoiceScheduleResource extends CRUDResource<InvoiceSchedule> {
 
     @Autowired
     public InvoiceScheduleDao invoiceScheduleDao;
+
     @Autowired
-    protected InvoiceScheduleService scheduleService;
+    public InvoiceScheduleService invoiceScheduleService;
 
     @Override
     public CRUDDao getDao() {
-        return invoiceScheduleDao;
+        return null;
     }
 
     @GET
@@ -52,12 +56,39 @@ public class InvoiceScheduleResource extends CRUDResource<InvoiceSchedule> {
         return invoiceScheduleDao.findById(id);
     }
 
+    @GET
+    @Path("/{targetClassName}/{targetId}/{start}/{limit}")
+    public InvoiceScheduleTable getInvoiceSchedules(@PathParam("targetClassName") String targetClassName, @PathParam("targetId") Long targetId, @PathParam("start") int start, @PathParam("limit") int limit) {
+        InvoiceScheduleTable tableObj = new InvoiceScheduleTable();
+        List<InvoiceSchedule> invoiceSchedules = new ArrayList<InvoiceSchedule>();
+        for (InvoiceSchedule schedule : invoiceScheduleDao.findAll(targetId, targetClassName)) {
+            invoiceSchedules.add(schedule);
+        }
+        tableObj.setEntities(invoiceSchedules);
+        tableObj.setSize((long) invoiceSchedules.size());
+        return tableObj;
+    }
+
+    @PUT
+    @Path("/add/{targetClassName}/{targetId}")
+    @Validate
+    public void addInvoiceSchedule(@PathParam("targetClassName") String targetClassName, @PathParam("targetId") Long targetId, InvoiceSchedule schedule) {
+        invoiceScheduleService.addInvoiceSchedule(targetId, targetClassName, schedule);
+    }
+
     @PUT
     @Override
+    @Path("/update")
     @Validate
     public InvoiceSchedule save(InvoiceSchedule schedule) {
-        scheduleService.saveSchedule(schedule);
-        return schedule;
+        return invoiceScheduleService.update(schedule);
+    }
+
+    @PUT
+    @Override
+    @Path("/delete/{id}")
+    public void delete(@PathParam("id") Long id) {
+        invoiceScheduleDao.delete(id);
     }
 
     @XmlRootElement

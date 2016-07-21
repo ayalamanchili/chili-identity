@@ -163,9 +163,7 @@ public class VendorResource extends CRUDResource<Vendor> {
     @Validate
     @Path("/invoice-schedules/{vendorId}")
     public void addVendorInvoiceSchedule(@PathParam("vendorId") Long vendorId, InvoiceSchedule schedule) {
-        Vendor vendor = (Vendor) getDao().findById(vendorId);
-        InvoiceSchedule invoiceSchedule = InvoiceScheduleService.instance().saveSchedule(schedule);
-        vendor.addInvoiceSchedules(invoiceSchedule);
+        InvoiceScheduleService.instance().addInvoiceSchedule(vendorId, schedule);
     }
 
     @PUT
@@ -186,15 +184,6 @@ public class VendorResource extends CRUDResource<Vendor> {
         Contact contact = ContactDao.instance().findById(contactId);
         vendor.getAcctPayContacts().remove(contact);
         ContactDao.instance().delete(contact.getId());
-    }
-    
-    @PUT
-    @Path("/invoice-schedules/remove/{vendorId}/{scheduleId}")
-    public void removeInvoiceSchedule(@PathParam("vendorId") Long vendorId, @PathParam("scheduleId") Long scheduleId) {
-        Vendor vendor = (Vendor) getDao().findById(vendorId);
-        InvoiceSchedule invoiceSchedule = InvoiceScheduleDao.instance().findById(scheduleId);
-        vendor.getInvoiceSchedules().remove(invoiceSchedule);
-        InvoiceScheduleDao.instance().delete(invoiceSchedule.getId());
     }
 
     /**
@@ -248,8 +237,12 @@ public class VendorResource extends CRUDResource<Vendor> {
             @PathParam("limit") int limit) {
         InvoiceScheduleTable tableObj = new InvoiceScheduleTable();
         Vendor vendor = (Vendor) getDao().findById(id);
-        tableObj.setEntities(vendor.getInvoiceSchedules());
-        tableObj.setSize((long) vendor.getInvoiceSchedules().size());
+        List<InvoiceSchedule> invoiceSchedules = new ArrayList<InvoiceSchedule>();
+        for (InvoiceSchedule schedule : InvoiceScheduleDao.instance().findAll(vendor.getId(), vendor.getClass().getCanonicalName())) {
+            invoiceSchedules.add((InvoiceSchedule) schedule);
+        }
+        tableObj.setEntities(invoiceSchedules);
+        tableObj.setSize((long) invoiceSchedules.size());
         return tableObj;
     }
 
