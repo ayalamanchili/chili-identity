@@ -89,14 +89,15 @@ public class InvoiceResource extends CRUDResource<Invoice> {
     @Path("/save/{id}")
     //TODO add invoice mgr role check using pre auth
     public Invoice saveInvoice(@PathParam("id") Long id, Invoice invoice) {
-
-        if (invoice.getInvoiceSentDate() != null && invoice.getInvoiceDate() != null) {
-            if (invoice.getInvoiceSentDate().before(invoice.getInvoiceDate())) {
-                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invoiceSentDate.not.before.invoiceDate", "InvoiceSentDate should not be prior to InvoiceDate");
+        ClientInformation ci = ClientInformationDao.instance().findById(id);
+        if (invoice.getStartDate() != null && invoice.getEndDate() != null) {
+            if (invoice.getEndDate().before(invoice.getStartDate())) {
+                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invoicePeriodTo.not.before.invoicePeriodFrom", "InvoicePeriod EndDate should not be prior to InvoicePeriod StartDate");
+            } else if (invoice.getStartDate().before(ci.getStartDate()) || invoice.getEndDate().after(ci.getEndDate())) {
+                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invoicePeriod.should.matchwith.projectperiod", "InvoicePeriod should be in between Project StartDate and Project EndDate");
             }
         }
         Invoice inv = new Invoice();
-        ClientInformation ci = ClientInformationDao.instance().findById(id);
         inv.setEmployee(ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
         inv.setStartDate(invoice.getStartDate());
         inv.setEndDate(invoice.getEndDate());
@@ -122,6 +123,15 @@ public class InvoiceResource extends CRUDResource<Invoice> {
     //TODO add invoice mgr role check using pre auth
     public Invoice update(@PathParam("id") Long id, InvoiceUpdateDto invoice) {
         Invoice inv = invoiceDao.findById(id);
+        if (invoice.getStartDate() != null && invoice.getEndDate() != null) {
+            Date cpdStartDate = inv.getClientInformation().getStartDate();
+            Date cpdEndDate = inv.getClientInformation().getEndDate();
+            if (invoice.getEndDate().before(invoice.getStartDate())) {
+                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invoicePeriodTo.not.before.invoicePeriodFrom", "InvoicePeriod EndDate should not be prior to InvoicePeriod StartDate");
+            } else if (invoice.getStartDate().before(cpdStartDate) || invoice.getEndDate().after(cpdEndDate)) {
+                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invoicePeriod.should.matchwith.projectperiod", "InvoicePeriod should be in between Project StartDate and Project EndDate");
+            }
+        }
         inv.setEmployee(invoice.getEmployee());
         inv.setOverTimeBillingRate(invoice.getOverTimeBillingRate());
         inv.setHours(invoice.getHours());
@@ -209,7 +219,6 @@ public class InvoiceResource extends CRUDResource<Invoice> {
         InvoiceService.instance().generateInvoiceSummaryReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
 
-   
     @GET
     @Path("/active-clientinfo-report")
     //TODO add invoice mgr role check using pre auth
