@@ -16,12 +16,12 @@ import info.yalamanchili.office.client.admin.vendor.TreeVendorsPanel;
  * @author Ramana.Lukalapu
  */
 public class CreateVendorInvoiceSchedulePanel extends CreateInvoiceSchedulePanel {
-    
+
     public CreateVendorInvoiceSchedulePanel(CreateComposite.CreateCompositeType type) {
         super(type);
     }
-    
-     public CreateVendorInvoiceSchedulePanel(CreateComposite.CreateCompositeType type, String parentId, String targetClassName) {
+
+    public CreateVendorInvoiceSchedulePanel(CreateComposite.CreateCompositeType type, String parentId, String targetClassName) {
         super(type, parentId, targetClassName);
     }
 
@@ -29,12 +29,12 @@ public class CreateVendorInvoiceSchedulePanel extends CreateInvoiceSchedulePanel
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Added Vendor Invoice Schedule");
         TabPanel.instance().adminPanel.entityPanel.clear();
-        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorInvoiceSchedulePanel(TreeVendorsPanel.instance().getEntityId()));
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorInvoiceSchedulePanel(TreeVendorsPanel.instance().getEntityId(), targetClassName));
     }
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "vendor/invoice-schedules/" + TreeVendorsPanel.instance().getEntityId();
+        return OfficeWelcome.constants.root_url() + "invoice-schedule/add/" + targetClassName + "/" + parentId;
     }
-    
+
 }

@@ -11,7 +11,6 @@ package info.yalamanchili.office.client;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.client.InvoiceScheduleDao;
 import info.yalamanchili.office.entity.client.InvoiceSchedule;
-import info.yalamanchili.office.entity.client.Vendor;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,15 +30,6 @@ public class InvoiceScheduleService {
     
     @Autowired
     public InvoiceScheduleDao invoiceScheduleDao;
-
-     public void addInvoiceSchedule(Long vendorId, InvoiceSchedule schedule) {
-        Vendor vendor = (Vendor) em.find(Vendor.class, vendorId);
-        InvoiceSchedule entity = null;
-        entity = invoiceScheduleDao.save(schedule);
-        entity.setTargetEntityId(vendorId);
-        entity.setTargetEntityName(vendor.getClass().getCanonicalName());
-        em.merge(entity);
-    }
 
     public void addInvoiceSchedule(Long targetId, String targetClassName, InvoiceSchedule schedule) {
         InvoiceSchedule entity = null;

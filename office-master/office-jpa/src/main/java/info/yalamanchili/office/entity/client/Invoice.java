@@ -13,7 +13,6 @@ import info.chili.jpa.validation.Unique;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import java.math.BigDecimal;
 import java.util.Date;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -68,7 +67,7 @@ public class Invoice extends AbstractEntity {
 
     protected BigDecimal overTimeBillingRate;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @ForeignKey(name = "FK_ClinetInfo_Invoice")
     protected ClientInformation clientInformation;
 

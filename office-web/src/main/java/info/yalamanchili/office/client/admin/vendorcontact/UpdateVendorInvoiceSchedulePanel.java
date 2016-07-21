@@ -20,7 +20,7 @@ public class UpdateVendorInvoiceSchedulePanel extends UpdateInvoiceSchedulePanel
     public UpdateVendorInvoiceSchedulePanel(JSONObject entity) {
         super(entity);
     }
-    
+
     public UpdateVendorInvoiceSchedulePanel(JSONObject entity, String targetClassName) {
         super(entity, targetClassName);
     }
@@ -29,7 +29,7 @@ public class UpdateVendorInvoiceSchedulePanel extends UpdateInvoiceSchedulePanel
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated Vendor Invoice Schedule");
         TabPanel.instance().adminPanel.entityPanel.clear();
-        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorInvoiceSchedulePanel(TreeVendorsPanel.instance().getEntityId()));
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorInvoiceSchedulePanel(TreeVendorsPanel.instance().getEntityId(), targetClassName));
     }
 
     @Override
