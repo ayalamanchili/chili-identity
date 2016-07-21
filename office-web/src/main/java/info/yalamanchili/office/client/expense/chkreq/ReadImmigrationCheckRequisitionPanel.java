@@ -40,7 +40,7 @@ public class ReadImmigrationCheckRequisitionPanel extends ReadComposite {
     protected SelectCompanyWidget selectCompanyWidget = new SelectCompanyWidget(false, true, Alignment.HORIZONTAL);
     private static Logger logger = Logger.getLogger(ReadImmigrationCheckRequisitionPanel.class.getName());
     SelectEmployeeWidget selectEmployeeWidgetF = new SelectEmployeeWidget("Employee", false, true);
-    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", true, false, Alignment.HORIZONTAL);
+    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", true, true, Alignment.HORIZONTAL);
 
     public static ReadImmigrationCheckRequisitionPanel instance() {
         return instance;
