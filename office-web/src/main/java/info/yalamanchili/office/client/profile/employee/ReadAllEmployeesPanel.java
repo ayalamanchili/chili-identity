@@ -23,6 +23,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.HTMLTable;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.utils.FormatUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -109,9 +110,16 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
                 table.setText(i, 4, JSONUtils.toString(entity, "jobTitle"));
                 table.setWidget(i, 5, new ImageField("Picture", JSONUtils.toString(entity, "imageURL"), JSONUtils.toString(entity, "id"), 50, 50, false));
             }
+            Boolean status = JSONUtils.toBoolean(entity,"status");
+            if(!status){
+                if(Auth.isEmployee(entity) || Auth.isCorporateEmployee(entity) || Auth.isInternEmployee(entity)){
+                    HTMLTable.RowFormatter rf = table.getRowFormatter();
+                    rf.addStyleName(i, "y-gwt-ReadAllComposite-DeactiveRow");
+                }
+            }
         }
     }
-
+    
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         if (Auth.isAdmin()) {
