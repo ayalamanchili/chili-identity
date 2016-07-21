@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 public class TreeVendorsPanel extends TreePanelComposite {
 
     private static TreeVendorsPanel instance;
+    protected String vendorId;
 
     public static TreeVendorsPanel instance() {
         return instance;

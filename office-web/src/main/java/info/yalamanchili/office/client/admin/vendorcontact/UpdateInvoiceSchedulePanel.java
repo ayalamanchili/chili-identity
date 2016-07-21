@@ -7,9 +7,7 @@ package info.yalamanchili.office.client.admin.vendorcontact;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
@@ -26,12 +24,15 @@ public abstract class UpdateInvoiceSchedulePanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateInvoiceSchedulePanel.class.getName());
 
+    protected String targetClassName;
+
     public UpdateInvoiceSchedulePanel(JSONObject entity) {
         initUpdateComposite(entity, "InvoiceSchedule", OfficeWelcome.constants2);
     }
 
-    public UpdateInvoiceSchedulePanel(String entityId) {
-        initUpdateComposite(entityId, "InvoiceSchedule", OfficeWelcome.constants2);
+    public UpdateInvoiceSchedulePanel(JSONObject entity, String targetClassName) {
+        this.targetClassName = targetClassName;
+        initUpdateComposite(entity, "InvoiceSchedule", OfficeWelcome.constants2);
     }
 
     @Override
@@ -96,30 +97,15 @@ public abstract class UpdateInvoiceSchedulePanel extends UpdateComposite {
     }
 
     @Override
-    public void loadEntity(String entityId) {
-        HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
-                new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity);
-                    }
-                });
-
-    }
-    
-    @Override
     protected boolean processClientSideValidations(JSONObject entity) {
         DateField startDateF = (DateField) fields.get("startDate");
         DateField endDateF = (DateField) fields.get("endDate");
-       if (startDateF.getDate() != null && endDateF.getDate() != null && startDateF.getDate().after(endDateF.getDate())) {
+        if (startDateF.getDate() != null && endDateF.getDate() != null && startDateF.getDate().after(endDateF.getDate())) {
             endDateF.setMessage("End Date must be equal to or after Start Date");
             return false;
         }
         return true;
     }
-
-    protected abstract String getReadURI();
 
     protected abstract String getURI();
 }

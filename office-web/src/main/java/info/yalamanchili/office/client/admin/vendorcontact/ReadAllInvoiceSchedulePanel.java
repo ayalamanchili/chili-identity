@@ -8,7 +8,6 @@ package info.yalamanchili.office.client.admin.vendorcontact;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.user.client.Window;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.date.DateUtils;
@@ -23,13 +22,25 @@ import java.util.logging.Logger;
  */
 public abstract class ReadAllInvoiceSchedulePanel extends CRUDReadAllComposite {
 
-    private static Logger logger = Logger.getLogger(ReadAllInvoiceSchedulePanel.class.getName());
+    protected static Logger logger = Logger.getLogger(ReadAllInvoiceSchedulePanel.class.getName());
     public static ReadAllInvoiceSchedulePanel instance;
+    protected String targetClassName;
+
+    public static ReadAllInvoiceSchedulePanel instance() {
+        return instance;
+    }
 
     public ReadAllInvoiceSchedulePanel(String parentId) {
         instance = this;
         this.parentId = parentId;
         initTable("InvoiceSchedule", OfficeWelcome.constants2);
+    }
+
+    public ReadAllInvoiceSchedulePanel(String parentId, String targetClassName) {
+        instance = this;
+        this.parentId = parentId;
+        this.targetClassName = targetClassName;
+        initTable("Dependent", OfficeWelcome.constants2);
     }
 
     public ReadAllInvoiceSchedulePanel() {
@@ -86,7 +97,6 @@ public abstract class ReadAllInvoiceSchedulePanel extends CRUDReadAllComposite {
                     }
                 });
     }
-    
 
     protected abstract String getDeleteURL(String entityId);
 

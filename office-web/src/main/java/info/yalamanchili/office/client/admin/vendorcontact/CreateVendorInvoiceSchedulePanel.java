@@ -20,6 +20,10 @@ public class CreateVendorInvoiceSchedulePanel extends CreateInvoiceSchedulePanel
     public CreateVendorInvoiceSchedulePanel(CreateComposite.CreateCompositeType type) {
         super(type);
     }
+    
+     public CreateVendorInvoiceSchedulePanel(CreateComposite.CreateCompositeType type, String parentId, String targetClassName) {
+        super(type, parentId, targetClassName);
+    }
 
     @Override
     protected void postCreateSuccess(String result) {

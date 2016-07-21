@@ -24,8 +24,16 @@ public class ReadAllVendorInvoiceSchedulePanel extends ReadAllInvoiceSchedulePan
         super(parentId);
     }
 
+    public ReadAllVendorInvoiceSchedulePanel(String parentId, String targetClassName) {
+        super(parentId, targetClassName);
+    }
+
     @Override
     protected String getSchedulesURL(Integer start, String limit) {
+        if (targetClassName != null) {
+            return OfficeWelcome.constants.root_url() + "invoice-schedule/" + targetClassName + "/" + parentId + "/" + start.toString()
+                    + "/" + limit.toString();
+        }
         return OfficeWelcome.constants.root_url() + "vendor/invoice-schedules/" + parentId + "/" + start.toString() + "/" + limit.toString();
     }
 
@@ -36,7 +44,7 @@ public class ReadAllVendorInvoiceSchedulePanel extends ReadAllInvoiceSchedulePan
 
     @Override
     protected String getDeleteURL(String entityId) {
-        return OfficeWelcome.instance().constants.root_url() + "vendor/invoice-schedules/remove/" + parentId + "/" + entityId;
+        return OfficeWelcome.instance().constants.root_url() + "invoice-schedule/delete/" + entityId;
     }
 
     @Override
@@ -49,7 +57,7 @@ public class ReadAllVendorInvoiceSchedulePanel extends ReadAllInvoiceSchedulePan
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().adminPanel.entityPanel.clear();
-        TabPanel.instance().adminPanel.entityPanel.add(new UpdateVendorInvoiceSchedulePanel(entityId));
+        TabPanel.instance().adminPanel.entityPanel.add(new UpdateVendorInvoiceSchedulePanel(getEntity(entityId)));
     }
 
     @Override

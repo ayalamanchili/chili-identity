@@ -16,8 +16,15 @@ import info.yalamanchili.office.client.OfficeWelcome;
  * @author Ramana.Lukalapu
  */
 public class ReadInvoiceSchedulePanel extends ReadComposite {
-
+    
+    private static ReadInvoiceSchedulePanel instance;
+    
+    public static ReadInvoiceSchedulePanel instance() {
+        return instance;
+    }
+    
     public ReadInvoiceSchedulePanel(JSONObject entity) {
+        instance = this;
         initReadComposite(entity, "InvoiceSchedule", OfficeWelcome.constants2);
     }
 
@@ -47,7 +54,7 @@ public class ReadInvoiceSchedulePanel extends ReadComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "invoice-schedule";
+        return OfficeWelcome.constants.root_url() + "invoice-schedule/" + entityId;
     }
 
     @Override

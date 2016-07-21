@@ -7,6 +7,7 @@ package info.yalamanchili.office.client.admin.vendorcontact;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
@@ -23,9 +24,18 @@ import java.util.logging.Logger;
 public abstract class CreateInvoiceSchedulePanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateInvoiceSchedulePanel.class.getName());
+    protected String parentId;
+    protected String targetClassName;
 
     public CreateInvoiceSchedulePanel(CreateComposite.CreateCompositeType type) {
         super(type);
+        initCreateComposite("InvoiceSchedule", OfficeWelcome.constants2);
+    }
+
+    public CreateInvoiceSchedulePanel(CreateCompositeType type, String parentId, String targetClassName) {
+        super(type);
+        this.targetClassName = targetClassName;
+        this.parentId = parentId;
         initCreateComposite("InvoiceSchedule", OfficeWelcome.constants2);
     }
 
@@ -36,6 +46,8 @@ public abstract class CreateInvoiceSchedulePanel extends CreateComposite {
         assignEntityValueFromField("endDate", entity);
         assignEntityValueFromField("reminderDays", entity);
         assignEntityValueFromField("notes", entity);
+        entity.put("targetEntityName", new JSONString("targetEntityName"));
+        entity.put("targetEntityId", new JSONString("0"));
         return entity;
     }
 

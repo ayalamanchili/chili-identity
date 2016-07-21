@@ -5,6 +5,7 @@
  */
 package info.yalamanchili.office.client.admin.vendorcontact;
 
+import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -16,8 +17,12 @@ import info.yalamanchili.office.client.admin.vendor.TreeVendorsPanel;
  */
 public class UpdateVendorInvoiceSchedulePanel extends UpdateInvoiceSchedulePanel {
 
-    public UpdateVendorInvoiceSchedulePanel(String id) {
-        super(id);
+    public UpdateVendorInvoiceSchedulePanel(JSONObject entity) {
+        super(entity);
+    }
+    
+    public UpdateVendorInvoiceSchedulePanel(JSONObject entity, String targetClassName) {
+        super(entity, targetClassName);
     }
 
     @Override
@@ -28,12 +33,7 @@ public class UpdateVendorInvoiceSchedulePanel extends UpdateInvoiceSchedulePanel
     }
 
     @Override
-    protected String getReadURI() {
-        return OfficeWelcome.constants.root_url() + "invoice-schedule/" + getEntityId();
-    }
-
-    @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "invoice-schedule";
+        return OfficeWelcome.constants.root_url() + "invoice-schedule/update";
     }
 }
