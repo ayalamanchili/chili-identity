@@ -8,7 +8,7 @@
  */
 package info.yalamanchili.office.dao.client;
 
-import info.chili.dao.CRUDDao;
+import info.chili.dao.AbstractHandleEntityDao;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.client.InvoiceSchedule;
 import javax.persistence.EntityManager;
@@ -22,18 +22,18 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 @Scope("prototype")
-public class InvoiceScheduleDao extends CRUDDao<InvoiceSchedule> {
+public class InvoiceScheduleDao extends AbstractHandleEntityDao<InvoiceSchedule> {
 
     @PersistenceContext
     protected EntityManager em;
 
+    public InvoiceScheduleDao() {
+        super(InvoiceSchedule.class);
+    }
+
     @Override
     public EntityManager getEntityManager() {
         return em;
-    }
-
-    public InvoiceScheduleDao() {
-        super(InvoiceSchedule.class);
     }
 
     public static InvoiceScheduleDao instance() {
