@@ -62,7 +62,7 @@ public class ReadEmployeePanel extends ReadComposite {
                 });
 
     }
-    
+
     protected void populateComments() {
         entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.profile.Employee"));
     }
@@ -77,7 +77,9 @@ public class ReadEmployeePanel extends ReadComposite {
             assignFieldValueFromEntity("dateOfBirth", entity, DataType.DATE_FIELD);
         }
         assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_CONTRACTS_ADMIN)) {
+            assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
+        }
         assignFieldValueFromEntity("employeeId", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("jobTitle", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("branch", entity, DataType.ENUM_FIELD);
@@ -134,7 +136,9 @@ public class ReadEmployeePanel extends ReadComposite {
             addField("dateOfBirth", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         }
         addEnumField("sex", true, false, Sex.names(), Alignment.HORIZONTAL);
-        addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_CONTRACTS_ADMIN)) {
+            addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        }
         addField("jobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("branch", true, false, Branch.names(), Alignment.HORIZONTAL);
         addField("hoursPerWeek", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
