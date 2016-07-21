@@ -94,7 +94,7 @@ public class CommentDao extends AbstractHandleEntityDao<Comment> {
     }
 
     //Temp method for bis migration
-    public Comment addBISComment(String comment, AbstractEntity target, String updatedBy, Date updatedDate) {
+    public Comment addComment(String comment, AbstractEntity target, String updatedBy, Date updatedDate) {
         if (Strings.isNullOrEmpty(comment)) {
             return null;
         } else {

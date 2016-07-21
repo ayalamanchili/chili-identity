@@ -97,7 +97,7 @@ public class CommentsDataTool {
                 commentD = commentD + " To: " + ToDate;
             }
             if (commentD != null) {
-                CommentDao.instance().addBISComment(commentD, clientInfo, cr.getUpdatedBy(), cr.getUpdatedDate());
+                CommentDao.instance().addComment(commentD, clientInfo, cr.getUpdatedBy(), cr.getUpdatedDate());
             }
         }
     }

@@ -43,7 +43,7 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
         EmployeeOnBoarding entity = getRequestFromTask(dt);
         //Notes
         String notes = (String) dt.getExecution().getVariable("notes");
-        CommentDao.instance().addComment(notes, entity);
+        CommentDao.instance().addComment(dt.getTaskDefinitionKey() + " Completed Notes:" + notes, entity);
         switch (dt.getTaskDefinitionKey()) {
             case "onBoardingFormsAndDataValidationTask":
                 onBoardingFormsAndDataValidationTaskCompleted(entity, dt);
