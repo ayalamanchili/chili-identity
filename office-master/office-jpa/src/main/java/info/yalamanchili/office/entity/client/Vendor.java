@@ -94,9 +94,6 @@ public class Vendor extends AbstractEntity {
 
     protected Float vendorFees;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    protected List<InvoiceSchedule> invoiceSchedules;
-
     public String getName() {
         return name;
     }
@@ -188,25 +185,6 @@ public class Vendor extends AbstractEntity {
             return;
         }
         getContacts().add(contact);
-    }
-
-    @XmlTransient
-    public List<InvoiceSchedule> getInvoiceSchedules() {
-        if (this.invoiceSchedules == null) {
-            this.invoiceSchedules = new ArrayList<InvoiceSchedule>();
-        }
-        return this.invoiceSchedules;
-    }
-
-    public void setInvoiceSchedules(List<InvoiceSchedule> invoiceSchedules) {
-        this.invoiceSchedules = invoiceSchedules;
-    }
-
-    public void addInvoiceSchedules(InvoiceSchedule invoiceSchedule) {
-        if (invoiceSchedule == null) {
-            return;
-        }
-        getInvoiceSchedules().add(invoiceSchedule);
     }
 
     public String getWebsite() {

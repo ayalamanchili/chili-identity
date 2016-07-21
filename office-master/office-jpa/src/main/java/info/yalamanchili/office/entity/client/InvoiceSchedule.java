@@ -8,13 +8,14 @@
  */
 package info.yalamanchili.office.entity.client;
 
-import info.chili.jpa.AbstractEntity;
+import info.chili.jpa.AbstractHandleEntity;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Indexed;
 
@@ -25,10 +26,11 @@ import org.hibernate.search.annotations.Indexed;
 @Indexed
 @XmlRootElement
 @Entity
+@XmlType
 @Audited
-public class InvoiceSchedule extends AbstractEntity {
+public class InvoiceSchedule extends AbstractHandleEntity {
 
-    private static final long serialVersionUID = 11L;
+    private static final long serialVersionUID = 1L;
 
     @Temporal(javax.persistence.TemporalType.DATE)
     @NotNull(message = "{startDate.cannot.be.empty}")
@@ -43,10 +45,6 @@ public class InvoiceSchedule extends AbstractEntity {
 
     @Lob
     protected String notes;
-
-    public InvoiceSchedule() {
-        super();
-    }
 
     public Date getStartDate() {
         return startDate;
