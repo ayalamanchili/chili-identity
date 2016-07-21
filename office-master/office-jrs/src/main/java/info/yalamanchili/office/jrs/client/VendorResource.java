@@ -14,24 +14,20 @@ import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.chili.reporting.ReportGenerator;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
-import info.yalamanchili.office.client.InvoiceScheduleService;
 import info.yalamanchili.office.client.VendorService;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
-import info.yalamanchili.office.dao.client.InvoiceScheduleDao;
 import info.yalamanchili.office.dao.client.VendorDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.profile.ContactDto;
 import info.yalamanchili.office.dto.profile.ContactDto.ContactDtoTable;
-import info.yalamanchili.office.entity.client.InvoiceSchedule;
 import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.jrs.CRUDResource;
-import info.yalamanchili.office.jrs.client.InvoiceScheduleResource.InvoiceScheduleTable;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
 import info.yalamanchili.office.mapper.profile.ContactMapper;
 import info.yalamanchili.office.profile.ContactService;
@@ -160,13 +156,6 @@ public class VendorResource extends CRUDResource<Vendor> {
     }
 
     @PUT
-    @Validate
-    @Path("/invoice-schedules/{vendorId}")
-    public void addVendorInvoiceSchedule(@PathParam("vendorId") Long vendorId, InvoiceSchedule schedule) {
-        InvoiceScheduleService.instance().addInvoiceSchedule(vendorId, schedule);
-    }
-
-    @PUT
     @Path("/contact/remove/{vendorId}/{contactId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
     public void removeContact(@PathParam("vendorId") Long vendorId, @PathParam("contactId") Long contactId) {
@@ -228,21 +217,6 @@ public class VendorResource extends CRUDResource<Vendor> {
             tableObj.getEntities().add(ContactMapper.map(entity));
         }
         tableObj.setSize((long) contacts.size());
-        return tableObj;
-    }
-
-    @GET
-    @Path("/invoice-schedules/{id}/{start}/{limit}")
-    public InvoiceScheduleTable getInvoiceSchedules(@PathParam("id") long id, @PathParam("start") int start,
-            @PathParam("limit") int limit) {
-        InvoiceScheduleTable tableObj = new InvoiceScheduleTable();
-        Vendor vendor = (Vendor) getDao().findById(id);
-        List<InvoiceSchedule> invoiceSchedules = new ArrayList<InvoiceSchedule>();
-        for (InvoiceSchedule schedule : InvoiceScheduleDao.instance().findAll(vendor.getId(), vendor.getClass().getCanonicalName())) {
-            invoiceSchedules.add((InvoiceSchedule) schedule);
-        }
-        tableObj.setEntities(invoiceSchedules);
-        tableObj.setSize((long) invoiceSchedules.size());
         return tableObj;
     }
 
