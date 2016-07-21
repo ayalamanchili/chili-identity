@@ -38,6 +38,7 @@
             <item name="Manage Employees" href="office/my-office.html" collapse="true">
                 <item name="Create/Delete/Deactivate Employee" href="/office/manage-employees/create-deactivate-employee.html"/>
                 <item name="Internal Company Transfer" href="/office/manage-employees/internal-company-transfer.html"/>
+                <item name="Department Transfer" href="/office/manage-employees/department-transfer.html"/>
                 <item name="Employee Documents" href="/office/manage-employees/manage-employee-documents.html"/>
                 <item name="Employee Information" href="/office/manage-employees/update-employee-info.html"/>
                 <item name="Company Contacts" href="/office/manage-employees/manage-company-contacts.html"/>

@@ -16,3 +16,6 @@ Department Transfer
 
     ![Department Transfer Comment Added](../../images/manage-employees/department_transfer_comment_added.png)
 
+Department Transfer Process
+-----
+![alt text](../../images/manage-employees/department_transfer_process.png "Department Transfer Process")
