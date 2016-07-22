@@ -9,6 +9,7 @@
 package info.yalamanchili.office.dto.client;
 
 import info.chili.commons.DateUtils;
+import info.yalamanchili.office.entity.profile.BillingDuration;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -22,6 +23,7 @@ public class ActiveCPDReportDto {
     String client;
     String vendor;
     BigDecimal billingRate;
+    BillingDuration bilingDuration;
     Date startDate;
     Date endDate;
     String totalDuration;
@@ -29,19 +31,43 @@ public class ActiveCPDReportDto {
     BigDecimal monthlyIncome;
     BigDecimal remainingIncome;
     String employeeType;
+    BillingDuration billingDuration;
 
-    public ActiveCPDReportDto(String employee, String client, String vendor, BigDecimal billingRate, Date startDate, Date endDate, String employeeType) {
+    protected static final BigDecimal hoursPerMonth = new BigDecimal("168.00");
+    protected static final BigDecimal daysPerMonth = new BigDecimal("21.00");
+    protected static final BigDecimal weeksPerMonth = new BigDecimal("4.00");
+
+    public ActiveCPDReportDto(String employee, String client, String vendor, BigDecimal billingRate, BillingDuration billingDuration, Date startDate, Date endDate, String employeeType) {
         this.employee = employee;
         this.client = client;
         this.vendor = vendor;
         this.billingRate = billingRate;
+        this.billingDuration = billingDuration;
         this.startDate = startDate;
         this.endDate = endDate;
         this.employeeType = employeeType;
         this.totalDuration = Integer.toString(DateUtils.differenceInMonths(startDate, endDate));
         this.remainingDuration = DateUtils.differenceInMonths(new Date(), endDate);
-        this.monthlyIncome = new BigDecimal("168.00").multiply(billingRate);
-        this.remainingIncome = new BigDecimal("168.00").multiply(new BigDecimal(this.remainingDuration)).multiply(billingRate);
+        if (null != billingDuration) {
+            switch (billingDuration) {
+                case MONTH:
+                    this.monthlyIncome = billingRate;
+                    this.remainingIncome = new BigDecimal(this.remainingDuration).multiply(billingRate);
+                    break;
+                case WEEK:
+                    this.monthlyIncome = weeksPerMonth.multiply(billingRate);
+                    this.remainingIncome = weeksPerMonth.multiply(new BigDecimal(this.remainingDuration)).multiply(billingRate);
+                    break;
+                case DAY:
+                    this.monthlyIncome = daysPerMonth.multiply(billingRate);
+                    this.remainingIncome = daysPerMonth.multiply(new BigDecimal(this.remainingDuration)).multiply(billingRate);
+                    break;
+                default:
+                    this.monthlyIncome = hoursPerMonth.multiply(billingRate);
+                    this.remainingIncome = hoursPerMonth.multiply(new BigDecimal(this.remainingDuration)).multiply(billingRate);
+                    break;
+            }
+        }
     }
 
     public String getEmployee() {

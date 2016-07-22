@@ -8,7 +8,6 @@
  */
 package info.yalamanchili.office.client;
 
-import info.chili.commons.DateUtils;
 import info.chili.reporting.ReportGenerator;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
@@ -26,7 +25,6 @@ import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.jms.MessagingService;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -205,7 +203,7 @@ public class ContractReportService {
     }
 
     public List<ContractDto> getActiveCPDs() {
-        TypedQuery<ContractDto> q = em.createQuery("SELECT NEW " + ContractDto.class.getCanonicalName() + "(ci.id, ci.employee.firstName,ci.employee.lastName, ci.client.name, ci.vendor.name,ci.billingRate, ci.startDate, ci.endDate, ci.employee.employeeType.name) from " + ClientInformation.class.getCanonicalName() + " ci where ci.employee.user.enabled = true and ci.endDate > Now()", ContractDto.class);
+        TypedQuery<ContractDto> q = em.createQuery("SELECT DISTINCT NEW " + ContractDto.class.getCanonicalName() + "(ci.id, ci.employee.firstName,ci.employee.lastName, ci.client.name, ci.vendor.name,ci.billingRate,ci.billingRateDuration, ci.startDate, ci.endDate, ci.employee.employeeType.name) from " + ClientInformation.class.getCanonicalName() + " ci where ci.employee.user.enabled = true and ci.endDate > Now()", ContractDto.class);
         return q.getResultList();
     }
 
@@ -214,7 +212,7 @@ public class ContractReportService {
     public void generateActiveCPDSReport(String email) {
         List<ActiveCPDReportDto> res = new ArrayList<>();
         getActiveCPDs().stream().forEach((dto) -> {
-            res.add(new ActiveCPDReportDto(dto.getEmployee(), dto.getClient(), dto.getVendor(), dto.getBillingRate(), dto.getStartDate(), dto.getEndDate(), dto.getEmployeeType()));
+            res.add(new ActiveCPDReportDto(dto.getEmployee(), dto.getClient(), dto.getVendor(), dto.getBillingRate(), dto.getBillingRateDuration(), dto.getStartDate(), dto.getEndDate(), dto.getEmployeeType()));
         });
         String[] columnOrder = new String[]{"employee", "client", "vendor", "billingRate", "startDate", "endDate", "totalDuration", "remainingDuration", "monthlyIncome", "remainingIncome", "employeeType"};
         MessagingService.instance()

@@ -53,7 +53,7 @@ public class ContractDto implements Serializable {
      * Client
      */
     protected String client;
-    
+
     protected String bpmProcessId;
     /**
      * Client Contact
@@ -230,15 +230,16 @@ public class ContractDto implements Serializable {
     public ContractDto() {
     }
 
-    public ContractDto(Long id, String firstName, String lastName, String client, String vendor,BigDecimal billingRate, Date startDate, Date endDate,String employeeType) {
+    public ContractDto(Long id, String firstName, String lastName, String client, String vendor, BigDecimal billingRate, BillingDuration billnigDuration, Date startDate, Date endDate, String employeeType) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
         this.client = client;
         this.vendor = vendor;
         this.billingRate = billingRate;
-        this.employee = firstName +" "+ lastName;
-        this.employeeType=employeeType;
+        this.billingRateDuration = billnigDuration;
+        this.employee = firstName + " " + lastName;
+        this.employeeType = employeeType;
     }
 
     public void setPaymentTerms1099(String paymentTerms1099) {
@@ -272,10 +273,10 @@ public class ContractDto implements Serializable {
     public void setPayTimeDuration1099(BillingDuration payTimeDuration1099) {
         this.payTimeDuration1099 = payTimeDuration1099;
     }
+
     /* 
      * Sub Contactor 
      */
-
     public String getSubcontractorAddress() {
         return subcontractorAddress;
     }
