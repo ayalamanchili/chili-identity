@@ -103,7 +103,11 @@ public class UpdateOutOfOfficePanel extends UpdateComposite {
 
     @Override
     protected void postUpdateSuccess(String result) {
-        new ResponseStatusWidget().show("OutOf Office Request Updated Successfully");
+        if (entity.get("outOfOfficeType").isString().stringValue().equalsIgnoreCase("OUT_OF_OFFICE")) {
+            new ResponseStatusWidget().show("Out Of Office Request Updated Successfully");
+        } else {
+            new ResponseStatusWidget().show("Work From Home Request Updated Successfully");
+        }
         TabPanel.instance().timePanel.entityPanel.clear();
         TabPanel.instance().timePanel.entityPanel.add(new ReadAllOutOfOfficePanel());
         TabPanel.instance().timePanel.entityPanel.add(new CurrentWeekOutOfOfficeRequestsPanel());

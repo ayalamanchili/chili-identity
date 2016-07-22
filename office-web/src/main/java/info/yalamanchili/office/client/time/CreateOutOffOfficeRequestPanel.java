@@ -88,7 +88,11 @@ public class CreateOutOffOfficeRequestPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("OutOf Office Request Submitted Successfully");
+        if (entity.get("outOfOfficeType").isString().stringValue().equalsIgnoreCase("OUT_OF_OFFICE")) {
+            new ResponseStatusWidget().show("Out Of Office Request Submitted Successfully");
+        } else {
+            new ResponseStatusWidget().show("Work From Home Request Submitted Successfully");
+        }
         TabPanel.instance().timePanel.entityPanel.clear();
         TabPanel.instance().timePanel.entityPanel.add(new ReadAllOutOfOfficePanel());
         TabPanel.instance().timePanel.entityPanel.add(new CurrentWeekOutOfOfficeRequestsPanel());

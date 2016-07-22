@@ -78,14 +78,18 @@ public class ReadAllOutOfOfficePanel extends CRUDReadAllComposite {
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String arg0) {
-                        postDeleteSuccess();
+                        postDeleteSuccess(entityId);
                     }
                 });
     }
 
-    @Override
-    public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("Successfully Deleted OutOf Office Request Information");
+    public void postDeleteSuccess(String entityId) {
+        JSONObject entity = getEntity(entityId);
+        if (entity.get("outOfOfficeType").isString().stringValue().equalsIgnoreCase("OUT_OF_OFFICE")) {
+            new ResponseStatusWidget().show("Successfully Deleted Out Of Office Request Information");
+        } else {
+            new ResponseStatusWidget().show("Successfully Deleted Work From Home Request Information");
+        }
         TabPanel.instance().timePanel.entityPanel.clear();
         TabPanel.instance().timePanel.entityPanel.add(new ReadAllOutOfOfficePanel());
         TabPanel.instance().timePanel.entityPanel.add(new CurrentWeekOutOfOfficeRequestsPanel());
@@ -178,5 +182,9 @@ public class ReadAllOutOfOfficePanel extends CRUDReadAllComposite {
     protected void createButtonClicked() {
         TabPanel.instance().getTimePanel().entityPanel.clear();
         TabPanel.instance().getTimePanel().entityPanel.add(new CreateOutOffOfficeRequestPanel(CreateComposite.CreateCompositeType.CREATE));
+    }
+
+    @Override
+    public void postDeleteSuccess() {
     }
 }
