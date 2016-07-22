@@ -203,7 +203,7 @@ public class ContractReportService {
     }
 
     public List<ContractDto> getActiveCPDs() {
-        TypedQuery<ContractDto> q = em.createQuery("SELECT DISTINCT NEW " + ContractDto.class.getCanonicalName() + "(ci.id, ci.employee.firstName,ci.employee.lastName, ci.client.name, ci.vendor.name,ci.billingRate,ci.billingRateDuration, ci.startDate, ci.endDate, ci.employee.employeeType.name) from " + ClientInformation.class.getCanonicalName() + " ci where ci.employee.user.enabled = true and ci.endDate > Now()", ContractDto.class);
+        TypedQuery<ContractDto> q = em.createQuery("SELECT DISTINCT NEW " + ContractDto.class.getCanonicalName() + "(ci.id, ci.employee.firstName,ci.employee.lastName, ci.client.name, ci.vendor.name,ci.billingRate,ci.billingRateDuration, ci.startDate, ci.endDate, ci.employee.employeeType.name, ci.company) from " + ClientInformation.class.getCanonicalName() + " ci where ci.employee.user.enabled = true and ci.endDate > Now()", ContractDto.class);
         return q.getResultList();
     }
 
@@ -212,9 +212,9 @@ public class ContractReportService {
     public void generateActiveCPDSReport(String email) {
         List<ActiveCPDReportDto> res = new ArrayList<>();
         getActiveCPDs().stream().forEach((dto) -> {
-            res.add(new ActiveCPDReportDto(dto.getEmployee(), dto.getClient(), dto.getVendor(), dto.getBillingRate(), dto.getBillingRateDuration(), dto.getStartDate(), dto.getEndDate(), dto.getEmployeeType()));
+            res.add(new ActiveCPDReportDto(dto.getEmployee(), dto.getClient(), dto.getVendor(), dto.getBillingRate(), dto.getBillingRateDuration(), dto.getStartDate(), dto.getEndDate(), dto.getEmployeeType(), dto.getCompany()));
         });
-        String[] columnOrder = new String[]{"employee", "client", "vendor", "billingRate", "startDate", "endDate", "totalDuration", "remainingDuration", "monthlyIncome", "remainingIncome", "employeeType"};
+        String[] columnOrder = new String[]{"employee", "client", "vendor", "billingRate", "startDate", "endDate", "totalDuration", "remainingDuration", "monthlyIncome", "remainingIncome", "employeeType", "company"};
         MessagingService.instance()
                 .emailReport(ReportGenerator.generateExcelOrderedReport(res, "Active CPDS Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }

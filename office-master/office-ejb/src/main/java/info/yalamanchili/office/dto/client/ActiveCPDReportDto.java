@@ -10,6 +10,7 @@ package info.yalamanchili.office.dto.client;
 
 import info.chili.commons.DateUtils;
 import info.yalamanchili.office.entity.profile.BillingDuration;
+import info.yalamanchili.office.entity.profile.ClientInformationCompany;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -23,7 +24,6 @@ public class ActiveCPDReportDto {
     String client;
     String vendor;
     BigDecimal billingRate;
-    BillingDuration bilingDuration;
     Date startDate;
     Date endDate;
     String totalDuration;
@@ -32,12 +32,13 @@ public class ActiveCPDReportDto {
     BigDecimal remainingIncome;
     String employeeType;
     BillingDuration billingDuration;
+    String company;
 
     protected static final BigDecimal hoursPerMonth = new BigDecimal("168.00");
     protected static final BigDecimal daysPerMonth = new BigDecimal("21.00");
     protected static final BigDecimal weeksPerMonth = new BigDecimal("4.00");
 
-    public ActiveCPDReportDto(String employee, String client, String vendor, BigDecimal billingRate, BillingDuration billingDuration, Date startDate, Date endDate, String employeeType) {
+    public ActiveCPDReportDto(String employee, String client, String vendor, BigDecimal billingRate, BillingDuration billingDuration, Date startDate, Date endDate, String employeeType, ClientInformationCompany company) {
         this.employee = employee;
         this.client = client;
         this.vendor = vendor;
@@ -46,6 +47,7 @@ public class ActiveCPDReportDto {
         this.startDate = startDate;
         this.endDate = endDate;
         this.employeeType = employeeType;
+        this.company = company.name();
         this.totalDuration = Integer.toString(DateUtils.differenceInMonths(startDate, endDate));
         this.remainingDuration = DateUtils.differenceInMonths(new Date(), endDate);
         if (null != billingDuration) {
@@ -156,6 +158,22 @@ public class ActiveCPDReportDto {
 
     public void setRemainingIncome(BigDecimal remainingIncome) {
         this.remainingIncome = remainingIncome;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public BillingDuration getBillingDuration() {
+        return billingDuration;
+    }
+
+    public void setBillingDuration(BillingDuration billingDuration) {
+        this.billingDuration = billingDuration;
     }
 
 }
