@@ -12,6 +12,7 @@ import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.profile.Branch;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.WorkStatus;
+import info.yalamanchili.office.entity.profile.onboarding.OnBoardingStatus;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Temporal;
@@ -53,11 +54,13 @@ public class InitiateOnBoardingDto implements Serializable {
      *
      */
     protected Branch branch;
-    
+
     protected WorkStatus workStatus;
-    
+
+    protected OnBoardingStatus status;
+
     protected String comment;
-    
+
     protected String bpmProcessId;
 
     public String getBpmProcessId() {
@@ -67,7 +70,7 @@ public class InitiateOnBoardingDto implements Serializable {
     public void setBpmProcessId(String bpmProcessId) {
         this.bpmProcessId = bpmProcessId;
     }
-    
+
     public String getComment() {
         return comment;
     }
@@ -83,7 +86,7 @@ public class InitiateOnBoardingDto implements Serializable {
     public void setWorkStatus(WorkStatus workStatus) {
         this.workStatus = workStatus;
     }
-    
+
     public EmployeeType getEmployeeType() {
         return employeeType;
     }
@@ -122,6 +125,14 @@ public class InitiateOnBoardingDto implements Serializable {
 
     public void setBranch(Branch branch) {
         this.branch = branch;
+    }
+
+    public OnBoardingStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OnBoardingStatus status) {
+        this.status = status;
     }
 
 }
