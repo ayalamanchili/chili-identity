@@ -10,6 +10,7 @@ package info.yalamanchili.office.bpm.time;
 
 import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
+import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.OutOfOfficeDao;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -47,6 +48,8 @@ public class OutOfOfficeRequestProcess extends RuleBasedTaskDelegateListner {
 
     protected void managerApprovalTaskComplete(OutOfOfficeRequest entity, DelegateTask task) {
         String status = (String) task.getExecution().getVariable("status");
+        String notes = (String) task.getExecution().getVariable("notes");
+        CommentDao.instance().addComment(task.getTaskDefinitionKey() + " Completed Notes:" + notes, entity);
         if (status.equalsIgnoreCase("approved")) {
             entity.setStatus(OutOfOfficeRequestStatus.Approved);
         } else {
