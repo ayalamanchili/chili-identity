@@ -168,7 +168,7 @@ public class ReadAllOutOfOfficePanel extends CRUDReadAllComposite {
     @Override
     protected void configureCreateButton() {
         if (isOnCurrent != true) {
-            createButton.setText("Create Out Of Office Request");
+            createButton.setText("Create Work From Home Request");
         } else {
             createButton.removeFromParent();
         }

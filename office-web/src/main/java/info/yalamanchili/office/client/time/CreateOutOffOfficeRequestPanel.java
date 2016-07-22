@@ -63,13 +63,11 @@ public class CreateOutOffOfficeRequestPanel extends CreateComposite {
         if (notifyEmployeesList.size() > 0) {
             outOfOffice.put("notifyEmployees", notifyEmployeesList);
         }
-        logger.info("entityyyyyy:" + outOfOffice);
         return outOfOffice;
     }
 
     @Override
     protected void createButtonClicked() {
-        logger.info("hellooooooo:" + entity.toString());
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
                     @Override
@@ -98,13 +96,12 @@ public class CreateOutOffOfficeRequestPanel extends CreateComposite {
 
     @Override
     protected void addListeners() {
-        //forTime.getBox().addClickHandler(this);
-        //recurring.getBox().addClickHandler(this);
     }
 
     @Override
     protected void configure() {
         setButtonText("Submit");
+        setTitle("Work From Home Request");
         HttpService.HttpServiceAsync.instance().doGet(getIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
