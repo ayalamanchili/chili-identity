@@ -65,7 +65,6 @@ public class ProjectRevenueForecastReportDto {
                     this.remainingIncome = daysPerMonth.multiply(new BigDecimal(this.remainingDuration)).multiply(billingRate);
                     break;
                 default:
-                    break;
             }
         } else {
             this.monthlyIncome = hoursPerMonth.multiply(billingRate);
