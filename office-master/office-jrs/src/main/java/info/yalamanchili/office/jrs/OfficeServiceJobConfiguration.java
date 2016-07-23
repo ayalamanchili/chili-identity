@@ -130,6 +130,6 @@ public class OfficeServiceJobConfiguration {
     
      @ManagedOperation
     public void activeCPDReport() {
-         ContractReportService.instance().generateActiveCPDSReport("yphanikumar@gmail.com");
+         ContractReportService.instance().activeEmployeesRevenueForcastReport("yphanikumar@gmail.com");
     }
 }

@@ -18,7 +18,7 @@ import java.util.Date;
  *
  * @author phani
  */
-public class ActiveCPDReportDto {
+public class ProjectRevenueForecastReportDto {
 
     String employee;
     String client;
@@ -38,7 +38,7 @@ public class ActiveCPDReportDto {
     protected static final BigDecimal daysPerMonth = new BigDecimal("21.00");
     protected static final BigDecimal weeksPerMonth = new BigDecimal("4.00");
 
-    public ActiveCPDReportDto(String employee, String client, String vendor, BigDecimal billingRate, BillingDuration billingDuration, Date startDate, Date endDate, String employeeType, ClientInformationCompany company) {
+    public ProjectRevenueForecastReportDto(String employee, String client, String vendor, BigDecimal billingRate, BillingDuration billingDuration, Date startDate, Date endDate, String employeeType, ClientInformationCompany company) {
         this.employee = employee;
         this.client = client;
         this.vendor = vendor;
@@ -65,10 +65,11 @@ public class ActiveCPDReportDto {
                     this.remainingIncome = daysPerMonth.multiply(new BigDecimal(this.remainingDuration)).multiply(billingRate);
                     break;
                 default:
-                    this.monthlyIncome = hoursPerMonth.multiply(billingRate);
-                    this.remainingIncome = hoursPerMonth.multiply(new BigDecimal(this.remainingDuration)).multiply(billingRate);
                     break;
             }
+        } else {
+            this.monthlyIncome = hoursPerMonth.multiply(billingRate);
+            this.remainingIncome = hoursPerMonth.multiply(new BigDecimal(this.remainingDuration)).multiply(billingRate);
         }
     }
 

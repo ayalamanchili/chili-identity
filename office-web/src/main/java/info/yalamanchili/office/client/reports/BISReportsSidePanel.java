@@ -59,18 +59,18 @@ import java.util.logging.Logger;
  * @author prasanthi.p
  */
 public class BISReportsSidePanel extends ALComposite implements ClickHandler, OpenHandler {
-
+    
     SuggestBox employeeSbf = new SuggestBox(OfficeWelcome.constants, "firstName", "Employee", false, false);
     SuggestBox employeeSbl = new SuggestBox(OfficeWelcome.constants, "lastName", "Employee", false, false);
-
+    
     MultiWordSuggestOracle data = new MultiWordSuggestOracle();
-
+    
     protected SelectCompanyWidget selectCompnayWidget = new SelectCompanyWidget(false, false);
     protected SelectVendorWidget selectVendorWidget = new SelectVendorWidget(false, false);
     protected SelectClientWidget selectClientWidget = new SelectClientWidget(false, false);
     protected SelectSubcontractorWidget selectSubWidget = new SelectSubcontractorWidget(false, false);
     protected SelectProjectWidget selectProjectWidget = new SelectProjectWidget(false, false);
-
+    
     protected DisclosurePanel masterDataReportsL = new DisclosurePanel("Consultants Master Data");
     protected DisclosurePanel myVendorL = new DisclosurePanel("Working Under Vendor");
     protected DisclosurePanel myClientL = new DisclosurePanel("Working Under Client");
@@ -82,14 +82,15 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
     protected DisclosurePanel myClocationL = new DisclosurePanel("Clients in a Location");
     protected DisclosurePanel empLocationL = new DisclosurePanel("Emp Working in a Location");
     protected DisclosurePanel projEndL = new DisclosurePanel("Emp Projects Going To Start / End");
-    protected ClickableLink activeCPDL = new ClickableLink("Active CPD's Report");
-
+    protected ClickableLink activeCPDL = new ClickableLink("Employees Project Forecast Report");
+    protected ClickableLink allProjectsForecastReport = new ClickableLink("All Projects Forecast Report");
+    
     ClickableLink clearReportsL = new ClickableLink("clear");
     protected Button searchTasks = new Button("Search");
     protected Button reportTasks = new Button("Report");
     protected Button graphB = new Button("Graph");
     FlowPanel panel = new FlowPanel();
-
+    
     FlowPanel masterDataPanel = new FlowPanel();
     FlowPanel clientPanel = new FlowPanel();
     FlowPanel vendorPanel = new FlowPanel();
@@ -101,9 +102,9 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
     FlowPanel cLocationPanel = new FlowPanel();
     FlowPanel empLocPanel = new FlowPanel();
     FlowPanel projEndPanel = new FlowPanel();
-
+    
     HorizontalPanel hPanel = new HorizontalPanel();
-
+    
     SelectEmployeeWithRoleWidget selectRecruiterW = new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER, false, false);
     StringField employeeFirstNameField = new StringField(OfficeWelcome.constants, "employeeFirstName", "Contract", false, false);
     StringField employeeLatNameField = new StringField(OfficeWelcome.constants, "employeeLastName", "Contract", false, false);
@@ -121,13 +122,13 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
     ListBox li = new ListBox();
     ListBox projectEndLi = new ListBox();
     Label label = new Label(" Based");
-
+    
     private static Logger logger = Logger.getLogger(BISReportsSidePanel.class.getName());
-
+    
     public BISReportsSidePanel() {
         init(panel);
     }
-
+    
     @Override
     protected void addListeners() {
         masterDataReportsL.addOpenHandler(this);
@@ -145,8 +146,9 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
         reportTasks.addClickHandler(this);
         graphB.addClickHandler(this);
         activeCPDL.addClickHandler(this);
+        allProjectsForecastReport.addClickHandler(this);
     }
-
+    
     @Override
     protected void configure() {
         li.addItem("Joined", "joined");
@@ -168,7 +170,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
             }
         });
     }
-
+    
     @Override
     protected void addWidgets() {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_FULL_VIEW)) {
@@ -184,28 +186,29 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
             panel.add(myClocationL);
             panel.add(empLocationL);
             panel.add(activeCPDL);
+            panel.add(allProjectsForecastReport);
         } else if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_RECRUITER)) {
             panel.add(myClientL);
             panel.add(myVendorL);
         }
     }
-
+    
     protected String getFirstNameDropDownUrl() {
         return OfficeWelcome.constants.root_url() + "employee/dropdown/0/10000?column=id&column=firstName";
     }
-
+    
     protected String getLastNameDropDownUrl() {
         return OfficeWelcome.constants.root_url() + "employee/dropdown/0/10000?column=id&column=lastName";
     }
-
+    
     public void loadSearchSuggestions(Collection<String> inputs) {
         data.addAll(inputs);
     }
-
+    
     protected String getDropDownURL(Integer start, Integer limit, JSONObject entity) {
         return OfficeWelcome.constants.root_url() + "client/locations/dropdown/" + entity.get("id").toString().substring(1, 2) + "/" + start + "/" + limit;
     }
-
+    
     @Override
     public void onClick(ClickEvent event) {
         String url = OfficeWelcome.constants.root_url() + "contract/search/0/10000";
@@ -248,67 +251,67 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                 if (entity.size() != 0) {
                     HttpService.HttpServiceAsync.instance().doPut(URL.encode(url), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                             new ALAsyncCallback<String>() {
-                                @Override
-                                public void onResponse(String result) {
-                                    if (result == null || JSONParser.parseLenient(result).isObject().size() == 0) {
-                                        new ResponseStatusWidget().show("No Results");
-                                    } else {
-                                        //TODO use size and entities attributes
-                                        JSONObject resObj = JSONParser.parseLenient(result).isObject();
-                                        String key = (String) resObj.keySet().toArray()[0];
-                                        JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-                                        TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllBisContractsPanel(results));
-                                    }
-                                }
-                            });
+                        @Override
+                        public void onResponse(String result) {
+                            if (result == null || JSONParser.parseLenient(result).isObject().size() == 0) {
+                                new ResponseStatusWidget().show("No Results");
+                            } else {
+                                //TODO use size and entities attributes
+                                JSONObject resObj = JSONParser.parseLenient(result).isObject();
+                                String key = (String) resObj.keySet().toArray()[0];
+                                JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
+                                TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllBisContractsPanel(results));
+                            }
+                        }
+                    });
                     clearFields();
                 } else {
                     employeeSbf.setMessage("Required");
                 }
             }
-
+            
             if (searchTasks.getParent().equals(clientPanel)) {
                 JSONObject obj = getClientObject();
                 if (obj.containsKey("client")) {
                     url = url.concat("?client=" + selectClientWidget.getSelectedObject().get("value").isString().stringValue());
                     HttpService.HttpServiceAsync.instance().doPut(URL.encode(url), obj.toString(), OfficeWelcome.instance().getHeaders(), true,
                             new ALAsyncCallback<String>() {
-                                @Override
-                                public void onResponse(String result) {
-                                    if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                                        new ResponseStatusWidget().show("No Results");
-                                    } else {
-                                        //TODO use size and entities attributes
-                                        JSONObject resObj = JSONParser.parseLenient(result).isObject();
-                                        String key = (String) resObj.keySet().toArray()[0];
-                                        JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-                                        TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllClientReportPanel(results));
-                                    }
-                                }
-                            });
+                        @Override
+                        public void onResponse(String result) {
+                            if (result == null || JSONParser.parseLenient(result).isObject() == null) {
+                                new ResponseStatusWidget().show("No Results");
+                            } else {
+                                //TODO use size and entities attributes
+                                JSONObject resObj = JSONParser.parseLenient(result).isObject();
+                                String key = (String) resObj.keySet().toArray()[0];
+                                JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
+                                TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllClientReportPanel(results));
+                            }
+                        }
+                    });
                     clearFields();
                 }
             }
-
+            
             if (searchTasks.getParent().equals(vendorPanel)) {
                 JSONObject obj = getVendorObject();
                 if (obj.containsKey("vendor")) {
                     url = url.concat("?vendor=" + selectVendorWidget.getSelectedObject().get("value").isString().stringValue());
                     HttpService.HttpServiceAsync.instance().doPut(URL.encode(url), obj.toString(), OfficeWelcome.instance().getHeaders(), true,
                             new ALAsyncCallback<String>() {
-                                @Override
-                                public void onResponse(String result) {
-                                    if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                                        new ResponseStatusWidget().show("No Results");
-                                    } else {
-                                        //TODO use size and entities attributes
-                                        JSONObject resObj = JSONParser.parseLenient(result).isObject();
-                                        String key = (String) resObj.keySet().toArray()[0];
-                                        JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-                                        TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllVendorReportPanel(results));
-                                    }
-                                }
-                            });
+                        @Override
+                        public void onResponse(String result) {
+                            if (result == null || JSONParser.parseLenient(result).isObject() == null) {
+                                new ResponseStatusWidget().show("No Results");
+                            } else {
+                                //TODO use size and entities attributes
+                                JSONObject resObj = JSONParser.parseLenient(result).isObject();
+                                String key = (String) resObj.keySet().toArray()[0];
+                                JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
+                                TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllVendorReportPanel(results));
+                            }
+                        }
+                    });
                     clearFields();
                 }
             }
@@ -318,19 +321,19 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                     url = url.concat("?subContractorName=" + selectSubWidget.getSelectedObject().get("value").isString().stringValue());
                     HttpService.HttpServiceAsync.instance().doPut(URL.encode(url), obj.toString(), OfficeWelcome.instance().getHeaders(), true,
                             new ALAsyncCallback<String>() {
-                                @Override
-                                public void onResponse(String result) {
-                                    if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                                        new ResponseStatusWidget().show("No Results");
-                                    } else {
-                                        //TODO use size and entities attributes
-                                        JSONObject resObj = JSONParser.parseLenient(result).isObject();
-                                        String key = (String) resObj.keySet().toArray()[0];
-                                        JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-                                        TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllSubContractorPanel(results));
-                                    }
-                                }
-                            });
+                        @Override
+                        public void onResponse(String result) {
+                            if (result == null || JSONParser.parseLenient(result).isObject() == null) {
+                                new ResponseStatusWidget().show("No Results");
+                            } else {
+                                //TODO use size and entities attributes
+                                JSONObject resObj = JSONParser.parseLenient(result).isObject();
+                                String key = (String) resObj.keySet().toArray()[0];
+                                JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
+                                TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllSubContractorPanel(results));
+                            }
+                        }
+                    });
                     clearFields();
                 }
             }
@@ -339,19 +342,19 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                 String mpurl = OfficeWelcome.constants.root_url() + "contract-report/multiple-cpds";
                 HttpService.HttpServiceAsync.instance().doPut(mpurl, entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
-                            @Override
-                            public void onResponse(String result) {
-                                if (result == null || JSONParser.parseLenient(result).isObject() == null || result.contains("entities") == false) {
-                                    new ResponseStatusWidget().show("No Results");
-                                } else {
-                                    //TODO use size and entities attributes
-                                    JSONObject resObj = JSONParser.parseLenient(result).isObject();
-                                    String key = (String) resObj.keySet().toArray()[0];
-                                    JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-                                    TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllMultiPleProjectsPanel(results));
-                                }
-                            }
-                        });
+                    @Override
+                    public void onResponse(String result) {
+                        if (result == null || JSONParser.parseLenient(result).isObject() == null || result.contains("entities") == false) {
+                            new ResponseStatusWidget().show("No Results");
+                        } else {
+                            //TODO use size and entities attributes
+                            JSONObject resObj = JSONParser.parseLenient(result).isObject();
+                            String key = (String) resObj.keySet().toArray()[0];
+                            JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
+                            TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllMultiPleProjectsPanel(results));
+                        }
+                    }
+                });
                 clearFields();
             }
             if (searchTasks.getParent().equals(recruiterPanel)) {
@@ -361,19 +364,19 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                 if ((obj.containsKey("recruiter") == true) || (obj.containsKey("recruitedDateFrom") == true && obj.containsKey("recruitedDateTo") == true)) {
                     HttpService.HttpServiceAsync.instance().doPut(URL.encode(recruiterUrl), obj.toString(), OfficeWelcome.instance().getHeaders(), true,
                             new ALAsyncCallback<String>() {
-                                @Override
-                                public void onResponse(String result) {
-                                    if (result == null || JSONParser.parseLenient(result).isObject().size() == 0) {
-                                        new ResponseStatusWidget().show("No Results");
-                                    } else {
-                                        //TODO use size and entities attributes
-                                        JSONObject resObj = JSONParser.parseLenient(result).isObject();
-                                        String key = (String) resObj.keySet().toArray()[0];
-                                        JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-                                        TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllRecruiterPanel(results));
-                                    }
-                                }
-                            });
+                        @Override
+                        public void onResponse(String result) {
+                            if (result == null || JSONParser.parseLenient(result).isObject().size() == 0) {
+                                new ResponseStatusWidget().show("No Results");
+                            } else {
+                                //TODO use size and entities attributes
+                                JSONObject resObj = JSONParser.parseLenient(result).isObject();
+                                String key = (String) resObj.keySet().toArray()[0];
+                                JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
+                                TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllRecruiterPanel(results));
+                            }
+                        }
+                    });
                     clearFields();
                 }
             }
@@ -389,18 +392,18 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                     empUrl = empUrl.concat("&value=" + li.getSelectedValue());
                     HttpService.HttpServiceAsync.instance().doPut(URL.encode(empUrl), obj.toString(), OfficeWelcome.instance().getHeaders(), true,
                             new ALAsyncCallback<String>() {
-                                @Override
-                                public void onResponse(String result) {
-                                    if (result == null || "0".equals(JSONParser.parseLenient(result).isObject().get("size").isString().stringValue())) {
-                                        new ResponseStatusWidget().show("No Results");
-                                    } else {
-                                        JSONObject resObj = JSONParser.parseLenient(result).isObject();
-                                        String key = (String) resObj.keySet().toArray()[0];
-                                        JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-                                        TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllEmployeesJoinedPanel(results));
-                                    }
-                                }
-                            });
+                        @Override
+                        public void onResponse(String result) {
+                            if (result == null || "0".equals(JSONParser.parseLenient(result).isObject().get("size").isString().stringValue())) {
+                                new ResponseStatusWidget().show("No Results");
+                            } else {
+                                JSONObject resObj = JSONParser.parseLenient(result).isObject();
+                                String key = (String) resObj.keySet().toArray()[0];
+                                JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
+                                TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllEmployeesJoinedPanel(results));
+                            }
+                        }
+                    });
                     clearFields();
                 }
             }
@@ -419,18 +422,18 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                     }
                     HttpService.HttpServiceAsync.instance().doPut(URL.encode(empUrl1), obj.toString(), OfficeWelcome.instance().getHeaders(), true,
                             new ALAsyncCallback<String>() {
-                                @Override
-                                public void onResponse(String result) {
-                                    if (result == null || "0".equals(JSONParser.parseLenient(result).isObject().get("size").isString().stringValue())) {
-                                        new ResponseStatusWidget().show("No Results");
-                                    } else {
-                                        JSONObject resObj = JSONParser.parseLenient(result).isObject();
-                                        String key = (String) resObj.keySet().toArray()[0];
-                                        JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-                                        TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllEndProjectPanel(results));
-                                    }
-                                }
-                            });
+                        @Override
+                        public void onResponse(String result) {
+                            if (result == null || "0".equals(JSONParser.parseLenient(result).isObject().get("size").isString().stringValue())) {
+                                new ResponseStatusWidget().show("No Results");
+                            } else {
+                                JSONObject resObj = JSONParser.parseLenient(result).isObject();
+                                String key = (String) resObj.keySet().toArray()[0];
+                                JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
+                                TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllEndProjectPanel(results));
+                            }
+                        }
+                    });
                     clearFields();
                 }
             }
@@ -449,19 +452,19 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                 if (vLovation.size() != 0) {
                     HttpService.HttpServiceAsync.instance().doPut(URL.encode(lurl), vLovation.toString(), OfficeWelcome.instance().getHeaders(), true,
                             new ALAsyncCallback<String>() {
-                                @Override
-                                public void onResponse(String result) {
-                                    if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                                        new ResponseStatusWidget().show("No Results");
-                                    } else {
-                                        //TODO use size and entities attributes
-                                        JSONObject resObj = JSONParser.parseLenient(result).isObject();
-                                        String key = (String) resObj.keySet().toArray()[0];
-                                        JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-                                        TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllVendorLocationPanel(results));
-                                    }
-                                }
-                            });
+                        @Override
+                        public void onResponse(String result) {
+                            if (result == null || JSONParser.parseLenient(result).isObject() == null) {
+                                new ResponseStatusWidget().show("No Results");
+                            } else {
+                                //TODO use size and entities attributes
+                                JSONObject resObj = JSONParser.parseLenient(result).isObject();
+                                String key = (String) resObj.keySet().toArray()[0];
+                                JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
+                                TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllVendorLocationPanel(results));
+                            }
+                        }
+                    });
                     clearFields();
                 } else {
                     cityField.setMessage("Required");
@@ -482,25 +485,25 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                 if (cLovation.size() != 0) {
                     HttpService.HttpServiceAsync.instance().doPut(URL.encode(lurl), cLovation.toString(), OfficeWelcome.instance().getHeaders(), true,
                             new ALAsyncCallback<String>() {
-                                @Override
-                                public void onResponse(String result) {
-                                    if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                                        new ResponseStatusWidget().show("No Results");
-                                    } else {
-                                        //TODO use size and entities attributes
-                                        JSONObject resObj = JSONParser.parseLenient(result).isObject();
-                                        String key = (String) resObj.keySet().toArray()[0];
-                                        JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-                                        TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllClientLocationPanel(results));
-                                    }
-                                }
-                            });
+                        @Override
+                        public void onResponse(String result) {
+                            if (result == null || JSONParser.parseLenient(result).isObject() == null) {
+                                new ResponseStatusWidget().show("No Results");
+                            } else {
+                                //TODO use size and entities attributes
+                                JSONObject resObj = JSONParser.parseLenient(result).isObject();
+                                String key = (String) resObj.keySet().toArray()[0];
+                                JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
+                                TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllClientLocationPanel(results));
+                            }
+                        }
+                    });
                     clearFields();
                 } else {
                     cityField.setMessage("Required");
                 }
             }
-
+            
             if (searchTasks.getParent().equals(empLocPanel)) {
                 TabPanel.instance().getReportingPanel().entityPanel.clear();
                 String empUrl = OfficeWelcome.constants.root_url() + "contract-report/emp-location-search/0/100";
@@ -515,19 +518,19 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                 if (entity.size() != 0) {
                     HttpService.HttpServiceAsync.instance().doPut(URL.encode(empUrl), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                             new ALAsyncCallback<String>() {
-                                @Override
-                                public void onResponse(String result) {
-                                    if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                                        new ResponseStatusWidget().show("No Results");
-                                    } else {
-                                        //TODO use size and entities attributes
-                                        JSONObject resObj = JSONParser.parseLenient(result).isObject();
-                                        String key = (String) resObj.keySet().toArray()[0];
-                                        JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-                                        TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllEmployeeLocationPanel(results));
-                                    }
-                                }
-                            });
+                        @Override
+                        public void onResponse(String result) {
+                            if (result == null || JSONParser.parseLenient(result).isObject() == null) {
+                                new ResponseStatusWidget().show("No Results");
+                            } else {
+                                //TODO use size and entities attributes
+                                JSONObject resObj = JSONParser.parseLenient(result).isObject();
+                                String key = (String) resObj.keySet().toArray()[0];
+                                JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
+                                TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllEmployeeLocationPanel(results));
+                            }
+                        }
+                    });
                     clearFields();
                 } else {
                     cityField.setMessage("Required");
@@ -542,11 +545,11 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                 if (cLovation.size() != 0) {
                     HttpService.HttpServiceAsync.instance().doPut(clurl, cLovation.toString(), OfficeWelcome.instance().getHeaders(), true,
                             new ALAsyncCallback<String>() {
-                                @Override
-                                public void onResponse(String result) {
-                                    new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
-                                }
-                            });
+                        @Override
+                        public void onResponse(String result) {
+                            new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
+                        }
+                    });
                     clearFields();
                 } else {
                     cityField.setMessage("Required");
@@ -559,11 +562,11 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                 if (cLovation.size() != 0) {
                     HttpService.HttpServiceAsync.instance().doPut(vlurl, cLovation.toString(), OfficeWelcome.instance().getHeaders(), true,
                             new ALAsyncCallback<String>() {
-                                @Override
-                                public void onResponse(String result) {
-                                    new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
-                                }
-                            });
+                        @Override
+                        public void onResponse(String result) {
+                            new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
+                        }
+                    });
                     clearFields();
                 } else {
                     cityField.setMessage("Required");
@@ -576,11 +579,11 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                 if (obj.containsKey("subContractorName")) {
                     HttpService.HttpServiceAsync.instance().doPut(surl, obj.toString(), OfficeWelcome.instance().getHeaders(), true,
                             new ALAsyncCallback<String>() {
-                                @Override
-                                public void onResponse(String result) {
-                                    new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
-                                }
-                            });
+                        @Override
+                        public void onResponse(String result) {
+                            new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
+                        }
+                    });
                     clearFields();
                 }
             }
@@ -591,11 +594,11 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                 if (obj.containsKey("client")) {
                     HttpService.HttpServiceAsync.instance().doPut(wucUrl, obj.toString(), OfficeWelcome.instance().getHeaders(), true,
                             new ALAsyncCallback<String>() {
-                                @Override
-                                public void onResponse(String result) {
-                                    new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
-                                }
-                            });
+                        @Override
+                        public void onResponse(String result) {
+                            new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
+                        }
+                    });
                     clearFields();
                 }
             }
@@ -606,11 +609,11 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                 if (obj.containsKey("vendor")) {
                     HttpService.HttpServiceAsync.instance().doPut(wuvUrl, obj.toString(), OfficeWelcome.instance().getHeaders(), true,
                             new ALAsyncCallback<String>() {
-                                @Override
-                                public void onResponse(String result) {
-                                    new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
-                                }
-                            });
+                        @Override
+                        public void onResponse(String result) {
+                            new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
+                        }
+                    });
                     clearFields();
                 }
             }
@@ -621,11 +624,11 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                     String rurl = OfficeWelcome.instance().constants.root_url() + "contract/recruiter-report";
                     HttpService.HttpServiceAsync.instance().doPut(rurl, obj.toString(), OfficeWelcome.instance().getHeaders(), true,
                             new ALAsyncCallback<String>() {
-                                @Override
-                                public void onResponse(String result) {
-                                    new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
-                                }
-                            });
+                        @Override
+                        public void onResponse(String result) {
+                            new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
+                        }
+                    });
                     clearFields();
                 }
             }
@@ -636,11 +639,11 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                 if (cLovation.size() != 0) {
                     HttpService.HttpServiceAsync.instance().doPut(rurl, cLovation.toString(), OfficeWelcome.instance().getHeaders(), true,
                             new ALAsyncCallback<String>() {
-                                @Override
-                                public void onResponse(String result) {
-                                    new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
-                                }
-                            });
+                        @Override
+                        public void onResponse(String result) {
+                            new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
+                        }
+                    });
                     clearFields();
                 } else {
                     cityField.setMessage("Required");
@@ -661,11 +664,11 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                     }
                     HttpService.HttpServiceAsync.instance().doGet(URL.encode(empUrl1), OfficeWelcome.instance().getHeaders(), true,
                             new ALAsyncCallback<String>() {
-                                @Override
-                                public void onResponse(String result) {
-                                    new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
-                                }
-                            });
+                        @Override
+                        public void onResponse(String result) {
+                            new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
+                        }
+                    });
                     clearFields();
                 }
             }
@@ -674,11 +677,11 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                 String mpurl = OfficeWelcome.constants.root_url() + "contract-report/multiple-cpds-report";
                 HttpService.HttpServiceAsync.instance().doGet(mpurl, OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
-                            @Override
-                            public void onResponse(String result) {
-                                new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
-                            }
-                        });
+                    @Override
+                    public void onResponse(String result) {
+                        new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
+                    }
+                });
                 clearFields();
             }
             if (reportTasks.getParent().equals(joinedPanel)) {
@@ -692,11 +695,11 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                     empUrl = empUrl.concat("&value=" + li.getSelectedValue());
                     HttpService.HttpServiceAsync.instance().doGet(URL.encode(empUrl), OfficeWelcome.instance().getHeaders(), true,
                             new ALAsyncCallback<String>() {
-                                @Override
-                                public void onResponse(String result) {
-                                    new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
-                                }
-                            });
+                        @Override
+                        public void onResponse(String result) {
+                            new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
+                        }
+                    });
                     clearFields();
                 }
             }
@@ -708,36 +711,48 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
             String chartUrl = OfficeWelcome.constants.root_url() + "contract/recruiterSearch";
             HttpService.HttpServiceAsync.instance().doPut(URL.encode(chartUrl), obj.toString(), OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
-                        @Override
-                        public void onResponse(String result) {
-                            if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                                new ResponseStatusWidget().show("no results");
-                            } else {
-                                TabPanel.instance().reportingPanel.entityPanel.clear();
-                                //TODO use size and entities attributes
-                                JSONObject resObj = JSONParser.parseLenient(result).isObject();
-                                String key = (String) resObj.keySet().toArray()[0];
-                                JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-                                TabPanel.instance().reportingPanel.entityPanel.add(new EmployeeRecruitedBWDatesChartPanel(results));
-                            }
-                        }
-                    });
+                @Override
+                public void onResponse(String result) {
+                    if (result == null || JSONParser.parseLenient(result).isObject() == null) {
+                        new ResponseStatusWidget().show("no results");
+                    } else {
+                        TabPanel.instance().reportingPanel.entityPanel.clear();
+                        //TODO use size and entities attributes
+                        JSONObject resObj = JSONParser.parseLenient(result).isObject();
+                        String key = (String) resObj.keySet().toArray()[0];
+                        JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
+                        TabPanel.instance().reportingPanel.entityPanel.add(new EmployeeRecruitedBWDatesChartPanel(results));
+                    }
+                }
+            });
             clearFields();
         }
         if (event.getSource().equals(activeCPDL)) {
-            String activeCPDUrl = OfficeWelcome.constants.root_url() + "contract-report/active-cpds";
+            String activeCPDUrl = OfficeWelcome.constants.root_url() + "contract-report/active-employees-projects-forecast-report";
             HttpService.HttpServiceAsync.instance().doGet(activeCPDUrl, OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
-                        @Override
-                        public void onResponse(String result) {
-                            if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                                new ResponseStatusWidget().show("Report Will be Emailed to your Primary Email");
-                            }
-                        }
-                    });
+                @Override
+                public void onResponse(String result) {
+                    if (result == null || JSONParser.parseLenient(result).isObject() == null) {
+                        new ResponseStatusWidget().show("Report Will be Emailed to your Primary Email");
+                    }
+                }
+            });
+        }
+         if (event.getSource().equals(allProjectsForecastReport)) {
+            String activeCPDUrl = OfficeWelcome.constants.root_url() + "contract-report/all-employees-projects-forecast-report";
+            HttpService.HttpServiceAsync.instance().doGet(activeCPDUrl, OfficeWelcome.instance().getHeaders(), true,
+                    new ALAsyncCallback<String>() {
+                @Override
+                public void onResponse(String result) {
+                    if (result == null || JSONParser.parseLenient(result).isObject() == null) {
+                        new ResponseStatusWidget().show("Report Will be Emailed to your Primary Email");
+                    }
+                }
+            });
         }
     }
-
+    
     @Override
     public void onOpen(OpenEvent event) {
         if (event.getSource().equals(masterDataReportsL)) {
@@ -836,7 +851,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
             projEndL.setContent(projEndPanel);
         }
     }
-
+    
     private void clearFields() {
         employeeSbf.clearText();
         employeeSbl.clearText();
@@ -860,7 +875,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
         selectRecruiterW.clearMessage();
         stateFeild.listBox.setSelectedIndex(0);
     }
-
+    
     protected JSONObject getClientObject() {
         JSONObject client = new JSONObject();
         if (selectClientWidget.getSelectedObject() == null) {
@@ -871,7 +886,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
         }
         return client;
     }
-
+    
     protected JSONObject getVendorObject() {
         JSONObject vendor = new JSONObject();
         if (selectVendorWidget.getSelectedObject() == null) {
@@ -882,7 +897,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
         }
         return vendor;
     }
-
+    
     protected JSONObject getSubContractorObject() {
         JSONObject sub = new JSONObject();
         if (selectSubWidget.getSelectedObject() == null) {
@@ -893,7 +908,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
         }
         return sub;
     }
-
+    
     protected JSONObject getLocationObject() {
         JSONObject cLovation = new JSONObject();
         if (cityField != null && !Strings.isNullOrEmpty(cityField.getValue())) {
@@ -904,7 +919,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
         }
         return cLovation;
     }
-
+    
     protected JSONObject getRecruiterObject() {
         JSONObject recruiter = new JSONObject();
         if (selectRecruiterW.getSelectedObject() == null && projectStartDate.getDate() == null && projectEndDate.getDate() == null) {
@@ -927,7 +942,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
         }
         return recruiter;
     }
-
+    
     protected JSONObject getBWDatesObject() {
         JSONObject date = new JSONObject();
         if (projectStartDate.getDate() == null) {
