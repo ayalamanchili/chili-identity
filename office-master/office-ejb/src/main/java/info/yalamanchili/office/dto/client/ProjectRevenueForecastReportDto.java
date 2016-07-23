@@ -64,7 +64,12 @@ public class ProjectRevenueForecastReportDto {
                     this.monthlyIncome = daysPerMonth.multiply(billingRate);
                     this.remainingIncome = daysPerMonth.multiply(new BigDecimal(this.remainingDuration)).multiply(billingRate);
                     break;
+                case HOUR:
+                    this.monthlyIncome = hoursPerMonth.multiply(billingRate);
+                    this.remainingIncome = hoursPerMonth.multiply(new BigDecimal(this.remainingDuration)).multiply(billingRate);
                 default:
+                    this.monthlyIncome = hoursPerMonth.multiply(billingRate);
+                    this.remainingIncome = hoursPerMonth.multiply(new BigDecimal(this.remainingDuration)).multiply(billingRate);
             }
         } else {
             this.monthlyIncome = hoursPerMonth.multiply(billingRate);
