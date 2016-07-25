@@ -46,6 +46,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("prototype")
 public class ContractReportService {
 
+    private static java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ContractReportService.class.getName());
+
     @PersistenceContext
     protected EntityManager em;
     @Autowired
@@ -234,5 +236,70 @@ public class ContractReportService {
         String[] columnOrder = new String[]{"employee", "client", "vendor", "billingRate", "startDate", "endDate", "totalDuration", "remainingDuration", "monthlyIncome", "remainingIncome", "employeeType", "company"};
         MessagingService.instance()
                 .emailReport(ReportGenerator.generateExcelOrderedReport(res, "All Active CPDS Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
+    }
+
+    @Transactional
+    public void changeAllCpdsStatus() {
+        int start = 0;
+        int limit = 100;
+        for (int i = start; i < limit; i++) {
+            List<Employee> employees = EmployeeDao.instance().queryAll(start, limit);
+            for (Employee emp : employees) {
+                List<ClientInformation> cpds = emp.getClientInformations();
+                if (cpds.size() > 0) {
+                    if (cpds.size() == 1) {
+                        ClientInformation cpd = cpds.get(0);
+                        cpd.setActive(Boolean.TRUE);
+                        em.merge(cpd);
+                    } else if (cpds.size() > 1) {
+                        boolean isAllEmpCpdsEnded = isAllEmpCpdsEnded(cpds);
+                        if (isAllEmpCpdsEnded == true) {
+                            logger.info("Employee Name :" + emp.getFirstName() + " " + emp.getLastName());
+                            TypedQuery<ClientInformation> q = em.createQuery("from " + ClientInformation.class.getCanonicalName() + " WHERE employee.id=:employeeIdParam order by endDate desc)", ClientInformation.class);
+                            q.setParameter("employeeIdParam", emp.getId());
+                            if (q.getResultList().size() > 0) {
+                                ClientInformation ci = q.getResultList().get(0);
+                                ci.setActive(Boolean.TRUE);
+                                em.merge(ci);
+                            }
+                        } else {
+                            for (ClientInformation cpd : cpds) {
+                                if (cpd.getEndDate() != null) {
+                                    if ((cpd.getEndDate().after(new Date())) || (cpd.getEndDate().equals(new Date()))) {
+                                        cpd.setActive(Boolean.TRUE);
+                                        em.merge(cpd);
+                                    }
+                                } else {
+                                    cpd.setActive(Boolean.TRUE);
+                                    em.merge(cpd);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (i == limit) {
+                start += 100;
+                limit += 100;
+            }
+            if (limit == 1000) {
+                break;
+            }
+        }
+    }
+
+    private boolean isAllEmpCpdsEnded(List<ClientInformation> cpds) {
+        boolean flag = true;
+        for (ClientInformation cpd : cpds) {
+            if (cpd.getEndDate() != null) {
+                if ((cpd.getEndDate().before(new Date()))) {
+                    flag = true;
+                } else {
+                    flag = false;
+                    break;
+                }
+            }
+        }
+        return flag;
     }
 }
