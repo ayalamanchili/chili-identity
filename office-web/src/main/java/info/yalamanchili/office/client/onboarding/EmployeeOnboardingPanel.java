@@ -435,7 +435,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         if (event.getSource().equals(addDependentsL)) {
             CreateDependentsPanel panel = null;
             int i = dependentsPanels.size();
-            panel = new CreateDependentsPanel(this, i);
+            panel = new CreateDependentsPanel(this, i, false);
             dependentsPanels.add(panel);
             entityFieldsPanel.insert(panel, entityFieldsPanel.getWidgetIndex(emerInfo));
         } else if (event.getSource().equals(addEmerContact)) {
