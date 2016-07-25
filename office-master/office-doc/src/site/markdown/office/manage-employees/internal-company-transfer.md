@@ -16,3 +16,6 @@ Internal Company Transfer
 
     ![internal Transfer Comment Added](../../images/manage-employees/internal_transfer_comment_added.png)
 
+Internal Company Transfer Process
+-----
+![alt text](../../images/manage-employees/internal_company_transfer_process.png "Internal Company Transfer Process")

@@ -40,7 +40,7 @@ public class InternalTransferPopUpPanel extends CreateComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject employee = new JSONObject();
-        assignEntityValueFromField("company", employee);
+        assignEntityValueFromField("transferCompany", employee);
         assignEntityValueFromField("transferDate", employee);
         logger.info(employee.toString());
         return employee;
@@ -98,7 +98,7 @@ public class InternalTransferPopUpPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addDropDown("company", selectCompanyWidget);
+        addDropDown("transferCompany", selectCompanyWidget);
         addField("transferDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
