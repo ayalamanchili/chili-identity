@@ -12,6 +12,7 @@ import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.chili.reporting.ReportGenerator;
 import info.chili.security.domain.CUser;
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.types.Entry;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
@@ -117,6 +118,12 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @Validate
     public void internalCompanyTransfer(@PathParam("employeeId") Long id, EmployeeCompanyTransferDto dto) {
         Employee emp = EmployeeDao.instance().findById(id);
+        if(emp.getCompany()!=null) {
+            dto.setPreviousCompany(emp.getCompany());
+        }
+        else {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "employee.currentCompany.not.available", "Current Company of employee is unavailable");
+        }
         dto.setPreviousCompany(emp.getCompany());
         Company company = CompanyDao.instance().findById(dto.getTransferCompany().getId());
         emp.setCompany(company);
