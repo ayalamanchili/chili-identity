@@ -36,11 +36,11 @@ import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.profile.ClientInformationDto;
 import info.yalamanchili.office.dto.profile.DependentDto;
 import info.yalamanchili.office.dto.profile.EmergencyContactDto;
+import info.yalamanchili.office.dto.profile.EmployeeCompanyTransferDto;
 import info.yalamanchili.office.dto.profile.EmployeeSearchDto;
 import info.yalamanchili.office.dto.profile.SkillSetSaveDto;
 import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.client.Client;
-import info.yalamanchili.office.entity.employee.ProbationPeriodEvaluation;
 import info.yalamanchili.office.entity.privacy.PrivacyData;
 import info.yalamanchili.office.entity.profile.ext.Dependent;
 import info.yalamanchili.office.privacy.PrivacyAware;
@@ -53,11 +53,11 @@ import info.yalamanchili.office.jrs.profile.PhoneResource.PhoneTable;
 import info.yalamanchili.office.profile.ClientInformationService;
 import info.yalamanchili.office.profile.DependentService;
 import info.yalamanchili.office.profile.EmergencyContactService;
+import info.yalamanchili.office.profile.EmployeeService;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import info.yalamanchili.office.security.AccessCheck;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.EntityManager;
@@ -80,7 +80,6 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.context.annotation.Scope;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -118,11 +117,13 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @Validate
     public void internalCompanyTransfer(@PathParam("employeeId") Long id, EmployeeCompanyTransferDto dto) {
         Employee emp = EmployeeDao.instance().findById(id);
-        Company company = CompanyDao.instance().findById(dto.getCompany().getId());
+        dto.setPreviousCompany(emp.getCompany());
+        Company company = CompanyDao.instance().findById(dto.getTransferCompany().getId());
         emp.setCompany(company);
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-        CommentDao.instance().addComment("Transfer to "+ emp.getCompany().getName()+
-                " on " + sdf.format(dto.getTransferDate()), emp);
+        CommentDao.instance().addComment("Transfered from " + dto.getPreviousCompany().getName()+
+                 " to "+ emp.getCompany().getName()+ " on " + sdf.format(dto.getTransferDate()), emp);
+        EmployeeService.instance().internalCompanyTransfer(emp, dto);
     }
     
     @PUT
