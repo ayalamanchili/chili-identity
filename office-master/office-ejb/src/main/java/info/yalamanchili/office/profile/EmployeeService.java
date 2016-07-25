@@ -8,7 +8,6 @@
 package info.yalamanchili.office.profile;
 
 import info.chili.commons.EntityQueryUtils;
-import info.chili.identity.jrsc.IdentityServiceClient;
 import info.chili.security.SecurityUtils;
 import info.chili.security.dao.CRoleDao;
 import info.chili.security.domain.CRole;
