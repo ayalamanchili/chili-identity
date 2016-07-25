@@ -80,7 +80,7 @@ public class CreateVendorPanel extends CreateComposite {
         new ResponseStatusWidget().show("Successfully Vendor Created");
         String id = JSONUtils.toString(JSONParser.parseLenient(result), "id");
         TabPanel.instance().adminPanel.sidePanelTop.clear();
-        TabPanel.instance().adminPanel.sidePanelTop.add(new TreeVendorsPanel(id, entity));
+        TabPanel.instance().adminPanel.sidePanelTop.add(new TreeVendorsPanel(id));
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorsPanel(id));
     }

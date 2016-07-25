@@ -37,9 +37,8 @@ public class TreeVendorsPanel extends TreePanelComposite {
     protected static final String VENDOR_ACCT_PAY_CONTACTS_NODE = "vendoracctpaycontacts";
     protected static final String VENDOR_INVOICE_SCHEDULE_NODE = "invoiceSchedules";
 
-    public TreeVendorsPanel(String entityId, JSONObject vendor) {
+    public TreeVendorsPanel(String entityId) {
         super(entityId);
-        this.vendorId = JSONUtils.toString(vendor, "id");
         instance = this;
         init("Vendors", OfficeWelcome.constants);
     }
@@ -91,8 +90,7 @@ public class TreeVendorsPanel extends TreePanelComposite {
         }
         if (VENDOR_INVOICE_SCHEDULE_NODE.equals(entityNodeKey)) {
             TabPanel.instance().adminPanel.entityPanel.clear();
-            logger.info("helooooooooooooo:" + vendorId.getClass().getCanonicalName());
-            TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorInvoiceSchedulePanel(entityId, vendorId.getClass().getCanonicalName()));
+            TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorInvoiceSchedulePanel(entityId, "info.yalamanchili.office.entity.client.Vendor"));
         }
     }
 
