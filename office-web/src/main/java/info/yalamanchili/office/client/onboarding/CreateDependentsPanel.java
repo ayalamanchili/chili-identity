@@ -39,6 +39,7 @@ public class CreateDependentsPanel extends CreateComposite implements ClickHandl
     private int index;
     protected String targetClassName;
     protected String parentId;
+    protected boolean isShowAllRelationships = false;
 
     public CreateDependentsPanel(EmployeeOnboardingPanel parent, int idx) {
         super(CreateComposite.CreateCompositeType.CREATE);
@@ -47,15 +48,25 @@ public class CreateDependentsPanel extends CreateComposite implements ClickHandl
         this.parentPanel = parent;
     }
 
+    public CreateDependentsPanel(EmployeeOnboardingPanel parent, int idx, boolean isShowAllRelationships) {
+        super(CreateComposite.CreateCompositeType.CREATE);
+        initCreateComposite("Dependent", OfficeWelcome.constants2);
+        this.index = idx;
+        this.parentPanel = parent;
+        this.isShowAllRelationships = isShowAllRelationships;
+    }
+
     public CreateDependentsPanel(CreateCompositeType type) {
         super(type);
         initCreateComposite("Dependent", OfficeWelcome.constants2);
+        this.isShowAllRelationships = isShowAllRelationships;
     }
-    
-    public CreateDependentsPanel(CreateCompositeType type,String parentId,String targetClassName) {
+
+    public CreateDependentsPanel(CreateCompositeType type, String parentId, String targetClassName) {
         super(type);
         this.targetClassName = targetClassName;
         this.parentId = parentId;
+        this.isShowAllRelationships = isShowAllRelationships;
         initCreateComposite("Dependent", OfficeWelcome.constants2);
     }
 
@@ -110,7 +121,7 @@ public class CreateDependentsPanel extends CreateComposite implements ClickHandl
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Added Dependent");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllDependentsPanel(
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllDependentsPanel(
                 TreeEmployeePanel.instance().getEntityId()));
     }
 
@@ -130,7 +141,11 @@ public class CreateDependentsPanel extends CreateComposite implements ClickHandl
         addField("dmiddleName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("dlastName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("ddateOfBirth", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addEnumField("relationship", false, true, Relationship.names(), Alignment.HORIZONTAL);
+        if (isShowAllRelationships == false) {
+            addEnumField("relationship", false, true, Relationship.getRelationsForDepenents(), Alignment.HORIZONTAL);
+        } else {
+            addEnumField("relationship", false, true, Relationship.names(), Alignment.HORIZONTAL);
+        }
         addEnumField("gender", false, false, Sex.names(), Alignment.HORIZONTAL);
         addField("email", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("phoneNumber", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
@@ -144,7 +159,7 @@ public class CreateDependentsPanel extends CreateComposite implements ClickHandl
 
     @Override
     protected String getURI() {
-       return OfficeWelcome.constants.root_url() + "employee/dependent/"
+        return OfficeWelcome.constants.root_url() + "employee/dependent/"
                 + TreeEmployeePanel.instance().getEntityId();
     }
 

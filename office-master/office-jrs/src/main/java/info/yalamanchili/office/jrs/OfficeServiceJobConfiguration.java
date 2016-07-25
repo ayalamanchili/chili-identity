@@ -132,4 +132,9 @@ public class OfficeServiceJobConfiguration {
     public void activeCPDReport() {
          ContractReportService.instance().activeEmployeesRevenueForcastReport("yphanikumar@gmail.com");
     }
+    
+    @ManagedOperation
+    public void changeAllCPDsStatus() {
+        ContractReportService.instance().changeAllCpdsStatus();
+    }
 }

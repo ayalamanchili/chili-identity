@@ -14,8 +14,8 @@ package info.yalamanchili.office.entity.profile.ext;
  */
 public enum Relationship {
     Spouse,
-    Child1,
-    Child2,
+    Child,
+    Legal_Dependent,
     Mother,
     Father,
     Son,
