@@ -13,6 +13,7 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.fields.ImageField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.utils.Alignment;
@@ -193,4 +194,10 @@ public class ReadEmployeePanel extends ReadComposite {
     protected String getAuditUrl() {
         return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.profile.Employee" + "/" + getEntityId();
     }
+    
+    @Override
+     protected ReadAllComposite getReadAllPanel() {
+        return ReadAllEmployeesPanel.instance;
+    }
+     
 }

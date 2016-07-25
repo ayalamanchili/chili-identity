@@ -8,7 +8,6 @@
 package info.yalamanchili.office.profile;
 
 import info.chili.commons.EntityQueryUtils;
-import info.chili.identity.jrsc.IdentityServiceClient;
 import info.chili.security.SecurityUtils;
 import info.chili.security.dao.CRoleDao;
 import info.chili.security.domain.CRole;
@@ -45,6 +44,8 @@ import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import info.yalamanchili.office.dto.profile.EmployeeCompanyTransferDto;
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -240,6 +241,17 @@ public class EmployeeService {
         } else {
             return employee;
         }
+    }
+    
+    public void internalCompanyTransfer(Employee emp, EmployeeCompanyTransferDto dto) {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        Map<String, Object> obj = new HashMap<String, Object>();
+        obj.put("employee", emp);
+        obj.put("transferCompany", emp.getCompany().getName());
+        obj.put("previousCompany", dto.getPreviousCompany().getName());
+        obj.put("workStatus", emp.getWorkStatus());
+        obj.put("transferDate", sdf.format(dto.getTransferDate()));
+        OfficeBPMService.instance().startProcess("internal_company_transfer_process", obj);
     }
 
     public static EmployeeService

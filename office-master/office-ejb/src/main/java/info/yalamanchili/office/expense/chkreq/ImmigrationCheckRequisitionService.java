@@ -8,7 +8,6 @@
  */
 package info.yalamanchili.office.expense.chkreq;
 
-import info.chili.commons.BeanMapper;
 import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
 import info.chili.commons.pdf.PdfDocumentData;
@@ -141,16 +140,11 @@ public class ImmigrationCheckRequisitionService {
     }
 
     public ImmigrationCheckRequisitionSaveDto read(Long id) {
-        ImmigrationCheckRequisition entity = immigrationCheckRequisitionDao.findById(id);
-        ImmigrationCheckRequisitionSaveDto res = (ImmigrationCheckRequisitionSaveDto) BeanMapper.clone(entity, ImmigrationCheckRequisitionSaveDto.class);
-        res.setItems(entity.getItems());
-        if (res.getEmployee() == null && res.getCompanyName() != null) {
-            res.setCompany(CompanyDao.instance().findByCompanyName(res.getCompanyName()));
+        ImmigrationCheckRequisitionSaveDto dto = mapper.map(immigrationCheckRequisitionDao.findById(id), ImmigrationCheckRequisitionSaveDto.class);
+        if (dto.getEmployee() == null && dto.getCompanyName() != null) {
+            dto.setCompany(CompanyDao.instance().findByCompanyName(dto.getCompanyName()));
         }
-        res.setEmployee(entity.getEmployee());
-        res.setCaseType(entity.getCaseType());
-        res.setStatus(entity.getStatus());
-        return res;
+        return dto;
     }
 
     public ImmigrationCheckRequisitionSaveDto clone(Long id) {
