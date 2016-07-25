@@ -8,7 +8,6 @@
  */
 package info.yalamanchili.office.client;
 
-import info.chili.commons.DateUtils;
 import info.chili.reporting.ReportGenerator;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
@@ -18,7 +17,7 @@ import info.yalamanchili.office.dao.profile.EmployeeDao.EmployeeTable;
 import info.yalamanchili.office.dao.profile.EmployeeDto;
 import info.yalamanchili.office.dao.profile.EmployeeLocationDto;
 import info.yalamanchili.office.dao.profile.EmployeeLocationReportDto;
-import info.yalamanchili.office.dto.client.ActiveCPDReportDto;
+import info.yalamanchili.office.dto.client.ProjectRevenueForecastReportDto;
 import info.yalamanchili.office.dto.client.ContractDto;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dto.client.ContractSearchDto;
@@ -26,7 +25,6 @@ import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.jms.MessagingService;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -204,20 +202,37 @@ public class ContractReportService {
         }
     }
 
-    public List<ContractDto> getActiveCPDs() {
-        TypedQuery<ContractDto> q = em.createQuery("SELECT NEW " + ContractDto.class.getCanonicalName() + "(ci.id, ci.employee.firstName,ci.employee.lastName, ci.client.name, ci.vendor.name,ci.billingRate, ci.startDate, ci.endDate, ci.employee.employeeType.name) from " + ClientInformation.class.getCanonicalName() + " ci where ci.employee.user.enabled = true and ci.endDate > Now()", ContractDto.class);
+    public List<ContractDto> getActiveEmployeeCPDs() {
+        TypedQuery<ContractDto> q = em.createQuery("SELECT DISTINCT NEW " + ContractDto.class.getCanonicalName() + "(ci.id, ci.employee.firstName,ci.employee.lastName, ci.client.name, ci.vendor.name,ci.billingRate,ci.billingRateDuration, ci.startDate, ci.endDate, ci.employee.employeeType.name, ci.company) from " + ClientInformation.class.getCanonicalName() + " ci where ci.employee.user.enabled = true and ci.endDate > Now()", ContractDto.class);
+        return q.getResultList();
+    }
+
+    public List<ContractDto> getAllActiveCPDs() {
+        TypedQuery<ContractDto> q = em.createQuery("SELECT DISTINCT NEW " + ContractDto.class.getCanonicalName() + "(ci.id, ci.employee.firstName,ci.employee.lastName, ci.client.name, ci.vendor.name,ci.billingRate,ci.billingRateDuration, ci.startDate, ci.endDate, ci.employee.employeeType.name, ci.company) from " + ClientInformation.class.getCanonicalName() + " ci where ci.endDate > Now()", ContractDto.class);
         return q.getResultList();
     }
 
     @Async
     @Transactional
-    public void generateActiveCPDSReport(String email) {
-        List<ActiveCPDReportDto> res = new ArrayList<>();
-        getActiveCPDs().stream().forEach((dto) -> {
-            res.add(new ActiveCPDReportDto(dto.getEmployee(), dto.getClient(), dto.getVendor(), dto.getBillingRate(), dto.getStartDate(), dto.getEndDate(), dto.getEmployeeType()));
+    public void activeEmployeesRevenueForcastReport(String email) {
+        List<ProjectRevenueForecastReportDto> res = new ArrayList<>();
+        getActiveEmployeeCPDs().stream().forEach((dto) -> {
+            res.add(new ProjectRevenueForecastReportDto(dto.getEmployee(), dto.getClient(), dto.getVendor(), dto.getBillingRate(), dto.getBillingRateDuration(), dto.getStartDate(), dto.getEndDate(), dto.getEmployeeType(), dto.getCompany()));
         });
-        String[] columnOrder = new String[]{"employee", "client", "vendor", "billingRate", "startDate", "endDate", "totalDuration", "remainingDuration", "monthlyIncome", "remainingIncome", "employeeType"};
+        String[] columnOrder = new String[]{"employee", "client", "vendor", "billingRate", "startDate", "endDate", "totalDuration", "remainingDuration", "monthlyIncome", "remainingIncome", "employeeType", "company"};
         MessagingService.instance()
-                .emailReport(ReportGenerator.generateExcelOrderedReport(res, "Active CPDS Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
+                .emailReport(ReportGenerator.generateExcelOrderedReport(res, "Active Employees CPDS Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
+    }
+
+    @Async
+    @Transactional
+    public void allActiveProjectsRevenueForcastReport(String email) {
+        List<ProjectRevenueForecastReportDto> res = new ArrayList<>();
+        getAllActiveCPDs().stream().forEach((dto) -> {
+            res.add(new ProjectRevenueForecastReportDto(dto.getEmployee(), dto.getClient(), dto.getVendor(), dto.getBillingRate(), dto.getBillingRateDuration(), dto.getStartDate(), dto.getEndDate(), dto.getEmployeeType(), dto.getCompany()));
+        });
+        String[] columnOrder = new String[]{"employee", "client", "vendor", "billingRate", "startDate", "endDate", "totalDuration", "remainingDuration", "monthlyIncome", "remainingIncome", "employeeType", "company"};
+        MessagingService.instance()
+                .emailReport(ReportGenerator.generateExcelOrderedReport(res, "All Active CPDS Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
 }

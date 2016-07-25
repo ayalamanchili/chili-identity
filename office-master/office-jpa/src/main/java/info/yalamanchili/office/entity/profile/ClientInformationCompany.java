@@ -21,5 +21,6 @@ public enum ClientInformationCompany {
     SST_Canada,
     CapMark_Solutions,
     ACO360,
+    ERP_CLOUD_LLC,
     CGS_INC;
 }

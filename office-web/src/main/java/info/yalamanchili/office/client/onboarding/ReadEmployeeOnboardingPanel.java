@@ -24,7 +24,6 @@ import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
 import info.yalamanchili.office.client.profile.contact.Branch;
-import info.yalamanchili.office.client.profile.contact.WorkStatus;
 import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWidget;
 import java.util.logging.Logger;
 
@@ -59,13 +58,14 @@ class ReadEmployeeOnboardingPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity);
-                        populateComments();
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                logger.info("dddddddddd" + entity.toString());
+                populateFieldsFromEntity(entity);
+                populateComments();
+            }
+        });
     }
 
     protected void populateComments() {
@@ -74,12 +74,13 @@ class ReadEmployeeOnboardingPanel extends ReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+
         assignFieldValueFromEntity("email", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("employeeType", entity, null);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("company", entity, null);
         assignFieldValueFromEntity("branch", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("workStatus", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
     }
 
     @Override
@@ -99,7 +100,7 @@ class ReadEmployeeOnboardingPanel extends ReadComposite {
         addDropDown("company", new SelectCompanyWidget(false, true, Alignment.HORIZONTAL));
         addField("startDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("branch", true, false, Branch.names(), Alignment.HORIZONTAL);
-        addEnumField("workStatus", true, false, WorkStatus.names(), Alignment.HORIZONTAL);
+        addEnumField("status", true, false, OnBoardingStatus.names(), Alignment.HORIZONTAL);
         alignFields();
     }
 
@@ -131,6 +132,8 @@ class ReadEmployeeOnboardingPanel extends ReadComposite {
     @Override
     protected void displayTasks() {
         String tasksUrl = OfficeWelcome.constants.root_url() + "bpm/tasks/process/";
-        tasksDP.setContent(new ReadAllTasks(tasksUrl + JSONUtils.toString(getEntity(), "bpmProcessId") + "/", true));
+        if (!JSONUtils.toString(getEntity(), "bpmProcessId").isEmpty()) {
+            tasksDP.setContent(new ReadAllTasks(tasksUrl + JSONUtils.toString(getEntity(), "bpmProcessId") + "/", true));
+        }
     }
 }

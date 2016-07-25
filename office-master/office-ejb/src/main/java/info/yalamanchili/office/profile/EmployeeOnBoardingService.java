@@ -65,19 +65,19 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class EmployeeOnBoardingService {
-
+    
     private final static Logger logger = Logger.getLogger(EmployeeOnBoardingService.class.getName());
-
+    
     @PersistenceContext
     protected EntityManager em;
     @Autowired
     protected EmployeeService employeeService;
     @Autowired
     protected Mapper mapper;
-
+    
     public void initiateOnBoarding(InitiateOnBoardingDto dto) {
         EmployeeOnBoarding eo = EmployeeOnBoardingDao.instance().findByEmail(dto.getEmail());
-        if (eo != null&& !eo.getStatus().equals(OnBoardingStatus.Rejected)) {
+        if (eo != null && !eo.getStatus().equals(OnBoardingStatus.Rejected)) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invitation.already.sent", "Onboarding Invitation Already Sent To This Email");
         } else {
             InviteCode code = InviteCodeGeneratorService.instance().generate(InvitationType.CLIENT_ONBOARDING, dto.getEmail(), new Date(), DateUtils.addDays(new Date(), 7), false);
@@ -96,7 +96,7 @@ public class EmployeeOnBoardingService {
             }
         }
     }
-
+    
     public OnBoardingEmployeeDto getOnboardingInfo(String invitationCode) {
         String invCde = invitationCode.trim();
         InviteCode code = InviteCodeDao.instance().find(invCde);
@@ -130,12 +130,12 @@ public class EmployeeOnBoardingService {
         }
         return res;
     }
-
+    
     @Autowired
     protected DependentDao dependentDao;
     @Autowired
     protected EmployeeDocumentDao employeeDocumentDao;
-
+    
     public OnBoardingEmployeeDto onBoardEmployee(OnBoardingEmployeeDto dto) {
         Employee emp = mapper.map(dto, Employee.class);
         InviteCode code = InviteCodeDao.instance().find(dto.getInviteCode().trim());
@@ -170,7 +170,7 @@ public class EmployeeOnBoardingService {
         address = dto.getAddress();
         emp.getAddresss().add(address);
         address.setContact(emp);
-
+        
         emp = EmployeeDao.instance().save(emp);
         emp = em.merge(emp);
 
@@ -218,7 +218,7 @@ public class EmployeeOnBoardingService {
             dep.setTargetEntityName(Employee.class.getCanonicalName());
             em.merge(dep);
         }
-
+        
         onboarding.setStatus(OnBoardingStatus.Pending_Document_Verification);
         onboarding.setEmployee(emp);
         onboarding = em.merge(onboarding);
@@ -236,7 +236,7 @@ public class EmployeeOnBoardingService {
         //Update BankAccount Information for Employee
         BankAccount bankAccount;
         bankAccount = dto.getBankAccount();
-        if(bankAccount.getAchBlocked()==null){
+        if (bankAccount.getAchBlocked() == null) {
             bankAccount.setAchBlocked(Boolean.FALSE);
         }
         BankAccountDao.instance().save(bankAccount, emp.getId(), emp.getClass().getCanonicalName());
@@ -259,7 +259,7 @@ public class EmployeeOnBoardingService {
         InviteCodeDao.instance().invalidateCode(code);
         return dto;
     }
-
+    
     public InitiateOnBoardingDto read(Long id) {
         EmployeeOnBoarding onboarding = EmployeeOnBoardingDao.instance().findById(id);
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
@@ -281,10 +281,11 @@ public class EmployeeOnBoardingService {
             dto.setEmail(onboarding.getEmail());
             dto.setStartDate(onboarding.getStartedDate());
             dto.setBpmProcessId(onboarding.getBpmProcessId());
+            dto.setStatus(onboarding.getStatus());
         }
         return dto;
     }
-
+    
     public static EmployeeOnBoardingService instance() {
         return SpringContext.getBean(EmployeeOnBoardingService.class);
     }
