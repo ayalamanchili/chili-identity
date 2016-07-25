@@ -36,6 +36,7 @@
                 <![CDATA[${workStatus!="H1B"}]]>
             </conditionExpression>
         </sequenceFlow>
+        <sequenceFlow sourceRef="workStatusGateway" targetRef="employeeCompanyChangeImmigrationTask" />
         <userTask id="employeeCompanyChangeImmigrationTask" 
                   name="Employee Company Change Immigration Task for ${employee.firstName} ${employee.lastName}" 
                   activiti:candidateGroups="ROLE_H1B_IMMIGRATION">
