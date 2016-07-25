@@ -10,6 +10,7 @@ package info.yalamanchili.office.invoice;
 
 import com.google.common.base.Strings;
 import info.chili.reporting.ReportGenerator;
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.client.InvoiceDao;
@@ -137,7 +138,7 @@ public class InvoiceService {
         String[] columnOrder = new String[]{"employee", "itemNumber", "invoiceNumber", "startDate", "endDate", "invoiceDate", "invoiceSentDate", "billingRate", "overTimeBillingRate", "hours", "invoicestatus", "invoicefrequency", "timeSheetstatus"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Invoice Summary Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
-    
+
     @Async
     @Transactional
     public void generateActiveInvoicesReport(String email) {
@@ -163,9 +164,21 @@ public class InvoiceService {
         }
         String[] columnOrder = new String[]{"employee", "itemNumber", "invoiceNumber", "startDate", "endDate", "invoiceDate", "billingRate", "overTimeBillingRate", "hours", "invoicestatus", "invoicefrequency", "timeSheetstatus"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Active Summary Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
-        
+
     }
-    
+
+    @Async
+    @Transactional
+    public void searchforDates(Date startDate, Date endDate, String email) {
+        List<Invoice> invoices = new ArrayList();
+        invoices.addAll(InvoiceDao.instance().getInvoicesForDates(startDate, endDate));
+        List<InvoiceDto> res = new ArrayList();
+        for (Invoice invoice : invoices) {
+            res.add(InvoiceDto.map(mapper, invoice));
+        }
+        String[] columnOrder = new String[]{"employee", "itemNumber", "invoiceNumber", "startDate", "endDate", "invoiceDate", "billingRate", "overTimeBillingRate", "hours", "invoicestatus", "invoicefrequency", "timeSheetstatus"};
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Invoice Summary Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
+    }
 
     @XmlRootElement
     @XmlType
