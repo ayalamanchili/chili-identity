@@ -88,7 +88,7 @@ public class OutOfOfficeSidePanel extends ALComposite implements ClickHandler {
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(viewB)) {
             TabPanel.instance().timePanel.entityPanel.clear();
-            TabPanel.instance().timePanel.entityPanel.add(new ReadAllOutOfOfficePanel(getOfficeURL(0, "10")));
+            TabPanel.instance().timePanel.entityPanel.add(new ReadAllOutOfOfficePanel(getOfficeURL(0, "1000")));
             employeeSB.clearText();
         }
     }

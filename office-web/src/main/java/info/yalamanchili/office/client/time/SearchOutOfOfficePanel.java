@@ -119,7 +119,7 @@ public class SearchOutOfOfficePanel extends SearchComposite {
 
     @Override
     protected void search(JSONObject entity) {
-        HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 10), entity.toString(),
+        HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 1000), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
