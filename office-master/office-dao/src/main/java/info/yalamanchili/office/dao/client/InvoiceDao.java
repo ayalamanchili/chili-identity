@@ -18,6 +18,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
+import java.util.Date;
 
 /**
  *
@@ -59,12 +60,20 @@ public class InvoiceDao extends CRUDDao<Invoice> {
         query.setMaxResults(limit);
         return query.getResultList();
     }
-    
-    public List<Invoice> getInvoices(Long clientInfoId,int start,int limit){
+
+    public List<Invoice> getInvoices(Long clientInfoId, int start, int limit) {
         TypedQuery<Invoice> query = getEntityManager().createQuery("from " + Invoice.class.getCanonicalName() + " where clientInformation.id=:clientInfoIdParam order by invoiceDate DESC", Invoice.class);
         query.setParameter("clientInfoIdParam", clientInfoId);
         query.setFirstResult(start);
         query.setMaxResults(limit);
         return query.getResultList();
     }
+
+    public List<Invoice> getInvoicesForDates(Date startDate, Date endDate) {
+        Query findAllQuery = getEntityManager().createQuery("from " + Invoice.class.getCanonicalName() + " inv where inv.invoiceDate>=:startDateParam AND inv.invoiceDate<=:endDateParam ", entityCls);
+        findAllQuery.setParameter("startDateParam", startDate);
+        findAllQuery.setParameter("endDateParam", endDate);
+        return findAllQuery.getResultList();
+    }
+
 }
