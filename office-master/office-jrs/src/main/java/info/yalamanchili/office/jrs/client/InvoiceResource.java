@@ -225,4 +225,13 @@ public class InvoiceResource extends CRUDResource<Invoice> {
     public void generateActiveInvoicesReport() {
         InvoiceService.instance().generateActiveInvoicesReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
+     @GET
+    @Path("/reports")
+    public void searchForInvoiceDates(@QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate, @QueryParam("value") String value) {
+        String email = currentEmpEmail();
+        InvoiceService.instance().searchforDates(startDate, endDate, email);
+    }
+      private String currentEmpEmail() {
+        return OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail();
+    }
 }
