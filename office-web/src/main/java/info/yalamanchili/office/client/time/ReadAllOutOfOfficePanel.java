@@ -124,7 +124,7 @@ public class ReadAllOutOfOfficePanel extends CRUDReadAllComposite {
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Employee"));
-        table.setText(0, 2, getKeyValue("Strat Date"));
+        table.setText(0, 2, getKeyValue("Start Date"));
         table.setText(0, 3, getKeyValue("End Date"));
         table.setText(0, 4, getKeyValue("Type"));
         table.setText(0, 5, getKeyValue("Status"));
