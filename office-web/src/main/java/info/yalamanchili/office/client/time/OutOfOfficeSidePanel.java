@@ -75,7 +75,7 @@ public class OutOfOfficeSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addWidgets() {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION, Auth.ROLE.ROLE_CRP_STATUS_RPT_MGR)) {
             outOfOfficeSidePanel.add(new SearchOutOfOfficePanel());
         } else {
             outOfOfficeSidePanel.add(Utils.getLineSeperatorTag("Search"));
