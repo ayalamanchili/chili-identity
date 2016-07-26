@@ -27,6 +27,7 @@ import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -244,7 +245,9 @@ public class ContractReportService {
         int limit = 100;
         for (int i = start; i < limit; i++) {
             List<Employee> employees = EmployeeDao.instance().queryAll(start, limit);
-            for (Employee emp : employees) {
+            Iterator empIterator = employees.iterator();
+            while (empIterator.hasNext()) {
+                Employee emp = (Employee) empIterator.next();
                 List<ClientInformation> cpds = emp.getClientInformations();
                 if (cpds.size() > 0) {
                     if (cpds.size() == 1) {
@@ -263,7 +266,9 @@ public class ContractReportService {
                                 em.merge(ci);
                             }
                         } else {
-                            for (ClientInformation cpd : cpds) {
+                            Iterator cpdsIterator = cpds.iterator();
+                            while (cpdsIterator.hasNext()) {
+                                ClientInformation cpd = (ClientInformation) cpdsIterator.next();
                                 if (cpd.getEndDate() != null) {
                                     if ((cpd.getEndDate().after(new Date())) || (cpd.getEndDate().equals(new Date()))) {
                                         cpd.setActive(Boolean.TRUE);
