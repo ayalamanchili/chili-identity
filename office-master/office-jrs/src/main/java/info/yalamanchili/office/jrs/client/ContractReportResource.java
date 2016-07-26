@@ -121,7 +121,7 @@ public class ContractReportResource {
     public ContractTable getCpdsBWDates(@PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate, @QueryParam("value") String value, @QueryParam("employeeType") String employeeType) {
         return ContractReportService.instance().searchProjsBWDates(start, limit, startDate, endDate, value, employeeType);
     }
-    
+
     @GET
     @Path("/search-projects-between-days-report")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CONTRACTS_FULL_VIEW')")
@@ -129,19 +129,26 @@ public class ContractReportResource {
         String email = currentEmpEmail();
         ContractReportService.instance().searchProjsBWDatesReport(startDate, endDate, value, employeeType, email);
     }
-    
+
     @GET
     @Path("/subcontractors-summary-report")
     public void subContractorSummaryReport() {
         String email = currentEmpEmail();
         ContractReportService.instance().subContractorSummaryReport(email);
     }
-    
+
     @GET
-    @Path("/active-cpds")
-    public void getActiveCPDsReport() {
+    @Path("/active-employees-projects-forecast-report")
+    public void getActiveEmployeesProjectForecastReport() {
         String email = currentEmpEmail();
-        ContractReportService.instance().generateActiveCPDSReport(email);
+        ContractReportService.instance().activeEmployeesRevenueForcastReport(email);
+    }
+
+    @GET
+    @Path("/all-employees-projects-forecast-report")
+    public void getAllActiveProjectsReport() {
+        String email = currentEmpEmail();
+        ContractReportService.instance().allActiveProjectsRevenueForcastReport(email);
     }
 
     private String currentEmpEmail() {

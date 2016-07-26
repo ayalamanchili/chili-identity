@@ -39,7 +39,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
 import javax.ws.rs.core.Response;
-import org.dozer.Mapper;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -159,6 +158,39 @@ public class EmployeeFormsService {
         });
         //section 2: Dependents
         int counter = 0;
+        Dependent dependent1 = new Dependent();
+        Dependent dependent2 = new Dependent();
+        if (dto.getDependent() != null && dto.getDependent().size() > 0) {
+            for (Dependent dependent : dto.getDependent()) {
+                if (dependent.getRelationship().equals(Relationship.Child)) {
+                    counter++;
+                }
+                if (counter == 1) {
+                    dependent1 = dependent;
+                }
+                if (counter > 1) {
+                    dependent2 = dependent;
+                }
+            }
+        }
+        if (dependent1.getDfirstName() != null) {
+            Date depDateOfBirth = dependent1.getDdateOfBirth();
+            data.getData().put("childName1", dependent1.getDfirstName());
+            String depLastName = dependent1.getDlastName();
+            if (depLastName != null || !"".equals(depLastName)) {
+                data.getData().put("childName1", dependent1.getDfirstName() + " , " + depLastName);
+            }
+            data.getData().put("childDOB1", sdf.format(depDateOfBirth));
+        }
+        if (dependent2.getDfirstName() != null) {
+            Date depDateOfBirth = dependent2.getDdateOfBirth();
+            data.getData().put("childName2", dependent2.getDfirstName());
+            String depLastName = dependent2.getDlastName();
+            if (depLastName != null || !"".equals(depLastName)) {
+                data.getData().put("childName2", dependent2.getDfirstName() + " , " + depLastName);
+            }
+            data.getData().put("childDOB2", sdf.format(depDateOfBirth));
+        }
         for (Dependent dep : dto.getDependent()) {
             if (dep.getRelationship().equals(Relationship.Spouse)) {
                 Date depDateOfBirth = dep.getDdateOfBirth();
@@ -168,24 +200,6 @@ public class EmployeeFormsService {
                     data.getData().put("spouseName", dep.getDfirstName() + " , " + depLastName);
                 }
                 data.getData().put("spouseDOB", sdf.format(depDateOfBirth));
-            } else if (dep.getRelationship().equals(Relationship.Child1)) {
-                counter++;
-                Date depDateOfBirth = dep.getDdateOfBirth();
-                data.getData().put("childName1", dep.getDfirstName());
-                String depLastName = dep.getDlastName();
-                if (depLastName != null || !"".equals(depLastName)) {
-                    data.getData().put("childName1", dep.getDfirstName() + " , " + depLastName);
-                }
-                data.getData().put("childDOB1", sdf.format(depDateOfBirth));
-            } else if (dep.getRelationship().equals(Relationship.Child2)) {
-                counter++;
-                Date depDateOfBirth = dep.getDdateOfBirth();
-                data.getData().put("childName2", dep.getDfirstName());
-                String depLastName = dep.getDlastName();
-                if (depLastName != null || !"".equals(depLastName)) {
-                    data.getData().put("childName2", dep.getDfirstName() + " , " + depLastName);
-                }
-                data.getData().put("childDOB2", sdf.format(depDateOfBirth));
             }
         }
         data.getData().put("numberOfChildren", String.valueOf(counter));
@@ -227,21 +241,21 @@ public class EmployeeFormsService {
         //section 5 :Emergency Contact Information - Other
         emp.getEmergencyContacts().stream().filter((emergencyContact) -> ((emergencyContact.getContact() != null)
                 && (emergencyContact.getRelation() != null))).map((emergencyContact) -> {
-            data.getData().put("ecName2", emergencyContact.getContact().getFirstName());
-            return emergencyContact;
-        }).map((emergencyContact) -> {
-            data.getData().put("ecRelation2", emergencyContact.getRelation());
-            return emergencyContact;
-        }).map((emergencyContact) -> {
-            emergencyContact.getContact().getPhones().stream().forEach((phone) -> {
-                data.getData().put("ecPhone2", phone.getPhoneNumber());
-            });
-            return emergencyContact;
-        }).forEach((EmergencyContact emergencyContact) -> {
-            emergencyContact.getContact().getAddresss().stream().forEach((address1) -> {
-                data.getData().put("ecAddress2", address1.getStreet1() + "," + address1.getCity() + "," + address1.getState() + "," + address1.getCountry());
-            });
-        });
+                    data.getData().put("ecName2", emergencyContact.getContact().getFirstName());
+                    return emergencyContact;
+                }).map((emergencyContact) -> {
+                    data.getData().put("ecRelation2", emergencyContact.getRelation());
+                    return emergencyContact;
+                }).map((emergencyContact) -> {
+                    emergencyContact.getContact().getPhones().stream().forEach((phone) -> {
+                        data.getData().put("ecPhone2", phone.getPhoneNumber());
+                    });
+                    return emergencyContact;
+                }).forEach((EmergencyContact emergencyContact) -> {
+                    emergencyContact.getContact().getAddresss().stream().forEach((address1) -> {
+                        data.getData().put("ecAddress2", address1.getStreet1() + "," + address1.getCity() + "," + address1.getState() + "," + address1.getCountry());
+                    });
+                });
         data.getData().put("employeeId", emp.getEmployeeId());
         if (emp.getJobTitle() != null) {
             data.getData().put("designation", emp.getJobTitle());

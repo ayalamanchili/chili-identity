@@ -13,18 +13,21 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.fields.ImageField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
+import info.yalamanchili.office.client.Company;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.profile.contact.Branch;
 import info.yalamanchili.office.client.profile.contact.Sex;
 import info.yalamanchili.office.client.profile.contact.WorkStatus;
 import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWidget;
+import info.yalamanchili.office.client.resources.OfficeImages;
 import java.util.logging.Logger;
 
 public class ReadEmployeePanel extends ReadComposite {
@@ -130,6 +133,18 @@ public class ReadEmployeePanel extends ReadComposite {
         vPanel.add(lnstringField);
         hpanel.add(vPanel);
         hpanel.add(new ImageField("Picture", JSONUtils.toString(entity, "imageURL"), JSONUtils.toString(entity, "id"), 100, 100, false));
+        if (entity != null && entity.get("company").isObject() != null) {
+            String companyName = entity.get("company").isObject().get("name").isString().stringValue();
+            if(companyName.equalsIgnoreCase(Company.CGS_INC)){
+                hpanel.add(new ImageField("Logo",OfficeImages.INSTANCE.cgsLogo(), 277, 50, false));
+            }else if(companyName.equalsIgnoreCase(Company.TECHPILLARS)){
+                hpanel.add(new ImageField("Logo",OfficeImages.INSTANCE.techPillarsLogo(), 277, 37, false));
+            }else if(companyName.equalsIgnoreCase(Company.SSTECH_INC) || companyName.equalsIgnoreCase(Company.SSTECH_LLC)){
+                hpanel.add(new ImageField("Logo",OfficeImages.INSTANCE.logo(), 277, 37, false));
+            }
+        }else{
+            hpanel.add(new ImageField("Logo",OfficeImages.INSTANCE.logo(), 277, 37, false));
+        }
         entityFieldsPanel.add(hpanel);
         addField("employeeId", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         if (canViewDOBField()) {
@@ -179,4 +194,10 @@ public class ReadEmployeePanel extends ReadComposite {
     protected String getAuditUrl() {
         return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.profile.Employee" + "/" + getEntityId();
     }
+    
+    @Override
+     protected ReadAllComposite getReadAllPanel() {
+        return ReadAllEmployeesPanel.instance;
+    }
+     
 }

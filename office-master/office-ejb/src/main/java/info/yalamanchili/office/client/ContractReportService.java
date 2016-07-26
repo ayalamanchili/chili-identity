@@ -17,7 +17,7 @@ import info.yalamanchili.office.dao.profile.EmployeeDao.EmployeeTable;
 import info.yalamanchili.office.dao.profile.EmployeeDto;
 import info.yalamanchili.office.dao.profile.EmployeeLocationDto;
 import info.yalamanchili.office.dao.profile.EmployeeLocationReportDto;
-import info.yalamanchili.office.dto.client.ActiveCPDReportDto;
+import info.yalamanchili.office.dto.client.ProjectRevenueForecastReportDto;
 import info.yalamanchili.office.dto.client.ContractDto;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dto.client.ContractSearchDto;
@@ -27,6 +27,7 @@ import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -45,6 +46,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Scope("prototype")
 public class ContractReportService {
+
+    private static java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ContractReportService.class.getName());
 
     @PersistenceContext
     protected EntityManager em;
@@ -202,20 +205,106 @@ public class ContractReportService {
         }
     }
 
-    public List<ContractDto> getActiveCPDs() {
-        TypedQuery<ContractDto> q = em.createQuery("SELECT DISTINCT NEW " + ContractDto.class.getCanonicalName() + "(ci.id, ci.employee.firstName,ci.employee.lastName, ci.client.name, ci.vendor.name,ci.billingRate,ci.billingRateDuration, ci.startDate, ci.endDate, ci.employee.employeeType.name) from " + ClientInformation.class.getCanonicalName() + " ci where ci.employee.user.enabled = true and ci.endDate > Now()", ContractDto.class);
+    public List<ContractDto> getActiveEmployeeCPDs() {
+        TypedQuery<ContractDto> q = em.createQuery("SELECT DISTINCT NEW " + ContractDto.class.getCanonicalName() + "(ci.id, ci.employee.firstName,ci.employee.lastName, ci.client.name, ci.vendor.name,ci.billingRate,ci.billingRateDuration, ci.startDate, ci.endDate, ci.employee.employeeType.name, ci.company) from " + ClientInformation.class.getCanonicalName() + " ci where ci.employee.user.enabled = true and ci.endDate > Now()", ContractDto.class);
+        return q.getResultList();
+    }
+
+    public List<ContractDto> getAllActiveCPDs() {
+        TypedQuery<ContractDto> q = em.createQuery("SELECT DISTINCT NEW " + ContractDto.class.getCanonicalName() + "(ci.id, ci.employee.firstName,ci.employee.lastName, ci.client.name, ci.vendor.name,ci.billingRate,ci.billingRateDuration, ci.startDate, ci.endDate, ci.employee.employeeType.name, ci.company) from " + ClientInformation.class.getCanonicalName() + " ci where ci.endDate > Now()", ContractDto.class);
         return q.getResultList();
     }
 
     @Async
     @Transactional
-    public void generateActiveCPDSReport(String email) {
-        List<ActiveCPDReportDto> res = new ArrayList<>();
-        getActiveCPDs().stream().forEach((dto) -> {
-            res.add(new ActiveCPDReportDto(dto.getEmployee(), dto.getClient(), dto.getVendor(), dto.getBillingRate(), dto.getBillingRateDuration(), dto.getStartDate(), dto.getEndDate(), dto.getEmployeeType()));
+    public void activeEmployeesRevenueForcastReport(String email) {
+        List<ProjectRevenueForecastReportDto> res = new ArrayList<>();
+        getActiveEmployeeCPDs().stream().forEach((dto) -> {
+            res.add(new ProjectRevenueForecastReportDto(dto.getEmployee(), dto.getClient(), dto.getVendor(), dto.getBillingRate(), dto.getBillingRateDuration(), dto.getStartDate(), dto.getEndDate(), dto.getEmployeeType(), dto.getCompany()));
         });
-        String[] columnOrder = new String[]{"employee", "client", "vendor", "billingRate", "startDate", "endDate", "totalDuration", "remainingDuration", "monthlyIncome", "remainingIncome", "employeeType"};
+        String[] columnOrder = new String[]{"employee", "client", "vendor", "billingRate", "startDate", "endDate", "totalDuration", "remainingDuration", "monthlyIncome", "remainingIncome", "employeeType", "company"};
         MessagingService.instance()
-                .emailReport(ReportGenerator.generateExcelOrderedReport(res, "Active CPDS Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
+                .emailReport(ReportGenerator.generateExcelOrderedReport(res, "Active Employees CPDS Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
+    }
+
+    @Async
+    @Transactional
+    public void allActiveProjectsRevenueForcastReport(String email) {
+        List<ProjectRevenueForecastReportDto> res = new ArrayList<>();
+        getAllActiveCPDs().stream().forEach((dto) -> {
+            res.add(new ProjectRevenueForecastReportDto(dto.getEmployee(), dto.getClient(), dto.getVendor(), dto.getBillingRate(), dto.getBillingRateDuration(), dto.getStartDate(), dto.getEndDate(), dto.getEmployeeType(), dto.getCompany()));
+        });
+        String[] columnOrder = new String[]{"employee", "client", "vendor", "billingRate", "startDate", "endDate", "totalDuration", "remainingDuration", "monthlyIncome", "remainingIncome", "employeeType", "company"};
+        MessagingService.instance()
+                .emailReport(ReportGenerator.generateExcelOrderedReport(res, "All Active CPDS Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
+    }
+
+    @Transactional
+    public void changeAllCpdsStatus() {
+        int start = 0;
+        int limit = 100;
+        for (int i = start; i < limit; i++) {
+            List<Employee> employees = EmployeeDao.instance().queryAll(start, limit);
+            Iterator empIterator = employees.iterator();
+            while (empIterator.hasNext()) {
+                Employee emp = (Employee) empIterator.next();
+                List<ClientInformation> cpds = emp.getClientInformations();
+                if (cpds.size() > 0) {
+                    if (cpds.size() == 1) {
+                        ClientInformation cpd = cpds.get(0);
+                        cpd.setActive(Boolean.TRUE);
+                        em.merge(cpd);
+                    } else if (cpds.size() > 1) {
+                        boolean isAllEmpCpdsEnded = isAllEmpCpdsEnded(cpds);
+                        if (isAllEmpCpdsEnded == true) {
+                            logger.info("Employee Name :" + emp.getFirstName() + " " + emp.getLastName());
+                            TypedQuery<ClientInformation> q = em.createQuery("from " + ClientInformation.class.getCanonicalName() + " WHERE employee.id=:employeeIdParam order by endDate desc)", ClientInformation.class);
+                            q.setParameter("employeeIdParam", emp.getId());
+                            if (q.getResultList().size() > 0) {
+                                ClientInformation ci = q.getResultList().get(0);
+                                ci.setActive(Boolean.TRUE);
+                                em.merge(ci);
+                            }
+                        } else {
+                            Iterator cpdsIterator = cpds.iterator();
+                            while (cpdsIterator.hasNext()) {
+                                ClientInformation cpd = (ClientInformation) cpdsIterator.next();
+                                if (cpd.getEndDate() != null) {
+                                    if ((cpd.getEndDate().after(new Date())) || (cpd.getEndDate().equals(new Date()))) {
+                                        cpd.setActive(Boolean.TRUE);
+                                        em.merge(cpd);
+                                    }
+                                } else {
+                                    cpd.setActive(Boolean.TRUE);
+                                    em.merge(cpd);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (i == limit) {
+                start += 100;
+                limit += 100;
+            }
+            if (limit == 1000) {
+                break;
+            }
+        }
+    }
+
+    private boolean isAllEmpCpdsEnded(List<ClientInformation> cpds) {
+        boolean flag = true;
+        for (ClientInformation cpd : cpds) {
+            if (cpd.getEndDate() != null) {
+                if ((cpd.getEndDate().before(new Date()))) {
+                    flag = true;
+                } else {
+                    flag = false;
+                    break;
+                }
+            }
+        }
+        return flag;
     }
 }

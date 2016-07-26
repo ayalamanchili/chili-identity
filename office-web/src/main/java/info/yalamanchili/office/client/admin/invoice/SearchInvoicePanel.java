@@ -8,20 +8,28 @@
  */
 package info.yalamanchili.office.client.admin.invoice;
 
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.http.client.URL;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.user.client.ui.Button;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.DateField;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.SearchComposite;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.profile.cllientinfo.ClientInformationCompany;
+import java.util.Date;
 import java.util.Map;
 import java.util.logging.Logger;
+import org.apache.poi.hwpf.usermodel.Fields;
 
 /**
  *
@@ -30,6 +38,7 @@ import java.util.logging.Logger;
 public class SearchInvoicePanel extends SearchComposite {
 
     private static Logger logger = Logger.getLogger(SearchInvoicePanel.class.getName());
+    protected Button reportB = new Button("Report");
 
     public SearchInvoicePanel() {
         init("Invoice Search", "Invoice", OfficeWelcome.constants2);
@@ -37,6 +46,7 @@ public class SearchInvoicePanel extends SearchComposite {
 
     @Override
     protected void addListeners() {
+        reportB.addClickHandler(this);
     }
 
     @Override
@@ -55,6 +65,7 @@ public class SearchInvoicePanel extends SearchComposite {
         addField("invoiceSentDate", DataType.DATE_FIELD);
         addEnumField("timeSheetStatus", false, false, TimeStatus.names());
         addEnumField("invoiceStatus", false, false, InvoiceStatus.names());
+        mainPanel.add(reportB);
     }
 
     @Override
@@ -78,11 +89,11 @@ public class SearchInvoicePanel extends SearchComposite {
         if (getSearchText() != null) {
             HttpService.HttpServiceAsync.instance().doGet(getSearchURI(getSearchText(), 0, 1000),
                     OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                        @Override
-                        public void onResponse(String result) {
-                            processSearchResult(result);
-                        }
-                    });
+                @Override
+                public void onResponse(String result) {
+                    processSearchResult(result);
+                }
+            });
         }
     }
 
@@ -90,11 +101,11 @@ public class SearchInvoicePanel extends SearchComposite {
     protected void search(JSONObject entity) {
         HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 1000), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        processSearchResult(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                processSearchResult(result);
+            }
+        });
     }
 
     @Override
@@ -150,9 +161,40 @@ public class SearchInvoicePanel extends SearchComposite {
     protected String getNameDropDownUrl() {
         return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Corporate Employee&employee-type=Employee&employee-type=Subcontractor&employee-type=1099 Contractor&employee-type=W2 Contractor&includeAll=true");
     }
+
     @Override
     protected void onOpenAdvancedSearch() {
         super.onOpenAdvancedSearch();
         TabPanel.instance().reportingPanel.sidePanelTop.setHeight("100%");
+    }
+
+    @Override
+    public void onClick(ClickEvent event) {
+        if (event.getSource().equals(reportB)) {
+            DateField startDateF = (DateField) fields.get("startDate");
+            DateField endDateF = (DateField) fields.get("endDate");
+            if (startDateF.getDate() == null && endDateF.getDate() == null) {
+                startDateF.setMessage("Required");
+                endDateF.setMessage("Required");
+            } else if (startDateF.getDate() != null && endDateF.getDate() == null) {
+                endDateF.setMessage("Required");
+            } else if (startDateF.getDate() == null && endDateF.getDate() != null) {
+                startDateF.setMessage("Required");
+            } else {
+                TabPanel.instance().getAdminPanel().entityPanel.clear();
+                DateTimeFormat sdf = DateTimeFormat.getFormat("MM/dd/yyyy");
+                String empUrl = OfficeWelcome.constants.root_url() + "invoice/reports";
+                empUrl = empUrl.concat("?startDate=" + sdf.format(startDateF.getDate()));
+                empUrl = empUrl.concat("&endDate=" + sdf.format(endDateF.getDate()));
+                HttpService.HttpServiceAsync.instance().doGet(URL.encode(empUrl), OfficeWelcome.instance().getHeaders(), true,
+                        new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String result) {
+                        new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
+                    }
+                });
+            }
+        }
+        super.onClick(event);
     }
 }

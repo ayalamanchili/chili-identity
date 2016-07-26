@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.dto.client;
 
+import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.client.InvoiceDeliveryMethod;
 import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import info.yalamanchili.office.entity.profile.BillingDuration;
@@ -230,7 +231,7 @@ public class ContractDto implements Serializable {
     public ContractDto() {
     }
 
-    public ContractDto(Long id, String firstName, String lastName, String client, String vendor, BigDecimal billingRate, BillingDuration billnigDuration, Date startDate, Date endDate, String employeeType) {
+    public ContractDto(Long id, String firstName, String lastName, String client, String vendor, BigDecimal billingRate, BillingDuration billnigDuration, Date startDate, Date endDate, String employeeType, ClientInformationCompany company) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -240,6 +241,7 @@ public class ContractDto implements Serializable {
         this.billingRateDuration = billnigDuration;
         this.employee = firstName + " " + lastName;
         this.employeeType = employeeType;
+        this.company = company;
     }
 
     public void setPaymentTerms1099(String paymentTerms1099) {

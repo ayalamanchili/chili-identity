@@ -40,9 +40,9 @@ public class CreateOutOffOfficeRequestPanel extends CreateComposite {
     protected FlowPanel panel = new FlowPanel();
 
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, true, Alignment.HORIZONTAL);
-    //BooleanField forTime = new BooleanField(OfficeWelcome.constants, "doYouNeedtoWorkForPartial", "OutOfOffice", false, false, Alignment.HORIZONTAL);
-    //BooleanField recurring = new BooleanField(OfficeWelcome.constants, "doYouNeedRecurring", "OutOfOffice", false, false, Alignment.HORIZONTAL);
-    HTML tacHelpText = new HTML("<h4 style=\"color:#888\">" + "If You Work For Partial or If you need recurring please enter the details in below field.. for Eg: for partial work you have to enter something like 05/08/2016 10 am to 1 pm.. for Recurring you have to mention like every wed,tue 9am to 4pm</h4>");
+    HTML tacHelpText = new HTML("<p>Please provide the details of your request in the fields below.</p>\n"
+            + "<p>For example, if you are requesting to work from home for part of a work day, please indicate the time and date for which you are requesting to do so (i.e. 10:00 am &ndash; 2:00 pm on 7/22/2016).</p>\n"
+            + "<p>If your request is recurring, please enter the times and days for which you are requesting to work from home, and, if applicable, the duration of your request (i.e. 8:30 am &ndash; 12:00 pm every Monday, Wednesday, and Friday beginning 7/22/2016 until 8/30/2016.</p>");
 
     public CreateOutOffOfficeRequestPanel(CreateComposite.CreateCompositeType type) {
         super(type);
@@ -105,7 +105,7 @@ public class CreateOutOffOfficeRequestPanel extends CreateComposite {
     @Override
     protected void configure() {
         setButtonText("Submit");
-        setTitle("Work From Home Request");
+        entityCaptionPanel.setCaptionHTML("Work From Home Request");
         HttpService.HttpServiceAsync.instance().doGet(getIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {

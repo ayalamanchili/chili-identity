@@ -15,8 +15,8 @@ package info.yalamanchili.office.client.onboarding;
 public enum Relationship {
 
     Spouse,
-    Child1,
-    Child2,
+    Child,
+    Legal_Dependent,
     Mother,
     Father,
     Son,
@@ -48,6 +48,15 @@ public enum Relationship {
         Relationship[] values = values();
         String[] names = new String[values.length];
         for (int i = 0; i < values.length; i++) {
+            names[i] = values[i].name();
+        }
+        return names;
+    }
+    
+    public static String[] getRelationsForDepenents() {
+        Relationship[] values = values();
+        String[] names = new String[3];
+        for (int i = 0; i < 3; i++) {
             names[i] = values[i].name();
         }
         return names;

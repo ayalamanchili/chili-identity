@@ -45,6 +45,8 @@ public class Company extends AbstractEntity {
     public static final String SST_CANADA = "SST Canada";
     public static final String CAPMARK_SOLUTIONS = "CapMark solutions";
     public static final String ACO360 = "ACO360";
+    public static final String ERP_CLOUD_LLC = "ERP Cloud Technology Investments LLC";
+    
     /**
      * @generated
      */
