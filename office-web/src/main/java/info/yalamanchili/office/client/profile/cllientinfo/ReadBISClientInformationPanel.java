@@ -11,6 +11,7 @@ package info.yalamanchili.office.client.profile.cllientinfo;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
@@ -288,4 +289,8 @@ public class ReadBISClientInformationPanel extends ReadComposite {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    protected ReadAllComposite getReadAllPanel() {
+        return ReadAllBISClientInformationPanel.instance;
+    }
 }
