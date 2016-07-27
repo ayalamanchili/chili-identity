@@ -11,6 +11,7 @@ package info.yalamanchili.office.client.employee.prbprdeval;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.TextAreaField;
@@ -136,6 +137,12 @@ public class ReadProbationPeriodEvaluation extends ReadComposite {
         tasksDP.setContent(new ReadAllTasks(tasksUrl + JSONUtils.toString(getEntity(), "bpmProcessId") + "/", true));
     }
 
+    @Override
+    protected ReadAllComposite getReadAllPanel() {
+        return ReadAllProbationPeriodEvaluationsPanel.instance;
+    }
+    
+    
     @Override
     protected String getAuditUrl() {
         return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.employee.ProbationPeriodEvaluation" + "/" + getEntityId();
