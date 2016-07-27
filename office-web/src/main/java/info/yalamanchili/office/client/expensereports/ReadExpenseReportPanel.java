@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
@@ -193,4 +194,14 @@ public class ReadExpenseReportPanel extends ReadComposite {
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "expensereport/" + entityId;
     }
+    
+    @Override
+   protected boolean enableBack() {
+       return true;
+   }
+    
+    @Override
+     protected ReadAllComposite getReadAllPanel() {
+        return ReadAllExpenseReportsPanel.instance;
+     }
 }
