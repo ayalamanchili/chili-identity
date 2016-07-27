@@ -91,6 +91,11 @@ public class ReadEmailPanel extends ReadComposite {
     }
 
     @Override
+   protected boolean enableBack() {
+       return true;
+   }
+    
+    @Override
     protected ReadAllComposite getReadAllPanel() {
         return ReadAllEmailsPanel.instance;
     }    
