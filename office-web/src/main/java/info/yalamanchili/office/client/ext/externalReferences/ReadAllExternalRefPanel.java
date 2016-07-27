@@ -31,7 +31,7 @@ public class ReadAllExternalRefPanel extends CRUDReadAllComposite {
 
     private static Logger logger = Logger.getLogger(ReadAllCommentsPanel.class.getName());
     protected String targetClassName;
-    private static ReadAllExternalRefPanel instance;
+    protected static ReadAllExternalRefPanel instance;
 
     public static ReadAllExternalRefPanel instance() {
         return instance;
