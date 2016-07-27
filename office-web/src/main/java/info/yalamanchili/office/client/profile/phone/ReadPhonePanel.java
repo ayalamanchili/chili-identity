@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.profile.phone;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.ReadComposite;
@@ -80,6 +81,11 @@ public class ReadPhonePanel extends ReadComposite {
     protected void addWidgetsBeforeCaptionPanel() {
     }
 
+    @Override
+    protected ReadAllComposite getReadAllPanel() {
+        return ReadAllPhonesPanel.instance;
+    }    
+    
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "phone";
