@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.BaseField;
 import info.chili.gwt.composite.BaseFieldWithTextBox;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.crud.TReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
@@ -311,5 +312,9 @@ public class ReadContractsPanel extends TReadComposite {
     private String getInvoiceUrl() {
         return OfficeWelcome.constants.root_url() + "invoice/" + getEntityId() + "/0/1000";
     }
-
+    
+    @Override
+    protected ReadAllComposite getReadAllPanel() {
+        return ReadAllContractsPanel.instance;
+    }
 }
