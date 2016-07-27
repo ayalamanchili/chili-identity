@@ -65,6 +65,11 @@ public class ReadTravelHistoryRecordPanel extends ReadComposite {
     }
     
     @Override
+   protected boolean enableBack() {
+       return true;
+   }
+    
+    @Override
     protected ReadAllComposite getReadAllPanel() {
         return ReadAllTravelHistoryRecordPanel.instance;
     }
