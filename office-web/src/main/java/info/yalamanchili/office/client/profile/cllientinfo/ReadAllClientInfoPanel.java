@@ -31,7 +31,7 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
 
     private static Logger logger = Logger.getLogger(ReadAllClientInfoPanel.class.getName());
 
-    private static ReadAllClientInfoPanel instance;
+    protected static ReadAllClientInfoPanel instance;
 
     public static ReadAllClientInfoPanel instance() {
         return instance;
