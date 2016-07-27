@@ -49,8 +49,4 @@ public class ReadCurrentConsultantLeavesPanel extends Composite {
         return OfficeWelcome.instance().constants.root_url() + "consultant-timesheet/current-leaves";
     }
     
-    @Override
-    protected ReadAllComposite getReadAllPanel() {
-        return ReadAllConsultantTimeSheetsPanel.instance;
-    }
 }
