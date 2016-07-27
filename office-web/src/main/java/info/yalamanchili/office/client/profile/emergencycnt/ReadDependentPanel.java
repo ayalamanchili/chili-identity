@@ -11,6 +11,7 @@ package info.yalamanchili.office.client.profile.emergencycnt;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
@@ -95,6 +96,11 @@ public class ReadDependentPanel extends ReadComposite {
     protected void addWidgetsBeforeCaptionPanel() {
     }
 
+    @Override
+    protected ReadAllComposite getReadAllPanel() {
+        return ReadAllDependentsPanel.instance();
+    }
+    
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "dependent/" + entityId;
