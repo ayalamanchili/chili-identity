@@ -65,6 +65,11 @@ public class ReadEducationRecordPanel extends ReadComposite {
     }
     
     @Override
+   protected boolean enableBack() {
+       return true;
+   }
+    
+    @Override
     protected ReadAllComposite getReadAllPanel() {
         return ReadAllEducationRecordPanel.instance;
     }
