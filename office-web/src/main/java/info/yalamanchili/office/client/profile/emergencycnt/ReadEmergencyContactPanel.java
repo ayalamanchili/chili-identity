@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.profile.emergencycnt;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -93,6 +94,11 @@ public class ReadEmergencyContactPanel extends ReadComposite {
     protected void addWidgetsBeforeCaptionPanel() {
     }
 
+    @Override
+    protected ReadAllComposite getReadAllPanel() {
+        return ReadAllEmergencyContactsPanel.instance();
+    }
+    
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "emergencycontact/" + entityId;
