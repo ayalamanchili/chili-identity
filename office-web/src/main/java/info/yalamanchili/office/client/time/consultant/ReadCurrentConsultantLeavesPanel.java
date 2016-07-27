@@ -14,6 +14,7 @@ import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -46,5 +47,10 @@ public class ReadCurrentConsultantLeavesPanel extends Composite {
 
     protected String getCurrentEmpLeavesUrl() {
         return OfficeWelcome.instance().constants.root_url() + "consultant-timesheet/current-leaves";
+    }
+    
+    @Override
+    protected ReadAllComposite getReadAllPanel() {
+        return ReadAllConsultantTimeSheetsPanel.instance;
     }
 }
