@@ -43,8 +43,8 @@ public class InviteCodeResource {
     
     @GET
     @Path("/{start}/{limit}")
-    public InviteCodeService.InviteCodeTable code(@PathParam("start") int start, @PathParam("limit") int limit) {
-        return inviteCodeService.getCode(start, limit);
+    public InviteCodeService.InviteCodeTable inviteCodes(@PathParam("start") int start, @PathParam("limit") int limit) {
+        return inviteCodeService.getInviteCodes(start, limit);
     }
     
     @PUT
