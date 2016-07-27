@@ -118,18 +118,27 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @Validate
     public void internalCompanyTransfer(@PathParam("employeeId") Long id, EmployeeCompanyTransferDto dto) {
         Employee emp = EmployeeDao.instance().findById(id);
-        if(emp.getCompany()!=null) {
+        
+        if (emp.getCompany() == null) {
+             /* There are some employees who are not associated with any company. 
+            This handles the null pointer which arises when such an employee is being transfered*/
+            Company previousCompany = new Company();
+            previousCompany.setName("");
+            dto.setPreviousCompany(previousCompany);
+        } else {
             dto.setPreviousCompany(emp.getCompany());
         }
-        else {
-            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "employee.currentCompany.not.available", "Current Company of employee is unavailable");
-        }
-        dto.setPreviousCompany(emp.getCompany());
         Company company = CompanyDao.instance().findById(dto.getTransferCompany().getId());
         emp.setCompany(company);
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-        CommentDao.instance().addComment("Transfered from " + dto.getPreviousCompany().getName()+
-                 " to "+ emp.getCompany().getName()+ " on " + sdf.format(dto.getTransferDate()), emp);
+        if(dto.getPreviousCompany().getName().equalsIgnoreCase("")){
+            CommentDao.instance().addComment("Transfered to " + emp.getCompany().getName() +
+                    " on " + sdf.format(dto.getTransferDate()), emp);
+        }
+        else {
+            CommentDao.instance().addComment("Transfered from " + dto.getPreviousCompany().getName()
+                + " to " + emp.getCompany().getName() + " on " + sdf.format(dto.getTransferDate()), emp);
+        }
         EmployeeService.instance().internalCompanyTransfer(emp, dto);
     }
     
