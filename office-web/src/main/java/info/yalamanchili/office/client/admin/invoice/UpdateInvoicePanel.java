@@ -98,7 +98,6 @@ public class UpdateInvoicePanel extends UpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        logger.info("ddddddddddddddddddddddd" + entity.toString());
         if (entity.containsKey("clientInformation")) {
             JSONObject clientInformation = entity.get("clientInformation").isObject();
             assignFieldValueFromEntity("billingRate", clientInformation, DataType.CURRENCY_FIELD);
@@ -141,7 +140,7 @@ public class UpdateInvoicePanel extends UpdateComposite {
         addField("invoiceNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("billingRate", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        addField("billingRate", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("hours", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addEnumField("invoiceFrequency", true, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
