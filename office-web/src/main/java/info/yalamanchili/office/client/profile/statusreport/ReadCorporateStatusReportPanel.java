@@ -121,8 +121,4 @@ public class ReadCorporateStatusReportPanel extends ALComposite {
         statusReportsF.setHTML(JSONUtils.toString(entity, "report"));
     }
     
-    @Override
-    protected ReadAllComposite getReadAllPanel() {
-        return ReadAllCorporateStatusReportsPanel.instance;
-    }
 }
