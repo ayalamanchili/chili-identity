@@ -127,6 +127,11 @@ public class ReadConsultantTimeSheetPanel extends ReadComposite {
     }
     
     @Override
+   protected boolean enableBack() {
+       return true;
+   }
+    
+    @Override
     protected ReadAllComposite getReadAllPanel() {
         return ReadAllConsultantTimeSheetsPanel.instance;
     }
