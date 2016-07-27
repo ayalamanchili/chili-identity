@@ -8,6 +8,7 @@
 package info.yalamanchili.office.client.i18n;
 
 import com.google.gwt.json.client.JSONObject;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -66,5 +67,10 @@ public class Readci18nResourcePanel extends ReadComposite {
     @Override
     protected String getAuditUrl() {
         return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.chili.i18n.domain.Ci18nResource" + "/" + getEntityId();
+    }
+    
+    @Override
+    protected ReadAllComposite getReadAllPanel() {
+        return ReadAllCi8nResourcesPanel.instance;
     }
 }
