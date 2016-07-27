@@ -9,6 +9,7 @@
 package info.yalamanchili.office.client.ext.externalReferences;
 
 import com.google.gwt.json.client.JSONObject;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -68,5 +69,14 @@ public class ReadExternalRefPanel extends ReadComposite {
     protected boolean enableClone() {
         return false;
     }
-
+    
+    @Override
+   protected boolean enableBack() {
+       return true;
    }
+    
+    @Override
+     protected ReadAllComposite getReadAllPanel() {
+        return ReadAllExternalRefPanel.instance;
+    }
+}
