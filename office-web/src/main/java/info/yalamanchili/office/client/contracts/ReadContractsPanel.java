@@ -313,8 +313,4 @@ public class ReadContractsPanel extends TReadComposite {
         return OfficeWelcome.constants.root_url() + "invoice/" + getEntityId() + "/0/1000";
     }
     
-    @Override
-    protected ReadAllComposite getReadAllPanel() {
-        return ReadAllContractsPanel.instance;
-    }
 }
