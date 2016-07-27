@@ -11,6 +11,7 @@ package info.yalamanchili.office.client.profile.immigration;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.data.CountryFactory;
 import info.chili.gwt.fields.DataType;
@@ -96,6 +97,11 @@ public class ReadPassportPanel extends ReadComposite {
         return OfficeWelcome.constants.root_url() + "passport/" + entityId;
     }
 
+    @Override
+    protected ReadAllComposite getReadAllPanel() {
+        return ReadAllPassportsPanel.instance;
+    }    
+    
     @Override
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
