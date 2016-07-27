@@ -9,6 +9,7 @@
 package info.yalamanchili.office.client.onboarding;
 
 import com.google.gwt.json.client.JSONObject;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.Alignment;
@@ -74,5 +75,14 @@ public class ReadDependentsPanel extends ReadComposite {
     protected String getURI() {
         return "";
     }
-
+    
+    @Override
+   protected boolean enableBack() {
+       return true;
+   }
+    
+    @Override
+     protected ReadAllComposite getReadAllPanel() {
+        return ReadAllEmployeeOnBoardingPanel.instance;
+     }    
 }
