@@ -103,6 +103,11 @@ public class ReadI94RecordPanel extends ReadComposite {
     }
 
     @Override
+   protected boolean enableBack() {
+       return true;
+   }
+    
+    @Override
     protected ReadAllComposite getReadAllPanel() {
         return ReadAllI94RecordPanel.instance;
     }
