@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.profile.contact;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -77,6 +78,11 @@ public class ReadContactPanel extends ReadComposite {
         return OfficeWelcome.constants.root_url() + "contact";
     }
 
+    @Override
+    protected ReadAllComposite getReadAllPanel() {
+        return ReadAllContactsPanel.instance;
+    }
+    
     @Override
     public void loadEntity(String entityId) {
     }
