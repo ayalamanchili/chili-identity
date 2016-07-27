@@ -290,6 +290,11 @@ public class ReadBISClientInformationPanel extends ReadComposite {
     }
 
     @Override
+   protected boolean enableBack() {
+       return true;
+   }
+    
+    @Override
     protected ReadAllComposite getReadAllPanel() {
         return ReadAllBISClientInformationPanel.instance;
     }
