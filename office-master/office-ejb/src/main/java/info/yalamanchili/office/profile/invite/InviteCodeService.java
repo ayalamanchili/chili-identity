@@ -49,14 +49,17 @@ public class InviteCodeService {
             dto.setExpiryDate(inviteCode.getExpiryDate());
             dto.setValidFromDate(inviteCode.getValidFromDate());
             dto.setEmail(inviteCode.getEmail());
-            dto.setInvitationType(inviteCode.getInviteType().getInvitationType());
+            if (inviteCode.getInviteType() != null) {
+                dto.setInvitationType(inviteCode.getInviteType().getInvitationType());
+
+            }
             res.getEntities().add(dto);
         }
         res.setSize(mongoTemplate.count(query, InviteCode.class));
         return res;
     }
 
-    public List<InviteCodeDto> searchCode(InviteCodeDto search) {
+    public List<InviteCodeDto> searchInviteCodes(InviteCodeDto search) {
         List<InviteCodeDto> res = new ArrayList();
         Query query = new Query();
         if (!Strings.isNullOrEmpty(search.getInvitationCode())) {
@@ -72,7 +75,9 @@ public class InviteCodeService {
             dto.setExpiryDate(inviteCode.getExpiryDate());
             dto.setValidFromDate(inviteCode.getValidFromDate());
             dto.setEmail(inviteCode.getEmail());
-            dto.setInvitationType(inviteCode.getInviteType().getInvitationType());
+            if (inviteCode.getInviteType().getInvitationType() != null) {
+                dto.setInvitationType(inviteCode.getInviteType().getInvitationType());
+            }
             res.add(dto);
         }
         return res;
