@@ -15,6 +15,7 @@ import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.BaseField;
 import info.chili.gwt.composite.BaseFieldWithTextBox;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.ReadComposite;
@@ -324,6 +325,11 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
         return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.profile.ClientInformation" + "/" + getEntityId();
     }
 
+    @Override
+    protected ReadAllComposite getReadAllPanel() {
+        return ReadAllClientInfoPanel.instance;
+    }
+    
     @Override
     protected boolean enableViewTasks() {
         return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN);
