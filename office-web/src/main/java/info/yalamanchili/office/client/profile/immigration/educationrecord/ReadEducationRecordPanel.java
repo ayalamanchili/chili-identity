@@ -9,6 +9,7 @@
 package info.yalamanchili.office.client.profile.immigration.educationrecord;
 
 import com.google.gwt.json.client.JSONObject;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.Alignment;
@@ -62,7 +63,12 @@ public class ReadEducationRecordPanel extends ReadComposite {
     protected String getURI() {
         return null;
     }
-
+    
+    @Override
+    protected ReadAllComposite getReadAllPanel() {
+        return ReadAllEducationRecordPanel.instance;
+    }
+    
     @Override
     public void loadEntity(String entityId) {
     }
