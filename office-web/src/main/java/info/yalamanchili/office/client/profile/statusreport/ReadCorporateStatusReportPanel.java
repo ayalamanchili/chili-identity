@@ -21,6 +21,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.crud.ReadAllAuditDataPanel;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
@@ -119,5 +120,9 @@ public class ReadCorporateStatusReportPanel extends ALComposite {
 
         statusReportsF.setHTML(JSONUtils.toString(entity, "report"));
     }
-
+    
+    @Override
+    protected ReadAllComposite getReadAllPanel() {
+        return ReadAllCorporateStatusReportsPanel.instance;
+    }
 }
