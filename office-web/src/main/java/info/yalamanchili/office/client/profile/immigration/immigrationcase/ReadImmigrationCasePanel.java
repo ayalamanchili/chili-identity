@@ -8,6 +8,7 @@ package info.yalamanchili.office.client.profile.immigration.immigrationcase;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.crud.TReadComposite;
 import info.chili.gwt.fields.DataType;
@@ -75,6 +76,11 @@ public class ReadImmigrationCasePanel extends ReadComposite {
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
+    
+    @Override
+    protected ReadAllComposite getReadAllPanel() {
+        return ReadAllImmigrationCasePanel.instance;
+    }    
 
     @Override
     protected String getURI() {
