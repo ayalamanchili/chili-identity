@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.company;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
@@ -83,4 +84,9 @@ public class ReadCompanyPanel extends ReadComposite {
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "company/" + entityId;
     }
+    
+    @Override
+    protected ReadAllComposite getReadAllPanel() {
+        return ReadAllCompanyPanel.instance;
+    }    
 }
