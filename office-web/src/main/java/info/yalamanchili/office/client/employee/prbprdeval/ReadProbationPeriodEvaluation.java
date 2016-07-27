@@ -138,6 +138,11 @@ public class ReadProbationPeriodEvaluation extends ReadComposite {
     }
 
     @Override
+   protected boolean enableBack() {
+       return true;
+   }
+    
+    @Override
     protected ReadAllComposite getReadAllPanel() {
         return ReadAllProbationPeriodEvaluationsPanel.instance;
     }
