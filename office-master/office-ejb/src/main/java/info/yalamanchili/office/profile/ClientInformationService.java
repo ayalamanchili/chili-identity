@@ -65,7 +65,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class ClientInformationService {
-    
+
     @PersistenceContext
     protected EntityManager em;
     @Autowired
@@ -76,13 +76,13 @@ public class ClientInformationService {
     protected ClientInformationDao clientInformationDao;
     @Autowired
     protected CompanyDao companyDao;
-    
+
     @Autowired
     protected ClientDao clientDao;
-    
+
     @Autowired
     protected VendorDao vendorDao;
-    
+
     public ClientInformationDto addClientInformation(Long empId, ClientInformationDto ciDto, Boolean submitForApproval) {
         ClientInformation ci = mapper.map(ciDto, ClientInformation.class);
         validate(ci, submitForApproval);
@@ -174,7 +174,7 @@ public class ClientInformationService {
         if (ci.getEndDate() != null) {
             project.setEndDate(ci.getEndDate());
         }
-        
+
         if (ci.getPractice() != null) {
             ci.setPractice(PracticeDao.instance().findById(ci.getPractice().getId()));
         }
@@ -242,20 +242,22 @@ public class ClientInformationService {
                 return "SSTL";
         }
     }
-    
+
     public ClientInformationDto read(Long id) {
         return mapper.map(clientInformationDao.findById(id), ClientInformationDto.class);
     }
-    
+
     public ClientInformationDto readCIForInvoice(Long id) {
         String queryStr = "SELECT NEW " + ClientInformationDto.class.getCanonicalName() + "(ci.id,ci.itemNumber,ci.billingRate,ci.overTimeBillingRate,ci.invoiceFrequency) from " + ClientInformation.class.getCanonicalName() + " ci where ci.id=:idParam";
         TypedQuery<ClientInformationDto> query = em.createQuery(queryStr, ClientInformationDto.class);
         query.setParameter("idParam", id);
         ClientInformationDto dto = query.getSingleResult();
-        dto.setBillingRate(ContractService.instance().getEffectiveBillingRate(dto.getId()));
+        if (ContractService.instance().getEffectiveBillingRate(dto.getId()) != null) {
+            dto.setBillingRate(ContractService.instance().getEffectiveBillingRate(dto.getId()));
+        }
         return dto;
     }
-    
+
     protected void updatePreviousProjectEndDate(Employee emp, ClientInformation ci) {
         ClientInformation previousClientInformation = null;
         Query query = em.createQuery("from ClientInformation where employee =:emp order by endDate desc");
@@ -306,7 +308,7 @@ public class ClientInformationService {
         if (billingRate.getBillingInvoiceFrequency() != null) {
             ci.setInvoiceFrequency(billingRate.getBillingInvoiceFrequency());
         }
-        
+
         if (emp.getEmployeeType().getName().equals(EmployeeType.SUBCONTRACTOR)) {
             if (billingRate.getSubContractorPayRate() != null) {
                 ci.setSubcontractorPayRate(billingRate.getSubContractorPayRate());
@@ -341,8 +343,10 @@ public class ClientInformationService {
     }
 
 //merge save and addci methods
-    public ClientInformationSaveDto update(ClientInformationSaveDto dto, Boolean submitForApproval) {
-        ClientInformation ci = mapper.map(dto, ClientInformation.class);
+    public ClientInformationSaveDto
+            update(ClientInformationSaveDto dto, Boolean submitForApproval) {
+        ClientInformation ci = mapper.map(dto, ClientInformation.class
+        );
         ClientInformation ciEntity = em.find(ClientInformation.class, ci.getId());
         String abbreviation = getCompanyAbbreviation(ci.getCompany());
         if (!ClientInformationStatus.PENDING_CONTRACTS_SUBMIT.equals(ci.getStatus()) && !submitForApproval) {
@@ -360,7 +364,7 @@ public class ClientInformationService {
                 if (ciEntity.getSubcontractorOvertimePayRate() != null) {
                     ci.setSubcontractorOvertimePayRate(ciEntity.getSubcontractorOvertimePayRate());
                 }
-                
+
             }
             if (emp.getEmployeeType().getName().equals(EmployeeType._1099_CONTRACTOR)) {
                 if (ciEntity.getPayRate1099() != null) {
@@ -369,7 +373,7 @@ public class ClientInformationService {
                 if (ciEntity.getOverTimePayrate1099() != null) {
                     ci.setOverTimePayrate1099(ciEntity.getOverTimePayrate1099());
                 }
-                
+
             }
         }
         validate(ci, submitForApproval);
@@ -488,7 +492,7 @@ public class ClientInformationService {
             vendorDao.save(middleVendor);
         }
         project.setClient(client);
-        
+
         for (CIDocument document : ci.getCidocument()) {
             if (document.getId() == null) {
                 document.setClientInformation(ciEntity);
@@ -508,19 +512,26 @@ public class ClientInformationService {
             ci.setBpmProcessId(ClientInformationProcessBean.instance().startNewClientInfoProcess(ciEntity, OfficeSecurityService.instance().getCurrentUser()));
         }
         em.flush();
-        ci = em.find(ClientInformation.class, ci.getId());
-        return mapper.map(ci, ClientInformationSaveDto.class);
+        ci
+                = em.find(ClientInformation.class, ci.getId());
+
+        return mapper.map(ci, ClientInformationSaveDto.class
+        );
+
     }
-    
+
     protected void validate(ClientInformation ci, Boolean submitForApproval) {
         if (submitForApproval) {
-            ServiceInterceptor.instance().validateInput(ci, ClientInformation.SubmitChecks.class);
+            ServiceInterceptor.instance().validateInput(ci, ClientInformation.SubmitChecks.class
+            );
+
         }
         if (ci.getStatus() != null && !ClientInformationStatus.PENDING_CONTRACTS_SUBMIT.equals(ci.getStatus()) && !submitForApproval) {
-            ServiceInterceptor.instance().validateInput(ci, ClientInformation.SubmitChecks.class);
+            ServiceInterceptor.instance().validateInput(ci, ClientInformation.SubmitChecks.class
+            );
         }
     }
-    
+
     private String projectName(String name) {
         String S = name.replaceAll("[^a-zA-Z0-9\\s]", "");
         String[] words = S.split("\\s+");
@@ -531,7 +542,7 @@ public class ClientInformationService {
             acronym += words[i].substring(0, 1);
             newname += words[i];
         }
-        
+
         if (acronym.length() >= 4) {
             acronym = acronym.substring(0, 4);
         } else if (newname.length() <= 3) {
@@ -539,15 +550,15 @@ public class ClientInformationService {
         } else {
             acronym = newname.substring(0, 4);
         }
-        
+
         Format formatter = new SimpleDateFormat("MMYY");
         Date todayDate = new Date();
         String MMYY = formatter.format(todayDate);
-        
+
         String projectName = "-" + acronym + "-" + "TS" + MMYY + "-";
         return projectName.toUpperCase();
     }
-    
+
     public void delete(Long id) {
         ClientInformation entity = clientInformationDao.findById(id);
         OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
