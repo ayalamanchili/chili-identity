@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.profile.email;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.ReadComposite;
@@ -89,6 +90,11 @@ public class ReadEmailPanel extends ReadComposite {
         return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.profile.Email" + "/" + getEntityId();
     }
 
+    @Override
+    protected ReadAllComposite getReadAllPanel() {
+        return ReadAllEmailsPanel.instance;
+    }    
+    
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "email";
