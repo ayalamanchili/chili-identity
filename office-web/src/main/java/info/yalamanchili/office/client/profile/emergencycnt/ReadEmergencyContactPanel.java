@@ -95,6 +95,11 @@ public class ReadEmergencyContactPanel extends ReadComposite {
     }
 
     @Override
+   protected boolean enableBack() {
+       return true;
+   }
+    
+    @Override
     protected ReadAllComposite getReadAllPanel() {
         return ReadAllEmergencyContactsPanel.instance();
     }
