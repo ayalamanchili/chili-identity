@@ -21,6 +21,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RichTextArea;
 import info.chili.gwt.config.ChiliClientConfig;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.fields.FileField;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
@@ -230,6 +231,11 @@ public class ReadSkillSetPanel extends ReadComposite {
         return OfficeWelcome.constants.root_url() + "employee/skillset/" + empId;
     }
 
+    @Override
+    protected ReadAllComposite getReadAllPanel() {
+        return ReadAllSkillSetFilesPanel.instance;
+    }    
+    
     @Override
     protected boolean showDocumentationLink() {
         return true;
