@@ -83,6 +83,11 @@ public class ReadBPMTaskDelegateRulePanel extends ReadComposite {
     }
 
     @Override
+   protected boolean enableBack() {
+       return true;
+   }
+    
+    @Override
     protected ReadAllComposite getReadAllPanel() {
         return ReadAllBPMTaskDelegateRulePanel.instance;
     }
