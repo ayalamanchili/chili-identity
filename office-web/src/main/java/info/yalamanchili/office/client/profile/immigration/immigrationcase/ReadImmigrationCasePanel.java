@@ -78,6 +78,11 @@ public class ReadImmigrationCasePanel extends ReadComposite {
     }
     
     @Override
+   protected boolean enableBack() {
+       return true;
+   }
+    
+    @Override
     protected ReadAllComposite getReadAllPanel() {
         return ReadAllImmigrationCasePanel.instance;
     }    
