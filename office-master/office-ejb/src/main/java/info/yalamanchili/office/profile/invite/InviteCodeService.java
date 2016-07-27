@@ -39,7 +39,7 @@ public class InviteCodeService {
     @Autowired
     protected MongoOperations mongoTemplate;
 
-    public InviteCodeTable getCode(int start, int limit) {
+    public InviteCodeTable getInviteCodes(int start, int limit) {
         InviteCodeTable res = new InviteCodeTable();
         Query query = new Query();
         query.with(new Sort(Sort.Direction.DESC, "expiryDate"));
