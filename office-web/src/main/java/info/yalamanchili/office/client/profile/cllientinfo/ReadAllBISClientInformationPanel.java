@@ -11,6 +11,7 @@ package info.yalamanchili.office.client.profile.cllientinfo;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.crud.CRUDReadAllComposite;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -21,6 +22,8 @@ import info.yalamanchili.office.client.TabPanel;
  * @author ayalamanchili
  */
 public class ReadAllBISClientInformationPanel extends CRUDReadAllComposite {
+    static ReadAllComposite instance;
+   
 
     public ReadAllBISClientInformationPanel(JSONArray entities) {
         initTable("Client Information", entities, OfficeWelcome.constants);
