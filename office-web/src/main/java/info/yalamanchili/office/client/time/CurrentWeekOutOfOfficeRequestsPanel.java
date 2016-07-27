@@ -42,12 +42,12 @@ public class CurrentWeekOutOfOfficeRequestsPanel extends Composite {
             @Override
             public void onResponse(String result) {
                 if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                    panel.add(new ReadAllOutOfOfficePanel("Current Week Work From Home or Out of office Requests", new JSONArray()));
+                    panel.add(new ReadAllOutOfOfficePanel("Current Week Remote Requests", new JSONArray()));
                 } else {
                     JSONObject resObj = JSONParser.parseLenient(result).isObject();
                     String key = (String) resObj.keySet().toArray()[0];
                     JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-                    panel.add(new ReadAllOutOfOfficePanel("Current Week Work From Home or Out of office Requests", results, true));
+                    panel.add(new ReadAllOutOfOfficePanel("Current Week Remote Requests", results, true));
                 }
             }
         });

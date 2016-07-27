@@ -19,6 +19,7 @@ import info.yalamanchili.office.entity.client.Invoice;
 import info.yalamanchili.office.entity.client.InvoiceStatus;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.invoice.InvoiceDatesDto;
 import info.yalamanchili.office.invoice.InvoiceSearchDto;
 import info.yalamanchili.office.invoice.InvoiceService;
 import info.yalamanchili.office.invoice.InvoiceService.InvoiceTable;
@@ -225,13 +226,15 @@ public class InvoiceResource extends CRUDResource<Invoice> {
     public void generateActiveInvoicesReport() {
         InvoiceService.instance().generateActiveInvoicesReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
-     @GET
+
+    @PUT
     @Path("/reports")
-    public void searchForInvoiceDates(@QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate, @QueryParam("value") String value) {
+    public void searchForInvoiceDates(InvoiceDatesDto dto) {
         String email = currentEmpEmail();
-        InvoiceService.instance().searchforDates(startDate, endDate, email);
+        InvoiceService.instance().searchforDates(dto.getStartDate(), dto.getEndDate(), email);
     }
-      private String currentEmpEmail() {
+
+    private String currentEmpEmail() {
         return OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail();
     }
 }

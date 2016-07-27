@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.expense.chkreq;
 
+import info.chili.commons.BeanMapper;
 import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
 import info.chili.commons.pdf.PdfDocumentData;
@@ -36,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 import javax.ws.rs.core.Response;
 import org.dozer.Mapper;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -47,15 +49,15 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class ImmigrationCheckRequisitionService {
-
+    
     @Autowired
     protected ImmigrationCheckRequisitionDao immigrationCheckRequisitionDao;
     @Autowired
     protected CheckRequisitionItemDao checkRequisitionItemDao;
-
+    
     @Autowired
     protected Mapper mapper;
-
+    
     public void checkVoidRequest(Long id) {
         ImmigrationCheckRequisition icr = ImmigrationCheckRequisitionDao.instance().findById(id);
         Map<String, Object> vars = new HashMap<>();
@@ -67,7 +69,7 @@ public class ImmigrationCheckRequisitionService {
         icr.setBpmProcessId(OfficeBPMService.instance().startProcess("immigration_check_requisition_void_request", vars));
         immigrationCheckRequisitionDao.save(icr);
     }
-
+    
     public void submitImmigrationCheckRequisition(ImmigrationCheckRequisitionSaveDto dto) {
         ImmigrationCheckRequisition entity = mapper.map(dto, ImmigrationCheckRequisition.class);
         entity.setSubmittedBy(OfficeSecurityService.instance().getCurrentUserName());
@@ -94,7 +96,7 @@ public class ImmigrationCheckRequisitionService {
         entity.setBpmProcessId(startExpenseReportProcess(entity));
         entity = immigrationCheckRequisitionDao.save(entity);
     }
-
+    
     protected String startExpenseReportProcess(ImmigrationCheckRequisition entity) {
         if (entity.getBpmProcessId() != null) {
             OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
@@ -110,7 +112,7 @@ public class ImmigrationCheckRequisitionService {
         vars.put("entityId", entity.getId());
         return OfficeBPMService.instance().startProcess("immigration_check_requisition_process", vars);
     }
-
+    
     public void saveImmigrationCheckRequisition(ImmigrationCheckRequisitionSaveDto dto) {
         ImmigrationCheckRequisition entity = immigrationCheckRequisitionDao.save(dto);
         //add/update items
@@ -120,7 +122,7 @@ public class ImmigrationCheckRequisitionService {
             Company company = CompanyDao.instance().findById(dto.getCompany().getId());
             entity.setCompanyName(company.getName());
         }
-
+        
         for (CheckRequisitionItem item : dto.getItems()) {
             if (item.getId() != null) {
                 checkRequisitionItemDao.save(item);
@@ -132,21 +134,28 @@ public class ImmigrationCheckRequisitionService {
         }
         immigrationCheckRequisitionDao.getEntityManager().merge(entity);
     }
-
+    
     public void delete(Long id) {
         ImmigrationCheckRequisition ticket = immigrationCheckRequisitionDao.findById(id);
         OfficeBPMTaskService.instance().deleteAllTasksForProcessId(ticket.getBpmProcessId(), true);
         immigrationCheckRequisitionDao.delete(id);
     }
-
+    
     public ImmigrationCheckRequisitionSaveDto read(Long id) {
-        ImmigrationCheckRequisitionSaveDto dto = mapper.map(immigrationCheckRequisitionDao.findById(id), ImmigrationCheckRequisitionSaveDto.class);
-        if (dto.getEmployee() == null && dto.getCompanyName() != null) {
-            dto.setCompany(CompanyDao.instance().findByCompanyName(dto.getCompanyName()));
+        ImmigrationCheckRequisition entity = immigrationCheckRequisitionDao.findById(id);
+        ImmigrationCheckRequisitionSaveDto res = (ImmigrationCheckRequisitionSaveDto) BeanMapper.clone(entity, ImmigrationCheckRequisitionSaveDto.class);
+        res.setItems(entity.getItems());
+        //TO fix lazy init error
+        Hibernate.initialize(res.getItems());
+        if (res.getEmployee() == null && res.getCompanyName() != null) {
+            res.setCompany(CompanyDao.instance().findByCompanyName(res.getCompanyName()));
         }
-        return dto;
+        res.setEmployee(entity.getEmployee());
+        res.setCaseType(entity.getCaseType());
+        res.setStatus(entity.getStatus());
+        return res;
     }
-
+    
     public ImmigrationCheckRequisitionSaveDto clone(Long id) {
         ImmigrationCheckRequisition entity = immigrationCheckRequisitionDao.clone(id, "amount", "submittedBy", "employeeName", "requestedDate", "approvedBy", "approvedDate", "accountedBy", "checkIssuedDate", "accountDeptReceivedDate", "status", "bpmProcessId", "employee");
         ImmigrationCheckRequisitionSaveDto res = mapper.map(entity, ImmigrationCheckRequisitionSaveDto.class);
@@ -156,7 +165,7 @@ public class ImmigrationCheckRequisitionService {
         }
         return res;
     }
-
+    
     public Response getReport(ImmigrationCheckRequisition entity) {
         PdfDocumentData data = new PdfDocumentData();
         Employee emp = entity.getEmployee();
@@ -240,9 +249,9 @@ public class ImmigrationCheckRequisitionService {
                 .header("content-disposition", "filename = check-requisition.pdf")
                 .header("Content-Length", pdf.length)
                 .build();
-
+        
     }
-
+    
     public static ImmigrationCheckRequisitionService instance() {
         return SpringContext.getBean(ImmigrationCheckRequisitionService.class);
     }

@@ -13,7 +13,6 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.Button;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
@@ -26,10 +25,8 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.profile.cllientinfo.ClientInformationCompany;
-import java.util.Date;
 import java.util.Map;
 import java.util.logging.Logger;
-import org.apache.poi.hwpf.usermodel.Fields;
 
 /**
  *
@@ -181,12 +178,12 @@ public class SearchInvoicePanel extends SearchComposite {
             } else if (startDateF.getDate() == null && endDateF.getDate() != null) {
                 startDateF.setMessage("Required");
             } else {
+                JSONObject entity = new JSONObject();
                 TabPanel.instance().getAdminPanel().entityPanel.clear();
-                DateTimeFormat sdf = DateTimeFormat.getFormat("MM/dd/yyyy");
                 String empUrl = OfficeWelcome.constants.root_url() + "invoice/reports";
-                empUrl = empUrl.concat("?startDate=" + sdf.format(startDateF.getDate()));
-                empUrl = empUrl.concat("&endDate=" + sdf.format(endDateF.getDate()));
-                HttpService.HttpServiceAsync.instance().doGet(URL.encode(empUrl), OfficeWelcome.instance().getHeaders(), true,
+                assignEntityValueFromField("startDate", entity);
+                assignEntityValueFromField("endDate", entity);
+                HttpService.HttpServiceAsync.instance().doPut(URL.encode(empUrl), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
