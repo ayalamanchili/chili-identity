@@ -232,6 +232,11 @@ public class ReadSkillSetPanel extends ReadComposite {
     }
 
     @Override
+   protected boolean enableBack() {
+       return true;
+   }
+    
+    @Override
     protected ReadAllComposite getReadAllPanel() {
         return ReadAllSkillSetFilesPanel.instance;
     }    
