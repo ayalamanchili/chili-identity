@@ -79,6 +79,11 @@ public class ReadBulkImportEntitiesPanel extends ReadComposite {
     }
     
     @Override
+   protected boolean enableBack() {
+       return true;
+   }
+    
+    @Override
     protected ReadAllComposite getReadAllPanel() {
         return ReadAllBulkImportEntitiesPanel.instance;
     }
