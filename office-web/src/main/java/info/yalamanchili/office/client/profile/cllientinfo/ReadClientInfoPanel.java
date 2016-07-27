@@ -326,6 +326,11 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
     }
 
     @Override
+   protected boolean enableBack() {
+       return true;
+   }
+    
+    @Override
     protected ReadAllComposite getReadAllPanel() {
         return ReadAllClientInfoPanel.instance;
     }
