@@ -12,6 +12,7 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
@@ -119,6 +120,17 @@ class ReadEmployeeOnboardingPanel extends ReadComposite {
         return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ON_BOARDING_MGR, Auth.ROLE.ROLE_HR_ADMINSTRATION);
     }
 
+    
+    @Override
+   protected boolean enableBack() {
+       return true;
+   }
+    
+    @Override
+     protected ReadAllComposite getReadAllPanel() {
+        return ReadAllEmployeeOnBoardingPanel.instance;
+     }
+     
     @Override
     protected String getAuditUrl() {
         return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding" + "/" + getEntityId();
