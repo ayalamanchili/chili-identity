@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.profile.address;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.data.CountryFactory;
 import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.DataType;
@@ -127,5 +128,10 @@ public class ReadAddressPanel extends ReadComposite {
     @Override
     protected String getAuditUrl() {
         return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.profile.Address" + "/" + getEntityId();
+    }
+    
+    @Override
+    protected ReadAllComposite getReadAllPanel() {
+        return ReadAllAddressesPanel.instance;
     }
 }
