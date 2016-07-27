@@ -79,6 +79,11 @@ public class ReadContactPanel extends ReadComposite {
     }
 
     @Override
+   protected boolean enableBack() {
+       return true;
+   }
+    
+    @Override
     protected ReadAllComposite getReadAllPanel() {
         return ReadAllContactsPanel.instance;
     }
