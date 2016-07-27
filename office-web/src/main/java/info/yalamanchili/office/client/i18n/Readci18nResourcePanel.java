@@ -70,6 +70,11 @@ public class Readci18nResourcePanel extends ReadComposite {
     }
     
     @Override
+   protected boolean enableBack() {
+       return true;
+   }
+    
+    @Override
     protected ReadAllComposite getReadAllPanel() {
         return ReadAllCi8nResourcesPanel.instance;
     }
