@@ -14,6 +14,7 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.data.CountryFactory;
 import info.chili.gwt.data.USAStatesFactory;
@@ -183,6 +184,11 @@ public class ReadProspectsPanel extends ReadComposite {
         return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.hr.Prospect" + "/" + getEntityId();
     }
 
+    @Override
+    protected ReadAllComposite getReadAllPanel() {
+        return ReadAllProspectsPanel.instance;
+    }
+    
     protected void addProspectWonFields() {
         if (!fields.containsKey("petitionFiledFor")) {
             addDropDown("company", selectCompnayWidget);
