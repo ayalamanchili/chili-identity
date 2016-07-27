@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.admin.bulkimport;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.ReadComposite;
@@ -90,4 +91,9 @@ public class ReadBulkImportPanel extends ReadComposite {
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "bulkimport/" + entityId;
     }
+    
+    @Override
+    protected ReadAllComposite getReadAllPanel() {
+        return ReadAllBulkImportsPanel.instance;
+    }    
 }
