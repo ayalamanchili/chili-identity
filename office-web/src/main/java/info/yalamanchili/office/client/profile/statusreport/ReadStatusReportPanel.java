@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.profile.statusreport;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.TextAreaField;
@@ -189,6 +190,11 @@ public class ReadStatusReportPanel extends ReadComposite {
         return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.employee.statusreport.StatusReport" + "/" + getEntityId();
     }
 
+    @Override
+    protected ReadAllComposite getReadAllPanel() {
+        return ReadAllStatusReportPanel.instance;
+    }    
+    
     @Override
     protected boolean enableClone() {
         return true;
