@@ -9,6 +9,7 @@
 package info.yalamanchili.office.client.profile.immigration.travelhistroy;
 
 import com.google.gwt.json.client.JSONObject;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.Alignment;
@@ -61,6 +62,11 @@ public class ReadTravelHistoryRecordPanel extends ReadComposite {
     @Override
     protected String getURI() {
         return null;
+    }
+    
+    @Override
+    protected ReadAllComposite getReadAllPanel() {
+        return ReadAllTravelHistoryRecordPanel.instance;
     }
 
     @Override
