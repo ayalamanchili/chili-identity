@@ -22,6 +22,7 @@ import info.yalamanchili.office.entity.profile.EmployeeDocument;
 import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
 import info.yalamanchili.office.entity.profile.onboarding.OnBoardingStatus;
 import info.yalamanchili.office.privacy.PrivacyAware;
+import info.yalamanchili.office.security.AccessCheck;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -70,7 +71,7 @@ public class EmployeeDocumentResource extends CRUDResource<EmployeeDocument> {
 
     @GET
     @Path("/{empid}/{start}/{limit}")
-    @PrivacyAware(key = PrivacyData.ADDRESSES)
+    @AccessCheck(roles = {"ROLE_BACKGROUND_SCREENING_MGR", "ROLE_E_VERIFY_MGR", "ROLE_ON_BOARDING_MGR", "ROLE_HR_ADMINSTRATION"})
     public EmployeeDocumentTable getDocuments(@PathParam("empid") long empid, @PathParam("start") int start,
             @PathParam("limit") int limit) {
         EmployeeDocumentTable tableObj = new EmployeeDocumentTable();
