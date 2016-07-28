@@ -6,6 +6,7 @@
 package info.yalamanchili.office.client.admin.vendorcontact;
 
 import com.google.gwt.json.client.JSONObject;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.Alignment;
@@ -64,4 +65,14 @@ public class ReadInvoiceSchedulePanel extends ReadComposite {
     @Override
     protected void addListeners() {
     }
+    
+    @Override
+   protected boolean enableBack() {
+       return true;
+   }
+    
+    @Override
+     protected ReadAllComposite getReadAllPanel() {
+        return ReadAllInvoiceSchedulePanel.instance;
+     }
 }
