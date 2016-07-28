@@ -63,7 +63,34 @@ public class Client extends AbstractEntity {
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "Client_AcctPayContacts")
     protected List<Contact> clientAcctPayContacts;
+    protected Float clientFee;
+    protected Float maxClientFee;
+    protected Float minClientFee;
 
+    public Float getClientFee() {
+        return clientFee;
+    }
+
+    public void setClientFee(Float clientFee) {
+        this.clientFee = clientFee;
+    }
+
+    public Float getMaxClientFee() {
+        return maxClientFee;
+    }
+
+    public void setMaxClientFee(Float maxClientFee) {
+        this.maxClientFee = maxClientFee;
+    }
+
+    public Float getMinClientFee() {
+        return minClientFee;
+    }
+
+    public void setMinClientFee(Float minClientFee) {
+        this.minClientFee = minClientFee;
+    }
+    
     public void setVendors(Set<Vendor> vendors) {
         this.vendors = vendors;
     }
