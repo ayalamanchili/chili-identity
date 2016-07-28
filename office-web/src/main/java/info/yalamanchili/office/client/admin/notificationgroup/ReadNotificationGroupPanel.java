@@ -8,6 +8,7 @@
 package info.yalamanchili.office.client.admin.notificationgroup;
 
 import com.google.gwt.json.client.JSONObject;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.ReadComposite;
@@ -58,5 +59,15 @@ public class ReadNotificationGroupPanel extends ReadComposite {
     @Override
     protected String getURI() {
         return null;
+    }
+    
+    @Override
+   protected boolean enableBack() {
+       return true;
+   }
+   
+    @Override
+    protected ReadAllComposite getReadAllPanel() {
+        return ReadAllNotificationGroupsPanel.instance;
     }
 }

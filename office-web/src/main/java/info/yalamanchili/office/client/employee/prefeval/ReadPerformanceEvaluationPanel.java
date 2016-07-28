@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.employee.prefeval;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.TextAreaField;
@@ -152,5 +153,15 @@ public class ReadPerformanceEvaluationPanel extends ReadComposite {
     protected void displayTasks() {
         String tasksUrl = OfficeWelcome.constants.root_url() + "bpm/tasks/process/";
         tasksDP.setContent(new ReadAllTasks(tasksUrl + JSONUtils.toString(getEntity(), "bpmProcessId") + "/", true));
+    }
+    
+    @Override
+   protected boolean enableBack() {
+       return true;
+   }
+   
+    @Override
+    protected ReadAllComposite getReadAllPanel() {
+        return ReadAllPerformanceEvaluationPanel.instance;
     }
 }

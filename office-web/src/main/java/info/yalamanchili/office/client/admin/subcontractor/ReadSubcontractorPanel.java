@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.admin.subcontractor;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
@@ -90,5 +91,15 @@ public class ReadSubcontractorPanel extends ReadComposite {
     @Override
     protected String getAuditUrl() {
         return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.client.Subcontractor" + "/" + getEntityId();
+    }
+    
+    @Override
+   protected boolean enableBack() {
+       return true;
+   }
+   
+    @Override
+    protected ReadAllComposite getReadAllPanel() {
+        return ReadAllSubcontractorsPanel.instance;
     }
 }
