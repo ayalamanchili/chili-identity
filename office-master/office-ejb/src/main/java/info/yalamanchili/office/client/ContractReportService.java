@@ -246,7 +246,7 @@ public class ContractReportService {
         for (int i = start; i < limit; i++) {
             List<Employee> employees = EmployeeDao.instance().queryAll(start, limit);
             Iterator empIterator = employees.iterator();
-            while (empIterator.hasNext()) {
+            while (empIterator.hasNext()== true) {
                 Employee emp = (Employee) empIterator.next();
                 List<ClientInformation> cpds = emp.getClientInformations();
                 if (cpds.size() > 0) {
@@ -267,7 +267,7 @@ public class ContractReportService {
                             }
                         } else {
                             Iterator cpdsIterator = cpds.iterator();
-                            while (cpdsIterator.hasNext()) {
+                            while (cpdsIterator.hasNext() == true) {
                                 ClientInformation cpd = (ClientInformation) cpdsIterator.next();
                                 if (cpd.getEndDate() != null) {
                                     if ((cpd.getEndDate().after(new Date())) || (cpd.getEndDate().equals(new Date()))) {
