@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.tae.timesheet;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.ReadComposite;
@@ -91,5 +92,15 @@ public class ReadTimeSheetPanel extends ReadComposite {
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "timesheet/" + entityId;
+    }
+    
+    @Override
+    protected boolean enableBack() {
+       return true;
+    }
+    
+    @Override
+    protected ReadAllComposite getReadAllPanel() {
+        return ReadAllTimesheetPanel.instance;
     }
 }
