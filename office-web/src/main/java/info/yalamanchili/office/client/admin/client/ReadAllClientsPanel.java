@@ -33,17 +33,17 @@ public class ReadAllClientsPanel extends CRUDReadAllComposite {
     public ReadAllClientsPanel(String parentId) {
         instance = this;
         this.parentId = parentId;
-        initTable("Clients", OfficeWelcome.constants);
+        initTable("Clients", OfficeWelcome.constants2);
     }
 
     public ReadAllClientsPanel() {
         instance = this;
-        initTable("Clients", OfficeWelcome.constants);
+        initTable("Clients", OfficeWelcome.constants2);
     }
 
     public ReadAllClientsPanel(JSONArray array) {
         instance = this;
-        initTable("Client", array, OfficeWelcome.constants);
+        initTable("Client", array, OfficeWelcome.constants2);
     }
 
     @Override
