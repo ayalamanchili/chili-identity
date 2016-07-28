@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -28,6 +29,7 @@ import java.util.logging.Logger;
 public class ReadAllQuestionCommentsPanel extends ALComposite {
 
     protected static Logger logger = Logger.getLogger(ReadAllQuestionCommentsPanel.class.getName());
+    protected static ReadAllComposite instance;
     protected FlowPanel basePanel = new FlowPanel();
     protected DisclosurePanel disclosurePanel;
     protected FlowPanel panel = new FlowPanel();
