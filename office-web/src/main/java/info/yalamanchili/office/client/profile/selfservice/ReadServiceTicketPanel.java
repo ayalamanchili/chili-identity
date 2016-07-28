@@ -15,6 +15,7 @@ import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.EnumField;
@@ -240,5 +241,15 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
     @Override
     protected String getDocumentationLink() {
         return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "selfservice/open-ticket.html";
+    }
+    
+    @Override
+   protected boolean enableBack() {
+       return true;
+   }
+   
+    @Override
+    protected ReadAllComposite getReadAllPanel() {
+        return ReadAllServiceTicketsPanel.instance;
     }
 }
