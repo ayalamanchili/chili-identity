@@ -32,11 +32,11 @@ public class ReadClientPanel extends ReadComposite {
 
     public ReadClientPanel(JSONObject entity) {
         instance = this;
-        initReadComposite(entity, "Client", OfficeWelcome.constants);
+        initReadComposite(entity, "Client", OfficeWelcome.constants2);
     }
 
     public ReadClientPanel(String id) {
-        initReadComposite(id, "Client", OfficeWelcome.constants);
+        initReadComposite(id, "Client", OfficeWelcome.constants2);
     }
 
     @Override
@@ -60,6 +60,9 @@ public class ReadClientPanel extends ReadComposite {
         assignFieldValueFromEntity("website", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("paymentTerms", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("clientinvFrequency", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("clientFee", entity, DataType.FLOAT_FIELD);
+        assignFieldValueFromEntity("maxClientFee", entity, DataType.FLOAT_FIELD);
+        assignFieldValueFromEntity("minClientFee", entity, DataType.FLOAT_FIELD);
     }
 
     @Override
@@ -79,6 +82,9 @@ public class ReadClientPanel extends ReadComposite {
         addField("website", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("paymentTerms", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("clientinvFrequency", true, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+        addField("clientFee", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addField("maxClientFee", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addField("minClientFee", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
