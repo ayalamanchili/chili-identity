@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.ext.question;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.HTML;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.TextAreaField;
@@ -74,5 +75,15 @@ public class ReadQuestionCommentPanel extends ReadComposite {
     @Override
     protected String getURI() {
         return "";
+    }
+    
+    @Override
+   protected boolean enableBack() {
+       return true;
+   }
+   
+    @Override
+    protected ReadAllComposite getReadAllPanel() {
+        return ReadAllQuestionCommentsPanel.instance;
     }
 }
