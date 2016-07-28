@@ -15,6 +15,7 @@ import com.google.gwt.json.client.JSONValue;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.BaseField;
 import info.chili.gwt.composite.BaseFieldWithTextBox;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
@@ -154,5 +155,14 @@ public class ReadImmigrationCheckRequisitionPanel extends ReadComposite {
         String tasksUrl = OfficeWelcome.constants.root_url() + "bpm/tasks/process/";
         tasksDP.setContent(new ReadAllTasks(tasksUrl + JSONUtils.toString(getEntity(), "bpmProcessId") + "/", true));
     }
-
+    
+    @Override
+   protected boolean enableBack() {
+       return true;
+   }
+    
+    @Override
+     protected ReadAllComposite getReadAllPanel() {
+        return ReadAllImmigrationCheckRequisitionPanel.instance;
+     }
 }
