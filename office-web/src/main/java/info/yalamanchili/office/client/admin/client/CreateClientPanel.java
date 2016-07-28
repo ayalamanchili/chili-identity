@@ -31,7 +31,7 @@ public class CreateClientPanel extends CreateComposite {
 
     public CreateClientPanel(CreateComposite.CreateCompositeType type) {
         super(type);
-        initCreateComposite("Client", OfficeWelcome.constants);
+        initCreateComposite("Client", OfficeWelcome.constants2);
     }
 
     @Override
@@ -43,6 +43,9 @@ public class CreateClientPanel extends CreateComposite {
         assignEntityValueFromField("website", clnt);
         assignEntityValueFromField("paymentTerms", clnt);
         assignEntityValueFromField("clientinvFrequency", clnt);
+        assignEntityValueFromField("clientFee", clnt);
+        assignEntityValueFromField("maxClientFee", clnt);
+        assignEntityValueFromField("minClientFee", clnt);
         logger.info(clnt.toString());
         return clnt;
     }
@@ -96,6 +99,9 @@ public class CreateClientPanel extends CreateComposite {
         addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("clientinvFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+        addField("clientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addField("maxClientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addField("minClientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
