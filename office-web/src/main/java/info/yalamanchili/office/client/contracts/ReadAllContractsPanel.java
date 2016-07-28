@@ -15,6 +15,7 @@ import com.google.gwt.user.client.Window;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.CRUDReadAllComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
@@ -25,7 +26,7 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.admin.invoice.UpdateInvoicePanel;
+import info.yalamanchili.office.client.admin.invoice.CreateInvoicePanel;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
 import java.util.logging.Logger;
 
@@ -83,12 +84,12 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
         // TODO externalize the limit size for read all
         HttpService.HttpServiceAsync.instance().doGet(getReadAllContractsURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                logger.info(result);
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        logger.info(result);
+                        postFetchTable(result);
+                    }
+                });
     }
 
     @Override
@@ -154,7 +155,7 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
 
     protected void getInvoice(String entityId) {
         if (!entityId.isEmpty()) {
-            new GenericPopup(new UpdateInvoicePanel(entityId, false), 0, Window.getClientHeight() / 5).show();
+            new GenericPopup(new CreateInvoicePanel(entityId, CreateComposite.CreateCompositeType.CREATE), 0, Window.getClientHeight() / 5).show();
         }
     }
 
