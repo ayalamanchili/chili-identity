@@ -34,6 +34,9 @@ public class UpdateClientPanel extends UpdateComposite {
         assignEntityValueFromField("website", entity);
         assignEntityValueFromField("paymentTerms", entity);
         assignEntityValueFromField("clientinvFrequency", entity);
+        assignEntityValueFromField("clientFee", entity);
+        assignEntityValueFromField("maxClientFee", entity);
+        assignEntityValueFromField("minClientFee", entity);
         return entity;
     }
 
@@ -60,6 +63,9 @@ public class UpdateClientPanel extends UpdateComposite {
         assignFieldValueFromEntity("website", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("paymentTerms", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("clientinvFrequency", entity, DataType.ENUM_FIELD);
+         assignFieldValueFromEntity("clientFee", entity, DataType.FLOAT_FIELD);
+        assignFieldValueFromEntity("maxClientFee", entity, DataType.FLOAT_FIELD);
+        assignFieldValueFromEntity("minClientFee", entity, DataType.FLOAT_FIELD);
     }
 
     @Override
@@ -86,6 +92,9 @@ public class UpdateClientPanel extends UpdateComposite {
         addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("clientinvFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+        addField("clientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addField("maxClientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addField("minClientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
