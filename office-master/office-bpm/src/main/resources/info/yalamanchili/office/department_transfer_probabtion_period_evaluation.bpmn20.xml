@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+​
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+​
+-->
+<definitions
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:activiti="http://activiti.org/bpmn">
+ 
+    <process id="department_transfer_probabtion_period_evaluation">
+        <startEvent id="probationPeriodEvaluationProcessStart">
+            <timerEventDefinition>
+                <timeDuration>PT10M</timeDuration>
+            </timerEventDefinition>
+            <!--</startEvent>-->
+        </startEvent>
+        <sequenceFlow  sourceRef="probationPeriodEvaluationProcessStart" targetRef="probationPeriodEvaluationProcess" />
+        <serviceTask id="probationPeriodEvaluationProcess" 
+                     activiti:expression="#{probationPeriodEvaluationInitiator.initiateProbationPeriodEvaluationReview(employeeId)}"/>
+        <sequenceFlow  sourceRef="probationPeriodEvaluationProcess" targetRef="probationPeriodEvaluationProcessEnd" />
+        <endEvent id="probationPeriodEvaluationProcessEnd"/>
+    </process>
+</definitions>
