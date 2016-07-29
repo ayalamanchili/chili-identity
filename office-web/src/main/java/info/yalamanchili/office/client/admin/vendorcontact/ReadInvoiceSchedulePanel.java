@@ -17,13 +17,13 @@ import info.yalamanchili.office.client.OfficeWelcome;
  * @author Ramana.Lukalapu
  */
 public class ReadInvoiceSchedulePanel extends ReadComposite {
-    
+
     private static ReadInvoiceSchedulePanel instance;
-    
+
     public static ReadInvoiceSchedulePanel instance() {
         return instance;
     }
-    
+
     public ReadInvoiceSchedulePanel(JSONObject entity) {
         instance = this;
         initReadComposite(entity, "InvoiceSchedule", OfficeWelcome.constants2);
@@ -35,6 +35,7 @@ public class ReadInvoiceSchedulePanel extends ReadComposite {
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("reminderDays", entity, DataType.INTEGER_FIELD);
         assignFieldValueFromEntity("notes", entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("notifyEmployees", entity, DataType.TEXT_AREA_FIELD);
     }
 
     @Override
@@ -46,6 +47,7 @@ public class ReadInvoiceSchedulePanel extends ReadComposite {
         addField("startDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("reminderDays", true, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        addField("notifyEmployees", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("notes", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
     }
 
