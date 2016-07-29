@@ -11,6 +11,7 @@ import info.chili.jpa.AbstractEntity;
 import info.chili.jpa.validation.Unique;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -93,6 +94,8 @@ public class Vendor extends AbstractEntity {
     protected InvoiceDeliveryMethod vendorinvDeliveryMethod;
 
     protected Float vendorFees;
+    protected BigDecimal minFees;
+    protected BigDecimal maxFees;
 
     public String getName() {
         return name;
@@ -218,6 +221,23 @@ public class Vendor extends AbstractEntity {
     public void setVendorFees(Float vendorFees) {
         this.vendorFees = vendorFees;
     }
+    
+    public BigDecimal getMinFees() {
+        return minFees;
+    }
+
+    public void setMinFees(BigDecimal minFees) {
+        this.minFees = minFees;
+    }
+    
+   public BigDecimal getMaxFees() {
+        return maxFees;
+    }
+
+    public void setMaxFees(BigDecimal maxFees) {
+        this.maxFees = maxFees;
+    }
+    
 
     public InvoiceDeliveryMethod getVendorinvDeliveryMethod() {
         return vendorinvDeliveryMethod;

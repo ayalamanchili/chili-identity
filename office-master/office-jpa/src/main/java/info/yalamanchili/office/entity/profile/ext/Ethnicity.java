@@ -19,6 +19,7 @@ public enum Ethnicity {
     AmericanIndian_AlaskaNative,
     Black_AfricanAmerican,
     NativeHawaiian_OtherPacificIslander,
-    White;
+    White,
+    Unknown;
 
 }

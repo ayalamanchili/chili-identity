@@ -10,7 +10,6 @@ package info.yalamanchili.office.client.admin.vendor;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
-import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.ReadComposite;
@@ -59,6 +58,8 @@ public class ReadVendorsPanel extends ReadComposite {
         assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("vendorType", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("vendorFees", entity, DataType.FLOAT_FIELD);
+        assignFieldValueFromEntity("minFees", entity, DataType.FLOAT_FIELD);
+        assignFieldValueFromEntity("maxFees", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("website", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("paymentTerms", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("vendorinvFrequency", entity, DataType.ENUM_FIELD);
@@ -79,6 +80,8 @@ public class ReadVendorsPanel extends ReadComposite {
         addField("description", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("vendorType", true, false, VendorType.names(), Alignment.HORIZONTAL);
         addField("vendorFees", true, true, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addField("minFees", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addField("maxFees", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("website", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("paymentTerms", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("vendorinvFrequency", true, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
@@ -103,15 +106,5 @@ public class ReadVendorsPanel extends ReadComposite {
     @Override
     protected String getAuditUrl() {
         return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.client.Vendor" + "/" + getEntityId();
-    }
-    
-    @Override
-    protected boolean enableBack() {
-       return true;
-    }
-    
-    @Override
-    protected ReadAllComposite getReadAllPanel() {
-        return ReadAllVendorsPanel.instance;
     }
 }
