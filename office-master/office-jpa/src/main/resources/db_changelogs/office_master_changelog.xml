@@ -118,4 +118,5 @@
     <include file="db_changelogs/07-14-2016_changelog.xml"/>
     <include file="db_changelogs/07-21-2016_changelog.xml"/>
     <include file="db_changelogs/07-27-2016_changelog.xml"/>
+    <include file="db_changelogs/07-28-2016_changelog.xml"/>
 </databaseChangeLog>
