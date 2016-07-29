@@ -34,71 +34,22 @@ public class OutOfOfficeSidePanel extends ALComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(OutOfOfficeSidePanel.class.getName());
     public FlowPanel outOfOfficeSidePanel = new FlowPanel();
-    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false);
-    Button viewB = new Button("View");
-
+    
     public OutOfOfficeSidePanel() {
         init(outOfOfficeSidePanel);
     }
 
     @Override
-    protected void addListeners() {
-        viewB.addClickHandler(this);
-    }
+    protected void addListeners() {}
 
     @Override
-    protected void configure() {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION, Auth.ROLE.ROLE_HR)) {
-            return;
-        }
-        Timer timer = new Timer() {
-            @Override
-            public void run() {
-                loadEmployeeSuggestions();
-            }
-        };
-        timer.schedule(2000);
-    }
-
-    protected void loadEmployeeSuggestions() {
-        HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String entityString) {
-                logger.info(entityString);
-                Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
-                if (values != null) {
-                    employeeSB.loadData(values);
-                }
-            }
-        });
-    }
+    protected void configure() {}
 
     @Override
     protected void addWidgets() {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION, Auth.ROLE.ROLE_CRP_STATUS_RPT_MGR)) {
-            outOfOfficeSidePanel.add(new SearchOutOfOfficePanel());
-        } else {
-            outOfOfficeSidePanel.add(Utils.getLineSeperatorTag("Search"));
-            outOfOfficeSidePanel.add(employeeSB);
-            outOfOfficeSidePanel.add(viewB);
-        }
+        outOfOfficeSidePanel.add(new SearchOutOfOfficePanel());
     }
 
     @Override
-    public void onClick(ClickEvent event) {
-        if (event.getSource().equals(viewB)) {
-            TabPanel.instance().timePanel.entityPanel.clear();
-            TabPanel.instance().timePanel.entityPanel.add(new ReadAllOutOfOfficePanel(getOfficeURL(0, "1000")));
-            employeeSB.clearText();
-        }
-    }
-
-    private String getOfficeURL(Integer start, String limit) {
-        return OfficeWelcome.constants.root_url() + "out-of-office/" + employeeSB.getKey() + "/" + start.toString() + "/"
-                + limit.toString();
-    }
-
-    private String getEmployeeIdsDropDownUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_USER.name() + "/0/10000");
-    }
+    public void onClick(ClickEvent event) {}
 }

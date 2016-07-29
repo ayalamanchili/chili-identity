@@ -11,6 +11,7 @@ import info.yalamanchili.office.Time.AssociateTimeAccuralService;
 import info.yalamanchili.office.Time.CorporateTimeAccuralService;
 import info.yalamanchili.office.Time.TimeJobService;
 import info.yalamanchili.office.client.ContractReportService;
+import info.yalamanchili.office.client.InvoiceScheduleService;
 import info.yalamanchili.office.dao.client.ClientDao;
 import info.yalamanchili.office.dao.expense.BankAccountDao;
 import info.yalamanchili.office.dao.message.NotificationGroupDao;
@@ -136,5 +137,10 @@ public class OfficeServiceJobConfiguration {
     @ManagedOperation
     public void changeAllCPDsStatus() {
         ContractReportService.instance().changeAllCpdsStatus();
+    }
+    
+    @ManagedOperation
+    public void sendInvoiceReminderToBillingTeam() {
+        InvoiceScheduleService.instance().sendReminderInvoiceNotification();
     }
 }

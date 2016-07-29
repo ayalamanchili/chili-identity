@@ -11,6 +11,7 @@ import info.chili.jpa.AbstractEntity;
 import info.chili.jpa.validation.Unique;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -64,8 +65,8 @@ public class Client extends AbstractEntity {
     @JoinTable(name = "Client_AcctPayContacts")
     protected List<Contact> clientAcctPayContacts;
     protected Float clientFee;
-    protected Float maxClientFee;
-    protected Float minClientFee;
+    protected BigDecimal maxClientFee;
+    protected BigDecimal minClientFee;
 
     public Float getClientFee() {
         return clientFee;
@@ -75,19 +76,19 @@ public class Client extends AbstractEntity {
         this.clientFee = clientFee;
     }
 
-    public Float getMaxClientFee() {
+    public BigDecimal getMaxClientFee() {
         return maxClientFee;
     }
 
-    public void setMaxClientFee(Float maxClientFee) {
+    public void setMaxClientFee(BigDecimal maxClientFee) {
         this.maxClientFee = maxClientFee;
     }
 
-    public Float getMinClientFee() {
+    public BigDecimal getMinClientFee() {
         return minClientFee;
     }
 
-    public void setMinClientFee(Float minClientFee) {
+    public void setMinClientFee(BigDecimal minClientFee) {
         this.minClientFee = minClientFee;
     }
     

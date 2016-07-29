@@ -28,23 +28,23 @@
         <addColumn catalogName="office"
                    schemaName="public"
                    tableName="client">
-            <column name="maxClientFee" type="float"/>
+            <column name="maxClientFee" type="decimal(19,2)"/>
         </addColumn>
         <addColumn catalogName="office"
                    schemaName="public"
                    tableName="client_aud">
-            <column name="maxClientFee" type="float"/>
+            <column name="maxClientFee" type="decimal(19,2)"/>
         </addColumn>
         
         <addColumn catalogName="office"
                    schemaName="public"
                    tableName="client">
-            <column name="minClientFee" type="float"/>
+            <column name="minClientFee" type="decimal(19,2)"/>
         </addColumn>
         <addColumn catalogName="office"
                    schemaName="public"
                    tableName="client_aud">
-            <column name="minClientFee" type="float"/>
+            <column name="minClientFee" type="decimal(19,2)"/>
         </addColumn>
     </changeSet>
 </databaseChangeLog>

@@ -43,6 +43,9 @@ public class InvoiceSchedule extends AbstractHandleEntity {
     @NotNull(message = "{reminderdays.cannot.be.empty}")
     private Integer reminderDays;
 
+    @NotNull(message = "{notifyEmployees.cannot.be.empty}")
+    private String notifyEmployees;
+
     @Lob
     protected String notes;
 
@@ -78,8 +81,17 @@ public class InvoiceSchedule extends AbstractHandleEntity {
         this.notes = notes;
     }
 
+    public String getNotifyEmployees() {
+        return notifyEmployees;
+    }
+
+    public void setNotifyEmployees(String notifyEmployees) {
+        this.notifyEmployees = notifyEmployees;
+    }
+
     @Override
     public String toString() {
-        return "InvoiceSchedule{" + "startDate=" + startDate + ", endDate=" + endDate + ", reminderDays=" + reminderDays + ", notes=" + notes + '}';
+        return "InvoiceSchedule{" + "startDate=" + startDate + ", endDate=" + endDate + ", reminderDays=" + reminderDays + ", notifyEmployees=" + notifyEmployees + ", notes=" + notes + '}';
     }
+
 }

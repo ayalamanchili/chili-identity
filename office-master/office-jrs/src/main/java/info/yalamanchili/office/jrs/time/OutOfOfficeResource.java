@@ -126,7 +126,6 @@ public class OutOfOfficeResource extends CRUDResource<OutOfOfficeRequest> {
     @PUT
     @Path("/search-request/{start}/{limit}")
     @Transactional(readOnly = true)
-    @PreAuthorize("hasAnyRole('ROLE_HR_ADMINSTRATION','ROLE_CRP_STATUS_RPT_MGR')")
     public List<OutOfOfficeRequest> search(OutOfOfficeRequest entity, @PathParam("start") int start, @PathParam("limit") int limit) {
         List<OutOfOfficeRequest> res = new ArrayList();
         Query searchQuery = SearchUtils.getSearchQuery(OutOfOfficeDao.instance().getEntityManager(), entity, new SearchUtils.SearchCriteria());

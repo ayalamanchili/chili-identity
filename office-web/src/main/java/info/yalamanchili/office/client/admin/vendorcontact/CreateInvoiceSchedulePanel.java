@@ -9,6 +9,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
@@ -26,6 +27,9 @@ public abstract class CreateInvoiceSchedulePanel extends CreateComposite {
     private static Logger logger = Logger.getLogger(CreateInvoiceSchedulePanel.class.getName());
     protected String parentId;
     protected String targetClassName;
+
+    HTML helpText = new HTML("<p>Please provide the Employee Id's to notify a reminder in the given field below.</p>\n"
+            + "<p>For example, the reminder is to be notified only for u then u need to enter your employeeId like <b>radapala</b> and also if you want to notify multiple employees then u need to enter like <b>radapala,rlaxman</b> with comma separted.</p>");
 
     public CreateInvoiceSchedulePanel(CreateComposite.CreateCompositeType type) {
         super(type);
@@ -46,6 +50,7 @@ public abstract class CreateInvoiceSchedulePanel extends CreateComposite {
         assignEntityValueFromField("endDate", entity);
         assignEntityValueFromField("reminderDays", entity);
         assignEntityValueFromField("notes", entity);
+        assignEntityValueFromField("notifyEmployees", entity);
         entity.put("targetEntityName", new JSONString("targetEntityName"));
         entity.put("targetEntityId", new JSONString("0"));
         return entity;
@@ -87,6 +92,8 @@ public abstract class CreateInvoiceSchedulePanel extends CreateComposite {
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("reminderDays", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(helpText);
+        addField("notifyEmployees", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("notes", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
     }
 
