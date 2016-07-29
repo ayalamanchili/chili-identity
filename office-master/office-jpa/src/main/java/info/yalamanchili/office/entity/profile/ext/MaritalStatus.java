@@ -14,6 +14,6 @@ package info.yalamanchili.office.entity.profile.ext;
  */
 public enum MaritalStatus {
     Married,
-    Unmarried
-    
+    Unmarried,
+    Unknown
 }
