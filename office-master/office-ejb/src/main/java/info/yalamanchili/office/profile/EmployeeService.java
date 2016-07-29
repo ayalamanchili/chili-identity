@@ -45,6 +45,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import info.yalamanchili.office.dto.profile.EmployeeCompanyTransferDto;
+import info.yalamanchili.office.dto.profile.EmployeeDeptTransferDto;
 import java.text.SimpleDateFormat;
 
 /**
@@ -252,6 +253,14 @@ public class EmployeeService {
         obj.put("workStatus", emp.getWorkStatus());
         obj.put("transferDate", sdf.format(dto.getTransferDate()));
         OfficeBPMService.instance().startProcess("internal_company_transfer_process", obj);
+    }
+    
+    public void departmentTransfer(Long id, EmployeeDeptTransferDto dto) {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        Map<String, Object> obj = new HashMap<String, Object>();
+        obj.put("employeeId", id);
+        obj.put("transferDate", sdf.format(dto.getTransferDate()));
+        OfficeBPMService.instance().startProcess("department_transfer_probabtion_period_evaluation", obj);
     }
 
     public static EmployeeService

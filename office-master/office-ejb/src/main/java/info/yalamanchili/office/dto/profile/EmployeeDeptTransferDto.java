@@ -6,7 +6,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.jrs.profile;
+package info.yalamanchili.office.dto.profile;
 
 import java.io.Serializable;
 import java.util.Date;
