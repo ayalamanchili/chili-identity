@@ -16,12 +16,14 @@ import info.chili.reporting.ReportGenerator;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.client.VendorService;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
+import info.yalamanchili.office.dao.client.InvoiceScheduleDao;
 import info.yalamanchili.office.dao.client.VendorDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.profile.ContactDto;
 import info.yalamanchili.office.dto.profile.ContactDto.ContactDtoTable;
+import info.yalamanchili.office.entity.client.InvoiceSchedule;
 import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
@@ -116,6 +118,15 @@ public class VendorResource extends CRUDResource<Vendor> {
     @CacheEvict(value = OfficeCacheKeys.VENDOR, allEntries = true)
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
+        InvoiceSchedule schedule = InvoiceScheduleDao.instance().find(id);
+        if (schedule != null) {
+            List<InvoiceSchedule> schedules = InvoiceScheduleDao.instance().findAll(id, schedule.getTargetEntityName());
+            if (schedules.size() > 0) {
+                for (InvoiceSchedule invschedule : schedules) {
+                    InvoiceScheduleDao.instance().delete(invschedule);
+                }
+            }
+        }
     }
 
     @GET
