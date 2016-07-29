@@ -14,7 +14,8 @@ package info.yalamanchili.office.client.onboarding;
  */
 public enum MaritalStatus {
     Married,
-    Unmarried;
+    Unmarried,
+    Unknown;
     
     public static String[] names() {
         MaritalStatus[] values = values();

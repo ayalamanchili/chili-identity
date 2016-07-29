@@ -38,12 +38,12 @@
             </conditionExpression>
         </sequenceFlow>
         <sequenceFlow sourceRef="fork3" 
-                      targetRef="ServiceTicketTaskforNetworkDept">
+                      targetRef="SetupManagerAndRolesAndResponsibilitiesTask">
             <conditionExpression xsi:type="tFormalExpression">
                 ${employee.employeeType.name == 'Corporate Employee'}
             </conditionExpression>
         </sequenceFlow>
-        
+                
         <!-- On Boarding Form and Data Validation task : OnBoarding_Manager-->
         <userTask id="onBoardingFormsAndDataValidationTask" 
                   name="On Boarding Forms and Data Validation task for ${employee.firstName} ${employee.lastName}" 
@@ -210,6 +210,81 @@
             </conditionExpression>
         </sequenceFlow>
         
+        <!-- Setup Manager, Roles & Responsibilities Task To HR Admin-->
+        <userTask id="SetupManagerAndRolesAndResponsibilitiesTask" 
+                  name="Setup Manager, Roles And Responsibilities Task for ${employee.firstName} ${employee.lastName}" 
+                  activiti:candidateGroups="ROLE_HR_ADMINSTRATION">
+            <documentation>
+                Setup Manager, Roles And Responsibilities Task for #{employee.firstName} #{employee.lastName}
+                Please Add Reports_To manager and Roles and Responsibilities.
+                
+                Employee Name       : #{employee.firstName} #{employee.lastName}
+                Employee Type       : #{employee.employeeType.name}
+                Gender              : #{employee.sex}
+                Date Of Birth       : #{employee.getDateOfBirth()}
+                Email               : #{employee.getEmails().get(0).getEmail()}
+                Start Date          : #{employee.startDate}
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                <activiti:formProperty id="reportsToManager" 
+                                       name="Reports_To Manager (please provide reports_to manager id)"
+                                       required="true" 
+                                       type="string" />
+                <activiti:formProperty id="rolesAndResponsibilities" 
+                                       name="Roles And Responsibilities"
+                                       required="true" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <boundaryEvent id="SetupManagerAndRolesAndResponsibilitiesTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="SetupManagerAndRolesAndResponsibilitiesTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="SetupManagerAndRolesAndResponsibilitiesTaskEscalationTimer" 
+                      targetRef="SetupManagerAndRolesAndResponsibilitiesTaskEscalation" />
+        <serviceTask id="SetupManagerAndRolesAndResponsibilitiesTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <sequenceFlow sourceRef="SetupManagerAndRolesAndResponsibilitiesTask" targetRef="EmployeeOnboardingManagerApprovalTask" />
+        
+        <!-- Create Manager Task For Reports_To To give requiremnts to network department  -->
+        <userTask id="EmployeeOnboardingManagerApprovalTask" 
+                  name="Employee Onboarding Manager Approval Task for ${employee.firstName} ${employee.lastName}">
+            <documentation>
+                Employee Onboarding Manager Approval Task for #{employee.firstName} #{employee.lastName}
+                Please provide requirements to Network team while complete the task.
+                
+                Employee Name       : #{employee.firstName} #{employee.lastName}
+                Employee Type       : #{employee.employeeType.name}
+                Gender              : #{employee.sex}
+                Date Of Birth       : #{employee.getDateOfBirth()}
+                Email               : #{employee.getEmails().get(0).getEmail()}
+                Start Date          : #{employee.startDate}
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                <activiti:formProperty id="requirements" 
+                                       name="Requirements"
+                                       required="true" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <boundaryEvent id="EmployeeOnboardingManagerApprovalTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="EmployeeOnboardingManagerApprovalTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="EmployeeOnboardingManagerApprovalTaskEscalationTimer" 
+                      targetRef="EmployeeOnboardingManagerApprovalTaskEscalation" />
+        <serviceTask id="EmployeeOnboardingManagerApprovalTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <sequenceFlow sourceRef="EmployeeOnboardingManagerApprovalTask" targetRef="ServiceTicketTaskforNetworkDept" />
+        
         <!-- Create Service Ticket For Network Department  -->
         <userTask id="ServiceTicketTaskforNetworkDept" 
                   name="Network Department Task for ${employee.firstName} ${employee.lastName}" 
@@ -224,6 +299,7 @@
                 Date Of Birth       : #{employee.getDateOfBirth()}
                 Email               : #{employee.getEmails().get(0).getEmail()}
                 Start Date          : #{employee.startDate}
+                Requirements        : #{requirements}
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />

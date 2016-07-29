@@ -32,6 +32,7 @@ import info.yalamanchili.office.entity.profile.Sex;
 import info.yalamanchili.office.entity.profile.ext.Dependent;
 import info.yalamanchili.office.entity.profile.ext.EmployeeAdditionalDetails;
 import info.yalamanchili.office.entity.profile.ext.Ethnicity;
+import info.yalamanchili.office.entity.profile.ext.MaritalStatus;
 import info.yalamanchili.office.entity.profile.ext.Relationship;
 import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
 import java.text.SimpleDateFormat;
@@ -377,7 +378,16 @@ public class EmployeeFormsService {
         Long id1 = Long.valueOf(id);
         Employee emp = EmployeeDao.instance().findById(id1);
         EmployeeAdditionalDetails empAdditionalDetails = EmployeeAdditionalDetailsDao.instance().find(emp);
-        empAdditionalDetails.setRolesAndResponsibilities(details.getRolesAndResponsibilities());
-        EmployeeAdditionalDetailsDao.instance().save(empAdditionalDetails, emp);
+        EmployeeAdditionalDetails additionalDetails = new EmployeeAdditionalDetails();
+        if (empAdditionalDetails != null) {
+            empAdditionalDetails.setRolesAndResponsibilities(details.getRolesAndResponsibilities());
+            EmployeeAdditionalDetailsDao.instance().getEntityManager().merge(empAdditionalDetails);
+        } else {
+            additionalDetails.setReferredBy("Unknown");
+            additionalDetails.setEthnicity(Ethnicity.Unknown);
+            additionalDetails.setMaritalStatus(MaritalStatus.Unknown);
+            additionalDetails.setRolesAndResponsibilities(details.getRolesAndResponsibilities());
+            EmployeeAdditionalDetailsDao.instance().save(additionalDetails, emp);
+        }
     }
 }
