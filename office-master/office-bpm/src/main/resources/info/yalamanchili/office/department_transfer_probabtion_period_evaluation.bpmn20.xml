@@ -11,13 +11,14 @@
     xmlns:activiti="http://activiti.org/bpmn">
  
     <process id="department_transfer_probabtion_period_evaluation">
-        <startEvent id="probationPeriodEvaluationProcessStart">
+        <startEvent id="probationPeriodEvaluationProcessStart"/>
+        <sequenceFlow  sourceRef="probationPeriodEvaluationProcessStart" targetRef="probationPeriodWaitTimer" />
+        <intermediateCatchEvent id="probationPeriodWaitTimer">
             <timerEventDefinition>
-                <timeDuration>PT10M</timeDuration>
+                <timeDuration>PT5M</timeDuration>
             </timerEventDefinition>
-            <!--</startEvent>-->
-        </startEvent>
-        <sequenceFlow  sourceRef="probationPeriodEvaluationProcessStart" targetRef="probationPeriodEvaluationProcess" />
+        </intermediateCatchEvent>
+        <sequenceFlow  sourceRef="probationPeriodWaitTimer" targetRef="probationPeriodEvaluationProcess" />
         <serviceTask id="probationPeriodEvaluationProcess" 
                      activiti:expression="#{probationPeriodEvaluationInitiator.initiateProbationPeriodEvaluationReview(employeeId)}"/>
         <sequenceFlow  sourceRef="probationPeriodEvaluationProcess" targetRef="probationPeriodEvaluationProcessEnd" />
