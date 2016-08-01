@@ -35,7 +35,7 @@ public class InviteTypeDao {
 
     public InviteType find(InvitationType type) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("type").is(type.name()));
+        query.addCriteria(Criteria.where("invitationType").is(type.name()));
         return mongoTemplate.findOne(query, InviteType.class);
     }
 

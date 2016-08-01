@@ -384,7 +384,7 @@ public class EmployeeFormsService {
             EmployeeAdditionalDetailsDao.instance().getEntityManager().merge(empAdditionalDetails);
         } else {
             additionalDetails.setReferredBy("Unknown");
-            additionalDetails.setEthnicity(Ethnicity.Unknown);
+            additionalDetails.setEthnicity(Ethnicity.Unspecified);
             additionalDetails.setMaritalStatus(MaritalStatus.Unknown);
             additionalDetails.setRolesAndResponsibilities(details.getRolesAndResponsibilities());
             EmployeeAdditionalDetailsDao.instance().save(additionalDetails, emp);

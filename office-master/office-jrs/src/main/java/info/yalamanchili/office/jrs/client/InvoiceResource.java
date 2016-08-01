@@ -178,8 +178,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
     @Override
     //TODO add invoice mgr role check using pre auth
     public void delete(@PathParam("id") Long id) {
-        super.delete(id);
-
+        invoiceDao.delete(id);
     }
 
     @GET

@@ -9,6 +9,7 @@
 package info.yalamanchili.office.dao.client;
 
 import info.chili.dao.CRUDDao;
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.client.Invoice;
 import java.util.List;
@@ -76,4 +77,13 @@ public class InvoiceDao extends CRUDDao<Invoice> {
         return findAllQuery.getResultList();
     }
 
+    @Override
+     public void delete(Invoice entity) {
+        try {
+            getEntityManager().remove(entity);
+        } catch (javax.persistence.PersistenceException e) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "DELETE", "SQLError", e.getMessage());
+        }
+    }
+     
 }
