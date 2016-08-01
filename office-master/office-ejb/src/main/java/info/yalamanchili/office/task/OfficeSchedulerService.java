@@ -244,11 +244,11 @@ public class OfficeSchedulerService {
     public void sendBenchProspectsWeeklyNotification() {
         ProspectService.instance().sendBenchProspectsWeeklyNotification();
     }
-    
+
     /**
      * runs every night at 2.00 AM
      */
-    //@Scheduled(cron = "0 0 2 * * ?")
+    @Scheduled(cron = "0 0 2 * * ?")
     public void sendInvoiceReminderToBillingTeam() {
         InvoiceScheduleService.instance().sendReminderInvoiceNotification();
     }

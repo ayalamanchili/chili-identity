@@ -10,17 +10,16 @@ package info.yalamanchili.office.client;
 
 import info.chili.commons.DateUtils;
 import info.chili.email.Email;
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.client.InvoiceScheduleDao;
 import info.yalamanchili.office.dao.client.VendorDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.client.InvoiceSchedule;
 import info.yalamanchili.office.entity.client.Vendor;
-import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -45,6 +44,7 @@ public class InvoiceScheduleService {
 
     public void addInvoiceSchedule(Long targetId, String targetClassName, InvoiceSchedule schedule) {
         InvoiceSchedule entity = null;
+        validateEmpId(schedule);
         entity = invoiceScheduleDao.save(schedule);
         entity.setTargetEntityId(targetId);
         entity.setTargetEntityName(targetClassName);
@@ -53,8 +53,19 @@ public class InvoiceScheduleService {
 
     public InvoiceSchedule update(InvoiceSchedule schedule) {
         InvoiceSchedule entity = null;
+        validateEmpId(schedule);
         entity = invoiceScheduleDao.save(schedule);
         return entity;
+    }
+
+    public void validateEmpId(InvoiceSchedule schedule) {
+        String notifyEmps = schedule.getNotifyEmployees();
+        String[] notifyEmpIds = notifyEmps.split(",");
+        for (String empId : notifyEmpIds) {
+            if (EmployeeDao.instance().findEmployeWithEmpId(empId.trim()) == null) {
+                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.empId", "Inavlid Employee Id");
+            }
+        }
     }
 
     public static InvoiceScheduleService instance() {
@@ -67,17 +78,14 @@ public class InvoiceScheduleService {
         Email email = new Email();
         SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-YYY");
         if (invoiceSchedules.size() > 0) {
-            Iterator<InvoiceSchedule> iter = invoiceSchedules.iterator();
-            while (iter.hasNext()) {
-                InvoiceSchedule schedule = iter.next();
+            for (InvoiceSchedule schedule : invoiceSchedules) {
                 int l = (int) DateUtils.differenceInDays(new Date(), schedule.getEndDate());
                 if (l == schedule.getReminderDays()) {
                     Vendor vendor = VendorDao.instance().findById(schedule.getTargetEntityId());
                     String notifyEmployees = schedule.getNotifyEmployees();
                     String[] notifyEmps = notifyEmployees.split(",");
                     for (String empId : notifyEmps) {
-                        Employee emp = EmployeeDao.instance().findEmployeWithEmpId(empId.trim());
-                        String empEmail = emp.getPrimaryEmail().getEmail();
+                        String empEmail = EmployeeDao.instance().findEmployeWithEmpId(empId.trim()).getPrimaryEmail().getEmail();
                         email.addTo(empEmail);
                     }
                     email.setHtml(Boolean.TRUE);
