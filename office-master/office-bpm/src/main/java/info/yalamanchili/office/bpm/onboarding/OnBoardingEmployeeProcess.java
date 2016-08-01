@@ -39,8 +39,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
 
-    protected Long empManagerId;
-
     @Override
     public void processTask(DelegateTask task) {
         if ("create".equals(task.getEventName()) || "assignment".equals(task.getEventName())) {
@@ -52,7 +50,7 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
     }
 
     protected void onboardingTaskCreated(DelegateTask task) {
-        if (task.getTaskDefinitionKey().equals("EmployeeOnboardingManagerApprovalTask")) {
+        if (task.getTaskDefinitionKey().equals("NewEmployeeNetworkNeedsTaskForManager")) {
             assignOnboardingTaskToManager(task);
         }
         new GenericTaskCreateNotification().notify(task);
@@ -81,7 +79,7 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
             case "SetupManagerAndRolesAndResponsibilitiesTask":
                 setupManagerAndRolesAndResponsibilitiesTask(entity, dt);
                 break;
-            case "EmployeeOnboardingManagerApprovalTask":
+            case "NewEmployeeNetworkNeedsTaskForManager":
                 onboardingManagerApprovalTask(entity, dt);
                 break;
             case "ServiceTicketTaskforNetworkDept":
@@ -141,7 +139,6 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
         //add reports-to contact to emp
         String managerId = (String) dt.getExecution().getVariable("reportsToManager");
         Employee employeeManager = EmployeeDao.instance().findEmployeWithEmpId(managerId);
-        empManagerId = employeeManager.getId();
         CompanyContact contact = new CompanyContact();
         CompanyContactType type = CompanyContactTypeDao.instance().findById(Long.valueOf(1));
         contact.setType(type);
@@ -157,7 +154,7 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
             EmployeeAdditionalDetailsDao.instance().getEntityManager().merge(empAdditionalDetails);
         } else {
             additionalDetails.setReferredBy("Unknown");
-            additionalDetails.setEthnicity(Ethnicity.Unknown);
+            additionalDetails.setEthnicity(Ethnicity.Unspecified);
             additionalDetails.setMaritalStatus(MaritalStatus.Unknown);
             additionalDetails.setRolesAndResponsibilities(rolesAndResponsibilities);
             EmployeeAdditionalDetailsDao.instance().save(additionalDetails);
