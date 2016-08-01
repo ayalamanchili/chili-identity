@@ -24,7 +24,7 @@ public class GenericBPMTaskFormPanel extends GenericBPMFormPanel {
     protected String taskId;
 
     public GenericBPMTaskFormPanel(final String taskName, final String taskId, JSONArray array) {
-        initCreateComposite(taskName, OfficeWelcome.constants);
+        initCreateComposite(taskName, OfficeWelcome.constants2);
         HttpService.HttpServiceAsync.instance().doGet(getTaskFormPropertiesURL(taskId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
