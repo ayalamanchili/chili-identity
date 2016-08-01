@@ -38,7 +38,7 @@
             </conditionExpression>
         </sequenceFlow>
         <sequenceFlow sourceRef="fork3" 
-                      targetRef="SetupManagerAndRolesAndResponsibilitiesTask">
+                      targetRef="SetupManagerTask">
             <conditionExpression xsi:type="tFormalExpression">
                 ${employee.employeeType.name == 'Corporate Employee'}
             </conditionExpression>
@@ -210,13 +210,13 @@
             </conditionExpression>
         </sequenceFlow>
         
-        <!-- Setup Manager, Roles & Responsibilities Task To HR Admin-->
-        <userTask id="SetupManagerAndRolesAndResponsibilitiesTask" 
-                  name="Setup Manager, Roles And Responsibilities Task for ${employee.firstName} ${employee.lastName}" 
+        <!-- Setup Manager Task To HR Admin-->
+        <userTask id="SetupManagerTask" 
+                  name="Setup Manager Task for ${employee.firstName} ${employee.lastName}" 
                   activiti:candidateGroups="ROLE_HR_ADMINSTRATION">
             <documentation>
-                Setup Manager, Roles And Responsibilities Task for #{employee.firstName} #{employee.lastName}
-                Please Add Reports_To manager and Roles and Responsibilities.
+                Setup Manager Task for #{employee.firstName} #{employee.lastName}
+                Please Add Reports_To manager.
                 
                 Employee Name       : #{employee.firstName} #{employee.lastName}
                 Employee Type       : #{employee.employeeType.name}
@@ -232,53 +232,55 @@
                                        name="Reports_To Manager (please provide reports_to manager id)"
                                        required="true" 
                                        type="string" />
-                <activiti:formProperty id="rolesAndResponsibilities" 
-                                       name="Roles And Responsibilities"
-                                       required="true" 
-                                       type="string" />
+                
             </extensionElements> 
         </userTask>
-        <boundaryEvent id="SetupManagerAndRolesAndResponsibilitiesTaskEscalationTimer"
+        <boundaryEvent id="SetupManagerTaskEscalationTimer"
                        cancelActivity="false" 
-                       attachedToRef="SetupManagerAndRolesAndResponsibilitiesTask">
+                       attachedToRef="SetupManagerTask">
             <timerEventDefinition> 
                 <timeDuration>PT48H</timeDuration> 
             </timerEventDefinition>
         </boundaryEvent>
-        <sequenceFlow sourceRef="SetupManagerAndRolesAndResponsibilitiesTaskEscalationTimer" 
-                      targetRef="SetupManagerAndRolesAndResponsibilitiesTaskEscalation" />
-        <serviceTask id="SetupManagerAndRolesAndResponsibilitiesTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
-        <sequenceFlow sourceRef="SetupManagerAndRolesAndResponsibilitiesTask" targetRef="NewEmployeeNetworkNeedsTaskForManager" />
+        <sequenceFlow sourceRef="SetupManagerTaskEscalationTimer" 
+                      targetRef="SetupManagerTaskEscalation" />
+        <serviceTask id="SetupManagerTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <sequenceFlow sourceRef="SetupManagerTask" targetRef="NewEmployeeManagerTask" />
         
         <!-- Create Manager Task For Reports_To To give requiremnts to network department  -->
-        <userTask id="NewEmployeeNetworkNeedsTaskForManager" 
-                  name="New Employee Network Needs Task for ${employee.firstName} ${employee.lastName}">
+        <userTask id="NewEmployeeManagerTask" 
+                  name="New Employee Manager Task for ${employee.firstName} ${employee.lastName}">
             <documentation>
                 New Employee #{employee.firstName} #{employee.lastName} 
                 who will be reporting to you is being on boarded. 
-                Please enter the requirements from a network perspective so the necessary will be arranged by the networking team. 
+                Please assign roles and responsibilities to the employee.
+                And enter the requirements from a network perspective so the necessary will be arranged by the networking team. 
                 Eg: Developer Laptop, MS word, Team Viewer, Access to IT Projects folder etc...
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
                 <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                <activiti:formProperty id="rolesAndResponsibilities" 
+                                       name="Roles And Responsibilities"
+                                       required="true" 
+                                       type="string" />
                 <activiti:formProperty id="requirements" 
                                        name="Requirements"
                                        required="true" 
                                        type="string" />
             </extensionElements> 
         </userTask>
-        <boundaryEvent id="NewEmployeeNetworkNeedsTaskForManagerEscalationTimer"
+        <boundaryEvent id="NewEmployeeManagerTaskEscalationTimer"
                        cancelActivity="false" 
-                       attachedToRef="NewEmployeeNetworkNeedsTaskForManager">
+                       attachedToRef="NewEmployeeManagerTask">
             <timerEventDefinition> 
                 <timeDuration>PT48H</timeDuration> 
             </timerEventDefinition>
         </boundaryEvent>
-        <sequenceFlow sourceRef="NewEmployeeNetworkNeedsTaskForManagerEscalationTimer" 
-                      targetRef="NewEmployeeNetworkNeedsTaskForManagerEscalation" />
-        <serviceTask id="NewEmployeeNetworkNeedsTaskForManagerEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
-        <sequenceFlow sourceRef="NewEmployeeNetworkNeedsTaskForManager" targetRef="ServiceTicketTaskforNetworkDept" />
+        <sequenceFlow sourceRef="NewEmployeeManagerTaskEscalationTimer" 
+                      targetRef="NewEmployeeManagerTaskEscalation" />
+        <serviceTask id="NewEmployeeManagerTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <sequenceFlow sourceRef="NewEmployeeManagerTask" targetRef="ServiceTicketTaskforNetworkDept" />
         
         <!-- Create Service Ticket For Network Department  -->
         <userTask id="ServiceTicketTaskforNetworkDept" 

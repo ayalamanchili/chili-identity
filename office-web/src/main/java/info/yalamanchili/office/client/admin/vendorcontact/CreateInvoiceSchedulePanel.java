@@ -16,6 +16,7 @@ import info.chili.gwt.fields.DateField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
+import java.util.Date;
 import java.util.logging.Logger;
 
 /**
@@ -29,7 +30,7 @@ public abstract class CreateInvoiceSchedulePanel extends CreateComposite {
     protected String targetClassName;
 
     HTML helpText = new HTML("<p>Please provide the Employee Id's to notify a reminder in the given field below.</p>\n"
-            + "<p>For example, the reminder is to be notified only for u then u need to enter your employeeId like <b>radapala</b> and also if you want to notify multiple employees then u need to enter like <b>radapala,rlaxman</b> with comma separted.</p>");
+            + "<p>For example, the reminder is to be notified only for you, then you need to enter your EmployeeId like <b>radapala</b> and also if you want to notify multiple employees, you need to enter like this <b>radapala,rlaxman</b> with comma separted .</p>");
 
     public CreateInvoiceSchedulePanel(CreateComposite.CreateCompositeType type) {
         super(type);
@@ -108,6 +109,10 @@ public abstract class CreateInvoiceSchedulePanel extends CreateComposite {
         DateField endDateF = (DateField) fields.get("endDate");
         if (startDateF.getDate() != null && endDateF.getDate() != null && startDateF.getDate().after(endDateF.getDate())) {
             endDateF.setMessage("End Date must be equal to or after Start Date");
+            return false;
+        }
+        if (endDateF.getDate() != null && endDateF.getDate().before(new Date())) {
+            endDateF.setMessage("End Date must be after Current Date");
             return false;
         }
         return true;

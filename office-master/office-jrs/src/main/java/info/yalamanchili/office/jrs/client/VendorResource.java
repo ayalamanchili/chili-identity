@@ -117,16 +117,13 @@ public class VendorResource extends CRUDResource<Vendor> {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
     @CacheEvict(value = OfficeCacheKeys.VENDOR, allEntries = true)
     public void delete(@PathParam("id") Long id) {
-        super.delete(id);
-        InvoiceSchedule schedule = InvoiceScheduleDao.instance().find(id);
-        if (schedule != null) {
-            List<InvoiceSchedule> schedules = InvoiceScheduleDao.instance().findAll(id, schedule.getTargetEntityName());
-            if (schedules.size() > 0) {
-                for (InvoiceSchedule invschedule : schedules) {
-                    InvoiceScheduleDao.instance().delete(invschedule);
-                }
+        List<InvoiceSchedule> schedules = InvoiceScheduleDao.instance().findAll(id, "info.yalamanchili.office.entity.client.Vendor");
+        if (schedules.size() > 0) {
+            for (InvoiceSchedule invschedule : schedules) {
+                InvoiceScheduleDao.instance().delete(invschedule);
             }
         }
+        super.delete(id);
     }
 
     @GET
