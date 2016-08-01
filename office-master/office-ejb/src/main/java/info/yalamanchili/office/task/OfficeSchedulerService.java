@@ -65,7 +65,7 @@ public class OfficeSchedulerService {
     /**
      * runs at 1'0 clock every month to accumulate monthly earned PTO,
      */
-//    @Scheduled(cron = "0 1 1 * * ?")
+    @Scheduled(cron = "0 0 1 1 * ?")
     public void accuredMonthlyTime() {
         CorporateTimeAccuralService.instance().accureMonthlyTime();
         AssociateTimeAccuralService.instance().accureMonthlyConsTime();
