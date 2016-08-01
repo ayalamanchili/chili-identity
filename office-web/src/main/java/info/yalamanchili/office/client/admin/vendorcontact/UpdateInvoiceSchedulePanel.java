@@ -8,6 +8,7 @@ package info.yalamanchili.office.client.admin.vendorcontact;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
@@ -26,6 +27,9 @@ public abstract class UpdateInvoiceSchedulePanel extends UpdateComposite {
 
     protected String targetClassName;
 
+     HTML helpText = new HTML("<p>Please provide the Employee Id's to notify a reminder in the given field below.</p>\n"
+            + "<p>For example, the reminder is to be notified only for u then u need to enter your employeeId like <b>radapala</b> and also if you want to notify multiple employees then u need to enter like <b>radapala,rlaxman</b> with comma separted.</p>");
+
     public UpdateInvoiceSchedulePanel(JSONObject entity) {
         initUpdateComposite(entity, "InvoiceSchedule", OfficeWelcome.constants2);
     }
@@ -41,6 +45,7 @@ public abstract class UpdateInvoiceSchedulePanel extends UpdateComposite {
         assignEntityValueFromField("endDate", entity);
         assignEntityValueFromField("reminderDays", entity);
         assignEntityValueFromField("notes", entity);
+        assignEntityValueFromField("notifyEmployees", entity);
         return entity;
     }
 
@@ -66,6 +71,7 @@ public abstract class UpdateInvoiceSchedulePanel extends UpdateComposite {
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("reminderDays", entity, DataType.INTEGER_FIELD);
         assignFieldValueFromEntity("notes", entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("notifyEmployees", entity, DataType.TEXT_AREA_FIELD);
     }
 
     @Override
@@ -84,7 +90,10 @@ public abstract class UpdateInvoiceSchedulePanel extends UpdateComposite {
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("reminderDays", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(helpText);
+        addField("notifyEmployees", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("notes", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+
     }
 
     @Override

@@ -40,7 +40,7 @@ public abstract class ReadAllInvoiceSchedulePanel extends CRUDReadAllComposite {
         instance = this;
         this.parentId = parentId;
         this.targetClassName = targetClassName;
-        initTable("Dependent", OfficeWelcome.constants2);
+        initTable("InvoiceSchedule", OfficeWelcome.constants2);
     }
 
     public ReadAllInvoiceSchedulePanel() {

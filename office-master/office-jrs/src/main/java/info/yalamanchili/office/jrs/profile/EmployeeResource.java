@@ -7,12 +7,12 @@
  */
 package info.yalamanchili.office.jrs.profile;
 
+import info.yalamanchili.office.dto.profile.EmployeeDeptTransferDto;
 import info.chili.commons.SearchUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.chili.reporting.ReportGenerator;
 import info.chili.security.domain.CUser;
-import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.types.Entry;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
@@ -152,6 +152,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         if (ProbationPeriodEvaluationDao.instance().getActiveEvaluations(emp).size() > 0) {
             ProbationPeriodEvaluationDao.instance().getActiveEvaluations(emp).get(0).setActive(false);
         }
+        EmployeeService.instance().departmentTransfer(employeeId, dto);
     }
     
     @PUT

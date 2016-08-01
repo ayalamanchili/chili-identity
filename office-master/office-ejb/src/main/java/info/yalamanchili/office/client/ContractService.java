@@ -45,6 +45,7 @@ import info.yalamanchili.office.jms.MessagingService;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 import javax.persistence.Query;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang.StringUtils;
@@ -66,7 +67,7 @@ public class ContractService {
     protected EntityManager em;
     @Autowired
     protected Mapper mapper;
-
+    
     public ContractDto read(Long id) {
         ClientInformation ci = ClientInformationDao.instance().findById(id);
         return mapClientInformation(ci);
@@ -315,9 +316,11 @@ public class ContractService {
             vi = ci.getVendor();
             dto.setVendor(vi.getName());
             dto.setVendorFees(vi.getVendorFees());
-            if (vi.getVendorFees() != null && vi.getVendorFees() > 0) {
-                BigDecimal value = new BigDecimal(vi.getVendorFees());
-                dto.setFinalBillingRate(dto.getBillingRate().subtract(value.divide(new BigDecimal(100)).multiply(dto.getBillingRate())));
+            if (vi.getVendorFees() != null) {
+            BigDecimal value = new BigDecimal(vi.getVendorFees());
+            BigDecimal vendorFee = value.divide(new BigDecimal(100)).multiply(dto.getBillingRate());
+            //dto.setFinalBillingRate(dto.getBillingRate().subtract(vendorFee));
+            dto.setFinalBillingRate(dto.getBillingRate().subtract(calcVendorMargin(vendorFee, vi.getMaxFees(), vi.getMinFees())));
             }
         }
 
@@ -427,6 +430,24 @@ public class ContractService {
         return ReportGenerator.generateReport(data.getEntities(), "contracts", format, OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
     }
 
+    public BigDecimal calcVendorMargin(BigDecimal vendorFee, BigDecimal maxFee, BigDecimal minFee) {
+        
+        BigDecimal vendorMargin =  BigDecimal.ZERO;
+
+        if (vendorFee != null &&  vendorFee.floatValue() > 0) {
+                if (maxFee != null && minFee != null && vendorFee.floatValue() <= maxFee.floatValue() && vendorFee.floatValue() >= minFee.floatValue())
+                    vendorMargin = vendorFee;
+                else if (maxFee != null && vendorFee.floatValue() > maxFee.floatValue())
+                    vendorMargin = maxFee;
+                else if (minFee != null && vendorFee.floatValue() < minFee.floatValue())
+                    vendorMargin = minFee; 
+                else 
+                    vendorMargin = vendorFee; 
+            }
+        
+        return vendorMargin;
+    }
+    
     @Async
     @Transactional
     public void generateSubCReport(ContractSearchDto dto, String email) {

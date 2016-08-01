@@ -11,40 +11,28 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
     
-    <changeSet author="batluri" id="client-update-jul">
+    <changeSet author="sbandaru" id="vendor-add-minmax">
         <preConditions onFail="WARN"> 
         </preConditions>
         <addColumn catalogName="office"
                    schemaName="public"
-                   tableName="client">
-            <column name="clientFee" type="float"/>
+                   tableName="vendor">
+            <column name="maxFees" type="decimal(19,2)"/>
         </addColumn>
         <addColumn catalogName="office"
                    schemaName="public"
-                   tableName="client_aud">
-            <column name="clientFee" type="float"/>
-        </addColumn>
-        
-        <addColumn catalogName="office"
-                   schemaName="public"
-                   tableName="client">
-            <column name="maxClientFee" type="decimal(19,2)"/>
+                   tableName="vendor_aud">
+            <column name="maxFees" type="decimal(19,2)"/>
         </addColumn>
         <addColumn catalogName="office"
                    schemaName="public"
-                   tableName="client_aud">
-            <column name="maxClientFee" type="decimal(19,2)"/>
-        </addColumn>
-        
-        <addColumn catalogName="office"
-                   schemaName="public"
-                   tableName="client">
-            <column name="minClientFee" type="decimal(19,2)"/>
+                   tableName="vendor">
+            <column name="minFees" type="decimal(19,2)"/>
         </addColumn>
         <addColumn catalogName="office"
                    schemaName="public"
-                   tableName="client_aud">
-            <column name="minClientFee" type="decimal(19,2)"/>
-        </addColumn>
+                   tableName="vendor_aud">
+            <column name="minFees" type="decimal(19,2)"/>
+        </addColumn>        
     </changeSet>
 </databaseChangeLog>

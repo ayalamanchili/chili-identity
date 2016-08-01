@@ -3,7 +3,8 @@ Perdiem Request Approval Or Rejection Process
  - [Login to Portal](../../office/forgot-password.html "Login")
  - Only the  payrole team can view , approve or reject the task
  - Navigate to my tasks --> view the task & approve or reject it with some relevant message specifying in the note
-   Payroll Department approval Task:
+
+Payroll Department approval Task:
 ----
 ![alt text](../../images/expense/PayrollDeparmentApproval.png "Payroll department Task")
 

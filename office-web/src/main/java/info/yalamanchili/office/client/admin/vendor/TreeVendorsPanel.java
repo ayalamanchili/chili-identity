@@ -27,6 +27,7 @@ public class TreeVendorsPanel extends TreePanelComposite {
 
     private static TreeVendorsPanel instance;
     protected String vendorId;
+    protected JSONObject vendor;
 
     public static TreeVendorsPanel instance() {
         return instance;
@@ -39,6 +40,7 @@ public class TreeVendorsPanel extends TreePanelComposite {
 
     public TreeVendorsPanel(String entityId) {
         super(entityId);
+        this.vendorId = entityId;
         instance = this;
         init("Vendors", OfficeWelcome.constants);
     }
@@ -90,7 +92,7 @@ public class TreeVendorsPanel extends TreePanelComposite {
         }
         if (VENDOR_INVOICE_SCHEDULE_NODE.equals(entityNodeKey)) {
             TabPanel.instance().adminPanel.entityPanel.clear();
-            TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorInvoiceSchedulePanel(entityId, "info.yalamanchili.office.entity.client.Vendor"));
+            TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorInvoiceSchedulePanel(vendorId, "info.yalamanchili.office.entity.client.Vendor"));
         }
     }
 

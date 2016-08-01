@@ -15,6 +15,7 @@ import info.yalamanchili.office.dao.message.NotificationGroupDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.time.TimePeriodDao;
 import info.chili.email.Email;
+import info.yalamanchili.office.client.InvoiceScheduleService;
 import info.yalamanchili.office.dao.profile.EmployeeDto;
 import info.yalamanchili.office.employee.probeval.ProbationPeriodEvaluationInitiator;
 import info.yalamanchili.office.entity.message.NotificationGroup;
@@ -64,7 +65,7 @@ public class OfficeSchedulerService {
     /**
      * runs at 1'0 clock every month to accumulate monthly earned PTO,
      */
-//    @Scheduled(cron = "0 1 1 * * ?")
+    @Scheduled(cron = "0 0 1 1 * ?")
     public void accuredMonthlyTime() {
         CorporateTimeAccuralService.instance().accureMonthlyTime();
         AssociateTimeAccuralService.instance().accureMonthlyConsTime();
@@ -242,5 +243,13 @@ public class OfficeSchedulerService {
     @Scheduled(cron = "0 15 2 ? * MON")
     public void sendBenchProspectsWeeklyNotification() {
         ProspectService.instance().sendBenchProspectsWeeklyNotification();
+    }
+    
+    /**
+     * runs every night at 2.00 AM
+     */
+    //@Scheduled(cron = "0 0 2 * * ?")
+    public void sendInvoiceReminderToBillingTeam() {
+        InvoiceScheduleService.instance().sendReminderInvoiceNotification();
     }
 }

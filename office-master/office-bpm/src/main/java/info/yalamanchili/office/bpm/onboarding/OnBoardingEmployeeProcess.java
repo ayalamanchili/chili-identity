@@ -11,8 +11,18 @@ package info.yalamanchili.office.bpm.onboarding;
 import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
 import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
 import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
+import info.yalamanchili.office.dao.company.CompanyContactDao;
+import info.yalamanchili.office.dao.company.CompanyContactTypeDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.profile.ext.EmployeeAdditionalDetailsDao;
 import info.yalamanchili.office.dao.profile.onboarding.EmployeeOnBoardingDao;
+import info.yalamanchili.office.entity.company.CompanyContact;
+import info.yalamanchili.office.entity.company.CompanyContactType;
+import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.ext.EmployeeAdditionalDetails;
+import info.yalamanchili.office.entity.profile.ext.Ethnicity;
+import info.yalamanchili.office.entity.profile.ext.MaritalStatus;
 import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
 import info.yalamanchili.office.entity.profile.onboarding.OnBoardingStatus;
 import org.activiti.engine.delegate.DelegateTask;
@@ -32,11 +42,23 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
     @Override
     public void processTask(DelegateTask task) {
         if ("create".equals(task.getEventName()) || "assignment".equals(task.getEventName())) {
-            new GenericTaskCreateNotification().notify(task);
+            onboardingTaskCreated(task);
         }
         if ("complete".equals(task.getEventName())) {
             employeeOnBoardingTaskCompleted(task);
         }
+    }
+
+    protected void onboardingTaskCreated(DelegateTask task) {
+        if (task.getTaskDefinitionKey().equals("NewEmployeeNetworkNeedsTaskForManager")) {
+            assignOnboardingTaskToManager(task);
+        }
+        new GenericTaskCreateNotification().notify(task);
+    }
+
+    protected void assignOnboardingTaskToManager(DelegateTask task) {
+        String employeeId = (String) task.getExecution().getVariable("reportsToManager");
+        task.addCandidateUser(employeeId);
     }
 
     private void employeeOnBoardingTaskCompleted(DelegateTask dt) {
@@ -53,6 +75,12 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
                 break;
             case "eVerifyTask":
                 eVerifyTaskCompleted(entity, dt);
+                break;
+            case "SetupManagerAndRolesAndResponsibilitiesTask":
+                setupManagerAndRolesAndResponsibilitiesTask(entity, dt);
+                break;
+            case "NewEmployeeNetworkNeedsTaskForManager":
+                onboardingManagerApprovalTask(entity, dt);
                 break;
             case "ServiceTicketTaskforNetworkDept":
                 createServiceTicketForNetworkDept(entity, dt);
@@ -103,6 +131,47 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
             new GenericTaskCompleteNotification().notify(dt);
         }
         EmployeeOnBoardingDao.instance().save(entity);
+    }
+
+    private void setupManagerAndRolesAndResponsibilitiesTask(EmployeeOnBoarding entity, DelegateTask dt) {
+        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findById(entity.getId());
+        Employee emp = empOnBoarding.getEmployee();
+        //add reports-to contact to emp
+        String managerId = (String) dt.getExecution().getVariable("reportsToManager");
+        Employee employeeManager = EmployeeDao.instance().findEmployeWithEmpId(managerId);
+        CompanyContact contact = new CompanyContact();
+        CompanyContactType type = CompanyContactTypeDao.instance().findById(Long.valueOf(1));
+        contact.setType(type);
+        contact.setEmployee(emp);
+        contact.setContact(employeeManager);
+        CompanyContactDao.instance().save(contact);
+        //emp roles and responsibilities save
+        String rolesAndResponsibilities = (String) dt.getExecution().getVariable("rolesAndResponsibilities");
+        EmployeeAdditionalDetails empAdditionalDetails = EmployeeAdditionalDetailsDao.instance().find(emp);
+        EmployeeAdditionalDetails additionalDetails = new EmployeeAdditionalDetails();
+        if (empAdditionalDetails != null) {
+            empAdditionalDetails.setRolesAndResponsibilities(rolesAndResponsibilities);
+            EmployeeAdditionalDetailsDao.instance().getEntityManager().merge(empAdditionalDetails);
+        } else {
+            additionalDetails.setReferredBy("Unknown");
+            additionalDetails.setEthnicity(Ethnicity.Unspecified);
+            additionalDetails.setMaritalStatus(MaritalStatus.Unknown);
+            additionalDetails.setRolesAndResponsibilities(rolesAndResponsibilities);
+            EmployeeAdditionalDetailsDao.instance().save(additionalDetails);
+        }
+        empOnBoarding.setStatus(OnBoardingStatus.Pending_HR_Validation);
+        new GenericTaskCompleteNotification().notify(dt);
+        EmployeeOnBoardingDao.instance().save(entity);
+    }
+
+    private void onboardingManagerApprovalTask(EmployeeOnBoarding entity, DelegateTask dt) {
+        String requirements = (String) dt.getExecution().getVariable("requirements");
+        CommentDao.instance().addComment(dt.getTaskDefinitionKey() + " Requirements:" + requirements, entity);
+        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findById(entity.getId());
+        empOnBoarding.setStatus(OnBoardingStatus.Pending_HR_Validation);
+        new GenericTaskCompleteNotification().notify(dt);
+        EmployeeOnBoardingDao.instance().save(entity);
+        dt.getExecution().setVariable("requirements", dt.getExecution().getVariable("requirements"));
     }
 
     protected void createServiceTicketForNetworkDept(EmployeeOnBoarding entity, DelegateTask dt) {
