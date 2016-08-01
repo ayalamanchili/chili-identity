@@ -20,7 +20,7 @@ public enum Ethnicity {
     Black_AfricanAmerican,
     NativeHawaiian_OtherPacificIslander,
     White,
-    Unknown;
+    Unspecified;
     
     public static String[] names() {
         Ethnicity[] values = values();
