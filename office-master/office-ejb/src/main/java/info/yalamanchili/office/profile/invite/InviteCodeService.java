@@ -45,7 +45,8 @@ public class InviteCodeService {
         query.with(new Sort(Sort.Direction.DESC, "expiryDate"));
         for (InviteCode inviteCode : mongoTemplate.find(query.limit(limit).skip(start), InviteCode.class)) {
             InviteCodeDto dto = new InviteCodeDto();
-            dto.setInvitationCode(StringUtils.join(inviteCode.getInvitationCode(), ", "));
+            dto.setId(inviteCode.getId());
+            dto.setInvitationCode(inviteCode.getInvitationCode());
             dto.setExpiryDate(inviteCode.getExpiryDate());
             dto.setValidFromDate(inviteCode.getValidFromDate());
             dto.setEmail(inviteCode.getEmail());
@@ -71,7 +72,8 @@ public class InviteCodeService {
         query.with(new Sort(Sort.Direction.DESC, "expiryDate"));
         for (InviteCode inviteCode : mongoTemplate.find(query.limit(100), InviteCode.class)) {
             InviteCodeDto dto = new InviteCodeDto();
-            dto.setInvitationCode(StringUtils.join(inviteCode.getInvitationCode(), ", "));
+            dto.setId(inviteCode.getId());
+            dto.setInvitationCode(inviteCode.getInvitationCode());
             dto.setExpiryDate(inviteCode.getExpiryDate());
             dto.setValidFromDate(inviteCode.getValidFromDate());
             dto.setEmail(inviteCode.getEmail());
@@ -87,6 +89,7 @@ public class InviteCodeService {
     @XmlType
     public static class InviteCodeDto implements java.io.Serializable {
 
+        protected String id;
         protected String invitationCode;
         protected Date expiryDate;
         protected Date validFromDate;
@@ -162,6 +165,20 @@ public class InviteCodeService {
          */
         public void setInvitationType(InvitationType invitationType) {
             this.invitationType = invitationType;
+        }
+
+        /**
+         * @return the id
+         */
+        public String getId() {
+            return id;
+        }
+
+        /**
+         * @param id the id to set
+         */
+        public void setId(String id) {
+            this.id = id;
         }
     }
 

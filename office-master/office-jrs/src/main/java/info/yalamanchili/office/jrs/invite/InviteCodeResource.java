@@ -9,6 +9,7 @@
 package info.yalamanchili.office.jrs.invite;
 
 import info.chili.jpa.validation.Validate;
+import info.yalamanchili.office.dao.invite.InviteCodeDao;
 import info.yalamanchili.office.entity.profile.invite.InviteCode;
 import info.yalamanchili.office.profile.invite.InviteCodeGeneratorService;
 import info.yalamanchili.office.profile.invite.InviteCodeService;
@@ -40,6 +41,8 @@ public class InviteCodeResource {
 
     @Autowired
     protected InviteCodeService inviteCodeService;
+    @Autowired
+    protected InviteCodeDao inviteCodeDao;
     
     @GET
     @Path("/{start}/{limit}")
@@ -60,5 +63,11 @@ public class InviteCodeResource {
         InviteCodeGeneratorService.instance().generate(entity, sendEmail);
     }
 
-
+    @PUT
+    @Validate
+    @Path("/save/{id}")
+    public void save(@PathParam("id") String id, InviteCode entity) {
+        InviteCodeDao.instance().save(entity);
+    }
+    
 }
