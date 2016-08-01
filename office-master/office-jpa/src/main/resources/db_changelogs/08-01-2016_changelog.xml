@@ -17,6 +17,7 @@
         <dropNotNullConstraint catalogName="office"
                    schemaName="public"
                    tableName="invoice_aud" 
+                   columnDataType="varchar(255)"
                    columnName="invoiceFrequency"/>
     </changeSet>
 </databaseChangeLog>
