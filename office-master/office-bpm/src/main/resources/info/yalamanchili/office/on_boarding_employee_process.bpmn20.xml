@@ -248,21 +248,16 @@
         <sequenceFlow sourceRef="SetupManagerAndRolesAndResponsibilitiesTaskEscalationTimer" 
                       targetRef="SetupManagerAndRolesAndResponsibilitiesTaskEscalation" />
         <serviceTask id="SetupManagerAndRolesAndResponsibilitiesTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
-        <sequenceFlow sourceRef="SetupManagerAndRolesAndResponsibilitiesTask" targetRef="EmployeeOnboardingManagerApprovalTask" />
+        <sequenceFlow sourceRef="SetupManagerAndRolesAndResponsibilitiesTask" targetRef="NewEmployeeNetworkNeedsTaskForManager" />
         
         <!-- Create Manager Task For Reports_To To give requiremnts to network department  -->
-        <userTask id="EmployeeOnboardingManagerApprovalTask" 
-                  name="Employee Onboarding Manager Approval Task for ${employee.firstName} ${employee.lastName}">
+        <userTask id="NewEmployeeNetworkNeedsTaskForManager" 
+                  name="New Employee Network Needs Task for ${employee.firstName} ${employee.lastName}">
             <documentation>
-                Employee Onboarding Manager Approval Task for #{employee.firstName} #{employee.lastName}
-                Please provide requirements to Network team while complete the task.
-                
-                Employee Name       : #{employee.firstName} #{employee.lastName}
-                Employee Type       : #{employee.employeeType.name}
-                Gender              : #{employee.sex}
-                Date Of Birth       : #{employee.getDateOfBirth()}
-                Email               : #{employee.getEmails().get(0).getEmail()}
-                Start Date          : #{employee.startDate}
+                New Employee #{employee.firstName} #{employee.lastName} 
+                who will be reporting to you is being on boarded. 
+                Please enter the requirements from a network perspective so the necessary will be arranged by the networking team. 
+                Eg: Developer Laptop, MS word, Team Viewer, Access to IT Projects folder etc...
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
@@ -273,17 +268,17 @@
                                        type="string" />
             </extensionElements> 
         </userTask>
-        <boundaryEvent id="EmployeeOnboardingManagerApprovalTaskEscalationTimer"
+        <boundaryEvent id="NewEmployeeNetworkNeedsTaskForManagerEscalationTimer"
                        cancelActivity="false" 
-                       attachedToRef="EmployeeOnboardingManagerApprovalTask">
+                       attachedToRef="NewEmployeeNetworkNeedsTaskForManager">
             <timerEventDefinition> 
                 <timeDuration>PT48H</timeDuration> 
             </timerEventDefinition>
         </boundaryEvent>
-        <sequenceFlow sourceRef="EmployeeOnboardingManagerApprovalTaskEscalationTimer" 
-                      targetRef="EmployeeOnboardingManagerApprovalTaskEscalation" />
-        <serviceTask id="EmployeeOnboardingManagerApprovalTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
-        <sequenceFlow sourceRef="EmployeeOnboardingManagerApprovalTask" targetRef="ServiceTicketTaskforNetworkDept" />
+        <sequenceFlow sourceRef="NewEmployeeNetworkNeedsTaskForManagerEscalationTimer" 
+                      targetRef="NewEmployeeNetworkNeedsTaskForManagerEscalation" />
+        <serviceTask id="NewEmployeeNetworkNeedsTaskForManagerEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <sequenceFlow sourceRef="NewEmployeeNetworkNeedsTaskForManager" targetRef="ServiceTicketTaskforNetworkDept" />
         
         <!-- Create Service Ticket For Network Department  -->
         <userTask id="ServiceTicketTaskforNetworkDept" 
