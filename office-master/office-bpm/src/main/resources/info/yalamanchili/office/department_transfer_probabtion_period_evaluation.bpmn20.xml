@@ -15,7 +15,7 @@
         <sequenceFlow  sourceRef="probationPeriodEvaluationProcessStart" targetRef="probationPeriodWaitTimer" />
         <intermediateCatchEvent id="probationPeriodWaitTimer">
             <timerEventDefinition>
-                <timeDuration>PT5M</timeDuration>
+                <timeDate>${probEvalProcessStartDate}T00:01:00</timeDate>
             </timerEventDefinition>
         </intermediateCatchEvent>
         <sequenceFlow  sourceRef="probationPeriodWaitTimer" targetRef="probationPeriodEvaluationProcess" />

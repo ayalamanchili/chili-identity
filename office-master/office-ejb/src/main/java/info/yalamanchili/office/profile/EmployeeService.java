@@ -47,6 +47,7 @@ import org.springframework.stereotype.Component;
 import info.yalamanchili.office.dto.profile.EmployeeCompanyTransferDto;
 import info.yalamanchili.office.dto.profile.EmployeeDeptTransferDto;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  *
@@ -256,10 +257,13 @@ public class EmployeeService {
     }
     
     public void departmentTransfer(Long id, EmployeeDeptTransferDto dto) {
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar c = Calendar.getInstance();
+        c.setTime(dto.getTransferDate());
+        c.add(Calendar.DATE, 52);
         Map<String, Object> obj = new HashMap<String, Object>();
         obj.put("employeeId", id);
-        obj.put("transferDate", sdf.format(dto.getTransferDate()));
+        obj.put("probEvalProcessStartDate", sdf.format(c.getTime()));
         OfficeBPMService.instance().startProcess("department_transfer_probabtion_period_evaluation", obj);
     }
 
