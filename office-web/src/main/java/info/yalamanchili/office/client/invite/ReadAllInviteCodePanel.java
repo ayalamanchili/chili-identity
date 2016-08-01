@@ -70,6 +70,7 @@ public class ReadAllInviteCodePanel extends CRUDReadAllComposite {
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().chiliAdminPanel.entityPanel.clear();
+        TabPanel.instance().chiliAdminPanel.entityPanel.add(new UpdateInviteCodePanel(getEntity(entityId)));
     }
     
     @Override
