@@ -307,9 +307,9 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
             String[] columnOrder;
             Employee emp = OfficeSecurityService.instance().getCurrentUser();
             if (ProspectStatus.CLOSED_WON.equals(dto.getStatus()) || (dto.getJoiningDateFrom() != null && dto.getJoiningDateTo() != null)) {
-                columnOrder = new String[]{"employee", "email", "phoneNumber", "screenedBy", "manager", "assignedto", "petitionFor", "placedby", "trfEmptype", "dateOfJoining", "referredBy", "companyName", "startDate", "stage"};
+                columnOrder = new String[]{"employee", "email", "phoneNumber", "screenedBy", "caseManagerName", "assignedto", "petitionFor", "placedby", "trfEmptype", "dateOfJoining", "referredBy", "companyName", "createdDate", "stage"};
             } else {
-                columnOrder = new String[]{"employee", "email", "phoneNumber", "screenedBy", "manager", "assignedto", "referredBy", "startDate", "stage"};
+                columnOrder = new String[]{"employee", "email", "phoneNumber", "screenedBy", "caseManagerName", "assignedto", "referredBy", "createdDate", "stage"};
             }
             String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), name, OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
             MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
@@ -335,7 +335,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
         } else if (format.equals("Pdf")) {
             reportFormat = reportFormat.concat("pdf").trim();
         }
-        String[] columnOrder = new String[]{"employee", "email", "phoneNumber", "screenedBy", "manager", "assignedto", "petitionFor", "placedby", "trfEmptype", "dateOfJoining", "referredBy", "companyName", "startDate", "stage"};
+        String[] columnOrder = new String[]{"employee", "email", "phoneNumber", "screenedBy", "caseManagerName", "assignedto", "petitionFor", "placedby", "trfEmptype", "dateOfJoining", "referredBy", "companyName", "createdDate", "stage"};
         return ReportGenerator.generateReport(dtos, "Prospect Report", reportFormat, home, columnOrder);
     }
 
