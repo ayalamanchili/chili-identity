@@ -114,7 +114,7 @@ public class ProspectDto implements Serializable {
     protected List<Long> employees;
 
     //for report purpose only
-    protected String manager;
+    protected String caseManagerName;
     protected String gender;
     protected String employee;
     protected String placedby;
@@ -123,6 +123,7 @@ public class ProspectDto implements Serializable {
     protected String companyName;
     protected String assignedto;
     protected String stage;
+    protected Date createdDate;
     
     protected String benchDate;
 
@@ -388,12 +389,12 @@ public class ProspectDto implements Serializable {
         this.company = company;
     }
 
-    public String getManager() {
-        return manager;
+    public String getCaseManagerName() {
+        return caseManagerName;
     }
 
-    public void setManager(String manager) {
-        this.manager = manager;
+    public void setCaseManagerName(String caseManagerName) {
+        this.caseManagerName = caseManagerName;
     }
 
     public List<Long> getEmployees() {
@@ -435,6 +436,14 @@ public class ProspectDto implements Serializable {
     public void setBenchDate(String benchDate) {
         this.benchDate = benchDate;
     }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
     
     @Override
     public String toString() {
@@ -446,7 +455,7 @@ public class ProspectDto implements Serializable {
         prospectContact.setEmployee(entity.getContact().getFirstName() + " " + entity.getContact().getLastName());
         if (entity.getManager() != null) {
             Employee manager = EmployeeDao.instance().findById(entity.getManager());
-            prospectContact.setManager(manager.getFirstName() + " " + manager.getLastName());
+            prospectContact.setCaseManagerName(manager.getFirstName() + " " + manager.getLastName());
         }
         if (entity.getAssigned() != null) {
             Employee assignedEmp = EmployeeDao.instance().findById(entity.getAssigned());
@@ -488,6 +497,9 @@ public class ProspectDto implements Serializable {
         if (entity.getCompany() != null) {
             prospectContact.setCompany(entity.getCompany());
             prospectContact.setCompanyName(entity.getCompany().getName());
+        }
+        if(entity.getStartDate() != null){
+            prospectContact.setCreatedDate(entity.getStartDate());
         }
         prospectContact.setStage(entity.getStatus().name());
         prospectContact.setId(entity.getId());
