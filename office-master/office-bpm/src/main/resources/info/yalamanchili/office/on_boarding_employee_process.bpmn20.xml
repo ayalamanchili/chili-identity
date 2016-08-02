@@ -21,9 +21,28 @@
                      activiti:expression="#{onBoardingEmployeeProcessBean.sendEmployeeOnBoardingProcessStartEmail(employee)}" />  
         
         <sequenceFlow sourceRef="sendEmployeeOnBoardingProcessStartEmail" 
-                      targetRef="fork3"/>
+                      targetRef="fork3">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${employee.employeeType.name == 'Corporate Employee'}
+            </conditionExpression>
+        </sequenceFlow>
+        
+        <sequenceFlow sourceRef="sendEmployeeOnBoardingProcessStartEmail" 
+                      targetRef="fork4">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${employee.employeeType.name != 'Corporate Employee'}
+            </conditionExpression>
+        </sequenceFlow>
         
         <parallelGateway id="fork3" />
+        <parallelGateway id="fork4" />
+        
+        <sequenceFlow sourceRef="fork4" 
+                      targetRef="onBoardingFormsAndDataValidationTask">
+        </sequenceFlow>
+        <sequenceFlow sourceRef="fork4" 
+                      targetRef="eVerifyTask">
+        </sequenceFlow>
         
         <sequenceFlow sourceRef="fork3" 
                       targetRef="onBoardingFormsAndDataValidationTask">
@@ -33,16 +52,10 @@
         </sequenceFlow>
         <sequenceFlow sourceRef="fork3" 
                       targetRef="backGroundAndDrugScreeningTestTask">
-            <conditionExpression xsi:type="tFormalExpression">
-                ${employee.employeeType.name == 'Corporate Employee'}
-            </conditionExpression>
-        </sequenceFlow>
+            </sequenceFlow>
         <sequenceFlow sourceRef="fork3" 
                       targetRef="SetupManagerTask">
-            <conditionExpression xsi:type="tFormalExpression">
-                ${employee.employeeType.name == 'Corporate Employee'}
-            </conditionExpression>
-        </sequenceFlow>
+            </sequenceFlow>
                 
         <!-- On Boarding Form and Data Validation task : OnBoarding_Manager-->
         <userTask id="onBoardingFormsAndDataValidationTask" 
@@ -216,7 +229,7 @@
                   activiti:candidateGroups="ROLE_HR_ADMINSTRATION">
             <documentation>
                 Setup Manager Task for #{employee.firstName} #{employee.lastName}
-                Please Add Reports_To manager.
+                Please Add Reports_To manager. 
                 
                 Employee Name       : #{employee.firstName} #{employee.lastName}
                 Employee Type       : #{employee.employeeType.name}
@@ -224,6 +237,14 @@
                 Date Of Birth       : #{employee.getDateOfBirth()}
                 Email               : #{employee.getEmails().get(0).getEmail()}
                 Start Date          : #{employee.startDate}
+                
+                Notes: 
+                ------ 
+                1. Only Corporate Employees ids allowed as Reports_To Manager.
+                2. To know employee id of an employee, please navigate to 
+                   My Office -> Employees -> Search for the employee, whom you want to add as Reports_To Manager
+                   -> Click on "view" -> Go to "Employee Id" 
+                
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
