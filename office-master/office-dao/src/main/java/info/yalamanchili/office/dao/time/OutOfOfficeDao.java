@@ -62,8 +62,8 @@ public class OutOfOfficeDao extends CRUDDao<OutOfOfficeRequest> {
 
     public List<OutOfOfficeRequest> queryForCurrentWeekRequests(Integer start, Integer limit) {
         TypedQuery<OutOfOfficeRequest> query = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " where (startDate <=:dateRangeEndParam ) and (endDate >=:dateRangeStartParam))", entityCls);
-        query.setParameter("dateRangeStartParam", DateUtils.getNextDay(new Date(), -1), TemporalType.DATE);
-        query.setParameter("dateRangeEndParam", DateUtils.getNextDay(new Date(), 1), TemporalType.DATE);
+        query.setParameter("dateRangeStartParam", DateUtils.getNextDay(new Date(), -3), TemporalType.DATE);
+        query.setParameter("dateRangeEndParam", DateUtils.getNextDay(new Date(), 3), TemporalType.DATE);
         return query.getResultList();
     }
 

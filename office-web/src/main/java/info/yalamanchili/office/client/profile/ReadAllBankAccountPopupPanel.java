@@ -14,7 +14,10 @@ import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.employee.ReadAllBankAcctWidget;
+import info.yalamanchili.office.client.profile.phone.ReadAllPhonesPopupPanel;
 
 /**
  *
@@ -40,7 +43,8 @@ class ReadAllBankAccountPopupPanel extends ReadAllBankAcctWidget {
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted BankAccount Information");
-        ProfileHome.instance().refreshBankAccountPanel();
+        TabPanel.instance().profilePanel.entityPanel.clear();
+        TabPanel.instance().profilePanel.entityPanel.add(new ReadAllBankAccountPopupPanel(OfficeWelcome.instance().employeeId));
     }
 
     @Override

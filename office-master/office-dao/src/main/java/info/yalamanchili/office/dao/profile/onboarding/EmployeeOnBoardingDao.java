@@ -11,7 +11,7 @@ package info.yalamanchili.office.dao.profile.onboarding;
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
-import java.util.ArrayList;
+import info.yalamanchili.office.entity.profile.onboarding.OnBoardingStatus;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -42,7 +42,7 @@ public class EmployeeOnBoardingDao extends CRUDDao<EmployeeOnBoarding> {
 
     public EmployeeOnBoarding findByEmail(String email) {
         try {
-            TypedQuery<EmployeeOnBoarding> findQuery = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " where email=:employeeEmailParam ", EmployeeOnBoarding.class);
+            TypedQuery<EmployeeOnBoarding> findQuery = em.createQuery("from " + EmployeeOnBoarding.class.getCanonicalName() + " as onboarding where email=:employeeEmailParam  and onboarding.status!='Rejected'", EmployeeOnBoarding.class);
             findQuery.setParameter("employeeEmailParam", email);
             return findQuery.getSingleResult();
         } catch (NoResultException nre) {
@@ -51,7 +51,7 @@ public class EmployeeOnBoardingDao extends CRUDDao<EmployeeOnBoarding> {
     }
 
     public EmployeeOnBoarding findByEmployeeId(Long id) {
-        TypedQuery<EmployeeOnBoarding> findQuery = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " where employee_id=:employeeIdParam ", EmployeeOnBoarding.class);
+        TypedQuery<EmployeeOnBoarding> findQuery = em.createQuery("from " + entityCls.getCanonicalName() + " where employee_id=:employeeIdParam", EmployeeOnBoarding.class);
         findQuery.setParameter("employeeIdParam", id);
         List<EmployeeOnBoarding> list = findQuery.getResultList();
         if (list.size() > 0) {
@@ -62,18 +62,18 @@ public class EmployeeOnBoardingDao extends CRUDDao<EmployeeOnBoarding> {
     }
 
     public EmployeeOnBoarding findById(Long id) {
-        TypedQuery<EmployeeOnBoarding> findQuery = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " where id=:employeeIdParam ", EmployeeOnBoarding.class);
+        TypedQuery<EmployeeOnBoarding> findQuery = em.createQuery("from " + entityCls.getCanonicalName() + " where id=:employeeIdParam ", EmployeeOnBoarding.class);
         findQuery.setParameter("employeeIdParam", id);
         return findQuery.getSingleResult();
     }
 
-    public List<EmployeeOnBoarding> getEmployees(int start,int limit){
-        TypedQuery<EmployeeOnBoarding> query = getEntityManager().createQuery("from " + EmployeeOnBoarding.class.getCanonicalName() + " order by startedDate DESC", EmployeeOnBoarding.class);
+    public List<EmployeeOnBoarding> getEmployees(int start, int limit) {
+        TypedQuery<EmployeeOnBoarding> query = em.createQuery("from " + EmployeeOnBoarding.class.getCanonicalName() + " order by startedDate DESC", EmployeeOnBoarding.class);
         query.setFirstResult(start);
         query.setMaxResults(limit);
         return query.getResultList();
     }
-    
+
     public static EmployeeOnBoardingDao instance() {
         return SpringContext.getBean(EmployeeOnBoardingDao.class);
     }
