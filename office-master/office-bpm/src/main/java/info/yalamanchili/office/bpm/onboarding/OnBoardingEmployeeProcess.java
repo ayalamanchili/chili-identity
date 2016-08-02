@@ -21,6 +21,7 @@ import info.yalamanchili.office.dao.profile.onboarding.EmployeeOnBoardingDao;
 import info.yalamanchili.office.entity.company.CompanyContact;
 import info.yalamanchili.office.entity.company.CompanyContactType;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.ext.EmployeeAdditionalDetails;
 import info.yalamanchili.office.entity.profile.ext.Ethnicity;
 import info.yalamanchili.office.entity.profile.ext.MaritalStatus;
@@ -140,8 +141,10 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
         //add reports-to contact to emp
         String managerId = (String) dt.getExecution().getVariable("reportsToManager");
         Employee employeeManager = EmployeeDao.instance().findEmployeWithEmpId(managerId);
-        if(employeeManager == null){
+        if (employeeManager == null) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.manager.id", "Invalid Manager Id");
+        } else if (!EmployeeType.CORPORATE_EMPLOYEE.equals(employeeManager.getEmployeeType().getName())) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "only.corporate.empId.allowed", "Only Corporate Employees can be Reports_To Manager");
         }
         CompanyContact contact = new CompanyContact();
         CompanyContactType type = CompanyContactTypeDao.instance().findById(CompanyContactTypeDao.instance().getCompanyContactId("Reports_To"));

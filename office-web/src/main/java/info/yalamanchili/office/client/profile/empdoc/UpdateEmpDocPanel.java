@@ -52,16 +52,16 @@ public class UpdateEmpDocPanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                uploadFile(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        uploadFile(arg0);
+                    }
+                });
     }
 
     protected void uploadFile(String entityId) {
@@ -73,7 +73,8 @@ public class UpdateEmpDocPanel extends UpdateComposite {
         new ResponseStatusWidget().show("Successfully Updated File");
         GenericPopup.instance().hide();
         if (TabPanel.instance().profilePanel.isVisible() && ProfileHome.instance() != null) {
-            ProfileHome.instance().refreshEmpDocs();
+            TabPanel.instance().profilePanel.entityPanel.clear();
+            TabPanel.instance().profilePanel.entityPanel.add(new ReadAllEmpDocsPopupPanel(OfficeWelcome.instance().employeeId));
         }
     }
 
