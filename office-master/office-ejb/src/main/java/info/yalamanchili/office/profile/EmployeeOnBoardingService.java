@@ -65,16 +65,16 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class EmployeeOnBoardingService {
-    
+
     private final static Logger logger = Logger.getLogger(EmployeeOnBoardingService.class.getName());
-    
+
     @PersistenceContext
     protected EntityManager em;
     @Autowired
     protected EmployeeService employeeService;
     @Autowired
     protected Mapper mapper;
-    
+
     public void initiateOnBoarding(InitiateOnBoardingDto dto) {
         EmployeeOnBoarding eo = EmployeeOnBoardingDao.instance().findByEmail(dto.getEmail());
         if (eo != null && !eo.getStatus().equals(OnBoardingStatus.Rejected)) {
@@ -96,7 +96,7 @@ public class EmployeeOnBoardingService {
             }
         }
     }
-    
+
     public OnBoardingEmployeeDto getOnboardingInfo(String invitationCode) {
         String invCde = invitationCode.trim();
         InviteCode code = InviteCodeDao.instance().find(invCde);
@@ -130,12 +130,12 @@ public class EmployeeOnBoardingService {
         }
         return res;
     }
-    
+
     @Autowired
     protected DependentDao dependentDao;
     @Autowired
     protected EmployeeDocumentDao employeeDocumentDao;
-    
+
     public OnBoardingEmployeeDto onBoardEmployee(OnBoardingEmployeeDto dto) {
         Employee emp = mapper.map(dto, Employee.class);
         InviteCode code = InviteCodeDao.instance().find(dto.getInviteCode().trim());
@@ -170,7 +170,7 @@ public class EmployeeOnBoardingService {
         address = dto.getAddress();
         emp.getAddresss().add(address);
         address.setContact(emp);
-        
+
         emp = EmployeeDao.instance().save(emp);
         emp = em.merge(emp);
 
@@ -218,13 +218,13 @@ public class EmployeeOnBoardingService {
             dep.setTargetEntityName(Employee.class.getCanonicalName());
             em.merge(dep);
         }
-        
+
         onboarding.setStatus(OnBoardingStatus.Pending_Document_Verification);
         onboarding.setEmployee(emp);
         onboarding = em.merge(onboarding);
 
         //Create BPM User
-        if (emp.getEmployeeType().getName().equalsIgnoreCase(EmployeeType.CORPORATE_EMPLOYEE) || emp.getEmployeeType().getName().equalsIgnoreCase(EmployeeType.EMPLOYEE)) {
+        if (emp.getEmployeeType().getName().equalsIgnoreCase(EmployeeType.CORPORATE_EMPLOYEE) || emp.getEmployeeType().getName().equalsIgnoreCase(EmployeeType.EMPLOYEE) || emp.getEmployeeType().getName().equalsIgnoreCase(EmployeeType.INTERN_SEASONAL_EMPLOYEE)) {
             OfficeBPMIdentityService.instance().createUser(emp.getEmployeeId());
             Map<String, Object> obj = new HashMap<>();
             obj.put("entity", onboarding);
@@ -259,7 +259,7 @@ public class EmployeeOnBoardingService {
         InviteCodeDao.instance().invalidateCode(code);
         return dto;
     }
-    
+
     public InitiateOnBoardingDto read(Long id) {
         EmployeeOnBoarding onboarding = EmployeeOnBoardingDao.instance().findById(id);
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
@@ -285,7 +285,7 @@ public class EmployeeOnBoardingService {
         }
         return dto;
     }
-    
+
     public static EmployeeOnBoardingService instance() {
         return SpringContext.getBean(EmployeeOnBoardingService.class);
     }
