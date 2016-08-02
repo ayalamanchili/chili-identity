@@ -11,8 +11,11 @@ package info.yalamanchili.office.client.profile;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.expense.bnkacct.UpdateBankAcctWidget;
 import info.yalamanchili.office.client.profile.employee.UpdateBankAccountPanel;
+import info.yalamanchili.office.client.profile.phone.ReadAllPhonesPopupPanel;
 
 /**
  *
@@ -28,6 +31,7 @@ class UpdateBankAccountPopupPanel extends UpdateBankAccountPanel {
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated BankAccount Information");
         GenericPopup.instance().hide();
-        ProfileHome.instance().refreshBankAccountPanel();
+        TabPanel.instance().profilePanel.entityPanel.clear();
+        TabPanel.instance().profilePanel.entityPanel.add(new ReadAllBankAccountPopupPanel(OfficeWelcome.instance().employeeId));
     }
 }
