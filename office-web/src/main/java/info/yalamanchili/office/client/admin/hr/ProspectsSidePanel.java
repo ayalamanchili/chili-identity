@@ -150,7 +150,9 @@ public class ProspectsSidePanel extends ALComposite implements ClickHandler {
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(reportB)) {
             JSONObject obj = getObject();
-            if ((obj.containsKey("status") == true) || (obj.containsKey("joiningDateFrom") == true && obj.containsKey("joiningDateTo") == true) || (obj.containsKey("assignedTo") == true) || obj.containsKey("caseManager") == true || obj.containsKey("company") == true) {
+            if ((obj.containsKey("status") == true) || (obj.containsKey("joiningDateFrom") == true && obj.containsKey("joiningDateTo") == true) || 
+                    (obj.containsKey("assignedTo") == true) || obj.containsKey("caseManager") == true || obj.containsKey("company") == true ||
+                    (obj.containsKey("createdDateFrom") == true && obj.containsKey("createdDateTo") == true)) {
                 String reportUrl = OfficeWelcome.instance().constants.root_url() + "prospect/report";
                 HttpService.HttpServiceAsync.instance().doPut(reportUrl, obj.toString(), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
