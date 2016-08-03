@@ -18,6 +18,7 @@ import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.ext.EmployeeAdditionalDetails;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.profile.EmployeeFormsService;
+import info.yalamanchili.office.security.AccessCheck;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.Consumes;
@@ -172,6 +173,7 @@ public class EmployeeFormsResource extends CRUDResource<BankAccount> {
 
     @GET
     @Path("/joining-form/{id}")
+    @AccessCheck(companyContacts = {"Reports_To"}, roles = {"ROLE.ROLE_ON_BOARDING_MGR", "ROLE_HR_ADMINSTRATION"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
     public JoiningFormsDto getJoiningForm(@PathParam("id") Long employeeId) {
         Employee emp = EmployeeDao.instance().findById(employeeId);
         return employeeFormsService.getJoiningForm(emp);
