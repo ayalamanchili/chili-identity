@@ -61,10 +61,9 @@ public class ProfileHomeStackPanel extends ALComposite implements ClickHandler {
         emailsPanel.addClickHandler(this);
         clientPanel.addClickHandler(this);
         skillPanel.addClickHandler(this);
-//        benefitsPanel.addClickHandler(this);
+        benefitsPanel.addClickHandler(this);
         preferencesPanel.addClickHandler(this);
         privacyPanel.addClickHandler(this);
-        //documentsPanel.addClickHandler(this);
     }
 
     @Override
