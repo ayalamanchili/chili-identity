@@ -301,6 +301,9 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
         } else if (dto.getJoiningDateFrom() != null && dto.getJoiningDateTo() != null) {
             SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
             name = name.concat("Prospects Joined Between  " + sdf.format(dto.getJoiningDateFrom()) + " - " + sdf.format(dto.getJoiningDateTo()) + "  Report");
+        } else if (dto.getCreatedDateFrom() != null && dto.getCreatedDateTo() != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+            name = name.concat("Prospects Created Between  " + sdf.format(dto.getCreatedDateFrom()) + " - " + sdf.format(dto.getCreatedDateTo()) + "  Report");
         }
         if (dtos.size() > 0) {
             table.setEntities(dtos);
