@@ -35,8 +35,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Scope("prototype")
 public class InvoiceScheduleService {
-    
-    private static java.util.logging.Logger logger = java.util.logging.Logger.getLogger(InvoiceScheduleService.class.getName());
 
     @PersistenceContext
     protected EntityManager em;
@@ -87,11 +85,9 @@ public class InvoiceScheduleService {
                     String notifyEmployees = schedule.getNotifyEmployees();
                     String[] notifyEmps = notifyEmployees.split(",");
                     for (String empId : notifyEmps) {
-                        logger.info("Employee email in the list is:" + empId);
                         String empEmail = EmployeeDao.instance().findEmployeWithEmpId(empId.trim()).getPrimaryEmail().getEmail();
                         email.addTo(empEmail);
                     }
-                    logger.info("Emails test before sending for invoice schedule");
                     email.setHtml(Boolean.TRUE);
                     email.setRichText(Boolean.TRUE);
                     email.setSubject("Invoice schedule reminder to raise the invoice for the vendor: " + vendor.getName());
@@ -101,7 +97,6 @@ public class InvoiceScheduleService {
                     messageText = messageText.concat("</br> <b>Schedule End Date  &nbsp;:</b> " + sdf.format(schedule.getEndDate()));
                     email.setBody(messageText);
                     MessagingService.instance().sendEmail(email);
-                    logger.info("Emails test after sending for invoice schedule");
                 }
 
             }
