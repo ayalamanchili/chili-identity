@@ -131,9 +131,6 @@ public class AdvanceRequestProcess extends RuleBasedTaskDelegateListner implemen
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.approved.amount", "Approved amount must be a valid amount eg: 99.99 ");
         }
         entity.setAmount(approvedAmount);
-        //Notes
-        String notes = (String) task.getExecution().getVariable("notes");
-        CommentDao.instance().addComment(notes, entity);
         //Status
         String status = (String) task.getExecution().getVariable("status");
         if (status.equalsIgnoreCase("approved")) {
