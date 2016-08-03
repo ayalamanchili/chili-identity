@@ -128,7 +128,7 @@ public class OutOfOfficeResource extends CRUDResource<OutOfOfficeRequest> {
     @Transactional(readOnly = true)
     public List<OutOfOfficeRequest> search(OutOfOfficeRequest entity, @PathParam("start") int start, @PathParam("limit") int limit) {
         List<OutOfOfficeRequest> res = new ArrayList();
-        Query searchQuery = SearchUtils.getSearchQuery(OutOfOfficeDao.instance().getEntityManager(), entity, new SearchUtils.SearchCriteria());
+        Query searchQuery = outOfOfficeDao.getSearchQuery(OutOfOfficeDao.instance().getEntityManager(), entity);
         searchQuery.setFirstResult(start);
         searchQuery.setMaxResults(limit);
         for (Object p : searchQuery.getResultList()) {

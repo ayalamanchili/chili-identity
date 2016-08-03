@@ -30,12 +30,12 @@ public class ReadInviteCodePanel extends ReadComposite {
     
     public ReadInviteCodePanel(JSONObject entity) {
         instance = this;
-        initReadComposite(entity, "InviteCodeService", OfficeWelcome.constants);
+        initReadComposite(entity, "InviteCodeService", OfficeWelcome.constants2);
     }
     
     public ReadInviteCodePanel(String id) {
         instance = this;
-        initReadComposite(id, "InviteCodeService", OfficeWelcome.constants);
+        initReadComposite(id, "InviteCodeService", OfficeWelcome.constants2);
     }
     
     @Override

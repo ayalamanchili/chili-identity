@@ -63,7 +63,7 @@ public class InvoiceScheduleService {
         String[] notifyEmpIds = notifyEmps.split(",");
         for (String empId : notifyEmpIds) {
             if (EmployeeDao.instance().findEmployeWithEmpId(empId.trim()) == null) {
-                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.empId", "Inavlid Employee Id");
+                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.empId", "Invalid Employee Id");
             }
         }
     }

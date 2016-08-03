@@ -103,9 +103,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
             addFirstChildLink("Roles", ROLES_NODE);
         }
         addFirstChildLink("Reports", REPORTS_NODE, empReportsPanel);
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ON_BOARDING_MGR, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_E_VERIFY_MGR, ROLE.ROLE_BACKGROUND_SCREENING_MGR)) {
-            addFirstChildLink("Forms & Docs", EMPLOYEE_FORMS, empDocsPanel);
-        }
+        addFirstChildLink("Forms & Docs", EMPLOYEE_FORMS, empDocsPanel);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP) && Auth.isEmployee(entity)) {
             addFirstChildLink("Reset Password", RESET_PASSWORD_NODE);
         }

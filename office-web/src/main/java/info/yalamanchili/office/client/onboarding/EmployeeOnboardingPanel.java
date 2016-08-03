@@ -36,6 +36,7 @@ import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.FileuploadField;
+import info.chili.gwt.fields.IntegerField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
@@ -105,7 +106,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
             + "<ul>\n"
             + "</ul>");
 
-    StringField countryCodeF = new StringField(OfficeWelcome.constants, "countryCode", "Phone", false, false, Alignment.HORIZONTAL);
+    IntegerField countryCodeF = new IntegerField(OfficeWelcome.constants, "countryCode", "Phone", false, false, Alignment.HORIZONTAL);
     StringField phoneNumberF = new StringField(OfficeWelcome.constants, "phoneNumber", "Phone", false, true, Alignment.HORIZONTAL);
 
     FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "EmployeeDocument", "", "EmployeeDocument/fileURL", false, true) {
@@ -410,7 +411,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
             assignFieldValueFromEntity("accountLastName", account, DataType.STRING_FIELD);
         }
         if (entity.containsKey("countryCode")) {
-            countryCodeF.setValue(entity.get("countryCode").isString().stringValue());
+            countryCodeF.setValue(entity.get("countryCode").isNumber().toString());
         }
         if (entity.containsKey("phoneNumber")) {
             phoneNumberF.setValue(entity.get("phoneNumber").isString().stringValue());
@@ -499,6 +500,8 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
             if (!number.matches("[0-9]*")) {
                 phoneNumberF.setMessage("Invalid Phone Number");
                 valid = false;
+            }else if(number.length()!=10){
+                phoneNumberF.setMessage("PhoneNumber must be in 10 characters long");
             }
         }
         return valid;

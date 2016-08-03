@@ -65,13 +65,11 @@ public class TreeEmpFormsPanel extends TreePanelComposite {
 
     @Override
     protected void addWidgets() {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ON_BOARDING_MGR, Auth.ROLE.ROLE_ON_BOARDING_MGR, Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ON_BOARDING_MGR, Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS)) {
             addFirstChildLink("ACH Form", ACH_FORM);
         }
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ON_BOARDING_MGR, Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
-            addFirstChildLink("Joining Form", JOINING_FORM);
-        }
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ON_BOARDING_MGR, Auth.ROLE.ROLE_BACKGROUND_SCREENING_MGR,Auth.ROLE.ROLE_E_VERIFY_MGR, Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS)) {
+        addFirstChildLink("Joining Form", JOINING_FORM);
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ON_BOARDING_MGR, Auth.ROLE.ROLE_BACKGROUND_SCREENING_MGR, Auth.ROLE.ROLE_E_VERIFY_MGR, Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS)) {
             addFirstChildLink("Documents", DOCUMENTS_NODE);
         }
     }

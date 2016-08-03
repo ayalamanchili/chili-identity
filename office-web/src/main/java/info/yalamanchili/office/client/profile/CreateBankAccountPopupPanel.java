@@ -12,6 +12,7 @@ import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.expense.bnkacct.CreateBankAcctWidget;
 
 /**
@@ -33,6 +34,7 @@ class CreateBankAccountPopupPanel extends CreateBankAcctWidget {
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Added BankAccount");
         GenericPopup.instance().hide();
-        ProfileHome.instance().refreshBankAccountPanel();
+        TabPanel.instance().profilePanel.entityPanel.clear();
+        TabPanel.instance().profilePanel.entityPanel.add(new ReadAllBankAccountPopupPanel(OfficeWelcome.instance().employeeId));
     }
 }
