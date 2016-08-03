@@ -113,7 +113,7 @@ public class ReadAllEmailsPanel extends CRUDReadAllComposite {
 
     @Override
     protected void configureCreateButton() {
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_CONTRACTS_ADMIN)) {
             createButton.setText("Add Email");
             createButton.setVisible(true);
         } else {
