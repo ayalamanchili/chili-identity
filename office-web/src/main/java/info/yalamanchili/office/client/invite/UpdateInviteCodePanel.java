@@ -106,7 +106,7 @@ public class UpdateInviteCodePanel extends UpdateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "invitecode/save/" + getEntityId();
+        return OfficeWelcome.constants.root_url() + "invitecode/update-expiration/" + getEntityId();
     }
     
 }
