@@ -33,6 +33,7 @@ import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dto.client.ContractSearchDto;
 import info.yalamanchili.office.email.MailUtils;
+import info.yalamanchili.office.entity.client.Invoice;
 import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.profile.Address;
@@ -45,7 +46,6 @@ import info.yalamanchili.office.jms.MessagingService;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.logging.Logger;
 import javax.persistence.Query;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang.StringUtils;
@@ -67,7 +67,7 @@ public class ContractService {
     protected EntityManager em;
     @Autowired
     protected Mapper mapper;
-    
+
     public ContractDto read(Long id) {
         ClientInformation ci = ClientInformationDao.instance().findById(id);
         return mapClientInformation(ci);
@@ -317,10 +317,10 @@ public class ContractService {
             dto.setVendor(vi.getName());
             dto.setVendorFees(vi.getVendorFees());
             if (vi.getVendorFees() != null) {
-            BigDecimal value = new BigDecimal(vi.getVendorFees());
-            BigDecimal vendorFee = value.divide(new BigDecimal(100)).multiply(dto.getBillingRate());
-            //dto.setFinalBillingRate(dto.getBillingRate().subtract(vendorFee));
-            dto.setFinalBillingRate(dto.getBillingRate().subtract(calcVendorMargin(vendorFee, vi.getMaxFees(), vi.getMinFees())));
+                BigDecimal value = new BigDecimal(vi.getVendorFees());
+                BigDecimal vendorFee = value.divide(new BigDecimal(100)).multiply(dto.getBillingRate());
+                //dto.setFinalBillingRate(dto.getBillingRate().subtract(vendorFee));
+                dto.setFinalBillingRate(dto.getBillingRate().subtract(calcVendorMargin(vendorFee, vi.getMaxFees(), vi.getMinFees())));
             }
         }
 
@@ -431,23 +431,24 @@ public class ContractService {
     }
 
     public BigDecimal calcVendorMargin(BigDecimal vendorFee, BigDecimal maxFee, BigDecimal minFee) {
-        
-        BigDecimal vendorMargin =  BigDecimal.ZERO;
 
-        if (vendorFee != null &&  vendorFee.floatValue() > 0) {
-                if (maxFee != null && minFee != null && vendorFee.floatValue() <= maxFee.floatValue() && vendorFee.floatValue() >= minFee.floatValue())
-                    vendorMargin = vendorFee;
-                else if (maxFee != null && vendorFee.floatValue() > maxFee.floatValue())
-                    vendorMargin = maxFee;
-                else if (minFee != null && vendorFee.floatValue() < minFee.floatValue())
-                    vendorMargin = minFee; 
-                else 
-                    vendorMargin = vendorFee; 
+        BigDecimal vendorMargin = BigDecimal.ZERO;
+
+        if (vendorFee != null && vendorFee.floatValue() > 0) {
+            if (maxFee != null && minFee != null && vendorFee.floatValue() <= maxFee.floatValue() && vendorFee.floatValue() >= minFee.floatValue()) {
+                vendorMargin = vendorFee;
+            } else if (maxFee != null && vendorFee.floatValue() > maxFee.floatValue()) {
+                vendorMargin = maxFee;
+            } else if (minFee != null && vendorFee.floatValue() < minFee.floatValue()) {
+                vendorMargin = minFee;
+            } else {
+                vendorMargin = vendorFee;
             }
-        
+        }
+
         return vendorMargin;
     }
-    
+
     @Async
     @Transactional
     public void generateSubCReport(ContractSearchDto dto, String email) {
@@ -527,6 +528,27 @@ public class ContractService {
         for (Object obj : query.getResultList()) {
             dto.setOverTimeBillingRate((BigDecimal) obj);
         }
+    }
+
+    public BigDecimal getEffectiveBillingRate(Long id, Invoice inv) {
+        Date date = new Date();
+        date = inv.getStartDate();
+        System.out.println("Inv Start Date:" +date);
+
+//        TypedQuery<BillingRate> queryForSub = em.createQuery("from " +BillingRate.class.getCanonicalName() + " where clientInformation_id=:ClientInfoIdParam and billingRate != NULL and effectiveDate <=:startDateParam  order by effectiveDate desc LIMIT 1",BillingRate.class);
+//        queryForSub.setParameter("ClientInfoIdParam", id);
+//        queryForSub.setParameter("startDateParam", date);
+//        System.out.println("Result Size" +queryForSub.getResultList().size());
+//        Long billingRate = queryForSub.getSingleResult().getBillingRate().longValue();
+//        return billingRate;
+        Query query = em.createNativeQuery("Select billingRate from BILLINGRATE "
+                + "where clientInformation_id=" + id + " and billingRate is "
+                + "not null and effectiveDate <= " + date
+                + " order by effectiveDate desc,updatedTs desc LIMIT 1");
+        for (Object obj : query.getResultList()) {
+            return (BigDecimal) obj;
+        }
+        return null;
     }
 
     public void getEffectiveBillingInvoiceFrequency(ClientInformation ci, ContractDto dto) {

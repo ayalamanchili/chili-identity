@@ -8,12 +8,17 @@
  */
 package info.yalamanchili.office.client.admin.invoice;
 
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
+import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.DateField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.GenericPopup;
@@ -28,26 +33,27 @@ import java.util.logging.Logger;
  *
  * @author prasanthi.p
  */
-public class UpdateInvoicePanel extends UpdateComposite {
-
+public class UpdateInvoicePanel extends UpdateComposite implements ChangeHandler {
+    
     private Logger logger = Logger.getLogger(UpdateInvoicePanel.class.getName());
-
+    
     protected static UpdateInvoicePanel instance;
     protected String id;
     protected boolean isUpdate;
     protected JSONObject invoice;
     protected String clientInfoId;
-
+    DateField startDate;
+    
     public static UpdateInvoicePanel instance() {
         return instance;
     }
-
+    
     public UpdateInvoicePanel(JSONObject entity) {
         instance = this;
         this.invoice = entity;
         initUpdateComposite(entity, "Invoice", OfficeWelcome.constants2);
     }
-
+    
     public UpdateInvoicePanel(String id, JSONObject entity, boolean isUpdate) {
         instance = this;
         this.id = id;
@@ -55,14 +61,14 @@ public class UpdateInvoicePanel extends UpdateComposite {
         this.invoice = entity;
         initUpdateComposite(entity, "Invoice", OfficeWelcome.constants2);
     }
-
+    
     public UpdateInvoicePanel(String id, boolean isUpdate) {
         this.id = id;
         instance = this;
         this.isUpdate = isUpdate;
         initUpdateComposite(id, "Invoice", OfficeWelcome.constants2);
     }
-
+    
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
@@ -79,7 +85,7 @@ public class UpdateInvoicePanel extends UpdateComposite {
         assignEntityValueFromField("notes", entity);
         return entity;
     }
-
+    
     @Override
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
@@ -88,14 +94,14 @@ public class UpdateInvoicePanel extends UpdateComposite {
             public void onFailure(Throwable arg0) {
                 handleErrorResponse(arg0);
             }
-
+            
             @Override
             public void onSuccess(String arg0) {
                 postUpdateSuccess(arg0);
             }
         });
     }
-
+    
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         if (entity.containsKey("clientInformation")) {
@@ -117,7 +123,7 @@ public class UpdateInvoicePanel extends UpdateComposite {
         assignFieldValueFromEntity("timeSheetStatus", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("notes", entity, DataType.TEXT_AREA_FIELD);
     }
-
+    
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated Invoice Information");
@@ -125,20 +131,22 @@ public class UpdateInvoicePanel extends UpdateComposite {
         GenericPopup.instance().hide();
         TabPanel.instance().reportingPanel.entityPanel.add(new ReadContractsPanel(id));
     }
-
+    
     @Override
     protected void addListeners() {
+        startDate.getDatePicker().addChangeHandler(this);
     }
-
+    
     @Override
     protected void configure() {
     }
-
+    
     @Override
     protected void addWidgets() {
         addField("itemNumber", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("invoiceNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        startDate = (DateField) fields.get("startDate");
         addField("endDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("billingRate", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
@@ -153,11 +161,11 @@ public class UpdateInvoicePanel extends UpdateComposite {
         addField("notes", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
-
+    
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
-
+    
     @Override
     protected String getURI() {
         if (isUpdate == true) {
@@ -166,7 +174,7 @@ public class UpdateInvoicePanel extends UpdateComposite {
             return OfficeWelcome.constants.root_url() + "invoice/save/" + id;
         }
     }
-
+    
     @Override
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
@@ -178,12 +186,44 @@ public class UpdateInvoicePanel extends UpdateComposite {
             }
         });
     }
-
+    
     protected String getReadURI() {
         if (isUpdate == false) {
             return OfficeWelcome.constants.root_url() + "clientinformation/invoice/read/" + id;
         } else {
             return OfficeWelcome.constants.root_url() + "invoice/read/" + invoice.get("id").isString().stringValue();
+        }
+    }
+    
+    protected String getEffectiveBillingRateURI() {
+        return OfficeWelcome.constants.root_url() + "contract/load-invoice-billingRate/" + id;
+    }
+    
+    @Override
+    public void onChange(ChangeEvent event) {
+        logger.info("On Change triggered" + startDate.getDate());
+        if (startDate.getDate() != null) {
+            logger.info("Inoice Start Date:" + startDate.getDate());
+            JSONObject invoice = new JSONObject();
+            invoice.put("startDate", new JSONString(DateUtils.toDateString(startDate.getDate())));
+            logger.info("dddddddddddddddddddd" + invoice.toString());
+            HttpService.HttpServiceAsync.instance().doPut(getEffectiveBillingRateURI(),
+                    invoice.toString(), OfficeWelcome.instance().getHeaders(), true,
+                    new ALAsyncCallback<String>() {
+                @Override
+                public void onFailure(Throwable arg0) {
+                    logger.info(arg0.getMessage());
+                    handleErrorResponse(arg0);
+                }
+                
+                @Override
+                public void onResponse(String response) {
+                    logger.info("Effective Billing Rate based on Invoice Start Date: " + response);
+                    //JSONObject jsonObject = (JSONObject) JSONParser.parseLenient(response);
+                    //fields.put("billingRate", jsonObject);
+                    //fields.put("billingRate", response);
+                }
+            });
         }
     }
 }

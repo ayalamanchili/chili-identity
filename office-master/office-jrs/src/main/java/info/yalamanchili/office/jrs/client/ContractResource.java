@@ -12,7 +12,9 @@ import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.client.ContractDto;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dto.client.ContractSearchDto;
+import info.yalamanchili.office.entity.client.Invoice;
 import info.yalamanchili.office.entity.profile.Employee;
+import java.math.BigDecimal;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
@@ -41,7 +43,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Consumes("application/json")
 @Transactional(readOnly = true)
 public class ContractResource {
-    
+
     @Autowired
     protected Mapper mapper;
     @PersistenceContext
@@ -122,5 +124,11 @@ public class ContractResource {
     @Path("/recruiterSearch")
     public ContractTable searchContractsForRecruiter(ContractSearchDto dto) {
         return ContractService.instance().searchContractsForRecruiter(dto);
+    }
+
+    @PUT
+    @Path("/load-invoice-billingRate/{cpdId}")
+    public BigDecimal getEffectiveBillingRateForInvoice(@PathParam("cpdId") Long cpdId, Invoice inv) {
+        return ContractService.instance().getEffectiveBillingRate(cpdId, inv);
     }
 }
