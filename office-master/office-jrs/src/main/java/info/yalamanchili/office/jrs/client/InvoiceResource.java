@@ -77,7 +77,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
 
     @GET
     @Path("/{start}/{limit}")
-    //TODO add invoice mgr role check using pre auth
+    @PreAuthorize("hasAnyRole('ROLE_INVOICE_MANAGER','ROLE_ADMIN')")
     //TODO caching?
     public InvoiceTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         InvoiceTable tableObj = new InvoiceTable();
@@ -89,7 +89,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
     @PUT
     @Validate
     @Path("/save/{id}")
-    //TODO add invoice mgr role check using pre auth
+    @PreAuthorize("hasAnyRole('ROLE_INVOICE_MANAGER')")
     public Invoice saveInvoice(@PathParam("id") Long id, Invoice invoice) {
         ClientInformation ci = ClientInformationDao.instance().findById(id);
         if (invoice.getStartDate() != null && invoice.getEndDate() != null) {
@@ -122,7 +122,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
     @PUT
     @Validate
     @Path("/update-Invoice/{id}")
-    //TODO add invoice mgr role check using pre auth
+    @PreAuthorize("hasAnyRole('ROLE_INVOICE_MANAGER')")
     public Invoice update(@PathParam("id") Long id, InvoiceUpdateDto invoice) {
         Invoice inv = invoiceDao.findById(id);
         if (invoice.getStartDate() != null && invoice.getEndDate() != null) {
@@ -150,7 +150,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
 
     @PUT
     @Path("/submit-invoice/{id}")
-    //TODO add invoice mgr role check using pre auth
+    @PreAuthorize("hasAnyRole('ROLE_INVOICE_MANAGER')")
     public Invoice submit(@PathParam("id") Long id, Invoice invoice) {
         Invoice inv = invoiceDao.findById(id);
         inv.setInvoiceStatus(InvoiceStatus.Submitted);
@@ -168,7 +168,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
 
     @GET
     @Path("/read/{id}")
-    //TODO add invoice mgr role check using pre auth
+    @PreAuthorize("hasAnyRole('ROLE_INVOICE_MANAGER')")
     public Invoice readInvoice(@PathParam("id") Long id) {
         return invoiceDao.findById(id);
     }
@@ -176,7 +176,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
     @PUT
     @Path("/delete/{id}")
     @Override
-    //TODO add invoice mgr role check using pre auth
+    @PreAuthorize("hasAnyRole('ROLE_INVOICE_MANAGER')")
     public void delete(@PathParam("id") Long id) {
         invoiceDao.delete(id);
     }
@@ -185,7 +185,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
     @Path("/search/{searchText}/{start}/{limit}")
     @Transactional(readOnly = true)
     @Override
-    //TODO add invoice mgr role check using pre auth
+    @PreAuthorize("hasAnyRole('ROLE_INVOICE_MANAGER', 'ROLE_ADMIN')")
     public List<Invoice> search(@PathParam("searchText") String searchText, @PathParam("start") int start,
             @PathParam("limit") int limit, @QueryParam("column") List<String> columns) {
         columns = new ArrayList<String>();
@@ -198,6 +198,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
     @GET
     @Path("/search-invoice-by-emp/{start}/{limit}")
     @Transactional(readOnly = true)
+    @PreAuthorize("hasAnyRole('ROLE_INVOICE_MANAGER', 'ROLE_ADMIN')")
     public List<Invoice> searchInvoiceByEmp(@PathParam("start") int start,
             @PathParam("limit") int limit, @QueryParam("empId") Long empId) {
         Employee emp = EmployeeDao.instance().findById(empId);
@@ -208,27 +209,28 @@ public class InvoiceResource extends CRUDResource<Invoice> {
     @PUT
     @Path("/adv-search/{start}/{limit}")
     @Transactional(readOnly = true)
-    //TODO add invoice mgr role check using pre auth
+    @PreAuthorize("hasAnyRole('ROLE_INVOICE_MANAGER', 'ROLE_ADMIN')")
     public List<Invoice> search(InvoiceSearchDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {
         return InvoiceService.instance().search(dto, start, limit);
     }
 
     @GET
     @Path("/invoice-summary-report")
-    //TODO add invoice mgr role check using pre auth
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CEO', 'ROLE_CONTRACTS_ADMIN', 'ROLE_BILLING_ADMIN')")
     public void generateInvoiceSummaryReport() {
         InvoiceService.instance().generateInvoiceSummaryReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
 
     @GET
     @Path("/active-clientinfo-report")
-    //TODO add invoice mgr role check using pre auth
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CEO', 'ROLE_CONTRACTS_ADMIN', 'ROLE_BILLING_ADMIN')")
     public void generateActiveInvoicesReport() {
         InvoiceService.instance().generateActiveInvoicesReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
 
     @PUT
     @Path("/reports")
+    @PreAuthorize("hasAnyRole('ROLE_INVOICE_MANAGER', 'ROLE_ADMIN')")
     public void searchForInvoiceDates(GenericsDatesDto dto) {
         String email = currentEmpEmail();
         InvoiceService.instance().searchforDates(dto.getStartDate(), dto.getEndDate(), email);
