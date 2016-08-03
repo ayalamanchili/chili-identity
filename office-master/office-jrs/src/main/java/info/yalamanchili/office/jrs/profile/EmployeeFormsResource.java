@@ -17,7 +17,9 @@ import info.yalamanchili.office.entity.expense.BankAccount;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.ext.EmployeeAdditionalDetails;
 import info.yalamanchili.office.jrs.CRUDResource;
+import info.yalamanchili.office.profile.EmployeeAdditionalDetailsDto;
 import info.yalamanchili.office.profile.EmployeeFormsService;
+import info.yalamanchili.office.security.AccessCheck;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.Consumes;
@@ -35,7 +37,6 @@ import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.springframework.security.access.prepost.PreAuthorize;
 
 /**
  *
@@ -154,9 +155,9 @@ public class EmployeeFormsResource extends CRUDResource<BankAccount> {
 
     @PUT
     @Path("/roles-responsibilities/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_HR_ADMINSTRATION','ROLE_ON_BOARDING_MGR')")
-    public void updateRolesAndResponsibilities(@PathParam("id") String id, EmployeeAdditionalDetails details) {
-        employeeFormsService.updateRolesAndResponsibilities(id, details);
+    @AccessCheck(companyContacts = {"Reports_To"}, roles = {"ROLE_HR_ADMINSTRATION"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
+    public EmployeeAdditionalDetailsDto updateRolesAndResponsibilities(@PathParam("id") String id, EmployeeAdditionalDetails details) {
+        return employeeFormsService.updateRolesAndResponsibilities(id, details);
     }
 
     @GET
@@ -172,6 +173,7 @@ public class EmployeeFormsResource extends CRUDResource<BankAccount> {
 
     @GET
     @Path("/joining-form/{id}")
+    @AccessCheck(companyContacts = {"Reports_To"}, roles = {"ROLE.ROLE_ON_BOARDING_MGR", "ROLE_HR_ADMINSTRATION"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
     public JoiningFormsDto getJoiningForm(@PathParam("id") Long employeeId) {
         Employee emp = EmployeeDao.instance().findById(employeeId);
         return employeeFormsService.getJoiningForm(emp);

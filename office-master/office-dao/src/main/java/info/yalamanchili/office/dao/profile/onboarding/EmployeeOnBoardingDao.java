@@ -8,14 +8,17 @@
  */
 package info.yalamanchili.office.dao.profile.onboarding;
 
+import com.google.common.base.Strings;
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
 import info.yalamanchili.office.entity.profile.onboarding.OnBoardingStatus;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
@@ -73,8 +76,38 @@ public class EmployeeOnBoardingDao extends CRUDDao<EmployeeOnBoarding> {
         query.setMaxResults(limit);
         return query.getResultList();
     }
+      public List<EmployeeOnBoarding> getSearchOnboarding(EmployeeOnBoardingSearchDto dto) {
+        TypedQuery<EmployeeOnBoarding> emps = em.createQuery(getSearchQuery(dto), EmployeeOnBoarding.class);
+        return emps.getResultList();
+    }
+      protected String getSearchQuery(EmployeeOnBoardingSearchDto dto) {
+        StringBuilder queryStr = new StringBuilder();
+        queryStr.append("SELECT onboarding from ").append(EmployeeOnBoarding.class.getCanonicalName()).append(" as onboarding");
+        queryStr.append("  where ");
+        if (!Strings.isNullOrEmpty(dto.getEmployeeType())) {
+            queryStr.append("lower(onboarding.employee.employeeType.name) = '").append(dto.getEmployeeType().toLowerCase().trim()).append("' ").append(" and ");
+        }
+        if (!Strings.isNullOrEmpty(dto.getCompany())) {
+            queryStr.append("onboarding.employee.company.name = '").append(dto.getCompany().trim()).append("' ").append(" and ");
+        }
+        if (!Strings.isNullOrEmpty(dto.getStatus())) {
+            queryStr.append("onboarding.status = '").append(dto.getStatus().trim()).append("' ").append(" and ");
+        }
+        if (!Strings.isNullOrEmpty(dto.getStartDate())) {
+            queryStr.append("onboarding.startedDate = '").append(dto.getStartDate().trim()).append("' ").append(" and ");
+        }
+
+        return queryStr.toString().substring(0, queryStr.toString().lastIndexOf("and"));
+    }
 
     public static EmployeeOnBoardingDao instance() {
         return SpringContext.getBean(EmployeeOnBoardingDao.class);
+    }
+     public List<EmployeeOnBoarding> getOboardingReportsForDates(Date startDate, Date endDate) {
+        Query findAllQuery = getEntityManager().createQuery("from " + EmployeeOnBoarding.class.getCanonicalName() + " onboarding where onboarding.status<>:statusParam AND onboarding.startedDate>=:startDateParam AND onboarding.startedDate<=:endDateParam ", entityCls);
+        findAllQuery.setParameter("startDateParam", startDate);
+        findAllQuery.setParameter("statusParam", OnBoardingStatus.Pending_Initial_Document_Submission);
+        findAllQuery.setParameter("endDateParam", endDate);
+        return findAllQuery.getResultList();
     }
 }

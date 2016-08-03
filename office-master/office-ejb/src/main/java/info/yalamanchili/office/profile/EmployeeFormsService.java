@@ -40,6 +40,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
 import javax.ws.rs.core.Response;
+import org.dozer.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -50,6 +52,9 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class EmployeeFormsService {
+
+    @Autowired
+    protected Mapper mapper;
 
     public JoiningFormsDto getJoiningForm(Employee emp) {
         JoiningFormsDto dto = new JoiningFormsDto();
@@ -374,7 +379,7 @@ public class EmployeeFormsService {
         return SpringContext.getBean(EmployeeService.class);
     }
 
-    public void updateRolesAndResponsibilities(String id, EmployeeAdditionalDetails details) {
+    public EmployeeAdditionalDetailsDto updateRolesAndResponsibilities(String id, EmployeeAdditionalDetails details) {
         Long id1 = Long.valueOf(id);
         Employee emp = EmployeeDao.instance().findById(id1);
         EmployeeAdditionalDetails empAdditionalDetails = EmployeeAdditionalDetailsDao.instance().find(emp);
@@ -389,5 +394,8 @@ public class EmployeeFormsService {
             additionalDetails.setRolesAndResponsibilities(details.getRolesAndResponsibilities());
             EmployeeAdditionalDetailsDao.instance().save(additionalDetails, emp);
         }
+        EmployeeAdditionalDetailsDto dto = EmployeeAdditionalDetailsDto.map(mapper, additionalDetails);
+        dto.setEmployee(emp);
+        return dto;
     }
 }

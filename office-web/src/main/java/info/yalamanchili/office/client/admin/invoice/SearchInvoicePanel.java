@@ -13,10 +13,12 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.Button;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
+import info.chili.gwt.fields.EnumField;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.SearchComposite;
@@ -36,6 +38,7 @@ public class SearchInvoicePanel extends SearchComposite {
 
     private static Logger logger = Logger.getLogger(SearchInvoicePanel.class.getName());
     protected Button reportB = new Button("Report");
+    EnumField clientInformationCompany = new EnumField(OfficeWelcome.constants2, "clientInformationCompany", "Invoice", false, false, ClientInformationCompany.names());
 
     public SearchInvoicePanel() {
         init("Invoice Search", "Invoice", OfficeWelcome.constants2);
@@ -53,7 +56,7 @@ public class SearchInvoicePanel extends SearchComposite {
     @Override
     protected void addWidgets() {
         addField("vendor", DataType.STRING_FIELD);
-        addEnumField("clientInformationCompany", false, false, ClientInformationCompany.names());
+        advancedSearchPanel.add(clientInformationCompany);
         addField("invoiceNumber", DataType.STRING_FIELD);
         addField("itemNumber", DataType.STRING_FIELD);
         addField("startDate", DataType.DATE_FIELD);
@@ -69,7 +72,11 @@ public class SearchInvoicePanel extends SearchComposite {
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
         assignEntityValueFromField("vendor", entity);
-        assignEntityValueFromField("clientInformationCompany", entity);
+        if (clientInformationCompany.getValue() != null) {
+            entity.put("clientInformationCompany", new JSONString(clientInformationCompany.getValue()));
+        } else {
+            entity.put("clientInformationCompany", null);
+        }
         assignEntityValueFromField("invoiceNumber", entity);
         assignEntityValueFromField("itemNumber", entity);
         assignEntityValueFromField("startDate", entity);
