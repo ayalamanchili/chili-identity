@@ -9,10 +9,12 @@
 package info.yalamanchili.office.profile;
 
 import info.chili.document.dao.SerializedEntityDao;
+import info.chili.reporting.ReportGenerator;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
 import info.yalamanchili.office.bpm.OfficeBPMService;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.expense.BankAccountDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.invite.InviteCodeDao;
@@ -22,6 +24,7 @@ import info.yalamanchili.office.dao.profile.EmployeeDocumentDao;
 import info.yalamanchili.office.dao.profile.ext.DependentDao;
 import info.yalamanchili.office.dao.profile.ext.EmployeeAdditionalDetailsDao;
 import info.yalamanchili.office.dao.profile.onboarding.EmployeeOnBoardingDao;
+import info.yalamanchili.office.dao.profile.onboarding.EmployeeOnBoardingSearchDto;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.onboarding.InitiateOnBoardingDto;
 import info.yalamanchili.office.dto.onboarding.OnBoardingEmployeeDto;
@@ -43,6 +46,7 @@ import info.yalamanchili.office.entity.profile.invite.InvitationType;
 import info.yalamanchili.office.entity.profile.invite.InviteCode;
 import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
 import info.yalamanchili.office.entity.profile.onboarding.OnBoardingStatus;
+import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.profile.invite.InviteCodeGeneratorService;
 import java.util.ArrayList;
 import java.util.Date;
@@ -56,7 +60,9 @@ import org.apache.commons.lang.time.DateUtils;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -288,5 +294,23 @@ public class EmployeeOnBoardingService {
 
     public static EmployeeOnBoardingService instance() {
         return SpringContext.getBean(EmployeeOnBoardingService.class);
+    }
+    
+    public List<EmployeeOnBoarding> getSearchEmpOnboarding(EmployeeOnBoardingSearchDto dto, int start, int limit) {
+        List<EmployeeOnBoarding> emps = EmployeeOnBoardingDao.instance().getSearchOnboarding(dto);
+        return emps;
+
+    }
+     @Async
+    @Transactional
+    public void reportsForOnBoarding(Date startDate, Date endDate, String email) {
+        List<EmployeeOnBoarding> onboardings = new ArrayList();
+        List<EmployeeOnBoardingReportDto> resultDtos = new ArrayList();
+        onboardings.addAll(EmployeeOnBoardingDao.instance().getOboardingReportsForDates(startDate, endDate));
+        for (EmployeeOnBoarding onboarding : onboardings) {
+            resultDtos.add(EmployeeOnBoardingReportDto.map(mapper, onboarding));
+        }
+        String[] columnOrder = new String[]{"employee", "employeeType", "startDate", "email", "company", "branch", "workStatus"};
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(resultDtos, "Onboarding Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
 }
