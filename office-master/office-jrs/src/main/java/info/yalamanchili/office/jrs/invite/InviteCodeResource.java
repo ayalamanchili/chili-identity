@@ -62,12 +62,14 @@ public class InviteCodeResource {
     public void invite(InviteCode entity, @DefaultValue("true") @QueryParam("sendEmail") boolean sendEmail) {
         InviteCodeGeneratorService.instance().generate(entity, sendEmail);
     }
-
+    
     @PUT
     @Validate
-    @Path("/save/{id}")
-    public void save(@PathParam("id") String id, InviteCode entity) {
-        InviteCodeDao.instance().save(entity);
+    @Path("/update-expiration/{id}")
+    public void updateExpirationDate(InviteCode entity) {
+    InviteCode updateEntity = inviteCodeDao.find(entity.getInvitationCode());
+    updateEntity.setExpiryDate(entity.getExpiryDate());
+    inviteCodeDao.save(updateEntity);
     }
     
 }
