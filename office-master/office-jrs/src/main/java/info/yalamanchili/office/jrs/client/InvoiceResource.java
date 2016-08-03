@@ -19,7 +19,7 @@ import info.yalamanchili.office.entity.client.Invoice;
 import info.yalamanchili.office.entity.client.InvoiceStatus;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.invoice.InvoiceDatesDto;
+import info.yalamanchili.office.invoice.GenericsDatesDto;
 import info.yalamanchili.office.invoice.InvoiceSearchDto;
 import info.yalamanchili.office.invoice.InvoiceService;
 import info.yalamanchili.office.invoice.InvoiceService.InvoiceTable;
@@ -229,7 +229,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
 
     @PUT
     @Path("/reports")
-    public void searchForInvoiceDates(InvoiceDatesDto dto) {
+    public void searchForInvoiceDates(GenericsDatesDto dto) {
         String email = currentEmpEmail();
         InvoiceService.instance().searchforDates(dto.getStartDate(), dto.getEndDate(), email);
     }
