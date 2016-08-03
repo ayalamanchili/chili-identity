@@ -18,6 +18,7 @@ import info.yalamanchili.office.client.admin.hr.ProspectsSidePanel;
 import info.yalamanchili.office.client.admin.hr.ReadAllProspectsPanel;
 import info.yalamanchili.office.client.admin.hr.SearchProspectsPanel;
 import info.yalamanchili.office.client.contacttype.ReadAllCompanyContactTypePanel;
+import info.yalamanchili.office.client.onboarding.OnBoardingSidePanel;
 import info.yalamanchili.office.client.onboarding.ReadAllEmployeeOnBoardingPanel;
 import info.yalamanchili.office.client.profile.addresstype.ReadAllAddressTypePanel;
 import info.yalamanchili.office.client.profile.emailtype.ReadAllEmailTypePanel;
@@ -87,6 +88,7 @@ public class MyOfficeMenu extends CMenuBar {
         TabPanel.instance().getMyOfficePanel().entityPanel.clear();
         TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
         TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmployeeOnBoardingPanel());
+        TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new OnBoardingSidePanel());
     };
     static Command prospectsMaintainenceCmd = () -> {
         TabPanel.instance().getMyOfficePanel().entityPanel.clear();
