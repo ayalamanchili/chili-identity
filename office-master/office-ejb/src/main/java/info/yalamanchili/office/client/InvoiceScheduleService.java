@@ -8,7 +8,6 @@
  */
 package info.yalamanchili.office.client;
 
-import info.chili.commons.DateUtils;
 import info.chili.email.Email;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
@@ -23,6 +22,7 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -79,8 +79,7 @@ public class InvoiceScheduleService {
         SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-YYY");
         if (invoiceSchedules.size() > 0) {
             for (InvoiceSchedule schedule : invoiceSchedules) {
-                int l = (int) DateUtils.differenceInDays(new Date(), schedule.getEndDate());
-                if (l == schedule.getReminderDays()) {
+                if (DateUtils.isSameDay(DateUtils.addDays(new Date(), schedule.getReminderDays()), schedule.getEndDate())) {
                     Vendor vendor = VendorDao.instance().findById(schedule.getTargetEntityId());
                     String notifyEmployees = schedule.getNotifyEmployees();
                     String[] notifyEmps = notifyEmployees.split(",");
