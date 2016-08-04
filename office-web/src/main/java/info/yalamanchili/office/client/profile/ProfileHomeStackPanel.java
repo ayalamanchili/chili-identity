@@ -18,10 +18,10 @@ import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.address.ReadAllAddressesPopupPanel;
-import info.yalamanchili.office.client.profile.benefits.RetirementPlanReadPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.ReadAllClientInfoPopupPanel;
 import info.yalamanchili.office.client.profile.email.ReadAllEmailsPopupPanel;
 import info.yalamanchili.office.client.profile.employee.ReadEmployeePopupPanel;
+import info.yalamanchili.office.client.profile.insurance.ProfileBenefitsPanelWidget;
 import info.yalamanchili.office.client.profile.phone.ReadAllPhonesPopupPanel;
 import info.yalamanchili.office.client.profile.preferences.PreferencesPanel;
 import info.yalamanchili.office.client.profile.privacy.ReadAllPrivacySettingPopupPanel;
@@ -41,12 +41,12 @@ public class ProfileHomeStackPanel extends ALComposite implements ClickHandler {
     protected ClickableLink emailsPanel = new ClickableLink("Emails");
     protected ClickableLink clientPanel = new ClickableLink("Client Information");
     protected ClickableLink skillPanel = new ClickableLink("Skill Set");
-    protected ClickableLink benefitsPanel = new ClickableLink("Benefits");
     protected ClickableLink preferencesPanel = new ClickableLink("Preferences");
     protected ClickableLink privacyPanel = new ClickableLink("Privacy");
     EmployeeFormsAndDocsWidget formsAndDocsPanel = new EmployeeFormsAndDocsWidget();
     ProfileStackPanelWidget contactsPanel = new ProfileStackPanelWidget();
     ProfileImmigraStackPanelWidget immigrationPanel = new ProfileImmigraStackPanelWidget();
+    ProfileBenefitsPanelWidget benefitsPanel = new ProfileBenefitsPanelWidget();
 
     public ProfileHomeStackPanel() {
         init(panel);
@@ -61,7 +61,6 @@ public class ProfileHomeStackPanel extends ALComposite implements ClickHandler {
         emailsPanel.addClickHandler(this);
         clientPanel.addClickHandler(this);
         skillPanel.addClickHandler(this);
-        benefitsPanel.addClickHandler(this);
         preferencesPanel.addClickHandler(this);
         privacyPanel.addClickHandler(this);
     }
@@ -118,10 +117,6 @@ public class ProfileHomeStackPanel extends ALComposite implements ClickHandler {
                             TabPanel.instance().profilePanel.entityPanel.add(new UpdateSkillSetPopupPanel(JSONParser.parseLenient(response).isObject()));
                         }
                     });
-        }
-        if (event.getSource().equals(benefitsPanel)) {
-            TabPanel.instance().profilePanel.entityPanel.clear();
-            TabPanel.instance().profilePanel.entityPanel.add(new RetirementPlanReadPanel());
         }
         if (event.getSource().equals(preferencesPanel)) {
             HttpService.HttpServiceAsync.instance().doGet(getPreferencesURI(), OfficeWelcome.instance().getHeaders(), true,
