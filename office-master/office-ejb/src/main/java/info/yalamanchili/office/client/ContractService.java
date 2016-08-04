@@ -26,6 +26,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import info.chili.reporting.ReportGenerator;
 import info.chili.spring.SpringContext;
+import static info.chili.spring.SpringContext.getBean;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
@@ -46,12 +47,22 @@ import info.yalamanchili.office.jms.MessagingService;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import javax.persistence.LockModeType;
 import javax.persistence.Query;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
+import org.hibernate.LockMode;
+import org.hibernate.ScrollMode;
+import org.hibernate.ScrollableResults;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.StatelessSession;
+import org.hibernate.ejb.QueryHints;
+import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 /**
  * Reporting service for Employee, client, vendor and contract related
@@ -495,10 +506,19 @@ public class ContractService {
     public ContractTable getResultForReport(ContractSearchDto dto) {
         String query = getSearchQuery(dto);
         ContractTable table = new ContractTable();
-        TypedQuery<ClientInformation> queryForSub = em.createQuery(query, ClientInformation.class);
-        for (ClientInformation ci : queryForSub.getResultList()) {
+        Session session = em.unwrap(Session.class);
+        org.hibernate.Query queryForSub = session.createQuery(query);
+        queryForSub.setReadOnly(true);
+        queryForSub.setFetchSize(Integer.MIN_VALUE);
+        queryForSub.setCacheable(false);
+        queryForSub.setLockMode("lockmode", LockMode.NONE);
+        ScrollableResults scrollableResults = queryForSub.scroll(ScrollMode.FORWARD_ONLY);
+        
+        while (scrollableResults.next()) {
+            ClientInformation ci = (ClientInformation) scrollableResults.get(0);
             table.getEntities().add(mapClientInformation(ci));
         }
+        scrollableResults.close();
         return table;
     }
 
