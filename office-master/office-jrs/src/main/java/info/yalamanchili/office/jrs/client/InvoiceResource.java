@@ -45,7 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  *
  * @author prasanthi.p
- */
+ */ 
 @Path("secured/invoice")
 @Component
 @Scope("prototype")
@@ -104,7 +104,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
         inv.setStartDate(invoice.getStartDate());
         inv.setEndDate(invoice.getEndDate());
         inv.setInvoiceDate(new Date());
-        inv.setBillingRate(ci.getBillingRate());
+        inv.setBillingRate(invoice.getBillingRate());
         inv.setOverTimeBillingRate(invoice.getOverTimeBillingRate());
         inv.setItemNumber(ci.getItemNumber());
         inv.setInvoiceFrequency(ci.getInvoiceFrequency());
@@ -135,6 +135,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
             }
         }
         inv.setEmployee(invoice.getEmployee());
+        inv.setBillingRate(invoice.getBillingRate());
         inv.setOverTimeBillingRate(invoice.getOverTimeBillingRate());
         inv.setHours(invoice.getHours());
         inv.setStartDate(invoice.getStartDate());
