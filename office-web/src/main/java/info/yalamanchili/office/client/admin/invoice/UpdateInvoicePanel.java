@@ -197,7 +197,6 @@ public class UpdateInvoicePanel extends UpdateComposite implements ChangeHandler
 
     protected String getEffectiveBillingRateURI() {
         DateTimeFormat sdf = DateTimeFormat.getFormat("MM/dd/yyyy");
-        logger.info("getEffectiveBillingRateURI" + "contract/load-invoice-billingRate/" + id + "?startDate=" + sdf.format(startDate.getDate()));
         return OfficeWelcome.constants.root_url() + "contract/load-invoice-billingRate/" + id + "?startDate=" + sdf.format(startDate.getDate());
     }
 
@@ -208,7 +207,6 @@ public class UpdateInvoicePanel extends UpdateComposite implements ChangeHandler
                     new ALAsyncCallback<String>() {
                 @Override
                 public void onResponse(String response) {
-                    logger.info("Effective Billing Rate based on Invoice Start Date: " + response);
                     JSONObject billingRate = new JSONObject();
                     billingRate.put("billingRate", new JSONString(response));
                     assignFieldValueFromEntity("billingRate", billingRate, DataType.CURRENCY_FIELD);
