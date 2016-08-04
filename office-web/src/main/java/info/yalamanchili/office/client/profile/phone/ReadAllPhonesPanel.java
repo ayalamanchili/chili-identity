@@ -118,7 +118,7 @@ public class ReadAllPhonesPanel extends CRUDReadAllComposite {
 
     @Override
     protected void configureCreateButton() {
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN, ROLE.ROLE_ADMIN, ROLE.ROLE_HR)) {
             createButton.setText("Add Phone");
             createButton.setVisible(true);
         } else {
