@@ -12,9 +12,9 @@ import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.client.ContractDto;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dto.client.ContractSearchDto;
-import info.yalamanchili.office.entity.client.Invoice;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.math.BigDecimal;
+import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
@@ -126,9 +126,9 @@ public class ContractResource {
         return ContractService.instance().searchContractsForRecruiter(dto);
     }
 
-    @PUT
+    @GET
     @Path("/load-invoice-billingRate/{cpdId}")
-    public BigDecimal getEffectiveBillingRateForInvoice(@PathParam("cpdId") Long cpdId, Invoice inv) {
-        return ContractService.instance().getEffectiveBillingRate(cpdId, inv);
+    public String getEffectiveBillingRateForInvoice(@PathParam("cpdId") Long cpdId, @QueryParam("startDate") Date startDate) {
+        return String.valueOf(ContractService.instance().getEffectiveBillingRateForInvoice(cpdId, startDate));
     }
 }

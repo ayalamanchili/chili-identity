@@ -33,10 +33,10 @@ import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dto.client.ContractSearchDto;
 import info.yalamanchili.office.email.MailUtils;
-import info.yalamanchili.office.entity.client.Invoice;
 import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.profile.Address;
+import info.yalamanchili.office.entity.profile.BillingRate;
 import info.yalamanchili.office.entity.profile.ClientInformationStatus;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -530,25 +530,15 @@ public class ContractService {
         }
     }
 
-    public BigDecimal getEffectiveBillingRate(Long id, Invoice inv) {
-        Date date = new Date();
-        date = inv.getStartDate();
-        System.out.println("Inv Start Date:" +date);
-
-//        TypedQuery<BillingRate> queryForSub = em.createQuery("from " +BillingRate.class.getCanonicalName() + " where clientInformation_id=:ClientInfoIdParam and billingRate != NULL and effectiveDate <=:startDateParam  order by effectiveDate desc LIMIT 1",BillingRate.class);
-//        queryForSub.setParameter("ClientInfoIdParam", id);
-//        queryForSub.setParameter("startDateParam", date);
-//        System.out.println("Result Size" +queryForSub.getResultList().size());
-//        Long billingRate = queryForSub.getSingleResult().getBillingRate().longValue();
-//        return billingRate;
-        Query query = em.createNativeQuery("Select billingRate from BILLINGRATE "
-                + "where clientInformation_id=" + id + " and billingRate is "
-                + "not null and effectiveDate <= " + date
-                + " order by effectiveDate desc,updatedTs desc LIMIT 1");
-        for (Object obj : query.getResultList()) {
-            return (BigDecimal) obj;
+    public BigDecimal getEffectiveBillingRateForInvoice(Long id, Date date) {
+        TypedQuery<BillingRate> queryForSub = em.createQuery("from " + BillingRate.class.getCanonicalName() + " where clientInformation_id=:ClientInfoIdParam and billingRate != NULL and effectiveDate <=:startDateParam  order by effectiveDate desc LIMIT 1", BillingRate.class);
+        queryForSub.setParameter("ClientInfoIdParam", id);
+        queryForSub.setParameter("startDateParam", date);
+        if (queryForSub.getResultList() != null && queryForSub.getResultList().size() > 0) {
+            return queryForSub.getResultList().get(0).getBillingRate();
+        } else {
+            return ClientInformationDao.instance().findById(id).getBillingRate();
         }
-        return null;
     }
 
     public void getEffectiveBillingInvoiceFrequency(ClientInformation ci, ContractDto dto) {
