@@ -45,7 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  *
  * @author prasanthi.p
- */ 
+ */
 @Path("secured/invoice")
 @Component
 @Scope("prototype")
@@ -95,7 +95,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
         if (invoice.getStartDate() != null && invoice.getEndDate() != null) {
             if (invoice.getEndDate().before(invoice.getStartDate())) {
                 throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invoicePeriodTo.not.before.invoicePeriodFrom", "InvoicePeriod EndDate should not be prior to InvoicePeriod StartDate");
-            } else if (invoice.getStartDate().before(ci.getStartDate()) || invoice.getEndDate().after(DateUtils.addDays(ci.getEndDate(),1))) {
+            } else if (invoice.getStartDate().before(ci.getStartDate()) || (ci.getEndDate() != null && invoice.getEndDate().after(DateUtils.addDays(ci.getEndDate(), 1)))) {
                 throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invoicePeriod.should.matchwith.projectperiod", "InvoicePeriod should be in between Project StartDate and Project EndDate");
             }
         }
@@ -130,7 +130,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
             Date cpdEndDate = inv.getClientInformation().getEndDate();
             if (invoice.getEndDate().before(invoice.getStartDate())) {
                 throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invoicePeriodTo.not.before.invoicePeriodFrom", "InvoicePeriod EndDate should not be prior to InvoicePeriod StartDate");
-            } else if (invoice.getStartDate().before(cpdStartDate) || invoice.getEndDate().after(DateUtils.addDays(cpdEndDate,1))) {
+            } else if (invoice.getStartDate().before(cpdStartDate) || (cpdEndDate != null && invoice.getEndDate().after(DateUtils.addDays(cpdEndDate, 1)))) {
                 throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invoicePeriod.should.matchwith.projectperiod", "InvoicePeriod should be in between Project StartDate and Project EndDate");
             }
         }
