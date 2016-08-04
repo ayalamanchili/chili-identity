@@ -73,7 +73,7 @@ public class ReadInvoicePanel extends ReadComposite {
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("invoiceDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("invoiceSentDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("billingRate", clientInformation, DataType.CURRENCY_FIELD);
+        assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("hours", entity, DataType.INTEGER_FIELD);
         assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);

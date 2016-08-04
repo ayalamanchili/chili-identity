@@ -166,7 +166,7 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
             table.setText(i, 4, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
             table.setText(i, 5, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
             table.setText(i, 6, JSONUtils.toString(entity, "hours"));
-            table.setText(i, 7, FormatUtils.formarCurrency(JSONUtils.toString(clientInformation, "billingRate")));
+            table.setText(i, 7, FormatUtils.formarCurrency(JSONUtils.toString(entity, "billingRate")));
             table.setText(i, 8, FormatUtils.formarCurrency(JSONUtils.toString(entity, "overTimeBillingRate")));
             if (Auth.hasAnyOfRoles(ROLE.ROLE_INVOICE_MANAGER) && (JSONUtils.toString(entity, "invoiceStatus").equalsIgnoreCase(InvoiceStatus.Confirmed.name()))) {
                 ClickableLink invoiceLink = new ClickableLink("Submit Invoice");
