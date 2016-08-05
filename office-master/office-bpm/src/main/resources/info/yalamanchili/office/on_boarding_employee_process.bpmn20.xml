@@ -105,7 +105,13 @@
         <sequenceFlow sourceRef="onBoardingFormsAndDataValidationTask" 
                       targetRef="join3">
             <conditionExpression xsi:type="tFormalExpression">
-                ${status == 'approved'}
+                ${status == 'approved' and employee.employeeType.name == 'Corporate Employee'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="onBoardingFormsAndDataValidationTask" 
+                      targetRef="join4">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved' and employee.employeeType.name != 'Corporate Employee'}
             </conditionExpression>
         </sequenceFlow>
         <sequenceFlow sourceRef="onBoardingFormsAndDataValidationTask" 
@@ -159,7 +165,13 @@
         <!--          E Verify Manager task : Decision -->
         <sequenceFlow sourceRef="eVerifyTask" targetRef="join3">
             <conditionExpression xsi:type="tFormalExpression">
-                ${status == 'approved'}
+                ${status == 'approved'and employee.employeeType.name == 'Corporate Employee'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="eVerifyTask" 
+                      targetRef="join4">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved' and employee.employeeType.name != 'Corporate Employee'}
             </conditionExpression>
         </sequenceFlow>
         <sequenceFlow sourceRef="eVerifyTask" 
@@ -341,6 +353,9 @@
         <parallelGateway id="join3" />
         <sequenceFlow sourceRef="join3" targetRef="onboardingFinalValidationTask" />
         
+        <parallelGateway id="join4" />
+        <sequenceFlow sourceRef="join4" targetRef="onboardingFinalValidationTask" />
+        
         <!-- Final Validation Task -->
         <userTask id="onboardingFinalValidationTask" 
                   name="Final Validation Task for ${employee.firstName} ${employee.lastName}" 
@@ -459,6 +474,5 @@
         <sequenceFlow sourceRef="deleteEmployee" 
                       targetRef="onBoardingEmployeeProcessEnd"/>
         <endEvent id="onBoardingEmployeeProcessEnd" />
-        
     </process>
 </definitions>
