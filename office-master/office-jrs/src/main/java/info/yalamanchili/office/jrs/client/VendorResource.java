@@ -34,6 +34,7 @@ import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
 import info.yalamanchili.office.mapper.profile.ContactMapper;
 import info.yalamanchili.office.profile.ContactService;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -396,6 +397,48 @@ public class VendorResource extends CRUDResource<Vendor> {
             String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Vendors In State " + dto.getState(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
             MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
         }
+    }
+
+    @GET
+    @Path("/reports")
+    public void generateCOIEndReport(@QueryParam("coiFromEndDate") Date startDate, @QueryParam("coiToEndDate") Date endDate) {
+        VendorResource.VendorTable table = searchForCOIEndDate(startDate, endDate);
+        System.out.println("the table size is:" + table.getSize());
+        if (table.getSize() != null) {
+            List<Vendor> list = new ArrayList();
+            list.addAll(table.getEntities());
+            VendorService.instance().generateCOIEndDateReport(list, OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
+        } else {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "DateInvalid", "No Results");
+        }
+    }
+
+    @PUT
+    @Path("/coiSearch")
+    public VendorResource.VendorTable searchForCOIEndDate(@QueryParam("coiFromEndDate") Date startDate, @QueryParam("coiToEndDate") Date endDate) {
+        VendorResource.VendorTable table = searchCOIEndDate(startDate, endDate);
+        return table;
+    }
+
+    private VendorResource.VendorTable searchCOIEndDate(Date startDate, Date endDate) {
+        VendorResource.VendorTable table = table(0, 10000);
+        VendorResource.VendorTable resulttable = new VendorResource.VendorTable();
+        List<Vendor> list = new ArrayList();
+        List<Vendor> finallist = new ArrayList();
+        list.addAll(table.getEntities());
+        for (Vendor ven : list) {
+            if (ven.getCoiEndDate() != null) {
+                if (ven.getCoiEndDate().after(startDate) && ven.getCoiEndDate().before(endDate)) {
+                    finallist.add(ven);
+                }
+            }
+        }
+        if (finallist.size() > 0) {
+            resulttable.setEntities(finallist);
+            resulttable.setSize(Long.valueOf(finallist.size()));
+        }
+        return resulttable;
+
     }
 
     @XmlRootElement
