@@ -75,10 +75,10 @@ public class InvoiceScheduleService {
     @Transactional
     public void sendReminderInvoiceNotification() {
         List<InvoiceSchedule> invoiceSchedules = invoiceScheduleDao.query();
-        Email email = new Email();
         SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-YYY");
         if (invoiceSchedules.size() > 0) {
             for (InvoiceSchedule schedule : invoiceSchedules) {
+                Email email = new Email();
                 if (DateUtils.isSameDay(DateUtils.addDays(new Date(), schedule.getReminderDays()), schedule.getEndDate())) {
                     Vendor vendor = VendorDao.instance().findById(schedule.getTargetEntityId());
                     String notifyEmployees = schedule.getNotifyEmployees();
