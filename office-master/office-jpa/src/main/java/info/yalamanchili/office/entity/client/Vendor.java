@@ -13,6 +13,7 @@ import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -21,6 +22,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -96,6 +98,9 @@ public class Vendor extends AbstractEntity {
     protected Float vendorFees;
     protected BigDecimal minFees;
     protected BigDecimal maxFees;
+
+    @Temporal(javax.persistence.TemporalType.DATE)
+    protected Date coiEndDate;
 
     public String getName() {
         return name;
@@ -221,7 +226,7 @@ public class Vendor extends AbstractEntity {
     public void setVendorFees(Float vendorFees) {
         this.vendorFees = vendorFees;
     }
-    
+
     public BigDecimal getMinFees() {
         return minFees;
     }
@@ -229,15 +234,14 @@ public class Vendor extends AbstractEntity {
     public void setMinFees(BigDecimal minFees) {
         this.minFees = minFees;
     }
-    
-   public BigDecimal getMaxFees() {
+
+    public BigDecimal getMaxFees() {
         return maxFees;
     }
 
     public void setMaxFees(BigDecimal maxFees) {
         this.maxFees = maxFees;
     }
-    
 
     public InvoiceDeliveryMethod getVendorinvDeliveryMethod() {
         return vendorinvDeliveryMethod;
@@ -245,6 +249,14 @@ public class Vendor extends AbstractEntity {
 
     public void setVendorinvDeliveryMethod(InvoiceDeliveryMethod vendorinvDeliveryMethod) {
         this.vendorinvDeliveryMethod = vendorinvDeliveryMethod;
+    }
+
+    public Date getCoiEndDate() {
+        return coiEndDate;
+    }
+
+    public void setCoiEndDate(Date coiEndDate) {
+        this.coiEndDate = coiEndDate;
     }
 
     @Override
