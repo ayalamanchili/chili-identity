@@ -119,6 +119,9 @@ public class OfficeWelcome implements EntryPoint {
     }
     
     protected void setLogo(JSONObject employee) {
+        if(employee.isObject() != null){
+           return;
+        }
         if (employee.get("company") != null) {
             if (employee.get("company").isObject().get("name").isString().stringValue().equalsIgnoreCase(Company.CGS_INC)) {
                 StatusPanel.instance().setLogo(OfficeImages.INSTANCE.cgsLogo());
