@@ -11,6 +11,7 @@ package info.yalamanchili.office.dao.invite;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.profile.invite.InviteCode;
 import java.util.Date;
+import java.util.List;
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -29,7 +30,7 @@ public class InviteCodeDao {
 
     @Autowired
     protected MongoOperations mongoTemplate;
-
+    
     public void save(InviteCode entity) {
         mongoTemplate.save(entity);
     }
@@ -45,6 +46,11 @@ public class InviteCodeDao {
         save(invitationCode);
     }
 
+    public List<InviteCode> query() {
+        Query query = new Query();
+        return mongoTemplate.find(query, InviteCode.class);
+    }
+    
     public static InviteCodeDao instance() {
         return SpringContext.getBean(InviteCodeDao.class);
     }
