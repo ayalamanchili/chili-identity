@@ -9,6 +9,7 @@
 package info.yalamanchili.office.dto.client;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -28,6 +29,7 @@ public class VendorMasterReportDto implements Serializable {
     protected String employeeName;
     protected String employeeType;
     protected String vendorPaymentTerms;
+    protected Date coiEndDate;
 
     public String getVendorName() {
         return vendorName;
@@ -109,4 +111,11 @@ public class VendorMasterReportDto implements Serializable {
         this.vendorPaymentTerms = vendorPaymentTerms;
     }
 
+    public Date getCoiEndDate() {
+        return coiEndDate;
+    }
+
+    public void setCoiEndDate(Date coiEndDate) {
+        this.coiEndDate = coiEndDate;
+    }
 }

@@ -45,7 +45,7 @@ public class VendorService {
         for (Vendor vn : VendorDao.instance().query(0, 2000)) {
             res.add(populateVendorInfo(vn));
         }
-        String[] columnOrder = new String[]{"vendorName", "webSite", "vendorType", "vendorFees", "vendorPaymentTerms", "vendorLocations", "recruiterContact", "acctPayContact"};
+        String[] columnOrder = new String[]{"vendorName", "webSite", "coiEndDate", "vendorType", "vendorFees", "vendorPaymentTerms", "vendorLocations", "recruiterContact", "acctPayContact"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Vendor Summary Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
 
@@ -79,7 +79,7 @@ public class VendorService {
                 dtos.add(dtoss);
             }
         }
-        String[] columnOrder = new String[]{"employeeName", "employeeType", "vendorName", "webSite", "vendorType", "vendorFees", "vendorLocations", "recruiterContact", "acctPayContact"};
+        String[] columnOrder = new String[]{"employeeName", "employeeType", "vendorName", "webSite", "coiEndDate", "vendorType", "vendorFees", "vendorLocations", "recruiterContact", "acctPayContact"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(dtos, "Active Vendors Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
 
@@ -97,6 +97,9 @@ public class VendorService {
         }
         if (vn.getPaymentTerms() != null) {
             dto.setVendorPaymentTerms(vn.getPaymentTerms());
+        }
+        if (vn.getCoiEndDate() != null) {
+            dto.setCoiEndDate(vn.getCoiEndDate());
         }
         // for getting vendor locations
         if (vn.getLocations().size() > 0) {
@@ -203,6 +206,14 @@ public class VendorService {
             }
         }
         return dto;
+    }
+
+    @Async
+    @Transactional
+    public void generateCOIEndDateReport(List<Vendor> ven, String email) {
+        String[] columnOrder = new String[]{"name", "description", "website", "coiEndDate"};
+        String fileName = ReportGenerator.generateExcelOrderedReport(ven, "COI End Date Report For Vendor", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        MessagingService.instance().emailReport(fileName, email);
     }
 
     public static VendorService instance() {
