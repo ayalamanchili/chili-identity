@@ -20,7 +20,6 @@ import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
-import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.rpc.HttpService;
@@ -45,8 +44,7 @@ public class SubcontractorSidePanel extends ALComposite implements ClickHandler 
     FlowPanel reportsPanel = new FlowPanel();
     Button reportsB = new Button("Report");
     Button viewReportsB = new Button("View");
-
-    ClickableLink clearReportsL = new ClickableLink("clear");
+    Button clearReportL = new Button("Clear");
 
     DateField startDateF = new DateField(OfficeWelcome.constants,
             "COI From EndDate", "", false, true);
@@ -61,7 +59,7 @@ public class SubcontractorSidePanel extends ALComposite implements ClickHandler 
     protected void addListeners() {
         SubcontractorSummaryReportL.addClickHandler(this);
         viewReportsB.addClickHandler(this);
-        clearReportsL.addClickHandler(this);
+        clearReportL.addClickHandler(this);
         reportsB.addClickHandler(this);
     }
 
@@ -78,6 +76,7 @@ public class SubcontractorSidePanel extends ALComposite implements ClickHandler 
         reportsPanel.add(endDateF);
         reportsPanel.add(viewReportsB);
         reportsPanel.add(reportsB);
+        reportsPanel.add(clearReportL);
         reportsCaptionPanel.setContentWidget(reportsPanel);
         subcontractorSidePanel.add(reportsCaptionPanel);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS)) {
@@ -93,7 +92,7 @@ public class SubcontractorSidePanel extends ALComposite implements ClickHandler 
         if (event.getSource().equals(viewReportsB)) {
             viewReport();
         }
-        if (event.getSource().equals(clearReportsL)) {
+        if (event.getSource().equals(clearReportL)) {
             clearReportsField();
         }
         if (event.getSource().equals(reportsB)) {
@@ -131,7 +130,7 @@ public class SubcontractorSidePanel extends ALComposite implements ClickHandler 
                         @Override
                         public void onResponse(String result) {
                             TabPanel.instance().getAdminPanel().entityPanel.clear();
-                            if (result == null || JSONParser.parseLenient(result).isObject() == null) {
+                            if (result == null || JSONParser.parseLenient(result).isObject().size() == 0) {
                                 new ResponseStatusWidget().show("no results");
                             } else {
                                 //TODO use size and entities attributes
@@ -160,6 +159,10 @@ public class SubcontractorSidePanel extends ALComposite implements ClickHandler 
         }
         if (endDateF.getDate() != null) {
             search.put("coiFromEndDate", new JSONString(DateUtils.toDateString(endDateF.getDate())));
+        }
+        if (startDateF.getDate() != null && endDateF.getDate() != null && startDateF.getDate().after(endDateF.getDate())) {
+            endDateF.setMessage("End Date must be after Start Date");
+            return null;
         }
         return search;
     }
