@@ -26,6 +26,7 @@ import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
 import info.yalamanchili.office.client.home.tasks.ReadTaskPanel;
 import info.yalamanchili.office.client.onboarding.ReadAllEmployeeOnBoardingPanel;
 import info.yalamanchili.office.client.profile.address.ReadAllAddressesPanel;
+import info.yalamanchili.office.client.profile.employee.ReadAllEmployeesPanel;
 import info.yalamanchili.office.client.profile.selfservice.ReadAllServiceTicketsPanel;
 import info.yalamanchili.office.client.profile.statusreport.ReadStatusReportPanel;
 import info.yalamanchili.office.client.time.ReadAllOutOfOfficePanel;
@@ -91,6 +92,9 @@ public class OfficeUrlRoutingHandler implements ValueChangeHandler<String> {
                     break;
                 case "info.yalamanchili.office.entity.time.OutOfOfficeRequest":
                     outOfOfficeNavigation(params);
+                    break;
+                case "info.yalamanchili.office.entity.profile.Employee":
+                    officeEmployeeProfileNavigation(params);
                 //TODO add navigation to add entities that have comment
             }
         }
@@ -98,6 +102,12 @@ public class OfficeUrlRoutingHandler implements ValueChangeHandler<String> {
 
     protected void commentNavigation(Map<String, String> params) {
 
+    }
+    
+    protected void officeEmployeeProfileNavigation(Map<String, String> params) {
+        TabPanel.instance().tabPanel.selectTab(TabPanel.instance().myOfficePanel, true);
+        ReadAllEmployeesPanel readAllEmployeesPanel = new ReadAllEmployeesPanel(new JSONArray());
+        readAllEmployeesPanel.viewClicked(params.get("id"));
     }
 
     protected void prospectNavigation(Map<String, String> params) {

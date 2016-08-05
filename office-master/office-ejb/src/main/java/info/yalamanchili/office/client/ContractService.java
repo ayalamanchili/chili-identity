@@ -26,7 +26,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import info.chili.reporting.ReportGenerator;
 import info.chili.spring.SpringContext;
-import static info.chili.spring.SpringContext.getBean;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
@@ -47,7 +46,6 @@ import info.yalamanchili.office.jms.MessagingService;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import javax.persistence.LockModeType;
 import javax.persistence.Query;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang.StringUtils;
@@ -56,13 +54,8 @@ import org.hibernate.LockMode;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.StatelessSession;
-import org.hibernate.ejb.QueryHints;
-import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 /**
  * Reporting service for Employee, client, vendor and contract related
@@ -73,7 +66,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 @Component
 @Scope("prototype")
 public class ContractService {
-
+    
     @PersistenceContext
     protected EntityManager em;
     @Autowired
@@ -506,10 +499,10 @@ public class ContractService {
     public ContractTable getResultForReport(ContractSearchDto dto) {
         String query = getSearchQuery(dto);
         ContractTable table = new ContractTable();
-        Session session = em.unwrap(Session.class);
+        Session session = em.getEntityManagerFactory().createEntityManager().unwrap(Session.class);
         org.hibernate.Query queryForSub = session.createQuery(query);
         queryForSub.setReadOnly(true);
-        queryForSub.setFetchSize(Integer.MIN_VALUE);
+        queryForSub.setFetchSize(200);
         queryForSub.setCacheable(false);
         queryForSub.setLockMode("lockmode", LockMode.NONE);
         ScrollableResults scrollableResults = queryForSub.scroll(ScrollMode.FORWARD_ONLY);
@@ -519,6 +512,7 @@ public class ContractService {
             table.getEntities().add(mapClientInformation(ci));
         }
         scrollableResults.close();
+        session.close();
         return table;
     }
 

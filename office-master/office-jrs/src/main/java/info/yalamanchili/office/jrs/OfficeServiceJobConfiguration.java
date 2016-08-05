@@ -22,6 +22,7 @@ import info.yalamanchili.office.dao.time.TimePeriodDao;
 import info.yalamanchili.office.email.ReceiveEmailsService;
 import info.yalamanchili.office.employee.perfeval.PerformanceEvaluationQuestionsFactory;
 import info.yalamanchili.office.employee.probeval.ProbationPeriodEvaluationQuestionsFactory;
+import info.yalamanchili.office.profile.invite.InviteCodeService;
 import info.yalamanchili.office.reports.profile.ProfileReportsService;
 import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.stereotype.Component;
@@ -143,4 +144,11 @@ public class OfficeServiceJobConfiguration {
     public void sendInvoiceReminderToBillingTeam() {
         InvoiceScheduleService.instance().sendReminderInvoiceNotification();
     }
+    
+    @ManagedOperation
+    public void sendExpiryDateAlertNotification() {
+        InviteCodeService.instance().sendExpiryDateAlertNotification();
+    }
+    
+    
 }
