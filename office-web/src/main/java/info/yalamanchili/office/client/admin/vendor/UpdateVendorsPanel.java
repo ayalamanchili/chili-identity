@@ -48,6 +48,7 @@ public class UpdateVendorsPanel extends UpdateComposite {
         assignEntityValueFromField("minFees", entity);
         assignEntityValueFromField("maxFees", entity);
         assignEntityValueFromField("vendorinvDeliveryMethod", entity);
+        assignEntityValueFromField("coiEndDate", entity);
         return entity;
     }
 
@@ -79,6 +80,7 @@ public class UpdateVendorsPanel extends UpdateComposite {
         assignFieldValueFromEntity("minFees", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("maxFees", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("vendorinvDeliveryMethod", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("coiEndDate", entity, DataType.DATE_FIELD);
     }
 
     @Override
@@ -113,6 +115,7 @@ public class UpdateVendorsPanel extends UpdateComposite {
         addField("minFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("maxFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("coiEndDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(submitForUpdateP);
         addEnumField("vendorinvFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);

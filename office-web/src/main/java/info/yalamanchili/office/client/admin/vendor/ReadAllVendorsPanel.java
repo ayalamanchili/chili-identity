@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.client.admin.vendor;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -17,6 +18,7 @@ import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
+import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.Auth;
 import java.util.logging.Logger;
@@ -67,6 +69,7 @@ public class ReadAllVendorsPanel extends CRUDReadAllComposite {
         table.setText(0, 1, getKeyValue("Name"));
         table.setText(0, 2, getKeyValue("Description"));
         table.setText(0, 3, getKeyValue("Type"));
+        table.setText(0, 4, getKeyValue("Coi End Date"));
     }
 
     @Override
@@ -77,6 +80,7 @@ public class ReadAllVendorsPanel extends CRUDReadAllComposite {
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
             table.setText(i, 2, JSONUtils.toString(entity, "description"));
             setEnumColumn(i, 3, entity, "vendorType", "vendorType");
+            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "coiEndDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
         }
     }
 

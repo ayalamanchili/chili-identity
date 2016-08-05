@@ -64,6 +64,7 @@ public class ReadVendorsPanel extends ReadComposite {
         assignFieldValueFromEntity("paymentTerms", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("vendorinvFrequency", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("vendorinvDeliveryMethod", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("coiEndDate", entity, DataType.DATE_FIELD);
     }
 
     @Override
@@ -83,6 +84,7 @@ public class ReadVendorsPanel extends ReadComposite {
         addField("minFees", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("maxFees", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("website", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("coiEndDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("paymentTerms", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("vendorinvFrequency", true, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         addEnumField("vendorinvDeliveryMethod", true, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);

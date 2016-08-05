@@ -49,6 +49,7 @@ public class CreateVendorPanel extends CreateComposite {
         assignEntityValueFromField("minFees", vendor);
         assignEntityValueFromField("maxFees", vendor);
         assignEntityValueFromField("vendorinvDeliveryMethod", vendor);
+        assignEntityValueFromField("coiEndDate", vendor);
         logger.info(vendor.toString());
         return vendor;
     }
@@ -104,6 +105,7 @@ public class CreateVendorPanel extends CreateComposite {
         addField("minFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("maxFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("coiEndDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("vendorinvFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         addEnumField("vendorinvDeliveryMethod", false, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
