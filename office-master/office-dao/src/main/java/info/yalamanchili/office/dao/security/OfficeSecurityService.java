@@ -20,7 +20,6 @@ import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -34,8 +33,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,7 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Scope("prototype")
 @Transactional
-public class OfficeSecurityService {
+public class OfficeSecurityService extends SecurityService {
 
     private final static Logger logger = Logger.getLogger(OfficeSecurityService.class.getName());
     @PersistenceContext
@@ -80,14 +77,6 @@ public class OfficeSecurityService {
         return login(user, null);
     }
 
-    public String getCurrentUserName() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null) {
-            return auth.getName();
-        }
-        return null;
-    }
-
     public Employee getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null) {
@@ -102,46 +91,6 @@ public class OfficeSecurityService {
         } catch (NoResultException e) {
             return null;
         }
-    }
-
-    public List<String> getCurrentUserRoles() {
-        SecurityContext context = SecurityContextHolder.getContext();
-        if (context == null) {
-            return Collections.emptyList();
-        }
-        Authentication authentication = context.getAuthentication();
-        if (authentication == null) {
-            return Collections.emptyList();
-        }
-        List<String> roles = new ArrayList();
-        for (GrantedAuthority auth : authentication.getAuthorities()) {
-            roles.add(auth.getAuthority());
-        }
-        return roles;
-    }
-
-    public boolean hasAnyRole(String... roles) {
-        SecurityContext context = SecurityContextHolder.getContext();
-        if (context == null) {
-            return false;
-        }
-        Authentication authentication = context.getAuthentication();
-        if (authentication == null) {
-            return false;
-        }
-
-        for (GrantedAuthority auth : authentication.getAuthorities()) {
-            for (String role : roles) {
-                if (role.equals(auth.getAuthority())) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean hasRole(String role) {
-        return hasAnyRole(role);
     }
 
     public boolean isValidEmployeeId(String employeeId) {
@@ -203,7 +152,7 @@ public class OfficeSecurityService {
         List<String> empTypes = new ArrayList<String>();
         empTypes.add(EmployeeType.EMPLOYEE);
         empTypes.add(EmployeeType.CORPORATE_EMPLOYEE);
-        empTypes.add(EmployeeType.INTERN_SEASONAL_EMPLOYEE);        
+        empTypes.add(EmployeeType.INTERN_SEASONAL_EMPLOYEE);
         TypedQuery<Employee> empQuery = em.createQuery("from " + Employee.class.getCanonicalName() + " where employeeType.name in (:empTypeParam) and user.enabled=true", Employee.class);
         empQuery.setParameter("empTypeParam", empTypes);
         OfficeSecurityConfiguration securityconfig = OfficeSecurityConfiguration.instance();
