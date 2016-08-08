@@ -9,6 +9,7 @@
 package info.yalamanchili.office.dao.profile.onboarding;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -23,7 +24,7 @@ public class EmployeeOnBoardingSearchDto implements Serializable {
     protected String employeeType;
     protected String company;
     protected String status;
-    protected String startDate;
+    protected Date startDate;
 
     public String getEmployeeType() {
         return employeeType;
@@ -37,7 +38,7 @@ public class EmployeeOnBoardingSearchDto implements Serializable {
         return status;
     }
 
-    public String getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
     
@@ -54,7 +55,7 @@ public class EmployeeOnBoardingSearchDto implements Serializable {
         this.status = status;
     }
 
-    public void setStartDate(String startedDate) {
+    public void setStartDate(Date startedDate) {
         this.startDate = startedDate;
     }
     
