@@ -98,16 +98,16 @@ public class InviteCodeService {
     
     public void sendExpiryDateAlertNotification() {
         List<InviteCode> inviteCodes = inviteCodeDao.query();
-        Email email = new Email();
         if (inviteCodes.size () > 0 ) {
             int reminderDays = 3;
             for (InviteCode inviteCode : inviteCodes) {
-               if (DateUtils.isSameDay(DateUtils.addDays(new Date(), reminderDays), inviteCode.getExpiryDate())) {
+               Email email = new Email();
+                if (DateUtils.isSameDay(DateUtils.addDays(new Date(), reminderDays), inviteCode.getExpiryDate())) {
                    email.addTo(inviteCode.getEmail());
                    email.setHtml(Boolean.TRUE);
                    email.setRichText(Boolean.TRUE);
                    email.setSubject("Invitation Link About to expire "+inviteCode.getInviteType().getInvitationType());
-                   String messageText = " <b>Invitation Link is About to Expire can extend Expiry Date </b> </br> ";
+                   String messageText = " <b>Your Invitation Link is About to Expire in 3 days please sign up as soon as possible  </b> </br> ";
                    email.setBody(messageText);
                    MessagingService.instance().sendEmail(email);
                }        
