@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.advancerequisition;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
@@ -119,6 +120,16 @@ public class ReadAdvanceRequisitionPanel extends ReadComposite {
         return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.expense.AdvanceRequisition" + "/" + getEntityId();
     }
 
+    @Override
+   protected boolean enableBack() {
+       return true;
+   }
+    
+    @Override
+     protected ReadAllComposite getReadAllPanel() {
+        return ReadAllAdvanceRequisitionPanel.instance;
+     }    
+    
     @Override
     protected boolean enableViewTasks() {
         return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_ACCOUNTS_PAYABLE, Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS);
