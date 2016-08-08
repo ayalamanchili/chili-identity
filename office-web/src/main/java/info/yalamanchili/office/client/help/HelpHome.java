@@ -46,10 +46,12 @@ public class HelpHome extends ALComposite implements ClickHandler {
     protected final String bulkimportVideo = "bulkimport";
     protected final String accountresetVideo = "account_reset";
     protected final String defaultImage = "help/videos/default.png";
+    protected final String onboardingVideo = "onboarding";
     protected ClickableLink portalDocumentationSite = new ClickableLink("Portal Documentation");
     protected ClickableLink fullVideoL = new ClickableLink("Portal Full Demo");
     protected ClickableLink rolesVideoL = new ClickableLink("Portal Roles Demo");
     protected ClickableLink myofficeVideoL = new ClickableLink("Portal My Office Demo");
+    protected ClickableLink onboardingVideoL = new ClickableLink("Portal Employee Onboarding Demo");
     protected ClickableLink adminVideoL = new ClickableLink("Portal Admin Demo");
     protected ClickableLink notificationsVideoL = new ClickableLink("Portal Notifications Demo");
     protected ClickableLink socialVideoL = new ClickableLink("Portal Social Demo");
@@ -72,6 +74,7 @@ public class HelpHome extends ALComposite implements ClickHandler {
         driveVideoL.addClickHandler(this);
         bulkimportVideoL.addClickHandler(this);
         accountresetVideoL.addClickHandler(this);
+        onboardingVideoL.addClickHandler(this);
     }
 
     @Override
@@ -91,6 +94,7 @@ public class HelpHome extends ALComposite implements ClickHandler {
         panel.add(driveVideoL);
         panel.add(bulkimportVideoL);
         panel.add(accountresetVideoL);
+        panel.add(onboardingVideoL);
     }
 
     @Override
@@ -124,6 +128,9 @@ public class HelpHome extends ALComposite implements ClickHandler {
         }
         if (event.getSource().equals(accountresetVideoL)) {
             new GenericPopup(getAccountResetVideoWidget()).show();
+        }
+        if (event.getSource().equals(onboardingVideoL)) {
+            new GenericPopup(getOnboardingVideoWidget()).show();
         }
     }
 
@@ -211,6 +218,16 @@ public class HelpHome extends ALComposite implements ClickHandler {
         VideoWidget videoPlayer = new VideoWidget(false, true, ChiliClientConfig.instance().getFileDownloadUrl() + defaultImage);
         List<VideoSource> sources = new ArrayList<VideoSource>();
         sources.add(new VideoSource(ChiliClientConfig.instance().getFileDownloadUrl() + videosLinkPrefix + webm + "/" + accountresetVideo + "."
+                + webm, VideoType.WEBM));
+        videoPlayer.setSources(sources);
+        videoPlayer.setPixelSize(500, 400);
+        return videoPlayer;
+    }
+    
+    protected VideoWidget getOnboardingVideoWidget() {
+        VideoWidget videoPlayer = new VideoWidget(false, true, ChiliClientConfig.instance().getFileDownloadUrl() + defaultImage);
+        List<VideoSource> sources = new ArrayList<VideoSource>();
+        sources.add(new VideoSource(ChiliClientConfig.instance().getFileDownloadUrl() + videosLinkPrefix + webm + "/" + onboardingVideo + "."
                 + webm, VideoType.WEBM));
         videoPlayer.setSources(sources);
         videoPlayer.setPixelSize(500, 400);
