@@ -310,7 +310,7 @@ public class EmployeeOnBoardingService {
         for (EmployeeOnBoarding onboarding : onboardings) {
             resultDtos.add(EmployeeOnBoardingReportDto.map(mapper, onboarding));
         }
-        String[] columnOrder = new String[]{"employee", "employeeType", "startDate", "email", "company", "branch", "workStatus"};
+        String[] columnOrder = new String[]{"employee", "employeeType", "startDate", "email", "company", "branch"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(resultDtos, "Onboarding Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
 }
