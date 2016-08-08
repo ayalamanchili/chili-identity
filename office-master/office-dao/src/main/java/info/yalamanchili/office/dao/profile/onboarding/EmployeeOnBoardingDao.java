@@ -19,6 +19,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
@@ -76,11 +77,16 @@ public class EmployeeOnBoardingDao extends CRUDDao<EmployeeOnBoarding> {
         query.setMaxResults(limit);
         return query.getResultList();
     }
-      public List<EmployeeOnBoarding> getSearchOnboarding(EmployeeOnBoardingSearchDto dto) {
-        TypedQuery<EmployeeOnBoarding> emps = em.createQuery(getSearchQuery(dto), EmployeeOnBoarding.class);
-        return emps.getResultList();
+
+    public List<EmployeeOnBoarding> getSearchOnboarding(EmployeeOnBoardingSearchDto dto) {
+        TypedQuery<EmployeeOnBoarding> onboardingSearchQuery = em.createQuery(getSearchQuery(dto), EmployeeOnBoarding.class);
+        if (dto.getStartDate() != null) {
+            onboardingSearchQuery.setParameter("startDateParam", dto.getStartDate(), TemporalType.DATE);
+        }
+        return onboardingSearchQuery.getResultList();
     }
-      protected String getSearchQuery(EmployeeOnBoardingSearchDto dto) {
+
+    protected String getSearchQuery(EmployeeOnBoardingSearchDto dto) {
         StringBuilder queryStr = new StringBuilder();
         queryStr.append("SELECT onboarding from ").append(EmployeeOnBoarding.class.getCanonicalName()).append(" as onboarding");
         queryStr.append("  where ");
@@ -93,17 +99,17 @@ public class EmployeeOnBoardingDao extends CRUDDao<EmployeeOnBoarding> {
         if (!Strings.isNullOrEmpty(dto.getStatus())) {
             queryStr.append("onboarding.status = '").append(dto.getStatus().trim()).append("' ").append(" and ");
         }
-        if (!Strings.isNullOrEmpty(dto.getStartDate())) {
-            queryStr.append("onboarding.startedDate = '").append(dto.getStartDate().trim()).append("' ").append(" and ");
+        if (dto.getStartDate() != null) {
+            queryStr.append("onboarding.startedDate =:startDateParam and '");
         }
-
         return queryStr.toString().substring(0, queryStr.toString().lastIndexOf("and"));
     }
 
     public static EmployeeOnBoardingDao instance() {
         return SpringContext.getBean(EmployeeOnBoardingDao.class);
     }
-     public List<EmployeeOnBoarding> getOboardingReportsForDates(Date startDate, Date endDate) {
+
+    public List<EmployeeOnBoarding> getOboardingReportsForDates(Date startDate, Date endDate) {
         Query findAllQuery = getEntityManager().createQuery("from " + EmployeeOnBoarding.class.getCanonicalName() + " onboarding where onboarding.status<>:statusParam AND onboarding.startedDate>=:startDateParam AND onboarding.startedDate<=:endDateParam ", entityCls);
         findAllQuery.setParameter("startDateParam", startDate);
         findAllQuery.setParameter("statusParam", OnBoardingStatus.Pending_Initial_Document_Submission);
