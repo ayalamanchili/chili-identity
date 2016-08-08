@@ -60,6 +60,8 @@
                 <item name="Prospect Graphs" href="/office/prospects/prospect-graphs.html"/>
             </item>
             <item name="Employee OnBoarding" href="/office/onboarding/employee-onboarding.html" collapse="true">
+                <item name="Onboarding Search" href="/office/onboarding/onboarding-search.html"/>
+                <item name="Onboarding Reports" href="/office/onboarding/onboarding-reports.html"/>
                 <item name="Verify Employee Forms And Data" href="/office/onboarding/forms-docs-verification.html"/>
                 <item name="How To Fill Onboarding Form" href="/office/onboarding/submit-onboarding-details.html"/>
             </item>

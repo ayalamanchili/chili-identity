@@ -14,6 +14,9 @@ How To Onboard An Employee:
         - **OnBoarding Manager** will get **Forms And Data Validation Task**
         - **Background Screening Manager** will get **Background And Drug Screening Task**
         - **E-Verify Manager** will get **E-Verify Task**
+        - **HR Admin** will get **Setup Manager Task**
+        - If **Setup Manager Task** completes, Employee manager will get **New Employee manager task**.
+        - Employee **Reports_To** manager will provide **Roles and Responsibilities** and **Requirements** (**For Network Department sake**) and complete the task.
         - **Network Administration Team** will get **Network Provisioning Task**
     - Else If the employee is of type **Employee**
         - **OnBoarding Manager** will get **Forms And Data Validation Task**
@@ -71,7 +74,7 @@ If the onboarded employee is **Corporate Employee**
         Forms And Data Validation Task and Email Notification to Onboarding Manager
         E-Verify task and Email Notification to E-Verify Manager
         Background And Drug Screening Task and Email Notification to Background Screening Manager
-        Network Provisioning Task and Email Notification to Network Department
+        Setup Manager Task and Email Notification to HR Admin
 
 Else If the OnBoarded Employee is of type **Employee**:
 ----
@@ -115,6 +118,14 @@ E-Verify Task:
 E-Verify Task Complete Email:
 ----
  ![alt text](../../images/onboarding/everify-complete-email.png "Employee Onboarding")
+
+Setup Manager Task:
+----
+ ![alt text](../../images/onboarding/setup-manager-task.png "Employee Onboarding")
+
+New Employee Manager Task:
+----
+ ![alt text](../../images/onboarding/new-manager-task.png "Employee Onboarding") 
 
 Network Provisioning Task Email:
 ----
