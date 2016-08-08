@@ -20,6 +20,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
@@ -73,6 +75,7 @@ public class OnBoardingEmployeeDto implements Serializable {
     /**
      *
      */
+    @Enumerated(EnumType.STRING)
     protected WorkStatus workStatus;
 
     @Pattern(regexp = "(^(\\d{9})$)", message = "{invalid.ssn.format}")
