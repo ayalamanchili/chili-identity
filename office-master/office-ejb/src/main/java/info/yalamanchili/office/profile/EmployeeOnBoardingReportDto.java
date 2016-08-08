@@ -91,7 +91,7 @@ public class EmployeeOnBoardingReportDto implements Serializable {
     public static EmployeeOnBoardingReportDto map(Mapper mapper, EmployeeOnBoarding onboarding) {
         EmployeeOnBoardingReportDto reportDto = mapper.map(onboarding, EmployeeOnBoardingReportDto.class);
         Employee onboardEmployee = onboarding.getEmployee();
-        //reportDto.setStartDate(onboardEmployee.getStartDate());
+        reportDto.setStartDate(onboardEmployee.getStartDate());
         reportDto.setEmployee(onboardEmployee.getFirstName() + " " + onboardEmployee.getLastName());
         reportDto.setEmployeeType(onboardEmployee.getEmployeeType().getName());
         reportDto.setEmail(onboardEmployee.getPrimaryEmail().getEmail());
