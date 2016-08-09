@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.admin.vendor;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.ReadComposite;
@@ -105,6 +106,16 @@ public class ReadVendorsPanel extends ReadComposite {
         return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN);
     }
 
+    @Override
+   protected boolean enableBack() {
+       return true;
+   }
+    
+    @Override
+     protected ReadAllComposite getReadAllPanel() {
+        return ReadAllVendorsPanel.instance;
+    }    
+    
     @Override
     protected String getAuditUrl() {
         return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.client.Vendor" + "/" + getEntityId();
