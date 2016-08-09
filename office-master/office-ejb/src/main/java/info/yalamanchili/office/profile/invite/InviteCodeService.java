@@ -9,15 +9,19 @@
 package info.yalamanchili.office.profile.invite;
 
 import com.google.common.base.Strings;
+import info.chili.email.Email;
+import info.chili.spring.SpringContext;
+import info.yalamanchili.office.dao.invite.InviteCodeDao;
 import info.yalamanchili.office.entity.profile.invite.InvitationType;
 import info.yalamanchili.office.entity.profile.invite.InviteCode;
+import info.yalamanchili.office.jms.MessagingService;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Sort;
@@ -38,6 +42,13 @@ public class InviteCodeService {
 
     @Autowired
     protected MongoOperations mongoTemplate;
+    @Autowired
+    public InviteCodeDao inviteCodeDao;
+    
+    public static InviteCodeService instance() {
+        return SpringContext.getBean(InviteCodeService.class);
+    }
+    
 
     public InviteCodeTable getInviteCodes(int start, int limit) {
         InviteCodeTable res = new InviteCodeTable();
@@ -84,6 +95,27 @@ public class InviteCodeService {
         }
         return res;
     }
+    
+    public void sendExpiryDateAlertNotification() {
+        List<InviteCode> inviteCodes = inviteCodeDao.query();
+        Email email = new Email();
+        if (inviteCodes.size () > 0 ) {
+            int reminderDays = 3;
+            for (InviteCode inviteCode : inviteCodes) {
+               if (DateUtils.isSameDay(DateUtils.addDays(new Date(), reminderDays), inviteCode.getExpiryDate())) {
+                   email.addTo(inviteCode.getEmail());
+                   email.setHtml(Boolean.TRUE);
+                   email.setRichText(Boolean.TRUE);
+                   email.setSubject("Invitation Link About to expire "+inviteCode.getInviteType().getInvitationType());
+                   String messageText = " <b>Invitation Link is About to Expire can extend Expiry Date </b> </br> ";
+                   email.setBody(messageText);
+                   MessagingService.instance().sendEmail(email);
+               }        
+           }
+           
+        }
+    }
+    
 
     @XmlRootElement
     @XmlType
