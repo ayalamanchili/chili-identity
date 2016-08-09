@@ -51,7 +51,7 @@ public class OfficeLifeCycle implements SmartLifecycle {
                 MongodStarter starter = MongodStarter.getDefaultInstance();
                 int port = 12345;
                 IMongodConfig mongodConfig = new MongodConfigBuilder()
-                        .version(Version.Main.PRODUCTION)
+                        .version(Version.Main.V2_6)
                         .net(new Net(port, Network.localhostIsIPv6()))
                         .build();
                 mongodExecutable = starter.prepare(mongodConfig);
