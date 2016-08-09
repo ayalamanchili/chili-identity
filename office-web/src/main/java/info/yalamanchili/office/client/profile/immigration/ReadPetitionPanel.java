@@ -12,6 +12,7 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.crud.TReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
@@ -193,4 +194,13 @@ public class ReadPetitionPanel extends TReadComposite {
         return OfficeWelcome.constants.root_url() + "lca/prevLCAWages/" + JSONUtils.toString(petitionEmployee, "id");
     }
 
+     @Override
+   protected boolean enableBack() {
+       return true;
+   }
+    
+    @Override
+     protected ReadAllComposite getReadAllPanel() {
+        return ReadAllPetitionsPanel.instance;
+    } 
 }

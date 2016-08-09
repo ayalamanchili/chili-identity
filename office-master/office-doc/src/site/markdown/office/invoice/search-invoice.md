@@ -13,6 +13,13 @@ To Know the invoices under a particular vendor:
 ----
  ![alt text](../../images/vendorsearch.png "Vendor Search")
 
+To generate reports for Invoice Period Start date and Invoice Period End date:
+----
+ This report is generated based on the **Invoice date**.
+
+ ![alt text](../../images/advsearchreport.png "Invoice report")
+ ![alt text](../../images/reportresult.png "Report from mail")
+
 To generate reports for invoices:
 ----
  ![alt text](../../images/invoicereport.png "Invoices Report")

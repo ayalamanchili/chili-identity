@@ -11,6 +11,7 @@ package info.yalamanchili.office.profile.invite;
 import com.google.common.base.Strings;
 import info.chili.email.Email;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.invite.InviteCodeDao;
 import info.yalamanchili.office.entity.profile.invite.InvitationType;
 import info.yalamanchili.office.entity.profile.invite.InviteCode;
@@ -22,6 +23,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.apache.commons.lang.time.DateUtils;
+import static org.hibernate.Hibernate.entity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Sort;
@@ -106,8 +108,12 @@ public class InviteCodeService {
                    email.addTo(inviteCode.getEmail());
                    email.setHtml(Boolean.TRUE);
                    email.setRichText(Boolean.TRUE);
-                   email.setSubject("Invitation Link About to expire "+inviteCode.getInviteType().getInvitationType());
-                   String messageText = " <b>Your Invitation Link is About to Expire in 3 days please sign up as soon as possible  </b> </br> ";
+                   email.setSubject("Invitation Link About to expire "+inviteCode.getInviteType().getDescription());
+                   String messageText = " <b>Your Invitation Link is About to"
+                           + " Expire in 3 days please complete as soon as "
+                           + "possible  </b> </br> "
+                           + OfficeServiceConfiguration.instance().getPortalWebUrl() 
+                           + "?inviteCode=" + inviteCode.getInvitationCode();
                    email.setBody(messageText);
                    MessagingService.instance().sendEmail(email);
                }        
