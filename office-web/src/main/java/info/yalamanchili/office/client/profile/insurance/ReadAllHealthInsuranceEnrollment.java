@@ -5,37 +5,37 @@
  */
 package info.yalamanchili.office.client.profile.insurance;
 
+import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
-import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.profile.phonetype.CreatePhoneTypePanel;
 import java.util.logging.Logger;
 
 /**
  *
  * @author prasanthi.p
  */
-public class ReadAllInsuranceEnrollment extends CRUDReadAllComposite {
+public class ReadAllHealthInsuranceEnrollment extends CRUDReadAllComposite {
 
-    private static Logger logger = Logger.getLogger(ReadAllInsuranceEnrollment.class.getName());
-    public static ReadAllInsuranceEnrollment instance;
+    private static Logger logger = Logger.getLogger(ReadAllHealthInsuranceEnrollment.class.getName());
+    public static ReadAllHealthInsuranceEnrollment instance;
+    protected String url;
 
-    public ReadAllInsuranceEnrollment() {
+    public ReadAllHealthInsuranceEnrollment() {
         instance = this;
-        initTable("InsuranceEnrollment", OfficeWelcome.constants);
+        initTable("HealthInsurances", OfficeWelcome.constants);
     }
 
-    public ReadAllInsuranceEnrollment(JSONArray array) {
+    public ReadAllHealthInsuranceEnrollment(JSONArray array) {
         instance = this;
-        initTable("InsuranceEnrollment", array, OfficeWelcome.constants);
+        initTable("HealthInsurances", array, OfficeWelcome.constants);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class ReadAllInsuranceEnrollment extends CRUDReadAllComposite {
     }
 
     public String getReadAllPhoneTypeURL(Integer start, String limit) {
-        return OfficeWelcome.constants.root_url() + "insurance-enrollment/" + start.toString() + "/" + limit.toString();
+        return URL.encode(OfficeWelcome.constants.root_url() + "insurance-enrollment/" + start.toString() + "/" + limit);
     }
 
     @Override
@@ -68,9 +68,8 @@ public class ReadAllInsuranceEnrollment extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            logger.info("insurance entity"+entity);
             table.setText(i, 1, JSONUtils.toString(entity, "year"));
-            table.setText(i, 2, JSONUtils.toString(entity, "type"));
+            table.setText(i, 2, JSONUtils.toString(entity, "insuranceType"));
             table.setText(i, 3, JSONUtils.toString(entity, "enrolled"));
         }
 
@@ -83,6 +82,8 @@ public class ReadAllInsuranceEnrollment extends CRUDReadAllComposite {
 
     @Override
     public void viewClicked(String entityId) {
+        TabPanel.instance().profilePanel.entityPanel.clear();
+        TabPanel.instance().profilePanel.entityPanel.add(new ReadHealthInsuranceEnrollment(entityId));
     }
 
     @Override
@@ -105,18 +106,15 @@ public class ReadAllInsuranceEnrollment extends CRUDReadAllComposite {
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Insurance Enrollment Information");
         TabPanel.instance().profilePanel.entityPanel.clear();
-        TabPanel.instance().profilePanel.entityPanel.add(new ReadAllInsuranceEnrollment());
+        TabPanel.instance().profilePanel.entityPanel.add(new ReadAllHealthInsuranceEnrollment());
     }
 
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().profilePanel.entityPanel.clear();
-//        TabPanel.instance().profilePanel.entityPanel.add(new UpdatePhoneTypePanel(getEntity(entityId)));
     }
 
     @Override
     protected void createButtonClicked() {
-        TabPanel.instance().profilePanel.entityPanel.clear();
-        TabPanel.instance().profilePanel.entityPanel.add(new CreatePhoneTypePanel(CreateComposite.CreateCompositeType.CREATE));
     }
 }

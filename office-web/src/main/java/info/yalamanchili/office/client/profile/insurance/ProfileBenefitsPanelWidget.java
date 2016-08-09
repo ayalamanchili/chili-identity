@@ -43,7 +43,7 @@ public class ProfileBenefitsPanelWidget extends ALComposite implements ClickHand
     @Override
     protected void addWidgets() {
         flowmainPanels.add(benefitsPanel);
-       // flowmainPanels.add(healthInsuranceL);
+        flowmainPanels.add(healthInsuranceL);
         scrollpanel.add(flowmainPanels);
     }
 
@@ -58,7 +58,7 @@ public class ProfileBenefitsPanelWidget extends ALComposite implements ClickHand
             TabPanel.instance().profilePanel.entityPanel.add(new CreateInsuranceEnrollmentPanel(CreateComposite.CreateCompositeType.CREATE));
         }
         if (event.getSource().equals(healthInsuranceL)) {
-            TabPanel.instance().profilePanel.entityPanel.add(new ReadAllInsuranceEnrollment());
+            TabPanel.instance().profilePanel.entityPanel.add(new ReadAllHealthInsuranceEnrollment());
         }
     }
 

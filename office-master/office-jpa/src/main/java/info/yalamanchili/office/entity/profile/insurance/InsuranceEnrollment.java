@@ -8,15 +8,12 @@
  */
 package info.yalamanchili.office.entity.profile.insurance;
 
-import info.chili.jpa.AbstractEntity;
-import info.yalamanchili.office.entity.profile.Employee;
+import info.chili.jpa.AbstractHandleEntity;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Indexed;
 
@@ -29,18 +26,12 @@ import org.hibernate.search.annotations.Indexed;
 @XmlType
 @Entity
 @Audited
-public class InsuranceEnrollment extends AbstractEntity {
+public class InsuranceEnrollment extends AbstractHandleEntity {
 
     private static final long serialVersionUID = 1L;
 
-    protected Boolean enrolled;
-
     @Enumerated(EnumType.STRING)
-    protected InsuranceType type;
-
-    @ManyToOne
-    @ForeignKey(name = "FK_EMP_INSU_ENRO")
-    protected Employee employee;
+    protected InsuranceType insuranceType;
 
     protected String comments;
 
@@ -49,45 +40,17 @@ public class InsuranceEnrollment extends AbstractEntity {
     protected InsuranceEnrollmentStatus status;
 
     /**
-     * @return the enrolled
+     * @return the insuranceType
      */
-    public Boolean getEnrolled() {
-        return enrolled;
+    public InsuranceType getInsuranceType() {
+        return insuranceType;
     }
 
     /**
-     * @param enrolled the enrolled to set
+     * @param insuranceType the insuranceType to set
      */
-    public void setEnrolled(Boolean enrolled) {
-        this.enrolled = enrolled;
-    }
-
-    /**
-     * @return the type
-     */
-    public InsuranceType getType() {
-        return type;
-    }
-
-    /**
-     * @param type the type to set
-     */
-    public void setType(InsuranceType type) {
-        this.type = type;
-    }
-
-    /**
-     * @return the employee
-     */
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    /**
-     * @param employee the employee to set
-     */
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
+    public void setInsuranceType(InsuranceType insuranceType) {
+        this.insuranceType = insuranceType;
     }
 
     /**
@@ -134,7 +97,7 @@ public class InsuranceEnrollment extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "InsuranceEnrollment{" + "enrolled=" + enrolled + ", type=" + type + ", employee=" + employee + ", comments=" + comments + ", year=" + year + ", status=" + status + '}';
+        return "InsuranceEnrollment{" + "insuranceType=" + getInsuranceType() + ", comments=" + comments + ", year=" + year + ", status=" + status + '}';
     }
 
 }
