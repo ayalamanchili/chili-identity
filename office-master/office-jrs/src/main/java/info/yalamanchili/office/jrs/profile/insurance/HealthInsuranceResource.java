@@ -11,7 +11,12 @@ package info.yalamanchili.office.jrs.profile.insurance;
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.dao.profile.insurance.HealthInsuranceDao;
+import info.yalamanchili.office.dao.profile.insurance.HealthInsuranceWaiverDao;
+import info.yalamanchili.office.dao.profile.insurance.InsuranceEnrollmentDao;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.entity.profile.insurance.HealthInsuranceWaiver;
 import info.yalamanchili.office.entity.profile.insurance.HealthInsurances;
+import info.yalamanchili.office.entity.profile.insurance.InsuranceEnrollment;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
 import javax.ws.rs.GET;
@@ -60,21 +65,37 @@ public class HealthInsuranceResource extends CRUDResource<HealthInsurances> {
         tableObj.setSize(getDao().size());
         return tableObj;
     }
-//    @GET
-//    @Path("/{start}/{limit}")
-//    public HealthInsuranceTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
-//        HealthInsuranceTable tableObj = new HealthInsuranceTable();
-//        Employee currentEmp = OfficeSecurityService.instance().getCurrentUser();
-//        tableObj.setEntities(healthInsuranceDao.queryForEmployee(currentEmp.getId(), start, limit));
-//        tableObj.setSize(healthInsuranceDao.size(currentEmp.getId()));
-//        return tableObj;
-//    }
+    @GET
+    @Path("/{empId}/{start}/{limit}")
+    public HealthInsuranceTable table(@PathParam("empId") Long empId, @PathParam("start") int start, @PathParam("limit") int limit) {
+        HealthInsuranceTable tableObj = new HealthInsuranceTable();
+        tableObj.setEntities(healthInsuranceDao.queryForEmployee(empId, start, limit));
+        tableObj.setSize(healthInsuranceDao.size(empId));
+        return tableObj;
+    }
 
     @PUT
     @Validate
     @Override
     public HealthInsurances save(HealthInsurances entity) {
-        return super.save(entity);
+        HealthInsurances insurance = new HealthInsurances();
+        insurance.setEnrolled(entity.getEnrolled());
+        insurance.setEmployee(OfficeSecurityService.instance().getCurrentUser());
+        if (entity.getInsuranceEnrollment() != null) {
+            InsuranceEnrollment entityEnrollment = entity.getInsuranceEnrollment();
+            entityEnrollment.setTargetEntityId(OfficeSecurityService.instance().getCurrentUser().getId());
+            entityEnrollment.setTargetEntityName(InsuranceEnrollment.class.getCanonicalName());
+            InsuranceEnrollment insEnrollment = InsuranceEnrollmentDao.instance().save(entityEnrollment);
+            insurance.setInsuranceEnrollment(insEnrollment);
+        }
+        if (entity.getHealthInsuranceWaiver() != null) {
+            HealthInsuranceWaiver entityWaiver = entity.getHealthInsuranceWaiver();
+            entityWaiver.setTargetEntityId(OfficeSecurityService.instance().getCurrentUser().getId());
+            entityWaiver.setTargetEntityName(InsuranceEnrollment.class.getCanonicalName());
+            HealthInsuranceWaiver waiverNew = HealthInsuranceWaiverDao.instance().save(entityWaiver);
+            insurance.setHealthInsuranceWaiver(waiverNew);
+        }
+        return HealthInsuranceDao.instance().save(insurance);
     }
 
     @PUT
