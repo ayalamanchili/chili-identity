@@ -10,7 +10,6 @@ package info.yalamanchili.office.dao.profile.insurance;
 
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.entity.profile.insurance.HealthInsuranceWaiver;
 import info.yalamanchili.office.entity.profile.insurance.HealthInsurances;
 import info.yalamanchili.office.entity.profile.insurance.InsuranceEnrollment;
@@ -19,7 +18,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -61,17 +59,15 @@ public class HealthInsuranceDao extends CRUDDao<HealthInsurances> {
         return entity;
     }
 
-    @Cacheable(value = OfficeCacheKeys.ADVANCE_REQUSITON, key = "{#root.methodName,#start,#limit}")
     public List<HealthInsurances> queryAll(Integer start, Integer limit) {
-        Query findAllQuery = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " order by dateRequested DESC", entityCls);
+        Query findAllQuery = getEntityManager().createQuery("from " + HealthInsurances.class.getCanonicalName() + " order by dateRequested DESC", entityCls);
         findAllQuery.setFirstResult(start);
         findAllQuery.setMaxResults(limit);
         return findAllQuery.getResultList();
     }
 
-    @Cacheable(value = OfficeCacheKeys.ADVANCE_REQUSITON, key = "{#root.methodName,#employeeId,#start,#limit}")
     public List<HealthInsurances> queryForEmployee(Long employeeId, Integer start, Integer limit) {
-        Query findAllQuery = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " where employee.id=:employeeIdParam order by dateRequested DESC", entityCls);
+        Query findAllQuery = getEntityManager().createQuery("from " + HealthInsurances.class.getCanonicalName() + " as insurance where insurance.employee.id=:employeeIdParam order by dateRequested DESC", entityCls);
         findAllQuery.setParameter("employeeIdParam", employeeId);
         findAllQuery.setFirstResult(start);
         findAllQuery.setMaxResults(limit);
@@ -80,12 +76,10 @@ public class HealthInsuranceDao extends CRUDDao<HealthInsurances> {
 
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     @Override
-    @Cacheable(value = OfficeCacheKeys.ADVANCE_REQUSITON, key = "{#root.methodName}")
     public Long size() {
         return super.size();
     }
 
-    @Cacheable(value = OfficeCacheKeys.ADVANCE_REQUSITON, key = "{#root.methodName,#employeeId}")
     public Long size(Long employeeId) {
         TypedQuery<Long> findAllQuery = getEntityManager().createQuery("select count(*) from " + entityCls.getCanonicalName() + " where employee.id=:employeeIdParam", Long.class);
         findAllQuery.setParameter("employeeIdParam", employeeId);
@@ -104,5 +98,4 @@ public class HealthInsuranceDao extends CRUDDao<HealthInsurances> {
     public static HealthInsuranceDao instance() {
         return SpringContext.getBean(HealthInsuranceDao.class);
     }
-
 }
