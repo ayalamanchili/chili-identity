@@ -19,6 +19,8 @@ import info.yalamanchili.office.client.analytics.emailevent.ReadAllEmailEventsPa
 import info.yalamanchili.office.client.i18n.ReadAllci18nResourceBundlesPanel;
 import info.yalamanchili.office.client.invite.InviteCodeSidePanel;
 import info.yalamanchili.office.client.invite.ReadAllInviteCodePanel;
+import info.yalamanchili.office.client.releasenotes.ReadAllReleaseNotesPanel;
+import info.yalamanchili.office.client.releasenotes.ReleaseNotesSidePanel;
 
 /**
  *
@@ -38,7 +40,8 @@ public class ChiliAdminMenu extends Composite {
         chiliAdminMenuBar.addItem("Task Rules", chiliAdminMenubpmTaskDelegate);
         chiliAdminMenuBar.addItem("Email Rules", chiliAdminMenuEmailPreferenceRule);
         chiliAdminMenuBar.addItem("Email Events", chiliAdminMenuEvent);
-        chiliAdminMenuBar.addItem("Invite Code", chiliAdminMenuCode);
+        chiliAdminMenuBar.addItem("Invite Code", chiliAdminMenuCode);        
+        chiliAdminMenuBar.addItem("Release Notes", chiliAdminMenuRelease);
         chiliAdminMenuBar.addStyleName("entityMenuBar");
     }
     Command chiliAdminMenuResourceBundles = new Command() {
@@ -78,4 +81,13 @@ public class ChiliAdminMenu extends Composite {
             TabPanel.instance().getChiliAdminPanel().entityPanel.add(new ReadAllInviteCodePanel());
         }
     };
-}
+    Command chiliAdminMenuRelease = new Command() {
+        public void execute() {
+            TabPanel.instance().getChiliAdminPanel().entityPanel.clear();
+            TabPanel.instance().getChiliAdminPanel().sidePanel.clear();
+            TabPanel.instance().getChiliAdminPanel().sidePanel.add(new ReleaseNotesSidePanel());
+            TabPanel.instance().getChiliAdminPanel().entityPanel.add(new ReadAllReleaseNotesPanel());
+        }
+    };
+}    
+
