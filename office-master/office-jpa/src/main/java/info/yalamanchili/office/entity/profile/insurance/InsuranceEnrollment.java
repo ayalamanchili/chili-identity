@@ -37,6 +37,7 @@ public class InsuranceEnrollment extends AbstractHandleEntity {
 
     protected String year;
 
+    @Enumerated(EnumType.STRING)
     protected InsuranceEnrollmentStatus status;
 
     /**
@@ -99,5 +100,4 @@ public class InsuranceEnrollment extends AbstractHandleEntity {
     public String toString() {
         return "InsuranceEnrollment{" + "insuranceType=" + getInsuranceType() + ", comments=" + comments + ", year=" + year + ", status=" + status + '}';
     }
-
 }
