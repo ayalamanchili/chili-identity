@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.widgets.ClickableLink;
+import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.benefits.RetirementPlanReadPanel;
 
@@ -55,11 +56,7 @@ public class ProfileBenefitsPanelWidget extends ALComposite implements ClickHand
         }
         if (event.getSource().equals(healthInsuranceL)) {
             TabPanel.instance().profilePanel.entityPanel.clear();
-            TabPanel.instance().profilePanel.entityPanel.add(new CreateInsuranceEnrollmentPanel(CreateComposite.CreateCompositeType.CREATE));
-        }
-        if (event.getSource().equals(healthInsuranceL)) {
-            TabPanel.instance().profilePanel.entityPanel.add(new ReadAllHealthInsuranceEnrollment());
+            TabPanel.instance().profilePanel.entityPanel.add(new CreateInsuranceEnrollmentPanel(CreateComposite.CreateCompositeType.CREATE, OfficeWelcome.instance().employeeId));
         }
     }
-
 }
