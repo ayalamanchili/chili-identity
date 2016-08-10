@@ -8,9 +8,10 @@
  */
 package info.yalamanchili.office.invoice;
 
+import info.yalamanchili.office.dao.client.MissingInvoicesReportDto;
 import com.google.common.base.Strings;
+import info.chili.commons.DateUtils;
 import info.chili.reporting.ReportGenerator;
-import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.client.InvoiceDao;
@@ -22,6 +23,10 @@ import info.yalamanchili.office.jms.MessagingService;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TemporalType;
@@ -176,8 +181,113 @@ public class InvoiceService {
         for (Invoice invoice : invoices) {
             res.add(InvoiceDto.map(mapper, invoice));
         }
-        String[] columnOrder = new String[]{"employee", "itemNumber", "invoiceNumber", "startDate", "endDate", "invoiceDate", "hours", "invoicestatus","timeSheetstatus"};
+        String[] columnOrder = new String[]{"employee", "itemNumber", "invoiceNumber", "startDate", "endDate", "invoiceDate", "hours", "invoicestatus", "timeSheetstatus"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Invoice Summary Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
+    }
+
+    TreeSet<Date> dates = new TreeSet();
+
+    @Async
+    @Transactional
+    public void generateMissingInvoiceReport(Date startDate, Date endDate, String email) {
+        List<MissingInvoicesReportDto> missingInvoices = new ArrayList();
+        List<Employee> emps = EmployeeDao.instance().queryAll(0, 1000);
+        for (Employee emp : emps) {
+            List<ClientInformation> cpds = invoiceDao.getMissingInvoicesForDates(startDate, endDate, emp);
+            if (cpds != null && cpds.size() > 0) {
+                for (ClientInformation cpd : cpds) {
+                    if (cpd.getInvoice().size() > 0) {
+                        List<Invoice> invoices = cpd.getInvoice();
+                        List<Invoice> resInvoices = new ArrayList();
+                        for (Invoice invoice : invoices) {
+                            if (invoice.getStartDate() != null && invoice.getEndDate() != null) {
+                                if ((invoice.getStartDate().after(startDate) || invoice.getStartDate().equals(startDate)) && (invoice.getEndDate().before(endDate) || invoice.getEndDate().equals(endDate))) {
+                                    resInvoices.add(invoice);
+                                }
+                            }
+                        }
+                        if (resInvoices.size() > 0) {
+                            Map<Date, Invoice> sortInvoicesWRTStartDate = sortInvoicesWRTStartDate(resInvoices);
+                            Invoice firstInvoice = sortInvoicesWRTStartDate.get(dates.first());
+                            if (!startDate.equals(DateUtils.getNextDay(dates.first(), 0))) {
+                                if (startDate.after(cpd.getStartDate()) || startDate.equals(cpd.getStartDate())) {
+                                    MissingInvoicesReportDto dto = new MissingInvoicesReportDto();
+                                    dto.setEmployee(emp.getFirstName() + " " + emp.getLastName());
+                                    dto.setItemNumber(cpd.getItemNumber());
+                                    dto.setInvFrequency(cpd.getInvoiceFrequency().name());
+                                    if (startDate.before(dates.first())) {
+                                        dto.setMissingInvPeriodFrom(startDate);
+                                        dto.setMissingInvPeriodTo(DateUtils.getNextDay(dates.first(), -2));
+                                    } else {
+                                        dto.setMissingInvPeriodFrom(dates.first());
+                                        dto.setMissingInvPeriodTo(DateUtils.getNextDay(startDate, 0));
+                                    }
+                                    missingInvoices.add(dto);
+                                } else {
+                                    MissingInvoicesReportDto dto = new MissingInvoicesReportDto();
+                                    dto.setEmployee(emp.getFirstName() + " " + emp.getLastName());
+                                    dto.setItemNumber(cpd.getItemNumber());
+                                    dto.setInvFrequency(cpd.getInvoiceFrequency().name());
+                                    dto.setMissingInvPeriodFrom(DateUtils.getNextDay(cpd.getStartDate(), 0));
+                                    dto.setMissingInvPeriodTo(DateUtils.getNextDay(firstInvoice.getStartDate(), -1));
+                                    missingInvoices.add(dto);
+                                }
+                            }
+                            Invoice lastInvoice = sortInvoicesWRTStartDate.get(dates.last());
+                            if (!endDate.equals(lastInvoice.getEndDate())) {
+                                if (endDate.before(cpd.getEndDate()) || cpd.getEndDate().equals(endDate)) {
+                                    if (endDate.after(lastInvoice.getEndDate())) {
+                                        MissingInvoicesReportDto dto = new MissingInvoicesReportDto();
+                                        dto.setEmployee(emp.getFirstName() + " " + emp.getLastName());
+                                        dto.setItemNumber(cpd.getItemNumber());
+                                        dto.setInvFrequency(cpd.getInvoiceFrequency().name());
+                                        dto.setMissingInvPeriodFrom(DateUtils.getNextDay(lastInvoice.getEndDate(), 0));
+                                        dto.setMissingInvPeriodTo(endDate);
+                                        missingInvoices.add(dto);
+                                    }
+
+                                }
+                            }
+                            System.out.println("dates array size is .... " + dates.size());
+                            for (int i = 0; i < dates.size(); i++) {
+                                Invoice inv1 = (Invoice) sortInvoicesWRTStartDate.values().toArray()[i];
+                                Invoice inv2 = new Invoice();
+                                if (dates.size() > (i + 1)) {
+                                    inv2 = (Invoice) sortInvoicesWRTStartDate.values().toArray()[i + 1];
+                                }
+                                if (inv2 != null && inv2.getId() != null) {
+                                    Date date1 = inv1.getEndDate();
+                                    Date date2 = inv2.getStartDate();
+                                    if (!date2.equals(DateUtils.getNextDay(date1, 1))) {
+                                        MissingInvoicesReportDto dto = new MissingInvoicesReportDto();
+                                        dto.setEmployee(emp.getFirstName() + " " + emp.getLastName());
+                                        dto.setItemNumber(cpd.getItemNumber());
+                                        dto.setInvFrequency(cpd.getInvoiceFrequency().name());
+                                        dto.setMissingInvPeriodFrom(DateUtils.getNextDay(date1, 0));
+                                        dto.setMissingInvPeriodTo(DateUtils.getNextDay(date2, -2));
+                                        missingInvoices.add(dto);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            dates.clear();
+        }
+        String[] columnOrder = new String[]{"employee", "itemNumber", "invFrequency", "missingInvPeriodFrom", "missingInvPeriodTo"};
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(missingInvoices, "Missing Invoices Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
+    }
+
+    private Map<Date, Invoice> sortInvoicesWRTStartDate(List<Invoice> invoices) {
+        Map<Date, Invoice> invoicesSortedMap = new TreeMap<Date, Invoice>();
+        Set<Date> dates = new TreeSet<Date>();
+        for (Invoice inv : invoices) {
+            invoicesSortedMap.put(inv.getStartDate(), inv);
+            dates.add(inv.getStartDate());
+        }
+        this.dates.addAll(dates);
+        return invoicesSortedMap;
     }
 
     @XmlRootElement
