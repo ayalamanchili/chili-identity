@@ -1,0 +1,137 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package info.yalamanchili.office.client.profile.insurance;
+
+import com.google.gwt.http.client.URL;
+import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
+import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.CRUDReadAllComposite;
+import info.chili.gwt.crud.TableRowOptionsWidget;
+import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
+import java.util.Date;
+import java.util.logging.Logger;
+
+/**
+ *
+ * @author radhika.mukkala
+ */
+public class ReadAllHealthInsuranceWaiverPanel extends CRUDReadAllComposite {
+
+    private static Logger logger = Logger.getLogger(ReadAllHealthInsuranceWaiverPanel.class.getName());
+    public static ReadAllHealthInsuranceWaiverPanel instance;
+    protected String url;
+    protected String empId;
+
+    public ReadAllHealthInsuranceWaiverPanel() {
+        instance = this;
+        initTable("HealthInsurances", OfficeWelcome.constants);
+    }
+
+    public ReadAllHealthInsuranceWaiverPanel(String empId) {
+        instance = this;
+        this.empId = empId;
+        initTable("HealthInsurances", OfficeWelcome.constants);
+    }
+
+    public ReadAllHealthInsuranceWaiverPanel(JSONArray array) {
+        instance = this;
+        initTable("HealthInsurances", array, OfficeWelcome.constants);
+    }
+
+    @Override
+    public void preFetchTable(int start) {
+        HttpService.HttpServiceAsync.instance().doGet(getReadAllInsuranceWaiverURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String result) {
+                        postFetchTable(result);
+                    }
+                });
+
+    }
+
+    public String getReadAllInsuranceWaiverURL(Integer start, String limit) {
+        if (empId != null && !"".equals(empId)) {
+            return URL.encode(OfficeWelcome.constants.root_url() + "insurance-enrollment/" + empId + "/" + start.toString() + "/" + limit);
+        } else {
+            return URL.encode(OfficeWelcome.constants.root_url() + "insurance-enrollment/" + start.toString() + "/" + limit);
+        }
+    }
+
+    @Override
+    public void createTableHeader() {
+        table.setText(0, 0, getKeyValue("Action"));
+        table.setText(0, 1, getKeyValue("Year"));
+        table.setText(0, 2, getKeyValue("Enrolled"));
+        table.setText(0, 3, getKeyValue("waivingCoverageFor"));
+        table.setText(0, 4, getKeyValue("waivingCoverageDueTo"));
+    }
+
+    @Override
+    public void fillData(JSONArray entities) {
+        for (int i = 1; i <= entities.size(); i++) {
+            JSONObject entity = (JSONObject) entities.get(i - 1);
+            if (entity.get("enrolled").isString().stringValue().equals("false")) {
+                JSONObject healthInsuranceWaiver = (JSONObject) entity.get("healthInsuranceWaiver");
+                addOptionsWidget(i, entity);
+                table.setText(i, 1, String.valueOf(DateTimeFormat.getFormat("MM/dd/yyyy").format(new Date()).split("/")[2]));
+                table.setText(i, 2, JSONUtils.toString(entity, "enrolled"));
+                table.setText(i, 3, JSONUtils.toString(healthInsuranceWaiver, "waivingCoverageFor"));
+                table.setText(i, 4, JSONUtils.toString(healthInsuranceWaiver, "waivingCoverageDueTo"));
+            }
+        }
+
+    }
+
+    @Override
+    protected void addOptionsWidget(int row, JSONObject entity) {
+        createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+    }
+
+    @Override
+    public void viewClicked(String entityId) {
+        TabPanel.instance().profilePanel.entityPanel.clear();
+        TabPanel.instance().profilePanel.entityPanel.add(new ReadHealthInsuranceEnrollment(entityId));
+    }
+
+    @Override
+    public void deleteClicked(String entityId) {
+        HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
+    }
+
+    protected String getDeleteURL(String entityId) {
+        return OfficeWelcome.instance().constants.root_url() + "insurance-enrollment/delete/" + entityId;
+    }
+
+    @Override
+    public void postDeleteSuccess() {
+        new ResponseStatusWidget().show("Successfully Deleted Insurance Enrollment Information");
+        TabPanel.instance().profilePanel.entityPanel.clear();
+        TabPanel.instance().profilePanel.entityPanel.add(new ReadAllHealthInsuranceEnrollment());
+    }
+
+    @Override
+    public void updateClicked(String entityId) {
+        TabPanel.instance().profilePanel.entityPanel.clear();
+    }
+
+    @Override
+    protected void createButtonClicked() {
+    }
+}
