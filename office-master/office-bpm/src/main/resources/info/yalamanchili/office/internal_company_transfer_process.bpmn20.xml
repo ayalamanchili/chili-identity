@@ -44,7 +44,7 @@
                 Employee Company Change Immigration Task for #{employee.firstName} #{employee.lastName}.
                 
                 Effective on #{transferDate}, #{employee.firstName} #{employee.lastName} is trasnferred from #{previousCompany} to #{transferCompany}.
-                Please initiate the necessary immigration changes as needeed to reflect the transfer. 
+                Please initiate the necessary immigration changes as needed to reflect the transfer. 
             </documentation>
         </userTask>
         <endEvent id="internalCompanyTransferProcessEnd"/>
