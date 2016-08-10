@@ -35,10 +35,12 @@ public class ReadAllReleaseNotesPanel extends CRUDReadAllComposite {
         instance = this;
         initTable("ReleaseNotes", OfficeWelcome.constants2);
     }
+
     public ReadAllReleaseNotesPanel(JSONArray array) {
         instance = this;
         initTable("ReleaseNotes", array, OfficeWelcome.constants2);
     }
+
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().chiliAdminPanel.entityPanel.clear();
@@ -49,11 +51,11 @@ public class ReadAllReleaseNotesPanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                postDeleteSuccess();
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
     }
 
     protected String getDeleteURL(String entityId) {
@@ -79,12 +81,12 @@ public class ReadAllReleaseNotesPanel extends CRUDReadAllComposite {
 
         HttpService.HttpServiceAsync.instance().doGet(getBPMTaskDelegateUrl(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
                 false, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                logger.info(result);
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        logger.info(result);
+                        postFetchTable(result);
+                    }
+                });
     }
 
     public String getBPMTaskDelegateUrl(Integer start, String limit) {
@@ -96,7 +98,7 @@ public class ReadAllReleaseNotesPanel extends CRUDReadAllComposite {
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Summary"));
-        table.setText(0, 2, getKeyValue("End Date"));   
+        table.setText(0, 2, getKeyValue("End Date"));
         table.setText(0, 3, getKeyValue("UserIds"));
         table.setText(0, 4, getKeyValue("Roles"));
     }
@@ -107,10 +109,10 @@ public class ReadAllReleaseNotesPanel extends CRUDReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "summary"));
-            table.setText(i, 2, info.chili.gwt.date.DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));            
+            table.setText(i, 2, info.chili.gwt.date.DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
             table.setText(i, 3, JSONUtils.toString(entity, "userIds"));
             table.setText(i, 4, JSONUtils.toString(entity, "roles"));
-            
+
         }
     }
 
@@ -118,17 +120,17 @@ public class ReadAllReleaseNotesPanel extends CRUDReadAllComposite {
     protected void addOptionsWidget(int row, JSONObject entity) {
         createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "userIds"));
     }
-    
+
     @Override
     protected boolean enableQuickView() {
         return true;
     }
-    
+
     @Override
     protected void onQuickView(int row, String entityId) {
         new GenericPopup(new ReadReleaseNotesPanel(entityId), Window.getClientWidth() / 3, 0).show();
     }
-    
+
     @Override
     protected boolean enablePersistedQuickView() {
         return true;
