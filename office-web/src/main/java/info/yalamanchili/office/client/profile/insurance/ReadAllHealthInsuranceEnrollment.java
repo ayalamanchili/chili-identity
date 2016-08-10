@@ -27,9 +27,16 @@ public class ReadAllHealthInsuranceEnrollment extends CRUDReadAllComposite {
     private static Logger logger = Logger.getLogger(ReadAllHealthInsuranceEnrollment.class.getName());
     public static ReadAllHealthInsuranceEnrollment instance;
     protected String url;
+    protected String empId;
 
     public ReadAllHealthInsuranceEnrollment() {
         instance = this;
+        initTable("HealthInsurances", OfficeWelcome.constants);
+    }
+
+    public ReadAllHealthInsuranceEnrollment(String empId) {
+        instance = this;
+        this.empId = empId;
         initTable("HealthInsurances", OfficeWelcome.constants);
     }
 
@@ -40,7 +47,7 @@ public class ReadAllHealthInsuranceEnrollment extends CRUDReadAllComposite {
 
     @Override
     public void preFetchTable(int start) {
-        HttpService.HttpServiceAsync.instance().doGet(getReadAllPhoneTypeURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
+        HttpService.HttpServiceAsync.instance().doGet(getReadAllInsEnrollmentURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
@@ -50,8 +57,12 @@ public class ReadAllHealthInsuranceEnrollment extends CRUDReadAllComposite {
 
     }
 
-    public String getReadAllPhoneTypeURL(Integer start, String limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "insurance-enrollment/" + start.toString() + "/" + limit);
+    public String getReadAllInsEnrollmentURL(Integer start, String limit) {
+        if (empId != null && !"".equals(empId)) {
+            return URL.encode(OfficeWelcome.constants.root_url() + "insurance-enrollment/" + empId + "/" + start.toString() + "/" + limit);
+        } else {
+            return URL.encode(OfficeWelcome.constants.root_url() + "insurance-enrollment/" + start.toString() + "/" + limit);
+        }
     }
 
     @Override
@@ -60,17 +71,19 @@ public class ReadAllHealthInsuranceEnrollment extends CRUDReadAllComposite {
         table.setText(0, 1, getKeyValue("Year"));
         table.setText(0, 2, getKeyValue("InsuranceType"));
         table.setText(0, 3, getKeyValue("Enrolled"));
-
     }
 
     @Override
     public void fillData(JSONArray entities) {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
-            addOptionsWidget(i, entity);
-            table.setText(i, 1, JSONUtils.toString(entity, "year"));
-            table.setText(i, 2, JSONUtils.toString(entity, "insuranceType"));
-            table.setText(i, 3, JSONUtils.toString(entity, "enrolled"));
+            if (entity.get("enrolled").isString().stringValue().equals("true")) {
+                JSONObject insuranceEnrollment = (JSONObject) entity.get("insuranceEnrollment");
+                addOptionsWidget(i, entity);
+                table.setText(i, 1, JSONUtils.toString(insuranceEnrollment, "year"));
+                table.setText(i, 2, JSONUtils.toString(insuranceEnrollment, "insuranceType"));
+                table.setText(i, 3, JSONUtils.toString(entity, "enrolled"));
+            }
         }
 
     }
