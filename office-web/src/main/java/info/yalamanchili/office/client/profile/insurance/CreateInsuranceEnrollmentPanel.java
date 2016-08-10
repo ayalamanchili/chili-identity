@@ -11,6 +11,7 @@ package info.yalamanchili.office.client.profile.insurance;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -38,12 +39,19 @@ public class CreateInsuranceEnrollmentPanel extends CreateComposite implements C
     FlowPanel flowPanel = new FlowPanel();
     VerticalPanel addrWidgetPanel = new VerticalPanel();
     EnumField yearsF;
+    protected String empId;
 
     HealthInsuranceWaiverPanel insuranceWaiver = new HealthInsuranceWaiverPanel();
     InsuranceEnrollmentPanel insuranceEnrollment = new InsuranceEnrollmentPanel();
 
     public CreateInsuranceEnrollmentPanel(CreateComposite.CreateCompositeType type) {
         super(type);
+        initCreateComposite("HealthInsurances", OfficeWelcome.constants);
+    }
+    
+    public CreateInsuranceEnrollmentPanel(CreateComposite.CreateCompositeType type, String empId) {
+        super(type);
+        this.empId = empId;
         initCreateComposite("HealthInsurances", OfficeWelcome.constants);
     }
 
@@ -87,20 +95,26 @@ public class CreateInsuranceEnrollmentPanel extends CreateComposite implements C
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Insurance Enrollment Created");
         TabPanel.instance().profilePanel.entityPanel.clear();
-        TabPanel.instance().profilePanel.entityPanel.add(new ReadAllHealthInsuranceEnrollment());
+        JSONObject resultEntity = (JSONObject) JSONParser.parseLenient(result);
+        if (resultEntity.containsKey("healthInsuranceWaiver")) {
+            TabPanel.instance().profilePanel.entityPanel.add(new ReadAllHealthInsuranceWaiverPanel(empId));
+        } else {
+            TabPanel.instance().profilePanel.entityPanel.add(new ReadAllHealthInsuranceEnrollment(empId));
+        }
     }
 
     @Override
     protected void addListeners() {
         enrolled.addClickHandler(this);
         enrolledNo.addClickHandler(this);
-
     }
 
     @Override
     protected void configure() {
         addrWidgetPanel.setStyleName("crudCompositeCaptionPanel");
         create.setText("Submit");
+        enrolled.setValue(true);
+        addenrolledWidget();
     }
 
     @Override
@@ -108,7 +122,6 @@ public class CreateInsuranceEnrollmentPanel extends CreateComposite implements C
         entityFieldsPanel.add(tac1);
         entityFieldsPanel.add(enrolled);
         entityFieldsPanel.add(enrolledNo);
-
     }
 
     @Override
@@ -122,6 +135,9 @@ public class CreateInsuranceEnrollmentPanel extends CreateComposite implements C
 
     @Override
     public void onClick(ClickEvent event) {
+        if(event.getSource().equals(create)){
+            create.setEnabled(false);
+        }
         if (event.getSource().equals(enrolled)) {
             addenrolledWidget();
         } else if (event.getSource().equals(enrolledNo)) {
@@ -139,6 +155,11 @@ public class CreateInsuranceEnrollmentPanel extends CreateComposite implements C
             insuranceEnrollment = new InsuranceEnrollmentPanel();
             entityFieldsPanel.add(insuranceEnrollment);
         }
+        if (create.isAttached()) {
+            entityActionsPanel.remove(create);
+        }
+        entityFieldsPanel.add(create);
+        entityFieldsPanel.add(new ReadAllHealthInsuranceEnrollment(empId));
     }
 
     protected void addenrolledNoWidget() {
@@ -150,6 +171,7 @@ public class CreateInsuranceEnrollmentPanel extends CreateComposite implements C
             insuranceWaiver = new HealthInsuranceWaiverPanel();
             entityFieldsPanel.add(insuranceWaiver);
         }
+        entityFieldsPanel.add(create);
+        entityFieldsPanel.add(new ReadAllHealthInsuranceWaiverPanel(empId));
     }
-
 }
