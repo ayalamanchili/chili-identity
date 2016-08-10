@@ -66,7 +66,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Scope("prototype")
 public class ContractService {
-    
+
     @PersistenceContext
     protected EntityManager em;
     @Autowired
@@ -323,7 +323,7 @@ public class ContractService {
             if (vi.getVendorFees() != null) {
                 BigDecimal value = new BigDecimal(vi.getVendorFees());
                 BigDecimal vendorFee = value.divide(new BigDecimal(100)).multiply(dto.getBillingRate());
-                //dto.setFinalBillingRate(dto.getBillingRate().subtract(vendorFee));
+                dto.setBillingRate(getEffectiveBillingRate(ci.getId()));
                 dto.setFinalBillingRate(dto.getBillingRate().subtract(calcVendorMargin(vendorFee, vi.getMaxFees(), vi.getMinFees())));
             }
         }
@@ -421,7 +421,6 @@ public class ContractService {
                 getEffectiveOverTimePayRate1099(ci, dto);
                 getEffectiveInvoiceFrequency1099(ci, dto);
             }
-            getEffectiveBillingRate(ci, dto, vi);
             getEffectiveOvertimeBillingRate(ci, dto);
             getEffectiveBillingInvoiceFrequency(ci, dto);
         }
@@ -506,7 +505,7 @@ public class ContractService {
         queryForSub.setCacheable(false);
         queryForSub.setLockMode("lockmode", LockMode.NONE);
         ScrollableResults scrollableResults = queryForSub.scroll(ScrollMode.FORWARD_ONLY);
-        
+
         while (scrollableResults.next()) {
             ClientInformation ci = (ClientInformation) scrollableResults.get(0);
             table.getEntities().add(mapClientInformation(ci));
@@ -514,18 +513,6 @@ public class ContractService {
         scrollableResults.close();
         session.close();
         return table;
-    }
-
-    public void getEffectiveBillingRate(ClientInformation ci, ContractDto dto, Vendor vi) {
-        dto.setBillingRate(null);
-        Query query = em.createNativeQuery("Select billingRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and billingRate is not null and effectiveDate <= NOW() order by effectiveDate desc,updatedTs desc LIMIT 1");
-        for (Object obj : query.getResultList()) {
-            dto.setBillingRate((BigDecimal) obj);
-            if (vi.getVendorFees() != null && vi.getVendorFees() > 0) {
-                BigDecimal value = new BigDecimal(vi.getVendorFees());
-                dto.setFinalBillingRate(dto.getBillingRate().subtract(value.divide(new BigDecimal(100)).multiply(dto.getBillingRate())));
-            }
-        }
     }
 
     public BigDecimal getEffectiveBillingRate(Long id) {
