@@ -11,8 +11,10 @@ package info.yalamanchili.office.entity.profile.insurance;
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import javax.validation.Valid;
@@ -47,14 +49,16 @@ public class HealthInsurances extends AbstractEntity {
     @org.hibernate.annotations.Index(name = "ADV_REQ_RQST_DT")
     protected Date dateRequested;
 
-    @Transient
+    @OneToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_HLTH_INS_WVR")
     @Valid
     protected HealthInsuranceWaiver healthInsuranceWaiver;
     /**
      *
      */
 
-    @Transient
+    @OneToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_INS_ENR")
     @Valid
     protected InsuranceEnrollment insuranceEnrollment;
 
