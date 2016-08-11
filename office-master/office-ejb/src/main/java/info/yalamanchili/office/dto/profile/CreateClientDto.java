@@ -10,6 +10,7 @@ package info.yalamanchili.office.dto.profile;
 
 import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import info.yalamanchili.office.entity.profile.Address;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.EnumType;
@@ -24,7 +25,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  */
 @XmlRootElement(name = "CreateClient")
 @XmlType
-public class CreateClientDto {
+public class CreateClientDto implements Serializable{
     protected Long id;
      
     @NotEmpty(message = "{client.not.empty.msg}")
@@ -137,6 +138,11 @@ public class CreateClientDto {
 
     public void setLocations(List<Address> locations) {
         this.locations = locations;
+    }
+    
+    @Override
+    public String toString() {
+        return "Create Client{" + "name=" + name + ", description=" + description + '}';
     }
 
 }
