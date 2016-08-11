@@ -17,6 +17,7 @@ import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.client.ClientService;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.client.ClientDao;
+import info.yalamanchili.office.dto.profile.CreateClientDto;
 import info.yalamanchili.office.dao.client.VendorDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
@@ -37,6 +38,7 @@ import info.yalamanchili.office.mapper.profile.ContactMapper;
 import info.yalamanchili.office.profile.ContactService;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -68,6 +70,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ClientResource extends CRUDResource<Client> {
 
+    private Logger logger = Logger.getLogger(ClientResource.class.getName());
+
     @Autowired
     public ClientDao clientDao;
     @Autowired
@@ -97,10 +101,19 @@ public class ClientResource extends CRUDResource<Client> {
 
     @PUT
     @Validate
-    @Override
+    @Path("/create")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
     @CacheEvict(value = OfficeCacheKeys.CLIENT, allEntries = true)
-    public Client save(Client client) {
+    public Client createClient(CreateClientDto createClientDto) {
+        Client client = mapper.map(createClientDto, Client.class);
+        if (createClientDto.getContact() != null) {
+            Contact contact = contactService.save(createClientDto.getContact());
+            client.addContact(contact);
+        }
+        if (createClientDto.getClientAcctPayContact() != null) {
+            Contact clientAcctPayContact = contactService.save(createClientDto.getClientAcctPayContact());
+            client.addClientAcctPayContact(clientAcctPayContact);
+        }
         return super.save(client);
     }
 
@@ -210,7 +223,7 @@ public class ClientResource extends CRUDResource<Client> {
     public void clientReport() {
         ClientService.instance().generateClientInfoReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
-    
+
     @GET
     @Path("/active-clientinfo-report")
     public void getActiveClientsReport() {
