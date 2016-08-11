@@ -14,8 +14,8 @@ import info.yalamanchili.office.dao.profile.insurance.HealthInsuranceDao;
 import info.yalamanchili.office.dao.profile.insurance.HealthInsuranceWaiverDao;
 import info.yalamanchili.office.dao.profile.insurance.InsuranceEnrollmentDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.entity.profile.insurance.HealthInsurance;
 import info.yalamanchili.office.entity.profile.insurance.HealthInsuranceWaiver;
-import info.yalamanchili.office.entity.profile.insurance.HealthInsurances;
 import info.yalamanchili.office.entity.profile.insurance.InsuranceEnrollment;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
@@ -39,7 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 @Scope("request")
-public class HealthInsuranceResource extends CRUDResource<HealthInsurances> {
+public class HealthInsuranceResource extends CRUDResource<HealthInsurance> {
 
     @Autowired
     public HealthInsuranceDao healthInsuranceDao;
@@ -53,7 +53,7 @@ public class HealthInsuranceResource extends CRUDResource<HealthInsurances> {
     @Path("/{id}")
     @Transactional(readOnly = true)
     @Override
-    public HealthInsurances read(@PathParam("id") Long id) {
+    public HealthInsurance read(@PathParam("id") Long id) {
         return healthInsuranceDao.findById(id);
     }
 
@@ -65,6 +65,7 @@ public class HealthInsuranceResource extends CRUDResource<HealthInsurances> {
         tableObj.setSize(getDao().size());
         return tableObj;
     }
+
     @GET
     @Path("/{empId}/{start}/{limit}")
     public HealthInsuranceTable table(@PathParam("empId") Long empId, @PathParam("start") int start, @PathParam("limit") int limit) {
@@ -77,8 +78,8 @@ public class HealthInsuranceResource extends CRUDResource<HealthInsurances> {
     @PUT
     @Validate
     @Override
-    public HealthInsurances save(HealthInsurances entity) {
-        HealthInsurances insurance = new HealthInsurances();
+    public HealthInsurance save(HealthInsurance entity) {
+        HealthInsurance insurance = new HealthInsurance();
         insurance.setEnrolled(entity.getEnrolled());
         insurance.setEmployee(OfficeSecurityService.instance().getCurrentUser());
         if (entity.getInsuranceEnrollment() != null) {
@@ -110,7 +111,7 @@ public class HealthInsuranceResource extends CRUDResource<HealthInsurances> {
     public static class HealthInsuranceTable implements java.io.Serializable {
 
         protected Long size;
-        protected List<HealthInsurances> entities;
+        protected List<HealthInsurance> entities;
 
         public Long getSize() {
             return size;
@@ -121,11 +122,11 @@ public class HealthInsuranceResource extends CRUDResource<HealthInsurances> {
         }
 
         @XmlElement
-        public List<HealthInsurances> getEntities() {
+        public List<HealthInsurance> getEntities() {
             return entities;
         }
 
-        public void setEntities(List<HealthInsurances> entities) {
+        public void setEntities(List<HealthInsurance> entities) {
             this.entities = entities;
         }
     }
