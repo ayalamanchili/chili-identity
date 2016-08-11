@@ -83,7 +83,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
 
     BooleanField endPreviousProjectFlagField = new BooleanField(OfficeWelcome.constants2, "endPreviousProject", "ClientInfo", false, false, Alignment.HORIZONTAL);
     DateField previousProjectEndDate = new DateField(OfficeWelcome.constants2, "previousProjectEndDate", "ClientInfo", false, false, Alignment.HORIZONTAL);
-    TextAreaField reason = new TextAreaField(OfficeWelcome.constants2, "reason", "ClientInfo", false, false, Alignment.HORIZONTAL);
+    TextAreaField reason = new TextAreaField(OfficeWelcome.constants2, "reason", "ClientInfo", false, true, Alignment.HORIZONTAL);
     EnumField servicesF;
     EnumField sectorsF;
     DateField endDateF;
@@ -303,7 +303,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                 entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
                 addDropDown("subcontractor", new SelectSubcontractorWidget(false, false, Alignment.HORIZONTAL));
                 addDropDown("subcontractorContact", new SelectSubcontractorContactWidget(false, false, Alignment.HORIZONTAL));
-                addField("subcontractorPayRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+                addField("subcontractorPayRate", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
                 addField("subcontractorOvertimePayRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
                 addEnumField("subcontractorinvoiceFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
                 addField("subcontractorpaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
@@ -506,7 +506,13 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
 
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
+        DateField startDateF = (DateField) fields.get("startDate");
+        DateField endDateF = (DateField) fields.get("endDate");
         boolean valid = true;
+        if (startDateF.getDate() != null && endDateF.getDate() != null && startDateF.getDate().after(endDateF.getDate())) {
+            endDateF.setMessage("End Date must be after Start Date");
+            return false;
+        }
         if (submitForApprovalF.getValue()) {
             if (isSub) {
                 CurrencyField subPay = (CurrencyField) fields.get("subcontractorPayRate");
@@ -522,6 +528,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                 }
             }
         }
+        
         if ((ReadAllClientInfoPanel.instance().numberOfRecords > 0) && endPreviousProjectFlagField.isVisible() == true && endPreviousProjectFlagField.getValue() == true) {
             if (reason.getValue() == null || "".equals(reason.getValue())) {
                 reason.setMessage("Reason Required");
