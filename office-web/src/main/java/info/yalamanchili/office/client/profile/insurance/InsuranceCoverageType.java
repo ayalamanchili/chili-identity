@@ -12,10 +12,10 @@ package info.yalamanchili.office.client.profile.insurance;
 public enum InsuranceCoverageType {
 
     Individual,
-    COBRA,
+    Cobra,
     Medicare,
     Medicaid,
-    TRICARE,
+    Tricare,
     EmployerSponsoredGroupPlan;
 
     public static String[] names() {

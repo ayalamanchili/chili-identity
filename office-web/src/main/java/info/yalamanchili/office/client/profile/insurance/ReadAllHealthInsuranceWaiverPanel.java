@@ -6,6 +6,7 @@
 package info.yalamanchili.office.client.profile.insurance;
 
 import com.google.gwt.http.client.URL;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -16,38 +17,39 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import java.util.Date;
 import java.util.logging.Logger;
 
 /**
  *
- * @author prasanthi.p
+ * @author radhika.mukkala
  */
-public class ReadAllHealthInsuranceEnrollment extends CRUDReadAllComposite {
+public class ReadAllHealthInsuranceWaiverPanel extends CRUDReadAllComposite {
 
-    private static Logger logger = Logger.getLogger(ReadAllHealthInsuranceEnrollment.class.getName());
-    public static ReadAllHealthInsuranceEnrollment instance;
+    private static Logger logger = Logger.getLogger(ReadAllHealthInsuranceWaiverPanel.class.getName());
+    public static ReadAllHealthInsuranceWaiverPanel instance;
     protected String url;
     protected String empId;
 
-    public ReadAllHealthInsuranceEnrollment() {
+    public ReadAllHealthInsuranceWaiverPanel() {
         instance = this;
         initTable("HealthInsurances", OfficeWelcome.constants);
     }
 
-    public ReadAllHealthInsuranceEnrollment(String empId) {
+    public ReadAllHealthInsuranceWaiverPanel(String empId) {
         instance = this;
         this.empId = empId;
         initTable("HealthInsurances", OfficeWelcome.constants);
     }
 
-    public ReadAllHealthInsuranceEnrollment(JSONArray array) {
+    public ReadAllHealthInsuranceWaiverPanel(JSONArray array) {
         instance = this;
         initTable("HealthInsurances", array, OfficeWelcome.constants);
     }
 
     @Override
     public void preFetchTable(int start) {
-        HttpService.HttpServiceAsync.instance().doGet(getReadAllInsEnrollmentURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
+        HttpService.HttpServiceAsync.instance().doGet(getReadAllInsuranceWaiverURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
@@ -57,7 +59,7 @@ public class ReadAllHealthInsuranceEnrollment extends CRUDReadAllComposite {
 
     }
 
-    public String getReadAllInsEnrollmentURL(Integer start, String limit) {
+    public String getReadAllInsuranceWaiverURL(Integer start, String limit) {
         if (empId != null && !"".equals(empId)) {
             return URL.encode(OfficeWelcome.constants.root_url() + "insurance-enrollment/" + empId + "/" + start.toString() + "/" + limit);
         } else {
@@ -69,20 +71,22 @@ public class ReadAllHealthInsuranceEnrollment extends CRUDReadAllComposite {
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Action"));
         table.setText(0, 1, getKeyValue("Year"));
-        table.setText(0, 2, getKeyValue("InsuranceType"));
-        table.setText(0, 3, getKeyValue("Enrolled"));
+        table.setText(0, 2, getKeyValue("Enrolled"));
+        table.setText(0, 3, getKeyValue("waivingCoverageFor"));
+        table.setText(0, 4, getKeyValue("waivingCoverageDueTo"));
     }
 
     @Override
     public void fillData(JSONArray entities) {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
-            if (entity.get("enrolled").isString().stringValue().equals("true")) {
-                JSONObject insuranceEnrollment = (JSONObject) entity.get("insuranceEnrollment");
+            if (entity.get("enrolled").isString().stringValue().equals("false")) {
+                JSONObject healthInsuranceWaiver = (JSONObject) entity.get("healthInsuranceWaiver");
                 addOptionsWidget(i, entity);
-                table.setText(i, 1, JSONUtils.toString(insuranceEnrollment, "year"));
-                table.setText(i, 2, JSONUtils.toString(insuranceEnrollment, "insuranceType"));
-                table.setText(i, 3, JSONUtils.toString(entity, "enrolled"));
+                table.setText(i, 1, String.valueOf(DateTimeFormat.getFormat("MM/dd/yyyy").format(new Date()).split("/")[2]));
+                table.setText(i, 2, JSONUtils.toString(entity, "enrolled"));
+                table.setText(i, 3, JSONUtils.toString(healthInsuranceWaiver, "waivingCoverageFor"));
+                table.setText(i, 4, JSONUtils.toString(healthInsuranceWaiver, "waivingCoverageDueTo"));
             }
         }
 

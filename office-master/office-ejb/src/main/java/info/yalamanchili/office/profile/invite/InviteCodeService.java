@@ -108,10 +108,10 @@ public class InviteCodeService {
                    email.addTo(inviteCode.getEmail());
                    email.setHtml(Boolean.TRUE);
                    email.setRichText(Boolean.TRUE);
-                   email.setSubject("Invitation Link About to expire "+inviteCode.getInviteType().getDescription());
+                   email.setSubject("Invitation Link about to expire: "+inviteCode.getInviteType().getDescription());
                    String messageText = " <b>Your Invitation Link is About to"
-                           + " Expire in 3 days please complete as soon as "
-                           + "possible  </b> </br> "
+                           + " expire in 3 days! Please go to the below url and"
+                           + " complete it as soon as possible.  </b> </br> "
                            + OfficeServiceConfiguration.instance().getPortalWebUrl() 
                            + "?inviteCode=" + inviteCode.getInvitationCode();
                    email.setBody(messageText);

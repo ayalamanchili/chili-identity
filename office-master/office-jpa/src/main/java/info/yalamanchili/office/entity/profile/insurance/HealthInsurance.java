@@ -11,12 +11,12 @@ package info.yalamanchili.office.entity.profile.insurance;
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
-import javax.persistence.Transient;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -33,11 +33,10 @@ import org.hibernate.search.annotations.Indexed;
 @XmlType
 @Entity
 @Audited
-public class HealthInsurances extends AbstractEntity {
+public class HealthInsurance extends AbstractEntity {
 
     protected static long serialVersionUID = 1L;
 
-    @NotNull(message = "{enrolled.not.empty.msg}")
     protected Boolean enrolled;
     @ManyToOne
     @ForeignKey(name = "FK_EMP_INSU_ENRO")
@@ -47,14 +46,16 @@ public class HealthInsurances extends AbstractEntity {
     @org.hibernate.annotations.Index(name = "ADV_REQ_RQST_DT")
     protected Date dateRequested;
 
-    @Transient
+    @OneToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_HLTH_INS_WVR")
     @Valid
     protected HealthInsuranceWaiver healthInsuranceWaiver;
     /**
      *
      */
 
-    @Transient
+    @OneToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_INS_ENR")
     @Valid
     protected InsuranceEnrollment insuranceEnrollment;
 
@@ -132,6 +133,7 @@ public class HealthInsurances extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "HealthInsurances{" + "enrolled=" + enrolled + ", employee=" + employee + ", dateRequested=" + dateRequested + ", healthInsuranceWaiver=" + healthInsuranceWaiver + ", insuranceEnrollment=" + insuranceEnrollment + '}';
+        return "HealthInsurance{" + "enrolled=" + enrolled + ", employee=" + employee + ", dateRequested=" + dateRequested + ", healthInsuranceWaiver=" + healthInsuranceWaiver + ", insuranceEnrollment=" + insuranceEnrollment + '}';
     }
+
 }

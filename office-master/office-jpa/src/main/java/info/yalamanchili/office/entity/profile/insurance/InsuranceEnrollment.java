@@ -37,8 +37,6 @@ public class InsuranceEnrollment extends AbstractHandleEntity {
 
     protected String year;
 
-    protected InsuranceEnrollmentStatus status;
-
     /**
      * @return the insuranceType
      */
@@ -81,23 +79,8 @@ public class InsuranceEnrollment extends AbstractHandleEntity {
         this.year = year;
     }
 
-    /**
-     * @return the status
-     */
-    public InsuranceEnrollmentStatus getStatus() {
-        return status;
-    }
-
-    /**
-     * @param status the status to set
-     */
-    public void setStatus(InsuranceEnrollmentStatus status) {
-        this.status = status;
-    }
-
     @Override
     public String toString() {
-        return "InsuranceEnrollment{" + "insuranceType=" + getInsuranceType() + ", comments=" + comments + ", year=" + year + ", status=" + status + '}';
+        return "InsuranceEnrollment{" + "insuranceType=" + insuranceType + ", comments=" + comments + ", year=" + year + '}';
     }
-
 }

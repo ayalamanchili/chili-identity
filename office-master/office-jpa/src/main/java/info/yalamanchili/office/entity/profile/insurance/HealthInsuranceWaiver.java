@@ -16,6 +16,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.envers.Audited;
@@ -38,6 +39,7 @@ public class HealthInsuranceWaiver extends AbstractHandleEntity {
     @OneToOne(cascade = CascadeType.ALL)
     protected InsuranceEnrollment insuranceEnrollment;
 
+    @Temporal(javax.persistence.TemporalType.DATE)
     protected Date submittedDate;
 
     protected String waivingCoverageFor;

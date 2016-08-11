@@ -72,7 +72,7 @@ public class ProjectResource extends CRUDResource<Project> {
 
     @PUT
     @Path("/sow/{projectId}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN')")
     public void addSOW(@PathParam("projectId") Long projectId, StatementOfWork SOW) {
         Project project = (Project) getDao().findById(projectId);
         project.addSOW(SOW);
@@ -80,7 +80,7 @@ public class ProjectResource extends CRUDResource<Project> {
 
     @PUT
     @Validate
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN')")
     @Override
     public Project save(Project entity) {
         return super.save(entity);
@@ -88,7 +88,7 @@ public class ProjectResource extends CRUDResource<Project> {
 
     @PUT
     @Path("/delete/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN')")
     @Override
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
