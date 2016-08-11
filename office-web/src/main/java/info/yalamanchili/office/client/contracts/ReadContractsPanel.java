@@ -297,10 +297,10 @@ public class ReadContractsPanel extends TReadComposite {
                     }
                 });
     }
-    
+
     @Override
     protected boolean enableViewTasks() {
-        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN);
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS_ADMIN);
     }
 
     @Override
@@ -310,17 +310,17 @@ public class ReadContractsPanel extends TReadComposite {
     }
 
     @Override
-   protected boolean enableBack() {
-       return true;
-   }
-    
+    protected boolean enableBack() {
+        return true;
+    }
+
     @Override
-     protected ReadAllComposite getReadAllPanel() {
+    protected ReadAllComposite getReadAllPanel() {
         return ReadAllContractsPanel.instance;
-     }    
-    
+    }
+
     private String getInvoiceUrl() {
         return OfficeWelcome.constants.root_url() + "invoice/" + getEntityId() + "/0/1000";
     }
-    
+
 }
