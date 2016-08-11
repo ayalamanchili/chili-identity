@@ -44,7 +44,7 @@ public class ReadAllReleaseNotesPanel extends CRUDReadAllComposite {
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().chiliAdminPanel.entityPanel.clear();
-        TabPanel.instance().chiliAdminPanel.entityPanel.add(new ReadReleaseNotesPanel(entityId));
+        TabPanel.instance().chiliAdminPanel.entityPanel.add(new ReadReleaseNotesPanel(getEntity(entityId)));
     }
 
     @Override
@@ -79,7 +79,7 @@ public class ReadAllReleaseNotesPanel extends CRUDReadAllComposite {
     @Override
     public void preFetchTable(int start) {
 
-        HttpService.HttpServiceAsync.instance().doGet(getBPMTaskDelegateUrl(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
+        HttpService.HttpServiceAsync.instance().doGet(getUrl(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
                 false, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String result) {
@@ -89,7 +89,7 @@ public class ReadAllReleaseNotesPanel extends CRUDReadAllComposite {
         });
     }
 
-    public String getBPMTaskDelegateUrl(Integer start, String limit) {
+    public String getUrl(Integer start, String limit) {
         return OfficeWelcome.constants.root_url() + "releaseNotes/" + start.toString() + "/"
                 + limit;
     }
