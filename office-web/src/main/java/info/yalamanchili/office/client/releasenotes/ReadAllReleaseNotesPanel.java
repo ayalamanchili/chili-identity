@@ -44,7 +44,7 @@ public class ReadAllReleaseNotesPanel extends CRUDReadAllComposite {
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().chiliAdminPanel.entityPanel.clear();
-        TabPanel.instance().chiliAdminPanel.entityPanel.add(new ReadReleaseNotesPanel(getEntity(entityId)));
+        TabPanel.instance().chiliAdminPanel.entityPanel.add(new ReadReleaseNotesPanel(entityId));
     }
 
     @Override
