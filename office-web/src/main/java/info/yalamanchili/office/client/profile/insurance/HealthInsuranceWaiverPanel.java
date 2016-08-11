@@ -12,7 +12,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RadioButton;
@@ -20,11 +19,9 @@ import info.chili.gwt.crud.TCreateComposite;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.FileuploadField;
 import info.chili.gwt.fields.StringField;
-import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
-import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.TabPanel;
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 /**
@@ -40,11 +37,11 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
     CheckBox spouse = new CheckBox("Spouse");
     CheckBox dependent = new CheckBox("Dependent");
 
-    RadioButton myspousesplan = new RadioButton("myspousesplan", "Coverage under my spouse's plan");
     RadioButton mypreferencenottohavecoverage = new RadioButton("mypreferencenottohavecoverage", "My preference not to have coverage");
+    RadioButton myspousesplan = new RadioButton("myspousesplan", "Coverage under my spouse's plan");
     RadioButton othercoverage = new RadioButton("othercoverage", "Other coverage");
 
-    HTML tac2 = new HTML("<h4><u>For the plan year 2016, I am waiving coverage for: \n</u>");
+    HTML tac2 = new HTML("<h4><u>For the plan year 2016, I am waiving coverage for: \n</u>" + Arrays.toString(HealthInsuranceYear.getyears().toArray(new String[0])));
     HTML tac3 = new HTML("<h4><u>I am waiving coverage due to: \n</u>");
 
     StringField spouseNameOfCarrier = new StringField(OfficeWelcome.constants, "spouseNameOfCarrier", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
@@ -53,7 +50,6 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
     StringField spouseName = new StringField(OfficeWelcome.constants, "spouseName", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
     StringField dependentName = new StringField(OfficeWelcome.constants, "dependentName", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
 
-    StringField name;
     EnumField othercoverageType = new EnumField(OfficeWelcome.constants, "othercoverageType", "HealthInsuranceWaiver", false, false, InsuranceCoverageType.names(), Alignment.HORIZONTAL);
 
     public HealthInsuranceWaiverPanel() {
@@ -79,14 +75,12 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
         } else if (dependent.getValue() == true) {
             entity.put("waivingCoverageFor", new JSONString("dependent"));
         }
-
         if (spouseName.getValue() != null) {
             entity.put("spouseName", new JSONString(spouseName.getValue()));
         }
         if (dependentName.getValue() != null) {
             entity.put("dependentName", new JSONString(dependentName.getValue()));
         }
-
         //waivingCoverageDueTo
         if (mypreferencenottohavecoverage.getValue() == true) {
             entity.put("waivingCoverageDueTo", new JSONString("nocoverage"));
@@ -95,32 +89,19 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
         } else if (othercoverage.getValue() == true) {
             entity.put("waivingCoverageDueTo", new JSONString("other"));
         }
-
         if (spouseNameOfCarrier.isVisible() == true) {
             entity.put("spouseNameOfCarrier", new JSONString(spouseNameOfCarrier.getValue()));
         }
         if (otherNameOfCarrier.getValue() != null) {
             entity.put("otherNameOfCarrier", new JSONString(otherNameOfCarrier.getValue()));
         }
-        logger.info("waiving info ... " + entity);
+        entity.put("targetEntityName", new JSONString("targetEntityName"));
+        entity.put("targetEntityId", new JSONString("0"));
         return entity;
     }
 
     @Override
     protected void createButtonClicked() {
-        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
-                new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
-
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
-                    }
-                });
-
     }
 
     @Override
@@ -129,9 +110,7 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully HealthInsuranceWaiver Created");
-        TabPanel.instance().profilePanel.entityPanel.clear();
-        TabPanel.instance().profilePanel.entityPanel.add(new ReadAllInsuranceEnrollment());
+
     }
 
     @Override
@@ -159,7 +138,7 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
         entityFieldsPanel.setWidget(6, 1, mypreferencenottohavecoverage);
         entityFieldsPanel.setWidget(7, 1, myspousesplan);
         entityFieldsPanel.setWidget(8, 1, othercoverage);
-        entityFieldsPanel.setWidget(9, 1, resumeUploadPanel);
+        entityFieldsPanel.setWidget(10, 1, resumeUploadPanel);
         entityActionsPanel.setVisible(false);
     }
 
@@ -169,7 +148,7 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "insurance-enrollment";
+        return "";
     }
 
     @Override

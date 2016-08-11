@@ -8,38 +8,40 @@
  */
 package info.yalamanchili.office.entity.profile.insurance;
 
-import info.chili.jpa.AbstractEntity;
+import info.chili.jpa.AbstractHandleEntity;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import org.hibernate.envers.Audited;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
  * @author prasanthi.p
  */
-@Indexed
-@XmlRootElement
 @Entity
 @Audited
-public class HealthInsuranceWaiver extends AbstractEntity {
+@XmlRootElement
+@XmlType
+@Table(name = "HealthInsuranceWaiver")
+public class HealthInsuranceWaiver extends AbstractHandleEntity {
 
     protected static long serialVersionUID = 1L;
 
-    @NotEmpty(message = "{fileUrl.not.empty.msg}")
     protected String fileUrl;
 
     @OneToOne(cascade = CascadeType.ALL)
     protected InsuranceEnrollment insuranceEnrollment;
-    
+
+    @Temporal(javax.persistence.TemporalType.DATE)
     protected Date submittedDate;
-    
+
     protected String waivingCoverageFor;
 
     protected String waivingCoverageDueTo;

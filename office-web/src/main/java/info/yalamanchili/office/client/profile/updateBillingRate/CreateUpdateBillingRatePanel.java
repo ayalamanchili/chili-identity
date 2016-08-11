@@ -13,6 +13,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
@@ -81,17 +82,17 @@ public class CreateUpdateBillingRatePanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                logger.info("in arg0" + arg0);
-                postUpdateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        logger.info("in arg0" + arg0);
+                        postUpdateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -102,14 +103,14 @@ public class CreateUpdateBillingRatePanel extends UpdateComposite {
     protected void loadClientInformation() {
         HttpService.HttpServiceAsync.instance().doGet(getCIId(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                ci = (JSONObject) JSONParser.parseLenient(response);
-                readClientInformation(ci);
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        ci = (JSONObject) JSONParser.parseLenient(response);
+                        readClientInformation(ci);
+                    }
+                });
     }
-    
+
     protected void readClientInformation(JSONObject ci) {
         new ResponseStatusWidget().show("Successfully Updated Billing Rate Info");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
@@ -154,7 +155,7 @@ public class CreateUpdateBillingRatePanel extends UpdateComposite {
                 addField("subContractorPayRate", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             }
             if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN)) {
-                addField("subContractorOverTimePayRate", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+                addField("subContractorOverTimePayRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             } else if (Auth.hasAnyOfRoles(ROLE.ROLE_BILLING_AND_INVOICING)) {
                 addField("subContractorOverTimePayRate", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             }
@@ -167,6 +168,20 @@ public class CreateUpdateBillingRatePanel extends UpdateComposite {
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
+    }
+
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+
+        if (entity.get("billingRate") == null) {
+            fields.get("billingRate").setMessage("BillRate can not be null");
+            return false;
+        } else if (entity.get("subContractorPayRate") == null) {
+            fields.get("subContractorPayRate").setMessage("SubContractor BillRate can not be null");
+            return false;
+        }
+        return true;
+
     }
 
     @Override

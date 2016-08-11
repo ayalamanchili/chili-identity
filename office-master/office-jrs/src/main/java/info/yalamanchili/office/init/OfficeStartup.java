@@ -531,7 +531,7 @@ public class OfficeStartup {
         //Invite Type on boarding
         InviteType invititationType = new InviteType();
         invititationType.setInvitationType(InvitationType.CLIENT_ONBOARDING);
-        invititationType.setDescription("Employee On Baording");
+        invititationType.setDescription("Employee On Boarding");
 //        invititationType.setEmailTemplateName("on-boardng-invite-email.xhtml");
         mongoTemplate.save(invititationType);
 

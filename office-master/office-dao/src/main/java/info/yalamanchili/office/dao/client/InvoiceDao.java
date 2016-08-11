@@ -8,10 +8,16 @@
  */
 package info.yalamanchili.office.dao.client;
 
+import info.chili.commons.DateUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.dao.profile.ClientInformationDao;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.client.Invoice;
+import info.yalamanchili.office.entity.profile.ClientInformation;
+import info.yalamanchili.office.entity.profile.Employee;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -20,6 +26,10 @@ import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import java.util.Date;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  *
@@ -36,6 +46,8 @@ public class InvoiceDao extends CRUDDao<Invoice> {
     public EntityManager getEntityManager() {
         return em;
     }
+
+    TreeSet<Date> dates = new TreeSet();
 
     public InvoiceDao() {
         super(Invoice.class);
@@ -78,12 +90,20 @@ public class InvoiceDao extends CRUDDao<Invoice> {
     }
 
     @Override
-     public void delete(Invoice entity) {
+    public void delete(Invoice entity) {
         try {
             getEntityManager().remove(entity);
         } catch (javax.persistence.PersistenceException e) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "DELETE", "SQLError", e.getMessage());
         }
     }
-     
+
+    public List<ClientInformation> getMissingInvoicesForDates(Date startDate, Date endDate, Employee emp) {
+        TypedQuery<ClientInformation> getClientInfos = ClientInformationDao.instance().getEntityManager().createQuery(" from " + ClientInformation.class.getCanonicalName() + " as cpd where cpd.employee.id=:employeeIdParam ", ClientInformation.class);
+        getClientInfos.setParameter("employeeIdParam", emp.getId());
+        //getClientInfos.setParameter("startDateParam", startDate);
+        //getClientInfos.setParameter("endDateParam", endDate);
+        return getClientInfos.getResultList();
+    }
+
 }

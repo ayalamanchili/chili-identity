@@ -10,7 +10,7 @@ package info.yalamanchili.office.dao.profile.insurance;
 
 import info.chili.dao.AbstractHandleEntityDao;
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.entity.profile.insurance.InsuranceEnrollment;
+import info.yalamanchili.office.entity.profile.insurance.HealthInsuranceWaiver;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.context.annotation.Scope;
@@ -22,17 +22,17 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 @Scope("prototype")
-public class InsuranceEnrollmentDao extends AbstractHandleEntityDao<InsuranceEnrollment> {
+public class HealthInsuranceWaiverDao extends AbstractHandleEntityDao<HealthInsuranceWaiver> {
 
     @PersistenceContext
     protected EntityManager em;
 
-    public InsuranceEnrollmentDao() {
-        super(InsuranceEnrollment.class);
+    public HealthInsuranceWaiverDao() {
+        super(HealthInsuranceWaiver.class);
     }
 
-    public static InsuranceEnrollmentDao instance() {
-        return SpringContext.getBean(InsuranceEnrollmentDao.class);
+    public static HealthInsuranceWaiverDao instance() {
+        return SpringContext.getBean(HealthInsuranceWaiverDao.class);
     }
 
     @Override
