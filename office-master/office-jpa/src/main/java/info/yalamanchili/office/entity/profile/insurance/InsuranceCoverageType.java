@@ -15,9 +15,9 @@ package info.yalamanchili.office.entity.profile.insurance;
 public enum InsuranceCoverageType {
 
     Individual,
-    COBRA,
+    Cobra,
     Medicare,
     Medicaid,
-    TRICARE,
+    Tricare,
     EmployerSponsoredGroupPlan;
 }

@@ -13,12 +13,15 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Rohith.Vallabhaneni
  */
 class UpdateReleaseNotesPanel extends UpdateComposite {
+    
+    private static Logger logger = Logger.getLogger(UpdateReleaseNotesPanel.class.getName());
 
     public UpdateReleaseNotesPanel(JSONObject entity) {
         initUpdateComposite(entity, "ReleaseNotes", OfficeWelcome.constants2);
@@ -26,7 +29,6 @@ class UpdateReleaseNotesPanel extends UpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject entity = new JSONObject();
         assignEntityValueFromField("summary", entity);
         assignEntityValueFromField("details", entity);
         assignEntityValueFromField("endDate", entity);

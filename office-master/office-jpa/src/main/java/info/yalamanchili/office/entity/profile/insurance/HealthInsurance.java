@@ -16,9 +16,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
-import javax.persistence.Transient;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -35,11 +33,10 @@ import org.hibernate.search.annotations.Indexed;
 @XmlType
 @Entity
 @Audited
-public class HealthInsurances extends AbstractEntity {
+public class HealthInsurance extends AbstractEntity {
 
     protected static long serialVersionUID = 1L;
 
-    @NotNull(message = "{enrolled.not.empty.msg}")
     protected Boolean enrolled;
     @ManyToOne
     @ForeignKey(name = "FK_EMP_INSU_ENRO")
@@ -136,6 +133,7 @@ public class HealthInsurances extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "HealthInsurances{" + "enrolled=" + enrolled + ", employee=" + employee + ", dateRequested=" + dateRequested + ", healthInsuranceWaiver=" + healthInsuranceWaiver + ", insuranceEnrollment=" + insuranceEnrollment + '}';
+        return "HealthInsurance{" + "enrolled=" + enrolled + ", employee=" + employee + ", dateRequested=" + dateRequested + ", healthInsuranceWaiver=" + healthInsuranceWaiver + ", insuranceEnrollment=" + insuranceEnrollment + '}';
     }
+
 }

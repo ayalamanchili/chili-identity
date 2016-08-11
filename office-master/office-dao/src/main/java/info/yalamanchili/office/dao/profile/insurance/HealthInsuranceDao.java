@@ -10,8 +10,8 @@ package info.yalamanchili.office.dao.profile.insurance;
 
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.entity.profile.insurance.HealthInsurance;
 import info.yalamanchili.office.entity.profile.insurance.HealthInsuranceWaiver;
-import info.yalamanchili.office.entity.profile.insurance.HealthInsurances;
 import info.yalamanchili.office.entity.profile.insurance.InsuranceEnrollment;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -29,14 +29,14 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository
 @Scope("prototype")
-public class HealthInsuranceDao extends CRUDDao<HealthInsurances> {
+public class HealthInsuranceDao extends CRUDDao<HealthInsurance> {
 
     @PersistenceContext
     protected EntityManager em;
 
     @Override
-    public HealthInsurances findById(Long id) {
-        HealthInsurances entity = super.findById(id);
+    public HealthInsurance findById(Long id) {
+        HealthInsurance entity = super.findById(id);
         if (entity == null) {
             return null;
         }
@@ -46,7 +46,7 @@ public class HealthInsuranceDao extends CRUDDao<HealthInsurances> {
     }
 
     @Override
-    public HealthInsurances save(HealthInsurances entity) {
+    public HealthInsurance save(HealthInsurance entity) {
         InsuranceEnrollment insuEnrt = entity.getInsuranceEnrollment();
         HealthInsuranceWaiver healthWaiver = entity.getHealthInsuranceWaiver();
         entity = super.save(entity);
@@ -59,15 +59,15 @@ public class HealthInsuranceDao extends CRUDDao<HealthInsurances> {
         return entity;
     }
 
-    public List<HealthInsurances> queryAll(Integer start, Integer limit) {
-        Query findAllQuery = getEntityManager().createQuery("from " + HealthInsurances.class.getCanonicalName() + " order by dateRequested DESC", entityCls);
+    public List<HealthInsurance> queryAll(Integer start, Integer limit) {
+        Query findAllQuery = getEntityManager().createQuery("from " + HealthInsurance.class.getCanonicalName() + " order by dateRequested DESC", entityCls);
         findAllQuery.setFirstResult(start);
         findAllQuery.setMaxResults(limit);
         return findAllQuery.getResultList();
     }
 
-    public List<HealthInsurances> queryForEmployee(Long employeeId, Integer start, Integer limit) {
-        Query findAllQuery = getEntityManager().createQuery("from " + HealthInsurances.class.getCanonicalName() + " as insurance where insurance.employee.id=:employeeIdParam order by dateRequested DESC", entityCls);
+    public List<HealthInsurance> queryForEmployee(Long employeeId, Integer start, Integer limit) {
+        Query findAllQuery = getEntityManager().createQuery("from " + HealthInsurance.class.getCanonicalName() + " as insurance where insurance.employee.id=:employeeIdParam order by dateRequested DESC", entityCls);
         findAllQuery.setParameter("employeeIdParam", employeeId);
         findAllQuery.setFirstResult(start);
         findAllQuery.setMaxResults(limit);
@@ -92,7 +92,7 @@ public class HealthInsuranceDao extends CRUDDao<HealthInsurances> {
     }
 
     public HealthInsuranceDao() {
-        super(HealthInsurances.class);
+        super(HealthInsurance.class);
     }
 
     public static HealthInsuranceDao instance() {

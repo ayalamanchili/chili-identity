@@ -21,6 +21,7 @@ import info.chili.gwt.fields.FileuploadField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 /**
@@ -40,7 +41,7 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
     RadioButton myspousesplan = new RadioButton("myspousesplan", "Coverage under my spouse's plan");
     RadioButton othercoverage = new RadioButton("othercoverage", "Other coverage");
 
-    HTML tac2 = new HTML("<h4><u>For the plan year 2016, I am waiving coverage for: \n</u>");
+    HTML tac2 = new HTML("<h4><u>For the plan year 2016, I am waiving coverage for: \n</u>" + Arrays.toString(HealthInsuranceYear.getyears().toArray(new String[0])));
     HTML tac3 = new HTML("<h4><u>I am waiving coverage due to: \n</u>");
 
     StringField spouseNameOfCarrier = new StringField(OfficeWelcome.constants, "spouseNameOfCarrier", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);

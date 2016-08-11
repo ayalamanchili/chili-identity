@@ -323,7 +323,12 @@ public class ContractService {
             if (vi.getVendorFees() != null) {
                 BigDecimal value = new BigDecimal(vi.getVendorFees());
                 BigDecimal vendorFee = value.divide(new BigDecimal(100)).multiply(dto.getBillingRate());
-                dto.setBillingRate(getEffectiveBillingRate(ci.getId()));
+                BigDecimal effectiveBillingRate = getEffectiveBillingRate(ci.getId());
+                if (effectiveBillingRate == null) {
+                    dto.setBillingRate(ci.getBillingRate());
+                } else {
+                    dto.setBillingRate(getEffectiveBillingRate(ci.getId()));
+                }
                 dto.setFinalBillingRate(dto.getBillingRate().subtract(calcVendorMargin(vendorFee, vi.getMaxFees(), vi.getMinFees())));
             }
         }
