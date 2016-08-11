@@ -176,14 +176,8 @@ public class CreateUpdateBillingRatePanel extends UpdateComposite {
             if (entity.get("billingRate") == null) {
                 fields.get("billingRate").setMessage("BillRate can not be null");
                 return false;
-            } else if (entity.get("subContractorPayRate") != null) {
-                fields.get("subContractorPayRate").setMessage("SubContractor BillRate can not be null");
-                return false;
-            } else if (entity.get("subContractorPayRate") == null && entity.get("billingRate") == null) {
-                fields.get("billingRate").setMessage("BillRate can not be null");
-                fields.get("subContractorPayRate").setMessage("SubContractor BillRate can not be null");
-                return false;
-            }
+            } 
+            
         }
         return true;
 
