@@ -106,6 +106,10 @@ public class ClientResource extends CRUDResource<Client> {
     @CacheEvict(value = OfficeCacheKeys.CLIENT, allEntries = true)
     public Client createClient(CreateClientDto createClientDto) {
         Client client = mapper.map(createClientDto, Client.class);
+        
+        if(createClientDto.getLocation() != null){
+            client.addLocations(createClientDto.getLocation());
+        }
         if (createClientDto.getContact() != null) {
             Contact contact = contactService.save(createClientDto.getContact());
             client.addContact(contact);
