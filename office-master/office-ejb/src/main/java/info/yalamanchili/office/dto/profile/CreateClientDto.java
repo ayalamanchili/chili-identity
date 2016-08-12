@@ -40,7 +40,7 @@ public class CreateClientDto implements Serializable{
     protected BigDecimal maxClientFee;
     protected BigDecimal minClientFee;
     
-    protected List<Address> locations;
+    protected Address location;
     protected ContactDto contact;
     protected ContactDto clientAcctPayContact;
     
@@ -132,12 +132,12 @@ public class CreateClientDto implements Serializable{
         this.minClientFee = minClientFee;
     }
 
-    public List<Address> getLocations() {
-        return locations;
+    public Address getLocation() {
+        return location;
     }
 
-    public void setLocations(List<Address> locations) {
-        this.locations = locations;
+    public void setLocation(Address location) {
+        this.location = location;
     }
     
     @Override

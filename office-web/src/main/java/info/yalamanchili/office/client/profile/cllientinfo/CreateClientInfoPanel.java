@@ -182,17 +182,17 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     protected void addButtonClicked() {
         HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                logger.info(arg0.getMessage());
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        logger.info(arg0.getMessage());
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                uploadDocuments(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        uploadDocuments(arg0);
+                    }
+                });
     }
 
     @Override
@@ -387,39 +387,39 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     public void populateEndDate() {
         HttpService.HttpServiceAsync.instance().doGet(getProjectEndDate(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                if (arg0 != null) {
-                    Date date2 = new Date(arg0);
-                    previousProjectEndDate.setDate(date2);
+                    @Override
+                    public void onResponse(String arg0) {
+                        if (arg0 != null) {
+                            Date date2 = new Date(arg0);
+                            previousProjectEndDate.setDate(date2);
+                        }
+                    }
                 }
-            }
-        }
         );
     }
 
     public void loadVendor(String vendorEntityId) {
         HttpService.HttpServiceAsync.instance().doGet(getVendor(vendorEntityId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                JSONObject vendor = (JSONObject) JSONParser.parseLenient(response);
-                TextAreaField payTermF = (TextAreaField) fields.get("vendorPaymentTerms");
-                payTermF.setValue(JSONUtils.toString(vendor, "paymentTerms"));
-                EnumField invDelv = (EnumField) fields.get("invoiceDeliveryMethod");
-                if (vendor.get("vendorinvDeliveryMethod") != null) {
-                    invDelv.selectValue(JSONUtils.toString(vendor, "vendorinvDeliveryMethod"));
-                } else {
-                    invDelv.setSelectedIndex(0);
-                }
-                EnumField invFrequencyv = (EnumField) fields.get("invoiceFrequency");
-                if (vendor.get("vendorinvFrequency") != null) {
-                    invFrequencyv.selectValue(JSONUtils.toString(vendor, "vendorinvFrequency"));
-                } else {
-                    invFrequencyv.setSelectedIndex(0);
-                }
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject vendor = (JSONObject) JSONParser.parseLenient(response);
+                        TextAreaField payTermF = (TextAreaField) fields.get("vendorPaymentTerms");
+                        payTermF.setValue(JSONUtils.toString(vendor, "paymentTerms"));
+                        EnumField invDelv = (EnumField) fields.get("invoiceDeliveryMethod");
+                        if (vendor.get("vendorinvDeliveryMethod") != null) {
+                            invDelv.selectValue(JSONUtils.toString(vendor, "vendorinvDeliveryMethod"));
+                        } else {
+                            invDelv.setSelectedIndex(0);
+                        }
+                        EnumField invFrequencyv = (EnumField) fields.get("invoiceFrequency");
+                        if (vendor.get("vendorinvFrequency") != null) {
+                            invFrequencyv.selectValue(JSONUtils.toString(vendor, "vendorinvFrequency"));
+                        } else {
+                            invFrequencyv.setSelectedIndex(0);
+                        }
+                    }
+                });
     }
 
     protected String getVendor(String vendorEntityId) {
@@ -429,13 +429,13 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     public void loadClient(String clientEntityId) {
         HttpService.HttpServiceAsync.instance().doGet(getClient(clientEntityId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                JSONObject client = (JSONObject) JSONParser.parseLenient(response);
-                TextAreaField payTermF = (TextAreaField) fields.get("clientPaymentTerms");
-                payTermF.setValue(JSONUtils.toString(client, "paymentTerms"));
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject client = (JSONObject) JSONParser.parseLenient(response);
+                        TextAreaField payTermF = (TextAreaField) fields.get("clientPaymentTerms");
+                        payTermF.setValue(JSONUtils.toString(client, "paymentTerms"));
+                    }
+                });
     }
 
     protected String getClient(String clientEntityId) {
@@ -506,13 +506,9 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
 
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
-        DateField startDateF = (DateField) fields.get("startDate");
-        DateField endDateF = (DateField) fields.get("endDate");
+
         boolean valid = true;
-        if (startDateF.getDate() != null && endDateF.getDate() != null && startDateF.getDate().after(endDateF.getDate())) {
-            endDateF.setMessage("End Date must be after Start Date");
-            return false;
-        }
+
         if (submitForApprovalF.getValue()) {
             if (isSub) {
                 CurrencyField subPay = (CurrencyField) fields.get("subcontractorPayRate");
@@ -528,7 +524,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                 }
             }
         }
-        
+
         if ((ReadAllClientInfoPanel.instance().numberOfRecords > 0) && endPreviousProjectFlagField.isVisible() == true && endPreviousProjectFlagField.getValue() == true) {
             if (reason.getValue() == null || "".equals(reason.getValue())) {
                 reason.setMessage("Reason Required");

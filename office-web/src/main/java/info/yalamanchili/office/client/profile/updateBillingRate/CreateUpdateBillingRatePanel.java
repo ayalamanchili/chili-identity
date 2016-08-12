@@ -172,13 +172,12 @@ public class CreateUpdateBillingRatePanel extends UpdateComposite {
 
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
-
-        if (entity.get("billingRate") == null) {
-            fields.get("billingRate").setMessage("BillRate can not be null");
-            return false;
-        } else if (entity.get("subContractorPayRate") == null) {
-            fields.get("subContractorPayRate").setMessage("SubContractor BillRate can not be null");
-            return false;
+        if (entity.get("billingRate") == null || entity.get("subContractorPayRate") == null) {
+            if (entity.get("billingRate") == null) {
+                fields.get("billingRate").setMessage("BillRate can not be null");
+                return false;
+            } 
+            
         }
         return true;
 

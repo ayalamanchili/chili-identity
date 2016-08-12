@@ -69,11 +69,9 @@ public class CreateClientPanel extends CreateComposite {
         assignEntityValueFromField("maxClientFee", clnt);
         assignEntityValueFromField("minClientFee", clnt);
 
-        JSONArray locations = new JSONArray();
         if (createAddressWidget != null) {
-            locations.set(0,createAddressWidget.populateEntityFromFields());
+            clnt.put("location",createAddressWidget.populateEntityFromFields());
         }
-        clnt.put("locations", locations);
         if(addRecruiterContact.getValue()){
             clnt.put("contact", createContactWidget1.populateEntityFromFields());
         }
