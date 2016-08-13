@@ -23,6 +23,7 @@ import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.profile.ContactDto;
 import info.yalamanchili.office.dto.profile.ContactDto.ContactDtoTable;
+import info.yalamanchili.office.dto.profile.VendorDto;
 import info.yalamanchili.office.entity.client.InvoiceSchedule;
 import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.profile.Address;
@@ -477,6 +478,28 @@ public class VendorResource extends CRUDResource<Vendor> {
             dtos.add(dto1);
         }
         return dtos;
+    }
+    
+    @PUT
+    @Validate
+    @Path("/create")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
+    @CacheEvict(value = OfficeCacheKeys.VENDOR, allEntries = true)
+    public Vendor createVendor(VendorDto vendorDto) {
+        Vendor vendor = mapper.map(vendorDto, Vendor.class);
+        
+        if(vendorDto.getLocation() != null){
+            vendor.addLocations(vendorDto.getLocation());
+        }
+        if (vendorDto.getContact() != null) {
+            Contact contact = ContactService.instance().save(vendorDto.getContact());
+            vendor.addContact(contact);
+        }
+        if (vendorDto.getVendorAcctPayContact() != null) {
+            Contact vendorAcctPayContact = ContactService.instance().save(vendorDto.getVendorAcctPayContact());
+            vendor.addAcctPayContact(vendorAcctPayContact);
+        }
+        return super.save(vendor);
     }
 
     @XmlRootElement
