@@ -97,6 +97,8 @@ public class ReadAllVendorLocationPanel extends CRUDReadAllComposite {
 
     @Override
     public void viewClicked(String entityId) {
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadVendorLocationPanel(getEntity(entityId)));
     }
 
     @Override
