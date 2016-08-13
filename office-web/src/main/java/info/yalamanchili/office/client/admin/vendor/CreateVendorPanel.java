@@ -80,7 +80,6 @@ public class CreateVendorPanel extends CreateComposite {
         if (createContactWidget2 != null) {
             vendor.put("vendorAcctPayContact", createContactWidget2.populateEntityFromFields());
         }
-        logger.info(vendor.toString());
         return vendor;
     }
 
@@ -90,7 +89,6 @@ public class CreateVendorPanel extends CreateComposite {
                 new AsyncCallback<String>() {
             @Override
             public void onFailure(Throwable arg0) {
-                logger.info(arg0.getMessage());
                 handleErrorResponse(arg0);
             }
 
