@@ -262,6 +262,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         addDropDown("clientAPContacts", selectClientAcctPayContact);
         addDropDown("clientContact", new SelectClientContactWidget(false, false, Alignment.HORIZONTAL));
         addField("clientPaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("Client Fee Applicable", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addDropDown("vendor", selectVendorWidgetF);
         entityFieldsPanel.add(addVendorL);
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, true, Alignment.HORIZONTAL));
@@ -284,6 +285,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("isEndDateConfirmed", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+
         if (ReadAllClientInfoPanel.instance().numberOfRecords > 0) {
             entityFieldsPanel.add(endPreviousProjectFlagField);
             entityFieldsPanel.add(previousProjectEndDate);
@@ -318,6 +320,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                 is1099 = true;
             }
         }
+
         entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
         addField("visaStatus", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("terminationNotice", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -341,6 +344,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         endDateF = (DateField) fields.get("endDate");
         isEndDateConfirmedF = (BooleanField) fields.get("isEndDateConfirmed");
         isEndDateConfirmedF.setVisible(false);
+
         entityFieldsPanel.add(getLineSeperatorTag("CPD Document"));
         entityFieldsPanel.add(fileUploadPanel);
         entityActionsPanel.add(submitForApprovalF);
@@ -361,6 +365,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             } else {
                 new GenericPopup(new GenericBPMStartFormPanel("AddNewClientRequest", "add_new_client_request_1")).show();
             }
+
         }
         if (event.getSource().equals(addVendorL)) {
             if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN)) {
