@@ -158,8 +158,8 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
             if (!isEmployeesOnLeavePanel) {
                 setEnumColumn(i, 2, entity, "category", "category");
             }
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 3, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
+            table.setText(i, 4, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
             table.setText(i, 5, JSONUtils.toString(entity, "hours"));
             table.setText(i, 6, JSONUtils.formatEnumString(entity, "status"));
             if (enableCancelRequest(entity)) {
@@ -265,5 +265,14 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
 
             }
         });
+    }
+    
+    private String getFormattedDate(String date) {
+        String[] dates = date.split("-");
+        String formatteddate = "";
+        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
+        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
+        formatteddate = formatteddate.concat(dates[0]);
+        return formatteddate;
     }
 }
