@@ -143,8 +143,8 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            table.setText(i, 1, DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportStartDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
-            table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportEndDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            table.setText(i, 1, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportStartDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
+            table.setText(i, 2, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportEndDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
             table.setText(i, 3, JSONUtils.toString(entity, "stage"));
         }
     }
@@ -207,5 +207,14 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
     @Override
     protected boolean autoShowDocumentation() {
         return true;
+    }
+    
+    private String getFormattedDate(String date) {
+        String[] dates = date.split("-");
+        String formatteddate = "";
+        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
+        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
+        formatteddate = formatteddate.concat(dates[0]);
+        return formatteddate;
     }
 }
