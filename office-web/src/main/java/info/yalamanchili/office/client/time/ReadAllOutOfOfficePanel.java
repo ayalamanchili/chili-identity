@@ -139,8 +139,8 @@ public class ReadAllOutOfOfficePanel extends CRUDReadAllComposite {
             if (emp != null) {
                 table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
             }
-            table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 2, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
+            table.setText(i, 3, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
             setEnumColumn(i, 4, entity, OutOfOfficeType.class.getSimpleName(), "outOfOfficeType");
             setEnumColumn(i, 5, entity, OutOfOfficeRequestStatus.class.getSimpleName(), "status");
         }
@@ -186,5 +186,14 @@ public class ReadAllOutOfOfficePanel extends CRUDReadAllComposite {
 
     @Override
     public void postDeleteSuccess() {
+    }
+    
+    private String getFormattedDate(String date) {
+        String[] dates = date.split("-");
+        String formatteddate = "";
+        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
+        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
+        formatteddate = formatteddate.concat(dates[0]);
+        return formatteddate;
     }
 }
