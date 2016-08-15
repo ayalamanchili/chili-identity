@@ -79,7 +79,7 @@ public class ReadAllSubcontractorsPanel extends CRUDReadAllComposite {
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
             table.setText(i, 2, JSONUtils.toString(entity, "description"));
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "coiEndDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 3, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "coiEndDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
         }
     }
 
@@ -144,5 +144,14 @@ public class ReadAllSubcontractorsPanel extends CRUDReadAllComposite {
         } else {
             createButton.setVisible(false);
         }
+    }
+    
+     private String getFormattedDate(String date) {
+        String[] dates = date.split("-");
+        String formatteddate = "";
+        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
+        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
+        formatteddate = formatteddate.concat(dates[0]);
+        return formatteddate;
     }
 }
