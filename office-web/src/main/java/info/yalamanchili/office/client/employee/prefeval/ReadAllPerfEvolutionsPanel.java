@@ -66,7 +66,7 @@ class ReadAllPerfEvolutionsPanel extends CRUDReadAllComposite {
             table.setCellSpacing(5);
             JSONObject entity = (JSONObject) entities.get(i - 1);
             table.setText(i, 0, JSONUtils.toString(entity, "employee"));
-            table.setText(i, 1, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 1, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
             table.setText(i, 2, JSONUtils.toString(entity, "evaluationFYYear"));
             table.setText(i, 3, JSONUtils.toString(entity, "manager"));
             table.setText(i, 4, JSONUtils.toString(entity, "managerReviewStarted"));
@@ -83,5 +83,14 @@ class ReadAllPerfEvolutionsPanel extends CRUDReadAllComposite {
     @Override
     protected boolean enableQuickView() {
         return false;
+    }
+    
+    private String getFormattedDate(String date) {
+        String[] dates = date.split("-");
+        String formatteddate = "";
+        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
+        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
+        formatteddate = formatteddate.concat(dates[0]);
+        return formatteddate;
     }
 }
