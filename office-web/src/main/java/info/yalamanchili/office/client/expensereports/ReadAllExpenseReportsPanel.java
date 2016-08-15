@@ -120,8 +120,8 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
             JSONObject emp = (JSONObject) entity.get(EMPLOYEE);
             table.setText(i, 2, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
             setEnumColumn(i, 3, entity, ExpenseReportStatus.class.getSimpleName(), EXPENSE_FORM_TYPE);
-            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, START_DATE), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, END_DATE), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 4, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, START_DATE), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
+            table.setText(i, 5, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, END_DATE), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
             table.setText(i, 6, FormatUtils.formarCurrency(JSONUtils.toString(entity, TOTAL_EXPENSES)));
             setEnumColumn(i, 7, entity, ExpenseReportStatus.class.getSimpleName(), "status");
         }
@@ -213,5 +213,14 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
     protected void createButtonClicked() {
         TabPanel.instance().expensePanel.entityPanel.clear();
         TabPanel.instance().expensePanel.entityPanel.add(new CreateExpenseReportPanel(CreateComposite.CreateCompositeType.CREATE));
+    }
+    
+    private String getFormattedDate(String date) {
+        String[] dates = date.split("-");
+        String formatteddate = "";
+        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
+        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
+        formatteddate = formatteddate.concat(dates[0]);
+        return formatteddate;
     }
 }
