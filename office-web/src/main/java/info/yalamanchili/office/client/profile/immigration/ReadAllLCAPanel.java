@@ -88,9 +88,9 @@ public class ReadAllLCAPanel extends CRUDReadAllComposite {
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "lcaNumber"));
             setEnumColumn(i, 2, entity, VisaClassificationType.class.getSimpleName(), "visaClassification");
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "lcaFiledDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "lcaValidFromDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, "lcaValidToDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 3, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "lcaFiledDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
+            table.setText(i, 4, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "lcaValidFromDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
+            table.setText(i, 5, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "lcaValidToDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
         }
     }
 
@@ -169,4 +169,12 @@ public class ReadAllLCAPanel extends CRUDReadAllComposite {
         return true;
     }
 
+    private String getFormattedDate(String date) {
+        String[] dates = date.split("-");
+        String formatteddate = "";
+        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
+        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
+        formatteddate = formatteddate.concat(dates[0]);
+        return formatteddate;
+    }
 }
