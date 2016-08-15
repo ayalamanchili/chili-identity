@@ -75,7 +75,7 @@ public class ReadAllBulkImportsPanel extends CRUDReadAllComposite {
             table.setText(i, 1, JSONUtils.toString(entity, "adapter"));
             table.setText(i, 2, JSONUtils.toString(entity, "name"));
             table.setText(i, 3, JSONUtils.toString(entity, "status"));
-            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "importTimeStamp"), DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM));
+            table.setText(i, 4, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "importTimeStamp"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
             String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "fileUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
             FileField fileField = new FileField(fileURL);
             table.setWidget(i, 5, fileField);
@@ -148,5 +148,14 @@ public class ReadAllBulkImportsPanel extends CRUDReadAllComposite {
         TabPanel.instance().getAdminPanel().sidePanelTop.clear();
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new CreateBulkImportPanel(CreateComposite.CreateCompositeType.CREATE));
+    }
+    
+    private String getFormattedDate(String date) {
+        String[] dates = date.split("-");
+        String formatteddate = "";
+        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
+        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
+        formatteddate = formatteddate.concat(dates[0]);
+        return formatteddate;
     }
 }
