@@ -87,8 +87,8 @@ public class ReadAllI94RecordPanel extends CRUDReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "i94RecordNumber"));
-            table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "dateofEntry"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "admitUntilDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 2, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "dateofEntry"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
+            table.setText(i, 3, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "admitUntilDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
             table.setText(i, 4, JSONUtils.toString(entity, "portOfEntry"));
             table.setText(i, 5, JSONUtils.toString(entity, "classOfAdmission"));
         }
@@ -165,5 +165,14 @@ public class ReadAllI94RecordPanel extends CRUDReadAllComposite {
     @Override
     protected boolean enablePersistedQuickView() {
         return true;
+    }
+    
+    private String getFormattedDate(String date) {
+        String[] dates = date.split("-");
+        String formatteddate = "";
+        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
+        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
+        formatteddate = formatteddate.concat(dates[0]);
+        return formatteddate;
     }
 }
