@@ -83,7 +83,7 @@ public class ReadAllTasks extends CRUDReadAllComposite {
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
             table.setText(i, 2, JSONUtils.toString(entity, "owner"));
             table.setText(i, 3, JSONUtils.toString(entity, "assignee"));
-            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "createTime"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            table.setText(i, 4, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "createTime"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
             //TODO add due date
         }
     }
@@ -141,5 +141,14 @@ public class ReadAllTasks extends CRUDReadAllComposite {
     @Override
     protected boolean enablePersistedQuickView() {
         return true;
+    }
+    
+    private String getFormattedDate(String date) {
+        String[] dates = date.split("-");
+        String formatteddate = "";
+        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
+        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
+        formatteddate = formatteddate.concat(dates[0]);
+        return formatteddate;
     }
 }
