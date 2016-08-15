@@ -89,8 +89,8 @@ public class ReadAllTimesheetPanel extends CRUDReadAllComposite {
             table.setText(i, 3, JSONUtils.toString(entity, "quickBooksHours"));
             table.setText(i, 4, JSONUtils.toString(entity, "adpRate"));
             table.setText(i, 5, JSONUtils.toString(entity, "quickBooksRate"));
-            table.setText(i, 6, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
-            table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            table.setText(i, 6, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
+            table.setText(i, 7, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
             table.setText(i, 8, JSONUtils.toString(entity.get("timeSheetPeriod"), "name"));
             table.setText(i, 9, JSONUtils.toString(entity, "versionStatus"));
 
@@ -138,5 +138,14 @@ public class ReadAllTimesheetPanel extends CRUDReadAllComposite {
     public void updateClicked(String entityId) {
         TabPanel.instance().timePanel.entityPanel.clear();
         TabPanel.instance().timePanel.entityPanel.add(new UpdateTimesheetPanel(timeSheetPeriodId, getEntity(entityId)));
+    }
+    
+    private String getFormattedDate(String date) {
+        String[] dates = date.split("-");
+        String formatteddate = "";
+        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
+        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
+        formatteddate = formatteddate.concat(dates[0]);
+        return formatteddate;
     }
 }
