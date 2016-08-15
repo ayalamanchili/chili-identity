@@ -134,7 +134,7 @@ public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
             if (entity.get("assignedTo") != null) {
                 table.setText(i, 7, JSONUtils.toString(entity.get("assignedTo").isObject(), "firstName"));
             }
-            table.setText(i, 8, DateUtils.getFormatedDate(JSONUtils.toString(entity, "createdTimeStamp"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 8, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "createdTimeStamp"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
         }
     }
 
@@ -176,5 +176,14 @@ public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
     @Override
     protected boolean enablePersistedQuickView(){
         return true;
+    }
+    
+    private String getFormattedDate(String date) {
+        String[] dates = date.split("-");
+        String formatteddate = "";
+        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
+        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
+        formatteddate = formatteddate.concat(dates[0]);
+        return formatteddate;
     }
 }
