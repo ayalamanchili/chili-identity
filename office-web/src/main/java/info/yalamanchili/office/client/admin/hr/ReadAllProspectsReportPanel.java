@@ -10,6 +10,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
+import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.utils.FormatUtils;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -76,12 +77,12 @@ public class ReadAllProspectsReportPanel extends CRUDReadAllComposite {
                 table.setText(i, 7, JSONUtils.toString(entity, "petitionFor"));
                 table.setText(i, 8, JSONUtils.toString(entity, "trfEmptype"));
                 table.setText(i, 9, JSONUtils.toString(entity, "placedby"));
-                table.setText(i, 10, info.chili.gwt.date.DateUtils.getFormatedDate(JSONUtils.toString(entity, "dateOfJoining"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
+                table.setText(i, 10, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "dateOfJoining"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
                 table.setText(i, 11, JSONUtils.toString(entity, "companyName"));
-                table.setText(i, 12, info.chili.gwt.date.DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
+                table.setText(i, 12, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
                 setEnumColumn(i, 13, entity, ProspectStatus.class.getSimpleName(), "status");
             } else {
-                table.setText(i, 7, info.chili.gwt.date.DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
+                table.setText(i, 7, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
                 setEnumColumn(i, 8, entity, ProspectStatus.class.getSimpleName(), "status");
             }
         }
@@ -106,5 +107,14 @@ public class ReadAllProspectsReportPanel extends CRUDReadAllComposite {
 
     @Override
     public void updateClicked(String entityId) {
+    }
+    
+    private String getFormattedDate(String date) {
+        String[] dates = date.split("-");
+        String formatteddate = "";
+        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
+        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
+        formatteddate = formatteddate.concat(dates[0]);
+        return formatteddate;
     }
 }
