@@ -110,7 +110,7 @@ public class ReadAllAdjustmentHoursPanel extends CRUDReadAllComposite {
             table.setText(i, 1, JSONUtils.toString(entity.get("employee"), "firstName"));
             table.setText(i, 2, JSONUtils.toString(entity, "paidRate"));
             table.setText(i, 3, JSONUtils.toString(entity, "paidHours"));
-            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "paidDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            table.setText(i, 4, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "paidDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
             table.setText(i, 5, JSONUtils.toString(entity, "paymentInfo"));
         }
     }
@@ -122,5 +122,14 @@ public class ReadAllAdjustmentHoursPanel extends CRUDReadAllComposite {
         } else {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
         }
+    }
+    
+    private String getFormattedDate(String date) {
+        String[] dates = date.split("-");
+        String formatteddate = "";
+        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
+        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
+        formatteddate = formatteddate.concat(dates[0]);
+        return formatteddate;
     }
 }
