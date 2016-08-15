@@ -98,8 +98,8 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
             if (searchResultsTable) {
                 table.setText(i, 1, JSONUtils.toString(entity, "employeeName"));
             }
-            table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportStartDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportEndDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 2, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportStartDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
+            table.setText(i, 3, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportEndDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
             table.setText(i, 4, JSONUtils.toString(entity, "status"));
             //Compare
             if (TabPanel.instance().homePanel.isVisible()) {
@@ -250,5 +250,14 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
     protected void createButtonClicked() {
         TabPanel.instance().homePanel.entityPanel.clear();
         TabPanel.instance().homePanel.entityPanel.add(new CreateCorporateStatusReportPanel());
+    }
+    
+    private String getFormattedDate(String date) {
+        String[] dates = date.split("-");
+        String formatteddate = "";
+        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
+        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
+        formatteddate = formatteddate.concat(dates[0]);
+        return formatteddate;
     }
 }
