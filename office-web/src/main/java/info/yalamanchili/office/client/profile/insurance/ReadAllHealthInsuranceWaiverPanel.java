@@ -9,9 +9,12 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.Window;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
+import info.chili.gwt.fields.FileField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -72,8 +75,9 @@ public class ReadAllHealthInsuranceWaiverPanel extends CRUDReadAllComposite {
         table.setText(0, 0, getKeyValue("Action"));
         table.setText(0, 1, getKeyValue("Year"));
         table.setText(0, 2, getKeyValue("Enrolled"));
-        table.setText(0, 3, getKeyValue("waivingCoverageFor"));
-        table.setText(0, 4, getKeyValue("waivingCoverageDueTo"));
+        table.setText(0, 3, getKeyValue("WaivingCoverageFor"));
+        table.setText(0, 4, getKeyValue("WaivingCoverageDueTo"));
+        table.setText(0, 5, getKeyValue("File"));
     }
 
     @Override
@@ -87,6 +91,9 @@ public class ReadAllHealthInsuranceWaiverPanel extends CRUDReadAllComposite {
                 table.setText(i, 2, JSONUtils.toString(entity, "enrolled"));
                 table.setText(i, 3, JSONUtils.toString(healthInsuranceWaiver, "waivingCoverageFor"));
                 table.setText(i, 4, JSONUtils.toString(healthInsuranceWaiver, "waivingCoverageDueTo"));
+                String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "fileUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
+                FileField fileField = new FileField(fileURL);
+                table.setWidget(i, 5, fileField);
             }
         }
 
@@ -94,7 +101,12 @@ public class ReadAllHealthInsuranceWaiverPanel extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+        createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE, TableRowOptionsWidget.OptionsType.PRINT);
+    }
+
+    @Override
+    public void printClicked(String entityId) {
+        Window.open(ChiliClientConfig.instance().getFileDownloadUrl() + "insurance-enrollment/insurance-print" + "&passthrough=true" + "&id=" + entityId, "_blank", "");
     }
 
     @Override

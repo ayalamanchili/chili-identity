@@ -6,13 +6,15 @@
 package info.yalamanchili.office.client.profile.insurance;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RadioButton;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.TReadComposite;
-import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.StringField;
+import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
 import java.util.logging.Logger;
@@ -55,22 +57,28 @@ public class ReadHealthInsuranceWaiverWidget extends TReadComposite {
 
     @Override
     public void loadEntity(String entityId) {
+        HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                    }
+                });
 
     }
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         logger.info("waiver entity is .... " + entity);
-        if (entity.get("waivingCoverageFor").isString().equals("myself")) {
+        if (entity.get("waivingCoverageFor").isString().equals("MySelf")) {
             myself.setValue(true);
         }
-        if (entity.get("waivingCoverageFor").isString().equals("spouse")) {
+        if (entity.get("waivingCoverageFor").isString().equals("Spouse")) {
             spouse.setValue(true);
-            assignFieldValueFromEntity("spouseName", entity, DataType.STRING_FIELD);
         }
-        if (entity.get("waivingCoverageFor").isString().equals("dependent")) {
+        if (entity.get("waivingCoverageFor").isString().equals("Dependent")) {
             dependent.setValue(true);
-            assignFieldValueFromEntity("dependentName", entity, DataType.STRING_FIELD);
         }
 
     }
@@ -105,12 +113,8 @@ public class ReadHealthInsuranceWaiverWidget extends TReadComposite {
     protected void addWidgetsBeforeCaptionPanel() {
     }
 
-    protected String getURI1(String entityId) {
-        return "";
-    }
-
     @Override
     protected String getURI() {
-        return "";
+        return OfficeWelcome.constants.root_url() + "insurance-enrollment/" + getEntityId();
     }
 }
