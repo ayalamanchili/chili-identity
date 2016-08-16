@@ -66,7 +66,7 @@ public class ProspectDao extends CRUDDao<Prospect> {
 
     public List<Prospect> report(ProspectReportDto dto) {
         String searchQuery = getSearchQuery(dto);
-        TypedQuery<Prospect> query = em.createQuery(searchQuery + " order by startDate DESC", Prospect.class);
+        TypedQuery<Prospect> query = em.createQuery(searchQuery + " order by p.contact.firstName ASC group by p.contact", Prospect.class);
         if (dto.getJoiningDateFrom() != null) {
             query.setParameter("startDateParam", dto.getJoiningDateFrom(), TemporalType.DATE);
         }
@@ -196,8 +196,8 @@ public class ProspectDao extends CRUDDao<Prospect> {
         json.addProperty(PlacedBy.By_Recruiter.name(), placedByRecruiterCount);
         json.addProperty(PlacedBy.Own_Placement.name(), placedByOwnCount);
         json.addProperty(PlacedBy.Corporate_Solutions_Team.name(), placedBySolutionsTeamCount);
-        int placedByCount = placedByRecruiterCount + placedByOwnCount+placedBySolutionsTeamCount;
-        if (totalCount !=  placedByCount) {
+        int placedByCount = placedByRecruiterCount + placedByOwnCount + placedBySolutionsTeamCount;
+        if (totalCount != placedByCount) {
             json.addProperty("PlacedByUnknown", totalCount - (placedByCount));
         }
         json.addProperty(ProspectStatus.IN_PROGRESS.name(), inProgressCount);
