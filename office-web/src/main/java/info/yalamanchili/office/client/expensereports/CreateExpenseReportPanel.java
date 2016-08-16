@@ -20,9 +20,13 @@ import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.FileUpload;
+import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.RadioButton;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.composite.BaseField;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TCRUDComposite;
@@ -31,6 +35,7 @@ import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.FileuploadField;
+import info.chili.gwt.fields.IntegerField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
@@ -41,8 +46,10 @@ import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.expenseitem.CreateExpenseItemPanel;
 import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.*;
+import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -56,20 +63,33 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
 
     private Logger logger = Logger.getLogger(CreateExpenseReportPanel.class.getName());
     protected ClickableLink addItemL = new ClickableLink("Add Expense Item");
-    public List<CreateExpenseItemPanel> expenseItemPanels = new ArrayList<>();
+    RadioButton foryourself = new RadioButton("expenses", "FOR YOURSELF");
+    RadioButton forsomeone = new RadioButton("expenses", "FOR SOMEONE");
+    protected SelectCompanyWidget selectCompanyWidget = new SelectCompanyWidget(false, true, Alignment.HORIZONTAL);
+    public List<CreateExpenseItemPanel> expenseItemPanels = new ArrayList();
+    SuggestBox approvalManager = new SuggestBox(OfficeWelcome.constants2, "approvalManager", "ApprovalManager", false, false, Alignment.HORIZONTAL);
+    BooleanField submitForApprovalF = new BooleanField(OfficeWelcome.constants2, "Submit", "ExpenseReport", false, false, Alignment.HORIZONTAL);
+    boolean isGeneralExpenseItem = false;
 
-    FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "ExpenseReceipt", "", "ExpenseReceipt/fileURL", false, true) {
+    FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants2, "ExpenseReceipt", "", "ExpenseReceipt/fileURL", false, true) {
         @Override
         public void onUploadComplete(String res) {
             postCreateSuccess(null);
         }
     };
-//    protected static HTML generalInfo = new HTML("\n"
-//            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
-//            + "<strong style=\"color:#555555\">General Expense Information</strong></p>\n"
-//            + "\n"
-//            + "<ul>\n"
-//            + "</ul>");
+    FormPanel formPanel = new FormPanel();
+    protected static HTML travelInfo = new HTML("\n"
+            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
+            + "<strong style=\"color:#555555\">Travel Expense Information</strong></p>\n"
+            + "\n"
+            + "<ul>\n"
+            + "</ul>");
+    protected static HTML generalInfo = new HTML("\n"
+            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
+            + "<strong style=\"color:#555555\">General Expense Information</strong></p>\n"
+            + "\n"
+            + "<ul>\n"
+            + "</ul>");
     protected static HTML expenseItemsInfo = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
             + "<strong style=\"color:#555555\">Expense Items Information</strong></p>\n"
@@ -98,14 +118,25 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     HTML emptyLine = new HTML("<br/>");
 
     EnumField expenseFormType;
-    StringField location;
+    StringField purpose;
+    StringField destination;
+    StringField nameOfReport;
+    StringField cardHolderName;
+    StringField expensesMadeBy;
     DateField startDate;
     DateField endDate;
     StringField projectName;
     StringField projectNumber;
-    boolean isGeneralExpenseItem = false;
+    EnumField reImbursmentMethod;
+    DateField submittedDate;
+    EnumField departmentType;
+    StringField otherDepartment;
+    IntegerField payrollFileNumber;
 
     protected static CreateExpenseReportPanel instance;
+    FileUpload fileUpload = new FileUpload();
+    protected String filePrefix;
+    ClickableLink addMoreFiles = new ClickableLink("Add More");
 
     public static CreateExpenseReportPanel instance() {
         return instance;
@@ -114,24 +145,36 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     public CreateExpenseReportPanel(CreateComposite.CreateCompositeType type) {
         super(type);
         instance = this;
-        initCreateComposite("ExpenseReport", OfficeWelcome.constants);
+        initCreateComposite("ExpenseReport", OfficeWelcome.constants2);
     }
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
 
-    BooleanField submitForApprovalF = new BooleanField(OfficeWelcome.constants, "Submit", "ExpenseReport", false, false, Alignment.HORIZONTAL);
-
     @Override
     protected void addWidgets() {
         addEnumField(EXPENSE_FORM_TYPE, false, true, ExpenseFormType.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(approver);
         entityFieldsPanel.add(approvalManager);
+        entityFieldsPanel.add(generalInfo);
         expenseFormType = (EnumField) fields.get(EXPENSE_FORM_TYPE);
-//        entityFieldsPanel.add(generalInfo);
-        addField(LOCATION, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        location = (StringField) fields.get(LOCATION);
+        entityFieldsPanel.add(travelInfo);
+        entityFieldsPanel.add(foryourself);
+        entityFieldsPanel.add(forsomeone);
+        addDropDown(OTHEREMPLOYEES, otherEmployees);
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_CORPORATE_EMPLOYEE)) {
+            addField(NAMEOFREPORT, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        }
+        nameOfReport = (StringField) fields.get(NAMEOFREPORT);
+        addField(PURPOSE, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        purpose = (StringField) fields.get(PURPOSE);
+        addField(DESTINATION, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        destination = (StringField) fields.get(DESTINATION);
+        addField(CARDHOLDERNAME, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        cardHolderName = (StringField) fields.get(CARDHOLDERNAME);
+        addField(EXPENSESMADEBY, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        expensesMadeBy = (StringField) fields.get(EXPENSESMADEBY);
         addField(START_DATE, false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         startDate = (DateField) fields.get(START_DATE);
         addField(END_DATE, false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
@@ -140,6 +183,18 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         projectName = (StringField) fields.get(PROJECT_NAME);
         addField(PROJECT_NUMBER, false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         projectNumber = (StringField) fields.get(PROJECT_NUMBER);
+        addField(PAYROLLFILENUMBER, false, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        payrollFileNumber = (IntegerField) fields.get(PAYROLLFILENUMBER);
+        addEnumField(REIMBURSMENTMETHOD, false, true, ReImbursmentMethod.names(), Alignment.HORIZONTAL);
+        reImbursmentMethod = (EnumField) fields.get(REIMBURSMENTMETHOD);
+        addField(SUBMITTEDDATE, false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        submittedDate = (DateField) fields.get(SUBMITTEDDATE);
+        addDropDown("company", selectCompanyWidget);
+        addEnumField(DEPARTMENTTYPE, false, true, Department.names(), Alignment.HORIZONTAL);
+        departmentType = (EnumField) fields.get(DEPARTMENTTYPE);
+        addField(OTHERDEPARTMENT, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        otherDepartment = (StringField) fields.get(OTHERDEPARTMENT);
+        addField(COMMENTS, false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(receiptsInfo);
         entityFieldsPanel.add(fileUploadPanel);
         entityFieldsPanel.add(expenseItemsInfo);
@@ -149,7 +204,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         panel = new CreateExpenseItemPanel(this, isGeneralExpenseItem);
         expenseItemPanels.add(panel);
         entityFieldsPanel.add(panel);
-        entityActionsPanel.add(getLineSeperatorTag("De-Select this if you are not ready to submit for approval, you can always come back to update and submit."));
+        entityActionsPanel.add(getLineSeperatorTag("I certify that all information in my expenses report is accurate and true."));
         entityActionsPanel.add(submitForApprovalF);
         submitForApprovalF.setValue(true);
         alignFields();
@@ -158,12 +213,14 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     @Override
     protected void configure() {
         expenseFormType.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
-        location.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
+        purpose.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
         startDate.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         endDate.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
         projectName.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         projectNumber.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
-//        generalInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        reImbursmentMethod.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
+        generalInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        travelInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         expenseItemsInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         receiptsInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         notes.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
@@ -172,7 +229,9 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         setButtonText("Submit");
         approvalManager.setVisible(false);
         approver.setVisible(false);
-        HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+        otherDepartment.setVisible(false);
+        otherEmployees.setVisible(false);
+        HttpService.HttpServiceAsync.instance().doGet(getGeneralExpMgrIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
                 Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
@@ -181,19 +240,35 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
                 }
             }
         });
+        formPanel.setEncoding(FormPanel.ENCODING_MULTIPART);
+        formPanel.setMethod(FormPanel.METHOD_POST);
+        fileUpload.setName(filePrefix);
+        formPanel.setAction(getUploadUrl());
+        addMoreFiles.addClickHandler(this);
+        fileUpload.getElement().setAttribute("multiple", "multiple");
+        String mimeType = "application/pdf,image/jpeg,image/pjpegs";
+        fileUploadPanel.getFileUpload().getElement().setAttribute("multiple", "multiple");
+        fileUploadPanel.getFileUpload().getElement().setPropertyString("accept", mimeType);
     }
 
-    private String getEmployeeIdsDropDownUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_GENERAL_EXPENSE_MANAGER.name() + "/0/10000");
-    }
+    SelectEmployeeWidget otherEmployees = new SelectEmployeeWidget(OTHEREMPLOYEES, false, false, Alignment.HORIZONTAL) {
+        @Override
+        public boolean enableMultiSelect() {
+            return true;
+        }
+    };
 
     @Override
     protected void addListeners() {
         expenseFormType.listBox.addChangeHandler(this);
+        departmentType.listBox.addChangeHandler(this);
         submitForApprovalF.getBox().addClickHandler(this);
         projectName.getTextbox().addBlurHandler(this);
         projectNumber.getTextbox().addBlurHandler(this);
+        reImbursmentMethod.listBox.addChangeHandler(this);
         addItemL.addClickHandler(this);
+        forsomeone.addClickHandler(this);
+        foryourself.addClickHandler(this);
     }
 
     @Override
@@ -203,11 +278,41 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
             entity.put("approvalManagerId", approvalManager.getSelectedObject().get("id").isString());
         }
         assignEntityValueFromField(EXPENSE_FORM_TYPE, entity);
-        assignEntityValueFromField(LOCATION, entity);
+        assignEntityValueFromField(PURPOSE, entity);
+        assignEntityValueFromField(NAMEOFREPORT, entity);
+        assignEntityValueFromField(DESTINATION, entity);
+        assignEntityValueFromField(EXPENSESMADEBY, entity);
+        assignEntityValueFromField(CARDHOLDERNAME, entity);
         assignEntityValueFromField(START_DATE, entity);
         assignEntityValueFromField(END_DATE, entity);
         assignEntityValueFromField(PROJECT_NAME, entity);
         assignEntityValueFromField(PROJECT_NUMBER, entity);
+        assignEntityValueFromField(REIMBURSMENTMETHOD, entity);
+        assignEntityValueFromField(PAYROLLFILENUMBER, entity);
+        assignEntityValueFromField(SUBMITTEDDATE, entity);
+        assignEntityValueFromField(DEPARTMENTTYPE, entity);
+        assignEntityValueFromField(OTHERDEPARTMENT, entity);
+        assignEntityValueFromField(COMMENTS, entity);
+        assignEntityValueFromField(COMPANY, entity);
+        entity.put("foryourself", new JSONString(foryourself.getValue().toString()));
+        entity.put("forsomeone", new JSONString(forsomeone.getValue().toString()));
+        entity.put(OTHEREMPLOYEES, otherEmployees.getSelectedObjects());
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
+            if (fields.containsKey("company") && selectCompanyWidget.getSelectedObject() != null) {
+                JSONObject company = selectCompanyWidget.getSelectedObject();
+                company.put("name", company.get("value"));
+                entity.put("company", company);
+            }
+        }
+        EnumField field1 = (EnumField) fields.get("departmentType");
+        if (field1.getValue() != null && !field1.getValue().trim().isEmpty()) {
+            entity.put("departmentType", new JSONString(field1.getValue()));
+        } else {
+            entity.put("departmentType", null);
+        }
+        if (otherDepartment.isVisible() == true) {
+            entity.put("otherDepartment", new JSONString(otherDepartment.getValue()));
+        }
         if (expenseItemPanels.size() > 0) {
             JSONArray items = new JSONArray();
             int i = 0;
@@ -221,17 +326,14 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         if (!fileUploadPanel.isEmpty()) {
             int i = 0;
             for (JSONString fileName : fileUploadPanel.getFileNames()) {
-                if (fileName != null && !fileName.stringValue().trim().isEmpty()) {
-                    JSONObject expenseReceipt = new JSONObject();
-                    expenseReceipt.put("fileURL", fileName);
-                    expenseReceipt.put("name", new JSONString("File Name"));
-                    expenseReceipts.set(i, expenseReceipt);
-                    i++;
-                }
+                JSONObject expenseReceipt = new JSONObject();
+                expenseReceipt.put("fileURL", fileName);
+                expenseReceipt.put("name", new JSONString("File Name"));
+                expenseReceipts.set(i, expenseReceipt);
+                i++;
             }
         }
         entity.put(EXPENSE_RECEIPT, expenseReceipts);
-        logger.info(entity.toString());
         return entity;
     }
 
@@ -274,6 +376,12 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
             expenseItemPanels.add(panel);
             entityFieldsPanel.add(panel);
         }
+        if (event.getSource().equals(forsomeone)) {
+            otherEmployees.setVisible(true);
+        }
+        if (event.getSource().equals(foryourself)) {
+            otherEmployees.setVisible(false);
+        }
         if (submitForApprovalF.getValue()) {
             setButtonText("Submit");
         } else {
@@ -297,12 +405,86 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         TabPanel.instance().expensePanel.entityPanel.add(new ReadAllExpenseReportsPanel());
     }
 
+    protected void renderproject(boolean render) {
+        projectName.setVisible(true);
+        projectNumber.setVisible(true);
+        purpose.setVisible(true);
+        approvalManager.setVisible(false);
+        generalInfo.setVisible(false);
+        if (render == true) {
+            entityFieldsPanel.remove(foryourself);
+            entityFieldsPanel.remove(forsomeone);
+            entityFieldsPanel.remove(otherEmployees);
+            entityFieldsPanel.remove(cardHolderName);
+            entityFieldsPanel.remove(expensesMadeBy);
+            if (fields.containsKey(PAYROLLFILENUMBER)) {
+                payrollFileNumber.setVisible(false);
+            }
+            if (fields.containsKey(SUBMITTEDDATE)) {
+                submittedDate.setVisible(false);
+            }
+        }
+    }
+
+    @Override
+    public void onChange(ChangeEvent event) {
+        if (event.getSource().equals(expenseFormType.listBox)) {
+            if (expenseFormType.getValue().equals(ExpenseFormType.GENERAL_EXPENSE.name())) {
+                renderproject(false);
+                isGeneralExpenseItem = true;
+                approvalManager.setVisible(true);
+                approver.setVisible(true);
+                generalInfo.setVisible(true);
+                travelInfo.setVisible(false);
+                entityCaptionPanel.setCaptionHTML("General Expense form");
+            } else if (expenseFormType.getValue().equals(ExpenseFormType.TRAVEL_EXPENSE.name())) {
+                renderproject(true);
+                isGeneralExpenseItem = false;
+                isGeneralExpenseItem = false;
+                travelInfo.setVisible(true);
+                entityCaptionPanel.setCaptionHTML("Travel Expense form");
+            }
+            expenseFormType.setVisible(false);
+        }
+        if (event.getSource().equals(departmentType.listBox)) {
+            if (departmentType.getValue().equals(Department.Other.name())) {
+                otherDepartment.setVisible(true);
+            } else {
+                otherDepartment.setVisible(false);
+            }
+        }
+    }
+
+    @Override
+    public void onBlur(BlurEvent event) {
+    }
+
+    protected String getUploadUrl() {
+        return ChiliClientConfig.instance().getFileUploadUrl();
+    }
+
+    private String getGeneralExpMgrIdsDropDownUrl() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_GENERAL_EXPENSE_MANAGER.name() + "/0/10000");
+    }
+
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
+        boolean valid = true;
         if (expenseItemPanels.size() > 0 && (fileUploadPanel.getFileNames().size() <= 0 || fileUploadPanel.getFileNames().get(0).stringValue().isEmpty())) {
-            return Window.confirm("You expense report does not have any receipts attached so will not be processed. Are you sure you still want to submit?");
+            return Window.confirm("Your expense report does not have any receipts attached so will not be processed. Are you sure you still want to submit?");
         }
-        return true;
+        StringField cardHolderNames = (StringField) fields.get(CARDHOLDERNAME);
+        if (cardHolderNames.getValue() == null) {
+            cardHolderNames.setMessage("Card Holder Name can not be null");
+            return false;
+        }
+        StringField expensesMadeBy = (StringField) fields.get(EXPENSESMADEBY);
+        if (expensesMadeBy.getValue() == null) {
+            expensesMadeBy.setMessage("Expense Made By can not be null");
+            return false;
+        }
+        return valid;
+
     }
 
     @Override
@@ -313,35 +495,6 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "expensereport/submit?submitForApproval=" + submitForApprovalF.getValue();
-
     }
 
-    protected void renderproject(boolean render) {
-        projectName.setVisible(render);
-        projectNumber.setVisible(render);
-    }
-
-    SuggestBox approvalManager = new SuggestBox(OfficeWelcome.constants, "approvalManager", "ApprovalManager", false, false, Alignment.HORIZONTAL);
-
-    @Override
-    public void onChange(ChangeEvent event) {
-        if (event.getSource().equals(expenseFormType.listBox)) {
-            if (expenseFormType.getValue().equals(ExpenseFormType.GENERAL_EXPENSE.name())) {
-                renderproject(false);
-                isGeneralExpenseItem = true;
-                approvalManager.setVisible(true);
-                approver.setVisible(true);
-                entityCaptionPanel.setCaptionHTML("General Expense form");
-            } else if (expenseFormType.getValue().equals(ExpenseFormType.TRAVEL_EXPENSE.name())) {
-                renderproject(true);
-                isGeneralExpenseItem = false;
-                entityCaptionPanel.setCaptionHTML("Travel Expense form");
-            }
-            expenseFormType.setVisible(false);
-        }
-    }
-
-    @Override
-    public void onBlur(BlurEvent event) {
-    }
 }

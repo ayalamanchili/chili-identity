@@ -32,6 +32,8 @@ public class ExpenseReportSaveDto extends ExpenseReport {
     protected List<ExpenseItem> expenseItems;
 
     protected Set<ExpenseReceipt> expenseReceipts;
+    
+    protected String comments;
 
     @Override
     @XmlElement
@@ -63,4 +65,11 @@ public class ExpenseReportSaveDto extends ExpenseReport {
         this.expenseReceipts = expenseReceipts;
     }
 
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
 }

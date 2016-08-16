@@ -21,7 +21,7 @@
                 Employee Expense Report Manager Approval Task
                 Employee Name       : #{currentEmployee.firstName} #{currentEmployee.lastName}
                 Expense Form Type   : #{entity.expenseFormType}
-                Location/Purpose    : #{entity.location}
+                Purpose             : #{entity.purpose}
                 Start Date          : #{entity.startDate}
                 End Date            : #{entity.endDate}
                 Total Amount        : #{entity.totalExpenses}
@@ -85,7 +85,7 @@
                 Employee Expense Report Final Approval Task
                 Employee Name       : #{currentEmployee.firstName} #{currentEmployee.lastName}
                 Expense Form Type   : #{entity.expenseFormType}
-                Location/Purpose    : #{entity.location}
+                Purpose             : #{entity.purpose}
                 Start Date          : #{entity.startDate}
                 End Date            : #{entity.endDate}
                 Total Amount        : #{entity.totalExpenses}
@@ -148,7 +148,7 @@
                 Employee Expense Report Accounts Payable Payment Dispatch Task.
                 Employee Name       : #{currentEmployee.firstName} #{currentEmployee.lastName}
                 Expense Form Type   : #{entity.expenseFormType}
-                Location/Purpose    : #{entity.location}
+                Purpose             : #{entity.purpose}
                 Start Date          : #{entity.startDate}
                 End Date            : #{entity.endDate}
                 Total Amount        : #{entity.totalExpenses}

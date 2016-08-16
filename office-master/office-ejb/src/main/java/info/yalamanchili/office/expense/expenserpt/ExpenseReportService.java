@@ -25,14 +25,15 @@ import info.yalamanchili.office.dao.expense.expenserpt.ExpenseItemDao;
 import info.yalamanchili.office.dao.expense.expenserpt.ExpenseReceiptDao;
 import info.yalamanchili.office.dao.expense.expenserpt.ExpenseReportsDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
+import info.yalamanchili.office.dao.profile.CompanyDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.Company;
+import info.yalamanchili.office.entity.expense.expenserpt.DepartmentType;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseCategory;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseFormType;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseItem;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReceipt;
-import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReimbursePaymentMode;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReportStatus;
 import info.yalamanchili.office.entity.ext.Comment;
@@ -41,8 +42,10 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.ws.rs.core.Response;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -58,19 +61,38 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("prototype")
 public class ExpenseReportService {
-    
+
     @Autowired
     protected ExpenseReportsDao expenseReportsDao;
-    
+
     @Autowired
     protected ExpenseItemDao expenseItemDao;
-    
+
     public ExpenseReportSaveDto create(ExpenseReportSaveDto dto, boolean submitForApproval) {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         ExpenseReport entity = mapper.map(dto, ExpenseReport.class);
         entity.setStatus(ExpenseReportStatus.PENDING_MANAGER_APPROVAL);
-        entity.setExpenseReimbursePaymentMode(ExpenseReimbursePaymentMode.MAIL_CHECK);
+        entity.setExpenseReimbursePaymentMode(dto.getExpenseReimbursePaymentMode());
         entity.setSubmittedDate(new Date());
+        entity.setNameOfReport(dto.getNameOfReport());
+        //entity.setComments(dto.getComments());
+        if (dto.getCompany() != null) {
+            Company company = CompanyDao.instance().findById(dto.getCompany().getId());
+            entity.setCompany(company);
+        } else {
+            entity.setCompany(null);
+        }
+        if (dto.getOtherEmployees() != null && dto.getOtherEmployees().size() > 0) {
+            Set<Employee> newotherEmployees = new HashSet();
+            for (Employee emp : dto.getOtherEmployees()) {
+                if (emp.getId() != null) {
+                    newotherEmployees.add(EmployeeDao.instance().findById(emp.getId()));
+                }
+            }
+            entity.setOtherEmployees(newotherEmployees);
+        }
+
+        entity.setDepartmentType(dto.getDepartmentType());
         ExpenseCategoryDao expenseCategoryDao = ExpenseCategoryDao.instance();
         for (ExpenseItem item : entity.getExpenseItems()) {
             if (dto.getExpenseFormType().equals(ExpenseFormType.GENERAL_EXPENSE)) {
@@ -98,7 +120,7 @@ public class ExpenseReportService {
         entity = expenseReportsDao.save(entity);
         return mapper.map(entity, ExpenseReportSaveDto.class);
     }
-    
+
     protected String startExpenseReportProcess(Long approvalManagerId, ExpenseReport entity) {
         if (entity.getBpmProcessId() != null) {
             OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
@@ -116,10 +138,14 @@ public class ExpenseReportService {
         vars.put("entityId", entity.getId());
         return OfficeBPMService.instance().startProcess("expense_report_process", vars);
     }
-    
+
     public ExpenseReportSaveDto update(ExpenseReportSaveDto dto, boolean submitForApproval) {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         ExpenseReport entity = expenseReportsDao.save(dto);
+        if (!dto.getDepartmentType().equals(DepartmentType.Other)) {
+            entity.setOtherDepartment(null);
+        }
+        entity.setExpenseReimbursePaymentMode(dto.getExpenseReimbursePaymentMode());
         ExpenseCategoryDao expenseCategoryDao = ExpenseCategoryDao.instance();
         //add/update items
         for (ExpenseItem item : dto.getExpenseItems()) {
@@ -145,6 +171,15 @@ public class ExpenseReportService {
                 ExpenseReceiptDao.instance().save(receipt);
             }
         }
+        if (dto.getOtherEmployees() != null && dto.getOtherEmployees().size() > 0) {
+            Set<Employee> newotherEmployees = new HashSet();
+            for (Employee emp : dto.getOtherEmployees()) {
+                if (emp.getId() != null) {
+                    newotherEmployees.add(EmployeeDao.instance().findById(emp.getId()));
+                }
+            }
+            entity.setOtherEmployees(newotherEmployees);
+        }
         expenseReportsDao.getEntityManager().flush();
         entity = expenseReportsDao.findById(entity.getId());
         entity.updateTotalAmount();
@@ -154,18 +189,35 @@ public class ExpenseReportService {
         }
         return mapper.map(entity, ExpenseReportSaveDto.class);
     }
-    
+
     public ExpenseReportSaveDto read(Long id) {
         ExpenseReport entity = expenseReportsDao.findById(id);
         ExpenseReportSaveDto res = (ExpenseReportSaveDto) BeanMapper.clone(entity, ExpenseReportSaveDto.class);
+        entity.setExpenseReimbursePaymentMode(res.getExpenseReimbursePaymentMode());
+        if (entity.getCompany() != null) {
+            res.setCompany(CompanyDao.instance().findById(entity.getCompany().getId()));
+        }
+        res.setDepartmentType(entity.getDepartmentType());
+        if (!entity.getDepartmentType().equals(DepartmentType.Other)) {
+            res.setOtherDepartment(null);
+        }
         res.setExpenseItems(entity.getExpenseItems());
         res.setExpenseReceipts(entity.getExpenseReceipts());
         res.setEmployee(entity.getEmployee());
+        res.setExpenseFormType(entity.getExpenseFormType());
+        Set<Employee> otherEmps = new HashSet();
+        if (entity.getOtherEmployees() != null && entity.getOtherEmployees().size() > 0) {
+            for (Employee emp : entity.getOtherEmployees()) {
+                otherEmps.add(EmployeeDao.instance().findById(emp.getId()));
+            }
+        }
+        res.setOtherEmployees(otherEmps);
+        res.setReImbursmentMethod(entity.getReImbursmentMethod());
         return res;
     }
-    
+
     private static final Log log = LogFactory.getLog(ExpenseReportService.class);
-    
+
     public ExpenseReportSaveDto clone(Long id) {
         ExpenseReport entity = expenseReportsDao.clone(id, "submittedDate", "approvedByManager", "approvedByManagerDate", "approvedByAccountsDept", "approvedByAccountsDeptDate", "approvedByCEO", "approvedByCEODate", "bpmProcessId", "status", "totalExpenses", "expenseReceipts");
         if (!entity.getEmployee().getEmployeeId().equals(OfficeSecurityService.instance().getCurrentUserName())) {
@@ -174,14 +226,14 @@ public class ExpenseReportService {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         return mapper.map(entity, ExpenseReportSaveDto.class);
     }
-    
+
     public void delete(Long id) {
         ExpenseReport entity = expenseReportsDao.findById(id);
         //TODO use processid
         OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
         expenseReportsDao.delete(id);
     }
-    
+
     public Response getReport(Long id) {
         ExpenseReport entity = expenseReportsDao.findById(id);
         EmployeeDao employeeDao = EmployeeDao.instance();
@@ -207,13 +259,13 @@ public class ExpenseReportService {
                 data.setTemplateUrl("/templates/pdf/travel-expenses-form.pdf");
             }
         }
-        
+
         data.setKeyStoreName(securityConfiguration.getKeyStoreName());
         Employee preparedBy = entity.getEmployee();
         Signature preparedBysignature = new Signature(preparedBy.getEmployeeId(), preparedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(entity.getSubmittedDate()), employeeDao.getPrimaryEmail(preparedBy), null);
         data.getData().put("submittedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getSubmittedDate()));
         data.getSignatures().add(preparedBysignature);
-        
+
         String prepareByStr = preparedBy.getLastName() + ", " + preparedBy.getFirstName();
         data.getData().put("name", prepareByStr);
         if (preparedBy.getCompany() == null || preparedBy.getCompany().getName().equals("System Soft Technologies LLC")) {
@@ -222,7 +274,7 @@ public class ExpenseReportService {
             data.getData().put("systemSoftTechnologies-INC", "true");
         }
         data.getData().put("department", entity.getDepartment());
-        data.getData().put("location", entity.getLocation());
+        data.getData().put("location", entity.getPurpose());
         data.getData().put("projectName", entity.getProjectName());
         data.getData().put("projectNumber", entity.getProjectNumber());
         data.getData().put("startDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getStartDate()));
@@ -251,7 +303,8 @@ public class ExpenseReportService {
                 itemTotal = itemTotal.add(item.getAmount());
                 i++;
             } else // Expanse Item Personal 
-             if (item.getExpensePaymentMode() != null && item.getExpensePaymentMode().name().equals("PERSONAL_CARD")) {
+            {
+                if (item.getExpensePaymentMode() != null && item.getExpensePaymentMode().name().equals("PERSONAL_CARD")) {
                     if (item.getCategory() != null) {
                         if (item.getCategory().getName().equals("AirFare")) {
                             data.getData().put("Air Fare", "true");
@@ -314,8 +367,9 @@ public class ExpenseReportService {
                     itemAmex = itemAmex.add(item.getAmount());
                     a++;
                 }
+            }
         }
-        
+
         data.getData().put("p-itemTotal", itemPersonal.setScale(2, BigDecimal.ROUND_UP).toString());
         data.getData().put("a-itemTotal", itemAmex.setScale(2, BigDecimal.ROUND_UP).toString());
         data.getData().put("itemTotal", itemTotal.setScale(2, BigDecimal.ROUND_UP).toString());
@@ -327,7 +381,7 @@ public class ExpenseReportService {
         for (Comment comment : cmnts) {
             allComment = allComment + ". " + comment.getComment();
         }
-        
+
         if (entity.getApprovedByCEO() != null) {
             Employee ceo = employeeDao.findEmployeWithEmpId(entity.getApprovedByCEO());
             if (ceo != null) {
@@ -336,7 +390,7 @@ public class ExpenseReportService {
                 data.getData().put("approvedByCEODate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getApprovedByCEODate()));
             }
         }
-        
+
         if ((entity.getExpenseFormType()) != null && entity.getExpenseFormType().name().equals("TRAVEL_EXPENSE")) {
             if (entity.getApprovedByManager() != null) {
                 Employee manager = employeeDao.findEmployeWithEmpId(entity.getApprovedByManager());
@@ -356,7 +410,7 @@ public class ExpenseReportService {
                     data.getData().put("PayrollDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getApprovedByAccountsDeptDate()));
                 }
             }
-            
+
         }
         data.getData().put("comment", allComment);
         byte[] pdf = PDFUtils.generatePdf(data);
@@ -365,7 +419,7 @@ public class ExpenseReportService {
                 .header("Content-Length", pdf.length)
                 .build();
     }
-    
+
     public static ExpenseReportService instance() {
         return SpringContext.getBean(ExpenseReportService.class);
     }

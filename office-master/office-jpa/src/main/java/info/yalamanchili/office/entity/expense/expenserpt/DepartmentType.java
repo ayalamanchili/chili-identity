@@ -10,10 +10,18 @@ package info.yalamanchili.office.entity.expense.expenserpt;
 
 /**
  *
- * @author Madhu.Badiginchala
+ * @author Kishore.Chigurupati
  */
-public enum ExpenseFormType {
+public enum DepartmentType {
 
-    TRAVEL_EXPENSE,
-    GENERAL_EXPENSE;
+    BusinessManagement,
+    ITProjects,
+    HRPayroll,
+    HRImmigration,
+    HRAdministration,
+    AccountingandFinanceDepartment,
+    RecruitingDepartment,
+    OffshoreSupportandDevelopment,
+    Other;
+
 }

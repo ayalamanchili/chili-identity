@@ -67,11 +67,11 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        postDeleteSuccess();
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                postDeleteSuccess();
+            }
+        });
     }
 
     @Override
@@ -91,12 +91,12 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllExpenseReportURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), false,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        logger.info("Info:" + result);
-                        postFetchTable(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                logger.info("Info:" + result);
+                postFetchTable(result);
+            }
+        });
     }
 
     @Override
@@ -152,14 +152,14 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
     public void copyClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(OfficeWelcome.constants.root_url() + "expensereport/clone/" + entityId, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        logger.info(arg0);
-                        new ResponseStatusWidget().show("Copy created. Plase update and save.");
-                        TabPanel.instance().expensePanel.entityPanel.clear();
-                        TabPanel.instance().expensePanel.entityPanel.add(new UpdateExpenseReportPanel(JSONParser.parseLenient(arg0).isObject()));
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                logger.info(arg0);
+                new ResponseStatusWidget().show("Copy created. Plase update and save.");
+                TabPanel.instance().expensePanel.entityPanel.clear();
+                TabPanel.instance().expensePanel.entityPanel.add(new UpdateExpenseReportPanel(JSONParser.parseLenient(arg0).isObject()));
+            }
+        });
     }
 
     private String getDeleteURL(String entityId) {
@@ -206,7 +206,7 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
     @Override
     protected void configureCreateButton() {
         createButton.setText("Create Expense Report");
-        createButton.setVisible(false);
+        createButton.setVisible(true);
     }
 
     @Override
@@ -214,7 +214,7 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
         TabPanel.instance().expensePanel.entityPanel.clear();
         TabPanel.instance().expensePanel.entityPanel.add(new CreateExpenseReportPanel(CreateComposite.CreateCompositeType.CREATE));
     }
-    
+
     private String getFormattedDate(String date) {
         String[] dates = date.split("-");
         String formatteddate = "";
