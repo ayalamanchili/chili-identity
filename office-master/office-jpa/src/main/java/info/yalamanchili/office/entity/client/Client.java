@@ -61,6 +61,8 @@ public class Client extends AbstractEntity {
     @ManyToMany(cascade = CascadeType.MERGE)
     protected Set<Vendor> vendors;
     @Temporal(TemporalType.DATE)
+    private Date msaValDate;
+    @Temporal(TemporalType.DATE)
     protected Date msaExpDate;
     protected String website;
     protected String paymentTerms;
@@ -200,6 +202,22 @@ public class Client extends AbstractEntity {
         this.website = website;
     }
 
+    
+    /**
+     * @return the msaValDate
+     */
+    public Date getMsaValDate() {
+        return msaValDate;
+    }
+
+    /**
+     * @param msaValDate the msaValDate to set
+     */
+    public void setMsaValDate(Date msaValDate) {
+        this.msaValDate = msaValDate;
+    }
+
+    
     /**
      * @return the msaExpDate
      */
