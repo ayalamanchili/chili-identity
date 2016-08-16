@@ -12,7 +12,7 @@ import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import info.yalamanchili.office.entity.profile.Address;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Date;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -33,6 +33,7 @@ public class CreateClientDto implements Serializable{
     
     protected String description;
     protected String website;
+    protected Date msaExpDate;
     protected String paymentTerms;
     @Enumerated(EnumType.STRING)
     protected InvoiceFrequency clientinvFrequency;
@@ -76,6 +77,21 @@ public class CreateClientDto implements Serializable{
         this.website = website;
     }
 
+    /**
+     * @return the msaExpDate
+     */
+    public Date getMsaExpDate() {
+        return msaExpDate;
+    }
+
+    /**
+     * @param msaExpDate the msaExpDate to set
+     */
+    public void setMsaExpDate(Date msaExpDate) {
+        this.msaExpDate = msaExpDate;
+    }
+
+    
     public String getPaymentTerms() {
         return paymentTerms;
     }
@@ -145,4 +161,5 @@ public class CreateClientDto implements Serializable{
         return "Create Client{" + "name=" + name + ", description=" + description + '}';
     }
 
+    
 }
