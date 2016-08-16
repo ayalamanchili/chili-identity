@@ -33,6 +33,8 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
 
     protected static ReadAllClientInfoPanel instance;
 
+    protected boolean active = false;
+
     public static ReadAllClientInfoPanel instance() {
         return instance;
     }
@@ -40,6 +42,13 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
     public ReadAllClientInfoPanel(String parentId) {
         instance = this;
         this.parentId = parentId;
+        initTable("Client Information", OfficeWelcome.constants);
+    }
+
+    public ReadAllClientInfoPanel(String parentId, boolean active) {
+        instance = this;
+        this.parentId = parentId;
+        this.active = active;
         initTable("Client Information", OfficeWelcome.constants);
     }
 
@@ -54,6 +63,7 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
+                        logger.info("Result with employee is:" + result);
                         postFetchTable(result);
                     }
                 });
@@ -199,10 +209,14 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
 
     @Override
     protected void createButtonClicked() {
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new CreateClientInfoPanel(CreateComposite.CreateCompositeType.ADD));
+        if (!active) {
+            new ResponseStatusWidget().show("CPD Should not be created for deactivated employee's");
+        } else {
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateClientInfoPanel(CreateComposite.CreateCompositeType.ADD));
+        }
     }
-    
+
     private String getFormattedDate(String date) {
         String[] dates = date.split("-");
         String formatteddate = "";

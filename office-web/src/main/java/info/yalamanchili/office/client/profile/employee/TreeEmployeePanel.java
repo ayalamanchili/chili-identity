@@ -58,6 +58,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected TreeEmpFormsPanel empDocsPanel;
     protected TreeEmpContactsPanel empContactsPanel;
     protected TreeEmployeeImmigrationPanel empImmigrationPanel;
+    protected boolean active = false;
 
     public TreeEmployeePanel(JSONObject emp) {
         super();
@@ -68,6 +69,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         empImmigrationPanel = new TreeEmployeeImmigrationPanel(getEntityId());
         empDocsPanel = new TreeEmpFormsPanel(emp);
         empContactsPanel = new TreeEmpContactsPanel(emp);
+        active = JSONUtils.toBoolean(emp, "status");
         String name = JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName");
         init(name, OfficeWelcome.constants);
     }
@@ -139,7 +141,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         }
         if (CLIENT_INFO_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(getEntityId()));
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(getEntityId(), active));
             TabPanel.instance().myOfficePanel.entityPanel.add(new ClientInfoOptionsPanel());
         }
         if (PRIVACY_NODE.equals(entityNodeKey)) {
