@@ -31,6 +31,15 @@ and open the template in the editor.
                    tableName="client_aud">
             <column name="msaExpDate" type="date"/>
         </addColumn>
-
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="client">
+            <column name="msaValDate" type="date"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="client_aud">
+            <column name="msaValDate" type="date"/>
+        </addColumn>
 </changeSet>
 </databaseChangeLog>
