@@ -52,11 +52,11 @@ public class ReadAllVendorsPanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllVendorPanelURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        postFetchTable(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                postFetchTable(result);
+            }
+        });
     }
 
     private String getReadAllVendorPanelURL(Integer start, String tableSize) {
@@ -80,7 +80,7 @@ public class ReadAllVendorsPanel extends CRUDReadAllComposite {
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
             table.setText(i, 2, JSONUtils.toString(entity, "description"));
             setEnumColumn(i, 3, entity, "vendorType", "vendorType");
-            table.setText(i, 4, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "coiEndDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
+            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "coiEndDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
         }
     }
 
@@ -105,11 +105,11 @@ public class ReadAllVendorsPanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        postDeleteSuccess();
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                postDeleteSuccess();
+            }
+        });
     }
 
     private String getDeleteURL(String entityId) {
@@ -130,6 +130,7 @@ public class ReadAllVendorsPanel extends CRUDReadAllComposite {
         TabPanel.instance().adminPanel.sidePanelTop.clear();
         TabPanel.instance().adminPanel.sidePanelTop.add(new TreeVendorsPanel(getEntity(entityId)));
     }
+
     @Override
     protected void createButtonClicked() {
         TabPanel.instance().getAdminPanel().entityPanel.clear();
@@ -141,18 +142,8 @@ public class ReadAllVendorsPanel extends CRUDReadAllComposite {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS)) {
             createButton.setText("Create Vendor");
             createButton.setVisible(true);
-        }
-        else {
+        } else {
             createButton.setVisible(false);
         }
-    }
-    
-     private String getFormattedDate(String date) {
-        String[] dates = date.split("-");
-        String formatteddate = "";
-        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
-        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
-        formatteddate = formatteddate.concat(dates[0]);
-        return formatteddate;
     }
 }

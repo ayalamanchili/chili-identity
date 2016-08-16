@@ -8,7 +8,6 @@
 package info.yalamanchili.office.client.admin.client;
 
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -63,6 +62,7 @@ public class CreateClientPanel extends CreateComposite {
         assignEntityValueFromField("name", clnt);
         assignEntityValueFromField("description", clnt);
         assignEntityValueFromField("website", clnt);
+        assignEntityValueFromField("msaExpDate", clnt);
         assignEntityValueFromField("paymentTerms", clnt);
         assignEntityValueFromField("clientinvFrequency", clnt);
         assignEntityValueFromField("clientFee", clnt);
@@ -131,6 +131,7 @@ public class CreateClientPanel extends CreateComposite {
         addField("name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("msaExpDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("clientinvFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         addField("clientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);

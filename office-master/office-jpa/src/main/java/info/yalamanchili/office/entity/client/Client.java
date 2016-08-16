@@ -13,6 +13,7 @@ import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -57,6 +58,7 @@ public class Client extends AbstractEntity {
     protected List<Contact> contacts;
     @ManyToMany(cascade = CascadeType.MERGE)
     protected Set<Vendor> vendors;
+    protected Date msaExpDate;
     protected String website;
     protected String paymentTerms;
     @Enumerated(EnumType.STRING)
@@ -195,6 +197,20 @@ public class Client extends AbstractEntity {
         this.website = website;
     }
 
+    /**
+     * @return the msaExpDate
+     */
+    public Date getMsaExpDate() {
+        return msaExpDate;
+    }
+
+    /**
+     * @param msaExpDate the msaExpDate to set
+     */
+    public void setMsaExpDate(Date msaExpDate) {
+        this.msaExpDate = msaExpDate;
+    }
+    
     public String getPaymentTerms() {
         return paymentTerms;
     }
