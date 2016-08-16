@@ -24,6 +24,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -58,6 +60,7 @@ public class Client extends AbstractEntity {
     protected List<Contact> contacts;
     @ManyToMany(cascade = CascadeType.MERGE)
     protected Set<Vendor> vendors;
+    @Temporal(TemporalType.DATE)
     protected Date msaExpDate;
     protected String website;
     protected String paymentTerms;
