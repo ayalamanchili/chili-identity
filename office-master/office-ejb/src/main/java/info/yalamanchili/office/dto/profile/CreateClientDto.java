@@ -33,6 +33,7 @@ public class CreateClientDto implements Serializable{
     
     protected String description;
     protected String website;
+    private Date msaValDate;
     protected Date msaExpDate;
     protected String paymentTerms;
     @Enumerated(EnumType.STRING)
@@ -77,6 +78,20 @@ public class CreateClientDto implements Serializable{
         this.website = website;
     }
 
+    /**
+     * @return the msaValDate
+     */
+    public Date getMsaValDate() {
+        return msaValDate;
+    }
+
+    /**
+     * @param msaValDate the msaValDate to set
+     */
+    public void setMsaValDate(Date msaValDate) {
+        this.msaValDate = msaValDate;
+    }
+    
     /**
      * @return the msaExpDate
      */
