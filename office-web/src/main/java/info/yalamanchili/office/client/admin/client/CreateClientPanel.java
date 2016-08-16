@@ -62,6 +62,7 @@ public class CreateClientPanel extends CreateComposite {
         assignEntityValueFromField("name", clnt);
         assignEntityValueFromField("description", clnt);
         assignEntityValueFromField("website", clnt);
+        assignEntityValueFromField("msaValDate", clnt);
         assignEntityValueFromField("msaExpDate", clnt);
         assignEntityValueFromField("paymentTerms", clnt);
         assignEntityValueFromField("clientinvFrequency", clnt);
@@ -131,6 +132,7 @@ public class CreateClientPanel extends CreateComposite {
         addField("name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("msaValDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("msaExpDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("clientinvFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
