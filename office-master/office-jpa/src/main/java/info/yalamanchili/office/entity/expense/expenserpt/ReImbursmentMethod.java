@@ -10,10 +10,11 @@ package info.yalamanchili.office.entity.expense.expenserpt;
 
 /**
  *
- * @author Madhu.Badiginchala
+ * @author Kishore.Chigurupati
  */
-public enum ExpenseFormType {
+public enum ReImbursmentMethod {
 
-    TRAVEL_EXPENSE,
-    GENERAL_EXPENSE;
+    ACH,
+    CHECK;
+
 }

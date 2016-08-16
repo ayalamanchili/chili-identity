@@ -18,14 +18,19 @@ import info.yalamanchili.office.entity.profile.insurance.HealthInsurance;
 import info.yalamanchili.office.entity.profile.insurance.HealthInsuranceWaiver;
 import info.yalamanchili.office.entity.profile.insurance.InsuranceEnrollment;
 import info.yalamanchili.office.jrs.CRUDResource;
+import info.yalamanchili.office.profile.insurance.HealthInsuranceService;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -39,10 +44,17 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 @Scope("request")
+//@Produces("application/json")
+//@Consumes("application/json")
 public class HealthInsuranceResource extends CRUDResource<HealthInsurance> {
 
     @Autowired
     public HealthInsuranceDao healthInsuranceDao;
+    @Autowired
+    public HealthInsuranceService healthInsuranceService;
+
+    @Autowired
+    protected Mapper mapper;
 
     @Override
     public CRUDDao getDao() {
@@ -104,6 +116,13 @@ public class HealthInsuranceResource extends CRUDResource<HealthInsurance> {
     @Override
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
+    }
+
+    @GET
+    @Path("/insurance-print")
+    @Produces({"application/pdf"})
+    public Response getReport(@QueryParam("id") Long id) {
+        return HealthInsuranceService.instance().getReport(healthInsuranceDao.findById(id));
     }
 
     @XmlRootElement

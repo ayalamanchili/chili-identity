@@ -10,18 +10,22 @@ package info.yalamanchili.office.client.profile.insurance;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RadioButton;
 import info.chili.gwt.crud.TCreateComposite;
+import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.FileuploadField;
 import info.chili.gwt.fields.StringField;
+import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
-import java.util.Arrays;
+import java.util.Date;
 import java.util.logging.Logger;
 
 /**
@@ -41,7 +45,7 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
     RadioButton myspousesplan = new RadioButton("myspousesplan", "Coverage under my spouse's plan");
     RadioButton othercoverage = new RadioButton("othercoverage", "Other coverage");
 
-    HTML tac2 = new HTML("<h4><u>For the plan year 2016, I am waiving coverage for: \n</u>" + Arrays.toString(HealthInsuranceYear.getyears().toArray(new String[0])));
+    HTML tac2 = new HTML("<h4><u>For the plan year " + DateTimeFormat.getFormat("MM/dd/yyyy").format(new Date()).split("/")[2] + ", I am waiving coverage for: \n</u >");
     HTML tac3 = new HTML("<h4><u>I am waiving coverage due to: \n</u>");
 
     StringField spouseNameOfCarrier = new StringField(OfficeWelcome.constants, "spouseNameOfCarrier", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
@@ -49,6 +53,7 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
 
     StringField spouseName = new StringField(OfficeWelcome.constants, "spouseName", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
     StringField dependentName = new StringField(OfficeWelcome.constants, "dependentName", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
+    DateField submitetdDate = new DateField(OfficeWelcome.constants, "submittedDate", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
 
     EnumField othercoverageType = new EnumField(OfficeWelcome.constants, "othercoverageType", "HealthInsuranceWaiver", false, false, InsuranceCoverageType.names(), Alignment.HORIZONTAL);
 
@@ -66,14 +71,15 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
 
     @Override
     public JSONObject populateEntityFromFields() {
-        entity = new JSONObject();
+        JSONObject entity = new JSONObject();
+        logger.info("dile and submitted date " + entity);
         //waivingCoverageFor
         if (myself.getValue() == true) {
-            entity.put("waivingCoverageFor", new JSONString("myself"));
+            entity.put("waivingCoverageFor", new JSONString("MySelf"));
         } else if (spouse.getValue() == true) {
-            entity.put("waivingCoverageFor", new JSONString("spouse"));
+            entity.put("waivingCoverageFor", new JSONString("Spouse"));
         } else if (dependent.getValue() == true) {
-            entity.put("waivingCoverageFor", new JSONString("dependent"));
+            entity.put("waivingCoverageFor", new JSONString("Dependent"));
         }
         if (spouseName.getValue() != null) {
             entity.put("spouseName", new JSONString(spouseName.getValue()));
@@ -83,11 +89,11 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
         }
         //waivingCoverageDueTo
         if (mypreferencenottohavecoverage.getValue() == true) {
-            entity.put("waivingCoverageDueTo", new JSONString("nocoverage"));
+            entity.put("waivingCoverageDueTo", new JSONString("NoCoverage"));
         } else if (myspousesplan.getValue() == true) {
-            entity.put("waivingCoverageDueTo", new JSONString("spouseplan"));
+            entity.put("waivingCoverageDueTo", new JSONString("SpousePlan"));
         } else if (othercoverage.getValue() == true) {
-            entity.put("waivingCoverageDueTo", new JSONString("other"));
+            entity.put("waivingCoverageDueTo", new JSONString("Other"));
         }
         if (spouseNameOfCarrier.isVisible() == true) {
             entity.put("spouseNameOfCarrier", new JSONString(spouseNameOfCarrier.getValue()));
@@ -95,6 +101,11 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
         if (otherNameOfCarrier.getValue() != null) {
             entity.put("otherNameOfCarrier", new JSONString(otherNameOfCarrier.getValue()));
         }
+        if (othercoverageType.getValue() != null) {
+            entity.put("othercoverageType", new JSONString(othercoverageType.getValue()));
+        }
+        assignEntityValueFromField("submittedDate", entity);
+        entity.put("fileUrl", resumeUploadPanel.getFileName());
         entity.put("targetEntityName", new JSONString("targetEntityName"));
         entity.put("targetEntityId", new JSONString("0"));
         return entity;
@@ -102,6 +113,19 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
 
     @Override
     protected void createButtonClicked() {
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+                new AsyncCallback<String>() {
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        logger.info(arg0.getMessage());
+                        handleErrorResponse(arg0);
+                    }
+
+                    @Override
+                    public void onSuccess(String arg0) {
+                        uploadDoc(arg0);
+                    }
+                });
     }
 
     @Override
@@ -138,8 +162,13 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
         entityFieldsPanel.setWidget(6, 1, mypreferencenottohavecoverage);
         entityFieldsPanel.setWidget(7, 1, myspousesplan);
         entityFieldsPanel.setWidget(8, 1, othercoverage);
-        entityFieldsPanel.setWidget(10, 1, resumeUploadPanel);
+        entityFieldsPanel.setWidget(10, 1, submitetdDate);
+        entityFieldsPanel.setWidget(11, 1, resumeUploadPanel);
         entityActionsPanel.setVisible(false);
+    }
+
+    protected void uploadDoc(String entityId) {
+        resumeUploadPanel.upload(entityId.trim());
     }
 
     @Override
