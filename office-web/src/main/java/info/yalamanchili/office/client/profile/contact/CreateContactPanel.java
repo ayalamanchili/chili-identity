@@ -19,6 +19,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.CreateComposite;
 import info.yalamanchili.office.client.profile.phone.CreatePhonePanel;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -102,13 +103,14 @@ public abstract class CreateContactPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("firstName", false, true, DataType.STRING_FIELD);
-        addField("middleInitial", false, false, DataType.STRING_FIELD);
-        addField("lastName", false, true, DataType.STRING_FIELD);
-        addEnumField("sex", false, false, Sex.names());
-        addField("email", false, false, DataType.STRING_FIELD);
+        addField("firstName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("middleInitial", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("lastName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("sex", false, false, Sex.names(), Alignment.HORIZONTAL);
+        addField("email", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addCreatePhonePanel();
         entityFieldsPanel.add(addPhoneL);
+        alignFields();
     }
 
     protected void addCreatePhonePanel() {
