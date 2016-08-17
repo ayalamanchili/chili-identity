@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RadioButton;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.TReadComposite;
+import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
@@ -70,15 +71,38 @@ public class ReadHealthInsuranceWaiverWidget extends TReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        logger.info("waiver entity is .... " + entity);
         if (entity.get("waivingCoverageFor").isString().equals("MySelf")) {
             myself.setValue(true);
         }
         if (entity.get("waivingCoverageFor").isString().equals("Spouse")) {
             spouse.setValue(true);
         }
+        if (entity.containsKey("spouseName")) {
+            spouseName.setValue(entity.get("spouseName").isString().stringValue());;
+        }
         if (entity.get("waivingCoverageFor").isString().equals("Dependent")) {
             dependent.setValue(true);
+        }
+        if (entity.containsKey("dependentName")) {
+            dependentName.setValue(entity.get("dependentName").isString().stringValue());
+        }
+        if (entity.get("waivingCoverageDueTo").isString().equals("NoCoverage")) {
+            mypreferencenottohavecoverage.setValue(true);
+        }
+        if (entity.get("waivingCoverageDueTo").isString().equals("SpousePlan")) {
+            myspousesplan.setValue(true);
+        }
+        if (entity.containsKey("spouseNameOfCarrier")) {
+            spouseNameOfCarrier.setValue(entity.get("spouseNameOfCarrier").isString().stringValue());
+        }
+        if (entity.get("waivingCoverageDueTo").isString().equals("Other")) {
+            othercoverage.setValue(true);
+        }
+        if (entity.containsKey("otherNameOfCarrier")) {
+            otherNameOfCarrier.setValue(entity.get("otherNameOfCarrier").isString().stringValue());
+        }
+        if (entity.containsKey("othercoverageType")) {
+            assignFieldValueFromEntity("othercoverageType", entity, DataType.ENUM_FIELD);
         }
 
     }

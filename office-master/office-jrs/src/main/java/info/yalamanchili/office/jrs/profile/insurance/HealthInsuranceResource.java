@@ -10,15 +10,21 @@ package info.yalamanchili.office.jrs.profile.insurance;
 
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
+import info.chili.reporting.ReportGenerator;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.insurance.HealthInsuranceDao;
 import info.yalamanchili.office.dao.profile.insurance.HealthInsuranceWaiverDao;
 import info.yalamanchili.office.dao.profile.insurance.InsuranceEnrollmentDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.insurance.HealthInsurance;
 import info.yalamanchili.office.entity.profile.insurance.HealthInsuranceWaiver;
 import info.yalamanchili.office.entity.profile.insurance.InsuranceEnrollment;
+import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.jrs.CRUDResource;
+import info.yalamanchili.office.profile.insurance.HealthInsuranceReportDto;
 import info.yalamanchili.office.profile.insurance.HealthInsuranceService;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -44,8 +50,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 @Scope("request")
-//@Produces("application/json")
-//@Consumes("application/json")
 public class HealthInsuranceResource extends CRUDResource<HealthInsurance> {
 
     @Autowired
@@ -123,6 +127,22 @@ public class HealthInsuranceResource extends CRUDResource<HealthInsurance> {
     @Produces({"application/pdf"})
     public Response getReport(@QueryParam("id") Long id) {
         return HealthInsuranceService.instance().getReport(healthInsuranceDao.findById(id));
+    }
+
+    @GET
+    @Path("/insurance-report-report")
+    public void employeeHealthInsuranceReport(@QueryParam("year") String year) {
+        List<HealthInsuranceReportDto> report = new ArrayList<>();
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
+        report = healthInsuranceService.getHealthInsuranceReport(year);
+        String[] columnOrder = new String[]{"employee", "year", "startDate", "stage"};
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(report, " HealthInsurance-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), emp.getPrimaryEmail().getEmail());
+    }
+
+    @GET
+    @Path("/insurance-reportView-reportView")
+    public List<HealthInsuranceReportDto> employeeperformanceEvaluationReportView(@QueryParam("year") String year) {
+        return healthInsuranceService.getHealthInsuranceReport(year);
     }
 
     @XmlRootElement
