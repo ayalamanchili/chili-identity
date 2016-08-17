@@ -56,6 +56,7 @@ public class InitiateOnBoardingPanel extends CreateComposite {
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("branch", entity);
         assignEntityValueFromField("workStatus", entity);
+        assignEntityValueFromField("jobTitle", entity);
         logger.info(entity.toString());
         return entity;
     }
@@ -106,7 +107,9 @@ public class InitiateOnBoardingPanel extends CreateComposite {
         addDropDown("company", new SelectCompanyWidget(false, true, Alignment.HORIZONTAL));
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("branch", false, false, Branch.names(), Alignment.HORIZONTAL);
-        addEnumField("workStatus", false, false, WorkStatus.names(), Alignment.HORIZONTAL);
+        addEnumField("workStatus", false, true, WorkStatus.names(), Alignment.HORIZONTAL);
+        addField("jobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+
         alignFields();
         if (prospect != null) {
             StringField emailF = (StringField) fields.get("email");

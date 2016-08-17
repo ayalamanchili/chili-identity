@@ -55,11 +55,15 @@ public class InitiateOnBoardingDto implements Serializable {
      */
     protected Branch branch;
 
+    @NotNull(message = "{workStatus.not.empty.msg}")
     protected WorkStatus workStatus;
 
     protected OnBoardingStatus status;
 
     protected String comment;
+    
+    @NotNull(message = "{jobTitle.not.empty.msg}")
+    protected String jobTitle;
 
     protected String bpmProcessId;
 
@@ -77,6 +81,14 @@ public class InitiateOnBoardingDto implements Serializable {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public String getJobTitle() {
+        return jobTitle;
+    }
+
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
     }
 
     public WorkStatus getWorkStatus() {

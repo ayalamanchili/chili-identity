@@ -92,6 +92,7 @@ public class EmployeeOnBoardingService {
             onboarding.setEmail(dto.getEmail());
             onboarding.setStartedBy(OfficeSecurityService.instance().getCurrentUserName());
             onboarding.setStartedDate(dto.getStartDate());
+            onboarding.setJobTitle(dto.getJobTitle());
             onboarding.setStatus(OnBoardingStatus.Pending_Initial_Document_Submission);
             //to save onboarding only once
             onboarding = em.merge(onboarding);
@@ -148,6 +149,8 @@ public class EmployeeOnBoardingService {
         EmployeeOnBoarding onboarding = EmployeeOnBoardingDao.instance().findByEmail(code.getEmail());
         InitiateOnBoardingDto initiateDto = (InitiateOnBoardingDto) SerializedEntityDao.instance().findAndConvert(code.getClass().getCanonicalName(), code.getId());
         emp.setEmployeeType(em.find(EmployeeType.class, initiateDto.getEmployeeType().getId()));
+        emp.setJobTitle(initiateDto.getJobTitle());
+        
         if (initiateDto.getCompany() != null) {
             emp.setCompany(em.find(Company.class, initiateDto.getCompany().getId()));
         }
@@ -284,6 +287,7 @@ public class EmployeeOnBoardingService {
                     dto.setWorkStatus(emp.getWorkStatus());
                 }
             }
+            dto.setJobTitle(onboarding.getJobTitle());
             dto.setEmail(onboarding.getEmail());
             dto.setStartDate(onboarding.getStartedDate());
             dto.setBpmProcessId(onboarding.getBpmProcessId());
