@@ -18,6 +18,7 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RadioButton;
 import info.chili.gwt.crud.TCreateComposite;
+import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.FileuploadField;
@@ -53,7 +54,7 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
 
     StringField spouseName = new StringField(OfficeWelcome.constants, "spouseName", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
     StringField dependentName = new StringField(OfficeWelcome.constants, "dependentName", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
-    DateField submitetdDate = new DateField(OfficeWelcome.constants, "submittedDate", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
+    DateField submittedDate = new DateField(OfficeWelcome.constants, "submittedDate", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
 
     EnumField othercoverageType = new EnumField(OfficeWelcome.constants, "otherCarrierType", "HealthInsuranceWaiver", false, false, InsuranceCoverageType.names(), Alignment.HORIZONTAL);
 
@@ -104,7 +105,9 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
         if (othercoverageType.getValue() != null) {
             entity.put("otherCarrierType", new JSONString(othercoverageType.getValue()));
         }
-        assignEntityValueFromField("submittedDate", entity);
+        if (submittedDate.getDate() != null) {
+            entity.put("submittedDate", new JSONString(DateUtils.toDateString(submittedDate.getDate())));
+        }
         entity.put("fileUrl", resumeUploadPanel.getFileName());
         entity.put("targetEntityName", new JSONString("targetEntityName"));
         entity.put("targetEntityId", new JSONString("0"));
@@ -162,7 +165,7 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
         entityFieldsPanel.setWidget(6, 1, mypreferencenottohavecoverage);
         entityFieldsPanel.setWidget(7, 1, myspousesplan);
         entityFieldsPanel.setWidget(8, 1, othercoverage);
-        entityFieldsPanel.setWidget(10, 1, submitetdDate);
+        entityFieldsPanel.setWidget(10, 1, submittedDate);
         entityFieldsPanel.setWidget(11, 1, resumeUploadPanel);
         entityActionsPanel.setVisible(false);
     }

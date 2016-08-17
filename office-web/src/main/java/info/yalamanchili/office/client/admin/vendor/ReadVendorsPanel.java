@@ -62,6 +62,8 @@ public class ReadVendorsPanel extends ReadComposite {
         assignFieldValueFromEntity("minFees", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("maxFees", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("website", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("msaValDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("msaExpDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("paymentTerms", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("vendorinvFrequency", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("vendorinvDeliveryMethod", entity, DataType.ENUM_FIELD);
@@ -85,6 +87,8 @@ public class ReadVendorsPanel extends ReadComposite {
         addField("minFees", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("maxFees", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("website", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("msaValDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("msaExpDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("coiEndDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("paymentTerms", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("vendorinvFrequency", true, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
