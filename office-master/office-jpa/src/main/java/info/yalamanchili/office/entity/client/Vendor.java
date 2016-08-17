@@ -23,6 +23,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -91,10 +92,12 @@ public class Vendor extends AbstractEntity {
     protected String paymentTerms;
     @Enumerated(EnumType.STRING)
     protected InvoiceFrequency vendorinvFrequency;
-
     @Enumerated(EnumType.STRING)
     protected InvoiceDeliveryMethod vendorinvDeliveryMethod;
-
+    @Temporal(TemporalType.DATE)
+    protected Date msaValDate;
+    @Temporal(TemporalType.DATE)
+    protected Date msaExpDate;
     protected Float vendorFees;
     protected BigDecimal minFees;
     protected BigDecimal maxFees;
@@ -124,6 +127,35 @@ public class Vendor extends AbstractEntity {
 
     public void setVendorType(VendorType vendorType) {
         this.vendorType = vendorType;
+    }
+    /**
+     *
+     * @return the msaValDate
+     *
+     */
+    public Date getMsaValDate() {
+        return msaValDate;
+    }
+
+    /**
+     * @param msaValDate the msaValDate to set
+     */
+    public void setMsaValDate(Date msaValDate) {
+        this.msaValDate = msaValDate;
+    }
+
+    /**
+     * @return the msaExpDate
+     */
+    public Date getMsaExpDate() {
+        return msaExpDate;
+    }
+
+    /**
+     * @param msaExpDate the msaExpDate to set
+     */
+    public void setMsaExpDate(Date msaExpDate) {
+        this.msaExpDate = msaExpDate;
     }
 
     @XmlTransient
