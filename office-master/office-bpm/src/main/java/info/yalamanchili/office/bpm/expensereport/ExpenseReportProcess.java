@@ -16,6 +16,7 @@ import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReportStatus;
 import info.yalamanchili.office.entity.profile.Employee;
+import java.math.BigDecimal;
 import java.util.Date;
 import org.activiti.engine.delegate.DelegateTask;
 
@@ -62,9 +63,15 @@ public class ExpenseReportProcess extends RuleBasedTaskDelegateListner {
         }
         //Status
         String status = (String) dt.getExecution().getVariable("status");
+        BigDecimal totExpenses = entity.getTotalExpenses();
+        BigDecimal checkedExpenses = new BigDecimal("1000.00");
         if (dt.getTaskDefinitionKey().equals("expenseReportMgrApprovalTask")) {
             if (status.equalsIgnoreCase("approved")) {
-                entity.setStatus(ExpenseReportStatus.PENDING_CEO_APPROVAL);
+                if (totExpenses.compareTo(checkedExpenses) == 1) {
+                    entity.setStatus(ExpenseReportStatus.PENDING_CEO_APPROVAL);
+                } else {
+                    entity.setStatus(ExpenseReportStatus.PENDING_ACCOUNTS_PAYABLE_DISPATCH);
+                }
                 entity.setApprovedByManager(OfficeSecurityService.instance().getCurrentUser().getEmployeeId());
                 entity.setApprovedByManagerDate(new Date());
             } else {

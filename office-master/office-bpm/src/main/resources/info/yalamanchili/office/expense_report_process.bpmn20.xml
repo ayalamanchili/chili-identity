@@ -69,7 +69,13 @@
         <sequenceFlow sourceRef="mgrApprovalGateway" 
                       targetRef="expenseReportFinalApprovalTask">
             <conditionExpression xsi:type="tFormalExpression">
-                ${status == 'approved'}
+                ${status == 'approved' and entity.totalExpenses &gt; 1000.00}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="mgrApprovalGateway" 
+                      targetRef="expenseReportAccountsPayableTask">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved' and entity.totalExpenses &lt;= 1000.00}
             </conditionExpression>
         </sequenceFlow>
         <sequenceFlow sourceRef="mgrApprovalGateway" 
