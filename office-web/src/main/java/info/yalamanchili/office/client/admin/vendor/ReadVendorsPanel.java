@@ -56,15 +56,17 @@ public class ReadVendorsPanel extends ReadComposite {
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("vendorType", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("vendorFees", entity, DataType.FLOAT_FIELD);
-        assignFieldValueFromEntity("minFees", entity, DataType.FLOAT_FIELD);
-        assignFieldValueFromEntity("maxFees", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("website", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("paymentTerms", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("vendorinvFrequency", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("vendorinvDeliveryMethod", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("vendorFees", entity, DataType.FLOAT_FIELD);
+        assignFieldValueFromEntity("maxFees", entity, DataType.FLOAT_FIELD);
+        assignFieldValueFromEntity("minFees", entity, DataType.FLOAT_FIELD);
+        assignFieldValueFromEntity("msaValDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("msaExpDate", entity, DataType.DATE_FIELD);
+//        assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("vendorType", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("coiEndDate", entity, DataType.DATE_FIELD);
     }
 
@@ -79,16 +81,18 @@ public class ReadVendorsPanel extends ReadComposite {
     @Override
     protected void addWidgets() {
         addField("name", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("description", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addEnumField("vendorType", true, false, VendorType.names(), Alignment.HORIZONTAL);
-        addField("vendorFees", true, true, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
-        addField("minFees", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
-        addField("maxFees", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("website", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("coiEndDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("paymentTerms", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("vendorinvFrequency", true, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         addEnumField("vendorinvDeliveryMethod", true, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
+        addField("vendorFees", true, true, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addField("maxFees", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addField("minFees", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addField("msaValDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("msaExpDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+//        addField("description", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("vendorType", true, false, VendorType.names(), Alignment.HORIZONTAL);
+        addField("coiEndDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
@@ -107,15 +111,15 @@ public class ReadVendorsPanel extends ReadComposite {
     }
 
     @Override
-   protected boolean enableBack() {
-       return true;
-   }
-    
+    protected boolean enableBack() {
+        return true;
+    }
+
     @Override
-     protected ReadAllComposite getReadAllPanel() {
+    protected ReadAllComposite getReadAllPanel() {
         return ReadAllVendorsPanel.instance;
-    }    
-    
+    }
+
     @Override
     protected String getAuditUrl() {
         return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.client.Vendor" + "/" + getEntityId();

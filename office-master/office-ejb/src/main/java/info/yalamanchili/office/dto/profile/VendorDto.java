@@ -18,6 +18,7 @@ import java.util.Date;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -39,6 +40,10 @@ public class VendorDto implements Serializable {
     @Enumerated(EnumType.STRING)
     protected VendorType vendorType;
     protected String website;
+    @Temporal(TemporalType.DATE)
+    protected Date msaValDate;
+    @Temporal(TemporalType.DATE)
+    protected Date msaExpDate;
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date coiEndDate;
     protected String paymentTerms;
@@ -123,6 +128,40 @@ public class VendorDto implements Serializable {
      */
     public void setWebsite(String website) {
         this.website = website;
+    }
+
+    /**
+     *
+     * @return the msaValDate
+     *
+     */
+    public Date getMsaValDate() {
+        return msaValDate;
+    }
+
+    /**
+     * @param msaValDate the msaValDate to set
+     */
+    public void setMsaValDate(Date msaValDate) {
+        this.msaValDate = msaValDate;
+    }
+
+    /**
+     *
+     *
+     * @return the msaExpDate
+     */
+    public Date getMsaExpDate() {
+        return msaExpDate;
+    }
+
+    /**
+     *
+     * @param msaExpDate the msaExpDate to set
+     *
+     */
+    public void setMsaExpDate(Date msaExpDate) {
+        this.msaExpDate = msaExpDate;
     }
 
     /**
@@ -265,7 +304,7 @@ public class VendorDto implements Serializable {
         this.vendorAcctPayContact = vendorAcctPayContact;
     }
 
-     @Override
+    @Override
     public String toString() {
         return "Create Vendor{" + "name=" + name + ", description=" + description + '}';
     }

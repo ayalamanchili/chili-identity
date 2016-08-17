@@ -30,15 +30,15 @@ public class UpdateClientPanel extends UpdateComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("name", entity);
-        assignEntityValueFromField("description", entity);
+//        assignEntityValueFromField("description", entity);
         assignEntityValueFromField("website", entity);
-        assignEntityValueFromField("msaValDate", entity);
-        assignEntityValueFromField("msaExpDate", entity);
         assignEntityValueFromField("paymentTerms", entity);
         assignEntityValueFromField("clientinvFrequency", entity);
         assignEntityValueFromField("clientFee", entity);
         assignEntityValueFromField("maxClientFee", entity);
         assignEntityValueFromField("minClientFee", entity);
+        assignEntityValueFromField("msaValDate", entity);
+        assignEntityValueFromField("msaExpDate", entity);
         return entity;
     }
 
@@ -61,15 +61,15 @@ public class UpdateClientPanel extends UpdateComposite {
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
+//        assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("website", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("msaValDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("msaExpDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("paymentTerms", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("clientinvFrequency", entity, DataType.ENUM_FIELD);
          assignFieldValueFromEntity("clientFee", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("maxClientFee", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("minClientFee", entity, DataType.FLOAT_FIELD);
+        assignFieldValueFromEntity("msaValDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("msaExpDate", entity, DataType.DATE_FIELD);
     }
 
     @Override
@@ -92,15 +92,15 @@ public class UpdateClientPanel extends UpdateComposite {
     @Override
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+//        addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("msaValDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("msaExpDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("clientinvFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         addField("clientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("maxClientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("minClientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addField("msaValDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("msaExpDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 

@@ -15,6 +15,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.BooleanField;
+import info.chili.gwt.fields.DateField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceDeliveryMethod;
@@ -39,16 +40,19 @@ public class UpdateVendorsPanel extends UpdateComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("name", entity);
-        assignEntityValueFromField("description", entity);
-        assignEntityValueFromField("vendorType", entity);
         assignEntityValueFromField("website", entity);
         assignEntityValueFromField("paymentTerms", entity);
         assignEntityValueFromField("vendorinvFrequency", entity);
-        assignEntityValueFromField("vendorFees", entity);
-        assignEntityValueFromField("minFees", entity);
-        assignEntityValueFromField("maxFees", entity);
         assignEntityValueFromField("vendorinvDeliveryMethod", entity);
+        assignEntityValueFromField("vendorFees", entity);
+        assignEntityValueFromField("maxFees", entity);
+        assignEntityValueFromField("minFees", entity);
+        assignEntityValueFromField("msaValDate", entity);
+        assignEntityValueFromField("msaExpDate", entity);
+//      assignEntityValueFromField("description", entity);
+        assignEntityValueFromField("vendorType", entity);
         assignEntityValueFromField("coiEndDate", entity);
+
         return entity;
     }
 
@@ -71,15 +75,17 @@ public class UpdateVendorsPanel extends UpdateComposite {
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("vendorType", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("website", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("paymentTerms", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("vendorinvFrequency", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("vendorFees", entity, DataType.FLOAT_FIELD);
-        assignFieldValueFromEntity("minFees", entity, DataType.FLOAT_FIELD);
-        assignFieldValueFromEntity("maxFees", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("vendorinvDeliveryMethod", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("vendorFees", entity, DataType.FLOAT_FIELD);
+        assignFieldValueFromEntity("maxFees", entity, DataType.FLOAT_FIELD);
+        assignFieldValueFromEntity("minFees", entity, DataType.FLOAT_FIELD);
+        assignFieldValueFromEntity("msaValDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("msaExpDate", entity, DataType.DATE_FIELD);
+//      assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("vendorType", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("coiEndDate", entity, DataType.DATE_FIELD);
     }
 
@@ -109,19 +115,21 @@ public class UpdateVendorsPanel extends UpdateComposite {
     @Override
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addEnumField("vendorType", false, false, VendorType.names(), Alignment.HORIZONTAL);
-        addField("vendorFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
-        addField("minFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
-        addField("maxFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("coiEndDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(submitForUpdateP);
         addEnumField("vendorinvFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(submitForUpdateF);
         addEnumField("vendorinvDeliveryMethod", false, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(submitForUpdateD);
+        addField("vendorFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addField("maxFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addField("minFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addField("msaValDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("msaExpDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+//        addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("vendorType", false, false, VendorType.names(), Alignment.HORIZONTAL);      
+        addField("coiEndDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
@@ -137,4 +145,26 @@ public class UpdateVendorsPanel extends UpdateComposite {
             return OfficeWelcome.constants.root_url() + "vendor";
         }
     }
+
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        boolean valid = true;
+
+        DateField msaValDate = (DateField) fields.get("msaValDate");
+        DateField msaExpDate = (DateField) fields.get("msaExpDate");
+        if (msaValDate.getDate() == null || "".equals(msaValDate.getDate())) {
+            msaValDate.setMessage("MSA Period From Not Empty");
+            valid = false;
+        }
+        if (msaExpDate.getDate() == null || "".equals(msaExpDate.getDate())) {
+            msaExpDate.setMessage("MSA Period To Not Empty");
+            valid = false;
+        }
+        if (msaValDate.getDate() != null && msaExpDate.getDate() != null && msaValDate.getDate().after(msaExpDate.getDate())) {
+            msaExpDate.setMessage("To Date must be after From Date");
+            return false;
+        }
+        return valid;
+    }
+
 }
