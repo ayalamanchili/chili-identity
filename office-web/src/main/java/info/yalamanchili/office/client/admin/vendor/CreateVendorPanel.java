@@ -19,6 +19,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.BooleanField;
+import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.LongField;
 import info.chili.gwt.fields.StringField;
@@ -63,6 +64,8 @@ public class CreateVendorPanel extends CreateComposite {
         assignEntityValueFromField("description", vendor);
         assignEntityValueFromField("vendorType", vendor);
         assignEntityValueFromField("website", vendor);
+        assignEntityValueFromField("msaValDate", vendor);
+        assignEntityValueFromField("msaExpDate", vendor);
         assignEntityValueFromField("paymentTerms", vendor);
         assignEntityValueFromField("vendorinvFrequency", vendor);
         assignEntityValueFromField("vendorFees", vendor);
@@ -87,16 +90,16 @@ public class CreateVendorPanel extends CreateComposite {
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -134,6 +137,8 @@ public class CreateVendorPanel extends CreateComposite {
         addField("minFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("maxFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("msaValDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("msaExpDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("coiEndDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("vendorinvFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
@@ -174,7 +179,21 @@ public class CreateVendorPanel extends CreateComposite {
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
         boolean valid = true;
-
+ 
+        DateField msaValDate = (DateField) fields.get("msaValDate");
+        DateField msaExpDate = (DateField) fields.get("msaExpDate");
+        if (msaValDate.getDate()== null || "".equals(msaValDate.getDate())) {
+            msaValDate.setMessage("MSA Period From Not Empty");
+            valid = false;
+        }
+        if (msaExpDate.getDate()== null || "".equals(msaExpDate.getDate())) {
+            msaExpDate.setMessage("MSA Period To Not Empty");
+            valid = false;
+        }
+        if (msaValDate.getDate() != null && msaExpDate.getDate() != null && msaValDate.getDate().after(msaExpDate.getDate())) {
+            msaExpDate.setMessage("To Date must be after From Date");
+            return false;
+        }
         StringField vendorNameF = (StringField) fields.get("name");
         if (vendorNameF.getValue() == null || "".equals(vendorNameF.getValue())) {
             vendorNameF.setMessage("Please enter a name for the Vendor");
