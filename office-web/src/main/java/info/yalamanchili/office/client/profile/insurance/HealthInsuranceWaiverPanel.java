@@ -55,7 +55,7 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
     StringField dependentName = new StringField(OfficeWelcome.constants, "dependentName", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
     DateField submitetdDate = new DateField(OfficeWelcome.constants, "submittedDate", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
 
-    EnumField othercoverageType = new EnumField(OfficeWelcome.constants, "othercoverageType", "HealthInsuranceWaiver", false, false, InsuranceCoverageType.names(), Alignment.HORIZONTAL);
+    EnumField othercoverageType = new EnumField(OfficeWelcome.constants, "otherCarrierType", "HealthInsuranceWaiver", false, false, InsuranceCoverageType.names(), Alignment.HORIZONTAL);
 
     public HealthInsuranceWaiverPanel() {
         super(TCreateComposite.CreateCompositeType.CREATE);
@@ -102,7 +102,7 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
             entity.put("otherNameOfCarrier", new JSONString(otherNameOfCarrier.getValue()));
         }
         if (othercoverageType.getValue() != null) {
-            entity.put("othercoverageType", new JSONString(othercoverageType.getValue()));
+            entity.put("otherCarrierType", new JSONString(othercoverageType.getValue()));
         }
         assignEntityValueFromField("submittedDate", entity);
         entity.put("fileUrl", resumeUploadPanel.getFileName());

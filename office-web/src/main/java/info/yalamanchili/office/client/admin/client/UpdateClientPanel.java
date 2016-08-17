@@ -32,6 +32,7 @@ public class UpdateClientPanel extends UpdateComposite {
         assignEntityValueFromField("name", entity);
         assignEntityValueFromField("description", entity);
         assignEntityValueFromField("website", entity);
+        assignEntityValueFromField("msaValDate", entity);
         assignEntityValueFromField("msaExpDate", entity);
         assignEntityValueFromField("paymentTerms", entity);
         assignEntityValueFromField("clientinvFrequency", entity);
@@ -62,6 +63,7 @@ public class UpdateClientPanel extends UpdateComposite {
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("website", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("msaValDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("msaExpDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("paymentTerms", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("clientinvFrequency", entity, DataType.ENUM_FIELD);
@@ -92,6 +94,7 @@ public class UpdateClientPanel extends UpdateComposite {
         addField("name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("msaValDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("msaExpDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("clientinvFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);

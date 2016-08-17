@@ -33,6 +33,7 @@ public class EmployeeAdditionalDetails extends AbstractHandleEntity {
     /**
      *
      */
+    @NotNull(message = "{referredBy.not.empty.msg}")
     protected String referredBy;
     /**
      *

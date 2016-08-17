@@ -44,8 +44,7 @@ public class ReadHealthInsuranceWaiverWidget extends TReadComposite {
     StringField spouseName = new StringField(OfficeWelcome.constants, "spouseName", "HealthInsuranceWaiver", true, false, Alignment.HORIZONTAL);
     StringField dependentName = new StringField(OfficeWelcome.constants, "dependentName", "HealthInsuranceWaiver", true, false, Alignment.HORIZONTAL);
 
-    StringField name;
-    EnumField othercoverageType = new EnumField(OfficeWelcome.constants, "othercoverageType", "HealthInsuranceWaiver", true, false, InsuranceCoverageType.names(), Alignment.HORIZONTAL);
+    EnumField otherCarrierType = new EnumField(OfficeWelcome.constants, "otherCarrierType", "HealthInsuranceWaiver", true, false, InsuranceCoverageType.names(), Alignment.HORIZONTAL);
 
     public ReadHealthInsuranceWaiverWidget(JSONObject entity) {
         initReadComposite(entity, "HealthInsuranceWaiver", OfficeWelcome.constants);
@@ -70,15 +69,38 @@ public class ReadHealthInsuranceWaiverWidget extends TReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        logger.info("waiver entity is .... " + entity);
         if (entity.get("waivingCoverageFor").isString().equals("MySelf")) {
             myself.setValue(true);
         }
         if (entity.get("waivingCoverageFor").isString().equals("Spouse")) {
             spouse.setValue(true);
         }
+        if (entity.containsKey("spouseName")) {
+            spouseName.setValue(entity.get("spouseName").isString().stringValue());;
+        }
         if (entity.get("waivingCoverageFor").isString().equals("Dependent")) {
             dependent.setValue(true);
+        }
+        if (entity.containsKey("dependentName")) {
+            dependentName.setValue(entity.get("dependentName").isString().stringValue());
+        }
+        if (entity.get("waivingCoverageDueTo").isString().equals("NoCoverage")) {
+            mypreferencenottohavecoverage.setValue(true);
+        }
+        if (entity.get("waivingCoverageDueTo").isString().equals("SpousePlan")) {
+            myspousesplan.setValue(true);
+        }
+        if (entity.containsKey("spouseNameOfCarrier")) {
+            spouseNameOfCarrier.setValue(entity.get("spouseNameOfCarrier").isString().stringValue());
+        }
+        if (entity.get("waivingCoverageDueTo").isString().equals("Other")) {
+            othercoverage.setValue(true);
+        }
+        if (entity.containsKey("otherNameOfCarrier")) {
+            otherNameOfCarrier.setValue(entity.get("otherNameOfCarrier").isString().stringValue());
+        }
+        if (entity.containsKey("otherCarrierType")) {
+            otherCarrierType.setValue(entity.get("otherCarrierType").isString().stringValue());
         }
 
     }
@@ -105,7 +127,7 @@ public class ReadHealthInsuranceWaiverWidget extends TReadComposite {
         entityFieldsPanel.setWidget(7, 2, spouseNameOfCarrier);
         entityFieldsPanel.setWidget(8, 1, othercoverage);
         entityFieldsPanel.setWidget(9, 1, otherNameOfCarrier);
-        entityFieldsPanel.setWidget(9, 2, othercoverageType);
+        entityFieldsPanel.setWidget(9, 2, otherCarrierType);
         alignFields();
     }
 

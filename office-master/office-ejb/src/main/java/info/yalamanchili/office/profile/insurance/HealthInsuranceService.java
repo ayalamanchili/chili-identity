@@ -18,6 +18,7 @@ import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.insurance.HealthInsuranceDao;
 import info.yalamanchili.office.dao.profile.insurance.HealthInsuranceWaiverDao;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.insurance.HealthInsurance;
 import info.yalamanchili.office.entity.profile.insurance.HealthInsuranceWaiver;
 import static info.yalamanchili.office.entity.profile.insurance.InsuranceCoverageType.Cobra;
@@ -26,7 +27,9 @@ import static info.yalamanchili.office.entity.profile.insurance.InsuranceCoverag
 import static info.yalamanchili.office.entity.profile.insurance.InsuranceCoverageType.Medicare;
 import static info.yalamanchili.office.entity.profile.insurance.InsuranceCoverageType.Tricare;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -62,19 +65,23 @@ public class HealthInsuranceService {
         if (entity != null) {
             if (healthInsuranceWaiver != null) {
                 if (healthInsuranceWaiver.getWaivingCoverageFor() != null) {
-                    if (healthInsuranceWaiver.getWaivingCoverageDueTo().equals("waivingCoverageFor")) {
+                    if (healthInsuranceWaiver.getWaivingCoverageFor().equalsIgnoreCase("MySelf")) {
                         data.getData().put("myself", "true");
+                    }
+                    if (healthInsuranceWaiver.getWaivingCoverageFor().equalsIgnoreCase("Spouse")) {
                         data.getData().put("spouse", "true");
+                    }
+                    if (healthInsuranceWaiver.getWaivingCoverageFor().equalsIgnoreCase("Dependent")) {
                         data.getData().put("dependent", "true");
                     }
                 }
                 if (healthInsuranceWaiver.getWaivingCoverageDueTo() != null) {
-                    if (healthInsuranceWaiver.getWaivingCoverageDueTo().equals("waivingCoverageDueTo")) {
+                    if (healthInsuranceWaiver.getWaivingCoverageDueTo().equalsIgnoreCase("NoCoverage")) {
                         data.getData().put("nocoverage", "true");
-                    } else if (healthInsuranceWaiver.getWaivingCoverageDueTo().equals("waivingCoverageDueTo")) {
+                    } else if (healthInsuranceWaiver.getWaivingCoverageDueTo().equalsIgnoreCase("SpousePlan")) {
                         data.getData().put("spouseplan", "true");
-                    } else if (healthInsuranceWaiver.getWaivingCoverageDueTo().equals("waivingCoverageDueTo")) {
-                        data.getData().put("other", "true");
+                    } else if (healthInsuranceWaiver.getWaivingCoverageDueTo().equalsIgnoreCase("Other")) {
+                        data.getData().put("otherC", "true");
                     }
                 }
                 if (healthInsuranceWaiver.getSpouseName() != null) {
@@ -119,6 +126,19 @@ public class HealthInsuranceService {
                 .header("content-disposition", "filename = health-insurance.pdf")
                 .header("Content-Length", pdf.length)
                 .build();
+    }
+
+    public List<HealthInsuranceReportDto> getHealthInsuranceReport(String year) {
+        List<HealthInsuranceReportDto> report = new ArrayList<>();
+        for (Employee emp : EmployeeDao.instance().getEmployeesByType(EmployeeType.CORPORATE_EMPLOYEE, EmployeeType.EMPLOYEE, EmployeeType.INTERN_SEASONAL_EMPLOYEE)) {
+            HealthInsuranceReportDto dto = new HealthInsuranceReportDto();
+            dto.setEmployee(emp.getFirstName() + " " + emp.getLastName());
+            HealthInsurance insurance = new HealthInsurance();
+            dto.setEnrolled(insurance.getEnrolled());
+            dto.setYear(insurance.getInsuranceEnrollment().getYear());
+            report.add(dto);
+        }
+        return report;
     }
 
     public static HealthInsuranceService instance() {
