@@ -12,7 +12,6 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RadioButton;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.TReadComposite;
-import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
@@ -45,8 +44,7 @@ public class ReadHealthInsuranceWaiverWidget extends TReadComposite {
     StringField spouseName = new StringField(OfficeWelcome.constants, "spouseName", "HealthInsuranceWaiver", true, false, Alignment.HORIZONTAL);
     StringField dependentName = new StringField(OfficeWelcome.constants, "dependentName", "HealthInsuranceWaiver", true, false, Alignment.HORIZONTAL);
 
-    StringField name;
-    EnumField othercoverageType = new EnumField(OfficeWelcome.constants, "othercoverageType", "HealthInsuranceWaiver", true, false, InsuranceCoverageType.names(), Alignment.HORIZONTAL);
+    EnumField otherCarrierType = new EnumField(OfficeWelcome.constants, "otherCarrierType", "HealthInsuranceWaiver", true, false, InsuranceCoverageType.names(), Alignment.HORIZONTAL);
 
     public ReadHealthInsuranceWaiverWidget(JSONObject entity) {
         initReadComposite(entity, "HealthInsuranceWaiver", OfficeWelcome.constants);
@@ -101,8 +99,8 @@ public class ReadHealthInsuranceWaiverWidget extends TReadComposite {
         if (entity.containsKey("otherNameOfCarrier")) {
             otherNameOfCarrier.setValue(entity.get("otherNameOfCarrier").isString().stringValue());
         }
-        if (entity.containsKey("othercoverageType")) {
-            assignFieldValueFromEntity("othercoverageType", entity, DataType.ENUM_FIELD);
+        if (entity.containsKey("otherCarrierType")) {
+            otherCarrierType.setValue(entity.get("otherCarrierType").isString().stringValue());
         }
 
     }
@@ -129,7 +127,7 @@ public class ReadHealthInsuranceWaiverWidget extends TReadComposite {
         entityFieldsPanel.setWidget(7, 2, spouseNameOfCarrier);
         entityFieldsPanel.setWidget(8, 1, othercoverage);
         entityFieldsPanel.setWidget(9, 1, otherNameOfCarrier);
-        entityFieldsPanel.setWidget(9, 2, othercoverageType);
+        entityFieldsPanel.setWidget(9, 2, otherCarrierType);
         alignFields();
     }
 

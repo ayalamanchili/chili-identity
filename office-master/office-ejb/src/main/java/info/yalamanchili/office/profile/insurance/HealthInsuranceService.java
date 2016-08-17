@@ -65,19 +65,23 @@ public class HealthInsuranceService {
         if (entity != null) {
             if (healthInsuranceWaiver != null) {
                 if (healthInsuranceWaiver.getWaivingCoverageFor() != null) {
-                    if (healthInsuranceWaiver.getWaivingCoverageDueTo().equals("waivingCoverageFor")) {
+                    if (healthInsuranceWaiver.getWaivingCoverageFor().equalsIgnoreCase("MySelf")) {
                         data.getData().put("myself", "true");
+                    }
+                    if (healthInsuranceWaiver.getWaivingCoverageFor().equalsIgnoreCase("Spouse")) {
                         data.getData().put("spouse", "true");
+                    }
+                    if (healthInsuranceWaiver.getWaivingCoverageFor().equalsIgnoreCase("Dependent")) {
                         data.getData().put("dependent", "true");
                     }
                 }
                 if (healthInsuranceWaiver.getWaivingCoverageDueTo() != null) {
-                    if (healthInsuranceWaiver.getWaivingCoverageDueTo().equals("waivingCoverageDueTo")) {
+                    if (healthInsuranceWaiver.getWaivingCoverageDueTo().equalsIgnoreCase("NoCoverage")) {
                         data.getData().put("nocoverage", "true");
-                    } else if (healthInsuranceWaiver.getWaivingCoverageDueTo().equals("waivingCoverageDueTo")) {
+                    } else if (healthInsuranceWaiver.getWaivingCoverageDueTo().equalsIgnoreCase("SpousePlan")) {
                         data.getData().put("spouseplan", "true");
-                    } else if (healthInsuranceWaiver.getWaivingCoverageDueTo().equals("waivingCoverageDueTo")) {
-                        data.getData().put("other", "true");
+                    } else if (healthInsuranceWaiver.getWaivingCoverageDueTo().equalsIgnoreCase("Other")) {
+                        data.getData().put("otherC", "true");
                     }
                 }
                 if (healthInsuranceWaiver.getSpouseName() != null) {
