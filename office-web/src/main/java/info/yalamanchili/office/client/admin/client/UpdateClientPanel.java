@@ -24,7 +24,7 @@ import info.chili.gwt.utils.Alignment;
 public class UpdateClientPanel extends UpdateComposite {
 
     public UpdateClientPanel(JSONObject entity) {
-        initUpdateComposite(entity, "Client", OfficeWelcome.constants);
+        initUpdateComposite(entity, "Client", OfficeWelcome.constants2);
     }
 
     @Override
