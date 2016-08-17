@@ -21,15 +21,18 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.LocalStorage;
 import info.chili.gwt.rpc.HttpService;
-import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.config.OfficeClientConfig;
 import info.yalamanchili.office.client.internalization.OfficeConstants2;
 import info.yalamanchili.office.client.login.LoginPage;
 import info.yalamanchili.office.client.resources.OfficeImages;
+import info.yalamanchili.office.client.user.ReadAllUserMessages;
 
 public class OfficeWelcome implements EntryPoint {
 
@@ -108,25 +111,48 @@ public class OfficeWelcome implements EntryPoint {
                 RootLayoutPanel.get().add(rootLayout);
                 History.addValueChangeHandler(new OfficeUrlRoutingHandler());
                 setLogo(employee);
+                Timer timer = new Timer() {
+                    @Override
+                    public void run() {
+//                        showMessages();
+                    }
+                };
+                timer.schedule(2000);
                 if (History.getToken() != null) {
                     History.fireCurrentHistoryState();
                 }
             }
         });
 
-        SessionTimeoutMonitor.get().initialize();
-
     }
-    
+
+    protected void showMessages() {
+        HttpService.HttpServiceAsync.instance().doGet(getMessagesUrl(), OfficeWelcome.instance().getHeaders(),
+                false, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String result) {
+                logger.info(result);
+                if (!result.trim().equals("null")) {
+                    final DialogBox dialog = new DialogBox();
+                    dialog.setText("Messages");
+                    new GenericPopup(new ReadAllUserMessages(JSONUtils.toJSONArray(JSONParser.parseLenient(result).isObject().get("userMessage")))).show();
+                }
+            }
+        });
+    }
+
+    protected String getMessagesUrl() {
+        return OfficeWelcome.instance().constants.root_url() + "notifications/user/messages/0/10";
+    }
+
     protected void setLogo(JSONObject employee) {
-        if(employee.isObject() != null){
-           return;
+        if (employee.isObject() != null) {
+            return;
         }
         if (employee.get("company") != null) {
             if (employee.get("company").isObject().get("name").isString().stringValue().equalsIgnoreCase(Company.CGS_INC)) {
                 StatusPanel.instance().setLogo(OfficeImages.INSTANCE.cgsLogo());
-            }
-            else if(employee.get("company").isObject().get("name").isString().stringValue().equalsIgnoreCase(Company.TECHPILLARS)){
+            } else if (employee.get("company").isObject().get("name").isString().stringValue().equalsIgnoreCase(Company.TECHPILLARS)) {
                 StatusPanel.instance().setLogo(OfficeImages.INSTANCE.techPillarsLogo());
             }
         }
@@ -155,9 +181,11 @@ public class OfficeWelcome implements EntryPoint {
         return instance;
     }
 
-    public OfficeClientConfig getOfficeClientConfig() {
+    public OfficeClientConfig
+            getOfficeClientConfig() {
         if (officeClientConfig == null) {
-            this.officeClientConfig = GWT.create(OfficeClientConfig.class);
+            this.officeClientConfig = GWT.create(OfficeClientConfig.class
+            );
         }
         return this.officeClientConfig;
     }

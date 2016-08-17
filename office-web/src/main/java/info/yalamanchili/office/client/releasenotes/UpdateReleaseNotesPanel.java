@@ -29,7 +29,6 @@ class UpdateReleaseNotesPanel extends UpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject entity = new JSONObject();
         assignEntityValueFromField("summary", entity);
         assignEntityValueFromField("details", entity);
         assignEntityValueFromField("endDate", entity);

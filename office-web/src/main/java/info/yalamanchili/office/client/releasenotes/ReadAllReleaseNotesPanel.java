@@ -79,7 +79,6 @@ public class ReadAllReleaseNotesPanel extends CRUDReadAllComposite {
 
     @Override
     public void preFetchTable(int start) {
-
         HttpService.HttpServiceAsync.instance().doGet(getUrl(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
                 false, new ALAsyncCallback<String>() {
             @Override
@@ -119,7 +118,7 @@ public class ReadAllReleaseNotesPanel extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "userIds"));
+        createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
     }
     
     @Override
