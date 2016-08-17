@@ -60,15 +60,15 @@ public class CreateClientPanel extends CreateComposite {
         JSONObject clnt = new JSONObject();
 
         assignEntityValueFromField("name", clnt);
-        assignEntityValueFromField("description", clnt);
+//        assignEntityValueFromField("description", clnt);
         assignEntityValueFromField("website", clnt);
-        assignEntityValueFromField("msaValDate", clnt);
-        assignEntityValueFromField("msaExpDate", clnt);
         assignEntityValueFromField("paymentTerms", clnt);
         assignEntityValueFromField("clientinvFrequency", clnt);
         assignEntityValueFromField("clientFee", clnt);
         assignEntityValueFromField("maxClientFee", clnt);
         assignEntityValueFromField("minClientFee", clnt);
+        assignEntityValueFromField("msaValDate", clnt);
+        assignEntityValueFromField("msaExpDate", clnt);
 
         if (createAddressWidget != null) {
             clnt.put("location",createAddressWidget.populateEntityFromFields());
@@ -130,15 +130,15 @@ public class CreateClientPanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+//        addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("msaValDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("msaExpDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("clientinvFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         addField("clientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("maxClientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("minClientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addField("msaValDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("msaExpDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         
         entityFieldsPanel.add(primaryLocation);
         entityFieldsPanel.add(createAddressWidget);

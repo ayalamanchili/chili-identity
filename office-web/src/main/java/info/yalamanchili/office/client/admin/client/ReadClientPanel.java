@@ -56,15 +56,15 @@ public class ReadClientPanel extends ReadComposite {
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
+//        assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("website", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("msaValDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("msaExpDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("paymentTerms", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("clientinvFrequency", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("clientFee", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("maxClientFee", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("minClientFee", entity, DataType.FLOAT_FIELD);
+        assignFieldValueFromEntity("msaValDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("msaExpDate", entity, DataType.DATE_FIELD);
     }
 
     @Override
@@ -80,15 +80,15 @@ public class ReadClientPanel extends ReadComposite {
     @Override
     protected void addWidgets() {
         addField("name", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("description", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+//        addField("description", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("website", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("msaValDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("msaExpDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("paymentTerms", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("clientinvFrequency", true, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         addField("clientFee", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("maxClientFee", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("minClientFee", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addField("msaValDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("msaExpDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
