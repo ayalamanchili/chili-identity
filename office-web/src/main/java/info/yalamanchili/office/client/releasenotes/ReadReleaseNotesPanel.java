@@ -60,6 +60,7 @@ public class ReadReleaseNotesPanel extends ReadComposite {
         assignFieldValueFromEntity("userIds", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("roles", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("moreInformationLink", entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("acknowledgedIds", entity, DataType.TEXT_AREA_FIELD);
     }
 
     @Override
@@ -78,6 +79,7 @@ public class ReadReleaseNotesPanel extends ReadComposite {
         addField("userIds", true, false, DataType.TEXT_AREA_FIELD);
         addField("roles", true, false, DataType.TEXT_AREA_FIELD);
         addField("moreInformationLink", true, false, DataType.TEXT_AREA_FIELD);
+        addField("acknowledgedIds", true, false, DataType.TEXT_AREA_FIELD);
     }
 
     @Override
@@ -85,15 +87,15 @@ public class ReadReleaseNotesPanel extends ReadComposite {
     }
 
     @Override
-   protected boolean enableBack() {
-       return true;
-   }
-    
+    protected boolean enableBack() {
+        return true;
+    }
+
     @Override
     protected ReadAllComposite getReadAllPanel() {
         return ReadAllReleaseNotesPanel.instance;
     }
-    
+
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "releaseNotes/" + entityId;

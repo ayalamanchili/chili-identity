@@ -61,17 +61,17 @@ public class CreateVendorPanel extends CreateComposite {
     protected JSONObject populateEntityFromFields() {
         JSONObject vendor = new JSONObject();
         assignEntityValueFromField("name", vendor);
-        assignEntityValueFromField("description", vendor);
-        assignEntityValueFromField("vendorType", vendor);
         assignEntityValueFromField("website", vendor);
-        assignEntityValueFromField("msaValDate", vendor);
-        assignEntityValueFromField("msaExpDate", vendor);
         assignEntityValueFromField("paymentTerms", vendor);
         assignEntityValueFromField("vendorinvFrequency", vendor);
-        assignEntityValueFromField("vendorFees", vendor);
-        assignEntityValueFromField("minFees", vendor);
-        assignEntityValueFromField("maxFees", vendor);
         assignEntityValueFromField("vendorinvDeliveryMethod", vendor);
+        assignEntityValueFromField("vendorFees", vendor);
+        assignEntityValueFromField("maxFees", vendor);
+        assignEntityValueFromField("minFees", vendor);
+        assignEntityValueFromField("msaValDate", vendor);
+        assignEntityValueFromField("msaExpDate", vendor);
+//      assignEntityValueFromField("description", vendor);
+        assignEntityValueFromField("vendorType", vendor);
         assignEntityValueFromField("coiEndDate", vendor);
 
         if (createAddressWidget != null) {
@@ -131,18 +131,18 @@ public class CreateVendorPanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addEnumField("vendorType", false, false, VendorType.names(), Alignment.HORIZONTAL);
-        addField("vendorFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
-        addField("minFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
-        addField("maxFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("msaValDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("msaExpDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("coiEndDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("vendorinvFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         addEnumField("vendorinvDeliveryMethod", false, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
+        addField("vendorFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addField("maxFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addField("minFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addField("msaValDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("msaExpDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+     // addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("vendorType", false, false, VendorType.names(), Alignment.HORIZONTAL);
+        addField("coiEndDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
 
         entityFieldsPanel.add(primaryLocation);
         entityFieldsPanel.add(createAddressWidget);
@@ -179,14 +179,14 @@ public class CreateVendorPanel extends CreateComposite {
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
         boolean valid = true;
- 
+
         DateField msaValDate = (DateField) fields.get("msaValDate");
         DateField msaExpDate = (DateField) fields.get("msaExpDate");
-        if (msaValDate.getDate()== null || "".equals(msaValDate.getDate())) {
+        if (msaValDate.getDate() == null || "".equals(msaValDate.getDate())) {
             msaValDate.setMessage("MSA Period From Not Empty");
             valid = false;
         }
-        if (msaExpDate.getDate()== null || "".equals(msaExpDate.getDate())) {
+        if (msaExpDate.getDate() == null || "".equals(msaExpDate.getDate())) {
             msaExpDate.setMessage("MSA Period To Not Empty");
             valid = false;
         }
