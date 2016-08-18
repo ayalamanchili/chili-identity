@@ -7,7 +7,6 @@
  */
 package info.yalamanchili.office.client.admin.vendor;
 
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -18,15 +17,13 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CreateComposite;
-import info.chili.gwt.fields.BooleanField;
-import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.LongField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.GenericPopup;
-import info.yalamanchili.office.client.admin.clientcontact.CreateClientContactPanel;
+import info.yalamanchili.office.client.admin.vendorcontact.CreateVendorContactPanel;
 import info.yalamanchili.office.client.profile.address.CreateAddressPanel;
 import info.yalamanchili.office.client.profile.address.CreateAddressWidget;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceDeliveryMethod;
@@ -44,13 +41,11 @@ public class CreateVendorPanel extends CreateComposite {
     private static Logger logger = Logger.getLogger(CreateVendorPanel.class.getName());
 
     CreateAddressWidget createAddressWidget = new CreateAddressWidget(CreateAddressPanel.CreateAddressPanelType.MIN);
-    protected BooleanField addRecruiterContact = new BooleanField(OfficeWelcome.constants, "Add Recruiter Contact", "Vendor", false, false, Alignment.HORIZONTAL);
-    CreateContactWidget createContactWidget1 = new CreateContactWidget(CreateClientContactPanel.CreateCompositeType.ADD);
-//    protected BooleanField addAcntPybleContact = new BooleanField(OfficeWelcome.constants, "Add Account Payable Contact", "Vendor", false, false, Alignment.HORIZONTAL);
-    CreateContactWidget createContactWidget2 = new CreateContactWidget(CreateClientContactPanel.CreateCompositeType.ADD);
-    HTML primaryLocation = new HTML("<h4 style=\"color:#427fed\">" + "Vendor Primary Address </h4>");
-    HTML recruiterContact = new HTML("<h4 style=\"color:#427fed\">" + "Recruiter Contact Information </h4>");
-    HTML acntPybleContact = new HTML("<h4 style=\"color:#427fed\">" + "Account Payable Contact Information </h4>");
+    CreateContactWidget createContactWidget1 = new CreateContactWidget(CreateVendorContactPanel.CreateCompositeType.ADD);
+    CreateContactWidget createContactWidget2 = new CreateContactWidget(CreateVendorContactPanel.CreateCompositeType.ADD);
+    HTML primaryLocation = new HTML("<h4 style=\"color:#427fed\">" + "Vendor Location </h4>");
+    HTML recruiterContact = new HTML("<h4 style=\"color:#427fed\">" + "Vendor Recruiter Contact </h4>");
+    HTML acntPybleContact = new HTML("<h4 style=\"color:#427fed\">" + "Vendor Account Payable Contact </h4>");
 
     public CreateVendorPanel(CreateComposite.CreateCompositeType type) {
         super(type);
@@ -77,7 +72,7 @@ public class CreateVendorPanel extends CreateComposite {
         if (createAddressWidget != null) {
             vendor.put("location", createAddressWidget.populateEntityFromFields());
         }
-        if (addRecruiterContact.getValue()) {
+        if (createContactWidget1 != null) {
             vendor.put("contact", createContactWidget1.populateEntityFromFields());
         }
         if (createContactWidget2 != null) {
@@ -90,16 +85,16 @@ public class CreateVendorPanel extends CreateComposite {
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postCreateSuccess(arg0);
+            }
+        });
     }
 
     @Override
@@ -114,14 +109,13 @@ public class CreateVendorPanel extends CreateComposite {
         new ResponseStatusWidget().show("Successfully Vendor Created");
         String id = JSONUtils.toString(JSONParser.parseLenient(result), "id");
         TabPanel.instance().adminPanel.sidePanelTop.clear();
-        TabPanel.instance().adminPanel.sidePanelTop.add(new TreeVendorsPanel(id));
+        TabPanel.instance().adminPanel.sidePanelTop.add(new VendorsSidePanel());
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorsPanel(id));
     }
 
     @Override
     protected void addListeners() {
-        addRecruiterContact.getBox().addClickHandler(this);
     }
 
     @Override
@@ -140,17 +134,15 @@ public class CreateVendorPanel extends CreateComposite {
         addField("minFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("msaValDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("msaExpDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-     // addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        // addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("vendorType", false, false, VendorType.names(), Alignment.HORIZONTAL);
         addField("coiEndDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-
         entityFieldsPanel.add(primaryLocation);
         entityFieldsPanel.add(createAddressWidget);
-
+        entityFieldsPanel.add(recruiterContact);
+        entityFieldsPanel.add(createContactWidget1);
         entityFieldsPanel.add(acntPybleContact);
         entityFieldsPanel.add(createContactWidget2);
-
-        entityFieldsPanel.add(addRecruiterContact);
         alignFields();
     }
 
@@ -164,36 +156,8 @@ public class CreateVendorPanel extends CreateComposite {
     }
 
     @Override
-    public void onClick(ClickEvent event) {
-        if (addRecruiterContact.getValue()) {
-            entityFieldsPanel.add(recruiterContact);
-            entityFieldsPanel.add(createContactWidget1);
-        } else {
-            entityFieldsPanel.remove(recruiterContact);
-            entityFieldsPanel.remove(createContactWidget1);
-        }
-
-        super.onClick(event);
-    }
-
-    @Override
     protected boolean processClientSideValidations(JSONObject entity) {
         boolean valid = true;
-
-        DateField msaValDate = (DateField) fields.get("msaValDate");
-        DateField msaExpDate = (DateField) fields.get("msaExpDate");
-        if (msaValDate.getDate() == null || "".equals(msaValDate.getDate())) {
-            msaValDate.setMessage("MSA Period From Not Empty");
-            valid = false;
-        }
-        if (msaExpDate.getDate() == null || "".equals(msaExpDate.getDate())) {
-            msaExpDate.setMessage("MSA Period To Not Empty");
-            valid = false;
-        }
-        if (msaValDate.getDate() != null && msaExpDate.getDate() != null && msaValDate.getDate().after(msaExpDate.getDate())) {
-            msaExpDate.setMessage("To Date must be after From Date");
-            return false;
-        }
         StringField vendorNameF = (StringField) fields.get("name");
         if (vendorNameF.getValue() == null || "".equals(vendorNameF.getValue())) {
             vendorNameF.setMessage("Please enter a name for the Vendor");
@@ -224,52 +188,50 @@ public class CreateVendorPanel extends CreateComposite {
             countryF.setMessage("Please enter the country");
             valid = false;
         }
-        if (addRecruiterContact.getValue()) {
 
-            StringField contactFirstNameF = (StringField) createContactWidget1.fields.get("firstName");
-            if (contactFirstNameF.getValue() == null || "".equals(contactFirstNameF.getValue())) {
-                contactFirstNameF.setMessage("Please enter the first name");
-                valid = false;
-            }
-            StringField contactLastNameF = (StringField) createContactWidget1.fields.get("lastName");
-            if (contactLastNameF.getValue() == null || "".equals(contactLastNameF.getValue())) {
-                contactLastNameF.setMessage("Please enter the last name");
-                valid = false;
-            }
-            for (CreatePhonePanel createPhoneWidget : createContactWidget1.getChildWidgets()) {
-                LongField phoneNumberF = (LongField) createPhoneWidget.fields.get("phoneNumber");
+        StringField recruiterFirstName = (StringField) createContactWidget1.fields.get("firstName");
+        if (recruiterFirstName.getValue() == null || "".equals(recruiterFirstName.getValue())) {
+            recruiterFirstName.setMessage("Please enter the first name");
+            valid = false;
+        }
+        StringField recruiterLastName = (StringField) createContactWidget1.fields.get("lastName");
+        if (recruiterLastName.getValue() == null || "".equals(recruiterLastName.getValue())) {
+            recruiterLastName.setMessage("Please enter the last name");
+            valid = false;
+        }
+        for (CreatePhonePanel createPhoneWidget : createContactWidget1.getChildWidgets()) {
+            LongField phoneNumberF = (LongField) createPhoneWidget.fields.get("phoneNumber");
 
-                if (phoneNumberF.getValue() == null || "".equals(phoneNumberF.getValue())) {
-                    phoneNumberF.setMessage("Please enter a phone number");
+            if (phoneNumberF.getValue() == null || "".equals(phoneNumberF.getValue())) {
+                phoneNumberF.setMessage("Please enter a phone number");
+                valid = false;
+            } else if (phoneNumberF.getValue() != null) {
+                String number = phoneNumberF.getValue();
+                if (!number.matches("[0-9]*")) {
+                    phoneNumberF.setMessage("Invalid Phone Number");
                     valid = false;
-                } else if (phoneNumberF.getValue() != null) {
-                    String number = phoneNumberF.getValue();
-                    if (!number.matches("[0-9]*")) {
-                        phoneNumberF.setMessage("Invalid Phone Number");
-                        valid = false;
-                    } else if (number.length() != 10) {
-                        phoneNumberF.setMessage("Phone Number must be 10 characters long");
-                        valid = false;
-                    }
+                } else if (number.length() != 10) {
+                    phoneNumberF.setMessage("Phone Number must be 10 characters long");
+                    valid = false;
                 }
             }
         }
 
-        StringField contactFirstNameF = (StringField) createContactWidget2.fields.get("firstName");
-        if (contactFirstNameF.getValue() == null || "".equals(contactFirstNameF.getValue())) {
-            contactFirstNameF.setMessage("First Name can not be empty");
+        StringField accountPayableFirstName = (StringField) createContactWidget2.fields.get("firstName");
+        if (accountPayableFirstName.getValue() == null || "".equals(accountPayableFirstName.getValue())) {
+            accountPayableFirstName.setMessage("Please enter the first name");
             valid = false;
         }
-        StringField contactLastNameF = (StringField) createContactWidget2.fields.get("lastName");
-        if (contactLastNameF.getValue() == null || "".equals(contactLastNameF.getValue())) {
-            contactLastNameF.setMessage("Last Name can not be empty");
+        StringField accountPayableLastName = (StringField) createContactWidget2.fields.get("lastName");
+        if (accountPayableLastName.getValue() == null || "".equals(accountPayableLastName.getValue())) {
+            accountPayableLastName.setMessage("Please enter the last name");
             valid = false;
         }
         for (CreatePhonePanel createPhoneWidget : createContactWidget2.getChildWidgets()) {
             LongField phoneNumberF = (LongField) createPhoneWidget.fields.get("phoneNumber");
 
             if (phoneNumberF.getValue() == null || "".equals(phoneNumberF.getValue())) {
-                phoneNumberF.setMessage("Phone Number can not be empty");
+                phoneNumberF.setMessage("Please enter a phone number");
                 valid = false;
             } else if (phoneNumberF.getValue() != null) {
                 String number = phoneNumberF.getValue();
