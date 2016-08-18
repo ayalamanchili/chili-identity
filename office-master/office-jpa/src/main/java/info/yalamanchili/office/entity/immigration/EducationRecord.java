@@ -9,7 +9,9 @@
 package info.yalamanchili.office.entity.immigration;
 
 import info.chili.jpa.AbstractHandleEntity;
+import java.util.Date;
 import javax.persistence.Entity;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Indexed;
@@ -37,7 +39,8 @@ public class EducationRecord  extends AbstractHandleEntity {
     
     protected String address;
     
-    protected String graduationYear;
+    @NotNull(message = "{dateDegreeAwarded.not.empty.msg}")
+    protected Date dateDegreeAwarded;
     
     public String getDegreeOfStudy() {
         return degreeOfStudy;
@@ -71,17 +74,17 @@ public class EducationRecord  extends AbstractHandleEntity {
         this.address = address;
     }
 
-    public String getGraduationYear() {
-        return graduationYear;
+    public Date getDateDegreeAwarded() {
+        return dateDegreeAwarded;
     }
 
-    public void setGraduationYear(String graduationYear) {
-        this.graduationYear = graduationYear;
+    public void setDateDegreeAwarded(Date dateDegreeAwarded) {
+        this.dateDegreeAwarded = dateDegreeAwarded;
     }    
     
     @Override
     public String toString() {
-        return "EducationRecord{" + "degreeOfStudy=" + degreeOfStudy + ", fieldOfStudy=" + fieldOfStudy + ", nameOfSchool=" + nameOfSchool + ", address=" + address + ", graduationYear=" + graduationYear + '}';
+        return "EducationRecord{" + "degreeOfStudy=" + degreeOfStudy + ", fieldOfStudy=" + fieldOfStudy + ", nameOfSchool=" + nameOfSchool + ", address=" + address + ", dateDegreeRewarded=" + dateDegreeAwarded + '}';
     }    
     
 }

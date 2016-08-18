@@ -47,7 +47,7 @@
         <addColumn catalogName="office"
                    schemaName="public"
                    tableName="expensereport">
-            <column name="expensesMadeBy" type="varchar(255)""/>
+            <column name="expensesMadeBy" type="varchar(255)"/>
         </addColumn>
         <addColumn catalogName="office"
                    schemaName="public"

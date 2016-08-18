@@ -76,7 +76,7 @@ public class ReadAllEducationRecordPanel extends CRUDReadAllComposite {
         table.setText(0, 1, getKeyValue("Degree Of Study"));
         table.setText(0, 2, getKeyValue("Field Of Study"));
         table.setText(0, 3, getKeyValue("Name Of School"));
-        table.setText(0, 4, getKeyValue("Graduation Year"));
+        table.setText(0, 4, getKeyValue("Date Degree Awarded"));
     }
 
     @Override
@@ -87,7 +87,7 @@ public class ReadAllEducationRecordPanel extends CRUDReadAllComposite {
             table.setText(i, 1, JSONUtils.toString(entity, "degreeOfStudy"));
             table.setText(i, 2, JSONUtils.toString(entity, "fieldOfStudy"));
             table.setText(i, 3, JSONUtils.toString(entity, "nameOfSchool"));
-            table.setText(i, 4, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "graduationYear"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
+            table.setText(i, 4, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "dateDegreeAwarded"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
         }
     }
 
