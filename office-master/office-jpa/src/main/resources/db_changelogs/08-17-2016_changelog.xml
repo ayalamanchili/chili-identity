@@ -27,12 +27,10 @@
         <dropColumn catalogName="office"
                     columnName="graduationYear"
                     schemaName="public"
-                    tableName="educationrecord">
-        </dropColumn>
+                    tableName="educationrecord"/>
         <dropColumn catalogName="office"
                     columnName="graduationYear"
                     schemaName="public"
-                    tableName="educationrecord_aud">  
-        </dropColumn>
+                    tableName="educationrecord_aud"/>  
     </changeSet>
 </databaseChangeLog>
