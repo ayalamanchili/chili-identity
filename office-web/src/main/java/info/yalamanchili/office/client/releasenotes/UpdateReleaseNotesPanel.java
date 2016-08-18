@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  * @author Rohith.Vallabhaneni
  */
 class UpdateReleaseNotesPanel extends UpdateComposite {
-    
+
     private static Logger logger = Logger.getLogger(UpdateReleaseNotesPanel.class.getName());
 
     public UpdateReleaseNotesPanel(JSONObject entity) {
@@ -31,6 +31,7 @@ class UpdateReleaseNotesPanel extends UpdateComposite {
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("summary", entity);
         assignEntityValueFromField("details", entity);
+        assignEntityValueFromField("effectiveDate", entity);
         assignEntityValueFromField("endDate", entity);
         assignEntityValueFromField("userIds", entity);
         assignEntityValueFromField("roles", entity);
@@ -59,6 +60,7 @@ class UpdateReleaseNotesPanel extends UpdateComposite {
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("summary", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("details", entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("effectiveDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("userIds", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("roles", entity, DataType.TEXT_AREA_FIELD);
@@ -84,6 +86,7 @@ class UpdateReleaseNotesPanel extends UpdateComposite {
     protected void addWidgets() {
         addField("summary", false, true, DataType.TEXT_AREA_FIELD);
         addField("details", false, true, DataType.TEXT_AREA_FIELD);
+        addField("effectiveDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
         addField("userIds", false, false, DataType.TEXT_AREA_FIELD);
         addField("roles", false, false, DataType.TEXT_AREA_FIELD);
@@ -99,5 +102,5 @@ class UpdateReleaseNotesPanel extends UpdateComposite {
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "releaseNotes/save";
     }
-    
+
 }

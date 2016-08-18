@@ -35,11 +35,12 @@ public class CreateReleaseNotesPanel extends CreateComposite {
         JSONObject entity = new JSONObject();
         assignEntityValueFromField("summary", entity);
         assignEntityValueFromField("details", entity);
+        assignEntityValueFromField("effectiveDate", entity);
         assignEntityValueFromField("endDate", entity);
         assignEntityValueFromField("userIds", entity);
         assignEntityValueFromField("roles", entity);
         assignEntityValueFromField("moreInformationLink", entity);
-        
+
         return entity;
     }
 
@@ -84,12 +85,12 @@ public class CreateReleaseNotesPanel extends CreateComposite {
     protected void addWidgets() {
         addField("summary", false, true, DataType.TEXT_AREA_FIELD);
         addField("details", false, true, DataType.TEXT_AREA_FIELD);
+        addField("effectiveDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
         addField("userIds", false, false, DataType.TEXT_AREA_FIELD);
         addField("roles", false, false, DataType.TEXT_AREA_FIELD);
         addField("moreInformationLink", false, false, DataType.TEXT_AREA_FIELD);
 
-        
     }
 
     @Override

@@ -52,7 +52,7 @@ public class ServiceInterceptor {
     @Autowired
     protected ServiceMessages serviceMessages;
 
-    @Pointcut(value = "execution(* info.yalamanchili.office.jrs..*.*(..)) || execution(* info.chili.service..*.*(..))")
+    @Pointcut(value = "execution(* info.yalamanchili.office.jrs..*.*(..)) || execution(* info.chili..*.*(..))")
     public void anyPublicMethod() {
     }
 

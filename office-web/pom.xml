@@ -213,7 +213,7 @@
                     <!-- use only for dev -->
                     <draftCompile>true</draftCompile>
                     <soyc>false</soyc>
-                    <extraJvmArgs>-Xmx512m</extraJvmArgs>
+                    <extraJvmArgs>-Xmx1024m</extraJvmArgs>
                     <!-- target dir for generated interfaces -->
                     <generateDirectory>src/main/java</generateDirectory>
                     <i18nConstantsWithLookupBundle>

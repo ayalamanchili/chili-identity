@@ -56,6 +56,7 @@ public class ReadReleaseNotesPanel extends ReadComposite {
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("summary", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("details", entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("effectiveDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("userIds", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("roles", entity, DataType.TEXT_AREA_FIELD);
@@ -75,6 +76,7 @@ public class ReadReleaseNotesPanel extends ReadComposite {
     protected void addWidgets() {
         addField("summary", true, false, DataType.TEXT_AREA_FIELD);
         addField("details", true, false, DataType.TEXT_AREA_FIELD);
+        addField("effectiveDate", true, false, DataType.DATE_FIELD);
         addField("endDate", true, false, DataType.DATE_FIELD);
         addField("userIds", true, false, DataType.TEXT_AREA_FIELD);
         addField("roles", true, false, DataType.TEXT_AREA_FIELD);
