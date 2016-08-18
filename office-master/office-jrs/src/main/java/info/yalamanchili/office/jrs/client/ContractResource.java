@@ -52,7 +52,7 @@ public class ContractResource {
     @GET
     @Path("/read/{id}")
     @Transactional(readOnly = true)
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CONTRACTS_ADMIN', 'ROLE_BILLING_ADMIN', 'ROLE_BILLING_AND_INVOICING', 'ROLE_INVOICE_MANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CONTRACTS_ADMIN', 'ROLE_BILLING_ADMIN', 'ROLE_BILLING_AND_INVOICING', 'ROLE_CONTRACTS_FULL_VIEW','ROLE_INVOICE_MANAGER')")
     public ContractDto readCIDto(@PathParam("id") Long id) {
         return ContractService.instance().read(id);
     }

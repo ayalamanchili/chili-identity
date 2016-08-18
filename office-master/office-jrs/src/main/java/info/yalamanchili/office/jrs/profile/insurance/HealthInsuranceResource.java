@@ -130,7 +130,7 @@ public class HealthInsuranceResource extends CRUDResource<HealthInsurance> {
     }
 
     @GET
-    @Path("/insurance-report-report")
+    @Path("/insurance-report")
     public void employeeHealthInsuranceReport(@QueryParam("year") String year) {
         List<HealthInsuranceReportDto> report = new ArrayList<>();
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
@@ -140,7 +140,7 @@ public class HealthInsuranceResource extends CRUDResource<HealthInsurance> {
     }
 
     @GET
-    @Path("/insurance-reportView-reportView")
+    @Path("/insurance-reportView")
     public List<HealthInsuranceReportDto> employeeperformanceEvaluationReportView(@QueryParam("year") String year) {
         return healthInsuranceService.getHealthInsuranceReport(year);
     }

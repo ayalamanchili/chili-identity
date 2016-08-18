@@ -73,14 +73,19 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
     @Override
     public JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
-        logger.info("dile and submitted date " + entity);
         //waivingCoverageFor
+        String waivingCoverageForS = "";
         if (myself.getValue() == true) {
-            entity.put("waivingCoverageFor", new JSONString("MySelf"));
-        } else if (spouse.getValue() == true) {
-            entity.put("waivingCoverageFor", new JSONString("Spouse"));
-        } else if (dependent.getValue() == true) {
-            entity.put("waivingCoverageFor", new JSONString("Dependent"));
+            waivingCoverageForS = waivingCoverageForS.concat("MySelf ,");
+            entity.put("waivingCoverageFor", new JSONString(waivingCoverageForS));
+        }
+        if (spouse.getValue() == true) {
+            waivingCoverageForS = waivingCoverageForS.concat("Spouse ,");
+            entity.put("waivingCoverageFor", new JSONString(waivingCoverageForS));
+        }
+        if (dependent.getValue() == true) {
+            waivingCoverageForS = waivingCoverageForS.concat("Dependent");
+            entity.put("waivingCoverageFor", new JSONString(waivingCoverageForS));
         }
         if (spouseName.getValue() != null) {
             entity.put("spouseName", new JSONString(spouseName.getValue()));

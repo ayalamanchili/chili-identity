@@ -11,10 +11,9 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
@@ -22,8 +21,10 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.profile.insurance.HealthInsuranceYear;
 import info.yalamanchili.office.client.profile.insurance.ReadAllHealthInsuranceReportPanel;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -36,14 +37,16 @@ import java.util.Map;
  */
 public class RetirementPlanOptInSidePanal extends ALComposite implements ClickHandler {
 
+    private static Logger logger = Logger.getLogger(RetirementPlanOptInSidePanal.class.getName());
+
     protected FlowPanel panel = new FlowPanel();
     ClickableLink retirementplanReportL = new ClickableLink("RetirementPlan Report");
 
     protected Button generateRepB = new Button("Generate");
     protected Button viewRepB = new Button("View");
-    protected Label yearL = new Label("Year");
+    EnumField yearsF = new EnumField(OfficeWelcome.constants, "otherCarrierType", "HealthInsuranceWaiver", false, false, HealthInsuranceYear.getyears().toArray(new String[0]));
+
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false);
-    protected ListBox yearDD = new ListBox();
 
     public RetirementPlanOptInSidePanal() {
         init(panel);
@@ -59,11 +62,6 @@ public class RetirementPlanOptInSidePanal extends ALComposite implements ClickHa
     @Override
     protected void configure() {
         retirementplanReportL.setTitle("report with name,comments");
-        yearDD.addItem("2013", "2013");
-        yearDD.addItem("2014", "2014");
-        yearDD.addItem("2015", "2015");
-        yearDD.addItem("2016", "2016");
-        yearDD.addItem("2017", "2017");
         HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
@@ -83,8 +81,7 @@ public class RetirementPlanOptInSidePanal extends ALComposite implements ClickHa
     protected void addWidgets() {
         panel.add(retirementplanReportL);
         panel.add(employeeSB);
-        panel.add(yearL);
-        panel.add(yearDD);
+        panel.add(yearsF);
         panel.add(generateRepB);
         panel.add(viewRepB);
     }
@@ -142,11 +139,10 @@ public class RetirementPlanOptInSidePanal extends ALComposite implements ClickHa
     }
 
     private String getHealthInsuranceReportUrl() {
-
-        return OfficeWelcome.constants.root_url() + "insurance-enrollment/insurance-report?year=" + yearDD.getValue(yearDD.getSelectedIndex());
+        return OfficeWelcome.constants.root_url() + "insurance-enrollment/insurance-report?year=" + yearsF.getValue();
     }
 
     private String getHealthInsuranceReportViewUrl() {
-        return OfficeWelcome.constants.root_url() + "insurance-enrollment/insurance-reportView?year=" + yearDD.getValue(yearDD.getSelectedIndex());
+        return OfficeWelcome.constants.root_url() + "insurance-enrollment/insurance-reportView?year=" + yearsF.getValue();
     }
 }
