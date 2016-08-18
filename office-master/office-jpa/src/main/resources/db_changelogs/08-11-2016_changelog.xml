@@ -77,16 +77,6 @@
         <addColumn catalogName="office"
                    schemaName="public"
                    tableName="expensereport">
-            <column name="submittedDate" type="date"/>
-        </addColumn>
-        <addColumn catalogName="office"
-                   schemaName="public"
-                   tableName="expensereport_aud">
-            <column name="submittedDate" type="date"/>
-        </addColumn>
-        <addColumn catalogName="office"
-                   schemaName="public"
-                   tableName="expensereport">
             <column name="departmentType" type="varchar(255)"/>
         </addColumn>
         <addColumn catalogName="office"
