@@ -89,6 +89,8 @@
                 <item name="Find Candidates" href="/office/recruiting/find-candidates.html"/>   
             </item>
             <item name="Adminstration" href="/office/admin.html" collapse="true">
+                <item name="Manage Client" href="/office/admin/manage_client.html"/>
+                <item name="Manage Vendor" href="/office/admin/manage_vendor.html"/>
                 <item name="Bulkupload" href="/office/admin/bulkimport.html"/>
                 <item name="Vendor Invoice Schedules" href="/office/admin/vendor-invoice-schedules.html"/>
             </item>
