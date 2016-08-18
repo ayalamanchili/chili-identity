@@ -36,12 +36,12 @@ public class ReadAllReleaseNotesPanel extends CRUDReadAllComposite {
         instance = this;
         initTable("ReleaseNotes", OfficeWelcome.constants2);
     }
-    
+
     public ReadAllReleaseNotesPanel(JSONArray array) {
         instance = this;
         initTable("ReleaseNotes", array, OfficeWelcome.constants2);
     }
-    
+
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().chiliAdminPanel.entityPanel.clear();
@@ -98,9 +98,10 @@ public class ReadAllReleaseNotesPanel extends CRUDReadAllComposite {
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Summary"));
-        table.setText(0, 2, getKeyValue("End Date"));   
-        table.setText(0, 3, getKeyValue("UserIds"));
-        table.setText(0, 4, getKeyValue("Roles"));
+        table.setText(0, 2, getKeyValue("Effective Date"));
+        table.setText(0, 3, getKeyValue("End Date"));
+        table.setText(0, 4, getKeyValue("UserIds"));
+        table.setText(0, 5, getKeyValue("Roles"));
     }
 
     @Override
@@ -109,10 +110,11 @@ public class ReadAllReleaseNotesPanel extends CRUDReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "summary"));
-            table.setText(i, 2, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));            
-            table.setText(i, 3, JSONUtils.toString(entity, "userIds"));
-            table.setText(i, 4, JSONUtils.toString(entity, "roles"));
-            
+            table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "effectiveDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
+            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
+            table.setText(i, 4, JSONUtils.toString(entity, "userIds"));
+            table.setText(i, 5, JSONUtils.toString(entity, "roles"));
+
         }
     }
 
@@ -120,17 +122,17 @@ public class ReadAllReleaseNotesPanel extends CRUDReadAllComposite {
     protected void addOptionsWidget(int row, JSONObject entity) {
         createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
     }
-    
+
     @Override
     protected boolean enableQuickView() {
         return true;
     }
-    
+
     @Override
     protected void onQuickView(int row, String entityId) {
         new GenericPopup(new ReadReleaseNotesPanel(entityId), Window.getClientWidth() / 3, 0).show();
     }
-    
+
     @Override
     protected boolean enablePersistedQuickView() {
         return true;
@@ -147,14 +149,5 @@ public class ReadAllReleaseNotesPanel extends CRUDReadAllComposite {
     protected void configureCreateButton() {
         createButton.setText("Create");
         createButton.setVisible(true);
-    }
-    
-    private String getFormattedDate(String date) {
-        String[] dates = date.split("-");
-        String formatteddate = "";
-        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
-        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
-        formatteddate = formatteddate.concat(dates[0]);
-        return formatteddate;
     }
 }
