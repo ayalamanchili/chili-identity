@@ -12,21 +12,15 @@ import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.Widget;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
-import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
-import info.chili.gwt.widgets.ResponseStatusWidget;
-import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
-import info.yalamanchili.office.client.profile.cllientinfo.ReadClientInfoPanel;
 
 /**
  *
@@ -63,32 +57,16 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
     public void viewClicked(String entityId) {
     }
 
-    public String getDeleteURL(String entityId) {
-        return OfficeWelcome.constants.root_url() + "billing-rate/delete/" + entityId;
-    }
-
+    @Override
     public void preDelete(String entityId) {
-        if (Window.confirm("Only delete billing rate is data is entered incorrectly. Deleting will not update the existing rate.")) {
-            deleteClicked(entityId);
-        }
     }
 
     @Override
     public void deleteClicked(String entityId) {
-        HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
-                new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                postDeleteSuccess();
-            }
-        });
     }
 
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("Successfully Deleted Billing Rate Information");
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadClientInfoPanel(clientInfo));
     }
 
     @Override
@@ -109,6 +87,7 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
 
     @Override
     public void createTableHeader() {
+        table.setHeight("15");
         table.setText(0, 0, getKeyValue("Table_Action"));
         //      table.setText(0, 1, getKeyValue("PayRate"));
         table.setText(0, 1, getKeyValue("BillRate"));
@@ -150,9 +129,6 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
-            createOptionsWidget(TableRowOptionsWidget.OptionsType.DELETE, row, JSONUtils.toString(entity, "id"));
-        }
     }
 
     private String getReadAllURL() {
