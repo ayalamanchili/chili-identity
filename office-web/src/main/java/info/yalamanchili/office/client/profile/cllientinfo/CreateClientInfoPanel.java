@@ -363,16 +363,16 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addClientL)) {
             if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN)) {
-                new GenericPopup(new CreateClientPanel(CreateCompositeType.CREATE),350,10).show();
+                new GenericPopup(new CreateClientPanel(CreateCompositeType.CREATE),350,0).show();
             } else {
-                new GenericPopup(new GenericBPMStartFormPanel("AddNewClientRequest", "add_new_client_request_1"),350,10).show();
+                new GenericPopup(new GenericBPMStartFormPanel("AddNewClientRequest", "add_new_client_request_1"),350,0).show();
             }
         }
         if (event.getSource().equals(addVendorL)) {
             if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN)) {
-                new GenericPopup(new CreateVendorPanel(CreateCompositeType.CREATE),350,10).show();
+                new GenericPopup(new CreateVendorPanel(CreateCompositeType.CREATE),350,0).show();
             } else {
-                new GenericPopup(new GenericBPMStartFormPanel("AddNewVendorRequest", "add_new_vendor_request_1"),350,10).show();
+                new GenericPopup(new GenericBPMStartFormPanel("AddNewVendorRequest", "add_new_vendor_request_1"),350,0).show();
             }
         }
 
