@@ -90,7 +90,7 @@ public class ClientResource extends CRUDResource<Client> {
 
     @GET
     @Path("/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS','ROLE_BILLING_AND_INVOICING','ROLE_CONTRACTS_FULL_VIEW')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_CONTRACTS','ROLE_BILLING_AND_INVOICING','ROLE_CONTRACTS_FULL_VIEW')")
     @Cacheable(OfficeCacheKeys.CLIENT)
     public ClientTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         ClientTable tableObj = new ClientTable();
