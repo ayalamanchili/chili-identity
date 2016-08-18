@@ -19,6 +19,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -41,8 +42,10 @@ public class VendorDto implements Serializable {
     protected VendorType vendorType;
     protected String website;
     @Temporal(TemporalType.DATE)
+    @NotNull(message = "{vendor.msaValDate.not.null.msg}")
     protected Date msaValDate;
     @Temporal(TemporalType.DATE)
+    @NotNull(message = "{vendor.msaExpDate.not.null.msg}")
     protected Date msaExpDate;
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date coiEndDate;
@@ -55,7 +58,6 @@ public class VendorDto implements Serializable {
     protected BigDecimal maxFees;
     @Enumerated(EnumType.STRING)
     protected InvoiceDeliveryMethod vendorinvDeliveryMethod;
-
     protected Address location;
     protected ContactDto contact;
     protected ContactDto vendorAcctPayContact;
