@@ -106,8 +106,8 @@ public class ClientResource extends CRUDResource<Client> {
     @CacheEvict(value = OfficeCacheKeys.CLIENT, allEntries = true)
     public Client createClient(CreateClientDto createClientDto) {
         Client client = mapper.map(createClientDto, Client.class);
-        
-        if(createClientDto.getLocation() != null){
+
+        if (createClientDto.getLocation() != null) {
             client.addLocations(createClientDto.getLocation());
         }
         if (createClientDto.getContact() != null) {
@@ -119,6 +119,14 @@ public class ClientResource extends CRUDResource<Client> {
             client.addClientAcctPayContact(clientAcctPayContact);
         }
         return super.save(client);
+    }
+
+    @PUT
+    @Validate
+    @CacheEvict(value = OfficeCacheKeys.CLIENT, allEntries = true)
+    @Override
+    public Client save(Client entity) {
+        return  clientDao.save(entity);
     }
 
     @PUT
