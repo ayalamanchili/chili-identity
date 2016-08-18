@@ -40,7 +40,6 @@ public class CreateClientPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateClientPanel.class.getName());
     
-//    CreateClientLocationPanel createClientLocationPanel = new CreateClientLocationPanel(CreateComposite.CreateCompositeType.ADD);
     CreateAddressWidget createAddressWidget = new CreateAddressWidget(CreateAddressPanel.CreateAddressPanelType.MIN);
     protected BooleanField addRecruiterContact = new BooleanField(OfficeWelcome.constants, "Add Recruiter Contact", "Client", false, false, Alignment.HORIZONTAL);
     CreateContactWidget createContactWidget1 = new CreateContactWidget(CreateClientContactPanel.CreateCompositeType.ADD);
@@ -112,7 +111,7 @@ public class CreateClientPanel extends CreateComposite {
         new ResponseStatusWidget().show("Successfully created Client");
         String id = JSONUtils.toString(JSONParser.parseLenient(result), "id");
         TabPanel.instance().adminPanel.sidePanelTop.clear();
-        TabPanel.instance().adminPanel.sidePanelTop.add(new TreeClientPanel(id));
+        TabPanel.instance().adminPanel.sidePanelTop.add(new ClientSidePanel());
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientsPanel(id));;
     }
@@ -215,19 +214,19 @@ public class CreateClientPanel extends CreateComposite {
             
             StringField contactFirstNameF = (StringField) createContactWidget1.fields.get("firstName");
             if (contactFirstNameF.getValue() == null || "".equals(contactFirstNameF.getValue())) {
-                contactFirstNameF.setMessage("First Name can not be empty");
+                contactFirstNameF.setMessage("Please enter the first name");
                 valid = false;
             }
             StringField contactLastNameF = (StringField) createContactWidget1.fields.get("lastName");
             if (contactLastNameF.getValue() == null || "".equals(contactLastNameF.getValue())) {
-                contactLastNameF.setMessage("Last Name can not be empty");
+                contactLastNameF.setMessage("Please enter the last name");
                 valid = false;
             }
             for(CreatePhonePanel createPhoneWidget : createContactWidget1.getChildWidgets()){
                 LongField phoneNumberF = (LongField) createPhoneWidget.fields.get("phoneNumber");
             
                 if (phoneNumberF.getValue() == null || "".equals(phoneNumberF.getValue())) {
-                    phoneNumberF.setMessage("Phone Number can not be empty");
+                    phoneNumberF.setMessage("Please enter a phone number");
                     valid = false;
                 } else if (phoneNumberF.getValue() != null) {
                     String number = phoneNumberF.getValue();
@@ -245,19 +244,19 @@ public class CreateClientPanel extends CreateComposite {
         if(addAcntPybleContact.getValue()){
             StringField contactFirstNameF = (StringField) createContactWidget2.fields.get("firstName");
             if (contactFirstNameF.getValue() == null || "".equals(contactFirstNameF.getValue())) {
-                contactFirstNameF.setMessage("First Name can not be empty");
+                contactFirstNameF.setMessage("Please enter the first name");
                 valid = false;
             }
             StringField contactLastNameF = (StringField) createContactWidget2.fields.get("lastName");
             if (contactLastNameF.getValue() == null || "".equals(contactLastNameF.getValue())) {
-                contactLastNameF.setMessage("Last Name can not be empty");
+                contactLastNameF.setMessage("Please enter a phone number");
                 valid = false;
             }
             for(CreatePhonePanel createPhoneWidget : createContactWidget2.getChildWidgets()){
                 LongField phoneNumberF = (LongField) createPhoneWidget.fields.get("phoneNumber");
             
                 if (phoneNumberF.getValue() == null || "".equals(phoneNumberF.getValue())) {
-                    phoneNumberF.setMessage("Phone Number can not be empty");
+                    phoneNumberF.setMessage("Please enter a phone number");
                     valid = false;
                 } else if (phoneNumberF.getValue() != null) {
                     String number = phoneNumberF.getValue();
