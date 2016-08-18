@@ -38,7 +38,7 @@ public class UpdateEducationRecordPanel extends UpdateComposite {
         assignEntityValueFromField("fieldOfStudy", entity);
         assignEntityValueFromField("nameOfSchool", entity);
         assignEntityValueFromField("address", entity);
-        assignEntityValueFromField("graduationYear", entity);
+        assignEntityValueFromField("dateDegreeAwarded", entity);
         return entity;
     }
 
@@ -64,7 +64,7 @@ public class UpdateEducationRecordPanel extends UpdateComposite {
         assignFieldValueFromEntity("fieldOfStudy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("nameOfSchool", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("address", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("graduationYear", entity, DataType.INTEGER_FIELD);
+        assignFieldValueFromEntity("dateDegreeAwarded", entity, DataType.DATE_FIELD);
     }
 
     @Override
@@ -85,10 +85,10 @@ public class UpdateEducationRecordPanel extends UpdateComposite {
     @Override
     protected void addWidgets() {
         addField("degreeOfStudy", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("fieldOfStudy", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("nameOfSchool", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("address", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("graduationYear", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        addField("fieldOfStudy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("nameOfSchool", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("address", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("dateDegreeAwarded", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
