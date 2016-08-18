@@ -69,31 +69,32 @@ public class ReadHealthInsuranceWaiverWidget extends TReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        if (entity.get("waivingCoverageFor").isString().equals("MySelf")) {
+        String waivingCoverageFor = entity.get("waivingCoverageFor").isString().stringValue();
+        if (waivingCoverageFor.contains("MySelf")) {
             myself.setValue(true);
         }
-        if (entity.get("waivingCoverageFor").isString().equals("Spouse")) {
+        if (waivingCoverageFor.contains("Spouse")) {
             spouse.setValue(true);
         }
         if (entity.containsKey("spouseName")) {
             spouseName.setValue(entity.get("spouseName").isString().stringValue());;
         }
-        if (entity.get("waivingCoverageFor").isString().equals("Dependent")) {
+        if (waivingCoverageFor.contains("Dependent")) {
             dependent.setValue(true);
         }
         if (entity.containsKey("dependentName")) {
             dependentName.setValue(entity.get("dependentName").isString().stringValue());
         }
-        if (entity.get("waivingCoverageDueTo").isString().equals("NoCoverage")) {
+        if (entity.get("waivingCoverageDueTo").isString().stringValue().equals("NoCoverage")) {
             mypreferencenottohavecoverage.setValue(true);
         }
-        if (entity.get("waivingCoverageDueTo").isString().equals("SpousePlan")) {
+        if (entity.get("waivingCoverageDueTo").isString().stringValue().equals("SpousePlan")) {
             myspousesplan.setValue(true);
         }
         if (entity.containsKey("spouseNameOfCarrier")) {
             spouseNameOfCarrier.setValue(entity.get("spouseNameOfCarrier").isString().stringValue());
         }
-        if (entity.get("waivingCoverageDueTo").isString().equals("Other")) {
+        if (entity.get("waivingCoverageDueTo").isString().stringValue().equals("Other")) {
             othercoverage.setValue(true);
         }
         if (entity.containsKey("otherNameOfCarrier")) {
