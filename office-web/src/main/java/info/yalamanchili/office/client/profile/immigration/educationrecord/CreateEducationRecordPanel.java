@@ -40,7 +40,7 @@ public class CreateEducationRecordPanel extends CreateComposite {
         assignEntityValueFromField("fieldOfStudy", educationRecord);
         assignEntityValueFromField("nameOfSchool", educationRecord);
         assignEntityValueFromField("address", educationRecord);
-        assignEntityValueFromField("graduationYear", educationRecord);
+        assignEntityValueFromField("dateDegreeAwarded", educationRecord);
         educationRecord.put("targetEntityName", new JSONString("targetEntityName"));
         educationRecord.put("targetEntityId", new JSONString("0"));
         return educationRecord;
@@ -85,9 +85,9 @@ public class CreateEducationRecordPanel extends CreateComposite {
     protected void addWidgets() {
         addField("degreeOfStudy", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("fieldOfStudy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("nameOfSchool", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("nameOfSchool", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("address", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("graduationYear", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        addField("dateDegreeAwarded", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
