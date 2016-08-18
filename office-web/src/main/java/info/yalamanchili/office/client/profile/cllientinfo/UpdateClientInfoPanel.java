@@ -64,6 +64,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     protected String cistatus;
     protected boolean isSub = false;
     protected boolean is1099 = false;
+    protected boolean active = false;
     JSONArray cidocument = new JSONArray();
 
     FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "ClientInformation", "cidocument", "CIDocument/fileURL", false, true) {
@@ -81,6 +82,12 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
 
     public UpdateClientInfoPanel(JSONObject entity) {
         instance = this;
+        initUpdateComposite(entity, "ClientInfo", OfficeWelcome.constants2);
+    }
+    
+    public UpdateClientInfoPanel(JSONObject entity, boolean active) {
+        instance = this;
+        this.active = active;
         initUpdateComposite(entity, "ClientInfo", OfficeWelcome.constants2);
     }
 
@@ -203,7 +210,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated Client Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(TreeEmployeePanel.instance().getEntityId()));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(TreeEmployeePanel.instance().getEntityId(), active));
         TabPanel.instance().myOfficePanel.entityPanel.add(new ClientInfoOptionsPanel());
     }
 

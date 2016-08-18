@@ -44,7 +44,6 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.user.client.ui.FileUpload;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.fields.CurrencyField;
@@ -69,6 +68,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     protected BooleanField submitForApprovalF = new BooleanField(OfficeWelcome.constants, "Submit For Approval", "ClientInfo", false, false, Alignment.HORIZONTAL);
     protected boolean isSub = false;
     protected boolean is1099 = false;
+    protected boolean active = false;
     FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "ClientInformation", "cidocument", "CIDocument/fileURL", false, true) {
         @Override
         public void onUploadComplete(String res) {
@@ -78,6 +78,12 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
 
     public CreateClientInfoPanel(CreateCompositeType type) {
         super(type);
+        initCreateComposite("ClientInfo", OfficeWelcome.constants2);
+    }
+    
+    public CreateClientInfoPanel(CreateCompositeType type, boolean active) {
+        super(type);
+        this.active = active;
         initCreateComposite("ClientInfo", OfficeWelcome.constants2);
     }
 
@@ -199,7 +205,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Added Client Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(TreeEmployeePanel.instance().getEntityId()));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(TreeEmployeePanel.instance().getEntityId(), active));
         TabPanel.instance().myOfficePanel.entityPanel.add(new ClientInfoOptionsPanel());
     }
 

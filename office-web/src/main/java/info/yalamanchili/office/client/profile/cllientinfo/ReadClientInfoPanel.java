@@ -59,9 +59,16 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
     private static Logger logger = Logger.getLogger(ReadClientInfoPanel.class.getName());
     SelectPracticeWidget selectPractiseWidgetF = new SelectPracticeWidget(true, false, Alignment.HORIZONTAL);
     protected boolean isSubOr1099 = false;
+    protected boolean active = false;
 
     public ReadClientInfoPanel(JSONObject entity) {
         instance = this;
+        initReadComposite(entity, "ClientInfo", OfficeWelcome.constants2);
+    }
+
+    public ReadClientInfoPanel(JSONObject entity, boolean active) {
+        instance = this;
+        this.active = active;
         initReadComposite(entity, "ClientInfo", OfficeWelcome.constants2);
     }
 
@@ -326,15 +333,15 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
     }
 
     @Override
-   protected boolean enableBack() {
-       return true;
-   }
-    
+    protected boolean enableBack() {
+        return true;
+    }
+
     @Override
     protected ReadAllComposite getReadAllPanel() {
         return ReadAllClientInfoPanel.instance;
     }
-    
+
     @Override
     protected boolean enableViewTasks() {
         return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN);
