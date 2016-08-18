@@ -65,13 +65,13 @@ public class HealthInsuranceService {
         if (entity != null) {
             if (healthInsuranceWaiver != null) {
                 if (healthInsuranceWaiver.getWaivingCoverageFor() != null) {
-                    if (healthInsuranceWaiver.getWaivingCoverageFor().equalsIgnoreCase("MySelf")) {
+                    if (healthInsuranceWaiver.getWaivingCoverageFor().contains("MySelf")) {
                         data.getData().put("myself", "true");
                     }
-                    if (healthInsuranceWaiver.getWaivingCoverageFor().equalsIgnoreCase("Spouse")) {
+                    if (healthInsuranceWaiver.getWaivingCoverageFor().contains("Spouse")) {
                         data.getData().put("spouse", "true");
                     }
-                    if (healthInsuranceWaiver.getWaivingCoverageFor().equalsIgnoreCase("Dependent")) {
+                    if (healthInsuranceWaiver.getWaivingCoverageFor().contains("Dependent")) {
                         data.getData().put("dependent", "true");
                     }
                 }
@@ -135,7 +135,10 @@ public class HealthInsuranceService {
             dto.setEmployee(emp.getFirstName() + " " + emp.getLastName());
             HealthInsurance insurance = new HealthInsurance();
             dto.setEnrolled(insurance.getEnrolled());
-            dto.setYear(insurance.getInsuranceEnrollment().getYear());
+            dto.setStartDate(insurance.getHealthInsuranceWaiver().getSubmittedDate());
+            if (insurance.getInsuranceEnrollment().getYear() != null) {
+                dto.setYear(insurance.getInsuranceEnrollment().getYear());
+            }
             report.add(dto);
         }
         return report;

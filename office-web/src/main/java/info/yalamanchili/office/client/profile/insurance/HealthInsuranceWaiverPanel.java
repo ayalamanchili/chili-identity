@@ -73,7 +73,6 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
     @Override
     public JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
-        logger.info("dile and submitted date " + entity);
         //waivingCoverageFor
         String waivingCoverageForS = "";
         if (myself.getValue() == true) {
