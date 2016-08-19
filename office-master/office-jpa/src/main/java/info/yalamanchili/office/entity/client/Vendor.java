@@ -98,7 +98,6 @@ public class Vendor extends AbstractEntity {
     protected Date msaValDate;
     @Temporal(TemporalType.DATE)
     protected Date msaExpDate;
-    protected String terminationNotice;
     protected Float vendorFees;
     protected BigDecimal minFees;
     protected BigDecimal maxFees;
@@ -158,21 +157,7 @@ public class Vendor extends AbstractEntity {
     public void setMsaExpDate(Date msaExpDate) {
         this.msaExpDate = msaExpDate;
     }
-    
-    /**
-     * @return the terminationNotice
-     */
-    public String getTerminationNotice() {
-        return terminationNotice;
-    }
 
-    /**
-     * @param terminationNotice the terminationNotice to set
-     */
-    public void setTerminationNotice(String terminationNotice) {
-        this.terminationNotice = terminationNotice;
-    }
-    
     @XmlTransient
     public List<Address> getLocations() {
         if (this.locations == null) {
