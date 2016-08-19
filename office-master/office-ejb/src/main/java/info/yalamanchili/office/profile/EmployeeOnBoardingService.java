@@ -92,9 +92,7 @@ public class EmployeeOnBoardingService {
             onboarding.setEmail(dto.getEmail());
             onboarding.setStartedBy(OfficeSecurityService.instance().getCurrentUserName());
             onboarding.setStartedDate(dto.getStartDate());
-            onboarding.setJobTitle(dto.getJobTitle());
             onboarding.setStatus(OnBoardingStatus.Pending_Initial_Document_Submission);
-            //to save onboarding only once
             onboarding = em.merge(onboarding);
             InviteCodeGeneratorService.instance().sendInviteCodeEmail(code);
             EmployeeOnBoardingDao.instance().save(onboarding);
@@ -150,7 +148,7 @@ public class EmployeeOnBoardingService {
         InitiateOnBoardingDto initiateDto = (InitiateOnBoardingDto) SerializedEntityDao.instance().findAndConvert(code.getClass().getCanonicalName(), code.getId());
         emp.setEmployeeType(em.find(EmployeeType.class, initiateDto.getEmployeeType().getId()));
         emp.setJobTitle(initiateDto.getJobTitle());
-        
+
         if (initiateDto.getCompany() != null) {
             emp.setCompany(em.find(Company.class, initiateDto.getCompany().getId()));
         }
@@ -286,8 +284,11 @@ public class EmployeeOnBoardingService {
                 if (emp.getWorkStatus() != null) {
                     dto.setWorkStatus(emp.getWorkStatus());
                 }
+                if (emp.getJobTitle() != null) {
+                    dto.setJobTitle(emp.getJobTitle());
+                }
             }
-            dto.setJobTitle(onboarding.getJobTitle());
+
             dto.setEmail(onboarding.getEmail());
             dto.setStartDate(onboarding.getStartedDate());
             dto.setBpmProcessId(onboarding.getBpmProcessId());
@@ -299,13 +300,14 @@ public class EmployeeOnBoardingService {
     public static EmployeeOnBoardingService instance() {
         return SpringContext.getBean(EmployeeOnBoardingService.class);
     }
-    
+
     public List<EmployeeOnBoarding> getSearchEmpOnboarding(EmployeeOnBoardingSearchDto dto, int start, int limit) {
         List<EmployeeOnBoarding> emps = EmployeeOnBoardingDao.instance().getSearchOnboarding(dto);
         return emps;
 
     }
-     @Async
+
+    @Async
     @Transactional
     public void reportsForOnBoarding(Date startDate, Date endDate, String email) {
         List<EmployeeOnBoarding> onboardings = new ArrayList();
