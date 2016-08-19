@@ -206,7 +206,7 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
     @Override
     protected void configureCreateButton() {
         createButton.setText("Create Expense Report");
-        createButton.setVisible(true);
+        createButton.setVisible(false);
     }
 
     @Override
