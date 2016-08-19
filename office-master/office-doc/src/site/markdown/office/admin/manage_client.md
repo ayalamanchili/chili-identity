@@ -20,4 +20,4 @@ The client is successfully created.
 
 To View/Update/Delete a particular client you can click on the respective icons under the Action column in the table.  
 
-![View/Update/Delete](../../images/admin/dependent_contact_actions.png)
+![View/Update/Delete](../../images/admin/client_actions.png)
