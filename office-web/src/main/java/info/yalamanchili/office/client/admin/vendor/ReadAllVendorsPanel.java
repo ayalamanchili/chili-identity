@@ -80,7 +80,7 @@ public class ReadAllVendorsPanel extends CRUDReadAllComposite {
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
 //            table.setText(i, 2, JSONUtils.toString(entity, "description"));
             setEnumColumn(i, 2, entity, "vendorType", "vendorType");
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "coiEndDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
+            table.setText(i, 3, DateUtils.formatDate(JSONUtils.toString(entity, "coiEndDate")));
         }
     }
 
