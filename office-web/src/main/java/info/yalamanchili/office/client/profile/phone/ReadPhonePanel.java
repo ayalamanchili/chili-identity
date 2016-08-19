@@ -16,6 +16,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.ReadComposite;
 import info.yalamanchili.office.client.profile.phonetype.SelectPhoneTypeWidget;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import java.util.logging.Logger;
 
 /**
@@ -71,10 +72,10 @@ public class ReadPhonePanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addField("countryCode", true, true, DataType.LONG_FIELD);
-        addField("phoneNumber", true, true, DataType.LONG_FIELD);
-        addField("extension", true, true, DataType.LONG_FIELD);
-        addDropDown("phoneType", new SelectPhoneTypeWidget(false, false));
+        addField("countryCode", true, true, DataType.LONG_FIELD, Alignment.HORIZONTAL);
+        addField("phoneNumber", true, true, DataType.LONG_FIELD, Alignment.HORIZONTAL);
+        addField("extension", true, true, DataType.LONG_FIELD, Alignment.HORIZONTAL);
+        addDropDown("phoneType", new SelectPhoneTypeWidget(false, false, Alignment.HORIZONTAL));
     }
 
     @Override

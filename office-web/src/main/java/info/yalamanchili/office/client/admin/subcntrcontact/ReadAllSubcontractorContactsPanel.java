@@ -30,6 +30,7 @@ public class ReadAllSubcontractorContactsPanel extends CRUDReadAllComposite {
 
     private static Logger logger = Logger.getLogger(ReadAllSubcontractorContactsPanel.class.getName());
     public static ReadAllSubcontractorContactsPanel instance;
+    protected String type = "SubContact";
 
     public ReadAllSubcontractorContactsPanel(String parentId) {
         instance = this;
@@ -97,7 +98,7 @@ public class ReadAllSubcontractorContactsPanel extends CRUDReadAllComposite {
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().adminPanel.entityPanel.clear();
-        TabPanel.instance().adminPanel.entityPanel.add(new ReadContactPanel(getEntity(entityId)));
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadContactPanel(getEntity(entityId), type));
     }
 
     @Override

@@ -21,7 +21,7 @@ import info.chili.gwt.utils.Alignment;
 public class CreatePhonePanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreatePhonePanel.class.getName());
-    SelectPhoneTypeWidget phoneTypeF = new SelectPhoneTypeWidget(false, false);
+    SelectPhoneTypeWidget phoneTypeF = new SelectPhoneTypeWidget(false, false, Alignment.HORIZONTAL);
 
     public CreatePhonePanel(CreateCompositeType type) {
         super(type);
