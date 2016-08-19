@@ -17,6 +17,16 @@
         <addColumn catalogName="office"
                    schemaName="public"
                    tableName="expensereport">
+            <column name="nameOfReport" type="varchar(255)"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="expensereport_aud">
+            <column name="nameOfReport" type="varchar(255)"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="expensereport">
             <column name="destination" type="varchar(255)"/>
         </addColumn>
         <addColumn catalogName="office"

@@ -66,7 +66,6 @@ public class CreateVendorPanel extends CreateComposite {
         assignEntityValueFromField("minFees", vendor);
         assignEntityValueFromField("msaValDate", vendor);
         assignEntityValueFromField("msaExpDate", vendor);
-        assignEntityValueFromField("terminationNotice", vendor);
 //      assignEntityValueFromField("description", vendor);
         assignEntityValueFromField("vendorType", vendor);
         assignEntityValueFromField("coiEndDate", vendor);
@@ -136,7 +135,6 @@ public class CreateVendorPanel extends CreateComposite {
         addField("minFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("msaValDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("msaExpDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("terminationNotice", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         // addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("vendorType", false, false, VendorType.names(), Alignment.HORIZONTAL);
         addField("coiEndDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
