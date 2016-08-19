@@ -61,12 +61,12 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
     public void preFetchTable(int start) {
         HttpServiceAsync.instance().doGet(getReadAllURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        logger.info("Result with employee is:" + result);
-                        postFetchTable(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                logger.info("Result with employee is:" + result);
+                postFetchTable(result);
+            }
+        });
     }
 
     @Override
@@ -140,11 +140,11 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
     public void deleteClicked(String entityId) {
         HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        postDeleteSuccess();
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                postDeleteSuccess();
+            }
+        });
     }
 
     @Override
@@ -186,8 +186,8 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
                 table.setText(i, 4, FormatUtils.formarCurrency(JSONUtils.toString(entity, "billingRate")));
                 setEnumColumn(i, 5, entity, InvoiceFrequency.class.getSimpleName(), "invoiceFrequency");
             }
-            table.setText(i, 6, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
-            table.setText(i, 7, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
+            table.setText(i, 6, DateUtils.formatDate(JSONUtils.toString(entity,"startDate")));
+            table.setText(i, 7, DateUtils.formatDate(JSONUtils.toString(entity,"endDate")));
             setEnumColumn(i, 8, entity, ClientInformationStatus.class.getSimpleName(), "status");
         }
     }
@@ -215,14 +215,5 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new CreateClientInfoPanel(CreateComposite.CreateCompositeType.ADD, active));
         }
-    }
-
-    private String getFormattedDate(String date) {
-        String[] dates = date.split("-");
-        String formatteddate = "";
-        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
-        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
-        formatteddate = formatteddate.concat(dates[0]);
-        return formatteddate;
     }
 }
