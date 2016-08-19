@@ -251,7 +251,7 @@ public class CreateClientPanel extends CreateComposite {
             }
             StringField contactLastNameF = (StringField) createContactWidget2.fields.get("lastName");
             if (contactLastNameF.getValue() == null || "".equals(contactLastNameF.getValue())) {
-                contactLastNameF.setMessage("Please enter a phone number");
+                contactLastNameF.setMessage("Please enter the last name");
                 valid = false;
             }
             for (CreatePhonePanel createPhoneWidget : createContactWidget2.getChildWidgets()) {
