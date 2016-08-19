@@ -65,6 +65,7 @@ public class ReadVendorsPanel extends ReadComposite {
         assignFieldValueFromEntity("minFees", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("msaValDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("msaExpDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("terminationNotice", entity, DataType.STRING_FIELD);
 //        assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("vendorType", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("coiEndDate", entity, DataType.DATE_FIELD);
@@ -90,6 +91,7 @@ public class ReadVendorsPanel extends ReadComposite {
         addField("minFees", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("msaValDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("msaExpDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("terminationNotice", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
 //        addField("description", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("vendorType", true, false, VendorType.names(), Alignment.HORIZONTAL);
         addField("coiEndDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
