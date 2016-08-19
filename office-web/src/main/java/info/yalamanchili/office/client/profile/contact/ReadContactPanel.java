@@ -7,7 +7,6 @@
  */
 package info.yalamanchili.office.client.profile.contact;
 
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.crud.ReadAllComposite;
@@ -15,6 +14,8 @@ import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.ReadComposite;
+import info.yalamanchili.office.client.admin.clientcontact.ReadAllClientContactPanel;
+import info.yalamanchili.office.client.admin.subcntrcontact.ReadAllSubcontractorContactsPanel;
 import info.yalamanchili.office.client.profile.phone.ReadPhonePanel;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,11 +31,20 @@ public class ReadContactPanel extends ReadComposite {
     private static Logger logger = Logger.getLogger(UpdateContactPanel.class.getName());
     protected List<ReadPhonePanel> readPhoneWidgets = new ArrayList<ReadPhonePanel>();
     protected JSONArray phones = new JSONArray();
+    protected String type = null;
 
     public ReadContactPanel(JSONObject entity) {
         if (entity.get("phones") != null) {
             phones = JSONUtils.toJSONArray(entity.get("phones"));
         }
+        initReadComposite(entity, "Contact", OfficeWelcome.constants);
+    }
+
+    public ReadContactPanel(JSONObject entity, String type) {
+        if (entity.get("phones") != null) {
+            phones = JSONUtils.toJSONArray(entity.get("phones"));
+        }
+        this.type = type;
         initReadComposite(entity, "Contact", OfficeWelcome.constants);
     }
 
@@ -79,15 +89,22 @@ public class ReadContactPanel extends ReadComposite {
     }
 
     @Override
-   protected boolean enableBack() {
-       return true;
-   }
-    
+    protected boolean enableBack() {
+        return true;
+    }
+
     @Override
     protected ReadAllComposite getReadAllPanel() {
-        return ReadAllContactsPanel.instance;
+        switch (type) {
+            case "ClientContact":
+                return ReadAllClientContactPanel.instance;
+            case "SubContact":
+                return ReadAllSubcontractorContactsPanel.instance;
+            default:
+                return ReadAllContactsPanel.instance;
+        }
     }
-    
+
     @Override
     public void loadEntity(String entityId) {
     }
