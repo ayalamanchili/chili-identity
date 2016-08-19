@@ -26,71 +26,71 @@ import java.util.logging.Logger;
  * @author Rohith.Vallabhaneni
  */
 public class ReadAllInviteCodePanel extends CRUDReadAllComposite {
-    
+
     private static Logger logger = Logger.getLogger(ReadAllInviteCodePanel.class.getName());
     public static ReadAllInviteCodePanel instance;
-    
+
     public ReadAllInviteCodePanel() {
         instance = this;
         initTable("Invite Code", OfficeWelcome.constants);
     }
-    
+
     public ReadAllInviteCodePanel(JSONArray array) {
         instance = this;
         initTable("Code", array, OfficeWelcome.constants);
     }
-    
+
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().chiliAdminPanel.entityPanel.clear();
         TabPanel.instance().chiliAdminPanel.entityPanel.add(new ReadInviteCodePanel(getEntity(entityId)));
     }
-    
+
     @Override
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        postDeleteSuccess();
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                postDeleteSuccess();
+            }
+        });
     }
-    
+
     protected String getDeleteURL(String entityId) {
         return OfficeWelcome.constants.root_url() + "invitecode/delete/" + entityId;
     }
-    
+
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("Successfully Deleted Invited Code Service"); 
+        new ResponseStatusWidget().show("Successfully Deleted Invited Code Service");
         TabPanel.instance().chiliAdminPanel.entityPanel.clear();
         TabPanel.instance().chiliAdminPanel.entityPanel.add(new ReadAllInviteCodePanel());
     }
-    
+
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().chiliAdminPanel.entityPanel.clear();
         TabPanel.instance().chiliAdminPanel.entityPanel.add(new UpdateInviteCodePanel(getEntity(entityId)));
     }
-    
+
     @Override
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getEventServiceUrl(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
                 false, new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        logger.info(result);
-                        postFetchTable(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                logger.info(result);
+                postFetchTable(result);
+            }
+        });
     }
 
     public String getEventServiceUrl(Integer start, String limit) {
         return OfficeWelcome.constants.root_url() + "invitecode/" + start.toString() + "/"
                 + limit;
     }
-    
+
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
@@ -100,25 +100,25 @@ public class ReadAllInviteCodePanel extends CRUDReadAllComposite {
         table.setText(0, 4, getKeyValue("Email"));
         table.setText(0, 5, getKeyValue("Invitation Type"));
     }
-    
+
     @Override
     public void fillData(JSONArray entities) {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "invitationCode"));
-            table.setText(i, 2, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "expiryDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
-            table.setText(i, 3, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "validFromDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
+            table.setText(i, 2,  DateUtils.formatDate(JSONUtils.toString(entity, "expiryDate")));
+            table.setText(i, 3, DateUtils.formatDate(JSONUtils.toString(entity,"validFromDate")));
             table.setText(i, 4, JSONUtils.toString(entity, "email"));
             table.setText(i, 5, JSONUtils.toString(entity, "invitationType"));
         }
     }
-    
+
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE);
     }
-    
+
     @Override
     protected boolean enableQuickView() {
         return true;
@@ -128,19 +128,9 @@ public class ReadAllInviteCodePanel extends CRUDReadAllComposite {
     protected void onQuickView(int row, String id) {
         new GenericPopup(new ReadInviteCodePanel(getEntity(id)), Window.getClientWidth() / 3, 0).show();
     }
-    
+
     @Override
     protected boolean enablePersistedQuickView() {
         return true;
     }
-    
-    private String getFormattedDate(String date) {
-        String[] dates = date.split("-");
-        String formatteddate = "";
-        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
-        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
-        formatteddate = formatteddate.concat(dates[0]);
-        return formatteddate;
-    }
-  
 }
