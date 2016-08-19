@@ -5,22 +5,17 @@ package info.yalamanchili.office.client.profile.phonetype;
 
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.composite.SelectComposite;
 import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONObject;
+import info.chili.gwt.utils.Alignment;
 
 public class SelectPhoneTypeWidget extends SelectComposite {
 
-    public SelectPhoneTypeWidget(Boolean readOnly, Boolean isRequired) {
-        super(OfficeWelcome.constants, "PhoneType", readOnly, isRequired);
+    public SelectPhoneTypeWidget(Boolean readOnly, Boolean isRequired, Alignment alignment) {
+        super(OfficeWelcome.constants, "PhoneType", readOnly, isRequired, alignment);
     }
-
+    
     protected void fetchDropDownData() {
         HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, "id", "phoneType"),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {

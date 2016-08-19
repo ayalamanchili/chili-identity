@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.chili.gwt.utils.Alignment;
 
 public class UpdatePhonePanel extends UpdateComposite {
 
@@ -80,10 +81,10 @@ public class UpdatePhonePanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("countryCode", false, false, DataType.LONG_FIELD);
-        addField("phoneNumber", false, true, DataType.LONG_FIELD);
-        addField("extension", false, false, DataType.LONG_FIELD);
-        addDropDown("phoneType", new SelectPhoneTypeWidget(false, false));
+        addField("countryCode", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
+        addField("phoneNumber", false, true, DataType.LONG_FIELD, Alignment.HORIZONTAL);
+        addField("extension", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
+        addDropDown("phoneType", new SelectPhoneTypeWidget(false, false, Alignment.HORIZONTAL));
     }
 
     @Override
