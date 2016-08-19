@@ -82,7 +82,7 @@ public class VendorResource extends CRUDResource<Vendor> {
 
     @GET
     @Path("/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS','ROLE_BILLING_AND_INVOICING','ROLE_CONTRACTS_FULL_VIEW')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING','ROLE_CONTRACTS_FULL_VIEW')")
     @Cacheable(OfficeCacheKeys.VENDOR)
     public VendorTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         VendorTable tableObj = new VendorTable();
@@ -479,7 +479,7 @@ public class VendorResource extends CRUDResource<Vendor> {
         }
         return dtos;
     }
-    
+
     @PUT
     @Validate
     @Path("/create")
@@ -487,8 +487,8 @@ public class VendorResource extends CRUDResource<Vendor> {
     @CacheEvict(value = OfficeCacheKeys.VENDOR, allEntries = true)
     public Vendor createVendor(VendorDto vendorDto) {
         Vendor vendor = mapper.map(vendorDto, Vendor.class);
-        
-        if(vendorDto.getLocation() != null){
+
+        if (vendorDto.getLocation() != null) {
             vendor.addLocations(vendorDto.getLocation());
         }
         if (vendorDto.getContact() != null) {
