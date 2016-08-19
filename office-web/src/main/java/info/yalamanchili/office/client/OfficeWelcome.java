@@ -86,17 +86,7 @@ public class OfficeWelcome implements EntryPoint {
         });
     }
 
-    protected static final String FEEDBACK_KEY = "FEEDBACK-JAN-2015";
-
-    protected void showFeedbackPage() {
-        if (LocalStorage.getValue(FEEDBACK_KEY) == null) {
-//            Frame feedbackForm = new Frame("https://docs.google.com/forms/d/1m33EzGvGN2aSBg1b0BT0USiNIhF_UpXRt0J3xq7Y-eE/viewform?usp=send_form");
-//            feedbackForm.setHeight("70em");
-//            feedbackForm.setWidth("55em");
-//            new NewWindowPanel(feedbackForm, Window.getClientWidth() / 5, 0).show();
-            LocalStorage.putValue(FEEDBACK_KEY, "true");
-        }
-    }
+    public RootLayout rootLayout;
 
     public void onMainModuleLoad(JSONObject employee) {
         this.employee = employee;
@@ -107,7 +97,7 @@ public class OfficeWelcome implements EntryPoint {
             public void onResponse() {
                 logger.info(roles.toString());
                 RootLayoutPanel.get().clear();
-                RootLayout rootLayout = new RootLayout();
+                rootLayout = new RootLayout();
                 RootLayoutPanel.get().add(rootLayout);
                 History.addValueChangeHandler(new OfficeUrlRoutingHandler());
                 setLogo(employee);
@@ -135,7 +125,15 @@ public class OfficeWelcome implements EntryPoint {
                 if (!result.trim().equals("null")) {
                     final DialogBox dialog = new DialogBox();
                     dialog.setText("Messages");
-                    new GenericPopup(new ReadAllUserMessages(JSONUtils.toJSONArray(JSONParser.parseLenient(result).isObject().get("userMessage")))).show();
+                    new GenericPopup(new ReadAllUserMessages(JSONUtils.toJSONArray(JSONParser.parseLenient(result).isObject().get("userMessage"))), 0, 0) {
+                        @Override
+                        protected void configure() {
+                            setAutoHideEnabled(true);
+                            this.getElement().getStyle().setProperty("width", "100%");
+                            this.addStyleName("genericPopup");
+                            rootLayout.setVisible(false);
+                        }
+                    }.show();
                 }
             }
         });

@@ -9,6 +9,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.Window;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
@@ -16,6 +17,8 @@ import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
+import info.chili.gwt.widgets.DocumentationWidget;
+import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.profile.email.ReadAllEmailsPanel;
@@ -33,8 +36,9 @@ public class ReadAllUserMessages extends CRUDReadAllComposite {
     public ReadAllUserMessages(JSONArray msgs) {
         instance = this;
         this.entities = msgs;
-        initTable("UserMessages", msgs, OfficeWelcome.constants);
+        initTable("UserMessages", msgs, OfficeWelcome.constants2);
         pagingPanel.setVisible(false);
+        captionPanel.setCaptionHTML("Welcome " + OfficeWelcome.instance().getCurrentUserName() + " you have " + msgs.size() + " new messages please read and acknowledge them.");
     }
 
     @Override
@@ -46,6 +50,8 @@ public class ReadAllUserMessages extends CRUDReadAllComposite {
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("summary"));
         table.setText(0, 1, getKeyValue("createdDate"));
+        table.setText(0, 2, getKeyValue("Details"));
+        table.setText(0, 3, getKeyValue("Action"));
     }
 
     @Override
@@ -59,7 +65,14 @@ public class ReadAllUserMessages extends CRUDReadAllComposite {
             invoiceLink.addClickHandler((ClickEvent event) -> {
                 acknowledge(((ClickableLink) event.getSource()).getTitle(), JSONUtils.toString(entity, "source"), invoiceLink);
             });
-            table.setWidget(i, 9, invoiceLink);
+            table.setWidget(i, 3, invoiceLink);
+            if (entity.containsKey("moreDetailsLink")) {
+                ClickableLink detailsL = new ClickableLink("Details");
+                detailsL.addClickHandler((ClickEvent event) -> {
+                    Window.open(JSONUtils.toString(entity, "moreDetailsLink"), "_blank", "");
+                });
+                table.setWidget(i, 2, detailsL);
+            }
         }
     }
 
@@ -100,4 +113,15 @@ public class ReadAllUserMessages extends CRUDReadAllComposite {
     public void updateClicked(String entityId) {
     }
 
+    @Override
+    protected void configureCreateButton() {
+        createButton.setText("Take me to Portal Home");
+        createButton.setVisible(true);
+    }
+
+    @Override
+    protected void createButtonClicked() {
+        GenericPopup.instance().hide();
+        OfficeWelcome.instance().rootLayout.setVisible(true);
+    }
 }
