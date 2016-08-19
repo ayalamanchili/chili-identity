@@ -39,7 +39,7 @@ import java.util.logging.Logger;
 public class ConsultantEmpLeaveRequestPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(ConsultantEmpLeaveRequestPanel.class.getName());
-    
+
     public ConsultantEmpLeaveRequestPanel(CreateComposite.CreateCompositeType type) {
         super(type);
         initCreateComposite("EmpLeaveRequest", OfficeWelcome.constants);
@@ -95,7 +95,9 @@ public class ConsultantEmpLeaveRequestPanel extends CreateComposite {
         TabPanel.instance().getTimePanel().sidePanelTop.add(new ConsultantTimeSummarySidePanel());
         TabPanel.instance().getTimePanel().entityPanel.add(new ConsultantTimeSummaryPanel());
         TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllConsultantTimeSheetsPanel());
-        TabPanel.instance().getTimePanel().entityPanel.add(new ReadCurrentConsultantLeavesPanel());
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CONSULTANT_TIME_ADMIN)) {
+            TabPanel.instance().getTimePanel().entityPanel.add(new ReadCurrentConsultantLeavesPanel());
+        }
     }
 
     @Override

@@ -14,6 +14,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.UpdateComposite;
+import info.chili.gwt.fields.DateField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 
@@ -65,7 +66,7 @@ public class UpdateClientPanel extends UpdateComposite {
         assignFieldValueFromEntity("website", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("paymentTerms", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("clientinvFrequency", entity, DataType.ENUM_FIELD);
-         assignFieldValueFromEntity("clientFee", entity, DataType.FLOAT_FIELD);
+        assignFieldValueFromEntity("clientFee", entity, DataType.FLOAT_FIELD);
 //        assignFieldValueFromEntity("maxClientFee", entity, DataType.FLOAT_FIELD);
 //        assignFieldValueFromEntity("minClientFee", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("msaValDate", entity, DataType.DATE_FIELD);
@@ -106,6 +107,18 @@ public class UpdateClientPanel extends UpdateComposite {
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
+    }
+
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        boolean valid = true;
+        DateField msaValDate = (DateField) fields.get("msaValDate");
+        DateField msaExpDate = (DateField) fields.get("msaExpDate");
+        if (msaValDate.getDate() != null && msaExpDate.getDate() != null && msaValDate.getDate().after(msaExpDate.getDate())) {
+            msaExpDate.setMessage("To Date must be after From Date");
+            return false;
+        }
+        return valid;
     }
 
     @Override

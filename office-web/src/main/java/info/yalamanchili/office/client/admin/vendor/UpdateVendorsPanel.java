@@ -131,7 +131,7 @@ public class UpdateVendorsPanel extends UpdateComposite {
         addField("msaExpDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("terminationNotice", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
 //        addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addEnumField("vendorType", false, false, VendorType.names(), Alignment.HORIZONTAL);      
+        addEnumField("vendorType", false, false, VendorType.names(), Alignment.HORIZONTAL);
         addField("coiEndDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
@@ -152,17 +152,8 @@ public class UpdateVendorsPanel extends UpdateComposite {
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
         boolean valid = true;
-
         DateField msaValDate = (DateField) fields.get("msaValDate");
         DateField msaExpDate = (DateField) fields.get("msaExpDate");
-        if (msaValDate.getDate() == null || "".equals(msaValDate.getDate())) {
-            msaValDate.setMessage("MSA Period From Not Empty");
-            valid = false;
-        }
-        if (msaExpDate.getDate() == null || "".equals(msaExpDate.getDate())) {
-            msaExpDate.setMessage("MSA Period To Not Empty");
-            valid = false;
-        }
         if (msaValDate.getDate() != null && msaExpDate.getDate() != null && msaValDate.getDate().after(msaExpDate.getDate())) {
             msaExpDate.setMessage("To Date must be after From Date");
             return false;

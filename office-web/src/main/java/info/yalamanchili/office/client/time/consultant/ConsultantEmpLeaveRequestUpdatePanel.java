@@ -12,6 +12,7 @@ import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.time.LeaveRequestTimeCategory;
@@ -65,7 +66,9 @@ public class ConsultantEmpLeaveRequestUpdatePanel extends UpdateConsultantTimeSh
         TabPanel.instance().getTimePanel().entityPanel.clear();
         TabPanel.instance().getTimePanel().entityPanel.add(new ConsultantTimeSummaryPanel());
         TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllConsultantTimeSheetsPanel());
-        TabPanel.instance().getTimePanel().entityPanel.add(new ReadCurrentConsultantLeavesPanel());
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CONSULTANT_TIME_ADMIN)) {
+            TabPanel.instance().getTimePanel().entityPanel.add(new ReadCurrentConsultantLeavesPanel());
+        }
     }
 
     @Override
