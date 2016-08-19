@@ -150,9 +150,8 @@ public class CreateClientPanel extends CreateComposite {
     @Override
     public void onClick(ClickEvent event) {
         if (addRecruiterContact.getValue()) {
-            entityFieldsPanel.add(recruiterContact);
-            //TODO refactor hard code
-            entityFieldsPanel.insert(createContactWidget1, 10);
+            entityFieldsPanel.insert(recruiterContact, entityFieldsPanel.getWidgetIndex(addRecruiterContact)+1);
+            entityFieldsPanel.insert(createContactWidget1, entityFieldsPanel.getWidgetIndex(recruiterContact)+1);
             
         } else {
             entityFieldsPanel.remove(recruiterContact);
