@@ -10,8 +10,8 @@ package info.yalamanchili.office.client.chiliadmin;
 
 import info.yalamanchili.office.client.bpm.taskrule.ReadAllBPMTaskDelegateRulePanel;
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.ui.MenuBar;
 import info.chili.gwt.widgets.CMenuBar;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.analytics.emailevent.EmailEventSidePanel;
 import info.yalamanchili.office.client.email.ReadAllEmailPreferenceRulePanel;
@@ -27,45 +27,55 @@ import info.yalamanchili.office.client.releasenotes.ReleaseNotesSidePanel;
  * @author ayalamanchili
  */
 public class ChiliAdminMenu extends CMenuBar {
-    
-    MenuBar chiliAdminMenuBar = new MenuBar(false);
-    
-    public ChiliAdminMenu() {
-        initWidget(chiliAdminMenuBar);
-        configureAdminMenu();
+
+    @Override
+    protected void configureMenu() {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CHILI_ADMIN)) {
+            addMenuItem("Resource Bundles", "Resource Bundles", chiliAdminMenuResourceBundles);
+        }
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CHILI_ADMIN)) {
+            addMenuItem("Task Rules", "Task Rules", chiliAdminMenubpmTaskDelegate);
+        }
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CHILI_ADMIN)) {
+            addMenuItem("Email Rules", "Email Rules", chiliAdminMenuEmailPreferenceRule);
+        }
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CHILI_ADMIN)) {
+            addMenuItem("Email Events", "Email Events", chiliAdminMenuEvent);
+        }
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CHILI_ADMIN)) {
+            addMenuItem("Invite Code", "Invite Code", chiliAdminMenuCode);
+        }
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CHILI_ADMIN)) {
+            addMenuItem("Release Notes", "Release Notes", chiliAdminMenuRelease);
+        }
     }
     
-    protected void configureAdminMenu() {
-        chiliAdminMenuBar.addItem("Resource Bundles", chiliAdminMenuResourceBundles);
-        chiliAdminMenuBar.addItem("Task Rules", chiliAdminMenubpmTaskDelegate);
-        chiliAdminMenuBar.addItem("Email Rules", chiliAdminMenuEmailPreferenceRule);
-        chiliAdminMenuBar.addItem("Email Events", chiliAdminMenuEvent);
-        chiliAdminMenuBar.addItem("Invite Code", chiliAdminMenuCode);        
-        chiliAdminMenuBar.addItem("Release Notes", chiliAdminMenuRelease);
-        chiliAdminMenuBar.addStyleName("entityMenuBar");
-    }
-    Command chiliAdminMenuResourceBundles = new Command() {
+    public static Command chiliAdminMenuResourceBundles = new Command() {
+        @Override
         public void execute() {
             TabPanel.instance().getChiliAdminPanel().entityPanel.clear();
             TabPanel.instance().getChiliAdminPanel().sidePanel.clear();
             TabPanel.instance().getChiliAdminPanel().entityPanel.add(new ReadAllci18nResourceBundlesPanel());
         }
     };
-    Command chiliAdminMenubpmTaskDelegate = new Command() {
+    public static Command chiliAdminMenubpmTaskDelegate = new Command() {
+        @Override
         public void execute() {
             TabPanel.instance().getChiliAdminPanel().entityPanel.clear();
             TabPanel.instance().getChiliAdminPanel().sidePanel.clear();
             TabPanel.instance().getChiliAdminPanel().entityPanel.add(new ReadAllBPMTaskDelegateRulePanel());
         }
     };
-    Command chiliAdminMenuEmailPreferenceRule = new Command() {
+    public static Command chiliAdminMenuEmailPreferenceRule = new Command() {
+        @Override
         public void execute() {
             TabPanel.instance().getChiliAdminPanel().entityPanel.clear();
             TabPanel.instance().getChiliAdminPanel().sidePanel.clear();
             TabPanel.instance().getChiliAdminPanel().entityPanel.add(new ReadAllEmailPreferenceRulePanel());
         }
     };
-    Command chiliAdminMenuEvent = new Command() {
+    public static Command chiliAdminMenuEvent = new Command() {
+        @Override
         public void execute() {
             TabPanel.instance().getChiliAdminPanel().entityPanel.clear();
             TabPanel.instance().getChiliAdminPanel().sidePanel.clear();
@@ -73,7 +83,8 @@ public class ChiliAdminMenu extends CMenuBar {
             TabPanel.instance().getChiliAdminPanel().entityPanel.add(new ReadAllEmailEventsPanel());
         }
     };
-    Command chiliAdminMenuCode = new Command() {
+    public static Command chiliAdminMenuCode = new Command() {
+        @Override
         public void execute() {
             TabPanel.instance().getChiliAdminPanel().entityPanel.clear();
             TabPanel.instance().getChiliAdminPanel().sidePanel.clear();
@@ -81,7 +92,8 @@ public class ChiliAdminMenu extends CMenuBar {
             TabPanel.instance().getChiliAdminPanel().entityPanel.add(new ReadAllInviteCodePanel());
         }
     };
-    Command chiliAdminMenuRelease = new Command() {
+    public static Command chiliAdminMenuRelease = new Command() {
+        @Override
         public void execute() {
             TabPanel.instance().getChiliAdminPanel().entityPanel.clear();
             TabPanel.instance().getChiliAdminPanel().sidePanel.clear();
@@ -90,8 +102,4 @@ public class ChiliAdminMenu extends CMenuBar {
         }
     };
 
-    @Override
-    protected void configureMenu() {
-    }
-}    
-
+}
