@@ -19,6 +19,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.BooleanField;
+import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.LongField;
 import info.chili.gwt.fields.StringField;
@@ -86,17 +87,17 @@ public class CreateClientPanel extends CreateComposite {
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                logger.info(arg0.getMessage());
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        logger.info(arg0.getMessage());
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -150,9 +151,9 @@ public class CreateClientPanel extends CreateComposite {
     @Override
     public void onClick(ClickEvent event) {
         if (addRecruiterContact.getValue()) {
-            entityFieldsPanel.insert(recruiterContact, entityFieldsPanel.getWidgetIndex(addRecruiterContact)+1);
-            entityFieldsPanel.insert(createContactWidget1, entityFieldsPanel.getWidgetIndex(recruiterContact)+1);
-            
+            entityFieldsPanel.insert(recruiterContact, entityFieldsPanel.getWidgetIndex(addRecruiterContact) + 1);
+            entityFieldsPanel.insert(createContactWidget1, entityFieldsPanel.getWidgetIndex(recruiterContact) + 1);
+
         } else {
             entityFieldsPanel.remove(recruiterContact);
             entityFieldsPanel.remove(createContactWidget1);
@@ -180,7 +181,12 @@ public class CreateClientPanel extends CreateComposite {
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
         boolean valid = true;
-
+        DateField msaValDate = (DateField) fields.get("msaValDate");
+        DateField msaExpDate = (DateField) fields.get("msaExpDate");
+        if (msaValDate.getDate() != null && msaExpDate.getDate() != null && msaValDate.getDate().after(msaExpDate.getDate())) {
+            msaExpDate.setMessage("To Date must be after From Date");
+            return false;
+        }
         StringField clientNameF = (StringField) fields.get("name");
         if (clientNameF.getValue() == null || "".equals(clientNameF.getValue())) {
             clientNameF.setMessage("client name can not be empty");
