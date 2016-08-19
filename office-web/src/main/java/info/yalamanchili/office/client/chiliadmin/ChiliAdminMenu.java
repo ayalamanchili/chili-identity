@@ -10,8 +10,8 @@ package info.yalamanchili.office.client.chiliadmin;
 
 import info.yalamanchili.office.client.bpm.taskrule.ReadAllBPMTaskDelegateRulePanel;
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuBar;
+import info.chili.gwt.widgets.CMenuBar;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.analytics.emailevent.EmailEventSidePanel;
 import info.yalamanchili.office.client.email.ReadAllEmailPreferenceRulePanel;
@@ -26,7 +26,7 @@ import info.yalamanchili.office.client.releasenotes.ReleaseNotesSidePanel;
  *
  * @author ayalamanchili
  */
-public class ChiliAdminMenu extends Composite {
+public class ChiliAdminMenu extends CMenuBar {
     
     MenuBar chiliAdminMenuBar = new MenuBar(false);
     
@@ -89,5 +89,9 @@ public class ChiliAdminMenu extends Composite {
             TabPanel.instance().getChiliAdminPanel().entityPanel.add(new ReadAllReleaseNotesPanel());
         }
     };
+
+    @Override
+    protected void configureMenu() {
+    }
 }    
 
