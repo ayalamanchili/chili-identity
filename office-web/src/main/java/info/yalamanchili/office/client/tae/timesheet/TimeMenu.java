@@ -62,12 +62,16 @@ public class TimeMenu extends CMenuBar {
                 TabPanel.instance().getTimePanel().sidePanelTop.add(new CorporateTimeSummarySidePanel());
                 TabPanel.instance().getTimePanel().entityPanel.add(new CorporateTimeSummaryPanel());
                 TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel());
-                TabPanel.instance().getTimePanel().entityPanel.add(new ReadCurrentCorpLeavesPanel());
+                if (Auth.hasAnyOfRoles(ROLE.ROLE_CONSULTANT_TIME_ADMIN)) {
+                    TabPanel.instance().getTimePanel().entityPanel.add(new ReadCurrentCorpLeavesPanel());
+                }
             } else if (Auth.isConsultantEmployee()) {
                 TabPanel.instance().getTimePanel().sidePanelTop.add(new ConsultantTimeSummarySidePanel());
                 TabPanel.instance().getTimePanel().entityPanel.add(new ConsultantTimeSummaryPanel());
                 TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllConsultantTimeSheetsPanel());
-                TabPanel.instance().getTimePanel().entityPanel.add(new ReadCurrentConsultantLeavesPanel());
+                if (Auth.hasAnyOfRoles(ROLE.ROLE_CONSULTANT_TIME_ADMIN)) {
+                    TabPanel.instance().getTimePanel().entityPanel.add(new ReadCurrentConsultantLeavesPanel());
+                }
             }
         }
     };

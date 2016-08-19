@@ -17,6 +17,7 @@ import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.MultiSelectSuggestBox;
@@ -77,7 +78,9 @@ public class CorpEmpLeaveRequestUpdatePanel extends UpdateCorporateTimeSheetPane
         TabPanel.instance().getTimePanel().entityPanel.clear();
         TabPanel.instance().getTimePanel().entityPanel.add(new CorporateTimeSummaryPanel(employeeF.getSelectedObjectId()));
         TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel(employeeF.getSelectedObjectId()));
-        TabPanel.instance().getTimePanel().entityPanel.add(new ReadCurrentCorpLeavesPanel());
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CONSULTANT_TIME_ADMIN)) {
+            TabPanel.instance().getTimePanel().entityPanel.add(new ReadCurrentCorpLeavesPanel());
+        }
     }
 
     @Override
