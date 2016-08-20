@@ -7,7 +7,6 @@
  */
 package info.yalamanchili.office.client.admin.vendor;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -69,7 +68,7 @@ public class ReadAllVendorsPanel extends CRUDReadAllComposite {
         table.setText(0, 1, getKeyValue("Name"));
 //        table.setText(0, 2, getKeyValue("Description"));
         table.setText(0, 2, getKeyValue("Type"));
-        table.setText(0, 3, getKeyValue("Coi End Date"));
+        table.setText(0, 3, getKeyValue("COI End Date"));
     }
 
     @Override
