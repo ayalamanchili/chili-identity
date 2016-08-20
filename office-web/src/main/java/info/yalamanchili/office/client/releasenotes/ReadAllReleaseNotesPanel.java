@@ -7,7 +7,6 @@
  */
 package info.yalamanchili.office.client.releasenotes;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
@@ -110,8 +109,8 @@ public class ReadAllReleaseNotesPanel extends CRUDReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "summary"));
-            table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "effectiveDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
+            table.setText(i, 2, DateUtils.formatDate(JSONUtils.toString(entity, "effectiveDate")));
+            table.setText(i, 3, DateUtils.formatDate(JSONUtils.toString(entity, "endDate")));
             table.setText(i, 4, JSONUtils.toString(entity, "userIds"));
             table.setText(i, 5, JSONUtils.toString(entity, "roles"));
 
