@@ -7,7 +7,6 @@
  */
 package info.yalamanchili.office.client.advancerequisition;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
@@ -119,7 +118,7 @@ public class ReadAllAdvanceRequisitionPanel extends CRUDReadAllComposite {
             table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
             table.setText(i, 2, JSONUtils.toString(entity, "purpose"));
             table.setText(i, 3, FormatUtils.formarCurrency(JSONUtils.toString(entity, "amount")));
-            table.setText(i, 4, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "neededBy"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
+            table.setText(i, 4, DateUtils.formatDate(JSONUtils.toString(entity, "neededBy")));
             table.setText(i, 5, JSONUtils.formatEnumString(entity, "status"));
         }
     }
@@ -185,14 +184,5 @@ public class ReadAllAdvanceRequisitionPanel extends CRUDReadAllComposite {
     protected void createButtonClicked() {
         TabPanel.instance().expensePanel.entityPanel.clear();
         TabPanel.instance().expensePanel.entityPanel.add(new AdvanceRequisitionRequestPanel());
-    }
-    
-    private String getFormattedDate(String date) {
-        String[] dates = date.split("-");
-        String formatteddate = "";
-        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
-        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
-        formatteddate = formatteddate.concat(dates[0]);
-        return formatteddate;
     }
 }

@@ -8,7 +8,6 @@
  */
 package info.yalamanchili.office.client.reports;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.crud.CRUDReadAllComposite;
@@ -75,8 +74,8 @@ public class ReadAllVendorReportPanel extends CRUDReadAllComposite {
             table.setText(i, 2, JSONUtils.toString(entity, "consultantJobTitle"));
             table.setText(i, 3, JSONUtils.toString(entity, "client"));
             table.setText(i, 4, FormatUtils.formarCurrency(JSONUtils.toString(entity, "billingRate")));
-            table.setText(i, 5, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
-            table.setText(i, 6, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
+            table.setText(i, 5, DateUtils.formatDate(JSONUtils.toString(entity, "startDate")));
+            table.setText(i, 6, DateUtils.formatDate(JSONUtils.toString(entity, "endDate")));
             table.setText(i, 7, JSONUtils.toString(entity, "subContractorName"));
             table.setText(i, 8, FormatUtils.formarCurrency(JSONUtils.toString(entity, "subcontractorPayRate")));
         }
@@ -90,14 +89,5 @@ public class ReadAllVendorReportPanel extends CRUDReadAllComposite {
     @Override
     protected boolean enableQuickView() {
         return false;
-    }
-    
-    private String getFormattedDate(String date) {
-        String[] dates = date.split("-");
-        String formatteddate = "";
-        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
-        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
-        formatteddate = formatteddate.concat(dates[0]);
-        return formatteddate;
     }
 }

@@ -7,7 +7,6 @@
  */
 package info.yalamanchili.office.client.admin.subcontractor;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -79,7 +78,7 @@ public class ReadAllSubcontractorsPanel extends CRUDReadAllComposite {
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
             table.setText(i, 2, JSONUtils.toString(entity, "description"));
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "coiEndDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
+            table.setText(i, 3, DateUtils.formatDate(JSONUtils.toString(entity, "coiEndDate")));
         }
     }
 

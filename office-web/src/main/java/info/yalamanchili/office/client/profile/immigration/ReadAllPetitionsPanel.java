@@ -8,7 +8,6 @@
  */
 package info.yalamanchili.office.client.profile.immigration;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -94,7 +93,7 @@ public class ReadAllPetitionsPanel extends CRUDReadAllComposite {
             setEnumColumn(i, 2, entity, VisaClassificationType.class.getSimpleName(), "visaClassification");
             setEnumColumn(i, 3, entity, VisaProcessingType.class.getSimpleName(), "visaProcessing");
             table.setText(i, 4, JSONUtils.toString(entity, "receiptNumber"));
-            table.setText(i, 5, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "petitionFileDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
+            table.setText(i, 5, DateUtils.formatDate(JSONUtils.toString(entity, "petitionFileDate")));
             setEnumColumn(i, 6, entity, PetitionStatus.class.getSimpleName(), "petitionStatus");
 
         }
@@ -173,14 +172,5 @@ public class ReadAllPetitionsPanel extends CRUDReadAllComposite {
     @Override
     protected boolean enablePersistedQuickView() {
         return true;
-    }
-
-    private String getFormattedDate(String date) {
-        String[] dates = date.split("-");
-        String formatteddate = "";
-        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
-        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
-        formatteddate = formatteddate.concat(dates[0]);
-        return formatteddate;
     }
 }

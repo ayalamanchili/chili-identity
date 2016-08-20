@@ -11,7 +11,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.logical.shared.OpenHandler;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
@@ -158,8 +157,8 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
             if (!isEmployeesOnLeavePanel) {
                 setEnumColumn(i, 2, entity, "category", "category");
             }
-            table.setText(i, 3, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
-            table.setText(i, 4, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
+            table.setText(i, 3, DateUtils.formatDate(JSONUtils.toString(entity, "startDate")));
+            table.setText(i, 4, DateUtils.formatDate(JSONUtils.toString(entity, "endDate")));
             table.setText(i, 5, JSONUtils.toString(entity, "hours"));
             table.setText(i, 6, JSONUtils.formatEnumString(entity, "status"));
             if (enableCancelRequest(entity)) {
@@ -265,14 +264,5 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
 
             }
         });
-    }
-    
-    private String getFormattedDate(String date) {
-        String[] dates = date.split("-");
-        String formatteddate = "";
-        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
-        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
-        formatteddate = formatteddate.concat(dates[0]);
-        return formatteddate;
     }
 }

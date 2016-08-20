@@ -7,7 +7,6 @@
  */
 package info.yalamanchili.office.client.profile.selfservice;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
@@ -22,7 +21,6 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.profile.cllientinfo.ReadClientInfoPanel;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
@@ -134,7 +132,7 @@ public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
             if (entity.get("assignedTo") != null) {
                 table.setText(i, 7, JSONUtils.toString(entity.get("assignedTo").isObject(), "firstName"));
             }
-            table.setText(i, 8, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "createdTimeStamp"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
+            table.setText(i, 8, DateUtils.formatDate(JSONUtils.toString(entity, "createdTimeStamp")));
         }
     }
 
@@ -176,14 +174,5 @@ public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
     @Override
     protected boolean enablePersistedQuickView(){
         return true;
-    }
-    
-    private String getFormattedDate(String date) {
-        String[] dates = date.split("-");
-        String formatteddate = "";
-        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
-        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
-        formatteddate = formatteddate.concat(dates[0]);
-        return formatteddate;
     }
 }

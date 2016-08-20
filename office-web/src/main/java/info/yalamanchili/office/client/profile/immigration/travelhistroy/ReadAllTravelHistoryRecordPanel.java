@@ -5,7 +5,6 @@
  */
 package info.yalamanchili.office.client.profile.immigration.travelhistroy;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -83,8 +82,8 @@ public class ReadAllTravelHistoryRecordPanel extends CRUDReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "typeOfVisa"));
-            table.setText(i, 2, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "arrivalDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
-            table.setText(i, 3, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "departureDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
+            table.setText(i, 2, DateUtils.formatDate(JSONUtils.toString(entity, "arrivalDate")));
+            table.setText(i, 3, DateUtils.formatDate(JSONUtils.toString(entity, "departureDate")));
         }
     }
 
@@ -159,14 +158,5 @@ public class ReadAllTravelHistoryRecordPanel extends CRUDReadAllComposite {
     @Override
     protected boolean enablePersistedQuickView() {
         return true;
-    }
-
-    private String getFormattedDate(String date) {
-        String[] dates = date.split("-");
-        String formatteddate = "";
-        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
-        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
-        formatteddate = formatteddate.concat(dates[0]);
-        return formatteddate;
     }
 }

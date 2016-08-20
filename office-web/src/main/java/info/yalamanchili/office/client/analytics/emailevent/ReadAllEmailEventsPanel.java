@@ -7,7 +7,6 @@
  */
 package info.yalamanchili.office.client.analytics.emailevent;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
@@ -107,7 +106,7 @@ public class ReadAllEmailEventsPanel extends CRUDReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "to"));
-            table.setText(i, 2, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "sentTimeStamp"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
+            table.setText(i, 2, DateUtils.formatDate(JSONUtils.toString(entity, "sentTimeStamp")));
             table.setText(i, 3, JSONUtils.toString(entity, "subject"));
         }
     }
@@ -130,14 +129,5 @@ public class ReadAllEmailEventsPanel extends CRUDReadAllComposite {
     @Override
     protected boolean enablePersistedQuickView() {
         return true;
-    }
-    
-    private String getFormattedDate(String date) {
-        String[] dates = date.split("-");
-        String formatteddate = "";
-        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
-        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
-        formatteddate = formatteddate.concat(dates[0]);
-        return formatteddate;
     }
 }

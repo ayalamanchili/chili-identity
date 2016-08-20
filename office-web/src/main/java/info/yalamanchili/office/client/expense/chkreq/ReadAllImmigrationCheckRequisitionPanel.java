@@ -7,7 +7,6 @@
  */
 package info.yalamanchili.office.client.expense.chkreq;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -146,7 +145,7 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
             setEnumColumn(i, 2, entity, ImmigrationCaseType.class.getSimpleName(), "caseType");
             table.setText(i, 3, JSONUtils.toString(entity, "attorneyName"));
             table.setText(i, 5, FormatUtils.formarCurrency(JSONUtils.toString(entity, "amount")));
-            table.setText(i, 6, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "requestedDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
+            table.setText(i, 6, DateUtils.formatDate(JSONUtils.toString(entity, "requestedDate")));
             setEnumColumn(i, 7, entity, ImmigrationCheckRequisitionStatus.class.getSimpleName(), "status");
         }
     }
@@ -222,14 +221,5 @@ public class ReadAllImmigrationCheckRequisitionPanel extends CRUDReadAllComposit
     @Override
     protected boolean enablePersistedQuickView(){
         return true;
-    }
-    
-    private String getFormattedDate(String date) {
-        String[] dates = date.split("-");
-        String formatteddate = "";
-        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
-        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
-        formatteddate = formatteddate.concat(dates[0]);
-        return formatteddate;
     }
 }

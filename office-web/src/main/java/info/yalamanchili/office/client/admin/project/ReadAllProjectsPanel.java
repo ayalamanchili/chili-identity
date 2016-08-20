@@ -7,7 +7,6 @@
  */
 package info.yalamanchili.office.client.admin.project;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -78,8 +77,8 @@ public class ReadAllProjectsPanel extends CRUDReadAllComposite {
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity.get("client"), "name"));
             table.setText(i, 2, JSONUtils.toString(entity, "name"));
-            table.setText(i, 4, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
-            table.setText(i, 5, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
+            table.setText(i, 4, DateUtils.formatDate(JSONUtils.toString(entity, "startDate")));
+            table.setText(i, 5, DateUtils.formatDate(JSONUtils.toString(entity, "endDate")));
         }
     }
 
@@ -156,14 +155,5 @@ public class ReadAllProjectsPanel extends CRUDReadAllComposite {
     protected void createButtonClicked() {
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new info.yalamanchili.office.client.profile.employee.CreateProjectPanel(CreateComposite.CreateCompositeType.CREATE));
-    }
-    
-    private String getFormattedDate(String date) {
-        String[] dates = date.split("-");
-        String formatteddate = "";
-        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
-        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
-        formatteddate = formatteddate.concat(dates[0]);
-        return formatteddate;
     }
 }

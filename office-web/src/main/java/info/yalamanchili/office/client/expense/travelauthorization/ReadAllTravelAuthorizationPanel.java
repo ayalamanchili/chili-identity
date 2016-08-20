@@ -7,7 +7,6 @@
  */
 package info.yalamanchili.office.client.expense.travelauthorization;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
@@ -116,8 +115,8 @@ public class ReadAllTravelAuthorizationPanel extends CRUDReadAllComposite {
             table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
             setEnumColumn(i, 2, entity, TravelType.class.getSimpleName(), TRAVEL_TYPE);
             table.setText(i, 3, JSONUtils.toString(entity, TRAVEL_DESTINATION));
-            table.setText(i, 4, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, DEPARTURE_DATE), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
-            table.setText(i, 5, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, RETURN_DATE), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
+            table.setText(i, 4, DateUtils.formatDate(JSONUtils.toString(entity, DEPARTURE_DATE)));
+            table.setText(i, 5, DateUtils.formatDate(JSONUtils.toString(entity, RETURN_DATE)));
             table.setText(i, 6, FormatUtils.formarCurrency(JSONUtils.toString(entity, TOTAL_ESTIMATED_TRIP_EXPENCES)));
             setEnumColumn(i, 7, entity, TravelAuthorizationStatus.class.getSimpleName(), "status");
         }
@@ -199,14 +198,5 @@ public class ReadAllTravelAuthorizationPanel extends CRUDReadAllComposite {
     protected void createButtonClicked() {
         TabPanel.instance().expensePanel.entityPanel.clear();
         TabPanel.instance().expensePanel.entityPanel.add(new CreateTravelAuthorizationPanel());
-    }
-    
-    private String getFormattedDate(String date) {
-        String[] dates = date.split("-");
-        String formatteddate = "";
-        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
-        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
-        formatteddate = formatteddate.concat(dates[0]);
-        return formatteddate;
     }
 }

@@ -7,7 +7,6 @@
  */
 package info.yalamanchili.office.client.analytics.event;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -92,7 +91,7 @@ public class ReadAllEventsPanel extends CRUDReadAllComposite {
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
             table.setText(i, 2, JSONUtils.toString(entity, "user"));
-            table.setText(i, 3, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "evenTimeStamp"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
+            table.setText(i, 3, DateUtils.formatDate(JSONUtils.toString(entity, "evenTimeStamp")));
         }
     }
 
@@ -112,14 +111,5 @@ public class ReadAllEventsPanel extends CRUDReadAllComposite {
 
     private String getReadAllEventURL(Integer start, String limit) {
         return OfficeWelcome.constants.root_url() + "chili/analytics/events/" + start.toString() + "/" + limit.toString();
-    }
-    
-    private String getFormattedDate(String date) {
-        String[] dates = date.split("-");
-        String formatteddate = "";
-        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
-        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
-        formatteddate = formatteddate.concat(dates[0]);
-        return formatteddate;
     }
 }

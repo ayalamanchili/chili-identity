@@ -8,7 +8,6 @@
  */
 package info.yalamanchili.office.client.profile.immigration.educationrecord;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -87,7 +86,7 @@ public class ReadAllEducationRecordPanel extends CRUDReadAllComposite {
             table.setText(i, 1, JSONUtils.toString(entity, "degreeOfStudy"));
             table.setText(i, 2, JSONUtils.toString(entity, "fieldOfStudy"));
             table.setText(i, 3, JSONUtils.toString(entity, "nameOfSchool"));
-            table.setText(i, 4, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "dateDegreeAwarded"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
+            table.setText(i, 4, DateUtils.formatDate(JSONUtils.toString(entity, "dateDegreeAwarded")));
         }
     }
 
@@ -162,14 +161,5 @@ public class ReadAllEducationRecordPanel extends CRUDReadAllComposite {
     @Override
     protected boolean enablePersistedQuickView() {
         return true;
-    }
-    
-    private String getFormattedDate(String date) {
-        String[] dates = date.split("-");
-        String formatteddate = "";
-        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
-        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
-        formatteddate = formatteddate.concat(dates[0]);
-        return formatteddate;
     }
 }

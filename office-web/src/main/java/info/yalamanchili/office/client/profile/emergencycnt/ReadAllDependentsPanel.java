@@ -8,7 +8,6 @@
  */
 package info.yalamanchili.office.client.profile.emergencycnt;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -86,7 +85,7 @@ public class ReadAllDependentsPanel extends CRUDReadAllComposite {
             table.setText(i, 2, JSONUtils.toString(entity, "dfirstName"));
             table.setText(i, 3, JSONUtils.toString(entity, "dmiddleName"));
             table.setText(i, 4, JSONUtils.toString(entity, "dlastName"));
-            table.setText(i, 5, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "ddateOfBirth"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
+            table.setText(i, 5, DateUtils.formatDate(JSONUtils.toString(entity, "ddateOfBirth")));
             table.setText(i, 6, JSONUtils.toString(entity, "relationship"));
         }
     }
@@ -183,14 +182,5 @@ public class ReadAllDependentsPanel extends CRUDReadAllComposite {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new CreateDependentsPanel(CreateComposite.CreateCompositeType.CREATE));
         }
-    }
-    
-    private String getFormattedDate(String date) {
-        String[] dates = date.split("-");
-        String formatteddate = "";
-        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
-        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
-        formatteddate = formatteddate.concat(dates[0]);
-        return formatteddate;
     }
 }

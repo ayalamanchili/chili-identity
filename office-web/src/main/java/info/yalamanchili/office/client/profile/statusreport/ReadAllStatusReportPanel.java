@@ -7,7 +7,6 @@
  */
 package info.yalamanchili.office.client.profile.statusreport;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -23,7 +22,6 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import static info.yalamanchili.office.client.profile.selfservice.ReadAllServiceTicketsPanel.instance;
 import java.util.logging.Logger;
 
 /**
@@ -143,8 +141,8 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            table.setText(i, 1, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportStartDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
-            table.setText(i, 2, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportEndDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
+            table.setText(i, 1, DateUtils.formatDate(JSONUtils.toString(entity, "reportStartDate")));
+            table.setText(i, 2, DateUtils.formatDate(JSONUtils.toString(entity, "reportEndDate")));
             table.setText(i, 3, JSONUtils.toString(entity, "stage"));
         }
     }
@@ -207,14 +205,5 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
     @Override
     protected boolean autoShowDocumentation() {
         return true;
-    }
-    
-    private String getFormattedDate(String date) {
-        String[] dates = date.split("-");
-        String formatteddate = "";
-        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
-        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
-        formatteddate = formatteddate.concat(dates[0]);
-        return formatteddate;
     }
 }

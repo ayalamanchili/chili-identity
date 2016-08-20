@@ -8,7 +8,6 @@
  */
 package info.yalamanchili.office.client.profile.empdoc;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -76,7 +75,7 @@ public class ReadAllEmpDocsPanel extends CRUDReadAllComposite {
             String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "fileUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
             FileField fileField = new FileField(fileURL);
             table.setWidget(i, 2, fileField);
-            table.setText(i, 3, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "updatedTs"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
+            table.setText(i, 3, DateUtils.formatDate(JSONUtils.toString(entity, "updatedTs")));
             table.setText(i, 4, JSONUtils.toString(entity, "updatedBy"));
         }
     }
@@ -143,14 +142,5 @@ public class ReadAllEmpDocsPanel extends CRUDReadAllComposite {
     protected void createButtonClicked() {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new CreateEmpDocPanel(TreeEmployeePanel.instance().getEntityId()));
-    }
-    
-    private String getFormattedDate(String date) {
-        String[] dates = date.split("-");
-        String formatteddate = "";
-        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
-        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
-        formatteddate = formatteddate.concat(dates[0]);
-        return formatteddate;
     }
 }

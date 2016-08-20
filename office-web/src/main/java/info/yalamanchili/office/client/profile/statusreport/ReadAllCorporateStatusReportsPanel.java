@@ -10,8 +10,6 @@ package info.yalamanchili.office.client.profile.statusreport;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -98,8 +96,8 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
             if (searchResultsTable) {
                 table.setText(i, 1, JSONUtils.toString(entity, "employeeName"));
             }
-            table.setText(i, 2, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportStartDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
-            table.setText(i, 3, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportEndDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
+            table.setText(i, 2, DateUtils.formatDate(JSONUtils.toString(entity, "reportStartDate")));
+            table.setText(i, 3, DateUtils.formatDate(JSONUtils.toString(entity, "reportEndDate")));
             table.setText(i, 4, JSONUtils.toString(entity, "status"));
             //Compare
             if (TabPanel.instance().homePanel.isVisible()) {
@@ -250,14 +248,5 @@ public class ReadAllCorporateStatusReportsPanel extends CRUDReadAllComposite {
     protected void createButtonClicked() {
         TabPanel.instance().homePanel.entityPanel.clear();
         TabPanel.instance().homePanel.entityPanel.add(new CreateCorporateStatusReportPanel());
-    }
-    
-    private String getFormattedDate(String date) {
-        String[] dates = date.split("-");
-        String formatteddate = "";
-        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
-        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
-        formatteddate = formatteddate.concat(dates[0]);
-        return formatteddate;
     }
 }
