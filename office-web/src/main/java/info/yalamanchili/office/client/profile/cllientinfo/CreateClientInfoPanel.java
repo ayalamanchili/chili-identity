@@ -101,6 +101,8 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         assignEntityValueFromField("consultantJobTitle", clientInfo);
         assignEntityValueFromField("company", clientInfo);
         assignEntityValueFromField("client", clientInfo);
+        assignEntityValueFromField("clientFeeApplicable", clientInfo);
+        assignEntityValueFromField("directClient", clientInfo);        
         assignEntityValueFromField("clientContact", clientInfo);
         assignEntityValueFromField("clientAPContacts", clientInfo);
         assignEntityValueFromField("clientLocation", clientInfo);
@@ -258,6 +260,8 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         entityFieldsPanel.add(getLineSeperatorTag("Client & Vendor Information"));
         addDropDown("client", selectClientWidgetF);
         entityFieldsPanel.add(addClientL);
+        addField("clientFeeApplicable", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        addField("directClient", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addDropDown("clientLocation", new SelectClientLocationWidget(false, true, Alignment.HORIZONTAL));
         selectClientAcctPayContact = new SelectClientAcctPayContact(false, false, Alignment.HORIZONTAL) {
             @Override
@@ -363,16 +367,16 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addClientL)) {
             if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN)) {
-                new GenericPopup(new CreateClientPanel(CreateCompositeType.CREATE),350,0).show();
+                new GenericPopup(new CreateClientPanel(CreateCompositeType.CREATE),350,10).show();
             } else {
-                new GenericPopup(new GenericBPMStartFormPanel("AddNewClientRequest", "add_new_client_request_1"),350,0).show();
+                new GenericPopup(new GenericBPMStartFormPanel("AddNewClientRequest", "add_new_client_request_1"),350,10).show();
             }
         }
         if (event.getSource().equals(addVendorL)) {
             if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN)) {
-                new GenericPopup(new CreateVendorPanel(CreateCompositeType.CREATE),350,0).show();
+                new GenericPopup(new CreateVendorPanel(CreateCompositeType.CREATE),350,10).show();
             } else {
-                new GenericPopup(new GenericBPMStartFormPanel("AddNewVendorRequest", "add_new_vendor_request_1"),350,0).show();
+                new GenericPopup(new GenericBPMStartFormPanel("AddNewVendorRequest", "add_new_vendor_request_1"),350,10).show();
             }
         }
 
@@ -440,6 +444,8 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                         JSONObject client = (JSONObject) JSONParser.parseLenient(response);
                         TextAreaField payTermF = (TextAreaField) fields.get("clientPaymentTerms");
                         payTermF.setValue(JSONUtils.toString(client, "paymentTerms"));
+                        BooleanField directClientB=(BooleanField) fields.get("directClient");
+                        directClientB.setValue(JSONUtils.toBoolean(client, "directClient"));
                     }
                 });
     }
