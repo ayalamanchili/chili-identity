@@ -88,8 +88,8 @@ public class ReadContractsPanel extends TReadComposite {
     }
 
     protected final void populateComments() {
-        entityFieldsPanel.setWidget(23, 1, new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.profile.ClientInformation"));
-        entityFieldsPanel.getFlexCellFormatter().setColSpan(23, 1, 2);
+        entityFieldsPanel.setWidget(24, 1, new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.profile.ClientInformation"));
+        entityFieldsPanel.getFlexCellFormatter().setColSpan(24, 1, 2);
     }
 
     @Override
@@ -99,8 +99,19 @@ public class ReadContractsPanel extends TReadComposite {
                     @Override
                     public void onResponse(String response) {
                         entity = (JSONObject) JSONParser.parseLenient(response);
+                        Boolean isClientFeeApplicable=false;
                         addWidgets();
-                        if (entity.containsKey("vendorFees")) {
+                        if (entity.containsKey("clientFeeApplicable"))
+                            isClientFeeApplicable = JSONUtils.toBoolean(entity, "clientFeeApplicable");
+                        if(isClientFeeApplicable && entity.containsKey("clientFees")) {
+                            addField("finalBillingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 3, 1);
+                            addField("clientFees", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL, 3, 2);
+                            assignFieldValueFromEntity("finalBillingRate", entity, DataType.CURRENCY_FIELD);
+                            assignFieldValueFromEntity("clientFees", entity, DataType.FLOAT_FIELD);
+                            alignFields(); 
+                        }
+                        else if (entity.containsKey("vendorFees")) {
+                            /*vendorFees*/                 
                             addField("finalBillingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 3, 1);
                             addField("vendorFees", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL, 3, 2);
                             assignFieldValueFromEntity("finalBillingRate", entity, DataType.CURRENCY_FIELD);
@@ -120,6 +131,8 @@ public class ReadContractsPanel extends TReadComposite {
         assignFieldValueFromEntity("company", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("employeeCompany", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("client", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("clientFeeApplicable", entity, DataType.BOOLEAN_FIELD);
+        assignFieldValueFromEntity("directClient", entity, DataType.BOOLEAN_FIELD);        
         assignFieldValueFromEntity("clientLocation", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("clientContact", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("clientAPContact", entity, DataType.RICH_TEXT_AREA);
@@ -225,24 +238,26 @@ public class ReadContractsPanel extends TReadComposite {
         addField("vendor", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 11, 1);
         addField("vendorAPContact", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 12, 1);
         addField("client", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 13, 1);
-        addField("clientLocation", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 13, 2);
-        addField("clientAPContact", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 14, 1);
-        addField("clientContact", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 14, 2);
-        addField("clientPaymentTerms", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL, 15, 1);
-        addField("notes", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL, 15, 2);
-        addField("middleVendor", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 16, 1);
-        addField("company", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 16, 2);
-        addField("clientProject", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 17, 1);
-        addField("purchaseOrderNo", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 17, 2);
-        addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 18, 1);
-        addField("endDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 18, 2);
-        addField("practice", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 19, 1);
-        addField("sectorsAndBUs", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 19, 2);
-        addField("employeeDetails", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 20, 1);
-        addField("consultantJobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 20, 2);
-        addField("employeeCompany", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 21, 1);
-        entityFieldsPanel.setWidget(22, 1, ReadAllConsultantTimeSheetsPanel.renderLeaveHistory(getEmployeeId()));
-        entityFieldsPanel.getFlexCellFormatter().setColSpan(22, 1, 2);
+        addField("clientFeeApplicable", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL, 13, 2);
+        addField("directClient", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL, 14, 1);        
+        addField("clientLocation", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 14, 2);
+        addField("clientAPContact", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 15, 1);
+        addField("clientContact", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 15, 2);
+        addField("clientPaymentTerms", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL, 16, 1);
+        addField("notes", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL, 16, 2);
+        addField("middleVendor", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 17, 1);
+        addField("company", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 17, 2);
+        addField("clientProject", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 18, 1);
+        addField("purchaseOrderNo", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 18, 2);
+        addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 19, 1);
+        addField("endDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 19, 2);
+        addField("practice", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 20, 1);
+        addField("sectorsAndBUs", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 20, 2);
+        addField("employeeDetails", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 21, 1);
+        addField("consultantJobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 21, 2);
+        addField("employeeCompany", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 22, 1);
+        entityFieldsPanel.setWidget(23, 1, ReadAllConsultantTimeSheetsPanel.renderLeaveHistory(getEmployeeId()));
+        entityFieldsPanel.getFlexCellFormatter().setColSpan(23, 1, 2);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_INVOICE_MANAGER)) {
             populateInvoices();
         }
@@ -266,8 +281,8 @@ public class ReadContractsPanel extends TReadComposite {
                         if (!response.trim().toString().equals("null")) {
                             if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_BILLING_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
                                 JSONArray docs = JSONUtils.toJSONArray(JSONParser.parseLenient(response).isObject().get("ciDocument"));
-                                entityFieldsPanel.setWidget(24, 1, new ReadAllCiDocumentPanel(getEntityId(), docs));
-                                entityFieldsPanel.getFlexCellFormatter().setColSpan(24, 1, 2);
+                                entityFieldsPanel.setWidget(25, 1, new ReadAllCiDocumentPanel(getEntityId(), docs));
+                                entityFieldsPanel.getFlexCellFormatter().setColSpan(25, 1, 2);
                             }
                         }
                     }
@@ -291,8 +306,8 @@ public class ReadContractsPanel extends TReadComposite {
                             JSONObject resObj = JSONParser.parseLenient(response).isObject();
                             String key = (String) resObj.keySet().toArray()[0];
                             JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-                            entityFieldsPanel.setWidget(25, 1, ReadAllInvoicePanel.renderInvoices(results, entityId));
-                            entityFieldsPanel.getFlexCellFormatter().setColSpan(25, 1, 2);
+                            entityFieldsPanel.setWidget(26, 1, ReadAllInvoicePanel.renderInvoices(results, entityId));
+                            entityFieldsPanel.getFlexCellFormatter().setColSpan(26, 1, 2);
                         }
                     }
                 });
