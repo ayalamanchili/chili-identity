@@ -151,14 +151,6 @@ public class UpdateVendorsPanel extends UpdateComposite {
         boolean valid = true;
         DateField msaValDate = (DateField) fields.get("msaValDate");
         DateField msaExpDate = (DateField) fields.get("msaExpDate");
-        if (msaValDate.getDate() == null || "".equals(msaValDate.getDate())) {
-            msaValDate.setMessage("Please enter the MSA Validity Period from date");
-            valid = false;
-        }
-        if (msaExpDate.getDate() == null || "".equals(msaExpDate.getDate())) {
-            msaExpDate.setMessage("Please enter the MSA Validity Period to date");
-            valid = false;
-        }
         if (msaValDate.getDate() != null && msaExpDate.getDate() != null && msaValDate.getDate().after(msaExpDate.getDate())) {
             msaExpDate.setMessage("To Date must be after From Date");
             return false;
