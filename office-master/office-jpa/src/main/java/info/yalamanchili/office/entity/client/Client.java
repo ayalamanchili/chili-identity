@@ -65,6 +65,7 @@ public class Client extends AbstractEntity {
     @Temporal(TemporalType.DATE)
     protected Date msaExpDate;
     protected String website;
+    protected Boolean directClient;
     protected String paymentTerms;
     @Enumerated(EnumType.STRING)
     protected InvoiceFrequency clientinvFrequency;
@@ -119,6 +120,16 @@ public class Client extends AbstractEntity {
 //        entity.set(this);
     }
 
+    public Boolean getDirectClient() {
+        return directClient;
+    }
+
+    public void setDirectClient(Boolean directClient) {
+        this.directClient = directClient;
+    }
+
+    
+    
     public String getName() {
         return name;
     }
