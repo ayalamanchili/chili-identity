@@ -57,6 +57,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     private static Logger logger = Logger.getLogger(UpdateClientInfoPanel.class.getName());
     SelectPracticeWidget selectPractiseWidgetF = new SelectPracticeWidget(false, true, Alignment.HORIZONTAL);
     SelectVendorWidget selectVendorWidgetF = new SelectVendorWidget(false, true, Alignment.HORIZONTAL);
+    SelectClientWidget selectClientWidgetF = new SelectClientWidget(false, true, Alignment.HORIZONTAL);
     EnumField servicesF;
     EnumField sectorsF;
     protected BooleanField submitForApprovalF = new BooleanField(OfficeWelcome.constants, "Submit For Approval", "ClientInfo", false, false, Alignment.HORIZONTAL);
@@ -117,6 +118,8 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignEntityValueFromField("clientContact", entity);
         assignEntityValueFromField("clientAPContacts", entity);
         assignEntityValueFromField("clientPaymentTerms", entity);
+        assignEntityValueFromField("clientFeeApplicable", entity);
+        assignEntityValueFromField("directClient", entity);        
         assignEntityValueFromField("vendor", entity);
         assignEntityValueFromField("vendorAPContacts", entity);
         assignEntityValueFromField("vendorRecruiters", entity);
@@ -223,6 +226,8 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignFieldValueFromEntity("clientLocation", entity, null);
         assignFieldValueFromEntity("clientContact", entity, null);
         assignFieldValueFromEntity("clientPaymentTerms", entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("clientFeeApplicable", entity, DataType.BOOLEAN_FIELD);
+        assignFieldValueFromEntity("directClient", entity, DataType.BOOLEAN_FIELD);                
         assignFieldValueFromEntity("vendor", entity, null);
         assignFieldValueFromEntity("vendorAPContacts", entity, null);
         assignFieldValueFromEntity("vendorLocation", entity, null);
@@ -286,6 +291,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         updateBillingRateIcn.addClickHandler(this);
         selectPractiseWidgetF.getListBox().addChangeHandler(this);
         selectVendorWidgetF.getListBox().addChangeHandler(this);
+        selectClientWidgetF.getListBox().addChangeHandler(this);        
         submitForApprovalF.getBox().addClickHandler(this);
     }
 
@@ -324,7 +330,9 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         addField("employeeType", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("company", false, true, ClientInformationCompany.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Client & Vendor Information"));
-        addDropDown("client", new SelectClientWidget(false, true, Alignment.HORIZONTAL));
+        addDropDown("client", selectClientWidgetF);
+        addField("clientFeeApplicable", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        addField("directClient", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);                        
         addDropDown("clientLocation", new SelectClientLocationWidget(false, false, Alignment.HORIZONTAL));
         selectClientAcctPayContact = new SelectClientAcctPayContact(false, false, Alignment.HORIZONTAL) {
             @Override
@@ -559,6 +567,11 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             String id = selectVendorWidgetF.getSelectedObject().get("id").isString().stringValue().trim();
             loadVendor(id);
         }
+        
+        if (event.getSource().equals(selectClientWidgetF.getListBox())) {
+            String id = selectClientWidgetF.getSelectedObject().get("id").isString().stringValue().trim();
+            loadClient(id);
+        }        
     }
 
     public void loadVendor(String vendorEntityId) {
@@ -583,6 +596,24 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         return OfficeWelcome.constants.root_url() + "vendor/" + vendorEntityId;
     }
 
+        public void loadClient(String clientEntityId) {
+        HttpService.HttpServiceAsync.instance().doGet(getClient(clientEntityId), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject client = (JSONObject) JSONParser.parseLenient(response);
+                        TextAreaField payTermF = (TextAreaField) fields.get("clientPaymentTerms");
+                        payTermF.setValue(JSONUtils.toString(client, "paymentTerms"));
+                        BooleanField directClientB=(BooleanField) fields.get("directClient");
+                        directClientB.setValue(JSONUtils.toBoolean(client, "directClient"));
+                    }
+                });
+    }
+
+    protected String getClient(String clientEntityId) {
+        return OfficeWelcome.constants.root_url() + "client/" + clientEntityId;
+    }
+    
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
