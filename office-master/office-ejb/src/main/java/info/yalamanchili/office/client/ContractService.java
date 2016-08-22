@@ -33,6 +33,7 @@ import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dto.client.ContractSearchDto;
 import info.yalamanchili.office.email.MailUtils;
+import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.profile.Address;
@@ -299,6 +300,7 @@ public class ContractService {
     public ContractDto mapClientInformation(ClientInformation ci) {
         ContractDto dto = mapper.map(ci, ContractDto.class);
         Vendor vi = new Vendor();
+        Client ct= new Client();
         if (ci.getEmployee() != null) {
             dto.setContractSignedEntity(ci.getCompany().name());
             dto.setEmployee(ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
@@ -314,13 +316,29 @@ public class ContractService {
         }
         //TODO set client
         if (ci.getClient() != null) {
-            dto.setClient(ci.getClient().getName());
+            ct = ci.getClient();
+            dto.setClient(ct.getName());
+            dto.setClientFeeApplicable(ci.getClientFeeApplicable());
+            dto.setDirectClient(ci.getDirectClient());
+            dto.setClientFees(ct.getClientFee());            
+            if(ci.getClientFeeApplicable() != null && ci.getClientFeeApplicable() && ct.getClientFee() != null) {
+                BigDecimal value = new BigDecimal(ct.getClientFee());
+                BigDecimal clientFee = value.divide(new BigDecimal(100)).multiply(dto.getBillingRate());
+                BigDecimal effectiveBillingRate = getEffectiveBillingRate(ci.getId());
+                if (effectiveBillingRate == null) {
+                    dto.setBillingRate(ci.getBillingRate());
+                } else {
+                    dto.setBillingRate(getEffectiveBillingRate(ci.getId()));
+                 }
+                dto.setFinalBillingRate(dto.getBillingRate().subtract(calculateMargin(clientFee, ct.getMaxClientFee(), ct.getMinClientFee())));            
+            }                
         }
+
         if (ci.getVendor() != null) {
             vi = ci.getVendor();
             dto.setVendor(vi.getName());
             dto.setVendorFees(vi.getVendorFees());
-            if (vi.getVendorFees() != null) {
+            if (!(ci.getClientFeeApplicable() != null && ci.getClientFeeApplicable()) && vi.getVendorFees() != null) {
                 BigDecimal value = new BigDecimal(vi.getVendorFees());
                 BigDecimal vendorFee = value.divide(new BigDecimal(100)).multiply(dto.getBillingRate());
                 BigDecimal effectiveBillingRate = getEffectiveBillingRate(ci.getId());
@@ -329,7 +347,7 @@ public class ContractService {
                 } else {
                     dto.setBillingRate(getEffectiveBillingRate(ci.getId()));
                 }
-                dto.setFinalBillingRate(dto.getBillingRate().subtract(calcVendorMargin(vendorFee, vi.getMaxFees(), vi.getMinFees())));
+                dto.setFinalBillingRate(dto.getBillingRate().subtract(calculateMargin(vendorFee, vi.getMaxFees(), vi.getMinFees())));
             }
         }
 
@@ -438,23 +456,23 @@ public class ContractService {
         return ReportGenerator.generateReport(data.getEntities(), "contracts", format, OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
     }
 
-    public BigDecimal calcVendorMargin(BigDecimal vendorFee, BigDecimal maxFee, BigDecimal minFee) {
+    public BigDecimal calculateMargin(BigDecimal fee, BigDecimal maxFee, BigDecimal minFee) {
 
-        BigDecimal vendorMargin = BigDecimal.ZERO;
+        BigDecimal margin = BigDecimal.ZERO;
 
-        if (vendorFee != null && vendorFee.floatValue() > 0) {
-            if (maxFee != null && minFee != null && vendorFee.floatValue() <= maxFee.floatValue() && vendorFee.floatValue() >= minFee.floatValue()) {
-                vendorMargin = vendorFee;
-            } else if (maxFee != null && vendorFee.floatValue() > maxFee.floatValue()) {
-                vendorMargin = maxFee;
-            } else if (minFee != null && vendorFee.floatValue() < minFee.floatValue()) {
-                vendorMargin = minFee;
+        if (fee != null && fee.floatValue() > 0) {
+            if (maxFee != null && minFee != null && fee.floatValue() <= maxFee.floatValue() && fee.floatValue() >= minFee.floatValue()) {
+                margin = fee;
+            } else if (maxFee != null && fee.floatValue() > maxFee.floatValue()) {
+                margin = maxFee;
+            } else if (minFee != null && fee.floatValue() < minFee.floatValue()) {
+                margin = minFee;
             } else {
-                vendorMargin = vendorFee;
+                margin = fee;
             }
         }
 
-        return vendorMargin;
+        return margin;
     }
 
     @Async

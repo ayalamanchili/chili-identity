@@ -64,7 +64,7 @@ public class EmployeeOnBoardingResource {
 
     @GET
     @Path("{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ON_BOARDING_MGR','ROLE_HR_ADMINSTRATION','ROLE_E_VERIFY_MGR','ROLE_BACKGROUND_SCREENING_MGR','ROLE_SYSTEM_AND_NETWORK_ADMIN','ROLE_PAYROLL_AND_BENIFITS')")
+    @PreAuthorize("hasAnyRole('ROLE_ON_BOARDING_MGR','ROLE_PROSPECTS_MANAGER','ROLE_HR_ADMINSTRATION','ROLE_E_VERIFY_MGR','ROLE_BACKGROUND_SCREENING_MGR','ROLE_SYSTEM_AND_NETWORK_ADMIN','ROLE_PAYROLL_AND_BENIFITS')")
     public EmployeeOnBoardingResource.EmployeeOnBoardingTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         EmployeeOnBoardingResource.EmployeeOnBoardingTable tableObj = new EmployeeOnBoardingResource.EmployeeOnBoardingTable();
         tableObj.setEntities(employeeOnBoardingDao.getEmployees(start, limit));
@@ -74,7 +74,7 @@ public class EmployeeOnBoardingResource {
 
     @Path("/initiate-onboarding")
     @PUT
-    @PreAuthorize("hasAnyRole('ROLE_ON_BOARDING_MGR','ROLE_HR_ADMINSTRATION')")
+    @PreAuthorize("hasAnyRole('ROLE_ON_BOARDING_MGR','ROLE_HR_ADMINSTRATION','ROLE_PROSPECTS_MANAGER')")
     @Validate
     public void initiateOnBoarding(InitiateOnBoardingDto dto) {
         EmployeeType type = EmployeeTypeDao.instance().findById(dto.getEmployeeType().getId());
