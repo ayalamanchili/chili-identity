@@ -97,9 +97,7 @@ public class CorpEmpLeaveRequestPanel extends CreateComposite {
         TabPanel.instance().getTimePanel().sidePanelTop.add(new CorporateTimeSummarySidePanel());
         TabPanel.instance().getTimePanel().entityPanel.add(new CorporateTimeSummaryPanel());
         TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel());
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CONSULTANT_TIME_ADMIN)) {
-            TabPanel.instance().getTimePanel().entityPanel.add(new ReadCurrentCorpLeavesPanel());
-        }
+        TabPanel.instance().getTimePanel().entityPanel.add(new ReadCurrentCorpLeavesPanel());
     }
 
     @Override
