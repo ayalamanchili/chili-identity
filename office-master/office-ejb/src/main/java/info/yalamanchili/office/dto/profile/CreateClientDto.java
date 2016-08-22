@@ -33,6 +33,7 @@ public class CreateClientDto implements Serializable{
     
     protected String description;
     protected String website;
+    protected Boolean directClient;
     private Date msaValDate;
     protected Date msaExpDate;
     protected String paymentTerms;
@@ -76,6 +77,14 @@ public class CreateClientDto implements Serializable{
 
     public void setWebsite(String website) {
         this.website = website;
+    }
+
+    public Boolean getDirectClient() {
+        return directClient;
+    }
+
+    public void setDirectClient(Boolean directClient) {
+        this.directClient = directClient;
     }
 
     /**
