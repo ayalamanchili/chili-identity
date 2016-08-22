@@ -95,7 +95,7 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
 
     @GET
     @Path("/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS','ROLE_BILLING_AND_INVOICING','ROLE_CONTRACTS_FULL_VIEW')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN',ROLE_CONTRACTS','ROLE_BILLING_AND_INVOICING','ROLE_CONTRACTS_FULL_VIEW')")
     @Cacheable(OfficeCacheKeys.SUB_CONTRACTOR)
     public SubcontractorTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         SubcontractorTable tableObj = new SubcontractorTable();
@@ -185,7 +185,7 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
      */
     @GET
     @Path("/contacts/{id}/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS','ROLE_BILLING_AND_INVOICING','ROLE_CONTRACTS_FULL_VIEW')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING','ROLE_CONTRACTS_FULL_VIEW')")
     public ContactDto.ContactDtoTable getContacts(@PathParam("id") long id, @PathParam("start") int start,
             @PathParam("limit") int limit) {
         ContactDto.ContactDtoTable tableObj = new ContactDto.ContactDtoTable();
@@ -257,7 +257,7 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
      */
     @GET
     @Path("/locations/{id}/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS','ROLE_BILLING_AND_INVOICING','ROLE_CONTRACTS_FULL_VIEW')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING','ROLE_CONTRACTS_FULL_VIEW')")
     public AddressResource.AddressTable getLocations(@PathParam("id") long id, @PathParam("start") int start,
             @PathParam("limit") int limit) {
         AddressResource.AddressTable tableObj = new AddressResource.AddressTable();
