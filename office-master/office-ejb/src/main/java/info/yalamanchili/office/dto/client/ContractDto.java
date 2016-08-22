@@ -55,6 +55,15 @@ public class ContractDto implements Serializable {
      */
     protected String client;
 
+    /**
+     * ClientFeeApplicable
+     */
+    protected Boolean clientFeeApplicable;
+    /**
+     * DirectClient
+     */
+    protected Boolean directClient;
+    
     protected String bpmProcessId;
     /**
      * Client Contact
@@ -225,6 +234,8 @@ public class ContractDto implements Serializable {
     protected long employeeID;
 
     protected Float vendorFees;
+    
+    protected Float clientFees;
 
     protected BigDecimal finalBillingRate;
 
@@ -453,6 +464,22 @@ public class ContractDto implements Serializable {
 
     public void setClient(String client) {
         this.client = client;
+    }
+
+    public Boolean getClientFeeApplicable() {
+        return clientFeeApplicable;
+    }
+
+    public void setClientFeeApplicable(Boolean clientFeeApplicable) {
+        this.clientFeeApplicable = clientFeeApplicable;
+    }
+
+    public Boolean getDirectClient() {
+        return directClient;
+    }
+
+    public void setDirectClient(Boolean directClient) {
+        this.directClient = directClient;
     }
 
     public String getClientContact() {
@@ -815,6 +842,13 @@ public class ContractDto implements Serializable {
         this.vendorFees = vendorFees;
     }
 
+        public Float getClientFees() {
+        return clientFees;
+    }
+
+    public void setClientFees(Float clientFees) {
+        this.clientFees = clientFees;
+    }
     /**
      * @return the bpmProcessId
      */
