@@ -105,6 +105,15 @@ public class ClientInformationDto implements Serializable {
      */
     protected Address clientLocation;
     /**
+     * clientFeeApplicable
+     */
+    protected Boolean clientFeeApplicable;
+    
+    /**
+     * directClient
+     */
+    protected Boolean directClient;
+    /**
      * Vendor AP Contact
      */
     protected Set<Contact> clientAPContacts;
@@ -408,6 +417,22 @@ public class ClientInformationDto implements Serializable {
 
     public void setClientLocation(Address clientLocation) {
         this.clientLocation = clientLocation;
+    }
+
+    public Boolean getClientFeeApplicable() {
+        return clientFeeApplicable;
+    }
+
+    public void setClientFeeApplicable(Boolean clientFeeApplicable) {
+        this.clientFeeApplicable = clientFeeApplicable;
+    }
+
+    public Boolean getDirectClient() {
+        return directClient;
+    }
+
+    public void setDirectClient(Boolean directClient) {
+        this.directClient = directClient;
     }
 
     public Set<Contact> getClientAPContacts() {
