@@ -1003,6 +1003,8 @@ public class OfficeStartup {
     public Vendor techSysVendor() {
         Vendor techSysVendor = new Vendor();
         techSysVendor.setName("Sstech");
+        techSysVendor.setMsaValDate(new Date());
+        techSysVendor.setMsaExpDate(DateUtils.getNextWeek(new Date(),1));
 
         Address vendorLocation = new Address();
         vendorLocation.setStreet1("2110 wilkes ct");
