@@ -19,6 +19,7 @@ import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.profile.ContactDto;
+import info.yalamanchili.office.dto.profile.SubcontractorDto;
 import info.yalamanchili.office.entity.client.Subcontractor;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
@@ -72,6 +73,24 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
     @Override
     public CRUDDao getDao() {
         return subcontractorDao;
+    }
+    
+    @PUT
+    @Validate
+    @Path("/create")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
+    @CacheEvict(value = OfficeCacheKeys.SUB_CONTRACTOR, allEntries = true)
+    public Subcontractor createSubcontractor(SubcontractorDto subcontractorDto) {
+        Subcontractor subcontractor = mapper.map(subcontractorDto, Subcontractor.class);
+        
+        if(subcontractorDto.getLocation() != null){
+            subcontractor.addLocations(subcontractorDto.getLocation());
+        }
+        if (subcontractorDto.getContact() != null) {
+            Contact contact = contactService.save(subcontractorDto.getContact());
+            subcontractor.addContact(contact);
+        }
+        return super.save(subcontractor);
     }
 
     @GET
