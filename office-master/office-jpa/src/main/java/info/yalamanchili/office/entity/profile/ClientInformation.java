@@ -124,6 +124,17 @@ public class ClientInformation extends AbstractEntity {
     @ForeignKey(name = "FK_ClientLocation_ClientInformations")
     @NotNull(groups = SubmitChecks.class)
     protected Address clientLocation;
+    
+    /**
+     * clientFeeApplicable
+     */
+    protected Boolean clientFeeApplicable;
+    
+    /**
+     * directClient
+     */
+    protected Boolean directClient;
+    
     /**
      * Vendor
      */
@@ -456,6 +467,22 @@ public class ClientInformation extends AbstractEntity {
         this.clientLocation = clientLocation;
     }
 
+    public Boolean getClientFeeApplicable() {
+        return clientFeeApplicable;
+    }
+
+    public void setClientFeeApplicable(Boolean clientFeeApplicable) {
+        this.clientFeeApplicable = clientFeeApplicable;
+    }
+
+    public Boolean getDirectClient() {
+        return directClient;
+    }
+
+    public void setDirectClient(Boolean directClient) {
+        this.directClient = directClient;
+    }
+    
     public Vendor getVendor() {
         return vendor;
     }
