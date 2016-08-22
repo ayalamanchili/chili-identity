@@ -33,6 +33,7 @@ public class UpdateClientPanel extends UpdateComposite {
         assignEntityValueFromField("name", entity);
 //        assignEntityValueFromField("description", entity);
         assignEntityValueFromField("website", entity);
+        assignEntityValueFromField("directClient", entity);                
         assignEntityValueFromField("paymentTerms", entity);
         assignEntityValueFromField("clientinvFrequency", entity);
         assignEntityValueFromField("clientFee", entity);
@@ -64,6 +65,7 @@ public class UpdateClientPanel extends UpdateComposite {
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
 //        assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("website", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("directClient", entity, DataType.BOOLEAN_FIELD);                
         assignFieldValueFromEntity("paymentTerms", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("clientinvFrequency", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("clientFee", entity, DataType.FLOAT_FIELD);
@@ -95,6 +97,7 @@ public class UpdateClientPanel extends UpdateComposite {
         addField("name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
 //        addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("directClient", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);        
         addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("clientinvFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         addField("clientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
