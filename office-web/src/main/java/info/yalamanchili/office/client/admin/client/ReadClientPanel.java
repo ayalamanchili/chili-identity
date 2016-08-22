@@ -58,6 +58,7 @@ public class ReadClientPanel extends ReadComposite {
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
 //        assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("website", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("directClient", entity, DataType.BOOLEAN_FIELD);                
         assignFieldValueFromEntity("paymentTerms", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("clientinvFrequency", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("clientFee", entity, DataType.FLOAT_FIELD);
@@ -82,6 +83,7 @@ public class ReadClientPanel extends ReadComposite {
         addField("name", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
 //        addField("description", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("website", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("directClient", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);                        
         addField("paymentTerms", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("clientinvFrequency", true, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         addField("clientFee", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
