@@ -204,7 +204,7 @@ public class CorporateStatusReportDao extends CRUDDao<CorporateStatusReport> {
         }
         Email email = new Email();
         email.setTos(res);
-        email.setSubject("Weekly status report Not submitted remainder " + timePeriod.describe());
+        email.setSubject("Weekly status report Not submitted reminder " + timePeriod.describe());
         String messageText = "Please submit your weekly status report";
         email.setBody(messageText);
         MessagingService.instance().sendEmail(email);
