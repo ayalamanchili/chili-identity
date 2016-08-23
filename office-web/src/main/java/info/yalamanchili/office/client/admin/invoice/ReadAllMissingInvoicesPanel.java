@@ -80,6 +80,7 @@ public class ReadAllMissingInvoicesPanel extends CRUDReadAllComposite {
     @Override
     public void fillData(JSONArray entities) {
         for (int i = 1; i <= entities.size(); i++) {
+            table.setCellSpacing(5);
             JSONObject entity = (JSONObject) entities.get(i - 1);
             table.setText(i, 1, JSONUtils.toString(entity, "employee"));
             table.setText(i, 2, JSONUtils.toString(entity, "itemNumber"));
