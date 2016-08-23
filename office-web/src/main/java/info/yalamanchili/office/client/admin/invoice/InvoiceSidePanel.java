@@ -14,6 +14,9 @@ import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -23,6 +26,7 @@ import info.chili.gwt.fields.DateField;
 import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.Auth;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -64,7 +68,7 @@ public class InvoiceSidePanel extends ALComposite implements ClickHandler, OpenH
         TabPanel.instance().reportingPanel.sidePanelTop.setHeight("100%");
         invoiceSummaryReportL.setTitle("report with full information of invoices");
         activeSummaryReportL.setTitle("report with full information of invoices");
-        missingInvoiceL.setTitle(" report with missing invoices");
+        missingInvoiceL.setTitle("report with missing invoices");
     }
 
     @Override
@@ -110,12 +114,20 @@ public class InvoiceSidePanel extends ALComposite implements ClickHandler, OpenH
                     new ALAsyncCallback<String>() {
                         @Override
                         public void onResponse(String result) {
+                            if (result == null || JSONParser.parseLenient(result).isObject() == null) {
+                                new ResponseStatusWidget().show("No Results");
+                            } else {
+                                JSONObject resObj = JSONParser.parseLenient(result).isObject();
+                                String key = (String) resObj.keySet().toArray()[0];
+                                JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
+                                TabPanel.instance().reportingPanel.entityPanel.clear();
+                                TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllMissingInvoicesPanel(results));
+                            }
                         }
                     });
         }
 
     }
-    
 
     protected void generateInvoiceInfoReport() {
         HttpService.HttpServiceAsync.instance().doGet(getInvoiceInfoReportUrl(), OfficeWelcome.instance().getHeaders(), true,
