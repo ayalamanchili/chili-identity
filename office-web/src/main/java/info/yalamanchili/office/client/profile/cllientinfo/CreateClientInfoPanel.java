@@ -101,8 +101,8 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         assignEntityValueFromField("consultantJobTitle", clientInfo);
         assignEntityValueFromField("company", clientInfo);
         assignEntityValueFromField("client", clientInfo);
-        assignEntityValueFromField("clientFeeApplicable", clientInfo);
-        assignEntityValueFromField("directClient", clientInfo);        
+//        assignEntityValueFromField("clientFeeApplicable", clientInfo);
+//        assignEntityValueFromField("directClient", clientInfo);        
         assignEntityValueFromField("clientContact", clientInfo);
         assignEntityValueFromField("clientAPContacts", clientInfo);
         assignEntityValueFromField("clientLocation", clientInfo);
@@ -260,8 +260,8 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         entityFieldsPanel.add(getLineSeperatorTag("Client & Vendor Information"));
         addDropDown("client", selectClientWidgetF);
         entityFieldsPanel.add(addClientL);
-        addField("clientFeeApplicable", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-        addField("directClient", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+//        addField("clientFeeApplicable", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+//        addField("directClient", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addDropDown("clientLocation", new SelectClientLocationWidget(false, true, Alignment.HORIZONTAL));
         selectClientAcctPayContact = new SelectClientAcctPayContact(false, false, Alignment.HORIZONTAL) {
             @Override
