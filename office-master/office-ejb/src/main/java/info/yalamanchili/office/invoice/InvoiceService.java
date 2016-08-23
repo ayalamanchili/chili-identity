@@ -190,6 +190,12 @@ public class InvoiceService {
     @Async
     @Transactional
     public void generateMissingInvoiceReport(Date startDate, Date endDate, String email) {
+        List<MissingInvoicesReportDto> missingInvoices = missingInvoiceList(startDate, endDate);
+        String[] columnOrder = new String[]{"employee", "itemNumber", "invFrequency", "missingInvPeriodFrom", "missingInvPeriodTo"};
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(missingInvoices, "Missing Invoices Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
+    }
+
+    public List<MissingInvoicesReportDto> missingInvoiceList(Date startDate, Date endDate) {
         List<MissingInvoicesReportDto> missingInvoices = new ArrayList();
         List<Employee> emps = EmployeeDao.instance().queryAll(0, 1000);
         for (Employee emp : emps) {
@@ -283,8 +289,7 @@ public class InvoiceService {
                 }
             }
         }
-        String[] columnOrder = new String[]{"employee", "itemNumber", "invFrequency", "missingInvPeriodFrom", "missingInvPeriodTo"};
-        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(missingInvoices, "Missing Invoices Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
+        return missingInvoices;
     }
 
     private Map<Date, Invoice> sortInvoicesWRTStartDate(List<Invoice> invoices) {
