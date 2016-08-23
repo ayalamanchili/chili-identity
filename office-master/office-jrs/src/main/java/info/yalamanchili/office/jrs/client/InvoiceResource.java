@@ -12,6 +12,7 @@ import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.office.dao.client.InvoiceDao;
+import info.yalamanchili.office.dao.client.MissingInvoicesReportDto;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
@@ -246,5 +247,12 @@ public class InvoiceResource extends CRUDResource<Invoice> {
     public void generateMissingInvoiceReport(@QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate) {
         String email = currentEmpEmail();
         InvoiceService.instance().generateMissingInvoiceReport(startDate, endDate, email);
+    }
+
+    @GET
+    @Path("/search-missing-invoices/{start}/{limit}")
+    public List<MissingInvoicesReportDto> searchMissingInvoices(@QueryParam("startDate") Date startDate, @QueryParam("endDate") Date endDate) {
+        List<MissingInvoicesReportDto> missingInvoiceList = InvoiceService.instance().missingInvoiceList(startDate, endDate);
+        return missingInvoiceList;
     }
 }
