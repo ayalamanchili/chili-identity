@@ -102,7 +102,7 @@ public class ClientResource extends CRUDResource<Client> {
     @PUT
     @Validate
     @Path("/create")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
     @CacheEvict(value = OfficeCacheKeys.CLIENT, allEntries = true)
     public Client createClient(CreateClientDto createClientDto) {
         Client client = mapper.map(createClientDto, Client.class);
