@@ -483,7 +483,7 @@ public class VendorResource extends CRUDResource<Vendor> {
     @PUT
     @Validate
     @Path("/create")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
     @CacheEvict(value = OfficeCacheKeys.VENDOR, allEntries = true)
     public Vendor createVendor(VendorDto vendorDto) {
         Vendor vendor = mapper.map(vendorDto, Vendor.class);
