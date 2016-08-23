@@ -198,7 +198,7 @@ public class CorporateStatusReportDao extends CRUDDao<CorporateStatusReport> {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "status.report.notificationgroup.dontnot.exist", CORPORATE_STATUS_REPORT_GROUP + " notification group does not exist");
         }
         for (Employee emp : ng.getEmployees()) {
-            if (find(emp, timePeriod.getStartDate(), timePeriod.getEndDate()) == null) {
+            if (emp.isActive() && find(emp, timePeriod.getStartDate(), timePeriod.getEndDate()) == null) {
                 res.add(emp.getPrimaryEmail().getEmail());
             }
         }
