@@ -102,14 +102,14 @@ public class ClientInformation extends AbstractEntity {
      * Client
      */
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @ForeignKey(name = "FK_Client_ClientInformations")
     @NotNull(message = "{client.not.empty.msg}")
     protected Client client;
     /**
      * Client Contact
      */
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @ForeignKey(name = "FK_ClientContact_ClientInformations")
     protected Contact clientContact;
 
@@ -120,7 +120,7 @@ public class ClientInformation extends AbstractEntity {
     /**
      * Client Location
      */
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @ForeignKey(name = "FK_ClientLocation_ClientInformations")
     @NotNull(groups = SubmitChecks.class)
     protected Address clientLocation;
@@ -138,14 +138,14 @@ public class ClientInformation extends AbstractEntity {
     /**
      * Vendor
      */
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @ForeignKey(name = "FK_Vendor_ClientInformations")
     @NotNull(groups = SubmitChecks.class)
     protected Vendor vendor;
     /**
      * Vendor Contact
      */
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @ForeignKey(name = "FK_VendorContact_ClientInformations")
     protected Contact vendorContact;
 
@@ -160,14 +160,14 @@ public class ClientInformation extends AbstractEntity {
     /**
      * Vendor Location
      */
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @ForeignKey(name = "FK_VendorLocation_ClientInformations")
     @NotNull(groups = SubmitChecks.class)
     protected Address vendorLocation;
     /**
      * Employee
      */
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @ForeignKey(name = "FK_Employee_ClientInformations")
     protected Employee employee;
     /**
@@ -243,19 +243,19 @@ public class ClientInformation extends AbstractEntity {
     /**
      * subcontractor
      */
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @ForeignKey(name = "FK_SubCntr_ClientInformations")
     protected Subcontractor subcontractor;
     /**
      * subcontractorContact;
      */
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @ForeignKey(name = "FK_SubCntrContact_ClientInformations")
     protected Contact subcontractorContact;
     /**
      * subcontractor Address
      */
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @ForeignKey(name = "FK_SubCntrLocation_ClientInformations")
     protected Address subcontractorAddress;
     /**
@@ -340,7 +340,7 @@ public class ClientInformation extends AbstractEntity {
     @ForeignKey(name = "FK_VendorRecruiters_ClientInformations")
     protected Set<Contact> vendorRecruiters;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @ForeignKey(name = "FK_MiddleVendor_ClientInformations")
     protected Vendor middleVendor;
 
@@ -355,7 +355,7 @@ public class ClientInformation extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private ClientInformationStatus status;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @ForeignKey(name = "FK_Practice_ClientInformation")
     @NotNull(message = "{practice.not.empty.msg}")
     private Practice practice;
