@@ -5,7 +5,6 @@ package info.yalamanchili.office.client.profile.cllientinfo;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -35,6 +34,8 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
 
     protected boolean active = false;
 
+    protected String empType;
+
     public static ReadAllClientInfoPanel instance() {
         return instance;
     }
@@ -61,12 +62,12 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
     public void preFetchTable(int start) {
         HttpServiceAsync.instance().doGet(getReadAllURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                logger.info("Result with employee is:" + result);
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        logger.info("Result with employee is:" + result);
+                        postFetchTable(result);
+                    }
+                });
     }
 
     @Override
@@ -140,11 +141,11 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
     public void deleteClicked(String entityId) {
         HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                postDeleteSuccess();
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
     }
 
     @Override
@@ -186,8 +187,8 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
                 table.setText(i, 4, FormatUtils.formarCurrency(JSONUtils.toString(entity, "billingRate")));
                 setEnumColumn(i, 5, entity, InvoiceFrequency.class.getSimpleName(), "invoiceFrequency");
             }
-            table.setText(i, 6, DateUtils.formatDate(JSONUtils.toString(entity,"startDate")));
-            table.setText(i, 7, DateUtils.formatDate(JSONUtils.toString(entity,"endDate")));
+            table.setText(i, 6, DateUtils.formatDate(JSONUtils.toString(entity, "startDate")));
+            table.setText(i, 7, DateUtils.formatDate(JSONUtils.toString(entity, "endDate")));
             setEnumColumn(i, 8, entity, ClientInformationStatus.class.getSimpleName(), "status");
         }
     }
@@ -209,11 +210,15 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
 
     @Override
     protected void createButtonClicked() {
-        if (!active) {
+        JSONObject emp = (JSONObject) TreeEmployeePanel.instance().getEntity();
+        JSONObject employeeType = (JSONObject) emp.get("employeeType");
+        empType = employeeType.get("name").isString().stringValue();
+        if (!active && !(empType.equalsIgnoreCase("1099 Contractor") || empType.equalsIgnoreCase("Subcontractor"))) {
             new ResponseStatusWidget().show("CPD Should not be created for deactivated employee's");
         } else {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new CreateClientInfoPanel(CreateComposite.CreateCompositeType.ADD, active));
         }
     }
+
 }
