@@ -39,8 +39,8 @@ public class CreateSubcontractorPanel extends CreateComposite {
 
     CreateAddressWidget createAddressWidget = new CreateAddressWidget(CreateAddressPanel.CreateAddressPanelType.MIN);
     CreateContactWidget createContactWidget = new CreateContactWidget(CreateSubcontractorContactPanel.CreateCompositeType.ADD);
-    HTML primaryLocation = new HTML("<h4 style=\"color:#427fed\">" + "Subcontractor Primary Address </h4>");
-    HTML contact = new HTML("<h4 style=\"color:#427fed\">" + "Subcontractor Contact Information </h4>");
+    HTML primaryLocation = new HTML("<h4 style=\"color:#427fed\">" + "Subcontractor Location </h4>");
+    HTML contact = new HTML("<h4 style=\"color:#427fed\">" + "Subcontractor Recruiter Contact </h4>");
 
     public CreateSubcontractorPanel(CreateComposite.CreateCompositeType type) {
         super(type);

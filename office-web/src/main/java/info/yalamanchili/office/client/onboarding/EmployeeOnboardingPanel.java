@@ -351,7 +351,12 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
 
     @Override
     protected Map<String, BaseField> getChildWidget(int childIndexWidget) {
-        return ((CRUDComposite) emergencyContactsPanels.get(childIndexWidget)).fields;
+        Map<String, BaseField> emergContactFields = ((CRUDComposite) emergencyContactsPanels.get(childIndexWidget)).fields;
+        Map<String, BaseField> dependentFields = ((CRUDComposite) dependentsPanels.get(childIndexWidget)).fields;
+        for (String key : dependentFields.keySet()) {
+            emergContactFields.put(key, dependentFields.get(key));
+        }
+        return emergContactFields;
     }
 
     protected void uploadDocs(String postString) {
@@ -500,7 +505,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
             if (!number.matches("[0-9]*")) {
                 phoneNumberF.setMessage("Invalid Phone Number");
                 valid = false;
-            }else if(number.length()!=10){
+            } else if (number.length() != 10) {
                 phoneNumberF.setMessage("PhoneNumber must be in 10 characters long");
             }
         }
