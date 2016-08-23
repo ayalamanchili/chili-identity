@@ -78,7 +78,7 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
     @PUT
     @Validate
     @Path("/create")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
     @CacheEvict(value = OfficeCacheKeys.SUB_CONTRACTOR, allEntries = true)
     public Subcontractor createSubcontractor(SubcontractorDto subcontractorDto) {
         Subcontractor subcontractor = mapper.map(subcontractorDto, Subcontractor.class);
