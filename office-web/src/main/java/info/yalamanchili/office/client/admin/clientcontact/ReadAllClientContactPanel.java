@@ -20,6 +20,7 @@ import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.yalamanchili.office.client.profile.contact.ReadContactPanel;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.FormatUtils;
 import java.util.logging.Logger;
 
 /**
@@ -72,6 +73,7 @@ public class ReadAllClientContactPanel extends CRUDReadAllComposite {
         table.setText(0, 3, getKeyValue("Last Name"));
         table.setText(0, 4, getKeyValue("Email"));
         table.setText(0, 5, getKeyValue("Sex"));
+        table.setText(0, 6, getKeyValue("Phone Number"));
 
     }
 
@@ -79,12 +81,21 @@ public class ReadAllClientContactPanel extends CRUDReadAllComposite {
     public void fillData(JSONArray entities) {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
+            JSONObject phones;
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "firstName"));
             table.setText(i, 2, JSONUtils.toString(entity, "middleInitial"));
             table.setText(i, 3, JSONUtils.toString(entity, "lastName"));
             table.setText(i, 4, JSONUtils.toString(entity, "email"));
             table.setText(i, 5, JSONUtils.toString(entity, "sex"));
+            if (entity.get("phones") instanceof JSONObject) {
+                phones = (JSONObject) entity.get("phones");
+                table.setText(i, 6, FormatUtils.formatPhoneNumber(JSONUtils.toString(phones, "phoneNumber")));
+            } else if (entity.get("phones") instanceof JSONArray) {
+                JSONArray phonesArray = (JSONArray) entity.get("phones");
+                phones = (JSONObject) phonesArray.get(0);
+                table.setText(i, 6, FormatUtils.formatPhoneNumber(JSONUtils.toString(phones, "phoneNumber")));
+            }
         }
     }
 
