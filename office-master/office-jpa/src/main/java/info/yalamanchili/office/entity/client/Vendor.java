@@ -26,7 +26,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
@@ -96,10 +95,8 @@ public class Vendor extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     protected InvoiceDeliveryMethod vendorinvDeliveryMethod;
     @Temporal(TemporalType.DATE)
-    @NotNull(message = "{vendor.msaValDate.not.null.msg}")
     protected Date msaValDate;
     @Temporal(TemporalType.DATE)
-    @NotNull(message = "{vendor.msaExpDate.not.null.msg}")
     protected Date msaExpDate;
     protected Float vendorFees;
     protected BigDecimal minFees;
