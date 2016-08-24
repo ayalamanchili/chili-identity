@@ -18,27 +18,27 @@ and open the template in the editor.
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
     
-    <changeSet author="rlukalapu" id="add-fields-to-vendor">
+    <changeSet author="rlukalapu" id="add-new-fields-to-client">
         <preConditions onFail="WARN"> 
         </preConditions>
         <addColumn catalogName="office"
                    schemaName="public"
-                   tableName="vendor">
+                   tableName="client">
             <column name="clientInvDeliveryMethod" type="varchar(255)"/>
         </addColumn>
         <addColumn catalogName="office"
                    schemaName="public"
-                   tableName="vendor_aud">
+                   tableName="client_aud">
             <column name="clientInvDeliveryMethod" type="varchar(255)"/>
         </addColumn>
         <addColumn catalogName="office"
                    schemaName="public"
-                   tableName="vendor">
+                   tableName="client">
             <column name="terminationNoticePeriod" type="int"/>
         </addColumn>
         <addColumn catalogName="office"
                    schemaName="public"
-                   tableName="vendor_aud">
+                   tableName="client_aud">
             <column name="terminationNoticePeriod" type="int"/>
         </addColumn>
         </changeSet>
