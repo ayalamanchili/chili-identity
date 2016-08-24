@@ -263,13 +263,13 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
             timePanel.entityPanel.add(new CorporateTimeSummaryPanel());
             timePanel.entityPanel.add(new ReadAllCorporateTimeSheetPanel());
             timePanel.entityPanel.add(new ReadCurrentCorpLeavesPanel());
+            if (Auth.hasAnyOfRoles(ROLE.ROLE_CONSULTANT_TIME_ADMIN)) {
+                timePanel.entityPanel.add(new ReadCurrentConsultantLeavesPanel());
+            }
         } else if (Auth.isConsultantEmployee()) {
             timePanel.sidePanelTop.add(new ConsultantTimeSummarySidePanel());
             timePanel.entityPanel.add(new ConsultantTimeSummaryPanel());
             timePanel.entityPanel.add(new ReadAllConsultantTimeSheetsPanel());
-            if (Auth.hasAnyOfRoles(ROLE.ROLE_CONSULTANT_TIME_ADMIN)) {
-                timePanel.entityPanel.add(new ReadCurrentConsultantLeavesPanel());
-            }
         }
         timePanel.entityTitlePanel.add(new TimeMenu());
     }

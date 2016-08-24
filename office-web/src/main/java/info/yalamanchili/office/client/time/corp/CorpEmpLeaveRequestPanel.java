@@ -29,6 +29,7 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.MultiSelectSuggestBox;
 import info.yalamanchili.office.client.time.LeaveRequestAdminTimeCategory;
 import info.yalamanchili.office.client.time.TimeSheetStatus;
+import info.yalamanchili.office.client.time.consultant.ReadCurrentConsultantLeavesPanel;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -98,6 +99,9 @@ public class CorpEmpLeaveRequestPanel extends CreateComposite {
         TabPanel.instance().getTimePanel().entityPanel.add(new CorporateTimeSummaryPanel());
         TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel());
         TabPanel.instance().getTimePanel().entityPanel.add(new ReadCurrentCorpLeavesPanel());
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CONSULTANT_TIME_ADMIN)) {
+            TabPanel.instance().getTimePanel().entityPanel.add(new ReadCurrentConsultantLeavesPanel());
+        }
     }
 
     @Override

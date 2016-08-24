@@ -14,7 +14,6 @@ import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
-import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -34,12 +33,12 @@ public class ReadCurrentConsultantLeavesPanel extends Composite {
                     @Override
                     public void onResponse(String result) {
                         if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                            panel.add(new ReadAllConsultantTimeSheetsPanel("Employees on Leave", new JSONArray(), true));
+                            panel.add(new ReadAllConsultantTimeSheetsPanel("Consultant Employees on Leave", new JSONArray(), true));
                         } else {
                             JSONObject resObj = JSONParser.parseLenient(result).isObject();
                             String key = (String) resObj.keySet().toArray()[0];
                             JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-                            panel.add(new ReadAllConsultantTimeSheetsPanel("Employees on Leave", results, true));
+                            panel.add(new ReadAllConsultantTimeSheetsPanel("Consultant Employees on Leave", results, true));
                         }
                     }
                 });
