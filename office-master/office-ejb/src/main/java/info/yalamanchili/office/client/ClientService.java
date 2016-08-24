@@ -37,18 +37,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Scope("request")
 public class ClientService {
-    
+
     @Async
     @Transactional
-    public void generateClientInfoReport(String email){
+    public void generateClientInfoReport(String email) {
         List<ClientMasterReportDto> res = new ArrayList();
         for (Client ci : ClientDao.instance().query(0, 2000)) {
             res.add(populateClientInfo(ci));
         }
-        String[] columnOrder = new String[]{"clientName", "webSite", "clientLocations", "recruiterContact", "acctPayContact"};
+        String[] columnOrder = new String[]{"clientName", "webSite", "clientInvDeliveryMethod", "terminationNoticePeriod", "clientLocations", "recruiterContact", "acctPayContact"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Client Summary Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
-    
+
     @Async
     @Transactional
     public void generateActiveClientsInfoReport(String email) {
@@ -78,7 +78,7 @@ public class ClientService {
             dtoss.setEmployeeType(ci.getEmployee().getEmployeeType().getName());
             dtos.add(dtoss);
         }
-        String[] columnOrder = new String[]{"employeeName", "employeeType", "clientName", "webSite", "clientLocations", "recruiterContact", "acctPayContact"};
+        String[] columnOrder = new String[]{"employeeName", "employeeType", "clientName", "webSite", "clientInvDeliveryMethod", "terminationNoticePeriod", "clientLocations", "recruiterContact", "acctPayContact"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(dtos, "Active Clients Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
 
     }
@@ -88,6 +88,12 @@ public class ClientService {
         dto.setClientName(ci.getName());
         if (ci.getWebsite() != null) {
             dto.setWebSite(ci.getWebsite());
+        }
+        if (ci.getClientInvDeliveryMethod() != null) {
+            dto.setClientInvDeliveryMethod(ci.getClientInvDeliveryMethod().name().toLowerCase().replaceAll("_", " "));
+        }
+        if (ci.getTerminationNoticePeriod() != null) {
+            dto.setTerminationNoticePeriod(ci.getTerminationNoticePeriod().toString());
         }
         // for getting client locations
         if (ci.getLocations().size() > 0) {
@@ -196,9 +202,9 @@ public class ClientService {
 
         return dto;
     }
-    
+
     public static ClientService instance() {
         return SpringContext.getBean(ClientService.class);
     }
-    
+
 }

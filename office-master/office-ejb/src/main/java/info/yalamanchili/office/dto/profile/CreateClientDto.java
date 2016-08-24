@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.dto.profile;
 
+import info.yalamanchili.office.entity.client.InvoiceDeliveryMethod;
 import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import info.yalamanchili.office.entity.profile.Address;
 import java.io.Serializable;
@@ -25,12 +26,13 @@ import org.hibernate.validator.constraints.NotEmpty;
  */
 @XmlRootElement(name = "CreateClient")
 @XmlType
-public class CreateClientDto implements Serializable{
+public class CreateClientDto implements Serializable {
+
     protected Long id;
-     
+
     @NotEmpty(message = "{client.not.empty.msg}")
     protected String name;
-    
+
     protected String description;
     protected String website;
     protected Boolean directClient;
@@ -42,11 +44,14 @@ public class CreateClientDto implements Serializable{
     protected Float clientFee;
     protected BigDecimal maxClientFee;
     protected BigDecimal minClientFee;
-    
+
     protected Address location;
     protected ContactDto contact;
     protected ContactDto clientAcctPayContact;
-    
+    @Enumerated(EnumType.STRING)
+    protected InvoiceDeliveryMethod clientInvDeliveryMethod;
+    protected Integer terminationNoticePeriod;
+
     public Long getId() {
         return id;
     }
@@ -100,7 +105,7 @@ public class CreateClientDto implements Serializable{
     public void setMsaValDate(Date msaValDate) {
         this.msaValDate = msaValDate;
     }
-    
+
     /**
      * @return the msaExpDate
      */
@@ -115,7 +120,6 @@ public class CreateClientDto implements Serializable{
         this.msaExpDate = msaExpDate;
     }
 
-    
     public String getPaymentTerms() {
         return paymentTerms;
     }
@@ -179,11 +183,26 @@ public class CreateClientDto implements Serializable{
     public void setLocation(Address location) {
         this.location = location;
     }
-    
+
+    public InvoiceDeliveryMethod getClientInvDeliveryMethod() {
+        return clientInvDeliveryMethod;
+    }
+
+    public void setClientInvDeliveryMethod(InvoiceDeliveryMethod clientInvDeliveryMethod) {
+        this.clientInvDeliveryMethod = clientInvDeliveryMethod;
+    }
+
+    public Integer getTerminationNoticePeriod() {
+        return terminationNoticePeriod;
+    }
+
+    public void setTerminationNoticePeriod(Integer terminationNoticePeriod) {
+        this.terminationNoticePeriod = terminationNoticePeriod;
+    }
+
     @Override
     public String toString() {
         return "Create Client{" + "name=" + name + ", description=" + description + '}';
     }
 
-    
 }

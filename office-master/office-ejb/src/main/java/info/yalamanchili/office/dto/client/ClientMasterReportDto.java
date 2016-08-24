@@ -25,6 +25,8 @@ public class ClientMasterReportDto implements Serializable {
     protected String acctPayContact;
     protected String employeeName;
     protected String employeeType;
+    protected String clientInvDeliveryMethod;
+    protected String terminationNoticePeriod;
 
     public String getClientName() {
         return clientName;
@@ -82,4 +84,19 @@ public class ClientMasterReportDto implements Serializable {
         this.employeeType = employeeType;
     }
 
+    public String getClientInvDeliveryMethod() {
+        return clientInvDeliveryMethod;
+    }
+
+    public void setClientInvDeliveryMethod(String clientInvDeliveryMethod) {
+        this.clientInvDeliveryMethod = clientInvDeliveryMethod;
+    }
+
+    public String getTerminationNoticePeriod() {
+        return terminationNoticePeriod;
+    }
+
+    public void setTerminationNoticePeriod(String terminationNoticePeriod) {
+        this.terminationNoticePeriod = terminationNoticePeriod;
+    }
 }
