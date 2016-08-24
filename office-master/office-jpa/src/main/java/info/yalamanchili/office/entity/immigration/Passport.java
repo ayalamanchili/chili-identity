@@ -48,6 +48,7 @@ public class Passport extends AbstractHandleEntity {
    
     
     @Temporal(javax.persistence.TemporalType.DATE)
+    @NotNull(message = "{dateOfBirth.not.empty.msg}")
     protected Date dateOfBirth;
     
     
