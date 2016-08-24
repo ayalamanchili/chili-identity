@@ -23,7 +23,7 @@ public class HealthInsuranceReportDto implements Serializable {
 
     protected String year;
 
-    protected Boolean enrolled;
+    protected String enrolled;
 
     protected Date startDate;
 
@@ -66,16 +66,15 @@ public class HealthInsuranceReportDto implements Serializable {
     /**
      * @return the enrolled
      */
-    public Boolean getEnrolled() {
+    public String getEnrolled() {
         return enrolled;
     }
 
     /**
      * @param enrolled the enrolled to set
      */
-    public void setEnrolled(Boolean enrolled) {
+    public void setEnrolled(String enrolled) {
         this.enrolled = enrolled;
     }
 
-   
 }

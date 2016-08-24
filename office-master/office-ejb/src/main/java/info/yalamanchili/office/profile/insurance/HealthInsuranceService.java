@@ -28,6 +28,7 @@ import static info.yalamanchili.office.entity.profile.insurance.InsuranceCoverag
 import static info.yalamanchili.office.entity.profile.insurance.InsuranceCoverageType.Tricare;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.ws.rs.core.Response;
@@ -131,15 +132,33 @@ public class HealthInsuranceService {
     public List<HealthInsuranceReportDto> getHealthInsuranceReport(String year) {
         List<HealthInsuranceReportDto> report = new ArrayList<>();
         for (Employee emp : EmployeeDao.instance().getEmployeesByType(EmployeeType.CORPORATE_EMPLOYEE, EmployeeType.EMPLOYEE, EmployeeType.INTERN_SEASONAL_EMPLOYEE)) {
-            HealthInsuranceReportDto dto = new HealthInsuranceReportDto();
-            dto.setEmployee(emp.getFirstName() + " " + emp.getLastName());
-            HealthInsurance insurance = new HealthInsurance();
-            dto.setEnrolled(insurance.getEnrolled());
-            dto.setStartDate(insurance.getHealthInsuranceWaiver().getSubmittedDate());
-            if (insurance.getInsuranceEnrollment().getYear() != null) {
-                dto.setYear(insurance.getInsuranceEnrollment().getYear());
+            List<HealthInsurance> insurances = healthInsuranceDao.queryForEmployee(emp.getId(), 0, 50);
+            if (insurances != null && insurances.size() > 0) {
+                for (HealthInsurance insurance : insurances) {
+                    HealthInsuranceReportDto dto = new HealthInsuranceReportDto();
+                    if (insurance.getInsuranceEnrollment() != null && year.equals(insurance.getInsuranceEnrollment().getYear())) {
+                        dto.setEmployee(emp.getFirstName() + " " + emp.getLastName());
+                        if (insurance.getEnrolled()) {
+                            dto.setEnrolled("Enrolled");
+                        } else {
+                            dto.setEnrolled("Not Enrolled");
+                        }
+                        //dto.setStartDate(insurance.getHealthInsuranceWaiver().getSubmittedDate());
+                        dto.setYear(insurance.getInsuranceEnrollment().getYear());
+                        report.add(dto);
+                    } else if (insurance.getInsuranceEnrollment() == null) {
+                        dto.setEmployee(emp.getFirstName() + " " + emp.getLastName());
+                        if (insurance.getEnrolled()) {
+                            dto.setEnrolled("Enrolled");
+                        } else {
+                            dto.setEnrolled("Not Enrolled");
+                        }
+                        dto.setStartDate(insurance.getHealthInsuranceWaiver().getSubmittedDate());
+                        dto.setYear(new SimpleDateFormat("MM/dd/yyyy").format(new Date()).split("/")[2]);
+                        report.add(dto);
+                    }
+                }
             }
-            report.add(dto);
         }
         return report;
     }

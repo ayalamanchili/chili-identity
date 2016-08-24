@@ -44,7 +44,7 @@ public class RetirementPlanOptInSidePanal extends ALComposite implements ClickHa
 
     protected Button generateRepB = new Button("Generate");
     protected Button viewRepB = new Button("View");
-    EnumField yearsF = new EnumField(OfficeWelcome.constants, "otherCarrierType", "HealthInsuranceWaiver", false, false, HealthInsuranceYear.getyears().toArray(new String[0]));
+    EnumField yearsF = new EnumField(OfficeWelcome.constants, "year", "HealthInsuranceWaiver", false, false, HealthInsuranceYear.getyears().toArray(new String[0]));
 
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false);
 
@@ -80,8 +80,8 @@ public class RetirementPlanOptInSidePanal extends ALComposite implements ClickHa
     @Override
     protected void addWidgets() {
         panel.add(retirementplanReportL);
-        panel.add(employeeSB);
         panel.add(yearsF);
+        panel.add(employeeSB);
         panel.add(generateRepB);
         panel.add(viewRepB);
     }
@@ -119,7 +119,11 @@ public class RetirementPlanOptInSidePanal extends ALComposite implements ClickHa
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
-                        new ResponseStatusWidget().show("Report will be emailed to your primary email");
+                        if (result == null || JSONParser.parseLenient(result).isObject().size() == 0) {
+                            new ResponseStatusWidget().show("No Results");
+                        } else {
+                            new ResponseStatusWidget().show("Report will be emailed to your primary email");
+                        }
                     }
                 });
     }
@@ -129,11 +133,16 @@ public class RetirementPlanOptInSidePanal extends ALComposite implements ClickHa
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
-                        TabPanel.instance().reportingPanel.entityPanel.clear();
-                        JSONObject resObj = JSONParser.parseLenient(result).isObject();
-                        String key = (String) resObj.keySet().toArray()[0];
-                        JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-                        TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllHealthInsuranceReportPanel(results));
+                        if (result == null || JSONParser.parseLenient(result).isObject().size() == 0) {
+                            new ResponseStatusWidget().show("No Results");
+                        } else {
+                            TabPanel.instance().reportingPanel.entityPanel.clear();
+                            JSONObject resObj = JSONParser.parseLenient(result).isObject();
+                            String key = (String) resObj.keySet().toArray()[0];
+                            JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
+                            TabPanel.instance().reportingPanel.entityPanel.clear();
+                            TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllHealthInsuranceReportPanel(results));
+                        }
                     }
                 });
     }

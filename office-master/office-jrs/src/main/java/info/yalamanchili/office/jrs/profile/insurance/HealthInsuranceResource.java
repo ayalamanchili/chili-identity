@@ -11,6 +11,7 @@ package info.yalamanchili.office.jrs.profile.insurance;
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.chili.reporting.ReportGenerator;
+import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.insurance.HealthInsuranceDao;
 import info.yalamanchili.office.dao.profile.insurance.HealthInsuranceWaiverDao;
@@ -131,12 +132,13 @@ public class HealthInsuranceResource extends CRUDResource<HealthInsurance> {
 
     @GET
     @Path("/insurance-report")
-    public void employeeHealthInsuranceReport(@QueryParam("year") String year) {
+    public List<HealthInsuranceReportDto> employeeHealthInsuranceReport(@QueryParam("year") String year) {
         List<HealthInsuranceReportDto> report = new ArrayList<>();
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
         report = healthInsuranceService.getHealthInsuranceReport(year);
-        String[] columnOrder = new String[]{"employee", "year", "startDate", "stage"};
+        String[] columnOrder = new String[]{"employee", "year", "startDate", "enrolled"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(report, " HealthInsurance-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), emp.getPrimaryEmail().getEmail());
+        return report;
     }
 
     @GET

@@ -5,7 +5,6 @@
  */
 package info.yalamanchili.office.client.profile.insurance;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.crud.CRUDReadAllComposite;
@@ -53,7 +52,7 @@ public class ReadAllHealthInsuranceReportPanel extends CRUDReadAllComposite {
         table.setText(0, 0, getKeyValue("Employee"));
         table.setText(0, 1, getKeyValue("StartDate"));
         table.setText(0, 2, getKeyValue("Year"));
-        table.setText(0, 6, getKeyValue("Stage"));
+        table.setText(0, 3, getKeyValue("Enrolled"));
     }
 
     @Override
@@ -62,9 +61,9 @@ public class ReadAllHealthInsuranceReportPanel extends CRUDReadAllComposite {
             table.setCellSpacing(5);
             JSONObject entity = (JSONObject) entities.get(i - 1);
             table.setText(i, 0, JSONUtils.toString(entity, "employee"));
-            table.setText(i, 1, getFormattedDate(DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT)));
+            table.setText(i, 1, DateUtils.formatDate(JSONUtils.toString(entity, "startDate")));
             table.setText(i, 2, JSONUtils.toString(entity, "year"));
-            table.setText(i, 6, JSONUtils.toString(entity, "enrolled"));
+            table.setText(i, 3, JSONUtils.toString(entity, "enrolled"));
         }
     }
 
@@ -77,12 +76,4 @@ public class ReadAllHealthInsuranceReportPanel extends CRUDReadAllComposite {
         return false;
     }
 
-    private String getFormattedDate(String date) {
-        String[] dates = date.split("-");
-        String formatteddate = "";
-        formatteddate = formatteddate.concat(dates[dates.length - 2]).concat("/");
-        formatteddate = formatteddate.concat(dates[dates.length - 1]).concat("/");
-        formatteddate = formatteddate.concat(dates[0]);
-        return formatteddate;
-    }
 }
