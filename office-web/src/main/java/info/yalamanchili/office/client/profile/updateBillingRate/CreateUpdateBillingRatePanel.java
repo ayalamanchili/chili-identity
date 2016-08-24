@@ -13,7 +13,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
-import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
@@ -172,15 +171,15 @@ public class CreateUpdateBillingRatePanel extends UpdateComposite {
 
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
-        if (entity.get("billingRate") == null || entity.get("subContractorPayRate") == null) {
-            if (entity.get("billingRate") == null) {
-                fields.get("billingRate").setMessage("BillRate can not be null");
-                return false;
-            } 
-            
+        if (entity.get("billingRate") == null) {
+            fields.get("billingRate").setMessage("BillRate can not be null");
+            return false;
+        }
+        if (isSubOr1099 == true && entity.get("subContractorPayRate") == null) {
+            fields.get("subContractorPayRate").setMessage("SubContractor PayRate can not be null");
+            return false;
         }
         return true;
-
     }
 
     @Override
