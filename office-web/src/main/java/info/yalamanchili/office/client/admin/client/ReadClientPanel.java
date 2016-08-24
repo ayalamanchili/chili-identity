@@ -17,6 +17,7 @@ import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.profile.cllientinfo.InvoiceDeliveryMethod;
 
 /**
  *
@@ -58,7 +59,7 @@ public class ReadClientPanel extends ReadComposite {
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
 //        assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("website", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("directClient", entity, DataType.BOOLEAN_FIELD);                
+        assignFieldValueFromEntity("directClient", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("paymentTerms", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("clientinvFrequency", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("clientFee", entity, DataType.FLOAT_FIELD);
@@ -66,6 +67,8 @@ public class ReadClientPanel extends ReadComposite {
 //        assignFieldValueFromEntity("minClientFee", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("msaValDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("msaExpDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("clientInvDeliveryMethod", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("terminationNoticePeriod", entity, DataType.INTEGER_FIELD);
     }
 
     @Override
@@ -83,14 +86,16 @@ public class ReadClientPanel extends ReadComposite {
         addField("name", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
 //        addField("description", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("website", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("directClient", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);                        
+        addField("directClient", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("paymentTerms", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("clientinvFrequency", true, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+        addEnumField("clientInvDeliveryMethod", true, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
         addField("clientFee", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
 //        addField("maxClientFee", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
 //        addField("minClientFee", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("msaValDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("msaExpDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("terminationNoticePeriod", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
@@ -103,7 +108,7 @@ public class ReadClientPanel extends ReadComposite {
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "client/" + entityId;
     }
-    
+
     @Override
     protected boolean enableAudit() {
         return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN);
@@ -113,12 +118,12 @@ public class ReadClientPanel extends ReadComposite {
     protected String getAuditUrl() {
         return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.client.Client" + "/" + getEntityId();
     }
-    
+
     @Override
-   protected boolean enableBack() {
-       return true;
-   }
-    
+    protected boolean enableBack() {
+        return true;
+    }
+
     @Override
     protected ReadAllComposite getReadAllPanel() {
         return ReadAllClientsPanel.instance;

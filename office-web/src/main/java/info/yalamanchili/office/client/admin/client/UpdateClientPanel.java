@@ -17,6 +17,7 @@ import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.yalamanchili.office.client.profile.cllientinfo.InvoiceDeliveryMethod;
 
 /**
  *
@@ -33,7 +34,7 @@ public class UpdateClientPanel extends UpdateComposite {
         assignEntityValueFromField("name", entity);
 //        assignEntityValueFromField("description", entity);
         assignEntityValueFromField("website", entity);
-        assignEntityValueFromField("directClient", entity);                
+        assignEntityValueFromField("directClient", entity);
         assignEntityValueFromField("paymentTerms", entity);
         assignEntityValueFromField("clientinvFrequency", entity);
         assignEntityValueFromField("clientFee", entity);
@@ -41,6 +42,8 @@ public class UpdateClientPanel extends UpdateComposite {
 //        assignEntityValueFromField("minClientFee", entity);
         assignEntityValueFromField("msaValDate", entity);
         assignEntityValueFromField("msaExpDate", entity);
+        assignEntityValueFromField("clientInvDeliveryMethod", entity);
+        assignEntityValueFromField("terminationNoticePeriod", entity);
         return entity;
     }
 
@@ -65,7 +68,7 @@ public class UpdateClientPanel extends UpdateComposite {
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
 //        assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("website", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("directClient", entity, DataType.BOOLEAN_FIELD);                
+        assignFieldValueFromEntity("directClient", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("paymentTerms", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("clientinvFrequency", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("clientFee", entity, DataType.FLOAT_FIELD);
@@ -73,6 +76,8 @@ public class UpdateClientPanel extends UpdateComposite {
 //        assignFieldValueFromEntity("minClientFee", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("msaValDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("msaExpDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("clientInvDeliveryMethod", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("terminationNoticePeriod", entity, DataType.INTEGER_FIELD);
     }
 
     @Override
@@ -97,14 +102,16 @@ public class UpdateClientPanel extends UpdateComposite {
         addField("name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
 //        addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("directClient", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);        
+        addField("directClient", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("clientinvFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+        addEnumField("clientInvDeliveryMethod", false, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
         addField("clientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
 //        addField("maxClientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
 //        addField("minClientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("msaValDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("msaExpDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("terminationNoticePeriod", false, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 

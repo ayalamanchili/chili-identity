@@ -29,6 +29,7 @@ import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.admin.clientcontact.CreateClientContactPanel;
 import info.yalamanchili.office.client.profile.address.CreateAddressPanel;
 import info.yalamanchili.office.client.profile.address.CreateAddressWidget;
+import info.yalamanchili.office.client.profile.cllientinfo.InvoiceDeliveryMethod;
 import info.yalamanchili.office.client.profile.contact.CreateContactWidget;
 import info.yalamanchili.office.client.profile.phone.CreatePhonePanel;
 import java.util.logging.Logger;
@@ -62,7 +63,7 @@ public class CreateClientPanel extends CreateComposite {
         assignEntityValueFromField("name", clnt);
 //        assignEntityValueFromField("description", clnt);
         assignEntityValueFromField("website", clnt);
-        assignEntityValueFromField("directClient", clnt);        
+        assignEntityValueFromField("directClient", clnt);
         assignEntityValueFromField("paymentTerms", clnt);
         assignEntityValueFromField("clientinvFrequency", clnt);
         assignEntityValueFromField("clientFee", clnt);
@@ -70,7 +71,8 @@ public class CreateClientPanel extends CreateComposite {
 //        assignEntityValueFromField("minClientFee", clnt);
         assignEntityValueFromField("msaValDate", clnt);
         assignEntityValueFromField("msaExpDate", clnt);
-
+        assignEntityValueFromField("clientInvDeliveryMethod", clnt);
+        assignEntityValueFromField("terminationNoticePeriod", clnt);
         if (createAddressWidget != null) {
             clnt.put("location", createAddressWidget.populateEntityFromFields());
         }
@@ -133,18 +135,18 @@ public class CreateClientPanel extends CreateComposite {
         addField("name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
 //        addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("directClient", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);                
+        addField("directClient", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("clientinvFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+        addEnumField("clientInvDeliveryMethod", false, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
         addField("clientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
 //        addField("maxClientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
 //        addField("minClientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("msaValDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("msaExpDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-
+        addField("terminationNoticePeriod", false, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(primaryLocation);
         entityFieldsPanel.add(createAddressWidget);
-
         entityFieldsPanel.add(addRecruiterContact);
         entityFieldsPanel.add(addAcntPybleContact);
         alignFields();
