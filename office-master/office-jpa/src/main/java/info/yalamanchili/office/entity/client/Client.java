@@ -75,6 +75,9 @@ public class Client extends AbstractEntity {
     protected Float clientFee;
     protected BigDecimal maxClientFee;
     protected BigDecimal minClientFee;
+    @Enumerated(EnumType.STRING)
+    protected InvoiceDeliveryMethod clientInvDeliveryMethod;
+    protected Integer terminationNoticePeriod;
 
     public Float getClientFee() {
         return clientFee;
@@ -99,7 +102,7 @@ public class Client extends AbstractEntity {
     public void setMinClientFee(BigDecimal minClientFee) {
         this.minClientFee = minClientFee;
     }
-    
+
     public void setVendors(Set<Vendor> vendors) {
         this.vendors = vendors;
     }
@@ -128,8 +131,6 @@ public class Client extends AbstractEntity {
         this.directClient = directClient;
     }
 
-    
-    
     public String getName() {
         return name;
     }
@@ -213,7 +214,6 @@ public class Client extends AbstractEntity {
         this.website = website;
     }
 
-    
     /**
      * @return the msaValDate
      */
@@ -228,7 +228,6 @@ public class Client extends AbstractEntity {
         this.msaValDate = msaValDate;
     }
 
-    
     /**
      * @return the msaExpDate
      */
@@ -242,7 +241,7 @@ public class Client extends AbstractEntity {
     public void setMsaExpDate(Date msaExpDate) {
         this.msaExpDate = msaExpDate;
     }
-    
+
     public String getPaymentTerms() {
         return paymentTerms;
     }
@@ -257,6 +256,22 @@ public class Client extends AbstractEntity {
 
     public void setClientinvFrequency(InvoiceFrequency clientinvFrequency) {
         this.clientinvFrequency = clientinvFrequency;
+    }
+
+    public InvoiceDeliveryMethod getClientInvDeliveryMethod() {
+        return clientInvDeliveryMethod;
+    }
+
+    public void setClientInvDeliveryMethod(InvoiceDeliveryMethod clientInvDeliveryMethod) {
+        this.clientInvDeliveryMethod = clientInvDeliveryMethod;
+    }
+
+    public Integer getTerminationNoticePeriod() {
+        return terminationNoticePeriod;
+    }
+
+    public void setTerminationNoticePeriod(Integer terminationNoticePeriod) {
+        this.terminationNoticePeriod = terminationNoticePeriod;
     }
 
     @Override
