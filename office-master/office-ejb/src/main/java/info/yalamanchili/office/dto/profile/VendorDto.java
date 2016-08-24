@@ -47,6 +47,8 @@ public class VendorDto implements Serializable {
     @Temporal(TemporalType.DATE)
     @NotNull(message = "{vendor.msaExpDate.not.null.msg}")
     protected Date msaExpDate;
+    @NotEmpty(message = "{vendor.terminationNotice.not.empty.msg}")
+    protected String terminationNotice;
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date coiEndDate;
     protected String paymentTerms;
@@ -166,6 +168,20 @@ public class VendorDto implements Serializable {
         this.msaExpDate = msaExpDate;
     }
 
+    /**
+     * @return the terminationNotice
+     */
+    public String getTerminationNotice() {
+        return terminationNotice;
+    }
+
+    /**
+     * @param terminationNotice the terminationNotice to set
+     */
+    public void setTerminationNotice(String terminationNotice) {
+        this.terminationNotice = terminationNotice;
+    }
+    
     /**
      * @return the coiEndDate
      */
