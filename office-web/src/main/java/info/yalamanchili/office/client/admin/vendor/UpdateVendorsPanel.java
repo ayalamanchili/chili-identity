@@ -116,6 +116,7 @@ public class UpdateVendorsPanel extends UpdateComposite {
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("vendorType", false, false, VendorType.names(), Alignment.HORIZONTAL);
         addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(submitForUpdateP);
         addEnumField("vendorinvFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
@@ -127,8 +128,8 @@ public class UpdateVendorsPanel extends UpdateComposite {
         addField("minFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("msaValDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("msaExpDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("terminationNotice", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
 //        addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addEnumField("vendorType", false, false, VendorType.names(), Alignment.HORIZONTAL);
         addField("coiEndDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
