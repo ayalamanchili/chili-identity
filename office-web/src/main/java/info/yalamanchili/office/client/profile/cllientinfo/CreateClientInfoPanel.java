@@ -48,6 +48,7 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.fields.FileuploadField;
+import info.chili.gwt.fields.FloatField;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
@@ -93,7 +94,9 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     EnumField servicesF;
     EnumField sectorsF;
     DateField endDateF;
+    FloatField clientFee;
     BooleanField isEndDateConfirmedF;
+    BooleanField isClientFeeApplicable;
 
     @Override
     protected JSONObject populateEntityFromFields() {
@@ -101,8 +104,9 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         assignEntityValueFromField("consultantJobTitle", clientInfo);
         assignEntityValueFromField("company", clientInfo);
         assignEntityValueFromField("client", clientInfo);
-//        assignEntityValueFromField("clientFeeApplicable", clientInfo);
-//        assignEntityValueFromField("directClient", clientInfo);        
+        assignEntityValueFromField("clientFeeApplicable", clientInfo);
+        assignEntityValueFromField("clientFee", clientInfo);        
+        assignEntityValueFromField("directClient", clientInfo);        
         assignEntityValueFromField("clientContact", clientInfo);
         assignEntityValueFromField("clientAPContacts", clientInfo);
         assignEntityValueFromField("clientLocation", clientInfo);
@@ -226,6 +230,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         if (endDateF != null) {
             endDateF.getDatePicker().addValueChangeHandler(this);
         }
+        isClientFeeApplicable.getBox().addClickHandler(this);
     }
 
     @Override
@@ -260,8 +265,12 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         entityFieldsPanel.add(getLineSeperatorTag("Client & Vendor Information"));
         addDropDown("client", selectClientWidgetF);
         entityFieldsPanel.add(addClientL);
-//        addField("clientFeeApplicable", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-//        addField("directClient", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        addField("clientFeeApplicable", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        isClientFeeApplicable = (BooleanField) fields.get("clientFeeApplicable");
+        addField("clientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL); 
+        clientFee = (FloatField) fields.get("clientFee");
+        clientFee.setVisible(false);
+        addField("directClient", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addDropDown("clientLocation", new SelectClientLocationWidget(false, true, Alignment.HORIZONTAL));
         selectClientAcctPayContact = new SelectClientAcctPayContact(false, false, Alignment.HORIZONTAL) {
             @Override
@@ -372,6 +381,11 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                 new GenericPopup(new GenericBPMStartFormPanel("AddNewClientRequest", "add_new_client_request_1"),350,10).show();
             }
         }
+        if (event.getSource().equals(isClientFeeApplicable.getBox()) && isClientFeeApplicable.getValue()) {
+            clientFee.setVisible(true);
+        } else {
+            clientFee.setVisible(false);
+        }
         if (event.getSource().equals(addVendorL)) {
             if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN)) {
                 new GenericPopup(new CreateVendorPanel(CreateCompositeType.CREATE),350,10).show();
@@ -446,6 +460,9 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                         payTermF.setValue(JSONUtils.toString(client, "paymentTerms"));
                         BooleanField directClientB=(BooleanField) fields.get("directClient");
                         directClientB.setValue(JSONUtils.toBoolean(client, "directClient"));
+                        FloatField clientFee=(FloatField) fields.get("clientFee");
+                        clientFee.setValue(JSONUtils.toString(client, "clientFee"));
+                        
                     }
                 });
     }
