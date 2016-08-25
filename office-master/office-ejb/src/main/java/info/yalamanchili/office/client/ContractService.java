@@ -301,6 +301,7 @@ public class ContractService {
         ContractDto dto = mapper.map(ci, ContractDto.class);
         Vendor vi = new Vendor();
         Client ct= new Client();
+        BigDecimal clientFeePer;        
         if (ci.getEmployee() != null) {
             dto.setContractSignedEntity(ci.getCompany().name());
             dto.setEmployee(ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
@@ -320,10 +321,16 @@ public class ContractService {
             dto.setClient(ct.getName());
             dto.setClientFeeApplicable(ci.getClientFeeApplicable());
             dto.setDirectClient(ci.getDirectClient());
-            dto.setClientFees(ct.getClientFee());            
+            if(ci.getClientFee() != null) {
+                clientFeePer = ci.getClientFee();
+                dto.setClientFees(clientFeePer.floatValue());
+            }  
+            else {
+                clientFeePer = new BigDecimal(ct.getClientFee());
+                dto.setClientFees(clientFeePer.floatValue()); 
+            }
             if(ci.getClientFeeApplicable() != null && ci.getClientFeeApplicable() && ct.getClientFee() != null) {
-                BigDecimal value = new BigDecimal(ct.getClientFee());
-                BigDecimal clientFee = value.divide(new BigDecimal(100)).multiply(dto.getBillingRate());
+                BigDecimal clientFee = clientFeePer.divide(new BigDecimal(100)).multiply(dto.getBillingRate());
                 BigDecimal effectiveBillingRate = getEffectiveBillingRate(ci.getId());
                 if (effectiveBillingRate == null) {
                     dto.setBillingRate(ci.getBillingRate());
