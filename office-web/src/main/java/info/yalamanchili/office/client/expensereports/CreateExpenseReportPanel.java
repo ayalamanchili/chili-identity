@@ -118,7 +118,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     HTML emptyLine = new HTML("<br/>");
 
     EnumField expenseFormType;
-    StringField purpose;
+    StringField location;
     StringField destination;
     StringField nameOfReport;
     StringField cardHolderName;
@@ -127,7 +127,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     DateField endDate;
     StringField projectName;
     StringField projectNumber;
-    EnumField reImbursmentMethod;
+    EnumField expenseReimbursePaymentMode;
     DateField submittedDate;
     EnumField departmentType;
     StringField otherDepartment;
@@ -167,8 +167,8 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
             addField(NAMEOFREPORT, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         }
         nameOfReport = (StringField) fields.get(NAMEOFREPORT);
-        addField(PURPOSE, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        purpose = (StringField) fields.get(PURPOSE);
+        addField(LOCATION, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        location = (StringField) fields.get(LOCATION);
         addField(DESTINATION, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         destination = (StringField) fields.get(DESTINATION);
         addField(CARDHOLDERNAME, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -185,8 +185,8 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         projectNumber = (StringField) fields.get(PROJECT_NUMBER);
         addField(PAYROLLFILENUMBER, false, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
         payrollFileNumber = (IntegerField) fields.get(PAYROLLFILENUMBER);
-        addEnumField(REIMBURSMENTMETHOD, false, true, ReImbursmentMethod.names(), Alignment.HORIZONTAL);
-        reImbursmentMethod = (EnumField) fields.get(REIMBURSMENTMETHOD);
+        addEnumField(REIMBURSMENTMETHOD, false, true, ExpenseReimbursePaymentMode.names(), Alignment.HORIZONTAL);
+        expenseReimbursePaymentMode = (EnumField) fields.get(REIMBURSMENTMETHOD);
         addField(SUBMITTEDDATE, false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         submittedDate = (DateField) fields.get(SUBMITTEDDATE);
         addDropDown("company", selectCompanyWidget);
@@ -213,12 +213,12 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     @Override
     protected void configure() {
         expenseFormType.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
-        purpose.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
+        location.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
         startDate.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         endDate.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
         projectName.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         projectNumber.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
-        reImbursmentMethod.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
+        expenseReimbursePaymentMode.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         generalInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         travelInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         expenseItemsInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
@@ -265,7 +265,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         submitForApprovalF.getBox().addClickHandler(this);
         projectName.getTextbox().addBlurHandler(this);
         projectNumber.getTextbox().addBlurHandler(this);
-        reImbursmentMethod.listBox.addChangeHandler(this);
+        expenseReimbursePaymentMode.listBox.addChangeHandler(this);
         addItemL.addClickHandler(this);
         forsomeone.addClickHandler(this);
         foryourself.addClickHandler(this);
@@ -278,7 +278,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
             entity.put("approvalManagerId", approvalManager.getSelectedObject().get("id").isString());
         }
         assignEntityValueFromField(EXPENSE_FORM_TYPE, entity);
-        assignEntityValueFromField(PURPOSE, entity);
+        assignEntityValueFromField(LOCATION, entity);
         assignEntityValueFromField(NAMEOFREPORT, entity);
         assignEntityValueFromField(DESTINATION, entity);
         assignEntityValueFromField(EXPENSESMADEBY, entity);
@@ -408,7 +408,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     protected void renderproject(boolean render) {
         projectName.setVisible(true);
         projectNumber.setVisible(true);
-        purpose.setVisible(true);
+        location.setVisible(true);
         approvalManager.setVisible(false);
         generalInfo.setVisible(false);
         if (render == true) {
