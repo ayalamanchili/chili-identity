@@ -95,7 +95,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Scope("request")
 public class EmployeeResource extends CRUDResource<Employee> {
-    
+
     @Autowired
     public EmployeeDao employeeDao;
     @PersistenceContext
@@ -104,7 +104,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     protected Mapper mapper;
     @Autowired
     protected ProfileNotificationService profileNotificationservice;
-    
+
     @GET
     @Path("/{id}")
     @Override
@@ -112,16 +112,16 @@ public class EmployeeResource extends CRUDResource<Employee> {
     public EmployeeReadDto read(@PathParam("id") Long id) {
         return employeeDao.read(id);
     }
-    
+
     @PUT
     @Path("/internalTransfer/{employeeId}")
     @Validate
     public void internalCompanyTransfer(@PathParam("employeeId") Long id, EmployeeCompanyTransferDto dto) {
         Employee emp = EmployeeDao.instance().findById(id);
-        
+
         if (emp.getCompany() == null) {
-             /* There are some employees who are not associated with any company. 
-            This handles the null pointer which arises when such an employee is being transfered*/
+            /* There are some employees who are not associated with any company. 
+             This handles the null pointer which arises when such an employee is being transfered*/
             Company previousCompany = new Company();
             previousCompany.setName("");
             dto.setPreviousCompany(previousCompany);
@@ -131,17 +131,16 @@ public class EmployeeResource extends CRUDResource<Employee> {
         Company company = CompanyDao.instance().findById(dto.getTransferCompany().getId());
         emp.setCompany(company);
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-        if(dto.getPreviousCompany().getName().equalsIgnoreCase("")){
-            CommentDao.instance().addComment("Transfered to " + emp.getCompany().getName() +
-                    " on " + sdf.format(dto.getTransferDate()), emp);
-        }
-        else {
+        if (dto.getPreviousCompany().getName().equalsIgnoreCase("")) {
+            CommentDao.instance().addComment("Transfered to " + emp.getCompany().getName()
+                    + " on " + sdf.format(dto.getTransferDate()), emp);
+        } else {
             CommentDao.instance().addComment("Transfered from " + dto.getPreviousCompany().getName()
-                + " to " + emp.getCompany().getName() + " on " + sdf.format(dto.getTransferDate()), emp);
+                    + " to " + emp.getCompany().getName() + " on " + sdf.format(dto.getTransferDate()), emp);
         }
         EmployeeService.instance().internalCompanyTransfer(emp, dto);
     }
-    
+
     @PUT
     @Path("/departmentTransfer/{employeeId}")
     @Validate
@@ -154,13 +153,13 @@ public class EmployeeResource extends CRUDResource<Employee> {
         }
         EmployeeService.instance().departmentTransfer(employeeId, dto);
     }
-    
+
     @PUT
     @Override
     public Employee save(Employee entity) {
         throw new UnsupportedOperationException();
     }
-    
+
     @PUT
     @Validate
     @Path("/save")
@@ -171,9 +170,12 @@ public class EmployeeResource extends CRUDResource<Employee> {
     //TODO currently does not have any restrictions since user emp profile update also uses this method
     public Employee save(EmployeeSaveDto dto) {
         if (dto.isActive() == true) {
-            dto.setEndDate(null);
             Long employeeId = dto.getId();
             Employee employee = EmployeeDao.instance().findById(employeeId);
+            if (dto.getEndDate() != null) {
+                CommentDao.instance().addComment("End Date is : " + new SimpleDateFormat("MM/dd/yyyy").format(dto.getEndDate()), employee);
+            }
+            dto.setEndDate(null);
             CUser user = employee.getUser();
             if (user != null) {
                 user.setEnabled(true);
@@ -181,7 +183,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         }
         return (Employee) getDao().save(mapper.map(dto, Employee.class));
     }
-    
+
     @GET
     @Path("/{start}/{limit}")
     @Cacheable(OfficeCacheKeys.EMPLOYEES)
@@ -195,7 +197,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         tableObj.setSize(employeeDao.size());
         return tableObj;
     }
-    
+
     @PUT
     @Path("/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -208,7 +210,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         }
         super.delete(id);
     }
-    
+
     @GET
     @Path("/dropdown/{start}/{limit}")
     @Transactional(propagation = Propagation.NEVER)
@@ -238,7 +240,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         }
         return result;
     }
-    
+
     @GET
     @Path("/employees-by-role/dropdown/{role}/{start}/{limit}")
     @Cacheable(OfficeCacheKeys.EMPLOYEES)
@@ -263,7 +265,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         tableObj.setSize((long) emp.getAddresss().size());
         return tableObj;
     }
-    
+
     @PUT
     @Validate
     @Path("/address/{empId}")
@@ -306,7 +308,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         }
         return dto;
     }
-    
+
     @PUT
     @Validate
     @Path("/skillset/{empId}")
@@ -349,7 +351,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     public Preferences getPreferences(@PathParam("empId") long empId) {
         Employee emp = (Employee) getDao().findById(empId);
         return emp.getPreferences();
-        
+
     }
 
     /* Email */
@@ -363,7 +365,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         tableObj.setSize((long) emp.getEmails().size());
         return tableObj;
     }
-    
+
     @PUT
     @Validate
     @Path("/email/{empId}")
@@ -373,7 +375,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     })
     public void addEmail(@PathParam("empId") Long empId, Email email) {
         Employee emp = (Employee) getDao().findById(empId);
-        
+
         if (email.getEmailType() != null) {
             EmailType emailType = getDao().getEntityManager().find(EmailType.class, email.getEmailType().getId());
             email.setEmailType(emailType);
@@ -394,7 +396,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         tableObj.setSize((long) emp.getPhones().size());
         return tableObj;
     }
-    
+
     @PUT
     @Validate
     @Path("/phone/{empId}")
@@ -446,7 +448,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     public ClientInformationDto addClientInformation(@PathParam("empId") Long empId, ClientInformationDto clientInformation, @QueryParam("submitForApproval") Boolean submitForApproval) {
         ClientInformationService clientInformationService = (ClientInformationService) SpringContext.getBean("clientInformationService");
         return clientInformationService.addClientInformation(empId, clientInformation, submitForApproval);
-        
+
     }
 
     /* Emergency Contact */
@@ -482,7 +484,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         tableObj.setSize((long) dependents.size());
         return tableObj;
     }
-    
+
     @PUT
     @Validate
     @Path("/emergencycontact/{empId}")
@@ -490,7 +492,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         EmergencyContactService emergencyContactService = (EmergencyContactService) SpringContext.getBean("emergencyContactService");
         emergencyContactService.addEmergencyContact(empId, ecDto);
     }
-    
+
     @PUT
     @Path("/dependent/{empId}")
     @Validate
@@ -498,7 +500,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         DependentService dependentService = (DependentService) SpringContext.getBean("dependentService");
         dependentService.addDependent(empId, depDto);
     }
-    
+
     @GET
     @Path("/searchEmployee/{start}/{limit}")
     @Transactional(readOnly = true)
@@ -511,7 +513,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         }
         return dtos;
     }
-    
+
     @PUT
     @Path("/searchEmployee/{start}/{limit}")
     @Transactional(readOnly = true)
@@ -552,32 +554,32 @@ public class EmployeeResource extends CRUDResource<Employee> {
         } while ((start + limit) < size);
         return ReportGenerator.generateReport(data, reportName, format, OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
     }
-    
+
     @Override
     public CRUDDao getDao() {
         return employeeDao;
     }
-    
+
     @XmlRootElement
     @XmlType
     public static class ClientTable implements java.io.Serializable {
-        
+
         protected Long size;
         protected List<Client> entities;
-        
+
         public Long getSize() {
             return size;
         }
-        
+
         public void setSize(Long size) {
             this.size = size;
         }
-        
+
         @XmlElement
         public List<Client> getEntities() {
             return entities;
         }
-        
+
         public void setEntities(List<Client> entities) {
             this.entities = entities;
         }
