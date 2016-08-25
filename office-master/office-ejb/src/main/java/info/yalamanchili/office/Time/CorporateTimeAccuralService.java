@@ -16,6 +16,8 @@ import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.chili.email.Email;
+import info.yalamanchili.office.dao.message.NotificationGroupDao;
+import info.yalamanchili.office.entity.message.NotificationGroup;
 import info.yalamanchili.office.entity.profile.Branch;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.CorporateTimeSheet;
@@ -36,12 +38,22 @@ import org.springframework.transaction.annotation.Transactional;
 public class CorporateTimeAccuralService {
 
     private final static Logger logger = Logger.getLogger(CorporateTimeAccuralService.class.getName());
+    public static final String DEACTIVATE_PTO_NOTIFICATION_GROUP = "Deactivate_Pto_Notification_Group";
 
     //TODO avoid duplicate creation
     public void accureMonthlyTime() {
+        NotificationGroup ng = NotificationGroupDao.instance().findByName(DEACTIVATE_PTO_NOTIFICATION_GROUP);
         CorporateTimeSheetDao dao = CorporateTimeSheetDao.instance();
         Date today = new Date();
+        loop1:
         for (Employee emp : OfficeSecurityService.instance().getUsersWithRoles(0, 5000, OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+            if (ng != null) {
+                for (Employee deactivateEmp : ng.getEmployees()) {
+                    if (deactivateEmp.equals(emp)) {
+                        break loop1;
+                    }
+                }
+            }
             if (emp.getStartDate() == null) {
                 continue;
             }
