@@ -128,6 +128,11 @@ public class ClientInformation extends AbstractEntity {
      * clientFeeApplicable
      */
     protected Boolean clientFeeApplicable;
+        
+    /**
+     * clientFee
+     */
+    protected BigDecimal clientFee;
     
     /**
      * directClient
@@ -472,6 +477,14 @@ public class ClientInformation extends AbstractEntity {
 
     public void setClientFeeApplicable(Boolean clientFeeApplicable) {
         this.clientFeeApplicable = clientFeeApplicable;
+    }
+
+    public BigDecimal getClientFee() {
+        return clientFee;
+    }
+
+    public void setClientFee(BigDecimal clientFee) {
+        this.clientFee = clientFee;
     }
 
     public Boolean getDirectClient() {
