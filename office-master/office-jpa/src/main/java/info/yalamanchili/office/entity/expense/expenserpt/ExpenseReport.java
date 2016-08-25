@@ -54,7 +54,7 @@ public class ExpenseReport extends AbstractEntity {
     private static long serialVersionUID = 1L;
 
     @NotEmpty(message = "{expensereport.purpose.not.empty.msg}")
-    private String purpose;
+    private String location;
 
     private String department;
 
@@ -77,6 +77,7 @@ public class ExpenseReport extends AbstractEntity {
     private String projectNumber;
 
     @Enumerated(EnumType.STRING)
+    @NotNull(message = "{expensereport.expenseReimbursePaymentMode.not.empty.msg}")
     private ExpenseReimbursePaymentMode expenseReimbursePaymentMode;
 
     @Temporal(TemporalType.DATE)
@@ -87,6 +88,10 @@ public class ExpenseReport extends AbstractEntity {
 
     private String cardHolderName;
 
+    private Integer payrollFileNumber;
+
+    private String otherDepartment;
+
     @NotNull(message = "{expensereport.company.not.empty.msg}")
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_EMP_COMPANY_EXP_RPTS")
@@ -94,14 +99,7 @@ public class ExpenseReport extends AbstractEntity {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "expensereport_other_employee")
-    @ForeignKey(name = "FK_OtherEmployees_ExpenseReport")
     protected Set<Employee> otherEmployees;
-
-    private Integer payrollFileNumber;
-
-    private String reimbursment;
-
-    private String otherDepartment;
 
     private String approvedByManager;
 
@@ -122,8 +120,6 @@ public class ExpenseReport extends AbstractEntity {
     @ForeignKey(name = "FK_EMP_EXP_RPTS")
     private Employee employee;
 
-    private Long empId;
-
     @OneToMany(mappedBy = "expenseReport", cascade = CascadeType.ALL)
     @Valid
     protected List<ExpenseItem> expenseItems;
@@ -141,10 +137,6 @@ public class ExpenseReport extends AbstractEntity {
     @NotNull(message = "{expensereport.departmentType.not.empty.msg}")
     private DepartmentType departmentType;
 
-    @Enumerated(EnumType.STRING)
-    @NotNull(message = "{expensereport.reImbursmentMethod.not.empty.msg}")
-    private ReImbursmentMethod reImbursmentMethod;
-
     private BigDecimal totalExpenses;
 
     @OneToMany(mappedBy = "expenseReport", cascade = CascadeType.ALL)
@@ -152,6 +144,9 @@ public class ExpenseReport extends AbstractEntity {
 
     @Transient
     protected Long approvalManagerId;
+
+    @Transient
+    protected String expenseReportNumber;
 
     public ExpenseReport() {
     }
@@ -167,12 +162,12 @@ public class ExpenseReport extends AbstractEntity {
         ExpenseReport.serialVersionUID = serialVersionUID;
     }
 
-    public String getPurpose() {
-        return purpose;
+    public String getLocation() {
+        return location;
     }
 
-    public void setPurpose(String purpose) {
-        this.purpose = purpose;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getDepartment() {
@@ -231,6 +226,14 @@ public class ExpenseReport extends AbstractEntity {
         this.projectNumber = projectNumber;
     }
 
+    public ExpenseReimbursePaymentMode getExpenseReimbursePaymentMode() {
+        return expenseReimbursePaymentMode;
+    }
+
+    public void setExpenseReimbursePaymentMode(ExpenseReimbursePaymentMode expenseReimbursePaymentMode) {
+        this.expenseReimbursePaymentMode = expenseReimbursePaymentMode;
+    }
+
     public Date getSubmittedDate() {
         return submittedDate;
     }
@@ -239,48 +242,36 @@ public class ExpenseReport extends AbstractEntity {
         this.submittedDate = submittedDate;
     }
 
-    public Company getCompany() {
-        return company;
+    public String getExpensesMadeBy() {
+        return expensesMadeBy;
     }
 
-    public void setCompany(Company company) {
-        this.company = company;
+    public void setExpensesMadeBy(String expensesMadeBy) {
+        this.expensesMadeBy = expensesMadeBy;
     }
 
-    public Employee getEmployee() {
-        return employee;
+    public String getCardHolderName() {
+        return cardHolderName;
     }
 
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
+    public void setCardHolderName(String cardHolderName) {
+        this.cardHolderName = cardHolderName;
     }
 
-    @XmlTransient
-    public List<ExpenseItem> getExpenseItems() {
-        if (this.expenseItems == null) {
-            this.expenseItems = new ArrayList();
-        }
-        return expenseItems;
+    public Integer getPayrollFileNumber() {
+        return payrollFileNumber;
     }
 
-    public void setExpenseItems(List<ExpenseItem> expenseItems) {
-        this.expenseItems = expenseItems;
+    public void setPayrollFileNumber(Integer payrollFileNumber) {
+        this.payrollFileNumber = payrollFileNumber;
     }
 
-    public String getBpmProcessId() {
-        return bpmProcessId;
+    public String getOtherDepartment() {
+        return otherDepartment;
     }
 
-    public void setBpmProcessId(String bpmProcessId) {
-        this.bpmProcessId = bpmProcessId;
-    }
-
-    public ExpenseReportStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(ExpenseReportStatus status) {
-        this.status = status;
+    public void setOtherDepartment(String otherDepartment) {
+        this.otherDepartment = otherDepartment;
     }
 
     public String getApprovedByManager() {
@@ -327,20 +318,32 @@ public class ExpenseReport extends AbstractEntity {
         return approvedByCEODate;
     }
 
-    @XmlTransient
-    public Set<ExpenseReceipt> getExpenseReceipts() {
-        if (this.expenseReceipts == null) {
-            this.expenseReceipts = new HashSet();
-        }
-        return expenseReceipts;
-    }
-
-    public void setExpenseReceipts(Set<ExpenseReceipt> expenseReceipts) {
-        this.expenseReceipts = expenseReceipts;
-    }
-
     public void setApprovedByCEODate(Date approvedByCEODate) {
         this.approvedByCEODate = approvedByCEODate;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public String getBpmProcessId() {
+        return bpmProcessId;
+    }
+
+    public void setBpmProcessId(String bpmProcessId) {
+        this.bpmProcessId = bpmProcessId;
+    }
+
+    public ExpenseReportStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ExpenseReportStatus status) {
+        this.status = status;
     }
 
     public ExpenseFormType getExpenseFormType() {
@@ -349,6 +352,14 @@ public class ExpenseReport extends AbstractEntity {
 
     public void setExpenseFormType(ExpenseFormType expenseFormType) {
         this.expenseFormType = expenseFormType;
+    }
+
+    public DepartmentType getDepartmentType() {
+        return departmentType;
+    }
+
+    public void setDepartmentType(DepartmentType departmentType) {
+        this.departmentType = departmentType;
     }
 
     public BigDecimal getTotalExpenses() {
@@ -367,17 +378,39 @@ public class ExpenseReport extends AbstractEntity {
         this.approvalManagerId = approvalManagerId;
     }
 
-    public ExpenseReimbursePaymentMode getExpenseReimbursePaymentMode() {
-        return expenseReimbursePaymentMode;
+    @XmlElement
+    public Company getCompany() {
+        return company;
     }
 
-    public void setExpenseReimbursePaymentMode(ExpenseReimbursePaymentMode expenseReimbursePaymentMode) {
-        this.expenseReimbursePaymentMode = expenseReimbursePaymentMode;
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
-    @Transient
-    protected String expenseReportNumber;
+    @XmlTransient
+    public List<ExpenseItem> getExpenseItems() {
+        if (this.expenseItems == null) {
+            this.expenseItems = new ArrayList();
+        }
+        return expenseItems;
+    }
 
+    public void setExpenseItems(List<ExpenseItem> expenseItems) {
+        this.expenseItems = expenseItems;
+    }
+
+    @XmlTransient
+    public Set<ExpenseReceipt> getExpenseReceipts() {
+        if (this.expenseReceipts == null) {
+            this.expenseReceipts = new HashSet();
+        }
+        return expenseReceipts;
+    }
+
+    public void setExpenseReceipts(Set<ExpenseReceipt> expenseReceipts) {
+        this.expenseReceipts = expenseReceipts;
+    }
+    
     public String getExpenseReportNumber() {
         if (getId() != null) {
             return "ERN-" + String.format("%04d", getId());
@@ -390,71 +423,7 @@ public class ExpenseReport extends AbstractEntity {
         this.expenseReportNumber = expenseReportNumber;
     }
 
-    public Long getEmpId() {
-        return empId;
-    }
-
-    public void setEmpId(Long empId) {
-        this.empId = empId;
-    }
-
-    public String getExpensesMadeBy() {
-        return expensesMadeBy;
-    }
-
-    public void setExpensesMadeBy(String expensesMadeBy) {
-        this.expensesMadeBy = expensesMadeBy;
-    }
-
-    public String getCardHolderName() {
-        return cardHolderName;
-    }
-
-    public void setCardHolderName(String cardHolderName) {
-        this.cardHolderName = cardHolderName;
-    }
-
-    public Integer getPayrollFileNumber() {
-        return payrollFileNumber;
-    }
-
-    public void setPayrollFileNumber(Integer payrollFileNumber) {
-        this.payrollFileNumber = payrollFileNumber;
-    }
-
-    public DepartmentType getDepartmentType() {
-        return departmentType;
-    }
-
-    public void setDepartmentType(DepartmentType departmentType) {
-        this.departmentType = departmentType;
-    }
-
-    public ReImbursmentMethod getReImbursmentMethod() {
-        return reImbursmentMethod;
-    }
-
-    public void setReImbursmentMethod(ReImbursmentMethod reImbursmentMethod) {
-        this.reImbursmentMethod = reImbursmentMethod;
-    }
-
-    public String getReimbursment() {
-        return reimbursment;
-    }
-
-    public void setReimbursment(String reimbursment) {
-        this.reimbursment = reimbursment;
-    }
-
-    public String getOtherDepartment() {
-        return otherDepartment;
-    }
-
-    public void setOtherDepartment(String otherDepartment) {
-        this.otherDepartment = otherDepartment;
-    }
-
-    @XmlElement
+    @XmlTransient
     public Set<Employee> getOtherEmployees() {
         return otherEmployees;
     }
@@ -486,6 +455,6 @@ public class ExpenseReport extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "ExpenseReport{" + "purpose=" + purpose + ", department=" + department + ", nameOfReport=" + nameOfReport + ", destination=" + destination + ", startDate=" + startDate + ", endDate=" + endDate + ", projectName=" + projectName + ", projectNumber=" + projectNumber + ", expenseReimbursePaymentMode=" + expenseReimbursePaymentMode + ", submittedDate=" + submittedDate + ", expensesMadeBy=" + expensesMadeBy + ", cardHolderName=" + cardHolderName + ", company=" + company + ", payrollFileNumber=" + payrollFileNumber + ", reimbursment=" + reimbursment + ", approvedByManager=" + approvedByManager + ", approvedByManagerDate=" + approvedByManagerDate + ", approvedByAccountsDept=" + approvedByAccountsDept + ", approvedByAccountsDeptDate=" + approvedByAccountsDeptDate + ", approvedByCEO=" + approvedByCEO + ", approvedByCEODate=" + approvedByCEODate + ", employee=" + employee + ", empId=" + empId + ", expenseItems=" + expenseItems + ", bpmProcessId=" + bpmProcessId + ", status=" + status + ", expenseFormType=" + expenseFormType + ", departmentType=" + departmentType + ", totalExpenses=" + totalExpenses + ", expenseReceipts=" + expenseReceipts + ", approvalManagerId=" + approvalManagerId + ", expenseReportNumber=" + expenseReportNumber + '}';
+        return "ExpenseReport{" + "location=" + location + ", department=" + department + ", nameOfReport=" + nameOfReport + ", destination=" + destination + ", startDate=" + startDate + ", endDate=" + endDate + ", projectName=" + projectName + ", projectNumber=" + projectNumber + ", expenseReimbursePaymentMode=" + expenseReimbursePaymentMode + ", submittedDate=" + submittedDate + ", expensesMadeBy=" + expensesMadeBy + ", cardHolderName=" + cardHolderName + ", company=" + company + ", otherEmployees=" + otherEmployees + ", payrollFileNumber=" + payrollFileNumber + ", otherDepartment=" + otherDepartment + ", approvedByManager=" + approvedByManager + ", approvedByManagerDate=" + approvedByManagerDate + ", approvedByAccountsDept=" + approvedByAccountsDept + ", approvedByAccountsDeptDate=" + approvedByAccountsDeptDate + ", approvedByCEO=" + approvedByCEO + ", approvedByCEODate=" + approvedByCEODate + ", employee=" + employee + ", expenseItems=" + expenseItems + ", bpmProcessId=" + bpmProcessId + ", status=" + status + ", expenseFormType=" + expenseFormType + ", departmentType=" + departmentType + ", totalExpenses=" + totalExpenses + ", expenseReceipts=" + expenseReceipts + ", approvalManagerId=" + approvalManagerId + ", expenseReportNumber=" + expenseReportNumber + '}';
     }
 }
