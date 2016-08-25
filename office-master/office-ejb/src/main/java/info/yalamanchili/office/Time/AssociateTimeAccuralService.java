@@ -11,8 +11,10 @@ import info.chili.audit.AuditService;
 import info.chili.commons.DateUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.ext.CommentDao;
+import info.yalamanchili.office.dao.message.NotificationGroupDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
+import info.yalamanchili.office.entity.message.NotificationGroup;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.ConsultantTimeSheet;
 import java.math.BigDecimal;
@@ -28,12 +30,23 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class AssociateTimeAccuralService {
 
+    public static final String DEACTIVATE_PTO_NOTIFICATION_GROUP = "Deactivate_Pto_Notification_Group";
+
     //TODO support for proration hours
     //TODO avoid duplicate creation
     public void accureMonthlyConsTime() {
         ConsultantTimeSheetDao dao = ConsultantTimeSheetDao.instance();
         Date today = new Date();
+        NotificationGroup ng = NotificationGroupDao.instance().findByName(DEACTIVATE_PTO_NOTIFICATION_GROUP);
+        loop1:
         for (Employee emp : EmployeeDao.instance().getEmployeesByType("Employee")) {
+            if (ng != null) {
+                for (Employee deactivateEmp : ng.getEmployees()) {
+                    if (deactivateEmp.equals(emp)) {
+                        break loop1;
+                    }
+                }
+            }
             if (emp.getStartDate() == null) {
                 continue;
             }
