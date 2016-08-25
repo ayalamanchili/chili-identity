@@ -14,6 +14,7 @@ import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import info.chili.gwt.crud.ReadAllComposite;
+import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.ImageField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.utils.Alignment;
@@ -38,6 +39,7 @@ public class ReadEmployeePanel extends ReadComposite {
     protected SelectEmployeeTypeWidget employeeSelectWidget = new SelectEmployeeTypeWidget(true, false);
     HorizontalPanel hpanel = new HorizontalPanel();
     VerticalPanel vPanel = new VerticalPanel();
+    DateField endDate = new DateField(OfficeWelcome.constants, "endDate", "Employee", true, false, Alignment.HORIZONTAL);
 
     public static ReadEmployeePanel instance() {
         return instance;
@@ -58,7 +60,6 @@ public class ReadEmployeePanel extends ReadComposite {
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String response) {
-                        logger.info("this is the response from the server" + response);
                         entity = (JSONObject) JSONParser.parseLenient(response);
                         populateFieldsFromEntity(entity);
                     }
@@ -72,7 +73,9 @@ public class ReadEmployeePanel extends ReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        logger.info("ddd" + entity);
+        if (entity.get("status").isString().stringValue().equals("true")) {
+            entityFieldsPanel.remove(endDate);
+        }
         assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("middleInitial", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
@@ -98,7 +101,9 @@ public class ReadEmployeePanel extends ReadComposite {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONSULTANT_TIME_ADMIN, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_HR_ADMINSTRATION)) {
             assignFieldValueFromEntity("status", entity, DataType.BOOLEAN_FIELD);
         }
-        assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
+        if (entity.get("status").isString().stringValue().equals("false")) {
+            endDate.setValue(JSONUtils.toString(entity, "endDate"));
+        }
         populateComments();
     }
 
@@ -167,7 +172,7 @@ public class ReadEmployeePanel extends ReadComposite {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONSULTANT_TIME_ADMIN, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_HR_ADMINSTRATION)) {
             addField("status", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         }
-        addField("endDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(endDate);
         alignFields();
     }
 
@@ -194,15 +199,14 @@ public class ReadEmployeePanel extends ReadComposite {
     protected String getAuditUrl() {
         return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.profile.Employee" + "/" + getEntityId();
     }
-    
+
     @Override
-   protected boolean enableBack() {
-       return true;
-   }
-    
+    protected boolean enableBack() {
+        return true;
+    }
+
     @Override
-     protected ReadAllComposite getReadAllPanel() {
+    protected ReadAllComposite getReadAllPanel() {
         return ReadAllEmployeesPanel.instance;
     }
-     
 }
