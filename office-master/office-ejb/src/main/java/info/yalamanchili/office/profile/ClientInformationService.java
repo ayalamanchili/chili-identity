@@ -42,6 +42,7 @@ import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.service.ServiceInterceptor;
+import java.math.BigDecimal;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -97,6 +98,7 @@ public class ClientInformationService {
         }
         client = clientDao.findById(ci.getClient().getId());
         ci.setClient(client);
+        
         if (ci.getClientContact() != null) {
             ci.setClientContact(ContactDao.instance().findById(ci.getClientContact().getId()));
         }
