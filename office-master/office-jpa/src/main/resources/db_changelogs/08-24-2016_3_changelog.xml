@@ -19,12 +19,12 @@ and open the template in the editor.
         <addColumn catalogName="office"
                    schemaName="public"
                    tableName="vendor">
-            <column name="terminationNotice" type="string"/>
+            <column name="terminationNotice" type="varchar(255)"/>
         </addColumn>
         <addColumn catalogName="office"
                    schemaName="public"
                    tableName="vendor_aud">
-            <column name="terminationNotice" type="string"/>
+            <column name="terminationNotice" type="varchar(255)"/>
         </addColumn>
         </changeSet>
 </databaseChangeLog>
