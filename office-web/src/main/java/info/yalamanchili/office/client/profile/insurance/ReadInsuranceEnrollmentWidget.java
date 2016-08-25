@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -23,11 +26,11 @@ public class ReadInsuranceEnrollmentWidget extends ReadComposite {
     EnumField yearsF;
 
     public ReadInsuranceEnrollmentWidget(JSONObject entity) {
-        initReadComposite(entity, "InsuranceEnrollment", OfficeWelcome.constants);
+        initReadComposite(entity, "InsuranceEnrollment", OfficeWelcome.constants2);
     }
 
     public ReadInsuranceEnrollmentWidget(String id) {
-        initReadComposite(id, "InsuranceEnrollment", OfficeWelcome.constants);
+        initReadComposite(id, "InsuranceEnrollment", OfficeWelcome.constants2);
     }
 
     @Override

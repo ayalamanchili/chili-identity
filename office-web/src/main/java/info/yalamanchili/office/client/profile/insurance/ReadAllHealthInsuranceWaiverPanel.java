@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -36,18 +39,18 @@ public class ReadAllHealthInsuranceWaiverPanel extends CRUDReadAllComposite {
 
     public ReadAllHealthInsuranceWaiverPanel() {
         instance = this;
-        initTable("HealthInsurances", OfficeWelcome.constants);
+        initTable("HealthInsurances", OfficeWelcome.constants2);
     }
 
     public ReadAllHealthInsuranceWaiverPanel(String empId) {
         instance = this;
         this.empId = empId;
-        initTable("HealthInsurances", OfficeWelcome.constants);
+        initTable("HealthInsurances", OfficeWelcome.constants2);
     }
 
     public ReadAllHealthInsuranceWaiverPanel(JSONArray array) {
         instance = this;
-        initTable("HealthInsurances", array, OfficeWelcome.constants);
+        initTable("HealthInsurances", array, OfficeWelcome.constants2);
     }
 
     @Override

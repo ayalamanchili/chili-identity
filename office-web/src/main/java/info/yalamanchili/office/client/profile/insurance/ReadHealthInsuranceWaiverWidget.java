@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -38,20 +41,20 @@ public class ReadHealthInsuranceWaiverWidget extends TReadComposite {
     HTML tac2 = new HTML("<h4><u>For the plan year 2016, I am waiving coverage for: \n</u>");
     HTML tac3 = new HTML("<h4><u>I am waiving coverage due to: \n</u>");
 
-    StringField spouseNameOfCarrier = new StringField(OfficeWelcome.constants, "spouseNameOfCarrier", "HealthInsuranceWaiver", true, false, Alignment.HORIZONTAL);
-    StringField otherNameOfCarrier = new StringField(OfficeWelcome.constants, "otherNameOfCarrier", "HealthInsuranceWaiver", true, false, Alignment.HORIZONTAL);
+    StringField spouseNameOfCarrier = new StringField(OfficeWelcome.constants2, "spouseNameOfCarrier", "HealthInsuranceWaiver", true, false, Alignment.HORIZONTAL);
+    StringField otherNameOfCarrier = new StringField(OfficeWelcome.constants2, "otherNameOfCarrier", "HealthInsuranceWaiver", true, false, Alignment.HORIZONTAL);
 
-    StringField spouseName = new StringField(OfficeWelcome.constants, "spouseName", "HealthInsuranceWaiver", true, false, Alignment.HORIZONTAL);
-    StringField dependentName = new StringField(OfficeWelcome.constants, "dependentName", "HealthInsuranceWaiver", true, false, Alignment.HORIZONTAL);
+    StringField spouseName = new StringField(OfficeWelcome.constants2, "spouseName", "HealthInsuranceWaiver", true, false, Alignment.HORIZONTAL);
+    StringField dependentName = new StringField(OfficeWelcome.constants2, "dependentName", "HealthInsuranceWaiver", true, false, Alignment.HORIZONTAL);
 
-    EnumField otherCarrierType = new EnumField(OfficeWelcome.constants, "otherCarrierType", "HealthInsuranceWaiver", true, false, InsuranceCoverageType.names(), Alignment.HORIZONTAL);
+    EnumField otherCarrierType = new EnumField(OfficeWelcome.constants2, "otherCarrierType", "HealthInsuranceWaiver", true, false, InsuranceCoverageType.names(), Alignment.HORIZONTAL);
 
     public ReadHealthInsuranceWaiverWidget(JSONObject entity) {
-        initReadComposite(entity, "HealthInsuranceWaiver", OfficeWelcome.constants);
+        initReadComposite(entity, "HealthInsuranceWaiver", OfficeWelcome.constants2);
     }
 
     public ReadHealthInsuranceWaiverWidget(String id) {
-        initReadComposite(id, "HealthInsuranceWaiver", OfficeWelcome.constants);
+        initReadComposite(id, "HealthInsuranceWaiver", OfficeWelcome.constants2);
     }
 
     @Override

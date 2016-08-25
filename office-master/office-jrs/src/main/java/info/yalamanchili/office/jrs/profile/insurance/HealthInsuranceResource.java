@@ -99,6 +99,14 @@ public class HealthInsuranceResource extends CRUDResource<HealthInsurance> {
         HealthInsurance insurance = new HealthInsurance();
         insurance.setEnrolled(entity.getEnrolled());
         insurance.setEmployee(OfficeSecurityService.instance().getCurrentUser());
+//        List<HealthInsurance> insurances = healthInsuranceDao.queryForEmployee(insurance.getEmployee().getId(), 0, 10);
+//        if (insurances != null && insurances.size() > 0) {
+//            for (HealthInsurance ins : insurances) {
+//                    if (ins.getInsuranceEnrollment().getYear().equals(entity.getInsuranceEnrollment().getYear())) {
+//                        throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "healthinsurance.year.submitted", "Health Inurance with the entered year already exists");
+//                    }
+//            }
+//        }
         if (entity.getInsuranceEnrollment() != null) {
             InsuranceEnrollment entityEnrollment = entity.getInsuranceEnrollment();
             entityEnrollment.setTargetEntityId(OfficeSecurityService.instance().getCurrentUser().getId());

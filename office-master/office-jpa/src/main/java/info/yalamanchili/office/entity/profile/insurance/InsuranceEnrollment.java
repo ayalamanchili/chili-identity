@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -35,6 +36,7 @@ public class InsuranceEnrollment extends AbstractHandleEntity {
 
     protected String comments;
 
+    @NotEmpty
     protected String year;
 
     /**

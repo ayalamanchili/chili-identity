@@ -49,14 +49,14 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
     HTML tac2 = new HTML("<h4><u>For the plan year " + DateTimeFormat.getFormat("MM/dd/yyyy").format(new Date()).split("/")[2] + ", I am waiving coverage for: \n</u >");
     HTML tac3 = new HTML("<h4><u>I am waiving coverage due to: \n</u>");
 
-    StringField spouseNameOfCarrier = new StringField(OfficeWelcome.constants, "spouseNameOfCarrier", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
-    StringField otherNameOfCarrier = new StringField(OfficeWelcome.constants, "otherNameOfCarrier", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
+    StringField spouseNameOfCarrier = new StringField(OfficeWelcome.constants2, "spouseNameOfCarrier", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
+    StringField otherNameOfCarrier = new StringField(OfficeWelcome.constants2, "otherNameOfCarrier", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
 
-    StringField spouseName = new StringField(OfficeWelcome.constants, "spouseName", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
-    StringField dependentName = new StringField(OfficeWelcome.constants, "dependentName", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
-    DateField submittedDate = new DateField(OfficeWelcome.constants, "submittedDate", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
+    StringField spouseName = new StringField(OfficeWelcome.constants2, "spouseName", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
+    StringField dependentName = new StringField(OfficeWelcome.constants2, "dependentName", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
+    DateField submittedDate = new DateField(OfficeWelcome.constants2, "submittedDate", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
 
-    EnumField othercoverageType = new EnumField(OfficeWelcome.constants, "otherCarrierType", "HealthInsuranceWaiver", false, false, InsuranceCoverageType.names(), Alignment.HORIZONTAL);
+    EnumField othercoverageType = new EnumField(OfficeWelcome.constants2, "otherCarrierType", "HealthInsuranceWaiver", false, false, InsuranceCoverageType.names(), Alignment.HORIZONTAL);
 
     public HealthInsuranceWaiverPanel() {
         super(TCreateComposite.CreateCompositeType.CREATE);

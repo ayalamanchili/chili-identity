@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -31,7 +34,7 @@ public class ReadAllHealthInsuranceEnrollment extends CRUDReadAllComposite {
 
     public ReadAllHealthInsuranceEnrollment() {
         instance = this;
-        initTable("HealthInsurances", OfficeWelcome.constants);
+        initTable("HealthInsurances", OfficeWelcome.constants2);
     }
 
     public ReadAllHealthInsuranceEnrollment(String empId) {

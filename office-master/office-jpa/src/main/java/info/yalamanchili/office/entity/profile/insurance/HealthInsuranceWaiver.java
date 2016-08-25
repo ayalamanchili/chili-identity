@@ -20,6 +20,7 @@ import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.envers.Audited;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -34,6 +35,7 @@ public class HealthInsuranceWaiver extends AbstractHandleEntity {
 
     protected static long serialVersionUID = 1L;
 
+    @NotEmpty
     protected String fileUrl;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -42,8 +44,10 @@ public class HealthInsuranceWaiver extends AbstractHandleEntity {
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date submittedDate;
 
+    @NotEmpty
     protected String waivingCoverageFor;
 
+    @NotEmpty
     protected String waivingCoverageDueTo;
 
     protected String spouseName;

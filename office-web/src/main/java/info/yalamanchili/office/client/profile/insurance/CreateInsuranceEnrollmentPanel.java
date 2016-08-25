@@ -46,13 +46,13 @@ public class CreateInsuranceEnrollmentPanel extends CreateComposite implements C
 
     public CreateInsuranceEnrollmentPanel(CreateComposite.CreateCompositeType type) {
         super(type);
-        initCreateComposite("HealthInsurances", OfficeWelcome.constants);
+        initCreateComposite("HealthInsurance", OfficeWelcome.constants2);
     }
     
     public CreateInsuranceEnrollmentPanel(CreateComposite.CreateCompositeType type, String empId) {
         super(type);
         this.empId = empId;
-        initCreateComposite("HealthInsurances", OfficeWelcome.constants);
+        initCreateComposite("HealthInsurance", OfficeWelcome.constants2);
     }
 
     @Override
