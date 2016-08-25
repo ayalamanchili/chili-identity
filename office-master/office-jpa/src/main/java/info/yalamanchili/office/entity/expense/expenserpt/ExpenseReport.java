@@ -98,7 +98,6 @@ public class ExpenseReport extends AbstractEntity {
     private Company company;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "expensereport_other_employee")
     protected Set<Employee> otherEmployees;
 
     private String approvedByManager;
