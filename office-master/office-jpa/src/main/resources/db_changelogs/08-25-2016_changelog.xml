@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet author="rmukkala" id="add-new-fields-to-expensereport">
+        <preConditions onFail="WARN"> 
+        </preConditions>
+        <dropColumn catalogName="office"
+                    columnName="reImbursmentMethod"
+                    schemaName="public"
+                    tableName="expensereport"/>
+        <dropColumn catalogName="office"
+                    columnName="reImbursmentMethod"
+                    schemaName="public"
+                    tableName="expensereport_aud"/> 
+        <dropColumn catalogName="office"
+                    columnName="company"
+                    schemaName="public"
+                    tableName="expensereport"/>
+        <dropColumn catalogName="office"
+                    columnName="company"
+                    schemaName="public"
+                    tableName="expensereport_aud"/> 
+        <dropColumn catalogName="office"
+                    columnName="otherEmployees"
+                    schemaName="public"
+                    tableName="expensereport"/>
+        <dropColumn catalogName="office"
+                    columnName="otherEmployees"
+                    schemaName="public"
+                    tableName="expensereport_aud"/> 
+        <addNotNullConstraint catalogName="office"
+                              columnDataType="varchar(255)"
+                              columnName="nameOfReport"
+                              defaultNullValue=""
+                              schemaName="public"
+                              tableName="expensereport"/>
+        <addNotNullConstraint catalogName="office"
+                              columnDataType="varchar(255)"
+                              columnName="destination"
+                              defaultNullValue=""
+                              schemaName="public"
+                              tableName="expensereport"/>
+        <addNotNullConstraint catalogName="office"
+                              columnDataType="varchar(255)"
+                              columnName="expenseReimbursePaymentMode"
+                              defaultNullValue=""
+                              schemaName="public"
+                              tableName="expensereport"/>
+        <addForeignKeyConstraint baseColumnNames="company_id"
+                                 baseTableName="expensereport"
+                                 constraintName="FK_EMP_COMPANY_EXP_RPTS"
+                                 referencedColumnNames="id"
+                                 referencedTableName="company"/>
+    </changeSet>
+</databaseChangeLog>
