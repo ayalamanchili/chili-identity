@@ -78,7 +78,7 @@ public class ReadExpenseReportPanel extends ReadComposite {
     HTML emptyLine = new HTML("<br/>");
 
     EnumField expenseFormType;
-    StringField purpose;
+    StringField location;
     StringField destination;
     StringField nameOfReport;
     StringField cardHolderName = new StringField(OfficeWelcome.constants2, CARDHOLDERNAME, "ExpenseReport", true, true, Alignment.HORIZONTAL);
@@ -87,7 +87,7 @@ public class ReadExpenseReportPanel extends ReadComposite {
     DateField endDate;
     StringField projectName;
     StringField projectNumber;
-    EnumField reImbursmentMethod;
+    EnumField expenseReimbursePaymentMode;
     DateField submittedDate = new DateField(OfficeWelcome.constants2, SUBMITTEDDATE, "ExpenseReport", true, true, Alignment.HORIZONTAL);
     IntegerField payrollFileNumber = new IntegerField(OfficeWelcome.constants2, PAYROLLFILENUMBER, "ExpenseReport", true, true, Alignment.HORIZONTAL);
     EnumField departmentType;
@@ -106,7 +106,6 @@ public class ReadExpenseReportPanel extends ReadComposite {
 
     public ReadExpenseReportPanel(String id) {
         initReadComposite(id, "ExpenseReport", OfficeWelcome.constants2);
-        populateComments();
     }
 
     protected final void populateComments() {
@@ -132,8 +131,8 @@ public class ReadExpenseReportPanel extends ReadComposite {
         otherEmployees.setVisible(true);
         addField(NAMEOFREPORT, true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         nameOfReport = (StringField) fields.get(NAMEOFREPORT);
-        addField(PURPOSE, true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        purpose = (StringField) fields.get(PURPOSE);
+        addField(LOCATION, true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        location = (StringField) fields.get(LOCATION);
         addField(DESTINATION, true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         destination = (StringField) fields.get(DESTINATION);
         addField(START_DATE, true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
@@ -145,8 +144,8 @@ public class ReadExpenseReportPanel extends ReadComposite {
         projectName = (StringField) fields.get(PROJECT_NAME);
         addField(PROJECT_NUMBER, true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         projectNumber = (StringField) fields.get(PROJECT_NUMBER);
-        addEnumField(REIMBURSMENTMETHOD, true, true, ReImbursmentMethod.names(), Alignment.HORIZONTAL);
-        reImbursmentMethod = (EnumField) fields.get(REIMBURSMENTMETHOD);
+        addEnumField(REIMBURSMENTMETHOD, true, true, ExpenseReimbursePaymentMode.names(), Alignment.HORIZONTAL);
+        expenseReimbursePaymentMode = (EnumField) fields.get(REIMBURSMENTMETHOD);
         addDropDown("company", selectCompanyWidget);
         addEnumField(DEPARTMENTTYPE, true, true, Department.names(), Alignment.HORIZONTAL);
         departmentType = (EnumField) fields.get(DEPARTMENTTYPE);
@@ -168,12 +167,12 @@ public class ReadExpenseReportPanel extends ReadComposite {
     @Override
     protected void configure() {
         expenseFormType.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
-        purpose.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
+        location.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
         startDate.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         endDate.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
         projectName.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         projectNumber.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
-        reImbursmentMethod.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
+        expenseReimbursePaymentMode.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
 //        generalInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 //        travelInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         expenseInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
@@ -205,7 +204,7 @@ public class ReadExpenseReportPanel extends ReadComposite {
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity(EXPENSE_FORM_TYPE, entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity(PURPOSE, entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity(LOCATION, entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity(NAMEOFREPORT, entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity(DESTINATION, entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity(START_DATE, entity, DataType.DATE_FIELD);
