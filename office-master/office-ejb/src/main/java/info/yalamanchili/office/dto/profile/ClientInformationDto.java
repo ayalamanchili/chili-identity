@@ -108,6 +108,11 @@ public class ClientInformationDto implements Serializable {
      * clientFeeApplicable
      */
     protected Boolean clientFeeApplicable;
+
+    /**
+     * clientFee
+     */
+    protected BigDecimal clientFee;
     
     /**
      * directClient
@@ -427,6 +432,14 @@ public class ClientInformationDto implements Serializable {
         this.clientFeeApplicable = clientFeeApplicable;
     }
 
+    public BigDecimal getClientFee() {
+        return clientFee;
+    }
+
+    public void setClientFee(BigDecimal clientFee) {
+        this.clientFee = clientFee;
+    }
+    
     public Boolean getDirectClient() {
         return directClient;
     }
