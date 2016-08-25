@@ -118,6 +118,9 @@ public class ExpenseReportService {
             entity.setBpmProcessId(startExpenseReportProcess(approvalManagerId, entity));
         }
         entity = expenseReportsDao.save(entity);
+        if (dto.getComments() != null) {
+            CommentDao.instance().addComment(dto.getComments(), entity);
+        }
         return mapper.map(entity, ExpenseReportSaveDto.class);
     }
 
@@ -187,13 +190,15 @@ public class ExpenseReportService {
             entity.setStatus(ExpenseReportStatus.PENDING_MANAGER_APPROVAL);
             entity.setBpmProcessId(startExpenseReportProcess(null, entity));
         }
+        if (dto.getComments() != null) {
+            CommentDao.instance().addComment(dto.getComments(), entity);
+        }
         return mapper.map(entity, ExpenseReportSaveDto.class);
     }
 
     public ExpenseReportSaveDto read(Long id) {
         ExpenseReport entity = expenseReportsDao.findById(id);
         ExpenseReportSaveDto res = (ExpenseReportSaveDto) BeanMapper.clone(entity, ExpenseReportSaveDto.class);
-        entity.setExpenseReimbursePaymentMode(res.getExpenseReimbursePaymentMode());
         if (entity.getCompany() != null) {
             res.setCompany(CompanyDao.instance().findById(entity.getCompany().getId()));
         }
@@ -212,7 +217,7 @@ public class ExpenseReportService {
             }
         }
         res.setOtherEmployees(otherEmps);
-        res.setReImbursmentMethod(entity.getReImbursmentMethod());
+        res.setExpenseReimbursePaymentMode(entity.getExpenseReimbursePaymentMode());
         return res;
     }
 
@@ -274,7 +279,7 @@ public class ExpenseReportService {
             data.getData().put("systemSoftTechnologies-INC", "true");
         }
         data.getData().put("department", entity.getDepartment());
-        data.getData().put("location", entity.getPurpose());
+        data.getData().put("location", entity.getLocation());
         data.getData().put("projectName", entity.getProjectName());
         data.getData().put("projectNumber", entity.getProjectNumber());
         data.getData().put("startDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getStartDate()));
