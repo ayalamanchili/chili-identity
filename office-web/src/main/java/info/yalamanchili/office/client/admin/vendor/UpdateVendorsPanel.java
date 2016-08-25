@@ -49,6 +49,7 @@ public class UpdateVendorsPanel extends UpdateComposite {
         assignEntityValueFromField("minFees", entity);
         assignEntityValueFromField("msaValDate", entity);
         assignEntityValueFromField("msaExpDate", entity);
+        assignEntityValueFromField("terminationNotice", entity);
 //      assignEntityValueFromField("description", entity);
         assignEntityValueFromField("vendorType", entity);
         assignEntityValueFromField("coiEndDate", entity);
@@ -84,6 +85,7 @@ public class UpdateVendorsPanel extends UpdateComposite {
         assignFieldValueFromEntity("minFees", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("msaValDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("msaExpDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("terminationNotice", entity, DataType.STRING_FIELD);
 //      assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("vendorType", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("coiEndDate", entity, DataType.DATE_FIELD);
