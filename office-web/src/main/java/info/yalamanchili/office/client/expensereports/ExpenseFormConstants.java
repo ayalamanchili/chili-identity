@@ -23,6 +23,7 @@ public interface ExpenseFormConstants {
     String EXPENSE_FORM_TYPE = "expenseFormType";
     String EXPENSE_PAYMENT_MODE = "expensePaymentMode";
     String NAME = "name";
+    String LOCATION = "location";
     String PURPOSE = "purpose";
     String SELECTNAME = "selectname";
     String NAMEOFREPORT = "nameOfReport";
@@ -36,7 +37,7 @@ public interface ExpenseFormConstants {
     String PROJECT_NUMBER = "projectNumber";
     String EXPENSE_REPORT = "ExpenseReport";
     String EXPENSE_ITEM = "ExpenseItem";
-    String REIMBURSMENTMETHOD = "reImbursmentMethod";
+    String REIMBURSMENTMETHOD = "expenseReimbursePaymentMode";
     String DEPARTMENT = "department";
     String DEPARTMENTTYPE = "departmentType";
     String OTHERDEPARTMENT = "otherDepartment";
