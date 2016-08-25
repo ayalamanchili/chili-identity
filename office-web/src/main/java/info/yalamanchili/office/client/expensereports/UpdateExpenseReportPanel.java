@@ -104,7 +104,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
     HTML emptyLine = new HTML("<br/>");
 
     EnumField expenseFormType;
-    StringField purpose;
+    StringField location;
     StringField destination;
     StringField nameOfReport;
     StringField cardHolderName = new StringField(OfficeWelcome.constants2, CARDHOLDERNAME, "ExpenseReport", false, true, Alignment.HORIZONTAL);
@@ -113,7 +113,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
     DateField endDate;
     StringField projectName;
     StringField projectNumber;
-    EnumField reImbursmentMethod;
+    EnumField expenseReimbursePaymentMode;
     IntegerField payrollFileNumber = new IntegerField(OfficeWelcome.constants2, PAYROLLFILENUMBER, "ExpenseReport", false, false, Alignment.HORIZONTAL);
     DateField submittedDate = new DateField(OfficeWelcome.constants2, SUBMITTEDDATE, "ExpenseReport", false, false, Alignment.HORIZONTAL);
     EnumField departmentType;
@@ -165,7 +165,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
     @Override
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField(EXPENSE_FORM_TYPE, entity);
-        assignEntityValueFromField(PURPOSE, entity);
+        assignEntityValueFromField(LOCATION, entity);
         assignEntityValueFromField(NAMEOFREPORT, entity);
         assignEntityValueFromField(DESTINATION, entity);
         assignEntityValueFromField(START_DATE, entity);
@@ -189,6 +189,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
                 i++;
             }
         }
+        logger.info("items are .... "+items);
         entity.put(EXPENSE_ITEMS, items);
         int j = expenseReceipts.size();
         logger.info(expenseReceipts.toString());
@@ -269,7 +270,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity(EXPENSE_FORM_TYPE, entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity(PURPOSE, entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity(LOCATION, entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity(NAMEOFREPORT, entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity(DESTINATION, entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity(START_DATE, entity, DataType.DATE_FIELD);
@@ -339,7 +340,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
     @Override
     protected void addListeners() {
         addItemL.addClickHandler(this);
-        reImbursmentMethod.listBox.addChangeHandler(this);
+        expenseReimbursePaymentMode.listBox.addChangeHandler(this);
         departmentType.listBox.addChangeHandler(this);
         submitForApprovalF.getBox().addClickHandler(this);
     }
@@ -347,12 +348,12 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
     @Override
     protected void configure() {
         expenseFormType.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
-        purpose.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
+        location.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
         startDate.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         endDate.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
         projectName.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         projectNumber.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
-        reImbursmentMethod.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
+        expenseReimbursePaymentMode.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         generalInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         travelInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         expenseItemsInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
@@ -374,8 +375,8 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
         expenseFormType = (EnumField) fields.get(EXPENSE_FORM_TYPE);
         addField(NAMEOFREPORT, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         nameOfReport = (StringField) fields.get(NAMEOFREPORT);
-        addField(PURPOSE, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        purpose = (StringField) fields.get(PURPOSE);
+        addField(LOCATION, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        location = (StringField) fields.get(LOCATION);
         addField(DESTINATION, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         destination = (StringField) fields.get(DESTINATION);
         addField(START_DATE, false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
@@ -386,8 +387,8 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
         projectName = (StringField) fields.get(PROJECT_NAME);
         addField(PROJECT_NUMBER, false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         projectNumber = (StringField) fields.get(PROJECT_NUMBER);
-        addEnumField(REIMBURSMENTMETHOD, false, true, ReImbursmentMethod.names(), Alignment.HORIZONTAL);
-        reImbursmentMethod = (EnumField) fields.get(REIMBURSMENTMETHOD);
+        addEnumField(REIMBURSMENTMETHOD, false, true, ExpenseReimbursePaymentMode.names(), Alignment.HORIZONTAL);
+        expenseReimbursePaymentMode = (EnumField) fields.get(REIMBURSMENTMETHOD);
         addDropDown("company", selectCompanyWidget);
         addEnumField(DEPARTMENTTYPE, false, true, Department.names(), Alignment.HORIZONTAL);
         departmentType = (EnumField) fields.get(DEPARTMENTTYPE);
