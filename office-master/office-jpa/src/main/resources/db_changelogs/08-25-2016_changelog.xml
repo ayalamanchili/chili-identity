@@ -38,6 +38,16 @@
                     columnName="otherEmployees"
                     schemaName="public"
                     tableName="expensereport_aud"/> 
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="expensereport">
+            <column name="company_id" type="bigint"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="expensereport_aud">
+            <column name="company_id" type="bigint"/>
+        </addColumn>
         <addNotNullConstraint catalogName="office"
                               columnDataType="varchar(255)"
                               columnName="nameOfReport"
