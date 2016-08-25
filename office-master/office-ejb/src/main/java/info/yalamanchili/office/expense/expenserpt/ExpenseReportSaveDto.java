@@ -11,10 +11,14 @@ package info.yalamanchili.office.expense.expenserpt;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseItem;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReceipt;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport;
+import info.yalamanchili.office.entity.profile.Employee;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.persistence.FetchType;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
@@ -34,7 +38,20 @@ public class ExpenseReportSaveDto extends ExpenseReport {
     protected Set<ExpenseReceipt> expenseReceipts;
     
     protected String comments;
+    
+    protected Set<Employee> otherEmployees;
 
+    @Override
+    public void setOtherEmployees(Set<Employee> otherEmployees) {
+        super.setOtherEmployees(otherEmployees); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @XmlElement
+    public Set<Employee> getOtherEmployees() {
+        return super.getOtherEmployees(); //To change body of generated methods, choose Tools | Templates.
+    }
+    
     @Override
     @XmlElement
     @Size(min = 1, message = "{expenseitem.min.size.msg}")
