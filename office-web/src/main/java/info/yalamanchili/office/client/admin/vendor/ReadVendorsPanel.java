@@ -17,6 +17,7 @@ import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.client.InvoiceFrequency;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceDeliveryMethod;
 
@@ -122,6 +123,22 @@ public class ReadVendorsPanel extends ReadComposite {
         return ReadAllVendorsPanel.instance;
     }
 
+    @Override
+    protected boolean enableEdit() {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
+            return true;
+        } else
+        return false;
+    }
+
+    @Override
+    protected void onEditClicked() {
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new UpdateVendorsPanel(entity));
+        TabPanel.instance().adminPanel.sidePanelTop.clear();
+        TabPanel.instance().adminPanel.sidePanelTop.add(new TreeVendorsPanel(entity));
+    }
+    
     @Override
     protected String getAuditUrl() {
         return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.client.Vendor" + "/" + getEntityId();
