@@ -18,6 +18,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import org.hibernate.Hibernate;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
@@ -46,6 +47,9 @@ public class ExpenseReportsDao extends CRUDDao<ExpenseReport> {
     @Override
     public ExpenseReport findById(Long id) {
         ExpenseReport entity = super.findById(id);
+        if (entity.getOtherEmployees() != null && entity.getOtherEmployees().size() > 0) {
+            Hibernate.initialize(entity.getOtherEmployees());
+        }
         if (entity == null) {
             return null;
         }

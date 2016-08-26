@@ -42,7 +42,7 @@ public class PerDiemService {
 
     @Autowired
     protected PerDiemDao perDiemDao;
-    
+
     public PerDiem save(PerDiem perDiem) {
         PerDiem perDiemObj = new PerDiem();
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
@@ -75,7 +75,7 @@ public class PerDiemService {
         perDiemObj.setId(entity.getId());
         return perDiemObj;
     }
-    
+
     public PerDiem update(PerDiem perdiem) {
         PerDiem perdiemObj = perDiemDao.findById(perdiem.getId());
         perdiemObj.setPerDiemStartDate(perdiem.getPerDiemStartDate());
@@ -131,6 +131,7 @@ public class PerDiemService {
                 }
             }
         }
+        data.getData().put("check", "On");
         Date submittedDate = null;
         submittedDate = entity.getSubmittedDate();
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");

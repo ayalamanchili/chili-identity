@@ -20,8 +20,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -97,7 +95,8 @@ public class ExpenseReport extends AbstractEntity {
     @ForeignKey(name = "FK_EMP_COMPANY_EXP_RPTS")
     private Company company;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
+    @ForeignKey(name = "FK_Other_Emps_Exp_Rprt")
     protected Set<Employee> otherEmployees;
 
     private String approvedByManager;
@@ -409,7 +408,7 @@ public class ExpenseReport extends AbstractEntity {
     public void setExpenseReceipts(Set<ExpenseReceipt> expenseReceipts) {
         this.expenseReceipts = expenseReceipts;
     }
-    
+
     public String getExpenseReportNumber() {
         if (getId() != null) {
             return "ERN-" + String.format("%04d", getId());
@@ -454,6 +453,6 @@ public class ExpenseReport extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "ExpenseReport{" + "location=" + location + ", department=" + department + ", nameOfReport=" + nameOfReport + ", destination=" + destination + ", startDate=" + startDate + ", endDate=" + endDate + ", projectName=" + projectName + ", projectNumber=" + projectNumber + ", expenseReimbursePaymentMode=" + expenseReimbursePaymentMode + ", submittedDate=" + submittedDate + ", expensesMadeBy=" + expensesMadeBy + ", cardHolderName=" + cardHolderName + ", company=" + company + ", otherEmployees=" + otherEmployees + ", payrollFileNumber=" + payrollFileNumber + ", otherDepartment=" + otherDepartment + ", approvedByManager=" + approvedByManager + ", approvedByManagerDate=" + approvedByManagerDate + ", approvedByAccountsDept=" + approvedByAccountsDept + ", approvedByAccountsDeptDate=" + approvedByAccountsDeptDate + ", approvedByCEO=" + approvedByCEO + ", approvedByCEODate=" + approvedByCEODate + ", employee=" + employee + ", expenseItems=" + expenseItems + ", bpmProcessId=" + bpmProcessId + ", status=" + status + ", expenseFormType=" + expenseFormType + ", departmentType=" + departmentType + ", totalExpenses=" + totalExpenses + ", expenseReceipts=" + expenseReceipts + ", approvalManagerId=" + approvalManagerId + ", expenseReportNumber=" + expenseReportNumber + '}';
+        return "ExpenseReport{" + "location=" + location + ", department=" + department + ", nameOfReport=" + nameOfReport + ", destination=" + destination + ", startDate=" + startDate + ", endDate=" + endDate + ", projectName=" + projectName + ", projectNumber=" + projectNumber + ", expenseReimbursePaymentMode=" + expenseReimbursePaymentMode + ", submittedDate=" + submittedDate + ", expensesMadeBy=" + expensesMadeBy + ", cardHolderName=" + cardHolderName + ", payrollFileNumber=" + payrollFileNumber + ", otherDepartment=" + otherDepartment + ", approvedByManager=" + approvedByManager + ", approvedByManagerDate=" + approvedByManagerDate + ", approvedByAccountsDept=" + approvedByAccountsDept + ", approvedByAccountsDeptDate=" + approvedByAccountsDeptDate + ", approvedByCEO=" + approvedByCEO + ", approvedByCEODate=" + approvedByCEODate + ", employee=" + employee + ", bpmProcessId=" + bpmProcessId + ", status=" + status + ", expenseFormType=" + expenseFormType + ", departmentType=" + departmentType + ", totalExpenses=" + totalExpenses + ", approvalManagerId=" + approvalManagerId + ", expenseReportNumber=" + expenseReportNumber + '}';
     }
 }

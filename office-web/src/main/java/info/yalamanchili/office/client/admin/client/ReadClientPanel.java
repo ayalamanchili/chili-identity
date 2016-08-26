@@ -17,6 +17,7 @@ import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceDeliveryMethod;
 
 /**
@@ -127,5 +128,21 @@ public class ReadClientPanel extends ReadComposite {
     @Override
     protected ReadAllComposite getReadAllPanel() {
         return ReadAllClientsPanel.instance;
+    }
+    
+    @Override
+    protected boolean enableEdit() {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
+            return true;
+        } else
+        return false;
+    }
+
+    @Override
+    protected void onEditClicked() {
+        TabPanel.instance().adminPanel.sidePanelTop.clear();
+        TabPanel.instance().adminPanel.sidePanelTop.add(new TreeClientPanel(entity));
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new UpdateClientPanel(entity));
     }
 }

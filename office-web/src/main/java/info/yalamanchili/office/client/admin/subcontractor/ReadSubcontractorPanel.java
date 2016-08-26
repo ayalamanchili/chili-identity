@@ -16,6 +16,7 @@ import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 
 /**
  *
@@ -92,14 +93,30 @@ public class ReadSubcontractorPanel extends ReadComposite {
     protected String getAuditUrl() {
         return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.client.Subcontractor" + "/" + getEntityId();
     }
-    
+
     @Override
-   protected boolean enableBack() {
-       return true;
-   }
-   
+    protected boolean enableBack() {
+        return true;
+    }
+
     @Override
     protected ReadAllComposite getReadAllPanel() {
         return ReadAllSubcontractorsPanel.instance;
+    }
+
+    @Override
+    protected boolean enableEdit() {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
+            return true;
+        } else
+        return false;
+    }
+
+    @Override
+    protected void onEditClicked() {
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new UpdateSubcontractorPanel(entity));
+        TabPanel.instance().adminPanel.sidePanelTop.clear();
+        TabPanel.instance().adminPanel.sidePanelTop.add(new TreeSubcontractorPanel(entity));
     }
 }

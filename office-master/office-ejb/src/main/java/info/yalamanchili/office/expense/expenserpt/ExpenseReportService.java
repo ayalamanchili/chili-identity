@@ -50,6 +50,7 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.dozer.Mapper;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -202,7 +203,9 @@ public class ExpenseReportService {
         if (entity.getCompany() != null) {
             res.setCompany(CompanyDao.instance().findById(entity.getCompany().getId()));
         }
-        res.setDepartmentType(entity.getDepartmentType());
+        if (entity.getDepartmentType() != null) {
+            res.setDepartmentType(entity.getDepartmentType());
+        }
         if (!entity.getDepartmentType().equals(DepartmentType.Other)) {
             res.setOtherDepartment(null);
         }

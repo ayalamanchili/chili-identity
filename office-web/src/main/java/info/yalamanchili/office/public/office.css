@@ -1160,6 +1160,7 @@ a.gwt-Anchor {
     color:orange_semilight !important;
     text-decoration: blink;
     line-height: 29px; 
+    padding: 3px;
 }
 a.gwt-Anchor:hover{
     color:orange_hover !important;
