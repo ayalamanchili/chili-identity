@@ -301,7 +301,7 @@ public class ContractService {
         ContractDto dto = mapper.map(ci, ContractDto.class);
         Vendor vi = new Vendor();
         Client ct= new Client();
-        BigDecimal clientFeePer;        
+        BigDecimal clientFeePer=new BigDecimal(0);        
         if (ci.getEmployee() != null) {
             dto.setContractSignedEntity(ci.getCompany().name());
             dto.setEmployee(ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
@@ -325,7 +325,7 @@ public class ContractService {
                 clientFeePer = ci.getClientFee();
                 dto.setClientFees(clientFeePer.floatValue());
             }  
-            else {
+            else if (ct.getClientFee() != null) {
                 clientFeePer = new BigDecimal(ct.getClientFee());
                 dto.setClientFees(clientFeePer.floatValue()); 
             }
