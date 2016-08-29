@@ -17,6 +17,7 @@ import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.client.VendorService;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.client.InvoiceScheduleDao;
+import info.yalamanchili.office.dao.client.SearchVendorDto;
 import info.yalamanchili.office.dao.client.VendorDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
@@ -404,11 +405,11 @@ public class VendorResource extends CRUDResource<Vendor> {
     @Path("/reports")
     public void generateCOIEndReport(@QueryParam("coiFromEndDate") Date startDate, @QueryParam("coiToEndDate") Date endDate) {
         VendorResource.VendorTable table = searchForCOIEndDate(startDate, endDate);
-        System.out.println("the table size is:" + table.getSize());
         if (table.getSize() != null) {
+            String reportName = "COI Report";
             List<Vendor> list = new ArrayList();
             list.addAll(table.getEntities());
-            VendorService.instance().generateCOIEndDateReport(list, OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
+            VendorService.instance().generateSearchDatesReport(list, OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail(), reportName);
         } else {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "DateInvalid", "No Results");
         }
@@ -440,6 +441,24 @@ public class VendorResource extends CRUDResource<Vendor> {
         }
         return resulttable;
 
+    }
+
+    @PUT
+    @Path("/msa-valid-reports")
+    public void generateMSAValidReport(SearchVendorDto dto) {
+        List<Vendor> list = vendorDao.getReport(dto, 0, 10000);
+        if (list.size() > 0) {
+            String reportName = "MSA Report";
+            VendorService.instance().generateSearchDatesReport(list, OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail(), reportName);
+        } else {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "DateInvalid", "No Results");
+        }
+    }
+
+    @PUT
+    @Path("/msa-valid-search/{start}/{limit}")
+    public List<Vendor> searchForMSADate(SearchVendorDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {
+        return vendorDao.getReport(dto, start, limit);
     }
 
     @XmlRootElement
