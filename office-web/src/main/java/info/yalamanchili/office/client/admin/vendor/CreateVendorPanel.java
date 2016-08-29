@@ -17,7 +17,9 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CreateComposite;
+import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
+import info.chili.gwt.fields.FloatField;
 import info.chili.gwt.fields.LongField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
@@ -66,7 +68,6 @@ public class CreateVendorPanel extends CreateComposite {
         assignEntityValueFromField("msaValDate", vendor);
         assignEntityValueFromField("msaExpDate", vendor);
         assignEntityValueFromField("terminationNotice", vendor);
-//      assignEntityValueFromField("description", vendor);
         assignEntityValueFromField("vendorType", vendor);
         assignEntityValueFromField("coiEndDate", vendor);
 
@@ -127,17 +128,16 @@ public class CreateVendorPanel extends CreateComposite {
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addEnumField("vendorType", false, false, VendorType.names(), Alignment.HORIZONTAL);
-        addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addEnumField("vendorinvFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
-        addEnumField("vendorinvDeliveryMethod", false, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
-        addField("vendorFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addEnumField("vendorType", false, true, VendorType.names(), Alignment.HORIZONTAL);
+        addField("paymentTerms", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("vendorinvFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+        addEnumField("vendorinvDeliveryMethod", false, true, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
+        addField("vendorFees", false, true, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("maxFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("minFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("msaValDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("msaExpDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("terminationNotice", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        // addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("coiEndDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(primaryLocation);
         entityFieldsPanel.add(createAddressWidget);
@@ -160,9 +160,36 @@ public class CreateVendorPanel extends CreateComposite {
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
         boolean valid = true;
+        DateField msaValDate = (DateField) fields.get("msaValDate");
+        DateField msaExpDate = (DateField) fields.get("msaExpDate");
         StringField vendorNameF = (StringField) fields.get("name");
         if (vendorNameF.getValue() == null || "".equals(vendorNameF.getValue())) {
             vendorNameF.setMessage("Please enter a name for the Vendor");
+            valid = false;
+        }
+        EnumField vendorTypeF = (EnumField) fields.get("vendorType");
+        if (vendorTypeF.getValue() == null || "".equals(vendorTypeF.getValue())) {
+            vendorTypeF.setMessage("Please enter Vendor Type ");
+            valid = false;
+        }
+        StringField paymentTermsF = (StringField) fields.get("paymentTerms");
+        if (paymentTermsF.getValue() == null || "".equals(paymentTermsF.getValue())) {
+            paymentTermsF.setMessage("Please enter the Payment Terms");
+            valid = false;
+        }
+        EnumField vendorinvFrequencyF = (EnumField) fields.get("vendorinvFrequency");
+        if (vendorinvFrequencyF.getValue() == null || "".equals(vendorinvFrequencyF.getValue())) {
+            vendorinvFrequencyF.setMessage("Please enter Invoice Frequency ");
+            valid = false;
+        }
+        EnumField vendorinvDeliveryMethodF = (EnumField) fields.get("vendorinvDeliveryMethod");
+        if (vendorinvDeliveryMethodF.getValue() == null || "".equals(vendorinvDeliveryMethodF.getValue())) {
+            vendorinvDeliveryMethodF.setMessage("Please enter Invoice Delivery Method ");
+            valid = false;
+        }
+        FloatField vendorFeesF = (FloatField) fields.get("vendorFees");
+        if (vendorFeesF.getValue() == null || "".equals(vendorFeesF.getValue())) {
+            vendorFeesF.setMessage("Please enter Vendor Fees");
             valid = false;
         }
         StringField street1F = (StringField) createAddressWidget.fields.get("street1");
@@ -201,9 +228,23 @@ public class CreateVendorPanel extends CreateComposite {
             recruiterLastName.setMessage("Please enter the last name");
             valid = false;
         }
+        StringField recruiterEmail = (StringField) createContactWidget1.fields.get("email");
+        if (recruiterEmail.getValue() == null || "".equals(recruiterEmail.getValue())) {
+            recruiterEmail.setMessage("Please enter email");
+            valid = false;
+        }
         for (CreatePhonePanel createPhoneWidget : createContactWidget1.getChildWidgets()) {
             LongField phoneNumberF = (LongField) createPhoneWidget.fields.get("phoneNumber");
-
+            if (createPhoneWidget.phoneTypeF.getSelectedObject() == null) {
+                createPhoneWidget.phoneTypeF.setMessage("Please enter a Phone Type");
+                valid = false;
+            } else {
+                String phoneTypeF = createPhoneWidget.phoneTypeF.getSelectedObject().get("value").isString().stringValue();
+                if (phoneTypeF == null || "".equals(phoneTypeF)) {
+                    createPhoneWidget.phoneTypeF.setMessage("Please enter a Phone Type");
+                    valid = false;
+                }
+            }
             if (phoneNumberF.getValue() == null || "".equals(phoneNumberF.getValue())) {
                 phoneNumberF.setMessage("Please enter a phone number");
                 valid = false;
@@ -231,7 +272,16 @@ public class CreateVendorPanel extends CreateComposite {
         }
         for (CreatePhonePanel createPhoneWidget : createContactWidget2.getChildWidgets()) {
             LongField phoneNumberF = (LongField) createPhoneWidget.fields.get("phoneNumber");
-
+            if (createPhoneWidget.phoneTypeF.getSelectedObject() == null) {
+                createPhoneWidget.phoneTypeF.setMessage("Please enter a Phone Type");
+                valid = false;
+            } else {
+                String phoneTypeF = createPhoneWidget.phoneTypeF.getSelectedObject().get("value").isString().stringValue();
+                if (phoneTypeF == null || "".equals(phoneTypeF)) {
+                    createPhoneWidget.phoneTypeF.setMessage("Please enter a Phone Type");
+                    valid = false;
+                }
+            }
             if (phoneNumberF.getValue() == null || "".equals(phoneNumberF.getValue())) {
                 phoneNumberF.setMessage("Please enter a phone number");
                 valid = false;
@@ -245,6 +295,15 @@ public class CreateVendorPanel extends CreateComposite {
                     valid = false;
                 }
             }
+        }
+        StringField accountPayableEmail = (StringField) createContactWidget2.fields.get("email");
+        if (accountPayableEmail.getValue() == null || "".equals(accountPayableEmail.getValue())) {
+            accountPayableEmail.setMessage("Please enter email");
+            valid = false;
+        }
+         if (msaValDate.getDate() != null && msaExpDate.getDate() != null && msaValDate.getDate().after(msaExpDate.getDate())) {
+            msaExpDate.setMessage("To Date must be after From Date");
+            return false;
         }
         return valid;
     }
