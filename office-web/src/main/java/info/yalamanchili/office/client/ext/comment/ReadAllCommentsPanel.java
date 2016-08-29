@@ -8,7 +8,6 @@
  */
 package info.yalamanchili.office.client.ext.comment;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -77,7 +76,7 @@ public class ReadAllCommentsPanel extends CRUDReadAllComposite {
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "comment"));
             table.setText(i, 2, JSONUtils.toString(entity, "updatedBy"));
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "updatedTS"), DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM));
+            table.setText(i, 3, DateUtils.formatDate(JSONUtils.toString(entity, "updatedTS")));
         }
     }
 
