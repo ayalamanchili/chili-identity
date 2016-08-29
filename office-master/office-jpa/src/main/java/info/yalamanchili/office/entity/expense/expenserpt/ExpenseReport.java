@@ -423,6 +423,9 @@ public class ExpenseReport extends AbstractEntity {
 
     @XmlTransient
     public Set<Employee> getOtherEmployees() {
+        if (this.otherEmployees == null) {
+            this.otherEmployees = new HashSet();
+        }
         return otherEmployees;
     }
 
