@@ -210,9 +210,16 @@ public class VendorService {
 
     @Async
     @Transactional
-    public void generateCOIEndDateReport(List<Vendor> ven, String email) {
-        String[] columnOrder = new String[]{"name", "description", "website", "coiEndDate"};
-        String fileName = ReportGenerator.generateExcelOrderedReport(ven, "COI End Date Report For Vendor", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+    public void generateSearchDatesReport(List<Vendor> ven, String email, String reportName) {
+        String[] columnOrder;
+        String fileName;
+        if (reportName.equalsIgnoreCase("COI Report")) {
+            columnOrder = new String[]{"name", "website", "coiEndDate"};
+            fileName = ReportGenerator.generateExcelOrderedReport(ven, "COI End Date Report For Vendor", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        } else {
+            columnOrder = new String[]{"name", "website", "msaValDate", "msaExpDate"};
+            fileName = ReportGenerator.generateExcelOrderedReport(ven, "MSA Validity Date Report For Vendor", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        }
         MessagingService.instance().emailReport(fileName, email);
     }
 
