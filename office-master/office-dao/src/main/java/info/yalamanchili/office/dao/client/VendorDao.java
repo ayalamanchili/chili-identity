@@ -20,6 +20,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.Async;
@@ -107,5 +108,36 @@ public class VendorDao extends CRUDDao<Vendor> {
         findAllQuery.setFirstResult(start);
         findAllQuery.setMaxResults(limit);
         return findAllQuery.getResultList();
+    }
+
+    public List<Vendor> getReport(SearchVendorDto dto, int start, int limit) {
+        String queryStr = getReportQueryString(dto);
+        TypedQuery<Vendor> query = getEntityManager().createQuery(queryStr, Vendor.class);
+        query = (TypedQuery<Vendor>) getReportQueryWithParams(queryStr, query, dto);
+        query.setFirstResult(start);
+        query.setMaxResults(limit);
+        return query.getResultList();
+    }
+
+    protected Query getReportQueryWithParams(String qryStr, Query query, SearchVendorDto dto) {
+        if (qryStr.contains("startDateParam")) {
+            query.setParameter("startDateParam", dto.getStartDate(), TemporalType.DATE);
+        }
+        if (qryStr.contains("endDateParam")) {
+            query.setParameter("endDateParam", dto.getEndDate(), TemporalType.DATE);
+        }
+        return query;
+    }
+
+    protected String getReportQueryString(SearchVendorDto dto) {
+        StringBuilder reportQueryBuilder = new StringBuilder();
+        reportQueryBuilder.append("from ").append(Vendor.class.getCanonicalName()).append(" where ");
+        if (dto.getStartDate() != null) {
+            reportQueryBuilder.append("( msaValDate BETWEEN :startDateParam AND :endDateParam");
+        }
+        if (dto.getEndDate() != null) {
+            reportQueryBuilder.append(" or msaExpDate BETWEEN :startDateParam AND :endDateParam)");
+        }
+        return reportQueryBuilder.toString();
     }
 }
