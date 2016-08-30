@@ -67,7 +67,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     RadioButton forsomeone = new RadioButton("expenses", "FOR SOMEONE");
     protected SelectCompanyWidget selectCompanyWidget = new SelectCompanyWidget(false, true, Alignment.HORIZONTAL);
     public List<CreateExpenseItemPanel> expenseItemPanels = new ArrayList();
-    SuggestBox approvalManager = new SuggestBox(OfficeWelcome.constants2, "approvalManager", "ApprovalManager", false, false, Alignment.HORIZONTAL);
+    SuggestBox approvalManager = new SuggestBox(OfficeWelcome.constants2, "approvalManager", "ExpenseReport", false, false, Alignment.HORIZONTAL);
     BooleanField submitForApprovalF = new BooleanField(OfficeWelcome.constants2, "Submit", "ExpenseReport", false, false, Alignment.HORIZONTAL);
     boolean isGeneralExpenseItem = false;
 
@@ -163,9 +163,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         entityFieldsPanel.add(foryourself);
         entityFieldsPanel.add(forsomeone);
         addDropDown(OTHEREMPLOYEES, otherEmployees);
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_CORPORATE_EMPLOYEE)) {
-            addField(NAMEOFREPORT, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        }
+        addField(NAMEOFREPORT, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         nameOfReport = (StringField) fields.get(NAMEOFREPORT);
         addField(LOCATION, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         location = (StringField) fields.get(LOCATION);
@@ -341,17 +339,17 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                logger.info(arg0.getMessage());
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        logger.info(arg0.getMessage());
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                uploadReceipts(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        uploadReceipts(arg0);
+                    }
+                });
     }
 
     @Override
@@ -473,15 +471,15 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         if (expenseItemPanels.size() > 0 && (fileUploadPanel.getFileNames().size() <= 0 || fileUploadPanel.getFileNames().get(0).stringValue().isEmpty())) {
             return Window.confirm("Your expense report does not have any receipts attached so will not be processed. Are you sure you still want to submit?");
         }
-        StringField cardHolderNames = (StringField) fields.get(CARDHOLDERNAME);
-        if (cardHolderNames.getValue() == null) {
-            cardHolderNames.setMessage("Card Holder Name can not be null");
-            return false;
-        }
-        StringField expensesMadeBy = (StringField) fields.get(EXPENSESMADEBY);
-        if (expensesMadeBy.getValue() == null) {
-            expensesMadeBy.setMessage("Expense Made By can not be null");
-            return false;
+        if (entity.get("expenseFormType") != null && entity.get("expenseFormType").isString().stringValue().equals(ExpenseFormType.GENERAL_EXPENSE.name())) {
+            if (cardHolderName.getValue() == null || "".equals(cardHolderName.getValue())) {
+                fields.get("cardHolderName").setMessage("Card Holder Name can not be null");
+                return false;
+            }
+            if (expensesMadeBy.getValue() == null || "".equals(expensesMadeBy.getValue())) {
+                fields.get("expensesMadeBy").setMessage("Expense Made By can not be null");
+                return false;
+            }
         }
         return valid;
 
