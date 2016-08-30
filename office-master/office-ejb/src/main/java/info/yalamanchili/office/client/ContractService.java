@@ -322,7 +322,7 @@ public class ContractService {
             dto.setClientFeeApplicable(ci.getClientFeeApplicable());
             dto.setDirectClient(ci.getDirectClient());
             if(ci.getClientFee() != null) {
-                clientFeePer = ci.getClientFee();
+                clientFeePer = new BigDecimal(ci.getClientFee());
                 dto.setClientFees(clientFeePer.floatValue());
             }  
             else if (ct.getClientFee() != null) {
@@ -330,14 +330,14 @@ public class ContractService {
                 dto.setClientFees(clientFeePer.floatValue()); 
             }
             if(ci.getClientFeeApplicable() != null && ci.getClientFeeApplicable() && ct.getClientFee() != null) {
-                BigDecimal clientFee = clientFeePer.divide(new BigDecimal(100)).multiply(dto.getBillingRate());
+                BigDecimal clientFeeVal = clientFeePer.divide(new BigDecimal(100)).multiply(dto.getBillingRate());
                 BigDecimal effectiveBillingRate = getEffectiveBillingRate(ci.getId());
                 if (effectiveBillingRate == null) {
                     dto.setBillingRate(ci.getBillingRate());
                 } else {
                     dto.setBillingRate(getEffectiveBillingRate(ci.getId()));
                  }
-                dto.setFinalBillingRate(dto.getBillingRate().subtract(calculateMargin(clientFee, ct.getMaxClientFee(), ct.getMinClientFee())));            
+                dto.setFinalBillingRate(dto.getBillingRate().subtract(calculateMargin(clientFeeVal, ct.getMaxClientFee(), ct.getMinClientFee())));            
             }                
         }
 
