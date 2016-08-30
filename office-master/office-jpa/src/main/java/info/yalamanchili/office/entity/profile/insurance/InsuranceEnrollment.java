@@ -36,7 +36,6 @@ public class InsuranceEnrollment extends AbstractHandleEntity {
 
     protected String comments;
 
-    @NotEmpty
     protected String year;
 
     /**

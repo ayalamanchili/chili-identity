@@ -11,7 +11,9 @@ package info.yalamanchili.office.profile.insurance;
 import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
 import info.chili.commons.pdf.PdfDocumentData;
+import info.chili.email.Email;
 import info.chili.security.Signature;
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
@@ -26,11 +28,13 @@ import static info.yalamanchili.office.entity.profile.insurance.InsuranceCoverag
 import static info.yalamanchili.office.entity.profile.insurance.InsuranceCoverageType.Individual;
 import static info.yalamanchili.office.entity.profile.insurance.InsuranceCoverageType.Medicare;
 import static info.yalamanchili.office.entity.profile.insurance.InsuranceCoverageType.Tricare;
+import info.yalamanchili.office.jms.MessagingService;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -143,7 +147,6 @@ public class HealthInsuranceService {
                         } else {
                             dto.setEnrolled("Not Enrolled");
                         }
-                        //dto.setStartDate(insurance.getHealthInsuranceWaiver().getSubmittedDate());
                         dto.setYear(insurance.getInsuranceEnrollment().getYear());
                         report.add(dto);
                     } else if (insurance.getInsuranceEnrollment() == null) {
@@ -161,6 +164,25 @@ public class HealthInsuranceService {
             }
         }
         return report;
+    }
+
+    public void notSubmittedEmailNotification(HealthInsuranceReportDto dto) {
+        Set<String> res = new HashSet();
+        if (dto.getYear() == null) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "healthinsurance.not.present", "Please select a Year");
+        }
+        HealthInsurance HealthInsuran = HealthInsuranceDao.instance().findById(Long.MIN_VALUE);
+        notSubmittedEmailNotification(HealthInsuran);
+    }
+
+    protected void notSubmittedEmailNotification(HealthInsurance healthIns) {
+        Set<String> res = new HashSet();
+        Email email = new Email();
+        email.setTos(res);
+        email.setSubject("Health Insurance Not submitted reminder " + healthIns.describe());
+        String messageText = "Please submit your Health Insurance report";
+        email.setBody(messageText);
+        MessagingService.instance().sendEmail(email);
     }
 
     public static HealthInsuranceService instance() {

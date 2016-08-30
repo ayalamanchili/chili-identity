@@ -43,7 +43,6 @@ public class HealthInsurance extends AbstractEntity {
     protected Employee employee;
 
     @Temporal(javax.persistence.TemporalType.DATE)
-    @org.hibernate.annotations.Index(name = "ADV_REQ_RQST_DT")
     protected Date dateRequested;
 
     @OneToOne(cascade = CascadeType.MERGE)

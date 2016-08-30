@@ -48,7 +48,7 @@ public class CreateInsuranceEnrollmentPanel extends CreateComposite implements C
         super(type);
         initCreateComposite("HealthInsurance", OfficeWelcome.constants2);
     }
-    
+
     public CreateInsuranceEnrollmentPanel(CreateComposite.CreateCompositeType type, String empId) {
         super(type);
         this.empId = empId;
@@ -64,6 +64,7 @@ public class CreateInsuranceEnrollmentPanel extends CreateComposite implements C
         }
         if (enrolledNo.getValue()) {
             entity.put("healthInsuranceWaiver", insuranceWaiver.populateEntityFromFields());
+            logger.info("healthInsuranceWaiver file" + entity);
         }
         return entity;
 
@@ -81,10 +82,15 @@ public class CreateInsuranceEnrollmentPanel extends CreateComposite implements C
 
                     @Override
                     public void onSuccess(String arg0) {
+                        uploadDoc(arg0);
                         postCreateSuccess(arg0);
                     }
                 });
 
+    }
+
+    protected void uploadDoc(String entityId) {
+        insuranceWaiver.resumeUploadPanel.upload(entityId.trim());
     }
 
     @Override
@@ -135,7 +141,7 @@ public class CreateInsuranceEnrollmentPanel extends CreateComposite implements C
 
     @Override
     public void onClick(ClickEvent event) {
-        if(event.getSource().equals(create)){
+        if (event.getSource().equals(create)) {
             create.setEnabled(false);
         }
         if (event.getSource().equals(enrolled)) {

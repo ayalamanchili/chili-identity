@@ -11,8 +11,8 @@ package info.yalamanchili.office.jrs.profile.insurance;
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.chili.reporting.ReportGenerator;
-import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.insurance.HealthInsuranceDao;
 import info.yalamanchili.office.dao.profile.insurance.HealthInsuranceWaiverDao;
 import info.yalamanchili.office.dao.profile.insurance.InsuranceEnrollmentDao;
@@ -115,10 +115,13 @@ public class HealthInsuranceResource extends CRUDResource<HealthInsurance> {
             insurance.setInsuranceEnrollment(insEnrollment);
         }
         if (entity.getHealthInsuranceWaiver() != null) {
+            HealthInsuranceWaiverDao.instance().save(entity.getHealthInsuranceWaiver());
             HealthInsuranceWaiver entityWaiver = entity.getHealthInsuranceWaiver();
             entityWaiver.setTargetEntityId(OfficeSecurityService.instance().getCurrentUser().getId());
             entityWaiver.setTargetEntityName(InsuranceEnrollment.class.getCanonicalName());
             HealthInsuranceWaiver waiverNew = HealthInsuranceWaiverDao.instance().save(entityWaiver);
+            entity.setEmployee(EmployeeDao.instance().findById(entity.getEmployee().getId()));
+            waiverNew.setFileUrl(entity.getHealthInsuranceWaiver().getFileUrl());
             insurance.setHealthInsuranceWaiver(waiverNew);
         }
         return HealthInsuranceDao.instance().save(insurance);
@@ -153,6 +156,12 @@ public class HealthInsuranceResource extends CRUDResource<HealthInsurance> {
     @Path("/insurance-reportView")
     public List<HealthInsuranceReportDto> employeeperformanceEvaluationReportView(@QueryParam("year") String year) {
         return healthInsuranceService.getHealthInsuranceReport(year);
+    }
+
+    @PUT
+    @Path("/not-submitted-reminder")
+    public void notSubmittedRemainder(HealthInsuranceReportDto dto) {
+        healthInsuranceService.notSubmittedEmailNotification(dto);
     }
 
     @XmlRootElement

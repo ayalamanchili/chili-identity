@@ -94,7 +94,7 @@ public class ReadAllHealthInsuranceWaiverPanel extends CRUDReadAllComposite {
                 table.setText(i, 2, JSONUtils.toString(entity, "enrolled"));
                 table.setText(i, 3, JSONUtils.toString(healthInsuranceWaiver, "waivingCoverageFor"));
                 table.setText(i, 4, JSONUtils.toString(healthInsuranceWaiver, "waivingCoverageDueTo"));
-                String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "fileUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
+                String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(healthInsuranceWaiver, "fileUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
                 FileField fileField = new FileField(fileURL);
                 table.setWidget(i, 5, fileField);
             }
