@@ -8,10 +8,13 @@
  */
 package info.yalamanchili.office.dto.profile;
 
+import info.yalamanchili.office.entity.client.InvoiceDeliveryMethod;
+import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import info.yalamanchili.office.entity.profile.Address;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Temporal;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -20,18 +23,30 @@ import org.hibernate.validator.constraints.NotEmpty;
  *
  * @author Sandeep Sunchu <sandeep.sunchu@sstech.us>
  */
-@XmlRootElement(name = "CreateSubcontractor")
+@XmlRootElement(name = "Subcontractor")
 @XmlType
 public class SubcontractorDto implements Serializable {
-    
+
     protected Long id;
 
     @NotEmpty(message = "{subcontractor.not.empty.msg}")
     protected String name;
-    protected String description;
+    // protected String description;
     protected String website;
+    protected String paymentTerms;
+    protected InvoiceFrequency invoiceFrequency;
+    protected InvoiceDeliveryMethod invoiceDeliveryMethod;
     @Temporal(javax.persistence.TemporalType.DATE)
+    @NotNull(message = "{subcontractor.coiEndDate.not.null.msg}")
     protected Date coiEndDate;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    @NotNull(message = "{subcontractor.msaValDate.not.null.msg}")
+    protected Date msaValDate;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    @NotNull(message = "{subcontractor.msaExpDate.not.null.msg}")
+    protected Date msaExpDate;
+    @NotNull(message = "{subcontractor.terminationNoticePeriod.not.null.msg}")
+    protected Integer terminationNoticePeriod;
     protected Address location;
     protected ContactDto contact;
 
@@ -63,20 +78,19 @@ public class SubcontractorDto implements Serializable {
         this.name = name;
     }
 
-    /**
-     * @return the description
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * @param description the description to set
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
+//    /**
+//     * @return the description
+//     */
+//    public String getDescription() {
+//        return description;
+//    }
+//
+//    /**
+//     * @param description the description to set
+//     */
+//    public void setDescription(String description) {
+//        this.description = description;
+//    }
     /**
      * @return the website
      */
@@ -91,6 +105,30 @@ public class SubcontractorDto implements Serializable {
         this.website = website;
     }
 
+    public String getPaymentTerms() {
+        return paymentTerms;
+    }
+
+    public void setPaymentTerms(String paymentTerms) {
+        this.paymentTerms = paymentTerms;
+    }
+
+    public InvoiceFrequency getInvoiceFrequency() {
+        return invoiceFrequency;
+    }
+
+    public void setInvoiceFrequency(InvoiceFrequency invoiceFrequency) {
+        this.invoiceFrequency = invoiceFrequency;
+    }
+
+    public InvoiceDeliveryMethod getInvoiceDeliveryMethod() {
+        return invoiceDeliveryMethod;
+    }
+
+    public void setInvoiceDeliveryMethod(InvoiceDeliveryMethod invoiceDeliveryMethod) {
+        this.invoiceDeliveryMethod = invoiceDeliveryMethod;
+    }
+
     /**
      * @return the coiEndDate
      */
@@ -103,6 +141,30 @@ public class SubcontractorDto implements Serializable {
      */
     public void setCoiEndDate(Date coiEndDate) {
         this.coiEndDate = coiEndDate;
+    }
+
+    public Date getMsaValDate() {
+        return msaValDate;
+    }
+
+    public void setMsaValDate(Date msaValDate) {
+        this.msaValDate = msaValDate;
+    }
+
+    public Date getMsaExpDate() {
+        return msaExpDate;
+    }
+
+    public void setMsaExpDate(Date msaExpDate) {
+        this.msaExpDate = msaExpDate;
+    }
+
+    public Integer getTerminationNoticePeriod() {
+        return terminationNoticePeriod;
+    }
+
+    public void setTerminationNoticePeriod(Integer terminationNoticePeriod) {
+        this.terminationNoticePeriod = terminationNoticePeriod;
     }
 
     /**
@@ -132,10 +194,10 @@ public class SubcontractorDto implements Serializable {
     public void setContact(ContactDto contact) {
         this.contact = contact;
     }
-    
+
     @Override
     public String toString() {
-        return "Create Subcontractor{" + "name=" + name + ", description=" + description + '}';
+        return "SubcontractorDto{" + "id=" + id + ", name=" + name + ", website=" + website + ", paymentTerms=" + paymentTerms + ", invoiceFrequency=" + invoiceFrequency + ", invoiceDeliveryMethod=" + invoiceDeliveryMethod + ", coiEndDate=" + coiEndDate + ", msaValDate=" + msaValDate + ", msaExpDate=" + msaExpDate + ", terminationNoticePeriod=" + terminationNoticePeriod + ", location=" + location + ", contact=" + contact + '}';
     }
-    
+
 }

@@ -9,10 +9,12 @@ package info.yalamanchili.office.client.admin.subcontractor;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.LongField;
 import info.chili.gwt.fields.StringField;
@@ -25,6 +27,8 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.subcntrcontact.CreateSubcontractorContactPanel;
 import info.yalamanchili.office.client.profile.address.CreateAddressPanel;
 import info.yalamanchili.office.client.profile.address.CreateAddressWidget;
+import info.yalamanchili.office.client.profile.cllientinfo.InvoiceDeliveryMethod;
+import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
 import info.yalamanchili.office.client.profile.contact.CreateContactWidget;
 import info.yalamanchili.office.client.profile.phone.CreatePhonePanel;
 import java.util.logging.Logger;
@@ -44,16 +48,28 @@ public class CreateSubcontractorPanel extends CreateComposite {
 
     public CreateSubcontractorPanel(CreateComposite.CreateCompositeType type) {
         super(type);
-        initCreateComposite("Subcontractor", OfficeWelcome.constants);
+        initCreateComposite("Subcontractor", OfficeWelcome.constants2);
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
         assignEntityValueFromField("name", entity);
-        assignEntityValueFromField("description", entity);
+        // assignEntityValueFromField("description", entity);
         assignEntityValueFromField("website", entity);
+        assignEntityValueFromField("paymentTerms", entity);
+        assignEntityValueFromField("invoiceFrequency", entity);
+        EnumField field = (EnumField) fields.get("invoiceDeliveryMethod");
+        if (field.getValue() != null && !field.getValue().trim().isEmpty()) {
+            entity.put("invoiceDeliveryMethod", new JSONString(field.getValue()));
+        } else {
+            entity.put("invoiceDeliveryMethod", null);
+        }
+        //assignEntityValueFromField("invoiceDeliveryMethod", entity);
         assignEntityValueFromField("coiEndDate", entity);
+        assignEntityValueFromField("msaValDate", entity);
+        assignEntityValueFromField("msaExpDate", entity);
+        assignEntityValueFromField("terminationNoticePeriod", entity);
         if (createAddressWidget != null) {
             entity.put("location", createAddressWidget.populateEntityFromFields());
         }
@@ -105,9 +121,15 @@ public class CreateSubcontractorPanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("coiEndDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        //addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("website", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("paymentTerms", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("invoiceFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+        addEnumField("invoiceDeliveryMethod", false, true, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
+        addField("coiEndDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("msaValDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("msaExpDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("terminationNoticePeriod", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(primaryLocation);
         entityFieldsPanel.add(createAddressWidget);
         entityFieldsPanel.add(contact);
@@ -123,11 +145,36 @@ public class CreateSubcontractorPanel extends CreateComposite {
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "subcontractor/create";
     }
-    
+
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
         boolean valid = true;
-        
+        StringField websiteF = (StringField) fields.get("website");
+        if (websiteF.getValue() == null || "".equals(websiteF.getValue())) {
+            websiteF.setMessage("Please enter  Website");
+            valid = false;
+        }
+        StringField paymentTermsF = (StringField) fields.get("paymentTerms");
+        if (paymentTermsF.getValue() == null || "".equals(paymentTermsF.getValue())) {
+            paymentTermsF.setMessage("Please enter  Payment Terms");
+            valid = false;
+        }
+        DateField msaValDate = (DateField) fields.get("msaValDate");
+        DateField msaExpDate = (DateField) fields.get("msaExpDate");
+        if (msaValDate.getDate() != null && msaExpDate.getDate() != null && msaValDate.getDate().after(msaExpDate.getDate())) {
+            msaExpDate.setMessage("To Date must be after From Date");
+            return false;
+        }
+        EnumField invoiceFrequencyF = (EnumField) fields.get("invoiceFrequency");
+        if (invoiceFrequencyF.getValue() == null || "".equals(invoiceFrequencyF.getValue())) {
+            invoiceFrequencyF.setMessage("Please enter Invoice Frequency");
+            valid = false;
+        }
+        EnumField invoiceDeliveryMethodF = (EnumField) fields.get("invoiceDeliveryMethod");
+        if (invoiceDeliveryMethodF.getValue() == null || "".equals(invoiceDeliveryMethodF.getValue())) {
+            invoiceDeliveryMethodF.setMessage("Please enter Invoice Delivery Method");
+            valid = false;
+        }
         StringField street1F = (StringField) createAddressWidget.fields.get("street1");
         if (street1F.getValue() == null || "".equals(street1F.getValue())) {
             street1F.setMessage("Please enter the street");
@@ -166,7 +213,16 @@ public class CreateSubcontractorPanel extends CreateComposite {
         }
         for (CreatePhonePanel createPhoneWidget : createContactWidget.getChildWidgets()) {
             LongField phoneNumberF = (LongField) createPhoneWidget.fields.get("phoneNumber");
-
+            if (createPhoneWidget.phoneTypeF.getSelectedObject() == null) {
+                createPhoneWidget.phoneTypeF.setMessage("Please enter a Phone Type");
+                valid = false;
+            } else {
+                String phoneTypeF = createPhoneWidget.phoneTypeF.getSelectedObject().get("value").isString().stringValue();
+                if (phoneTypeF == null || "".equals(phoneTypeF)) {
+                    createPhoneWidget.phoneTypeF.setMessage("Please enter a Phone Type");
+                    valid = false;
+                }
+            }
             if (phoneNumberF.getValue() == null || "".equals(phoneNumberF.getValue())) {
                 phoneNumberF.setMessage("Please enter a phone number");
                 valid = false;
@@ -181,6 +237,13 @@ public class CreateSubcontractorPanel extends CreateComposite {
                 }
             }
         }
+
+        StringField emailF = (StringField) createContactWidget.fields.get("email");
+        if (emailF.getValue() == null || "".equals(emailF.getValue())) {
+            emailF.setMessage("Please enter email");
+            valid = false;
+        }
+
         return valid;
     }
 }
