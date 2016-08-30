@@ -149,6 +149,9 @@ public class ExpenseReportService {
         if (!dto.getDepartmentType().equals(DepartmentType.Other)) {
             entity.setOtherDepartment(null);
         }
+        if (dto.getCompany() != null) {
+            entity.setCompany(CompanyDao.instance().findById(dto.getCompany().getId()));
+        }
         entity.setExpenseReimbursePaymentMode(dto.getExpenseReimbursePaymentMode());
         ExpenseCategoryDao expenseCategoryDao = ExpenseCategoryDao.instance();
         //add/update items
