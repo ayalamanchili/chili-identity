@@ -11,12 +11,14 @@ package info.yalamanchili.office.profile.insurance;
 import java.io.Serializable;
 import java.util.Date;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  *
  * @author prasanthi.p
  */
 @XmlRootElement
+@XmlType
 public class HealthInsuranceReportDto implements Serializable {
 
     protected String employee;
