@@ -193,7 +193,6 @@ public class CreateClientPanel extends CreateComposite {
                 hideRecruiterContact();
             }
             if (addAcntPybleContact.getValue()) {
-                logger.info("Acct Payable On Click");
                 showAcctPayableContact();
             } else {
                 hideAcctPayableContact();
@@ -345,9 +344,17 @@ public class CreateClientPanel extends CreateComposite {
             contactLastNameF.setMessage("Please enter the last name");
             valid = false;
         }
+        StringField recruiterEmail = (StringField) createContactWidget1.fields.get("email");
+        if (recruiterEmail.getValue() == null || "".equals(recruiterEmail.getValue())) {
+            recruiterEmail.setMessage("Please enter email");
+            valid = false;
+        }
         for (CreatePhonePanel createPhoneWidget : createContactWidget1.getChildWidgets()) {
             LongField phoneNumberF = (LongField) createPhoneWidget.fields.get("phoneNumber");
-
+            if (createPhoneWidget.phoneTypeF.getSelectedObject() == null) {
+                createPhoneWidget.phoneTypeF.setMessage("Please enter a Phone Type");
+                valid = false;
+            }
             if (phoneNumberF.getValue() == null || "".equals(phoneNumberF.getValue())) {
                 phoneNumberF.setMessage("Please enter a phone number");
                 valid = false;
@@ -376,9 +383,17 @@ public class CreateClientPanel extends CreateComposite {
             contactLastNameF.setMessage("Please enter the last name");
             valid = false;
         }
+        StringField accountPayableEmail = (StringField) createContactWidget2.fields.get("email");
+        if (accountPayableEmail.getValue() == null || "".equals(accountPayableEmail.getValue())) {
+            accountPayableEmail.setMessage("Please enter email");
+            valid = false;
+        }
         for (CreatePhonePanel createPhoneWidget : createContactWidget2.getChildWidgets()) {
             LongField phoneNumberF = (LongField) createPhoneWidget.fields.get("phoneNumber");
-
+            if (createPhoneWidget.phoneTypeF.getSelectedObject() == null) {
+                createPhoneWidget.phoneTypeF.setMessage("Please enter a Phone Type");
+                valid = false;
+            }
             if (phoneNumberF.getValue() == null || "".equals(phoneNumberF.getValue())) {
                 phoneNumberF.setMessage("Please enter a phone number");
                 valid = false;
