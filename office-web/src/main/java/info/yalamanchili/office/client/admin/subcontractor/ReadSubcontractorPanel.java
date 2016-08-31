@@ -14,9 +14,12 @@ import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.profile.cllientinfo.InvoiceDeliveryMethod;
+import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
 
 /**
  *
@@ -36,27 +39,33 @@ public class ReadSubcontractorPanel extends ReadComposite {
     }
 
     public ReadSubcontractorPanel(String id) {
-        initReadComposite(id, "Subcontractor", OfficeWelcome.constants);
+        initReadComposite(id, "Subcontractor", OfficeWelcome.constants2);
     }
 
     @Override
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity);
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                populateFieldsFromEntity(entity);
+            }
+        });
     }
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
+//        assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("website", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("paymentTerms", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("invoiceDeliveryMethod", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("coiEndDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("msaValDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("msaExpDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("terminationNoticePeriod", entity, DataType.INTEGER_FIELD);
     }
 
     @Override
@@ -69,10 +78,16 @@ public class ReadSubcontractorPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addField("name", true, false, DataType.STRING_FIELD);
-        addField("description", true, false, DataType.STRING_FIELD);
-        addField("website", true, false, DataType.STRING_FIELD);
-        addField("coiEndDate", true, false, DataType.DATE_FIELD);
+        addField("name", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+//      addField("description", true, false, DataType.STRING_FIELD);
+        addField("website", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("paymentTerms", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("invoiceFrequency", true, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+        addEnumField("invoiceDeliveryMethod", true, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
+        addField("coiEndDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("msaValDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("msaExpDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("terminationNoticePeriod", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
     }
 
     @Override
@@ -108,8 +123,9 @@ public class ReadSubcontractorPanel extends ReadComposite {
     protected boolean enableEdit() {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
             return true;
-        } else
-        return false;
+        } else {
+            return false;
+        }
     }
 
     @Override

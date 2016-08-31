@@ -11,10 +11,15 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.DateField;
+import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.profile.cllientinfo.InvoiceDeliveryMethod;
+import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
 
 /**
  *
@@ -23,15 +28,21 @@ import info.yalamanchili.office.client.TabPanel;
 public class UpdateSubcontractorPanel extends UpdateComposite {
 
     public UpdateSubcontractorPanel(JSONObject entity) {
-        initUpdateComposite(entity, "Subcontractor", OfficeWelcome.constants);
+        initUpdateComposite(entity, "Subcontractor", OfficeWelcome.constants2);
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("name", entity);
-        assignEntityValueFromField("description", entity);
+        //assignEntityValueFromField("description", entity);
         assignEntityValueFromField("website", entity);
+        assignEntityValueFromField("paymentTerms", entity);
+        assignEntityValueFromField("invoiceFrequency", entity);
+        assignEntityValueFromField("invoiceDeliveryMethod", entity);
         assignEntityValueFromField("coiEndDate", entity);
+        assignEntityValueFromField("msaValDate", entity);
+        assignEntityValueFromField("msaExpDate", entity);
+        assignEntityValueFromField("terminationNoticePeriod", entity);
         return entity;
     }
 
@@ -39,24 +50,30 @@ public class UpdateSubcontractorPanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postUpdateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postUpdateSuccess(arg0);
+            }
+        });
     }
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
+        // assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("website", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("paymentTerms", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("invoiceDeliveryMethod", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("coiEndDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("msaValDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("msaExpDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("terminationNoticePeriod", entity, DataType.INTEGER_FIELD);
     }
 
     @Override
@@ -78,10 +95,16 @@ public class UpdateSubcontractorPanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("name", false, true, DataType.STRING_FIELD);
-        addField("description", false, false, DataType.STRING_FIELD);
-        addField("website", false, false, DataType.STRING_FIELD);
-        addField("coiEndDate", false, false, DataType.DATE_FIELD);
+        addField("name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        //addField("description", false, false, DataType.STRING_FIELD);
+        addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("invoiceFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+        addEnumField("invoiceDeliveryMethod", false, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
+        addField("coiEndDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("msaValDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("msaExpDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("terminationNoticePeriod", false, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
     }
 
     @Override
@@ -92,4 +115,30 @@ public class UpdateSubcontractorPanel extends UpdateComposite {
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "subcontractor";
     }
+
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        boolean valid = true;
+        DateField msaValDate = (DateField) fields.get("msaValDate");
+        DateField msaExpDate = (DateField) fields.get("msaExpDate");
+        if (msaValDate.getDate() == null || "".equals(msaValDate.getDate())) {
+            msaValDate.setMessage("Please enter the MSA Validity Period from date");
+            valid = false;
+        }
+        if (msaExpDate.getDate() == null || "".equals(msaExpDate.getDate())) {
+            msaExpDate.setMessage("Please enter the MSA Validity Period to date");
+            valid = false;
+        }
+        if (msaValDate.getDate() != null && msaExpDate.getDate() != null && msaValDate.getDate().after(msaExpDate.getDate())) {
+            msaExpDate.setMessage("To Date must be after From Date");
+            return false;
+        }
+        StringField nameF = (StringField) fields.get("name");
+        if (nameF.getValue() == null || "".equals(nameF.getValue())) {
+            nameF.setMessage("Please enter Sub Contractor Name");
+            valid = false;
+        }
+        return valid;
+    }
+
 }
