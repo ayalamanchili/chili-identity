@@ -141,7 +141,7 @@ public class ReadAllSubcontractorContactsPanel extends CRUDReadAllComposite {
 
     @Override
     protected void configureCreateButton() {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN ,Auth.ROLE.ROLE_BILLING_AND_INVOICING)) {
             createButton.setText("Add Subcontractor contact");
             createButton.setVisible(true);
         } else {
