@@ -329,7 +329,7 @@ public class ContractService {
                 clientFeePer = new BigDecimal(ct.getClientFee());
                 dto.setClientFees(clientFeePer.floatValue()); 
             }
-            if(ci.getClientFeeApplicable() != null && ci.getClientFeeApplicable() && ct.getClientFee() != null) {
+            if(ci.getClientFeeApplicable() != null && ci.getClientFeeApplicable() && clientFeePer != null && clientFeePer.floatValue()>0) {
                 BigDecimal clientFeeVal = clientFeePer.divide(new BigDecimal(100)).multiply(dto.getBillingRate());
                 BigDecimal effectiveBillingRate = getEffectiveBillingRate(ci.getId());
                 if (effectiveBillingRate == null) {
