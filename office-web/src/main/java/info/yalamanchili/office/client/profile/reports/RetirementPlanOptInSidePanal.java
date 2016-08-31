@@ -9,6 +9,7 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
@@ -97,7 +98,10 @@ public class RetirementPlanOptInSidePanal extends ALComposite implements ClickHa
         if (employeeSB.getSelectedObject() != null) {
             entity.put("employee", employeeSB.getSelectedObject());
         }
-
+        if (yearsF.getValue() != null) {
+            entity.put("year", new JSONString(yearsF.getValue()));
+        }
+        logger.info("entity in populate entity () is .... " + entity);
         return entity;
     }
 
@@ -118,7 +122,7 @@ public class RetirementPlanOptInSidePanal extends ALComposite implements ClickHa
     }
 
     protected void sendRemainder() {
-        HttpService.HttpServiceAsync.instance().doGet(sendRemainderUrl(), OfficeWelcome.instance().getHeaders(), true,
+        HttpService.HttpServiceAsync.instance().doPut(sendRemainderUrl(), populateEntity().toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
@@ -128,7 +132,7 @@ public class RetirementPlanOptInSidePanal extends ALComposite implements ClickHa
     }
 
     protected String sendRemainderUrl() {
-        return OfficeWelcome.instance().constants.root_url() + "insurance-enrollment/not-submitted-reminder";
+        return OfficeWelcome.constants.root_url() + "insurance-enrollment/get/not-submitted-reminder";
     }
 
     protected void generateRetirementPlanReport() {
