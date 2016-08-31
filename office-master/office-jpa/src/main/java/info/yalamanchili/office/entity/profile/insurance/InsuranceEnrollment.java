@@ -35,7 +35,7 @@ public class InsuranceEnrollment extends AbstractHandleEntity {
     protected InsuranceType insuranceType;
 
     protected String comments;
-
+    @NotEmpty(message = "{year.not.empty.msg}")
     protected String year;
 
     /**

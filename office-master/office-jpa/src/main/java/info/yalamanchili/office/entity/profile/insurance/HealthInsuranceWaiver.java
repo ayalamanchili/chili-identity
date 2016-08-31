@@ -42,9 +42,9 @@ public class HealthInsuranceWaiver extends AbstractHandleEntity {
 
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date submittedDate;
-
+    @NotEmpty(message = "{waivingCoverageFor.not.empty.msg}")
     protected String waivingCoverageFor;
-
+    @NotEmpty(message = "{waivingCoverageDueTo.not.empty.msg}")
     protected String waivingCoverageDueTo;
 
     protected String spouseName;
