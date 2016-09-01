@@ -38,6 +38,7 @@ public class HealthInsurance extends AbstractEntity {
     protected static long serialVersionUID = 1L;
 
     protected Boolean enrolled;
+    
     @ManyToOne
     @ForeignKey(name = "FK_EMP_INSU_ENRO")
     protected Employee employee;
