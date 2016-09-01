@@ -85,9 +85,11 @@ public class ReadAllHealthInsuranceWaiverPanel extends CRUDReadAllComposite {
 
     @Override
     public void fillData(JSONArray entities) {
+        int count = 0;
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             if (entity.get("enrolled").isString().stringValue().equals("false")) {
+                count++;
                 JSONObject healthInsuranceWaiver = (JSONObject) entity.get("healthInsuranceWaiver");
                 addOptionsWidget(i, entity);
                 table.setText(i, 1, String.valueOf(DateTimeFormat.getFormat("MM/dd/yyyy").format(new Date()).split("/")[2]));
@@ -99,7 +101,7 @@ public class ReadAllHealthInsuranceWaiverPanel extends CRUDReadAllComposite {
                 table.setWidget(i, 5, fileField);
             }
         }
-
+        setTotalResults(count);
     }
 
     @Override
