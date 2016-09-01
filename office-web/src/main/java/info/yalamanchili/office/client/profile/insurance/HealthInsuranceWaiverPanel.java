@@ -73,7 +73,6 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
     @Override
     public JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
-        logger.info("waivingCoverageForS file" + entity);
         //waivingCoverageFor
         String waivingCoverageForS = "";
         if (myself.getValue() == true) {
@@ -114,8 +113,9 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
         if (submittedDate.getDate() != null) {
             entity.put("submittedDate", new JSONString(DateUtils.toDateString(submittedDate.getDate())));
         }
-        logger.info("resumeUploadPanel" + resumeUploadPanel.getFileName());
-        entity.put("fileUrl", resumeUploadPanel.getFileName());
+        if (resumeUploadPanel.getFileName() != null) {
+            entity.put("fileUrl", resumeUploadPanel.getFileName());
+        }
         entity.put("targetEntityName", new JSONString("targetEntityName"));
         entity.put("targetEntityId", new JSONString("0"));
         return entity;
@@ -133,7 +133,7 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
 
                     @Override
                     public void onSuccess(String arg0) {
-                        uploadDoc(arg0);
+                        postCreateSuccess(arg0);
                     }
                 });
     }
@@ -245,5 +245,4 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
             }
         }
     }
-
 }
