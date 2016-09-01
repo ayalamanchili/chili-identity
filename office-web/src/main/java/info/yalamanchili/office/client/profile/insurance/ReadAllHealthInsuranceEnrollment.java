@@ -78,9 +78,11 @@ public class ReadAllHealthInsuranceEnrollment extends CRUDReadAllComposite {
 
     @Override
     public void fillData(JSONArray entities) {
+        int count = 0;
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             if (entity.get("enrolled").isString().stringValue().equals("true")) {
+                count++;
                 JSONObject insuranceEnrollment = (JSONObject) entity.get("insuranceEnrollment");
                 addOptionsWidget(i, entity);
                 table.setText(i, 1, JSONUtils.toString(insuranceEnrollment, "year"));
@@ -88,7 +90,7 @@ public class ReadAllHealthInsuranceEnrollment extends CRUDReadAllComposite {
                 table.setText(i, 3, JSONUtils.toString(entity, "enrolled"));
             }
         }
-
+        setTotalResults(count);
     }
 
     @Override
