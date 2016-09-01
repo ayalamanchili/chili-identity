@@ -71,7 +71,7 @@ public class EmployeeDocumentResource extends CRUDResource<EmployeeDocument> {
 
     @GET
     @Path("/{empid}/{start}/{limit}")
-    @AccessCheck(roles = {"ROLE_BACKGROUND_SCREENING_MGR", "ROLE_E_VERIFY_MGR", "ROLE_ON_BOARDING_MGR", "ROLE_HR_ADMINSTRATION"})
+    @AccessCheck(roles = {"ROLE_BACKGROUND_SCREENING_MGR", "ROLE_E_VERIFY_MGR", "ROLE_ON_BOARDING_MGR", "ROLE_HR_ADMINSTRATION", "ROLE_PAYROLL_AND_BENIFITS"})
     public EmployeeDocumentTable getDocuments(@PathParam("empid") long empid, @PathParam("start") int start,
             @PathParam("limit") int limit) {
         EmployeeDocumentTable tableObj = new EmployeeDocumentTable();
