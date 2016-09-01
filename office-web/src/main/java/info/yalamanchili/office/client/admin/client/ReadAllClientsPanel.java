@@ -20,8 +20,6 @@ import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
-import info.chili.gwt.utils.FormatUtils;
-import info.yalamanchili.office.client.Auth.ROLE;
 import java.util.logging.Logger;
 
 /**
@@ -81,7 +79,12 @@ public class ReadAllClientsPanel extends CRUDReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
-            table.setText(i, 2, JSONUtils.toString(entity, "directClient"));
+            String isDirectClient = JSONUtils.toString(entity, "directClient");
+            if (isDirectClient.equals("true")) {
+                table.setText(i, 2, "Yes");
+            } else {
+                table.setText(i, 2, "No");
+            }
             table.setText(i, 3, DateUtils.formatDate(JSONUtils.toString(entity, "msaExpDate")));
         }
 
