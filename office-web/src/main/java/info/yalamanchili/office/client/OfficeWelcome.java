@@ -25,7 +25,6 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
-import info.chili.gwt.composite.LocalStorage;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.config.OfficeClientConfig;
