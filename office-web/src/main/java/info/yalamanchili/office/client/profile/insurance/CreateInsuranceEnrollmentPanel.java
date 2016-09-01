@@ -31,7 +31,7 @@ import java.util.logging.Logger;
  * @author prasanthi.p
  */
 public class CreateInsuranceEnrollmentPanel extends CreateComposite implements ClickHandler {
-    
+
     private static Logger logger = Logger.getLogger(CreateInsuranceEnrollmentPanel.class.getName());
     RadioButton enrolled = new RadioButton("HealthInsurance", "Yes");
     RadioButton enrolledNo = new RadioButton("HealthInsurance", "No");
@@ -40,21 +40,21 @@ public class CreateInsuranceEnrollmentPanel extends CreateComposite implements C
     VerticalPanel addrWidgetPanel = new VerticalPanel();
     EnumField yearsF;
     protected String empId;
-    
+
     HealthInsuranceWaiverPanel insuranceWaiver = new HealthInsuranceWaiverPanel();
     InsuranceEnrollmentPanel insuranceEnrollment = new InsuranceEnrollmentPanel();
-    
+
     public CreateInsuranceEnrollmentPanel(CreateComposite.CreateCompositeType type) {
         super(type);
         initCreateComposite("HealthInsurance", OfficeWelcome.constants2);
     }
-    
+
     public CreateInsuranceEnrollmentPanel(CreateComposite.CreateCompositeType type, String empId) {
         super(type);
         this.empId = empId;
         initCreateComposite("HealthInsurance", OfficeWelcome.constants2);
     }
-    
+
     @Override
     public JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
@@ -66,9 +66,9 @@ public class CreateInsuranceEnrollmentPanel extends CreateComposite implements C
             entity.put("healthInsuranceWaiver", insuranceWaiver.populateEntityFromFields());
         }
         return entity;
-        
+
     }
-    
+
     @Override
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
@@ -78,23 +78,23 @@ public class CreateInsuranceEnrollmentPanel extends CreateComposite implements C
                         logger.info(arg0.getMessage());
                         handleErrorResponse(arg0);
                     }
-                    
+
                     @Override
                     public void onSuccess(String arg0) {
                         postCreateSuccess(arg0);
                     }
                 });
-        
+
     }
-    
+
     protected void uploadDoc(String entityId) {
         insuranceWaiver.resumeUploadPanel.upload(entityId.trim());
     }
-    
+
     @Override
     protected void addButtonClicked() {
     }
-    
+
     @Override
     protected void postCreateSuccess(String result) {
         JSONObject resultEntity = (JSONObject) JSONParser.parseLenient(result);
@@ -108,13 +108,13 @@ public class CreateInsuranceEnrollmentPanel extends CreateComposite implements C
             TabPanel.instance().profilePanel.entityPanel.add(new ReadAllHealthInsuranceEnrollment(empId));
         }
     }
-    
+
     @Override
     protected void addListeners() {
         enrolled.addClickHandler(this);
         enrolledNo.addClickHandler(this);
     }
-    
+
     @Override
     protected void configure() {
         addrWidgetPanel.setStyleName("crudCompositeCaptionPanel");
@@ -122,28 +122,25 @@ public class CreateInsuranceEnrollmentPanel extends CreateComposite implements C
         enrolled.setValue(true);
         addenrolledWidget();
     }
-    
+
     @Override
     protected void addWidgets() {
         entityFieldsPanel.add(tac1);
         entityFieldsPanel.add(enrolled);
         entityFieldsPanel.add(enrolledNo);
     }
-    
+
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
-    
+
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "insurance-enrollment";
     }
-    
+
     @Override
     public void onClick(ClickEvent event) {
-        if (event.getSource().equals(create)) {
-            create.setEnabled(false);
-        }
         if (event.getSource().equals(enrolled)) {
             addenrolledWidget();
         } else if (event.getSource().equals(enrolledNo)) {
@@ -151,7 +148,7 @@ public class CreateInsuranceEnrollmentPanel extends CreateComposite implements C
         }
         super.onClick(event);
     }
-    
+
     protected void addenrolledWidget() {
         entityFieldsPanel.clear();
         entityFieldsPanel.add(tac1);
@@ -167,7 +164,7 @@ public class CreateInsuranceEnrollmentPanel extends CreateComposite implements C
         entityFieldsPanel.add(create);
         entityFieldsPanel.add(new ReadAllHealthInsuranceEnrollment(empId));
     }
-    
+
     protected void addenrolledNoWidget() {
         entityFieldsPanel.clear();
         entityFieldsPanel.add(tac1);
@@ -179,5 +176,11 @@ public class CreateInsuranceEnrollmentPanel extends CreateComposite implements C
         }
         entityFieldsPanel.add(create);
         entityFieldsPanel.add(new ReadAllHealthInsuranceWaiverPanel(empId));
+    }
+
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        boolean valid = true;
+        return insuranceWaiver.checkClientSideValidations(valid);
     }
 }
