@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -68,7 +71,7 @@ public class SubmitInvoicePanel extends CreateComposite {
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Submitted Invoice Information");
-        ReadAllInvoicePanel.instance.refresh();
+//        ReadAllInvoicePanel.instance.refresh();
         GenericPopup.instance().hide();
     }
 
