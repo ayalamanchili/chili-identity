@@ -122,7 +122,7 @@ public class CreateSubcontractorPanel extends CreateComposite {
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         //addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("website", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("paymentTerms", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("invoiceFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         addEnumField("invoiceDeliveryMethod", false, true, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
@@ -149,11 +149,6 @@ public class CreateSubcontractorPanel extends CreateComposite {
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
         boolean valid = true;
-        StringField websiteF = (StringField) fields.get("website");
-        if (websiteF.getValue() == null || "".equals(websiteF.getValue())) {
-            websiteF.setMessage("Please enter  Website");
-            valid = false;
-        }
         StringField paymentTermsF = (StringField) fields.get("paymentTerms");
         if (paymentTermsF.getValue() == null || "".equals(paymentTermsF.getValue())) {
             paymentTermsF.setMessage("Please enter  Payment Terms");
