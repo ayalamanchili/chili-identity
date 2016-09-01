@@ -9,8 +9,10 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.fields.EnumField;
@@ -47,6 +49,7 @@ public class RetirementPlanOptInSidePanal extends ALComposite implements ClickHa
     EnumField yearsF = new EnumField(OfficeWelcome.constants, "year", "HealthInsuranceWaiver", false, false, HealthInsuranceYear.getyears().toArray(new String[0]));
 
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false);
+    ClickableLink reminderB = new ClickableLink("Send Reminder");
 
     public RetirementPlanOptInSidePanal() {
         init(panel);
@@ -57,10 +60,12 @@ public class RetirementPlanOptInSidePanal extends ALComposite implements ClickHa
         retirementplanReportL.addClickHandler(this);
         generateRepB.addClickHandler(this);
         viewRepB.addClickHandler(this);
+        reminderB.addClickHandler(this);
     }
 
     @Override
     protected void configure() {
+        TabPanel.instance().reportingPanel.sidePanelTop.setHeight("100%");
         retirementplanReportL.setTitle("report with name,comments");
         HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
@@ -84,6 +89,20 @@ public class RetirementPlanOptInSidePanal extends ALComposite implements ClickHa
         panel.add(employeeSB);
         panel.add(generateRepB);
         panel.add(viewRepB);
+        panel.add(new HTML("<hr>"));
+        panel.add(reminderB);
+    }
+
+    protected JSONObject populateEntity() {
+        JSONObject entity = new JSONObject();
+        if (employeeSB.getSelectedObject() != null) {
+            entity.put("employee", employeeSB.getSelectedObject());
+        }
+        if (yearsF.getValue() != null) {
+            entity.put("year", new JSONString(yearsF.getValue()));
+        }
+        logger.info("entity in populate entity () is .... " + entity);
+        return entity;
     }
 
     @Override
@@ -97,6 +116,23 @@ public class RetirementPlanOptInSidePanal extends ALComposite implements ClickHa
         if (event.getSource().equals(viewRepB)) {
             viewHealthInsuranceReport();
         }
+        if (event.getSource().equals(reminderB)) {
+            sendRemainder();
+        }
+    }
+
+    protected void sendRemainder() {
+        HttpService.HttpServiceAsync.instance().doPut(sendRemainderUrl(), populateEntity().toString(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String result) {
+                        new ResponseStatusWidget().show("Remainder Email Sent");
+                    }
+                });
+    }
+
+    protected String sendRemainderUrl() {
+        return OfficeWelcome.constants.root_url() + "insurance-enrollment/get/not-submitted-reminder";
     }
 
     protected void generateRetirementPlanReport() {

@@ -15,10 +15,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -66,8 +69,24 @@ public class Subcontractor extends AbstractEntity {
 
     protected String website;
 
+    protected String paymentTerms;
+
+    @Enumerated(EnumType.STRING)
+    protected InvoiceFrequency invoiceFrequency;
+
+    @Enumerated(EnumType.STRING)
+    protected InvoiceDeliveryMethod invoiceDeliveryMethod;
+
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date coiEndDate;
+
+    @Temporal(TemporalType.DATE)
+    protected Date msaValDate;
+
+    @Temporal(TemporalType.DATE)
+    protected Date msaExpDate;
+
+    protected Integer terminationNoticePeriod;
 
     public Date getCoiEndDate() {
         return coiEndDate;
@@ -139,4 +158,51 @@ public class Subcontractor extends AbstractEntity {
         this.website = website;
     }
 
+    public String getPaymentTerms() {
+        return paymentTerms;
+    }
+
+    public void setPaymentTerms(String paymentTerms) {
+        this.paymentTerms = paymentTerms;
+    }
+
+    public InvoiceFrequency getInvoiceFrequency() {
+        return invoiceFrequency;
+    }
+
+    public void setInvoiceFrequency(InvoiceFrequency invoiceFrequency) {
+        this.invoiceFrequency = invoiceFrequency;
+    }
+
+    public InvoiceDeliveryMethod getInvoiceDeliveryMethod() {
+        return invoiceDeliveryMethod;
+    }
+
+    public void setInvoiceDeliveryMethod(InvoiceDeliveryMethod invoiceDeliveryMethod) {
+        this.invoiceDeliveryMethod = invoiceDeliveryMethod;
+    }
+
+    public Date getMsaValDate() {
+        return msaValDate;
+    }
+
+    public void setMsaValDate(Date msaValDate) {
+        this.msaValDate = msaValDate;
+    }
+
+    public Date getMsaExpDate() {
+        return msaExpDate;
+    }
+
+    public void setMsaExpDate(Date msaExpDate) {
+        this.msaExpDate = msaExpDate;
+    }
+
+    public Integer getTerminationNoticePeriod() {
+        return terminationNoticePeriod;
+    }
+
+    public void setTerminationNoticePeriod(Integer terminationNoticePeriod) {
+        this.terminationNoticePeriod = terminationNoticePeriod;
+    }
 }

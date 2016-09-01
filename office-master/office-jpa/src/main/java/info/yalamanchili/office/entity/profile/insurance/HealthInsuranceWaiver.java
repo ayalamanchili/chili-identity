@@ -35,7 +35,6 @@ public class HealthInsuranceWaiver extends AbstractHandleEntity {
 
     protected static long serialVersionUID = 1L;
 
-    @NotEmpty
     protected String fileUrl;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -43,11 +42,11 @@ public class HealthInsuranceWaiver extends AbstractHandleEntity {
 
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date submittedDate;
-
-    @NotEmpty
+    
+    @NotEmpty(message = "{waivingCoverageFor.not.empty.msg}")
     protected String waivingCoverageFor;
-
-    @NotEmpty
+    
+    @NotEmpty(message = "{waivingCoverageDueTo.not.empty.msg}")
     protected String waivingCoverageDueTo;
 
     protected String spouseName;

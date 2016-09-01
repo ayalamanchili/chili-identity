@@ -11,12 +11,16 @@ package info.yalamanchili.office.profile.insurance;
 import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
 import info.chili.commons.pdf.PdfDocumentData;
+import info.chili.email.Email;
 import info.chili.security.Signature;
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.insurance.HealthInsuranceDao;
 import info.yalamanchili.office.dao.profile.insurance.HealthInsuranceWaiverDao;
+import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.insurance.HealthInsurance;
@@ -26,10 +30,12 @@ import static info.yalamanchili.office.entity.profile.insurance.InsuranceCoverag
 import static info.yalamanchili.office.entity.profile.insurance.InsuranceCoverageType.Individual;
 import static info.yalamanchili.office.entity.profile.insurance.InsuranceCoverageType.Medicare;
 import static info.yalamanchili.office.entity.profile.insurance.InsuranceCoverageType.Tricare;
+import info.yalamanchili.office.entity.profile.insurance.InsuranceEnrollment;
+import info.yalamanchili.office.jms.MessagingService;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -143,7 +149,6 @@ public class HealthInsuranceService {
                         } else {
                             dto.setEnrolled("Not Enrolled");
                         }
-                        //dto.setStartDate(insurance.getHealthInsuranceWaiver().getSubmittedDate());
                         dto.setYear(insurance.getInsuranceEnrollment().getYear());
                         report.add(dto);
                     } else if (insurance.getInsuranceEnrollment() == null) {
@@ -161,6 +166,73 @@ public class HealthInsuranceService {
             }
         }
         return report;
+    }
+
+    public void notSubmittedEmailNotification(HealthInsuranceReportDto dto) {
+        if (dto.getYear() == null) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "healthinsurance.not.present", "Please select a Year");
+        }
+        List<Employee> notSubmittedEmps = new ArrayList();
+        for (Employee emp : EmployeeDao.instance().queryAll(0, 1000)) {
+            List<HealthInsurance> insurances = healthInsuranceDao.queryForEmployee(emp.getId(), 0, 50);
+            if (insurances == null || insurances.isEmpty()) {
+                notSubmittedEmps.add(emp);
+                //notSubmittedEmailNotification(emp.getPrimaryEmail().getEmail(), dto.getYear());
+            } else if (insurances.size() > 0) {
+                List<InsuranceEnrollment> enrolledInsurances = new ArrayList();
+                for (HealthInsurance ins : insurances) {
+                    if (ins.getInsuranceEnrollment() != null) {
+                        enrolledInsurances.add(ins.getInsuranceEnrollment());
+                    }
+                }
+                if (isInsuranceEnrolled(enrolledInsurances, dto.getYear()) == enrolledInsurances.size()) {
+                    notSubmittedEmps.add(emp);
+                    //notSubmittedEmailNotification(emp.getPrimaryEmail().getEmail(), dto.getYear());
+                }
+            }
+        }
+        notSubmittedEmail(notSubmittedEmps, dto.getYear());
+    }
+
+    private int isInsuranceEnrolled(List<InsuranceEnrollment> enrolledInsurances, String year) {
+        int falseCount = 0;
+        for (InsuranceEnrollment ins : enrolledInsurances) {
+            if (!ins.getYear().equals(year)) {
+                falseCount++;
+            }
+        }
+        return falseCount;
+    }
+
+    protected void notSubmittedEmailNotification(String empEmail, String year) {
+        Email email = new Email();
+        email.addTo(empEmail);
+        email.setSubject("Health Insurance Not submitted reminder");
+        String messageText = "Please submit your Health Insurance for " + year;
+        email.setBody(messageText);
+        MessagingService.instance().sendEmail(email);
+    }
+
+    protected void notSubmittedEmail(List<Employee> emps, String year) {
+        for (Employee emp : emps) {
+            Email email = new Email();
+            email.addTo(emp.getPrimaryEmail().getEmail());
+            email.setSubject("Health Insurance Not submitted reminder");
+            String messageText = "Please submit your Health Insurance for " + year;
+            email.setBody(messageText);
+            MessagingService.instance().sendEmail(email);
+        }
+        Email email = new Email();
+        email.setTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRole.ROLE_HEALTH_INSURANCE_MANAGER.name()));
+        email.setSubject("Health Insurances Not submitted Consolidated Emails");
+        String messageText = "Please submit your Health Insurance for " + year;
+        email.setBody(messageText);
+        HashMap<String, Object> emailContext = new HashMap();
+        emailContext.put("employees", emps);
+        emailContext.put("year", year);
+        email.setContext(emailContext);
+        email.setTemplateName("health_insurance_template.html");
+        MessagingService.instance().sendEmail(email);
     }
 
     public static HealthInsuranceService instance() {

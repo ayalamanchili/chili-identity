@@ -20,8 +20,6 @@ import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
-import info.chili.gwt.utils.FormatUtils;
-import info.yalamanchili.office.client.Auth.ROLE;
 import java.util.logging.Logger;
 
 /**
@@ -71,9 +69,7 @@ public class ReadAllClientsPanel extends CRUDReadAllComposite {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Name"));
         table.setText(0, 2, getKeyValue("Direct Client"));
-        table.setText(0, 3, getKeyValue("Client Fees"));
-        table.setText(0, 4, getKeyValue("MSA Exp. Date"));
-//        table.setText(0, 2, getKeyValue("Description"));
+        table.setText(0, 3, getKeyValue("MSA Exp. Date"));
 
     }
 
@@ -83,10 +79,13 @@ public class ReadAllClientsPanel extends CRUDReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
-            table.setText(i, 2, JSONUtils.toString(entity, "directClient"));
-            table.setText(i, 3, FormatUtils.formarCurrency(JSONUtils.toString(entity, "clientFee")));
-            table.setText(i, 4, DateUtils.formatDate(JSONUtils.toString(entity, "msaExpDate")));
-//            table.setText(i, 2, JSONUtils.toString(entity, "description"));
+            String isDirectClient = JSONUtils.toString(entity, "directClient");
+            if (isDirectClient.equals("true")) {
+                table.setText(i, 2, "Yes");
+            } else {
+                table.setText(i, 2, "No");
+            }
+            table.setText(i, 3, DateUtils.formatDate(JSONUtils.toString(entity, "msaExpDate")));
         }
 
     }

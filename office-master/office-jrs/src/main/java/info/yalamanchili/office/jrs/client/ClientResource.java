@@ -126,7 +126,7 @@ public class ClientResource extends CRUDResource<Client> {
     @CacheEvict(value = OfficeCacheKeys.CLIENT, allEntries = true)
     @Override
     public Client save(Client entity) {
-        return  clientDao.save(entity);
+        return clientDao.save(entity);
     }
 
     @PUT
@@ -414,11 +414,10 @@ public class ClientResource extends CRUDResource<Client> {
     }
 
     @GET
-    @Path("/search/{searchText}/{start}/{limit}")
+    @Path("/search/{start}/{limit}")
     @Transactional(propagation = Propagation.NEVER)
-    @Override
-    public List<Client> search(@PathParam("searchText") String searchText, @PathParam("start") int start,
-            @PathParam("limit") int limit, @QueryParam("column") List<String> columns) {
+    public List<Client> search(@PathParam("start") int start,
+            @PathParam("limit") int limit, @QueryParam("text") String searchText, @QueryParam("column") List<String> columns) {
         return getDao().sqlSearch(searchText, start, limit, columns, false);
     }
 

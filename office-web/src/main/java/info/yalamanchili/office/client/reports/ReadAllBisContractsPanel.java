@@ -126,7 +126,7 @@ public class ReadAllBisContractsPanel extends CRUDReadAllComposite {
             table.setText(i, 4, JSONUtils.toString(entity, "vendor"));
             table.setText(i, 5, JSONUtils.toString(entity, "middleVendor"));
             setEnumColumn(i, 6, entity, InvoiceFrequency.class.getSimpleName(), "invoiceFrequency");
-            table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
+            table.setText(i, 7, DateUtils.formatDate(JSONUtils.toString(entity, "startDate")));
             setEnumColumn(i, 8, entity, ClientInformationStatus.class.getSimpleName(), "status");
         }
     }

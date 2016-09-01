@@ -69,11 +69,9 @@ public class ReadAllClientContactPanel extends CRUDReadAllComposite {
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("First Name"));
-        table.setText(0, 2, getKeyValue("Middle Initial"));
-        table.setText(0, 3, getKeyValue("Last Name"));
-        table.setText(0, 4, getKeyValue("Email"));
-        table.setText(0, 5, getKeyValue("Sex"));
-        table.setText(0, 6, getKeyValue("Phone Number"));
+        table.setText(0, 2, getKeyValue("Last Name"));
+        table.setText(0, 3, getKeyValue("Email"));
+        table.setText(0, 4, getKeyValue("Phone Number"));
 
     }
 
@@ -84,17 +82,15 @@ public class ReadAllClientContactPanel extends CRUDReadAllComposite {
             JSONObject phones;
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "firstName"));
-            table.setText(i, 2, JSONUtils.toString(entity, "middleInitial"));
-            table.setText(i, 3, JSONUtils.toString(entity, "lastName"));
-            table.setText(i, 4, JSONUtils.toString(entity, "email"));
-            table.setText(i, 5, JSONUtils.toString(entity, "sex"));
+            table.setText(i, 2, JSONUtils.toString(entity, "lastName"));
+            table.setText(i, 3, JSONUtils.toString(entity, "email"));
             if (entity.get("phones") instanceof JSONObject) {
                 phones = (JSONObject) entity.get("phones");
-                table.setText(i, 6, FormatUtils.formatPhoneNumber(JSONUtils.toString(phones, "phoneNumber")));
+                table.setText(i, 4, FormatUtils.formatPhoneNumber(JSONUtils.toString(phones, "phoneNumber")));
             } else if (entity.get("phones") instanceof JSONArray) {
                 JSONArray phonesArray = (JSONArray) entity.get("phones");
                 phones = (JSONObject) phonesArray.get(0);
-                table.setText(i, 6, FormatUtils.formatPhoneNumber(JSONUtils.toString(phones, "phoneNumber")));
+                table.setText(i, 4, FormatUtils.formatPhoneNumber(JSONUtils.toString(phones, "phoneNumber")));
             }
         }
     }

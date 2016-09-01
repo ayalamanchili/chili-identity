@@ -51,11 +51,11 @@ public class ReadAllSubcontractorsPanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllSubcontractorPanelURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        postFetchTable(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                postFetchTable(result);
+            }
+        });
     }
 
     private String getReadAllSubcontractorPanelURL(Integer start, String tableSize) {
@@ -66,9 +66,9 @@ public class ReadAllSubcontractorsPanel extends CRUDReadAllComposite {
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Name"));
-        table.setText(0, 2, getKeyValue("Description"));
-        table.setText(0, 3, getKeyValue("WebSite"));
-        table.setText(0, 3, getKeyValue("Coi End Date"));
+        // table.setText(0, 2, getKeyValue("WebSite"));
+        table.setText(0, 2, getKeyValue("MSA Exp Date"));
+        table.setText(0, 3, getKeyValue("COI End Date"));
     }
 
     @Override
@@ -77,7 +77,7 @@ public class ReadAllSubcontractorsPanel extends CRUDReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
-            table.setText(i, 2, JSONUtils.toString(entity, "description"));
+            table.setText(i, 2, DateUtils.formatDate(JSONUtils.toString(entity, "msaExpDate")));
             table.setText(i, 3, DateUtils.formatDate(JSONUtils.toString(entity, "coiEndDate")));
         }
     }
@@ -103,11 +103,11 @@ public class ReadAllSubcontractorsPanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        postDeleteSuccess();
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                postDeleteSuccess();
+            }
+        });
     }
 
     private String getDeleteURL(String entityId) {

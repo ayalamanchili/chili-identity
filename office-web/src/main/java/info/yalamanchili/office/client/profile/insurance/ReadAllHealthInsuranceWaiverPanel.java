@@ -85,21 +85,23 @@ public class ReadAllHealthInsuranceWaiverPanel extends CRUDReadAllComposite {
 
     @Override
     public void fillData(JSONArray entities) {
+        int count = 0;
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             if (entity.get("enrolled").isString().stringValue().equals("false")) {
+                count++;
                 JSONObject healthInsuranceWaiver = (JSONObject) entity.get("healthInsuranceWaiver");
                 addOptionsWidget(i, entity);
                 table.setText(i, 1, String.valueOf(DateTimeFormat.getFormat("MM/dd/yyyy").format(new Date()).split("/")[2]));
                 table.setText(i, 2, JSONUtils.toString(entity, "enrolled"));
                 table.setText(i, 3, JSONUtils.toString(healthInsuranceWaiver, "waivingCoverageFor"));
                 table.setText(i, 4, JSONUtils.toString(healthInsuranceWaiver, "waivingCoverageDueTo"));
-                String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "fileUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
+                String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(healthInsuranceWaiver, "fileUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
                 FileField fileField = new FileField(fileURL);
                 table.setWidget(i, 5, fileField);
             }
         }
-
+        setTotalResults(count);
     }
 
     @Override
@@ -138,7 +140,7 @@ public class ReadAllHealthInsuranceWaiverPanel extends CRUDReadAllComposite {
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Insurance Enrollment Information");
         TabPanel.instance().profilePanel.entityPanel.clear();
-        TabPanel.instance().profilePanel.entityPanel.add(new ReadAllHealthInsuranceWaiverPanel());
+        TabPanel.instance().profilePanel.entityPanel.add(new ReadAllHealthInsuranceWaiverPanel(empId));
     }
 
     @Override
