@@ -25,22 +25,22 @@ public class OfficeClientConfigGCETest implements OfficeClientConfig {
 
     @Override
     public String getFileUploadUrl() {
-        return "http://107.178.211.215:9080/office-web/office/rpc/fileService";
+        return "http://104.197.194.6:9080/office-web/office/rpc/fileService";
     }
 
     @Override
     public String getFileDownloadUrl() {
-        return "http://107.178.211.215:9080/office-web/office/rpc/fileService?path=";
+        return "http://104.197.194.6:9080/office-web/office/rpc/fileService?path=";
     }
 
     @Override
     public String getPortalDocumentationSiteUrl() {
-        return "http://107.178.211.215/site/office/";
+        return "http://104.197.194.6/site/office/";
     }
 
     @Override
     public String getFileConverterUrl() {
-        return "http://107.178.211.215:9080/office-web/office/rpc/fileConverterService";
+        return "http://104.197.194.6:9080/office-web/office/rpc/fileConverterService";
     }
 
     @Override
