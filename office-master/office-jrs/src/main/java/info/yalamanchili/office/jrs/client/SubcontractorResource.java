@@ -74,7 +74,7 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
     public CRUDDao getDao() {
         return subcontractorDao;
     }
-    
+
     @PUT
     @Validate
     @Path("/create")
@@ -82,8 +82,8 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
     @CacheEvict(value = OfficeCacheKeys.SUB_CONTRACTOR, allEntries = true)
     public Subcontractor createSubcontractor(SubcontractorDto subcontractorDto) {
         Subcontractor subcontractor = mapper.map(subcontractorDto, Subcontractor.class);
-        
-        if(subcontractorDto.getLocation() != null){
+
+        if (subcontractorDto.getLocation() != null) {
             subcontractor.addLocations(subcontractorDto.getLocation());
         }
         if (subcontractorDto.getContact() != null) {
@@ -123,11 +123,10 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
     }
 
     @GET
-    @Path("/search/{searchText}/{start}/{limit}")
+    @Path("/search-text/{start}/{limit}")
     @Transactional(propagation = Propagation.NEVER)
-    @Override
-    public List<Subcontractor> search(@PathParam("searchText") String searchText, @PathParam("start") int start,
-            @PathParam("limit") int limit, @QueryParam("column") List<String> columns) {
+    public List<Subcontractor> search(@PathParam("start") int start,
+            @PathParam("limit") int limit, @QueryParam("text") String searchText, @QueryParam("column") List<String> columns) {
         return getDao().sqlSearch(searchText, start, limit, columns, false);
     }
 
