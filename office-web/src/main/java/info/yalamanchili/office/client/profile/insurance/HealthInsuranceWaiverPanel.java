@@ -13,7 +13,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RadioButton;
@@ -23,7 +22,6 @@ import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.FileuploadField;
 import info.chili.gwt.fields.StringField;
-import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
 import java.util.Date;
@@ -39,8 +37,8 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
 
     private static Logger logger = Logger.getLogger(HealthInsuranceWaiverPanel.class.getName());
     CheckBox myself = new CheckBox("MySelf");
-    CheckBox spouse = new CheckBox("Spouse");
-    CheckBox dependent = new CheckBox("Dependent");
+    protected CheckBox spouse = new CheckBox("Spouse");
+    protected CheckBox dependent = new CheckBox("Dependent");
 
     RadioButton mypreferencenottohavecoverage = new RadioButton("mypreferencenottohavecoverage", "My preference not to have coverage");
     RadioButton myspousesplan = new RadioButton("myspousesplan", "Coverage under my spouse's plan");
@@ -49,11 +47,11 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
     HTML tac2 = new HTML("<h4><u>For the plan year " + DateTimeFormat.getFormat("MM/dd/yyyy").format(new Date()).split("/")[2] + ", I am waiving coverage for: \n</u >");
     HTML tac3 = new HTML("<h4><u>I am waiving coverage due to: \n</u>");
 
-    StringField spouseNameOfCarrier = new StringField(OfficeWelcome.constants2, "spouseNameOfCarrier", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
-    StringField otherNameOfCarrier = new StringField(OfficeWelcome.constants2, "otherNameOfCarrier", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
+    protected StringField spouseNameOfCarrier = new StringField(OfficeWelcome.constants2, "spouseNameOfCarrier", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
+    protected StringField otherNameOfCarrier = new StringField(OfficeWelcome.constants2, "otherNameOfCarrier", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
 
-    StringField spouseName = new StringField(OfficeWelcome.constants2, "spouseName", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
-    StringField dependentName = new StringField(OfficeWelcome.constants2, "dependentName", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
+    protected StringField spouseName = new StringField(OfficeWelcome.constants2, "spouseName", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
+    protected StringField dependentName = new StringField(OfficeWelcome.constants2, "dependentName", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
     DateField submittedDate = new DateField(OfficeWelcome.constants2, "submittedDate", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
 
     EnumField othercoverageType = new EnumField(OfficeWelcome.constants2, "otherCarrierType", "HealthInsuranceWaiver", false, false, InsuranceCoverageType.names(), Alignment.HORIZONTAL);
@@ -123,19 +121,6 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
 
     @Override
     protected void createButtonClicked() {
-        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
-                new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        logger.info(arg0.getMessage());
-                        handleErrorResponse(arg0);
-                    }
-
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
-                    }
-                });
     }
 
     @Override
@@ -144,7 +129,6 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
 
     @Override
     protected void postCreateSuccess(String result) {
-
     }
 
     @Override
@@ -244,5 +228,25 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
                 entityFieldsPanel.remove(dependentName);
             }
         }
+    }
+
+    protected boolean checkClientSideValidations(boolean valid) {
+        if (spouse.isChecked() == true && spouseName.isVisible() == true && (spouseName.getValue() == null || spouseName.getValue().isEmpty())) {
+            spouseName.setMessage("Spouse Name can not be empty");
+            valid = false;
+        }
+        if (dependent.isChecked() == true && dependentName.isVisible() == true && (dependentName.getValue() == null || dependentName.getValue().isEmpty())) {
+            dependentName.setMessage("Dependent Name can not be empty");
+            valid = false;
+        }
+        if(myspousesplan.isChecked()==true && spouseNameOfCarrier.isVisible()==true &&(spouseNameOfCarrier.getValue()==null || spouseNameOfCarrier.getValue().isEmpty())){
+            spouseNameOfCarrier.setMessage("Spouse Name Of Carrier can not be empty");
+            valid = false;
+        }
+        if(othercoverage.isChecked()==true && otherNameOfCarrier.isVisible()==true &&(otherNameOfCarrier.getValue()==null || otherNameOfCarrier.getValue().isEmpty())){
+            otherNameOfCarrier.setMessage("Other Name Of Carrier can not be empty");
+            valid = false;
+        }
+        return valid;
     }
 }
