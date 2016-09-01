@@ -73,7 +73,7 @@ public class ReadEmployeePanel extends ReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        if (entity.get("status").isString().stringValue().equals("true")) {
+        if (entity.containsKey("status") && entity.get("status").isString().stringValue().equals("true")) {
             entityFieldsPanel.remove(endDate);
         }
         assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
@@ -101,7 +101,7 @@ public class ReadEmployeePanel extends ReadComposite {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONSULTANT_TIME_ADMIN, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_HR_ADMINSTRATION)) {
             assignFieldValueFromEntity("status", entity, DataType.BOOLEAN_FIELD);
         }
-        if (entity.get("status").isString().stringValue().equals("false")) {
+        if (entity.containsKey("status") && entity.get("status").isString().stringValue().equals("false")) {
             endDate.setValue(JSONUtils.toString(entity, "endDate"));
         }
         populateComments();
@@ -140,15 +140,15 @@ public class ReadEmployeePanel extends ReadComposite {
         hpanel.add(new ImageField("Picture", JSONUtils.toString(entity, "imageURL"), JSONUtils.toString(entity, "id"), 100, 100, false));
         if (entity != null && entity.get("company").isObject() != null) {
             String companyName = entity.get("company").isObject().get("name").isString().stringValue();
-            if(companyName.equalsIgnoreCase(Company.CGS_INC)){
-                hpanel.add(new ImageField("Logo",OfficeImages.INSTANCE.cgsLogo(), 277, 50, false));
-            }else if(companyName.equalsIgnoreCase(Company.TECHPILLARS)){
-                hpanel.add(new ImageField("Logo",OfficeImages.INSTANCE.techPillarsLogo(), 277, 37, false));
-            }else if(companyName.equalsIgnoreCase(Company.SSTECH_INC) || companyName.equalsIgnoreCase(Company.SSTECH_LLC)){
-                hpanel.add(new ImageField("Logo",OfficeImages.INSTANCE.logo(), 277, 37, false));
+            if (companyName.equalsIgnoreCase(Company.CGS_INC)) {
+                hpanel.add(new ImageField("Logo", OfficeImages.INSTANCE.cgsLogo(), 277, 50, false));
+            } else if (companyName.equalsIgnoreCase(Company.TECHPILLARS)) {
+                hpanel.add(new ImageField("Logo", OfficeImages.INSTANCE.techPillarsLogo(), 277, 37, false));
+            } else if (companyName.equalsIgnoreCase(Company.SSTECH_INC) || companyName.equalsIgnoreCase(Company.SSTECH_LLC)) {
+                hpanel.add(new ImageField("Logo", OfficeImages.INSTANCE.logo(), 277, 37, false));
             }
-        }else{
-            hpanel.add(new ImageField("Logo",OfficeImages.INSTANCE.logo(), 277, 37, false));
+        } else {
+            hpanel.add(new ImageField("Logo", OfficeImages.INSTANCE.logo(), 277, 37, false));
         }
         entityFieldsPanel.add(hpanel);
         addField("employeeId", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
