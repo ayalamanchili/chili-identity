@@ -107,16 +107,16 @@ public class HealthInsuranceResource extends CRUDResource<HealthInsurance> {
                 if (entity.getInsuranceEnrollment() != null && ins.getInsuranceEnrollment() != null) {
                     if (ins.getInsuranceEnrollment().getId() != null && ins.getInsuranceEnrollment().getYear().equals(entity.getInsuranceEnrollment().getYear())) {
                         throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "healthinsurance.year.submitted",
-                                "Health Inurance with the entered year already exists");
+                                "Health Insurance with the entered year already exists");
                     }
                     InsuranceEnrollment entityEnrollment = entity.getInsuranceEnrollment();
-                    entityEnrollment.setTargetEntityId(OfficeSecurityService.instance().getCurrentUser().getId());
+                    entityEnrollment.setTargetEntityId(insurance.getEmployee().getId());
                     entityEnrollment.setTargetEntityName(InsuranceEnrollment.class.getCanonicalName());
                     InsuranceEnrollment insEnrollment = InsuranceEnrollmentDao.instance().save(entityEnrollment);
                     insurance.setInsuranceEnrollment(insEnrollment);
                 } else {
                     HealthInsuranceWaiver entityWaiver = entity.getHealthInsuranceWaiver();
-                    entityWaiver.setTargetEntityId(OfficeSecurityService.instance().getCurrentUser().getId());
+                    entityWaiver.setTargetEntityId(insurance.getEmployee().getId());
                     entityWaiver.setTargetEntityName(InsuranceEnrollment.class.getCanonicalName());
                     HealthInsuranceWaiver waiverNew = HealthInsuranceWaiverDao.instance().save(entityWaiver);
                     insurance.setHealthInsuranceWaiver(waiverNew);
