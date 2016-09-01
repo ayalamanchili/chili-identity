@@ -140,7 +140,7 @@ public class ReadAllHealthInsuranceWaiverPanel extends CRUDReadAllComposite {
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Insurance Enrollment Information");
         TabPanel.instance().profilePanel.entityPanel.clear();
-        TabPanel.instance().profilePanel.entityPanel.add(new ReadAllHealthInsuranceWaiverPanel());
+        TabPanel.instance().profilePanel.entityPanel.add(new ReadAllHealthInsuranceWaiverPanel(empId));
     }
 
     @Override
