@@ -104,8 +104,8 @@ public class HealthInsuranceResource extends CRUDResource<HealthInsurance> {
         List<HealthInsurance> insurances = healthInsuranceDao.queryForEmployee(insurance.getEmployee().getId(), 0, 10);
         if (insurances != null && insurances.size() > 0) {
             for (HealthInsurance ins : insurances) {
-                if (entity.getInsuranceEnrollment() != null) {
-                    if (ins.getInsuranceEnrollment().getYear().equals(entity.getInsuranceEnrollment().getYear())) {
+                if (entity.getInsuranceEnrollment() != null && ins.getInsuranceEnrollment() != null) {
+                    if (ins.getInsuranceEnrollment().getId() != null && ins.getInsuranceEnrollment().getYear().equals(entity.getInsuranceEnrollment().getYear())) {
                         throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "healthinsurance.year.submitted",
                                 "Health Inurance with the entered year already exists");
                     }
@@ -114,6 +114,12 @@ public class HealthInsuranceResource extends CRUDResource<HealthInsurance> {
                     entityEnrollment.setTargetEntityName(InsuranceEnrollment.class.getCanonicalName());
                     InsuranceEnrollment insEnrollment = InsuranceEnrollmentDao.instance().save(entityEnrollment);
                     insurance.setInsuranceEnrollment(insEnrollment);
+                } else {
+                    HealthInsuranceWaiver entityWaiver = entity.getHealthInsuranceWaiver();
+                    entityWaiver.setTargetEntityId(OfficeSecurityService.instance().getCurrentUser().getId());
+                    entityWaiver.setTargetEntityName(InsuranceEnrollment.class.getCanonicalName());
+                    HealthInsuranceWaiver waiverNew = HealthInsuranceWaiverDao.instance().save(entityWaiver);
+                    insurance.setHealthInsuranceWaiver(waiverNew);
                 }
             }
         } else {
@@ -132,7 +138,6 @@ public class HealthInsuranceResource extends CRUDResource<HealthInsurance> {
                 insurance.setHealthInsuranceWaiver(waiverNew);
             }
         }
-
         return HealthInsuranceDao.instance().save(insurance);
     }
 
