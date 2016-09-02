@@ -50,7 +50,7 @@ public class ReportsMenu extends CMenuBar {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_HR, ROLE.ROLE_PRB_EVALUATIONS_MANAGER)) {
             addMenuItem("Probation Period", "Probation Period", probperformanceEvaluationsReportsMaintainenceCmd);
         }
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION, Auth.ROLE.ROLE_HEALTH_INSURANCE_MANAGER)) {
             addMenuItem("Retirement Plan", "Retirement Plan", retirementPlanReportsMaintainenceCmd);
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
