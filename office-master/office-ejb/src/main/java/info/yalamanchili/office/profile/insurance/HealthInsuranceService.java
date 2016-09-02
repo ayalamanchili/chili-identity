@@ -173,11 +173,11 @@ public class HealthInsuranceService {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "healthinsurance.not.present", "Please select a Year");
         }
         List<Employee> notSubmittedEmps = new ArrayList();
-        for (Employee emp : EmployeeDao.instance().queryAll(0, 1000)) {
+        if (dto.getEmployee() != null || !dto.getEmployee().isEmpty()) {
+            Employee emp = EmployeeDao.instance().findById(Long.valueOf(dto.getEmployee()));
             List<HealthInsurance> insurances = healthInsuranceDao.queryForEmployee(emp.getId(), 0, 50);
             if (insurances == null || insurances.isEmpty()) {
                 notSubmittedEmps.add(emp);
-                //notSubmittedEmailNotification(emp.getPrimaryEmail().getEmail(), dto.getYear());
             } else if (insurances.size() > 0) {
                 List<InsuranceEnrollment> enrolledInsurances = new ArrayList();
                 for (HealthInsurance ins : insurances) {
@@ -187,11 +187,30 @@ public class HealthInsuranceService {
                 }
                 if (isInsuranceEnrolled(enrolledInsurances, dto.getYear()) == enrolledInsurances.size()) {
                     notSubmittedEmps.add(emp);
-                    //notSubmittedEmailNotification(emp.getPrimaryEmail().getEmail(), dto.getYear());
+                }
+            }
+        } else {
+            for (Employee emp : EmployeeDao.instance().queryAll(0, 1000)) {
+                List<HealthInsurance> insurances = healthInsuranceDao.queryForEmployee(emp.getId(), 0, 50);
+                if (insurances == null || insurances.isEmpty()) {
+                    notSubmittedEmps.add(emp);
+                } else if (insurances.size() > 0) {
+                    List<InsuranceEnrollment> enrolledInsurances = new ArrayList();
+                    for (HealthInsurance ins : insurances) {
+                        if (ins.getInsuranceEnrollment() != null) {
+                            enrolledInsurances.add(ins.getInsuranceEnrollment());
+                        }
+                    }
+                    if (isInsuranceEnrolled(enrolledInsurances, dto.getYear()) == enrolledInsurances.size()) {
+                        notSubmittedEmps.add(emp);
+                    }
                 }
             }
         }
-        notSubmittedEmail(notSubmittedEmps, dto.getYear());
+        if (notSubmittedEmps.size() > 0) {
+            notSubmittedEmail(notSubmittedEmps, dto.getYear());
+            notSubmittedEmps.clear();
+        }
     }
 
     private int isInsuranceEnrolled(List<InsuranceEnrollment> enrolledInsurances, String year) {
@@ -224,8 +243,8 @@ public class HealthInsuranceService {
         }
         Email email = new Email();
         email.setTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRole.ROLE_HEALTH_INSURANCE_MANAGER.name()));
-        email.setSubject("Health Insurances Not submitted Consolidated Emails");
-        String messageText = "Please submit your Health Insurance for " + year;
+        email.setSubject("Health Insurances Not submitted Consolidated Email for " + year);
+        String messageText = "Employees, not submitted health insurance waiver for the year " + year;
         email.setBody(messageText);
         HashMap<String, Object> emailContext = new HashMap();
         emailContext.put("employees", emps);
