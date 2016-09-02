@@ -37,18 +37,18 @@ public class ReadAllOutOfOfficePanel extends CRUDReadAllComposite {
 
     public ReadAllOutOfOfficePanel() {
         instance = this;
-        initTable("Work From Home Requests", OfficeWelcome.constants2);
+        initTable("Remote Work Requests", OfficeWelcome.constants2);
     }
 
     public ReadAllOutOfOfficePanel(String url) {
         instance = this;
         this.url = url;
-        initTable("Work From Home Requests", OfficeWelcome.constants2);
+        initTable("Remote Work Requests", OfficeWelcome.constants2);
     }
 
     public ReadAllOutOfOfficePanel(JSONArray result) {
         instance = this;
-        initTable("Work From Home Requests", result, OfficeWelcome.constants2);
+        initTable("Remote Work Requests", result, OfficeWelcome.constants2);
     }
 
     public ReadAllOutOfOfficePanel(String title, JSONArray array) {
@@ -171,7 +171,7 @@ public class ReadAllOutOfOfficePanel extends CRUDReadAllComposite {
     @Override
     protected void configureCreateButton() {
         if (isOnCurrent != true) {
-            createButton.setText("Create Work From Home Request");
+            createButton.setText("Create Remote Work Request");
         } else {
             createButton.removeFromParent();
         }

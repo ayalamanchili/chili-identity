@@ -173,7 +173,7 @@ public class HealthInsuranceService {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "healthinsurance.not.present", "Please select a Year");
         }
         List<Employee> notSubmittedEmps = new ArrayList();
-        if (dto.getEmployee() != null || !dto.getEmployee().isEmpty()) {
+        if (dto.getEmployee() != null) {
             Employee emp = EmployeeDao.instance().findById(Long.valueOf(dto.getEmployee()));
             List<HealthInsurance> insurances = healthInsuranceDao.queryForEmployee(emp.getId(), 0, 50);
             if (insurances == null || insurances.isEmpty()) {

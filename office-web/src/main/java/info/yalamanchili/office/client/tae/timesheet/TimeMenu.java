@@ -50,7 +50,7 @@ public class TimeMenu extends CMenuBar {
             addMenuItem("Attendance", "Attendance", attendenceCmd);
         }
         if (Auth.isCorporateEmployee()) {
-            addMenuItem("Work From Home", "Work From Home", outOfOfficeMaintainenceCmd);
+            addMenuItem("Remote Work", "Remote Work", outOfOfficeMaintainenceCmd);
         }
     }
     static Command summaryMaintainenceCmd = new Command() {
