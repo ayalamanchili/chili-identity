@@ -74,7 +74,10 @@
                 <item name="Emergency Contacts" href="office/profile/emergency_contacts.html"/>
                 <item name="Dependents" href="office/profile/dependents.html"/>
                 <item name="SkillSet" href="office/profile/skillset.html" />
-                <item name="Benefits" href="office/profile/benefits.html"/>
+                <item name="Benefits" href="office/profile/benefits.html" collapse="true">
+                     <item name="Health Insurance" href="office/profile/health-insurance.html" collapse="true"/>
+                    <item name="Reports" href="office/profile/health-reports.html" collapse="true"/>
+                </item>   
                 <item name="Preferences" href="office/profile/preferences.html"/>
                 <item name="Privacy" href="office/profile/privacy.html"/>
             </item>
