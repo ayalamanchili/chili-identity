@@ -21,6 +21,7 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.widgets.SuggestBox;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.insurance.HealthInsuranceYear;
@@ -46,7 +47,7 @@ public class RetirementPlanOptInSidePanal extends ALComposite implements ClickHa
 
     protected Button generateRepB = new Button("Generate");
     protected Button viewRepB = new Button("View");
-    EnumField yearsF = new EnumField(OfficeWelcome.constants, "year", "HealthInsuranceWaiver", false, false, HealthInsuranceYear.getyears().toArray(new String[0]));
+    EnumField yearsF = new EnumField(OfficeWelcome.constants2, "year", "InsuranceEnrollment", false, true, HealthInsuranceYear.getyears().toArray(new String[0]));
 
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false);
     ClickableLink reminderB = new ClickableLink("Send Reminder");
@@ -85,23 +86,24 @@ public class RetirementPlanOptInSidePanal extends ALComposite implements ClickHa
     @Override
     protected void addWidgets() {
         panel.add(retirementplanReportL);
-        panel.add(yearsF);
-        panel.add(employeeSB);
-        panel.add(generateRepB);
-        panel.add(viewRepB);
-        panel.add(new HTML("<hr>"));
-        panel.add(reminderB);
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HEALTH_INSURANCE_MANAGER)) {
+            panel.add(yearsF);
+            panel.add(employeeSB);
+            panel.add(generateRepB);
+            panel.add(viewRepB);
+            panel.add(new HTML("<hr>"));
+            panel.add(reminderB);
+        }
     }
 
     protected JSONObject populateEntity() {
         JSONObject entity = new JSONObject();
         if (employeeSB.getSelectedObject() != null) {
-            entity.put("employee", employeeSB.getSelectedObject());
+            entity.put("employee", employeeSB.getSelectedObject().get("id"));
         }
         if (yearsF.getValue() != null) {
             entity.put("year", new JSONString(yearsF.getValue()));
         }
-        logger.info("entity in populate entity () is .... " + entity);
         return entity;
     }
 
