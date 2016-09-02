@@ -71,7 +71,7 @@ public class SubmitInvoicePanel extends CreateComposite {
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Submitted Invoice Information");
-//        ReadAllInvoicePanel.instance.refresh();
+        ReadAllInvoicePanel.instance.refresh();
         GenericPopup.instance().hide();
     }
 
