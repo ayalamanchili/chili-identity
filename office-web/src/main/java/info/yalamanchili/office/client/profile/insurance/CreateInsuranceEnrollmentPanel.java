@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.EnumField;
+import info.chili.gwt.fields.FileuploadField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -40,6 +41,13 @@ public class CreateInsuranceEnrollmentPanel extends CreateComposite implements C
     VerticalPanel addrWidgetPanel = new VerticalPanel();
     EnumField yearsF;
     protected String empId;
+
+    protected FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "HealthInsuranceWaiver", "fileUrl", "HealthInsuranceWaiver/fileUrl", false, true) {
+        @Override
+        public void onUploadComplete(String res) {
+            postCreateSuccessForWaiver(res);
+        }
+    };
 
     HealthInsuranceWaiverPanel insuranceWaiver = new HealthInsuranceWaiverPanel();
     InsuranceEnrollmentPanel insuranceEnrollment = new InsuranceEnrollmentPanel();
@@ -63,7 +71,11 @@ public class CreateInsuranceEnrollmentPanel extends CreateComposite implements C
             entity.put("insuranceEnrollment", insuranceEnrollment.populateEntityFromFields());
         }
         if (enrolledNo.getValue()) {
-            entity.put("healthInsuranceWaiver", insuranceWaiver.populateEntityFromFields());
+            JSONObject insuranceWaiverEntity = insuranceWaiver.populateEntityFromFields();
+            if (resumeUploadPanel.getFileName() != null) {
+                insuranceWaiverEntity.put("fileUrl", resumeUploadPanel.getFileName());
+            }
+            entity.put("healthInsuranceWaiver", insuranceWaiverEntity);
         }
         return entity;
 
@@ -81,14 +93,18 @@ public class CreateInsuranceEnrollmentPanel extends CreateComposite implements C
 
                     @Override
                     public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
+                        JSONObject waiverEntity = (JSONObject) JSONParser.parseLenient(arg0);
+                        if (waiverEntity.get("enrolled").isString().stringValue().equals("false")) {
+                            uploadDoc(waiverEntity.get("id").isString().stringValue());
+                        } else {
+                            postCreateSuccess(arg0);
+                        }
                     }
                 });
-
     }
 
     protected void uploadDoc(String entityId) {
-        insuranceWaiver.resumeUploadPanel.upload(entityId.trim());
+        resumeUploadPanel.upload(entityId.trim());
     }
 
     @Override
@@ -107,6 +123,12 @@ public class CreateInsuranceEnrollmentPanel extends CreateComposite implements C
             TabPanel.instance().profilePanel.entityPanel.clear();
             TabPanel.instance().profilePanel.entityPanel.add(new ReadAllHealthInsuranceEnrollment(empId));
         }
+    }
+
+    protected void postCreateSuccessForWaiver(String result) {
+        new ResponseStatusWidget().show("Health Waiver Submitted Successfully");
+        TabPanel.instance().profilePanel.entityPanel.clear();
+        TabPanel.instance().profilePanel.entityPanel.add(new ReadAllHealthInsuranceWaiverPanel(empId));
     }
 
     @Override
@@ -174,6 +196,7 @@ public class CreateInsuranceEnrollmentPanel extends CreateComposite implements C
             insuranceWaiver = new HealthInsuranceWaiverPanel();
             entityFieldsPanel.add(insuranceWaiver);
         }
+        entityFieldsPanel.add(resumeUploadPanel);
         entityFieldsPanel.add(create);
         entityFieldsPanel.add(new ReadAllHealthInsuranceWaiverPanel(empId));
     }
@@ -181,6 +204,10 @@ public class CreateInsuranceEnrollmentPanel extends CreateComposite implements C
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
         boolean valid = true;
-        return insuranceWaiver.checkClientSideValidations(valid);
+        if (enrolledNo.isChecked()) {
+            return insuranceWaiver.checkClientSideValidations(valid);
+        } else {
+            return true;
+        }
     }
 }
