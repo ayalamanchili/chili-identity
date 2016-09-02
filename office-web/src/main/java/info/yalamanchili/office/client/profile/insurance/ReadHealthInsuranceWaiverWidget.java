@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RadioButton;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.crud.TReadComposite;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.StringField;
@@ -106,7 +107,6 @@ public class ReadHealthInsuranceWaiverWidget extends TReadComposite {
         if (entity.containsKey("otherCarrierType")) {
             otherCarrierType.setValue(entity.get("otherCarrierType").isString().stringValue());
         }
-
     }
 
     @Override
@@ -142,5 +142,15 @@ public class ReadHealthInsuranceWaiverWidget extends TReadComposite {
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "insurance-enrollment/" + getEntityId();
+    }
+    
+    @Override
+    protected boolean enableBack() {
+        return true;
+    }
+
+    @Override
+    protected ReadAllComposite getReadAllPanel() {
+        return ReadAllHealthInsuranceWaiverPanel.instance;
     }
 }
