@@ -218,7 +218,8 @@ public class ClientInformationService {
         }
         ciDto.setId(ci.getId());
         ci.setActive(Boolean.TRUE);
-        return mapper.map(ci, ClientInformationDto.class);
+        ciDto.setCidocument(ci.getCidocument());
+        return ciDto;
     }
 //TODO set these values
 
