@@ -54,7 +54,6 @@ public class ReadHealthInsuranceEnrollment extends ReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        logger.info("populate Fields FromEntity +++" + entity);
         if (entity.containsKey("insuranceEnrollment")) {
             entityFieldsPanel.add(new ReadInsuranceEnrollmentWidget(entity.get("insuranceEnrollment").isObject()));
         }
@@ -73,7 +72,6 @@ public class ReadHealthInsuranceEnrollment extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-
     }
 
     @Override
@@ -84,5 +82,4 @@ public class ReadHealthInsuranceEnrollment extends ReadComposite {
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "insurance-enrollment/" + getEntityId();
     }
-
 }
