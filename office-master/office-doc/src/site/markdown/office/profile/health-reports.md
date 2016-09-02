@@ -1,4 +1,4 @@
-To generate reports
+Health Insurance Reports
 -----
  - Navigate through **Reports** -> **RetirementPlan**
  ![alt text](../../images/profile/benefits/reports-view.png "generate report")
