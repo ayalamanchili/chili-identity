@@ -11,7 +11,6 @@ package info.yalamanchili.office.client.profile.insurance;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.crud.CRUDReadAllComposite;
-import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
 import java.util.logging.Logger;
@@ -53,9 +52,8 @@ public class ReadAllHealthInsuranceReportPanel extends CRUDReadAllComposite {
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Employee"));
-        table.setText(0, 1, getKeyValue("StartDate"));
-        table.setText(0, 2, getKeyValue("Year"));
-        table.setText(0, 3, getKeyValue("Enrolled"));
+        table.setText(0, 1, getKeyValue("Year"));
+        table.setText(0, 2, getKeyValue("Enrolled"));
     }
 
     @Override
@@ -64,9 +62,8 @@ public class ReadAllHealthInsuranceReportPanel extends CRUDReadAllComposite {
             table.setCellSpacing(5);
             JSONObject entity = (JSONObject) entities.get(i - 1);
             table.setText(i, 0, JSONUtils.toString(entity, "employee"));
-            table.setText(i, 1, DateUtils.formatDate(JSONUtils.toString(entity, "startDate")));
-            table.setText(i, 2, JSONUtils.toString(entity, "year"));
-            table.setText(i, 3, JSONUtils.toString(entity, "enrolled"));
+            table.setText(i, 1, JSONUtils.toString(entity, "year"));
+            table.setText(i, 2, JSONUtils.toString(entity, "enrolled"));
         }
     }
 
@@ -78,5 +75,4 @@ public class ReadAllHealthInsuranceReportPanel extends CRUDReadAllComposite {
     protected boolean enableQuickView() {
         return false;
     }
-
 }
