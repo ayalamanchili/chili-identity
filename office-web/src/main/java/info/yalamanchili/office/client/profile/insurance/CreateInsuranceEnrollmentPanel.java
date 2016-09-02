@@ -42,7 +42,7 @@ public class CreateInsuranceEnrollmentPanel extends CreateComposite implements C
     EnumField yearsF;
     protected String empId;
 
-    protected FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "HealthInsuranceWaiver", "fileUrl", "HealthInsuranceWaiver/fileUrl", false, true) {
+    protected FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants2, "HealthInsuranceWaiver", "fileUrl", "HealthInsuranceWaiver/fileUrl", false, true) {
         @Override
         public void onUploadComplete(String res) {
             postCreateSuccessForWaiver(res);
