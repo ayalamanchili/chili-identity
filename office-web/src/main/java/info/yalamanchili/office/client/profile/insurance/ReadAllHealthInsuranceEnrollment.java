@@ -95,7 +95,7 @@ public class ReadAllHealthInsuranceEnrollment extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+        createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_DELETE, row, JSONUtils.toString(entity, "id"));
     }
 
     @Override
@@ -129,7 +129,6 @@ public class ReadAllHealthInsuranceEnrollment extends CRUDReadAllComposite {
 
     @Override
     public void updateClicked(String entityId) {
-        TabPanel.instance().profilePanel.entityPanel.clear();
     }
 
     @Override
