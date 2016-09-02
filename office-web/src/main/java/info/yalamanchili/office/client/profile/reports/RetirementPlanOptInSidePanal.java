@@ -157,7 +157,7 @@ public class RetirementPlanOptInSidePanal extends ALComposite implements ClickHa
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
-                        if (result == null || JSONParser.parseLenient(result).isObject().size() == 0) {
+                        if (result == null || JSONParser.parseLenient(result).isObject() == null) {
                             new ResponseStatusWidget().show("No Results");
                         } else {
                             new ResponseStatusWidget().show("Report will be emailed to your primary email");
@@ -171,7 +171,7 @@ public class RetirementPlanOptInSidePanal extends ALComposite implements ClickHa
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
-                        if (result == null || JSONParser.parseLenient(result).isObject().size() == 0) {
+                        if (result == null || JSONParser.parseLenient(result).isObject() == null) {
                             new ResponseStatusWidget().show("No Results");
                         } else {
                             TabPanel.instance().reportingPanel.entityPanel.clear();
