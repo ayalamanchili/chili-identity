@@ -9,6 +9,7 @@
 package info.yalamanchili.office.client.profile.insurance;
 
 import com.google.gwt.json.client.JSONObject;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.EnumField;
@@ -74,5 +75,15 @@ public class ReadInsuranceEnrollmentWidget extends ReadComposite {
     @Override
     protected String getURI() {
         return "";
+    }
+    
+    @Override
+    protected boolean enableBack() {
+        return true;
+    }
+
+    @Override
+    protected ReadAllComposite getReadAllPanel() {
+        return ReadAllHealthInsuranceEnrollment.instance;
     }
 }
