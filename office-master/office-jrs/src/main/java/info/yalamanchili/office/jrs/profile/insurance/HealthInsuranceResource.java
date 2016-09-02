@@ -102,9 +102,9 @@ public class HealthInsuranceResource extends CRUDResource<HealthInsurance> {
         insurance.setEmployee(OfficeSecurityService.instance().getCurrentUser());
         insurance.setDateRequested(new Date());
         List<HealthInsurance> insurances = healthInsuranceDao.queryForEmployee(insurance.getEmployee().getId(), 0, 10);
-        if (insurances != null && insurances.size() > 0) {
+        if (insurances != null && insurances.size() > 0 && entity.getInsuranceEnrollment() != null) {
             for (HealthInsurance ins : insurances) {
-                if (entity.getInsuranceEnrollment() != null && ins.getInsuranceEnrollment() != null) {
+                if (ins.getInsuranceEnrollment() != null) {
                     if (ins.getInsuranceEnrollment().getId() != null && ins.getInsuranceEnrollment().getYear().equals(entity.getInsuranceEnrollment().getYear())) {
                         throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "healthinsurance.year.submitted",
                                 "Health Insurance with the entered year already exists");
@@ -114,12 +114,13 @@ public class HealthInsuranceResource extends CRUDResource<HealthInsurance> {
                     entityEnrollment.setTargetEntityName(InsuranceEnrollment.class.getCanonicalName());
                     InsuranceEnrollment insEnrollment = InsuranceEnrollmentDao.instance().save(entityEnrollment);
                     insurance.setInsuranceEnrollment(insEnrollment);
-                } else {
-                    HealthInsuranceWaiver entityWaiver = entity.getHealthInsuranceWaiver();
-                    entityWaiver.setTargetEntityId(insurance.getEmployee().getId());
-                    entityWaiver.setTargetEntityName(InsuranceEnrollment.class.getCanonicalName());
-                    HealthInsuranceWaiver waiverNew = HealthInsuranceWaiverDao.instance().save(entityWaiver);
-                    insurance.setHealthInsuranceWaiver(waiverNew);
+                } 
+                else {
+                    InsuranceEnrollment entityEnrollment = entity.getInsuranceEnrollment();
+                    entityEnrollment.setTargetEntityId(insurance.getEmployee().getId());
+                    entityEnrollment.setTargetEntityName(InsuranceEnrollment.class.getCanonicalName());
+                    InsuranceEnrollment insEnrollment = InsuranceEnrollmentDao.instance().save(entityEnrollment);
+                    insurance.setInsuranceEnrollment(insEnrollment);
                 }
             }
         } else {
