@@ -106,7 +106,7 @@ public class ReadAllHealthInsuranceWaiverPanel extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE, TableRowOptionsWidget.OptionsType.PRINT);
+        createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.DELETE, TableRowOptionsWidget.OptionsType.PRINT);
     }
 
     @Override
@@ -138,14 +138,13 @@ public class ReadAllHealthInsuranceWaiverPanel extends CRUDReadAllComposite {
 
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("Successfully Deleted Insurance Enrollment Information");
+        new ResponseStatusWidget().show("Successfully Deleted Health Waiver Information");
         TabPanel.instance().profilePanel.entityPanel.clear();
         TabPanel.instance().profilePanel.entityPanel.add(new ReadAllHealthInsuranceWaiverPanel(empId));
     }
 
     @Override
     public void updateClicked(String entityId) {
-        TabPanel.instance().profilePanel.entityPanel.clear();
     }
 
     @Override
