@@ -265,12 +265,12 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         entityFieldsPanel.add(getLineSeperatorTag("Client & Vendor Information"));
         addDropDown("client", selectClientWidgetF);
         entityFieldsPanel.add(addClientL);
+        addField("directClient", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("clientFeeApplicable", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         isClientFeeApplicable = (BooleanField) fields.get("clientFeeApplicable");
         addField("clientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL); 
         clientFee = (FloatField) fields.get("clientFee");
         clientFee.setVisible(false);
-        addField("directClient", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addDropDown("clientLocation", new SelectClientLocationWidget(false, true, Alignment.HORIZONTAL));
         selectClientAcctPayContact = new SelectClientAcctPayContact(false, false, Alignment.HORIZONTAL) {
             @Override
