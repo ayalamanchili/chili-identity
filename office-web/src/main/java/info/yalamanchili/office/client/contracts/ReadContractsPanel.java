@@ -82,7 +82,7 @@ public class ReadContractsPanel extends TReadComposite {
 
     public ReadContractsPanel(String entityId) {
         instance = this;
-        initReadComposite(entityId, "Contract", OfficeWelcome.constants);
+        initReadComposite(entityId, "Contract", OfficeWelcome.constants2);
         populateCIDocuments();
         populateComments();
     }
