@@ -16,6 +16,9 @@ import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DateField;
+import info.chili.gwt.fields.EnumField;
+import info.chili.gwt.fields.FloatField;
+import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceDeliveryMethod;
@@ -118,14 +121,14 @@ public class UpdateVendorsPanel extends UpdateComposite {
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addEnumField("vendorType", false, false, VendorType.names(), Alignment.HORIZONTAL);
-        addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("vendorType", false, true, VendorType.names(), Alignment.HORIZONTAL);
+        addField("paymentTerms", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(submitForUpdateP);
-        addEnumField("vendorinvFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+        addEnumField("vendorinvFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(submitForUpdateF);
-        addEnumField("vendorinvDeliveryMethod", false, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
+        addEnumField("vendorinvDeliveryMethod", false, true, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(submitForUpdateD);
-        addField("vendorFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addField("vendorFees", false, true, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("maxFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("minFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("msaValDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
@@ -165,6 +168,36 @@ public class UpdateVendorsPanel extends UpdateComposite {
         if (msaValDate.getDate() != null && msaExpDate.getDate() != null && msaValDate.getDate().after(msaExpDate.getDate())) {
             msaExpDate.setMessage("To Date must be after From Date");
             return false;
+        }
+        EnumField vendorTypeF = (EnumField) fields.get("vendorType");
+        if (vendorTypeF.getValue() == null || "".equals(vendorTypeF.getValue())) {
+            vendorTypeF.setMessage("Please enter Vendor Type ");
+            valid = false;
+        }
+        StringField paymentTermsF = (StringField) fields.get("paymentTerms");
+        if (paymentTermsF.getValue() == null || "".equals(paymentTermsF.getValue())) {
+            paymentTermsF.setMessage("Please enter the Payment Terms");
+            valid = false;
+        }
+        StringField terminationNoticeF = (StringField) fields.get("terminationNotice");
+        if (terminationNoticeF.getValue() == null || "".equals(terminationNoticeF.getValue())) {
+            terminationNoticeF.setMessage("Please enter the Termination Notice Period");
+            valid = false;
+        }
+        EnumField vendorinvFrequencyF = (EnumField) fields.get("vendorinvFrequency");
+        if (vendorinvFrequencyF.getValue() == null || "".equals(vendorinvFrequencyF.getValue())) {
+            vendorinvFrequencyF.setMessage("Please enter Invoice Frequency ");
+            valid = false;
+        }
+        EnumField vendorinvDeliveryMethodF = (EnumField) fields.get("vendorinvDeliveryMethod");
+        if (vendorinvDeliveryMethodF.getValue() == null || "".equals(vendorinvDeliveryMethodF.getValue())) {
+            vendorinvDeliveryMethodF.setMessage("Please enter Invoice Delivery Method ");
+            valid = false;
+        }
+        FloatField vendorFeesF = (FloatField) fields.get("vendorFees");
+        if (vendorFeesF.getValue() == null || "".equals(vendorFeesF.getValue())) {
+            vendorFeesF.setMessage("Please enter Vendor Fees");
+            valid = false;
         }
         return valid;
     }
