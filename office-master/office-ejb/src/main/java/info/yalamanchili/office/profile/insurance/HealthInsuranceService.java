@@ -136,6 +136,9 @@ public class HealthInsuranceService {
     }
 
     public List<HealthInsuranceReportDto> getHealthInsuranceReport(String year) {
+        if (year == null || year.isEmpty() || year.contains("null")) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "healthinsurance.not.present", "Please select a Year");
+        }
         List<HealthInsuranceReportDto> report = new ArrayList<>();
         for (Employee emp : EmployeeDao.instance().getEmployeesByType(EmployeeType.CORPORATE_EMPLOYEE, EmployeeType.EMPLOYEE, EmployeeType.INTERN_SEASONAL_EMPLOYEE)) {
             List<HealthInsurance> insurances = healthInsuranceDao.queryForEmployee(emp.getId(), 0, 50);
