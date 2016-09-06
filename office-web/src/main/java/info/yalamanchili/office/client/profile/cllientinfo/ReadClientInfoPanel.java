@@ -189,8 +189,8 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
         addEnumField("company", true, true, ClientInformationCompany.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Client & Vendor Information"));
         addDropDown("client", new SelectClientWidget(true, false, Alignment.HORIZONTAL));
+        addField("directClient", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);    
         addField("clientFeeApplicable", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-        addField("directClient", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);                
         addDropDown("clientLocation", new SelectClientLocationWidget(true, false, Alignment.HORIZONTAL));
         selectClientAcctPayContact = new SelectClientAcctPayContact(false, false, Alignment.HORIZONTAL) {
             @Override
