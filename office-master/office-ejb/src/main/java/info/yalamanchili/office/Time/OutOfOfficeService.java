@@ -62,12 +62,12 @@ public class OutOfOfficeService {
             }
             String summary = "";
             if (vars.containsKey("status1")) {
-                email.setSubject("Out Of Office Request was updated by  " + emp.getFirstName() + " " + emp.getLastName());
-                summary = summary.concat(" <b> Out Of Office Request was updated </b>" + "</br></br>" + " <b> Employee  : </b> &nbsp;" + emp.getFirstName() + "&nbsp;" + emp.getLastName() + "&nbsp;" + "</br>" + " <b>Start Date  : </b> " + "&nbsp;" + sdf.format(entity.getStartDate()) + "&nbsp;" + "</br>" + " <b> End Date   &nbsp;: </b> " + "&nbsp;" + sdf.format(entity.getEndDate()) + "&nbsp;" + "</br>" + " <b> Status    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </b> &nbsp;" + entity.getStatus().name().replace("_", " "));
+                email.setSubject("Remote Work Request was updated by  " + emp.getFirstName() + " " + emp.getLastName());
+                summary = summary.concat(" <b> Remote Work Request was updated </b>" + "</br></br>" + " <b> Employee  : </b> &nbsp;" + emp.getFirstName() + "&nbsp;" + emp.getLastName() + "&nbsp;" + "</br>" + " <b>Start Date  : </b> " + "&nbsp;" + sdf.format(entity.getStartDate()) + "&nbsp;" + "</br>" + " <b> End Date   &nbsp;: </b> " + "&nbsp;" + sdf.format(entity.getEndDate()) + "&nbsp;" + "</br>" + " <b> Status    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </b> &nbsp;" + entity.getStatus().name().replace("_", " "));
 
             } else {
-                email.setSubject("Out Of Office Request - " + entity.getStatus().name().replace("_", " ") + " for " + emp.getFirstName() + " " + emp.getLastName());
-                summary = summary.concat(" <b> Out Of Office Request - </b>  " + "<b>" + entity.getStatus().name().replace("_", " ") + "</b>" + "</br></br>" + " <b> Employee : </b> &nbsp;" + emp.getFirstName() + "&nbsp;" + emp.getLastName() + "&nbsp;" + "</br>" + " <b>Start Date  : </b> " + "&nbsp;" + sdf.format(entity.getStartDate()) + "&nbsp;" + "</br>" + " <b> End Date    &nbsp;: </b> " + "&nbsp;" + sdf.format(entity.getEndDate()) + "&nbsp;");
+                email.setSubject("Remote Work Request - " + entity.getStatus().name().replace("_", " ") + " for " + emp.getFirstName() + " " + emp.getLastName());
+                summary = summary.concat(" <b> Remote Work Request - </b>  " + "<b>" + entity.getStatus().name().replace("_", " ") + "</b>" + "</br></br>" + " <b> Employee : </b> &nbsp;" + emp.getFirstName() + "&nbsp;" + emp.getLastName() + "&nbsp;" + "</br>" + " <b>Start Date  : </b> " + "&nbsp;" + sdf.format(entity.getStartDate()) + "&nbsp;" + "</br>" + " <b> End Date    &nbsp;: </b> " + "&nbsp;" + sdf.format(entity.getEndDate()) + "&nbsp;");
             }
             MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
             email.setBody(summary);
