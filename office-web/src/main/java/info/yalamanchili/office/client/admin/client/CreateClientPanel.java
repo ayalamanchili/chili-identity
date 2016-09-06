@@ -74,8 +74,8 @@ public class CreateClientPanel extends CreateComposite {
         assignEntityValueFromField("paymentTerms", clnt);
         assignEntityValueFromField("clientinvFrequency", clnt);
         assignEntityValueFromField("clientFee", clnt);
-        assignEntityValueFromField("maxClientFee", clnt);
-        assignEntityValueFromField("minClientFee", clnt);
+        //assignEntityValueFromField("maxClientFee", clnt);
+        //assignEntityValueFromField("minClientFee", clnt);
         assignEntityValueFromField("msaValDate", clnt);
         assignEntityValueFromField("msaExpDate", clnt);
         assignEntityValueFromField("clientInvDeliveryMethod", clnt);
@@ -155,8 +155,8 @@ public class CreateClientPanel extends CreateComposite {
         addEnumField("clientinvFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         addEnumField("clientInvDeliveryMethod", false, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
         addField("clientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
-        addField("maxClientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
-        addField("minClientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        //addField("maxClientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        //addField("minClientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("msaValDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("msaExpDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("terminationNoticePeriod", false, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);

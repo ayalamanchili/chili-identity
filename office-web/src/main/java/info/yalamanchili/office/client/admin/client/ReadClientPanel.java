@@ -64,8 +64,8 @@ public class ReadClientPanel extends ReadComposite {
         assignFieldValueFromEntity("paymentTerms", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("clientinvFrequency", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("clientFee", entity, DataType.FLOAT_FIELD);
-        assignFieldValueFromEntity("maxClientFee", entity, DataType.FLOAT_FIELD);
-        assignFieldValueFromEntity("minClientFee", entity, DataType.FLOAT_FIELD);
+//        assignFieldValueFromEntity("maxClientFee", entity, DataType.FLOAT_FIELD);
+//        assignFieldValueFromEntity("minClientFee", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("msaValDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("msaExpDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("clientInvDeliveryMethod", entity, DataType.ENUM_FIELD);
@@ -92,8 +92,8 @@ public class ReadClientPanel extends ReadComposite {
         addEnumField("clientinvFrequency", true, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         addEnumField("clientInvDeliveryMethod", true, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
         addField("clientFee", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
-        addField("maxClientFee", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
-        addField("minClientFee", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+//        addField("maxClientFee", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+//        addField("minClientFee", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("msaValDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("msaExpDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("terminationNoticePeriod", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
