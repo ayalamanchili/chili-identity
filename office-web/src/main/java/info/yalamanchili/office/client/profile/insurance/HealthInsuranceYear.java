@@ -19,7 +19,6 @@ public class HealthInsuranceYear {
 
     public static List<String> getyears() {
         List<String> years = new ArrayList<String>();
-        years.add("Select");
         years.add("2013");
         years.add("2014");
         years.add("2015");
