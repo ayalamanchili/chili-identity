@@ -331,8 +331,8 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         addEnumField("company", false, true, ClientInformationCompany.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Client & Vendor Information"));
         addDropDown("client", selectClientWidgetF);
+        addField("directClient", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);      
         addField("clientFeeApplicable", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-        addField("directClient", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);                        
         addDropDown("clientLocation", new SelectClientLocationWidget(false, false, Alignment.HORIZONTAL));
         selectClientAcctPayContact = new SelectClientAcctPayContact(false, false, Alignment.HORIZONTAL) {
             @Override
