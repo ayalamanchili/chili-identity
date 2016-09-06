@@ -9,7 +9,6 @@
 package info.yalamanchili.office.client.profile.insurance;
 
 import com.google.gwt.http.client.URL;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
@@ -23,7 +22,6 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import java.util.Date;
 import java.util.logging.Logger;
 
 /**
@@ -92,7 +90,7 @@ public class ReadAllHealthInsuranceWaiverPanel extends CRUDReadAllComposite {
                 count++;
                 JSONObject healthInsuranceWaiver = (JSONObject) entity.get("healthInsuranceWaiver");
                 addOptionsWidget(i, entity);
-                table.setText(i, 1, String.valueOf(DateTimeFormat.getFormat("MM/dd/yyyy").format(new Date()).split("/")[2]));
+                table.setText(i, 1, JSONUtils.toString(healthInsuranceWaiver, "waiverYear"));
                 table.setText(i, 2, JSONUtils.toString(entity, "enrolled"));
                 table.setText(i, 3, JSONUtils.toString(healthInsuranceWaiver, "waivingCoverageFor"));
                 table.setText(i, 4, JSONUtils.toString(healthInsuranceWaiver, "waivingCoverageDueTo"));
