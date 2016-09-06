@@ -12,6 +12,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
+import info.chili.gwt.fields.EnumField;
+import info.chili.gwt.fields.IntegerField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
@@ -98,13 +100,13 @@ public class UpdateSubcontractorPanel extends UpdateComposite {
         addField("name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         //addField("description", false, false, DataType.STRING_FIELD);
         addField("website", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("paymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addEnumField("invoiceFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
-        addEnumField("invoiceDeliveryMethod", false, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
-        addField("coiEndDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("paymentTerms", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("invoiceFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+        addEnumField("invoiceDeliveryMethod", false, true, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
+        addField("coiEndDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("msaValDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("msaExpDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("terminationNoticePeriod", false, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        addField("terminationNoticePeriod", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
     }
 
     @Override
@@ -119,8 +121,13 @@ public class UpdateSubcontractorPanel extends UpdateComposite {
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
         boolean valid = true;
+        DateField coiEndDate = (DateField) fields.get("coiEndDate");
         DateField msaValDate = (DateField) fields.get("msaValDate");
         DateField msaExpDate = (DateField) fields.get("msaExpDate");
+        if (coiEndDate.getDate() == null || "".equals(coiEndDate.getDate())) {
+            coiEndDate.setMessage("Please enter the COI end date");
+            valid = false;
+        }
         if (msaValDate.getDate() == null || "".equals(msaValDate.getDate())) {
             msaValDate.setMessage("Please enter the MSA Validity Period from date");
             valid = false;
@@ -136,6 +143,26 @@ public class UpdateSubcontractorPanel extends UpdateComposite {
         StringField nameF = (StringField) fields.get("name");
         if (nameF.getValue() == null || "".equals(nameF.getValue())) {
             nameF.setMessage("Please enter Sub Contractor Name");
+            valid = false;
+        }
+        StringField paymentTermsF = (StringField) fields.get("paymentTerms");
+        if (paymentTermsF.getValue() == null || "".equals(paymentTermsF.getValue())) {
+            paymentTermsF.setMessage("Please enter  Payment Terms");
+            valid = false;
+        }
+        EnumField invoiceFrequencyF = (EnumField) fields.get("invoiceFrequency");
+        if (invoiceFrequencyF.getValue() == null || "".equals(invoiceFrequencyF.getValue())) {
+            invoiceFrequencyF.setMessage("Please enter Invoice Frequency");
+            valid = false;
+        }
+        EnumField invoiceDeliveryMethodF = (EnumField) fields.get("invoiceDeliveryMethod");
+        if (invoiceDeliveryMethodF.getValue() == null || "".equals(invoiceDeliveryMethodF.getValue())) {
+            invoiceDeliveryMethodF.setMessage("Please enter Invoice Delivery Method");
+            valid = false;
+        }
+        IntegerField terminationNoticePeriodF = (IntegerField) fields.get("terminationNoticePeriod");
+        if (terminationNoticePeriodF.getValue() == null || "".equals(terminationNoticePeriodF.getValue())) {
+            terminationNoticePeriodF.setMessage("please enter Termination Notice Period");
             valid = false;
         }
         return valid;
