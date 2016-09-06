@@ -1,4 +1,4 @@
-Work From Home request Process
+Remote Work Request Process
 -----
 
 - When an employee submits a request, it creates a task for that employee’s Reports_To manager.
@@ -7,16 +7,16 @@ Work From Home request Process
 - The Reports_To manager task will be approved or rejected within 48 hours.
 - The employee receives email regarding the status, and the entry in the Status box is changed to Approved or Rejected.
 - If the approval or rejection action does not occur within the 48 hours, the manager will receive an email notification regarding the request.
-- HR Admin has search capability to view all Out of Office requests.
+- HR Admin has search capability to view all Remote Work requests.
 - The Reports_To manager has search capability for only those employees who are direct reports or otherwise under that manager.
 
-Work From Home Process Task
+Remote Work Request Process Task
 ----
 ![alt text](../../../images/timesheets/outofoffice/ooo-process.png "Out Of Office")
 
-Work From Home Search Process
+Remote Work Request Search Process
 ----
-- **HR Admin able to search the requests based on employee name, Start date and End dates, OutOf Office type, and Status**.
+- **HR Admin able to search the requests based on employee name, Start date and End dates, Remote Work type, and Status**.
 ![alt text](../../../images/timesheets/outofoffice/search-requests.png "Out Of Office")
 
 Comments
