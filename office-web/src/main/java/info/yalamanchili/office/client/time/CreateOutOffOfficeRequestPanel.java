@@ -105,7 +105,6 @@ public class CreateOutOffOfficeRequestPanel extends CreateComposite {
     @Override
     protected void configure() {
         setButtonText("Submit");
-        entityCaptionPanel.setCaptionHTML("Work From Home Request");
         HttpService.HttpServiceAsync.instance().doGet(getIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
