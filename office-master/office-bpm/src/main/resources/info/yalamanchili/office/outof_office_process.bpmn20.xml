@@ -16,11 +16,11 @@
         <!-- Manager approval task-->
         <sequenceFlow  sourceRef="outOfOfficeStart" targetRef="outOfOfficeMgrApprovalTask" />
         <userTask id="outOfOfficeMgrApprovalTask" 
-                  name="OutOf Office Manager Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}">
+                  name="Remote Work Request Manager Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}">
             <documentation>
-                Employee Out Of Office Request Manager Approval Task
+                Employee Remote Work Request Manager Approval Task
                 Employee Name       : #{currentEmployee.firstName} #{currentEmployee.lastName}
-                OutOf Office Type   : #{entity.outOfOfficeType}
+                Remote Work Type   : #{entity.outOfOfficeType}
                 Start Date          : #{entity.startDate}
                 End Date            : #{entity.endDate}
                 Reason Notes        : #{entity.reason}
@@ -28,8 +28,8 @@
                 time                : #{entity.time}
                 
                 Navigate to view OutOf Office Request:
-                Time > OutOf Office > Search > Click View Icon (or)
-                Time > OutOf Office > Table Action column > Click View Icon
+                Time > Remote Work > Search > Click View Icon (or)
+                Time > Remote Work > Table Action column > Click View Icon
                 Follow instructions from below:
                 https://apps.sstech.us/site/office/timesheets/OutOfOffice/submit-out-of-office-request.html
             </documentation>
