@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.jrs.profile.insurance;
 
+import info.chili.commons.DateUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.chili.reporting.ReportGenerator;
@@ -102,20 +103,44 @@ public class HealthInsuranceResource extends CRUDResource<HealthInsurance> {
         insurance.setEmployee(OfficeSecurityService.instance().getCurrentUser());
         insurance.setDateRequested(new Date());
         List<HealthInsurance> insurances = healthInsuranceDao.queryForEmployee(insurance.getEmployee().getId(), 0, 10);
-        if (insurances != null && insurances.size() > 0 && entity.getInsuranceEnrollment() != null) {
+        if (insurances != null && insurances.size() > 0) {
             for (HealthInsurance ins : insurances) {
                 if (ins.getInsuranceEnrollment() != null) {
-                    if (ins.getInsuranceEnrollment().getId() != null && ins.getInsuranceEnrollment().getYear().equals(entity.getInsuranceEnrollment().getYear())) {
-                        throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "healthinsurance.year.submitted",
-                                "Health Insurance with the entered year already exists");
+                    if (entity.getInsuranceEnrollment() != null) {
+                        if (ins.getInsuranceEnrollment().getId() != null && ins.getInsuranceEnrollment().getYear().equals(entity.getInsuranceEnrollment().getYear())) {
+                            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "healthinsurance.year.submitted",
+                                    "Health Insurance with the entered year already exists");
+                        }
+                        InsuranceEnrollment entityEnrollment = entity.getInsuranceEnrollment();
+                        entityEnrollment.setTargetEntityId(insurance.getEmployee().getId());
+                        entityEnrollment.setTargetEntityName(InsuranceEnrollment.class.getCanonicalName());
+                        InsuranceEnrollment insEnrollment = InsuranceEnrollmentDao.instance().save(entityEnrollment);
+                        insurance.setInsuranceEnrollment(insEnrollment);
+                    } else if (entity.getHealthInsuranceWaiver() != null) {
+                        if (ins.getInsuranceEnrollment().getYear() != null && ins.getInsuranceEnrollment().getYear().equals(String.valueOf(DateUtils.getYearFromDate(new Date())))) {
+                            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "health.insurance.already.enrolled",
+                                    "Health Insurance already enrolled with the current year");
+                        }
+                        HealthInsuranceWaiver entityWaiver = entity.getHealthInsuranceWaiver();
+                        entityWaiver.setTargetEntityId(OfficeSecurityService.instance().getCurrentUser().getId());
+                        entityWaiver.setTargetEntityName(InsuranceEnrollment.class.getCanonicalName());
+                        entityWaiver.setWaiverYear(String.valueOf(DateUtils.getYearFromDate(new Date())));
+                        HealthInsuranceWaiver waiverNew = HealthInsuranceWaiverDao.instance().save(entityWaiver);
+                        insurance.setHealthInsuranceWaiver(waiverNew);
                     }
-                    InsuranceEnrollment entityEnrollment = entity.getInsuranceEnrollment();
-                    entityEnrollment.setTargetEntityId(insurance.getEmployee().getId());
-                    entityEnrollment.setTargetEntityName(InsuranceEnrollment.class.getCanonicalName());
-                    InsuranceEnrollment insEnrollment = InsuranceEnrollmentDao.instance().save(entityEnrollment);
-                    insurance.setInsuranceEnrollment(insEnrollment);
-                } 
-                else {
+                } else if (ins.getHealthInsuranceWaiver() != null) {
+                    if (entity.getInsuranceEnrollment() != null) {
+                        if (ins.getHealthInsuranceWaiver().getId() != null && ins.getHealthInsuranceWaiver().getWaiverYear().equals(entity.getInsuranceEnrollment().getYear())) {
+                            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "healthwaiver.already.submitted",
+                                    "Health Waiver already submitted with the entered year");
+                        }
+                        InsuranceEnrollment entityEnrollment = entity.getInsuranceEnrollment();
+                        entityEnrollment.setTargetEntityId(insurance.getEmployee().getId());
+                        entityEnrollment.setTargetEntityName(InsuranceEnrollment.class.getCanonicalName());
+                        InsuranceEnrollment insEnrollment = InsuranceEnrollmentDao.instance().save(entityEnrollment);
+                        insurance.setInsuranceEnrollment(insEnrollment);
+                    }
+                } else {
                     InsuranceEnrollment entityEnrollment = entity.getInsuranceEnrollment();
                     entityEnrollment.setTargetEntityId(insurance.getEmployee().getId());
                     entityEnrollment.setTargetEntityName(InsuranceEnrollment.class.getCanonicalName());
@@ -135,6 +160,7 @@ public class HealthInsuranceResource extends CRUDResource<HealthInsurance> {
                 HealthInsuranceWaiver entityWaiver = entity.getHealthInsuranceWaiver();
                 entityWaiver.setTargetEntityId(OfficeSecurityService.instance().getCurrentUser().getId());
                 entityWaiver.setTargetEntityName(InsuranceEnrollment.class.getCanonicalName());
+                entityWaiver.setWaiverYear(String.valueOf(DateUtils.getYearFromDate(new Date())));
                 HealthInsuranceWaiver waiverNew = HealthInsuranceWaiverDao.instance().save(entityWaiver);
                 insurance.setHealthInsuranceWaiver(waiverNew);
             }
@@ -169,7 +195,7 @@ public class HealthInsuranceResource extends CRUDResource<HealthInsurance> {
 
     @GET
     @Path("/insurance-reportView")
-    public List<HealthInsuranceReportDto> employeeperformanceEvaluationReportView(@QueryParam("year") String year) {
+    public List<HealthInsuranceReportDto> employeeHealthInsReportView(@QueryParam("year") String year) {
         return healthInsuranceService.getHealthInsuranceReport(year);
     }
 
