@@ -85,7 +85,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         instance = this;
         initUpdateComposite(entity, "ClientInfo", OfficeWelcome.constants2);
     }
-    
+
     public UpdateClientInfoPanel(JSONObject entity, boolean active) {
         instance = this;
         this.active = active;
@@ -95,14 +95,14 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     protected void populateCIDocuments() {
         HttpService.HttpServiceAsync.instance().doGet(getDocumentUrl(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                if (!response.trim().toString().equals("null")) {
-                    JSONArray docs = JSONUtils.toJSONArray(JSONParser.parseLenient(response).isObject().get("ciDocument"));
-                    entityFieldsPanel.add(new ReadAllCiDocumentPanel(getEntityId(), docs));
-                }
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        if (!response.trim().toString().equals("null")) {
+                            JSONArray docs = JSONUtils.toJSONArray(JSONParser.parseLenient(response).isObject().get("ciDocument"));
+                            entityFieldsPanel.add(new ReadAllCiDocumentPanel(getEntityId(), docs));
+                        }
+                    }
+                });
     }
 
     protected String getDocumentUrl() {
@@ -119,7 +119,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignEntityValueFromField("clientAPContacts", entity);
         assignEntityValueFromField("clientPaymentTerms", entity);
         assignEntityValueFromField("clientFeeApplicable", entity);
-        assignEntityValueFromField("directClient", entity);        
+        assignEntityValueFromField("directClient", entity);
         assignEntityValueFromField("vendor", entity);
         assignEntityValueFromField("vendorAPContacts", entity);
         assignEntityValueFromField("vendorRecruiters", entity);
@@ -191,16 +191,16 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                uploadDocuments(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        uploadDocuments(arg0);
+                    }
+                });
 
     }
 
@@ -222,12 +222,12 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignFieldValueFromEntity("consultantJobTitle", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("company", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("client", entity, null);
-        assignFieldValueFromEntity("clientAPContacts", entity, null);
+        assignFieldValueFromEntity("directClient", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("clientLocation", entity, null);
         assignFieldValueFromEntity("clientContact", entity, null);
-        assignFieldValueFromEntity("clientPaymentTerms", entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("clientAPContacts", entity, null);
         assignFieldValueFromEntity("clientFeeApplicable", entity, DataType.BOOLEAN_FIELD);
-        assignFieldValueFromEntity("directClient", entity, DataType.BOOLEAN_FIELD);                
+        assignFieldValueFromEntity("clientPaymentTerms", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("vendor", entity, null);
         assignFieldValueFromEntity("vendorAPContacts", entity, null);
         assignFieldValueFromEntity("vendorLocation", entity, null);
@@ -291,7 +291,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         updateBillingRateIcn.addClickHandler(this);
         selectPractiseWidgetF.getListBox().addChangeHandler(this);
         selectVendorWidgetF.getListBox().addChangeHandler(this);
-        selectClientWidgetF.getListBox().addChangeHandler(this);        
+        selectClientWidgetF.getListBox().addChangeHandler(this);
         submitForApprovalF.getBox().addClickHandler(this);
     }
 
@@ -331,9 +331,9 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         addEnumField("company", false, true, ClientInformationCompany.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Client & Vendor Information"));
         addDropDown("client", selectClientWidgetF);
-        addField("directClient", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);      
-        addField("clientFeeApplicable", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        addField("directClient", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addDropDown("clientLocation", new SelectClientLocationWidget(false, false, Alignment.HORIZONTAL));
+        addDropDown("clientContact", new SelectClientContactWidget(false, false, Alignment.HORIZONTAL));
         selectClientAcctPayContact = new SelectClientAcctPayContact(false, false, Alignment.HORIZONTAL) {
             @Override
             public boolean enableMultiSelect() {
@@ -341,7 +341,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             }
         };
         addDropDown("clientAPContacts", selectClientAcctPayContact);
-        addDropDown("clientContact", new SelectClientContactWidget(false, false, Alignment.HORIZONTAL));
+        addField("clientFeeApplicable", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("clientPaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         if (!Auth.isAdmin() && cistatus.equals("COMPLETED")) {
             selectVendorWidgetF.setReadOnly(true);
@@ -567,36 +567,36 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             String id = selectVendorWidgetF.getSelectedObject().get("id").isString().stringValue().trim();
             loadVendor(id);
         }
-        
+
         if (event.getSource().equals(selectClientWidgetF.getListBox())) {
             String id = selectClientWidgetF.getSelectedObject().get("id").isString().stringValue().trim();
             loadClient(id);
-        }        
+        }
     }
 
     public void loadVendor(String vendorEntityId) {
         HttpService.HttpServiceAsync.instance().doGet(getVendor(vendorEntityId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                JSONObject vendor = (JSONObject) JSONParser.parseLenient(response);
-                TextAreaField payTermF = (TextAreaField) fields.get("vendorPaymentTerms");
-                payTermF.setValue(JSONUtils.toString(vendor, "paymentTerms"));
-                EnumField invDelv = (EnumField) fields.get("invoiceDeliveryMethod");
-                if (vendor.get("vendorinvDeliveryMethod") != null) {
-                    invDelv.selectValue(JSONUtils.toString(vendor, "vendorinvDeliveryMethod"));
-                } else {
-                    invDelv.setSelectedIndex(0);
-                }
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject vendor = (JSONObject) JSONParser.parseLenient(response);
+                        TextAreaField payTermF = (TextAreaField) fields.get("vendorPaymentTerms");
+                        payTermF.setValue(JSONUtils.toString(vendor, "paymentTerms"));
+                        EnumField invDelv = (EnumField) fields.get("invoiceDeliveryMethod");
+                        if (vendor.get("vendorinvDeliveryMethod") != null) {
+                            invDelv.selectValue(JSONUtils.toString(vendor, "vendorinvDeliveryMethod"));
+                        } else {
+                            invDelv.setSelectedIndex(0);
+                        }
+                    }
+                });
     }
 
     protected String getVendor(String vendorEntityId) {
         return OfficeWelcome.constants.root_url() + "vendor/" + vendorEntityId;
     }
 
-        public void loadClient(String clientEntityId) {
+    public void loadClient(String clientEntityId) {
         HttpService.HttpServiceAsync.instance().doGet(getClient(clientEntityId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
@@ -604,7 +604,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
                         JSONObject client = (JSONObject) JSONParser.parseLenient(response);
                         TextAreaField payTermF = (TextAreaField) fields.get("clientPaymentTerms");
                         payTermF.setValue(JSONUtils.toString(client, "paymentTerms"));
-                        BooleanField directClientB=(BooleanField) fields.get("directClient");
+                        BooleanField directClientB = (BooleanField) fields.get("directClient");
                         directClientB.setValue(JSONUtils.toBoolean(client, "directClient"));
                     }
                 });
@@ -613,7 +613,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     protected String getClient(String clientEntityId) {
         return OfficeWelcome.constants.root_url() + "client/" + clientEntityId;
     }
-    
+
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
