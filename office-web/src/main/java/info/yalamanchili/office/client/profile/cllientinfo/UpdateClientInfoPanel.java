@@ -68,7 +68,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     protected boolean active = false;
     JSONArray cidocument = new JSONArray();
 
-    FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "ClientInformation", "cidocument", "CIDocument/fileURL", false, true) {
+    FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants2, "ClientInformation", "cidocument", "CIDocument/fileURL", false, true) {
         @Override
         public void onUploadComplete(String res) {
             postUpdateSuccess(null);
