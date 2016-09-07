@@ -266,12 +266,8 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         addDropDown("client", selectClientWidgetF);
         entityFieldsPanel.add(addClientL);
         addField("directClient", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-        addField("clientFeeApplicable", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-        isClientFeeApplicable = (BooleanField) fields.get("clientFeeApplicable");
-        addField("clientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL); 
-        clientFee = (FloatField) fields.get("clientFee");
-        clientFee.setVisible(false);
         addDropDown("clientLocation", new SelectClientLocationWidget(false, true, Alignment.HORIZONTAL));
+        addDropDown("clientContact", new SelectClientContactWidget(false, false, Alignment.HORIZONTAL));
         selectClientAcctPayContact = new SelectClientAcctPayContact(false, false, Alignment.HORIZONTAL) {
             @Override
             public boolean enableMultiSelect() {
@@ -279,7 +275,12 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             }
         };
         addDropDown("clientAPContacts", selectClientAcctPayContact);
-        addDropDown("clientContact", new SelectClientContactWidget(false, false, Alignment.HORIZONTAL));
+        addField("clientFeeApplicable", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        isClientFeeApplicable = (BooleanField) fields.get("clientFeeApplicable");
+        addField("clientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL); 
+        clientFee = (FloatField) fields.get("clientFee");
+        clientFee.setVisible(false);
+        
         addField("clientPaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addDropDown("vendor", selectVendorWidgetF);
         entityFieldsPanel.add(addVendorL);
