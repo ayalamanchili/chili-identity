@@ -347,13 +347,6 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             selectVendorWidgetF.setReadOnly(true);
             addDropDown("vendor", selectVendorWidgetF);
             addDropDown("vendorLocation", new SelectVendorLocationsWidget(true, true, Alignment.HORIZONTAL));
-            selectVendorAPContactsW = new SelectVendorAcctPayContact(true, true, Alignment.HORIZONTAL) {
-                @Override
-                public boolean enableMultiSelect() {
-                    return true;
-                }
-            };
-            addDropDown("vendorAPContacts", selectVendorAPContactsW);
             selectVendorRecruiterContactsWidget = new SelectVendorRecruiterContactWidget(true, false, Alignment.HORIZONTAL) {
                 @Override
                 public boolean enableMultiSelect() {
@@ -361,19 +354,19 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
                 }
             };
             addDropDown("vendorRecruiters", selectVendorRecruiterContactsWidget);
-            addField("vendorPaymentTerms", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-            addDropDown("middleVendor", new SelectMiddleVendorWidget(true, false, Alignment.HORIZONTAL));
-        } else {
-            selectVendorWidgetF.setReadOnly(false);
-            addDropDown("vendor", selectVendorWidgetF);
-            addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, true, Alignment.HORIZONTAL));
-            selectVendorAPContactsW = new SelectVendorAcctPayContact(false, true, Alignment.HORIZONTAL) {
+            selectVendorAPContactsW = new SelectVendorAcctPayContact(true, true, Alignment.HORIZONTAL) {
                 @Override
                 public boolean enableMultiSelect() {
                     return true;
                 }
             };
             addDropDown("vendorAPContacts", selectVendorAPContactsW);
+            addField("vendorPaymentTerms", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+            addDropDown("middleVendor", new SelectMiddleVendorWidget(true, false, Alignment.HORIZONTAL));
+        } else {
+            selectVendorWidgetF.setReadOnly(false);
+            addDropDown("vendor", selectVendorWidgetF);
+            addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, true, Alignment.HORIZONTAL));
             selectVendorRecruiterContactsWidget = new SelectVendorRecruiterContactWidget(false, false, Alignment.HORIZONTAL) {
                 @Override
                 public boolean enableMultiSelect() {
@@ -381,6 +374,13 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
                 }
             };
             addDropDown("vendorRecruiters", selectVendorRecruiterContactsWidget);
+            selectVendorAPContactsW = new SelectVendorAcctPayContact(false, true, Alignment.HORIZONTAL) {
+                @Override
+                public boolean enableMultiSelect() {
+                    return true;
+                }
+            };
+            addDropDown("vendorAPContacts", selectVendorAPContactsW);
             addField("vendorPaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
             addDropDown("middleVendor", new SelectMiddleVendorWidget(false, false, Alignment.HORIZONTAL));
         }

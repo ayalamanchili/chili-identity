@@ -280,18 +280,10 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         addField("clientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL); 
         clientFee = (FloatField) fields.get("clientFee");
         clientFee.setVisible(false);
-        
         addField("clientPaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addDropDown("vendor", selectVendorWidgetF);
         entityFieldsPanel.add(addVendorL);
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, true, Alignment.HORIZONTAL));
-        selectVendorAPContactsW = new SelectVendorAcctPayContact(false, true, Alignment.HORIZONTAL) {
-            @Override
-            public boolean enableMultiSelect() {
-                return true;
-            }
-        };
-        addDropDown("vendorAPContacts", selectVendorAPContactsW);
         selectVendorRecruiterContactsWidget = new SelectVendorRecruiterContactWidget(false, false, Alignment.HORIZONTAL) {
             @Override
             public boolean enableMultiSelect() {
@@ -299,6 +291,13 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             }
         };
         addDropDown("vendorRecruiters", selectVendorRecruiterContactsWidget);
+        selectVendorAPContactsW = new SelectVendorAcctPayContact(false, true, Alignment.HORIZONTAL) {
+            @Override
+            public boolean enableMultiSelect() {
+                return true;
+            }
+        };
+        addDropDown("vendorAPContacts", selectVendorAPContactsW);
         addField("vendorPaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addDropDown("middleVendor", new SelectMiddleVendorWidget(false, false, Alignment.HORIZONTAL));
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);

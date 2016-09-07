@@ -203,13 +203,6 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
         addField("clientPaymentTerms", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addDropDown("vendor", new SelectVendorWidget(true, true, Alignment.HORIZONTAL));
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(true, true, Alignment.HORIZONTAL));
-        selectVendorAPContactsW = new SelectVendorAcctPayContact(false, true, Alignment.HORIZONTAL) {
-            @Override
-            public boolean enableMultiSelect() {
-                return true;
-            }
-        };
-        addDropDown("vendorAPContacts", selectVendorAPContactsW);
         selectVendorRecruiterContactsWidget = new SelectVendorRecruiterContactWidget(false, false, Alignment.HORIZONTAL) {
             @Override
             public boolean enableMultiSelect() {
@@ -217,6 +210,13 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
             }
         };
         addDropDown("vendorRecruiters", selectVendorRecruiterContactsWidget);
+        selectVendorAPContactsW = new SelectVendorAcctPayContact(false, true, Alignment.HORIZONTAL) {
+            @Override
+            public boolean enableMultiSelect() {
+                return true;
+            }
+        };
+        addDropDown("vendorAPContacts", selectVendorAPContactsW);
         addField("vendorPaymentTerms", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addDropDown("middleVendor", new SelectMiddleVendorWidget(true, false, Alignment.HORIZONTAL));
         addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
