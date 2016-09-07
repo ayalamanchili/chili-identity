@@ -104,17 +104,17 @@ public class ReadContractsPanel extends TReadComposite {
                         if (entity.containsKey("clientFeeApplicable"))
                             isClientFeeApplicable = JSONUtils.toBoolean(entity, "clientFeeApplicable");
                         if(isClientFeeApplicable && entity.containsKey("clientFees")) {
-                            addField("finalBillingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 3, 1);
+                            addField("finalBillingRate", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL, 3, 1);
                             addField("clientFees", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL, 3, 2);
-                            assignFieldValueFromEntity("finalBillingRate", entity, DataType.CURRENCY_FIELD);
+                            assignFieldValueFromEntity("finalBillingRate", entity, DataType.FLOAT_FIELD);
                             assignFieldValueFromEntity("clientFees", entity, DataType.FLOAT_FIELD);
                             alignFields(); 
                         }
                         else if (entity.containsKey("vendorFees")) {
                             /*vendorFees*/                 
-                            addField("finalBillingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 3, 1);
+                            addField("finalBillingRate", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL, 3, 1);
                             addField("vendorFees", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL, 3, 2);
-                            assignFieldValueFromEntity("finalBillingRate", entity, DataType.CURRENCY_FIELD);
+                            assignFieldValueFromEntity("finalBillingRate", entity, DataType.FLOAT_FIELD);
                             assignFieldValueFromEntity("vendorFees", entity, DataType.FLOAT_FIELD);
                             alignFields();
                         }
@@ -146,8 +146,8 @@ public class ReadContractsPanel extends TReadComposite {
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("purchaseOrderNo", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
-        assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
+        assignFieldValueFromEntity("billingRate", entity, DataType.FLOAT_FIELD);
+        assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("invoiceDeliveryMethod", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("billingRateDuration", entity, DataType.ENUM_FIELD);
@@ -158,8 +158,8 @@ public class ReadContractsPanel extends TReadComposite {
         if (isSubContractor(entity)) {
             assignFieldValueFromEntity("subContractorName", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("subContractorContactName", entity, DataType.RICH_TEXT_AREA);
-            assignFieldValueFromEntity("subcontractorPayRate", entity, DataType.CURRENCY_FIELD);
-            assignFieldValueFromEntity("subcontractorOvertimePayRate", entity, DataType.CURRENCY_FIELD);
+            assignFieldValueFromEntity("subcontractorPayRate", entity, DataType.FLOAT_FIELD);
+            assignFieldValueFromEntity("subcontractorOvertimePayRate", entity, DataType.FLOAT_FIELD);
             assignFieldValueFromEntity("subcontractorinvoiceFrequency", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("subcontractorpaymentTerms", entity, DataType.STRING_FIELD);
         }
@@ -206,8 +206,8 @@ public class ReadContractsPanel extends TReadComposite {
     protected void addWidgets() {
         addField("employee", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 1);
         addField("itemNumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 2);
-        addField("billingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 2, 1);
-        addField("overTimeBillingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 2, 2);
+        addField("billingRate", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL, 2, 1);
+        addField("overTimeBillingRate", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL, 2, 2);
         String[] billingDuration = {"HOUR", "DAY", "MONTH", "WEEK"};
         addEnumField("billingRateDuration", true, false, billingDuration, Alignment.HORIZONTAL, 4, 1);
         addEnumField("overTimeRateDuration", true, false, billingDuration, Alignment.HORIZONTAL, 4, 2);
@@ -219,8 +219,8 @@ public class ReadContractsPanel extends TReadComposite {
             isSubOr1099 = true;
         }
         if (isSubContractor(entity)) {
-            addField("subcontractorPayRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 7, 1);
-            addField("subcontractorOvertimePayRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 7, 2);
+            addField("subcontractorPayRate", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL, 7, 1);
+            addField("subcontractorOvertimePayRate", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL, 7, 2);
             addEnumField("subcontractorinvoiceFrequency", true, false, InvoiceFrequency.names(), Alignment.HORIZONTAL, 8, 1);
             addField("subcontractorpaymentTerms", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 10, 2);
             addField("subContractorName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 11, 2);
