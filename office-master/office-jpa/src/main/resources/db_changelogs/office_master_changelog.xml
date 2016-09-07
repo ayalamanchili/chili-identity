@@ -136,4 +136,5 @@
     <include file="db_changelogs/08-30-2016_1_changelog.xml"/>
     <include file="db_changelogs/08-31-2016_changelog.xml"/>
     <include file="db_changelogs/08-31-2016_1_changelog.xml"/>
+    <include file="db_changelogs/09-06-2016_changelog.xml"/>
 </databaseChangeLog>
