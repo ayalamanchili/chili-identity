@@ -70,7 +70,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     protected boolean isSub = false;
     protected boolean is1099 = false;
     protected boolean active = false;
-    FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "ClientInformation", "cidocument", "CIDocument/fileURL", false, true) {
+    FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants2, "ClientInformation", "cidocument", "CIDocument/fileURL", false, true) {
         @Override
         public void onUploadComplete(String res) {
             postCreateSuccess(res);
