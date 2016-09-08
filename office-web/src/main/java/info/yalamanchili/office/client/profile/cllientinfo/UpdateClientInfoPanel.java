@@ -167,7 +167,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
 
         assignEntityValueFromField("terminationNotice", entity);
         assignEntityValueFromField("visaStatus", entity);
-        assignEntityValueFromField("notes", entity);
+        assignEntityValueFromField("Comments", entity);
         assignEntityValueFromField("practice", entity);
         assignEntityValueFromField("sectorsAndBUs", entity);
         assignEntityValueFromField("active", entity);
@@ -277,7 +277,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             assignFieldValueFromEntity("timeSheetRequirement", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("specialInvoiceInstructions", entity, DataType.TEXT_AREA_FIELD);
         }
-        assignFieldValueFromEntity("notes", entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("Comments", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("terminationNotice", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("visaStatus", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("practice", entity, null);
@@ -384,6 +384,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             addField("vendorPaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
             addDropDown("middleVendor", new SelectMiddleVendorWidget(false, false, Alignment.HORIZONTAL));
         }
+        entityFieldsPanel.add(getLineSeperatorTag("Project Details"));
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("isEndDateConfirmed", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
@@ -427,7 +428,6 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             addField("hrOrientation", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("joiningReport", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
             addField("logisticsPreparation", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-
             entityFieldsPanel.add(getLineSeperatorTag("Account Department Docs"));
             addField("accountVerificationDocs", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("signedCopyOfWorkOrder", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
@@ -470,7 +470,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
         addField("visaStatus", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("terminationNotice", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("notes", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        
         if (TreeEmployeePanel.instance().getEntity().get("employeeType") != null) {
             StringField employeeTypeF = (StringField) fields.get("employeeType");
             employeeTypeF.setValue(TreeEmployeePanel.instance().getEntity().get("employeeType").isObject().get("name").isString().stringValue());
@@ -505,6 +505,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
                 break;
         }
         addField("sectorsAndBUs", false, true, DataType.ENUM_FIELD);
+        addField("Comments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("active", false, true, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         sectorsF = (EnumField) fields.get("sectorsAndBUs");
         entityFieldsPanel.add(fileUploadPanel);

@@ -152,7 +152,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             }
         }
         assignEntityValueFromField("terminationNotice", clientInfo);
-        assignEntityValueFromField("notes", clientInfo);
+        assignEntityValueFromField("Comments", clientInfo);
         assignEntityValueFromField("visaStatus", clientInfo);
         assignEntityValueFromField("practice", clientInfo);
         assignEntityValueFromField("sectorsAndBUs", clientInfo);
@@ -300,6 +300,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         addDropDown("vendorAPContacts", selectVendorAPContactsW);
         addField("vendorPaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addDropDown("middleVendor", new SelectMiddleVendorWidget(false, false, Alignment.HORIZONTAL));
+        entityFieldsPanel.add(getLineSeperatorTag("Project Details"));
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("isEndDateConfirmed", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
@@ -338,9 +339,9 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             }
         }
         entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
-        addField("visaStatus", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("visaStatus", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("terminationNotice", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("notes", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addDropDown("practice", selectPractiseWidgetF);
         if (TreeEmployeePanel.instance().getEntity().get("workStatus") != null) {
             StringField employeeVisaStatusF = (StringField) fields.get("visaStatus");
             employeeVisaStatusF.setValue(TreeEmployeePanel.instance().getEntity().get("workStatus").isString().stringValue());
@@ -353,9 +354,8 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             StringField employeeTypeF = (StringField) fields.get("employeeType");
             employeeTypeF.setValue(TreeEmployeePanel.instance().getEntity().get("employeeType").isObject().get("name").isString().stringValue());
         }
-
-        addDropDown("practice", selectPractiseWidgetF);
         addEnumField("sectorsAndBUs", false, true, ConsultingServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
+        addField("Comments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         sectorsF = (EnumField) fields.get("sectorsAndBUs");
         endDateF = (DateField) fields.get("endDate");
         isEndDateConfirmedF = (BooleanField) fields.get("isEndDateConfirmed");
@@ -365,6 +365,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         entityActionsPanel.add(submitForApprovalF);
         submitForApprovalF.setValue(true);
         alignFields();
+       
     }
 
     @Override
