@@ -110,32 +110,32 @@ public class VendorDao extends CRUDDao<Vendor> {
         return findAllQuery.getResultList();
     }
 
-    public List<Vendor> getReport(SearchVendorDto dto, int start, int limit) {
-        String queryStr = getReportQueryString(dto);
+    public List<Vendor> getReport(Date startDate, Date endDate, int start, int limit) {
+        String queryStr = getReportQueryString(startDate, endDate);
         TypedQuery<Vendor> query = getEntityManager().createQuery(queryStr, Vendor.class);
-        query = (TypedQuery<Vendor>) getReportQueryWithParams(queryStr, query, dto);
+        query = (TypedQuery<Vendor>) getReportQueryWithParams(queryStr, query, startDate, endDate);
         query.setFirstResult(start);
         query.setMaxResults(limit);
         return query.getResultList();
     }
 
-    protected Query getReportQueryWithParams(String qryStr, Query query, SearchVendorDto dto) {
+    protected Query getReportQueryWithParams(String qryStr, Query query, Date startDate, Date endDate) {
         if (qryStr.contains("startDateParam")) {
-            query.setParameter("startDateParam", dto.getStartDate(), TemporalType.DATE);
+            query.setParameter("startDateParam", startDate, TemporalType.DATE);
         }
         if (qryStr.contains("endDateParam")) {
-            query.setParameter("endDateParam", dto.getEndDate(), TemporalType.DATE);
+            query.setParameter("endDateParam", endDate, TemporalType.DATE);
         }
         return query;
     }
 
-    protected String getReportQueryString(SearchVendorDto dto) {
+    protected String getReportQueryString(Date startDate, Date endDate) {
         StringBuilder reportQueryBuilder = new StringBuilder();
         reportQueryBuilder.append("from ").append(Vendor.class.getCanonicalName()).append(" where ");
-        if (dto.getStartDate() != null) {
+        if (startDate != null) {
             reportQueryBuilder.append("( msaValDate BETWEEN :startDateParam AND :endDateParam");
         }
-        if (dto.getEndDate() != null) {
+        if (endDate != null) {
             reportQueryBuilder.append(" or msaExpDate BETWEEN :startDateParam AND :endDateParam)");
         }
         return reportQueryBuilder.toString();
