@@ -17,7 +17,6 @@ import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.client.VendorService;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.client.InvoiceScheduleDao;
-import info.yalamanchili.office.dao.client.SearchVendorDto;
 import info.yalamanchili.office.dao.client.VendorDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
@@ -30,6 +29,7 @@ import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.invoice.GenericsDatesDto;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
@@ -444,8 +444,8 @@ public class VendorResource extends CRUDResource<Vendor> {
 
     @PUT
     @Path("/msa-valid-reports")
-    public void generateMSAValidReport(SearchVendorDto dto) {
-        List<Vendor> list = vendorDao.getReport(dto, 0, 10000);
+    public void generateMSAValidReport(GenericsDatesDto dto) {
+        List<Vendor> list = vendorDao.getReport(dto.getStartDate(), dto.getEndDate(), 0, 10000);
         if (list.size() > 0) {
             String reportName = "MSA Report";
             VendorService.instance().generateSearchDatesReport(list, OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail(), reportName);
@@ -456,8 +456,8 @@ public class VendorResource extends CRUDResource<Vendor> {
 
     @PUT
     @Path("/msa-valid-search/{start}/{limit}")
-    public List<Vendor> searchForMSADate(SearchVendorDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {
-        return vendorDao.getReport(dto, start, limit);
+    public List<Vendor> searchForMSADate(GenericsDatesDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {
+        return vendorDao.getReport(dto.getStartDate(), dto.getEndDate(), start, limit);
     }
 
     @XmlRootElement
