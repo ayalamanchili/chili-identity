@@ -299,12 +299,12 @@ public class CreateClientPanel extends CreateComposite {
         }
         EnumField invoiceFrequency = (EnumField) fields.get("clientinvFrequency");
         if (invoiceFrequency.getValue() == null || "".equals(invoiceFrequency.getValue())) {
-            invoiceFrequency.setMessage("Please enter the Invoice Frequency");
+            invoiceFrequency.setMessage("Please select Invoice Frequency");
             valid = false;
         }
         EnumField invoiceDeliveryMentod = (EnumField) fields.get("clientInvDeliveryMethod");
         if (invoiceDeliveryMentod.getValue() == null || "".equals(invoiceDeliveryMentod.getValue())) {
-            invoiceDeliveryMentod.setMessage("Please enter the Invoice Frequency");
+            invoiceDeliveryMentod.setMessage("Please select Invoice Delivery Method");
             valid = false;
         }
         FloatField clientFee = (FloatField) fields.get("clientFee");
@@ -352,7 +352,7 @@ public class CreateClientPanel extends CreateComposite {
         for (CreatePhonePanel createPhoneWidget : createContactWidget1.getChildWidgets()) {
             LongField phoneNumberF = (LongField) createPhoneWidget.fields.get("phoneNumber");
             if (createPhoneWidget.phoneTypeF.getSelectedObject() == null) {
-                createPhoneWidget.phoneTypeF.setMessage("Please enter a Phone Type");
+                createPhoneWidget.phoneTypeF.setMessage("Please select Phone Type");
                 valid = false;
             }
             if (phoneNumberF.getValue() == null || "".equals(phoneNumberF.getValue())) {
@@ -391,7 +391,7 @@ public class CreateClientPanel extends CreateComposite {
         for (CreatePhonePanel createPhoneWidget : createContactWidget2.getChildWidgets()) {
             LongField phoneNumberF = (LongField) createPhoneWidget.fields.get("phoneNumber");
             if (createPhoneWidget.phoneTypeF.getSelectedObject() == null) {
-                createPhoneWidget.phoneTypeF.setMessage("Please enter a Phone Type");
+                createPhoneWidget.phoneTypeF.setMessage("Please select Phone Type");
                 valid = false;
             }
             if (phoneNumberF.getValue() == null || "".equals(phoneNumberF.getValue())) {
