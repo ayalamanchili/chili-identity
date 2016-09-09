@@ -16,6 +16,7 @@ import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
@@ -43,9 +44,32 @@ public class GenericTaskCreateNotification implements TaskListener {
             delegateTask.setOwner(currentEmployee.getFirstName() + " " + currentEmployee.getLastName());
         }
         Email email = new Email();
+        email.setRichText(Boolean.TRUE);
         email.setTos(getEmails(delegateTask, notifyEmployee, notifyRoles));
         email.setSubject("Task Created:" + delegateTask.getName());
-        String messageText = "Task is Created. Please complete.\n Details: \n Name: " + delegateTask.getName() + " \n Description:" + delegateTask.getDescription() + "\n\n\t Please click on the below link to complete the task: \n\t " + getTaskLink(delegateTask);
+        String messageText = "<b>Task Created:</b> Please complete.<br/> <br/> <b> Name        : </b>" + delegateTask.getName() + " <br/> <br/> <b> Description : </b>";
+        String description = delegateTask.getDescription();
+        String[] descA = description.split("\n");
+        messageText = messageText.concat(descA[0] + "<br/> <br/> <b> <u> Details: </u> </b> <br/><html><body><table>");
+        for (int i = 1; i < descA.length - 1; i++) {
+            if (descA[i].contains(":")) {
+                String descArrayLeft = descA[i].substring(0, descA[i].indexOf(":"));
+                String descArrayRight = descA[i].substring(descA[i].indexOf(":") + 1, descA[i].length());
+                messageText = messageText.concat("<tr> <td> <b>" + descArrayLeft.trim() + "</b> </td>");
+                messageText = messageText.concat("<td> :" + descArrayRight + "</td> </tr>");
+            } else {
+                messageText = messageText.concat("<br/>" + descA[i]);
+            }
+        }
+        if (descA[descA.length - 1].contains("instructions") || descA[descA.length - 1].contains("http")) {
+            messageText = messageText.concat("</table></body></html> " + descA[descA.length - 1]);
+        } else {
+            String descArrayLeft = descA[descA.length - 1].substring(0, descA[descA.length - 1].indexOf(":"));
+            String descArrayRight = descA[descA.length - 1].substring(descA[descA.length - 1].indexOf(":") + 1, descA[descA.length - 1].length());
+            messageText = messageText.concat("<tr> <td> <b>" + descArrayLeft.trim() + "</b> </td>");
+            messageText = messageText.concat("<td> :" + descArrayRight + "</td> </tr></table></body></html>");
+        }
+        messageText = messageText.concat("<br/> <br/> &nbsp; <b>Please click on the below link to complete the task: </b> <br/> &nbsp; " + getTaskLink(delegateTask));
         email.setHtml(Boolean.TRUE);
         email.setBody(messageText);
         email.getHeaders().put("task-id", delegateTask.getId());
@@ -71,5 +95,15 @@ public class GenericTaskCreateNotification implements TaskListener {
             }
         }
         return emails;
+    }
+
+    private int alignSpacesUsingLargestStr(List<String> leftStr) {
+        int largestStr = leftStr.size();
+        for (int i = 0; i < leftStr.size(); i++) {
+            if (leftStr.get(i).trim().length() > largestStr) {
+                largestStr = leftStr.get(i).trim().length();
+            }
+        }
+        return largestStr;
     }
 }
