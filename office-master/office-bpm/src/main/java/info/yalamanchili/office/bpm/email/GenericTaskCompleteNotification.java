@@ -34,23 +34,45 @@ public class GenericTaskCompleteNotification implements TaskListener {
     public void notify(DelegateTask delegateTask, Boolean notifyEmployee, String... notifyRoles) {
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
         Email email = new Email();
+        email.setRichText(Boolean.TRUE);
         email.setTos(getEmails(delegateTask, notifyEmployee, notifyRoles));
         String subjectText = "Task Complete:" + delegateTask.getName();
-        String messageText = "Task Complete.  Details: \n Name: " + delegateTask.getName() + " \n Description:" + delegateTask.getDescription();
+        String messageText = "<b>Task Complete.  </b> <br/> <br/> <b> Name: </b>" + delegateTask.getName() + " <br/> <b> Description: </b>";
+        String description = delegateTask.getDescription();
+        String[] descA = description.split("\n");
+        messageText = messageText.concat(descA[0] + "<br/> <br/> <b> <u> Details: </u> </b> <br/><html><body><table>");
+        for (int i = 1; i < descA.length - 1; i++) {
+            if (descA[i].contains(":")) {
+                String descArrayLeft = descA[i].substring(0, descA[i].indexOf(":"));
+                String descArrayRight = descA[i].substring(descA[i].indexOf(":") + 1, descA[i].length());
+                messageText = messageText.concat("<tr> <td> <b>" + descArrayLeft.trim() + "</b> </td>");
+                messageText = messageText.concat("<td> :" + descArrayRight + "</td> </tr>");
+            } else {
+                messageText = messageText.concat("<br/>" + descA[i]);
+            }
+        }
+        if (descA[descA.length - 1].contains("instructions") || descA[descA.length - 1].contains("http")) {
+            messageText = messageText.concat("</table></body></html> " + descA[descA.length - 1]);
+        } else {
+            String descArrayLeft = descA[descA.length - 1].substring(0, descA[descA.length - 1].indexOf(":"));
+            String descArrayRight = descA[descA.length - 1].substring(descA[descA.length - 1].indexOf(":") + 1, descA[descA.length - 1].length());
+            messageText = messageText.concat("<tr> <td> <b>" + descArrayLeft.trim() + "</b> </td>");
+            messageText = messageText.concat("<td> :" + descArrayRight + "</td> </tr></table></body></html>");
+        }
         //task statuss
         String status = (String) delegateTask.getExecution().getVariable("status");
         if (status != null) {
             subjectText = subjectText.concat(" Status:" + status.toUpperCase());
-            messageText = messageText.concat(" \n Status:" + status.toUpperCase());
+            messageText = messageText.concat(" <br/> <b> Status :</b> &nbsp;" + status.toUpperCase());
         }
         //task notes
         String notes = (String) delegateTask.getExecution().getVariable("notes");
         if (notes != null) {
-            messageText = messageText.concat(" \n Notes:" + notes);
+            messageText = messageText.concat(" <br/> <b>Notes :</b> &nbsp;" + notes);
         }
         Employee taskActionUser = (Employee) delegateTask.getExecution().getVariable("taskActionUser");
         if (taskActionUser != null) {
-            messageText = messageText.concat(" \n Task Updated By:" + taskActionUser.getFirstName() + " " + taskActionUser.getLastName());
+            messageText = messageText.concat(" <br/> <b> Task Updated By :</b> &nbsp;" + taskActionUser.getFirstName() + " " + taskActionUser.getLastName());
         }
         email.setHtml(Boolean.TRUE);
         email.setSubject(subjectText);
